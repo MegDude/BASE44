@@ -1,0 +1,69 @@
+{
+  "name": "Building",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Building Name"
+    },
+    "address": {
+      "type": "string",
+      "title": "Address"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Image URL"
+    },
+    "unit_count": {
+      "type": "number",
+      "title": "Unit Count"
+    },
+    "developer": {
+      "type": "string",
+      "title": "Developer/Manager"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "amenities": {
+      "type": "array",
+      "title": "Amenities",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_partner": {
+      "type": "boolean",
+      "title": "Is Partner Building"
+    },
+    "real_estate_contact": {
+      "type": "string",
+      "title": "Real Estate Contact"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "pilot",
+        "prospect"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "name",
+    "address",
+    "latitude",
+    "longitude"
+  ]
+}

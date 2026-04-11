@@ -1,0 +1,73 @@
+{
+  "name": "Perk",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Perk Title"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "venue_name": {
+      "type": "string",
+      "title": "Venue Name"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "discount",
+        "free_item",
+        "priority_access",
+        "members_rate",
+        "experience",
+        "class_pass"
+      ]
+    },
+    "value": {
+      "type": "string",
+      "title": "Value (e.g. 15% off, Free drink)"
+    },
+    "terms": {
+      "type": "string",
+      "title": "Terms & Conditions"
+    },
+    "valid_from": {
+      "type": "string",
+      "title": "Valid From",
+      "format": "date-time"
+    },
+    "valid_until": {
+      "type": "string",
+      "title": "Valid Until",
+      "format": "date-time"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "title": "Featured"
+    },
+    "redemption_count": {
+      "type": "number",
+      "title": "Redemption Count",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "expired",
+        "paused"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "title",
+    "venue_name",
+    "category",
+    "value"
+  ]
+}

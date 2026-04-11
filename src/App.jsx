@@ -5,7 +5,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+import Layout from './components/Layout';
+import Landing from './pages/Landing';
+import Explore from './pages/Explore';
+import Events from './pages/Events';
+import PerksPage from './pages/PerksPage';
+import PerksCard from './pages/PerksCard';
+import ForBuildings from './pages/ForBuildings';
+import About from './pages/About';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,8 +40,16 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
-      <Route path="*" element={<PageNotFound />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/perks" element={<PerksPage />} />
+        <Route path="/card" element={<PerksCard />} />
+        <Route path="/for-buildings" element={<ForBuildings />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Routes>
   );
 };

@@ -1,0 +1,101 @@
+{
+  "name": "Event",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Event Title"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "fitness",
+        "wellness",
+        "social",
+        "dining",
+        "nightlife",
+        "arts",
+        "networking",
+        "class",
+        "run_club",
+        "yoga"
+      ]
+    },
+    "venue_name": {
+      "type": "string",
+      "title": "Venue Name"
+    },
+    "address": {
+      "type": "string",
+      "title": "Address"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Image URL"
+    },
+    "date": {
+      "type": "string",
+      "title": "Date",
+      "format": "date-time"
+    },
+    "end_date": {
+      "type": "string",
+      "title": "End Date",
+      "format": "date-time"
+    },
+    "is_members_only": {
+      "type": "boolean",
+      "title": "Members Only",
+      "default": true
+    },
+    "capacity": {
+      "type": "number",
+      "title": "Capacity"
+    },
+    "rsvp_count": {
+      "type": "number",
+      "title": "RSVP Count",
+      "default": 0
+    },
+    "tags": {
+      "type": "array",
+      "title": "Tags",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_featured": {
+      "type": "boolean",
+      "title": "Featured"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "upcoming",
+        "live",
+        "past",
+        "cancelled"
+      ],
+      "default": "upcoming"
+    }
+  },
+  "required": [
+    "title",
+    "category",
+    "date"
+  ]
+}

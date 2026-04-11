@@ -1,0 +1,93 @@
+{
+  "name": "Venue",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Venue Name"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "restaurant",
+        "bar",
+        "fitness",
+        "wellness",
+        "beauty",
+        "retail",
+        "entertainment",
+        "coworking",
+        "hotel"
+      ]
+    },
+    "subcategory": {
+      "type": "string",
+      "title": "Subcategory"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "address": {
+      "type": "string",
+      "title": "Address"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Image URL"
+    },
+    "perk_description": {
+      "type": "string",
+      "title": "Perk Description"
+    },
+    "perk_value": {
+      "type": "string",
+      "title": "Perk Value"
+    },
+    "hours": {
+      "type": "string",
+      "title": "Hours"
+    },
+    "website": {
+      "type": "string",
+      "title": "Website"
+    },
+    "tags": {
+      "type": "array",
+      "title": "Tags",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_featured": {
+      "type": "boolean",
+      "title": "Featured"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "coming_soon",
+        "inactive"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "address",
+    "latitude",
+    "longitude"
+  ]
+}
