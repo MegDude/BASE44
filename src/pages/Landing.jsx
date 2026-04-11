@@ -5,15 +5,15 @@ import ExperienceGrid from "../components/landing/ExperienceGrid";
 import HowItWorksSection from "../components/landing/HowItWorksSection";
 import CTASection from "../components/landing/CTASection";
 
-const HERO_IMAGE = "/__generating__/img_7532b37baee0.png";
+const HERO_IMAGE = "https://media.base44.com/images/public/69da00318449b692572744f2/010c4f66b_generated_7a2820f8.png";
 
 const EXPERIENCE_IMAGES = [
-  { src: "/__generating__/img_260f44b95425.png", alt: "Rooftop social in Austin", label: "Rooftop Socials" },
-  { src: "/__generating__/img_c600082a9b17.png", alt: "Wellness cold plunge experience", label: "Wellness & Recovery" },
-  { src: "/__generating__/img_15202024938a.png", alt: "Downtown Austin run club", label: "Run Clubs" },
-  { src: "/__generating__/img_491daf807d40.png", alt: "Local dining experience", label: "Local Dining" },
-  { src: "/__generating__/img_ed2608cf52f4.png", alt: "Yoga class with skyline view", label: "Yoga & Movement" },
-  { src: "/__generating__/img_260f44b95425.png", alt: "Community gathering", label: "Community Events" },
+  { src: "https://media.base44.com/images/public/69da00318449b692572744f2/52842f078_generated_09e0a551.png", alt: "Rooftop social in Austin", label: "Rooftop Socials" },
+  { src: "https://media.base44.com/images/public/69da00318449b692572744f2/6852cd7a6_generated_ef9262dd.png", alt: "Wellness cold plunge experience", label: "Wellness & Recovery" },
+  { src: "https://media.base44.com/images/public/69da00318449b692572744f2/cfce8a43d_generated_49045bf8.png", alt: "Downtown Austin run club", label: "Run Clubs" },
+  { src: "https://media.base44.com/images/public/69da00318449b692572744f2/44a9a98fc_generated_8d4c27ec.png", alt: "Local dining experience", label: "Local Dining" },
+  { src: "https://media.base44.com/images/public/69da00318449b692572744f2/eed33e441_generated_36cd1dbb.png", alt: "Yoga class with skyline view", label: "Yoga & Movement" },
+  { src: "https://media.base44.com/images/public/69da00318449b692572744f2/52842f078_generated_09e0a551.png", alt: "Community gathering", label: "Community Events" },
 ];
 
 export default function Landing() {
