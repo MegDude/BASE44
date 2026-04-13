@@ -6,13 +6,15 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Layout from './components/Layout';
-import Landing from './pages/Landing';
-import Explore from './pages/Explore';
-import Events from './pages/Events';
-import PerksPage from './pages/PerksPage';
-import PerksCard from './pages/PerksCard';
-import ForBuildings from './pages/ForBuildings';
-import About from './pages/About';
+import Home from './pages/Home';
+// Downtown Perks pages
+import Landing from './pages/downtown-perks/Landing';
+import Explore from './pages/downtown-perks/Explore';
+import Events from './pages/downtown-perks/Events';
+import PerksPage from './pages/downtown-perks/PerksPage';
+import PerksCard from './pages/downtown-perks/PerksCard';
+import ForBuildings from './pages/downtown-perks/ForBuildings';
+import About from './pages/downtown-perks/About';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -41,13 +43,15 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Landing />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/perks" element={<PerksPage />} />
-        <Route path="/card" element={<PerksCard />} />
-        <Route path="/for-buildings" element={<ForBuildings />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/" element={<Home />} />
+        {/* Downtown Perks routes */}
+        <Route path="/downtown-perks" element={<Landing />} />
+        <Route path="/downtown-perks/explore" element={<Explore />} />
+        <Route path="/downtown-perks/events" element={<Events />} />
+        <Route path="/downtown-perks/perks" element={<PerksPage />} />
+        <Route path="/downtown-perks/card" element={<PerksCard />} />
+        <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
+        <Route path="/downtown-perks/about" element={<About />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

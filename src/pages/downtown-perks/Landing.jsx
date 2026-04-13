@@ -1,9 +1,9 @@
-import HeroSection from "../components/landing/HeroSection";
-import ProblemSection from "../components/landing/ProblemSection";
-import SystemSection from "../components/landing/SystemSection";
-import ExperienceGrid from "../components/landing/ExperienceGrid";
-import HowItWorksSection from "../components/landing/HowItWorksSection";
-import CTASection from "../components/landing/CTASection";
+import HeroSection from "../../components/downtown-perks/landing/HeroSection";
+import ProblemSection from "../../components/downtown-perks/landing/ProblemSection";
+import SystemSection from "../../components/downtown-perks/landing/SystemSection";
+import ExperienceGrid from "../../components/downtown-perks/landing/ExperienceGrid";
+import HowItWorksSection from "../../components/downtown-perks/landing/HowItWorksSection";
+import CTASection from "../../components/downtown-perks/landing/CTASection";
 
 const HERO_IMAGE = "https://media.base44.com/images/public/69da00318449b692572744f2/010c4f66b_generated_7a2820f8.png";
 

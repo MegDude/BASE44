@@ -39,14 +39,14 @@ export default function CTASection() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Link
-            to="/card"
+            to="/downtown-perks/card"
             className="group px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center gap-2"
           >
             Get Your Perks Card
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
-            to="/for-buildings"
+            to="/downtown-perks/for-buildings"
             className="px-8 py-4 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
           >
             Partner With Us

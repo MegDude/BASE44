@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { base44 } from "@/api/base44Client";
 import { Search, Filter, Building2, Utensils, Dumbbell, Heart, Sparkles, Music, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import VenueCard from "../components/explore/VenueCard";
+import VenueCard from "../../components/downtown-perks/explore/VenueCard";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 

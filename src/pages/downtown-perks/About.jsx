@@ -175,7 +175,7 @@ export default function About() {
           className="mt-20 text-center"
         >
           <Link
-            to="/explore"
+            to="/downtown-perks/explore"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30"
           >
             Explore the System

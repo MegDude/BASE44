@@ -75,13 +75,13 @@ export default function HeroSection({ heroImage }) {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Link
-            to="/explore"
+            to="/downtown-perks/explore"
             className="px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30"
           >
             Explore the Map
           </Link>
           <Link
-            to="/card"
+            to="/downtown-perks/card"
             className="px-8 py-4 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
           >
             Get Your Perks Card

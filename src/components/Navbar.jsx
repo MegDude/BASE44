@@ -1,15 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, MapPin } from "lucide-react";
+import { Menu, X, MapPin, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { to: "/", label: "Home" },
-  { to: "/explore", label: "Explore" },
-  { to: "/events", label: "Events" },
-  { to: "/perks", label: "Perks" },
-  { to: "/for-buildings", label: "For Buildings" },
-  { to: "/about", label: "About" },
+  { to: "/downtown-perks", label: "Downtown Perks" },
 ];
 
 export default function Navbar() {
@@ -22,11 +18,11 @@ export default function Navbar() {
       <div className="relative max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <MapPin className="w-4 h-4 text-primary-foreground" />
+          <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
+            <Building2 className="w-4 h-4 text-primary" />
           </div>
           <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-            Downtown<span className="text-primary">Perks</span>
+            Property<span className="text-primary">Platform</span>
           </span>
         </Link>
 
@@ -37,7 +33,7 @@ export default function Navbar() {
               key={link.to}
               to={link.to}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                location.pathname === link.to
+                location.pathname === link.to || (link.to === "/downtown-perks" && location.pathname.startsWith("/downtown-perks"))
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary"
               }`}
@@ -50,7 +46,7 @@ export default function Navbar() {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           <Link
-            to="/card"
+            to="/downtown-perks/card"
             className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/20"
           >
             Get Your Card
@@ -91,7 +87,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                to="/card"
+                to="/downtown-perks/card"
                 onClick={() => setOpen(false)}
                 className="block mt-4 px-4 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold text-center"
               >

@@ -122,7 +122,7 @@ export default function PerksCard() {
             </button>
           )}
           <Link
-            to="/explore"
+            to="/downtown-perks/explore"
             className="w-full px-6 py-4 rounded-2xl border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all flex items-center justify-center gap-2"
           >
             Explore the Map

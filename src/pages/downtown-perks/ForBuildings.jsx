@@ -192,7 +192,7 @@ export default function ForBuildings() {
             and content."
           </p>
           <Link
-            to="/explore"
+            to="/downtown-perks/explore"
             className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:underline"
           >
             See the Map <ArrowRight className="w-4 h-4" />

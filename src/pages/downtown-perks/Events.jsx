@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Calendar, MapPin, Users, Clock, Filter } from "lucide-react";
 import { motion } from "framer-motion";
 import moment from "moment";
-import EventCard from "../components/events/EventCard";
+import EventCard from "../../components/downtown-perks/events/EventCard";
 
 const eventCategories = [
   "all", "fitness", "wellness", "social", "dining", "nightlife", "arts", "networking", "class", "run_club", "yoga"
