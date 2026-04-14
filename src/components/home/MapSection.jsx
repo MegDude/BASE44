@@ -1,13 +1,14 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Calendar, Star, Home, Coffee, ArrowRight } from "lucide-react";
+import { MapPin, Calendar, Star, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
 
 const features = [
   "Restaurants, bars, coffee shops, and services nearby",
   "Events happening tonight, ready to RSVP",
   "Local perks from places you'd go anyway",
   "Places worth coming back to",
+  "People around you, when you want to be social",
 ];
 
 const howSteps = [
@@ -27,7 +28,7 @@ export default function MapSection() {
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16 items-end">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-14 items-end">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -52,29 +53,24 @@ export default function MapSection() {
           </motion.p>
         </div>
 
-        {/* Map filter tabs preview */}
+        {/* Map filter tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex items-center gap-2 mb-8 overflow-x-auto pb-1"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex gap-2 mb-8 overflow-x-auto pb-0.5"
         >
           {filterTabs.map((tab, i) => (
-            <span
-              key={i}
-              className={`px-4 py-1.5 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all cursor-default ${
-                i === 0
-                  ? "border-primary/50 bg-primary/10 text-primary"
-                  : "border-border/50 text-muted-foreground hover:text-foreground"
-              }`}
-            >
+            <span key={i} className={`px-4 py-1.5 rounded-full text-[12px] font-medium whitespace-nowrap border cursor-default flex-shrink-0 ${
+              i === 0 ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground"
+            }`}>
               {tab}
             </span>
           ))}
         </motion.div>
 
-        {/* Two columns: features + how it works */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-border/40 rounded-lg overflow-hidden mb-12">
+        {/* Two-col: find + how */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-border/40 rounded-xl overflow-hidden mb-10">
 
           {/* Find what you need */}
           <div className="p-8 md:border-r border-border/40">
@@ -83,31 +79,40 @@ export default function MapSection() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-6">Find What You Need</div>
+              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">Find What You Need</div>
               <ul className="space-y-3 mb-8">
                 {features.map((f, i) => (
                   <li key={i} className="flex items-start gap-3 text-[13px] text-muted-foreground">
-                    <div className="w-1 h-1 rounded-full bg-primary/60 mt-2 flex-shrink-0" />
+                    <div className="w-1 h-1 rounded-full bg-primary/60 mt-2 shrink-0" />
                     {f}
                   </li>
                 ))}
               </ul>
 
               {/* Sample venue card */}
-              <div className="p-4 rounded-lg bg-muted/30 border border-border/40">
+              <div className="p-4 rounded-lg bg-muted/30 border border-border/40 mb-6">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
                     <Coffee className="w-3.5 h-3.5 text-primary/60" />
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="font-medium text-sm text-foreground">Jo's Coffee</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">Coffee · 5-minute walk</div>
-                    <div className="text-[11px] text-primary/70 mt-1">Nearby perk available</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">Coffee. Quick stops. Daily rituals.</div>
+                    <div className="text-[11px] text-primary/70 mt-1">Nearby perk · 5-minute walk</div>
                   </div>
-                  <span className="text-[11px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-full">
+                  <span className="text-[11px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-full shrink-0">
                     Show Card
                   </span>
                 </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[12px] hover:bg-primary/90 transition-all">
+                  <MapPin className="w-3.5 h-3.5" /> Explore Downtown
+                </Link>
+                <Link to="/downtown-perks/card" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-foreground/70 font-medium text-[12px] hover:text-foreground transition-all">
+                  Get a Perks Card
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -119,41 +124,59 @@ export default function MapSection() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-6">How It Works</div>
-              <div className="space-y-0 divide-y divide-border/40">
+              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">How It Works</div>
+              <div className="divide-y divide-border/40">
                 {howSteps.map((s, i) => (
-                  <div key={i} className="py-4 first:pt-0 last:pb-0">
-                    <div className="font-medium text-sm text-foreground mb-1">{s.label}</div>
+                  <div key={i} className="py-5 first:pt-0 last:pb-0">
+                    <div className="font-medium text-sm text-foreground mb-1.5">{s.label}</div>
                     <div className="text-[13px] text-muted-foreground leading-relaxed">{s.detail}</div>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 pt-6 border-t border-border/40">
-                <p className="font-heading text-base font-medium text-foreground italic mb-1">That's how friction dies.</p>
-                <p className="text-[12px] text-muted-foreground">No extra steps. Just the shortest distance between "maybe" and "I'm going."</p>
+              <div className="mt-6 pt-6 border-t border-border/40 space-y-1">
+                <p className="font-heading text-base font-medium text-foreground italic">That's how friction dies.</p>
+                <p className="text-[12px] text-muted-foreground leading-relaxed">No extra steps. No guesswork. Just the shortest distance between "maybe" and "I'm going."</p>
               </div>
             </motion.div>
           </div>
         </div>
 
-        {/* Map sub-sections: Events / Properties / Perks Card */}
+        {/* Three sub-section cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
           {[
-            { icon: Calendar, label: "Events Happening Now", detail: "See what's on. RSVP in one tap.", cta: "See events", to: "/downtown-perks/events" },
-            { icon: Home, label: "Want to live here?", detail: "Browse properties nearby — not just listings online.", cta: "View properties", to: "/downtown-perks/explore" },
-            { icon: Star, label: "Get Your Perks Card", detail: "Scan the QR code. Your card comes straight to your phone.", cta: "Sign me up", to: "/downtown-perks/card" },
+            {
+              icon: Calendar,
+              label: "Events Happening Now",
+              detail: "See what's on. RSVP in one tap. From happy hours to local programming — without leaving the map.",
+              cta: "See events",
+              to: "/downtown-perks/events",
+            },
+            {
+              icon: Home,
+              label: "Want to live here?",
+              detail: "Browse properties nearby. Filter to Properties to view participating buildings, rentals, and homes for sale. Tap any building for availability and what's walkable.",
+              cta: "View properties",
+              to: "/downtown-perks/explore",
+            },
+            {
+              icon: QrCode,
+              label: "Get Your Perks Card Now",
+              detail: "Scan the QR code to get your Perks Card sent directly to your phone. Sign me up.",
+              cta: "Sign me up",
+              to: "/downtown-perks/card",
+            },
           ].map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.4 + i * 0.08 }}
-              className="p-6 rounded-lg border border-border/50 bg-card/40 hover:border-primary/20 transition-all group"
+              className="p-6 rounded-xl border border-border/50 bg-card/40 hover:border-primary/20 transition-all group"
             >
               <div className="w-8 h-8 rounded-full border border-border/60 flex items-center justify-center mb-4">
                 <item.icon className="w-3.5 h-3.5 text-primary/60" />
               </div>
-              <div className="font-heading font-medium text-sm text-foreground mb-1.5">{item.label}</div>
+              <div className="font-heading font-medium text-sm text-foreground mb-2">{item.label}</div>
               <div className="text-[12px] text-muted-foreground leading-relaxed mb-4">{item.detail}</div>
               <Link to={item.to} className="inline-flex items-center gap-1 text-[12px] text-primary font-medium hover:underline underline-offset-4">
                 {item.cta} <ArrowRight className="w-3 h-3" />
@@ -162,19 +185,26 @@ export default function MapSection() {
           ))}
         </div>
 
-        {/* CTAs */}
+        {/* "What's around the corner" strip */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-wrap gap-3"
+          className="border border-border/40 rounded-xl p-8"
         >
-          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300">
-            <MapPin className="w-3.5 h-3.5" /> Explore Downtown
-          </Link>
-          <Link to="/downtown-perks/card" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300">
-            Get a Perks Card
-          </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h3 className="font-heading text-2xl font-medium leading-[1.2] mb-2">What's Around the Corner</h3>
+              <p className="text-muted-foreground text-[13px] leading-relaxed">
+                Everything you need, within walking distance. See what's close, decide quickly, and go.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
+                <MapPin className="w-3.5 h-3.5" /> Explore nearby
+              </Link>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -15,8 +15,23 @@ const forms = [
       { name: "email", label: "Email", type: "email" },
       { name: "phone", label: "Phone", type: "tel" },
       { name: "units", label: "Number of Units", type: "number" },
+      { name: "goals", label: "Any specific goals? (Optional)", type: "text" },
     ],
     cta: "Start Free Pilot",
+  },
+  {
+    id: "hotels",
+    label: "Hotels",
+    headline: "Extend the stay",
+    sub: "beyond your lobby.",
+    fields: [
+      { name: "property", label: "Hotel / Property Name", type: "text" },
+      { name: "name", label: "Your Name & Role", type: "text" },
+      { name: "email", label: "Email", type: "email" },
+      { name: "phone", label: "Phone", type: "tel" },
+      { name: "rooms", label: "Number of Rooms", type: "number" },
+    ],
+    cta: "Use This for Guests",
   },
   {
     id: "venues",
@@ -34,19 +49,6 @@ const forms = [
     cta: "Discuss Activation",
   },
   {
-    id: "residents",
-    label: "Residents",
-    headline: "Check if your building is in.",
-    sub: "Get your perks card.",
-    fields: [
-      { name: "name", label: "Your Name", type: "text" },
-      { name: "phone", label: "Phone (used for QR card login)", type: "tel" },
-      { name: "email", label: "Email (optional)", type: "email" },
-      { name: "building", label: "Building Address", type: "text" },
-    ],
-    cta: "Get My Perks Card",
-  },
-  {
     id: "brands",
     label: "Brands",
     headline: "Buy the moment,",
@@ -58,6 +60,47 @@ const forms = [
       { name: "phone", label: "Phone", type: "tel" },
     ],
     cta: "Start a Conversation",
+  },
+  {
+    id: "civic",
+    label: "Civic",
+    headline: "Turn attendance",
+    sub: "into participation.",
+    fields: [
+      { name: "org", label: "Organization Name", type: "text" },
+      { name: "name", label: "Your Name & Role", type: "text" },
+      { name: "email", label: "Email", type: "email" },
+      { name: "phone", label: "Phone", type: "tel" },
+      { name: "focus", label: "Geographic Focus (Which blocks/corridors)", type: "text" },
+    ],
+    cta: "Talk to Us",
+  },
+  {
+    id: "realestate",
+    label: "Real Estate",
+    headline: "Turn foot traffic",
+    sub: "into qualified leads.",
+    fields: [
+      { name: "name", label: "Your Name", type: "text" },
+      { name: "email", label: "Email", type: "email" },
+      { name: "phone", label: "Phone", type: "tel" },
+      { name: "brokerage", label: "Brokerage", type: "text" },
+      { name: "listings", label: "Active Listings in Downtown Austin", type: "number" },
+    ],
+    cta: "Discuss Lead Integration",
+  },
+  {
+    id: "residents",
+    label: "Residents",
+    headline: "Check if your building",
+    sub: "is part of Downtown Perks.",
+    fields: [
+      { name: "name", label: "Your Name", type: "text" },
+      { name: "phone", label: "Phone (used for QR card login)", type: "tel" },
+      { name: "email", label: "Email (optional)", type: "email" },
+      { name: "building", label: "Building Address", type: "text" },
+    ],
+    cta: "Get My Perks Card",
   },
 ];
 
@@ -112,17 +155,22 @@ export default function ContactSection() {
               <em className="text-primary">you are.</em>
             </h2>
           </motion.div>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground text-[13px] leading-relaxed"
           >
-            People don't choose the best option. They choose the one they notice. Be the one they notice.
-          </motion.p>
+            <p className="text-muted-foreground text-[13px] leading-relaxed mb-4">
+              People don't choose the best option. They choose the one they notice.
+            </p>
+            <div className="flex flex-col gap-1.5 text-[12px] text-muted-foreground/60">
+              <span className="font-medium text-foreground/70">For residents — Stop searching. Start doing.</span>
+              <span className="font-medium text-foreground/70">For partners — Be the one they notice.</span>
+            </div>
+          </motion.div>
         </div>
 
-        {/* Form tabs + form */}
+        {/* Form panel */}
         <div className="border border-border/50 rounded-xl overflow-hidden">
           {/* Tabs */}
           <div className="flex border-b border-border/40 overflow-x-auto">
@@ -130,7 +178,7 @@ export default function ContactSection() {
               <button
                 key={f.id}
                 onClick={() => setActiveForm(f.id)}
-                className={`px-6 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${
+                className={`px-5 py-4 text-[11px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${
                   activeForm === f.id
                     ? "text-primary bg-primary/5"
                     : "text-muted-foreground hover:text-foreground"
@@ -141,8 +189,8 @@ export default function ContactSection() {
             ))}
           </div>
 
-          {/* Form */}
           <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Form */}
             <div className="p-8 md:border-r border-border/40">
               <motion.div
                 key={activeForm}
@@ -155,28 +203,30 @@ export default function ContactSection() {
                 <ContactForm form={current} />
               </motion.div>
             </div>
+
+            {/* Sidebar */}
             <div className="p-8 bg-muted/20 flex flex-col justify-between">
               <div>
-                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">
+                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">
                   Also Available
                 </div>
-                <div className="space-y-3">
-                  {forms.filter(f => f.id !== activeForm).map(f => (
+                <div className="space-y-2">
+                  {forms.filter(f => f.id !== activeForm).slice(0, 4).map(f => (
                     <button
                       key={f.id}
                       onClick={() => setActiveForm(f.id)}
-                      className="flex items-center justify-between w-full p-3.5 rounded-lg border border-border/40 hover:border-primary/20 text-left transition-all group"
+                      className="flex items-center justify-between w-full p-3 rounded-lg border border-border/40 hover:border-primary/20 text-left transition-all group"
                     >
                       <div>
-                        <div className="text-sm font-medium text-foreground">{f.label}</div>
-                        <div className="text-[12px] text-muted-foreground mt-0.5">{f.headline} {f.sub}</div>
+                        <div className="text-[13px] font-medium text-foreground">{f.label}</div>
+                        <div className="text-[11px] text-muted-foreground mt-0.5">{f.headline} {f.sub}</div>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-primary transition-colors" />
+                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/30 group-hover:text-primary transition-colors shrink-0" />
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-border/40">
+              <div className="mt-8 pt-6 border-t border-border/40 space-y-1">
                 <p className="text-[12px] text-muted-foreground/60 italic">
                   Prefer email?{" "}
                   <a href="mailto:hello@downtownperks.com" className="text-primary hover:underline underline-offset-4">
@@ -202,9 +252,9 @@ export default function ContactSection() {
           <Link to="/downtown-perks/for-buildings" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300">
             Become a Partner
           </Link>
-          <a href="mailto:hello@downtownperks.com" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/40 text-muted-foreground font-medium text-sm hover:text-foreground transition-all duration-300">
-            Contact Us
-          </a>
+          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/40 text-muted-foreground font-medium text-sm hover:text-foreground transition-all duration-300">
+            Check Availability
+          </Link>
         </motion.div>
       </div>
     </section>

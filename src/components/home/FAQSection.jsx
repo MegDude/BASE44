@@ -8,40 +8,32 @@ const faqs = [
   { q: "Do venues pay to join?", a: "Not at first. Venues get 12 months free to prove the value. After that, it's $49–$99/year. No risk. No long-term commitment." },
   { q: "What do buildings pay?", a: "90-day free pilot. After that, choose: stay free forever (basic reporting), $39/year (full analytics), or $99/year (premium). Most start free and upgrade when they see engagement." },
   { q: "How fast can a partner launch?", a: "7–10 days. We handle setup, map placement, QR generation, and coordination. You bring your business details, perks, and events." },
-  { q: "What gets tracked?", a: "Scans, saves, RSVPs, and redemptions. You get reporting snapshots at 30, 60, and 90 days to see what's working." },
+  { q: "What gets tracked?", a: "Scans (QR entry points). Saves (bookmarked places/events). RSVPs (event signups). Redemptions (perks card usage). You get reporting snapshots at 30, 60, and 90 days." },
+  { q: "What kind of perks?", a: "Discounts on food and drinks. Priority access to events. Welcome offers for first-time visits. Members-only specials. Each business sets its own perks. They show up on the map when you're nearby." },
   { q: "Is my info shared with partners?", a: "No. We track actions for reporting — not personal contact information. Your details aren't shared unless you explicitly opt in. Privacy is the default." },
+  { q: "Can partners update listings?", a: "Yes. Partners get a simple dashboard to update hours, add perks, post events, and adjust map presence. Changes go live immediately." },
   { q: "Where is this available?", a: "Downtown Austin. We're starting with one district, proving the model, then expanding to other downtown corridors based on partner and resident demand." },
   { q: "Who can join?", a: "Downtown residents in participating buildings. It's exclusive by design — built for people who actually live here." },
+  { q: "How do resident connections work?", a: "See an event or activity you want to join. Use the \"Connect Nearby\" feature to signal interest and reach out to others who are going. It's opt-in, lightweight, and designed to make it easier to show up together. No separate social platform required." },
 ];
 
 function FAQItem({ q, a, index }) {
   const [open, setOpen] = useState(false);
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: index * 0.03 }}
-      className="border-b border-border/40 last:border-b-0"
-    >
+    <div className="border-b border-border/40 last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between py-5 text-left gap-4 group"
       >
         <span className="font-medium text-sm text-foreground group-hover:text-primary transition-colors">{q}</span>
-        <ChevronDown className={`w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.2 }}
-          className="pb-5 text-[13px] text-muted-foreground leading-relaxed"
-        >
+        <div className="pb-5 text-[13px] text-muted-foreground leading-relaxed">
           {a}
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
