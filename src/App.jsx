@@ -27,6 +27,7 @@ import Lululemon from './pages/downtown-perks/brands/Lululemon';
 import Equinox from './pages/downtown-perks/brands/Equinox';
 import AustinFC from './pages/downtown-perks/brands/AustinFC';
 import FabiAndRosi from './pages/downtown-perks/brands/FabiAndRosi';
+import CivicPartner from './pages/partners/Civic';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -76,6 +77,7 @@ const AuthenticatedApp = () => {
         <Route path="/brands/equinox" element={<Equinox />} />
         <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
+        <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
