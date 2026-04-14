@@ -4,10 +4,11 @@ import { Menu, X, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { to: "/downtown-perks", label: "Explore" },
+  { to: "/downtown-perks/explore", label: "Map" },
   { to: "/downtown-perks/events", label: "Events" },
+  { to: "/downtown-perks/card", label: "Perks Card" },
   { to: "/brands", label: "Partners" },
-  { to: "/downtown-perks/for-buildings", label: "Buildings" },
+  { to: "/downtown-perks/for-buildings", label: "Pricing" },
 ];
 
 export default function Navbar() {
@@ -23,10 +24,7 @@ export default function Navbar() {
 
   const isActive = (link) =>
     location.pathname === link.to ||
-    (link.to === "/downtown-perks" && location.pathname.startsWith("/downtown-perks") && location.pathname !== "/downtown-perks/events" && location.pathname !== "/downtown-perks/for-buildings") ||
-    (link.to === "/brands" && location.pathname.startsWith("/brands")) ||
-    (link.to === "/downtown-perks/events" && location.pathname === "/downtown-perks/events") ||
-    (link.to === "/downtown-perks/for-buildings" && location.pathname === "/downtown-perks/for-buildings");
+    (link.to === "/brands" && location.pathname.startsWith("/brands"));
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/95 backdrop-blur-md border-b border-border/60" : "bg-transparent"}`}>
