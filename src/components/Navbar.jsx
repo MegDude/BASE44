@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/downtown-perks", label: "Downtown Perks" },
+  { to: "/brands", label: "Partners" },
 ];
 
 export default function Navbar() {
@@ -33,7 +34,9 @@ export default function Navbar() {
               key={link.to}
               to={link.to}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                location.pathname === link.to || (link.to === "/downtown-perks" && location.pathname.startsWith("/downtown-perks"))
+                location.pathname === link.to || 
+                (link.to === "/downtown-perks" && location.pathname.startsWith("/downtown-perks")) ||
+                (link.to === "/brands" && location.pathname.startsWith("/brands"))
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary"
               }`}

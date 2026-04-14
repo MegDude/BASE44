@@ -5,7 +5,7 @@ import HomeFooter from "./HomeFooter";
 
 export default function Layout() {
   const location = useLocation();
-  const isDowntownPerks = location.pathname.startsWith("/downtown-perks");
+  const isDowntownPerks = location.pathname.startsWith("/downtown-perks") || location.pathname.startsWith("/brands");
 
   return (
     <div className="min-h-screen bg-background font-body">

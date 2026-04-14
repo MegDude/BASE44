@@ -46,10 +46,10 @@ export default function CTASection() {
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
-            to="/downtown-perks/for-buildings"
+            to="/brands"
             className="px-8 py-4 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
           >
-            Partner With Us
+            See Partner Brands
           </Link>
         </motion.div>
       </div>

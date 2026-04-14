@@ -57,6 +57,7 @@ export default function Footer() {
             </h4>
             <div className="space-y-3">
               {[
+                { to: "/brands", label: "Brand Partners" },
                 { to: "/downtown-perks/for-buildings", label: "For Buildings" },
                 { to: "/downtown-perks/for-buildings", label: "For Businesses" },
                 { to: "/downtown-perks/for-buildings", label: "For Real Estate" },
