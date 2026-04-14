@@ -28,6 +28,10 @@ import Equinox from './pages/downtown-perks/brands/Equinox';
 import AustinFC from './pages/downtown-perks/brands/AustinFC';
 import FabiAndRosi from './pages/downtown-perks/brands/FabiAndRosi';
 import CivicPartner from './pages/partners/Civic';
+import PropertiesPartner from './pages/partners/Properties';
+import HotelsPartner from './pages/partners/Hotels';
+import VenuesPartner from './pages/partners/Venues';
+import BrandsPartner from './pages/partners/Brands';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +82,10 @@ const AuthenticatedApp = () => {
         <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
+        <Route path="/partners/properties" element={<PropertiesPartner />} />
+        <Route path="/partners/hotels" element={<HotelsPartner />} />
+        <Route path="/partners/venues" element={<VenuesPartner />} />
+        <Route path="/partners/brands" element={<BrandsPartner />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
