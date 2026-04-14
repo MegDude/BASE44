@@ -27,7 +27,10 @@ import Lululemon from './pages/downtown-perks/brands/Lululemon';
 import Equinox from './pages/downtown-perks/brands/Equinox';
 import AustinFC from './pages/downtown-perks/brands/AustinFC';
 import FabiAndRosi from './pages/downtown-perks/brands/FabiAndRosi';
+import PartnersIndex from './pages/partners/Index';
 import CivicPartner from './pages/partners/Civic';
+import PartnerWorkspace from './pages/PartnerWorkspace';
+import Dashboard from './pages/Dashboard';
 import PropertiesPartner from './pages/partners/Properties';
 import HotelsPartner from './pages/partners/Hotels';
 import VenuesPartner from './pages/partners/Venues';
@@ -81,7 +84,10 @@ const AuthenticatedApp = () => {
         <Route path="/brands/equinox" element={<Equinox />} />
         <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
+        <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
+        <Route path="/partner-workspace" element={<PartnerWorkspace />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/partners/properties" element={<PropertiesPartner />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
