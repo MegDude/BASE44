@@ -3,25 +3,25 @@ import { useRef } from "react";
 
 export function BrandSection({ label, title, children, className = "" }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section ref={ref} className={`py-24 px-6 ${className}`}>
+    <section ref={ref} className={`py-20 px-6 border-t border-border/40 ${className}`}>
       <div className="max-w-6xl mx-auto">
         {(label || title) && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
-            className="mb-14"
+            className="mb-12"
           >
             {label && (
-              <span className="text-primary text-xs font-medium uppercase tracking-widest block mb-3">
+              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
                 {label}
               </span>
             )}
             {title && (
-              <h2 className="font-heading text-3xl md:text-5xl font-bold leading-tight max-w-3xl">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight max-w-2xl">
                 {title}
               </h2>
             )}
@@ -35,40 +35,44 @@ export function BrandSection({ label, title, children, className = "" }) {
 
 export function SignalCard({ icon, label, value, sub, delay = 0 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all"
+      className="p-6 rounded-lg border border-border/60 bg-card/60 hover:border-border transition-all"
     >
-      {icon && <div className="text-primary mb-3">{icon}</div>}
-      {value && <div className="font-heading text-3xl font-bold text-foreground mb-1">{value}</div>}
-      <div className="font-semibold text-sm text-foreground mb-1">{label}</div>
-      {sub && <div className="text-xs text-muted-foreground leading-relaxed">{sub}</div>}
+      {icon && <div className="text-primary mb-3 opacity-70">{icon}</div>}
+      {value && (
+        <div className="font-heading text-3xl font-medium text-foreground mb-1 tracking-tight">
+          {value}
+        </div>
+      )}
+      <div className="text-sm font-medium text-foreground mb-1">{label}</div>
+      {sub && <div className="text-[12px] text-muted-foreground leading-relaxed">{sub}</div>}
     </motion.div>
   );
 }
 
 export function FlowCard({ step, title, desc, delay = 0 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: -12 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="flex gap-5 p-6 rounded-2xl bg-card border border-border hover:border-primary/20 transition-all"
+      className="flex gap-5 p-6 border-b border-border/40 last:border-b-0"
     >
-      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-        <span className="text-primary font-heading font-bold text-sm">{step}</span>
+      <div className="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center shrink-0 mt-0.5">
+        <span className="text-primary font-heading font-medium text-[12px]">{step}</span>
       </div>
       <div>
-        <div className="font-semibold text-foreground mb-1.5">{title}</div>
-        <div className="text-sm text-muted-foreground leading-relaxed">{desc}</div>
+        <div className="font-medium text-foreground text-sm mb-1.5">{title}</div>
+        <div className="text-[13px] text-muted-foreground leading-relaxed">{desc}</div>
       </div>
     </motion.div>
   );
@@ -76,71 +80,66 @@ export function FlowCard({ step, title, desc, delay = 0 }) {
 
 export function UseCaseCard({ title, detail, tag, delay = 0 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="p-7 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all group"
+      className="p-6 rounded-lg border border-border/60 bg-card/40 hover:border-primary/20 transition-all"
     >
       {tag && (
-        <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-4">
+        <span className="inline-block text-[11px] font-medium text-primary/70 uppercase tracking-[0.12em] mb-3">
           {tag}
         </span>
       )}
-      <h4 className="font-heading font-bold text-lg mb-3 group-hover:text-primary transition-colors">{title}</h4>
-      <p className="text-sm text-muted-foreground leading-relaxed">{detail}</p>
+      <h4 className="font-heading font-medium text-base mb-2.5 text-foreground">{title}</h4>
+      <p className="text-[13px] text-muted-foreground leading-relaxed">{detail}</p>
     </motion.div>
   );
 }
 
 export function BrandCTA({ headline, sub, ctaLabel, ctaHref }) {
   return (
-    <section className="py-32 px-6 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="relative max-w-3xl mx-auto text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="font-heading text-4xl md:text-5xl font-bold mb-6 leading-tight"
-        >
-          {headline}
-        </motion.h2>
-        {sub && (
-          <motion.p
+    <section className="py-24 px-6 border-t border-border/40">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight"
+          >
+            {headline}
+          </motion.h2>
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground text-lg mb-10"
+            className="space-y-5"
           >
-            {sub}
-          </motion.p>
-        )}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <a
-            href={ctaHref || "mailto:partners@downtownperks.com"}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30"
-          >
-            {ctaLabel || "Start the Conversation"}
-          </a>
-          <a
-            href="/downtown-perks/for-buildings"
-            className="px-8 py-4 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
-          >
-            See All Partnerships
-          </a>
-        </motion.div>
+            {sub && (
+              <p className="text-muted-foreground text-base leading-relaxed">{sub}</p>
+            )}
+            <div className="flex flex-col sm:flex-row items-start gap-3">
+              <a
+                href={ctaHref || "mailto:partners@downtownperks.com"}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+              >
+                {ctaLabel || "Start the Conversation"}
+              </a>
+              <a
+                href="/downtown-perks/for-buildings"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300"
+              >
+                See All Partnerships
+              </a>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

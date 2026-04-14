@@ -1,102 +1,86 @@
 import { motion } from "framer-motion";
-import { ArrowDown, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ArrowRight, MapPin } from "lucide-react";
 
 export default function HeroSection({ heroImage }) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+    <section className="relative min-h-screen flex items-end overflow-hidden">
+      {/* Background image — full cover */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
-          alt="Downtown Austin skyline at night"
+          alt="Downtown Austin"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/60 to-transparent" />
+        {/* Multi-layer gradient for editorial elegance */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/65 to-background/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
       </div>
 
-      {/* Animated grid lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(5)].map((_, i) => (
+      {/* Content — bottom-anchored editorial layout */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-24 pt-40">
+        <div className="max-w-2xl">
+
           <motion.div
-            key={i}
-            className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent w-full"
-            style={{ top: `${20 + i * 15}%` }}
-            animate={{ opacity: [0.1, 0.3, 0.1] }}
-            transition={{ duration: 4, delay: i * 0.5, repeat: Infinity }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mb-8">
-            <MapPin className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-medium text-primary tracking-wide uppercase">
-              Austin, TX — Members Only
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.1 }}
+            className="flex items-center gap-2 mb-8"
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pin-pulse" />
+            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em]">
+              Austin, TX — Downtown
             </span>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-none tracking-tight mb-6"
-        >
-          <span className="text-foreground">Where downtown</span>
-          <br />
-          <span className="text-primary">starts working</span>
-          <br />
-          <span className="text-foreground">like a system.</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
-        >
-          A members-only digital layer that connects residents, buildings, and
-          local businesses into a single, real-time neighborhood — so you don't
-          just live downtown, you move through it together.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Link
-            to="/downtown-perks/explore"
-            className="px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30"
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.25 }}
+            className="font-heading text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.05] tracking-tight mb-6 text-foreground"
           >
-            Explore the Map
-          </Link>
-          <Link
-            to="/downtown-perks/card"
-            className="px-8 py-4 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
+            Where downtown
+            <br />
+            <em className="text-primary not-italic">starts working</em>
+            <br />
+            like a system.
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-muted-foreground text-base md:text-lg max-w-xl leading-relaxed mb-10 font-body"
           >
-            Get Your Perks Card
-          </Link>
-        </motion.div>
+            A live neighborhood layer for downtown residents — connecting your building, local venues, and community into one real-time map experience.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.7 }}
+            className="flex flex-col sm:flex-row items-start gap-3"
+          >
+            <Link
+              to="/downtown-perks/explore"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/20"
+            >
+              <MapPin className="w-4 h-4" />
+              Open the Map
+            </Link>
+            <Link
+              to="/downtown-perks/card"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/80 text-foreground/80 font-medium text-sm hover:text-foreground hover:border-foreground/30 transition-all duration-300"
+            >
+              Get Your Perks Card
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <ArrowDown className="w-5 h-5 text-muted-foreground" />
-      </motion.div>
+      {/* Subtle bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
     </section>
   );
 }

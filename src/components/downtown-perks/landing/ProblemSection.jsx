@@ -1,86 +1,83 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+
+const stats = [
+  { number: "50K+", label: "Residents", detail: "stacked in downtown high-rises" },
+  { number: "500+", label: "Local businesses", detail: "competing for attention" },
+  { number: "0", label: "Shared layer", detail: "connecting any of them — until now" },
+];
 
 export default function ProblemSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-32 px-6 relative overflow-hidden">
-      {/* Subtle background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      
-      <div className="max-w-4xl mx-auto relative">
+    <section ref={ref} className="py-28 px-6">
+      <div className="max-w-5xl mx-auto">
+
+        {/* Editorial label */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7 }}
+          className="mb-10"
         >
-          <span className="text-primary text-sm font-medium uppercase tracking-widest">
-            The Problem
+          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em]">
+            The Gap
           </span>
         </motion.div>
 
+        {/* Main statement — editorial, not promotional */}
         <motion.h2
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-heading text-3xl md:text-5xl font-bold text-center leading-tight mb-12"
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="font-heading text-4xl md:text-5xl font-medium leading-[1.15] tracking-tight mb-6 max-w-3xl"
         >
-          You live in one of the most dense, vibrant parts of the city…
+          You live in one of the most walkable parts of the city.
           <br />
-          <span className="text-muted-foreground">
-            and still feel like you're doing it alone.
+          <span className="text-muted-foreground font-normal italic">
+            And still feel like you're doing it alone.
           </span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-          {[
-            {
-              number: "50K+",
-              label: "residents",
-              detail: "stacked in downtown high-rises",
-            },
-            {
-              number: "500+",
-              label: "local businesses",
-              detail: "competing for attention",
-            },
-            {
-              number: "0",
-              label: "shared layer",
-              detail: "connecting any of them",
-            },
-          ].map((stat, i) => (
+        {/* Divider line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.9, delay: 0.3 }}
+          style={{ transformOrigin: "left" }}
+          className="h-px bg-border/60 max-w-3xl mb-16"
+        />
+
+        {/* Stats — horizontal, clean */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-border/40">
+          {stats.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 + i * 0.15 }}
-              className="text-center"
+              transition={{ duration: 0.6, delay: 0.4 + i * 0.12 }}
+              className="py-8 sm:px-10 first:pl-0 last:pr-0"
             >
-              <div className="font-heading text-4xl md:text-5xl font-bold text-primary mb-2">
+              <div className="font-heading text-5xl font-medium text-primary mb-2 tracking-tight">
                 {stat.number}
               </div>
-              <div className="text-foreground font-medium mb-1">
-                {stat.label}
-              </div>
-              <div className="text-muted-foreground text-sm">{stat.detail}</div>
+              <div className="text-foreground text-sm font-medium mb-1">{stat.label}</div>
+              <div className="text-muted-foreground text-[13px] leading-relaxed">{stat.detail}</div>
             </motion.div>
           ))}
         </div>
 
+        {/* Resolution */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center text-muted-foreground mt-16 text-lg"
+          transition={{ duration: 0.8, delay: 0.85 }}
+          className="mt-16 text-muted-foreground text-base border-l-2 border-primary/40 pl-5 max-w-lg leading-relaxed"
         >
-          Downtown has density without connection.
-          <br />
-          <span className="text-foreground font-medium">
+          Downtown has proximity without connection.
+          <span className="block mt-1 text-foreground font-medium">
             Downtown Perks changes that.
           </span>
         </motion.p>

@@ -1,36 +1,30 @@
 import { Link } from "react-router-dom";
-import { MapPin, Instagram, ArrowUpRight } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t border-border/60">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+
           {/* Brand */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-primary-foreground" />
+          <div className="md:col-span-5">
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
+                <MapPin className="w-3.5 h-3.5 text-primary" />
               </div>
-              <span className="font-heading font-bold text-lg text-foreground">
-                Downtown<span className="text-primary">Perks</span>
+              <span className="font-heading font-medium text-[15px] text-foreground">
+                Downtown<span className="text-primary"> Perks</span>
               </span>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-              The real-time neighborhood system for downtown Austin. Connecting
-              where you live to what you do — through a live map, a simple
-              membership, and a shared layer of local activity.
+            <p className="text-muted-foreground text-[13px] leading-relaxed max-w-xs">
+              A live neighborhood layer for downtown Austin — connecting residents, buildings, and local businesses through a shared map, a simple card, and real-time district intelligence.
             </p>
-            <div className="flex items-center gap-4 mt-6">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-            </div>
           </div>
 
-          {/* Links */}
-          <div>
-            <h4 className="font-heading font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">
+          {/* Explore */}
+          <div className="md:col-span-3">
+            <h4 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">
               Explore
             </h4>
             <div className="space-y-3">
@@ -39,20 +33,18 @@ export default function Footer() {
                 { to: "/downtown-perks/events", label: "Events" },
                 { to: "/downtown-perks/perks", label: "Perks" },
                 { to: "/downtown-perks/about", label: "About" },
+                { to: "/downtown-perks/card", label: "Get Your Card" },
               ].map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
+                <Link key={link.to} to={link.to} className="block text-[13px] text-muted-foreground hover:text-foreground transition-colors">
                   {link.label}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div>
-            <h4 className="font-heading font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">
+          {/* Partners */}
+          <div className="md:col-span-4">
+            <h4 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">
               Partners
             </h4>
             <div className="space-y-3">
@@ -60,27 +52,22 @@ export default function Footer() {
                 { to: "/brands", label: "Brand Partners" },
                 { to: "/downtown-perks/for-buildings", label: "For Buildings" },
                 { to: "/downtown-perks/for-buildings", label: "For Businesses" },
-                { to: "/downtown-perks/for-buildings", label: "For Real Estate" },
+                { to: "/downtown-perks/for-buildings", label: "Real Estate" },
               ].map((link, i) => (
-                <Link
-                  key={i}
-                  to={link.to}
-                  className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
+                <Link key={i} to={link.to} className="block text-[13px] text-muted-foreground hover:text-foreground transition-colors">
                   {link.label}
-                  <ArrowUpRight className="w-3 h-3" />
                 </Link>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
+        <div className="mt-14 pt-8 border-t border-border/40 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[12px] text-muted-foreground/70">
             © {new Date().getFullYear()} Downtown Perks. Austin, TX.
           </p>
-          <p className="text-xs text-muted-foreground">
-            Where downtown stops being a place — and starts working like a system.
+          <p className="text-[12px] text-muted-foreground/50 italic font-heading">
+            Where downtown works like a system.
           </p>
         </div>
       </div>

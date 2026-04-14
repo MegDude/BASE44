@@ -2,52 +2,68 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
-export default function BrandHero({ eyebrow, headline, support, ctaLabel, ctaHref, demoPanel, bgAccent = "from-primary/10" }) {
+export default function BrandHero({ eyebrow, headline, support, ctaLabel, ctaHref, demoPanel }) {
   return (
-    <section className="relative pt-32 pb-24 px-6 overflow-hidden">
-      <div className={`absolute inset-0 bg-gradient-to-br ${bgAccent} via-transparent to-transparent pointer-events-none`} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section className="relative pt-36 pb-20 px-6 overflow-hidden">
       <div className="relative max-w-6xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-          <Link to="/brands" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors mb-8">
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Partners
+
+        {/* Back link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Link to="/brands" className="inline-flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-primary transition-colors mb-10 group">
+            <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
+            Partner Directory
           </Link>
-          <div className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium tracking-wider uppercase mb-6">
-            {eyebrow}
-          </div>
-          <h1 className="font-heading text-5xl md:text-7xl font-bold leading-none tracking-tight mb-6 max-w-4xl">
-            {headline}
-          </h1>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
-            {support}
-          </p>
-          <div className="flex flex-col sm:flex-row items-start gap-4">
-            <Link
-              to={ctaHref || "/downtown-perks/card"}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-xl shadow-primary/25"
-            >
-              {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/downtown-perks/for-buildings"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
-            >
-              View Partnership Details
-            </Link>
-          </div>
         </motion.div>
 
-        {demoPanel && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-20"
-          >
-            {demoPanel}
-          </motion.div>
-        )}
+        <div className={`grid grid-cols-1 ${demoPanel ? "md:grid-cols-2" : ""} gap-16 items-start`}>
+          {/* Left — copy */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+            >
+              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+                {eyebrow}
+              </span>
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight mb-6 text-foreground">
+                {headline}
+              </h1>
+              <p className="text-muted-foreground text-base leading-relaxed mb-10 max-w-lg">
+                {support}
+              </p>
+              <div className="flex flex-col sm:flex-row items-start gap-3">
+                <Link
+                  to={ctaHref || "/downtown-perks/card"}
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
+                >
+                  {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/downtown-perks/for-buildings"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground hover:border-border transition-all duration-300"
+                >
+                  Partnership Details
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right — demo panel */}
+          {demoPanel && (
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              {demoPanel}
+            </motion.div>
+          )}
+        </div>
       </div>
     </section>
   );

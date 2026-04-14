@@ -5,53 +5,54 @@ import { ArrowRight } from "lucide-react";
 
 export default function CTASection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-32 px-6 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
+    <section ref={ref} className="py-28 px-6 border-t border-border/40">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
-      <div className="max-w-3xl mx-auto relative text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="font-heading text-4xl md:text-6xl font-bold leading-tight mb-6"
-        >
-          Everything around you is alive, connected, and
-          <span className="text-primary"> easier to step into.</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-muted-foreground text-lg mb-12"
-        >
-          Stop scrolling. Start moving. Your neighborhood is waiting.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Link
-            to="/downtown-perks/card"
-            className="group px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center gap-2"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7 }}
           >
-            Get Your Perks Card
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link
-            to="/brands"
-            className="px-8 py-4 rounded-full border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all"
+            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+              Your Neighborhood
+            </span>
+            <h2 className="font-heading text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight">
+              Everything around you
+              <br />
+              <em className="text-primary">is already alive.</em>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="space-y-6"
           >
-            See Partner Brands
-          </Link>
-        </motion.div>
+            <p className="text-muted-foreground text-base leading-relaxed">
+              Stop scrolling. Start moving. Your neighborhood is waiting — and Downtown Perks is the layer that makes it legible.
+            </p>
+            <div className="flex flex-col sm:flex-row items-start gap-3 pt-2">
+              <Link
+                to="/downtown-perks/card"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
+              >
+                Get Your Perks Card
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/brands"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground hover:border-border transition-all duration-300"
+              >
+                See Partner Brands
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

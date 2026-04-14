@@ -7,82 +7,85 @@ const steps = [
     icon: QrCode,
     step: "01",
     title: "Scan",
-    description: "Find a QR code in your building lobby or at a participating venue. One scan starts your journey.",
+    description: "Find a QR code in your building lobby or at a participating venue. One scan starts your membership.",
   },
   {
     icon: Smartphone,
     step: "02",
     title: "Activate",
-    description: "A quick SMS flow — your name, your building. No app download. Your perks card is live in seconds.",
+    description: "A quick SMS flow — your name, your building. No app download. Your card is live in seconds.",
   },
   {
     icon: MapPin,
     step: "03",
     title: "Discover",
-    description: "Open the interactive map. See what's happening near you right now — venues, events, wellness, dining.",
+    description: "Open the live map. See what's happening near you — venues, events, wellness, dining.",
   },
   {
     icon: Sparkles,
     step: "04",
     title: "Experience",
-    description: "Flash your card. Unlock member perks. Meet neighbors at events. Downtown starts working for you.",
+    description: "Flash your card. Unlock perks. Meet neighbors. Downtown starts working for you.",
   },
 ];
 
 export default function HowItWorksSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-32 px-6 bg-card/50">
+    <section ref={ref} className="py-28 px-6 border-t border-border/40">
       <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-6"
-        >
-          <span className="text-primary text-sm font-medium uppercase tracking-widest">
-            How It Works
-          </span>
-        </motion.div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-heading text-3xl md:text-5xl font-bold text-center mb-20 leading-tight"
-        >
-          From scan to
-          <span className="text-primary"> connected</span>
-          <br />
-          in under 60 seconds.
-        </motion.h2>
+        {/* Header — split editorial */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16 items-end">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7 }}
+          >
+            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+              How It Works
+            </span>
+            <h2 className="font-heading text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight">
+              Scan to connected
+              <br />
+              <em className="text-primary">in 60 seconds.</em>
+            </h2>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-muted-foreground text-base leading-relaxed"
+          >
+            No app store. No account setup. A single QR code starts your entire downtown membership.
+          </motion.p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Steps — numbered, clean */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0">
           {steps.map((step, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
-              className="relative flex gap-5 p-6 rounded-2xl border border-border hover:border-primary/30 bg-card transition-all duration-300 group"
+              transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
+              className={`flex gap-6 p-8 border-border/40 ${
+                i % 2 === 0 ? "md:border-r" : ""
+              } ${i < 2 ? "border-b" : ""}`}
             >
               <div className="flex-shrink-0">
-                <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                  <step.icon className="w-6 h-6 text-primary" />
+                <div className="font-heading text-[11px] font-medium text-primary/50 tracking-[0.12em] mb-3">
+                  {step.step}
+                </div>
+                <div className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center">
+                  <step.icon className="w-4 h-4 text-primary" />
                 </div>
               </div>
-              <div>
-                <span className="text-primary/50 font-heading text-xs font-bold tracking-widest">
-                  STEP {step.step}
-                </span>
-                <h3 className="font-heading text-xl font-bold mt-1 mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {step.description}
-                </p>
+              <div className="pt-5">
+                <h3 className="font-heading text-lg font-medium mb-2">{step.title}</h3>
+                <p className="text-muted-foreground text-[13px] leading-relaxed">{step.description}</p>
               </div>
             </motion.div>
           ))}

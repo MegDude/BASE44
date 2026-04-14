@@ -1,106 +1,79 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Building2, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import HomeFooter from "../components/HomeFooter";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background" />
-        
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-secondary mb-8">
-              <Building2 className="w-4 h-4 text-primary" />
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Property Management Platform
-              </span>
-            </div>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-heading text-5xl md:text-7xl font-bold leading-tight mb-6"
-          >
-            Welcome to Your
-            <br />
-            <span className="text-primary">App</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-muted-foreground text-xl max-w-2xl mx-auto mb-12"
-          >
-            Manage properties, track operations, and connect with your community.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Link
-              to="/downtown-perks"
-              className="group px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 flex items-center gap-2"
-            >
-              <Sparkles className="w-4 h-4" />
-              Explore Downtown Perks
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Subtle grid */}
+          <div className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "linear-gradient(hsl(222 18% 40%) 1px, transparent 1px), linear-gradient(90deg, hsl(222 18% 40%) 1px, transparent 1px)",
+              backgroundSize: "64px 64px"
+            }}
+          />
         </div>
-      </section>
 
-      {/* Features preview */}
-      <section className="py-24 px-6 border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: MapPin,
-                title: "Location Management",
-                description: "Track and manage multiple properties and locations from one dashboard."
-              },
-              {
-                icon: Building2,
-                title: "Building Operations",
-                description: "Streamline maintenance, amenities, and resident services."
-              },
-              {
-                icon: Sparkles,
-                title: "Community Features",
-                description: "Connect residents with local perks, events, and neighborhood experiences."
-              }
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + i * 0.1 }}
-                className="p-6 rounded-2xl border border-border bg-card hover:border-primary/30 transition-all"
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-32">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="flex items-center gap-2 mb-8"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pin-pulse" />
+              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em]">
+                Austin, TX
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1 }}
+              className="font-heading text-5xl md:text-7xl font-medium leading-[1.05] tracking-tight mb-6"
+            >
+              Welcome to
+              <br />
+              <em className="text-primary not-italic">Downtown Perks.</em>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-muted-foreground text-lg leading-relaxed mb-10 max-w-lg"
+            >
+              A live neighborhood layer for downtown Austin residents — map-first, membership-backed, and built around real behavior.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              className="flex flex-col sm:flex-row items-start gap-3"
+            >
+              <Link
+                to="/downtown-perks"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
               >
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-heading text-lg font-bold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
+                <MapPin className="w-4 h-4" />
+                Explore Downtown Perks
+              </Link>
+              <Link
+                to="/brands"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground hover:border-border transition-all duration-300"
+              >
+                See Partners <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
-      <HomeFooter />
     </div>
   );
 }
