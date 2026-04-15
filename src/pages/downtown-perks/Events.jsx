@@ -1,29 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useMapStore } from "@/store/map-store";
 import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
 import { Search, X, Users, Clock, MapPin, Calendar, Star, Zap, ExternalLink, Share2, Twitter, Link as LinkIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import MapShell from "@/components/map/MapShell";
 import MapResultsPanel from "@/components/map/MapResultsPanel";
+import { eventIcon, EVENT_COLORS as CAT_COLORS } from "@/components/map/mapUtils/markerIcons";
 import moment from "moment";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
 
 const AUSTIN_CENTER = [30.267, -97.743];
-
-const CAT_COLORS = {
-  fitness: "#10b981", wellness: "#8b5cf6", social: "#f59e0b",
-  dining: "#ef4444", nightlife: "#6366f1", arts: "#ec4899",
-  networking: "#06b6d4", class: "#84cc16", run_club: "#f97316", yoga: "#a78bfa",
-};
 
 const STATUS_STYLE = {
   live: "bg-green-500/90 text-white",
@@ -33,36 +19,9 @@ const STATUS_STYLE = {
 
 const CATS = ["all", "fitness", "wellness", "social", "dining", "nightlife", "arts", "networking", "class", "run_club", "yoga"];
 
-function eventIcon(category, active = false) {
-  const color = CAT_COLORS[category] || "#C8973A";
-  if (active) {
-    return L.divIcon({
-      className: "",
-      html: `<div style="background:#fff;color:#111;border:2px solid #111;border-radius:999px;padding:5px 10px;font:600 12px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.18);transform:scale(1.05)">📍 Selected</div>`,
-      iconSize: [100, 28], iconAnchor: [50, 14],
-    });
-  }
-  return L.divIcon({
-    className: "",
-    html: `<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2.5px solid rgba(255,255,255,.9);box-shadow:0 4px 12px ${color}60"></div>`,
-    iconSize: [12, 12], iconAnchor: [6, 6],
-  });
-}
-
-function MapFlyTo({ position }) {
-  const map = useMap();
-  useEffect(() => {
-    if (position && Array.isArray(position) && position.length === 2 && position.every(v => typeof v === 'number' && isFinite(v))) {
-      map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
-    }
-  }, [position, map]);
-  return null;
-}
-
 export default function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const listRef = useRef(null);
 
   // Use unified map store
   const {
@@ -77,6 +36,7 @@ export default function Events() {
 
   useEffect(() => {
     base44.entities.Event.list("-date").then(data => {
+      // CRITICAL: All events pass through filterValidMapItems + normalizeCoordinates
       const live = filterValidMapItems((data || []).filter(e => e.status !== "past" && e.status !== "cancelled")).map(normalizeCoordinates);
       setEvents(live);
       setLoading(false);
@@ -97,7 +57,6 @@ export default function Events() {
 
   // Find selected event from store
   const selected = filtered.find((e) => e.id === selectedEntityId);
-  const flyTarget = getValidLatLng(selected);
 
   return (
     <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
@@ -121,6 +80,17 @@ export default function Events() {
 
       {/* ── MAP ──────────────────────────────────────────────────────── */}
       <div className="flex-1 relative hidden md:flex">
+        <MapShell
+          items={filtered}
+          selected={selected}
+          onSelect={(item) => selectEntity(item.id, 'event')}
+          markerIcon={(item, active) => eventIcon(item.category, active)}
+          renderDetailDrawer={(item, onClose) => (
+            <EventDetail event={item} onClose={onClose} />
+          )}
+          className="w-full h-full"
+        />
+
         {/* Floating search bar */}
         <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none">
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
@@ -141,33 +111,6 @@ export default function Events() {
           </div>
         </div>
 
-        <MapContainer
-          center={AUSTIN_CENTER} zoom={14}
-          className="h-full w-full"
-          zoomControl={false}
-          scrollWheelZoom={true}
-        >
-          <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            attribution="&copy; CARTO"
-          />
-          <MapFlyTo position={flyTarget} />
-          {filtered.map(ev => {
-            const coords = getValidLatLng(ev);
-            return coords ? (
-              <Marker
-                key={ev.id}
-                position={coords}
-                icon={eventIcon(ev.category, selectedEntityId === ev.id)}
-                eventHandlers={{ click: () => selectEntity(ev.id, 'event') }}
-              />
-            ) : null;
-          })}
-          <div className="leaflet-bottom leaflet-right" style={{ zIndex: 999 }}>
-            <div className="leaflet-control leaflet-bar" />
-          </div>
-        </MapContainer>
-
         {/* Map legend */}
         <div className="absolute left-5 bottom-5 z-[500] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[240px]">
           <div className="text-[12px] font-bold text-[#111] mb-2.5">Category legend</div>
@@ -180,22 +123,6 @@ export default function Events() {
             ))}
           </div>
         </div>
-
-        {/* Detail drawer */}
-        <AnimatePresence>
-          {selected && isDrawerOpen && (
-            <motion.div
-              key={selected.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 16 }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-5 bottom-5 z-[600] w-[90vw] md:w-[400px] max-h-[50vh] md:max-h-[70vh] overflow-y-auto bg-white/97 backdrop-blur-xl border border-black/8 rounded-3xl shadow-[0_24px_60px_rgba(17,17,17,.16)]"
-            >
-              <EventDetail event={selected} onClose={() => selectEntity(null, null)} />
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );

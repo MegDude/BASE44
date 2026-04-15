@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
-import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
+import { normalizeCoordinates, filterValidMapItems, getValidLatLng, isValidLatLngArray } from "@/lib/mapCoordinates";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -19,10 +19,14 @@ const AUSTIN_CENTER = [30.267, -97.743];
  * Guarantees coordinate safety through lib/mapCoordinates validation
  */
 
+/**
+ * MapFlyTo — Coordinate-safe map centering
+ * Only flies to valid coordinates; silently ignores invalid ones
+ */
 function MapFlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
-    if (position && Array.isArray(position) && position.length === 2 && position.every(v => typeof v === 'number' && isFinite(v))) {
+    if (isValidLatLngArray(position)) {
       map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
     }
   }, [position, map]);
@@ -54,9 +58,12 @@ export default function MapShell({
   zoom = 14,
   className = "w-full h-full",
 }) {
-  // Normalize and filter all items through shared coordinate validation
+  // CRITICAL: All items MUST pass through filterValidMapItems and normalizeCoordinates
+  // This is the only path items take to the map
   const validItems = filterValidMapItems(items).map(normalizeCoordinates);
   
+  // CRITICAL: Retrieve flyTarget through getValidLatLng only
+  // Returns null if selected is missing or has invalid coordinates
   const flyTarget = getValidLatLng(selected);
 
   return (
@@ -75,8 +82,10 @@ export default function MapShell({
         <MapFlyTo position={flyTarget} />
 
         {validItems.map(item => {
+          // CRITICAL: Every marker gets re-validated through getValidLatLng
+          // This prevents any coordinate from reaching Marker without validation
           const coords = getValidLatLng(item);
-          if (!coords) return null;
+          if (!coords) return null; // Silent fail for invalid coordinates
           
           const icon = markerIcon ? markerIcon(item, selected?.id === item.id) : undefined;
           
