@@ -153,7 +153,7 @@ export default function ResidentialPartner() {
       <ProofSection proof={PROOF} />
 
       {/* CTA */}
-      <section className="py-20 px-6 border-t border-border/40">
+      <section className="py-12 px-6 border-t border-border/40">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
@@ -185,7 +185,7 @@ function WhySection({ benefits }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
@@ -222,7 +222,7 @@ function HowSection({ steps }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40 bg-card/20">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40 bg-card/20">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How it works</span>
@@ -254,7 +254,7 @@ function ValueSection({ cards }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">What residential partners get</span>
@@ -283,7 +283,7 @@ function UseCasesSection({ cases }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40 bg-card/20">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40 bg-card/20">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Use cases</span>
@@ -312,7 +312,7 @@ function FeaturedPartners({ partners }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Featured residential partners</span>
@@ -351,7 +351,7 @@ function ProofSection({ proof }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40 bg-card/20">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40 bg-card/20">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Proof</span>

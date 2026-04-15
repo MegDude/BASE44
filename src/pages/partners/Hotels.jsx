@@ -156,7 +156,7 @@ export default function HotelsPartner() {
       </section>
 
       {/* MAP */}
-      <section id="hotel-map" className="py-12 px-6 border-t border-border/40">
+      <section id="hotel-map" className="py-8 px-6 border-t border-border/40">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
@@ -314,7 +314,7 @@ function ImpactSection({ headline, stats, lower }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-tight mb-8">{headline}</motion.h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
@@ -342,7 +342,7 @@ function StepsSection({ label, headline, steps, proof }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
@@ -379,7 +379,7 @@ function GuestFlowSection({ steps, feed }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Guest experience</span>
@@ -427,7 +427,7 @@ function HotelCards({ hotels, selectHotel }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live hotels</span>
@@ -467,7 +467,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
   return (
-    <section id="partner-form" ref={ref} className="py-16 px-6 border-t border-border/40">
+    <section id="partner-form" ref={ref} className="py-10 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
@@ -517,7 +517,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
 
 function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondLabel, secondHref }) {
   return (
-    <section className="py-20 px-6 border-t border-border/40">
+    <section className="py-12 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>

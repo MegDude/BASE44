@@ -204,7 +204,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── INTRO ──────────────────────────────────────────────────────── */}
-      <section className="py-16 px-6 border-t border-border/40">
+      <section className="py-10 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -222,7 +222,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── CAMPAIGN FORMATS ───────────────────────────────────────────── */}
-      <section className="py-16 px-6 border-t border-border/40">
+      <section className="py-10 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <div className="space-y-4">
             {CAMPAIGN_FORMATS.map((format) => (
@@ -239,7 +239,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── WHICH FORMAT IS RIGHT ────────────────────────────────────── */}
-      <section className="py-16 px-6 border-t border-border/40">
+      <section className="py-10 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <motion.h3
             initial={{ opacity: 0, y: 12 }}
@@ -272,7 +272,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── EXAMPLE CAMPAIGN ────────────────────────────────────────── */}
-      <section className="py-20 px-6 border-t border-border/40">
+      <section className="py-12 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -319,7 +319,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── ANALYTICS PROOF ────────────────────────────────────────── */}
-      <section className="py-20 px-6 border-t border-border/40">
+      <section className="py-12 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -344,7 +344,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── CLOSING CTA ────────────────────────────────────────────── */}
-      <section className="py-24 px-6 border-t border-border/40">
+      <section className="py-12 px-6 border-t border-border/40">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
