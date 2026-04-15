@@ -19,8 +19,8 @@ const PARTNER_LINKS = [
 ];
 
 const TOP_LINKS = [
-  { to: "/downtown-perks/explore", label: "Map" },
-  { to: "/downtown-perks/events", label: "Events" },
+  
+  
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
   { to: "/downtown-perks/for-buildings", label: "Pricing" },
