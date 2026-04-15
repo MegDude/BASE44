@@ -30,7 +30,9 @@ import FabiAndRosi from './pages/downtown-perks/brands/FabiAndRosi';
 import HotelVanZandt from './pages/downtown-perks/brands/HotelVanZandt';
 import FourSeasons from './pages/downtown-perks/brands/FourSeasons';
 import FourSeasonsResidences from './pages/downtown-perks/brands/FourSeasonsResidences';
+import TheShore from './pages/downtown-perks/brands/TheShore';
 import PartnersIndex from './pages/partners/Index';
+import ResidentialPartner from './pages/partners/Residential';
 import CivicPartner from './pages/partners/Civic';
 import PartnerWorkspace from './pages/PartnerWorkspace';
 import Dashboard from './pages/Dashboard';
@@ -90,10 +92,12 @@ const AuthenticatedApp = () => {
         <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
         <Route path="/brands/four-seasons" element={<FourSeasons />} />
         <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
+        <Route path="/brands/the-shore" element={<TheShore />} />
         <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/partners/residential" element={<ResidentialPartner />} />
         <Route path="/partners/properties" element={<PropertiesPartner />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />

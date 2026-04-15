@@ -1,9 +1,21 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Building2, Hotel, MapPin, Star, Users, LayoutDashboard } from "lucide-react";
+import { ArrowRight, Building2, Hotel, MapPin, Star, Users, LayoutDashboard, Home } from "lucide-react";
 
 const PARTNER_TYPES = [
+  {
+    slug: "residential",
+    label: "Residential",
+    eyebrow: "Residential partner layer",
+    headline: "Give residents a live downtown layer right where they live.",
+    body: "Buildings offer residents one map for nearby dining, events, wellness, and local perks — a real amenity that gets used every day.",
+    stat: "2 buildings live",
+    icon: Home,
+    color: "#8B7355",
+    proof: ["67% resident activation rate", "3.4× repeat weekly opens", "29% perk engagement rate"],
+    cta: "Explore residential model",
+  },
   {
     slug: "properties",
     label: "Properties",
@@ -92,11 +104,11 @@ export default function PartnersIndex() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
               <div>
                 <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                  One downtown system.<br />
-                  <em className="text-primary">Five ways in.</em>
+                  See how Downtown Perks works<br />
+                  <em className="text-primary">across the people and places that shape downtown.</em>
                 </h1>
                 <p className="text-muted-foreground text-base leading-relaxed max-w-lg">
-                  Buildings, hotels, venues, brands, and civic organizations each have a distinct entry point. All of them connect to the same map and the same people moving through downtown.
+                  Downtown Perks connects residential buildings, hospitality partners, venues, brands, and civic organizations through one shared downtown layer. Each partner type plays a different role, but all of them benefit from better visibility and clearer real-world action.
                 </p>
               </div>
               <div className="space-y-4">
@@ -134,9 +146,14 @@ export default function PartnersIndex() {
         <div className="max-w-6xl mx-auto">
           <div className="mb-10">
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Partner types</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-            Choose the partner type that fits what you do.
-            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
+                One downtown system. Different partner roles.
+              </h2>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">
+                Explore how different partner types use Downtown Perks inside one shared downtown layer.
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -223,10 +240,10 @@ export default function PartnersIndex() {
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Get started</span>
               <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-3">
-                Tell us what you have.
+                Bring your part of downtown into the same live layer.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                We can help identify the right setup. Whether you manage a building, run a venue, or lead a brand — there is a straightforward entry point.
+                Whether you manage a building, run a venue, lead a brand, or shape district activity — there is a straightforward entry point.
               </p>
             </div>
             <div className="space-y-4">
@@ -264,9 +281,9 @@ function HowSystemWorks() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How it works</span>
+            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How it works together</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              One platform. Every type of downtown presence.
+              One shared system. Every type of downtown presence.
             </h2>
           </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.15 }}
