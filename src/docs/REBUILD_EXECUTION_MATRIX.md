@@ -111,11 +111,60 @@
 
 ---
 
+#### Route: `/ask-the-map`, `/search` ⭐ **PRIORITY AGENT ROUTE**
+- **Page File:** `pages/AskMapPage`
+- **Surface:** Ask the Map Agent + Discovery
+- **Audience:** Public
+- **Auth:** None (optional for saved preferences)
+- **Map Level:** **PRIMARY**
+- **Ask the Map Integration:**
+  - Chat interface for intent input
+  - Guided prompt chips (coffee, dinner, events, perks, walking, etc.)
+  - Intent parsing engine
+  - Query state persistence (URL params + recent queries)
+  - Map filter/layer sync based on intent
+  - Result list auto-generation
+  - Detail drawer auto-open on selection
+- **Entities Used:**
+  - Venue (search, filter, display)
+  - Event (search, filter, display)
+  - Perk (search, filter, display)
+  - Building (reference context)
+  - IntentQuery (logging)
+- **Key Interactions:**
+  - Natural-language input → parse intent → activate filters
+  - Guided chip selection → update map + results
+  - Result card click → open detail drawer
+  - Save perk → persist in resident preferences
+  - RSVP to event → trigger RSVP flow
+- **Parity Checklist:**
+  - [x] Chat interface or input surface
+  - [x] Guided prompt chips preserved
+  - [x] Intent parsing logic (coffee, dinner, etc. → category filters)
+  - [x] Map syncs to query results
+  - [x] Detail drawer integrates with ask-map state
+  - [x] Result count badge
+  - [x] Recent searches (if applicable)
+  - [x] Mobile chat overlay
+  - [x] Desktop split view (chat + map)
+  - [x] Analytics logging (intent, interpreted, result viewed)
+  - [x] Link to save/RSVP/explore flows
+- **Rebuild Priority:** P0 - **CRITICAL**
+- **Production-Critical:** YES
+- **Notes:**
+  - Core map agent surface
+  - Must parse freeform intent + guided chips
+  - Must sync Ask the Map results with map filters, markers, and detail states
+  - Must enable booking searches: "where should I work", "coffee tonight", "events this weekend"
+  - Intent logging feeds analytics pipeline
+
+---
+
 #### Route: `/downtown-perks/explore` ⭐ **PRIORITY MAP ROUTE**
 - **Page File:** `pages/downtown-perks/Explore`
 - **Surface:** Explore Downtown (Venues + Buildings)
 - **Audience:** Public
-- **Auth:** None
+- **Auth:** None (optional for saved items)
 - **Map Level:** **PRIMARY**
 - **Shared Components:**
   - `MapFlyTo` - safe coordinate-based map navigation
@@ -745,14 +794,111 @@
   - `filterValidMapItems(items)` - remove invalid records
 - **Used By Routes:**
   - `/` (Home - hero map)
+  - `/ask-the-map`, `/search` (Ask the Map agent)
   - `/downtown-perks/explore` (Venues + Buildings)
   - `/downtown-perks/events` (Events)
+  - `/resident-app` (Resident map-first surface)
+  - `/app/now` (Now page - intent-based discovery)
   - `/partners/properties` (Property showcase)
   - `/partners/hotels` (Hotel + nearby)
   - `/partners/venues` (Venue discovery)
   - `/partners/civic` (District overview)
   - `/partners/brands` (Campaign touchpoints)
   - `/dashboard` (Partner analytics map)
+- **Production-Critical:** YES
+
+### Ask the Map Agent System ⭐ **PRODUCTION-CRITICAL**
+- **Purpose:** Natural-language intent parsing + map-action execution
+- **Components:**
+  - Ask the Map chat/input interface
+  - Intent parser (interprets user intent)
+  - Query state manager
+  - Filter/layer sync engine
+  - Result card mapper
+  - Analytics logger
+- **Routes with Ask the Map:**
+  - `/ask-the-map` (Dedicated agent page)
+  - `/search` (Search alias for agent)
+  - `/resident-app` (Map-integrated agent)
+  - `/app/now` (Intent-driven discovery)
+  - All other map surfaces (optional/contextual)
+- **Supported Intents:**
+  - Category-based: coffee, dinner, drinks, fitness, wellness
+  - Time-based: tonight, now, this weekend
+  - Activity-based: happy hour, workout, dinner date, brunch
+  - Location-based: nearby, walking, within 5 min
+  - Perk-based: free coffee, perks, deals
+  - Hybrid: "where should I work", "what's open", "events tonight"
+- **Integration Points:**
+  - Parse intent → activate map filters
+  - Match entities (Venue, Event, Perk, Building)
+  - Sync map markers to query results
+  - Open correct detail drawer
+  - Link to save/RSVP/redeem flows
+- **Query State Persistence:**
+  - URL query params for bookmarkable searches
+  - Recent searches in resident dashboard
+  - Intent logging for analytics
+- **Analytics Tracked:**
+  - intent_query (text + parsed intent)
+  - intent_interpreted (category + matched entities)
+  - result_viewed (entity + type)
+  - result_action (save/rsvp/redeem)
+  - query_time (timestamp)
+- **Production-Critical:** YES
+
+### Real-Time Geofencing Engagement System ⭐ **PRODUCTION-CRITICAL**
+- **Purpose:** Location-based resident engagement at saved perk locations
+- **Components:**
+  - Geofence detector (proximity engine)
+  - Notification trigger logic
+  - Toast/alert surface
+  - Push notification bridge
+  - Permission manager
+  - Cooldown state tracker
+- **Routes with Geofencing:**
+  - `/resident-app` (Geofence toast integration)
+  - `/app/now` (Proximity-based suggestions)
+  - All resident-app surfaces (alert bar integration)
+- **Trigger Logic:**
+  - Monitor resident location (with permission)
+  - Compare against saved perk locations
+  - Trigger when within 500m (configurable)
+  - Check cooldown (not more than 2x per day per perk)
+  - Show in-app toast + push notification
+- **Notification States:**
+  - First trigger: full CTA (show perk details)
+  - Repeat trigger (same day): subtle reminder
+  - Cooldown: suppress for 12 hours
+  - Dismissed: track dismissal reason
+  - Redeemed: link successful conversion
+- **Permission Handling:**
+  - Request location permission on welcome flow
+  - Request notification permission on welcome flow
+  - Allow opt-out per perk/category/all
+  - Graceful fallback if permissions denied
+- **Link-Back Behavior:**
+  - Toast click → open perk detail in map drawer
+  - Detail drawer → show perk location on map
+  - Detail drawer → show redemption card if applicable
+  - Detail drawer → show save button
+- **Analytics Tracked:**
+  - geofence_trigger_sent (perk_id + distance)
+  - geofence_toast_shown
+  - geofence_toast_clicked (time to click)
+  - geofence_toast_dismissed
+  - geofence_detail_opened
+  - geofence_perk_redeemed
+- **Mobile Behavior:**
+  - In-app toast notification (foreground)
+  - Push notification (background)
+  - Desktop: notification bell icon + alert bar
+- **Entity Dependencies:**
+  - Saved items (resident favorites/saved perks)
+  - Perk (location coordinates, name, redemption rules)
+  - Resident (location tracking, preferences)
+  - ResidentAlert (alert state + history)
+- **Production-Critical:** YES
 
 ### Layout System
 - **Root Layout:** `components/Layout` (wraps all routes)
@@ -867,65 +1013,140 @@
    - Dependency: None
    - Risk: **CRITICAL - foundational**
 
+5. **Toast/Alert System** (Notification layer)
+   - Toast component for geofence notifications
+   - Alert bar for resident alerts
+   - Push notification bridge
+   - Dependency: None
+   - Risk: Low
+
 ---
 
-### Phase 2: Map System (Week 2)
+### Phase 2: Ask the Map Agent System (Week 2)
+**Goal:** Build intent parser + query engine for map-action execution
+
+6. **Intent Parser** (Ask the Map core)
+   - Natural-language input processing
+   - Category mapping (coffee → restaurant filter)
+   - Time parsing (tonight → event filter)
+   - Activity parsing (workout → fitness)
+   - Hybrid intent (where should I work → coworking)
+   - Dependency: Phase 1
+   - Risk: **CRITICAL** - core product
+
+7. **Query State Manager**
+   - URL query param persistence
+   - Recent search tracking
+   - Intent state synchronization
+   - Dependency: Intent Parser
+   - Risk: Medium
+
+8. **Filter/Map Sync Engine**
+   - Translate parsed intent to map filters
+   - Auto-populate category chips from intent
+   - Sync result count + markers
+   - Dependency: Intent Parser, MapShell (Phase 3)
+   - Risk: High (must sync perfectly with map)
+
+---
+
+### Phase 3: Map System (Week 3)
 **Goal:** Establish canonical map component and verify coordinate safety
 
-5. **MapShell Component** (`components/map/MapShell.jsx`)
+9. **MapShell Component** (`components/map/MapShell.jsx`)
    - Render Leaflet container
    - Marker plotting with validation
    - Result list integration
    - Detail drawer integration
-   - Dependency: Coordinate validation (Phase 1)
+   - Ask the Map query state integration
+   - Dependency: Coordinate validation (Phase 1), Filter/Map Sync (Phase 2)
    - Risk: Medium (new component, must be reusable)
 
-6. **Map Integration Test** (Explore page)
-   - Verify MapShell with Venue + Building data
-   - Test coordinate validation
-   - Test smart filters
-   - Test mobile behavior
-   - Dependency: MapShell (Phase 2)
-   - Risk: High (parity-critical)
+10. **Map Integration Test** (Explore page)
+    - Verify MapShell with Venue + Building data
+    - Test coordinate validation
+    - Test smart filters
+    - Test Ask the Map integration
+    - Test mobile behavior
+    - Dependency: MapShell (Phase 3)
+    - Risk: High (parity-critical)
 
 ---
 
-### Phase 3: Map-Primary Pages (Week 3)
+### Phase 4: Geofencing System (Week 4)
+**Goal:** Build real-time proximity detection + engagement
+
+11. **Geofence Detector** (Proximity engine)
+    - Location permission request on welcome
+    - Background location tracking
+    - Distance calculation to saved perks
+    - 500m proximity threshold
+    - Dependency: Phase 1 (Toast/Alert), Phase 5 (Resident data)
+    - Risk: **CRITICAL** - privacy + accuracy sensitive
+
+12. **Trigger Logic** (Notification logic)
+    - Cooldown state (not 2x per perk per day)
+    - First trigger vs repeat trigger behavior
+    - Dismissal state tracking
+    - Redemption linkage
+    - Dependency: Geofence Detector
+    - Risk: High (engagement metric dependent)
+
+---
+
+### Phase 5: Map-Primary Pages (Week 5)
 **Goal:** Rebuild critical map-driven resident surfaces
 
-7. **Explore Page Rebuild** (`/downtown-perks/explore`)
-   - Use MapShell component
-   - Venue + Building data flow
-   - Search + filter integration
-   - Smart filters (walking, free perks, event-based)
-   - Detail drawer
-   - Dependency: MapShell (Phase 2)
-   - Risk: High (currently production, must maintain parity)
+13. **Ask the Map Page Rebuild** (`/ask-the-map`, `/search`)
+    - Use intent parser (Phase 2)
+    - Integrate MapShell (Phase 3)
+    - Chat interface + guided chips
+    - Query state persistence
+    - Analytics logging
+    - Dependency: Intent Parser (Phase 2), MapShell (Phase 3)
+    - Risk: High (core product)
 
-8. **Events Page Rebuild** (`/downtown-perks/events`)
-   - Use MapShell component
-   - Event data flow
-   - Category filtering
-   - Status badges
-   - Detail drawer + RSVP (placeholder)
-   - Dependency: MapShell (Phase 2)
-   - Risk: High (currently production, must maintain parity)
+14. **Explore Page Rebuild** (`/downtown-perks/explore`)
+    - Use MapShell component
+    - Venue + Building data flow
+    - Search + filter integration
+    - Smart filters (walking, free perks, event-based)
+    - Detail drawer
+    - Dependency: MapShell (Phase 3)
+    - Risk: High (currently production, must maintain parity)
+
+15. **Events Page Rebuild** (`/downtown-perks/events`)
+    - Use MapShell component
+    - Event data flow
+    - Category filtering
+    - Status badges
+    - Detail drawer + RSVP (placeholder)
+    - Dependency: MapShell (Phase 3)
+    - Risk: High (currently production, must maintain parity)
+
+16. **Resident App Rebuild** (`/resident-app`, `/app/now`)
+    - Use MapShell with Ask the Map integration
+    - Geofence notification integration
+    - Toast display on nearby saved perks
+    - Perk detail drawer linkage
+    - Dependency: MapShell (Phase 3), Geofence System (Phase 4), Ask the Map (Phase 2)
+    - Risk: **CRITICAL** (map-first resident surface + dual systems)
 
 ---
 
-### Phase 4: Partner Management (Week 4)
+### Phase 6: Partner Management (Week 6)
 **Goal:** Rebuild operator-facing management interfaces
 
-9. **PartnerWorkspace Rebuild** (`/partner-workspace`)
-   - Tab navigation (Overview, Perks, Events, Profile)
-   - Perk CRUD forms
-   - Event CRUD forms
-   - Profile update form
-   - User auth gating
-   - Dependency: Auth System (Phase 1), Query System (Phase 1)
-   - Risk: Medium (data-sensitive, form validation required)
+17. **PartnerWorkspace Rebuild** (`/partner-workspace`)
+    - Tab navigation (Overview, Perks, Events, Profile)
+    - Perk CRUD forms
+    - Event CRUD forms
+    - Profile update form
+    - User auth gating
+    - Dependency: Auth System (Phase 1), Query System (Phase 1)
+    - Risk: Medium (data-sensitive, form validation required)
 
-10. **Dashboard Rebuild** (`/dashboard`)
+18. **Dashboard Rebuild** (`/dashboard`)
     - User auth gating
     - Analytics display (placeholder metrics)
     - Optional: Map visualization (footfall)
@@ -935,10 +1156,10 @@
 
 ---
 
-### Phase 5: Partner Marketing Pages (Week 5)
+### Phase 7: Partner Marketing Pages (Week 7)
 **Goal:** Rebuild partner-facing informational surfaces
 
-11. **Partner Hub Pages** (`/partners`, `/partners/residential`, `/partners/properties`, `/partners/hotels`, `/partners/venues`, `/partners/civic`, `/partners/brands`)
+19. **Partner Hub Pages** (`/partners`, `/partners/residential`, `/partners/properties`, `/partners/hotels`, `/partners/venues`, `/partners/civic`, `/partners/brands`)
     - Static content + light map references
     - Form submission (placeholder)
     - Navigation flows
@@ -947,10 +1168,10 @@
 
 ---
 
-### Phase 6: Brand Pages (Week 6)
+### Phase 8: Brand Pages (Week 8)
 **Goal:** Rebuild brand showcase surfaces
 
-12. **Brands Index + Individual Brand Pages** (`/brands`, `/brands/*`)
+20. **Brands Index + Individual Brand Pages** (`/brands`, `/brands/*`)
     - Brand directory grid
     - Individual brand pages with unique demo panels
     - Navigation flows
@@ -960,25 +1181,25 @@
 
 ---
 
-### Phase 7: Public Landing Pages (Week 7)
+### Phase 9: Public Landing Pages (Week 9)
 **Goal:** Rebuild public-facing entry surfaces
 
-13. **Home Page Rebuild** (`/`)
+21. **Home Page Rebuild** (`/`)
     - Hero map (use MapShell)
     - Value prop sections
     - Partner carousel
     - Pricing section
     - CTA flows
-    - Dependency: MapShell (Phase 2)
+    - Dependency: MapShell (Phase 3)
     - Risk: Medium (hero map must work correctly)
 
-14. **Downtown Perks Landing** (`/downtown-perks`)
+22. **Downtown Perks Landing** (`/downtown-perks`)
     - Static content sections
     - CTA flows
     - Dependency: Layout System (Phase 1)
     - Risk: Low
 
-15. **Additional Pages** (`/downtown-perks/perks`, `/downtown-perks/card`, `/downtown-perks/for-buildings`, `/downtown-perks/about`)
+23. **Additional Pages** (`/downtown-perks/perks`, `/downtown-perks/card`, `/downtown-perks/for-buildings`, `/downtown-perks/about`)
     - Static content + light interactions
     - Placeholder forms
     - Dependency: Layout System (Phase 1)
@@ -986,26 +1207,36 @@
 
 ---
 
-### Phase 8: Testing & Polish
-**Goal:** Verify all pages, fix parity issues, mobile behavior
+### Phase 10: System Integration & Testing (Week 10)
+**Goal:** Verify all pages, fix parity issues, mobile behavior, system integration
 
-16. **Parity Verification** (All routes)
+24. **Ask the Map + Geofence Integration** (Resident surfaces)
+    - Verify Ask the Map query state syncs to map
+    - Verify geofence triggers show toast
+    - Verify toast click opens detail drawer
+    - Verify all three systems work together
+    - Dependency: All Phases 2-5
+    - Risk: **CRITICAL** (dual system integration)
+
+25. **Parity Verification** (All routes)
     - Compare rebuilt routes against original
-    - Check map behavior (Explore, Events, Dashboard, etc.)
+    - Check map behavior (Explore, Events, Dashboard, Ask the Map, etc.)
     - Check form behavior (PartnerWorkspace, Partner pages)
     - Check mobile responsiveness (all pages)
     - Dependency: All phases
     - Risk: High (must catch all deviations)
 
-17. **Mobile Testing & Fixes** (All routes)
-    - Map viewport behavior (mobile primary on Explore/Events)
+26. **Mobile Testing & Fixes** (All routes)
+    - Map viewport behavior (mobile primary on Explore/Events/Resident App)
     - Sidebar collapse on mobile
     - Bottom-sheet behavior
+    - Toast positioning on mobile
+    - Geofence notification behavior (foreground/background)
     - Responsive text + truncation
     - Dependency: All phases
     - Risk: High (mobile-critical for resident app)
 
-18. **Coordinate Safety Audit** (All map routes)
+27. **Coordinate Safety Audit** (All map routes)
     - Verify no NaN errors
     - Verify all coordinates normalized before use
     - Verify filterValidMapItems applied everywhere
@@ -1013,15 +1244,27 @@
     - Dependency: Coordinate validation system (Phase 1)
     - Risk: Critical (must eliminate errors completely)
 
+28. **Analytics Validation** (All systems)
+    - Ask the Map: intent queries logged correctly
+    - Geofence: triggers and conversions tracked
+    - Map interactions: result views and actions logged
+    - Dependency: All analytics instrumentation
+    - Risk: Medium (analytics must be clean)
+
 ---
 
 ## PART 7: REBUILD PRIORITY CLASSIFICATION
 
-### Critical (P1) — Must complete before production
+### Critical (P0) — Production Systems (Must complete before go-live)
+- **Ask the Map Agent System** - `/ask-the-map`, `/search`, resident-app integration
+- **Real-time Geofencing System** - `/resident-app`, `/app/now`, all resident surfaces
 - `/` (Home)
 - `/downtown-perks` (Landing)
+- `/ask-the-map`, `/search` (Ask the Map agent surface)
 - `/downtown-perks/explore` (Map-primary resident surface)
 - `/downtown-perks/events` (Map-primary resident surface)
+- `/resident-app` (Resident map-first + geofencing + ask-map)
+- `/app/now` (Intent-driven discovery + geofencing)
 - `/partner-workspace` (Operator management)
 - `/dashboard` (Operator analytics)
 
