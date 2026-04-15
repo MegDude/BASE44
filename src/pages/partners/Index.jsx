@@ -5,6 +5,7 @@ import { ArrowRight, Building2, Users, Utensils, Sparkles, MapPin } from 'lucide
 import PartnerHero from '@/components/partner/PartnerHero';
 import SelectorCards from '@/components/partner/SelectorCards';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
+import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES } from '@/lib/partner-system';
 
 const PARTNER_TYPES = [
   {
@@ -69,7 +70,7 @@ export default function PartnersIndex() {
       />
 
       {/* Partner selection */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-12">
             <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight">
@@ -80,7 +81,7 @@ export default function PartnersIndex() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-4">
             {PARTNER_TYPES.map((type) => {
               const Icon = type.icon;
               return (
@@ -126,7 +127,7 @@ export default function PartnersIndex() {
       </section>
 
       {/* How it works unified */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
             One system, five roles
@@ -196,7 +197,7 @@ export default function PartnersIndex() {
       </section>
 
       {/* Examples / use cases */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
             See it in action
@@ -260,24 +261,20 @@ export default function PartnersIndex() {
       />
 
       {/* Footer nav */}
-      <section className="py-12 border-t border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.subsectionVertical} border-t border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-wrap gap-6 text-[13px]">
-            <a href="/partners/residential" className="text-[#111] hover:text-[#7a746b]">
-              Residential
-            </a>
-            <a href="/partners/hotels" className="text-[#111] hover:text-[#7a746b]">
-              Hospitality
-            </a>
-            <a href="/partners/venues" className="text-[#111] hover:text-[#7a746b]">
-              Venues
-            </a>
-            <a href="/partners/brands" className="text-[#111] hover:text-[#7a746b]">
-              Brands
-            </a>
-            <a href="/partners/civic" className="text-[#111] hover:text-[#7a746b]">
-              Civic
-            </a>
+            {[
+              { label: 'Residential', href: PARTNER_ROUTES[PARTNER_CATEGORIES.RESIDENTIAL] },
+              { label: 'Hospitality', href: PARTNER_ROUTES[PARTNER_CATEGORIES.HOSPITALITY] },
+              { label: 'Venues', href: PARTNER_ROUTES[PARTNER_CATEGORIES.VENUES] },
+              { label: 'Brands', href: PARTNER_ROUTES[PARTNER_CATEGORIES.BRANDS] },
+              { label: 'Civic', href: PARTNER_ROUTES[PARTNER_CATEGORIES.CIVIC] },
+            ].map((link) => (
+              <a key={link.href} href={link.href} className="text-[#111] hover:text-[#7a746b] transition-colors">
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
       </section>
