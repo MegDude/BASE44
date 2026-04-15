@@ -9,6 +9,21 @@ const FILTER_OPTIONS = {
     { id: 'month', label: 'This Month' },
     { id: 'custom', label: 'Custom Range' }
   ],
+  campaignFormat: [
+    { id: 'founding', label: 'Founding Partner' },
+    { id: 'launch', label: 'Launch Campaign' },
+    { id: 'resident', label: 'Resident Activation' },
+    { id: 'event', label: 'Event-Led Campaign' },
+    { id: 'utility', label: 'Utility Campaign' }
+  ],
+  placementType: [
+    { id: 'building_qr', label: 'Building QR' },
+    { id: 'venue', label: 'Venue Placement' },
+    { id: 'district', label: 'District Activation' },
+    { id: 'event', label: 'Event Marker' },
+    { id: 'redemption', label: 'Redemption Point' },
+    { id: 'map', label: 'Map Discovery' }
+  ],
   source: [
     { id: 'building_qr', label: 'Building QR' },
     { id: 'map_discovery', label: 'Map Discovery' },
@@ -82,7 +97,7 @@ export default function AnalyticsFiltersPanel({ activeFilters, onFilterChange, o
               className="w-full flex items-center justify-between p-2 hover:bg-muted/30 rounded-lg transition-colors group"
             >
               <span className="text-[13px] font-medium text-foreground capitalize">
-                {filterType === 'timeRange' ? 'Time Range' : filterType.replace('_', ' ')}
+                {filterType === 'timeRange' ? 'Time Range' : filterType === 'campaignFormat' ? 'Campaign Format' : filterType === 'placementType' ? 'Placement Type' : filterType.replace('_', ' ')}
               </span>
               <ChevronDown
                 className={`w-4 h-4 text-muted-foreground transition-transform ${
