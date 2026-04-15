@@ -61,10 +61,7 @@ export default function Explore() {
     smartFilters: activeFilters.smartFilters,
   });
 
-  // Update visible results in store whenever they change
-  useEffect(() => {
-    setVisibleResults(allItems);
-  }, [allItems, setVisibleResults]);
+
 
   function toggleSmartFilter(key) {
     setSmartFilters({
