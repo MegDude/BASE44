@@ -81,7 +81,7 @@ export default function ExploreRebuilt() {
     // Apply walk time filter
     if (store.activeFilters.walkMinutes) {
       results = results.filter((e) =>
-        e.metadata?.walkMinutes && e.metadata.walkMinutes <= store.activeFilters.walkMinutes!
+        e.metadata?.walkMinutes && e.metadata.walkMinutes <= store.activeFilters.walkMinutes
       );
     }
 
