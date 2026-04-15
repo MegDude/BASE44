@@ -235,17 +235,7 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Location count below card */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="mt-6 flex items-center gap-2"
-        >
-          <span className="text-[12px] text-foreground/45">
-            {venues.length > 0 ? venues.length : "155"} mapped locations · 78701 Austin
-          </span>
-        </motion.div>
+
       </div>
 
       {/* Click-outside to dismiss intent dropdown */}
