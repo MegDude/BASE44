@@ -1,21 +1,28 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, QrCode, CalendarDays, Heart, Coffee, Navigation } from "lucide-react";
+import { MapPin, Zap, BarChart3, Star, Clock, Music, CalendarDays, TrendingUp } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
-import { QRDemoPanel, NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
+import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
 
 const demo = (
-  <div className="grid md:grid-cols-2 gap-5">
-    <QRDemoPanel
-      headline="Welcome to Austin."
-      sub="Scan to unlock your guest neighborhood guide — dining, fitness, events, and member perks, all within walking distance of The Stay Put."
-      action="Activate Guest Pass"
-    />
+  <div className="rounded-xl border border-border/60 bg-card/60 overflow-hidden">
+    <div className="p-5 border-b border-border/40">
+      <div className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.14em] mb-1">Local Venue</div>
+      <div className="font-heading font-semibold text-lg text-foreground">Stay Put</div>
+      <div className="text-[12px] text-muted-foreground mt-0.5">Local bar + downtown hangout</div>
+      <p className="text-[12px] text-muted-foreground mt-3 leading-relaxed">
+        See what's happening now — drinks, events, live moments, and what's nearby.
+      </p>
+      <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-primary text-primary-foreground text-[12px] font-medium">
+        <Zap className="w-3 h-3" /> View Tonight's Lineup
+      </div>
+    </div>
     <NotificationDemoPanel
       items={[
-        { title: "Rooftop yoga — tomorrow 7am", sub: "0.2 miles · Free for guests" },
-        { title: "Dinner reservation available", sub: "Fabi & Rosi · Tonight 8pm · Guest rate" },
-        { title: "Run club departs at 6am Saturday", sub: "Hotel lobby · 3.2 mile route" },
+        { title: "Happy hour live now", sub: "House cocktails until 6:30pm" },
+        { title: "DJ set tonight · 9pm", sub: "Walk in or save for later" },
+        { title: "Trivia night Thursday", sub: "Starts at 7pm · team sign-up open" },
+        { title: "Pre-show stop nearby", sub: "A good place to start the night" },
       ]}
     />
   </div>
@@ -25,32 +32,31 @@ export default function TheStayPut() {
   return (
     <div className="min-h-screen bg-background">
       <BrandHero
-        eyebrow="Boutique Hotel · Austin Experience Layer"
-        headline={<>Guests don't want a concierge.<br /><span className="text-primary">They want a live neighborhood.</span></>}
-        support="The Stay Put becomes a local guide the moment guests check in — delivering curated discovery, timed offers, and event access without any friction."
-        ctaLabel="Build the Guest Experience"
+        eyebrow="Local Venue Partner · Real-Time Downtown Discovery"
+        headline={<>Be the place people choose<br /><span className="text-primary">when they're already nearby.</span></>}
+        support="Downtown Perks helps Stay Put show up at the right moment — when someone downtown is deciding on drinks, music, dinner, or where to go next. Timed visibility, live programming, event tie-ins, and measurable actions all work together in one local layer."
+        ctaLabel="Partner With Downtown Perks"
         ctaHref="mailto:partners@downtownperks.com"
         demoPanel={demo}
-        bgAccent="from-primary/6"
       />
 
-      {/* Why they fit */}
-      <BrandSection label="The Fit" title="Great hotels amplify great neighborhoods.">
+      {/* Why it fits */}
+      <BrandSection label="Why It Fits" title="Great venues don't need more noise. They need better timing.">
         <div className="grid md:grid-cols-2 gap-10">
           <div className="space-y-5">
             <p className="text-muted-foreground leading-relaxed">
-              Guests choose The Stay Put because of Austin. Not just the room. They want to move through the city with confidence — to discover the right dinner, the right morning workout, the right moment.
+              People are already downtown making decisions in real time. Where to meet. Where to grab a drink. Where to go before the show. Where to keep the night going.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Downtown Perks gives The Stay Put a live local layer. Curated, proximity-aware, and continuously updated — so every guest feels like a local from the moment they arrive.
+              Downtown Perks helps Stay Put show up in those moments with the right context, the right timing, and the right reason to choose it. That creates stronger local discovery, better-timed traffic, and a clearer line between visibility and real visits.
             </p>
           </div>
           <div className="space-y-4">
             {[
-              { icon: Navigation, label: "Frictionless local discovery", desc: "Guests get the neighborhood guide at check-in via a single QR scan." },
-              { icon: Coffee, label: "Morning-to-night itinerary", desc: "Fitness at 6am, coffee at 8am, dinner at 8pm — all surfaced automatically." },
-              { icon: Heart, label: "Curated, not crowdsourced", desc: "No Yelp star ratings. Just places that belong in the Downtown Perks system." },
-              { icon: Star, label: "Exclusive guest perks", desc: "Partner venues offer stay-guest-only rates and experiences." },
+              { icon: MapPin, label: "Real-time discovery", desc: "Stay Put appears when people nearby are actively deciding where to go next." },
+              { icon: Clock, label: "Timed traffic moments", desc: "Happy hour, pre-event, post-event, and late-night moments can surface automatically." },
+              { icon: Star, label: "Curated local visibility", desc: "The venue appears inside a high-intent downtown layer, not buried in generic search clutter." },
+              { icon: BarChart3, label: "Measurable proof", desc: "Views, saves, RSVPs, offer opens, and redemptions create a clear proof layer." },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -73,54 +79,54 @@ export default function TheStayPut() {
         </div>
       </BrandSection>
 
-      {/* How they show up */}
-      <BrandSection label="Guest Journey" title="From check-in to checkout — connected." className="bg-card/30 border-y border-border">
+      {/* How it works */}
+      <BrandSection label="How It Works" title="From discovery to arrival — connected in one downtown flow." className="bg-card/30 border-y border-border">
         <div className="grid md:grid-cols-2 gap-4">
-          <FlowCard step="01" title="QR at check-in" desc="A single QR on the room key, lobby card, or welcome booklet. Guests activate a neighborhood guide in under 30 seconds." delay={0} />
-          <FlowCard step="02" title="Curated local list" desc="Guests see a tight, walking-distance set of recommendations — dining, wellness, fitness, nightlife — all vetted and live." delay={0.1} />
-          <FlowCard step="03" title="Timed offers surface automatically" desc="Morning wellness, afternoon dining, evening social — perks appear at the right moment without the guest searching." delay={0.2} />
-          <FlowCard step="04" title="Event access" desc="Guests see upcoming district events — run clubs, live music, pop-ups — and can RSVP directly from their guide." delay={0.3} />
-          <FlowCard step="05" title="Partner venue tie-ins" desc="The Stay Put's recommended dining and wellness partners are pinned on the map with guest-specific rates." delay={0.4} />
-          <FlowCard step="06" title="Mobile follow-up" desc="Guests who opt in receive a curated itinerary for the next 24 hours — delivered the morning after check-in." delay={0.5} />
+          <FlowCard step="01" title="Stay Put goes live" desc="The venue is added to the downtown map with profile, programming, offers, and real-time venue details." delay={0} />
+          <FlowCard step="02" title="Nearby intent forms" desc="Someone downtown opens the map while deciding where to go — after work, before a show, later in the night." delay={0.1} />
+          <FlowCard step="03" title="Stay Put surfaces" desc="The venue appears based on proximity, timing, category, and what is happening nearby." delay={0.2} />
+          <FlowCard step="04" title="Timed moment is shown" desc="Happy hour, tonight's set, trivia night, or a live reason to visit appears when it matters most." delay={0.3} />
+          <FlowCard step="05" title="Person takes action" desc="They save it, tap in, RSVP, or head there directly from the map." delay={0.4} />
+          <FlowCard step="06" title="Proof is recorded" desc="Downtown Perks tracks the signals that matter — views, saves, and redemptions — across real downtown behavior." delay={0.5} />
         </div>
       </BrandSection>
 
-      {/* What they gain */}
-      <BrandSection label="Value" title="What The Stay Put gets.">
+      {/* Value */}
+      <BrandSection label="Value" title="What Stay Put gets.">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <SignalCard icon={<Heart className="w-5 h-5" />} label="Guest satisfaction" sub="Guests who discover the neighborhood leave better reviews." delay={0} />
-          <SignalCard icon={<MapPin className="w-5 h-5" />} label="Local credibility" sub="The Stay Put is seen as a neighborhood insider, not a transient stop." delay={0.1} />
-          <SignalCard icon={<QrCode className="w-5 h-5" />} label="Zero-friction onboarding" sub="No app download. No registration form. Just a scan." delay={0.2} />
-          <SignalCard icon={<CalendarDays className="w-5 h-5" />} label="Event awareness" sub="Guests discover and attend local events — boosting their experience and district engagement." delay={0.3} />
-          <SignalCard icon={<Star className="w-5 h-5" />} label="Review quality" sub="Guests who feel well-connected to Austin leave higher-quality reviews." delay={0.4} />
-          <SignalCard icon={<Users className="w-5 h-5" />} label="Return signal" sub="Guests who had a rich local experience are more likely to rebook." delay={0.5} />
+          <SignalCard icon={<MapPin className="w-5 h-5" />} label="Stronger downtown visibility" sub="Stay Put shows up inside real local decision-making, not just passive browsing." delay={0} />
+          <SignalCard icon={<Clock className="w-5 h-5" />} label="Better-timed traffic" sub="Offers and programming appear when people are most likely to act." delay={0.1} />
+          <SignalCard icon={<Music className="w-5 h-5" />} label="Event adjacency" sub="Nearby events can naturally feed pre- and post-event traffic into the venue." delay={0.2} />
+          <SignalCard icon={<BarChart3 className="w-5 h-5" />} label="Clearer proof" sub="The team can see what people viewed, saved, tapped, and redeemed." delay={0.3} />
+          <SignalCard icon={<TrendingUp className="w-5 h-5" />} label="More repeat discovery" sub="Stay Put stays part of the downtown rhythm, not just a one-time find." delay={0.4} />
+          <SignalCard icon={<Zap className="w-5 h-5" />} label="Lightweight setup" sub="No heavy systems, no operational burden, no complicated onboarding." delay={0.5} />
         </div>
       </BrandSection>
 
-      {/* Use cases */}
-      <BrandSection label="Use Cases" title="What the guest experience looks like." className="bg-card/30 border-y border-border">
+      {/* Use Cases */}
+      <BrandSection label="Use Cases" title="When it works best." className="bg-card/30 border-y border-border">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <UseCaseCard tag="Arrival" title="Check-in neighborhood guide" detail="Room key includes a QR. Guest scans. Instantly sees top 8 curated spots within walking distance, plus what's happening this week." delay={0} />
-          <UseCaseCard tag="Morning" title="Fitness and coffee flow" detail="6am: run club direction via the map. 7:30am: cold brew offer at a nearby café goes live. Guest moves through Austin like a local." delay={0.1} />
-          <UseCaseCard tag="Dining" title="Reservation-linked offer" detail="The Stay Put guest rate at partner restaurants appears in the guide. Guest books. Venue gets a high-intent, warm referral." delay={0.2} />
-          <UseCaseCard tag="Events" title="District event discovery" detail="Guest sees a live music event Saturday night 4 blocks away. RSVPs through the guide. Shows up. Tells three friends about Austin." delay={0.3} />
-          <UseCaseCard tag="Checkout" title="Local keepsake list" detail="At checkout, the guide optionally emails the guest their saved spots — turning The Stay Put into a lasting memory anchor." detail="At checkout, the guide optionally emails the guest their saved spots — turning The Stay Put into a lasting memory anchor." delay={0.4} />
+          <UseCaseCard tag="Happy Hour" title="After-work decision moment" detail="Someone nearby opens the map at 5:12pm looking for drinks within walking distance. Stay Put appears with a live happy hour offer and gets the visit." delay={0} />
+          <UseCaseCard tag="Pre-Event" title="Before the crowd moves" detail="A person heading to a concert or district event sees Stay Put as a nearby pre-show stop with a timely reason to go now." delay={0.1} />
+          <UseCaseCard tag="Programming" title="Recurring nights that stay visible" detail="Trivia, live music, DJ nights, themed events, and social programming surface directly in the downtown feed." delay={0.2} />
+          <UseCaseCard tag="Late Night" title="Where to go next" detail="After dinner or another stop, someone nearby sees Stay Put in the right moment — one more place worth visiting." delay={0.3} />
+          <UseCaseCard tag="Repeat Traffic" title="Saved and revisited" detail="A person saves the venue one week and returns through the same downtown layer later, building a regular habit." delay={0.4} />
         </div>
       </BrandSection>
 
-      {/* Metrics */}
-      <BrandSection label="Proof" title="Numbers that hospitality teams care about.">
+      {/* Proof */}
+      <BrandSection label="Proof" title="Numbers that matter to venue partners.">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <SignalCard value="61%" label="Guide activation" sub="Guests who scan on day of arrival" delay={0} />
-          <SignalCard value="4.1★" label="Review quality lift" sub="Among guests who used the neighborhood guide" delay={0.1} />
-          <SignalCard value="2.4×" label="Event attendance" sub="vs. guests without a curated local layer" delay={0.2} />
-          <SignalCard value="0" label="Concierge effort" sub="The guide runs automatically — no staff overhead" delay={0.3} />
+          <SignalCard value="38%" label="Offer view rate" sub="Among people who opened the venue profile" delay={0} />
+          <SignalCard value="22%" label="Save or tap-through rate" sub="From nearby discovery moments" delay={0.1} />
+          <SignalCard value="2.1×" label="Higher engagement" sub="During event-linked windows vs. non-programmed blocks" delay={0.2} />
+          <SignalCard value="0" label="Extra platforms" sub="Lightweight setup inside the Downtown Perks layer" delay={0.3} />
         </div>
       </BrandSection>
 
       <BrandCTA
-        headline="Give your guests a neighborhood, not just a room."
-        sub="A single QR. A live local guide. A better Austin experience."
+        headline="Give people a reason to choose Stay Put right now."
+        sub="One downtown layer. Better timing. Real local visibility. A clearer path from nearby intent to actual visits."
         ctaLabel="Partner With Downtown Perks"
         ctaHref="mailto:partners@downtownperks.com"
       />
