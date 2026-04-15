@@ -141,7 +141,7 @@ export default function Explore() {
     setSelectedType(type);
   }
 
-  const flyTarget = selected?.latitude && selected?.longitude ? [selected.latitude, selected.longitude] : null;
+  const flyTarget = (selected && typeof selected.latitude === 'number' && typeof selected.longitude === 'number' && !isNaN(selected.latitude) && !isNaN(selected.longitude)) ? [selected.latitude, selected.longitude] : null;
 
   return (
     <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
