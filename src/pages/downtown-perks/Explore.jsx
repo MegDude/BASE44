@@ -29,14 +29,14 @@ export default function Explore() {
   const {
     selectedEntityId,
     selectedEntityType,
-    activeFilters,
+    query,
+    filters,
     isDrawerOpen,
     selectEntity,
     clearSelection,
     setVisibleResults,
     setCategoryFilter,
     setQueryFilter,
-    setSmartFilters,
   } = useMapStore();
 
   useEffect(() => {
@@ -56,19 +56,10 @@ export default function Explore() {
 
   // Sync store filters with adapter
   const { items: allItems, getMarkerIcon } = useVenueMapAdapter(venues, buildings, {
-    category: activeFilters.category,
-    query: activeFilters.query,
-    smartFilters: activeFilters.smartFilters,
+    category: filters.category,
+    query,
+    smartFilters: { walking: false, freePerks: false, eventBased: false },
   });
-
-
-
-  function toggleSmartFilter(key) {
-    setSmartFilters({
-      ...activeFilters.smartFilters,
-      [key]: !activeFilters.smartFilters[key],
-    });
-  }
 
   // Find selected item from store
   const selected = allItems.find((item) => item.id === selectedEntityId);
@@ -99,7 +90,7 @@ export default function Explore() {
             <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
             <input
               type="search"
-              value={activeFilters.query}
+              value={query}
               onChange={(e) => setQueryFilter(e.target.value)}
               placeholder="Search venues, perks, neighborhoods..."
               className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
@@ -107,17 +98,6 @@ export default function Explore() {
             <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0 hidden md:block">
               Austin
             </button>
-            {Object.values(activeFilters.smartFilters).filter(Boolean).length > 0 && (
-              <button
-                onClick={() => setSmartFilters({ walking: false, freePerks: false, eventBased: false })}
-                className="h-10 px-3.5 rounded-xl border border-violet-300 bg-violet-50 text-[12px] font-medium text-violet-700 hover:bg-violet-100 transition-all shrink-0 flex items-center gap-1.5"
-              >
-                <span className="w-4 h-4 rounded-full bg-violet-600 text-white text-[10px] flex items-center justify-center font-bold">
-                  {Object.values(activeFilters.smartFilters).filter(Boolean).length}
-                </span>
-                Filters on
-              </button>
-            )}
           </div>
         </div>
 
@@ -149,7 +129,7 @@ export default function Explore() {
             <Search className="w-4 h-4 text-[#7a746b]" />
             <input
               type="search"
-              value={activeFilters.query}
+              value={query}
               onChange={(e) => setQueryFilter(e.target.value)}
               placeholder="Search venues..."
               className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"

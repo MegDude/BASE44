@@ -26,7 +26,8 @@ export default function Events() {
   // Use unified map store
   const {
     selectedEntityId,
-    activeFilters,
+    query,
+    filters,
     isDrawerOpen,
     selectEntity,
     setVisibleResults,
@@ -45,8 +46,8 @@ export default function Events() {
 
   // Filter events by category and query
   const filtered = events.filter(e => {
-    if (activeFilters.category !== "all" && e.category !== activeFilters.category) return false;
-    if (activeFilters.query && !`${e.title} ${e.venue_name} ${e.address} ${e.category}`.toLowerCase().includes(activeFilters.query.toLowerCase())) return false;
+    if (filters.category !== "all" && e.category !== filters.category) return false;
+    if (query && !`${e.title} ${e.venue_name} ${e.address} ${e.category}`.toLowerCase().includes(query.toLowerCase())) return false;
     return true;
   });
 
@@ -74,14 +75,14 @@ export default function Events() {
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
             <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
             <input
-              type="search" value={activeFilters.query} onChange={e => setQueryFilter(e.target.value)}
+              type="search" value={query} onChange={e => setQueryFilter(e.target.value)}
               placeholder="Search events, venues, neighborhoods..."
               className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
             />
             {CATS.slice(1, 4).map(c => (
-              <button key={c} onClick={() => setCategoryFilter(activeFilters.category === c ? "all" : c)}
+              <button key={c} onClick={() => setCategoryFilter(filters.category === c ? "all" : c)}
                 className={`h-10 px-3.5 rounded-xl border text-[12px] font-medium shrink-0 transition-all hidden md:block ${
-                  activeFilters.category === c ? "bg-[#111] text-white border-[#111]" : "bg-white text-[#3d3934] border-[#e8e5df] hover:border-[#bbb]"
+                  filters.category === c ? "bg-[#111] text-white border-[#111]" : "bg-white text-[#3d3934] border-[#e8e5df] hover:border-[#bbb]"
                 }`}>
                 {c.replace("_", " ")}
               </button>
@@ -111,7 +112,7 @@ export default function Events() {
             <Search className="w-4 h-4 text-[#7a746b]" />
             <input
               type="search"
-              value={activeFilters.query}
+              value={query}
               onChange={(e) => setQueryFilter(e.target.value)}
               placeholder="Search events..."
               className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
