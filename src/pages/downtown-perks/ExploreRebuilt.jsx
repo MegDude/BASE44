@@ -5,9 +5,8 @@
 
 import { useState, useEffect } from 'react';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity, selectDrawerState } from '@/store/mapStateStore';
-import { getValidPlottedEntities, searchEntities } from '@/data/mapEntities';
-import { filterValidEntities } from '@/lib/mapValidation';
 import { motion } from 'framer-motion';
+import { base44 } from '@/api/base44Client';
 
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
 import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
@@ -34,16 +33,22 @@ export default function ExploreRebuilt() {
   const [allEntities, setAllEntities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Initialize with centralized data
+  // Initialize with unified map feed from repositories
   useEffect(() => {
-    try {
-      const entities = getValidPlottedEntities();
-      setAllEntities(filterValidEntities(entities));
-      setLoading(false);
-    } catch (error) {
-      console.error('Failed to load map entities:', error);
-      setLoading(false);
-    }
+    (async () => {
+      try {
+        const response = await base44.functions.invoke('getSharedMapFeed', {
+          search: '',
+          filters: {},
+          limit: 1000,
+        });
+        setAllEntities(response.data?.items || []);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to load map feed:', error);
+        setLoading(false);
+      }
+    })();
   }, []);
 
   // Apply search and filters
@@ -54,7 +59,12 @@ export default function ExploreRebuilt() {
 
     // Apply search
     if (store.searchQuery.trim()) {
-      results = searchEntities(store.searchQuery);
+      const lowerSearch = store.searchQuery.toLowerCase();
+      results = results.filter((e) =>
+        e.title?.toLowerCase().includes(lowerSearch) ||
+        e.subtitle?.toLowerCase().includes(lowerSearch) ||
+        e.description?.toLowerCase().includes(lowerSearch)
+      );
     }
 
     // Apply filters (entity types)
