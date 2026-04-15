@@ -20,7 +20,7 @@ export default function MapResultsPanel({
     setPanelExpanded,
     selectEntity,
     clearSelection,
-    activeFilters,
+    filters,
   } = useMapStore();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -40,8 +40,8 @@ export default function MapResultsPanel({
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-lg md:text-[22px] font-semibold text-[#111] tracking-tight leading-tight">
             {/* Dynamic title based on context */}
-            {activeFilters.category !== 'all'
-              ? activeFilters.category.charAt(0).toUpperCase() + activeFilters.category.slice(1)
+            {filters.category !== 'all'
+              ? filters.category.charAt(0).toUpperCase() + filters.category.slice(1)
               : 'Results'}
           </h1>
           <div className="flex items-center gap-2">
