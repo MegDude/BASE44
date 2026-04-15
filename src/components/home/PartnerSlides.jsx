@@ -100,7 +100,7 @@ export default function PartnerSlides() {
   const Icon = slide.icon;
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-border/40">
+    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-white">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
@@ -110,10 +110,10 @@ export default function PartnerSlides() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               Turn Residents Into Regulars
             </span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight">
+            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
               Be the place
               <br />
               <em className="text-primary">people choose next.</em>
@@ -123,7 +123,7 @@ export default function PartnerSlides() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground text-[13px] leading-relaxed"
+            className="text-foreground/60 text-[13px] leading-relaxed"
           >
             People are already downtown. Already walking. Already deciding. Downtown Perks puts you in front of them when it matters — not broad advertising, better timing.
           </motion.p>
@@ -144,8 +144,8 @@ export default function PartnerSlides() {
                 onClick={() => setActive(i)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all duration-200 ${
                   active === i
-                    ? "border-primary/50 bg-primary/10 text-primary"
-                    : "border-border/50 text-muted-foreground hover:text-foreground"
+                    ? "border-primary/40 bg-primary/10 text-primary"
+                    : "border-[hsl(218,20%,88%)] text-foreground/60 hover:text-foreground hover:border-[hsl(218,20%,78%)]"
                 }`}
               >
                 <SlideIcon className="w-3.5 h-3.5" />
@@ -161,24 +161,24 @@ export default function PartnerSlides() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="border border-border/50 rounded-xl overflow-hidden"
+          className="border border-[hsl(218,20%,88%)] rounded-xl overflow-hidden shadow-[0_2px_16px_rgba(14,28,54,.06)]"
         >
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Left */}
-            <div className="p-8 md:border-r border-border/40">
-              <div className="w-9 h-9 rounded-full border border-border/60 flex items-center justify-center mb-6">
+            <div className="p-8 md:border-r border-[hsl(218,20%,90%)] bg-white">
+              <div className="w-9 h-9 rounded-full border border-[hsl(218,20%,88%)] flex items-center justify-center mb-6">
                 <Icon className="w-4 h-4 text-primary" />
               </div>
-              <h3 className="font-heading text-2xl font-medium leading-[1.2] mb-1">{slide.headline}</h3>
-              <p className="text-muted-foreground text-sm italic mb-5">{slide.subhead}</p>
-              <p className="text-[13px] text-muted-foreground leading-relaxed mb-8">{slide.body}</p>
+              <h3 className="font-heading text-2xl font-medium leading-[1.08] mb-1.5 text-foreground">{slide.headline}</h3>
+              <p className="text-foreground/55 text-sm italic mb-5">{slide.subhead}</p>
+              <p className="text-[13px] text-foreground/60 leading-relaxed mb-8">{slide.body}</p>
 
-              <div className="border-t border-border/40 pt-6">
-                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-1">
+              <div className="border-t border-[hsl(218,20%,90%)] pt-6">
+                <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-1">
                   Pricing
                 </div>
                 <div className="font-heading font-medium text-foreground text-sm mb-1">{slide.pricing}</div>
-                <div className="text-[12px] text-muted-foreground italic mb-5">{slide.pricingNote}</div>
+                <div className="text-[12px] text-foreground/55 italic mb-5">{slide.pricingNote}</div>
                 <Link
                   to="/downtown-perks/for-buildings"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
@@ -189,26 +189,26 @@ export default function PartnerSlides() {
             </div>
 
             {/* Right — what's included */}
-            <div className="p-8 bg-muted/20">
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">
+            <div className="p-8 bg-[hsl(42,24%,96%)]">
+              <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">
                 What's Included
               </div>
               <ul className="space-y-3">
                 {slide.includes.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-[13px] text-muted-foreground">
+                  <li key={i} className="flex items-start gap-3 text-[13px] text-foreground/60">
                     <div className="w-1 h-1 rounded-full bg-primary/60 mt-2 flex-shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-8 pt-6 border-t border-border/40">
-                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">
+              <div className="mt-8 pt-6 border-t border-[hsl(218,20%,90%)]">
+                <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-3">
                   How It Works
                 </div>
                 {["Launch", "Measure", "Decide"].map((step, i) => (
-                  <div key={i} className="flex items-center gap-3 text-[13px] text-muted-foreground mb-2">
-                    <div className="w-5 h-5 rounded-full border border-primary/30 flex items-center justify-center text-[10px] text-primary font-medium shrink-0">
+                  <div key={i} className="flex items-center gap-3 text-[13px] text-foreground/60 mb-2">
+                    <div className="w-5 h-5 rounded-full border border-primary/40 flex items-center justify-center text-[10px] text-primary font-medium shrink-0">
                       {i + 1}
                     </div>
                     {step === "Launch" && "Set up QR entry points and map visibility."}
@@ -226,7 +226,7 @@ export default function PartnerSlides() {
           <button
             onClick={() => setActive((a) => Math.max(0, a - 1))}
             disabled={active === 0}
-            className="p-2.5 rounded-full border border-border/50 text-muted-foreground hover:text-foreground disabled:opacity-30 transition-all"
+            className="p-2.5 rounded-full border border-[hsl(218,20%,88%)] text-foreground/60 hover:text-foreground disabled:opacity-30 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
@@ -235,14 +235,14 @@ export default function PartnerSlides() {
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${active === i ? "bg-primary w-4" : "bg-border"}`}
+                className={`w-1.5 h-1.5 rounded-full transition-all ${active === i ? "bg-primary w-4" : "bg-[hsl(218,20%,82%)]"}`}
               />
             ))}
           </div>
           <button
             onClick={() => setActive((a) => Math.min(slides.length - 1, a + 1))}
             disabled={active === slides.length - 1}
-            className="p-2.5 rounded-full border border-border/50 text-muted-foreground hover:text-foreground disabled:opacity-30 transition-all"
+            className="p-2.5 rounded-full border border-[hsl(218,20%,88%)] text-foreground/60 hover:text-foreground disabled:opacity-30 transition-all"
           >
             <ArrowRight className="w-4 h-4" />
           </button>

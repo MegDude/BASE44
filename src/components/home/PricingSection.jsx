@@ -51,7 +51,7 @@ export default function PricingSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-border/40">
+    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
       <div className="max-w-5xl mx-auto">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12 items-end">
@@ -60,10 +60,10 @@ export default function PricingSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               Pricing
             </span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight">
+            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
               Spend less.
               <br />
               <em className="text-primary">Do more.</em>
@@ -73,7 +73,7 @@ export default function PricingSection() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground text-[13px] leading-relaxed"
+            className="text-foreground/60 text-[13px] leading-relaxed"
           >
             Start with a pilot. Decide with real data. No setup. No long-term commitment. You go live, people use it, you see what happens.
             <span className="block mt-2 text-[12px] text-muted-foreground/60 italic">
@@ -89,14 +89,14 @@ export default function PricingSection() {
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
-              className="p-5 rounded-lg border border-border/50 bg-card/40 hover:border-primary/20 transition-all"
+              className="p-5 rounded-lg border border-[hsl(218,20%,88%)] bg-white hover:border-primary/30 hover:shadow-[0_4px_14px_rgba(14,28,54,.06)] transition-all shadow-[0_1px_4px_rgba(14,28,54,.04)]"
             >
               <div className="text-xl mb-3">{tier.emoji}</div>
               <div className="font-heading font-medium text-sm text-foreground mb-0.5">{tier.label}</div>
-              <div className="text-[11px] text-muted-foreground/60 mb-3">{tier.sub}</div>
+              <div className="text-[11px] text-foreground/45 mb-3">{tier.sub}</div>
               <div className="font-heading font-medium text-primary text-[13px] mb-1">{tier.price}</div>
-              <div className="text-[11px] text-muted-foreground leading-relaxed mb-2">{tier.note}</div>
-              <div className="text-[11px] text-muted-foreground/60 italic leading-relaxed">{tier.detail}</div>
+              <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
+              <div className="text-[11px] text-foreground/45 italic leading-relaxed">{tier.detail}</div>
             </motion.div>
           ))}
         </div>
@@ -113,7 +113,7 @@ export default function PricingSection() {
           >
             See how it works for you <ArrowRight className="w-3.5 h-3.5" />
           </Link>
-          <span className="text-[12px] text-muted-foreground/60">No setup fee. No long-term commitment.</span>
+          <span className="text-[12px] text-foreground/45">No setup fee. No long-term commitment.</span>
         </motion.div>
       </div>
     </section>

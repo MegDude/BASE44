@@ -27,7 +27,11 @@ export default function Navbar() {
     (link.to === "/brands" && location.pathname.startsWith("/brands"));
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/95 backdrop-blur-md border-b border-border/60" : "bg-transparent"}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      scrolled
+        ? "bg-white/96 backdrop-blur-md border-b border-[hsl(218,20%,88%)] shadow-[0_1px_12px_rgba(14,28,54,.06)]"
+        : "bg-white/80 backdrop-blur-sm border-b border-[hsl(218,20%,90%)]"
+    }`}>
       <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
 
         {/* Logo */}
@@ -49,7 +53,7 @@ export default function Navbar() {
               className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
                 isActive(link)
                   ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-foreground/60 hover:text-foreground"
               }`}
             >
               {link.label}
@@ -61,14 +65,14 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             to="/downtown-perks/card"
-            className="px-5 py-2 rounded-full border border-primary/50 text-primary text-[13px] font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+            className="px-5 py-2 rounded-full border border-primary/50 text-primary text-[13px] font-medium hover:bg-primary hover:text-white transition-all duration-300"
           >
             Get Your Card
           </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-muted-foreground hover:text-foreground p-2 transition-colors">
+        <button onClick={() => setOpen(!open)} className="md:hidden text-foreground/60 hover:text-foreground p-2 transition-colors">
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
@@ -81,7 +85,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-[68px] left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border"
+            className="md:hidden absolute top-[68px] left-0 right-0 bg-white border-b border-[hsl(218,20%,88%)] shadow-sm"
           >
             <div className="px-6 py-6 space-y-1">
               {navLinks.map((link) => (
@@ -90,7 +94,7 @@ export default function Navbar() {
                   to={link.to}
                   onClick={() => setOpen(false)}
                   className={`block px-3 py-3 text-sm font-medium transition-colors ${
-                    isActive(link) ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    isActive(link) ? "text-primary" : "text-foreground/60 hover:text-foreground"
                   }`}
                 >
                   {link.label}
@@ -100,7 +104,7 @@ export default function Navbar() {
                 <Link
                   to="/downtown-perks/card"
                   onClick={() => setOpen(false)}
-                  className="block px-5 py-3 rounded-full border border-primary/50 text-primary text-sm font-medium text-center hover:bg-primary hover:text-primary-foreground transition-all"
+                  className="block px-5 py-3 rounded-full border border-primary/50 text-primary text-sm font-medium text-center hover:bg-primary hover:text-white transition-all"
                 >
                   Get Your Card
                 </Link>

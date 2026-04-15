@@ -110,14 +110,14 @@ function ContactForm({ form }) {
     <div className="space-y-3">
       {form.fields.map((f) => (
         <div key={f.name}>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">
+          <label className="block text-[11px] font-medium text-foreground/50 uppercase tracking-[0.1em] mb-1.5">
             {f.label}
           </label>
           <input
             type={f.type}
             value={values[f.name] || ""}
             onChange={(e) => setValues({ ...values, [f.name]: e.target.value })}
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground placeholder-muted-foreground/40 focus:outline-none focus:border-primary/40 transition-colors"
+            className="w-full bg-[hsl(42,24%,97%)] border border-[hsl(218,20%,88%)] rounded-lg px-4 py-2.5 text-[13px] text-foreground placeholder-foreground/30 focus:outline-none focus:border-primary/40 transition-colors"
           />
         </div>
       ))}
@@ -136,7 +136,7 @@ export default function ContactSection() {
   const current = forms.find((f) => f.id === activeForm);
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-border/40">
+    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
@@ -146,10 +146,10 @@ export default function ContactSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               Get Started
             </span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight">
+            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
               Ready when
               <br />
               <em className="text-primary">you are.</em>
@@ -160,10 +160,10 @@ export default function ContactSection() {
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <p className="text-muted-foreground text-[13px] leading-relaxed mb-4">
+            <p className="text-foreground/60 text-[13px] leading-relaxed mb-4">
               People don't choose the best option. They choose the one they notice.
             </p>
-            <div className="flex flex-col gap-1.5 text-[12px] text-muted-foreground/60">
+            <div className="flex flex-col gap-1.5 text-[12px] text-foreground/50">
               <span className="font-medium text-foreground/70">For residents — Stop searching. Start doing.</span>
               <span className="font-medium text-foreground/70">For partners — Be the one they notice.</span>
             </div>
@@ -171,17 +171,17 @@ export default function ContactSection() {
         </div>
 
         {/* Form panel */}
-        <div className="border border-border/50 rounded-xl overflow-hidden">
+        <div className="border border-[hsl(218,20%,88%)] rounded-xl overflow-hidden shadow-[0_2px_16px_rgba(14,28,54,.06)]">
           {/* Tabs */}
-          <div className="flex border-b border-border/40 overflow-x-auto">
+          <div className="flex border-b border-[hsl(218,20%,90%)] overflow-x-auto bg-white">
             {forms.map((f) => (
               <button
                 key={f.id}
                 onClick={() => setActiveForm(f.id)}
-                className={`px-5 py-4 text-[11px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${
+                className={`px-5 py-4 text-[11px] font-medium whitespace-nowrap border-r border-[hsl(218,20%,90%)] last:border-r-0 transition-all ${
                   activeForm === f.id
                     ? "text-primary bg-primary/5"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-foreground/55 hover:text-foreground"
                 }`}
               >
                 {f.label}
@@ -191,23 +191,23 @@ export default function ContactSection() {
 
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Form */}
-            <div className="p-8 md:border-r border-border/40">
+            <div className="p-8 md:border-r border-[hsl(218,20%,90%)] bg-white">
               <motion.div
                 key={activeForm}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="font-heading text-2xl font-medium mb-1">{current.headline}</h3>
-                <p className="text-muted-foreground text-[13px] mb-6">{current.sub}</p>
+                <h3 className="font-heading text-2xl font-medium leading-[1.08] mb-1.5 text-foreground">{current.headline}</h3>
+                <p className="text-foreground/55 text-[13px] mb-6">{current.sub}</p>
                 <ContactForm form={current} />
               </motion.div>
             </div>
 
             {/* Sidebar */}
-            <div className="p-8 bg-muted/20 flex flex-col justify-between">
+            <div className="p-8 bg-[hsl(42,24%,96%)] flex flex-col justify-between">
               <div>
-                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">
+                <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-4">
                   Also Available
                 </div>
                 <div className="space-y-2">
@@ -215,25 +215,25 @@ export default function ContactSection() {
                     <button
                       key={f.id}
                       onClick={() => setActiveForm(f.id)}
-                      className="flex items-center justify-between w-full p-3 rounded-lg border border-border/40 hover:border-primary/20 text-left transition-all group"
+                      className="flex items-center justify-between w-full p-3 rounded-lg border border-[hsl(218,20%,90%)] bg-white hover:border-primary/30 text-left transition-all group"
                     >
                       <div>
                         <div className="text-[13px] font-medium text-foreground">{f.label}</div>
-                        <div className="text-[11px] text-muted-foreground mt-0.5">{f.headline} {f.sub}</div>
+                        <div className="text-[11px] text-foreground/50 mt-0.5">{f.headline} {f.sub}</div>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/30 group-hover:text-primary transition-colors shrink-0" />
+                      <ArrowRight className="w-3.5 h-3.5 text-foreground/25 group-hover:text-primary transition-colors shrink-0" />
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-border/40 space-y-1">
-                <p className="text-[12px] text-muted-foreground/60 italic">
+              <div className="mt-8 pt-6 border-t border-[hsl(218,20%,90%)] space-y-1">
+                <p className="text-[12px] text-foreground/50 italic">
                   Prefer email?{" "}
                   <a href="mailto:hello@downtownperks.com" className="text-primary hover:underline underline-offset-4">
                     hello@downtownperks.com
                   </a>
                 </p>
-                <p className="text-[11px] text-muted-foreground/40 mt-2">Downtown Perks · Powered by Boop · Austin, Texas</p>
+                <p className="text-[11px] text-foreground/35 mt-2">Downtown Perks · Powered by Boop · Austin, Texas</p>
               </div>
             </div>
           </div>
@@ -246,13 +246,13 @@ export default function ContactSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-10 flex flex-wrap gap-3"
         >
-          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300">
+          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,84%)] text-foreground/70 font-medium text-sm hover:text-foreground hover:border-foreground/30 transition-all duration-300">
             Explore Downtown
           </Link>
-          <Link to="/downtown-perks/for-buildings" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300">
+          <Link to="/downtown-perks/for-buildings" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,84%)] text-foreground/70 font-medium text-sm hover:text-foreground hover:border-foreground/30 transition-all duration-300">
             Become a Partner
           </Link>
-          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/40 text-muted-foreground font-medium text-sm hover:text-foreground transition-all duration-300">
+          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,88%)] text-foreground/50 font-medium text-sm hover:text-foreground transition-all duration-300">
             Check Availability
           </Link>
         </motion.div>

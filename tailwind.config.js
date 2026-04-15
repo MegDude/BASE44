@@ -22,15 +22,21 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         gold: {
-          DEFAULT: 'hsl(40, 72%, 54%)',
-          light: 'hsl(40, 72%, 68%)',
-          dark: 'hsl(40, 72%, 38%)',
-          muted: 'hsl(40, 40%, 35%)',
+          DEFAULT: 'hsl(40, 62%, 46%)',
+          light: 'hsl(40, 62%, 62%)',
+          dark: 'hsl(40, 62%, 34%)',
+          muted: 'hsl(40, 36%, 56%)',
         },
         navy: {
-          DEFAULT: 'hsl(222, 28%, 8%)',
-          light: 'hsl(222, 24%, 11%)',
-          mid: 'hsl(222, 20%, 15%)',
+          DEFAULT: 'hsl(218, 42%, 14%)',
+          light: 'hsl(218, 30%, 22%)',
+          mid: 'hsl(218, 28%, 32%)',
+          pale: 'hsl(218, 30%, 92%)',
+        },
+        cream: {
+          DEFAULT: 'hsl(42, 24%, 96%)',
+          warm: 'hsl(40, 20%, 94%)',
+          deep: 'hsl(40, 18%, 88%)',
         },
         card: {
           DEFAULT: 'hsl(var(--card))',

@@ -20,16 +20,16 @@ const faqs = [
 function FAQItem({ q, a, index }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-border/40 last:border-b-0">
+    <div className="border-b border-[hsl(218,20%,90%)] last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-5 text-left gap-4 group"
+        className="w-full flex items-center justify-between py-4.5 text-left gap-4 group"
       >
-        <span className="font-medium text-sm text-foreground group-hover:text-primary transition-colors">{q}</span>
-        <ChevronDown className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <span className="font-medium text-sm text-foreground group-hover:text-primary transition-colors py-1">{q}</span>
+        <ChevronDown className={`w-4 h-4 text-foreground/40 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="pb-5 text-[13px] text-muted-foreground leading-relaxed">
+        <div className="pb-5 text-[13px] text-foreground/60 leading-relaxed">
           {a}
         </div>
       )}
@@ -42,7 +42,7 @@ export default function FAQSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-border/40">
+    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-white">
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <motion.div
@@ -50,10 +50,10 @@ export default function FAQSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               FAQ
             </span>
-            <h2 className="font-heading text-3xl font-medium leading-[1.15] tracking-tight">
+            <h2 className="font-heading text-3xl font-medium leading-[1.08] tracking-tight text-foreground">
               Common
               <br />
               questions.

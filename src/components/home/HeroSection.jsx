@@ -120,7 +120,7 @@ export default function HeroSection() {
           className="flex items-center gap-2 mb-6"
         >
           <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pin-pulse" />
-          <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.24em]">
+          <span className="text-[11px] font-medium text-white/70 uppercase tracking-[0.24em]">
             Downtown Perks · Map entry state
           </span>
         </motion.div>
@@ -130,21 +130,21 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="w-full max-w-3xl rounded-[30px] border border-white/[0.14] bg-background/[0.72] p-6 md:p-8 shadow-[0_28px_70px_rgba(11,31,51,0.36)] backdrop-blur-2xl"
+          className="w-full max-w-3xl rounded-[30px] border border-white/20 bg-white/[0.88] p-6 md:p-8 shadow-[0_28px_70px_rgba(14,28,54,0.28)] backdrop-blur-2xl"
         >
           {/* Headline */}
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl md:text-6xl font-semibold tracking-[-0.04em] text-foreground leading-[1.05]">
+            <h1 className="font-heading text-4xl md:text-[56px] font-semibold tracking-[-0.03em] text-[hsl(218,42%,14%)] leading-[1.08]">
               Where downtown meets you
             </h1>
-            <p className="mt-3 text-sm md:text-base leading-7 text-muted-foreground">
+            <p className="mt-3 text-sm md:text-base leading-6 text-[hsl(218,20%,44%)]">
               Everything nearby — in one map.
             </p>
           </div>
 
           {/* Search bar */}
-          <form onSubmit={handleSearch} className="mx-auto mt-6 flex max-w-xl items-center gap-3 rounded-[18px] border border-white/[0.10] bg-white/[0.06] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] focus-within:border-primary/30 transition-colors">
-            <Search className="h-4 w-4 text-foreground/60 flex-shrink-0" />
+          <form onSubmit={handleSearch} className="mx-auto mt-6 flex max-w-xl items-center gap-3 rounded-[18px] border border-[hsl(218,20%,86%)] bg-white px-4 py-3 shadow-sm focus-within:border-primary/40 transition-colors">
+            <Search className="h-4 w-4 text-foreground/50 flex-shrink-0" />
             <input
               type="text"
               value={searchQuery}
@@ -166,21 +166,21 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0, height: "auto" }}
                 exit={{ opacity: 0, y: -6, height: 0 }}
                 transition={{ duration: 0.2 }}
-                className="mx-auto max-w-xl mt-2 rounded-2xl border border-white/[0.10] bg-background/90 backdrop-blur-xl overflow-hidden divide-y divide-border/30"
+                className="mx-auto max-w-xl mt-2 rounded-2xl border border-[hsl(218,20%,88%)] bg-white shadow-lg overflow-hidden divide-y divide-[hsl(218,20%,92%)]"
               >
                 {INTENT_PROMPTS.map((item, i) => (
                   <button
                     key={i}
                     onClick={() => handlePromptClick(item.fill)}
-                    className="w-full text-left px-4 py-3.5 hover:bg-primary/5 transition-colors group"
+                    className="w-full text-left px-4 py-3.5 hover:bg-[hsl(42,24%,97%)] transition-colors group"
                   >
-                    <div className="text-[11px] font-semibold text-primary/70 uppercase tracking-[0.12em] mb-0.5 group-hover:text-primary transition-colors">{item.q}</div>
-                    <div className="text-[12px] text-muted-foreground leading-relaxed">{item.a}</div>
+                    <div className="text-[11px] font-semibold text-primary/80 uppercase tracking-[0.12em] mb-0.5 group-hover:text-primary transition-colors">{item.q}</div>
+                    <div className="text-[12px] text-foreground/60 leading-relaxed">{item.a}</div>
                   </button>
                 ))}
                 <button
                   onClick={() => setIntentExpanded(false)}
-                  className="w-full px-4 py-2.5 text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                  className="w-full px-4 py-2.5 text-[11px] text-foreground/40 hover:text-foreground/60 transition-colors"
                 >
                   Dismiss
                 </button>
@@ -199,10 +199,9 @@ export default function HeroSection() {
                   onClick={() => setActiveChip(chip.label)}
                   className={`inline-flex h-10 items-center gap-2 rounded-full border px-4 text-xs font-semibold tracking-[0.01em] transition-all ${
                     isActive
-                      ? "border-primary/26 bg-secondary text-primary"
-                      : "border-white/[0.12] bg-white/[0.05] text-foreground/80 hover:bg-white/[0.08] hover:border-primary/20"
+                      ? "border-primary/40 bg-primary/8 text-primary"
+                      : "border-[hsl(218,20%,88%)] bg-white text-foreground/70 hover:border-primary/30 hover:text-foreground"
                   }`}
-                  style={isActive ? { borderColor: "rgba(207,175,90,0.26)" } : {}}
                 >
                   <Icon className="h-3.5 w-3.5" />
                   {chip.label}
@@ -215,13 +214,13 @@ export default function HeroSection() {
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <button
               onClick={handleOpenMap}
-              className="inline-flex items-center justify-center gap-2 h-12 rounded-[14px] px-6 text-base font-medium min-w-[160px] border border-primary/[0.18] bg-secondary text-secondary-foreground shadow-[0_10px_24px_rgba(11,31,51,0.18)] hover:bg-secondary/80 hover:-translate-y-[1px] hover:shadow-[0_14px_30px_rgba(11,31,51,0.22)] active:translate-y-0 transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 h-12 rounded-[14px] px-6 text-base font-medium min-w-[160px] bg-[hsl(218,42%,14%)] text-white shadow-[0_8px_24px_rgba(14,28,54,.2)] hover:-translate-y-[1px] hover:shadow-[0_12px_30px_rgba(14,28,54,.26)] active:translate-y-0 transition-all duration-200"
             >
               Open map <ArrowRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIntentExpanded(true)}
-              className="inline-flex items-center justify-center gap-2 h-12 rounded-[14px] px-6 text-base font-medium min-w-[160px] border border-white/[0.16] bg-white/[0.06] text-foreground hover:bg-white/[0.10] hover:-translate-y-[1px] active:translate-y-0 transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 h-12 rounded-[14px] px-6 text-base font-medium min-w-[160px] border border-[hsl(218,20%,86%)] bg-white text-foreground hover:border-primary/30 hover:-translate-y-[1px] active:translate-y-0 transition-all duration-200"
             >
               Ask the map
             </button>
@@ -235,8 +234,8 @@ export default function HeroSection() {
           transition={{ delay: 0.9 }}
           className="mt-6 flex items-center gap-2"
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-primary/50" />
-          <span className="text-[12px] text-foreground/40">
+          <div className="w-1.5 h-1.5 rounded-full bg-white/50" />
+          <span className="text-[12px] text-white/50">
             {venues.length > 0 ? venues.length : "155"} mapped locations · 78701 Austin
           </span>
         </motion.div>
