@@ -68,10 +68,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav ref={dropdownRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <nav ref={dropdownRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled
-        ? "bg-white/96 backdrop-blur-md border-b border-[hsl(218,20%,88%)] shadow-[0_1px_12px_rgba(14,28,54,.06)]"
-        : "bg-white/90 backdrop-blur-sm border-b border-[hsl(218,20%,90%)]"
+        ? "bg-white/95 backdrop-blur-lg border-b border-border/40 shadow-sm shadow-black/5"
+        : "bg-white/90 backdrop-blur-sm border-b border-border/20"
     }`}>
       <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
 
@@ -108,8 +108,8 @@ export default function Navbar() {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.18 }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[320px] bg-white rounded-2xl border border-[hsl(218,20%,88%)] shadow-[0_16px_40px_rgba(14,28,54,.10)] overflow-hidden"
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[320px] bg-white rounded-2xl border border-border/40 shadow-lg shadow-black/8 overflow-hidden"
                       >
                         <div className="p-2">
                           {(link.dropdown === "residents" ? RESIDENT_LINKS : PARTNER_LINKS).map((item) => {
@@ -196,7 +196,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-[68px] left-0 right-0 bg-white border-b border-[hsl(218,20%,88%)] shadow-sm max-h-[80vh] overflow-y-auto"
+            className="md:hidden absolute top-[68px] left-0 right-0 bg-white border-b border-border/40 shadow-sm max-h-[80vh] overflow-y-auto"
           >
             <div className="px-5 py-5 space-y-1">
 
