@@ -9,7 +9,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 // Downtown Perks pages
 import Landing from './pages/downtown-perks/Landing';
-import Explore from './pages/downtown-perks/Explore';
+import ExploreRebuilt from './pages/downtown-perks/ExploreRebuilt';
 import Events from './pages/downtown-perks/Events';
 import PerksPage from './pages/downtown-perks/PerksPage';
 import PerksCard from './pages/downtown-perks/PerksCard';
@@ -74,7 +74,7 @@ const AuthenticatedApp = () => {
         <Route path="/" element={<Home />} />
         {/* Downtown Perks routes */}
         <Route path="/downtown-perks" element={<Landing />} />
-        <Route path="/downtown-perks/explore" element={<Explore />} />
+        <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
         <Route path="/downtown-perks/events" element={<Events />} />
         <Route path="/downtown-perks/perks" element={<PerksPage />} />
         <Route path="/downtown-perks/card" element={<PerksCard />} />
