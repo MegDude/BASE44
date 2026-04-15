@@ -95,10 +95,14 @@ export const useUnifiedMapStore = create((set, get) => ({
     }),
 
   // Update map center (from drag/pan)
-  setMapCenter: (center) =>
-    set({
-      mapCenter: center,
-    }),
+  setMapCenter: (center) => {
+    // Validate center before storing to prevent NaN propagation
+    if (Array.isArray(center) && Number.isFinite(center[0]) && Number.isFinite(center[1])) {
+      set({
+        mapCenter: center,
+      });
+    }
+  },
 
   // Update map zoom
   setMapZoom: (zoom) =>

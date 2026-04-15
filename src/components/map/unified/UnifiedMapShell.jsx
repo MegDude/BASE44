@@ -27,9 +27,14 @@ function MapFlyTo({ position }) {
       Array.isArray(position) &&
       position.length === 2 &&
       Number.isFinite(position[0]) &&
-      Number.isFinite(position[1])
+      Number.isFinite(position[1]) &&
+      map.getContainer() // Only fly if map is ready
     ) {
-      map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
+      try {
+        map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
+      } catch (error) {
+        console.warn('Map flyTo error:', error);
+      }
     }
   }, [position, map]);
   return null;
