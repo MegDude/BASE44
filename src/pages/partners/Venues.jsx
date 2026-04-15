@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { ArrowLeft, ArrowRight, X, MapPin, Star, Zap, Search } from "lucide-react";
 import L from "leaflet";
-import { PARTNER_SPACING } from '@/lib/partner-system';
+import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -294,10 +294,10 @@ function ImpactSection({ headline, stats, lower }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-tight mb-8">{headline}</motion.h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
+        <div className={`${PARTNER_GRIDS.gridCardFiveCol} mb-4`}>
           {stats.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.06 }} className="p-5 rounded-lg border border-border/50 bg-card/40 text-center">
               <div className="font-heading text-2xl font-medium text-foreground"><CountUp to={s.v} /></div>
@@ -305,7 +305,7 @@ function ImpactSection({ headline, stats, lower }) {
             </motion.div>
           ))}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+        <div className={PARTNER_GRIDS.gridCardCompact}>
           {lower.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.05 }} className="p-4 rounded-lg border border-border/40 bg-card/20">
               <div className="font-heading text-lg font-medium text-foreground">{s.v}</div>
@@ -322,7 +322,7 @@ function StepsSection({ label, headline, steps, proof }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
@@ -359,13 +359,13 @@ function DecisionMomentsSection({ moments }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How people find places</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">The moment between "I want to go somewhere" and walking in the door.</h2>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={PARTNER_GRIDS.gridCardTwoCol}>
           {moments.map((m, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
               className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/20 transition-all">
@@ -387,7 +387,7 @@ function VenueCards({ venues, selectVenue }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live venues</span>
