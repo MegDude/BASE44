@@ -83,10 +83,10 @@ const GUEST_FLOW = [
 ];
 
 const PROMPTS = [
-  "We want guests to open one downtown map from the lobby.",
-  "Help us set up QR access for guests.",
-  "We want to connect our concierge flow to real nearby activity.",
-  "Show us how hotel perks can work.",
+  "We want a simple neighborhood guide guests can open from the lobby.",
+  "Help us set up QR access.",
+  "We want guests to find dining and events nearby without asking staff.",
+  "Show us how offers work for guests.",
 ];
 
 export default function HotelsPartner() {
@@ -115,9 +115,9 @@ export default function HotelsPartner() {
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Hotel Partner Layer</span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                Give guests a better way to <em className="text-primary">explore downtown.</em>
+                Help guests find what to do <em className="text-primary">from the moment they arrive.</em>
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">Events, nearby places, local perks, and walkable suggestions all show up in one map your guests can actually use.</p>
+              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to handle it.</p>
               <div className="flex flex-wrap gap-3">
                 <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
                   Connect your hotel <ArrowRight className="w-4 h-4" />
@@ -161,9 +161,9 @@ export default function HotelsPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Hotel Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">See what guests can reach from each hotel.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">What guests can reach from each location.</h2>
             </div>
-            <p className="text-muted-foreground text-[13px] leading-relaxed">Every hotel is a downtown access point. Select one to see what guests can save, walk to, or unlock.</p>
+            <p className="text-muted-foreground text-[13px] leading-relaxed">Select a hotel to see the nearby events, places, and offers your guests can access during their stay.</p>
           </div>
           <div className="flex gap-2 mb-4 overflow-x-auto pb-0.5">
             {MAP_FILTERS.map(f => (
@@ -273,20 +273,20 @@ export default function HotelsPartner() {
       </section>
 
       {/* IMPACT */}
-      <ImpactSection headline="See what guests actually open, save, and use."
-        stats={[{ label: "Hotel views", v: 7208 }, { label: "Guest taps", v: 1044 }, { label: "Saves", v: 312 }, { label: "RSVPs", v: 184 }, { label: "Perk unlocks", v: 93 }]}
-        lower={[{ label: "Hotels live", v: "9" }, { label: "QR access points", v: "18" }, { label: "Avg walkable picks opened", v: "4.2" }, { label: "Guest return opens", v: "29%" }, { label: "Nearby venues linked", v: "16" }, { label: "Concierge replacement actions", v: "71%" }]} />
+      <ImpactSection headline="What the guest layer looks like in practice."
+        stats={[{ label: "Hotel views", v: 7208 }, { label: "Guest taps", v: 1044 }, { label: "Saves", v: 312 }, { label: "RSVPs", v: 184 }, { label: "Offer unlocks", v: 93 }]}
+        lower={[{ label: "Hotels live", v: "9" }, { label: "QR access points", v: "18" }, { label: "Avg nearby opens per guest", v: "4.2" }, { label: "Guests who return to the map", v: "29%" }, { label: "Nearby venues linked", v: "16" }, { label: "Self-serve discovery rate", v: "71%" }]} />
 
       {/* HOW IT WORKS */}
-      <StepsSection label="How it works" headline="From lobby to live map in one scan."
+      <StepsSection label="How it works" headline="From check-in to neighborhood use in one step."
         steps={[
-          { n: "1", label: "Add the hotel", detail: "Register and set up the guest access layer." },
-          { n: "2", label: "Turn on QR or text access", detail: "Guests open the map from lobby, elevator, or room." },
-          { n: "3", label: "Connect what is nearby", detail: "Events, places, and perks show up in context." },
-          { n: "4", label: "Guests save, go, and unlock", detail: "One tap. Walk there. Redeem a perk." },
-          { n: "5", label: "Track what gets used", detail: "See which nearby activity gets the most guest opens." },
+          { n: "1", label: "Register the hotel", detail: "Set up the property and configure guest access." },
+          { n: "2", label: "Add the QR touchpoint", detail: "Guests open the map from the lobby, elevator, or room — no app required." },
+          { n: "3", label: "Nearby context is ready", detail: "Dining, events, and offers surface automatically based on proximity." },
+          { n: "4", label: "Guests decide and go", detail: "One tap to save, directions when needed, offer redeemed on arrival." },
+          { n: "5", label: "See what got used", detail: "Track which nearby places and events drove the most guest activity." },
         ]}
-        proof={["18 QR access points", "16 linked nearby venues", "184 RSVPs", "93 unlocks"]} />
+        proof={["18 QR access points", "16 nearby venues linked", "184 RSVPs", "93 offer unlocks"]} />
 
       {/* GUEST FLOW VISUAL */}
       <GuestFlowSection steps={GUEST_FLOW} feed={LIVE_FEED} />
@@ -296,16 +296,16 @@ export default function HotelsPartner() {
 
       {/* FORM */}
       <PartnerForm headline="Tell us about your hotel"
-        body="Use this form to set up guest access, connect nearby places and events, or launch a hotel-ready downtown layer."
+        body="Share a few details and we will help you set up guest access and connect nearby context."
         formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
         prompts={PROMPTS} submitLabel="Connect your hotel" />
 
       {/* CLOSING */}
-      <ClosingCTA eyebrow="Hotel partner layer" headline="Make downtown easier for guests to use."
-        body="If guests are already here, they should be able to see what is worth doing nearby right away."
-        proof="9 hotels are already represented across the downtown map."
+      <ClosingCTA eyebrow="Hotel partner layer" headline="Your guests already want to explore. Make it simple."
+        body="Nine hotels are live. Setup takes less than a day and works from the first QR scan."
+        proof="Questions? Reach the team at partners@downtownperks.com"
         ctaLabel="Connect your hotel" ctaHref="#partner-form"
-        secondLabel="See the guest layer" secondHref="#hotel-map" />
+        secondLabel="See the map" secondHref="#hotel-map" />
     </div>
   );
 }
@@ -382,8 +382,8 @@ function GuestFlowSection({ steps, feed }) {
     <section ref={ref} className="py-16 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Guest flow in action</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">One scan. Everything nearby.</h2>
+          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Guest experience</span>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">What a guest does from scan to visit.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
@@ -431,7 +431,7 @@ function HotelCards({ hotels, selectHotel }) {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live hotels</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">What each hotel is generating.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">Activity across live hotels.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {hotels.slice(0, 3).map((h, i) => (

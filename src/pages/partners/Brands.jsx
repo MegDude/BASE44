@@ -102,10 +102,10 @@ const FLOW_STEPS = [
 ];
 
 const PROMPTS = [
-  "We want a campaign that lives across real downtown places.",
-  "Help us set up QR-to-map flow.",
-  "Show us how a brand campaign connects to buildings and venues.",
-  "We want measurable visits and redemptions.",
+  "We want placement across real downtown locations.",
+  "Help us set up a QR-to-map flow.",
+  "Show us how a campaign connects to buildings and venues.",
+  "We want to track visits and redemptions by placement.",
 ];
 
 export default function BrandsPartner() {
@@ -134,9 +134,9 @@ export default function BrandsPartner() {
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Brand Partner Layer</span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                Run campaigns that <em className="text-primary">live in the city, not beside it.</em>
+                Put your brand where <em className="text-primary">people are already moving.</em>
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">Your brand shows up through real downtown places, resident access points, venues, events, and walkable decision moments.</p>
+              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">Placement runs through real downtown buildings, venues, and map context — tied to behavior and location, not just ad inventory.</p>
               <div className="flex flex-wrap gap-3">
                 <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
                   Launch a campaign <ArrowRight className="w-4 h-4" />
@@ -180,9 +180,9 @@ export default function BrandsPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Campaign Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">See how a brand shows up across buildings, venues, and downtown movement.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">Where each campaign is placed and how it performs.</h2>
             </div>
-            <p className="text-muted-foreground text-[13px] leading-relaxed">Every campaign touchpoint is a real place — a lobby QR, a map pin, a venue perk, or a district event tie-in.</p>
+            <p className="text-muted-foreground text-[13px] leading-relaxed">Each touchpoint is a physical location — a lobby QR code, a map pin, a venue offer, or a district event. Select a campaign to see its spread and results.</p>
           </div>
           <div className="flex gap-2 mb-4 overflow-x-auto pb-0.5">
             {MAP_FILTERS.map(f => (
@@ -292,18 +292,18 @@ export default function BrandsPartner() {
       </section>
 
       {/* IMPACT */}
-      <ImpactSection headline="See where campaign attention turns into visits."
-        stats={[{ label: "Scans", v: 1204 }, { label: "Visits", v: 412 }, { label: "Saves", v: 267 }, { label: "Redemptions", v: 188 }, { label: "Building placements", v: 7 }]}
-        lower={[{ label: "Campaigns live", v: "3" }, { label: "Districts activated", v: "3" }, { label: "Venue partners linked", v: "6" }, { label: "Resident access points", v: "4" }, { label: "Scan-to-visit rate", v: "34%" }, { label: "Offer completions", v: "62%" }]} />
+      <ImpactSection headline="Placement results across active campaigns."
+        stats={[{ label: "Scans", v: 1204 }, { label: "Visits", v: 412 }, { label: "Saves", v: 267 }, { label: "Redemptions", v: 188 }, { label: "Placements active", v: 7 }]}
+        lower={[{ label: "Campaigns live", v: "3" }, { label: "Districts", v: "3" }, { label: "Venue partners linked", v: "6" }, { label: "Building access points", v: "4" }, { label: "Scan-to-visit rate", v: "34%" }, { label: "Offer completion rate", v: "62%" }]} />
 
       {/* HOW IT WORKS */}
-      <StepsSection label="How it works" headline="From footprint to measurable response."
+      <StepsSection label="How it works" headline="From placement to measurable response."
         steps={[
-          { n: "1", label: "Choose the downtown footprint", detail: "Select districts, buildings, and venues for your campaign." },
-          { n: "2", label: "Place QR and campaign touchpoints", detail: "Go live in lobbies, on pins, and at partner venues." },
-          { n: "3", label: "Show up across map context", detail: "Appear when residents and guests explore nearby." },
-          { n: "4", label: "People scan, save, visit, and redeem", detail: "One action. Walk there. Unlock the offer." },
-          { n: "5", label: "Track what actually converts", detail: "See scan-to-visit rates, saves, and redemptions per placement." },
+          { n: "1", label: "Define the placement", detail: "Pick which districts, buildings, and venues anchor the campaign." },
+          { n: "2", label: "Deploy the touchpoints", detail: "QR codes go live in lobbies, on map pins, and at linked venues." },
+          { n: "3", label: "Show up in context", detail: "Your brand appears when people nearby are already deciding what to do." },
+          { n: "4", label: "People scan, save, and go", detail: "Walk-in intent builds from a real map interaction, not a passive impression." },
+          { n: "5", label: "See what converted", detail: "Scan-to-visit rates, saves, and redemptions per placement — all tracked." },
         ]}
         proof={["7 QR placements", "412 visits", "188 redemptions", "34% scan-to-visit"]} />
 
@@ -315,16 +315,16 @@ export default function BrandsPartner() {
 
       {/* FORM */}
       <PartnerForm headline="Tell us about your campaign"
-        body="Use this form to plan a downtown activation, connect a campaign to real places, or launch a measurable QR-to-map experience."
+        body="Describe where you want to be, what response you are looking for, and we will help you map it out."
         formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
         prompts={PROMPTS} submitLabel="Launch a campaign" />
 
       {/* CLOSING */}
-      <ClosingCTA eyebrow="Brand partner layer" headline="Run a campaign people can actually act on."
-        body="If your brand is showing up downtown, it should show up in the moments people are already moving through."
-        proof="3 live campaigns are already represented across the downtown map."
-        ctaLabel="Launch a campaign" ctaHref="#partner-form"
-        secondLabel="See campaign flow" secondHref="#campaign-map" />
+      <ClosingCTA eyebrow="Brand partner layer" headline="Presence that fits the way people move."
+        body="Three campaigns are already live. Each one runs through real locations with measurable results from day one."
+        proof="Scan-to-visit rate across active campaigns: 34%"
+        ctaLabel="Plan a campaign" ctaHref="#partner-form"
+        secondLabel="See placement map" secondHref="#campaign-map" />
     </div>
   );
 }
@@ -401,8 +401,8 @@ function CampaignFlowSection({ steps, feed }) {
     <section ref={ref} className="py-16 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Campaign flow in action</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">QR to visit to redemption.</h2>
+          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Campaign path</span>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">How a scan turns into a visit.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
@@ -450,7 +450,7 @@ function CampaignCards({ campaigns, selectCampaign }) {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live campaigns</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">What each campaign is generating.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">Results across live campaigns.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {campaigns.map((c, i) => (

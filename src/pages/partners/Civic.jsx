@@ -333,18 +333,18 @@ export default function CivicPartner() {
                 Civic Layer · Downtown Austin · 78701
               </span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                Put your civic activity<br />
-                <em className="text-primary">where people already look.</em>
+                Make downtown programs<br />
+                <em className="text-primary">easier to find and join.</em>
               </h1>
               <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">
-                If it matters downtown, it should show up here. Downtown Perks gives civic organizations, district groups, and community programs a live presence on the map where residents and visitors already decide what to do next.
+                District events, public programs, and civic initiatives show up on the same map people use to find dining, places, and things to do — alongside everything else happening nearby.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
-                  Integrate your organization <ArrowRight className="w-4 h-4" />
+                 List your organization <ArrowRight className="w-4 h-4" />
                 </a>
                 <a href="#civic-map" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">
-                  See the civic layer
+                 See what is active
                 </a>
               </div>
             </motion.div>
@@ -398,11 +398,11 @@ export default function CivicPartner() {
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Civic Layer</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-                Four districts. Live across the map.
+                Four districts. All on the map.
               </h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">
-              Select a district or program to see what's active. Every pin on this map represents something real happening downtown — select it to explore.
+              Select any district or program pin to see what is currently active and what response it is generating.
             </p>
           </div>
 
@@ -669,22 +669,22 @@ export default function CivicPartner() {
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Civic Layer</span>
               <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-4">
-                Put your civic activity where people already look.
+                Your programs belong on this map.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                If it matters downtown, it should show up here.
+                Public activity is already here. Add what your organization is running.
               </p>
             </div>
             <div className="space-y-4">
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                6 civic organizations are already active across the downtown layer. Add yours.
+                Six organizations are listed. Getting on the map takes less than a day.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-                  Integrate your organization <ArrowRight className="w-4 h-4" />
+                  List your organization <ArrowRight className="w-4 h-4" />
                 </a>
                 <a href="#civic-map" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">
-                  See the civic layer
+                  See what is active
                 </a>
               </div>
             </div>
@@ -707,7 +707,7 @@ function ImpactSection() {
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Activity Summary</span>
           <div className="flex items-end justify-between gap-4 flex-wrap">
             <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              Live activity across four downtown districts.
+              What public participation looks like across the map.
             </h2>
           </div>
         </div>
@@ -776,7 +776,7 @@ function HowItWorks() {
           </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ duration: 0.7, delay: 0.15 }}
             className="text-muted-foreground text-[13px] leading-relaxed">
-            A district team, civic group, building, or partner adds something happening. It appears in the right downtown context, shows up on the map, and gives people nearby something useful to act on.
+            A district group, civic organization, or program team adds what is happening. It appears on the map in context — tied to location, time, and the people nearby who can act on it.
           </motion.p>
         </div>
 
@@ -827,7 +827,7 @@ function DistrictIntelligence({ districts, openDistrict }) {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">District Intelligence</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              A live read on each district.
+              By district, in numbers.
             </h2>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -903,12 +903,12 @@ function NetworkSection({ orgs, allOrgs, chips, activeChip, setChip, desc }) {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Civic Partner Network</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              Built for the groups that help downtown run.
+              Organizations already on the map.
             </h2>
           </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
             className="text-muted-foreground text-[13px] leading-relaxed">
-            {activeChip ? desc[activeChip] : "Organizations, district groups, and civic programs already active across the downtown layer."}
+            {activeChip ? desc[activeChip] : "District groups, cultural organizations, and neighborhood programs contributing to what people see and do downtown."}
           </motion.p>
         </div>
 
@@ -1003,12 +1003,12 @@ function PartnerForm({ formType, setFormType, formText, setFormText }) {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Get Started</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              Add your activity to the civic layer.
+              List your organization or program.
             </h2>
           </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
             className="text-muted-foreground text-[13px] leading-relaxed">
-            Use this form for district programming, community events, public participation, or neighborhood activation support.
+            Share what is happening, where, and what kind of response you want to generate. We will help you get it on the map.
           </motion.p>
         </div>
 

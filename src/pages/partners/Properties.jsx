@@ -119,9 +119,9 @@ const AMENITY_ICONS = { Pool: Waves, Gym: Dumbbell, Parking: Car, Concierge: Bel
 
 const FORM_TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
 const PROMPTS = [
-  "We want to turn our building into a live downtown amenity.",
-  "Help us set up resident access.",
-  "We want to connect our building to nearby perks and events.",
+  "We want to add a neighborhood layer for our residents.",
+  "Help us set up building access.",
+  "We want to connect nearby offers and events to our building.",
   "Show us how the resident card works.",
 ];
 
@@ -156,10 +156,10 @@ export default function PropertiesPartner() {
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Property Partner Layer</span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                Give residents a better way to use <em className="text-primary">downtown.</em>
+                Connect your building to what is <em className="text-primary">happening around it.</em>
               </h1>
               <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">
-                Your building becomes part of the map people already use to see what is nearby, what is worth doing, and what they can unlock around them.
+                Residents get a working map of nearby places, offers, and events. Your team gets a clearer picture of how they use the surrounding neighborhood.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
@@ -206,9 +206,9 @@ export default function PropertiesPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Property Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">See how buildings connect into downtown activity.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">See each building alongside what is walkable from it.</h2>
             </div>
-            <p className="text-muted-foreground text-[13px] leading-relaxed">Buildings are not shown as static pins. They show up in context with nearby perks, events, and walkable places residents can actually use.</p>
+            <p className="text-muted-foreground text-[13px] leading-relaxed">Select a building to see the nearby offers, events, and places that show up in the resident experience.</p>
           </div>
           <div className="flex gap-2 mb-4 overflow-x-auto pb-0.5">
             {MAP_FILTERS.map(f => (
@@ -327,20 +327,20 @@ export default function PropertiesPartner() {
       {/* IMPACT */}
       <ProofSection stats={[
         { label: "Building views", v: 5420 }, { label: "Resident scans", v: 612 },
-        { label: "Saves", v: 184 }, { label: "Perk unlocks", v: 137 }, { label: "Walkable actions", v: 221 },
+        { label: "Saves", v: 184 }, { label: "Offer unlocks", v: 137 }, { label: "Walkable actions", v: 221 },
       ]} lower={[
         { label: "Buildings live", v: "6" }, { label: "Card activations", v: "186" },
-        { label: "Nearby partner offers", v: "12" }, { label: "Events linked", v: "6" },
-        { label: "Avg walk radius", v: "5 min" }, { label: "Resident return use", v: "38%" },
-      ]} headline="See what residents are actually using." />
+        { label: "Nearby offers", v: "12" }, { label: "Events linked", v: "6" },
+        { label: "Avg walk radius", v: "5 min" }, { label: "Return visits", v: "38%" },
+      ]} headline="What activity looks like across the portfolio." />
 
       {/* HOW IT WORKS */}
       <HowItWorks steps={[
-        { n: "1", label: "Add the building", detail: "Register your building and set up resident access." },
-        { n: "2", label: "Turn on resident access", detail: "Residents can scan, save, and use the map from day one." },
-        { n: "3", label: "Connect nearby places", detail: "Link events, perks, and venues within walking distance." },
-        { n: "4", label: "Residents engage", detail: "They scan, save, and use what is around them." },
-        { n: "5", label: "Track what gets used", detail: "See which nearby activity is driving the most resident engagement." },
+        { n: "1", label: "Register the building", detail: "Add your property and configure the resident access layer." },
+        { n: "2", label: "Residents get access", detail: "On day one they can open the map and see what is nearby." },
+        { n: "3", label: "Nearby context goes live", detail: "Offers, events, and walkable venues appear in the right places." },
+        { n: "4", label: "Residents use it", detail: "They save places, unlock offers, and RSVP to things nearby." },
+        { n: "5", label: "Your team sees the data", detail: "Track which activity is getting the most traction by building." },
       ]} proof={["6 live buildings", "12 nearby offers", "186 card activations", "137 unlocks"]} />
 
       {/* BUILDING CARDS */}
@@ -348,17 +348,17 @@ export default function PropertiesPartner() {
 
       {/* FORM */}
       <PartnerForm headline="Tell us about your building"
-        body="Use this form to set up resident access, add building context, connect nearby partners, or launch a live amenity layer."
+        body="Tell us about your building and what you want to connect. We will find the right setup."
         formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
         prompts={PROMPTS} defaultType="Property" />
 
       {/* CLOSING CTA */}
       <ClosingCTA eyebrow="Property partner layer"
-        headline="Turn your building into a better downtown experience."
-        body="If residents already live here, they should be able to use what is around them more easily."
-        proof="6 buildings are already represented across the downtown map."
-        ctaLabel="Activate your building" ctaHref="#partner-form"
-        secondLabel="See the resident layer" secondHref="#property-map" />
+        headline="Give your residents a reason to open the map."
+        body="Six buildings are already live. Most started with a 90-day pilot at no cost."
+        proof="Ready to walk through the setup? Reach out to our team."
+        ctaLabel="Add your building" ctaHref="#partner-form"
+        secondLabel="See the map" secondHref="#property-map" />
     </div>
   );
 }
@@ -442,7 +442,7 @@ function BuildingCards({ buildings, selectBuilding }) {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live buildings</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">What each building is generating.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">Activity across live buildings.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {buildings.slice(0, 3).map((b, i) => (

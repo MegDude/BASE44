@@ -8,24 +8,24 @@ const PARTNER_TYPES = [
     slug: "properties",
     label: "Properties",
     eyebrow: "Property partner layer",
-    headline: "Give residents a better way to use downtown.",
-    body: "Your building becomes part of the map people already use to see what is nearby, what is worth doing, and what they can unlock around them.",
+    headline: "Connect your building to what is happening around it.",
+    body: "Residents get a map of nearby places, offers, and events. Your team gets a clearer picture of how they use the neighborhood.",
     stat: "6 buildings live",
     icon: Building2,
     color: "#C8973A",
-    proof: ["1,284 resident interactions", "186 card activations", "412 perks unlocked"],
-    cta: "Activate your building",
+    proof: ["1,284 resident interactions", "186 card activations", "412 offers unlocked"],
+    cta: "Add your building",
   },
   {
     slug: "hotels",
     label: "Hotels",
     eyebrow: "Hotel partner layer",
-    headline: "Give guests a better way to explore downtown.",
-    body: "Events, nearby places, local perks, and walkable suggestions all show up in one map your guests can actually use.",
+    headline: "Help guests find what to do from the moment they arrive.",
+    body: "One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to explain it.",
     stat: "9 hotels active",
     icon: Hotel,
     color: "#7B9EC8",
-    proof: ["2,104 guest interactions", "18 QR access points", "93 perk unlocks"],
+    proof: ["2,104 guest interactions", "18 QR access points", "93 offer unlocks"],
     cta: "Connect your hotel",
   },
   {
@@ -33,7 +33,7 @@ const PARTNER_TYPES = [
     label: "Venues",
     eyebrow: "Venue partner layer",
     headline: "Show up when people nearby are deciding where to go.",
-    body: "Your venue appears on the map when someone nearby is looking for food, drinks, coffee, wellness, or something to do.",
+    body: "Your venue appears on the map at the right moment — when someone close by is looking for food, a drink, a class, or somewhere to be.",
     stat: "24 venues active",
     icon: MapPin,
     color: "#5B9E6E",
@@ -44,25 +44,25 @@ const PARTNER_TYPES = [
     slug: "brands",
     label: "Brands",
     eyebrow: "Brand partner layer",
-    headline: "Run campaigns that live in the city, not beside it.",
-    body: "Your brand shows up through real downtown places, resident access points, venues, events, and walkable decision moments.",
+    headline: "Place your brand inside real downtown behavior.",
+    body: "Campaigns run through buildings, venues, and map context — tied to actual movement, not just impressions.",
     stat: "3 campaigns live",
     icon: Star,
     color: "#8B78C8",
     proof: ["1,204 scans", "412 visits", "34% scan-to-visit rate"],
-    cta: "Launch a campaign",
+    cta: "Plan a campaign",
   },
   {
     slug: "civic",
     label: "Civic",
     eyebrow: "Civic layer",
-    headline: "Put your civic activity where people already look.",
-    body: "If it matters downtown, it should show up here. Give civic organizations, district groups, and community programs a live presence on the map.",
+    headline: "Make downtown programs easier to find and join.",
+    body: "District events, public programs, and civic initiatives show up where people are already looking — alongside everything else happening nearby.",
     stat: "4 districts live",
     icon: Users,
     color: "#C85858",
     proof: ["10,880 map views", "327 RSVPs", "8 programs this week"],
-    cta: "Integrate your organization",
+    cta: "List your organization",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function PartnersIndex() {
                   <em className="text-primary">Five ways in.</em>
                 </h1>
                 <p className="text-muted-foreground text-base leading-relaxed max-w-lg">
-                  Whether you run a building, hotel, venue, brand campaign, or civic program — Downtown Perks gives you a live presence on the map where people already decide what to do next.
+                  Buildings, hotels, venues, brands, and civic organizations each have a distinct entry point. All of them connect to the same map and the same people moving through downtown.
                 </p>
               </div>
               <div className="space-y-4">
@@ -135,7 +135,7 @@ export default function PartnersIndex() {
           <div className="mb-10">
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Partner types</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              Find the right entry point for your organization.
+            Choose the partner type that fits what you do.
             </h2>
           </div>
 
@@ -201,7 +201,7 @@ export default function PartnersIndex() {
                     Already a partner? Manage everything from one place.
                   </h3>
                   <p className="text-[12px] text-muted-foreground leading-relaxed">
-                    Add perks, publish events, launch campaigns, and track performance across all your downtown touchpoints.
+                    Add offers, publish events, manage campaigns, and see what is getting used — all in one place.
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 text-[12px] font-medium text-primary mt-5">
@@ -223,15 +223,15 @@ export default function PartnersIndex() {
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Get started</span>
               <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-3">
-                Not sure where to start?
+                Tell us what you have.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                Every partner type connects into the same downtown system. Tell us what you have and we will help you find the right setup.
+                We can help identify the right setup. Whether you manage a building, run a venue, or lead a brand — there is a straightforward entry point.
               </p>
             </div>
             <div className="space-y-4">
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                47 partners are already active across the downtown map. Each one adds visibility, context, and activity to the same live layer.
+                47 organizations are already active on the map. Most started with a pilot and expanded from there.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
@@ -253,11 +253,11 @@ function HowSystemWorks() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const steps = [
-    { n: "1", label: "Choose your entry point", detail: "Building, hotel, venue, brand, or civic organization." },
-    { n: "2", label: "Connect to the map", detail: "Your activity, offers, or location goes live in the right context." },
-    { n: "3", label: "Reach people nearby", detail: "Residents, guests, and visitors see your presence when they look." },
-    { n: "4", label: "Track what happens", detail: "Views, saves, visits, and redemptions measured in one place." },
-    { n: "5", label: "Grow from there", detail: "Add more touchpoints, connect to events, and deepen district reach." },
+    { n: "1", label: "Pick the right fit", detail: "Building, hotel, venue, brand, or civic organization." },
+    { n: "2", label: "Go live on the map", detail: "Your location, offers, or activity shows up where people are already looking." },
+    { n: "3", label: "Reach people close by", detail: "The map surfaces your presence at the moment it is relevant." },
+    { n: "4", label: "See what gets used", detail: "Views, saves, visits, and redemptions in one simple view." },
+    { n: "5", label: "Build from there", detail: "Add more context, tie into events, and increase district presence over time." },
   ];
   return (
     <section ref={ref} className="py-16 px-6 border-t border-border/40">
@@ -271,7 +271,7 @@ function HowSystemWorks() {
           </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.15 }}
             className="text-muted-foreground text-[13px] leading-relaxed">
-            The same underlying system connects buildings, hotels, venues, brands, and civic groups into a single live downtown layer — visible to the people already looking.
+            Every partner type connects into one shared system. Your presence is visible to whoever is already on the map and looking for something nearby.
           </motion.p>
         </div>
         <div className="relative">

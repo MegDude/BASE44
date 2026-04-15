@@ -69,10 +69,10 @@ const DECISION_MOMENTS = [
 ];
 
 const PROMPTS = [
-  "We want to show up when people nearby are deciding.",
-  "Help us add an offer to the map.",
-  "Show us how venue visibility works.",
-  "We want to connect to events and nearby foot traffic.",
+  "We want to appear when people nearby are searching our category.",
+  "Help us add an offer.",
+  "Show us how the map placement works.",
+  "We want to connect our venue to nearby events.",
 ];
 
 export default function VenuesPartner() {
@@ -101,9 +101,9 @@ export default function VenuesPartner() {
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Venue Partner Layer</span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                Show up when people nearby are <em className="text-primary">deciding where to go.</em>
+                Be on the map when people nearby are <em className="text-primary">deciding where to go.</em>
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">Your venue appears on the map when someone nearby is looking for food, drinks, coffee, wellness, or something to do.</p>
+              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">Your place shows up at the right moment — when someone close by is looking for food, a drink, a class, or somewhere to go.</p>
               <div className="flex flex-wrap gap-3">
                 <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
                   Add your venue <ArrowRight className="w-4 h-4" />
@@ -147,9 +147,9 @@ export default function VenuesPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Venue Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">See how places show up at the moment nearby intent is forming.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">Where your venue fits in the neighborhood search.</h2>
             </div>
-            <p className="text-muted-foreground text-[13px] leading-relaxed">Every pin is a venue showing up in context — the right category, the right time, the right offer — when someone nearby is looking.</p>
+            <p className="text-muted-foreground text-[13px] leading-relaxed">Select any pin to see how it surfaces in context — category, distance, offer, and the moment that triggered it.</p>
           </div>
           <div className="flex gap-2 mb-4 overflow-x-auto pb-0.5">
             {MAP_FILTERS.map(f => (
@@ -252,18 +252,18 @@ export default function VenuesPartner() {
       </section>
 
       {/* IMPACT */}
-      <ImpactSection headline="See what nearby intent turns into."
+      <ImpactSection headline="From nearby intent to foot traffic."
         stats={[{ label: "Venue views", v: 12440 }, { label: "Saves", v: 712 }, { label: "Visits", v: 289 }, { label: "Redemptions", v: 96 }, { label: "Offer opens", v: 341 }]}
         lower={[{ label: "Venues live", v: "24" }, { label: "Active offers", v: "10" }, { label: "Avg walk time", v: "6 min" }, { label: "Nearby searches", v: "402" }, { label: "Event-linked venues", v: "8" }, { label: "Repeat saves", v: "22%" }]} />
 
       {/* HOW IT WORKS */}
-      <StepsSection label="How it works" headline="From search to visit."
+      <StepsSection label="How it works" headline="From map to door."
         steps={[
-          { n: "1", label: "Add the venue", detail: "Connect to the downtown map with your category and location." },
-          { n: "2", label: "Connect timing and offer", detail: "Tell us when you are live and what is available right now." },
-          { n: "3", label: "Show up nearby", detail: "Appear when someone close by is searching your category." },
-          { n: "4", label: "Save, visit, or redeem", detail: "One tap to save. Walk there. Redeem an offer." },
-          { n: "5", label: "Track what converts", detail: "See views, saves, visits, and redemptions per offer." },
+          { n: "1", label: "List your venue", detail: "Add your category, location, and basic details." },
+          { n: "2", label: "Set your offer and timing", detail: "Tell people what is available and when." },
+          { n: "3", label: "Appear at the right moment", detail: "Show up when someone nearby searches your category." },
+          { n: "4", label: "They save or walk in", detail: "One tap. Directions if needed. Offer redeemed on arrival." },
+          { n: "5", label: "Track what worked", detail: "Views, saves, visits, and redemptions broken down by offer." },
         ]}
         proof={["10 active offers", "289 visits", "96 redemptions", "402 nearby searches"]} />
 
@@ -274,17 +274,17 @@ export default function VenuesPartner() {
       <VenueCards venues={VENUES} selectVenue={selectVenue} />
 
       {/* FORM */}
-      <PartnerForm headline="Tell us about your venue"
-        body="Use this form to add your venue, connect an offer, or show up in the moments nearby people are already searching."
+      <PartnerForm headline="Add your venue"
+        body="List your place, connect an offer, and start appearing when people nearby are looking for somewhere to go."
         formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
         prompts={PROMPTS} submitLabel="Add your venue" />
 
       {/* CLOSING */}
-      <ClosingCTA eyebrow="Venue partner layer" headline="Show up at the right moment, not just on a list."
-        body="If someone nearby is deciding where to go, your venue should be part of that choice."
-        proof="24 venues are already represented across the downtown map."
+      <ClosingCTA eyebrow="Venue partner layer" headline="Your best customers are already nearby."
+        body="24 venues are live. Your offer goes up in minutes and can be updated anytime."
+        proof="No setup cost. You only give what the offer is worth."
         ctaLabel="Add your venue" ctaHref="#partner-form"
-        secondLabel="See the live map" secondHref="#venue-map" />
+        secondLabel="See the map" secondHref="#venue-map" />
     </div>
   );
 }
@@ -361,8 +361,8 @@ function DecisionMomentsSection({ moments }) {
     <section ref={ref} className="py-16 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Decision moments happening now</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">This is what search-to-venue looks like.</h2>
+          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How people find places</span>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">The moment between "I want to go somewhere" and walking in the door.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {moments.map((m, i) => (
@@ -390,7 +390,7 @@ function VenueCards({ venues, selectVenue }) {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live venues</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">What each place is generating.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">Activity across live venues.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {venues.slice(0, 3).map((v, i) => (
