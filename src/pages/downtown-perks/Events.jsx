@@ -63,6 +63,7 @@ export default function Events() {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState("all");
   const [selected, setSelected] = useState(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -94,15 +95,24 @@ export default function Events() {
     <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
 
       {/* ── SIDEBAR ─────────────────────────────────────────────────── */}
-      <aside className="w-full md:w-[420px] md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[#e8e5df] flex flex-col h-auto md:h-full z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)]">
+      <aside className={`w-full md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[#e8e5df] flex flex-col h-auto md:h-full z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)] transition-all ${sidebarCollapsed ? "md:w-0 md:overflow-hidden" : "md:w-[420px]"}`}>
 
         {/* Top */}
         <div className="px-4 md:px-5 pt-4 md:pt-6 pb-3 md:pb-4 border-b border-[#e8e5df]">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <h1 className="text-lg md:text-[22px] font-semibold text-[#111] tracking-tight leading-tight">Events</h1>
-            <span className="text-[12px] md:text-[13px] font-medium text-[#8d887f] border border-[#e8e5df] rounded-xl px-2.5 md:px-3 py-1 md:py-1.5 bg-[#f5f3ef]">
-              {filtered.length}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[12px] md:text-[13px] font-medium text-[#8d887f] border border-[#e8e5df] rounded-xl px-2.5 md:px-3 py-1 md:py-1.5 bg-[#f5f3ef]">
+                {filtered.length}
+              </span>
+              <button
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                className="hidden md:flex w-8 h-8 rounded-lg border border-[#e8e5df] bg-white items-center justify-center hover:bg-[#f5f4f2] transition-colors"
+                title={sidebarCollapsed ? "Expand" : "Collapse"}
+              >
+                <span className="text-[#111] font-bold">{sidebarCollapsed ? "→" : "←"}</span>
+              </button>
+            </div>
           </div>
 
           {/* Search */}
@@ -149,7 +159,7 @@ export default function Events() {
                 key={ev.id}
                 event={ev}
                 active={selected?.id === ev.id}
-                onClick={() => select(ev, false)}
+                onClick={() => {}}
               />
             ))
           )}
