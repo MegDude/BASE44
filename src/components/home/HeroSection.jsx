@@ -1,36 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { MapPin, ArrowRight, Search, Calendar, Gift, Sparkles } from "lucide-react";
-import { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { base44 } from "@/api/base44Client";
-import L from "leaflet";
-
-// Fix leaflet marker icons
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
-
-const categoryColors = {
-  restaurant: "#C8973A", bar: "#A07830", fitness: "#5B9E6E",
-  wellness: "#7B9EC8", beauty: "#C87890", retail: "#8B78C8",
-  entertainment: "#C85858", coworking: "#78B0C8", hotel: "#C8A058",
-  default: "#C8973A",
-};
-
-function createVenueIcon(category) {
-  const color = categoryColors[category] || categoryColors.default;
-  return L.divIcon({
-    className: "",
-    html: `<div style="width:9px;height:9px;border-radius:50%;background:${color};border:2px solid rgba(255,255,255,0.85);box-shadow:0 0 7px ${color}80"></div>`,
-    iconSize: [9, 9], iconAnchor: [4.5, 4.5],
-  });
-}
-
-const DOWNTOWN_AUSTIN = [30.2672, -97.7431];
+import { ArrowRight, Search, Calendar, Gift, Sparkles, MapPin } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Search intent prompts that populate the search bar
 const INTENT_PROMPTS = [
@@ -47,35 +18,25 @@ const FILTER_CHIPS = [
 ];
 
 export default function HeroSection() {
-  const [venues, setVenues] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeChip, setActiveChip] = useState("Venues");
   const [intentExpanded, setIntentExpanded] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    base44.entities.Venue.list().then((d) => setVenues(d || [])).catch(() => {});
-  }, []);
-
   function handlePromptClick(fill) {
-    setSearchQuery(fill);
+    navigate(`/downtown-perks/explore?q=${encodeURIComponent(fill)}`);
     setIntentExpanded(false);
   }
 
   function handleSearch(e) {
     e.preventDefault();
     navigate(`/downtown-perks/explore${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`);
+    setSearchQuery("");
   }
 
   function handleOpenMap() {
     navigate("/downtown-perks/explore");
   }
-
-  const filteredVenues = venues.filter(v => {
-    if (!searchQuery) return true;
-    return v.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      v.category?.toLowerCase().includes(searchQuery.toLowerCase());
-  });
 
   return (
     <section className="relative w-full min-h-screen overflow-hidden">
@@ -90,32 +51,6 @@ export default function HeroSection() {
         />
         {/* Light overlay so card reads clearly */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/20 to-white/50 pointer-events-none" />
-        {/* Map layer on top, semi-transparent */}
-        <div className="absolute inset-0" style={{ opacity: 0.32 }}>
-          <MapContainer
-            center={DOWNTOWN_AUSTIN}
-            zoom={14}
-            style={{ height: "100%", width: "100%" }}
-            zoomControl={false}
-            scrollWheelZoom={false}
-            dragging={false}
-            doubleClickZoom={false}
-            attributionControl={false}
-          >
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-            {filteredVenues.filter(v => v.latitude && v.longitude).map((venue) => (
-              <Marker key={venue.id} position={[venue.latitude, venue.longitude]} icon={createVenueIcon(venue.category)}>
-                <Popup>
-                  <div className="text-xs">
-                    <div className="font-semibold">{venue.name}</div>
-                    <div className="text-gray-500 capitalize">{venue.category}</div>
-                    {venue.perk_value && <div className="text-amber-600 mt-1">Perk: {venue.perk_value}</div>}
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MapContainer>
-        </div>
       </div>
 
       {/* ── GLASSMORPHIC OVERLAY CARD ── */}

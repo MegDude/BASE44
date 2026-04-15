@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Search, MapPin, X } from "lucide-react";
-import L from "leaflet";
-
-const AUSTIN_CENTER = [30.267, -97.743];
+import { useNavigate } from "react-router-dom";
 
 const PROMPT_CHIPS = [
   "coffee right now",
@@ -13,40 +10,19 @@ const PROMPT_CHIPS = [
   "quiet place to work",
 ];
 
-// Mock data for map pins
-const VENUES = [
-  { id: 1, name: "Café Noir", lat: 30.267, lng: -97.743, category: "coffee" },
-  { id: 2, name: "Rainey Rooftop", lat: 30.268, lng: -97.744, category: "bar" },
-  { id: 3, name: "Yoga Haven", lat: 30.269, lng: -97.742, category: "wellness" },
-];
-
-// Custom marker icons
-const getMarkerIcon = (category) => {
-  const colors = {
-    coffee: "#8B4513",
-    bar: "#C8973A",
-    wellness: "#2D9D78",
-    default: "#1E40AF",
-  };
-  return L.divIcon({
-    html: `<div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background-color: ${colors[category] || colors.default}"><${category === "coffee" ? "☕" : category === "bar" ? "🍷" : "🧘"}></div>`,
-    className: "",
-    iconSize: [32, 32],
-  });
-};
-
 export default function ProductEntryLayer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const navigate = useNavigate();
 
   const handlePromptClick = (prompt) => {
-    setSearchQuery(prompt);
+    navigate(`/downtown-perks/explore?q=${encodeURIComponent(prompt)}`);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Trigger map search/navigation
-    window.location.href = `/downtown-perks/explore?q=${encodeURIComponent(searchQuery)}`;
+    navigate(`/downtown-perks/explore?q=${encodeURIComponent(searchQuery)}`);
+    setSearchQuery("");
   };
 
   return (
@@ -134,58 +110,7 @@ export default function ProductEntryLayer() {
           </motion.div>
         </motion.div>
 
-        {/* Live Map Preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="relative h-96 rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-black/8"
-        >
-          {/* Map Container */}
-          <div className="absolute inset-0 z-0">
-            <MapContainer
-              center={AUSTIN_CENTER}
-              zoom={14}
-              style={{ width: "100%", height: "100%" }}
-              dragging={true}
-              zoomControl={false}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; OpenStreetMap contributors'
-              />
-              {VENUES.map((venue) => (
-                <Marker
-                  key={venue.id}
-                  position={[venue.lat, venue.lng]}
-                  icon={getMarkerIcon(venue.category)}
-                >
-                  <Popup>
-                    <div className="text-sm font-medium">{venue.name}</div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
-          </div>
 
-          {/* Floating Filter Chips */}
-          <div className="absolute top-4 left-4 z-10 flex gap-2">
-            {["Places", "Events", "Perks"].map((filter) => (
-              <button
-                key={filter}
-                className="px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-xs font-medium text-foreground hover:bg-white transition-colors shadow-sm"
-              >
-                {filter}
-              </button>
-            ))}
-            <button className="px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-xs font-medium text-foreground hover:bg-white transition-colors shadow-sm">
-              5 min walk
-            </button>
-          </div>
-
-          {/* Map Overlay Fade */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10 pointer-events-none" />
-        </motion.div>
 
         {/* Selected Nearby Cards */}
         <motion.div
@@ -262,13 +187,13 @@ export default function ProductEntryLayer() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-wrap gap-3 justify-center pt-4"
         >
-          <button className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors shadow-sm">
+          <button onClick={() => navigate("/downtown-perks/card")} className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors shadow-sm">
             Get Your Card
           </button>
-          <button className="px-8 py-3 rounded-full border border-border/70 text-foreground font-medium text-sm hover:border-border hover:bg-muted/50 transition-colors">
+          <button onClick={() => navigate("/downtown-perks/explore")} className="px-8 py-3 rounded-full border border-border/70 text-foreground font-medium text-sm hover:border-border hover:bg-muted/50 transition-colors">
             Explore the Map
           </button>
         </motion.div>
