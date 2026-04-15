@@ -1,7 +1,14 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeFooter from "./HomeFooter";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -22,6 +29,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-background font-body">
+      <ScrollToTop />
       <Navbar />
       <main>
         <Outlet />
