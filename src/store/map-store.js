@@ -26,6 +26,9 @@ export const useMapStore = create((set) => ({
   // Map mode ('explore' | 'campaign-preview' | 'search')
   mode: 'explore',
   
+  // Intent mode ('explore' | 'now' | 'plan' | 'perks')
+  intentMode: 'explore',
+  
   // Campaign context (state-only configuration)
   campaignContext: {
     campaignId: null,
@@ -98,6 +101,9 @@ export const useMapStore = create((set) => ({
 
   setMode: (mode) =>
     set({ mode }),
+
+  setIntentMode: (intentMode) =>
+    set({ intentMode, isPanelExpanded: true }),
 
   setMapBounds: (bounds) =>
     set({ mapBounds: bounds }),

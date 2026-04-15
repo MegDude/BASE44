@@ -81,13 +81,22 @@ function applyCampaignContext(
 }
 
 /**
- * STEP 4: Apply ranking (active > recent > featured)
+ * STEP 4: Apply ranking with resident intelligence
+ * Active > Saved > Viewed > Recent > Default
  */
-function applyRanking(entities: MapEntity[]): MapEntity[] {
+function applyRanking(entities: MapEntity[], residentHistory?: any): MapEntity[] {
   return [...entities].sort((a, b) => {
-    // Active entities first
+    // Saved items first
+    if (residentHistory?.saved.includes(a.id) && !residentHistory?.saved.includes(b.id)) return -1;
+    if (!residentHistory?.saved.includes(a.id) && residentHistory?.saved.includes(b.id)) return 1;
+
+    // Active entities next
     if (a.isActive && !b.isActive) return -1;
     if (!a.isActive && b.isActive) return 1;
+
+    // Previously viewed
+    if (residentHistory?.viewed.includes(a.id) && !residentHistory?.viewed.includes(b.id)) return -1;
+    if (!residentHistory?.viewed.includes(a.id) && residentHistory?.viewed.includes(b.id)) return 1;
 
     // Then by type (venues first, then events, buildings)
     const typeOrder = { venue: 0, event: 1, building: 2, perk: 3, campaign: 4 };
@@ -104,7 +113,7 @@ function applyRanking(entities: MapEntity[]): MapEntity[] {
  * Pipe all entities through the entire system
  * RULE: MapShell uses ONLY this output
  */
-export function getVisibleEntities(state: MapState): MapEntity[] {
+export function getVisibleEntities(state: MapState, residentHistory?: any): MapEntity[] {
   // CRITICAL: All items must pass coordinate validation
   let result = filterValidMapItems(state.entities).map(normalizeCoordinates) as MapEntity[];
 
@@ -112,7 +121,7 @@ export function getVisibleEntities(state: MapState): MapEntity[] {
   result = applySearch(result, state.search);
   result = applyFilters(result, state.filters);
   result = applyCampaignContext(result, state.campaignContext);
-  result = applyRanking(result);
+  result = applyRanking(result, residentHistory);
 
   return result;
 }
