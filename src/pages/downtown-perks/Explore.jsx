@@ -85,9 +85,11 @@ export default function Explore() {
       base44.entities.Venue.list(),
       base44.entities.Building.list(),
     ]).then(([v, b]) => {
-      setVenues(v || []);
-      setBuildings(b || []);
-      const first = (v || [])[0];
+      const venues = (v || []).map(v => ({ ...v, latitude: Number(v.latitude), longitude: Number(v.longitude) }));
+      const buildings = (b || []).map(b => ({ ...b, latitude: Number(b.latitude), longitude: Number(b.longitude) }));
+      setVenues(venues);
+      setBuildings(buildings);
+      const first = venues[0];
       if (first) { setSelected(first); setSelectedType("venue"); }
       setLoading(false);
     }).catch(() => setLoading(false));
