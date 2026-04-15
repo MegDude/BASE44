@@ -49,10 +49,6 @@ export default function Explore() {
         const buildings = filterValidMapItems(b || []).map(normalizeCoordinates);
         setVenues(venues);
         setBuildings(buildings);
-        if (venues[0]) {
-          setSelected(normalizeCoordinates(venues[0]));
-          setSelectedType("venue");
-        }
         setLoading(false);
       })
       .catch(() => setLoading(false));

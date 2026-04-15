@@ -57,17 +57,13 @@ export default function MapResultsPanel({
           </div>
         </div>
 
-        {/* Collapsed header info (mobile only) */}
-        {isCollapsed && (
+        {/* Hidden mobile expand zone (no label) */}
+        {isCollapsed && hiddenCount > 0 && (
           <button
             onClick={() => setPanelExpanded(true)}
-            className="w-full md:hidden flex items-center justify-between h-10 px-3 rounded-lg bg-[#f5f4f2] border border-[#e8e5df] text-[12px] font-medium text-[#3d3934] hover:bg-[#ede8e0] transition-colors"
-          >
-            <span>
-              {results.length} {results.length === 1 ? 'result' : 'results'}
-            </span>
-            <ChevronUp className="w-4 h-4" />
-          </button>
+            className="w-full h-2 -mx-4 -mb-3 cursor-pointer"
+            aria-label="Expand results"
+          />
         )}
       </div>
 
@@ -103,15 +99,13 @@ export default function MapResultsPanel({
               ))}
             </AnimatePresence>
 
-            {/* Show expand button if more results */}
+            {/* Hidden expand zone (no visible button) */}
             {hiddenCount > 0 && (
               <button
                 onClick={() => setPanelExpanded(true)}
-                className="w-full h-12 rounded-2xl border border-[#e8e5df] bg-[#f5f4f2] text-[#3d3934] font-semibold text-[14px] hover:bg-[#ede8e0] transition-colors flex items-center justify-center gap-2"
-              >
-                <ChevronUp className="w-4 h-4" />
-                Show all {results.length} results
-              </button>
+                className="w-full h-3 -mx-3 cursor-pointer"
+                aria-label="Expand results"
+              />
             )}
           </>
         ) : (
@@ -135,15 +129,13 @@ export default function MapResultsPanel({
               ))}
             </AnimatePresence>
 
-            {/* Collapse button when expanded */}
+            {/* Hidden collapse zone (no visible button) */}
             {results.length > previewCount && (
               <button
                 onClick={() => setPanelExpanded(false)}
-                className="w-full h-12 rounded-2xl border border-[#e8e5df] bg-[#f5f4f2] text-[#3d3934] font-semibold text-[14px] hover:bg-[#ede8e0] transition-colors flex items-center justify-center gap-2 sticky bottom-0"
-              >
-                <ChevronDown className="w-4 h-4" />
-                Collapse
-              </button>
+                className="w-full h-3 -mx-3 cursor-pointer sticky bottom-0"
+                aria-label="Collapse results"
+              />
             )}
           </>
         )}
