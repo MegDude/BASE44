@@ -454,10 +454,9 @@ export default function CivicPartner() {
                   );
                 })}
               </MapContainer>
-            </div>
 
-            {/* Drawer panel (floating right on desktop, bottom on mobile) */}
-            <div className="absolute bottom-0 right-0 md:top-0 w-full md:w-96 h-1/2 md:h-[calc(100%-140px)] md:mt-[140px] rounded-t-2xl md:rounded-none border border-border/50 bg-card/95 backdrop-blur-sm overflow-hidden flex flex-col z-30 md:shadow-lg">
+              {/* Drawer panel (floating right on desktop, bottom on mobile) */}
+              <div className="absolute bottom-0 right-0 md:top-0 w-full md:w-96 h-1/2 md:h-[calc(100%-140px)] md:mt-[140px] rounded-t-2xl md:rounded-none border border-border/50 bg-card/95 backdrop-blur-sm overflow-hidden flex flex-col z-30 md:shadow-lg">
               {!district && !program && (
                 <div className="flex flex-col h-full">
                   <div className="p-5 border-b border-border/40">
