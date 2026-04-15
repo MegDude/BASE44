@@ -75,9 +75,9 @@ export default function Explore() {
   const selectedType = selectedEntityType;
 
   return (
-    <div className="pt-[68px] min-h-screen flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
-      {/* ── MAP (mobile-first, full width on mobile, left side on desktop) ──── */}
-      <div className="flex-1 relative w-full md:flex hidden md:block min-h-[50vh] md:min-h-screen">
+    <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
+      {/* ── MAP (always visible, full screen with floating panels) ──── */}
+      <div className="flex-1 relative w-full h-[calc(100vh-68px)] md:h-full">
         <MapShell
           items={allItems}
           selected={selected}
@@ -93,8 +93,8 @@ export default function Explore() {
           className="w-full h-full"
         />
 
-        {/* Floating search bar (desktop only) */}
-        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none hidden md:flex">
+        {/* Floating search bar */}
+        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none">
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
             <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
             <input
@@ -104,7 +104,7 @@ export default function Explore() {
               placeholder="Search venues, perks, neighborhoods..."
               className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
             />
-            <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0">
+            <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0 hidden md:block">
               Austin
             </button>
             {Object.values(activeFilters.smartFilters).filter(Boolean).length > 0 && (
@@ -141,8 +141,8 @@ export default function Explore() {
         </div>
       </div>
 
-      {/* ── UNIFIED RESULTS PANEL (shifts below map on mobile) ─────────────── */}
-      <div className="w-full md:w-[420px] md:shrink-0 flex flex-col">
+      {/* ── FLOATING RESULTS PANEL (layered on top, always visible) ─────────────── */}
+      <div className="absolute bottom-0 left-0 right-0 md:static w-full md:w-[420px] md:shrink-0 h-1/2 md:h-full flex flex-col z-40 bg-white md:bg-transparent md:border-l border-t md:border-t-0 border-[#e8e5df]">
         {/* Mobile search bar */}
         <div className="md:hidden p-3 bg-white border-b border-[#e8e5df]">
           <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">

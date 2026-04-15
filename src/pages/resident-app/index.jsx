@@ -66,9 +66,9 @@ export default function ResidentApp() {
   }
 
   return (
-    <div className="pt-[68px] min-h-screen bg-background flex flex-col">
-      {/* Map section (mobile-first, full height on mobile, left panel on desktop) */}
-      <div className="flex-1 relative w-full md:flex hidden md:block min-h-[50vh] md:min-h-0 bg-muted/20">
+    <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-background">
+      {/* Map section (always visible full screen) */}
+      <div className="flex-1 relative w-full h-[calc(100vh-68px)] md:h-full bg-muted/20">
         <div className="w-full h-full flex items-center justify-center">
           <div className="text-center">
             <div className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-4 bg-primary/5">
@@ -79,8 +79,8 @@ export default function ResidentApp() {
         </div>
       </div>
 
-      {/* Results/Info panel (shifts below map on mobile) */}
-      <div className="w-full md:w-[420px] md:shrink-0 flex flex-col max-h-[50vh] md:max-h-none">
+      {/* Floating info panel */}
+      <div className="absolute bottom-0 left-0 right-0 md:static w-full md:w-[420px] md:shrink-0 h-1/2 md:h-full flex flex-col z-40 bg-background md:border-l border-t border-border/20">
         <div className="p-6 md:p-8 bg-background overflow-y-auto flex-1">
           <div className="text-center md:text-left">
             <h1 className="font-heading text-2xl md:text-3xl font-medium mb-3">Your Downtown Map</h1>

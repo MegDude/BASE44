@@ -392,38 +392,41 @@ export default function CivicPartner() {
       </section>
 
       {/* ── CIVIC MAP ───────────────────────────────────────────────── */}
-      <section id="civic-map" className="py-12 px-6 border-t border-border/40">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
-            <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Civic Layer</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-                Four districts. All on the map.
-              </h2>
+      <section id="civic-map" className="fixed inset-0 pt-[68px] flex flex-col bg-muted/10">
+        <div className="flex-1 relative w-full h-full flex flex-col">
+          {/* Header + filters (floating at top) */}
+          <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6 bg-gradient-to-b from-background/95 to-background/50 backdrop-blur-md border-b border-border/20">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 items-end">
+                <div>
+                  <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Civic Layer</span>
+                  <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
+                    Four districts. All on the map.
+                  </h2>
+                </div>
+                <p className="text-muted-foreground text-[13px] leading-relaxed hidden md:block">
+                  Select any district or program pin to see what is currently active.
+                </p>
+              </div>
+
+              {/* Filter chips */}
+              <div className="flex gap-2 overflow-x-auto pb-0.5">
+                {MAP_FILTERS.map((f) => (
+                  <button key={f.id} onClick={() => { setMapFilter(f.id); setActiveDistrict(null); setActiveProgram(null); }}
+                    className={`px-3.5 py-2 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all flex-shrink-0 ${
+                      mapFilter === f.id ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {f.label} <span className={`ml-1.5 text-[10px] ${mapFilter === f.id ? "text-primary/70" : "text-muted-foreground/50"}`}>{f.count}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-            <p className="text-muted-foreground text-[13px] leading-relaxed">
-              Select any district or program pin to see what is currently active and what response it is generating.
-            </p>
           </div>
 
-          {/* Filter chips */}
-          <div className="flex gap-2 mb-4 overflow-x-auto pb-0.5">
-            {MAP_FILTERS.map((f) => (
-              <button key={f.id} onClick={() => { setMapFilter(f.id); setActiveDistrict(null); setActiveProgram(null); }}
-                className={`px-3.5 py-2 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all flex-shrink-0 ${
-                  mapFilter === f.id ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {f.label} <span className={`ml-1.5 text-[10px] ${mapFilter === f.id ? "text-primary/70" : "text-muted-foreground/50"}`}>{f.count}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Map + drawer */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 auto-rows-max lg:auto-rows-[480px]">
-            {/* Map */}
-            <div className="lg:col-span-2 rounded-xl border border-border/50 overflow-hidden h-[400px] lg:h-full">
-              <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }} zoomControl={false} scrollWheelZoom={false}>
+          {/* Map (always visible) */}
+          <div className="flex-1 relative mt-[180px] md:mt-[140px]">
+              <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }} zoomControl={true} scrollWheelZoom={true}>
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; CARTO' />
                 <MapController center={mapCenter} />
 
@@ -453,8 +456,8 @@ export default function CivicPartner() {
               </MapContainer>
             </div>
 
-            {/* Drawer panel */}
-            <div className="lg:col-span-1 rounded-xl border border-border/50 bg-card/60 overflow-hidden flex flex-col h-[400px] lg:h-full">
+            {/* Drawer panel (floating right on desktop, bottom on mobile) */}
+            <div className="absolute bottom-0 right-0 md:top-0 w-full md:w-96 h-1/2 md:h-[calc(100%-140px)] md:mt-[140px] rounded-t-2xl md:rounded-none border border-border/50 bg-card/95 backdrop-blur-sm overflow-hidden flex flex-col z-30 md:shadow-lg">
               {!district && !program && (
                 <div className="flex flex-col h-full">
                   <div className="p-5 border-b border-border/40">
@@ -639,12 +642,12 @@ export default function CivicPartner() {
                   </div>
                 </motion.div>
               )}
-            </div>
-          </div>
-        </div>
-      </section>
+              </div>
+              </div>
+              </div>
+              </section>
 
-      {/* ── IMPACT SUMMARY ──────────────────────────────────────────── */}
+              {/* ── IMPACT SUMMARY ──────────────────────────────────────────── */}
       <ImpactSection />
 
       {/* ── HOW IT WORKS ────────────────────────────────────────────── */}
