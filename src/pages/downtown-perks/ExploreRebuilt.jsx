@@ -1,13 +1,12 @@
 /**
  * Explore (Rebuilt) — Unified map system
- * Mobile-first, fully responsive, real-time search + filters + AI
- * Single source of truth for all map interactions
+ * Now using centralized data layer and validated state management
  */
 
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
-import { useUnifiedMapStore } from '@/store/unified-map-store';
-import { filterValidMapItems, normalizeCoordinates } from '@/lib/mapCoordinates';
+import { useMapStateStore, selectFilteredResults, selectSelectedEntity, selectDrawerState } from '@/store/mapStateStore';
+import { getValidPlottedEntities, searchEntities } from '@/data/mapEntities';
+import { filterValidEntities } from '@/lib/mapValidation';
 import { motion } from 'framer-motion';
 
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
@@ -17,132 +16,91 @@ import UnifiedDrawer from '@/components/map/unified/UnifiedDrawer';
 import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
 import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
 import TimeFilter from '@/components/map/unified/TimeFilter';
+import { createMarker } from '@/components/map/markers/MarkerFactory';
 
-import { CATEGORY_COLORS } from '@/lib/mapSystemConstants';
 import L from 'leaflet';
 
-// Marker icon factory
-function createMarkerIcon(category, isSelected = false) {
-  const color = CATEGORY_COLORS[category] || '#C8973A';
-
-  if (isSelected) {
-    return L.divIcon({
-      className: '',
-      html: `<div style="width:28px;height:28px;border-radius:6px;background:${color};border:2.5px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"><div style="width:4px;height:4px;border-radius:50%;background:white"></div></div>`,
-      iconSize: [28, 28],
-      iconAnchor: [14, 14],
-    });
-  }
-
-  return L.divIcon({
-    className: '',
-    html: `<div style="width:10px;height:10px;border-radius:50%;background:${color};border:2px solid white;box-shadow:0 2px 6px ${color}80"></div>`,
-    iconSize: [10, 10],
-    iconAnchor: [5, 5],
-  });
+// Helper to get marker icon from factory
+function getMarkerIcon(entity, isSelected) {
+  return createMarker(entity, { isSelected });
 }
 
 export default function ExploreRebuilt() {
-  const [venues, setVenues] = useState([]);
-  const [buildings, setBuildings] = useState([]);
+  const store = useMapStateStore();
+  const filteredResults = selectFilteredResults(store);
+  const selectedEntity = selectSelectedEntity(store);
+  const drawerState = selectDrawerState(store);
+
+  const [allEntities, setAllEntities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const {
-    query,
-    activeFilters,
-    selectedId,
-    drawerState,
-    setResults,
-    selectEntity,
-  } = useUnifiedMapStore();
-
-  // Load venue and building data + subscribe to live actions
+  // Initialize with centralized data
   useEffect(() => {
-    const init = async () => {
-      try {
-        const [v, b] = await Promise.all([
-          base44.entities.Venue.list(),
-          base44.entities.Building.list(),
-        ]);
-
-        const venues = filterValidMapItems(v || []).map(normalizeCoordinates);
-        const buildings = filterValidMapItems(b || []).map(
-          normalizeCoordinates
-        );
-        setVenues(venues);
-        setBuildings(buildings);
-
-        // Subscribe to live actions for heatmap
-        const unsubscribe = base44.entities.UserAction.subscribe((event) => {
-          if (event.type === 'create') {
-            // Triggers heatmap re-render via Zustand store
-          }
-        });
-
-        setLoading(false);
-        return () => unsubscribe?.();
-      } catch {
-        setLoading(false);
-      }
-    };
-
-    init();
+    try {
+      const entities = getValidPlottedEntities();
+      setAllEntities(filterValidEntities(entities));
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to load map entities:', error);
+      setLoading(false);
+    }
   }, []);
 
-  // Filter and search logic
+  // Apply search and filters
   useEffect(() => {
-    const allItems = [
-      ...venues.map((v) => ({ ...v, _type: 'venue' })),
-      ...buildings.map((b) => ({ ...b, _type: 'building' })),
-    ];
+    if (!allEntities.length) return;
 
-    const filtered = allItems.filter((item) => {
-      // Category filter
-      const hasCategory =
-        (activeFilters.places && item._type === 'venue') ||
-        (activeFilters.buildings && item._type === 'building') ||
-        (!activeFilters.places && !activeFilters.buildings);
+    let results = [...allEntities];
 
-      if (!hasCategory) return false;
-
-      // Search query
-      if (query.trim()) {
-        const searchText = `${item.name} ${item.category || ''} ${item.address || ''}`.toLowerCase();
-        if (!searchText.includes(query.toLowerCase())) return false;
-      }
-
-      return true;
-    });
-
-    setResults(filtered);
-  }, [venues, buildings, query, activeFilters, setResults]);
-
-  // Get selected item from results (which are synced to store)
-  const allItems = [
-    ...venues.map((v) => ({ ...v, _type: 'venue' })),
-    ...buildings.map((b) => ({ ...b, _type: 'building' })),
-  ];
-
-  const filtered = allItems.filter((item) => {
-    const hasCategory =
-      (activeFilters.places && item._type === 'venue') ||
-      (activeFilters.buildings && item._type === 'building') ||
-      (!activeFilters.places && !activeFilters.buildings);
-
-    if (!hasCategory) return false;
-
-    if (query.trim()) {
-      const searchText = `${item.name} ${item.category || ''} ${item.address || ''}`.toLowerCase();
-      if (!searchText.includes(query.toLowerCase())) return false;
+    // Apply search
+    if (store.searchQuery.trim()) {
+      results = searchEntities(store.searchQuery);
     }
 
-    return true;
-  });
+    // Apply filters (entity types)
+    if (store.activeFilters.entityTypes.size > 0) {
+      results = results.filter((e) =>
+        store.activeFilters.entityTypes.has(e.type)
+      );
+    }
 
-  const selected = filtered.find((item) => item.id === selectedId);
+    // Apply category filter
+    if (store.activeFilters.categories.size > 0) {
+      results = results.filter((e) =>
+        e.category && store.activeFilters.categories.has(e.category)
+      );
+    }
 
-  const handleMarkerSelect = (item) => {
-    selectEntity(item.id, item._type);
+    // Apply district filter
+    if (store.activeFilters.districts.size > 0) {
+      results = results.filter((e) =>
+        e.district && store.activeFilters.districts.has(e.district)
+      );
+    }
+
+    // Apply walk time filter
+    if (store.activeFilters.walkMinutes) {
+      results = results.filter((e) =>
+        e.metadata?.walkMinutes && e.metadata.walkMinutes <= store.activeFilters.walkMinutes!
+      );
+    }
+
+    // Apply state filters
+    if (store.activeFilters.isOpenNow) {
+      results = results.filter((e) => e.isOpenNow);
+    }
+    if (store.activeFilters.isLive) {
+      results = results.filter((e) => e.isLive);
+    }
+    if (store.activeFilters.isSaved) {
+      results = results.filter((e) => store.savedEntityIds.has(e.id));
+    }
+
+    store.setFilteredResults(results);
+  }, [store.searchQuery, store.activeFilters, allEntities, store.savedEntityIds]);
+
+  const handleMarkerSelect = (entity) => {
+    store.selectEntity(entity);
   };
 
   if (loading) {
@@ -160,11 +118,16 @@ export default function ExploreRebuilt() {
         {/* Map (full height) */}
         <div className="flex-1 relative">
           <UnifiedMapShell
-            items={filtered}
+            items={filteredResults}
             markerIcon={(item, active) =>
-              createMarkerIcon(item.category, active)
+              getMarkerIcon(item, active)
             }
             onMarkerSelect={handleMarkerSelect}
+            mapCenter={store.mapCenter}
+            mapZoom={store.mapZoom}
+            onMapCenterChange={(center) => store.setMapCenter(center)}
+            onMapZoomChange={(zoom) => store.setMapZoom(zoom)}
+            selectedId={selectedEntity?.id}
             className="w-full h-full"
           >
             <HeatmapLayer />
@@ -184,7 +147,7 @@ export default function ExploreRebuilt() {
 
         {/* Bottom sheet drawer */}
         <UnifiedDrawer
-          selected={selected}
+          selected={selectedEntity}
           onMarkerSelect={handleMarkerSelect}
         />
       </div>
@@ -194,11 +157,16 @@ export default function ExploreRebuilt() {
         {/* Map (left 65%) */}
         <div className="w-2/3 relative">
           <UnifiedMapShell
-            items={filtered}
+            items={filteredResults}
             markerIcon={(item, active) =>
-              createMarkerIcon(item.category, active)
+              getMarkerIcon(item, active)
             }
             onMarkerSelect={handleMarkerSelect}
+            mapCenter={store.mapCenter}
+            mapZoom={store.mapZoom}
+            onMapCenterChange={(center) => store.setMapCenter(center)}
+            onMapZoomChange={(zoom) => store.setMapZoom(zoom)}
+            selectedId={selectedEntity?.id}
             className="w-full h-full"
           />
 
@@ -216,7 +184,7 @@ export default function ExploreRebuilt() {
 
         {/* Results panel (right 35%) */}
         <div className="w-1/3 bg-white border-l border-border overflow-hidden flex flex-col">
-          <UnifiedResultsPanel items={filtered} />
+          <UnifiedResultsPanel items={filteredResults} />
         </div>
       </div>
     </div>

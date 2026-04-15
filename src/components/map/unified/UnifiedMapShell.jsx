@@ -6,10 +6,11 @@
 
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
-import { useUnifiedMapStore } from '@/store/unified-map-store';
-import { AUSTIN_CENTER } from '@/lib/mapSystemConstants';
+import { getValidMapCenter } from '@/lib/mapValidation';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+const AUSTIN_CENTER = [30.267, -97.743];
 
 // Fix leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -44,12 +45,14 @@ export default function UnifiedMapShell({
   items = [],
   markerIcon,
   onMarkerSelect,
+  mapCenter = AUSTIN_CENTER,
+  mapZoom = 14,
+  onMapCenterChange,
+  onMapZoomChange,
+  selectedId,
   className = 'w-full h-full',
   children,
 }) {
-  const { mapCenter, mapZoom, selectedId, setMapCenter, setMapZoom } =
-    useUnifiedMapStore();
-
   const handleDragEnd = (map) => {
     const center = map.getCenter();
     const lat = center?.lat;
@@ -57,21 +60,16 @@ export default function UnifiedMapShell({
     
     // Only update if both are valid finite numbers
     if (Number.isFinite(lat) && Number.isFinite(lng)) {
-      setMapCenter([lat, lng]);
+      onMapCenterChange?.([lat, lng]);
     }
   };
 
   const handleZoom = (map) => {
-    setMapZoom(map.getZoom());
+    onMapZoomChange?.(map.getZoom());
   };
 
   // Ensure mapCenter is always valid for MapContainer
-  const validCenter = (
-    Array.isArray(mapCenter) &&
-    mapCenter.length === 2 &&
-    Number.isFinite(mapCenter[0]) &&
-    Number.isFinite(mapCenter[1])
-  ) ? mapCenter : AUSTIN_CENTER;
+  const validCenter = getValidMapCenter(mapCenter, AUSTIN_CENTER);
 
   return (
     <MapContainer
@@ -95,8 +93,10 @@ export default function UnifiedMapShell({
 
       {/* Markers */}
       {items.map((item) => {
-        if (!item.latitude || !item.longitude) return null;
+        // Use validated location from centralized data
+        if (!item.location || !item.location.valid) return null;
 
+        const position = [item.location.latitude, item.location.longitude];
         const icon = markerIcon
           ? markerIcon(item, selectedId === item.id)
           : L.divIcon({
@@ -109,7 +109,7 @@ export default function UnifiedMapShell({
         return (
           <Marker
             key={item.id}
-            position={[item.latitude, item.longitude]}
+            position={position}
             icon={icon}
             eventHandlers={{
               click: () => {
