@@ -91,7 +91,10 @@ export default function Explore() {
       setVenues(venues);
       setBuildings(buildings);
       const first = venues[0];
-      if (first) { setSelected(first); setSelectedType("venue"); }
+      if (first) { 
+        setSelected(normalizeCoordinates(first)); 
+        setSelectedType("venue"); 
+      }
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
@@ -142,7 +145,7 @@ export default function Explore() {
   ];
 
   function selectItem(item, type) {
-    setSelected(item);
+    setSelected(normalizeCoordinates(item));
     setSelectedType(type);
   }
 
