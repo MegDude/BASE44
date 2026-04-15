@@ -30,7 +30,11 @@ export default function MapResultsPanel({
   const hiddenCount = Math.max(0, results.length - previewCount);
 
   return (
-    <div className="w-full md:w-[420px] md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[#e8e5df] flex flex-col h-auto md:h-full z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)] transition-all">
+    <div className={`w-full md:w-[420px] md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[#e8e5df] flex flex-col z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)] transition-all ${
+      isPanelExpanded
+        ? 'h-auto md:h-full'
+        : 'h-auto md:h-full'
+    }`}>
       {/* Header */}
       <div className="px-4 md:px-5 pt-4 md:pt-6 pb-3 md:pb-4 border-b border-[#e8e5df]">
         <div className="flex items-center justify-between mb-4">

@@ -75,32 +75,9 @@ export default function Explore() {
   const selectedType = selectedEntityType;
 
   return (
-    <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
-      {/* ── UNIFIED RESULTS PANEL ─────────────────────────────────────── */}
-      <MapResultsPanel
-        results={allItems}
-        renderCard={(item, active, onClick) =>
-          item._type === "venue" ? (
-            <VenueSideCard venue={item} active={active} onClick={onClick} />
-          ) : (
-            <BuildingSideCard building={item} active={active} onClick={onClick} />
-          )
-        }
-        renderEmptyState={() => (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Sparkles className="w-10 h-10 text-[#c8c4be] mb-3" />
-            <p className="text-[15px] font-semibold text-[#3d3934]">Nothing found</p>
-            <p className="text-[13px] text-[#8d887f] mt-1">Try clearing the search or changing the filter.</p>
-          </div>
-        )}
-      />
-
-      {/* Old sidebar code removed — now using MapResultsPanel */}
-      <aside className="hidden">
-      </aside>
-
-      {/* ── MAP ──────────────────────────────────────────────────────── */}
-      <div className="flex-1 relative hidden md:flex">
+    <div className="pt-[68px] min-h-screen flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
+      {/* ── MAP (mobile-first, full width on mobile, left side on desktop) ──── */}
+      <div className="flex-1 relative w-full md:flex hidden md:block min-h-[50vh] md:min-h-screen">
         <MapShell
           items={allItems}
           selected={selected}
@@ -116,8 +93,8 @@ export default function Explore() {
           className="w-full h-full"
         />
 
-        {/* Floating bar */}
-        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none">
+        {/* Floating search bar (desktop only) */}
+        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none hidden md:flex">
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
             <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
             <input
@@ -144,8 +121,8 @@ export default function Explore() {
           </div>
         </div>
 
-        {/* Legend */}
-        <div className="absolute left-5 bottom-5 z-[500] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[220px]">
+        {/* Legend (desktop only) */}
+        <div className="absolute left-5 bottom-5 z-[500] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[220px] hidden md:block">
           <div className="text-[12px] font-bold text-[#111] mb-2.5">Map logic</div>
           <div className="flex flex-wrap gap-2">
             {Object.entries(VENUE_COLORS)
@@ -163,6 +140,43 @@ export default function Explore() {
           </div>
         </div>
       </div>
+
+      {/* ── UNIFIED RESULTS PANEL (shifts below map on mobile) ─────────────── */}
+      <div className="w-full md:w-[420px] md:shrink-0 flex flex-col">
+        {/* Mobile search bar */}
+        <div className="md:hidden p-3 bg-white border-b border-[#e8e5df]">
+          <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">
+            <Search className="w-4 h-4 text-[#7a746b]" />
+            <input
+              type="search"
+              value={activeFilters.query}
+              onChange={(e) => setQueryFilter(e.target.value)}
+              placeholder="Search venues..."
+              className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+            />
+          </div>
+        </div>
+
+        {/* Results panel */}
+        <MapResultsPanel
+          results={allItems}
+          renderCard={(item, active, onClick) =>
+            item._type === "venue" ? (
+              <VenueSideCard venue={item} active={active} onClick={onClick} />
+            ) : (
+              <BuildingSideCard building={item} active={active} onClick={onClick} />
+            )
+          }
+          renderEmptyState={() => (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <Sparkles className="w-10 h-10 text-[#c8c4be] mb-3" />
+              <p className="text-[15px] font-semibold text-[#3d3934]">Nothing found</p>
+              <p className="text-[13px] text-[#8d887f] mt-1">Try clearing the search or changing the filter.</p>
+            </div>
+          )}
+        />
+      </div>
+
     </div>
   );
 }

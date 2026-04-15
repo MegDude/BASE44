@@ -59,27 +59,10 @@ export default function Events() {
   const selected = filtered.find((e) => e.id === selectedEntityId);
 
   return (
-    <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
+    <div className="pt-[68px] min-h-screen flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
 
-      {/* ── UNIFIED RESULTS PANEL ─────────────────────────────────────── */}
-      <MapResultsPanel
-        results={filtered}
-        renderCard={(event, active, onClick) => (
-          <EventCard event={event} active={active} onClick={onClick} />
-        )}
-        renderEmptyState={() => (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Calendar className="w-10 h-10 text-[#c8c4be] mb-3" />
-            <p className="text-[15px] font-semibold text-[#3d3934]">No events found</p>
-            <p className="text-[13px] text-[#8d887f] mt-1">Try a different filter or search term.</p>
-          </div>
-        )}
-      />
-
-      {/* Old sidebar removed — now using MapResultsPanel */}
-
-      {/* ── MAP ──────────────────────────────────────────────────────── */}
-      <div className="flex-1 relative hidden md:flex">
+      {/* ── MAP (mobile-first, full width on mobile, left side on desktop) ──── */}
+      <div className="flex-1 relative w-full md:flex hidden md:block min-h-[50vh] md:min-h-screen">
         <MapShell
           items={filtered}
           selected={selected}
@@ -91,8 +74,8 @@ export default function Events() {
           className="w-full h-full"
         />
 
-        {/* Floating search bar */}
-        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none">
+        {/* Floating search bar (desktop only) */}
+        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none hidden md:flex">
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
             <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
             <input
@@ -111,8 +94,8 @@ export default function Events() {
           </div>
         </div>
 
-        {/* Map legend */}
-        <div className="absolute left-5 bottom-5 z-[500] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[240px]">
+        {/* Map legend (desktop only) */}
+        <div className="absolute left-5 bottom-5 z-[500] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[240px] hidden md:block">
           <div className="text-[12px] font-bold text-[#111] mb-2.5">Category legend</div>
           <div className="flex flex-wrap gap-2">
             {Object.entries(CAT_COLORS).slice(0, 6).map(([k, v]) => (
@@ -124,6 +107,39 @@ export default function Events() {
           </div>
         </div>
       </div>
+
+      {/* ── UNIFIED RESULTS PANEL (shifts below map on mobile) ─────────────── */}
+      <div className="w-full md:w-[420px] md:shrink-0 flex flex-col">
+        {/* Mobile search bar */}
+        <div className="md:hidden p-3 bg-white border-b border-[#e8e5df]">
+          <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">
+            <Search className="w-4 h-4 text-[#7a746b]" />
+            <input
+              type="search"
+              value={activeFilters.query}
+              onChange={(e) => setQueryFilter(e.target.value)}
+              placeholder="Search events..."
+              className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+            />
+          </div>
+        </div>
+
+        {/* Results panel */}
+        <MapResultsPanel
+          results={filtered}
+          renderCard={(event, active, onClick) => (
+            <EventCard event={event} active={active} onClick={onClick} />
+          )}
+          renderEmptyState={() => (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <Calendar className="w-10 h-10 text-[#c8c4be] mb-3" />
+              <p className="text-[15px] font-semibold text-[#3d3934]">No events found</p>
+              <p className="text-[13px] text-[#8d887f] mt-1">Try a different filter or search term.</p>
+            </div>
+          )}
+        />
+      </div>
+
     </div>
   );
 }
