@@ -80,33 +80,42 @@ export default function HeroSection() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden">
 
-      {/* ── FULL-SCREEN MAP BACKGROUND ── */}
+      {/* ── FULL-SCREEN BACKGROUND ── */}
       <div className="absolute inset-0 z-0">
-        <MapContainer
-          center={DOWNTOWN_AUSTIN}
-          zoom={14}
-          style={{ height: "100%", width: "100%" }}
-          zoomControl={false}
-          scrollWheelZoom={false}
-          dragging={false}
-          doubleClickZoom={false}
-          attributionControl={false}
-        >
-          <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
-          {filteredVenues.filter(v => v.latitude && v.longitude).map((venue) => (
-            <Marker key={venue.id} position={[venue.latitude, venue.longitude]} icon={createVenueIcon(venue.category)}>
-              <Popup>
-                <div className="text-xs">
-                  <div className="font-semibold">{venue.name}</div>
-                  <div className="text-gray-500 capitalize">{venue.category}</div>
-                  {venue.perk_value && <div className="text-amber-600 mt-1">Perk: {venue.perk_value}</div>}
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-        {/* Dark overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background/70 pointer-events-none" />
+        {/* Austin photo background */}
+        <img
+          src="https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80"
+          alt="Downtown Austin"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Light overlay so card reads clearly */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/20 to-white/50 pointer-events-none" />
+        {/* Map layer on top, semi-transparent */}
+        <div className="absolute inset-0" style={{ opacity: 0.32 }}>
+          <MapContainer
+            center={DOWNTOWN_AUSTIN}
+            zoom={14}
+            style={{ height: "100%", width: "100%" }}
+            zoomControl={false}
+            scrollWheelZoom={false}
+            dragging={false}
+            doubleClickZoom={false}
+            attributionControl={false}
+          >
+            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+            {filteredVenues.filter(v => v.latitude && v.longitude).map((venue) => (
+              <Marker key={venue.id} position={[venue.latitude, venue.longitude]} icon={createVenueIcon(venue.category)}>
+                <Popup>
+                  <div className="text-xs">
+                    <div className="font-semibold">{venue.name}</div>
+                    <div className="text-gray-500 capitalize">{venue.category}</div>
+                    {venue.perk_value && <div className="text-amber-600 mt-1">Perk: {venue.perk_value}</div>}
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
       </div>
 
       {/* ── GLASSMORPHIC OVERLAY CARD ── */}
@@ -119,9 +128,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6 }}
           className="flex items-center gap-2 mb-6"
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pin-pulse" />
-          <span className="text-[11px] font-medium text-white/70 uppercase tracking-[0.24em]">
-            Downtown Perks · Map entry state
+          <span className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.24em]">
+            Downtown Perks
           </span>
         </motion.div>
 
@@ -234,8 +242,7 @@ export default function HeroSection() {
           transition={{ delay: 0.9 }}
           className="mt-6 flex items-center gap-2"
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-white/50" />
-          <span className="text-[12px] text-white/50">
+          <span className="text-[12px] text-foreground/45">
             {venues.length > 0 ? venues.length : "155"} mapped locations · 78701 Austin
           </span>
         </motion.div>
