@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Gift, CreditCard, Bookmark, Building2, Menu, X } from "lucide-react";
+import { MapPin, Gift, CreditCard, Bookmark, Building2, Menu, X } from "lucide-react";
 
 const TABS = [
-  { id: "now", label: "Now", icon: MapPin, tooltip: "Live map & nearby" },
-  { id: "plan", label: "Plan", icon: Clock, tooltip: "Upcoming events" },
+  { id: "now", label: "Residents", icon: MapPin, tooltip: "Live map & nearby" },
   { id: "perks", label: "Perks", icon: Gift, tooltip: "Active offers" },
   { id: "card", label: "Card", icon: CreditCard, tooltip: "Your card & QR" },
   { id: "saved", label: "Saved", icon: Bookmark, tooltip: "Your saves" },

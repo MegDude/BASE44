@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
 import ResidentNowTab from "./tabs/ResidentNowTab";
-import ResidentPlanTab from "./tabs/ResidentPlanTab";
 import ResidentPerksTab from "./tabs/ResidentPerksTab";
 import ResidentCardTab from "./tabs/ResidentCardTab";
 import ResidentSavedTab from "./tabs/ResidentSavedTab";
@@ -11,8 +10,6 @@ export default function ResidentTabs({ activeTab, user }) {
     switch (activeTab) {
       case "now":
         return <ResidentNowTab user={user} />;
-      case "plan":
-        return <ResidentPlanTab user={user} />;
       case "perks":
         return <ResidentPerksTab user={user} />;
       case "card":
