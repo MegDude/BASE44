@@ -642,12 +642,12 @@ export default function CivicPartner() {
                   </div>
                 </motion.div>
               )}
-              </div>
-              </div>
-              </div>
-              </section>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              {/* ── IMPACT SUMMARY ──────────────────────────────────────────── */}
+      {/* ── IMPACT SUMMARY ──────────────────────────────────────────── */}
       <ImpactSection />
 
       {/* ── HOW IT WORKS ────────────────────────────────────────────── */}
