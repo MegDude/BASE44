@@ -4,8 +4,21 @@ import Footer from "./Footer";
 import HomeFooter from "./HomeFooter";
 
 export default function Layout() {
-  const location = useLocation();
-  const isDowntownPerks = location.pathname.startsWith("/downtown-perks") || location.pathname.startsWith("/brands");
+  const { pathname } = useLocation();
+
+  // Pages that use the full Downtown Perks editorial footer
+  const usesEditorialFooter =
+    pathname.startsWith("/downtown-perks") ||
+    pathname.startsWith("/brands") ||
+    pathname.startsWith("/partners") ||
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/partner-workspace") ||
+    pathname === "/";
+
+  // Pages that suppress the footer entirely (full-screen map/app views)
+  const noFooter =
+    pathname === "/downtown-perks/explore" ||
+    pathname === "/downtown-perks/events";
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -13,7 +26,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-      {isDowntownPerks ? <Footer /> : <HomeFooter />}
+      {!noFooter && (usesEditorialFooter ? <Footer /> : <HomeFooter />)}
     </div>
   );
 }
