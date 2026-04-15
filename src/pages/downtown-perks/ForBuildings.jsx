@@ -9,10 +9,10 @@ const tiers = [
     price: "Free",
     period: "90 days",
     features: [
-      "Downtown Perks for all residents",
+      "Resident access for the whole building",
       "QR card activation",
-      "Map listing for your building",
-      "Top-line automated reports",
+      "Map listing and neighborhood layer",
+      "Top-line usage reports",
     ],
     highlight: false,
   },
@@ -22,10 +22,10 @@ const tiers = [
     period: "/month",
     features: [
       "Everything in Pilot",
-      "Resident engagement dashboard",
-      "Direct messaging channel",
-      "Monthly insights reports",
-      "Priority venue partnerships",
+      "Resident activity dashboard",
+      "Building communication channel",
+      "Monthly engagement reports",
+      "Priority partner access",
     ],
     highlight: true,
   },
@@ -35,10 +35,10 @@ const tiers = [
     period: "/month",
     features: [
       "Everything in Connected",
-      "Advanced analytics",
-      "Behavioral insights",
+      "Advanced usage analytics",
+      "Behavioral and segmentation data",
       "Custom event programming",
-      "Real estate lead routing",
+      "Leasing lead routing",
       "Dedicated account manager",
     ],
     highlight: false,
@@ -48,23 +48,23 @@ const tiers = [
 const benefits = [
   {
     icon: Users,
-    title: "A better resident amenity",
-    description: "Give residents a more useful way to experience the neighborhood with local perks, nearby places, and what is happening around them.",
+    title: "A more useful resident amenity",
+    description: "Give residents an easier way to find nearby places, local offers, and what is happening around them in daily downtown life.",
   },
   {
     icon: MessageSquare,
-    title: "A channel residents actually use",
-    description: "Share updates, events, and local opportunities through a simpler touchpoint that feels more relevant than another email.",
+    title: "A better way to use the neighborhood",
+    description: "Help people get more out of where they live by making it simpler to discover what is worth walking to, using, or joining nearby.",
   },
   {
     icon: BarChart3,
-    title: "Clearer resident signals",
-    description: "See what people are opening, saving, and using so your team gets a better read on what matters most in and around the building.",
+    title: "A touchpoint people come back to",
+    description: "Create a resident-facing layer that feels more useful than another building email because it connects updates with real neighborhood value.",
   },
   {
     icon: Building2,
-    title: "Leads from real neighborhood intent",
-    description: "Turn map interest into qualified leasing traffic by routing people who want to live nearby directly to your team.",
+    title: "Stronger visibility for your team",
+    description: "See what residents are opening, saving, and using while turning neighborhood interest into warmer leasing conversations.",
   },
 ];
 
@@ -93,7 +93,7 @@ export default function ForBuildings() {
                 <em className="text-primary">Building Amenity</em>
               </h1>
               <p className="text-muted-foreground text-[15px] leading-relaxed md:pb-1">
-                Downtown Perks helps your property connect residents to nearby places, experiences, and perks while supporting communication, retention, and qualified leasing interest.
+                Downtown Perks gives residents a better way to use the neighborhood around them while giving your property a stronger amenity, clearer communication, and added leasing value.
               </p>
             </div>
           </motion.div>
@@ -140,10 +140,10 @@ export default function ForBuildings() {
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
               <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight">
-                Simple, building-level pricing.
+                Simple pricing. Start with a pilot.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                Start free for 90 days. After that, choose the level of insights that works for your team.
+                90 days free. After that, choose the level that fits your team's communication and reporting needs.
               </p>
             </div>
           </div>
@@ -210,12 +210,12 @@ export default function ForBuildings() {
                 <h3 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] mb-4">
                   No cost to join.
                   <br />
-                  <em className="text-muted-foreground font-normal">Just real residents.</em>
+                  <em className="text-muted-foreground font-normal">The offer is the entry point.</em>
                 </h3>
               </div>
               <div>
                 <p className="text-muted-foreground text-[13px] leading-relaxed mb-6">
-                  Your only "cost" is the value of the perk you offer our resident members. In exchange, we send you curated, hyper-local customers and promote you on the map and in content.
+                  Local businesses join by offering a perk to resident members. In return, they appear on the map at the moment nearby residents are deciding where to go.
                 </p>
                 <Link
                   to="/downtown-perks/explore"

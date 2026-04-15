@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { base44 } from "@/api/base44Client";
-import { Search, X, Users, Clock, MapPin, Calendar, Star, Zap } from "lucide-react";
+import { Search, X, Users, Clock, MapPin, Calendar, Star, Zap, ExternalLink, Share2, Twitter, Link as LinkIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import moment from "moment";
 import L from "leaflet";
@@ -408,6 +408,22 @@ function EventDetail({ event, onClose }) {
           )}
         </div>
 
+        {/* Organizer */}
+        {event.venue_name && (
+          <div className="bg-[#f8f6f2] border border-[#e8e5df] rounded-2xl p-4">
+            <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-2">Organizer</div>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-semibold text-[14px] text-[#111]">{event.venue_name}</div>
+                {event.address && <div className="text-[12px] text-[#7a746b] mt-0.5">{event.address}</div>}
+              </div>
+              <div className="w-8 h-8 rounded-full bg-[#e8e5df] flex items-center justify-center shrink-0">
+                <MapPin className="w-3.5 h-3.5 text-[#7a746b]" />
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* CTAs */}
         <div className="flex gap-2.5 pt-1">
           <button className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
@@ -416,6 +432,53 @@ function EventDetail({ event, onClose }) {
           <button className="flex-1 h-12 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors">
             Save
           </button>
+        </div>
+
+        {/* Ticketing link */}
+        {event.website && (
+          <a
+            href={event.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full h-11 rounded-2xl border border-[#e8e5df] bg-white text-[#3d3934] font-medium text-[13px] hover:bg-[#f5f4f2] transition-colors"
+          >
+            <ExternalLink className="w-3.5 h-3.5" /> View tickets / event page
+          </a>
+        )}
+
+        {/* Social sharing */}
+        <div>
+          <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-2.5">Share</div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                const text = `${event.title}${event.venue_name ? ` at ${event.venue_name}` : ""}`;
+                const url = window.location.href;
+                if (navigator.share) {
+                  navigator.share({ title: event.title, text, url });
+                } else {
+                  navigator.clipboard.writeText(url);
+                }
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#e8e5df] bg-white text-[#3d3934] text-[12px] font-medium hover:bg-[#f5f4f2] transition-colors"
+            >
+              <Share2 className="w-3.5 h-3.5" /> Share
+            </button>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${event.title}${event.venue_name ? ` at ${event.venue_name}` : ""} — downtown Austin`)}&url=${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#e8e5df] bg-white text-[#3d3934] text-[12px] font-medium hover:bg-[#f5f4f2] transition-colors"
+            >
+              <Twitter className="w-3.5 h-3.5" /> Post
+            </a>
+            <button
+              onClick={() => navigator.clipboard.writeText(window.location.href)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#e8e5df] bg-white text-[#3d3934] text-[12px] font-medium hover:bg-[#f5f4f2] transition-colors"
+            >
+              <LinkIcon className="w-3.5 h-3.5" /> Copy link
+            </button>
+          </div>
         </div>
       </div>
     </div>
