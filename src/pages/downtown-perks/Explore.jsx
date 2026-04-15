@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { base44 } from "@/api/base44Client";
-import { Search, X, MapPin, Clock, Building2, Utensils, Dumbbell, Heart, Music, Sparkles, ExternalLink, Tag, Hotel } from "lucide-react";
+import { Search, X, MapPin, Clock, Building2, Utensils, Dumbbell, Heart, Music, Sparkles, ExternalLink, Tag, Hotel, PersonStanding, Gift, CalendarDays } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -72,6 +72,11 @@ export default function Explore() {
   const [cat, setCat] = useState("all");
   const [selected, setSelected] = useState(null);
   const [selectedType, setSelectedType] = useState("venue"); // "venue" | "building"
+  const [smartFilters, setSmartFilters] = useState({ walking: false, freePerks: false, eventBased: false });
+
+  function toggleSmartFilter(key) {
+    setSmartFilters(prev => ({ ...prev, [key]: !prev[key] }));
+  }
 
   useEffect(() => {
     Promise.all([
@@ -86,15 +91,41 @@ export default function Explore() {
     }).catch(() => setLoading(false));
   }, []);
 
+  // Smart filter helpers — approximate "walking distance" as venues with coordinates near Austin center
+  const WALKING_RADIUS_DEG = 0.018; // ~2km / ~5-min walk radius
+  const [mapCenter] = useState(AUSTIN_CENTER);
+
+  function isWalkingDistance(item) {
+    if (!item.latitude || !item.longitude) return false;
+    const dlat = item.latitude - mapCenter[0];
+    const dlng = item.longitude - mapCenter[1];
+    return Math.sqrt(dlat * dlat + dlng * dlng) <= WALKING_RADIUS_DEG;
+  }
+
+  function hasFreePerks(item) {
+    const text = `${item.perk_description || ""} ${item.perk_value || ""}`.toLowerCase();
+    return text.includes("free") || text.includes("complimentary") || text.includes("on us") || text.includes("no charge");
+  }
+
+  const EVENT_CATEGORIES = ["entertainment", "bar", "fitness", "wellness"];
+
+  function isEventBased(item) {
+    return EVENT_CATEGORIES.includes(item.category);
+  }
+
   const showBuildings = cat === "all" || cat === "building";
   const filteredVenues = venues.filter(v => {
     if (cat !== "all" && cat !== "building" && v.category !== cat) return false;
     if (cat === "building") return false;
     if (query && !`${v.name} ${v.category} ${v.address} ${v.perk_description}`.toLowerCase().includes(query.toLowerCase())) return false;
+    if (smartFilters.walking && !isWalkingDistance(v)) return false;
+    if (smartFilters.freePerks && !hasFreePerks(v)) return false;
+    if (smartFilters.eventBased && !isEventBased(v)) return false;
     return true;
   });
   const filteredBuildings = showBuildings ? buildings.filter(b => {
     if (query && !`${b.name} ${b.address} ${b.developer}`.toLowerCase().includes(query.toLowerCase())) return false;
+    if (smartFilters.walking && !isWalkingDistance(b)) return false;
     return true;
   }) : [];
 
@@ -152,6 +183,37 @@ export default function Explore() {
               );
             })}
           </div>
+
+          {/* Smart filters */}
+          <div className="flex gap-2 mt-3 flex-wrap">
+            {[
+              { key: "walking", label: "< 5 min walk", icon: PersonStanding, activeColor: "bg-emerald-600 text-white border-emerald-600" },
+              { key: "freePerks", label: "Free perks", icon: Gift, activeColor: "bg-amber-500 text-white border-amber-500" },
+              { key: "eventBased", label: "Event spots", icon: CalendarDays, activeColor: "bg-violet-600 text-white border-violet-600" },
+            ].map(({ key, label, icon: Icon, activeColor }) => {
+              const on = smartFilters[key];
+              return (
+                <button
+                  key={key}
+                  onClick={() => toggleSmartFilter(key)}
+                  className={`flex items-center gap-1.5 h-8 px-3 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all shrink-0 ${
+                    on ? activeColor : "bg-white text-[#3d3934] border-[#e8e5df] hover:border-[#c8c4be]"
+                  }`}
+                >
+                  <Icon className="w-3 h-3" /> {label}
+                  {on && <X className="w-2.5 h-2.5 ml-0.5 opacity-80" />}
+                </button>
+              );
+            })}
+            {(smartFilters.walking || smartFilters.freePerks || smartFilters.eventBased) && (
+              <button
+                onClick={() => setSmartFilters({ walking: false, freePerks: false, eventBased: false })}
+                className="h-8 px-3 rounded-full text-[11px] font-medium text-[#8d887f] border border-[#e8e5df] hover:border-[#c8c4be] whitespace-nowrap transition-all"
+              >
+                Clear all
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Cards list */}
@@ -200,9 +262,17 @@ export default function Explore() {
             <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0">
               Austin
             </button>
-            <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0">
-              Perks layer
-            </button>
+            {Object.values(smartFilters).filter(Boolean).length > 0 && (
+              <button
+                onClick={() => setSmartFilters({ walking: false, freePerks: false, eventBased: false })}
+                className="h-10 px-3.5 rounded-xl border border-violet-300 bg-violet-50 text-[12px] font-medium text-violet-700 hover:bg-violet-100 transition-all shrink-0 flex items-center gap-1.5"
+              >
+                <span className="w-4 h-4 rounded-full bg-violet-600 text-white text-[10px] flex items-center justify-center font-bold">
+                  {Object.values(smartFilters).filter(Boolean).length}
+                </span>
+                Filters on
+              </button>
+            )}
           </div>
         </div>
 
