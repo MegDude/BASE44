@@ -46,9 +46,23 @@ function MapFlyTo({ position }) {
  */
 
 /**
- * @param {MapShellProps} props
+ * @typedef {Object} CampaignPreviewProps
+ * @property {string} mode - 'default' | 'campaign-preview'
+ * @property {string} campaignId - Campaign identifier (optional)
+ * @property {string[]} placementTypes - Filter types to render
+ * @property {string} sourceContext - Source of campaign ('brand' | 'venue' | 'hotel' | 'building' | 'civic')
+ * @property {boolean} interactive - Enable interactive behavior
+ */
+
+/**
+ * @param {MapShellProps & CampaignPreviewProps} props
  */
 export default function MapShell({
+  mode = 'default',
+  campaignId,
+  placementTypes,
+  sourceContext,
+  interactive = true,
   items = [],
   selected,
   onSelect,

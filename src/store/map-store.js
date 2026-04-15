@@ -28,6 +28,13 @@ export const useMapStore = create((set) => ({
   
   // Map bounds (for geofencing)
   mapBounds: null,
+
+  // Campaign context (for campaign preview mode)
+  campaignContext: {
+    campaignId: null,
+    sourceContext: null,
+    placementTypes: [],
+  },
   
   // Actions
   selectEntity: (entityId, entityType) =>
@@ -86,6 +93,18 @@ export const useMapStore = create((set) => ({
   setMapBounds: (bounds) =>
     set({ mapBounds: bounds }),
 
+  setCampaignContext: (context) =>
+    set({ campaignContext: context }),
+
+  clearCampaignContext: () =>
+    set({
+      campaignContext: {
+        campaignId: null,
+        sourceContext: null,
+        placementTypes: [],
+      },
+    }),
+
   resetToDefaults: () =>
     set({
       selectedEntityId: null,
@@ -99,5 +118,10 @@ export const useMapStore = create((set) => ({
       isPanelExpanded: false,
       isDrawerOpen: false,
       mapBounds: null,
+      campaignContext: {
+        campaignId: null,
+        sourceContext: null,
+        placementTypes: [],
+      },
     }),
 }));
