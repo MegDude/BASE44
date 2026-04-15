@@ -5,7 +5,7 @@ import { ArrowRight, Building2, Users, Utensils, Sparkles, MapPin } from 'lucide
 import PartnerHero from '@/components/partner/PartnerHero';
 import SelectorCards from '@/components/partner/SelectorCards';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
-import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES } from '@/lib/partner-system';
+import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES, PARTNER_GRIDS } from '@/lib/partner-system';
 
 const PARTNER_TYPES = [
   {
@@ -81,7 +81,7 @@ export default function PartnersIndex() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-4">
+          <div className={PARTNER_GRIDS.gridCardFiveCol}>
             {PARTNER_TYPES.map((type) => {
               const Icon = type.icon;
               return (
@@ -203,7 +203,7 @@ export default function PartnersIndex() {
             See it in action
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={PARTNER_GRIDS.gridCardThreeCol}>
             {[
               {
                 type: 'Residential',

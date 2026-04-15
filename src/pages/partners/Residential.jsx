@@ -8,7 +8,7 @@ import ProofGrid from '@/components/partner/ProofGrid';
 import LiveActivityFeed from '@/components/partner/LiveActivityFeed';
 import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
-import { PARTNER_SPACING } from '@/lib/partner-system';
+import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 
 const RESIDENTIAL_FEATURES = [
   {
@@ -169,7 +169,7 @@ export default function ResidentialPartner() {
             Use cases
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={PARTNER_GRIDS.gridUseCaseTwoCol}>
             {[
               {
                 title: 'Resident onboarding',

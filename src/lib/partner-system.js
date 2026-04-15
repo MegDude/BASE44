@@ -9,6 +9,11 @@ export const PARTNER_SPACING = {
   sectionBottom: 'pb-16 md:pb-24',
   sectionVertical: 'py-16 md:py-24',
   
+  // Hero spacing (landing pages + individual partner pages)
+  heroTop: 'pt-20 md:pt-32',
+  heroBottom: 'pb-16 md:pb-24',
+  heroVertical: 'pt-20 md:pt-32 pb-16 md:pb-24',
+  
   // Subsection spacing
   subsectionTop: 'pt-12 md:pt-16',
   subsectionBottom: 'pb-12 md:pb-16',
@@ -22,6 +27,21 @@ export const PARTNER_SPACING = {
   gridGapSmall: 'gap-3 md:gap-4',
   gridGapMedium: 'gap-6 md:gap-8',
   gridGapLarge: 'gap-8 md:gap-12',
+};
+
+export const PARTNER_GRIDS = {
+  // Card grid layouts
+  gridCardTwoCol: 'grid grid-cols-1 md:grid-cols-2 gap-6',
+  gridCardThreeCol: 'grid grid-cols-1 md:grid-cols-3 gap-6',
+  gridCardFourCol: 'grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4',
+  gridCardFiveCol: 'grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-4',
+  
+  // Responsive card grids (compact on mobile)
+  gridCardCompact: 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4',
+  
+  // Use case grids (featured layouts)
+  gridUseCaseTwoCol: 'grid grid-cols-1 md:grid-cols-2 gap-6',
+  gridUseCaseFourUp: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6',
 };
 
 export const PARTNER_BREAKPOINTS = {

@@ -2,7 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronDown } from "lucide-react";
-import { PARTNER_SPACING } from '@/lib/partner-system';
+import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 
 const CAMPAIGN_FORMATS = [
   {
@@ -250,7 +250,7 @@ export default function BrandsPartner() {
           >
             Which format is right?
           </motion.h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className={PARTNER_GRIDS.gridCardTwoCol}>
             {FORMAT_SELECTORS.map((selector, i) => (
               <motion.button
                 key={selector.id}
@@ -336,7 +336,7 @@ export default function BrandsPartner() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className={PARTNER_GRIDS.gridCardCompact}>
             {PROOF_METRICS.map((metric, i) => (
               <ProofMetricCard key={metric.label} metric={metric} index={i} />
             ))}

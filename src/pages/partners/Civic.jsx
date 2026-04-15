@@ -10,7 +10,7 @@ import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
 import PreviewModule from '@/components/partner/PreviewModule';
 import { MapPin as MapPinIcon } from 'lucide-react';
-import { PARTNER_SPACING } from '@/lib/partner-system';
+import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 
 const CIVIC_FORMATS = [
   {
@@ -264,7 +264,7 @@ export default function CivicPartner() {
             Select the format that matches your goal. We'll highlight the best fit.
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className={PARTNER_GRIDS.gridCardCompact}>
             {FORMAT_SELECTOR.map((item) => (
               <button
                 key={item.id}
@@ -319,7 +319,7 @@ export default function CivicPartner() {
             Civic partnerships in Downtown Perks should feel useful, timely, and easy to act on. These examples show how events, districts, neighborhood guidance, and public participation appear across the map, buildings, and live downtown flow.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={PARTNER_GRIDS.gridCardThreeCol}>
             {CIVIC_EXAMPLES.map((example, i) => (
               <motion.a
                 key={i}
