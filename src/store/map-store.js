@@ -2,22 +2,35 @@ import { create } from 'zustand';
 
 /**
  * Unified map store for all map instances
- * Controls: selectedEntityId, visibleResults, filters, drawer state, panel state
+ * Controls: selectedEntityId, filters, drawer state, panel state, mode
  * Single source of truth for map UI + interactions
+ * 
+ * CRITICAL RULES:
+ * - Campaign context is just state, not a separate system
+ * - All filtering logic moved to lib/map/selectors.ts
+ * - MapShell reads ONLY from store, no prop drilling
  */
 export const useMapStore = create((set) => ({
   // Entity selection (from map marker click)
   selectedEntityId: null,
   selectedEntityType: null, // 'venue' | 'building' | 'event'
   
-  // Visible results (filtered by category, query, smart filters)
-  visibleResults: [],
-  
-  // Active filters
-  activeFilters: {
+  // Search + filter state
+  query: '',
+  filters: {
     category: 'all',
-    query: '',
-    smartFilters: { walking: false, freePerks: false, eventBased: false },
+    types: [],
+    districts: [],
+  },
+  
+  // Map mode ('explore' | 'campaign-preview' | 'search')
+  mode: 'explore',
+  
+  // Campaign context (state-only configuration)
+  campaignContext: {
+    campaignId: null,
+    sourceContext: null,
+    placementTypes: [],
   },
   
   // Panel state (collapsed = rolled up, expanded = full list visible)
@@ -28,13 +41,6 @@ export const useMapStore = create((set) => ({
   
   // Map bounds (for geofencing)
   mapBounds: null,
-
-  // Campaign context (for campaign preview mode)
-  campaignContext: {
-    campaignId: null,
-    sourceContext: null,
-    placementTypes: [],
-  },
   
   // Actions
   selectEntity: (entityId, entityType) =>
@@ -66,29 +72,32 @@ export const useMapStore = create((set) => ({
   setVisibleResults: (results) =>
     set({ visibleResults: results }),
 
-  setActiveFilters: (filters) =>
+  setQueryFilter: (query) =>
     set({
-      activeFilters: filters,
-      isPanelExpanded: true, // Auto-expand when filters change
+      query,
+      isPanelExpanded: true,
     }),
 
   setCategoryFilter: (category) =>
     set((state) => ({
-      activeFilters: { ...state.activeFilters, category },
+      filters: { ...state.filters, category },
       isPanelExpanded: true,
     })),
 
-  setQueryFilter: (query) =>
+  setTypeFilters: (types) =>
     set((state) => ({
-      activeFilters: { ...state.activeFilters, query },
+      filters: { ...state.filters, types },
       isPanelExpanded: true,
     })),
 
-  setSmartFilters: (smartFilters) =>
+  setDistrictFilters: (districts) =>
     set((state) => ({
-      activeFilters: { ...state.activeFilters, smartFilters },
+      filters: { ...state.filters, districts },
       isPanelExpanded: true,
     })),
+
+  setMode: (mode) =>
+    set({ mode }),
 
   setMapBounds: (bounds) =>
     set({ mapBounds: bounds }),
@@ -109,19 +118,20 @@ export const useMapStore = create((set) => ({
     set({
       selectedEntityId: null,
       selectedEntityType: null,
-      visibleResults: [],
-      activeFilters: {
+      query: '',
+      filters: {
         category: 'all',
-        query: '',
-        smartFilters: { walking: false, freePerks: false, eventBased: false },
+        types: [],
+        districts: [],
       },
-      isPanelExpanded: false,
-      isDrawerOpen: false,
-      mapBounds: null,
+      mode: 'explore',
       campaignContext: {
         campaignId: null,
         sourceContext: null,
         placementTypes: [],
       },
+      isPanelExpanded: false,
+      isDrawerOpen: false,
+      mapBounds: null,
     }),
 }));
