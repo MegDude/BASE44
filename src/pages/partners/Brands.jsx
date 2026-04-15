@@ -112,7 +112,7 @@ const CAMPAIGN_EXAMPLES = [
   },
 ];
 
-function CampaignFormatCard({ format, isExpanded, onToggle }) {
+function CampaignFormatCard({ format, isExpanded, onToggle, onUseFormat }) {
   const Icon = format.icon;
   return (
     <motion.button
@@ -173,7 +173,10 @@ function CampaignFormatCard({ format, isExpanded, onToggle }) {
 
             <div className="bg-primary/5 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
               <p className="text-sm text-foreground/70 leading-relaxed mb-4">{format.body}</p>
-              <button className="w-full h-10 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
+              <button 
+                onClick={() => onUseFormat(format.id)}
+                className="w-full h-10 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
                 Use this format
               </button>
             </div>
@@ -238,9 +241,41 @@ function CampaignExampleCard({ example, index }) {
 
 export default function BrandsPartner() {
   const [expandedFormat, setExpandedFormat] = useState(null);
+  const [campaignType, setCampaignType] = useState(null);
+  const [formData, setFormData] = useState({
+    organizationName: "",
+    name: "",
+    email: "",
+    phone: "",
+    campaignIntent: "",
+  });
+  const [selectedPrompt, setSelectedPrompt] = useState(null);
 
   const handleFormatSelect = (formatId) => {
     setExpandedFormat(expandedFormat === formatId ? null : formatId);
+  };
+
+  const handleFormChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("Campaign plan submitted:", { ...formData, campaignType, selectedPrompt });
+    // Redirect or show success state
+    alert("Campaign plan submitted! We'll contact you shortly.");
+    // Reset form
+    setFormData({ organizationName: "", name: "", email: "", phone: "", campaignIntent: "" });
+    setCampaignType(null);
+    setSelectedPrompt(null);
+  };
+
+  const handleUseFormat = (formatId) => {
+    setFormData((prev) => ({ ...prev }));
+    const element = document.querySelector("[data-section='planning-form']");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -264,32 +299,68 @@ export default function BrandsPartner() {
                 Downtown Perks helps brands show up inside real downtown behavior — through buildings, venues, map context, district activity, and timed campaign moments that lead to measurable response.
               </p>
               <div className="flex flex-wrap gap-3 mb-10">
-                <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector("[data-section='planning-form']");
+                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
+                >
                   Plan a campaign <ArrowRight className="w-3.5 h-3.5" />
                 </button>
-                <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-colors">
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector("[data-section='placement-explorer']");
+                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-colors"
+                >
                   See placement map
                 </button>
               </div>
 
               {/* Live stat strip */}
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 rounded-lg border border-border/30 bg-white/50">
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector("[data-section='proof-analytics']");
+                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
+                >
                   <div className="font-semibold text-lg text-primary">12</div>
                   <div className="text-xs text-muted-foreground">Campaigns live</div>
-                </div>
-                <div className="p-3 rounded-lg border border-border/30 bg-white/50">
+                </button>
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector("[data-section='proof-analytics']");
+                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
+                >
                   <div className="font-semibold text-lg text-emerald-600">2.4K</div>
                   <div className="text-xs text-muted-foreground">Total scans</div>
-                </div>
-                <div className="p-3 rounded-lg border border-border/30 bg-white/50">
+                </button>
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector("[data-section='proof-analytics']");
+                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
+                >
                   <div className="font-semibold text-lg text-violet-600">840</div>
                   <div className="text-xs text-muted-foreground">Visits</div>
-                </div>
-                <div className="p-3 rounded-lg border border-border/30 bg-white/50">
+                </button>
+                <button 
+                  onClick={() => {
+                    const element = document.querySelector("[data-section='proof-analytics']");
+                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
+                >
                   <div className="font-semibold text-lg text-amber-600">340</div>
                   <div className="text-xs text-muted-foreground">Redemptions</div>
-                </div>
+                </button>
               </div>
               <div className="text-xs text-muted-foreground">4 districts • Updated 2 min ago</div>
             </motion.div>
@@ -366,6 +437,7 @@ export default function BrandsPartner() {
                   format={format}
                   isExpanded={expandedFormat === format.id}
                   onToggle={handleFormatSelect}
+                  onUseFormat={handleUseFormat}
                 />
               </div>
             ))}
@@ -374,7 +446,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── PLACEMENT EXPLORER ────────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
+      <section data-section="placement-explorer" className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -494,7 +566,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── PROOF AND ANALYTICS ───────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
+      <section data-section="proof-analytics" className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -574,7 +646,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── CAMPAIGN PLANNING FORM ────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
+      <section data-section="planning-form" className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -593,6 +665,7 @@ export default function BrandsPartner() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Form */}
             <motion.form
+              onSubmit={handleFormSubmit}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -611,7 +684,12 @@ export default function BrandsPartner() {
                     <button
                       key={type.id}
                       type="button"
-                      className="px-4 py-3 rounded-lg border border-border/40 text-sm font-medium hover:border-primary/40 transition-colors"
+                      onClick={() => setCampaignType(type.id)}
+                      className={`px-4 py-3 rounded-lg border text-sm font-medium transition-colors ${
+                        campaignType === type.id
+                          ? "border-primary/60 bg-primary/10 text-primary"
+                          : "border-border/40 hover:border-primary/40"
+                      }`}
                     >
                       {type.label}
                     </button>
@@ -623,20 +701,44 @@ export default function BrandsPartner() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Organization name</label>
-                  <input type="text" placeholder="Your brand or organization" className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" />
+                  <input 
+                    type="text" 
+                    placeholder="Your brand or organization" 
+                    value={formData.organizationName}
+                    onChange={(e) => handleFormChange("organizationName", e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Your name and role</label>
-                  <input type="text" placeholder="e.g. Jane Smith, Marketing Director" className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" />
+                  <input 
+                    type="text" 
+                    placeholder="e.g. Jane Smith, Marketing Director" 
+                    value={formData.name}
+                    onChange={(e) => handleFormChange("name", e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
+                  />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-medium mb-2">Email</label>
-                    <input type="email" placeholder="your@email.com" className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" />
+                    <input 
+                      type="email" 
+                      placeholder="your@email.com" 
+                      value={formData.email}
+                      onChange={(e) => handleFormChange("email", e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
+                    />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Phone</label>
-                    <input type="tel" placeholder="(555) 000-0000" className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" />
+                    <input 
+                      type="tel" 
+                      placeholder="(555) 000-0000" 
+                      value={formData.phone}
+                      onChange={(e) => handleFormChange("phone", e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
+                    />
                   </div>
                 </div>
               </div>
@@ -644,7 +746,13 @@ export default function BrandsPartner() {
               {/* Campaign intent */}
               <div>
                 <label className="block text-sm font-semibold mb-3">What do you want this campaign to do?</label>
-                <textarea placeholder="Describe your campaign goal..." className="w-full px-4 py-3 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors resize-none" rows="4" />
+                <textarea 
+                  placeholder="Describe your campaign goal..." 
+                  value={formData.campaignIntent}
+                  onChange={(e) => handleFormChange("campaignIntent", e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors resize-none" 
+                  rows="4" 
+                />
               </div>
 
               {/* Smart prompts */}
@@ -660,7 +768,15 @@ export default function BrandsPartner() {
                     <button
                       key={i}
                       type="button"
-                      className="w-full px-4 py-2.5 text-left text-sm rounded-lg border border-border/40 hover:border-primary/40 hover:bg-primary/5 transition-colors"
+                      onClick={() => {
+                        setSelectedPrompt(selectedPrompt === prompt ? null : prompt);
+                        handleFormChange("campaignIntent", prompt);
+                      }}
+                      className={`w-full px-4 py-2.5 text-left text-sm rounded-lg border transition-colors ${
+                        selectedPrompt === prompt
+                          ? "border-primary/60 bg-primary/5"
+                          : "border-border/40 hover:border-primary/40 hover:bg-primary/5"
+                      }`}
                     >
                       {prompt}
                     </button>
@@ -668,7 +784,11 @@ export default function BrandsPartner() {
                 </div>
               </div>
 
-              <button className="w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
+              <button 
+                type="submit"
+                disabled={!formData.email || !formData.name}
+                className="w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
                 Submit campaign plan
               </button>
             </motion.form>
@@ -742,7 +862,13 @@ export default function BrandsPartner() {
             transition={{ delay: 0.15 }}
             className="flex flex-wrap gap-3 justify-center mb-6"
           >
-            <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors">
+            <button 
+              onClick={() => {
+                const element = document.querySelector("[data-section='planning-form']");
+                if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
+            >
               Check availability <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <Link
