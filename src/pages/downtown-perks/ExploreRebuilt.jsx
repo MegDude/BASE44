@@ -15,6 +15,8 @@ import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
 import UnifiedFilterChips from '@/components/map/unified/UnifiedFilterChips';
 import UnifiedDrawer from '@/components/map/unified/UnifiedDrawer';
 import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
+import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
+import TimeFilter from '@/components/map/unified/TimeFilter';
 
 import { CATEGORY_COLORS } from '@/lib/mapSystemConstants';
 import L from 'leaflet';
@@ -54,22 +56,37 @@ export default function ExploreRebuilt() {
     selectEntity,
   } = useUnifiedMapStore();
 
-  // Load venue and building data
+  // Load venue and building data + subscribe to live actions
   useEffect(() => {
-    Promise.all([
-      base44.entities.Venue.list(),
-      base44.entities.Building.list(),
-    ])
-      .then(([v, b]) => {
+    const init = async () => {
+      try {
+        const [v, b] = await Promise.all([
+          base44.entities.Venue.list(),
+          base44.entities.Building.list(),
+        ]);
+
         const venues = filterValidMapItems(v || []).map(normalizeCoordinates);
         const buildings = filterValidMapItems(b || []).map(
           normalizeCoordinates
         );
         setVenues(venues);
         setBuildings(buildings);
+
+        // Subscribe to live actions for heatmap
+        const unsubscribe = base44.entities.UserAction.subscribe((event) => {
+          if (event.type === 'create') {
+            // Triggers heatmap re-render via Zustand store
+          }
+        });
+
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+        return () => unsubscribe?.();
+      } catch {
+        setLoading(false);
+      }
+    };
+
+    init();
   }, []);
 
   // Filter and search logic
@@ -128,14 +145,17 @@ export default function ExploreRebuilt() {
             }
             onMarkerSelect={handleMarkerSelect}
             className="w-full h-full"
-          />
+          >
+            <HeatmapLayer />
+          </UnifiedMapShell>
 
           {/* Floating search + filters (overlay) */}
           <motion.div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-background/80 via-background/40 to-transparent p-4 space-y-3 pointer-events-none">
             <div className="pointer-events-auto">
               <UnifiedSearchBar />
             </div>
-            <div className="pointer-events-auto">
+            <div className="pointer-events-auto space-y-2">
+              <TimeFilter />
               <UnifiedFilterChips />
             </div>
           </motion.div>
@@ -166,7 +186,8 @@ export default function ExploreRebuilt() {
             <div className="pointer-events-auto">
               <UnifiedSearchBar />
             </div>
-            <div className="pointer-events-auto">
+            <div className="pointer-events-auto space-y-2">
+              <TimeFilter />
               <UnifiedFilterChips />
             </div>
           </motion.div>

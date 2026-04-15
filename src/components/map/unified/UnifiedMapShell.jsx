@@ -34,6 +34,7 @@ export default function UnifiedMapShell({
   markerIcon,
   onMarkerSelect,
   className = 'w-full h-full',
+  children,
 }) {
   const { mapCenter, mapZoom, selectedId, setMapCenter, setMapZoom } =
     useUnifiedMapStore();
@@ -63,6 +64,10 @@ export default function UnifiedMapShell({
 
       <MapFlyTo position={mapCenter} />
 
+      {/* Heatmap and other layers */}
+      {children}
+
+      {/* Markers */}
       {items.map((item) => {
         if (!item.latitude || !item.longitude) return null;
 

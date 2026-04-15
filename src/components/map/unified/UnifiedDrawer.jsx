@@ -6,8 +6,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Clock, Tag, Heart, Share2 } from 'lucide-react';
+import { X, MapPin, Clock, Tag, Heart } from 'lucide-react';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
+import DrawerActions from '@/components/map/unified/DrawerActions';
 
 export default function UnifiedDrawer({ selected, onMarkerSelect }) {
   const { drawerState, setDrawerState, clearSelection } = useUnifiedMapStore();
@@ -148,8 +149,10 @@ function DrawerPreview({ selected }) {
 }
 
 function DrawerFull({ selected }) {
+  const { setDrawerState } = useUnifiedMapStore();
+
   return (
-    <div className="p-5 space-y-5">
+    <div className="p-5 space-y-5 pb-20">
       {/* Header */}
       <div>
         <div className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">
@@ -192,29 +195,34 @@ function DrawerFull({ selected }) {
         )}
       </div>
 
-      {/* Perk */}
+      {/* Description */}
+      {selected.description && (
+        <div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {selected.description}
+          </p>
+        </div>
+      )}
+
+      {/* Perk highlight */}
       {selected._type === 'venue' && selected.perk_value && (
         <div className="bg-primary/10 rounded-xl p-4">
           <div className="text-xs font-semibold text-primary mb-2 uppercase">
             Member perk
           </div>
-          <p className="text-base font-semibold text-foreground mb-3">
+          <p className="text-base font-semibold text-foreground">
             {selected.perk_value}
           </p>
-          <button className="w-full h-10 rounded-lg bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors">
-            Get perk
-          </button>
         </div>
       )}
 
-      {/* Actions */}
-      <div className="flex gap-2 pt-3 border-t border-border">
-        <button className="flex-1 h-11 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2">
-          <Heart className="w-4 h-4" /> Save
-        </button>
-        <button className="flex-1 h-11 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2">
-          <Share2 className="w-4 h-4" /> Share
-        </button>
+      {/* Transactional actions (sticky bottom) */}
+      <div className="fixed inset-x-0 bottom-0 md:relative bg-white border-t border-border p-5 space-y-3">
+        <DrawerActions
+          item={selected}
+          itemType={selected._type}
+          onClose={() => setDrawerState('collapsed')}
+        />
       </div>
     </div>
   );

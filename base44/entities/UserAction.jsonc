@@ -1,0 +1,71 @@
+{
+  "name": "UserAction",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "title": "User Email"
+    },
+    "entity_id": {
+      "type": "string",
+      "title": "Entity ID (Venue/Event/Perk)"
+    },
+    "entity_type": {
+      "type": "string",
+      "title": "Entity Type",
+      "enum": [
+        "venue",
+        "event",
+        "perk",
+        "building"
+      ]
+    },
+    "action_type": {
+      "type": "string",
+      "title": "Action Type",
+      "enum": [
+        "scan",
+        "save",
+        "redeem",
+        "rsvp",
+        "navigate",
+        "book"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "title": "Timestamp",
+      "format": "date-time"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "campaign_id": {
+      "type": "string",
+      "title": "Campaign ID (optional)"
+    },
+    "metadata": {
+      "type": "object",
+      "title": "Additional Metadata",
+      "properties": {
+        "duration": {
+          "type": "number"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "user_email",
+    "entity_id",
+    "action_type",
+    "timestamp"
+  ]
+}
