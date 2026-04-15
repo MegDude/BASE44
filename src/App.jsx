@@ -29,6 +29,7 @@ import AustinFC from './pages/downtown-perks/brands/AustinFC';
 import FabiAndRosi from './pages/downtown-perks/brands/FabiAndRosi';
 import HotelVanZandt from './pages/downtown-perks/brands/HotelVanZandt';
 import FourSeasons from './pages/downtown-perks/brands/FourSeasons';
+import FourSeasonsResidences from './pages/downtown-perks/brands/FourSeasonsResidences';
 import PartnersIndex from './pages/partners/Index';
 import CivicPartner from './pages/partners/Civic';
 import PartnerWorkspace from './pages/PartnerWorkspace';
@@ -88,6 +89,7 @@ const AuthenticatedApp = () => {
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
         <Route path="/brands/four-seasons" element={<FourSeasons />} />
+        <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
         <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />

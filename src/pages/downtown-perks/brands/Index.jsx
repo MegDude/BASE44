@@ -10,6 +10,7 @@ const brands = [
   { slug: "the-stay-put", name: "Stay Put", category: "Local Bar & Venue", description: "Real-time discovery, timed traffic moments, and live programming for downtown's social scene.", tag: "Venue · Social" },
   { slug: "hotel-van-zandt", name: "Hotel Van Zandt", category: "Hospitality Partner", description: "Live neighborhood layer for guests — dining, events, wellness, and local perks on arrival.", tag: "Hospitality" },
   { slug: "four-seasons", name: "Four Seasons", category: "Hospitality Partner", description: "Curated downtown guide that extends the quality of the stay into the city around it.", tag: "Hospitality · Premium" },
+  { slug: "four-seasons-residences", name: "Four Seasons Residences", category: "Residential Partner", description: "A live downtown layer for residents — dining, wellness, events, and local perks in one place.", tag: "Residential · Premium" },
   { slug: "yeti", name: "YETI", category: "Austin Brand Campaign", description: "Flagship city-brand activation. QR-led product moments. District presence.", tag: "Brand Campaign" },
   { slug: "rivian", name: "Rivian", category: "Mobility & Experiential", description: "Downtown placement. Experiential activation. Behavior-led engagement.", tag: "Mobility" },
   { slug: "lululemon", name: "lululemon", category: "Premium Retail & Wellness", description: "Run clubs, studio tie-ins, and QR-activated product moments for members.", tag: "Retail · Wellness" },
