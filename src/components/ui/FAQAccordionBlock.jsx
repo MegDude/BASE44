@@ -63,7 +63,7 @@ export default function FAQAccordionBlock({
     : "bg-background";
 
   const AccordionList = (
-    <div className={isCard ? "space-y-3" : "divide-y divide-border/40"}>
+    <div className={isCard ? "space-y-2" : "divide-y divide-border/40"}>
       {items.map((item, i) => {
         const isOpen = openSet.has(i);
         return (
@@ -87,11 +87,11 @@ export default function FAQAccordionBlock({
   return (
     <section
       ref={ref}
-      className={`py-20 px-6 border-t border-border/40 ${sectionBg}`}
+      className={`py-16 px-6 border-t border-border/40 ${sectionBg}`}
     >
       <div className="max-w-5xl mx-auto">
         {isSplit ? (
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-14 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-10 items-start">
             {/* Left: intro */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -199,7 +199,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
         onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onToggle(); } }}
         aria-expanded={isOpen}
         className={`w-full flex items-center gap-4 text-left transition-colors ${
-          isCard ? "px-6 py-5" : "px-2 py-5"
+          isCard ? "px-6 py-4" : "px-2 py-4"
         } group`}
       >
         {/* Number badge */}
@@ -247,7 +247,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
             transition={{ height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }, opacity: { duration: 0.2 } }}
             className="overflow-hidden"
           >
-            <div className={`${isCard ? "px-6 pb-6" : "px-2 pb-6"} ${showNumber ? "pl-11" : ""}`}>
+            <div className={`${isCard ? "px-6 pb-4" : "px-2 pb-4"} ${showNumber ? "pl-11" : ""}`}>
               <p className={`text-[13px] leading-relaxed ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
                 {item.answer}
               </p>

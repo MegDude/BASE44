@@ -4,6 +4,8 @@ import SystemSection from "../../components/downtown-perks/landing/SystemSection
 import ExperienceGrid from "../../components/downtown-perks/landing/ExperienceGrid";
 import HowItWorksSection from "../../components/downtown-perks/landing/HowItWorksSection";
 import CTASection from "../../components/downtown-perks/landing/CTASection";
+import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
+import { FAQ_HOME } from "@/lib/faq-data";
 
 const HERO_IMAGE = "https://media.base44.com/images/public/69da00318449b692572744f2/010c4f66b_generated_7a2820f8.png";
 
@@ -25,6 +27,18 @@ export default function Landing() {
       <ExperienceGrid images={EXPERIENCE_IMAGES} />
       <HowItWorksSection />
       <CTASection />
+      <FAQAccordionBlock
+        sectionEyebrow="FAQ"
+        sectionTitle="Questions, answered simply."
+        sectionIntro="Downtown Perks is built to make downtown easier to use. These are the questions people usually ask first."
+        items={FAQ_HOME}
+        styleVariant="split"
+        showNumbers={true}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        ctaLabel="Learn more about Downtown Perks"
+        ctaHref="/downtown-perks/about"
+      />
     </div>
   );
 }
