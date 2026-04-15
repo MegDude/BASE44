@@ -48,23 +48,23 @@ const tiers = [
 const benefits = [
   {
     icon: Users,
-    title: "Modern Resident Amenity",
-    description: "Give your residents something no other building offers — a citywide perks and community system.",
+    title: "A better resident amenity",
+    description: "Give residents a more useful way to experience the neighborhood with local perks, nearby places, and what is happening around them.",
   },
   {
     icon: MessageSquare,
-    title: "Direct Communication",
-    description: "Reach residents through a channel they actually use — beyond clunky emails and outdated tools.",
+    title: "A channel residents actually use",
+    description: "Share updates, events, and local opportunities through a simpler touchpoint that feels more relevant than another email.",
   },
   {
     icon: BarChart3,
-    title: "Resident Insights",
-    description: "Understand what your residents actually do, care about, and engage with across downtown.",
+    title: "Clearer resident signals",
+    description: "See what people are opening, saving, and using so your team gets a better read on what matters most in and around the building.",
   },
   {
     icon: Building2,
-    title: "Real Estate Leads",
-    description: "Turn map visitors into warm leads — 'Want to live here?' routes directly to your leasing team.",
+    title: "Leads from real neighborhood intent",
+    description: "Turn map interest into qualified leasing traffic by routing people who want to live nearby directly to your team.",
   },
 ];
 
@@ -84,16 +84,16 @@ export default function ForBuildings() {
             transition={{ duration: 0.7 }}
           >
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
-              For Buildings & Developers
+              For Buildings
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
               <h1 className="font-heading text-4xl md:text-5xl font-medium leading-[1.08] tracking-tight">
-                Your New
+                A Smarter
                 <br />
-                <em className="text-primary">Resident Amenity</em>
+                <em className="text-primary">Building Amenity</em>
               </h1>
               <p className="text-muted-foreground text-[15px] leading-relaxed md:pb-1">
-                Subscribe to a better version of downtown for your residents. Downtown Perks gives your building a modern amenity — connecting residents to the neighborhood, driving foot traffic, and surfacing high-intent real estate leads for less than $5 per unit per year.
+                Downtown Perks helps your property connect residents to nearby places, experiences, and perks while supporting communication, retention, and qualified leasing interest.
               </p>
             </div>
           </motion.div>
