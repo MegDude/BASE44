@@ -88,48 +88,48 @@ export default function Events() {
   const flyTarget = selected?.latitude && selected?.longitude ? [selected.latitude, selected.longitude] : null;
 
   return (
-    <div className="pt-[68px] h-screen flex overflow-hidden bg-[#f4f4f3]">
+    <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
 
       {/* ── SIDEBAR ─────────────────────────────────────────────────── */}
-      <aside className="w-[420px] shrink-0 bg-white border-r border-[#e8e5df] flex flex-col h-full z-10 shadow-[2px_0_12px_rgba(0,0,0,.04)]">
+      <aside className="w-full md:w-[420px] md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[#e8e5df] flex flex-col h-auto md:h-full z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)]">
 
         {/* Top */}
-        <div className="px-5 pt-6 pb-4 border-b border-[#e8e5df]">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-[22px] font-semibold text-[#111] tracking-tight leading-tight">Events & Experiences</h1>
-            <span className="text-[13px] font-medium text-[#8d887f] border border-[#e8e5df] rounded-xl px-3 py-1.5 bg-[#f5f3ef]">
-              {filtered.length} events
+        <div className="px-4 md:px-5 pt-4 md:pt-6 pb-3 md:pb-4 border-b border-[#e8e5df]">
+          <div className="flex items-center justify-between mb-3 md:mb-4">
+            <h1 className="text-lg md:text-[22px] font-semibold text-[#111] tracking-tight leading-tight">Events</h1>
+            <span className="text-[12px] md:text-[13px] font-medium text-[#8d887f] border border-[#e8e5df] rounded-xl px-2.5 md:px-3 py-1 md:py-1.5 bg-[#f5f3ef]">
+              {filtered.length}
             </span>
           </div>
 
           {/* Search */}
-          <label className="flex items-center gap-2.5 h-12 rounded-2xl border border-[#e8e5df] bg-[#f7f6f4] px-3.5 mb-3">
-            <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
+          <label className="flex items-center gap-2.5 h-10 md:h-12 rounded-2xl border border-[#e8e5df] bg-[#f7f6f4] px-3 md:px-3.5 mb-3">
+            <Search className="w-3.5 md:w-4 h-3.5 md:h-4 text-[#7a746b] shrink-0" />
             <input
               type="search" value={query} onChange={e => setQuery(e.target.value)}
-              placeholder="Search events, venues, categories..."
-              className="flex-1 bg-transparent outline-none text-[14px] text-[#111] placeholder:text-[#9d9890] font-[Inter,sans-serif]"
+              placeholder="Search events..."
+              className="flex-1 bg-transparent outline-none text-[13px] md:text-[14px] text-[#111] placeholder:text-[#9d9890] font-[Inter,sans-serif]"
             />
-            {query && <button onClick={() => setQuery("")}><X className="w-3.5 h-3.5 text-[#7a746b]" /></button>}
+            {query && <button onClick={() => setQuery("")}><X className="w-3 md:w-3.5 h-3 md:h-3.5 text-[#7a746b]" /></button>}
           </label>
 
           {/* Category chips */}
           <div className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-hide">
             {CATS.map(c => (
               <button key={c} onClick={() => setCat(c)}
-                className={`h-9 px-3.5 rounded-xl text-[12px] font-medium whitespace-nowrap border transition-all shrink-0 ${
+                className={`h-8 md:h-9 px-3 md:px-3.5 rounded-xl text-[11px] md:text-[12px] font-medium whitespace-nowrap border transition-all shrink-0 ${
                   cat === c
                     ? "bg-[#111] text-white border-[#111]"
                     : "bg-white text-[#3d3934] border-[#e8e5df] hover:border-[#c8c4be]"
                 }`}>
-                {c === "all" ? "All events" : c.replace("_", " ")}
+                {c === "all" ? "All" : c.replace("_", " ")}
               </button>
             ))}
           </div>
         </div>
 
         {/* Cards list */}
-        <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+        <div ref={listRef} className="flex-1 overflow-y-auto px-3 md:px-4 py-3 md:py-4 space-y-3 md:space-y-4 max-h-[40vh] md:max-h-none">
           {loading ? (
             <div className="space-y-4">
               {[1,2,3].map(i => <div key={i} className="h-48 rounded-2xl bg-[#f0ede8] animate-pulse" />)}
@@ -154,7 +154,7 @@ export default function Events() {
       </aside>
 
       {/* ── MAP ──────────────────────────────────────────────────────── */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative hidden md:flex">
         {/* Floating search bar */}
         <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none">
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
@@ -223,7 +223,7 @@ export default function Events() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 16 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-5 bottom-5 z-[600] w-[400px] max-h-[70vh] overflow-y-auto bg-white/97 backdrop-blur-xl border border-black/8 rounded-3xl shadow-[0_24px_60px_rgba(17,17,17,.16)]"
+              className="absolute right-5 bottom-5 z-[600] w-[90vw] md:w-[400px] max-h-[50vh] md:max-h-[70vh] overflow-y-auto bg-white/97 backdrop-blur-xl border border-black/8 rounded-3xl shadow-[0_24px_60px_rgba(17,17,17,.16)]"
             >
               <EventDetail event={selected} onClose={() => setSelected(null)} />
             </motion.div>
