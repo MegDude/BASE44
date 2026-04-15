@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { ArrowLeft, ArrowRight, X, Hotel, QrCode, MapPin, Zap } from "lucide-react";
 import L from "leaflet";
+import { PARTNER_SPACING } from '@/lib/partner-system';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -103,7 +104,7 @@ export default function HotelsPartner() {
   return (
     <div className="min-h-screen bg-background">
       {/* HERO */}
-      <section className="pt-36 pb-16 px-6 relative overflow-hidden">
+      <section className={`${PARTNER_SPACING.heroVertical} px-6 relative overflow-hidden`}>
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(hsl(222 18% 40%) 1px,transparent 1px),linear-gradient(90deg,hsl(222 18% 40%) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -156,7 +157,7 @@ export default function HotelsPartner() {
       </section>
 
       {/* MAP */}
-      <section id="hotel-map" className="py-8 px-6 border-t border-border/40">
+      <section id="hotel-map" className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>

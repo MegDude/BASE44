@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronDown } from "lucide-react";
+import { PARTNER_SPACING } from '@/lib/partner-system';
 
 const CAMPAIGN_FORMATS = [
   {
@@ -170,7 +171,7 @@ export default function BrandsPartner() {
   return (
     <div className="min-h-screen bg-background">
       {/* ──── HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 px-6">
+      <section className={`relative ${PARTNER_SPACING.heroVertical} px-6`}>
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -204,7 +205,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── INTRO ──────────────────────────────────────────────────────── */}
-      <section className="py-10 px-6 border-t border-border/40">
+      <section className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -222,7 +223,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── CAMPAIGN FORMATS ───────────────────────────────────────────── */}
-      <section className="py-10 px-6 border-t border-border/40">
+      <section className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-5xl mx-auto">
           <div className="space-y-4">
             {CAMPAIGN_FORMATS.map((format) => (
@@ -239,7 +240,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── WHICH FORMAT IS RIGHT ────────────────────────────────────── */}
-      <section className="py-10 px-6 border-t border-border/40">
+      <section className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-5xl mx-auto">
           <motion.h3
             initial={{ opacity: 0, y: 12 }}
@@ -272,7 +273,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── EXAMPLE CAMPAIGN ────────────────────────────────────────── */}
-      <section className="py-12 px-6 border-t border-border/40">
+      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -319,7 +320,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── ANALYTICS PROOF ────────────────────────────────────────── */}
-      <section className="py-12 px-6 border-t border-border/40">
+      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -344,7 +345,7 @@ export default function BrandsPartner() {
       </section>
 
       {/* ──── CLOSING CTA ────────────────────────────────────────────── */}
-      <section className="py-12 px-6 border-t border-border/40">
+      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
