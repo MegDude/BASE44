@@ -6,6 +6,7 @@ import { Search, X, MapPin, Sparkles, ExternalLink, Gift, CalendarDays, PersonSt
 import { motion, AnimatePresence } from "framer-motion";
 import MapShell from "@/components/map/MapShell";
 import MapResultsPanel from "@/components/map/MapResultsPanel";
+import BottomSheet from "@/components/ui/BottomSheet";
 import { useVenueMapAdapter, VenueSideCard, BuildingSideCard } from "@/components/map/mapAdapters/VenueMapAdapter";
 import { VENUE_COLORS } from "@/components/map/mapUtils/markerIcons";
 import { isWalkingDistance, hasFreePerks, isEventBased } from "@/components/map/mapUtils/filterLogic";
@@ -24,6 +25,7 @@ export default function Explore() {
   const [venues, setVenues] = useState([]);
   const [buildings, setBuildings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sheetState, setSheetState] = useState('collapsed'); // collapsed | mid | full
 
   // Use unified map store instead of local state
   const {
@@ -65,27 +67,38 @@ export default function Explore() {
   const selected = allItems.find((item) => item.id === selectedEntityId);
   const selectedType = selectedEntityType;
 
+  // Mobile: marker tap → mid state (results visible)
+  // Mobile: result tap → full state (detail drawer)
+  const handleMarkerSelect = (item) => {
+    selectEntity(item.id, item._type);
+    setSheetState('mid');
+  };
+
+  const handleResultSelect = (item) => {
+    selectEntity(item.id, item._type);
+    setSheetState('full');
+  };
+
+  // Close detail → back to mid state
+  const handleCloseDetail = () => {
+    clearSelection();
+    setSheetState('mid');
+  };
+
   return (
     <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
       {/* ── MAP (always visible, full screen with floating panels) ──── */}
-      <div className="flex-1 relative w-full h-[calc(100vh-68px)] md:h-full">
+      <div className="flex-1 relative w-full h-[calc(100vh-68px)] md:h-full z-0">
         <MapShell
           items={allItems}
           selected={selected}
-          onSelect={(item) => selectEntity(item.id, item._type)}
+          onSelect={handleMarkerSelect}
           markerIcon={(item, active) => getMarkerIcon(item, active)}
-          renderDetailDrawer={(item, onClose) =>
-            item._type === "venue" ? (
-              <VenueDetail venue={item} onClose={onClose} />
-            ) : (
-              <BuildingDetail building={item} onClose={onClose} />
-            )
-          }
           className="w-full h-full"
         />
 
         {/* Floating search bar */}
-        <div className="absolute top-5 left-6 right-6 z-[500] flex justify-center pointer-events-none">
+        <div className="absolute top-5 left-6 right-6 z-20 flex justify-center pointer-events-none">
           <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
             <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
             <input
@@ -102,7 +115,7 @@ export default function Explore() {
         </div>
 
         {/* Legend (desktop only) */}
-        <div className="absolute left-5 bottom-5 z-[500] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[220px] hidden md:block">
+        <div className="absolute left-5 bottom-5 z-20 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-4 max-w-[220px] hidden md:block">
           <div className="text-[12px] font-bold text-[#111] mb-2.5">Map logic</div>
           <div className="flex flex-wrap gap-2">
             {Object.entries(VENUE_COLORS)
@@ -121,23 +134,29 @@ export default function Explore() {
         </div>
       </div>
 
-      {/* ── FLOATING RESULTS PANEL (layered on top, always visible) ─────────────── */}
-      <div className="absolute bottom-0 left-0 right-0 md:static w-full md:w-[420px] md:shrink-0 h-1/2 md:h-full flex flex-col z-40 bg-white md:bg-transparent md:border-l border-t md:border-t-0 border-[#e8e5df]">
-        {/* Mobile search bar */}
-        <div className="md:hidden p-3 bg-white border-b border-[#e8e5df]">
-          <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">
-            <Search className="w-4 h-4 text-[#7a746b]" />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQueryFilter(e.target.value)}
-              placeholder="Search venues..."
-              className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
-            />
-          </div>
-        </div>
+      {/* ── BOTTOM SHEET (Mobile results + detail) ─────────────── */}
+      <BottomSheet state={sheetState} onStateChange={setSheetState} isDraggable>
+        {sheetState === 'full' && selected ? (
+          // Full screen detail view
+          <DetailView
+            item={selected}
+            itemType={selectedType}
+            onClose={handleCloseDetail}
+          />
+        ) : (
+          // Mid state: results list
+          <ResultsView
+            items={allItems}
+            selectedId={selectedEntityId}
+            query={query}
+            onQueryChange={setQueryFilter}
+            onSelect={handleResultSelect}
+          />
+        )}
+      </BottomSheet>
 
-        {/* Results panel */}
+      {/* ── DESKTOP RESULTS PANEL (visible on MD+) ─────────────── */}
+      <div className="hidden md:flex absolute bottom-0 left-0 right-0 md:static w-full md:w-[420px] md:shrink-0 h-full flex-col z-30 bg-white md:border-l border-[#e8e5df]">
         <MapResultsPanel
           results={allItems}
           renderCard={(item, active, onClick) =>
@@ -159,6 +178,65 @@ export default function Explore() {
 
     </div>
   );
+}
+
+// ── RESULTS VIEW (Mobile bottom sheet mid state) ────────────────────────────
+
+function ResultsView({ items, selectedId, query, onQueryChange, onSelect }) {
+  return (
+    <div className="flex flex-col h-full">
+      {/* Search */}
+      <div className="p-4 border-b border-[#e8e5df] shrink-0">
+        <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">
+          <Search className="w-4 h-4 text-[#7a746b]" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            placeholder="Search venues..."
+            className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+          />
+        </div>
+      </div>
+
+      {/* Results list */}
+      <div className="flex-1 overflow-y-auto space-y-3 p-4">
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <Sparkles className="w-10 h-10 text-[#c8c4be] mb-3" />
+            <p className="text-[15px] font-semibold text-[#3d3934]">Nothing found</p>
+            <p className="text-[13px] text-[#8d887f] mt-1">Try clearing the search.</p>
+          </div>
+        ) : (
+          items.map((item) => (
+            <div
+              key={item.id}
+              onClick={() => onSelect(item)}
+              className={`cursor-pointer transition-all rounded-lg p-3 border ${
+                selectedId === item.id
+                  ? 'border-[#111] bg-[#f5f3ef]'
+                  : 'border-[#e8e5df] bg-white hover:border-[#bbb]'
+              }`}
+            >
+              <div className="font-medium text-[13px] text-[#111]">{item.name}</div>
+              <div className="text-[11px] text-[#7a746b] mt-0.5">
+                {item.category || item._type} · {item.address?.split(',')[0]}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── DETAIL VIEW (Mobile bottom sheet full state) ────────────────────────────
+
+function DetailView({ item, itemType, onClose }) {
+  if (itemType === 'venue') {
+    return <VenueDetail venue={item} onClose={onClose} />;
+  }
+  return <BuildingDetail building={item} onClose={onClose} />;
 }
 
 

@@ -81,11 +81,11 @@ export default function MapShell({
   const flyTarget = getValidLatLng(selected);
 
   return (
-    <div className={className}>
+    <div className={`${className} relative`}>
       <MapContainer
         center={center}
         zoom={zoom}
-        className="h-full w-full"
+        className="h-full w-full absolute inset-0 z-0"
         zoomControl={false}
         scrollWheelZoom={true}
       >
@@ -114,12 +114,7 @@ export default function MapShell({
         })}
       </MapContainer>
 
-      {/* Detail drawer — render via callback if provided */}
-      {selected && renderDetailDrawer && (
-        <div className="absolute right-5 bottom-5 z-60 w-96 max-h-96 overflow-y-auto bg-white rounded-2xl shadow-xl">
-          {renderDetailDrawer(selected, () => onSelect(null))}
-        </div>
-      )}
+      {/* Detail drawer — NOT rendered here on mobile (handled by bottom sheet) */}
     </div>
   );
 }
