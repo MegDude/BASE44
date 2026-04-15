@@ -67,7 +67,7 @@ export default function PartnerWorkspace() {
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-1">Partner Workspace</span>
               <h1 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">
-                {user.full_name || "Your workspace"}
+                {user.full_name || user.email?.split("@")[0] || "Your workspace"}
               </h1>
               <p className="text-muted-foreground text-[13px] mt-1">{user.email}</p>
             </div>
