@@ -59,8 +59,10 @@ const buildingIcon = (active = false) => L.divIcon({
 function MapFlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
-    if (position) map.flyTo(position, Math.max(map.getZoom(), 15), { duration: 0.55 });
-  }, [position]);
+    if (position && typeof position[0] === 'number' && typeof position[1] === 'number' && !isNaN(position[0]) && !isNaN(position[1])) {
+      map.flyTo(position, Math.max(map.getZoom(), 15), { duration: 0.55 });
+    }
+  }, [position, map]);
   return null;
 }
 
