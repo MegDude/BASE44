@@ -68,7 +68,7 @@ export default function Explore() {
   const selectedType = selectedEntityType;
 
   // Mobile: marker tap → mid state (results visible)
-  // Mobile: result tap → full state (detail drawer)
+  // Mobile: result tap → full state (detail drawer with CTAs)
   const handleMarkerSelect = (item) => {
     selectEntity(item.id, item._type);
     setSheetState('mid');
@@ -79,10 +79,12 @@ export default function Explore() {
     setSheetState('full');
   };
 
-  // Close detail → back to mid state
-  const handleCloseDetail = () => {
-    clearSelection();
-    setSheetState('mid');
+  // Sheet state change handler
+  const handleSheetStateChange = (newState) => {
+    setSheetState(newState);
+    if (newState === 'collapsed') {
+      clearSelection();
+    }
   };
 
   return (
@@ -135,13 +137,12 @@ export default function Explore() {
       </div>
 
       {/* ── BOTTOM SHEET (Mobile results + detail) ─────────────── */}
-      <BottomSheet state={sheetState} onStateChange={setSheetState} isDraggable>
+      <BottomSheet state={sheetState} onStateChange={handleSheetStateChange} isDraggable>
         {sheetState === 'full' && selected ? (
-          // Full screen detail view
+          // Full state: detail view with CTAs
           <DetailView
             item={selected}
             itemType={selectedType}
-            onClose={handleCloseDetail}
           />
         ) : (
           // Mid state: results list
@@ -232,28 +233,23 @@ function ResultsView({ items, selectedId, query, onQueryChange, onSelect }) {
 
 // ── DETAIL VIEW (Mobile bottom sheet full state) ────────────────────────────
 
-function DetailView({ item, itemType, onClose }) {
+function DetailView({ item, itemType }) {
   if (itemType === 'venue') {
-    return <VenueDetail venue={item} onClose={onClose} />;
+    return <VenueDetail venue={item} />;
   }
-  return <BuildingDetail building={item} onClose={onClose} />;
+  return <BuildingDetail building={item} />;
 }
 
 
 // ── VENUE DETAIL ──────────────────────────────────────────────────────────────
 
-function VenueDetail({ venue, onClose }) {
+function VenueDetail({ venue }) {
   return (
     <div>
       <div className="p-5 pb-4 border-b border-[#e8e5df]">
-        <div className="flex items-start justify-between gap-3 mb-1">
-          <div>
-            <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-1.5 capitalize">{venue.category}</div>
-            <h2 className="text-[22px] font-bold text-[#111] leading-tight tracking-tight">{venue.name}</h2>
-          </div>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-[#f5f4f2] border border-[#e8e5df] flex items-center justify-center hover:bg-[#eceae6] transition-colors shrink-0 mt-0.5">
-            <X className="w-4 h-4 text-[#111]" />
-          </button>
+        <div className="mb-1">
+          <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-1.5 capitalize">{venue.category}</div>
+          <h2 className="text-[22px] font-bold text-[#111] leading-tight tracking-tight">{venue.name}</h2>
         </div>
         {venue.address && <p className="text-[14px] text-[#6f6b65]">{venue.address}</p>}
       </div>
@@ -314,18 +310,13 @@ function VenueDetail({ venue, onClose }) {
 
 // ── BUILDING DETAIL ───────────────────────────────────────────────────────────
 
-function BuildingDetail({ building, onClose }) {
+function BuildingDetail({ building }) {
   return (
     <div>
       <div className="p-5 pb-4 border-b border-[#e8e5df]">
-        <div className="flex items-start justify-between gap-3 mb-1">
-          <div>
-            <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-1.5">Building</div>
-            <h2 className="text-[22px] font-bold text-[#111] leading-tight tracking-tight">{building.name}</h2>
-          </div>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-[#f5f4f2] border border-[#e8e5df] flex items-center justify-center hover:bg-[#eceae6] transition-colors shrink-0 mt-0.5">
-            <X className="w-4 h-4 text-[#111]" />
-          </button>
+        <div className="mb-1">
+          <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-1.5">Building</div>
+          <h2 className="text-[22px] font-bold text-[#111] leading-tight tracking-tight">{building.name}</h2>
         </div>
         {building.address && <p className="text-[14px] text-[#6f6b65]">{building.address}</p>}
       </div>

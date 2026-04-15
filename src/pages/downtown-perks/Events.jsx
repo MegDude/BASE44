@@ -6,6 +6,7 @@ import { Search, X, Users, Clock, MapPin, Calendar, Star, Zap, ExternalLink, Sha
 import { motion, AnimatePresence } from "framer-motion";
 import MapShell from "@/components/map/MapShell";
 import MapResultsPanel from "@/components/map/MapResultsPanel";
+import BottomSheet from "@/components/ui/BottomSheet";
 import { eventIcon, EVENT_COLORS as CAT_COLORS } from "@/components/map/mapUtils/markerIcons";
 import moment from "moment";
 
@@ -30,6 +31,7 @@ export default function Events() {
     filters,
     isDrawerOpen,
     selectEntity,
+    clearSelection,
     setVisibleResults,
     setCategoryFilter,
     setQueryFilter,
@@ -54,6 +56,26 @@ export default function Events() {
   // Find selected event from store
   const selected = filtered.find((e) => e.id === selectedEntityId);
 
+  // Bottom sheet state management
+  const [sheetState, setSheetState] = useState('collapsed');
+
+  const handleMarkerSelect = (item) => {
+    selectEntity(item.id, 'event');
+    setSheetState('mid');
+  };
+
+  const handleResultSelect = (item) => {
+    selectEntity(item.id, 'event');
+    setSheetState('full');
+  };
+
+  const handleSheetStateChange = (newState) => {
+    setSheetState(newState);
+    if (newState === 'collapsed') {
+      clearSelection();
+    }
+  };
+
   return (
     <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
 
@@ -62,11 +84,8 @@ export default function Events() {
         <MapShell
           items={filtered}
           selected={selected}
-          onSelect={(item) => selectEntity(item.id, 'event')}
+          onSelect={handleMarkerSelect}
           markerIcon={(item, active) => eventIcon(item.category, active)}
-          renderDetailDrawer={(item, onClose) => (
-            <EventDetail event={item} onClose={onClose} />
-          )}
           className="w-full h-full"
         />
 
@@ -104,23 +123,25 @@ export default function Events() {
         </div>
       </div>
 
-      {/* ── FLOATING RESULTS PANEL (layered on top, always visible) ─────────────── */}
-      <div className="absolute bottom-0 left-0 right-0 md:static w-full md:w-[420px] md:shrink-0 h-1/2 md:h-full flex flex-col z-40 bg-white md:bg-transparent md:border-l border-t md:border-t-0 border-[#e8e5df]">
-        {/* Mobile search bar */}
-        <div className="md:hidden p-3 bg-white border-b border-[#e8e5df]">
-          <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">
-            <Search className="w-4 h-4 text-[#7a746b]" />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQueryFilter(e.target.value)}
-              placeholder="Search events..."
-              className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
-            />
-          </div>
-        </div>
+      {/* ── BOTTOM SHEET (Mobile results + detail) ─────────────── */}
+      <BottomSheet state={sheetState} onStateChange={handleSheetStateChange} isDraggable>
+        {sheetState === 'full' && selected ? (
+          // Full state: detail view with CTAs
+          <EventDetail event={selected} />
+        ) : (
+          // Mid state: results list
+          <ResultsView
+            items={filtered}
+            selectedId={selectedEntityId}
+            query={query}
+            onQueryChange={setQueryFilter}
+            onSelect={handleResultSelect}
+          />
+        )}
+      </BottomSheet>
 
-        {/* Results panel */}
+      {/* ── DESKTOP RESULTS PANEL (visible on MD+) ─────────────── */}
+      <div className="hidden md:flex absolute bottom-0 left-0 right-0 md:static w-full md:w-[420px] md:shrink-0 h-full flex-col z-30 bg-white md:border-l border-[#e8e5df]">
         <MapResultsPanel
           results={filtered}
           renderCard={(event, active, onClick) => (
@@ -228,7 +249,49 @@ function EventCard({ event, active, onClick }) {
   );
 }
 
-// ── EVENT DETAIL (map drawer) ──────────────────────────────────────────────────
+// ── RESULTS VIEW (Mobile bottom sheet mid state) ────────────────────────────
+
+function ResultsView({ items, selectedId, query, onQueryChange, onSelect }) {
+  return (
+    <div className="flex flex-col h-full">
+      {/* Search */}
+      <div className="p-4 border-b border-[#e8e5df] shrink-0">
+        <div className="flex items-center gap-2 bg-[#f5f3ef] rounded-xl px-3 py-2">
+          <Search className="w-4 h-4 text-[#7a746b]" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            placeholder="Search events..."
+            className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+          />
+        </div>
+      </div>
+
+      {/* Results list */}
+      <div className="flex-1 overflow-y-auto space-y-3 p-4">
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <Calendar className="w-10 h-10 text-[#c8c4be] mb-3" />
+            <p className="text-[15px] font-semibold text-[#3d3934]">No events found</p>
+            <p className="text-[13px] text-[#8d887f] mt-1">Try clearing the search.</p>
+          </div>
+        ) : (
+          items.map((item) => (
+            <EventCard
+              key={item.id}
+              event={item}
+              active={selectedId === item.id}
+              onClick={() => onSelect(item)}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── EVENT DETAIL (mobile bottom sheet full state) ──────────────────────────
 
 function EventDetail({ event, onClose }) {
   const date = event.date ? moment(event.date) : null;
