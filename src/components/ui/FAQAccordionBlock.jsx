@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
  *   showNumbers       boolean
  *   allowMultipleOpen boolean
  *   defaultOpenIndex  number | null
+ *   pageType          "homepage" | "partners" | "residential" | "hospitality" | "venues" | "brands" | "civic"
+ *   backgroundVariant "light" | "dark"
  *   ctaLabel          string
  *   ctaHref           string
  */
@@ -28,6 +30,8 @@ export default function FAQAccordionBlock({
   showNumbers = false,
   allowMultipleOpen = false,
   defaultOpenIndex = null,
+  pageType = "homepage",
+  backgroundVariant = "light",
   ctaLabel,
   ctaHref,
 }) {
@@ -87,7 +91,7 @@ export default function FAQAccordionBlock({
   return (
     <section
       ref={ref}
-      className={`py-16 px-6 border-t border-border/40 ${sectionBg}`}
+      className={`py-14 px-6 border-t border-border/40 ${sectionBg}`}
     >
       <div className="max-w-5xl mx-auto">
         {isSplit ? (
@@ -126,7 +130,7 @@ export default function FAQAccordionBlock({
               initial={{ opacity: 0, y: 14 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7 }}
-              className="mb-12"
+              className="mb-10"
             >
               {sectionEyebrow && (
                 <span className={`text-[11px] font-medium uppercase tracking-[0.16em] block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
@@ -152,7 +156,7 @@ export default function FAQAccordionBlock({
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ delay: 0.5 }}
-                className="mt-10"
+                className="mt-8"
               >
                 <CTAButton label={ctaLabel} href={ctaHref} isDark={isDark} />
               </motion.div>

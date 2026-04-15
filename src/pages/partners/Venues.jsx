@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { ArrowLeft, ArrowRight, X, MapPin, Star, Zap, Search } from "lucide-react";
 import L from "leaflet";
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
+import { FAQ_VENUES } from '@/lib/faq-partner-data';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -279,6 +281,20 @@ export default function VenuesPartner() {
         body="List your place, connect an offer, and start appearing when people nearby are looking for somewhere to go."
         formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
         prompts={PROMPTS} submitLabel="Add your venue" />
+
+      {/* FAQ */}
+      <FAQAccordionBlock
+        sectionEyebrow="Venue FAQs"
+        sectionTitle="Questions about venue visibility and conversion"
+        sectionIntro="Venue partners use Downtown Perks to show up when nearby intent is already forming."
+        items={FAQ_VENUES}
+        styleVariant="default"
+        showNumbers={false}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        pageType="venues"
+        backgroundVariant="light"
+      />
 
       {/* CLOSING */}
       <ClosingCTA eyebrow="Venue partner layer" headline="Your best customers are already nearby."

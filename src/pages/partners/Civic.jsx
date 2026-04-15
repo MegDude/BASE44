@@ -11,6 +11,8 @@ import PartnerCTASection from '@/components/partner/PartnerCTASection';
 import PreviewModule from '@/components/partner/PreviewModule';
 import { MapPin as MapPinIcon } from 'lucide-react';
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
+import { FAQ_CIVIC } from '@/lib/faq-partner-data';
 
 const CIVIC_FORMATS = [
   {
@@ -360,6 +362,20 @@ export default function CivicPartner() {
 
       {/* Planning */}
       <PlanningForm partnerType="Civic Organization" />
+
+      {/* FAQ */}
+      <FAQAccordionBlock
+        sectionEyebrow="Civic FAQs"
+        sectionTitle="Questions about civic participation and visibility"
+        sectionIntro="Civic partners use Downtown Perks to make what is happening downtown easier to find, easier to join, and easier to measure."
+        items={FAQ_CIVIC}
+        styleVariant="default"
+        showNumbers={false}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        pageType="civic"
+        backgroundVariant="light"
+      />
 
       {/* Closing CTA */}
       <PartnerCTASection

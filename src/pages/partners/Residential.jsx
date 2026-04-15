@@ -9,6 +9,8 @@ import LiveActivityFeed from '@/components/partner/LiveActivityFeed';
 import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
+import { FAQ_RESIDENTIAL } from '@/lib/faq-partner-data';
 
 const RESIDENTIAL_FEATURES = [
   {
@@ -220,6 +222,20 @@ export default function ResidentialPartner() {
 
       {/* Planning */}
       <PlanningForm partnerType="Residential Property" />
+
+      {/* FAQ */}
+      <FAQAccordionBlock
+        sectionEyebrow="Residential FAQs"
+        sectionTitle="Questions about residential use"
+        sectionIntro="Residential is how buildings connect residents to the downtown layer in a way that feels useful every day."
+        items={FAQ_RESIDENTIAL}
+        styleVariant="default"
+        showNumbers={false}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        pageType="residential"
+        backgroundVariant="light"
+      />
 
       {/* Closing CTA */}
       <PartnerCTASection

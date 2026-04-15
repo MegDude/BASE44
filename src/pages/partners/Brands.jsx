@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronDown } from "lucide-react";
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
+import { FAQ_BRANDS } from '@/lib/faq-partner-data';
 
 const CAMPAIGN_FORMATS = [
   {
@@ -343,6 +345,20 @@ export default function BrandsPartner() {
           </div>
         </div>
       </section>
+
+      {/* ──── FAQ ────────────────────────────────────────────────────── */}
+      <FAQAccordionBlock
+        sectionEyebrow="Brand FAQs"
+        sectionTitle="Questions about downtown campaign use"
+        sectionIntro="Brands use Downtown Perks to show up inside real downtown movement, not beside it."
+        items={FAQ_BRANDS}
+        styleVariant="default"
+        showNumbers={false}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        pageType="brands"
+        backgroundVariant="light"
+      />
 
       {/* ──── CLOSING CTA ────────────────────────────────────────────── */}
       <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>

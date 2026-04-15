@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { ArrowLeft, ArrowRight, X, Hotel, QrCode, MapPin, Zap } from "lucide-react";
 import L from "leaflet";
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
+import { FAQ_HOSPITALITY } from '@/lib/faq-partner-data';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -300,6 +302,20 @@ export default function HotelsPartner() {
         body="Share a few details and we will help you set up guest access and connect nearby context."
         formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
         prompts={PROMPTS} submitLabel="Connect your hotel" />
+
+      {/* FAQ */}
+      <FAQAccordionBlock
+        sectionEyebrow="Hospitality FAQs"
+        sectionTitle="Questions about hospitality use"
+        sectionIntro="Hospitality is about giving guests a better way into downtown through the same shared map system."
+        items={FAQ_HOSPITALITY}
+        styleVariant="default"
+        showNumbers={false}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        pageType="hospitality"
+        backgroundVariant="light"
+      />
 
       {/* CLOSING */}
       <ClosingCTA eyebrow="Hotel partner layer" headline="Your guests already want to explore. Make it simple."

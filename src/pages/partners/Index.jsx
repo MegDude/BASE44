@@ -6,6 +6,8 @@ import PartnerHero from '@/components/partner/PartnerHero';
 import SelectorCards from '@/components/partner/SelectorCards';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
 import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES, PARTNER_GRIDS } from '@/lib/partner-system';
+import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
+import { FAQ_PARTNERS, FAQ_RESIDENTIAL, FAQ_HOSPITALITY, FAQ_VENUES, FAQ_BRANDS, FAQ_CIVIC } from '@/lib/faq-partner-data';
 
 const PARTNER_TYPES = [
   {
@@ -250,6 +252,20 @@ export default function PartnersIndex() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQAccordionBlock
+        sectionEyebrow="Partner FAQs"
+        sectionTitle="How the partner system works"
+        sectionIntro="Downtown Perks gives each partner type a different way into the same downtown product. These answers explain how that system works."
+        items={FAQ_PARTNERS}
+        styleVariant="default"
+        showNumbers={false}
+        allowMultipleOpen={false}
+        defaultOpenIndex={0}
+        pageType="partners"
+        backgroundVariant="light"
+      />
 
       {/* Closing CTA */}
       <PartnerCTASection
