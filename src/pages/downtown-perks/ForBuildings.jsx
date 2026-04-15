@@ -76,7 +76,7 @@ export default function ForBuildings() {
     <div className="min-h-screen bg-background">
 
       {/* Hero */}
-      <section className="pt-36 pb-20 px-6">
+      <section className="pt-32 pb-12 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -87,15 +87,13 @@ export default function ForBuildings() {
               For Buildings & Developers
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
-              <h1 className="font-heading text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight">
-                Subscribe to a better
+              <h1 className="font-heading text-4xl md:text-5xl font-medium leading-[1.08] tracking-tight">
+                Your New
                 <br />
-                <em className="text-primary">version of downtown</em>
-                <br />
-                for your residents.
+                <em className="text-primary">Resident Amenity</em>
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed md:pb-2">
-                Downtown Perks gives your building a modern amenity — connecting residents to the neighborhood, driving foot traffic, and surfacing high-intent real estate leads for less than $5 per unit per year.
+              <p className="text-muted-foreground text-[15px] leading-relaxed md:pb-1">
+                Subscribe to a better version of downtown for your residents. Downtown Perks gives your building a modern amenity — connecting residents to the neighborhood, driving foot traffic, and surfacing high-intent real estate leads for less than $5 per unit per year.
               </p>
             </div>
           </motion.div>
@@ -103,13 +101,13 @@ export default function ForBuildings() {
       </section>
 
       {/* Benefits */}
-      <section ref={ref} className="py-16 px-6 border-t border-border/40">
+      <section ref={ref} className="py-10 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-10"
+            className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-7"
           >
             What You Get
           </motion.div>
@@ -134,9 +132,9 @@ export default function ForBuildings() {
       </section>
 
       {/* Pricing */}
-      <section className="py-16 px-6 border-t border-border/40">
+      <section className="py-10 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
-          <div className="mb-10">
+          <div className="mb-7">
             <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] block mb-4">
               Pricing
             </span>
@@ -201,7 +199,7 @@ export default function ForBuildings() {
       </section>
 
       {/* Business pitch */}
-      <section className="py-16 px-6 border-t border-border/40">
+      <section className="py-10 px-6 border-t border-border/40">
         <div className="max-w-5xl mx-auto">
           <div className="border border-border/60 rounded-lg p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
