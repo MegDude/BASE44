@@ -40,9 +40,7 @@ export default function MapResultsPanel({
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-lg md:text-[22px] font-semibold text-[#111] tracking-tight leading-tight">
             {/* Dynamic title based on context */}
-            {activeFilters.smartFilters.walking || activeFilters.smartFilters.freePerks || activeFilters.smartFilters.eventBased
-              ? 'Filtered'
-              : activeFilters.category !== 'all'
+            {activeFilters.category !== 'all'
               ? activeFilters.category.charAt(0).toUpperCase() + activeFilters.category.slice(1)
               : 'Results'}
           </h1>
