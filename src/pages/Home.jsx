@@ -1,4 +1,3 @@
-import ProductEntryLayer from "../components/home/ProductEntryLayer";
 import HeroSection from "../components/home/HeroSection";
 import WhySection from "../components/home/WhySection";
 import MapSection from "../components/home/MapSection";
@@ -10,10 +9,7 @@ import ContactSection from "../components/home/ContactSection";
 export default function Home() {
   return (
     <div className="bg-background">
-      {/* Layer 1: Product Entry (immediate interaction) */}
-      <ProductEntryLayer />
-
-      {/* Layer 2: Marketing Homepage (refined messaging) */}
+      {/* Marketing Homepage */}
       <HeroSection />
       <WhySection />
       <MapSection />
