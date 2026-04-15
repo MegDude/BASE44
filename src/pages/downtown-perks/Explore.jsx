@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { base44 } from "@/api/base44Client";
+import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
 import { Search, X, MapPin, Clock, Building2, Utensils, Dumbbell, Heart, Music, Sparkles, ExternalLink, Tag, Hotel, PersonStanding, Gift, CalendarDays } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import L from "leaflet";
@@ -85,8 +86,8 @@ export default function Explore() {
       base44.entities.Venue.list(),
       base44.entities.Building.list(),
     ]).then(([v, b]) => {
-      const venues = (v || []).filter(v => typeof v.latitude === 'number' && typeof v.longitude === 'number' && !isNaN(v.latitude) && !isNaN(v.longitude));
-      const buildings = (b || []).filter(b => typeof b.latitude === 'number' && typeof b.longitude === 'number' && !isNaN(b.latitude) && !isNaN(b.longitude));
+      const venues = filterValidMapItems(v || []).map(normalizeCoordinates);
+      const buildings = filterValidMapItems(b || []).map(normalizeCoordinates);
       setVenues(venues);
       setBuildings(buildings);
       const first = venues[0];
@@ -143,7 +144,7 @@ export default function Explore() {
     setSelectedType(type);
   }
 
-  const flyTarget = (selected && typeof selected.latitude === 'number' && typeof selected.longitude === 'number' && !isNaN(selected.latitude) && !isNaN(selected.longitude)) ? [selected.latitude, selected.longitude] : null;
+  const flyTarget = getValidLatLng(selected);
 
   return (
     <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
@@ -292,26 +293,28 @@ export default function Explore() {
           />
           <MapFlyTo position={flyTarget} />
 
-          {filteredVenues.map(v =>
-            v.latitude && v.longitude ? (
+          {filteredVenues.map(v => {
+            const coords = getValidLatLng(v);
+            return coords ? (
               <Marker
                 key={v.id}
-                position={[v.latitude, v.longitude]}
+                position={coords}
                 icon={venueIcon(v.category, selectedType === "venue" && selected?.id === v.id)}
                 eventHandlers={{ click: () => selectItem(v, "venue") }}
               />
-            ) : null
-          )}
-          {filteredBuildings.map(b =>
-            b.latitude && b.longitude ? (
+            ) : null;
+          })}
+          {filteredBuildings.map(b => {
+            const coords = getValidLatLng(b);
+            return coords ? (
               <Marker
                 key={`b-${b.id}`}
-                position={[b.latitude, b.longitude]}
+                position={coords}
                 icon={buildingIcon(selectedType === "building" && selected?.id === b.id)}
                 eventHandlers={{ click: () => selectItem(b, "building") }}
               />
-            ) : null
-          )}
+            ) : null;
+          })}
         </MapContainer>
 
         {/* Legend */}

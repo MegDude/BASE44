@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { base44 } from "@/api/base44Client";
+import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
 import { Search, X, Users, Clock, MapPin, Calendar, Star, Zap, ExternalLink, Share2, Twitter, Link as LinkIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import moment from "moment";
@@ -66,7 +67,7 @@ export default function Events() {
 
   useEffect(() => {
     base44.entities.Event.list("-date").then(data => {
-      const live = (data || []).filter(e => e.status !== "past" && e.status !== "cancelled");
+      const live = filterValidMapItems((data || []).filter(e => e.status !== "past" && e.status !== "cancelled")).map(normalizeCoordinates);
       setEvents(live);
       if (live.length > 0) setSelected(live[0]);
       setLoading(false);
@@ -87,7 +88,7 @@ export default function Events() {
     }
   }
 
-  const flyTarget = selected?.latitude && selected?.longitude ? [selected.latitude, selected.longitude] : null;
+  const flyTarget = getValidLatLng(selected);
 
   return (
     <div className="pt-[68px] min-h-screen flex flex-col-reverse md:flex-row overflow-hidden bg-[#f4f4f3]">
@@ -188,16 +189,17 @@ export default function Events() {
             attribution="&copy; CARTO"
           />
           <MapFlyTo position={flyTarget} />
-          {filtered.map(ev =>
-            ev.latitude && ev.longitude ? (
+          {filtered.map(ev => {
+            const coords = getValidLatLng(ev);
+            return coords ? (
               <Marker
                 key={ev.id}
-                position={[ev.latitude, ev.longitude]}
+                position={coords}
                 icon={eventIcon(ev.category, selected?.id === ev.id)}
                 eventHandlers={{ click: () => select(ev, true) }}
               />
-            ) : null
-          )}
+            ) : null;
+          })}
           <div className="leaflet-bottom leaflet-right" style={{ zIndex: 999 }}>
             <div className="leaflet-control leaflet-bar" />
           </div>
