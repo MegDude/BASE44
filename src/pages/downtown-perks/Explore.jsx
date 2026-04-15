@@ -101,9 +101,11 @@ export default function Explore() {
   const [mapCenter] = useState(AUSTIN_CENTER);
 
   function isWalkingDistance(item) {
-    if (!item.latitude || !item.longitude) return false;
-    const dlat = item.latitude - mapCenter[0];
-    const dlng = item.longitude - mapCenter[1];
+    const lat = item.normalizedLat || item.latitude;
+    const lng = item.normalizedLng || item.longitude;
+    if (lat === null || lng === null) return false;
+    const dlat = lat - mapCenter[0];
+    const dlng = lng - mapCenter[1];
     return Math.sqrt(dlat * dlat + dlng * dlng) <= WALKING_RADIUS_DEG;
   }
 

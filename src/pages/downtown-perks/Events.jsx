@@ -50,7 +50,7 @@ function eventIcon(category, active = false) {
 function MapFlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
-    if (position && typeof position[0] === 'number' && typeof position[1] === 'number' && !isNaN(position[0]) && !isNaN(position[1])) {
+    if (position && Array.isArray(position) && position.length === 2 && position.every(v => typeof v === 'number' && isFinite(v))) {
       map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
     }
   }, [position, map]);
