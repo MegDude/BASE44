@@ -33,8 +33,6 @@ export function useVenueMapAdapter(venues, buildings, { category, query, smartFi
  * Render venue side card
  */
 export function VenueSideCard({ venue, active, onClick }) {
-  const { MapPin, Clock, Tag } = require("lucide-react");
-
   return (
     <article
       onClick={onClick}
