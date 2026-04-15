@@ -39,10 +39,12 @@ export default function Events() {
   } = useMapStore();
 
   useEffect(() => {
-    base44.entities.Event.list("-date").then(data => {
-      // CRITICAL: All events pass through filterValidMapItems + normalizeCoordinates
-      const live = filterValidMapItems((data || []).filter(e => e.status !== "past" && e.status !== "cancelled")).map(normalizeCoordinates);
-      setEvents(live);
+    base44.functions.invoke('getSharedMapFeed', {
+      filters: { statuses: ['upcoming', 'live'] },
+      limit: 100,
+    }).then(res => {
+      const events = (res.data?.items || []).filter(e => e.entity_type === 'event');
+      setEvents(events);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
