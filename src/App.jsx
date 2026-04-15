@@ -40,6 +40,7 @@ import PropertiesPartner from './pages/partners/Properties';
 import HotelsPartner from './pages/partners/Hotels';
 import VenuesPartner from './pages/partners/Venues';
 import BrandsPartner from './pages/partners/Brands';
+import ResidentApp from './pages/resident-app';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -102,6 +103,7 @@ const AuthenticatedApp = () => {
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
         <Route path="/partners/brands" element={<BrandsPartner />} />
+        <Route path="/resident-app" element={<ResidentApp />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
