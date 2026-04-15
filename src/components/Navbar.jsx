@@ -12,7 +12,6 @@ const RESIDENT_LINKS = [
 
 const PARTNER_LINKS = [
   { to: "/partners/residential", label: "Residential", desc: "Buildings & amenity layers", icon: Home },
-  { to: "/partners/properties", label: "Properties", desc: "Buildings & developers", icon: Building2 },
   { to: "/partners/hotels", label: "Hospitality", desc: "Hotels & guest experience", icon: Hotel },
   { to: "/partners/venues", label: "Venues", desc: "Restaurants, bars & fitness", icon: MapIcon },
   { to: "/partners/brands", label: "Brands", desc: "Campaigns & activations", icon: Star },
