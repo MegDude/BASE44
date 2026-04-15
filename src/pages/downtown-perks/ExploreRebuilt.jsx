@@ -90,13 +90,40 @@ export default function ExploreRebuilt() {
   }, []);
 
   // Filter and search logic
+  useEffect(() => {
+    const allItems = [
+      ...venues.map((v) => ({ ...v, _type: 'venue' })),
+      ...buildings.map((b) => ({ ...b, _type: 'building' })),
+    ];
+
+    const filtered = allItems.filter((item) => {
+      // Category filter
+      const hasCategory =
+        (activeFilters.places && item._type === 'venue') ||
+        (activeFilters.buildings && item._type === 'building') ||
+        (!activeFilters.places && !activeFilters.buildings);
+
+      if (!hasCategory) return false;
+
+      // Search query
+      if (query.trim()) {
+        const searchText = `${item.name} ${item.category || ''} ${item.address || ''}`.toLowerCase();
+        if (!searchText.includes(query.toLowerCase())) return false;
+      }
+
+      return true;
+    });
+
+    setResults(filtered);
+  }, [venues, buildings, query, activeFilters, setResults]);
+
+  // Get selected item from results (which are synced to store)
   const allItems = [
     ...venues.map((v) => ({ ...v, _type: 'venue' })),
     ...buildings.map((b) => ({ ...b, _type: 'building' })),
   ];
 
   const filtered = allItems.filter((item) => {
-    // Category filter
     const hasCategory =
       (activeFilters.places && item._type === 'venue') ||
       (activeFilters.buildings && item._type === 'building') ||
@@ -104,7 +131,6 @@ export default function ExploreRebuilt() {
 
     if (!hasCategory) return false;
 
-    // Search query
     if (query.trim()) {
       const searchText = `${item.name} ${item.category || ''} ${item.address || ''}`.toLowerCase();
       if (!searchText.includes(query.toLowerCase())) return false;
@@ -112,11 +138,6 @@ export default function ExploreRebuilt() {
 
     return true;
   });
-
-  // Sync results to store
-  useEffect(() => {
-    setResults(filtered);
-  }, [filtered, setResults]);
 
   const selected = filtered.find((item) => item.id === selectedId);
 
