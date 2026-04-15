@@ -420,9 +420,9 @@ export default function CivicPartner() {
           </div>
 
           {/* Map + drawer */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 auto-rows-max lg:auto-rows-[480px]">
             {/* Map */}
-            <div className="lg:col-span-2 rounded-xl border border-border/50 overflow-hidden" style={{ height: "480px" }}>
+            <div className="lg:col-span-2 rounded-xl border border-border/50 overflow-hidden h-[400px] lg:h-full">
               <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }} zoomControl={false} scrollWheelZoom={false}>
                 <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; CARTO' />
                 <MapController center={mapCenter} />
@@ -454,7 +454,7 @@ export default function CivicPartner() {
             </div>
 
             {/* Drawer panel */}
-            <div className="rounded-xl border border-border/50 bg-card/60 overflow-hidden flex flex-col">
+            <div className="lg:col-span-1 rounded-xl border border-border/50 bg-card/60 overflow-hidden flex flex-col h-[400px] lg:h-full">
               {!district && !program && (
                 <div className="flex flex-col h-full">
                   <div className="p-5 border-b border-border/40">

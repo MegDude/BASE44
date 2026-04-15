@@ -66,33 +66,41 @@ export default function ResidentApp() {
   }
 
   return (
-    <div className="pt-[68px] min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-4 bg-primary/5">
-            <MapPin className="w-6 h-6 text-primary" />
+    <div className="pt-[68px] min-h-screen bg-background flex flex-col">
+      {/* Map section (mobile-first, full height on mobile, left panel on desktop) */}
+      <div className="flex-1 relative w-full md:flex hidden md:block min-h-[50vh] md:min-h-0 bg-muted/20">
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center mx-auto mb-4 bg-primary/5">
+              <MapPin className="w-6 h-6 text-primary" />
+            </div>
+            <p className="text-muted-foreground text-[13px]">MapShell will render here in Phase 5</p>
           </div>
-          <h1 className="font-heading text-3xl font-medium mb-3">Your Downtown Map</h1>
-          <p className="text-muted-foreground text-base max-w-md mx-auto">
-            Welcome, {user.full_name}. This is the foundation of your resident experience map.
-          </p>
+        </div>
+      </div>
 
-          <div className="mt-12 p-8 rounded-2xl border border-border/40 bg-card/40">
-            <h2 className="font-heading text-lg font-medium mb-4">Phase 5 Foundation</h2>
+      {/* Results/Info panel (shifts below map on mobile) */}
+      <div className="w-full md:w-[420px] md:shrink-0 flex flex-col max-h-[50vh] md:max-h-none">
+        <div className="p-6 md:p-8 bg-background overflow-y-auto flex-1">
+          <div className="text-center md:text-left">
+            <h1 className="font-heading text-2xl md:text-3xl font-medium mb-3">Your Downtown Map</h1>
             <p className="text-muted-foreground text-[13px] mb-6">
-              The /resident-app page is being built with:
+              Welcome, {user.full_name}. This is the foundation of your resident experience.
             </p>
-            <ul className="text-left space-y-2 text-[13px] text-muted-foreground max-w-sm mx-auto mb-6">
-              <li>✓ Unified MapShell architecture (shared with Explore + Events)</li>
-              <li>✓ Venue + Event + Building plotting</li>
-              <li>✓ Geofence-triggered resident alerts</li>
-              <li>✓ Ask the Map integration</li>
-              <li>✓ Saved items and preferences</li>
-              <li>✓ Resident onboarding flows</li>
-            </ul>
-            <p className="text-muted-foreground text-[12px]">
-              This page will become the map-first resident experience in Phase 5.
-            </p>
+
+            <div className="p-6 rounded-2xl border border-border/40 bg-card/40">
+              <h2 className="font-heading text-base font-medium mb-4">Phase 5 Roadmap</h2>
+              <ul className="text-left space-y-2 text-[12px] text-muted-foreground mb-4">
+                <li>✓ Unified MapShell (Explore + Events + ResidentApp)</li>
+                <li>✓ Venue + Event + Building plotting</li>
+                <li>✓ Geofence-triggered alerts</li>
+                <li>✓ Ask the Map integration</li>
+                <li>✓ Saved items & preferences</li>
+              </ul>
+              <p className="text-muted-foreground text-[11px]">
+                Interactive map experience coming soon.
+              </p>
+            </div>
           </div>
         </div>
       </div>
