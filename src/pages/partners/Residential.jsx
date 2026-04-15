@@ -8,6 +8,7 @@ import ProofGrid from '@/components/partner/ProofGrid';
 import LiveActivityFeed from '@/components/partner/LiveActivityFeed';
 import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
+import { PARTNER_SPACING } from '@/lib/partner-system';
 
 const RESIDENTIAL_FEATURES = [
   {
@@ -94,7 +95,7 @@ export default function ResidentialPartner() {
       />
 
       {/* Partner model */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
             How it works for residents
@@ -139,7 +140,7 @@ export default function ResidentialPartner() {
       </section>
 
       {/* Map placement */}
-      <section id="map" className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section id="map" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-8">
             Map visibility
@@ -162,7 +163,7 @@ export default function ResidentialPartner() {
       <HowItWorksRail steps={HOW_IT_WORKS} />
 
       {/* Use cases */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
             Use cases

@@ -10,6 +10,7 @@ import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
 import PreviewModule from '@/components/partner/PreviewModule';
 import { MapPin as MapPinIcon } from 'lucide-react';
+import { PARTNER_SPACING } from '@/lib/partner-system';
 
 const CIVIC_FORMATS = [
   {
@@ -172,7 +173,7 @@ export default function CivicPartner() {
       />
 
       {/* Intro section */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
             Civic formats for downtown participation
@@ -184,7 +185,7 @@ export default function CivicPartner() {
       </section>
 
       {/* Civic formats */}
-      <section id="formats" className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section id="formats" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="space-y-6">
             {CIVIC_FORMATS.map((format, i) => (
@@ -254,7 +255,7 @@ export default function CivicPartner() {
       </section>
 
       {/* Format selector helper */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h3 className="text-[24px] md:text-[28px] font-bold text-[#111] leading-tight tracking-tight mb-8">
             Which civic format is right?
@@ -309,7 +310,7 @@ export default function CivicPartner() {
       </section>
 
       {/* Civic examples */}
-      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
             See how civic participation comes to life on the map
