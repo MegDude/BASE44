@@ -7,9 +7,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import MapShell from "@/components/map/MapShell";
 import MapResultsPanel from "@/components/map/MapResultsPanel";
 import BottomSheet from "@/components/ui/BottomSheet";
+import HeatmapLayer from "@/components/map/HeatmapLayer";
+import HeatmapControls from "@/components/map/HeatmapControls";
 import { useVenueMapAdapter, VenueSideCard, BuildingSideCard } from "@/components/map/mapAdapters/VenueMapAdapter";
 import { VENUE_COLORS } from "@/components/map/mapUtils/markerIcons";
 import { isWalkingDistance, hasFreePerks, isEventBased } from "@/components/map/mapUtils/filterLogic";
+import { filterSignalsByTime } from "@/lib/heatmap-utils";
 
 const CATEGORIES = [
   { id: "all", label: "All", icon: Sparkles },
@@ -26,6 +29,9 @@ export default function Explore() {
   const [buildings, setBuildings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sheetState, setSheetState] = useState('collapsed'); // collapsed | mid | full
+  const [heatmapVisible, setHeatmapVisible] = useState(false);
+  const [heatmapTimeFilter, setHeatmapTimeFilter] = useState('now');
+  const [analyticsData, setAnalyticsData] = useState([]);
 
   // Use unified map store instead of local state
   const {
@@ -45,16 +51,31 @@ export default function Explore() {
     Promise.all([
       base44.entities.Venue.list(),
       base44.entities.Building.list(),
+      base44.entities.AnalyticsSignal.list('-timestamp', 500), // Last 500 signals
     ])
-      .then(([v, b]) => {
+      .then(([v, b, signals]) => {
         const venues = filterValidMapItems(v || []).map(normalizeCoordinates);
         const buildings = filterValidMapItems(b || []).map(normalizeCoordinates);
         setVenues(venues);
         setBuildings(buildings);
+        setAnalyticsData(signals || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
+
+  // Refresh heatmap data every 30 seconds when visible
+  useEffect(() => {
+    if (!heatmapVisible) return;
+
+    const interval = setInterval(() => {
+      base44.entities.AnalyticsSignal.list('-timestamp', 500).then((signals) => {
+        setAnalyticsData(signals || []);
+      });
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [heatmapVisible]);
 
   // Sync store filters with adapter
   const { items: allItems, getMarkerIcon } = useVenueMapAdapter(venues, buildings, {
@@ -87,6 +108,9 @@ export default function Explore() {
     }
   };
 
+  // Filter analytics data based on time
+  const filteredAnalytics = filterSignalsByTime(analyticsData, heatmapTimeFilter);
+
   return (
     <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-[#f4f4f3]">
       {/* ── MAP (always visible, full screen with floating panels) ──── */}
@@ -97,22 +121,42 @@ export default function Explore() {
           onSelect={handleMarkerSelect}
           markerIcon={(item, active) => getMarkerIcon(item, active)}
           className="w-full h-full"
-        />
+        >
+          {/* Heatmap overlay layer */}
+          <HeatmapLayer
+            visible={heatmapVisible}
+            data={filteredAnalytics}
+            timeFilter={heatmapTimeFilter}
+          />
+        </MapShell>
 
-        {/* Floating search bar */}
-        <div className="absolute top-5 left-6 right-6 z-20 flex justify-center pointer-events-none">
-          <div className="w-full max-w-2xl pointer-events-auto flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
-            <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQueryFilter(e.target.value)}
-              placeholder="Search venues, perks, neighborhoods..."
-              className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+        {/* Floating controls */}
+        <div className="absolute top-5 left-6 right-6 z-20 flex flex-col gap-3 pointer-events-none">
+          {/* Search bar */}
+          <div className="flex justify-center pointer-events-auto">
+            <div className="w-full max-w-2xl flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
+              <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQueryFilter(e.target.value)}
+                placeholder="Search venues, perks, neighborhoods..."
+                className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+              />
+              <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0 hidden md:block">
+                Austin
+              </button>
+            </div>
+          </div>
+
+          {/* Heatmap controls */}
+          <div className="flex justify-center pointer-events-auto">
+            <HeatmapControls
+              visible={heatmapVisible}
+              onVisibilityChange={setHeatmapVisible}
+              timeFilter={heatmapTimeFilter}
+              onTimeFilterChange={setHeatmapTimeFilter}
             />
-            <button className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-all shrink-0 hidden md:block">
-              Austin
-            </button>
           </div>
         </div>
 
