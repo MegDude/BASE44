@@ -52,16 +52,30 @@ export default function UnifiedMapShell({
 
   const handleDragEnd = (map) => {
     const center = map.getCenter();
-    setMapCenter([center.lat, center.lng]);
+    const lat = center?.lat;
+    const lng = center?.lng;
+    
+    // Only update if both are valid finite numbers
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+      setMapCenter([lat, lng]);
+    }
   };
 
   const handleZoom = (map) => {
     setMapZoom(map.getZoom());
   };
 
+  // Ensure mapCenter is always valid for MapContainer
+  const validCenter = (
+    Array.isArray(mapCenter) &&
+    mapCenter.length === 2 &&
+    Number.isFinite(mapCenter[0]) &&
+    Number.isFinite(mapCenter[1])
+  ) ? mapCenter : AUSTIN_CENTER;
+
   return (
     <MapContainer
-      center={mapCenter}
+      center={validCenter}
       zoom={mapZoom}
       className={`${className} relative`}
       zoomControl={false}
