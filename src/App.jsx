@@ -36,6 +36,7 @@ import ResidentialPartner from './pages/partners/Residential';
 import CivicPartner from './pages/partners/Civic';
 import PartnerWorkspace from './pages/PartnerWorkspace';
 import Dashboard from './pages/Dashboard';
+import PartnerDashboard from './pages/PartnerDashboard';
 import PropertiesPartner from './pages/partners/Properties';
 import HotelsPartner from './pages/partners/Hotels';
 import VenuesPartner from './pages/partners/Venues';
@@ -102,6 +103,7 @@ const AuthenticatedApp = () => {
         <Route path="/partners/properties" element={<ResidentialPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/partner-dashboard" element={<PartnerDashboard />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
         <Route path="/partners/brands" element={<BrandsPartner />} />
