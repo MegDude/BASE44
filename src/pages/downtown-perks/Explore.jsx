@@ -85,8 +85,8 @@ export default function Explore() {
       base44.entities.Venue.list(),
       base44.entities.Building.list(),
     ]).then(([v, b]) => {
-      const venues = (v || []).map(v => ({ ...v, latitude: Number(v.latitude), longitude: Number(v.longitude) }));
-      const buildings = (b || []).map(b => ({ ...b, latitude: Number(b.latitude), longitude: Number(b.longitude) }));
+      const venues = (v || []).filter(v => typeof v.latitude === 'number' && typeof v.longitude === 'number' && !isNaN(v.latitude) && !isNaN(v.longitude));
+      const buildings = (b || []).filter(b => typeof b.latitude === 'number' && typeof b.longitude === 'number' && !isNaN(b.latitude) && !isNaN(b.longitude));
       setVenues(venues);
       setBuildings(buildings);
       const first = venues[0];
