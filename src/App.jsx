@@ -98,10 +98,10 @@ const AuthenticatedApp = () => {
         <Route path="/brands/the-shore" element={<TheShore />} />
         <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
+        <Route path="/partners/residential" element={<ResidentialPartner />} />
+        <Route path="/partners/properties" element={<ResidentialPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/partners/residential" element={<ResidentialPartner />} />
-        <Route path="/partners/properties" element={<PropertiesPartner />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
         <Route path="/partners/brands" element={<BrandsPartner />} />
