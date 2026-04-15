@@ -50,11 +50,6 @@ export default function Events() {
     return true;
   });
 
-  // Update store with visible results
-  useEffect(() => {
-    setVisibleResults(filtered);
-  }, [filtered, setVisibleResults]);
-
   // Find selected event from store
   const selected = filtered.find((e) => e.id === selectedEntityId);
 
