@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
 import L from "leaflet";
@@ -35,7 +35,6 @@ function MapFlyTo({ position }) {
  * @property {any} selected - Currently selected item
  * @property {Function} onSelect - Callback when item is selected
  * @property {Function} markerIcon - Optional function to create custom marker icons
- * @property {Function} renderItemCard - Render function for item cards
  * @property {Function} renderDetailDrawer - Optional render function for detail drawer
  * @property {number[]} center - Map center [lat, lng]
  * @property {number} zoom - Initial zoom level
@@ -50,7 +49,6 @@ export default function MapShell({
   selected,
   onSelect,
   markerIcon,
-  renderItemCard,
   renderDetailDrawer,
   center = AUSTIN_CENTER,
   zoom = 14,
@@ -92,13 +90,6 @@ export default function MapShell({
           );
         })}
       </MapContainer>
-
-      {/* Item list cards — render via callback */}
-      <div className="absolute top-5 left-5 bottom-5 w-80 z-50 bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {validItems.map(item => renderItemCard(item, selected?.id === item.id, () => onSelect(item)))}
-        </div>
-      </div>
 
       {/* Detail drawer — render via callback if provided */}
       {selected && renderDetailDrawer && (
