@@ -1,4 +1,4 @@
-#env
+# env
 .env
 .env.*
 
@@ -11,21 +11,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# dependencies / build output
 node_modules
 dist
 dist-ssr
+.vite
+.vercel
+
+# local files
 *.local
+.DS_Store
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-.env
-.vite
