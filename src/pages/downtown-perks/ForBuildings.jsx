@@ -77,7 +77,7 @@ export default function ForBuildings() {
 
       {/* Hero */}
       <section className="pt-32 pb-12 px-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -102,7 +102,7 @@ export default function ForBuildings() {
 
       {/* Benefits */}
       <section ref={ref} className="py-10 px-6 border-t border-border/40">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
@@ -133,7 +133,7 @@ export default function ForBuildings() {
 
       {/* Pricing */}
       <section className="py-10 px-6 border-t border-border/40">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="mb-7">
             <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] block mb-4">
               Pricing
@@ -200,7 +200,7 @@ export default function ForBuildings() {
 
       {/* Business pitch */}
       <section className="py-10 px-6 border-t border-border/40">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="border border-border/60 rounded-lg p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
               <div>

@@ -25,7 +25,7 @@ export default function MapSection() {
 
   return (
     <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
 
         {/* Header */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-14 items-end">
