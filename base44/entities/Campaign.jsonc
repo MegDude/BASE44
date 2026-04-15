@@ -1,0 +1,93 @@
+{
+  "name": "Campaign",
+  "type": "object",
+  "properties": {
+    "slug": {
+      "type": "string",
+      "title": "Campaign Slug"
+    },
+    "name": {
+      "type": "string",
+      "title": "Campaign Name"
+    },
+    "brand_id": {
+      "type": "string",
+      "title": "Brand ID"
+    },
+    "type": {
+      "type": "string",
+      "title": "Campaign Type",
+      "enum": [
+        "launch",
+        "seasonal",
+        "event",
+        "promotion",
+        "resident"
+      ],
+      "default": "promotion"
+    },
+    "start_date": {
+      "type": "string",
+      "title": "Start Date",
+      "format": "date-time"
+    },
+    "end_date": {
+      "type": "string",
+      "title": "End Date",
+      "format": "date-time"
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Is Active",
+      "default": true
+    },
+    "districts": {
+      "type": "array",
+      "title": "Participating Districts",
+      "items": {
+        "type": "string"
+      }
+    },
+    "participating_venues": {
+      "type": "array",
+      "title": "Participating Venues",
+      "items": {
+        "type": "string"
+      }
+    },
+    "participating_buildings": {
+      "type": "array",
+      "title": "Participating Buildings",
+      "items": {
+        "type": "string"
+      }
+    },
+    "associated_events": {
+      "type": "array",
+      "title": "Associated Events",
+      "items": {
+        "type": "string"
+      }
+    },
+    "objective": {
+      "type": "string",
+      "title": "Campaign Objective"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "draft",
+        "active",
+        "paused",
+        "completed"
+      ],
+      "default": "draft"
+    }
+  },
+  "required": [
+    "slug",
+    "name",
+    "brand_id"
+  ]
+}

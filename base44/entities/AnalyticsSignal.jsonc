@@ -1,0 +1,79 @@
+{
+  "name": "AnalyticsSignal",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "title": "Timestamp",
+      "format": "date-time"
+    },
+    "source_type": {
+      "type": "string",
+      "title": "Source Type",
+      "enum": [
+        "building_qr",
+        "map_discovery",
+        "event_marker",
+        "sms",
+        "resident_card",
+        "direct_link"
+      ]
+    },
+    "campaign_id": {
+      "type": "string",
+      "title": "Campaign ID"
+    },
+    "brand_id": {
+      "type": "string",
+      "title": "Brand ID"
+    },
+    "venue_id": {
+      "type": "string",
+      "title": "Venue ID"
+    },
+    "building_id": {
+      "type": "string",
+      "title": "Building ID"
+    },
+    "event_id": {
+      "type": "string",
+      "title": "Event ID"
+    },
+    "district_id": {
+      "type": "string",
+      "title": "District ID"
+    },
+    "action_type": {
+      "type": "string",
+      "title": "Action Type",
+      "enum": [
+        "impression",
+        "open",
+        "scan",
+        "save",
+        "rsvp",
+        "unlock",
+        "opt_in",
+        "visit_intent",
+        "visit",
+        "redemption",
+        "booking",
+        "repeat_visit"
+      ]
+    },
+    "value": {
+      "type": "number",
+      "title": "Value",
+      "default": 1
+    },
+    "session_token": {
+      "type": "string",
+      "title": "Session Token"
+    }
+  },
+  "required": [
+    "timestamp",
+    "source_type",
+    "action_type"
+  ]
+}

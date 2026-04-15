@@ -41,6 +41,7 @@ import HotelsPartner from './pages/partners/Hotels';
 import VenuesPartner from './pages/partners/Venues';
 import BrandsPartner from './pages/partners/Brands';
 import ResidentApp from './pages/resident-app';
+import BrandAnalytics from './pages/downtown-perks/brands/BrandAnalytics';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -80,6 +81,7 @@ const AuthenticatedApp = () => {
         <Route path="/downtown-perks/about" element={<About />} />
         {/* Brands routes */}
         <Route path="/brands" element={<BrandsIndex />} />
+        <Route path="/brands/analytics" element={<BrandAnalytics />} />
         <Route path="/brands/the-paseo" element={<ThePaseo />} />
         <Route path="/brands/the-waterline" element={<TheWaterline />} />
         <Route path="/brands/bangers" element={<Bangers />} />
