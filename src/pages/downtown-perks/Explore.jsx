@@ -3,6 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { useMapStore } from "@/store/map-store";
 import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
 import { Search, X, MapPin, Sparkles, ExternalLink, Gift, CalendarDays, PersonStanding, Utensils, Dumbbell, Heart, Music, Building2, Hotel, Clock, Tag } from "lucide-react";
+import VenueBookingForm from "@/components/booking/VenueBookingForm";
+import AmenityReservationForm from "@/components/booking/AmenityReservationForm";
 import { motion, AnimatePresence } from "framer-motion";
 import MapShell from "@/components/map/MapShell";
 import MapResultsPanel from "@/components/map/MapResultsPanel";
@@ -277,17 +279,24 @@ function ResultsView({ items, selectedId, query, onQueryChange, onSelect }) {
 
 // ── DETAIL VIEW (Mobile bottom sheet full state) ────────────────────────────
 
-function DetailView({ item, itemType }) {
+function DetailView({ item, itemType, onClose }) {
+  const [showBooking, setShowBooking] = useState(false);
+  const [showReservation, setShowReservation] = useState(false);
+
   if (itemType === 'venue') {
-    return <VenueDetail venue={item} />;
+    return <VenueDetail venue={item} onClose={onClose} showBooking={showBooking} setShowBooking={setShowBooking} />;
   }
-  return <BuildingDetail building={item} />;
+  return <BuildingDetail building={item} onClose={onClose} showReservation={showReservation} setShowReservation={setShowReservation} />;
 }
 
 
 // ── VENUE DETAIL ──────────────────────────────────────────────────────────────
 
-function VenueDetail({ venue }) {
+function VenueDetail({ venue, onClose, showBooking, setShowBooking }) {
+  if (showBooking) {
+    return <VenueBookingForm venue={venue} onClose={() => { setShowBooking(false); onClose?.(); }} />;
+  }
+
   return (
     <div>
       <div className="p-5 pb-4 border-b border-[#e8e5df]">
@@ -333,18 +342,13 @@ function VenueDetail({ venue }) {
           </div>
         )}
         <div className="flex gap-2.5 pt-1">
-          {venue.website ? (
-            <a href={venue.website} target="_blank" rel="noopener noreferrer"
-              className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] flex items-center justify-center gap-2 hover:bg-[#2a2a2a] transition-colors">
-              Visit <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          ) : (
-            <button className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
-              Save
-            </button>
-          )}
+          <button
+            onClick={() => setShowBooking(true)}
+            className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
+            Book now
+          </button>
           <button className="flex-1 h-12 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors">
-            Nearby
+            Save
           </button>
         </div>
       </div>
@@ -354,7 +358,11 @@ function VenueDetail({ venue }) {
 
 // ── BUILDING DETAIL ───────────────────────────────────────────────────────────
 
-function BuildingDetail({ building }) {
+function BuildingDetail({ building, onClose, showReservation, setShowReservation }) {
+  if (showReservation && building.amenities?.length) {
+    return <AmenityReservationForm building={building} amenities={building.amenities} onClose={() => { setShowReservation(false); onClose?.(); }} />;
+  }
+
   return (
     <div>
       <div className="p-5 pb-4 border-b border-[#e8e5df]">
@@ -398,9 +406,17 @@ function BuildingDetail({ building }) {
           </div>
         )}
         <div className="flex gap-2.5 pt-1">
-          <button className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
-            Save
-          </button>
+          {building.amenities?.length > 0 ? (
+            <button
+              onClick={() => setShowReservation(true)}
+              className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
+              Reserve amenity
+            </button>
+          ) : (
+            <button className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
+              Save
+            </button>
+          )}
           <button className="flex-1 h-12 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors">
             Nearby perks
           </button>

@@ -1,0 +1,78 @@
+{
+  "name": "Booking",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "title": "Booking Type",
+      "enum": [
+        "venue_spot",
+        "event_rsvp",
+        "amenity_reservation"
+      ],
+      "default": "venue_spot"
+    },
+    "user_email": {
+      "type": "string",
+      "title": "User Email"
+    },
+    "venue_id": {
+      "type": "string",
+      "title": "Venue ID"
+    },
+    "event_id": {
+      "type": "string",
+      "title": "Event ID"
+    },
+    "building_id": {
+      "type": "string",
+      "title": "Building ID"
+    },
+    "amenity": {
+      "type": "string",
+      "title": "Amenity Name"
+    },
+    "party_size": {
+      "type": "number",
+      "title": "Party Size"
+    },
+    "booking_date": {
+      "type": "string",
+      "title": "Booking Date",
+      "format": "date-time"
+    },
+    "booking_time": {
+      "type": "string",
+      "title": "Booking Time (HH:MM)"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "title": "Duration (minutes)",
+      "default": 60
+    },
+    "special_requests": {
+      "type": "string",
+      "title": "Special Requests"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "confirmed",
+        "pending",
+        "cancelled"
+      ],
+      "default": "pending"
+    },
+    "confirmation_code": {
+      "type": "string",
+      "title": "Confirmation Code"
+    }
+  },
+  "required": [
+    "type",
+    "user_email",
+    "booking_date",
+    "status"
+  ]
+}

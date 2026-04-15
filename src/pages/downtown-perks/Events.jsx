@@ -8,6 +8,7 @@ import MapShell from "@/components/map/MapShell";
 import MapResultsPanel from "@/components/map/MapResultsPanel";
 import BottomSheet from "@/components/ui/BottomSheet";
 import { eventIcon, EVENT_COLORS as CAT_COLORS } from "@/components/map/mapUtils/markerIcons";
+import EventRSVPForm from "@/components/booking/EventRSVPForm";
 import moment from "moment";
 
 const AUSTIN_CENTER = [30.267, -97.743];
@@ -127,7 +128,7 @@ export default function Events() {
       <BottomSheet state={sheetState} onStateChange={handleSheetStateChange} isDraggable>
         {sheetState === 'full' && selected ? (
           // Full state: detail view with CTAs
-          <EventDetail event={selected} />
+          <EventDetail event={selected} onClose={() => handleSheetStateChange('collapsed')} />
         ) : (
           // Mid state: results list
           <ResultsView
@@ -294,8 +295,13 @@ function ResultsView({ items, selectedId, query, onQueryChange, onSelect }) {
 // ── EVENT DETAIL (mobile bottom sheet full state) ──────────────────────────
 
 function EventDetail({ event, onClose }) {
+  const [showRSVP, setShowRSVP] = useState(false);
   const date = event.date ? moment(event.date) : null;
   const color = CAT_COLORS[event.category] || "#C8973A";
+
+  if (showRSVP) {
+    return <EventRSVPForm event={event} onClose={() => { setShowRSVP(false); onClose?.(); }} />;
+  }
 
   return (
     <div>
@@ -396,7 +402,9 @@ function EventDetail({ event, onClose }) {
 
         {/* CTAs */}
         <div className="flex gap-2.5 pt-1">
-          <button className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
+          <button
+            onClick={() => setShowRSVP(true)}
+            className="flex-1 h-12 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors">
             RSVP
           </button>
           <button className="flex-1 h-12 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors">
