@@ -1,1086 +1,373 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useInView, animate } from "framer-motion";
-import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { ArrowLeft, ArrowRight, MapPin, Calendar, Users, TrendingUp, Activity, Building2, Zap, Star, ChevronRight, X } from "lucide-react";
-import L from "leaflet";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, Calendar, Users, TrendingUp, CheckCircle2 } from 'lucide-react';
+import PartnerHero from '@/components/partner/PartnerHero';
+import PartnerTypeCard from '@/components/partner/PartnerTypeCard';
+import SelectorCards from '@/components/partner/SelectorCards';
+import ProofGrid from '@/components/partner/ProofGrid';
+import LiveActivityFeed from '@/components/partner/LiveActivityFeed';
+import PlanningForm from '@/components/partner/PlanningForm';
+import PartnerCTASection from '@/components/partner/PartnerCTASection';
+import PreviewModule from '@/components/partner/PreviewModule';
+import { MapPin as MapPinIcon } from 'lucide-react';
 
-// Fix leaflet icons
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
-
-// ─── SHARED DEMO DATA ───────────────────────────────────────────────────────
-
-const DISTRICTS = {
-  congress: {
-    id: "congress", name: "Congress", color: "#C8973A",
-    programs: 3, rsvps: 184, views: 412, trend: "+18% this week",
-    active: 3, buildingLinked: 1,
-    topActivity: "Downtown Style Weekend",
-    nearby: ["Public Art Walk", "Congress Clean Streets Briefing", "Rooftop Yoga at The Quincy"],
-    center: [30.2660, -97.7431],
-  },
-  rainey: {
-    id: "rainey", name: "Rainey", color: "#7B9EC8",
-    programs: 2, rsvps: 96, views: 233, trend: "+9% this week",
-    active: 1, buildingLinked: 1,
-    topActivity: "Rainey Clean Corridor Morning",
-    nearby: ["Rainey Resident Safety Walk", "Hotel Van Zandt Wellness Hour"],
-    center: [30.2580, -97.7370],
-  },
-  waterloo: {
-    id: "waterloo", name: "Waterloo", color: "#5B9E6E",
-    programs: 2, rsvps: 71, views: 188, trend: "+11% this week",
-    active: 1, buildingLinked: 1,
-    topActivity: "Waterloo Sunset Series",
-    nearby: ["Wellness Walk Club", "Waterloo Park Morning"],
-    center: [30.2720, -97.7390],
-  },
-  redRiver: {
-    id: "redRiver", name: "Red River", color: "#C85858",
-    programs: 2, rsvps: 54, views: 165, trend: "+6% this week",
-    active: 0, buildingLinked: 0,
-    topActivity: "Red River Night Pulse",
-    nearby: ["Venue Safety Activation"],
-    center: [30.2645, -97.7360],
-  },
-};
-
-const PROGRAMS = [
+const CIVIC_FORMATS = [
   {
-    id: "style-weekend", name: "Downtown Style Weekend",
-    type: "Civic activation", district: "Congress", schedule: "Fri–Sun · 78701",
-    status: "This weekend",
-    description: "A multi-day downtown activation connecting style, retail, hospitality, and walkable discovery.",
-    venues: ["Fine Eyewear", "Hotel Van Zandt", "Neighbourhood coffee stop", "Local retail partner"],
-    linked: ["The Quincy", "The Independent"],
-    rsvps: 184, saves: 92, visits: 246,
-    lat: 30.2660, lng: -97.7431,
-    filter: "civic",
+    id: 'district-visibility',
+    label: 'District visibility layer',
+    description: 'Always-on civic presence across a neighborhood, district, or downtown corridor.',
+    bestFor: 'Always-on civic presence',
+    placements: 'Map layer, district pins, recurring civic highlights, partner adjacency',
+    activation: 'Always-on district visibility, civic information, or neighborhood utility layer',
+    kpi: 'Map opens, district engagement, repeat discovery, attributed visits',
+    body: 'Use this format when the goal is to make a district, organization, or public-serving layer easier to see and navigate every day. This works best for groups that need a steady downtown presence instead of a one-time campaign.',
   },
   {
-    id: "public-art", name: "Public Art Walk",
-    type: "Community event", district: "Congress", schedule: "Saturdays · 10am",
-    status: "This weekend",
-    description: "A guided walk through public art installations in the Congress district, open to all residents.",
-    venues: ["The Quincy", "Fine Eyewear"],
-    linked: ["The Independent"],
-    rsvps: 47, saves: 38, visits: 94,
-    lat: 30.2670, lng: -97.7440,
-    filter: "events",
+    id: 'event-activation',
+    label: 'Event-led civic activation',
+    description: 'Festivals, downtown programs, public events, cultural moments, and RSVP-driven participation.',
+    bestFor: 'Event-driven participation',
+    placements: 'Live event markers, RSVP layer, timed offers or prompts, event detail pages',
+    activation: 'Event-linked civic promotion or public participation flow',
+    kpi: 'Event opens, RSVPs, attendance, participation actions, downstream visits',
+    body: 'Use this format when the goal is to drive turnout or make a public moment easier to join. This works well for civic organizers, cultural districts, and downtown partners activating around specific events or programming windows.',
   },
   {
-    id: "clean-streets", name: "Congress Clean Streets Briefing",
-    type: "Civic program", district: "Congress", schedule: "Mondays · 8am",
-    status: "Active now",
-    description: "Weekly district briefing connecting building managers, businesses, and residents around cleanliness and safety.",
-    venues: ["The Quincy"],
-    linked: [],
-    rsvps: 22, saves: 15, visits: 41,
-    lat: 30.2655, lng: -97.7425,
-    filter: "civic",
+    id: 'utility-campaign',
+    label: 'Neighborhood utility campaign',
+    description: 'Public-service information, wayfinding, recurring neighborhood tools, and useful downtown guidance.',
+    bestFor: 'Useful public guidance',
+    placements: 'Map utility placement, building adjacency, QR surfaces, service-led CTA, helpful neighborhood prompts',
+    activation: 'Useful civic action, service visibility, or public information layer',
+    kpi: 'Saves, scans, visit intent, repeat engagement, utility use',
+    body: 'Use this format when the experience should feel helpful first. This is ideal for civic groups offering guidance, wayfinding, service information, neighborhood discovery, or practical local resources.',
   },
   {
-    id: "rainey-morning", name: "Rainey Clean Corridor Morning",
-    type: "Neighborhood program", district: "Rainey", schedule: "Tuesdays · 7am",
-    status: "Active now",
-    description: "Early morning corridor activation with residents, local businesses, and neighborhood group volunteers.",
-    venues: ["Hotel Van Zandt"],
-    linked: [],
-    rsvps: 38, saves: 24, visits: 61,
-    lat: 30.2580, lng: -97.7370,
-    filter: "community",
+    id: 'building-outreach',
+    label: 'Building and resident outreach layer',
+    description: 'Move-ins, resident welcome flows, district education, local discovery, and recurring neighborhood participation.',
+    bestFor: 'Resident and building outreach',
+    placements: 'Lobby QR, welcome insert, building signage, resident flows, district prompts',
+    activation: 'Resident-facing civic onboarding or district participation layer',
+    kpi: 'Building response, scans, opt-ins, resident interaction, repeat local engagement',
+    body: 'Use this format when the opportunity starts where people live. This works best for civic organizations that want to connect residents to neighborhood resources, public programming, district events, or useful local activity through residential buildings.',
   },
   {
-    id: "safety-walk", name: "Rainey Resident Safety Walk",
-    type: "Community event", district: "Rainey", schedule: "Thursdays · 7pm",
-    status: "Tonight",
-    description: "Resident-led safety and community walk through Rainey Street with local group coordination.",
-    venues: ["Hotel Van Zandt"],
-    linked: [],
-    rsvps: 29, saves: 18, visits: 44,
-    lat: 30.2575, lng: -97.7365,
-    filter: "community",
-  },
-  {
-    id: "waterloo-sunset", name: "Waterloo Sunset Series",
-    type: "Cultural programming", district: "Waterloo", schedule: "Fridays · 6pm",
-    status: "Tonight",
-    description: "Weekly outdoor performance series at Waterloo Park — music, art, and public space activation.",
-    venues: ["Waterloo Greenway"],
-    linked: ["The Independent"],
-    rsvps: 71, saves: 49, visits: 113,
-    lat: 30.2720, lng: -97.7390,
-    filter: "events",
-  },
-  {
-    id: "wellness-walk", name: "Wellness Walk Club",
-    type: "Wellness program", district: "Waterloo", schedule: "Wednesdays · 7am",
-    status: "This week",
-    description: "Community morning walk for downtown residents and workers — starting at Waterloo Park.",
-    venues: ["Waterloo Greenway"],
-    linked: [],
-    rsvps: 33, saves: 21, visits: 55,
-    lat: 30.2715, lng: -97.7385,
-    filter: "wellness",
-  },
-  {
-    id: "red-river-pulse", name: "Red River Night Pulse",
-    type: "Safety + hospitality activation", district: "Red River", schedule: "Fri–Sat · 9pm",
-    status: "Active now",
-    description: "Live safety and hospitality activation during peak Red River nightlife hours — real-time district visibility.",
-    venues: ["Venue Safety Activation"],
-    linked: [],
-    rsvps: 54, saves: 32, visits: 88,
-    lat: 30.2645, lng: -97.7360,
-    filter: "hospitality",
-  },
-  {
-    id: "venue-safety", name: "Venue Safety Activation",
-    type: "Civic / hospitality", district: "Red River", schedule: "Weekends",
-    status: "This weekend",
-    description: "Coordinated venue safety activation working with businesses and district partners on Red River corridor.",
-    venues: [],
-    linked: [],
-    rsvps: 12, saves: 8, visits: 22,
-    lat: 30.2640, lng: -97.7355,
-    filter: "civic",
+    id: 'sponsored-moment',
+    label: 'Sponsored public moment',
+    description: 'Special downtown initiatives, seasonal programming, sponsored activations, and collaborative civic moments.',
+    bestFor: 'Sponsored activation',
+    placements: 'Feature placement, timed marker priority, sponsor recognition, event-linked context',
+    activation: 'Timed civic spotlight or co-branded participation moment',
+    kpi: 'Opens, engagement rate, attendance, sponsor visibility, repeat action',
+    body: 'Use this format when a public moment needs added visibility, sponsorship, or concentrated attention. This is best for limited-time civic activations that should feel visible, useful, and well-integrated into live downtown behavior.',
   },
 ];
 
-const ORGS = [
+const FORMAT_SELECTOR = [
   {
-    id: "daa", name: "Downtown Austin Alliance", programs: 2,
-    desc: "District-level organization focused on downtown experience, activation, mobility, and placemaking.",
-    chip: "City & policy",
+    id: 'always-on',
+    label: 'Always-on district presence',
+    matches: ['district-visibility'],
   },
   {
-    id: "visit-austin", name: "Visit Austin", programs: 1,
-    desc: "Visitor and event partner helping people discover what's happening downtown.",
-    chip: "District programs",
+    id: 'event-driven',
+    label: 'Event-driven participation',
+    matches: ['event-activation', 'sponsored-moment'],
   },
   {
-    id: "rainey-group", name: "Rainey Street Neighborhood Group", programs: 2,
-    desc: "Neighborhood organization focused on livability, local communication, and community activity.",
-    chip: "Community groups",
+    id: 'resident-outreach',
+    label: 'Resident and building outreach',
+    matches: ['building-outreach'],
   },
   {
-    id: "waterloo", name: "Waterloo Greenway", programs: 2,
-    desc: "Public space and cultural organization connected to park programming and civic events.",
-    chip: "District programs",
-  },
-  {
-    id: "arts-network", name: "City Cultural Arts Network", programs: 1,
-    desc: "Arts and cultural organization supporting installations, performances, and public programming represented across the downtown map.",
-    chip: "Community groups",
+    id: 'public-guidance',
+    label: 'Useful public guidance',
+    matches: ['utility-campaign'],
   },
 ];
 
-const NETWORK_CHIPS = ["City & policy", "District programs", "Buildings & residents", "Community groups", "Hospitality", "Wellness & movement"];
-
-const LIVE_FEED = [
-  { name: "Downtown Style Weekend", district: "Congress", status: "This weekend", id: "style-weekend" },
-  { name: "Rainey Clean Corridor Morning", district: "Rainey", status: "Active now", id: "rainey-morning" },
-  { name: "Waterloo Sunset Series", district: "Waterloo", status: "Tonight", id: "waterloo-sunset" },
-  { name: "Red River Night Pulse", district: "Red River", status: "Active now", id: "red-river-pulse" },
+const CIVIC_EXAMPLES = [
+  {
+    name: 'Downtown Austin Alliance',
+    type: 'District coordination',
+    desc: 'Rainey Street visibility layer showing events, venues, and district happenings',
+    proof: '↑ 340% district opens',
+  },
+  {
+    name: 'Visit Austin',
+    type: 'Visitor guidance',
+    desc: 'Downtown attraction discovery and helpful wayfinding for visitors',
+    proof: '↑ 2.1k attributed visits',
+  },
+  {
+    name: 'Waterloo Greenway',
+    type: 'Public space activation',
+    desc: 'Event-led civic participation and programming visibility',
+    proof: '↑ 920 event RSVPs',
+  },
+  {
+    name: 'Rainey Street Group',
+    type: 'Venue coordination',
+    desc: 'District-wide venue partnership and event layer',
+    proof: '↑ 48% repeat discovery',
+  },
+  {
+    name: 'Red River',
+    type: 'Music district activation',
+    desc: 'Live event and venue discovery across the music district',
+    proof: '↑ 1.8k monthly scans',
+  },
+  {
+    name: 'Wellness Loop',
+    type: 'Wellness coordination',
+    desc: 'Connected wellness and fitness experience across downtown',
+    proof: '↑ 340 attributed visits',
+  },
 ];
 
-const MAP_FILTERS = [
-  { id: "all", label: "All", count: 24 },
-  { id: "civic", label: "Civic", count: 8 },
-  { id: "districts", label: "Districts", count: 4 },
-  { id: "buildings", label: "Buildings", count: 3 },
-  { id: "events", label: "Events", count: 5 },
-  { id: "community", label: "Community", count: 4 },
-  { id: "hospitality", label: "Hospitality", count: 2 },
-  { id: "wellness", label: "Movement", count: 2 },
+const CIVIC_METRICS = [
+  { label: 'Map opens', value: '28k+', change: '+45% MoM', positive: true },
+  { label: 'District engagement', value: '14k+', change: '+23% MoM', positive: true },
+  { label: 'Event RSVPs', value: '3.2k', change: '+67% MoM', positive: true },
+  { label: 'Attributed visits', value: '8.4k', change: '+31% MoM', positive: true },
 ];
 
-const STATUS_COLORS = {
-  "Active now": "bg-green-500/20 text-green-400 border-green-500/30",
-  "Tonight": "bg-primary/20 text-primary border-primary/30",
-  "This weekend": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  "This week": "bg-muted text-muted-foreground border-border/50",
-};
-
-// ─── ANIMATED COUNT UP ───────────────────────────────────────────────────────
-
-function CountUp({ to, duration = 1.2 }) {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  useEffect(() => {
-    if (!isInView) return;
-    const controls = animate(0, to, {
-      duration,
-      onUpdate: (v) => setVal(Math.round(v)),
-    });
-    return controls.stop;
-  }, [isInView, to]);
-  return <span ref={ref}>{val.toLocaleString()}</span>;
-}
-
-// ─── MAP MARKERS ──────────────────────────────────────────────────────────────
-
-function civicIcon(color = "#C8973A", size = 10) {
-  return L.divIcon({
-    className: "",
-    html: `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:2px solid rgba(255,255,255,0.75);box-shadow:0 0 8px ${color}70"></div>`,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-  });
-}
-
-function districtIcon(color) {
-  return L.divIcon({
-    className: "",
-    html: `<div style="width:14px;height:14px;border-radius:3px;background:${color};border:2px solid rgba(255,255,255,0.8);box-shadow:0 0 10px ${color}90;transform:rotate(45deg)"></div>`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
-  });
-}
-
-function MapController({ center }) {
-  const map = useMap();
-  useEffect(() => {
-    if (center) map.flyTo(center, 14, { duration: 1.2 });
-  }, [center]);
-  return null;
-}
-
-// ─── CIVIC PAGE ───────────────────────────────────────────────────────────────
+const CIVIC_ACTIVITIES = [
+  { action: 'Resident RSVP\'d for Waterloo Greenway event', source: 'Event Marker', time: '5 min ago' },
+  { action: 'Downtown Austin Alliance district visibility updated', source: 'Admin', time: '34 min ago' },
+  { action: 'Visitor scanned Rainey Street wayfinding QR', source: 'District Utility', time: '1 hr ago' },
+  { action: 'Red River live event: 8 venues now showing', source: 'District', time: '3 hrs ago' },
+  { action: 'Wellness Loop: +12 new resident enrollments', source: 'Building Outreach', time: '4 hrs ago' },
+  { action: 'Visit Austin: +340 attributed downtown visits', source: 'Analytics', time: '6 hrs ago' },
+];
 
 export default function CivicPartner() {
-  const [mapFilter, setMapFilter] = useState("all");
-  const [activeDistrict, setActiveDistrict] = useState(null);
-  const [activeProgram, setActiveProgram] = useState(null);
-  const [networkChip, setNetworkChip] = useState(null);
-  const [mapCenter, setMapCenter] = useState([30.2660, -97.7410]);
-  const [formType, setFormType] = useState("civic");
-  const [formText, setFormText] = useState("");
+  const [selectedFormat, setSelectedFormat] = useState('district-visibility');
+  const [selectedSelector, setSelectedSelector] = useState(null);
 
-  const heroRef = useRef(null);
-  const heroInView = useInView(heroRef, { once: true });
-
-  // Filter programs for map
-  const visiblePrograms = mapFilter === "all"
-    ? PROGRAMS
-    : PROGRAMS.filter(p => p.filter === mapFilter || mapFilter === "districts");
-
-  const visibleDistricts = ["all", "districts"].includes(mapFilter) ? Object.values(DISTRICTS) : [];
-
-  function openDistrict(id) {
-    setActiveDistrict(id);
-    setActiveProgram(null);
-    const d = DISTRICTS[id];
-    if (d) setMapCenter(d.center);
-  }
-
-  function openProgram(id) {
-    setActiveProgram(id);
-    setActiveDistrict(null);
-    const p = PROGRAMS.find(x => x.id === id);
-    if (p) setMapCenter([p.lat, p.lng]);
-  }
-
-  const district = activeDistrict ? DISTRICTS[activeDistrict] : null;
-  const program = activeProgram ? PROGRAMS.find(p => p.id === activeProgram) : null;
-
-  const filteredOrgs = networkChip
-    ? ORGS.filter(o => o.chip === networkChip)
-    : ORGS;
-
-  const networkDesc = {
-    "City & policy": "City agencies, district managers, and policy groups shaping the downtown experience.",
-    "District programs": "Organizations running active programs across specific downtown corridors.",
-    "Buildings & residents": "Residential and commercial buildings adding civic context for residents.",
-    "Community groups": "Neighborhood and community organizations generating local activity.",
-    "Hospitality": "Hospitality partners supporting district-level programming and activation.",
-    "Wellness & movement": "Wellness organizations running recurring walks, classes, and movement activations.",
-  };
-
-  const FORM_TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
-  const PROMPTS = [
-    "Help me write this",
-    "We're planning a downtown weekend activation.",
-    "We need help getting visibility for a public event.",
-    "We want to connect multiple districts.",
-  ];
+  const matchingFormats = selectedSelector
+    ? FORMAT_SELECTOR.find((s) => s.id === selectedSelector)?.matches || []
+    : [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="pt-[68px] min-h-screen bg-background">
+      {/* Hero */}
+      <PartnerHero
+        eyebrow="Civic"
+        headline="A civic layer built for how downtown actually works."
+        description="Downtown Perks helps civic organizations surface events, districts, public moments, and local participation across one live downtown map. Make what is happening easier to find, easier to join, and easier to measure."
+        primaryCTA="Explore civic formats"
+        primaryCTAHref="#formats"
+        secondaryCTA="View civic analytics"
+        secondaryCTAHref="#proof"
+        stats={[
+          { label: 'Monthly opens', value: '28k+' },
+          { label: 'Active civic orgs', value: '8+' },
+          { label: 'RSVPs / month', value: '3.2k+' },
+        ]}
+        preview={
+          <PreviewModule type="civic" icon="📍" title="Civic Layer Preview" description="Districts, events, and public participation" />
+        }
+      />
 
-      {/* ── HERO ────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="pt-36 pb-16 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(hsl(222 18% 40%) 1px, transparent 1px), linear-gradient(90deg, hsl(222 18% 40%) 1px, transparent 1px)", backgroundSize: "56px 56px" }}
-        />
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <Link to="/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
-              <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
-              Partner Directory
-            </Link>
-          </motion.div>
+      {/* Intro section */}
+      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
+            Civic formats for downtown participation
+          </h2>
+          <p className="text-[16px] text-[#6f6b65] leading-relaxed max-w-2xl">
+            Choose the civic format that fits the district, moment, initiative, or public objective. Every format shows up on the map where people are already looking.
+          </p>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
-                Civic Layer · Downtown Austin · 78701
-              </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
-                Make downtown programs<br />
-                <em className="text-primary">easier to find and join.</em>
-              </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">
-                District events, public programs, and civic initiatives show up on the same map people use to find dining, places, and things to do — alongside everything else happening nearby.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
-                 List your organization <ArrowRight className="w-4 h-4" />
-                </a>
-                <a href="#civic-map" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">
-                 See what is active
-                </a>
-              </div>
-            </motion.div>
+      {/* Civic formats */}
+      <section id="formats" className="py-16 md:py-24 border-b border-[#e8e5df]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="space-y-6">
+            {CIVIC_FORMATS.map((format, i) => (
+              <motion.button
+                key={format.id}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                onClick={() => setSelectedFormat(format.id)}
+                className={`w-full text-left p-6 rounded-2xl border transition-all duration-200 ${
+                  selectedFormat === format.id
+                    ? 'border-[#111] bg-[#111] text-white shadow-lg'
+                    : 'border-[#e8e5df] bg-white hover:border-[#bbb]'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <h3 className="text-[18px] font-bold leading-snug">{format.label}</h3>
+                  <div className={`text-[12px] font-medium px-3 py-1 rounded-full ${
+                    selectedFormat === format.id
+                      ? 'bg-white/20 text-white'
+                      : 'bg-[#f5f3ef] text-[#8d887f]'
+                  }`}>
+                    {format.bestFor}
+                  </div>
+                </div>
 
-            {/* Hero stats */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}>
-              <div className="rounded-xl border border-border/60 bg-card/60 overflow-hidden">
-                {/* Top strip */}
-                <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border/40 border-b border-border/40">
-                  {[
-                    { label: "Active now", value: 5 },
-                    { label: "Districts live", value: 4 },
-                    { label: "Programs this week", value: 8 },
-                    { label: "Map views", value: 10880 },
-                  ].map((s, i) => (
-                    <div key={i} className="p-5 text-center">
-                      <div className="font-heading text-2xl font-medium text-foreground tracking-tight">
-                        <CountUp to={s.value} />
+                <p className={`text-[14px] leading-relaxed mb-4 ${
+                  selectedFormat === format.id ? 'text-white/80' : 'text-[#6f6b65]'
+                }`}>
+                  {format.description}
+                </p>
+
+                {/* Expanded details */}
+                {selectedFormat === format.id && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-6 pt-6 border-t border-current border-opacity-20 space-y-4"
+                  >
+                    <div>
+                      <div className="text-[11px] font-bold uppercase tracking-[.12em] text-current text-opacity-60 mb-2">
+                        Core placements
                       </div>
-                      <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
+                      <p className="text-[13px] text-current text-opacity-80">{format.placements}</p>
                     </div>
-                  ))}
-                </div>
-                {/* Secondary strip */}
-                <div className="grid grid-cols-3 divide-x divide-border/40 border-b border-border/40">
-                  {[
-                    { label: "Saves", value: 495 },
-                    { label: "RSVPs", value: 327 },
-                    { label: "Visits", value: 246 },
-                  ].map((s, i) => (
-                    <div key={i} className="p-3.5 text-center">
-                      <div className="font-medium text-sm text-foreground"><CountUp to={s.value} /></div>
-                      <div className="text-[11px] text-muted-foreground/60">{s.label}</div>
+
+                    <div>
+                      <div className="text-[11px] font-bold uppercase tracking-[.12em] text-current text-opacity-60 mb-2">
+                        Key metrics
+                      </div>
+                      <p className="text-[13px] text-current text-opacity-80">{format.kpi}</p>
                     </div>
-                  ))}
-                </div>
-                <div className="px-5 py-3 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-[11px] text-muted-foreground/60">Updated 2 min ago</span>
-                </div>
-              </div>
-            </motion.div>
+
+                    <div>
+                      <div className="text-[11px] font-bold uppercase tracking-[.12em] text-current text-opacity-60 mb-2">
+                        How it works
+                      </div>
+                      <p className="text-[13px] text-current text-opacity-80 leading-relaxed">{format.body}</p>
+                    </div>
+                  </motion.div>
+                )}
+              </motion.button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── CIVIC MAP ───────────────────────────────────────────────── */}
-      <section id="civic-map" className="fixed inset-0 pt-[68px] flex flex-col bg-muted/10">
-        <div className="flex-1 relative w-full h-full flex flex-col">
-          {/* Header + filters (floating at top) */}
-          <div className="absolute top-0 left-0 right-0 z-20 px-6 py-6 bg-gradient-to-b from-background/95 to-background/50 backdrop-blur-md border-b border-border/20">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 items-end">
-                <div>
-                  <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Civic Layer</span>
-                  <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-                    Four districts. All on the map.
-                  </h2>
-                </div>
-                <p className="text-muted-foreground text-[13px] leading-relaxed hidden md:block">
-                  Select any district or program pin to see what is currently active.
-                </p>
-              </div>
+      {/* Format selector helper */}
+      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+        <div className="max-w-7xl mx-auto px-6">
+          <h3 className="text-[24px] md:text-[28px] font-bold text-[#111] leading-tight tracking-tight mb-8">
+            Which civic format is right?
+          </h3>
+          <p className="text-[15px] text-[#6f6b65] mb-8 max-w-2xl">
+            Select the format that matches your goal. We'll highlight the best fit.
+          </p>
 
-              {/* Filter chips */}
-              <div className="flex gap-2 overflow-x-auto pb-0.5">
-                {MAP_FILTERS.map((f) => (
-                  <button key={f.id} onClick={() => { setMapFilter(f.id); setActiveDistrict(null); setActiveProgram(null); }}
-                    className={`px-3.5 py-2 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all flex-shrink-0 ${
-                      mapFilter === f.id ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {f.label} <span className={`ml-1.5 text-[10px] ${mapFilter === f.id ? "text-primary/70" : "text-muted-foreground/50"}`}>{f.count}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {FORMAT_SELECTOR.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setSelectedSelector(selectedSelector === item.id ? null : item.id)}
+                className={`p-4 rounded-2xl border text-[12px] font-medium text-center transition-all ${
+                  selectedSelector === item.id
+                    ? 'border-[#111] bg-[#111] text-white'
+                    : 'border-[#e8e5df] bg-white text-[#3d3934] hover:border-[#bbb]'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
 
-          {/* Map (always visible) */}
-          <div className="flex-1 relative mt-[180px] md:mt-[140px]">
-              <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }} zoomControl={true} scrollWheelZoom={true}>
-                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution='&copy; CARTO' />
-                <MapController center={mapCenter} />
-
-                {/* District markers */}
-                {visibleDistricts.map(d => (
-                  <Marker key={d.id} position={d.center} icon={districtIcon(d.color)}
-                    eventHandlers={{ click: () => openDistrict(d.id) }}>
-                    <Popup><div className="text-xs font-semibold">{d.name} District</div></Popup>
-                  </Marker>
-                ))}
-
-                {/* Program markers */}
-                {visiblePrograms.map(p => {
-                  const dColor = Object.values(DISTRICTS).find(d => d.name === p.district)?.color || "#C8973A";
+          {selectedSelector && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 p-6 rounded-2xl bg-[#f5f3ef] border border-[#e8e5df]"
+            >
+              <p className="text-[13px] text-[#4a463f]">
+                You selected <strong>{FORMAT_SELECTOR.find((s) => s.id === selectedSelector)?.label}</strong>. This matches:
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4">
+                {matchingFormats.map((formatId) => {
+                  const format = CIVIC_FORMATS.find((f) => f.id === formatId);
                   return (
-                    <Marker key={p.id} position={[p.lat, p.lng]} icon={civicIcon(dColor)}
-                      eventHandlers={{ click: () => openProgram(p.id) }}>
-                      <Popup>
-                        <div className="text-xs">
-                          <div className="font-semibold mb-0.5">{p.name}</div>
-                          <div className="text-gray-400">{p.district} · {p.type}</div>
-                        </div>
-                      </Popup>
-                    </Marker>
+                    <button
+                      key={formatId}
+                      onClick={() => setSelectedFormat(formatId)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#e8e5df] text-[11px] font-medium text-[#111] hover:border-[#111] transition-colors"
+                    >
+                      <CheckCircle2 className="w-3 h-3" />
+                      {format?.label}
+                    </button>
                   );
                 })}
-              </MapContainer>
-
-              {/* Drawer panel (floating right on desktop, bottom on mobile) */}
-              <div className="absolute bottom-0 right-0 md:top-0 w-full md:w-96 h-1/2 md:h-[calc(100%-140px)] md:mt-[140px] rounded-t-2xl md:rounded-none border border-border/50 bg-card/95 backdrop-blur-sm overflow-hidden flex flex-col z-30 md:shadow-lg">
-              {!district && !program && (
-                <div className="flex flex-col h-full">
-                  <div className="p-5 border-b border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Live Feed</div>
-                    <p className="text-[12px] text-muted-foreground/60">A quick read on what is active across the map right now.</p>
-                  </div>
-                  <div className="flex-1 overflow-y-auto divide-y divide-border/40">
-                    {LIVE_FEED.map((item) => (
-                      <button key={item.id} onClick={() => openProgram(item.id)}
-                        className="w-full flex items-start gap-3 p-4 hover:bg-muted/20 transition-colors text-left group">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 shrink-0 group-hover:bg-primary transition-colors" />
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-[13px] text-foreground truncate">{item.name}</div>
-                          <div className="text-[11px] text-muted-foreground mt-0.5">{item.district}</div>
-                        </div>
-                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border shrink-0 ${STATUS_COLORS[item.status]}`}>
-                          {item.status}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="p-4 border-t border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Districts</div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {Object.values(DISTRICTS).map(d => (
-                        <button key={d.id} onClick={() => openDistrict(d.id)}
-                          className="p-2.5 rounded-lg border border-border/40 hover:border-primary/30 transition-all text-left">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <div className="w-2 h-2 rounded-full shrink-0" style={{ background: d.color }} />
-                            <span className="text-[12px] font-medium text-foreground">{d.name}</span>
-                          </div>
-                          <div className="text-[11px] text-muted-foreground">{d.programs} programs</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* District Drawer */}
-              {district && (
-                <motion.div key={district.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full">
-                  <div className="p-5 border-b border-border/40 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ background: district.color }} />
-                      <span className="font-medium text-foreground">{district.name} District</span>
-                    </div>
-                    <button onClick={() => setActiveDistrict(null)} className="text-muted-foreground hover:text-foreground transition-colors">
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="flex-1 p-5 space-y-5 overflow-y-auto">
-                    <div className="grid grid-cols-3 gap-3">
-                      {[
-                        { label: "Active now", value: district.active },
-                        { label: "Building-linked", value: district.buildingLinked },
-                        { label: "Programs", value: district.programs },
-                      ].map((s, i) => (
-                        <div key={i} className="p-3 rounded-lg bg-muted/30 border border-border/40 text-center">
-                          <div className="font-heading text-xl font-medium text-foreground">{s.value}</div>
-                          <div className="text-[10px] text-muted-foreground mt-0.5">{s.label}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/20">
-                      <div className="text-[12px] font-medium text-foreground">Trend</div>
-                      <div className="text-[12px] font-medium text-primary">{district.trend}</div>
-                    </div>
-
-                    <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Top activity</div>
-                      <div className="text-sm font-medium text-foreground">{district.topActivity}</div>
-                    </div>
-
-                    <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Nearby</div>
-                      <div className="space-y-1.5">
-                        {district.nearby.map((item, i) => (
-                          <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                            <div className="w-1 h-1 rounded-full bg-primary/40 shrink-0" />
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Activity</div>
-                      <div className="flex gap-3 text-[12px] text-muted-foreground">
-                        <span>{district.rsvps} RSVPs</span>
-                        <span>·</span>
-                        <span>{district.views} views</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 border-t border-border/40 flex gap-2">
-                    <button className="flex-1 py-2.5 rounded-full bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-all">
-                      View district
-                    </button>
-                    <button className="flex-1 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[12px] font-medium hover:text-foreground transition-all">
-                      View nearby
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Program Drawer */}
-              {program && (
-                <motion.div key={program.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full">
-                  <div className="p-5 border-b border-border/40 flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-foreground text-sm truncate">{program.name}</div>
-                      <div className="text-[11px] text-muted-foreground mt-0.5">{program.type}</div>
-                    </div>
-                    <button onClick={() => setActiveProgram(null)} className="text-muted-foreground hover:text-foreground transition-colors ml-2">
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="flex-1 p-5 space-y-4 overflow-y-auto">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border ${STATUS_COLORS[program.status] || STATUS_COLORS["This week"]}`}>
-                        {program.status}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">{program.district} · {program.schedule}</span>
-                    </div>
-
-                    <p className="text-[13px] text-muted-foreground leading-relaxed">{program.description}</p>
-
-                    {program.venues.length > 0 && (
-                      <div>
-                        <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Participating venues</div>
-                        <div className="space-y-1">
-                          {program.venues.map((v, i) => (
-                            <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                              <div className="w-1 h-1 rounded-full bg-primary/40 shrink-0" />
-                              {v}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {program.linked.length > 0 && (
-                      <div>
-                        <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Linked places</div>
-                        <div className="space-y-1">
-                          {program.linked.map((v, i) => (
-                            <div key={i} className="flex items-center gap-2 text-[12px] text-foreground/70">
-                              <div className="w-1 h-1 rounded-full bg-primary/60 shrink-0" />
-                              {v}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { label: "RSVPs", value: program.rsvps },
-                        { label: "Saves", value: program.saves },
-                        { label: "Visits", value: program.visits },
-                      ].map((s, i) => (
-                        <div key={i} className="p-2.5 rounded-lg bg-muted/30 border border-border/40 text-center">
-                          <div className="font-heading text-lg font-medium text-foreground">{s.value}</div>
-                          <div className="text-[10px] text-muted-foreground mt-0.5">{s.label}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="p-4 border-t border-border/40 flex gap-2">
-                    <button className="flex-1 py-2.5 rounded-full bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-all">
-                      RSVP
-                    </button>
-                    <button className="flex-1 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[12px] font-medium hover:text-foreground transition-all">
-                      Save
-                    </button>
-                    <button className="px-4 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[12px] font-medium hover:text-foreground transition-all">
-                      Nearby
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── IMPACT SUMMARY ──────────────────────────────────────────── */}
-      <ImpactSection />
-
-      {/* ── HOW IT WORKS ────────────────────────────────────────────── */}
-      <HowItWorks />
-
-      {/* ── DISTRICT INTELLIGENCE ───────────────────────────────────── */}
-      <DistrictIntelligence districts={DISTRICTS} openDistrict={openDistrict} />
-
-      {/* ── CIVIC PARTNER NETWORK ───────────────────────────────────── */}
-      <NetworkSection orgs={filteredOrgs} allOrgs={ORGS} chips={NETWORK_CHIPS} activeChip={networkChip} setChip={setNetworkChip} desc={networkDesc} />
-
-      {/* ── FROM ACTIVITY TO RESPONSE ───────────────────────────────── */}
-      <ActivityStrip />
-
-      {/* ── PARTNER FORM ────────────────────────────────────────────── */}
-      <PartnerForm formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText} />
-
-      {/* ── FINAL CTA ───────────────────────────────────────────────── */}
-      <section className="py-20 px-6 border-t border-border/40">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Civic Layer</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-4">
-                Your programs belong on this map.
-              </h2>
-              <p className="text-muted-foreground text-[13px] leading-relaxed">
-                Public activity is already here. Add what your organization is running.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <p className="text-muted-foreground text-[13px] leading-relaxed">
-                Six organizations are listed. Getting on the map takes less than a day.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-                  List your organization <ArrowRight className="w-4 h-4" />
-                </a>
-                <a href="#civic-map" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">
-                  See what is active
-                </a>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// ─── SUB-COMPONENTS ───────────────────────────────────────────────────────────
-
-function ImpactSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Activity Summary</span>
-          <div className="flex items-end justify-between gap-4 flex-wrap">
-            <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              What public participation looks like across the map.
-            </h2>
-          </div>
-        </div>
-
-        {/* Top row */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
-          {[
-            { label: "Map views", value: 10880 },
-            { label: "Saves", value: 495 },
-            { label: "RSVPs", value: 327 },
-            { label: "Visits", value: 246 },
-            { label: "Participation", value: 402 },
-          ].map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.06 }}
-              className="p-5 rounded-lg border border-border/50 bg-card/40 text-center">
-              <div className="font-heading text-2xl font-medium text-foreground tracking-tight">
-                <CountUp to={s.value} />
-              </div>
-              <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom row */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-          {[
-            { label: "Live now", value: "5", sub: "programs active" },
-            { label: "District activity", value: "8", sub: "this week" },
-            { label: "Building-linked", value: "3", sub: "places connected" },
-            { label: "Recurring series", value: "2", sub: "weekly programs" },
-            { label: "Movement activity", value: "Moderate", sub: "across districts" },
-            { label: "Map coverage", value: "100%", sub: "all 4 districts" },
-          ].map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.05 }}
-              className="p-4 rounded-lg border border-border/40 bg-card/20">
-              <div className="font-heading text-lg font-medium text-foreground">{s.value}</div>
-              <div className="text-[11px] font-medium text-muted-foreground">{s.label}</div>
-              <div className="text-[10px] text-muted-foreground/50 mt-0.5">{s.sub}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HowItWorks() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const steps = [
-    { n: "1", label: "Add the activity", detail: "A district team, civic group, or partner adds something happening." },
-    { n: "2", label: "Place it on the map", detail: "It appears in the right downtown context, tied to district and location." },
-    { n: "3", label: "Make it visible", detail: "Residents and visitors nearby see it in their feed and on the map." },
-    { n: "4", label: "Connect it to place", detail: "Buildings, venues, and linked places surface alongside the activity." },
-    { n: "5", label: "See the response", detail: "RSVPs, saves, and visits create a measurable signal for every program." },
-  ];
-  return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10 items-end">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How it works</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              From activity to response.
-            </h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ duration: 0.7, delay: 0.15 }}
-            className="text-muted-foreground text-[13px] leading-relaxed">
-            A district group, civic organization, or program team adds what is happening. It appears on the map in context — tied to location, time, and the people nearby who can act on it.
-          </motion.p>
-        </div>
-
-        {/* Steps with connector */}
-        <div className="relative">
-          <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {steps.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 + i * 0.1 }}
-                className="relative flex flex-col items-center text-center md:items-start md:text-left">
-                <div className="w-10 h-10 rounded-full border border-primary/40 bg-card flex items-center justify-center mb-4 z-10">
-                  <span className="text-primary font-heading font-medium text-sm">{s.n}</span>
-                </div>
-                <div className="font-medium text-sm text-foreground mb-1.5">{s.label}</div>
-                <div className="text-[12px] text-muted-foreground leading-relaxed">{s.detail}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Proof strip */}
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            "8 live civic items",
-            "4 districts connected",
-            "3 linked places",
-            "2 hospitality-supported moments",
-          ].map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.6 + i * 0.05 }}
-              className="flex items-center gap-2 p-3 rounded-lg border border-border/40 bg-card/20">
-              <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
-              <span className="text-[12px] text-muted-foreground">{item}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function DistrictIntelligence({ districts, openDistrict }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">District Intelligence</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              By district, in numbers.
-            </h2>
-          </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { label: "Active now", value: "5" },
-              { label: "Building-linked", value: "3" },
-              { label: "Recurring series", value: "2" },
-              { label: "Movement", value: "Moderate" },
-            ].map((s, i) => (
-              <div key={i} className="p-3 rounded-lg border border-border/40 bg-card/20 text-center">
-                <div className="font-heading text-lg font-medium text-foreground">{s.value}</div>
-                <div className="text-[10px] text-muted-foreground mt-0.5">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {Object.values(districts).map((d, i) => (
-            <motion.div key={d.id} initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
-              onClick={() => openDistrict(d.id)}
-              className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 cursor-pointer transition-all group">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: d.color }} />
-                <span className="font-heading font-medium text-sm text-foreground">{d.name}</span>
-              </div>
-
-              {/* Mini activity bar */}
-              <div className="h-1.5 rounded-full bg-border/50 mb-4 overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: `${Math.min(100, (d.rsvps / 200) * 100)}%` } : {}}
-                  transition={{ duration: 1, delay: 0.3 + i * 0.1 }}
-                  className="h-full rounded-full"
-                  style={{ background: d.color }}
-                />
-              </div>
-
-              <div className="space-y-2 text-[12px]">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Programs</span><span className="text-foreground font-medium">{d.programs}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>RSVPs</span><span className="text-foreground font-medium">{d.rsvps}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Views</span><span className="text-foreground font-medium">{d.views}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Trend</span><span className="text-primary font-medium">{d.trend}</span>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-border/40">
-                <div className="text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em] mb-1">Hotspot</div>
-                <div className="text-[12px] text-foreground truncate">{d.topActivity}</div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function NetworkSection({ orgs, allOrgs, chips, activeChip, setChip, desc }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className="py-16 px-6 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Civic Partner Network</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              Organizations already on the map.
-            </h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
-            className="text-muted-foreground text-[13px] leading-relaxed">
-            {activeChip ? desc[activeChip] : "District groups, cultural organizations, and neighborhood programs contributing to what people see and do downtown."}
-          </motion.p>
-        </div>
-
-        {/* Chips */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          {chips.map((chip) => (
-            <button key={chip} onClick={() => setChip(activeChip === chip ? null : chip)}
-              className={`px-4 py-2 rounded-full text-[12px] font-medium border transition-all ${
-                activeChip === chip ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {chip}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {orgs.map((org, i) => (
-            <motion.div key={org.id} initial={{ opacity: 0, y: 10 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.07 }}
-              className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/20 transition-all">
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <div className="font-heading font-medium text-sm text-foreground leading-snug">{org.name}</div>
-                <span className="text-[11px] font-medium text-primary/70 whitespace-nowrap">{org.programs} {org.programs === 1 ? "program" : "programs"} live</span>
-              </div>
-              <p className="text-[12px] text-muted-foreground leading-relaxed">{org.desc}</p>
-              <div className="mt-3 pt-3 border-t border-border/40">
-                <span className="text-[11px] font-medium text-muted-foreground/60 border border-border/40 px-2.5 py-1 rounded-full">{org.chip}</span>
-              </div>
-            </motion.div>
-          ))}
-          {/* "Your org" card */}
-          {orgs.length < 5 && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: orgs.length * 0.07 }}
-              className="p-5 rounded-xl border border-dashed border-border/40 hover:border-primary/30 transition-all flex flex-col items-center justify-center text-center min-h-[120px] group cursor-pointer">
-              <div className="text-[12px] text-muted-foreground/50 group-hover:text-muted-foreground transition-colors">Your organization</div>
-              <div className="text-[11px] text-muted-foreground/30 mt-1">Add it to the civic layer</div>
             </motion.div>
           )}
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-function ActivityStrip() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const steps = [
-    { label: "Activate", detail: "Add the activity to the map." },
-    { label: "Show", detail: "Visible to people nearby." },
-    { label: "Connect", detail: "Tied to place and district." },
-    { label: "Engage", detail: "RSVPs, saves, shares." },
-    { label: "Measure", detail: "30/60/90-day read." },
-  ];
-  return (
-    <section ref={ref} className="py-14 px-6 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="relative">
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-          <div className="grid grid-cols-5 gap-2 relative">
-            {steps.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center text-center p-4">
-                <div className="w-8 h-8 rounded-full border border-primary/40 bg-card flex items-center justify-center mb-3 z-10">
-                  <span className="text-primary text-[11px] font-medium">{i + 1}</span>
-                </div>
-                <div className="font-medium text-xs text-foreground mb-1">{s.label}</div>
-                <div className="text-[11px] text-muted-foreground leading-relaxed hidden md:block">{s.detail}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+      {/* Civic examples */}
+      <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
+            See how civic participation comes to life on the map
+          </h2>
+          <p className="text-[15px] text-[#6f6b65] mb-12 max-w-2xl">
+            Civic partnerships in Downtown Perks should feel useful, timely, and easy to act on. These examples show how events, districts, neighborhood guidance, and public participation appear across the map, buildings, and live downtown flow.
+          </p>
 
-function PartnerForm({ formType, setFormType, formText, setFormText }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
-  const PROMPTS = [
-    "Help me write this",
-    "We're planning a downtown weekend activation.",
-    "We need help getting visibility for a public event.",
-    "We want to connect multiple districts.",
-  ];
-  return (
-    <section id="partner-form" ref={ref} className="py-16 px-6 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Get Started</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">
-              List your organization or program.
-            </h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
-            className="text-muted-foreground text-[13px] leading-relaxed">
-            Share what is happening, where, and what kind of response you want to generate. We will help you get it on the map.
-          </motion.p>
-        </div>
-
-        <div className="border border-border/50 rounded-xl overflow-hidden">
-          {/* Type tabs */}
-          <div className="flex border-b border-border/40 overflow-x-auto">
-            {TYPES.map((t) => (
-              <button key={t} onClick={() => setFormType(t)}
-                className={`px-6 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${
-                  formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"
-                }`}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {CIVIC_EXAMPLES.map((example, i) => (
+              <motion.a
+                key={i}
+                href="#"
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all"
               >
-                {t}
-              </button>
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div>
+                    <h3 className="text-[16px] font-bold text-[#111] mb-0.5">{example.name}</h3>
+                    <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f]">
+                      {example.type}
+                    </div>
+                  </div>
+                  <MapPinIcon className="w-5 h-5 text-[#C8973A]" />
+                </div>
+
+                <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{example.desc}</p>
+
+                <div className="flex items-center gap-1.5 text-[12px] font-bold text-[#111]">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  {example.proof}
+                </div>
+              </motion.a>
             ))}
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Form */}
-            <div className="p-8 md:border-r border-border/40 space-y-4">
-              {[
-                { label: "Organization Name", type: "text" },
-                { label: "Your Name & Role", type: "text" },
-                { label: "Email", type: "email" },
-                { label: "Phone", type: "tel" },
-              ].map((f) => (
-                <div key={f.label}>
-                  <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">{f.label}</label>
-                  <input type={f.type} className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
-                </div>
-              ))}
-              <div>
-                <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">What's happening</label>
-                <textarea
-                  rows={4}
-                  value={formText}
-                  onChange={(e) => setFormText(e.target.value)}
-                  placeholder="Tell us what is happening, where it is happening, and what kind of response you want to drive."
-                  className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30"
-                />
-              </div>
-              <button className="w-full py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-                Integrate your organization
-              </button>
-            </div>
-
-            {/* Prompts panel */}
-            <div className="p-8 bg-muted/10 flex flex-col">
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Prompts</div>
-              <div className="space-y-2 flex-1">
-                {PROMPTS.map((p) => (
-                  <button key={p} onClick={() => setFormText(p === "Help me write this" ? "" : p)}
-                    className="w-full text-left px-4 py-3 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">
-                    {p}
-                  </button>
-                ))}
-              </div>
-              <div className="mt-6 pt-6 border-t border-border/40 space-y-1">
-                <p className="text-[12px] text-muted-foreground/60 italic">
-                  Questions?{" "}
-                  <a href="mailto:civic@downtownperks.com" className="text-primary hover:underline underline-offset-4">
-                    civic@downtownperks.com
-                  </a>
-                </p>
-                <p className="text-[11px] text-muted-foreground/40">Downtown Perks · Powered by Boop · Austin, Texas</p>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Proof */}
+      <ProofGrid id="proof" metrics={CIVIC_METRICS} />
+
+      {/* Live activity */}
+      <LiveActivityFeed activities={CIVIC_ACTIVITIES} />
+
+      {/* Planning */}
+      <PlanningForm partnerType="Civic Organization" />
+
+      {/* Closing CTA */}
+      <PartnerCTASection
+        headline="Build civic participation into the downtown moment."
+        description="Downtown Perks gives civic organizations a way to show up inside live downtown behavior instead of outside it. Start with the format that fits the initiative, then connect visibility, participation, and proof into one civic system people can actually use."
+        primaryCTA="Check availability"
+        primaryHref="#form"
+        secondaryLink={{ label: 'Become a civic partner', href: '#form' }}
+      />
+    </div>
   );
 }
