@@ -22,7 +22,13 @@ L.Icon.Default.mergeOptions({
 function MapFlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
-    if (position && Array.isArray(position) && position.length === 2) {
+    if (
+      position &&
+      Array.isArray(position) &&
+      position.length === 2 &&
+      Number.isFinite(position[0]) &&
+      Number.isFinite(position[1])
+    ) {
       map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
     }
   }, [position, map]);
@@ -40,7 +46,8 @@ export default function UnifiedMapShell({
     useUnifiedMapStore();
 
   const handleDragEnd = (map) => {
-    setMapCenter(map.getCenter());
+    const center = map.getCenter();
+    setMapCenter([center.lat, center.lng]);
   };
 
   const handleZoom = (map) => {
