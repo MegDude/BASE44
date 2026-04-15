@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, X } from "lucide-react";
+import { Search, MapPin, X, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const PROMPT_CHIPS = [
@@ -8,6 +8,33 @@ const PROMPT_CHIPS = [
   "dinner tonight on Rainey",
   "happy hour nearby",
   "quiet place to work",
+];
+
+const NEARBY_CARDS = [
+  {
+    name: "Café Noir",
+    distance: "0.2 mi away",
+    line: "Espresso bar with cold brew focus",
+    perk: "15% off on card",
+  },
+  {
+    name: "Rainey Rooftop",
+    distance: "0.1 mi away",
+    line: "Live music venue and cocktail lounge",
+    perk: "Free appetizer with 2 drinks",
+  },
+  {
+    name: "Yoga Haven",
+    distance: "0.3 mi away",
+    line: "Yoga studio with drop-in classes",
+    perk: "First class free",
+  },
+];
+
+const PROOF_METRICS = [
+  { label: "Saves this week", value: "180k+" },
+  { label: "Perks redeemed", value: "42k+" },
+  { label: "Avg walk distance", value: "0.3 mi" },
 ];
 
 export default function ProductEntryLayer() {
@@ -26,49 +53,51 @@ export default function ProductEntryLayer() {
   };
 
   return (
-    <section className="relative pt-[68px] pb-12 bg-background overflow-hidden">
-      {/* Background gradient accent */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative overflow-hidden bg-[#f8f5ef] pt-[68px] pb-12">
+      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[#cfaf5a]/[0.06] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[hsl(218,42%,14%)]/[0.035] blur-3xl" />
 
-      <div className="relative max-w-6xl mx-auto px-6 space-y-12">
-        {/* Headline + Search */}
+      <div className="relative mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center space-y-8"
+          transition={{ duration: 0.55 }}
+          className="text-center"
         >
-          <div className="space-y-4">
-            <h1 className="font-heading text-5xl md:text-6xl font-medium leading-[1.05] tracking-tight text-foreground">
+          <div className="mx-auto max-w-3xl">
+            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(218,18%,42%)]">
+              Live downtown context
+            </p>
+
+            <h2 className="font-heading text-4xl font-medium leading-[1.02] tracking-[-0.04em] text-[hsl(218,42%,14%)] md:text-[56px]">
               The operating system for downtown life.
-            </h1>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              Open one map. See what's happening. Go.
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[hsl(218,16%,42%)]">
+              Open one map. See what is nearby. Decide faster and go.
             </p>
           </div>
 
-          {/* Ask the Map Search */}
           <motion.form
             onSubmit={handleSearch}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex justify-center"
+            transition={{ duration: 0.55, delay: 0.08 }}
+            className="mt-8 flex justify-center"
           >
             <div
-              className={`relative w-full max-w-2xl transition-all duration-300 ${
-                isFocused ? "scale-105" : ""
+              className={`relative w-full max-w-2xl transition-all duration-200 ${
+                isFocused ? "translate-y-[-1px]" : ""
               }`}
             >
               <div
-                className={`flex items-center gap-3 px-6 py-4 rounded-full border-2 transition-all ${
+                className={`flex items-center gap-3 rounded-[20px] border px-5 py-4 transition-all ${
                   isFocused
-                    ? "border-primary bg-white shadow-lg shadow-primary/20"
-                    : "border-border/40 bg-white/50 backdrop-blur-sm hover:border-border/60"
+                    ? "border-[#cfaf5a]/45 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.10)]"
+                    : "border-[hsl(218,18%,86%)] bg-white/88 shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
                 }`}
               >
-                <Search className="w-5 h-5 text-muted-foreground" />
+                <Search className="h-5 w-5 text-[hsl(218,14%,52%)]" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -76,33 +105,32 @@ export default function ProductEntryLayer() {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   placeholder="Ask the map..."
-                  className="flex-1 bg-transparent outline-none text-foreground placeholder:text-muted-foreground/60 text-base"
+                  className="flex-1 bg-transparent text-[15px] text-[hsl(218,42%,14%)] outline-none placeholder:text-[hsl(218,12%,58%)]"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="p-1 hover:bg-muted rounded-full transition-colors"
+                    className="rounded-full p-1 transition-colors hover:bg-[hsl(218,18%,94%)]"
                   >
-                    <X className="w-4 h-4 text-muted-foreground" />
+                    <X className="h-4 w-4 text-[hsl(218,12%,52%)]" />
                   </button>
                 )}
               </div>
             </div>
           </motion.form>
 
-          {/* Prompt Chips */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-3 pt-4"
+            transition={{ duration: 0.55, delay: 0.14 }}
+            className="flex flex-wrap justify-center gap-2.5 pt-5"
           >
-            {PROMPT_CHIPS.map((prompt, i) => (
+            {PROMPT_CHIPS.map((prompt) => (
               <button
-                key={i}
+                key={prompt}
                 onClick={() => handlePromptClick(prompt)}
-                className="px-4 py-2 rounded-full border border-border/40 bg-white hover:border-primary/50 hover:bg-primary/5 text-foreground text-sm font-medium transition-all duration-200"
+                className="rounded-full border border-[hsl(218,18%,86%)] bg-white px-4 py-2 text-sm font-medium text-[hsl(218,32%,20%)] transition-all duration-200 hover:border-[#cfaf5a]/40 hover:bg-[#cfaf5a]/[0.06]"
               >
                 {prompt}
               </button>
@@ -110,90 +138,81 @@ export default function ProductEntryLayer() {
           </motion.div>
         </motion.div>
 
-
-
-        {/* Selected Nearby Cards */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-10"
         >
-          <h3 className="text-sm font-medium text-muted-foreground mb-4">Selected Nearby</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              {
-                name: "Café Noir",
-                distance: "0.2 mi away",
-                line: "Espresso bar with cold brew focus",
-                perk: "15% off on card",
-              },
-              {
-                name: "Rainey Rooftop",
-                distance: "0.1 mi away",
-                line: "Live music venue & cocktail lounge",
-                perk: "Free appetizer with 2 drinks",
-              },
-              {
-                name: "Yoga Haven",
-                distance: "0.3 mi away",
-                line: "Yoga studio with drop-in classes",
-                perk: "First class free",
-              },
-            ].map((card, i) => (
-              <div
-                key={i}
-                className="p-4 rounded-2xl border border-border/40 bg-white hover:border-primary/50 hover:shadow-md transition-all cursor-pointer"
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h3 className="text-sm font-medium text-[hsl(218,16%,44%)]">Selected nearby</h3>
+            <button
+              onClick={() => navigate("/downtown-perks/explore")}
+              className="inline-flex items-center gap-1 text-sm font-medium text-[hsl(218,42%,14%)] transition-opacity hover:opacity-70"
+            >
+              Open map
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {NEARBY_CARDS.map((card) => (
+              <button
+                key={card.name}
+                onClick={() => navigate("/downtown-perks/explore")}
+                className="rounded-[22px] border border-[hsl(218,18%,88%)] bg-white p-4 text-left shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[#cfaf5a]/35 hover:shadow-[0_16px_32px_rgba(15,23,42,0.08)]"
               >
-                <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="mb-2 flex items-start justify-between gap-2">
                   <div>
-                    <h4 className="font-semibold text-foreground text-sm">{card.name}</h4>
-                    <p className="text-xs text-muted-foreground">{card.distance}</p>
+                    <h4 className="text-sm font-semibold text-[hsl(218,42%,14%)]">{card.name}</h4>
+                    <p className="text-xs text-[hsl(218,12%,52%)]">{card.distance}</p>
                   </div>
-                  <MapPin className="w-4 h-4 text-primary shrink-0" />
+                  <MapPin className="h-4 w-4 shrink-0 text-[#cfaf5a]" />
                 </div>
-                <p className="text-xs text-muted-foreground mb-3">{card.line}</p>
+
+                <p className="mb-3 text-xs leading-5 text-[hsl(218,14%,44%)]">{card.line}</p>
+
                 {card.perk && (
-                  <div className="inline-block text-[10px] font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
+                  <div className="inline-flex rounded-full bg-[#cfaf5a]/[0.10] px-2.5 py-1 text-[10px] font-medium text-[hsl(218,42%,14%)]">
                     {card.perk}
                   </div>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Proof Strip */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="grid grid-cols-3 gap-6 py-8 border-t border-b border-border/20"
+          transition={{ duration: 0.6, delay: 0.28 }}
+          className="mt-10 grid grid-cols-3 gap-4 border-y border-[hsl(218,18%,88%)] py-7"
         >
-          {[
-            { label: "Saves this week", value: "180k+" },
-            { label: "Perks redeemed", value: "42k+" },
-            { label: "Avg walk distance", value: "0.3 mi" },
-          ].map((metric, i) => (
-            <div key={i} className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-foreground mb-1">
-                {metric.value}
-              </div>
-              <div className="text-xs md:text-sm text-muted-foreground">{metric.label}</div>
+          {PROOF_METRICS.map((metric) => (
+            <div key={metric.label} className="text-center">
+              <div className="text-2xl font-bold text-[hsl(218,42%,14%)] md:text-3xl">{metric.value}</div>
+              <div className="mt-1 text-xs text-[hsl(218,12%,50%)] md:text-sm">{metric.label}</div>
             </div>
           ))}
         </motion.div>
 
-        {/* Primary CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap gap-3 justify-center pt-4"
+          transition={{ duration: 0.55, delay: 0.32 }}
+          className="flex flex-wrap justify-center gap-3 pt-8"
         >
-          <button onClick={() => navigate("/downtown-perks/card")} className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors shadow-sm">
+          <button
+            onClick={() => navigate("/downtown-perks/card")}
+            className="rounded-[16px] bg-[hsl(218,42%,14%)] px-8 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(15,23,42,0.14)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(15,23,42,0.18)]"
+          >
             Get Your Card
           </button>
-          <button onClick={() => navigate("/downtown-perks/explore")} className="px-8 py-3 rounded-full border border-border/70 text-foreground font-medium text-sm hover:border-border hover:bg-muted/50 transition-colors">
+
+          <button
+            onClick={() => navigate("/downtown-perks/explore")}
+            className="rounded-[16px] border border-[hsl(218,18%,84%)] bg-white px-8 py-3 text-sm font-medium text-[hsl(218,42%,14%)] transition-all duration-200 hover:bg-[hsl(42,24%,97%)]"
+          >
             Explore the Map
           </button>
         </motion.div>
