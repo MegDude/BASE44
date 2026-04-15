@@ -1,48 +1,50 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2, Hotel, UtensilsCrossed, Megaphone, Landmark } from "lucide-react";
+
+const TIER_ICONS = { Properties: Building2, Hotels: Hotel, Venues: UtensilsCrossed, Brands: Megaphone, Civic: Landmark };
 
 const tiers = [
   {
-    emoji: "🏢",
     label: "Properties",
     sub: "Multifamily, condos, apartments",
     price: "Free · $39 · $99 / yr",
     note: "Management pays. Residents stay.",
     detail: "Your address is your key to downtown.",
+    href: "/partners/properties",
   },
   {
-    emoji: "🏨",
     label: "Hotels",
     sub: "Hotels, boutiques, extended stays",
     price: "$99–$149 / yr",
     note: "Extend the stay beyond your lobby.",
     detail: "One scan. Every option nearby.",
+    href: "/partners/hotels",
   },
   {
-    emoji: "🍽️",
     label: "Venues",
     sub: "Restaurants, bars, fitness, wellness",
     price: "Free for 12 months",
     note: "Show up in the moment that counts.",
     detail: "Not reach. Relevance. Not impressions. Intent.",
+    href: "/partners/venues",
   },
   {
-    emoji: "📢",
     label: "Brands",
     sub: "Activations, campaigns, sponsorships",
     price: "$99–$149 / yr",
     note: "Buy the moment, not the impression.",
     detail: "Context beats scale. Timing beats frequency.",
+    href: "/partners/brands",
   },
   {
-    emoji: "🏛️",
     label: "Civic",
     sub: "Cities, districts, chambers",
     price: "$49–$79 / yr",
     note: "Turn attendance into participation.",
     detail: "Discovery drives turnout.",
+    href: "/partners/civic",
   },
 ];
 
@@ -89,14 +91,18 @@ export default function PricingSection() {
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
-              className="p-5 rounded-lg border border-[hsl(218,20%,88%)] bg-white hover:border-primary/30 hover:shadow-[0_4px_14px_rgba(14,28,54,.06)] transition-all shadow-[0_1px_4px_rgba(14,28,54,.04)]"
+              className="group p-5 rounded-lg border border-[hsl(218,20%,88%)] bg-white hover:border-primary/30 hover:shadow-[0_4px_14px_rgba(14,28,54,.06)] transition-all shadow-[0_1px_4px_rgba(14,28,54,.04)] cursor-pointer"
+              onClick={() => {}}
             >
-              <div className="text-xl mb-3">{tier.emoji}</div>
-              <div className="font-heading font-medium text-sm text-foreground mb-0.5">{tier.label}</div>
+              {(() => { const Icon = TIER_ICONS[tier.label]; return Icon ? <Icon className="w-4 h-4 text-primary/60 mb-3" /> : null; })()}
+              <div className="font-heading font-medium text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>
               <div className="text-[11px] text-foreground/45 mb-3">{tier.sub}</div>
               <div className="font-heading font-medium text-primary text-[13px] mb-1">{tier.price}</div>
               <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
-              <div className="text-[11px] text-foreground/45 italic leading-relaxed">{tier.detail}</div>
+              <div className="text-[11px] text-foreground/45 italic leading-relaxed mb-3">{tier.detail}</div>
+              <Link to={tier.href} className="text-[11px] text-primary font-medium hover:underline underline-offset-4">
+                Learn more →
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -108,10 +114,10 @@ export default function PricingSection() {
           className="mt-8 flex flex-wrap items-center gap-4"
         >
           <Link
-            to="/downtown-perks/for-buildings"
+            to="/partners"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
           >
-            See how it works for you <ArrowRight className="w-3.5 h-3.5" />
+            Explore all partner types <ArrowRight className="w-3.5 h-3.5" />
           </Link>
           <span className="text-[12px] text-foreground/45">No setup fee. No long-term commitment.</span>
         </motion.div>

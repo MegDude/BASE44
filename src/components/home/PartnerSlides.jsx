@@ -20,6 +20,7 @@ const slides = [
     pricing: "Free pilot · $39/yr · $99/yr",
     pricingNote: "Start for nothing. Upgrade when it's obvious.",
     cta: "Bring this to your property",
+    href: "/partners/properties",
   },
   {
     id: "hotels",
@@ -37,6 +38,7 @@ const slides = [
     pricing: "From $99/yr",
     pricingNote: "Less than one bad review costs you.",
     cta: "Use this for guests",
+    href: "/partners/hotels",
   },
   {
     id: "venues",
@@ -54,6 +56,7 @@ const slides = [
     pricing: "Free for 12 months · From $49/yr after",
     pricingNote: "Pay nothing until you see the value.",
     cta: "Discuss activation",
+    href: "/partners/venues",
   },
   {
     id: "brands",
@@ -71,6 +74,7 @@ const slides = [
     pricing: "From $149/yr",
     pricingNote: "Less than one underperforming media buy.",
     cta: "Start a conversation",
+    href: "/partners/brands",
   },
   {
     id: "civic",
@@ -88,6 +92,7 @@ const slides = [
     pricing: "From $49/yr",
     pricingNote: "Less than printing flyers no one reads.",
     cta: "Talk to us",
+    href: "/partners/civic",
   },
 ];
 
@@ -180,7 +185,7 @@ export default function PartnerSlides() {
                 <div className="font-heading font-medium text-foreground text-sm mb-1">{slide.pricing}</div>
                 <div className="text-[12px] text-foreground/55 italic mb-5">{slide.pricingNote}</div>
                 <Link
-                  to="/downtown-perks/for-buildings"
+                  to={slide.href}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
                 >
                   {slide.cta} <ArrowRight className="w-3.5 h-3.5" />
