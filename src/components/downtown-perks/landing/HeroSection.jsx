@@ -4,17 +4,14 @@ import { ArrowRight, MapPin } from "lucide-react";
 export default function HeroSection({ heroImage }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
 
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
 
       {/* Background */}
       <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Downtown Austin"
-          className="w-full h-full object-cover"
-        />
+        <img src={heroImage} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
@@ -40,97 +37,62 @@ export default function HeroSection({ heroImage }) {
               setLoading(true);
 
               try {
-                console.log("Search:", query);
-
                 const res = await fetch("/api/ask-map", {
                   method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    query,
-                    location: "Downtown Austin"
-                  })
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ query })
                 });
 
                 const data = await res.json();
 
-                // TEMP: replace later with UI panel
-                alert(data.answer);
+                const parsed = data.answer.split("\n").filter(Boolean);
+                setResults(parsed);
 
               } catch (err) {
                 console.error(err);
-                alert("AI request failed");
               }
 
               setLoading(false);
             }}
-            className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white shadow-[0_12px_30px_rgba(14,28,54,0.10)]"
+            className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white shadow-lg"
           >
-            <div className="p-2">
+            <div className="p-2 flex gap-2">
 
-              <div className="flex gap-2">
-
-                {/* INPUT */}
-                <div className="flex flex-1 items-center gap-3 border rounded-[16px] px-4 h-12">
-                  <MapPin className="h-4 w-4 text-gray-400" />
-                  <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Where should I go right now?"
-                    className="flex-1 outline-none text-sm"
-                  />
-                </div>
-
-                {/* BUTTON */}
-                <button
-                  className="h-12 px-5 bg-gray-900 text-white rounded-[16px] flex items-center gap-2"
-                >
-                  {loading ? "Thinking..." : "Open map"}
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-
+              <div className="flex flex-1 items-center gap-3 border rounded-[16px] px-4 h-12">
+                <MapPin className="h-4 w-4 text-gray-400" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Where should I go right now?"
+                  className="flex-1 outline-none text-sm"
+                />
               </div>
 
-              {/* CHIPS */}
-              <div className="mt-3 flex gap-2 flex-wrap">
-
-                <button
-                  onClick={() => setQuery("restaurants nearby")}
-                  type="button"
-                  className="px-3 py-1 rounded-full border text-sm"
-                >
-                  Venues
-                </button>
-
-                <button
-                  onClick={() => setQuery("events tonight")}
-                  type="button"
-                  className="px-3 py-1 rounded-full border text-sm"
-                >
-                  Events
-                </button>
-
-                <button
-                  onClick={() => setQuery("local perks")}
-                  type="button"
-                  className="px-3 py-1 rounded-full border text-sm"
-                >
-                  Perks
-                </button>
-
-                <button
-                  onClick={() => setQuery("5 minute walk")}
-                  type="button"
-                  className="px-3 py-1 rounded-full border text-sm"
-                >
-                  5 min walk
-                </button>
-
-              </div>
+              <button className="h-12 px-5 bg-gray-900 text-white rounded-[16px] flex items-center gap-2">
+                {loading ? "Thinking..." : "Open map"}
+                <ArrowRight className="h-4 w-4" />
+              </button>
 
             </div>
           </form>
+
+          {/* RESULTS PANEL */}
+          {results.length > 0 && (
+            <div className="mt-6 bg-white rounded-xl p-4 shadow">
+              <h3 className="font-semibold mb-2">Recommendations</h3>
+
+              {results.map((r, i) => (
+                <div key={i} className="text-sm py-1 border-b last:border-0">
+                  {r}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* MAP — CORRECTLY PLACED */}
+          <div className="mt-6 h-[300px] bg-gray-200 rounded-xl flex items-center justify-center">
+            Map will render here
+          </div>
 
         </div>
       </div>
