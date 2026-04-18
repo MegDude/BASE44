@@ -1,76 +1,90 @@
-<form
-  onSubmit={(e) => {
-    e.preventDefault();
-    console.log("Search:", query); // hook this to map later
-  }}
-  className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white shadow-[0_12px_30px_rgba(14,28,54,0.10)] md:mt-6"
->
-  <div className="p-2">
-    
-    <div className="flex flex-col gap-2 md:flex-row md:items-center">
-      
-      {/* INPUT */}
-      <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-[hsl(218,20%,80%)] bg-white px-4 transition-all focus-within:border-primary/50 focus-within:shadow-[0_0_0_3px_rgba(99,102,241,0.08)]">
-        
-        <MapPin className="h-4 w-4 flex-shrink-0 text-foreground/45" />
-        
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          type="text"
-          placeholder="Where should I go right now?"
-          className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-        />
-      
-      </div>
+import { useState } from "react";
+import { MapPin, ArrowRight } from "lucide-react";
 
-      {/* OPEN MAP (SEARCH ACTION) */}
-      <button
-        type="submit"
-        className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-5 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
+export default function HeroSection() {
+  
+  // ✅ MUST be inside component
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (!query) return;
+
+          setLoading(true);
+
+          try {
+            const res = await fetch("/api/ask-map", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                query,
+                location: "Downtown Austin"
+              })
+            });
+
+            const data = await res.json();
+            setResults(data.places || []);
+
+          } catch (err) {
+            console.error(err);
+          }
+
+          setLoading(false);
+        }}
+        className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white shadow-[0_12px_30px_rgba(14,28,54,0.10)]"
       >
-        Open map
-        <ArrowRight className="h-4 w-4" />
-      </button>
+        <div className="p-2">
+          
+          <div className="flex gap-2">
+            
+            <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-gray-300 px-4">
+              <MapPin className="h-4 w-4 text-gray-400" />
+              
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Where should I go right now?"
+                className="flex-1 outline-none text-sm"
+              />
+            </div>
 
-    </div>
+            <button className="h-12 px-5 bg-gray-900 text-white rounded-[16px] flex items-center gap-2">
+              {loading ? "Searching..." : "Open map"}
+              <ArrowRight className="h-4 w-4" />
+            </button>
 
-    {/* FILTER CHIPS */}
-    <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-      
-      <button
-        type="button"
-        onClick={() => setQuery("restaurants nearby")}
-        className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-[#cfaf5a]/45 bg-[#cfaf5a]/12 text-[hsl(218,42%,14%)]"
-      >
-        Venues
-      </button>
+          </div>
 
-      <button
-        type="button"
-        onClick={() => setQuery("events tonight")}
-        className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
-      >
-        Events
-      </button>
+          {/* FILTERS */}
+          <div className="mt-3 flex gap-2 flex-wrap">
+            <button type="button" onClick={() => setQuery("restaurants nearby")}>Venues</button>
+            <button type="button" onClick={() => setQuery("events tonight")}>Events</button>
+            <button type="button" onClick={() => setQuery("local deals")}>Perks</button>
+            <button type="button" onClick={() => setQuery("5 minute walk")}>5 min walk</button>
+          </div>
 
-      <button
-        type="button"
-        onClick={() => setQuery("local deals and perks")}
-        className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
-      >
-        Perks
-      </button>
+        </div>
+      </form>
 
-      <button
-        type="button"
-        onClick={() => setQuery("things within 5 minute walk")}
-        className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
-      >
-        5 min walk
-      </button>
+      {/* RESULTS */}
+      {results.length > 0 && (
+        <div className="mt-6 bg-white/80 backdrop-blur rounded-xl p-4">
+          <h3 className="text-sm font-semibold mb-2">Places</h3>
 
-    </div>
-
-  </div>
-</form>
+          {results.map((place, i) => (
+            <div key={i} className="text-sm mb-2">
+              <strong>{place.name}</strong> — {place.reason}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
