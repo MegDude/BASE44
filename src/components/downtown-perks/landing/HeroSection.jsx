@@ -1,86 +1,53 @@
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowRight, MapPin } from "lucide-react";
-
-export default function HeroSection({ heroImage }) {
-  return (
-    <section className="relative min-h-screen flex items-end overflow-hidden">
-      {/* Background image — full cover */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Downtown Austin"
-          className="w-full h-full object-cover"
+<form className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white/[0.92] shadow-[0_12px_30px_rgba(14,28,54,0.10)] md:mt-6">
+  
+  <div className="p-2">
+    
+    <div className="flex flex-col gap-2 md:flex-row md:items-center">
+      
+      {/* Input container */}
+      <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-[hsl(218,20%,86%)] bg-white px-4 transition-colors focus-within:border-primary/40">
+        
+        <MapPin className="h-4 w-4 flex-shrink-0 text-foreground/45" />
+        
+        <input
+          type="text"
+          placeholder="Where should I go right now?"
+          className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
         />
-        {/* Multi-layer gradient for editorial elegance */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/65 to-background/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
+      
       </div>
 
-      {/* Content — bottom-anchored editorial layout */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-24 pt-40">
-        <div className="max-w-2xl">
+      {/* CTA button */}
+      <button
+        type="submit"
+        className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-5 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
+      >
+        Open map
+        <ArrowRight className="h-4 w-4" />
+      </button>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.1 }}
-            className="flex items-center gap-2 mb-8"
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pin-pulse" />
-            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em]">
-              Austin, TX — Downtown
-            </span>
-          </motion.div>
+    </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.25 }}
-            className="font-heading text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.05] tracking-tight mb-6 text-foreground"
-          >
-            Where downtown
-            <br />
-            <em className="text-primary not-italic">starts working</em>
-            <br />
-            like a system.
-          </motion.h1>
+    {/* Filter chips */}
+    <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+      
+      <button className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-[#cfaf5a]/45 bg-[#cfaf5a]/12 text-[hsl(218,42%,14%)]">
+        Venues
+      </button>
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-muted-foreground text-base md:text-lg max-w-xl leading-relaxed mb-10 font-body"
-          >
-            A live neighborhood layer for downtown residents — connecting your building, local venues, and community into one real-time map experience.
-          </motion.p>
+      <button className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground">
+        Events
+      </button>
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-start gap-3"
-          >
-            <Link
-              to="/downtown-perks/explore"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/20"
-            >
-              <MapPin className="w-4 h-4" />
-              Open the Map
-            </Link>
-            <Link
-              to="/downtown-perks/card"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/80 text-foreground/80 font-medium text-sm hover:text-foreground hover:border-foreground/30 transition-all duration-300"
-            >
-              Get Your Perks Card
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </div>
+      <button className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground">
+        Perks
+      </button>
 
-      {/* Subtle bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-    </section>
-  );
-}
+      <button className="inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground">
+        5 min walk
+      </button>
+
+    </div>
+
+  </div>
+</form>
