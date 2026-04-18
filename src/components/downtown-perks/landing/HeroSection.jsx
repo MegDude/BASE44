@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { ArrowRight, MapPin } from "lucide-react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 export default function HeroSection({ heroImage }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState([]);
+  const [places, setPlaces] = useState([]);
 
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
@@ -44,9 +46,7 @@ export default function HeroSection({ heroImage }) {
                 });
 
                 const data = await res.json();
-
-                const parsed = data.answer.split("\n").filter(Boolean);
-                setResults(parsed);
+                setPlaces(data.places);
 
               } catch (err) {
                 console.error(err);
@@ -76,23 +76,39 @@ export default function HeroSection({ heroImage }) {
             </div>
           </form>
 
-          {/* RESULTS PANEL */}
-          {results.length > 0 && (
+          {/* RESULTS */}
+          {places.length > 0 && (
             <div className="mt-6 bg-white rounded-xl p-4 shadow">
               <h3 className="font-semibold mb-2">Recommendations</h3>
 
-              {results.map((r, i) => (
+              {places.map((p, i) => (
                 <div key={i} className="text-sm py-1 border-b last:border-0">
-                  {r}
+                  {p.name}
                 </div>
               ))}
             </div>
           )}
 
-          {/* MAP — CORRECTLY PLACED */}
-          <div className="mt-6 h-[300px] bg-gray-200 rounded-xl flex items-center justify-center">
-            Map will render here
-          </div>
+          {/* MAP */}
+          {places.length > 0 && (
+            <div className="mt-6 h-[350px] rounded-xl overflow-hidden">
+              <MapContainer
+                center={[30.2672, -97.7431]}
+                zoom={14}
+                className="h-full w-full"
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                {places.map((p, i) => (
+                  <Marker key={i} position={[p.lat, p.lng]}>
+                    <Popup>{p.name}</Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            </div>
+          )}
 
         </div>
       </div>
