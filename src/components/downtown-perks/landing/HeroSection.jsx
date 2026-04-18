@@ -3,6 +3,7 @@ import { ArrowRight, MapPin } from "lucide-react";
 
 export default function HeroSection({ heroImage }) {
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
@@ -36,6 +37,8 @@ export default function HeroSection({ heroImage }) {
               e.preventDefault();
               if (!query) return;
 
+              setLoading(true);
+
               try {
                 console.log("Search:", query);
 
@@ -51,12 +54,16 @@ export default function HeroSection({ heroImage }) {
                 });
 
                 const data = await res.json();
+
+                // TEMP: replace later with UI panel
                 alert(data.answer);
 
               } catch (err) {
                 console.error(err);
                 alert("AI request failed");
               }
+
+              setLoading(false);
             }}
             className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white shadow-[0_12px_30px_rgba(14,28,54,0.10)]"
           >
@@ -64,6 +71,7 @@ export default function HeroSection({ heroImage }) {
 
               <div className="flex gap-2">
 
+                {/* INPUT */}
                 <div className="flex flex-1 items-center gap-3 border rounded-[16px] px-4 h-12">
                   <MapPin className="h-4 w-4 text-gray-400" />
                   <input
@@ -74,8 +82,11 @@ export default function HeroSection({ heroImage }) {
                   />
                 </div>
 
-                <button className="h-12 px-5 bg-gray-900 text-white rounded-[16px] flex items-center gap-2">
-                  Open map
+                {/* BUTTON */}
+                <button
+                  className="h-12 px-5 bg-gray-900 text-white rounded-[16px] flex items-center gap-2"
+                >
+                  {loading ? "Thinking..." : "Open map"}
                   <ArrowRight className="h-4 w-4" />
                 </button>
 
@@ -84,19 +95,35 @@ export default function HeroSection({ heroImage }) {
               {/* CHIPS */}
               <div className="mt-3 flex gap-2 flex-wrap">
 
-                <button onClick={() => setQuery("restaurants nearby")} type="button">
+                <button
+                  onClick={() => setQuery("restaurants nearby")}
+                  type="button"
+                  className="px-3 py-1 rounded-full border text-sm"
+                >
                   Venues
                 </button>
 
-                <button onClick={() => setQuery("events tonight")} type="button">
+                <button
+                  onClick={() => setQuery("events tonight")}
+                  type="button"
+                  className="px-3 py-1 rounded-full border text-sm"
+                >
                   Events
                 </button>
 
-                <button onClick={() => setQuery("local perks")} type="button">
+                <button
+                  onClick={() => setQuery("local perks")}
+                  type="button"
+                  className="px-3 py-1 rounded-full border text-sm"
+                >
                   Perks
                 </button>
 
-                <button onClick={() => setQuery("5 minute walk")} type="button">
+                <button
+                  onClick={() => setQuery("5 minute walk")}
+                  type="button"
+                  className="px-3 py-1 rounded-full border text-sm"
+                >
                   5 min walk
                 </button>
 
