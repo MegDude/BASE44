@@ -1,8 +1,3 @@
-/**
- * Ask the Map AI — Interpret natural language and drive map state
- * Translates user intent into filters, categories, and ranking
- */
-
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
@@ -10,60 +5,98 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const { query, context } = await req.json();
 
-    if (!query || query.trim().length === 0) {
-      return Response.json({ error: 'Query required' }, { status: 400 });
+    if (!query || typeof query !== "string" || query.trim().length === 0) {
+      return Response.json({ error: "Query required" }, { status: 400 });
     }
 
-    // Use LLM to interpret intent
-    const response = await base44.integrations.Core.InvokeLLM({
+    const llmRaw = await base44.integrations.Core.InvokeLLM({
       prompt: `
-        You are a downtown discovery assistant. Interpret this user query and extract:
-        1. Intent type: (search, discovery, action, exploration)
-        2. Categories: (restaurant, bar, fitness, wellness, beauty, retail, entertainment, coworking, hotel, event, building)
-        3. Filters: (open_now, walkable_5, popular, new, live_events, offers)
-        4. Ranking: (relevance, distance, popularity, rating)
-        5. Reasoning: brief explanation of what the user is looking for
-        
-        User query: "${query}"
-        ${context ? `Context (location, time): ${JSON.stringify(context)}` : ''}
-        
-        Return as JSON only:
-        {
-          "intent": "string",
-          "categories": ["string"],
-          "filters": ["string"],
-          "ranking": "string",
-          "reasoning": "string",
-          "confidence": 0.0-1.0
-        }
+Return ONLY JSON:
+
+{
+  "intent": "search|discovery|action|exploration",
+  "categories": ["string"],
+  "filters": ["string"],
+  "ranking": "relevance|distance|popularity|rating",
+  "reasoning": "string",
+  "confidence": number
+}
+
+Query: "${query}"
+${context ? `Context: ${JSON.stringify(context)}` : ""}
       `,
-      response_json_schema: {
-        type: 'object',
-        properties: {
-          intent: { type: 'string' },
-          categories: { type: 'array', items: { type: 'string' } },
-          filters: { type: 'array', items: { type: 'string' } },
-          ranking: { type: 'string' },
-          reasoning: { type: 'string' },
-          confidence: { type: 'number' },
-        },
-      },
     });
+
+    let parsed = {};
+    try {
+      parsed = typeof llmRaw === "string" ? JSON.parse(llmRaw) : llmRaw;
+    } catch {
+      parsed = {};
+    }
+
+    const response = {
+      intent: normalizeIntent(parsed.intent),
+      categories: normalizeArray(parsed.categories),
+      filters: normalizeFilters(parsed.filters),
+      ranking: normalizeRanking(parsed.ranking),
+      reasoning: typeof parsed.reasoning === "string" ? parsed.reasoning : "",
+      confidence: normalizeConfidence(parsed.confidence),
+    };
 
     return Response.json({
       success: true,
-      intent: response.intent,
-      categories: response.categories || [],
-      filters: response.filters || [],
-      ranking: response.ranking || 'relevance',
-      reasoning: response.reasoning,
-      confidence: response.confidence,
+      query,
+      ...response,
     });
+
   } catch (error) {
-    console.error('Ask the Map error:', error);
-    return Response.json(
-      { error: error.message || 'Intent parsing failed' },
-      { status: 500 }
-    );
+    console.error("Intent error:", error);
+
+    return Response.json({
+      success: true,
+      intent: "search",
+      categories: [],
+      filters: [],
+      ranking: "relevance",
+      reasoning: "fallback",
+      confidence: 0.3,
+    });
   }
 });
+
+/* HELPERS */
+
+function normalizeIntent(intent) {
+  const allowed = ["search", "discovery", "action", "exploration"];
+  return allowed.includes(intent) ? intent : "search";
+}
+
+function normalizeArray(arr) {
+  if (!Array.isArray(arr)) return [];
+  return arr.filter((v) => typeof v === "string");
+}
+
+function normalizeFilters(filters) {
+  const allowed = [
+    "open_now",
+    "walkable_5",
+    "popular",
+    "new",
+    "live_events",
+    "offers",
+  ];
+  if (!Array.isArray(filters)) return [];
+  return filters.filter((f) => allowed.includes(f));
+}
+
+function normalizeRanking(ranking) {
+  const allowed = ["relevance", "distance", "popularity", "rating"];
+  return allowed.includes(ranking) ? ranking : "relevance";
+}
+
+function normalizeConfidence(confidence) {
+  if (typeof confidence !== "number") return 0.5;
+  if (confidence < 0) return 0.3;
+  if (confidence > 1) return 1;
+  return confidence;
+}
