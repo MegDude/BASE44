@@ -3,15 +3,14 @@ import { MapPin } from "lucide-react";
 
 const FOOTER_LINKS = {
   Explore: [
-    { to: "/downtown-perks/explore", label: "Live Map" },
-    { to: "/downtown-perks/events", label: "Events" },
-    { to: "/downtown-perks/perks", label: "Perks" },
-    { to: "/downtown-perks/card", label: "Perks Card" },
-    { to: "/downtown-perks/about", label: "About" },
+    { to: "/explore", label: "Live Map" },
+    { to: "/events", label: "Events" },
+    { to: "/perks", label: "Perks" },
+    { to: "/card", label: "Perks Card" },
+    { to: "/about", label: "About" },
   ],
   Partners: [
     { to: "/partners/residential", label: "Residential" },
-    { to: "/partners/properties", label: "Properties" },
     { to: "/partners/hotels", label: "Hospitality" },
     { to: "/partners/venues", label: "Venues" },
     { to: "/partners/brands", label: "Brands" },
@@ -21,7 +20,7 @@ const FOOTER_LINKS = {
     { to: "/partners", label: "Partner Overview" },
     { to: "/partner-workspace", label: "Partner Workspace" },
     { to: "/dashboard", label: "Dashboard" },
-    { to: "/downtown-perks/for-buildings", label: "Pricing" },
+    { to: "/partners", label: "Pricing" },
     { to: "/brands", label: "Brand Directory" },
   ],
 };
@@ -46,7 +45,7 @@ export default function Footer() {
               A live neighborhood layer for downtown Austin — connecting residents, buildings, and local businesses through a shared map, a simple card, and real-time district intelligence.
             </p>
             <Link
-              to="/downtown-perks/card"
+              to="/card"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all"
             >
               Get Your Card

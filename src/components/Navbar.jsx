@@ -4,10 +4,10 @@ import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Home, Lay
 import { motion, AnimatePresence } from "framer-motion";
 
 const RESIDENT_LINKS = [
-  { to: "/downtown-perks/explore", label: "Live Map", desc: "Browse places, events & perks" },
-  { to: "/downtown-perks/events", label: "Events", desc: "What's happening downtown" },
-  { to: "/downtown-perks/perks", label: "Perks", desc: "Member offers & benefits" },
-  { to: "/downtown-perks/card", label: "Perks Card", desc: "Your resident credential" },
+  { to: "/explore", label: "Live Map", desc: "Browse places, events & perks" },
+  { to: "/events", label: "Events", desc: "What's happening downtown" },
+  { to: "/perks", label: "Perks", desc: "Member offers & benefits" },
+  { to: "/card", label: "Perks Card", desc: "Your resident credential" },
 ];
 
 const PARTNER_LINKS = [
@@ -23,7 +23,7 @@ const TOP_LINKS = [
   
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
-  { to: "/downtown-perks/for-buildings", label: "Pricing" },
+  { to: "/partners", label: "Pricing" },
 ];
 
 export default function Navbar() {
@@ -62,7 +62,12 @@ export default function Navbar() {
   };
 
   const isDropdownActive = (which) => {
-    if (which === "residents") return location.pathname.startsWith("/downtown-perks");
+    if (which === "residents") {
+      return (
+        location.pathname.startsWith("/downtown-perks") ||
+        ["/explore", "/map", "/events", "/perks", "/card", "/about"].includes(location.pathname)
+      );
+    }
     if (which === "partners") return location.pathname.startsWith("/partners") || location.pathname.startsWith("/brands");
     return false;
   };
@@ -175,7 +180,7 @@ export default function Navbar() {
             Dashboard
           </Link>
           <Link
-            to="/downtown-perks/card"
+            to="/card"
             className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all duration-300 shadow-sm shadow-primary/20"
           >
             Get Your Card
@@ -228,7 +233,7 @@ export default function Navbar() {
 
               {/* Other */}
               <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
-              <Link to="/downtown-perks/for-buildings" onClick={() => setOpen(false)}
+              <Link to="/partners" onClick={() => setOpen(false)}
                 className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
                 Pricing
               </Link>
@@ -238,7 +243,7 @@ export default function Navbar() {
               </Link>
 
               <div className="pt-4 pb-2">
-                <Link to="/downtown-perks/card" onClick={() => setOpen(false)}
+                <Link to="/card" onClick={() => setOpen(false)}
                   className="block px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium text-center hover:bg-primary/90 transition-all">
                   Get Your Card
                 </Link>

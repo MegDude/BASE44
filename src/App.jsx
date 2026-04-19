@@ -45,8 +45,6 @@ import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
 import ResidentApp from "./pages/resident-app";
 import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
-// New Map Page import
-import MapPage from "./pages/Map";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -76,7 +74,16 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        {/* Downtown Perks routes */}
+
+        {/* Canonical top-level routes */}
+        <Route path="/map" element={<ExploreRebuilt />} />
+        <Route path="/explore" element={<ExploreRebuilt />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/perks" element={<PerksPage />} />
+        <Route path="/card" element={<PerksCard />} />
+        <Route path="/about" element={<About />} />
+
+        {/* Legacy Downtown Perks routes */}
         <Route path="/downtown-perks" element={<Landing />} />
         <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
         <Route path="/downtown-perks/events" element={<Events />} />
@@ -84,7 +91,8 @@ const AuthenticatedApp = () => {
         <Route path="/downtown-perks/card" element={<PerksCard />} />
         <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
         <Route path="/downtown-perks/about" element={<About />} />
-        {/* Brands routes */}
+
+        {/* Brand routes */}
         <Route path="/brands" element={<BrandsIndex />} />
         <Route path="/brands/analytics" element={<BrandAnalytics />} />
         <Route path="/brands/the-paseo" element={<ThePaseo />} />
@@ -95,31 +103,31 @@ const AuthenticatedApp = () => {
         <Route path="/brands/rivian" element={<Rivian />} />
         <Route path="/brands/lululemon" element={<Lululemon />} />
         <Route path="/brands/equinox" element={<Equinox />} />
+        <Route path="/brands/austin-fc" element={<AustinFC />} />
         <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
         <Route path="/brands/four-seasons" element={<FourSeasons />} />
         <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
         <Route path="/brands/the-shore" element={<TheShore />} />
-        {/* Partners routes */}
+
+        {/* Partner and app routes */}
         <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="/partners/residential" element={<ResidentialPartner />} />
         <Route path="/partners/properties" element={<PropertiesPartner />} />
         <Route path="/property-and-building-management" element={<PropertiesPartner />} />
+        <Route path="/partners/hotels" element={<HotelsPartner />} />
+        <Route path="/partners/venues" element={<VenuesPartner />} />
+        <Route path="/partners/brands" element={<BrandsPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
         <Route path="/dashboard" element={<DashboardHub />} />
         <Route path="/dashboard/partner" element={<Dashboard />} />
         <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
         <Route path="/dashboard/resident" element={<ResidentApp />} />
         <Route path="/partner-dashboard" element={<PartnerDashboard />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/partners/hotels" element={<HotelsPartner />} />
-        <Route path="/partners/venues" element={<VenuesPartner />} />
-        <Route path="/partners/brands" element={<BrandsPartner />} />
         <Route path="/resident-app" element={<ResidentApp />} />
-        {/* Map page route */}
-        <Route path="/map" element={<MapPage />} />
+        <Route path="/pricing" element={<Pricing />} />
         {/* Catch-all route */}
         <Route path="*" element={<PageNotFound />} />
       </Route>

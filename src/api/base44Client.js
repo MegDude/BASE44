@@ -2,13 +2,51 @@ import { createClient } from '@base44/sdk';
 import { appParams } from '@/lib/app-params';
 
 const { appId, token, functionsVersion, appBaseUrl } = appParams;
+const isConfigured = Boolean(appId);
 
-//Create a client with authentication required
-export const base44 = createClient({
-  appId,
-  token,
-  functionsVersion,
-  serverUrl: '',
-  requiresAuth: false,
-  appBaseUrl
+const createEntityStub = () => ({
+  list: async () => [],
+  filter: async () => [],
+  create: async (payload = {}) => payload,
+  update: async (_id, payload = {}) => payload,
+  delete: async () => true,
+  subscribe: () => () => {},
 });
+
+const createNoopClient = () => ({
+  auth: {
+    isAuthenticated: async () => false,
+    me: async () => null,
+    updateMe: async () => null,
+    logout: () => {},
+    redirectToLogin: () => {},
+  },
+  functions: {
+    invoke: async () => null,
+  },
+  analytics: {
+    track: () => {},
+  },
+  integrations: {
+    Core: {
+      InvokeLLM: async () => ({ success: false, reason: 'base44_not_configured' }),
+    },
+  },
+  entities: new Proxy(
+    {},
+    {
+      get: () => createEntityStub(),
+    }
+  ),
+});
+
+export const base44 = isConfigured
+  ? createClient({
+      appId,
+      token,
+      functionsVersion,
+      serverUrl: '',
+      requiresAuth: false,
+      appBaseUrl,
+    })
+  : createNoopClient();

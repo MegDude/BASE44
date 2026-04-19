@@ -23,19 +23,18 @@ L.Icon.Default.mergeOptions({
 function MapFlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
-    if (
-      position &&
-      Array.isArray(position) &&
-      position.length === 2 &&
-      Number.isFinite(position[0]) &&
-      Number.isFinite(position[1]) &&
-      map.getContainer() // Only fly if map is ready
-    ) {
-      try {
-        map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
-      } catch (error) {
-        console.warn('Map flyTo error:', error);
-      }
+    const safePosition = getValidMapCenter(position, AUSTIN_CENTER);
+    const currentZoom = map?.getZoom?.();
+    const nextZoom = Number.isFinite(currentZoom) ? Math.max(currentZoom, 14) : 14;
+
+    if (!map?.getContainer?.() || !safePosition || !map._loaded) {
+      return;
+    }
+
+    try {
+      map.setView(safePosition, nextZoom, { animate: false });
+    } catch (error) {
+      console.warn('Map flyTo error:', error);
     }
   }, [position, map]);
   return null;
@@ -86,7 +85,7 @@ export default function UnifiedMapShell({
         attribution="&copy; CARTO"
       />
 
-      <MapFlyTo position={mapCenter} />
+      {selectedId ? <MapFlyTo position={mapCenter} /> : null}
 
       {/* Heatmap and other layers */}
       {children}

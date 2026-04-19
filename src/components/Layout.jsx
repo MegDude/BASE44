@@ -20,12 +20,15 @@ export default function Layout() {
     pathname.startsWith("/partners") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/partner-workspace") ||
-    pathname === "/";
+    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about"].includes(pathname);
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
     pathname === "/downtown-perks/explore" ||
-    pathname === "/downtown-perks/events";
+    pathname === "/downtown-perks/events" ||
+    pathname === "/map" ||
+    pathname === "/explore" ||
+    pathname === "/events";
 
   return (
     <div className="min-h-screen bg-background font-body">

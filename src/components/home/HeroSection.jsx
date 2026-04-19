@@ -51,18 +51,18 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-[#f6f3ee]">
+    <section className="relative w-full min-h-[92svh] overflow-hidden bg-background">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80"
           alt="Downtown Austin"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover opacity-30"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/26 via-white/10 to-[rgba(15,23,42,0.14)]" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[rgba(252,251,248,0.94)] via-[rgba(252,251,248,0.82)] to-[rgba(252,251,248,0.92)]" />
       </div>
 
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-24 md:py-28">
+      <div className="relative z-10 flex min-h-[92svh] flex-col items-center justify-center px-4 py-20 md:py-24">
         {/* Brand tag */}
         <motion.div
           initial={{ opacity: 0, y: -8 }}
@@ -178,7 +178,7 @@ export default function HeroSection() {
                     onClick={() => setActiveChip(chip.label)}
                     className={`inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all ${
                       isActive
-                        ? "border-[#cfaf5a]/45 bg-[#cfaf5a]/12 text-[hsl(218,42%,14%)]"
+                        ? "border-primary/30 bg-primary/10 text-foreground"
                         : "border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
                     }`}
                   >

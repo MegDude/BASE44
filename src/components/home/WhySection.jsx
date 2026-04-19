@@ -6,9 +6,9 @@ export default function WhySection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-white">
+    <section ref={ref} className="py-14 md:py-16 px-6 border-t border-[hsl(218,20%,88%)] bg-white">
       <div className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
           {/* Left — problem */}
           <motion.div
@@ -39,7 +39,7 @@ export default function WhySection() {
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="md:pt-8 space-y-8"
+            className="md:pt-6 space-y-6"
           >
             <div>
               <h3 className="font-heading text-2xl font-medium leading-[1.1] tracking-tight mb-3 text-foreground">

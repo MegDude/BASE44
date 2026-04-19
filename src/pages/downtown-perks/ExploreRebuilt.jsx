@@ -16,6 +16,7 @@ import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
 import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
 import TimeFilter from '@/components/map/unified/TimeFilter';
 import { createMarker } from '@/components/map/markers/MarkerFactory';
+import { MAP_ENTITIES } from '@/data/mapEntities';
 
 
 // Helper to get marker icon from factory
@@ -41,10 +42,14 @@ export default function ExploreRebuilt() {
           filters: {},
           limit: 1000,
         });
-        setAllEntities(response.data?.items || []);
+
+        const remoteItems = Array.isArray(response?.data?.items) ? response.data.items : [];
+        const fallbackItems = Array.isArray(MAP_ENTITIES) ? MAP_ENTITIES : [];
+        setAllEntities(remoteItems.length ? remoteItems : fallbackItems);
         setLoading(false);
       } catch (error) {
         console.error('Failed to load map feed:', error);
+        setAllEntities(MAP_ENTITIES);
         setLoading(false);
       }
     })();
@@ -121,7 +126,7 @@ export default function ExploreRebuilt() {
   }
 
   return (
-    <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-cream">
+    <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-background">
       {/* ── MOBILE LAYOUT ────────────────────────────────── */}
       <div className="md:hidden w-full h-[calc(100vh-68px)] flex flex-col">
         {/* Map (full height) */}
