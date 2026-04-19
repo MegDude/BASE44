@@ -1,8 +1,3 @@
-/**
- * Ask the Map AI — Interpret natural language and return safe intent
- * JS-safe (Base44 compatible) + normalized + fail-safe
- */
-
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 Deno.serve(async (req) => {
@@ -10,17 +5,13 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const { query, context } = await req.json();
 
-    // 🔒 INPUT VALIDATION
     if (!query || typeof query !== "string" || query.trim().length === 0) {
       return Response.json({ error: "Query required" }, { status: 400 });
     }
 
-    // 🔒 LLM CALL
     const llmRaw = await base44.integrations.Core.InvokeLLM({
       prompt: `
-You are a downtown discovery assistant.
-
-Return ONLY valid JSON:
+Return ONLY JSON:
 
 {
   "intent": "search|discovery|action|exploration",
@@ -31,32 +22,24 @@ Return ONLY valid JSON:
   "confidence": number
 }
 
-User query: "${query}"
+Query: "${query}"
 ${context ? `Context: ${JSON.stringify(context)}` : ""}
       `,
     });
 
-    // 🔒 SAFE PARSE
     let parsed = {};
     try {
-      parsed =
-        typeof llmRaw === "string"
-          ? JSON.parse(llmRaw)
-          : llmRaw;
+      parsed = typeof llmRaw === "string" ? JSON.parse(llmRaw) : llmRaw;
     } catch {
       parsed = {};
     }
 
-    // 🔒 NORMALIZATION
     const response = {
       intent: normalizeIntent(parsed.intent),
       categories: normalizeArray(parsed.categories),
       filters: normalizeFilters(parsed.filters),
       ranking: normalizeRanking(parsed.ranking),
-      reasoning:
-        typeof parsed.reasoning === "string"
-          ? parsed.reasoning
-          : "",
+      reasoning: typeof parsed.reasoning === "string" ? parsed.reasoning : "",
       confidence: normalizeConfidence(parsed.confidence),
     };
 
@@ -67,7 +50,7 @@ ${context ? `Context: ${JSON.stringify(context)}` : ""}
     });
 
   } catch (error) {
-    console.error("Ask the Map error:", error);
+    console.error("Intent error:", error);
 
     return Response.json({
       success: true,
@@ -75,15 +58,13 @@ ${context ? `Context: ${JSON.stringify(context)}` : ""}
       categories: [],
       filters: [],
       ranking: "relevance",
-      reasoning: "Fallback",
+      reasoning: "fallback",
       confidence: 0.3,
     });
   }
 });
 
-/* --------------------------
-   NORMALIZATION HELPERS
--------------------------- */
+/* HELPERS */
 
 function normalizeIntent(intent) {
   const allowed = ["search", "discovery", "action", "exploration"];
@@ -104,7 +85,6 @@ function normalizeFilters(filters) {
     "live_events",
     "offers",
   ];
-
   if (!Array.isArray(filters)) return [];
   return filters.filter((f) => allowed.includes(f));
 }
