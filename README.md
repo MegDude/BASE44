@@ -37,3 +37,14 @@ Open [Base44.com](http://Base44.com) and click on Publish.
 Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
 
 Support: [https://app.base44.com/support](https://app.base44.com/support)
+
+## Quick test links for map search
+
+After running `npm run dev`, use the following in your browser:
+
+- UI route test: `http://localhost:5173/map?q=coffee%20near%20me`
+- API test: `http://localhost:5173/api/places?query=coffee%20near%20me`
+
+If the API returns a `Missing GOOGLE_MAPS_API_KEY` error, add this env var before testing:
+
+- `GOOGLE_MAPS_API_KEY=your_google_places_key`

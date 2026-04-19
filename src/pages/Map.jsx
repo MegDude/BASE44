@@ -1,66 +1,103 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
+const DEFAULT_COORDINATES = { lat: 30.2672, lng: -97.7431 };
+
 export default function MapPage() {
   const [params] = useSearchParams();
-  const query = params.get("q");
+  const query = (params.get("q") || "").trim();
 
   const [results, setResults] = useState([]);
-  const [coordinates, setCoordinates] = useState({ lat: 30.2672, lng: -97.7431 }); // Default Austin, TX coordinates
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!query) return;
+    if (!query) {
+      setResults([]);
+      setError("");
+      return;
+    }
+
+    const controller = new AbortController();
 
     const fetchResults = async () => {
+      setLoading(true);
+      setError("");
+
       try {
-        const res = await fetch("/api/ask-map", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ query })
+        const res = await fetch(`/api/places?query=${encodeURIComponent(query)}`, {
+          signal: controller.signal,
         });
 
         const data = await res.json();
-        setResults(data.places);
 
+        if (!res.ok) {
+          throw new Error(data?.error || "Places request failed");
+        }
+
+        setResults(Array.isArray(data.results) ? data.results : []);
       } catch (err) {
+        if (err.name === "AbortError") return;
         console.error(err);
+        setError("Unable to fetch places right now.");
+        setResults([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchResults();
+
+    return () => controller.abort();
   }, [query]);
+
+  const mapCenter = useMemo(() => {
+    if (results.length > 0) {
+      return { lat: results[0].lat, lng: results[0].lng };
+    }
+    return DEFAULT_COORDINATES;
+  }, [results]);
 
   return (
     <div className="h-screen flex">
-
-      {/* Sidebar */}
       <div className="w-[320px] bg-white border-r p-4 overflow-y-auto">
-        <h2 className="font-semibold mb-4">Results</h2>
+        <h2 className="font-semibold mb-2">Results</h2>
+        {query ? <p className="text-xs text-slate-500 mb-1">Query: {query}</p> : null}
+        <a href="/map?q=coffee%20near%20me" className="text-xs text-blue-600 hover:underline">Test link: /map?q=coffee%20near%20me</a>
+
+        {loading ? <p className="text-sm text-slate-500">Loading places…</p> : null}
+        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+
+        {!loading && !error && results.length === 0 ? (
+          <p className="text-sm text-slate-500">No places found yet.</p>
+        ) : null}
+
         {results.map((place, index) => (
-          <div key={index} className="text-sm py-2 border-b">
-            {place.name}
+          <div key={`${place.name}-${index}`} className="text-sm py-3 border-b">
+            <div className="font-medium">{place.name}</div>
+            <div className="text-xs text-slate-500">{place.address}</div>
+            {place.rating ? <div className="text-xs mt-1">⭐ {place.rating}</div> : null}
           </div>
         ))}
       </div>
 
-      {/* Map Section */}
       <div className="flex-1 relative">
-        <MapContainer center={[coordinates.lat, coordinates.lng]} zoom={13} className="w-full h-full">
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+        <MapContainer center={[mapCenter.lat, mapCenter.lng]} zoom={13} className="w-full h-full">
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {results.map((place, index) => (
-            <Marker key={index} position={[place.lat, place.lng]}>
-              <Popup>{place.name}</Popup>
+            <Marker key={`${place.name}-${index}`} position={[place.lat, place.lng]}>
+              <Popup>
+                <div className="text-sm">
+                  <div className="font-medium">{place.name}</div>
+                  <div>{place.address}</div>
+                </div>
+              </Popup>
             </Marker>
           ))}
         </MapContainer>
       </div>
-
     </div>
   );
 }
