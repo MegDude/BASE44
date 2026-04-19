@@ -64,7 +64,8 @@ export default function MapPage() {
     <div className="h-screen flex">
       <div className="w-[320px] bg-white border-r p-4 overflow-y-auto">
         <h2 className="font-semibold mb-2">Results</h2>
-        {query ? <p className="text-xs text-slate-500 mb-3">Query: {query}</p> : null}
+        {query ? <p className="text-xs text-slate-500 mb-1">Query: {query}</p> : null}
+        <a href="/map?q=coffee%20near%20me" className="text-xs text-blue-600 hover:underline">Test link: /map?q=coffee%20near%20me</a>
 
         {loading ? <p className="text-sm text-slate-500">Loading places…</p> : null}
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
