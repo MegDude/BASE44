@@ -67,15 +67,19 @@ export default function UnifiedMapShell({
     onMapZoomChange?.(map.getZoom());
   };
 
-  // Ensure mapCenter is always valid for MapContainer
+  // Ensure mapCenter and zoom are always valid for MapContainer
   const validCenter = getValidMapCenter(mapCenter, AUSTIN_CENTER);
+  const validZoom = Number.isFinite(mapZoom) ? mapZoom : 14;
 
   return (
     <MapContainer
       center={validCenter}
-      zoom={mapZoom}
-      className={`${className} relative`}
+      zoom={validZoom}
+      className={`${className} relative overflow-hidden`}
       zoomControl={false}
+      attributionControl={false}
+      minZoom={12}
+      maxZoom={19}
       scrollWheelZoom={true}
       onMoveend={(e) => handleDragEnd(e.target)}
       onZoomend={(e) => handleZoom(e.target)}
@@ -92,17 +96,18 @@ export default function UnifiedMapShell({
 
       {/* Markers */}
       {items.map((item) => {
-        // Use validated location from centralized data
-        if (!item.location || !item.location.valid) return null;
+        const lat = item?.location?.latitude;
+        const lng = item?.location?.longitude;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
 
-        const position = [item.location.latitude, item.location.longitude];
+        const position = [lat, lng];
         const icon = markerIcon
           ? markerIcon(item, selectedId === item.id)
           : L.divIcon({
               className: '',
-              html: `<div style="width:10px;height:10px;border-radius:50%;background:#C8973A;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)"></div>`,
-              iconSize: [10, 10],
-              iconAnchor: [5, 5],
+              html: `<div style="width:12px;height:12px;border-radius:999px;background:#0b1f33;border:2px solid #fff;box-shadow:0 4px 12px rgba(11,31,51,0.18)"></div>`,
+              iconSize: [12, 12],
+              iconAnchor: [6, 6],
             });
 
         return (

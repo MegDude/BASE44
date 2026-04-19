@@ -1,76 +1,103 @@
-/**
- * UnifiedResultsPanel — Desktop right sidebar
- * Shows filtered results, synced with map
- */
-
 import { motion, AnimatePresence } from 'framer-motion';
-import { useUnifiedMapStore } from '@/store/unified-map-store';
-import { Sparkles } from 'lucide-react';
+import { Heart, MapPin, Sparkles, Clock3 } from 'lucide-react';
+import { useMapStateStore } from '@/store/mapStateStore';
 
 export default function UnifiedResultsPanel({ items = [] }) {
-  const { selectedId, selectEntity, query } = useUnifiedMapStore();
+  const selectedEntityId = useMapStateStore((state) => state.selectedEntityId);
+  const searchQuery = useMapStateStore((state) => state.searchQuery);
+  const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
+  const selectEntity = useMapStateStore((state) => state.selectEntity);
+  const toggleSaved = useMapStateStore((state) => state.toggleSaved);
 
   return (
-    <>
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-border">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-foreground">
-            Results
-            {query && ` for "${query}"`}
-          </h2>
-          <span className="text-xs font-medium bg-secondary text-muted-foreground px-2.5 py-1 rounded-full">
+    <div className="flex h-full flex-col">
+      <div className="border-b border-border px-5 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-foreground">
+              Downtown results
+              {searchQuery ? ` for “${searchQuery}”` : ''}
+            </h2>
+            <p className="mt-1 text-xs text-slate-500">Pins, perks, events, and properties in one live view.</p>
+          </div>
+          <span className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             {items.length}
           </span>
         </div>
       </div>
 
-      {/* Results list */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-4">
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4 py-12">
-            <Sparkles className="w-8 h-8 text-muted-foreground/40 mb-3" />
-            <p className="text-sm font-medium text-foreground">No results</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Try a different search or filter
-            </p>
+          <div className="flex h-full flex-col items-center justify-center rounded-[24px] border border-dashed border-border bg-white px-6 py-12 text-center">
+            <Sparkles className="mb-3 h-8 w-8 text-slate-300" />
+            <p className="text-sm font-medium text-foreground">No results yet</p>
+            <p className="mt-1 text-xs text-slate-500">Try a different search or clear a few filters.</p>
           </div>
         ) : (
-          <div className="space-y-2 p-4">
+          <div className="space-y-3">
             <AnimatePresence>
-              {items.map((item) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  onClick={() => selectEntity(item.id, item._type)}
-                  className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                    selectedId === item.id
-                      ? 'bg-primary/10 border-primary'
-                      : 'bg-white border-border hover:border-foreground/30'
-                  }`}
-                >
-                  <div className="text-xs font-semibold uppercase text-muted-foreground mb-0.5 capitalize">
-                    {item._type}
-                  </div>
-                  <h3 className="font-semibold text-foreground text-sm">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {item.address?.split(',')[0] || item.category}
-                  </p>
-                  {item.perk_value && (
-                    <p className="text-xs font-medium text-primary mt-2">
-                      {item.perk_value}
-                    </p>
-                  )}
-                </motion.div>
-              ))}
+              {items.map((item) => {
+                const isSaved = savedEntityIds.has(item.id);
+                const isSelected = selectedEntityId === item.id;
+                const metaWalk = item.metadata?.walkMinutes ? `${item.metadata.walkMinutes} min walk` : null;
+
+                return (
+                  <motion.button
+                    key={item.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    onClick={() => selectEntity(item)}
+                    className={`w-full rounded-[22px] border p-4 text-left transition-all ${
+                      isSelected
+                        ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.04)] shadow-sm'
+                        : 'border-border bg-white hover:border-[rgba(11,31,51,0.22)] hover:shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <span className="inline-flex rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
+                          {item.type}
+                        </span>
+                        <h3 className="mt-2 text-base font-semibold text-[#0b1f33]">{item.name}</h3>
+                      </div>
+
+                      <button
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleSaved(item.id);
+                        }}
+                        className={isSaved ? 'dp-chip dp-chip-active' : 'dp-chip'}
+                        aria-label="Save location"
+                      >
+                        <Heart className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    <p className="mt-2 text-sm text-slate-600">{item.description || item.address}</p>
+
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
+                      {item.address && (
+                        <span className="dp-chip">
+                          <MapPin className="h-3.5 w-3.5" />
+                          {item.address.split(',')[0]}
+                        </span>
+                      )}
+                      {metaWalk && (
+                        <span className="dp-chip">
+                          <Clock3 className="h-3.5 w-3.5" />
+                          {metaWalk}
+                        </span>
+                      )}
+                      {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
+                    </div>
+                  </motion.button>
+                );
+              })}
             </AnimatePresence>
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

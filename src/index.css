@@ -161,6 +161,42 @@
     transform: translateY(-1px);
     box-shadow: 0 12px 30px rgba(11, 31, 51, 0.08);
   }
+
+  .dp-map-panel {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(11, 31, 51, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 18px 50px rgba(11, 31, 51, 0.08);
+    backdrop-filter: blur(16px);
+  }
+
+  .dp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(11, 31, 51, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    color: rgb(71 85 105);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .dp-chip-active {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .dp-micro-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b69247;
+  }
 }
 
 /* Refined scrollbar */
