@@ -1,6 +1,6 @@
 /**
  * Downtown Perks Data Repositories
- * SINGLE SOURCE OF TRUTH
+ * CLEAN + STABLE VERSION
  */
 
 import { base44Api } from "@/lib/api/base44Api";
@@ -25,8 +25,11 @@ export const mapRepository = {
 
       const ranked = rankItems(items, intent?.ranking, userLocation);
 
+      // 🔥 ADAPTER → FIXES UI BREAKS
+      const adapted = ranked.map(adaptToUI);
+
       return {
-        items: ranked,
+        items: adapted,
         intent,
       };
     } catch (err) {
@@ -35,7 +38,7 @@ export const mapRepository = {
       const items = await this.getMapFeed({ query });
 
       return {
-        items,
+        items: items.map(adaptToUI),
         intent: null,
       };
     }
@@ -124,7 +127,32 @@ export const partnerRepository = {
 };
 
 /* =========================================================
-   RANKING SYSTEM
+   UI ADAPTER (CRITICAL FIX)
+========================================================= */
+
+function adaptToUI(item) {
+  return {
+    id: item.entity_id,
+    type: item.entity_type,
+    name: item.title,
+    description: item.description,
+
+    latitude: item.lat,
+    longitude: item.lng,
+
+    category: item.tags?.[0] || null,
+
+    rating: item.metadata?.rating || null,
+    popularity: item.metadata?.popularity || null,
+
+    image: item.metadata?.image || null,
+
+    raw: item,
+  };
+}
+
+/* =========================================================
+   RANKING SYSTEM (FIXED)
 ========================================================= */
 
 function rankItems(items, ranking, userLocation) {
@@ -132,19 +160,19 @@ function rankItems(items, ranking, userLocation) {
 
   switch (ranking) {
     case "distance":
-      return items.sort(
+      return [...items].sort(
         (a, b) => distance(a, userLocation) - distance(b, userLocation)
       );
 
     case "popularity":
-      return items.sort(
+      return [...items].sort(
         (a, b) =>
           (b?.metadata?.popularity || 0) -
           (a?.metadata?.popularity || 0)
       );
 
     case "rating":
-      return items.sort(
+      return [...items].sort(
         (a, b) =>
           (b?.metadata?.rating || 0) -
           (a?.metadata?.rating || 0)
