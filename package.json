@@ -13,6 +13,8 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
+    "ci:validate": "npm run lint && npm run typecheck && npm run build",
+    "health:check": "./scripts/health-check.sh",
     "preview": "vite preview"
   },
   "dependencies": {
