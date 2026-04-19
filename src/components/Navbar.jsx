@@ -19,11 +19,9 @@ const PARTNER_LINKS = [
 ];
 
 const TOP_LINKS = [
-  
-  
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
-  { to: "/downtown-perks/for-buildings", label: "Pricing" },
+  { to: "/partners", label: "Partnerships" },
 ];
 
 export default function Navbar() {
@@ -230,7 +228,7 @@ export default function Navbar() {
               <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
               <Link to="/downtown-perks/for-buildings" onClick={() => setOpen(false)}
                 className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
-                Pricing
+Partnerships
               </Link>
               <Link to="/dashboard" onClick={() => setOpen(false)}
                 className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">

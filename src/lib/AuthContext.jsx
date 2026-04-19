@@ -21,23 +21,30 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
-      
-      // First, check app public settings (with token if available)
-      // This will tell us if auth is required, user not registered, etc.
+
+      if (!appParams.appId || !appParams.appBaseUrl) {
+        console.warn('Base44 app parameters missing. Running in public mode.');
+        setAppPublicSettings(null);
+        setIsAuthenticated(false);
+        setIsLoadingPublicSettings(false);
+        setIsLoadingAuth(false);
+        return;
+      }
+
+      // Check app public settings against the configured Base44 backend.
       const appClient = createAxiosClient({
-        baseURL: `/api/apps/public`,
+        baseURL: `${appParams.appBaseUrl.replace(/\/$/, '')}/api/apps/public`,
         headers: {
           'X-App-Id': appParams.appId
         },
-        token: appParams.token, // Include token if available
+        token: appParams.token,
         interceptResponses: true
       });
-      
+
       try {
         const publicSettings = await appClient.get(`/prod/public-settings/by-id/${appParams.appId}`);
         setAppPublicSettings(publicSettings);
-        
-        // If we got the app public settings successfully, check if user is authenticated
+
         if (appParams.token) {
           await checkUserAuth();
         } else {
@@ -47,9 +54,14 @@ export const AuthProvider = ({ children }) => {
         setIsLoadingPublicSettings(false);
       } catch (appError) {
         console.error('App state check failed:', appError);
-        
-        // Handle app-level errors
-        if (appError.status === 403 && appError.data?.extra_data?.reason) {
+
+        const message = appError?.message || '';
+        if (appError?.status === 404 || /app not found/i.test(message)) {
+          console.warn('Base44 app was not found. Falling back to public mode.');
+          setAppPublicSettings(null);
+          setAuthError(null);
+          setIsAuthenticated(false);
+        } else if (appError.status === 403 && appError.data?.extra_data?.reason) {
           const reason = appError.data.extra_data.reason;
           if (reason === 'auth_required') {
             setAuthError({
