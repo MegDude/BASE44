@@ -1,4 +1,11 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
+import { z } from 'zod';
+
+const saveSchema = z.object({
+  profileId: z.string().trim().min(1),
+  entityType: z.enum(['venue', 'event', 'perk']),
+  entityId: z.string().trim().min(1)
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,12 +16,12 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing Supabase server environment variables' });
   }
 
-  const { profileId, entityType, entityId } = req.body || {};
-  if (!profileId || !entityType || !entityId) {
-    return res
-      .status(400)
-      .json({ error: 'Missing required fields: profileId, entityType, and entityId are required' });
+  const parsedBody = saveSchema.safeParse(req.body ?? {});
+  if (!parsedBody.success) {
+    return res.status(400).json({ error: parsedBody.error.issues[0]?.message ?? 'Invalid request body' });
   }
+
+  const { profileId, entityType, entityId } = parsedBody.data;
 
   const { error } = await supabaseServer.from('saved_items').insert({
     profile_id: profileId,

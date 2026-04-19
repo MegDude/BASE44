@@ -1,4 +1,12 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
+import { z } from 'zod';
+
+const searchLogSchema = z.object({
+  sessionId: z.string().trim().min(1),
+  query: z.string().trim().min(1).max(120),
+  lat: z.coerce.number().min(-90).max(90),
+  lng: z.coerce.number().min(-180).max(180)
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,26 +17,18 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing Supabase server environment variables' });
   }
 
-  const { sessionId, query, lat, lng } = req.body || {};
-  if (!sessionId || typeof query !== 'string' || !query.trim()) {
-    return res
-      .status(400)
-      .json({ error: 'Missing required fields: sessionId and a non-empty query are required' });
+  const parsedBody = searchLogSchema.safeParse(req.body ?? {});
+  if (!parsedBody.success) {
+    return res.status(400).json({ error: parsedBody.error.issues[0]?.message ?? 'Invalid request body' });
   }
 
-  const latitude = Number(lat);
-  const longitude = Number(lng);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    return res.status(400).json({
-      error: 'Invalid coordinates: latitude and longitude must be finite numbers'
-    });
-  }
+  const { sessionId, query, lat, lng } = parsedBody.data;
 
   const { error } = await supabaseServer.from('search_logs').insert({
     session_id: sessionId,
-    query: query.trim(),
-    lat: latitude,
-    lng: longitude
+    query,
+    lat,
+    lng
   });
 
   if (error) {

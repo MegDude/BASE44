@@ -1,4 +1,13 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
+import { z } from 'zod';
+
+const impressionSchema = z.object({
+  sessionId: z.string().trim().min(1),
+  entityId: z.string().trim().min(1),
+  entityType: z.enum(['venue', 'event', 'perk']),
+  lat: z.coerce.number().min(-90).max(90),
+  lng: z.coerce.number().min(-180).max(180)
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,27 +18,19 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing Supabase server environment variables' });
   }
 
-  const { sessionId, entityId, entityType, lat, lng } = req.body || {};
-  if (!sessionId || !entityId || !entityType) {
-    return res
-      .status(400)
-      .json({ error: 'Missing required fields: sessionId, entityId, and entityType are required' });
+  const parsedBody = impressionSchema.safeParse(req.body ?? {});
+  if (!parsedBody.success) {
+    return res.status(400).json({ error: parsedBody.error.issues[0]?.message ?? 'Invalid request body' });
   }
 
-  const latitude = Number(lat);
-  const longitude = Number(lng);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    return res.status(400).json({
-      error: 'Invalid coordinates: latitude and longitude must be finite numbers'
-    });
-  }
+  const { sessionId, entityId, entityType, lat, lng } = parsedBody.data;
 
   const { error } = await supabaseServer.from('map_impressions').insert({
     session_id: sessionId,
     entity_id: entityId,
     entity_type: entityType,
-    lat: latitude,
-    lng: longitude
+    lat,
+    lng
   });
 
   if (error) {

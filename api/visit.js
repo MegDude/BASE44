@@ -1,4 +1,11 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
+import { z } from 'zod';
+
+const visitSchema = z.object({
+  profileId: z.string().trim().min(1),
+  venueId: z.string().trim().min(1),
+  source: z.enum(['map', 'search', 'direct']).nullable().optional()
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,10 +16,12 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing Supabase server environment variables' });
   }
 
-  const { profileId, venueId, source } = req.body || {};
-  if (!profileId || !venueId) {
-    return res.status(400).json({ error: 'Missing required fields: profileId and venueId are required' });
+  const parsedBody = visitSchema.safeParse(req.body ?? {});
+  if (!parsedBody.success) {
+    return res.status(400).json({ error: parsedBody.error.issues[0]?.message ?? 'Invalid request body' });
   }
+
+  const { profileId, venueId, source } = parsedBody.data;
 
   const { error } = await supabaseServer.from('visits').insert({
     profile_id: profileId,
