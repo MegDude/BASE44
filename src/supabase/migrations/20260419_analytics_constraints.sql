@@ -135,7 +135,7 @@ BEGIN
      ) THEN
     ALTER TABLE public.search_logs
       ADD CONSTRAINT query_length
-      CHECK (char_length(query) <= 120);
+      CHECK (char_length(btrim(query)) <= 120);
   END IF;
 END
 $$;

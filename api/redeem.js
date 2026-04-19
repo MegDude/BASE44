@@ -7,6 +7,8 @@ const redeemSchema = z.object({
   venueId: z.string().trim().min(1)
 });
 
+const getValidationMessage = (issues) => issues.map((issue) => issue.message).join(', ');
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -18,7 +20,7 @@ export default async function handler(req, res) {
 
   const parsedBody = redeemSchema.safeParse(req.body ?? {});
   if (!parsedBody.success) {
-    return res.status(400).json({ error: parsedBody.error.issues[0]?.message ?? 'Invalid request body' });
+    return res.status(400).json({ error: getValidationMessage(parsedBody.error.issues) || 'Invalid request body' });
   }
 
   const { cardCode, venueOfferId, venueId } = parsedBody.data;
