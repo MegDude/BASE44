@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   const { profileId, venueId, source } = req.body || {};
   if (!profileId || !venueId) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'Missing required fields: profileId and venueId are required' });
   }
 
   const { error } = await supabaseServer.from('visits').insert({

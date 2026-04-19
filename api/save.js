@@ -11,7 +11,9 @@ export default async function handler(req, res) {
 
   const { profileId, entityType, entityId } = req.body || {};
   if (!profileId || !entityType || !entityId) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res
+      .status(400)
+      .json({ error: 'Missing required fields: profileId, entityType, and entityId are required' });
   }
 
   const { error } = await supabaseServer.from('saved_items').insert({

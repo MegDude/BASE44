@@ -11,7 +11,9 @@ export default async function handler(req, res) {
 
   const { sessionId, entityId, entityType, lat, lng } = req.body || {};
   if (!sessionId || !entityId || !entityType) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res
+      .status(400)
+      .json({ error: 'Missing required fields: sessionId, entityId, and entityType are required' });
   }
 
   const latitude = Number(lat);

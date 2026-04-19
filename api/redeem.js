@@ -11,17 +11,19 @@ export default async function handler(req, res) {
 
   const { cardCode, venueOfferId, venueId } = req.body || {};
   if (!cardCode || !venueOfferId || !venueId) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res
+      .status(400)
+      .json({ error: 'Missing required fields: cardCode, venueOfferId, and venueId are required' });
   }
 
   const { data: card, error: cardError } = await supabaseServer
     .from('perk_cards')
     .select('id')
     .eq('card_code', cardCode)
-    .single();
+    .maybeSingle();
 
   if (cardError) {
-    return res.status(500).json({ error: 'Card lookup failed' });
+    return res.status(500).json({ error: cardError.message });
   }
 
   if (!card) {
