@@ -12,73 +12,113 @@
  * ✓ All markers, fitBounds, setView use validated paths only
  */
 
+/* =========================================================
+   SAFE NUMBER PARSING
+========================================================= */
+
 export const toFiniteNumber = (value) => {
   if (value === null || value === undefined) return null;
-  const num = typeof value === 'string' ? parseFloat(value.trim()) : value;
+
+  const num =
+    typeof value === "string"
+      ? parseFloat(value.trim())
+      : Number(value);
+
   return isFinite(num) ? num : null;
 };
+
+/* =========================================================
+   CORE VALIDATION (UPDATED)
+========================================================= */
 
 export const isValidCoordinate = (lat, lng) => {
   const finLat = toFiniteNumber(lat);
   const finLng = toFiniteNumber(lng);
-  return finLat !== null && finLng !== null;
+
+  // 🚨 Must be valid numbers
+  if (finLat === null || finLng === null) return false;
+
+  // 🚨 Must be within Earth bounds
+  if (finLat < -90 || finLat > 90) return false;
+  if (finLng < -180 || finLng > 180) return false;
+
+  return true;
 };
 
+/* =========================================================
+   NORMALIZATION
+========================================================= */
+
 /**
- * Normalize any entity with coordinates to standardized fields
- * Returns entity with normalizedLat, normalizedLng, hasValidCoordinates
+ * Normalize any entity with coordinates
+ * Returns consistent internal structure
  */
 export const normalizeCoordinates = (entity) => {
   if (!entity) return null;
-  
-  const lat = toFiniteNumber(entity.latitude || entity.lat);
-  const lng = toFiniteNumber(entity.longitude || entity.lng || entity.lon);
-  
+
+  const lat = toFiniteNumber(entity.latitude ?? entity.lat);
+  const lng = toFiniteNumber(
+    entity.longitude ?? entity.lng ?? entity.lon
+  );
+
+  const isValid = isValidCoordinate(lat, lng);
+
   return {
     ...entity,
-    normalizedLat: lat,
-    normalizedLng: lng,
-    hasValidCoordinates: isValidCoordinate(lat, lng),
+    normalizedLat: isValid ? lat : null,
+    normalizedLng: isValid ? lng : null,
+    hasValidCoordinates: isValid,
   };
 };
 
+/* =========================================================
+   LEAFLET-SAFE OUTPUT
+========================================================= */
+
 /**
- * CRITICAL: Get valid [lat, lng] pair for Leaflet operations
- * Returns null if coordinates are invalid, missing, or out of bounds
- * 
- * Usage:
- *   const coords = getValidLatLng(item);
- *   if (!coords) return null; // Safe to skip rendering
- *   marker.setLatLng(coords); // Safe to call
- *   map.flyTo(coords, zoom);  // Safe to call
+ * Get safe [lat, lng] for Leaflet
+ * Returns null if invalid
  */
 export const getValidLatLng = (entity) => {
   const normalized = normalizeCoordinates(entity);
-  if (!normalized || !normalized.hasValidCoordinates) return null;
+
+  if (!normalized || !normalized.hasValidCoordinates) {
+    return null;
+  }
+
   return [normalized.normalizedLat, normalized.normalizedLng];
 };
 
+/* =========================================================
+   COLLECTION HELPERS
+========================================================= */
+
 /**
- * Filter array to only items with valid coordinates
- * Used to prepare data before passing to map components
+ * Filter only valid map items
  */
 export const filterValidMapItems = (items) => {
   if (!Array.isArray(items)) return [];
-  return items.filter(item => {
+
+  return items.filter((item) => {
     const normalized = normalizeCoordinates(item);
     return normalized && normalized.hasValidCoordinates;
   });
 };
 
+/* =========================================================
+   LOW-LEVEL VALIDATION
+========================================================= */
+
 /**
- * Validation helper: Check if a Leaflet position array is valid
- * (used internally by MapFlyTo and coordinate-safe operations)
+ * Validate Leaflet position array
  */
 export const isValidLatLngArray = (position) => {
   return (
     position &&
     Array.isArray(position) &&
     position.length === 2 &&
-    position.every(v => typeof v === 'number' && isFinite(v))
+    position.every(
+      (v) => typeof v === "number" && isFinite(v)
+    )
   );
 };
