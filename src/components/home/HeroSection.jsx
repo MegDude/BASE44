@@ -41,7 +41,7 @@ export default function HeroSection() {
 
   function handleSearch(e) {
     e.preventDefault();
-    navigate(`/downtown-perks/explore${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`);
+    navigate(`/map${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`);
     setSearchQuery("");
     setIntentExpanded(false);
   }
