@@ -1,18 +1,9 @@
 /**
- * Ask the Map AI — Interpret natural language and drive map state
- * Production-safe version with normalization + fallback
+ * Ask the Map AI — Interpret natural language and return safe intent
+ * JS-safe (Base44 compatible) + normalized + fail-safe
  */
 
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
-
-type IntentResponse = {
-  intent: string;
-  categories: string[];
-  filters: string[];
-  ranking: string;
-  reasoning: string;
-  confidence: number;
-};
 
 Deno.serve(async (req) => {
   try {
@@ -29,22 +20,16 @@ Deno.serve(async (req) => {
       prompt: `
 You are a downtown discovery assistant.
 
-Return ONLY valid JSON in this format:
+Return ONLY valid JSON:
 
 {
   "intent": "search|discovery|action|exploration",
-  "categories": string[],
-  "filters": string[],
+  "categories": ["string"],
+  "filters": ["string"],
   "ranking": "relevance|distance|popularity|rating",
-  "reasoning": string,
+  "reasoning": "string",
   "confidence": number
 }
-
-Rules:
-- categories must match real-world place types (restaurant, bar, fitness, etc.)
-- filters must be from: open_now, walkable_5, popular, new, live_events, offers
-- keep reasoning short (1 sentence)
-- confidence must be between 0 and 1
 
 User query: "${query}"
 ${context ? `Context: ${JSON.stringify(context)}` : ""}
@@ -52,7 +37,7 @@ ${context ? `Context: ${JSON.stringify(context)}` : ""}
     });
 
     // 🔒 SAFE PARSE
-    let parsed: Partial<IntentResponse> = {};
+    let parsed = {};
     try {
       parsed =
         typeof llmRaw === "string"
@@ -62,8 +47,8 @@ ${context ? `Context: ${JSON.stringify(context)}` : ""}
       parsed = {};
     }
 
-    // 🔒 NORMALIZATION LAYER (CRITICAL)
-    const normalized: IntentResponse = {
+    // 🔒 NORMALIZATION
+    const response = {
       intent: normalizeIntent(parsed.intent),
       categories: normalizeArray(parsed.categories),
       filters: normalizeFilters(parsed.filters),
@@ -78,40 +63,39 @@ ${context ? `Context: ${JSON.stringify(context)}` : ""}
     return Response.json({
       success: true,
       query,
-      ...normalized,
+      ...response,
     });
 
   } catch (error) {
     console.error("Ask the Map error:", error);
 
-    // 🔒 FAILSAFE (NEVER BREAK MAP)
     return Response.json({
       success: true,
       intent: "search",
       categories: [],
       filters: [],
       ranking: "relevance",
-      reasoning: "Fallback intent used",
+      reasoning: "Fallback",
       confidence: 0.3,
     });
   }
 });
 
 /* --------------------------
-   🔧 NORMALIZATION HELPERS
+   NORMALIZATION HELPERS
 -------------------------- */
 
-function normalizeIntent(intent?: string): string {
+function normalizeIntent(intent) {
   const allowed = ["search", "discovery", "action", "exploration"];
-  return allowed.includes(intent || "") ? intent! : "search";
+  return allowed.includes(intent) ? intent : "search";
 }
 
-function normalizeArray(arr: any): string[] {
+function normalizeArray(arr) {
   if (!Array.isArray(arr)) return [];
   return arr.filter((v) => typeof v === "string");
 }
 
-function normalizeFilters(filters: any): string[] {
+function normalizeFilters(filters) {
   const allowed = [
     "open_now",
     "walkable_5",
@@ -122,16 +106,15 @@ function normalizeFilters(filters: any): string[] {
   ];
 
   if (!Array.isArray(filters)) return [];
-
   return filters.filter((f) => allowed.includes(f));
 }
 
-function normalizeRanking(ranking?: string): string {
+function normalizeRanking(ranking) {
   const allowed = ["relevance", "distance", "popularity", "rating"];
-  return allowed.includes(ranking || "") ? ranking! : "relevance";
+  return allowed.includes(ranking) ? ranking : "relevance";
 }
 
-function normalizeConfidence(confidence: any): number {
+function normalizeConfidence(confidence) {
   if (typeof confidence !== "number") return 0.5;
   if (confidence < 0) return 0.3;
   if (confidence > 1) return 1;
