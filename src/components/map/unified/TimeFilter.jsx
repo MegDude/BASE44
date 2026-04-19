@@ -1,38 +1,51 @@
-/**
- * TimeFilter — Global time control
- * Affects map pins, heatmap, events, trends
- */
-
 import { motion } from 'framer-motion';
-import { useUnifiedMapStore } from '@/store/unified-map-store';
-import { Clock } from 'lucide-react';
+import { Clock3 } from 'lucide-react';
+import { useMapStateStore } from '@/store/mapStateStore';
 
 const OPTIONS = [
-  { id: 'now', label: 'Now', span: '30m' },
-  { id: 'today', label: 'Today', span: '24h' },
-  { id: 'week', label: 'This week', span: '7d' },
+  { id: 'all', label: 'All activity' },
+  { id: 'open', label: 'Open now' },
+  { id: 'live', label: 'Live now' },
 ];
 
 export default function TimeFilter() {
-  const { timeFilter, setTimeFilter } = useUnifiedMapStore();
+  const activeFilters = useMapStateStore((state) => state.activeFilters);
+  const updateFilter = useMapStateStore((state) => state.updateFilter);
+
+  const currentFilter = activeFilters.isLive ? 'live' : activeFilters.isOpenNow ? 'open' : 'all';
+
+  const applyFilter = (next) => {
+    if (next === 'all') {
+      updateFilter('isOpenNow', false);
+      updateFilter('isLive', false);
+      return;
+    }
+
+    if (next === 'open') {
+      updateFilter('isOpenNow', true);
+      updateFilter('isLive', false);
+      return;
+    }
+
+    updateFilter('isOpenNow', false);
+    updateFilter('isLive', true);
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center gap-2 bg-white/95 backdrop-blur-xl border border-border rounded-full shadow-sm px-2 py-1.5"
+      className="dp-map-panel inline-flex items-center gap-2 px-2 py-1.5"
     >
-      <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0 ml-2" />
+      <span className="ml-1 flex h-7 w-7 items-center justify-center rounded-full bg-[rgba(11,31,51,0.06)] text-[#0b1f33]">
+        <Clock3 className="h-3.5 w-3.5" />
+      </span>
 
       {OPTIONS.map((opt) => (
         <button
           key={opt.id}
-          onClick={() => setTimeFilter(opt.id)}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-            timeFilter === opt.id
-              ? 'bg-foreground text-background'
-              : 'bg-transparent text-muted-foreground hover:text-foreground'
-          }`}
+          onClick={() => applyFilter(opt.id)}
+          className={currentFilter === opt.id ? 'dp-chip dp-chip-active' : 'dp-chip'}
         >
           {opt.label}
         </button>
