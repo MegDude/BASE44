@@ -20,8 +20,12 @@ export default async function handler(req, res) {
     .eq('card_code', cardCode)
     .single();
 
-  if (cardError || !card) {
-    return res.status(400).json({ error: 'Invalid card' });
+  if (cardError) {
+    return res.status(500).json({ error: 'Card lookup failed' });
+  }
+
+  if (!card) {
+    return res.status(400).json({ error: 'Card not found' });
   }
 
   const { error: redemptionError } = await supabaseServer.from('redemptions').insert({

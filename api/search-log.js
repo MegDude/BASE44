@@ -17,7 +17,9 @@ export default async function handler(req, res) {
   const latitude = Number(lat);
   const longitude = Number(lng);
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    return res.status(400).json({ error: 'Invalid coords' });
+    return res.status(400).json({
+      error: 'Invalid coordinates: latitude and longitude must be finite numbers'
+    });
   }
 
   const { error } = await supabaseServer.from('search_logs').insert({
