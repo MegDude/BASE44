@@ -7,6 +7,8 @@ import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
+import Pricing from "./pages/Pricing";
+import DashboardHub from "./pages/DashboardHub";
 // Downtown Perks pages
 import Landing from "./pages/downtown-perks/Landing";
 import ExploreRebuilt from "./pages/downtown-perks/ExploreRebuilt";
@@ -104,15 +106,20 @@ const AuthenticatedApp = () => {
         <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="/partners/residential" element={<ResidentialPartner />} />
         <Route path="/partners/properties" element={<PropertiesPartner />} />
+        <Route path="/property-and-building-management" element={<PropertiesPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<DashboardHub />} />
+        <Route path="/dashboard/partner" element={<Dashboard />} />
+        <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
+        <Route path="/dashboard/resident" element={<ResidentApp />} />
         <Route path="/partner-dashboard" element={<PartnerDashboard />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
         <Route path="/partners/brands" element={<BrandsPartner />} />
         <Route path="/resident-app" element={<ResidentApp />} />
         {/* Map page route */}
-        <Route path="/map" element={<MapPage />} /> {/* New Map Route */}
+        <Route path="/map" element={<MapPage />} />
         {/* Catch-all route */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
