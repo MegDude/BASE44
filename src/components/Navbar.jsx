@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, MapPin, ChevronDown, Building2, Hotel, MapIcon, Users, Star, Landmark, Home, LayoutDashboard } from "lucide-react";
+import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Home, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const RESIDENT_LINKS = [

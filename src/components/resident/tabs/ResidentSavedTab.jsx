@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Bookmark, MapPin, Trash2 } from "lucide-react";
+import { MapPin, Trash2 } from "lucide-react";
 
 export default function ResidentSavedTab({ user }) {
   const saved = [

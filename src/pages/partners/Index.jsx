@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Building2, Users, Utensils, Sparkles, MapPin } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
-import SelectorCards from '@/components/partner/SelectorCards';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
 import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES, PARTNER_GRIDS } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
-import { FAQ_PARTNERS, FAQ_RESIDENTIAL, FAQ_HOSPITALITY, FAQ_VENUES, FAQ_BRANDS, FAQ_CIVIC } from '@/lib/faq-partner-data';
+import { FAQ_PARTNERS } from '@/lib/faq-partner-data';
 
 const PARTNER_TYPES = [
   {

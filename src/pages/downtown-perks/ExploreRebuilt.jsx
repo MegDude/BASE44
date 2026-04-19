@@ -17,7 +17,6 @@ import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
 import TimeFilter from '@/components/map/unified/TimeFilter';
 import { createMarker } from '@/components/map/markers/MarkerFactory';
 
-import L from 'leaflet';
 
 // Helper to get marker icon from factory
 function getMarkerIcon(entity, isSelected) {

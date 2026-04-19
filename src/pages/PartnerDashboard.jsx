@@ -12,7 +12,6 @@ import {
   Eye,
   Heart,
   CheckCircle,
-  BarChart3,
   Clock,
   Edit2,
   X,

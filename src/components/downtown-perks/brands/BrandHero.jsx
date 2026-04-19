@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
-export default function BrandHero({ eyebrow, headline, support, ctaLabel, ctaHref, demoPanel }) {
+export default function BrandHero({ eyebrow = "", headline = "", support = "", ctaLabel = "Get Started", ctaHref = "/downtown-perks/card", demoPanel = null, bgAccent = "from-primary/5" }) {
   return (
     <section className="relative pt-36 pb-20 px-6 overflow-hidden">
+      <div className={`absolute inset-x-0 top-0 h-64 bg-gradient-to-b ${bgAccent} to-transparent pointer-events-none`} />
       <div className="relative max-w-6xl mx-auto">
 
         {/* Back link */}

@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-export function BrandSection({ label, title, children, className = "" }) {
+export function BrandSection({ label = "", title = "", children, className = "" }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
@@ -33,7 +33,7 @@ export function BrandSection({ label, title, children, className = "" }) {
   );
 }
 
-export function SignalCard({ icon, label, value, sub, delay = 0 }) {
+export function SignalCard({ icon = null, label = "", value = "", sub = "", delay = 0 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   return (
@@ -56,7 +56,7 @@ export function SignalCard({ icon, label, value, sub, delay = 0 }) {
   );
 }
 
-export function FlowCard({ step, title, desc, delay = 0 }) {
+export function FlowCard({ step = "", title = "", desc = "", delay = 0 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   return (
@@ -78,7 +78,7 @@ export function FlowCard({ step, title, desc, delay = 0 }) {
   );
 }
 
-export function UseCaseCard({ title, detail, tag, delay = 0 }) {
+export function UseCaseCard({ title = "", detail = "", tag = "", delay = 0 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   return (
@@ -100,7 +100,7 @@ export function UseCaseCard({ title, detail, tag, delay = 0 }) {
   );
 }
 
-export function BrandCTA({ headline, sub, ctaLabel, ctaHref }) {
+export function BrandCTA({ headline = "", sub = "", ctaLabel = "Start the Conversation", ctaHref = "mailto:partners@downtownperks.com" }) {
   return (
     <section className="py-24 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">

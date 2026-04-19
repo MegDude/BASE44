@@ -3,7 +3,7 @@
  * Updates without map reload, respects time filters
  */
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Circle, useMap } from 'react-leaflet';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
 import L from 'leaflet';

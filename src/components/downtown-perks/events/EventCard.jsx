@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Users, Clock } from "lucide-react";
+import { MapPin, Users, Clock } from "lucide-react";
 import moment from "moment";
 
 export default function EventCard({ event }) {

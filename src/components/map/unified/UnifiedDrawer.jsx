@@ -6,7 +6,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Clock, Tag, Heart } from 'lucide-react';
+import { MapPin, Clock, Tag, Heart } from 'lucide-react';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
 import DrawerActions from '@/components/map/unified/DrawerActions';
 

@@ -2,7 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, ChevronDown, TrendingUp, Home, Utensils, Calendar, Zap } from "lucide-react";
-import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import { PARTNER_SPACING } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
 import { FAQ_BRANDS } from '@/lib/faq-partner-data';
 

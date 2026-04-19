@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
   LayoutDashboard, MapPin, Star, Calendar, TrendingUp, Settings,
   Menu, X, ChevronRight, Bell, Building2, Users, ArrowRight,
-  AlertCircle, Zap, Activity, BarChart2, LogOut
+  AlertCircle, Zap, Activity, LogOut
 } from "lucide-react";
 
 const NAV_ITEMS = [

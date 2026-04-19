@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GRIDS, MOTION as MOTION_CONFIG, TYPOGRAPHY } from "@/lib/design-system";
+import { TYPOGRAPHY } from "@/lib/design-system";
 
 /**
  * StatGrid — Unified stats/metrics display for proof, KPIs, performance

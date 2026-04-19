@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Users, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 /**

@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Clock } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 /**
  * HeatmapControls — Toggle and time filter for live activity heatmap

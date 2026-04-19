@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Calendar, Star, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
+import { MapPin, Calendar, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
 
 const features = [
   "Restaurants, bars, coffee shops, and services nearby",

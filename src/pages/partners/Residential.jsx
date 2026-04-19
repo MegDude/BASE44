@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, MapPin, Users, TrendingUp, ArrowRight } from 'lucide-react';
+import { Building2, MapPin, TrendingUp } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
 import HowItWorksRail from '@/components/partner/HowItWorksRail';
 import SelectorCards from '@/components/partner/SelectorCards';
