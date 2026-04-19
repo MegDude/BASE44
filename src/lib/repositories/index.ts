@@ -1,6 +1,6 @@
 /**
  * Downtown Perks Data Repositories
- * CLEAN + STABLE VERSION
+ * FINAL STABLE VERSION (NaN-safe)
  */
 
 import { base44Api } from "@/lib/api/base44Api";
@@ -25,8 +25,10 @@ export const mapRepository = {
 
       const ranked = rankItems(items, intent?.ranking, userLocation);
 
-      // 🔥 ADAPTER → FIXES UI BREAKS
-      const adapted = ranked.map(adaptToUI);
+      // ✅ CRITICAL FIX: sanitize + filter invalid map items
+      const adapted = ranked
+        .map(adaptToUI)
+        .filter(Boolean);
 
       return {
         items: adapted,
@@ -38,7 +40,7 @@ export const mapRepository = {
       const items = await this.getMapFeed({ query });
 
       return {
-        items: items.map(adaptToUI),
+        items: items.map(adaptToUI).filter(Boolean),
         intent: null,
       };
     }
@@ -61,16 +63,12 @@ export const mapRepository = {
       (item) => item && item.entity_type === type
     );
 
-    if (options.limit) {
-      return filtered.slice(0, options.limit);
-    }
-
-    return filtered;
+    return options.limit ? filtered.slice(0, options.limit) : filtered;
   },
 };
 
 /* =========================================================
-   RESIDENT REPOSITORY (FIXED)
+   RESIDENT REPOSITORY
 ========================================================= */
 
 export const residentRepository = {
@@ -131,14 +129,22 @@ export const partnerRepository = {
 ========================================================= */
 
 function adaptToUI(item) {
+  const lat = Number(item?.lat);
+  const lng = Number(item?.lng);
+
+  // 🚨 HARD STOP: prevent NaN from reaching map
+  if (!isFinite(lat) || !isFinite(lng)) {
+    return null;
+  }
+
   return {
     id: item.entity_id,
     type: item.entity_type,
     name: item.title,
     description: item.description,
 
-    latitude: item.lat,
-    longitude: item.lng,
+    latitude: lat,
+    longitude: lng,
 
     category: item.tags?.[0] || null,
 
@@ -152,7 +158,7 @@ function adaptToUI(item) {
 }
 
 /* =========================================================
-   RANKING SYSTEM (FIXED)
+   RANKING SYSTEM
 ========================================================= */
 
 function rankItems(items, ranking, userLocation) {
