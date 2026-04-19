@@ -1,11 +1,17 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
 import { z } from 'zod';
 
+const LAT_MIN = -90;
+const LAT_MAX = 90;
+const LNG_MIN = -180;
+const LNG_MAX = 180;
+const MAX_QUERY_LENGTH = 120;
+
 const searchLogSchema = z.object({
   sessionId: z.string().trim().min(1),
-  query: z.string().trim().min(1).max(120),
-  lat: z.coerce.number().min(-90).max(90),
-  lng: z.coerce.number().min(-180).max(180)
+  query: z.string().trim().min(1).max(MAX_QUERY_LENGTH),
+  lat: z.coerce.number().min(LAT_MIN).max(LAT_MAX),
+  lng: z.coerce.number().min(LNG_MIN).max(LNG_MAX)
 });
 
 export default async function handler(req, res) {
