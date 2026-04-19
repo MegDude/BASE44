@@ -4,20 +4,20 @@ import { Link } from "react-router-dom";
 import { MapPin, Calendar, Star, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
 
 const features = [
-  "Walkable venues, coffee, bars, and services nearby",
-  "Events happening now or later tonight",
-  "Resident perks worth saving before you head out",
-  "Property and building context tied to the same map",
-  "Quick actions for saving, visiting, and redeeming",
+  "Restaurants, bars, coffee shops, and services nearby",
+  "Events happening tonight, ready to RSVP",
+  "Local perks from places you'd go anyway",
+  "Places worth coming back to",
+  "People around you, when you want to be social",
 ];
 
 const howSteps = [
-  { label: "Explore the map.", detail: "See what is near you, what is open, and what looks worth your time." },
-  { label: "Save a perk or event.", detail: "Hold onto the places and plans you want to revisit." },
-  { label: "Visit and redeem.", detail: "Show up, use your card, and get rewarded without extra friction." },
+  { label: "Tap. Learn. Decide.", detail: "See what it is, why it matters, and how close you are." },
+  { label: "Save it or go now.", detail: "Plan ahead — or decide in the moment." },
+  { label: "Flash your card. Get the perk.", detail: "They scan. You save. Done." },
 ];
 
-const filterTabs = ["Properties", "Venues", "Deals", "Events", "Resident Perks"];
+const filterTabs = ["All", "Places", "Offers", "Events", "Properties"];
 
 export default function MapSection() {
   const ref = useRef(null);
@@ -35,12 +35,12 @@ export default function MapSection() {
             transition={{ duration: 0.7 }}
           >
             <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
-Live Map Preview
+              What You Can Do
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
-              Decide faster with one live map
+              Everything works together —
               <br />
-              <em className="text-primary">built for residents first.</em>
+              <em className="text-primary">so you show up more.</em>
             </h2>
           </motion.div>
           <motion.p
@@ -49,7 +49,7 @@ Live Map Preview
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-foreground/60 text-[13px] leading-relaxed"
           >
-No clutter, no floating legend, and no extra explanation layer on top of the map. Just places, events, perks, and the next best move nearby.
+            Spend less time searching and more time showing up. Everything you need to move through downtown is in one place.
           </motion.p>
         </div>
 
@@ -79,7 +79,7 @@ No clutter, no floating legend, and no extra explanation layer on top of the map
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">What the map helps you decide</div>
+              <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">Find What You Need</div>
               <ul className="space-y-3 mb-8">
                 {features.map((f, i) => (
                   <li key={i} className="flex items-start gap-3 text-[13px] text-foreground/60">
@@ -96,9 +96,9 @@ No clutter, no floating legend, and no extra explanation layer on top of the map
                     <Coffee className="w-3.5 h-3.5 text-primary/60" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-sm text-foreground">Royal Blue Grocery</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">Coffee, essentials, and a quick reset before your next stop.</div>
-                    <div className="text-[11px] text-primary/70 mt-1">Active perk · 5-minute walk</div>
+                    <div className="font-medium text-sm text-foreground">Jo's Coffee</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">Coffee. Quick stops. Daily rituals.</div>
+                    <div className="text-[11px] text-primary/70 mt-1">Nearby perk · 5-minute walk</div>
                   </div>
                   <span className="text-[11px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-full shrink-0">
                     Show Card
@@ -108,10 +108,10 @@ No clutter, no floating legend, and no extra explanation layer on top of the map
 
               <div className="flex gap-3">
                 <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[12px] hover:bg-primary/90 transition-all">
-                  <MapPin className="w-3.5 h-3.5" /> Open Full Map
+                  <MapPin className="w-3.5 h-3.5" /> Explore Downtown
                 </Link>
                 <Link to="/downtown-perks/card" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-foreground/70 font-medium text-[12px] hover:text-foreground transition-all">
-                  Save a Perk
+                  Get a Perks Card
                 </Link>
               </div>
             </motion.div>
@@ -124,7 +124,7 @@ No clutter, no floating legend, and no extra explanation layer on top of the map
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">How the resident loop works</div>
+              <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">How It Works</div>
               <div className="divide-y divide-[hsl(218,20%,92%)]">
                 {howSteps.map((s, i) => (
                   <div key={i} className="py-5 first:pt-0 last:pb-0">
@@ -134,8 +134,8 @@ No clutter, no floating legend, and no extra explanation layer on top of the map
                 ))}
               </div>
               <div className="mt-6 pt-6 border-t border-[hsl(218,20%,92%)] space-y-1">
-                <p className="font-heading text-base font-medium text-foreground italic">The goal is simple: less searching, faster decisions.</p>
-                <p className="text-[12px] text-foreground/55 leading-relaxed">That is what turns a static directory into a behavior-driven downtown system.</p>
+                <p className="font-heading text-base font-medium text-foreground italic">That's how friction dies.</p>
+                <p className="text-[12px] text-foreground/55 leading-relaxed">No extra steps. No guesswork. Just the shortest distance between "maybe" and "I'm going."</p>
               </div>
             </motion.div>
           </div>

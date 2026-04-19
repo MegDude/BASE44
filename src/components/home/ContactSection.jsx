@@ -128,12 +128,6 @@ function ContactForm({ form }) {
   );
 }
 
-export const fadeUp = {
-  initial: { opacity: 0, y: 12 },
-  whileInView: { opacity: 1, y: 0 },
-  transition: { duration: 0.4 }
-};
-
 export default function ContactSection() {
   const [activeForm, setActiveForm] = useState("buildings");
   const ref = useRef(null);
@@ -142,7 +136,7 @@ export default function ContactSection() {
   const current = forms.find((f) => f.id === activeForm);
 
   return (
-    <section id="contact" ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
+    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
@@ -265,14 +259,4 @@ export default function ContactSection() {
       </div>
     </section>
   );
-}
-
-.highlight::after {
-  width: 0%;
-  background: var(--gold);
-  transition: width 0.4s ease;
-}
-
-.highlight.active::after {
-  width: 100%;
 }
