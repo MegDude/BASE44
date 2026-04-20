@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, Music, Beer, CalendarDays, BarChart2 } from "lucide-react";
+import { MapPin, Users, Zap, TrendingUp, CalendarDays, BarChart2 } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";

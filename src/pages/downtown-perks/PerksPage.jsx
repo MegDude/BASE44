@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Tag, Sparkles, Gift } from "lucide-react";
+import { Sparkles, Gift } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function PerksPage() {

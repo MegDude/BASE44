@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Calendar, Users, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 /**

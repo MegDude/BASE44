@@ -1,197 +1,169 @@
-import { create } from 'zustand';
-import { initialMapState, FILTER_CHIPS } from '@/lib/mapSystemConstants';
-import { base44 } from '@/api/base44Client';
+import { useMemo } from 'react';
+import { useMapStateStore } from '@/store/mapStateStore';
 
-/**
- * Unified map store
- * Synchronizes search, filters, selection, drawer, and results
- * Single source of truth for all map interactions
- * Extended with live data subscriptions and actions
- */
+const LEGACY_ENTITY_TYPES = {
+  places: 'venue',
+  events: 'event',
+  perks: 'perk',
+  buildings: 'building',
+};
 
-export const useUnifiedMapStore = create((set, get) => ({
-  // ── STATE ──────────────────────────────────────────────────────
-  selectedId: null,
-  selectedType: null,
-  query: '',
-  activeFilters: Object.fromEntries(
-    FILTER_CHIPS.map((chip) => [chip.id, chip.active])
-  ),
-  results: [],
-  isLoading: false,
-  drawerState: 'collapsed',
-  mapCenter: initialMapState.mapCenter,
-  mapZoom: 14,
-  timeFilter: 'now', // now | today | week
-  liveActions: [], // Recent user actions for heatmap
-  heatmapVisible: false,
-  isRedeeming: false,
-  redeemingId: null,
+const LEGACY_DRAWER_MAP = {
+  collapsed: 'closed',
+  mid: 'preview',
+  full: 'expanded',
+};
 
-  // ── ACTIONS ────────────────────────────────────────────────────
+export function useUnifiedMapStore() {
+  const state = useMapStateStore();
 
-  // Select an entity (venue, event, building, etc.)
-  selectEntity: (id, type) =>
-    set((state) => ({
-      selectedId: id,
-      selectedType: type,
-      drawerState: state.drawerState === 'collapsed' ? 'mid' : state.drawerState,
-    })),
-
-  // Clear selection
-  clearSelection: () =>
-    set({
-      selectedId: null,
-      selectedType: null,
-      drawerState: 'collapsed',
+  const legacyFilters = useMemo(
+    () => ({
+      places: state.activeFilters.entityTypes.has('venue'),
+      events: state.activeFilters.entityTypes.has('event'),
+      perks: state.activeFilters.entityTypes.has('perk'),
+      buildings:
+        state.activeFilters.entityTypes.has('building') ||
+        state.activeFilters.entityTypes.has('property'),
+      'open-now': state.activeFilters.isOpenNow,
+      'walkable-5': state.activeFilters.walkMinutes === 5,
+      popular: state.activeFilters.isTrending,
+      new: state.activeFilters.isLive,
     }),
+    [state.activeFilters]
+  );
 
-  // Update search query (triggers AI intent detection)
-  setQuery: (query) =>
-    set({
-      query,
-      isLoading: true,
-    }),
+  const timeFilter = state.activeFilters.isLive
+    ? 'now'
+    : state.activeFilters.isOpenNow
+      ? 'today'
+      : 'week';
 
-  // Toggle filter
-  toggleFilter: (filterId) =>
-    set((state) => ({
-      activeFilters: {
-        ...state.activeFilters,
-        [filterId]: !state.activeFilters[filterId],
-      },
-      isLoading: true,
-    })),
-
-  // Set multiple filters
-  setFilters: (filters) =>
-    set({
-      activeFilters: filters,
-      isLoading: true,
-    }),
-
-  // Clear all filters
-  clearFilters: () => {
-    const cleared = Object.fromEntries(
-      Object.keys(get().activeFilters).map((k) => [k, false])
-    );
-    set({
-      activeFilters: cleared,
-      isLoading: true,
-    });
-  },
-
-  // Update results
-  setResults: (results) =>
-    set({
-      results,
-      isLoading: false,
-    }),
-
-  // Update drawer state
-  setDrawerState: (state) =>
-    set({
-      drawerState: state,
-    }),
-
-  // Update map center (from drag/pan)
-  setMapCenter: (center) => {
-    // Validate center before storing to prevent NaN propagation
-    if (Array.isArray(center) && Number.isFinite(center[0]) && Number.isFinite(center[1])) {
-      set({
-        mapCenter: center,
-      });
+  const selectEntity = (entityOrId, type) => {
+    if (!entityOrId) {
+      state.selectEntity(null);
+      return;
     }
-  },
 
-  // Update map zoom
-  setMapZoom: (zoom) =>
-    set({
-      mapZoom: zoom,
-    }),
-
-  // Get active filter count
-  getActiveFilterCount: () => {
-    return Object.values(get().activeFilters).filter(Boolean).length;
-  },
-
-  // Get selected entity from results
-  getSelectedEntity: () => {
-    const { selectedId, results } = get();
-    return results.find((r) => r.id === selectedId);
-  },
-
-  // ── LIVE DATA & ACTIONS ───────────────────────────────────────
-
-  // Set time filter (affects all layers)
-  setTimeFilter: (filter) =>
-    set({
-      timeFilter: filter,
-      isLoading: true,
-    }),
-
-  // Toggle heatmap
-  setHeatmapVisible: (visible) =>
-    set({ heatmapVisible: visible }),
-
-  // Track user action (save, redeem, RSVP, etc.)
-  trackAction: async (entityId, actionType, metadata = {}) => {
-    try {
-      set({ isRedeeming: true, redeemingId: entityId });
-
-      const user = await base44.auth.me();
-      if (!user) return;
-
-      const action = {
-        user_email: user.email,
-        entity_id: entityId,
-        action_type: actionType,
-        timestamp: new Date().toISOString(),
-        metadata,
-      };
-
-      await base44.entities.UserAction.create(action);
-
-      // Add to local live feed
-      set((state) => ({
-        liveActions: [action, ...state.liveActions].slice(0, 20),
-      }));
-
-      return action;
-    } catch (error) {
-      console.error('Action tracking failed:', error);
-    } finally {
-      set({ isRedeeming: false, redeemingId: null });
+    if (typeof entityOrId === 'object') {
+      state.selectEntity(entityOrId);
+      return;
     }
-  },
 
-  // Subscribe to live actions (for dashboard + heatmap)
-  subscribeLiveActions: () => {
-    const unsubscribe = base44.entities.UserAction.subscribe((event) => {
-      if (event.type === 'create') {
-        set((state) => ({
-          liveActions: [event.data, ...state.liveActions].slice(0, 20),
-        }));
-      }
-    });
-    return unsubscribe;
-  },
+    const match = state.filteredResults.find((item) => item.id === entityOrId);
+    if (match) {
+      state.selectEntity(match);
+    } else {
+      state.setDrawerState('preview');
+    }
+  };
 
-  // Get heatmap data (filtered by time)
-  getHeatmapData: () => {
-    const { liveActions, timeFilter } = get();
-    const now = new Date();
-    const cutoff = new Date();
+  const toggleFilter = (filterId) => {
+    if (LEGACY_ENTITY_TYPES[filterId]) {
+      const next = new Set(state.activeFilters.entityTypes);
+      const entityType = LEGACY_ENTITY_TYPES[filterId];
+      if (next.has(entityType)) next.delete(entityType);
+      else next.add(entityType);
+      state.updateFilter('entityTypes', next);
+      return;
+    }
 
-    if (timeFilter === 'now') cutoff.setMinutes(cutoff.getMinutes() - 30);
-    else if (timeFilter === 'today') cutoff.setHours(0, 0, 0, 0);
-    else if (timeFilter === 'week') cutoff.setDate(cutoff.getDate() - 7);
+    if (filterId === 'open-now') {
+      state.updateFilter('isOpenNow', !state.activeFilters.isOpenNow);
+      return;
+    }
 
-    return liveActions.filter(
-      (a) => new Date(a.timestamp) >= cutoff
-    );
-  },
+    if (filterId === 'walkable-5') {
+      state.updateFilter('walkMinutes', state.activeFilters.walkMinutes === 5 ? null : 5);
+      return;
+    }
 
-  // Reset everything
-  reset: () => set(initialMapState),
-}));
+    if (filterId === 'popular') {
+      state.updateFilter('isTrending', !state.activeFilters.isTrending);
+      return;
+    }
+
+    if (filterId === 'new') {
+      state.updateFilter('isLive', !state.activeFilters.isLive);
+    }
+  };
+
+  const setTimeFilter = (filter) => {
+    if (filter === 'now') {
+      state.updateFilter('isLive', true);
+      state.updateFilter('isOpenNow', false);
+      return;
+    }
+
+    if (filter === 'today') {
+      state.updateFilter('isOpenNow', true);
+      state.updateFilter('isLive', false);
+      return;
+    }
+
+    state.updateFilter('isOpenNow', false);
+    state.updateFilter('isLive', false);
+  };
+
+  const trackAction = async (entityId, actionType, metadata = {}) => {
+    if (actionType === 'save') {
+      state.toggleSaved(entityId);
+    }
+
+    return {
+      entityId,
+      actionType,
+      timestamp: new Date().toISOString(),
+      metadata,
+    };
+  };
+
+  return {
+    selectedId: state.selectedEntityId,
+    selectedType: state.selectedEntity?.type || null,
+    query: state.searchQuery,
+    activeFilters: legacyFilters,
+    results: state.filteredResults,
+    isLoading: state.isMapLoading,
+    drawerState:
+      state.drawerState === 'closed'
+        ? 'collapsed'
+        : state.drawerState === 'preview'
+          ? 'mid'
+          : 'full',
+    mapCenter: state.mapCenter,
+    mapZoom: state.mapZoom,
+    timeFilter,
+    liveActions: [],
+    heatmapVisible: state.heatmapVisible,
+    isRedeeming: false,
+    redeemingId: null,
+    selectEntity,
+    clearSelection: () => state.selectEntity(null),
+    setQuery: state.setSearchQuery,
+    toggleFilter,
+    setFilters: () => {},
+    clearFilters: state.clearFilters,
+    setResults: state.setFilteredResults,
+    setDrawerState: (drawerState) =>
+      state.setDrawerState(LEGACY_DRAWER_MAP[drawerState] || 'closed'),
+    setMapCenter: state.setMapCenter,
+    setMapZoom: state.setMapZoom,
+    getActiveFilterCount: () => Object.values(legacyFilters).filter(Boolean).length,
+    getSelectedEntity: () => state.selectedEntity,
+    setTimeFilter,
+    setHeatmapVisible: state.setHeatmapVisible,
+    trackAction,
+    subscribeLiveActions: () => () => {},
+    getHeatmapData: () =>
+      state.filteredResults
+        .filter((item) => item.location?.valid && (item.isLive || item.metadata?.isTrending))
+        .map((item) => ({
+          latitude: item.location.latitude,
+          longitude: item.location.longitude,
+          action_type: item.type,
+          timestamp: item.updatedAt || new Date().toISOString(),
+        })),
+    reset: state.reset,
+  };
+}

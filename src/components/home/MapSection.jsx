@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Calendar, Star, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
+import { MapPin, Calendar, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
 
 const features = [
   "Restaurants, bars, coffee shops, and services nearby",
@@ -24,11 +24,11 @@ export default function MapSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
+    <section ref={ref} className="py-14 md:py-16 px-6 border-t border-[hsl(218,20%,88%)] bg-background">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-14 items-end">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 items-end">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}

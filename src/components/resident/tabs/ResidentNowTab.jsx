@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { MapPin, Clock } from "lucide-react";

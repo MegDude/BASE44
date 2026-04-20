@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 const SOURCES = [
   { id: 'building_qr', label: 'Building QR', icon: '📍' },

@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
  */
 export default function PartnerCTASection({ headline, description, primaryCTA, primaryHref, secondaryLink }) {
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+    <section className="py-12 md:py-16 border-b border-border/70 bg-background">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -14,12 +14,12 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-[32px] md:text-[44px] font-bold text-[#111] leading-tight tracking-tight mb-5">
+          <h2 className="text-[30px] md:text-[40px] font-bold text-foreground leading-[1.04] tracking-tight mb-4">
             {headline}
           </h2>
 
           {description && (
-            <p className="text-[16px] text-[#6f6b65] mb-8 max-w-lg mx-auto leading-relaxed">
+            <p className="text-[15px] text-foreground/72 mb-6 max-w-lg mx-auto leading-7">
               {description}
             </p>
           )}
@@ -28,7 +28,7 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
             {primaryCTA && (
               <a
                 href={primaryHref || '#'}
-                className="inline-flex items-center gap-2 h-12 px-6 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors"
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-primary text-primary-foreground font-semibold text-[14px] hover:bg-primary/92"
               >
                 {primaryCTA}
                 <ArrowRight className="w-4 h-4" />
@@ -38,7 +38,7 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
             {secondaryLink && (
               <a
                 href={secondaryLink.href || '#'}
-                className="inline-flex items-center h-12 px-6 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors"
+                className="inline-flex items-center h-11 px-5 rounded-full border border-border bg-white text-foreground font-semibold text-[14px] hover:bg-accent"
               >
                 {secondaryLink.label}
               </a>

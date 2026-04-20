@@ -23,19 +23,18 @@ L.Icon.Default.mergeOptions({
 function MapFlyTo({ position }) {
   const map = useMap();
   useEffect(() => {
-    if (
-      position &&
-      Array.isArray(position) &&
-      position.length === 2 &&
-      Number.isFinite(position[0]) &&
-      Number.isFinite(position[1]) &&
-      map.getContainer() // Only fly if map is ready
-    ) {
-      try {
-        map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
-      } catch (error) {
-        console.warn('Map flyTo error:', error);
-      }
+    const safePosition = getValidMapCenter(position, AUSTIN_CENTER);
+    const currentZoom = map?.getZoom?.();
+    const nextZoom = Number.isFinite(currentZoom) ? Math.max(currentZoom, 14) : 14;
+
+    if (!map?.getContainer?.() || !safePosition || !map._loaded) {
+      return;
+    }
+
+    try {
+      map.setView(safePosition, nextZoom, { animate: false });
+    } catch (error) {
+      console.warn('Map flyTo error:', error);
     }
   }, [position, map]);
   return null;
@@ -68,15 +67,19 @@ export default function UnifiedMapShell({
     onMapZoomChange?.(map.getZoom());
   };
 
-  // Ensure mapCenter is always valid for MapContainer
+  // Ensure mapCenter and zoom are always valid for MapContainer
   const validCenter = getValidMapCenter(mapCenter, AUSTIN_CENTER);
+  const validZoom = Number.isFinite(mapZoom) ? mapZoom : 14;
 
   return (
     <MapContainer
       center={validCenter}
-      zoom={mapZoom}
-      className={`${className} relative`}
+      zoom={validZoom}
+      className={`${className} relative overflow-hidden`}
       zoomControl={false}
+      attributionControl={false}
+      minZoom={12}
+      maxZoom={19}
       scrollWheelZoom={true}
       onMoveend={(e) => handleDragEnd(e.target)}
       onZoomend={(e) => handleZoom(e.target)}
@@ -86,24 +89,25 @@ export default function UnifiedMapShell({
         attribution="&copy; CARTO"
       />
 
-      <MapFlyTo position={mapCenter} />
+      {selectedId ? <MapFlyTo position={mapCenter} /> : null}
 
       {/* Heatmap and other layers */}
       {children}
 
       {/* Markers */}
       {items.map((item) => {
-        // Use validated location from centralized data
-        if (!item.location || !item.location.valid) return null;
+        const lat = item?.location?.latitude;
+        const lng = item?.location?.longitude;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
 
-        const position = [item.location.latitude, item.location.longitude];
+        const position = [lat, lng];
         const icon = markerIcon
           ? markerIcon(item, selectedId === item.id)
           : L.divIcon({
               className: '',
-              html: `<div style="width:10px;height:10px;border-radius:50%;background:#C8973A;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)"></div>`,
-              iconSize: [10, 10],
-              iconAnchor: [5, 5],
+              html: `<div style="width:12px;height:12px;border-radius:999px;background:#0b1f33;border:2px solid #fff;box-shadow:0 4px 12px rgba(11,31,51,0.18)"></div>`,
+              iconSize: [12, 12],
+              iconAnchor: [6, 6],
             });
 
         return (

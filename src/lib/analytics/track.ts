@@ -5,6 +5,7 @@
  */
 
 import { base44 } from '@/api/base44Client';
+import type { MapEntityType } from '@/data/mapEntities';
 
 export type EventType =
   | 'marker_click'
@@ -24,7 +25,7 @@ export type EventType =
 export interface TrackingEvent {
   type: EventType;
   entityId?: string;
-  entityType?: 'venue' | 'event' | 'building' | 'perk';
+  entityType?: MapEntityType;
   campaign?: string;
   value?: any;
 }
@@ -49,7 +50,7 @@ export function track(event: TrackingEvent) {
 }
 
 export const trackingEvents = {
-  markerClick: (entityId: string, entityType: string) =>
+  markerClick: (entityId: string, entityType: MapEntityType) =>
     track({ type: 'marker_click', entityId, entityType }),
 
   drawerOpen: (entityId: string) => track({ type: 'drawer_open', entityId }),

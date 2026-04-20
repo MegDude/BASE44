@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, useInView, animate } from "framer-motion";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { ArrowLeft, ArrowRight, X, Hotel, QrCode, MapPin, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, X, Hotel, QrCode } from "lucide-react";
 import L from "leaflet";
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';

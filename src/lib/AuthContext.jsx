@@ -21,6 +21,16 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
+
+      // Allow the app to render in local preview / Vercel preview mode
+      // even when Base44 runtime variables have not been configured yet.
+      if (!appParams.appId) {
+        setAppPublicSettings(null);
+        setIsAuthenticated(false);
+        setIsLoadingPublicSettings(false);
+        setIsLoadingAuth(false);
+        return;
+      }
       
       // First, check app public settings (with token if available)
       // This will tell us if auth is required, user not registered, etc.
@@ -113,6 +123,8 @@ export const AuthProvider = ({ children }) => {
   const logout = (shouldRedirect = true) => {
     setUser(null);
     setIsAuthenticated(false);
+
+    if (!appParams.appId) return;
     
     if (shouldRedirect) {
       // Use the SDK's logout method which handles token cleanup and redirect
@@ -124,6 +136,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
+    if (!appParams.appId) return;
     // Use the SDK's redirectToLogin method
     base44.auth.redirectToLogin(window.location.href);
   };

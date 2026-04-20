@@ -1,0 +1,15 @@
+{
+  "name": "Downtown Perks",
+  "short_name": "Perks",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcfbf8",
+  "theme_color": "#0b1f33",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

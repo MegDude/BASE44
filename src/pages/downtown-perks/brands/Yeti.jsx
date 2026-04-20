@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, QrCode, Target, Layers, BarChart2 } from "lucide-react";
+import { MapPin, Users, Star, TrendingUp, QrCode, Target, Layers, BarChart2 } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
-import { QRDemoPanel, NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
+import { QRDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
 
 const demo = (
   <div className="grid md:grid-cols-2 gap-5">

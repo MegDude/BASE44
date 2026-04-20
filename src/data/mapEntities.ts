@@ -144,6 +144,7 @@ export interface MapEntity {
     popularity?: number;
     isTrending?: boolean;
     tags?: string[];
+    searchKeywords?: string[];
     askMapIntentTags?: string[];
   };
 

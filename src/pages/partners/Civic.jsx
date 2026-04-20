@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Users, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, CheckCircle2 } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
-import PartnerTypeCard from '@/components/partner/PartnerTypeCard';
-import SelectorCards from '@/components/partner/SelectorCards';
 import ProofGrid from '@/components/partner/ProofGrid';
 import LiveActivityFeed from '@/components/partner/LiveActivityFeed';
 import PlanningForm from '@/components/partner/PlanningForm';

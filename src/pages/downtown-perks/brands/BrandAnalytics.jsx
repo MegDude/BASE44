@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
 import { ArrowRight, MapPin, ArrowLeft, TrendingUp, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AnalyticsKPICard from '@/components/analytics/AnalyticsKPICard';

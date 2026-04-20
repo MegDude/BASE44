@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Loader2 } from "lucide-react";
-import { SURFACES, DEFAULTS, TYPOGRAPHY } from "@/lib/design-system";
+import { SURFACES } from "@/lib/design-system";
 
 /**
  * UniversalSearch — Canonical search bar used across homepage, map, and discovery surfaces

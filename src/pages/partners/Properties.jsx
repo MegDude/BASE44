@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView, animate } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { ArrowLeft, ArrowRight, X, Building2, MapPin, Zap, Star, Waves, Dumbbell, Car, Bell } from "lucide-react";
+import { ArrowLeft, ArrowRight, X, Building2, Star, Waves, Dumbbell, Car, Bell } from "lucide-react";
 import L from "leaflet";
 
 delete L.Icon.Default.prototype._getIconUrl;

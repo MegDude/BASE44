@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, MapPin, Calendar, Star, Zap, LayoutDashboard, Building2, ArrowRight, Check, AlertCircle } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, ArrowRight, Check, AlertCircle } from "lucide-react";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.

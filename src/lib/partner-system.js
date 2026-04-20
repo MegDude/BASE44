@@ -5,19 +5,19 @@
 
 export const PARTNER_SPACING = {
   // Section spacing
-  sectionTop: 'pt-16 md:pt-24',
-  sectionBottom: 'pb-16 md:pb-24',
-  sectionVertical: 'py-16 md:py-24',
+  sectionTop: 'pt-12 md:pt-16',
+  sectionBottom: 'pb-12 md:pb-16',
+  sectionVertical: 'py-12 md:py-16',
   
   // Hero spacing (landing pages + individual partner pages)
-  heroTop: 'pt-20 md:pt-32',
-  heroBottom: 'pb-16 md:pb-24',
-  heroVertical: 'pt-20 md:pt-32 pb-16 md:pb-24',
+  heroTop: 'pt-16 md:pt-24',
+  heroBottom: 'pb-12 md:pb-16',
+  heroVertical: 'pt-16 md:pt-24 pb-12 md:pb-16',
   
   // Subsection spacing
-  subsectionTop: 'pt-12 md:pt-16',
-  subsectionBottom: 'pb-12 md:pb-16',
-  subsectionVertical: 'py-12 md:py-16',
+  subsectionTop: 'pt-8 md:pt-10',
+  subsectionBottom: 'pb-8 md:pb-10',
+  subsectionVertical: 'py-8 md:py-10',
   
   // Container padding
   containerPaddingMobile: 'px-4 md:px-6',

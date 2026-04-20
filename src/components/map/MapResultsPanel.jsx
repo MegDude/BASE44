@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ChevronUp, X, Menu, Filter, List } from 'lucide-react';
 import { useMapStore } from '@/store/map-store';
 import { motion, AnimatePresence } from 'framer-motion';

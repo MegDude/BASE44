@@ -45,7 +45,6 @@ import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import ResidentApp from "./pages/resident-app";
-import MapPage from "./pages/Map";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,12 +77,12 @@ const AuthenticatedApp = () => {
         <Route path="/" element={<Landing />} />
 
         {/* Top-level product routes */}
+        <Route path="/map" element={<ExploreRebuilt />} />
         <Route path="/explore" element={<ExploreRebuilt />} />
         <Route path="/events" element={<Events />} />
         <Route path="/perks" element={<PerksPage />} />
         <Route path="/card" element={<PerksCard />} />
         <Route path="/about" element={<About />} />
-        <Route path="/map" element={<MapPage />} />
         <Route path="/pricing" element={<Pricing />} />
 
         {/* Brands routes */}

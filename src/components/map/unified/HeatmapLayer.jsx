@@ -1,97 +1,37 @@
-/**
- * HeatmapLayer — Real-time activity density visualization
- * Updates without map reload, respects time filters
- */
+import { useMemo } from 'react';
+import { CircleMarker } from 'react-leaflet';
+import { useMapStateStore } from '@/store/mapStateStore';
 
-import { useEffect, useMemo } from 'react';
-import { Circle, useMap } from 'react-leaflet';
-import { useUnifiedMapStore } from '@/store/unified-map-store';
-import L from 'leaflet';
+export default function HeatmapLayer({ items = [] }) {
+  const heatmapVisible = useMapStateStore((state) => state.heatmapVisible);
 
-export default function HeatmapLayer() {
-  const map = useMap();
-  const { heatmapVisible, getHeatmapData } = useUnifiedMapStore();
+  const hotspots = useMemo(
+    () =>
+      items
+        .filter((item) => item.location?.valid && (item.isLive || item.metadata?.isTrending))
+        .slice(0, 12),
+    [items]
+  );
 
-  const heatmapData = useMemo(() => {
-    const data = getHeatmapData();
-    if (!data.length) return [];
-
-    // Cluster by location (rough grid)
-    const clusters = {};
-    const cellSize = 0.005; // ~500m
-
-    data.forEach((action) => {
-      if (!action.latitude || !action.longitude) return;
-
-      const cellKey = `${Math.floor(action.latitude / cellSize)}-${Math.floor(
-        action.longitude / cellSize
-      )}`;
-
-      if (!clusters[cellKey]) {
-        clusters[cellKey] = {
-          lat:
-            action.latitude +
-            (Math.random() - 0.5) * cellSize * 0.5,
-          lng:
-            action.longitude +
-            (Math.random() - 0.5) * cellSize * 0.5,
-          count: 0,
-          actions: [],
-        };
-      }
-
-      clusters[cellKey].count++;
-      clusters[cellKey].actions.push(action.action_type);
-    });
-
-    // Normalize intensity (0–1)
-    const maxCount = Math.max(...Object.values(clusters).map((c) => c.count));
-    return Object.values(clusters)
-      .map((cluster) => ({
-        ...cluster,
-        intensity: cluster.count / maxCount,
-      }))
-      .sort((a, b) => b.intensity - a.intensity);
-  }, [getHeatmapData]);
-
-  if (!heatmapVisible || !heatmapData.length) return null;
+  if (!heatmapVisible || hotspots.length === 0) {
+    return null;
+  }
 
   return (
     <>
-      {heatmapData.map((cluster, idx) => {
-        const intensity = cluster.intensity;
-        const color = intensity > 0.7 ? '#ef4444' : intensity > 0.4 ? '#f59e0b' : '#10b981';
-        const radius = 50 + intensity * 150;
-        const opacity = 0.3 + intensity * 0.4;
-
-        return (
-          <Circle
-            key={idx}
-            center={[cluster.lat, cluster.lng]}
-            radius={radius}
-            pathOptions={{
-              color,
-              weight: 0,
-              fillOpacity: opacity,
-              fillColor: color,
-            }}
-            eventHandlers={{
-              click: () => {
-                const popupContent = `
-                  <div style="font-size:12px;padding:4px;">
-                    <strong>${cluster.count} action${cluster.count !== 1 ? 's' : ''}</strong><br/>
-                    ${cluster.actions.join(', ')}
-                  </div>
-                `;
-                L.popup()
-                  .setLatLng([cluster.lat, cluster.lng])
-                  .setContent(popupContent)
-                  .openOn(map);
-              },
-            }}
-          />
-        );
-      })}
+      {hotspots.map((item) => (
+        <CircleMarker
+          key={`heat-${item.id}`}
+          center={[item.location.latitude, item.location.longitude]}
+          radius={18}
+          pathOptions={{
+            color: 'rgba(182,146,71,0.45)',
+            weight: 1,
+            fillColor: 'rgba(182,146,71,0.22)',
+            fillOpacity: 0.85,
+          }}
+        />
+      ))}
     </>
   );
 }
