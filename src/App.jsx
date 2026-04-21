@@ -17,6 +17,7 @@ import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
+import SnowDayPilot from "./pages/downtown-perks/SnowDayPilot";
 // Brands pages
 import BrandsIndex from "./pages/downtown-perks/brands/Index";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
@@ -82,6 +83,8 @@ const AuthenticatedApp = () => {
         <Route path="/perks" element={<PerksPage />} />
         <Route path="/card" element={<PerksCard />} />
         <Route path="/about" element={<About />} />
+        <Route path="/snow-day-pilot" element={<SnowDayPilot />} />
+        <Route path="/stay-put-snow-day" element={<SnowDayPilot />} />
 
         {/* Legacy Downtown Perks routes */}
         <Route path="/downtown-perks" element={<Landing />} />
@@ -91,6 +94,7 @@ const AuthenticatedApp = () => {
         <Route path="/downtown-perks/card" element={<PerksCard />} />
         <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
         <Route path="/downtown-perks/about" element={<About />} />
+        <Route path="/downtown-perks/snow-day-pilot" element={<SnowDayPilot />} />
 
         {/* Brand routes */}
         <Route path="/brands" element={<BrandsIndex />} />
