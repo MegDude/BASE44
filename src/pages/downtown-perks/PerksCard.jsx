@@ -136,7 +136,8 @@ export default function PerksCard() {
             Your Membership
           </p>
           <h1 className="mt-4 text-5xl font-semibold leading-[0.92] tracking-[-0.065em] md:text-6xl">
-            Perks Card
+            Perks{" "}
+            <span className="dp-script-accent-inline whitespace-nowrap text-[1.28em]">Card</span>
           </h1>
           <p className="mt-5 max-w-md text-base leading-7 text-[rgba(11,31,51,0.66)]">
             Scan or show this code at partner venues to redeem perks and verify membership.

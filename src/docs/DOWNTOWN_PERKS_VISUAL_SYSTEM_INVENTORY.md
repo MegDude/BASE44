@@ -6,6 +6,16 @@ Downtown Perks uses a modern, minimal Material-style product system with a trans
 
 The map remains the primary interface. Icons, cards, QR states, chips, dashboards, and signup surfaces should all support fast spatial decision-making rather than decorative marketing.
 
+## Typography System
+
+| Role | Font | Usage |
+| --- | --- | --- |
+| Display / headlines | Inter Tight | Hero, section titles, major product statements |
+| Body / UI | Inter | Body copy, navigation, forms, buttons, chips, map drawers, dashboards |
+| Accent script | Allura | One short emotional phrase only |
+
+Script usage is intentionally narrow. It can appear in phrases such as `downtown living`, `surface for you`, `choose next`, or `you are`, but never in controls, forms, body text, pricing, dashboard tables, map cards, or filters.
+
 ## Icon Style Rules
 
 - Base grid: 24px
@@ -192,4 +202,3 @@ The map remains the primary interface. Icons, cards, QR states, chips, dashboard
 5. Partner/dashboard metric icons
 6. Motion and loading rules
 7. Editorial diagrams and proof mockups
-

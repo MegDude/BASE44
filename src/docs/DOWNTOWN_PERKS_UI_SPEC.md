@@ -14,6 +14,8 @@ Use:
 - deep navy for structure and primary actions
 - gold only as a highlight or status accent
 - transparent glass surfaces with low-opacity fills
+- sharp modern sans typography for display, body, navigation, controls, forms, dashboards, and map UI
+- one restrained script accent font for short emotional phrases only
 - thin dividers
 - precise card hierarchy
 - compact chips and controls
@@ -29,6 +31,7 @@ Avoid:
 - rainbow category systems
 - heavy card stacking that feels like a wireframe
 - unnecessary borders, shadows, and boxed surfaces
+- cursive/script usage in body copy, buttons, filters, map drawers, forms, pricing cards, or dashboards
 
 ## Interaction Principles
 
@@ -59,6 +62,16 @@ Buttons should be navy-led, square-ish with slight radius, and use light text.
 Gold should only appear in small accents, selected detail, or proof signals.
 
 Map controls should be compact, quiet, and highly legible over the map surface.
+
+## Typography Standard
+
+Primary display and UI typography is sharp sans:
+
+- Display/headlines: Inter Tight
+- Body/UI/navigation: Inter
+- Accent: Allura through `.dp-script-accent` or `.dp-script-accent-inline`
+
+Script is allowed only for one short phrase inside a hero, emotional pivot, section transition, or CTA support line. It must not become a secondary system font.
 
 ## Progressive Access Standard
 

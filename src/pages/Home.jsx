@@ -261,7 +261,8 @@ function InterestPicker({ selectedInterests, onToggle, onOpenMap }) {
           </div>
           <SectionLabel>Personalize the map</SectionLabel>
           <h2 className="mt-5 text-4xl font-semibold tracking-[-0.052em] text-[hsl(218,42%,14%)] md:text-5xl">
-            What should downtown surface for you?
+            What should downtown{" "}
+            <span className="dp-script-accent-inline whitespace-nowrap text-[1.38em]">surface for you?</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-[rgba(19,36,67,0.64)]">
             Choose three or more signals. You can browse without signing up; these simply tune the first map view.
@@ -422,7 +423,10 @@ export default function Home() {
           >
             <SectionLabel>Downtown Perks</SectionLabel>
             <h1 className="mt-6 text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-[hsl(218,42%,14%)] md:text-7xl">
-              The neighborhood operating layer for downtown living.
+              The neighborhood operating layer for{" "}
+              <span className="dp-script-accent block pt-3 text-[1.08em] md:pt-4">
+                downtown living.
+              </span>
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-[rgba(19,36,67,0.72)] md:text-lg">
               The map is the interface to a live downtown system connecting residents,
@@ -510,7 +514,8 @@ export default function Home() {
           <div>
             <SectionLabel>The operating layer</SectionLabel>
             <h2 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[hsl(218,42%,14%)] md:text-5xl">
-              Downtown organized around movement, access, and action.
+              Downtown organized around movement, access, and{" "}
+              <span className="dp-script-accent-inline whitespace-nowrap text-[1.32em]">action.</span>
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -648,7 +653,10 @@ export default function Home() {
                 Rollout
               </p>
               <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.045em] md:text-5xl">
-                A living city interface, delivered in phases.
+                A living city interface,{" "}
+                <span className="dp-script-accent-inline whitespace-nowrap text-[1.32em] text-[hsl(40,62%,62%)]">
+                  delivered in phases.
+                </span>
               </h2>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/68">
                 Foundations, resident core, partner tools, property layer, intelligence, and launch hardening should all use the same map-native product language.

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Inter:opsz,wght@14..32,300..700&family=Inter+Tight:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,8 +6,9 @@
 
 @layer base {
   :root {
-    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-heading: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-accent: 'Allura', 'Inter Tight', cursive;
 
     /* Bright, warm off-white base with dark navy controls */
     --background: 42 38% 98%;
@@ -102,8 +103,8 @@
   h1,
   h2 {
     font-family: var(--font-heading);
-    letter-spacing: -0.035em;
-    line-height: 1.02;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
   }
 
   h3,
@@ -196,6 +197,22 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #b69247;
+  }
+
+  .dp-script-accent {
+    font-family: var(--font-accent);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 0.74;
+    color: hsl(40 62% 42%);
+    text-wrap: balance;
+  }
+
+  .dp-script-accent-inline {
+    font-family: var(--font-accent);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: hsl(40 62% 42%);
   }
 }
 
