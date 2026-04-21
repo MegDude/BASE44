@@ -20,17 +20,13 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
     setLoading(true);
 
     try {
-      const user = await base44.auth.me();
-      if (!user) {
-        alert('Please sign in to reserve an amenity');
-        return;
-      }
+      const user = await base44.auth.me().catch(() => null);
 
       const confirmation_code = `AR${Date.now().toString().slice(-8)}`;
 
       await base44.entities.Booking.create({
         type: 'amenity_reservation',
-        user_email: user.email,
+        user_email: user?.email || 'guest@downtownperks.demo',
         building_id: building.id,
         amenity: formData.amenity,
         booking_date: new Date(`${formData.booking_date}T${formData.booking_time}`).toISOString(),
@@ -42,7 +38,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
 
       setSubmitted(true);
       setTimeout(() => onClose?.(), 2000);
-    } catch (error) {
+    } catch {
       alert('Reservation failed. Please try again.');
     } finally {
       setLoading(false);

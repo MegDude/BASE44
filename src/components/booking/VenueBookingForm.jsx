@@ -20,17 +20,13 @@ export default function VenueBookingForm({ venue, onClose }) {
     setLoading(true);
 
     try {
-      const user = await base44.auth.me();
-      if (!user) {
-        alert('Please sign in to book a spot');
-        return;
-      }
+      const user = await base44.auth.me().catch(() => null);
 
       const confirmation_code = `VB${Date.now().toString().slice(-8)}`;
 
       await base44.entities.Booking.create({
         type: 'venue_spot',
-        user_email: user.email,
+        user_email: user?.email || 'guest@downtownperks.demo',
         venue_id: venue.id,
         party_size: parseInt(formData.party_size),
         booking_date: new Date(`${formData.booking_date}T${formData.booking_time}`).toISOString(),
@@ -42,7 +38,7 @@ export default function VenueBookingForm({ venue, onClose }) {
 
       setSubmitted(true);
       setTimeout(() => onClose?.(), 2000);
-    } catch (error) {
+    } catch {
       alert('Booking failed. Please try again.');
     } finally {
       setLoading(false);

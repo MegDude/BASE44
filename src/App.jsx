@@ -4,7 +4,6 @@ import { queryClientInstance } from "@/lib/query-client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PageNotFound from "./lib/PageNotFound";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
-import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
@@ -47,26 +46,15 @@ import ResidentApp from "./pages/resident-app";
 import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const { isLoadingPublicSettings } = useAuth();
 
-  // Show loading spinner while checking app public settings or auth
-  if (isLoadingPublicSettings || isLoadingAuth) {
+  // Public product routes must render even when Base44 auth is unavailable.
+  if (isLoadingPublicSettings) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-[rgba(11,31,51,0.12)] border-t-[var(--dp-navy,#0B1F33)] rounded-full animate-spin"></div>
       </div>
     );
-  }
-
-  // Handle authentication errors
-  if (authError) {
-    if (authError.type === "user_not_registered") {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === "auth_required") {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
-    }
   }
 
   // Render the main app

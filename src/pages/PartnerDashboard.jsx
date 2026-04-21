@@ -17,27 +17,27 @@ import {
   X,
 } from 'lucide-react';
 
+const DEMO_PARTNER_USER = {
+  id: 'demo-partner',
+  full_name: 'Downtown Perks Partner',
+  email: 'partner@downtownperks.demo',
+  role: 'partner',
+  is_demo: true,
+};
+
 export default function PartnerDashboard() {
-  const [user, setUser] = useState(null);
   const [venues, setVenues] = useState([]);
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedVenue, setSelectedVenue] = useState(null);
-  const [editingPerk, setEditingPerk] = useState(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const me = await base44.auth.me();
-        if (!me) {
-          base44.auth.redirectToLogin();
-          return;
-        }
-
-        setUser(me);
+        await base44.auth.me().catch(() => DEMO_PARTNER_USER);
 
         // Load venues (for this partner)
-        const venueList = await base44.entities.Venue.list();
+        const venueList = await base44.entities.Venue.list().catch(() => []);
         setVenues(venueList || []);
 
         // Subscribe to live actions
@@ -259,8 +259,9 @@ function VenuePanel({ venue, onClose }) {
     await base44.entities.Venue.update(venue.id, formData);
     setIsEditing(false);
     // Trigger map refresh via action
+    const actor = await base44.auth.me().catch(() => DEMO_PARTNER_USER);
     await base44.entities.UserAction.create({
-      user_email: (await base44.auth.me()).email,
+      user_email: actor?.email || DEMO_PARTNER_USER.email,
       entity_id: venue.id,
       action_type: 'edit',
       timestamp: new Date().toISOString(),

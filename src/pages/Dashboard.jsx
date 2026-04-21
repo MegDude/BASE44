@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import {
   LayoutDashboard, MapPin, Star, Calendar, TrendingUp, Settings,
   Menu, X, ChevronRight, Bell, Building2, Users, ArrowRight,
-  AlertCircle, Zap, Activity, LogOut, Megaphone, Wrench,
+  Zap, Activity, LogOut, Megaphone, Wrench,
   ClipboardList, Home, FileText, BarChart3
 } from "lucide-react";
 
@@ -69,6 +69,14 @@ const PROPERTY_CAPABILITIES = [
   },
 ];
 
+const DEMO_PARTNER_USER = {
+  id: "demo-partner",
+  full_name: "Downtown Perks Partner",
+  email: "partner@downtownperks.demo",
+  role: "partner",
+  is_demo: true,
+};
+
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -76,28 +84,16 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
+    base44.auth
+      .me()
+      .then(u => setUser(u || DEMO_PARTNER_USER))
+      .catch(() => setUser(DEMO_PARTNER_USER))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-7 h-7 border-2 border-border border-t-primary rounded-full animate-spin" />
-    </div>
-  );
-
-  if (!user) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="text-center max-w-sm">
-        <div className="w-12 h-12 rounded-full border border-border/50 flex items-center justify-center mx-auto mb-4">
-          <AlertCircle className="w-5 h-5 text-muted-foreground" />
-        </div>
-        <h2 className="font-heading text-xl font-medium mb-2">Sign in required</h2>
-        <p className="text-muted-foreground text-[13px] mb-6">Access your partner dashboard to view activity, manage content, and track performance.</p>
-        <button onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-          Sign in <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
     </div>
   );
 

@@ -17,17 +17,13 @@ export default function EventRSVPForm({ event, onClose }) {
     setLoading(true);
 
     try {
-      const user = await base44.auth.me();
-      if (!user) {
-        alert('Please sign in to RSVP');
-        return;
-      }
+      const user = await base44.auth.me().catch(() => null);
 
       const confirmation_code = `ER${Date.now().toString().slice(-8)}`;
 
       await base44.entities.Booking.create({
         type: 'event_rsvp',
-        user_email: user.email,
+        user_email: user?.email || 'guest@downtownperks.demo',
         event_id: event.id,
         party_size: parseInt(formData.guest_count),
         booking_date: event.date,
@@ -37,7 +33,7 @@ export default function EventRSVPForm({ event, onClose }) {
 
       setSubmitted(true);
       setTimeout(() => onClose?.(), 2000);
-    } catch (error) {
+    } catch {
       alert('RSVP failed. Please try again.');
     } finally {
       setLoading(false);
