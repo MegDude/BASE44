@@ -13,6 +13,7 @@ Use:
 - softly lit off-white backgrounds
 - deep navy for structure and primary actions
 - gold only as a highlight or status accent
+- transparent glass surfaces with low-opacity fills
 - thin dividers
 - precise card hierarchy
 - compact chips and controls
@@ -27,6 +28,7 @@ Avoid:
 - enterprise dashboard chrome
 - rainbow category systems
 - heavy card stacking that feels like a wireframe
+- unnecessary borders, shadows, and boxed surfaces
 
 ## Interaction Principles
 
@@ -43,11 +45,12 @@ Radius, proximity, live status, save state, RSVP, and redemption states should b
 ## Homepage Structure
 
 1. Hero and map entry
-2. Operating layer explanation
-3. Resident decision loop
-4. Four-system platform modules
-5. Platform proof
-6. Rollout and CTA
+2. Medium-style interest picker that tunes the map without requiring signup
+3. Operating layer explanation
+4. Resident decision loop
+5. Four-system platform modules
+6. Platform proof
+7. Rollout and CTA
 
 ## Component Standard
 
@@ -57,3 +60,16 @@ Gold should only appear in small accents, selected detail, or proof signals.
 
 Map controls should be compact, quiet, and highly legible over the map surface.
 
+## Progressive Access Standard
+
+Users must be able to browse the homepage, map, events, places, public perks, and partner surfaces without signing up.
+
+Signup appears only at high-intent moments:
+
+- save a place
+- RSVP to an event
+- redeem a perk
+- unlock or issue the Perks Card
+- request SMS access
+
+The Perks Card QR is the center of the card screen. Member identity and status sit below the QR as supporting metadata.

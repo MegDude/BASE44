@@ -7,13 +7,21 @@ import {
   Check,
   Clock3,
   Compass,
+  Coffee,
+  Dumbbell,
   Gift,
+  HeartPulse,
   MapPin,
+  Moon,
+  Music,
+  PawPrint,
   Radio,
   Search,
   ShieldCheck,
+  ShoppingBag,
   Sparkles,
   Ticket,
+  Utensils,
   Users,
   Zap,
 } from "lucide-react";
@@ -26,6 +34,42 @@ const HERO_INTENTS = [
   { label: "Events nearby", query: "events tonight downtown", icon: Ticket },
   { label: "Resident perks", query: "resident perks nearby", icon: Gift },
   { label: "5 min walk", query: "things within a 5 minute walk", icon: Clock3 },
+];
+
+const INTEREST_GROUPS = [
+  {
+    label: "Daily downtown",
+    accent: "navy",
+    items: [
+      { label: "Coffee", query: "coffee nearby", icon: Coffee },
+      { label: "Dinner", query: "dinner tonight", icon: Utensils },
+      { label: "5 min walk", query: "within a 5 minute walk", icon: Clock3 },
+      { label: "Quiet work spots", query: "quiet places to work", icon: Search },
+      { label: "Open now", query: "open now nearby", icon: Radio },
+    ],
+  },
+  {
+    label: "What feels worth it",
+    accent: "gold",
+    items: [
+      { label: "Live music", query: "live music tonight", icon: Music },
+      { label: "Resident perks", query: "resident perks", icon: Gift },
+      { label: "Date night", query: "date night nearby", icon: Sparkles },
+      { label: "Late night", query: "late night downtown", icon: Moon },
+      { label: "Wellness", query: "wellness and recovery", icon: HeartPulse },
+    ],
+  },
+  {
+    label: "My downtown layer",
+    accent: "cool",
+    items: [
+      { label: "Building offers", query: "building resident offers", icon: Building2 },
+      { label: "Events tonight", query: "events tonight downtown", icon: Ticket },
+      { label: "Fitness", query: "fitness nearby", icon: Dumbbell },
+      { label: "Shopping", query: "shopping nearby", icon: ShoppingBag },
+      { label: "Pet friendly", query: "pet friendly places", icon: PawPrint },
+    ],
+  },
 ];
 
 const SYSTEM_NODES = [
@@ -122,13 +166,13 @@ function SectionLabel({ children }) {
 
 function MapInterfacePreview() {
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.86)] p-3 shadow-[0_28px_70px_rgba(19,36,67,0.16)] backdrop-blur-xl">
-      <div className="relative min-h-[520px] overflow-hidden rounded-[22px] border border-[rgba(19,36,67,0.1)] bg-[hsl(42,24%,96%)]">
+    <div className="relative overflow-hidden rounded-[28px] bg-[rgba(252,251,248,0.44)] p-3 shadow-[0_20px_56px_rgba(19,36,67,0.10)] backdrop-blur-xl">
+      <div className="relative min-h-[520px] overflow-hidden rounded-[22px] bg-[hsl(42,24%,96%)]">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(19,36,67,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(19,36,67,0.08)_1px,transparent_1px)] bg-[size:56px_56px]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_24%,rgba(200,151,58,0.24),transparent_24%),radial-gradient(circle_at_80%_62%,rgba(19,36,67,0.16),transparent_26%)]" />
 
-        <div className="absolute left-5 right-5 top-5 rounded-[18px] border border-[rgba(19,36,67,0.12)] bg-white/90 p-3 shadow-[0_20px_50px_rgba(19,36,67,0.12)] backdrop-blur-xl">
-          <div className="flex items-center gap-3 rounded-[14px] border border-[rgba(19,36,67,0.12)] bg-white px-4 py-3">
+        <div className="absolute left-5 right-5 top-5 rounded-[18px] bg-white/64 p-3 backdrop-blur-xl">
+          <div className="flex items-center gap-3 rounded-[14px] bg-white/70 px-4 py-3">
             <Search className="h-4 w-4 text-[rgba(19,36,67,0.46)]" />
             <span className="flex-1 text-sm text-[rgba(19,36,67,0.62)]">
               Dinner tonight near Rainey
@@ -187,13 +231,91 @@ function MapInterfacePreview() {
                 Coffee, quick meetings, resident perk, 5-minute walk.
               </p>
             </div>
-            <span className="rounded-full bg-[rgba(200,151,58,0.13)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)]">
+            <span className="rounded-full bg-[rgba(200,151,58,0.12)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)]">
               5 min
             </span>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function InterestPicker({ selectedInterests, onToggle, onOpenMap }) {
+  const selectedCount = selectedInterests.length;
+
+  return (
+    <section className="border-b border-[rgba(19,36,67,0.08)] px-5 py-20 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center">
+          <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center">
+            <div className="relative h-20 w-20">
+              <span className="absolute left-4 top-4 h-12 w-12 rounded-full border border-[rgba(11,31,51,0.72)]" />
+              <span className="absolute left-8 top-2 h-14 w-10 rotate-45 rounded-full border border-[rgba(11,31,51,0.72)]" />
+              <span className="absolute left-2 top-8 h-10 w-14 -rotate-12 rounded-full border border-[rgba(11,31,51,0.72)]" />
+              <span className="absolute left-[37px] top-[35px] h-2 w-2 rounded-full bg-[var(--dp-gold,#CFAF5A)]" />
+              <span className="absolute left-1 top-7 h-1 w-1 rounded-full bg-[rgba(11,31,51,0.72)]" />
+              <span className="absolute right-2 top-1 h-1.5 w-1.5 rounded-full bg-[rgba(11,31,51,0.72)]" />
+              <span className="absolute bottom-2 right-4 h-1.5 w-1.5 rounded-full bg-[rgba(11,31,51,0.72)]" />
+            </div>
+          </div>
+          <SectionLabel>Personalize the map</SectionLabel>
+          <h2 className="mt-5 text-4xl font-semibold tracking-[-0.052em] text-[hsl(218,42%,14%)] md:text-5xl">
+            What should downtown surface for you?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-[rgba(19,36,67,0.64)]">
+            Choose three or more signals. You can browse without signing up; these simply tune the first map view.
+          </p>
+        </div>
+
+        <div className="mt-12 space-y-9">
+          {INTEREST_GROUPS.map((group) => (
+            <div key={group.label}>
+              <h3 className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-[rgba(19,36,67,0.82)]">
+                {group.label}
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const selected = selectedInterests.some((interest) => interest.label === item.label);
+                  return (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => onToggle(item)}
+                      className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm transition ${
+                        selected
+                          ? "bg-[hsl(218,42%,14%)] text-white"
+                          : "border border-[rgba(19,36,67,0.18)] bg-transparent text-[rgba(19,36,67,0.78)] hover:border-[rgba(19,36,67,0.32)] hover:bg-white/34"
+                      }`}
+                    >
+                      <Icon className={`h-4 w-4 ${selected ? "text-[hsl(40,62%,56%)]" : "text-[rgba(19,36,67,0.54)]"}`} strokeWidth={1.75} />
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-[rgba(19,36,67,0.08)] pt-7 sm:flex-row">
+          <p className="text-sm text-[rgba(19,36,67,0.58)]">
+            {selectedCount >= 3
+              ? `${selectedCount} signals selected. The map can open with your downtown layer.`
+              : `${Math.max(0, 3 - selectedCount)} more signal${3 - selectedCount === 1 ? "" : "s"} recommended before tuning the map.`}
+          </p>
+          <button
+            type="button"
+            onClick={onOpenMap}
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-[hsl(218,42%,14%)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[hsl(218,42%,12%)]"
+          >
+            Open tuned map
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -210,6 +332,11 @@ export default function Home() {
     "Search starts the experience. The map holds the system together."
   );
   const [aiLoading, setAiLoading] = useState(false);
+  const [selectedInterests, setSelectedInterests] = useState([
+    INTEREST_GROUPS[0].items[0],
+    INTEREST_GROUPS[0].items[2],
+    INTEREST_GROUPS[1].items[1],
+  ]);
 
   const selectedIntent = useMemo(
     () => HERO_INTENTS.find((item) => item.label === activeIntent) || HERO_INTENTS[0],
@@ -236,6 +363,22 @@ export default function Home() {
     setActiveIntent(intent.label);
     setSearchQuery(intent.query);
     setAssistantNote(`Ready to open the live map for ${intent.label.toLowerCase()}.`);
+  };
+
+  const toggleInterest = (item) => {
+    setSelectedInterests((current) => {
+      if (current.some((interest) => interest.label === item.label)) {
+        return current.filter((interest) => interest.label !== item.label);
+      }
+      return [...current, item];
+    });
+  };
+
+  const openInterestMap = () => {
+    const query = selectedInterests.length
+      ? selectedInterests.map((interest) => interest.query).join(", ")
+      : "places events and perks nearby";
+    openMapWithIntent(query);
   };
 
   const handleAskMap = async () => {
@@ -288,10 +431,10 @@ export default function Home() {
 
             <form
               onSubmit={handleSearch}
-              className="mt-10 max-w-3xl rounded-[24px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.82)] p-3 shadow-[0_24px_60px_rgba(19,36,67,0.12)] backdrop-blur-xl"
+              className="mt-10 max-w-3xl rounded-[24px] bg-[rgba(252,251,248,0.50)] p-3 shadow-[0_20px_52px_rgba(19,36,67,0.08)] backdrop-blur-xl"
             >
               <div className="flex flex-col gap-3 md:flex-row">
-                <div className="flex h-14 min-w-0 flex-1 items-center gap-3 rounded-[16px] border border-[rgba(19,36,67,0.12)] bg-white px-4 focus-within:border-[rgba(200,151,58,0.52)] focus-within:shadow-[0_0_0_3px_rgba(200,151,58,0.1)]">
+                <div className="flex h-14 min-w-0 flex-1 items-center gap-3 rounded-[16px] bg-white/66 px-4 focus-within:bg-white/84 focus-within:shadow-[0_0_0_1px_rgba(200,151,58,0.34)]">
                   <Search className="h-4 w-4 shrink-0 text-[rgba(19,36,67,0.46)]" />
                   <input
                     value={searchQuery}
@@ -311,7 +454,7 @@ export default function Home() {
                   type="button"
                   disabled={aiLoading}
                   onClick={handleAskMap}
-                  className="inline-flex h-14 items-center justify-center gap-2 rounded-[16px] border border-[rgba(19,36,67,0.14)] bg-white px-6 text-sm font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)] transition hover:border-[rgba(200,151,58,0.45)] disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex h-14 items-center justify-center gap-2 rounded-[16px] bg-white/56 px-6 text-sm font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)] transition hover:bg-white/78 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <Sparkles className={`h-4 w-4 text-[hsl(40,62%,46%)] ${aiLoading ? "animate-pulse" : ""}`} />
                   Ask the map
@@ -355,6 +498,12 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <InterestPicker
+        selectedInterests={selectedInterests}
+        onToggle={toggleInterest}
+        onOpenMap={openInterestMap}
+      />
 
       <section className="border-b border-[rgba(19,36,67,0.1)] px-5 py-24 md:px-8">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.82fr_1.18fr]">
