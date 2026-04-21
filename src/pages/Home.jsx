@@ -1,788 +1,529 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
+  BarChart3,
   Building2,
-  Calendar,
-  CheckCircle2,
-  Coffee,
+  Check,
+  Clock3,
+  Compass,
   Gift,
-  LandPlot,
   MapPin,
-  Megaphone,
+  Radio,
   Search,
+  ShieldCheck,
   Sparkles,
   Ticket,
-  Wallet,
-  Waves,
+  Users,
+  Zap,
 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
+import { useMapStore } from "@/store/map-store";
 
-const neighborhoodChips = ["Rainey", "2nd Street", "Congress", "Seaholm", "West 6th"];
-const categoryChips = ["Properties", "Venues", "Deals", "Events", "Resident Perks"];
-
-const proofStats = [
-  { label: "Residents", value: "7,000+" },
-  { label: "Venues", value: "50+" },
-  { label: "Corridor engagement", value: "3.8–4.2%" },
-  { label: "No app required", value: "QR + text" },
+const HERO_INTENTS = [
+  { label: "Dinner tonight", query: "dinner tonight downtown", icon: MapPin },
+  { label: "Events nearby", query: "events tonight downtown", icon: Ticket },
+  { label: "Resident perks", query: "resident perks nearby", icon: Gift },
+  { label: "5 min walk", query: "things within a 5 minute walk", icon: Clock3 },
 ];
 
-const mapItems = [
-  {
-    id: 1,
-    type: "Venue",
-    title: "Jo's Coffee",
-    subtitle: "Quick coffee, good Wi-Fi, morning reset",
-    meta: "4 min walk · Nearby perk",
-    action: "Save to Card",
-    x: "22%",
-    y: "62%",
-  },
-  {
-    id: 2,
-    type: "Event",
-    title: "Rainey Happy Hour Set",
-    subtitle: "Tonight · Live music + partner specials",
-    meta: "8 min walk · RSVP open",
-    action: "RSVP",
-    x: "57%",
-    y: "46%",
-  },
-  {
-    id: 3,
-    type: "Property",
-    title: "The Quincy",
-    subtitle: "Participating building with resident access",
-    meta: "6 min walk · 12 venues nearby",
-    action: "View Building",
-    x: "72%",
-    y: "28%",
-  },
+const SYSTEM_NODES = [
+  { label: "Places", detail: "Venues and daily-use stops", icon: MapPin },
+  { label: "Events", detail: "What is live, tonight, or worth planning around", icon: Ticket },
+  { label: "Perks", detail: "Access and value when it matters", icon: Gift },
+  { label: "Properties", detail: "Buildings as neighborhood entry points", icon: Building2 },
+  { label: "Signals", detail: "Intent, movement, saves, RSVP, and redemption", icon: Radio },
 ];
 
-const nowCards = [
-  {
-    title: "Tonight on Rainey",
-    label: "Event",
-    text: "Live music, walkable drinks, one-tap RSVP.",
-    cta: "Open in Map",
-    href: "/events",
-    icon: Calendar,
-  },
-  {
-    title: "Lunch Perk Nearby",
-    label: "Offer",
-    text: "Save the perk now and unlock it when you walk in.",
-    cta: "Save to Card",
-    href: "/card",
-    icon: Gift,
-  },
-  {
-    title: "Weekly Highlight",
-    label: "Roundup",
-    text: "A faster read on what is actually worth leaving for.",
-    cta: "See What's On",
-    href: "/events",
-    icon: Sparkles,
-  },
+const RESIDENT_LOOP = [
+  "Search by intent, not by category.",
+  "See nearby results on the live map.",
+  "Open details in context without losing place.",
+  "Save, RSVP, redeem, or go.",
 ];
 
-const residentBenefits = [
+const PLATFORM_LAYERS = [
   {
-    title: "No app to download",
-    text: "Open from QR or text and go straight to the useful part.",
-    icon: Waves,
+    eyebrow: "Resident experience",
+    title: "A downtown decision loop.",
+    body: "Residents discover what is nearby, see why it fits the moment, and move from intent to action without bouncing between search, social, texts, and property emails.",
+    points: ["Search", "Save", "RSVP", "Redeem"],
+    icon: Users,
+    cta: "Open resident flow",
+    href: "/resident-app",
   },
   {
-    title: "Real-time local discovery",
-    text: "See what is nearby now instead of searching across five places.",
-    icon: Search,
-  },
-  {
-    title: "Plans and perks together",
-    text: "Events, saved spots, and resident perks live in one layer.",
-    icon: Wallet,
-  },
-  {
-    title: "Built around walking",
-    text: "Distance, timing, and corridor context help you decide faster.",
-    icon: MapPin,
-  },
-];
-
-const partnerTabs = {
-  Properties: {
-    problem: "Buildings need a better amenity story than static lists and generic local guides.",
-    role: "Downtown Perks becomes a live neighborhood layer residents can actually use.",
-    outcome: "Better resident utility, better retention story, better downtown visibility.",
+    eyebrow: "Property / access layer",
+    title: "Buildings become neighborhood entry points.",
+    body: "Properties can extend amenity value beyond the lobby by giving residents a branded path into nearby places, offers, events, and walkable context.",
+    points: ["QR entry", "Resident onboarding", "Amenity extension", "Leasing proof"],
     icon: Building2,
-  },
-  Developers: {
-    problem: "Developers need a sharper way to sell location value before and after lease-up.",
-    role: "The platform turns surrounding walkability, partners, and district energy into product.",
-    outcome: "Stronger location narrative and clearer neighborhood differentiation.",
-    icon: LandPlot,
-  },
-  Venues: {
-    problem: "Local venues need visibility when nearby intent is forming, not after it passes.",
-    role: "The map places offers and moments in front of residents already downtown.",
-    outcome: "More timely discovery, more visits, more measurable redemptions.",
-    icon: Coffee,
-  },
-  "Brands / Sponsors": {
-    problem: "Brand activations need context and relevance, not broad wasted reach.",
-    role: "Downtown Perks inserts sponsor moments into real movement and real intent.",
-    outcome: "Higher-quality attention and cleaner local activation proof.",
-    icon: Megaphone,
-  },
-  Civic: {
-    problem: "District and civic groups need turnout, participation, and easier discovery.",
-    role: "The map becomes a working downtown layer for events, programs, and attendance.",
-    outcome: "Better visibility for programming and stronger corridor participation.",
-    icon: Ticket,
-  },
-};
-
-const partnershipOptions = [
-  {
-    title: "Properties",
-    price: "Pilot available",
-    text: "Residential buildings and mixed-use properties bringing the map into resident life.",
-    href: "/partners/properties",
+    cta: "For buildings",
+    href: "/downtown-perks/for-buildings",
   },
   {
-    title: "Developers",
-    price: "Custom rollout",
-    text: "Use neighborhood intelligence as part of leasing, launch, and location storytelling.",
-    href: "/partners/properties",
+    eyebrow: "Partner operating surface",
+    title: "Partners influence decisions, not impressions.",
+    body: "Venues, hotels, brands, and local businesses show up inside the map layer when residents are deciding where to go next.",
+    points: ["Offers", "Campaigns", "Leads", "Conversion signals"],
+    icon: Zap,
+    cta: "Partner options",
+    href: "/partners",
   },
   {
-    title: "Venues",
-    price: "Annual plans",
-    text: "Show up when nearby residents are deciding where to go next.",
-    href: "/partners/venues",
-  },
-  {
-    title: "Brands / Sponsors",
-    price: "Activation pricing",
-    text: "Own the moment instead of buying generic impressions.",
-    href: "/partners/brands",
-  },
-  {
-    title: "Civic",
-    price: "District plans",
-    text: "Turn programming and attendance into participation across downtown.",
-    href: "/partners/civic",
+    eyebrow: "Operator intelligence",
+    title: "The system can be managed, measured, and improved.",
+    body: "Operator views turn downtown activity into quality control, content moderation, campaign performance, district coverage, and platform health.",
+    points: ["QA", "Analytics", "Approvals", "Rollups"],
+    icon: ShieldCheck,
+    cta: "Open dashboard",
+    href: "/dashboard",
   },
 ];
+
+const PROOF_ITEMS = [
+  "Map-native resident surface",
+  "Shared partner and property routes",
+  "Base44 entity-backed venue, building, and event feeds",
+  "Intent handoff into the unified downtown map",
+  "Pricing separated from partner narrative",
+  "Dashboard split for resident and partner entry",
+];
+
+const SUPPORTED_CATEGORIES = new Set([
+  "all",
+  "restaurant",
+  "fitness",
+  "wellness",
+  "hotel",
+  "entertainment",
+  "building",
+]);
+
+function normalizeIntentCategory(intent) {
+  const categories = Array.isArray(intent?.categories) ? intent.categories : [];
+  for (const rawValue of categories) {
+    const value = String(rawValue).toLowerCase().trim();
+    if (value === "bar" || value === "coffee" || value === "retail") return "restaurant";
+    if (value === "event" || value === "events") return "entertainment";
+    if (SUPPORTED_CATEGORIES.has(value)) return value;
+  }
+  return "all";
+}
+
+function SectionLabel({ children }) {
+  return (
+    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,46%)]">
+      {children}
+    </p>
+  );
+}
+
+function MapInterfacePreview() {
+  return (
+    <div className="relative overflow-hidden rounded-[28px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.86)] p-3 shadow-[0_28px_70px_rgba(19,36,67,0.16)] backdrop-blur-xl">
+      <div className="relative min-h-[520px] overflow-hidden rounded-[22px] border border-[rgba(19,36,67,0.1)] bg-[hsl(42,24%,96%)]">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(19,36,67,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(19,36,67,0.08)_1px,transparent_1px)] bg-[size:56px_56px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_24%,rgba(200,151,58,0.24),transparent_24%),radial-gradient(circle_at_80%_62%,rgba(19,36,67,0.16),transparent_26%)]" />
+
+        <div className="absolute left-5 right-5 top-5 rounded-[18px] border border-[rgba(19,36,67,0.12)] bg-white/90 p-3 shadow-[0_20px_50px_rgba(19,36,67,0.12)] backdrop-blur-xl">
+          <div className="flex items-center gap-3 rounded-[14px] border border-[rgba(19,36,67,0.12)] bg-white px-4 py-3">
+            <Search className="h-4 w-4 text-[rgba(19,36,67,0.46)]" />
+            <span className="flex-1 text-sm text-[rgba(19,36,67,0.62)]">
+              Dinner tonight near Rainey
+            </span>
+            <span className="rounded-[10px] bg-[hsl(218,42%,14%)] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
+              Ask
+            </span>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {["Live", "5 min", "Perks", "Events"].map((item, index) => (
+              <span
+                key={item}
+                className={`rounded-[12px] border px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] ${
+                  index === 0
+                    ? "border-[rgba(19,36,67,0.18)] bg-[hsl(218,42%,14%)] text-white"
+                    : "border-[rgba(19,36,67,0.12)] bg-white/84 text-[rgba(19,36,67,0.68)]"
+                }`}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {[
+          { x: "28%", y: "46%", label: "Jo's", active: true },
+          { x: "58%", y: "34%", label: "Live", active: false },
+          { x: "72%", y: "66%", label: "Perk", active: false },
+          { x: "40%", y: "72%", label: "Bldg", active: false },
+        ].map((pin) => (
+          <div
+            key={pin.label}
+            className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full border px-3 py-2 shadow-[0_12px_26px_rgba(19,36,67,0.16)] ${
+              pin.active
+                ? "border-[rgba(200,151,58,0.65)] bg-[hsl(218,42%,14%)] text-white"
+                : "border-white/80 bg-white/90 text-[hsl(218,42%,14%)]"
+            }`}
+            style={{ left: pin.x, top: pin.y }}
+          >
+            <span className="h-2 w-2 rounded-full bg-[hsl(40,62%,46%)]" />
+            <span className="text-[11px] font-semibold">{pin.label}</span>
+          </div>
+        ))}
+
+        <div className="absolute bottom-4 left-4 right-4 rounded-[22px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.96)] p-4 shadow-[0_-12px_40px_rgba(19,36,67,0.12)]">
+          <div className="mb-3 h-1 w-12 rounded-full bg-[rgba(19,36,67,0.16)]" />
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(19,36,67,0.46)]">
+            Best right now
+          </p>
+          <div className="mt-2 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold tracking-[-0.03em] text-[hsl(218,42%,14%)]">
+                Jo's Coffee
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-[rgba(19,36,67,0.64)]">
+                Coffee, quick meetings, resident perk, 5-minute walk.
+              </p>
+            </div>
+            <span className="rounded-full bg-[rgba(200,151,58,0.13)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)]">
+              5 min
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
-  const [selectedMapItem, setSelectedMapItem] = useState(mapItems[1]);
-  const [activePartnerTab, setActivePartnerTab] = useState("Properties");
-  const ActivePartnerIcon = partnerTabs[activePartnerTab].icon;
+  const navigate = useNavigate();
+  const resetToDefaults = useMapStore((state) => state.resetToDefaults);
+  const setQueryFilter = useMapStore((state) => state.setQueryFilter);
+  const setCategoryFilter = useMapStore((state) => state.setCategoryFilter);
+  const setPanelExpanded = useMapStore((state) => state.setPanelExpanded);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeIntent, setActiveIntent] = useState(HERO_INTENTS[0].label);
+  const [assistantNote, setAssistantNote] = useState(
+    "Search starts the experience. The map holds the system together."
+  );
+  const [aiLoading, setAiLoading] = useState(false);
+
+  const selectedIntent = useMemo(
+    () => HERO_INTENTS.find((item) => item.label === activeIntent) || HERO_INTENTS[0],
+    [activeIntent]
+  );
+
+  const openMapWithIntent = (query, category = "all") => {
+    const nextQuery = query.trim() || selectedIntent.query;
+    resetToDefaults();
+    setPanelExpanded(true);
+    setQueryFilter(nextQuery);
+    if (SUPPORTED_CATEGORIES.has(category)) {
+      setCategoryFilter(category);
+    }
+    navigate(`/downtown-perks/explore?q=${encodeURIComponent(nextQuery)}`);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    openMapWithIntent(searchQuery || selectedIntent.query);
+  };
+
+  const handleIntentClick = (intent) => {
+    setActiveIntent(intent.label);
+    setSearchQuery(intent.query);
+    setAssistantNote(`Ready to open the live map for ${intent.label.toLowerCase()}.`);
+  };
+
+  const handleAskMap = async () => {
+    const query = searchQuery.trim() || selectedIntent.query;
+    setAiLoading(true);
+    setAssistantNote("Reading intent and routing into the downtown map...");
+
+    try {
+      const response = await base44.functions.invoke("searchMapIntent", {
+        query,
+        context: {
+          location: "Downtown Austin",
+          time: new Date().toISOString(),
+          frame: "neighborhood operating layer",
+        },
+      });
+
+      const category = normalizeIntentCategory(response.data);
+      setAssistantNote(response.data?.reasoning || "Intent recognized. Opening the live downtown layer.");
+      openMapWithIntent(query, category);
+    } catch (error) {
+      console.error("Ask the map failed:", error);
+      setAssistantNote("AI routing failed. Opening the live map with your current search.");
+      openMapWithIntent(query, "all");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#f7f7fb] text-slate-900">
-      <main>
-        <section className="border-b border-slate-200/70">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-14 md:px-6 md:py-20 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
-            <div>
-              <div className="mb-4 inline-flex rounded-full border border-[#b69247]/30 bg-[#b69247]/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0b1f33]">
-                Built for residents. Backed by properties and local partners.
-              </div>
+    <div className="relative overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_18%_8%,rgba(200,151,58,0.11),transparent_26%),radial-gradient(circle_at_82%_18%,rgba(19,36,67,0.08),transparent_24%),linear-gradient(180deg,hsl(210,33%,98%)_0%,hsl(42,24%,96%)_100%)]" />
 
-              <h1 className="max-w-3xl text-4xl font-semibold leading-[0.96] tracking-[-0.04em] text-[#0b1f33] md:text-6xl">
-                Walk Downtown with a Better Read on What’s Worth It
-              </h1>
+      <section className="relative min-h-screen border-b border-[rgba(19,36,67,0.1)] px-5 pb-14 pt-[92px] md:px-8">
+        <div className="mx-auto grid min-h-[calc(100vh-92px)] max-w-7xl items-center gap-12 lg:grid-cols-[0.96fr_1.04fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="max-w-3xl"
+          >
+            <SectionLabel>Downtown Perks</SectionLabel>
+            <h1 className="mt-6 text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-[hsl(218,42%,14%)] md:text-7xl">
+              The neighborhood operating layer for downtown living.
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-[rgba(19,36,67,0.72)] md:text-lg">
+              The map is the interface to a live downtown system connecting residents,
+              partners, properties, and operators around what is nearby and what should happen next.
+            </p>
 
-              <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-                Discover nearby events, perks, and venues through one live map and perks card.
-              </p>
-
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Link
-                  to="/explore"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#0b1f33] px-5 py-3 text-sm font-medium text-white transition hover:-translate-y-[1px]"
+            <form
+              onSubmit={handleSearch}
+              className="mt-10 max-w-3xl rounded-[24px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.82)] p-3 shadow-[0_24px_60px_rgba(19,36,67,0.12)] backdrop-blur-xl"
+            >
+              <div className="flex flex-col gap-3 md:flex-row">
+                <div className="flex h-14 min-w-0 flex-1 items-center gap-3 rounded-[16px] border border-[rgba(19,36,67,0.12)] bg-white px-4 focus-within:border-[rgba(200,151,58,0.52)] focus-within:shadow-[0_0_0_3px_rgba(200,151,58,0.1)]">
+                  <Search className="h-4 w-4 shrink-0 text-[rgba(19,36,67,0.46)]" />
+                  <input
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Ask what downtown should do next."
+                    className="min-w-0 flex-1 bg-transparent text-sm text-[hsl(218,42%,14%)] outline-none placeholder:text-[rgba(19,36,67,0.42)]"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="inline-flex h-14 items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-6 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[hsl(218,42%,12%)]"
                 >
-                  Explore Live Map
+                  Open map
                   <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  to="/events"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-800 transition hover:-translate-y-[1px]"
+                </button>
+                <button
+                  type="button"
+                  disabled={aiLoading}
+                  onClick={handleAskMap}
+                  className="inline-flex h-14 items-center justify-center gap-2 rounded-[16px] border border-[rgba(19,36,67,0.14)] bg-white px-6 text-sm font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)] transition hover:border-[rgba(200,151,58,0.45)] disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  See What’s On Tonight
-                </Link>
+                  <Sparkles className={`h-4 w-4 text-[hsl(40,62%,46%)] ${aiLoading ? "animate-pulse" : ""}`} />
+                  Ask the map
+                </button>
               </div>
 
-              <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
-                {proofStats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl border border-slate-200 bg-white p-4">
-                    <div className="text-lg font-semibold tracking-tight text-[#0b1f33]">{stat.value}</div>
-                    <div className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-500">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-[28px] border border-slate-200 bg-white p-4 shadow-[0_20px_60px_rgba(11,31,51,0.08)]">
-              <div className="rounded-[24px] border border-slate-200 bg-[#fbfbfd] p-4">
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                    <Search className="h-4 w-4 text-slate-400" />
-                    <span className="text-sm text-slate-500">coffee right now · dinner tonight on Rainey</span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {["Venues", "Events", "Perks", "5 min walk"].map((chip, index) => (
-                      <span
-                        key={chip}
-                        className={`rounded-full px-3 py-1.5 text-xs font-medium ${
-                          index === 0
-                            ? "bg-[#0b1f33] text-white"
-                            : "border border-slate-200 bg-white text-slate-600"
-                        }`}
-                      >
-                        {chip}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="relative h-[360px] overflow-hidden rounded-[22px] border border-slate-200 bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#eef2f7_55%,_#e7edf5_100%)]">
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.04)_1px,transparent_1px),linear-gradient(rgba(11,31,51,0.04)_1px,transparent_1px)] bg-[size:24px_24px]" />
-                    <div className="absolute left-[12%] top-[18%] h-40 w-40 rounded-full bg-[#b69247]/10 blur-3xl" />
-                    <div className="absolute right-[10%] top-[8%] h-44 w-44 rounded-full bg-[#0b1f33]/8 blur-3xl" />
-
-                    {mapItems.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => setSelectedMapItem(item)}
-                        className="absolute -translate-x-1/2 -translate-y-1/2"
-                        style={{ left: item.x, top: item.y }}
-                      >
-                        <span
-                          className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-lg transition ${
-                            selectedMapItem.id === item.id
-                              ? "border-[#0b1f33] bg-[#0b1f33] text-white"
-                              : "border-white bg-white text-[#0b1f33]"
-                          }`}
-                        >
-                          <MapPin className="h-5 w-5" />
-                        </span>
-                      </button>
-                    ))}
-
-                    <div className="absolute bottom-4 left-4 right-4 rounded-[22px] border border-slate-200 bg-white/95 p-4 backdrop-blur">
-                      <div className="mb-2 flex items-center justify-between gap-3">
-                        <span className="rounded-full bg-[#b69247]/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
-                          {selectedMapItem.type}
-                        </span>
-                        <span className="text-xs text-slate-500">{selectedMapItem.meta}</span>
-                      </div>
-                      <h3 className="text-base font-semibold tracking-tight text-[#0b1f33]">
-                        {selectedMapItem.title}
-                      </h3>
-                      <p className="mt-1 text-sm text-slate-600">{selectedMapItem.subtitle}</p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        <button className="rounded-xl bg-[#0b1f33] px-4 py-2 text-sm font-medium text-white">
-                          {selectedMapItem.action}
-                        </button>
-                        <Link
-                          to="/explore"
-                          className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700"
-                        >
-                          Open Full Map
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="rounded-2xl border border-slate-200 bg-white p-3">
-                      <div className="text-xs uppercase tracking-[0.12em] text-slate-500">Map-led</div>
-                      <div className="mt-1 text-sm font-medium text-[#0b1f33]">One live surface</div>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-white p-3">
-                      <div className="text-xs uppercase tracking-[0.12em] text-slate-500">Resident-first</div>
-                      <div className="mt-1 text-sm font-medium text-[#0b1f33]">Useful before persuasive</div>
-                    </div>
-                    <div className="rounded-2xl border border-slate-200 bg-white p-3">
-                      <div className="text-xs uppercase tracking-[0.12em] text-slate-500">Walkable</div>
-                      <div className="mt-1 text-sm font-medium text-[#0b1f33]">Downtown in minutes</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                  Live Map Preview
-                </span>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                  One map. Better decisions.
-                </h2>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-                  Search, filter by corridor, switch categories, and decide faster without bouncing between apps.
-                </p>
-              </div>
-
-              <Link to="/explore" className="inline-flex items-center gap-2 text-sm font-medium text-[#0b1f33]">
-                Open Full Map
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <div className="rounded-[28px] border border-slate-200 bg-[#f7f7fb] p-5">
-              <div className="mb-4 flex flex-col gap-3">
-                <div className="flex flex-wrap gap-2">
-                  {neighborhoodChips.map((chip, index) => (
-                    <span
-                      key={chip}
-                      className={`rounded-full px-3 py-1.5 text-xs font-medium ${
-                        index === 0
-                          ? "bg-[#0b1f33] text-white"
-                          : "border border-slate-200 bg-white text-slate-600"
+              <div className="mt-3 flex flex-wrap gap-2">
+                {HERO_INTENTS.map((intent) => {
+                  const Icon = intent.icon;
+                  const active = intent.label === activeIntent;
+                  return (
+                    <button
+                      key={intent.label}
+                      type="button"
+                      onClick={() => handleIntentClick(intent)}
+                      className={`inline-flex h-10 items-center gap-2 rounded-[12px] border px-3.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
+                        active
+                          ? "border-[rgba(19,36,67,0.18)] bg-[hsl(218,42%,14%)] text-white"
+                          : "border-[rgba(19,36,67,0.12)] bg-white/80 text-[rgba(19,36,67,0.7)] hover:bg-white"
                       }`}
                     >
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {categoryChips.map((chip, index) => (
-                    <span
-                      key={chip}
-                      className={`rounded-full px-3 py-1.5 text-xs font-medium ${
-                        index === 1
-                          ? "border border-[#b69247]/35 bg-[#b69247]/10 text-[#0b1f33]"
-                          : "border border-slate-200 bg-white text-slate-600"
-                      }`}
-                    >
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.3fr_.7fr]">
-                <div className="rounded-[24px] border border-slate-200 bg-white p-4">
-                  <div className="relative h-[320px] overflow-hidden rounded-[18px] bg-[linear-gradient(135deg,#eef4fb_0%,#f9fbff_100%)]">
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.04)_1px,transparent_1px),linear-gradient(rgba(11,31,51,0.04)_1px,transparent_1px)] bg-[size:28px_28px]" />
-                    {mapItems.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => setSelectedMapItem(item)}
-                        className="absolute -translate-x-1/2 -translate-y-1/2"
-                        style={{ left: item.x, top: item.y }}
-                      >
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white bg-[#0b1f33] text-white shadow-lg">
-                          <MapPin className="h-4 w-4" />
-                        </span>
-                      </button>
-                    ))}
-
-                    <div className="absolute bottom-5 left-5 rounded-full border border-[#b69247]/25 bg-[#b69247]/10 px-3 py-1.5 text-xs font-medium text-[#0b1f33]">
-                      5-minute walk radius
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[24px] border border-slate-200 bg-white p-5">
-                  <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                    Selected pin
-                  </div>
-                  <h3 className="text-xl font-semibold tracking-tight text-[#0b1f33]">
-                    {selectedMapItem.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate-600">{selectedMapItem.subtitle}</p>
-
-                  <div className="mt-4 space-y-3">
-                    <div className="rounded-2xl border border-slate-200 bg-[#f7f7fb] p-3 text-sm text-slate-600">
-                      {selectedMapItem.meta}
-                    </div>
-                    <button className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0b1f33] px-4 py-3 text-sm font-medium text-white">
-                      {selectedMapItem.action}
+                      <Icon className={`h-3.5 w-3.5 ${active ? "text-[hsl(40,62%,46%)]" : ""}`} />
+                      {intent.label}
                     </button>
-                    <Link
-                      to="/explore"
-                      className="flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-800"
-                    >
-                      Open in Map
-                    </Link>
-                  </div>
+                  );
+                })}
+              </div>
+            </form>
 
-                  <div className="mt-5 border-t border-slate-200 pt-5">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                      Actions
+            <p className="mt-5 max-w-2xl text-sm leading-6 text-[rgba(19,36,67,0.62)]">
+              {assistantNote}
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.65, delay: 0.08 }}
+          >
+            <MapInterfacePreview />
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(19,36,67,0.1)] px-5 py-24 md:px-8">
+        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.82fr_1.18fr]">
+          <div>
+            <SectionLabel>The operating layer</SectionLabel>
+            <h2 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[hsl(218,42%,14%)] md:text-5xl">
+              Downtown organized around movement, access, and action.
+            </h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SYSTEM_NODES.map((node) => {
+              const Icon = node.icon;
+              return (
+                <motion.div
+                  key={node.label}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  className="rounded-[22px] border border-[rgba(19,36,67,0.1)] bg-white/72 p-5 shadow-[0_14px_36px_rgba(19,36,67,0.05)]"
+                >
+                  <div className="mb-7 flex h-10 w-10 items-center justify-center rounded-[14px] bg-[rgba(19,36,67,0.06)]">
+                    <Icon className="h-4 w-4 text-[hsl(218,42%,14%)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold tracking-[-0.03em] text-[hsl(218,42%,14%)]">
+                    {node.label}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[rgba(19,36,67,0.62)]">{node.detail}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(19,36,67,0.1)] px-5 py-24 md:px-8">
+        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1fr_1fr] lg:items-center">
+          <div>
+            <SectionLabel>Resident experience</SectionLabel>
+            <h2 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[hsl(218,42%,14%)] md:text-5xl">
+              The core loop is simple: search, see, decide, go.
+            </h2>
+            <p className="mt-6 max-w-xl text-base leading-7 text-[rgba(19,36,67,0.68)]">
+              Downtown Perks should not explain the city. It should reduce the effort of using it.
+            </p>
+          </div>
+          <div className="rounded-[28px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.86)] p-4 shadow-[0_24px_60px_rgba(19,36,67,0.1)]">
+            {RESIDENT_LOOP.map((step, index) => (
+              <div
+                key={step}
+                className="flex items-center gap-4 border-b border-[rgba(19,36,67,0.09)] px-3 py-5 last:border-b-0"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] bg-[hsl(218,42%,14%)] text-[12px] font-semibold text-white">
+                  {index + 1}
+                </span>
+                <p className="text-base font-medium text-[hsl(218,42%,14%)]">{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(19,36,67,0.1)] px-5 py-24 md:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <SectionLabel>One ecosystem, four systems</SectionLabel>
+            <h2 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[hsl(218,42%,14%)] md:text-5xl">
+              Different users, one live downtown layer.
+            </h2>
+          </div>
+
+          <div className="mt-12 grid gap-4 lg:grid-cols-4">
+            {PLATFORM_LAYERS.map((layer) => {
+              const Icon = layer.icon;
+              return (
+                <div
+                  key={layer.eyebrow}
+                  className="flex min-h-[420px] flex-col justify-between rounded-[26px] border border-[rgba(19,36,67,0.1)] bg-white/72 p-5 shadow-[0_18px_46px_rgba(19,36,67,0.06)]"
+                >
+                  <div>
+                    <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-[15px] bg-[rgba(19,36,67,0.06)]">
+                      <Icon className="h-5 w-5 text-[hsl(218,42%,14%)]" />
                     </div>
-                    <div className="mt-3 grid gap-2">
-                      {[
-                        { label: "Open in Map", href: "/explore" },
-                        { label: "Save to Card", href: "/card" },
-                        { label: "RSVP", href: "/events" },
-                      ].map((action) => (
-                        <Link
-                          key={action.label}
-                          to={action.href}
-                          className="rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700"
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,46%)]">
+                      {layer.eyebrow}
+                    </p>
+                    <h3 className="mt-3 text-2xl font-semibold leading-tight tracking-[-0.04em] text-[hsl(218,42%,14%)]">
+                      {layer.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-6 text-[rgba(19,36,67,0.64)]">{layer.body}</p>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {layer.points.map((point) => (
+                        <span
+                          key={point}
+                          className="rounded-full border border-[rgba(19,36,67,0.1)] bg-[rgba(247,246,242,0.8)] px-3 py-1.5 text-[11px] font-medium text-[rgba(19,36,67,0.7)]"
                         >
-                          {action.label}
-                        </Link>
+                          {point}
+                        </span>
                       ))}
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-[#f7f7fb]">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-10 max-w-2xl">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                How It Works
-              </span>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                Four steps. No friction.
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-              {[
-                {
-                  step: "01",
-                  title: "Explore the map",
-                  text: "Open the live layer and see what is nearby right now.",
-                  icon: Search,
-                },
-                {
-                  step: "02",
-                  title: "Save a perk or event",
-                  text: "Keep the option you want without losing the thread.",
-                  icon: Gift,
-                },
-                {
-                  step: "03",
-                  title: "Walk in and redeem or check in",
-                  text: "Use your card or RSVP flow when you get there.",
-                  icon: CheckCircle2,
-                },
-                {
-                  step: "04",
-                  title: "Get rewarded and see what’s next",
-                  text: "Keep moving through downtown with less effort.",
-                  icon: ArrowRight,
-                },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.step} className="rounded-[24px] border border-slate-200 bg-white p-5">
-                    <div className="mb-5 flex items-center justify-between">
-                      <span className="text-xs font-semibold tracking-[0.14em] text-slate-400">
-                        {item.step}
-                      </span>
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0b1f33] text-white">
-                        <Icon className="h-4 w-4" />
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-semibold tracking-tight text-[#0b1f33]">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-600">{item.text}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                  What’s Happening Now
-                </span>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                  Tonight’s events, nearby specials, weekly highlights.
-                </h2>
-              </div>
-              <Link to="/events" className="text-sm font-medium text-[#0b1f33]">
-                View all activity
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {nowCards.map((card) => {
-                const Icon = card.icon;
-                return (
-                  <div key={card.title} className="rounded-[24px] border border-slate-200 bg-[#f7f7fb] p-5">
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                        {card.label}
-                      </span>
-                      <Icon className="h-4 w-4 text-[#0b1f33]" />
-                    </div>
-                    <h3 className="text-lg font-semibold tracking-tight text-[#0b1f33]">{card.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-600">{card.text}</p>
-                    <Link
-                      to={card.href}
-                      className="mt-5 inline-flex rounded-xl bg-[#0b1f33] px-4 py-2.5 text-sm font-medium text-white"
-                    >
-                      {card.cta}
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-[#f7f7fb]">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-8 max-w-2xl">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                Why Residents Use It
-              </span>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                Useful by default.
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                No app. Real-time discovery. Saved plans in one place. Walkable perks that make downtown easier to use.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {residentBenefits.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.title} className="rounded-[24px] border border-slate-200 bg-white p-5">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0b1f33] text-white">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <h3 className="mt-5 text-lg font-semibold tracking-tight text-[#0b1f33]">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-600">{item.text}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-8">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                Why Partners Join
-              </span>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                Show up when the decision is being made.
-              </h2>
-            </div>
-
-            <div className="mb-5 flex flex-wrap gap-2">
-              {Object.keys(partnerTabs).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActivePartnerTab(tab)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                    activePartnerTab === tab
-                      ? "bg-[#0b1f33] text-white"
-                      : "border border-slate-200 bg-white text-slate-600"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 rounded-[28px] border border-slate-200 bg-[#f7f7fb] p-5 md:grid-cols-[.8fr_1.2fr]">
-              <div className="rounded-[22px] border border-slate-200 bg-white p-6">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0b1f33] text-white">
-                  <ActivePartnerIcon className="h-5 w-5" />
-                </span>
-                <h3 className="mt-5 text-2xl font-semibold tracking-tight text-[#0b1f33]">
-                  {activePartnerTab}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  Compact homepage preview. Detailed workflow belongs on the partner pages.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="rounded-[22px] border border-slate-200 bg-white p-5">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                    Problem solved
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-slate-700">
-                    {partnerTabs[activePartnerTab].problem}
-                  </p>
-                </div>
-
-                <div className="rounded-[22px] border border-slate-200 bg-white p-5">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                    Platform role
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-slate-700">
-                    {partnerTabs[activePartnerTab].role}
-                  </p>
-                </div>
-
-                <div className="rounded-[22px] border border-slate-200 bg-white p-5">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                    Outcome delivered
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-slate-700">
-                    {partnerTabs[activePartnerTab].outcome}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-[#f7f7fb]">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-8 max-w-2xl">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                Proof
-              </span>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                Better than broad. Stronger than static.
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                A simple comparison of broad targeting, corridor targeting, and event-timed targeting.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.2fr_.8fr]">
-              <div className="rounded-[28px] border border-slate-200 bg-white p-5">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  {[
-                    {
-                      title: "Broad targeting",
-                      value: "Low intent",
-                      text: "Large reach, weak timing, weak local context.",
-                    },
-                    {
-                      title: "Corridor targeting",
-                      value: "3.8–4.2%",
-                      text: "Rainey corridor engagement when people are already nearby.",
-                    },
-                    {
-                      title: "Event targeting",
-                      value: "Higher action",
-                      text: "Better alignment between timing, location, and decision moment.",
-                    },
-                  ].map((item) => (
-                    <div key={item.title} className="rounded-[22px] border border-slate-200 bg-[#f7f7fb] p-5">
-                      <div className="text-sm font-semibold text-[#0b1f33]">{item.title}</div>
-                      <div className="mt-3 text-2xl font-semibold tracking-tight text-[#0b1f33]">
-                        {item.value}
-                      </div>
-                      <p className="mt-2 text-sm leading-7 text-slate-600">{item.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-[28px] border border-slate-200 bg-[#0b1f33] p-6 text-white">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/65">
-                  Corridor signal
-                </div>
-                <div className="mt-4 text-5xl font-semibold tracking-[-0.04em]">3.8–4.2%</div>
-                <p className="mt-4 text-sm leading-7 text-white/75">
-                  Highlighting Rainey corridor engagement as a clearer local signal than generic reach metrics.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200/70 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-            <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-                  Partnership Options
-                </span>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#0b1f33] md:text-4xl">
-                  Short. Clear. Scan-friendly.
-                </h2>
-              </div>
-              <Link to="/partners" className="text-sm font-medium text-[#0b1f33]">
-                Explore all options
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
-              {partnershipOptions.map((option) => (
-                <Link
-                  key={option.title}
-                  to={option.href}
-                  className="rounded-[24px] border border-slate-200 bg-[#f7f7fb] p-5 transition hover:-translate-y-[2px] hover:border-[#0b1f33]/20"
-                >
-                  <div className="text-sm font-semibold text-[#0b1f33]">{option.title}</div>
-                  <div className="mt-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#b69247]">
-                    {option.price}
-                  </div>
-                  <p className="mt-4 text-sm leading-7 text-slate-600">{option.text}</p>
-                  <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#0b1f33]">
-                    Learn more
+                  <Link
+                    to={layer.href}
+                    className="mt-8 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)] transition hover:text-[hsl(40,62%,46%)]"
+                  >
+                    {layer.cta}
                     <ArrowRight className="h-4 w-4" />
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="bg-[#f7f7fb]" id="contact">
-          <div className="mx-auto max-w-5xl px-4 py-20 text-center md:px-6">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b69247]">
-              Ready when you are
-            </span>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-[#0b1f33] md:text-5xl">
-              Downtown works better when it works like a system.
+      <section className="border-b border-[rgba(19,36,67,0.1)] px-5 py-24 md:px-8">
+        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <SectionLabel>Platform proof</SectionLabel>
+            <h2 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[hsl(218,42%,14%)] md:text-5xl">
+              Built to feel operational, not promotional.
             </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-600">
-              Start with the map, unlock the card, or bring the platform into your building or district.
+            <p className="mt-6 max-w-xl text-base leading-7 text-[rgba(19,36,67,0.68)]">
+              The homepage now points into the actual platform surfaces: map, resident app, partner routes, building narrative, pricing, and dashboard.
             </p>
+          </div>
+          <div className="rounded-[28px] border border-[rgba(19,36,67,0.12)] bg-[rgba(252,251,248,0.86)] p-4">
+            {PROOF_ITEMS.map((item) => (
+              <div key={item} className="flex items-center gap-4 border-b border-[rgba(19,36,67,0.08)] px-3 py-4 last:border-b-0">
+                <Check className="h-4 w-4 shrink-0 text-[hsl(40,62%,46%)]" />
+                <span className="text-sm font-medium text-[rgba(19,36,67,0.76)]">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Link to="/card" className="rounded-2xl bg-[#0b1f33] px-5 py-3 text-sm font-medium text-white">
-                Get Access
+      <section className="px-5 py-24 md:px-8">
+        <div className="mx-auto max-w-7xl rounded-[32px] bg-[hsl(218,42%,14%)] p-8 text-white shadow-[0_28px_70px_rgba(19,36,67,0.18)] md:p-12">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,56%)]">
+                Rollout
+              </p>
+              <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.045em] md:text-5xl">
+                A living city interface, delivered in phases.
+              </h2>
+              <p className="mt-6 max-w-2xl text-base leading-7 text-white/68">
+                Foundations, resident core, partner tools, property layer, intelligence, and launch hardening should all use the same map-native product language.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+              <Link
+                to="/downtown-perks/explore"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-white px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[hsl(218,42%,14%)] transition hover:bg-[hsl(42,24%,96%)]"
+              >
+                Open live map
+                <Compass className="h-4 w-4" />
               </Link>
               <Link
-                to="/partners/properties"
-                className="rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-800"
+                to="/pricing"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[14px] border border-white/18 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-[hsl(40,62%,56%)]"
               >
-                Bring It to My Building
+                View pricing
+                <BarChart3 className="h-4 w-4 text-[hsl(40,62%,56%)]" />
               </Link>
-              <Link
-                to="/partners"
-                className="rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-800"
-              >
-                Start a Partner Pilot
-              </Link>
-              <a
-                href="mailto:hello@downtownperks.com"
-                className="rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-800"
-              >
-                Contact
-              </a>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
     </div>
   );
 }
