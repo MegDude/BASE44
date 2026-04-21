@@ -47,7 +47,7 @@ export default function DashboardHub() {
               <p className="mt-5 max-w-2xl text-base leading-7 text-[rgba(19,36,67,0.7)]">
                 {userName
                   ? `Signed in as ${userName}. Continue into the resident experience or the partner management flow.`
-                  : "Enter as a resident or partner. Both routes are now linked to the same live product system."}
+                : "Enter as a resident or partner. The partner route now includes the property-management capability layer: residents, campaigns, amenities, maintenance, reports, and partner intelligence."}
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function DashboardHub() {
             <div className="space-y-4">
               {[
                 "Resident search and Ask the map both feed the live explore route.",
-                "Partner teams can manage activity, offers, and performance without leaving the product system.",
+                "Partner teams can manage activity, offers, property operations, campaigns, amenities, maintenance, and performance without leaving the product system.",
                 "Pricing, dashboard, and map now link to each other instead of splitting the experience.",
               ].map((line) => (
                 <div key={line} className="flex items-start gap-3 border-b border-[rgba(19,36,67,0.08)] pb-4">

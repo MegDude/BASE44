@@ -86,3 +86,19 @@ Signup appears only at high-intent moments:
 - request SMS access
 
 The Perks Card QR is the center of the card screen. Member identity and status sit below the QR as supporting metadata.
+
+## Dashboard Capability Standard
+
+The partner dashboard should match the operational breadth of the Harmony Homes backend dashboard while staying visually aligned with Downtown Perks.
+
+Include these capability areas:
+
+- residents and segments
+- campaigns and announcements
+- amenities and reservations
+- maintenance requests
+- performance reports and recommendations
+- partner network management
+- map activity, perks, events, and conversion metrics
+
+The UI should be an intelligence hub: transparent off-white glass, navy structure, gold accent only, sharp sans typography, compact operational rows, and recommendation-oriented panels.

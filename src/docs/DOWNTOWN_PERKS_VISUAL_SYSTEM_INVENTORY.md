@@ -139,6 +139,21 @@ Script usage is intentionally narrow. It can appear in phrases such as `downtown
 | Download | Reporting |
 | Clipboard | Lead forms |
 
+## Property Management Capability Layer
+
+The partner dashboard should preserve the operational scope visible in the Harmony Homes backend dashboard while using Downtown Perks styling.
+
+Required surfaces:
+
+- Resident CRM: profiles, building source, membership/card status, saved behavior, segments
+- Campaigns: announcements, reminders, open rate, click rate, conversion, segment performance
+- Amenities: amenity modules, reservations, QR entry points, resident usage
+- Maintenance: requests, priority, status, response time, resolution rate
+- Reports: redemptions, engagement trends, venue status, category mix, actionable recommendations
+- Partner network: venues, hotels, properties, brands, civic partners, offer/event health
+
+These should read as one intelligence hub, not separate admin pages.
+
 ## Required UI Elements
 
 | Element | Required States |
