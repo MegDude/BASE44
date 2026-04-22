@@ -12,7 +12,19 @@ const COLORS = {
 
 const SHADOW = 'filter:drop-shadow(0 8px 16px rgba(11,31,51,0.18))';
 
-function wrapPin(innerSvg, { width = 28, height = 36, active = false, className = 'custom-marker' } = {}) {
+function wrapPin(
+  innerSvg,
+  {
+    width = 32,
+    height = 42,
+    active = false,
+    className = 'custom-marker',
+    live = false,
+    topRanked = false,
+    trending = false,
+  } = {}
+) {
+  const scale = active ? 1.08 : topRanked ? 1.06 : 1;
   return L.divIcon({
     className,
     html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;width:${width}px;height:${height}px;transform:${active ? 'translateY(-1px) scale(1.05)' : 'translateY(0) scale(1)'};transition:all .2s ease;">

@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, MapPin, Sparkles, Clock3 } from 'lucide-react';
+import { Heart, MapPin, Sparkles, Clock3, X, ChevronRight } from 'lucide-react';
 import { useMapStateStore } from '@/store/mapStateStore';
 
-export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
+export default function UnifiedResultsPanel({ items = [], onSelectResult, onClose = null, title = null }) {
   const selectedEntityId = useMapStateStore((state) => state.selectedEntityId);
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
@@ -15,14 +15,26 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-semibold text-foreground">
-              Downtown results
+              {title || 'Downtown results'}
               {searchQuery ? ` for “${searchQuery}”` : ''}
             </h2>
             <p className="mt-1 text-xs text-slate-500">Pins, perks, events, and properties in one live view.</p>
           </div>
-          <span className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-            {items.length}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+              {items.length}
+            </span>
+            {onClose ? (
+              <button
+                type="button"
+                onClick={onClose}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(11,31,51,0.08)] bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900"
+                aria-label="Close results"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -93,6 +105,13 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
                         </span>
                       )}
                       {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-end text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                      <span className="inline-flex items-center gap-1">
+                        View details
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      </span>
                     </div>
                   </motion.button>
                 );

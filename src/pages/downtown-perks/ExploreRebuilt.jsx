@@ -134,6 +134,13 @@ export default function ExploreRebuilt() {
     setShowResultsList(false);
   }, [selectedEntity, setShowResultsList]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.innerWidth >= 768) {
+      setShowResultsList(true);
+    }
+  }, [setShowResultsList]);
+
   const handleAsk = async (q) => {
     const query = String(q || '').trim();
     if (!query) return;
@@ -405,7 +412,7 @@ export default function ExploreRebuilt() {
             <HeatmapLayer items={filteredResults} />
           </UnifiedMapShell>
 
-          <div className="pointer-events-none absolute left-8 right-8 top-8 z-20 space-y-3 pr-[32%]">
+          <div className={`pointer-events-none absolute left-8 right-8 top-8 z-20 space-y-3 ${showResultsList ? 'pr-[32%]' : 'pr-0'}`}>
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-4">
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -443,11 +450,36 @@ export default function ExploreRebuilt() {
               <UnifiedFilterChips />
             </div>
           </div>
+
+          <div className="pointer-events-none absolute bottom-8 right-8 z-20">
+            <button
+              type="button"
+              onClick={() => setShowResultsList(!showResultsList)}
+              className={`pointer-events-auto ${showResultsList ? 'dp-chip dp-chip-active' : 'dp-chip'} min-h-11`}
+            >
+              {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
+              {showResultsList ? 'Roll up results' : `Show results (${filteredResults.length})`}
+            </button>
+          </div>
         </div>
 
-        <aside className="flex w-[32%] flex-col border-l border-border bg-[#fbfbfd]">
-          <UnifiedResultsPanel items={filteredResults} />
-        </aside>
+        <AnimatePresence initial={false}>
+          {showResultsList ? (
+            <motion.aside
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: '32%', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="flex flex-col border-l border-border bg-[#fbfbfd] overflow-hidden"
+            >
+              <UnifiedResultsPanel
+                items={filteredResults}
+                onClose={() => setShowResultsList(false)}
+                title="Downtown results"
+              />
+            </motion.aside>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
   );
