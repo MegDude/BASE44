@@ -20,7 +20,7 @@ const FOOTER_LINKS = {
     { to: "/partners", label: "Partner Overview" },
     { to: "/partner-workspace", label: "Partner Workspace" },
     { to: "/partners/dashboard", label: "Dashboard" },
-    { to: "/pricing", label: "Pricing" },
+    { to: "/#start-here", label: "Start Here" },
     { to: "/brands", label: "Brand Directory" },
   ],
 };

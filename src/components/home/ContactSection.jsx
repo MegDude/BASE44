@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import SwipeRail from "@/components/home/SwipeRail";
 
 const forms = [
   {
@@ -210,21 +211,25 @@ export default function ContactSection() {
                 <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-4">
                   Also Available
                 </div>
-                <div className="space-y-2">
-                  {forms.filter(f => f.id !== activeForm).slice(0, 4).map(f => (
+                <SwipeRail
+                  items={forms.filter(f => f.id !== activeForm).slice(0, 4)}
+                  getKey={(item) => item.id}
+                  cardClassName="w-[88%] sm:w-[72%] md:w-[88%]"
+                  showDots={false}
+                  renderItem={(form) => (
                     <button
-                      key={f.id}
-                      onClick={() => setActiveForm(f.id)}
-                      className="flex items-center justify-between w-full p-3 rounded-lg border border-[hsl(218,20%,90%)] bg-white hover:border-primary/30 text-left transition-all group"
+                      key={form.id}
+                      onClick={() => setActiveForm(form.id)}
+                      className="flex h-full w-full items-center justify-between rounded-[18px] border border-[hsl(218,20%,90%)] bg-white p-4 text-left transition-all group hover:border-primary/30"
                     >
                       <div>
-                        <div className="text-[13px] font-medium text-foreground">{f.label}</div>
-                        <div className="text-[11px] text-foreground/50 mt-0.5">{f.headline} {f.sub}</div>
+                        <div className="text-[13px] font-medium text-foreground">{form.label}</div>
+                        <div className="mt-1 text-[11px] leading-5 text-foreground/50">{form.headline} {form.sub}</div>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-foreground/25 group-hover:text-primary transition-colors shrink-0" />
+                      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-foreground/25 transition-colors group-hover:text-primary" />
                     </button>
-                  ))}
-                </div>
+                  )}
+                />
               </div>
               <div className="mt-8 pt-6 border-t border-[hsl(218,20%,90%)] space-y-1">
                 <p className="text-[12px] text-foreground/50 italic">

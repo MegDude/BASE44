@@ -24,7 +24,7 @@ const PARTNER_LINKS = [
 const TOP_LINKS = [
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
-  { to: "/downtown-perks/for-buildings", label: "Pricing" },
+  { href: "/#start-here", label: "Start Here" },
 ];
 
 export default function Navbar() {
@@ -158,6 +158,18 @@ export default function Navbar() {
               );
             }
 
+            if (link.href) {
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+                >
+                  {link.label}
+                </a>
+              );
+            }
+
             return (
               <Link
                 key={link.to}
@@ -233,10 +245,10 @@ export default function Navbar() {
 
               {/* Other */}
               <div className="text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
-              <Link to="/downtown-perks/for-buildings" onClick={() => setOpen(false)}
+              <a href="/#start-here" onClick={() => setOpen(false)}
                 className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-[rgba(11,31,51,0.72)] hover:text-[#0B1F33] transition-colors">
-                Pricing
-              </Link>
+                Start Here
+              </a>
               <Link to="/partners/dashboard" onClick={() => setOpen(false)}
                 className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[rgba(11,31,51,0.72)] hover:text-[#0B1F33] transition-colors">
                 <LayoutDashboard className="w-3.5 h-3.5 text-[rgba(11,31,51,0.55)]" /> Dashboard

@@ -59,7 +59,7 @@ export default function HomeFooter() {
             <div className="space-y-2">
               {[
                 { to: "/partners", label: "Partner Overview" },
-                { to: "/pricing", label: "Pricing" },
+                { to: "/#start-here", label: "Start Here" },
                 { to: "/partners/dashboard", label: "Dashboard" },
                 { to: "/downtown-perks/about", label: "About" },
               ].map(l => (
