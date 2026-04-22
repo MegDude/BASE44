@@ -1,169 +1,201 @@
 /**
  * Downtown Perks Marker Factory
  * Unified marker rendering system for all entity types
- * Ensures consistent visual language across the product
+ * Sharp glass map marker language: base, ring, active pulse.
  */
 
 import L from 'leaflet';
 
-/**
- * Marker configuration library
- * Aligned with Downtown Perks brand system
- */
 const MARKER_CONFIG = {
-  // Standard venues (coffee, dining, retail, etc.)
   'standard:restaurant': {
-    color: '#C8973A', // Gold
-    icon: '🍽️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(200, 151, 58, 0.4)',
+    color: '#C69532',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Dining',
   },
   'standard:coffee': {
-    color: '#8B6F47', // Deep brown
-    icon: '☕',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(139, 111, 71, 0.4)',
+    color: '#8B6F47',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Coffee',
   },
   'standard:bar': {
-    color: '#9C5BA3', // Wine/purple
-    icon: '🍷',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(156, 91, 163, 0.4)',
+    color: '#8B4FA3',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Nightlife',
   },
   'standard:fitness': {
-    color: '#2ECC71', // Teal/green
-    icon: '💪',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(46, 204, 113, 0.4)',
+    color: '#2E8B57',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Fitness',
   },
   'standard:wellness': {
-    color: '#A67BC4', // Soft purple
-    icon: '🧘',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(166, 123, 196, 0.4)',
+    color: '#5A8F78',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Wellness',
   },
   'standard:retail': {
-    color: '#7D7D7D', // Neutral gray
-    icon: '🛍️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(125, 125, 125, 0.4)',
+    color: '#7B5FA8',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Retail',
   },
   'standard:entertainment': {
-    color: '#3498DB', // Light blue
-    icon: '🎭',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(52, 152, 219, 0.4)',
+    color: '#B94545',
+    icon: '•',
+    size: 18,
+    selectedScale: 1.45,
+    label: 'Event',
   },
-
-  // Buildings and properties (navy with building icon)
   'building:default': {
-    color: '#1A3A52', // Navy
-    icon: '🏢',
-    size: 16,
-    iconSize: 10,
-    selectedScale: 1.8,
-    shadowBlur: '0 4px 12px rgba(26, 58, 82, 0.5)',
+    color: '#071C2F',
+    icon: '▪',
+    size: 20,
+    selectedScale: 1.42,
+    label: 'Building',
   },
-
-  // Events (light blue with calendar)
   'event:default': {
-    color: '#4A90E2', // Event blue
-    icon: '📅',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(74, 144, 226, 0.4)',
+    color: '#B94545',
+    icon: '•',
+    size: 19,
+    selectedScale: 1.5,
+    label: 'Event',
   },
-
-  // Perks (green with tag)
   'perk:default': {
-    color: '#27AE60', // Perk green
-    icon: '🏷️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(39, 174, 96, 0.4)',
+    color: '#2E8B57',
+    icon: '•',
+    size: 19,
+    selectedScale: 1.5,
+    label: 'Perk',
   },
-
-  // Brands (orange with star)
   'brand:default': {
-    color: '#E67E22', // Brand orange
-    icon: '⭐',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(230, 126, 34, 0.4)',
+    color: '#C69532',
+    icon: '•',
+    size: 19,
+    selectedScale: 1.5,
+    label: 'Brand',
   },
-
-  // Civic (red with landmark)
   'civic:default': {
-    color: '#C0392B', // Civic red
-    icon: '🏛️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(192, 57, 43, 0.4)',
+    color: '#476A8E',
+    icon: '•',
+    size: 19,
+    selectedScale: 1.5,
+    label: 'Civic',
   },
 };
 
-/**
- * Get marker configuration for an entity
- */
 function getMarkerConfig(entity) {
-  // Try category-specific config first
   const categoryKey = `${entity.markerType}:${entity.category || entity.type}`;
-  if (MARKER_CONFIG[categoryKey]) {
-    return MARKER_CONFIG[categoryKey];
-  }
+  if (MARKER_CONFIG[categoryKey]) return MARKER_CONFIG[categoryKey];
 
-  // Fall back to type-specific config
   const typeKey = `${entity.markerType}:default`;
-  if (MARKER_CONFIG[typeKey]) {
-    return MARKER_CONFIG[typeKey];
-  }
+  if (MARKER_CONFIG[typeKey]) return MARKER_CONFIG[typeKey];
 
-  // Ultimate fallback
   return MARKER_CONFIG['standard:restaurant'];
 }
 
-/**
- * Create a compact marker icon (unselected state)
- */
+function markerHtml(entity, { selected = false, pill = false } = {}) {
+  const config = getMarkerConfig(entity);
+  const size = Math.round(config.size * (selected ? config.selectedScale : 1));
+  const glow = selected || entity.isLive || entity.eventTiming?.isLive;
+  const pulse = selected || entity.isLive || entity.eventTiming?.isLive;
+
+  if (pill) {
+    return `
+      <div class="dp-marker-pill" style="--marker-color:${config.color};">
+        <span class="dp-marker-dot"></span>
+        <span>${entity.name || entity.title || config.label}</span>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="dp-marker-wrap ${selected ? 'is-selected' : ''} ${pulse ? 'is-live' : ''}" style="--marker-color:${config.color}; width:${size}px; height:${size}px;">
+      <span class="dp-marker-ring"></span>
+      <span class="dp-marker-core">${config.icon}</span>
+    </div>
+    <style>
+      .dp-marker-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transform-origin: center;
+        transition: transform 160ms ease, filter 160ms ease;
+      }
+      .dp-marker-wrap:hover { transform: scale(1.06); }
+      .dp-marker-ring {
+        position: absolute;
+        inset: -5px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--marker-color) 16%, transparent);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--marker-color) 28%, transparent), 0 8px 18px rgba(15,23,42,0.14);
+      }
+      .dp-marker-core {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--marker-color);
+        border: 2px solid rgba(255,255,255,0.95);
+        color: white;
+        font-size: 12px;
+        line-height: 1;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 4px 14px rgba(15,23,42,0.18);
+      }
+      .dp-marker-wrap.is-selected .dp-marker-ring {
+        inset: -9px;
+        background: color-mix(in srgb, var(--marker-color) 22%, transparent);
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--marker-color) 34%, transparent), 0 0 24px color-mix(in srgb, var(--marker-color) 32%, transparent), 0 14px 28px rgba(15,23,42,0.18);
+      }
+      .dp-marker-wrap.is-live .dp-marker-ring { animation: dpMarkerPulse 1.8s ease-out infinite; }
+      .dp-marker-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.82);
+        border: 1px solid rgba(15,23,42,0.10);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.64), 0 8px 20px rgba(15,23,42,0.12);
+        backdrop-filter: blur(12px);
+        color: #071c2f;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .dp-marker-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        background: var(--marker-color);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--marker-color) 14%, transparent);
+      }
+      @keyframes dpMarkerPulse {
+        0% { transform: scale(0.82); opacity: 0.64; }
+        72% { transform: scale(1.35); opacity: 0; }
+        100% { transform: scale(1.35); opacity: 0; }
+      }
+    </style>
+  `;
+}
+
 export function createCompactMarker(entity) {
   const config = getMarkerConfig(entity);
-
-  const html = `
-    <div style="
-      width: ${config.size}px;
-      height: ${config.size}px;
-      border-radius: 50%;
-      background-color: ${config.color};
-      border: 2px solid white;
-      box-shadow: ${config.shadowBlur};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${config.iconSize}px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    ">
-      ${config.icon}
-    </div>
-  `;
+  const html = markerHtml(entity);
 
   return L.divIcon({
     className: '',
@@ -174,46 +206,10 @@ export function createCompactMarker(entity) {
   });
 }
 
-/**
- * Create a selected marker icon (larger, highlighted)
- */
 export function createSelectedMarker(entity) {
   const config = getMarkerConfig(entity);
   const selectedSize = config.size * config.selectedScale;
-  const selectedIconSize = config.iconSize * config.selectedScale;
-
-  const html = `
-    <div style="
-      width: ${selectedSize}px;
-      height: ${selectedSize}px;
-      border-radius: 50%;
-      background-color: ${config.color};
-      border: 3px solid white;
-      box-shadow: 
-        0 0 0 2px ${config.color}40,
-        ${config.shadowBlur};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${selectedIconSize}px;
-      cursor: pointer;
-      animation: markerPulse 0.5s ease-out;
-    ">
-      ${config.icon}
-    </div>
-    <style>
-      @keyframes markerPulse {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-    </style>
-  `;
+  const html = markerHtml(entity, { selected: true });
 
   return L.divIcon({
     className: '',
@@ -224,78 +220,35 @@ export function createSelectedMarker(entity) {
   });
 }
 
-/**
- * Create a pill marker (for detail/expanded state)
- * Shows entity name and category
- */
 export function createPillMarker(entity) {
-  const config = getMarkerConfig(entity);
-
-  const html = `
-    <div style="
-      background: white;
-      border: 2px solid ${config.color};
-      border-radius: 20px;
-      padding: 6px 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 12px;
-      font-weight: 600;
-      color: #1a3a52;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    ">
-      <span style="font-size: 14px;">${config.icon}</span>
-      <span>${entity.name}</span>
-    </div>
-  `;
+  const html = markerHtml(entity, { pill: true });
 
   return L.divIcon({
     className: '',
     html,
-    iconSize: [200, 32], // Approximate, will auto-size
-    iconAnchor: [100, 16],
-    popupAnchor: [0, -32],
+    iconSize: [220, 36],
+    iconAnchor: [110, 18],
+    popupAnchor: [0, -34],
   });
 }
 
-/**
- * Marker factory function
- * Returns appropriate marker based on state and entity type
- */
 export function createMarker(entity, options = {}) {
-  if (options?.showPill) {
-    return createPillMarker(entity);
-  }
-
-  if (options?.isSelected) {
-    return createSelectedMarker(entity);
-  }
-
+  if (options?.showPill) return createPillMarker(entity);
+  if (options?.isSelected) return createSelectedMarker(entity);
   return createCompactMarker(entity);
 }
 
-/**
- * Get all available marker colors (for legend, filters, etc.)
- */
 export function getMarkerColors() {
   const colors = {};
-
   Object.entries(MARKER_CONFIG).forEach(([key, config]) => {
     const [markerType, category] = key.split(':');
     colors[`${markerType}:${category}`] = config.color;
   });
-
   return colors;
 }
 
-/**
- * Check if entity should have a special marker variant
- */
 export function getMarkerVariant(entity) {
-  if (entity.isLive) return 'live';
+  if (entity.isLive || entity.eventTiming?.isLive) return 'live';
   if (entity.isSaved) return 'saved';
   if (entity.perk && entity.perk.isActive) return 'perk-active';
   return 'default';
