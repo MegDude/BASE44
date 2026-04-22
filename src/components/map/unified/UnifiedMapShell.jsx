@@ -1,5 +1,5 @@
 /**
- * UnifiedMapShell — Core map component
+ * UnifiedMapShell - Core map component
  * Mobile-first, fully responsive, real-time interactions
  * Single source of truth for all map surfaces
  */
@@ -12,7 +12,6 @@ import 'leaflet/dist/leaflet.css';
 
 const AUSTIN_CENTER = [30.267, -97.743];
 
-// Fix leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -20,23 +19,29 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-function MapFlyTo({ position }) {
+function MapFlyTo({ position, selectedId }) {
   const map = useMap();
+
   useEffect(() => {
     const safePosition = getValidMapCenter(position, AUSTIN_CENTER);
     const currentZoom = map?.getZoom?.();
-    const nextZoom = Number.isFinite(currentZoom) ? Math.max(currentZoom, 14) : 14;
+    const nextZoom = Number.isFinite(currentZoom) ? Math.max(currentZoom, selectedId ? 15 : 14) : 14;
 
     if (!map?.getContainer?.() || !safePosition || !map._loaded) {
       return;
     }
 
     try {
-      map.setView(safePosition, nextZoom, { animate: false });
+      map.flyTo(safePosition, nextZoom, {
+        animate: true,
+        duration: selectedId ? 0.72 : 0.46,
+        easeLinearity: 0.22,
+      });
     } catch (error) {
       console.warn('Map flyTo error:', error);
     }
-  }, [position, map]);
+  }, [position, selectedId, map]);
+
   return null;
 }
 
@@ -56,8 +61,7 @@ export default function UnifiedMapShell({
     const center = map.getCenter();
     const lat = center?.lat;
     const lng = center?.lng;
-    
-    // Only update if both are valid finite numbers
+
     if (Number.isFinite(lat) && Number.isFinite(lng)) {
       onMapCenterChange?.([lat, lng]);
     }
@@ -67,7 +71,6 @@ export default function UnifiedMapShell({
     onMapZoomChange?.(map.getZoom());
   };
 
-  // Ensure mapCenter and zoom are always valid for MapContainer
   const validCenter = getValidMapCenter(mapCenter, AUSTIN_CENTER);
   const validZoom = Number.isFinite(mapZoom) ? mapZoom : 14;
 
@@ -75,26 +78,30 @@ export default function UnifiedMapShell({
     <MapContainer
       center={validCenter}
       zoom={validZoom}
-      className={`${className} relative overflow-hidden`}
+      className={`${className} dp-map-canvas relative overflow-hidden`}
       zoomControl={false}
       attributionControl={false}
       minZoom={12}
       maxZoom={19}
       scrollWheelZoom={true}
-      onMoveend={(e) => handleDragEnd(e.target)}
-      onZoomend={(e) => handleZoom(e.target)}
+      zoomAnimation={true}
+      fadeAnimation={true}
+      markerZoomAnimation={true}
+      onMoveend={(event) => handleDragEnd(event.target)}
+      onZoomend={(event) => handleZoom(event.target)}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution="&copy; CARTO"
+        updateWhenIdle={false}
+        updateWhenZooming={false}
+        keepBuffer={4}
       />
 
-      {selectedId ? <MapFlyTo position={mapCenter} /> : null}
+      <MapFlyTo position={mapCenter} selectedId={selectedId} />
 
-      {/* Heatmap and other layers */}
       {children}
 
-      {/* Markers */}
       {items.map((item) => {
         const lat = item?.location?.latitude;
         const lng = item?.location?.longitude;
@@ -105,7 +112,7 @@ export default function UnifiedMapShell({
           ? markerIcon(item, selectedId === item.id)
           : L.divIcon({
               className: '',
-              html: `<div style="width:12px;height:12px;border-radius:999px;background:#0b1f33;border:2px solid #fff;box-shadow:0 4px 12px rgba(11,31,51,0.18)"></div>`,
+              html: `<div style="width:12px;height:12px;border-radius:999px;background:#0b1f33;border:2px solid #fff;box-shadow:0 0 0 4px rgba(11,31,51,0.10),0 6px 18px rgba(11,31,51,0.18);transition:transform 160ms ease;"></div>`,
               iconSize: [12, 12],
               iconAnchor: [6, 6],
             });
