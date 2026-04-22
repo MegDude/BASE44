@@ -25,10 +25,15 @@ export default function UnifiedSearchBar() {
       className="w-full"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22 }}
     >
       <div className="relative">
-        <div className="dp-map-panel flex items-center gap-3 px-4 py-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(11,31,51,0.06)] text-[#0b1f33]">
+        <motion.div
+          animate={{ scale: isExpanded ? 1.012 : 1 }}
+          transition={{ duration: 0.16 }}
+          className="dp-map-panel-strong flex min-h-[64px] items-center gap-3 rounded-full px-3 py-2 md:px-4"
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#071c2f] text-[#fff8e9] shadow-[0_10px_20px_rgba(7,28,47,0.16)]">
             <Search className="h-4 w-4" />
           </span>
 
@@ -38,12 +43,12 @@ export default function UnifiedSearchBar() {
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             onFocus={() => setIsExpanded(true)}
-            onBlur={() => window.setTimeout(() => setIsExpanded(false), 120)}
-            placeholder="Search venues, events, perks, or a corridor"
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground md:text-base"
+            onBlur={() => window.setTimeout(() => setIsExpanded(false), 140)}
+            placeholder="Ask the map: coffee, events, perks, walkable tonight"
+            className="min-w-0 flex-1 bg-transparent text-[15px] font-semibold text-[#071c2f] outline-none placeholder:text-[#071c2f]/52 md:text-base"
           />
 
-          <span className="hidden rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(247,247,251,0.95)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500 md:inline-flex">
+          <span className="hidden rounded-full border border-[#071c2f]/10 bg-white/70 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.12em] text-[#071c2f]/62 md:inline-flex">
             {resultCount} live
           </span>
 
@@ -53,31 +58,32 @@ export default function UnifiedSearchBar() {
                 setSearchQuery('');
                 inputRef.current?.focus();
               }}
-              className="rounded-full p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+              className="rounded-full p-2 text-[#071c2f]/58 hover:bg-[#071c2f]/7 hover:text-[#071c2f]"
               aria-label="Clear search"
             >
               <X className="h-4 w-4" />
             </button>
           ) : (
-            <span className="hidden text-[#b69247] md:inline-flex">
+            <span className="hidden rounded-full bg-[#c69532]/12 p-2 text-[#a8751f] md:inline-flex">
               <Sparkles className="h-4 w-4" />
             </span>
           )}
-        </div>
+        </motion.div>
 
         <AnimatePresence>
           {isExpanded && !hasQuery && (
             <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              className="mt-2 flex flex-wrap gap-2"
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.16 }}
+              className="dp-glass-control absolute left-0 right-0 top-[calc(100%+8px)] z-30 flex flex-wrap gap-2 rounded-[22px] p-3"
             >
               {QUICK_PROMPTS.map((prompt) => (
                 <button
                   key={prompt}
                   onMouseDown={() => setSearchQuery(prompt)}
-                  className="dp-chip hover:border-[rgba(11,31,51,0.24)]"
+                  className="dp-chip"
                 >
                   {prompt}
                 </button>
@@ -88,7 +94,7 @@ export default function UnifiedSearchBar() {
                   clearFilters();
                   setSearchQuery('');
                 }}
-                className="dp-chip hover:border-[rgba(11,31,51,0.24)]"
+                className="dp-chip"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 Reset map
