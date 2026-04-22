@@ -9,6 +9,7 @@ export default function ResidentTabs({ activeTab, user }) {
   const renderTab = () => {
     switch (activeTab) {
       case "now":
+      case "map":
         return <ResidentNowTab user={user} />;
       case "perks":
         return <ResidentPerksTab user={user} />;
