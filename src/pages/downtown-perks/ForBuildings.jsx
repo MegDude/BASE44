@@ -218,10 +218,10 @@ export default function ForBuildings() {
                   Local businesses join by offering a perk to resident members. In return, they appear on the map at the moment nearby residents are deciding where to go.
                 </p>
                 <Link
-                  to="/downtown-perks/explore"
+                  to="/buildings/the-waterline"
                   className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline underline-offset-4"
                 >
-                  See the Map <ArrowRight className="w-3.5 h-3.5" />
+                  Open building intelligence <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>

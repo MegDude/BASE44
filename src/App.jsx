@@ -36,6 +36,7 @@ import CivicPartner from "./pages/partners/Civic";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
 import PartnerDashboard from "./pages/PartnerDashboard";
+import BuildingIntelligence from "./pages/BuildingIntelligence";
 import PropertiesPartner from "./pages/partners/Properties";
 import HotelsPartner from "./pages/partners/Hotels";
 import VenuesPartner from "./pages/partners/Venues";
@@ -97,6 +98,18 @@ function App() {
             <Route path="/partner-workspace" element={<PartnerWorkspace />} />
             <Route path="/dashboard" element={<DashboardHub />} />
             <Route path="/dashboard/partner" element={<Dashboard />} />
+            <Route path="/buildings/:buildingId" element={<BuildingIntelligence />} />
+            <Route path="/buildings/:buildingId/residents" element={<BuildingIntelligence />} />
+            <Route path="/buildings/:buildingId/amenities" element={<BuildingIntelligence />} />
+            <Route path="/buildings/:buildingId/maintenance" element={<BuildingIntelligence />} />
+            <Route path="/buildings/:buildingId/reports" element={<BuildingIntelligence />} />
+            <Route path="/buildings/:buildingId/partners" element={<BuildingIntelligence />} />
+            <Route path="/properties/:buildingId" element={<BuildingIntelligence />} />
+            <Route path="/properties/:buildingId/residents" element={<BuildingIntelligence />} />
+            <Route path="/properties/:buildingId/amenities" element={<BuildingIntelligence />} />
+            <Route path="/properties/:buildingId/maintenance" element={<BuildingIntelligence />} />
+            <Route path="/properties/:buildingId/reports" element={<BuildingIntelligence />} />
+            <Route path="/properties/:buildingId/partners" element={<BuildingIntelligence />} />
             <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
             <Route path="/dashboard/resident" element={<ResidentApp />} />
             <Route path="/partner-dashboard" element={<PartnerDashboard />} />
