@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Activity, Flame, Layers3, List, MapPin, X } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { Activity, ChevronLeft, Flame, Layers3, List, MapPin, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity } from '@/store/mapStateStore';
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
 import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
@@ -13,6 +13,7 @@ import TimeFilter from '@/components/map/unified/TimeFilter';
 import { createMarker } from '@/components/map/markers/MarkerFactory';
 import { filterValidEntities } from '@/lib/mapValidation';
 import { mapRepository } from '@/lib/repositories/mapRepository';
+import { getPrimaryPresetDefinition } from '@/lib/map/searchUiConfig';
 
 function getMarkerIcon(entity, isSelected) {
   return createMarker(entity, { isSelected });
@@ -23,7 +24,8 @@ function parseExploreParams(search) {
   const query = params.get('query') || params.get('q') || '';
   const category = params.get('category') || '';
   const mode = params.get('mode') || '';
-  return { query, category, mode };
+  const toggles = params.get('toggles') || '';
+  return { query, category, mode, toggles };
 }
 
 export default function ExploreRebuilt() {
@@ -45,6 +47,7 @@ export default function ExploreRebuilt() {
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
   const setShowResultsList = useMapStateStore((state) => state.setShowResultsList);
   const updateFilter = useMapStateStore((state) => state.updateFilter);
+  const clearFilters = useMapStateStore((state) => state.clearFilters);
 
   const [allEntities, setAllEntities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -88,6 +91,7 @@ export default function ExploreRebuilt() {
   useEffect(() => {
     const nextAskMode = exploreParams.mode === 'ask';
     setAskMode(nextAskMode);
+    clearFilters();
 
     // Apply URL query into the map store for consistent filtering/highlights
     if (typeof exploreParams.query === 'string') {
@@ -95,26 +99,64 @@ export default function ExploreRebuilt() {
     }
 
     const rawCategory = String(exploreParams.category || '').trim().toLowerCase();
-    if (!rawCategory) return;
+    if (rawCategory) {
+      if (rawCategory === 'walk' || rawCategory === '5min' || rawCategory === '5-min') {
+        updateFilter('walkMinutes', 5);
+      } else if (
+        rawCategory === 'venues' ||
+        rawCategory === 'venue' ||
+        rawCategory === 'events' ||
+        rawCategory === 'event' ||
+        rawCategory === 'perks' ||
+        rawCategory === 'perk' ||
+        rawCategory === 'buildings' ||
+        rawCategory === 'building' ||
+        rawCategory === 'properties' ||
+        rawCategory === 'property'
+      ) {
+        const entityMap = {
+          venues: ['venue'],
+          venue: ['venue'],
+          events: ['event'],
+          event: ['event'],
+          perks: ['perk'],
+          perk: ['perk'],
+          buildings: ['building'],
+          building: ['building'],
+          properties: ['building'],
+          property: ['building'],
+        };
+        updateFilter('entityTypes', new Set(entityMap[rawCategory] || ['venue', 'event', 'perk', 'building']));
+      } else {
+        const preset = getPrimaryPresetDefinition(rawCategory);
+        updateFilter('entityTypes', new Set(preset.entityTypes || ['venue', 'event', 'perk', 'building']));
+        updateFilter('categories', new Set(preset.categories || []));
+        if (!exploreParams.query && preset.query) {
+          setSearchQuery(preset.query);
+        }
+      }
+    }
 
-    // Landing categories are plural; store expects entityTypes.
-    if (rawCategory === 'venues' || rawCategory === 'venue') {
-      updateFilter('entityTypes', new Set(['venue']));
-    } else if (rawCategory === 'events' || rawCategory === 'event') {
-      updateFilter('entityTypes', new Set(['event']));
-    } else if (rawCategory === 'perks' || rawCategory === 'perk') {
-      updateFilter('entityTypes', new Set(['perk']));
-    } else if (
-      rawCategory === 'buildings' ||
-      rawCategory === 'building' ||
-      rawCategory === 'properties' ||
-      rawCategory === 'property'
-    ) {
-      updateFilter('entityTypes', new Set(['building']));
-    } else if (rawCategory === 'walk' || rawCategory === '5min' || rawCategory === '5-min') {
+    const toggleSet = new Set(
+      String(exploreParams.toggles || '')
+        .split(',')
+        .map((item) => item.trim().toLowerCase())
+        .filter(Boolean)
+    );
+
+    if (toggleSet.has('crowd')) {
+      updateFilter('isTrending', true);
+      updateFilter('isLive', true);
+    }
+
+    if (toggleSet.has('perks')) {
+      updateFilter('hasPerk', true);
+    }
+
+    if (toggleSet.has('walk')) {
       updateFilter('walkMinutes', 5);
     }
-  }, [exploreParams.category, exploreParams.mode, exploreParams.query, setSearchQuery, updateFilter]);
+  }, [clearFilters, exploreParams.category, exploreParams.mode, exploreParams.query, exploreParams.toggles, setSearchQuery, updateFilter]);
 
   useEffect(() => {
     if (askMode) return;
@@ -238,6 +280,10 @@ export default function ExploreRebuilt() {
       results = results.filter((item) => Boolean(item.metadata?.isTrending || (item.metadata?.popularity ?? 0) >= 70));
     }
 
+    if (activeFilters.hasPerk) {
+      results = results.filter((item) => Boolean(item.perk?.value || item.perk_value || item.type === 'perk'));
+    }
+
     results.sort((a, b) => {
       const liveDelta = Number(Boolean(b.isLive || b.eventTiming?.isLive)) - Number(Boolean(a.isLive || a.eventTiming?.isLive));
       if (liveDelta !== 0) return liveDelta;
@@ -295,6 +341,15 @@ export default function ExploreRebuilt() {
           </UnifiedMapShell>
 
           <div className="pointer-events-none absolute inset-x-0 top-0 z-20 space-y-3 p-4">
+            <div className="pointer-events-auto">
+              <Link
+                to="/"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Back
+              </Link>
+            </div>
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-3">
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -413,6 +468,15 @@ export default function ExploreRebuilt() {
           </UnifiedMapShell>
 
           <div className={`pointer-events-none absolute left-8 right-8 top-8 z-20 space-y-3 ${showResultsList ? 'pr-[32%]' : 'pr-0'}`}>
+            <div className="pointer-events-auto">
+              <Link
+                to="/"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Back
+              </Link>
+            </div>
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-4">
               <div className="flex items-start justify-between gap-4">
                 <div>

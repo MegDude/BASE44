@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import PartnerTypeCard from "@/components/partner/PartnerTypeCard";
@@ -24,6 +25,35 @@ function SectionLabel({ children }) {
 
 export default function PartnersIndex() {
   const partnerCards = PARTNER_TYPE_ORDER.map((id) => PARTNER_TYPE_CONTENT[id]);
+  const [activePrinciple, setActivePrinciple] = useState(0);
+
+  const operatingPrinciples = [
+    {
+      id: "discovery",
+      eyebrow: "Access model",
+      title: "Discovery stays open",
+      body: "Residents and guests should be able to browse immediately. Access layers, card issuance, and redemption unlock when the intent is real.",
+    },
+    {
+      id: "map",
+      eyebrow: "Map logic",
+      title: "The map is the operating surface",
+      body: "Partner value comes from visibility in context: time, distance, neighborhood, building source, and current demand.",
+    },
+    {
+      id: "dashboard",
+      eyebrow: "Intelligence layer",
+      title: "The dashboard is the intelligence hub",
+      body: "Scans, saves, RSVPs, redemptions, repeat behavior, and source attribution should turn into clear next actions.",
+    },
+  ];
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActivePrinciple((current) => (current + 1) % operatingPrinciples.length);
+    }, 4800);
+    return () => window.clearInterval(timer);
+  }, [operatingPrinciples.length]);
 
   return (
     <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
@@ -75,21 +105,15 @@ export default function PartnersIndex() {
         </div>
       </section>
 
-      <PartnerInsightMap
-        partnerType="dashboard"
-        title="The partner map is business intelligence."
-        description="Partner mode should show visibility, campaign, coverage, source, and conversion signals. It should not reuse the resident discovery map as a fake dashboard."
-      />
-
       <section id="partner-types" className="border-y border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
             <SectionLabel>Partner Types</SectionLabel>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
-              Choose the layer that matches the business problem.
+              All partner types live in one platform.
             </h2>
             <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
-              Each page should stay general, operational, and useful. Brand examples live separately so the main partner narrative stays clean.
+              Start with the full operating system, then move into the residential, hospitality, venue, brand, or civic view that matches the problem.
             </p>
           </div>
 
@@ -115,15 +139,53 @@ export default function PartnersIndex() {
       </section>
 
       <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.84fr_1.16fr]">
-          <div>
-            <SectionLabel>Platform Logic</SectionLabel>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
-              How the partner system should flow.
-            </h2>
-            <p className="mt-5 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
-              Residents and guests browse first. The value layer unlocks later. Partner success comes from measured visibility, not early friction.
-            </p>
+        <div className="mx-auto max-w-7xl space-y-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <SectionLabel>Operating model</SectionLabel>
+              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+                One partner platform. Three rules.
+              </h2>
+              <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
+                The partner side should read like one system: open discovery, a live downtown map, and a dashboard that turns movement into action.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {operatingPrinciples.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActivePrinciple(index)}
+                  className={`h-2.5 rounded-full transition-all ${
+                    activePrinciple === index ? "w-8 bg-[hsl(40,62%,42%)]" : "w-2.5 bg-[rgba(11,31,51,0.16)]"
+                  }`}
+                  aria-label={`Show ${item.title}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-[26px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_18px_44px_rgba(11,31,51,0.06)]">
+            <motion.div
+              animate={{ x: `-${activePrinciple * 100}%` }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="flex"
+            >
+              {operatingPrinciples.map((item) => (
+                <div key={item.id} className="min-w-full p-6 md:p-8">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,42%)]">
+                    {item.eyebrow}
+                  </div>
+                  <div className="mt-4 text-3xl font-semibold tracking-[-0.05em] md:text-4xl">
+                    {item.title}
+                  </div>
+                  <div className="mt-4 max-w-3xl text-[15px] leading-8 text-[rgba(11,31,51,0.66)]">
+                    {item.body}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
 
           <ResponsiveScrollSection
@@ -140,6 +202,12 @@ export default function PartnersIndex() {
           />
         </div>
       </section>
+
+      <PartnerInsightMap
+        partnerType="dashboard"
+        title="The partner map is business intelligence."
+        description="Partner mode should show visibility, campaign, coverage, source, and conversion signals. It should not reuse the resident discovery map as a fake dashboard."
+      />
 
       <PartnerBrandShowcase groups={BRAND_SHOWCASE_GROUPS} />
     </div>

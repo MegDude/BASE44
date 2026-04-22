@@ -13,6 +13,7 @@ const DEFAULT_MAP_CONTEXT = {
   category: "all",
   askMode: false,
   walkMinutes: null,
+  toggles: [],
   requestKey: 0,
 };
 
@@ -33,6 +34,7 @@ export default function Home() {
     category = "all",
     walkMinutes = null,
     askMode = false,
+    toggles = [],
   } = {}) => {
     const params = new URLSearchParams();
     const trimmedQuery = String(query || "").trim();
@@ -40,6 +42,7 @@ export default function Home() {
     if (trimmedQuery) params.set("query", trimmedQuery);
     if (category && category !== "all") params.set("category", category);
     if (Number.isFinite(walkMinutes)) params.set("category", "5min");
+    if (Array.isArray(toggles) && toggles.length > 0) params.set("toggles", toggles.join(","));
     if (askMode) params.set("mode", "ask");
 
     const nextUrl = params.toString()
@@ -50,27 +53,29 @@ export default function Home() {
   }, [navigate]);
 
   const handleExplore = useCallback(
-    ({ query = "", category = "all", walkMinutes = null } = {}) => {
+    ({ query = "", category = "all", walkMinutes = null, toggles = [] } = {}) => {
       updateMapContext({
         query,
         category,
         walkMinutes,
         askMode: false,
+        toggles,
       });
-      openExploreRoute({ query, category, walkMinutes, askMode: false });
+      openExploreRoute({ query, category, walkMinutes, askMode: false, toggles });
     },
     [openExploreRoute, updateMapContext]
   );
 
   const handleAsk = useCallback(
-    ({ query = "", category = "all", walkMinutes = null } = {}) => {
+    ({ query = "", category = "all", walkMinutes = null, toggles = [] } = {}) => {
       updateMapContext({
         query,
         category,
         walkMinutes,
         askMode: true,
+        toggles,
       });
-      openExploreRoute({ query, category, walkMinutes, askMode: true });
+      openExploreRoute({ query, category, walkMinutes, askMode: true, toggles });
     },
     [openExploreRoute, updateMapContext]
   );

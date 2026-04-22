@@ -46,6 +46,7 @@ export interface ActiveFilters {
   isLive: boolean;
   isSaved: boolean;
   isTrending: boolean;
+  hasPerk: boolean;
 }
 
 /**
@@ -120,6 +121,7 @@ const DEFAULT_FILTERS: ActiveFilters = {
   isLive: false,
   isSaved: false,
   isTrending: false,
+  hasPerk: false,
 };
 
 /**
