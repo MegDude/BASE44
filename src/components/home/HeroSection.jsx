@@ -8,6 +8,75 @@ const FILTER_CHIPS = [
   { id: "walk", label: "5 min walk", icon: Sparkles },
 ];
 
+const CHIP_PROMPTS = {
+  venue: [
+    {
+      title: "Where should I eat or drink?",
+      subtitle: "Coffee, dinner, patios, and everyday stops that are actually nearby.",
+      query: "best venues nearby right now",
+    },
+    {
+      title: "What is open close by?",
+      subtitle: "Useful places you can walk to without leaving the map flow.",
+      query: "open now nearby",
+    },
+  ],
+  event: [
+    {
+      title: "What is on tonight?",
+      subtitle: "Live events, music, and things worth showing up for nearby.",
+      query: "events tonight",
+    },
+    {
+      title: "What can I do right now?",
+      subtitle: "Immediate options for a plan without extra searching.",
+      query: "live events nearby",
+    },
+  ],
+  perk: [
+    {
+      title: "What perks can I actually use?",
+      subtitle: "Real resident value at places you would go anyway.",
+      query: "resident perks nearby",
+    },
+    {
+      title: "What is worth saving?",
+      subtitle: "Offers tied to actual locations instead of decorative coupons.",
+      query: "best perks downtown",
+    },
+  ],
+  walk: [
+    {
+      title: "What is within five minutes?",
+      subtitle: "The shortest useful options around you right now.",
+      query: "5 minute walk nearby",
+    },
+    {
+      title: "What can I do fast?",
+      subtitle: "Quick nearby places, events, and perks without a long walk.",
+      query: "quick nearby options",
+    },
+  ],
+};
+
+const DEFAULT_ASK_PROMPTS = [
+  {
+    title: "Where do you want to go?",
+    subtitle: "Coffee. Dinner. Groceries. Fitness. Drinks. All within walking distance.",
+    query: "coffee nearby",
+  },
+  {
+    title: "What do you want to do?",
+    subtitle: "See what's on tonight. Find something worth showing up for.",
+    query: "events tonight",
+  },
+  {
+    title: "Who do you want to meet?",
+    subtitle: "See who's going. Join in. Make a plan.",
+    query: "live music nearby",
+  },
+];
+
 export default function HeroSection({ mapContext, onExplore, onAsk }) {
   const [query, setQuery] = useState(mapContext?.query || "");
   const [category, setCategory] = useState(mapContext?.category || "venue");
@@ -68,6 +137,13 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
     handleAskMap(nextQuery);
   }
 
+  function handleChipClick(chipId) {
+    setCategory(chipId);
+    setShowAskPanel(true);
+  }
+
+  const promptSet = CHIP_PROMPTS[category] || DEFAULT_ASK_PROMPTS;
+
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-[#f6f3ee]">
       {/* Background image */}
@@ -116,6 +192,14 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
                   placeholder="Where should I go right now?"
                   className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowAskPanel((current) => !current)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[hsl(218,20%,86%)] bg-[hsl(42,26%,96%)] text-[hsl(218,42%,14%)] transition hover:border-primary/25 hover:bg-white"
+                  aria-label="Ask the map"
+                >
+                  <Sparkles className="h-4 w-4" />
+                </button>
               </div>
 
               <button
@@ -130,42 +214,21 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
             {showAskPanel && (
               <div className="mt-2 overflow-hidden rounded-[18px] border border-[hsl(218,20%,88%)] bg-white shadow-lg">
                 <div className="divide-y divide-[hsl(218,20%,92%)]">
-                  <button
-                    type="button"
-                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
-                    onClick={() => handleAskPrompt("coffee nearby")}
-                  >
-                    <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
-                      Where do you want to go?
-                    </div>
-                    <div className="text-[12px] leading-relaxed text-foreground/60">
-                      Coffee. Dinner. Groceries. Fitness. Drinks. All within walking distance.
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
-                    onClick={() => handleAskPrompt("events tonight")}
-                  >
-                    <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
-                      What do you want to do?
-                    </div>
-                    <div className="text-[12px] leading-relaxed text-foreground/60">
-                      See what&apos;s on tonight. Find something worth showing up for.
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
-                    onClick={() => handleAskPrompt("live music nearby")}
-                  >
-                    <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
-                      Who do you want to meet?
-                    </div>
-                    <div className="text-[12px] leading-relaxed text-foreground/60">
-                      See who&apos;s going. Join in. Make a plan.
-                    </div>
-                  </button>
+                  {promptSet.map((item) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
+                      onClick={() => handleAskPrompt(item.query)}
+                    >
+                      <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
+                        {item.title}
+                      </div>
+                      <div className="text-[12px] leading-relaxed text-foreground/60">
+                        {item.subtitle}
+                      </div>
+                    </button>
+                  ))}
                   <button
                     type="button"
                     className="w-full px-4 py-2.5 text-[11px] text-foreground/40 transition-colors hover:text-foreground/60"
@@ -187,7 +250,7 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
                   <button
                     key={chip.id}
                     type="button"
-                    onClick={() => setCategory(chip.id)}
+                    onClick={() => handleChipClick(chip.id)}
                     className={`inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all ${
                       isActive
                         ? "border-gold/40 bg-gold/10 text-[hsl(218,42%,14%)]"
@@ -207,18 +270,10 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
             <button
               type="button"
               onClick={handleOpenMap}
-              className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-6 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
+              className="inline-flex min-w-[190px] items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-6 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
             >
               Explore downtown
               <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleAskMap()}
-              className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-[16px] border border-white/75 bg-white/76 px-6 py-3 text-sm font-medium text-foreground shadow-[0_8px_18px_rgba(14,28,54,0.08)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-[1px] hover:bg-white active:translate-y-0"
-            >
-              Ask the map
             </button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HeroSection from "@/components/home/HeroSection";
 import WhySection from "@/components/home/WhySection";
 import MapSection from "@/components/home/MapSection";
@@ -16,14 +17,8 @@ const DEFAULT_MAP_CONTEXT = {
 };
 
 export default function Home() {
+  const navigate = useNavigate();
   const [mapContext, setMapContext] = useState(DEFAULT_MAP_CONTEXT);
-
-  const scrollToMap = useCallback(() => {
-    document.getElementById("home-live-map")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, []);
 
   const updateMapContext = useCallback((nextState) => {
     setMapContext((current) => ({
@@ -33,6 +28,27 @@ export default function Home() {
     }));
   }, []);
 
+  const openExploreRoute = useCallback(({
+    query = "",
+    category = "all",
+    walkMinutes = null,
+    askMode = false,
+  } = {}) => {
+    const params = new URLSearchParams();
+    const trimmedQuery = String(query || "").trim();
+
+    if (trimmedQuery) params.set("query", trimmedQuery);
+    if (category && category !== "all") params.set("category", category);
+    if (Number.isFinite(walkMinutes)) params.set("category", "5min");
+    if (askMode) params.set("mode", "ask");
+
+    const nextUrl = params.toString()
+      ? `/downtown-perks/explore?${params.toString()}`
+      : "/downtown-perks/explore";
+
+    navigate(nextUrl);
+  }, [navigate]);
+
   const handleExplore = useCallback(
     ({ query = "", category = "all", walkMinutes = null } = {}) => {
       updateMapContext({
@@ -41,9 +57,9 @@ export default function Home() {
         walkMinutes,
         askMode: false,
       });
-      scrollToMap();
+      openExploreRoute({ query, category, walkMinutes, askMode: false });
     },
-    [scrollToMap, updateMapContext]
+    [openExploreRoute, updateMapContext]
   );
 
   const handleAsk = useCallback(
@@ -54,9 +70,9 @@ export default function Home() {
         walkMinutes,
         askMode: true,
       });
-      scrollToMap();
+      openExploreRoute({ query, category, walkMinutes, askMode: true });
     },
-    [scrollToMap, updateMapContext]
+    [openExploreRoute, updateMapContext]
   );
 
   const handleMapContextChange = useCallback((nextState) => {
