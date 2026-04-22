@@ -77,7 +77,7 @@ const DEFAULT_ASK_PROMPTS = [
   },
 ];
 
-export default function HeroSection({ mapContext, onExplore, onAsk }) {
+export default function HeroSection({ mapContext, onExplore, onAsk, children }) {
   const [query, setQuery] = useState(mapContext?.query || "");
   const [category, setCategory] = useState(mapContext?.category || "venue");
   const [showAskPanel, setShowAskPanel] = useState(false);
@@ -156,7 +156,7 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/26 via-white/10 to-[rgba(15,23,42,0.14)]" />
       </div>
 
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-24 md:py-28">
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-20 md:py-24">
         {/* Brand tag */}
         <div className="mb-5 flex items-center gap-2">
           <span className="rounded-full border border-white/40 bg-white/42 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(218,24%,28%)] backdrop-blur-md">
@@ -165,7 +165,7 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
         </div>
 
         {/* Refined hero shell */}
-        <div className="w-full max-w-3xl rounded-[30px] border border-white/38 bg-white/[0.68] p-5 shadow-[0_24px_60px_rgba(14,28,54,0.16)] backdrop-blur-xl md:p-8">
+        <div className="w-full max-w-6xl rounded-[30px] border border-white/38 bg-white/[0.68] p-5 shadow-[0_24px_60px_rgba(14,28,54,0.16)] backdrop-blur-xl md:p-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[hsl(218,42%,14%)] md:text-[56px]">
               Where downtown meets you
@@ -276,6 +276,8 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
+
+          {children ? <div className="mt-6 md:mt-8">{children}</div> : null}
         </div>
       </div>
     </section>
