@@ -30,7 +30,217 @@ function renderMetric(item) {
   );
 }
 
+function renderHospitalityPage(content) {
+  return (
+    <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
+      <section className="px-6 py-16 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_420px] lg:items-start">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+            <Link
+              to="/partners"
+              className="inline-flex items-center gap-2 text-[12px] text-[rgba(11,31,51,0.52)] transition hover:text-[var(--dp-navy,#0B1F33)]"
+            >
+              <ChevronRight className="h-3.5 w-3.5 rotate-180" />
+              Partner Directory
+            </Link>
+            <SectionLabel>{content.eyebrow}</SectionLabel>
+            <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-[0.98] tracking-[-0.055em] md:text-6xl">
+              {content.heroTitle}
+            </h1>
+            <p className="mt-5 max-w-2xl text-[15px] leading-7 text-[rgba(11,31,51,0.66)]">
+              {content.heroDescription}
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                to={content.heroPrimaryCta.href}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-[var(--dp-navy,#0B1F33)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[rgba(11,31,51,0.9)]"
+              >
+                {content.heroPrimaryCta.label}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to={content.heroSecondaryCta.href}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-white/42 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-white/68"
+              >
+                {content.heroSecondaryCta.label}
+              </Link>
+            </div>
+
+            {content.heroTrustRow ? (
+              <div className="mt-6 text-[13px] font-medium text-[rgba(11,31,51,0.68)]">
+                {content.heroTrustRow}
+              </div>
+            ) : null}
+
+            {content.heroBullets?.length ? (
+              <div className="mt-6 grid gap-2 sm:grid-cols-2">
+                {content.heroBullets.map((item) => (
+                  <div key={item} className="text-[13px] text-[rgba(11,31,51,0.62)]">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}>
+            <PlanningForm partnerType={{ ...content.form, label: content.label, variant: "embedded" }} />
+          </motion.div>
+        </div>
+      </section>
+
+      {content.proofStrip?.length ? (
+        <section className="border-y border-[rgba(11,31,51,0.08)] px-6 py-8">
+          <div className="mx-auto grid max-w-7xl gap-3 md:grid-cols-4">
+            {content.proofStrip.map((item) => (
+              <div key={item.label} className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-white/65 p-4">
+                <div className="text-2xl font-semibold tracking-[-0.05em] text-foreground">{item.value}</div>
+                <div className="mt-1 text-[11px] uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <SectionLabel>{content.mapPreviewTitle}</SectionLabel>
+            <div className="mt-6 overflow-hidden rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white">
+              <PartnerInsightMap
+                partnerType={content.mapMode}
+                title={content.mapPreviewTitle}
+                description={content.mapPreviewDescription}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <SectionLabel>{content.mapStoryTitle || "What hotels get"}</SectionLabel>
+            <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-6">
+              <div className="space-y-4">
+                {(content.mapStoryPoints || []).map((item) => (
+                  <div key={item.title}>
+                    <div className="text-sm font-semibold text-foreground">{item.title}</div>
+                    <div className="mt-1 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{item.body}</div>
+                  </div>
+                ))}
+              </div>
+              {content.mapStoryProof ? (
+                <div className="mt-5 rounded-[18px] bg-[rgba(11,31,51,0.03)] p-4">
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-[hsl(40,62%,42%)]">{content.mapStoryProof.label}</div>
+                  <div className="mt-2 text-[13px] text-[rgba(11,31,51,0.68)]">{content.mapStoryProof.value}</div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+          <div>
+            <SectionLabel>{content.stepsTitle}</SectionLabel>
+            <p className="mt-5 text-sm leading-6 text-[rgba(11,31,51,0.62)]">{content.stepsIntro}</p>
+          </div>
+          <div className="space-y-4">
+            {content.workflow.map((step, index) => (
+              <div key={step} className="flex gap-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[rgba(11,31,51,0.10)] bg-white/54 text-[12px] font-semibold">
+                  {index + 1}
+                </div>
+                <div className="text-sm leading-6 text-[rgba(11,31,51,0.66)]">{step}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {content.measurementMetrics?.length ? (
+        <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8 max-w-3xl">
+              <SectionLabel>{content.measurementTitle}</SectionLabel>
+              <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">{content.measurementIntro}</p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+              {content.measurementMetrics.map((item) => (
+                <div key={item.label} className="rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white p-5">
+                  <div className="text-2xl font-semibold tracking-[-0.05em] text-foreground">{item.value}</div>
+                  <div className="mt-2 text-[12px] font-medium text-foreground">{item.label}</div>
+                  <div className="mt-2 text-[12px] leading-5 text-[rgba(11,31,51,0.58)]">{item.detail}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <SectionLabel>{content.liveMomentsTitle || "Recent activity"}</SectionLabel>
+            <div className="mt-6 space-y-3">
+              {(content.liveMoments || []).map((item) => (
+                <div key={`${item.title}-${item.meta}`} className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-white p-4">
+                  <div className="text-sm font-semibold">{item.title}</div>
+                  <div className="mt-1 text-[13px] text-[rgba(11,31,51,0.62)]">{item.meta}</div>
+                  {item.stamp ? (
+                    <div className="mt-2 text-[11px] uppercase tracking-[0.14em] text-[hsl(40,62%,42%)]">{item.stamp}</div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <SectionLabel>{content.venueListTitle || "Live hotels"}</SectionLabel>
+            <div className="mt-6 rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-4">
+              <div className="space-y-3">
+                {(content.venueList || []).map((item) => (
+                  <div key={item.name} className="flex items-center justify-between rounded-[16px] bg-[rgba(11,31,51,0.03)] px-4 py-3">
+                    <span className="font-medium">{item.name}</span>
+                    <span className="text-[13px] text-[rgba(11,31,51,0.54)]">{item.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {content.faqs?.length ? (
+        <FAQAccordionBlock
+          sectionEyebrow={content.faqTitle}
+          sectionTitle={content.faqTitle}
+          sectionIntro={content.faqIntro}
+          items={content.faqs}
+          styleVariant="split"
+          pageType="partners"
+        />
+      ) : null}
+
+      <PartnerCTASection
+        headline={content.closing.title}
+        description={content.closing.description}
+        primaryCTA={content.closing.primary.label}
+        primaryHref={content.closing.primary.href}
+        secondaryLink={{
+          label: content.closing.secondary.label,
+          href: content.closing.secondary.href,
+        }}
+        footerText={content.closing.footer}
+      />
+    </div>
+  );
+}
+
 export default function PartnerTypeTemplate({ content, extraSection = null }) {
+  if (content.id === "hospitality") {
+    return renderHospitalityPage(content);
+  }
+
   return (
     <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
       <section className="px-6 py-20 md:py-24">

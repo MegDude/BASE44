@@ -8,11 +8,15 @@ import { ArrowRight } from 'lucide-react';
 export default function PlanningForm({ partnerType, onSubmit }) {
   const [formData, setFormData] = useState({
     name: '',
+    contactName: '',
     email: '',
     role: '',
     organization: '',
     phone: '',
+    propertyType: '',
+    goals: [],
     goal: '',
+    notes: '',
   });
 
   const handleChange = (e) => {
@@ -29,6 +33,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
   const intro =
     config.intro ||
     `Tell us about your ${config.label?.toLowerCase() || 'partnership'} and we'll help you get up and running.`;
+  const variant = config.variant || "section";
   const roleOptions = config.roleOptions || [
     'Property',
     'Hotel',
@@ -41,6 +46,176 @@ export default function PlanningForm({ partnerType, onSubmit }) {
   const footer = config.footer || null;
   const prompts = config.prompts || [];
   const recommendation = config.recommendation || null;
+  const propertyTypeOptions = config.propertyTypeOptions || [];
+  const notesPlaceholder = config.notesPlaceholder || "Tell us what you want to set up.";
+  const submitExpectation = config.submitExpectation || null;
+
+  const applyPrompt = (prompt) => {
+    const nextGoals = Array.from(new Set([...(formData.goals || []), prompt]));
+    setFormData((current) => ({
+      ...current,
+      goals: nextGoals,
+      goal: nextGoals.join(" | "),
+      notes: current.notes || prompt,
+    }));
+  };
+
+  const toggleGoal = (goal) => {
+    setFormData((current) => {
+      const currentGoals = current.goals || [];
+      const nextGoals = currentGoals.includes(goal)
+        ? currentGoals.filter((item) => item !== goal)
+        : [...currentGoals, goal];
+
+      return {
+        ...current,
+        goals: nextGoals,
+        goal: nextGoals.join(" | "),
+      };
+    });
+  };
+
+  const formFields = (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          type="text"
+          name="organization"
+          placeholder={config.organizationLabel || "Hotel name"}
+          value={formData.organization}
+          onChange={handleChange}
+          className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+        />
+        <input
+          type="text"
+          name="contactName"
+          placeholder={config.contactLabel || "Contact name"}
+          value={formData.contactName}
+          onChange={handleChange}
+          className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          type="text"
+          name="role"
+          placeholder={config.roleLabel || "Role"}
+          value={formData.role}
+          onChange={handleChange}
+          className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder={config.emailLabel || "Work email"}
+          value={formData.email}
+          onChange={handleChange}
+          className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+        />
+        {propertyTypeOptions.length ? (
+          <select
+            name="propertyType"
+            value={formData.propertyType}
+            onChange={handleChange}
+            className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] text-[#4a463f] focus:border-[#111] focus:outline-none transition-colors"
+          >
+            <option value="">Property type</option>
+            {propertyTypeOptions.map((option) => (
+              <option key={option} value={option.toLowerCase()}>
+                {option}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] text-[#4a463f] focus:border-[#111] focus:outline-none transition-colors"
+          >
+            <option value="">Select your role</option>
+            {roleOptions.map((option) => (
+              <option key={option} value={option.toLowerCase()}>
+                {option}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      {prompts.length ? (
+        <div>
+          <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8d887f]">
+            What do you want to launch?
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {prompts.map((prompt) => (
+              <button
+                key={prompt}
+                type="button"
+                onClick={() => toggleGoal(prompt)}
+                className={`rounded-full border px-3 py-2 text-left text-[12px] transition ${
+                  (formData.goals || []).includes(prompt)
+                    ? "border-[#111] bg-[#f5f3ef] text-[#111]"
+                    : "border-[#e8e5df] bg-[#faf8f4] text-[#4a463f] hover:border-[#111]"
+                }`}
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <textarea
+        name="notes"
+        placeholder={notesPlaceholder}
+        value={formData.notes}
+        onChange={handleChange}
+        rows={variant === "embedded" ? 4 : 5}
+        className="w-full rounded-xl border border-[#e8e5df] bg-white px-4 py-3 text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+      />
+
+      <button
+        type="submit"
+        className="w-full h-12 rounded-xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors flex items-center justify-center gap-2"
+      >
+        {submitLabel}
+        <ArrowRight className="w-4 h-4" />
+      </button>
+    </>
+  );
+
+  if (variant === "embedded") {
+    return (
+      <div className="rounded-[24px] border border-[#e8e5df] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
+        <h3 className="text-[26px] font-bold text-[#111] leading-tight tracking-tight mb-3">
+          {title}
+        </h3>
+        <p className="text-[14px] text-[#6f6b65] mb-5">{intro}</p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {formFields}
+        </form>
+        {submitExpectation ? (
+          <p className="mt-4 text-[12px] text-[#6f6b65]">{submitExpectation}</p>
+        ) : null}
+        {notes ? <p className="text-[12px] text-[#8d887f] mt-3">{notes}</p> : null}
+        {footer ? <p className="text-[12px] text-[#6f6b65] mt-2">{footer}</p> : null}
+      </div>
+    );
+  }
 
   return (
     <section className="py-16 md:py-24 border-b border-[#e8e5df]">
@@ -61,79 +236,17 @@ export default function PlanningForm({ partnerType, onSubmit }) {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    name="organization"
-                    placeholder="Organization / Property name"
-                    value={formData.organization}
-                    onChange={handleChange}
-                    className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
-                  />
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] text-[#4a463f] focus:border-[#111] focus:outline-none transition-colors"
-                >
-                  <option value="">Select your role</option>
-                  {roleOptions.map((option) => (
-                    <option key={option} value={option.toLowerCase()}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                <textarea
-                  name="goal"
-                  placeholder="Tell us what you want to set up."
-                  value={formData.goal}
-                  onChange={handleChange}
-                  rows={5}
-                  className="w-full rounded-xl border border-[#e8e5df] bg-white px-4 py-3 text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
-                />
-
-                <button
-                  type="submit"
-                  className="w-full h-12 rounded-xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors flex items-center justify-center gap-2"
-                >
-                  {submitLabel}
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                {formFields}
               </form>
 
               <p className="text-[12px] text-[#8d887f] mt-6">
                 {notes}
               </p>
+              {submitExpectation ? (
+                <p className="text-[12px] text-[#6f6b65] mt-3">
+                  {submitExpectation}
+                </p>
+              ) : null}
               {footer ? (
                 <p className="text-[12px] text-[#6f6b65] mt-3">
                   {footer}
@@ -152,7 +265,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
                       <button
                         key={prompt}
                         type="button"
-                        onClick={() => setFormData((current) => ({ ...current, goal: prompt }))}
+                        onClick={() => applyPrompt(prompt)}
                         className="rounded-full border border-[#e8e5df] bg-[#faf8f4] px-3 py-2 text-left text-[12px] text-[#4a463f] transition hover:border-[#111]"
                       >
                         {prompt}
