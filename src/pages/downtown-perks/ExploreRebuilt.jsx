@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Flame, Layers3, MapPin } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { useLocation } from 'react-router-dom';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity } from '@/store/mapStateStore';
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
 import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
@@ -11,14 +11,23 @@ import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
 import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
 import TimeFilter from '@/components/map/unified/TimeFilter';
 import { createMarker } from '@/components/map/markers/MarkerFactory';
-import { MAP_ENTITIES } from '@/data/mapEntities';
 import { filterValidEntities } from '@/lib/mapValidation';
+import { mapRepository } from '@/lib/repositories/mapRepository';
 
 function getMarkerIcon(entity, isSelected) {
   return createMarker(entity, { isSelected });
 }
 
+function parseExploreParams(search) {
+  const params = new URLSearchParams(search || '');
+  const query = params.get('query') || params.get('q') || '';
+  const category = params.get('category') || '';
+  const mode = params.get('mode') || '';
+  return { query, category, mode };
+}
+
 export default function ExploreRebuilt() {
+  const location = useLocation();
   const filteredResults = useMapStateStore(selectFilteredResults);
   const selectedEntity = useMapStateStore(selectSelectedEntity);
   const mapCenter = useMapStateStore((state) => state.mapCenter);
@@ -32,9 +41,17 @@ export default function ExploreRebuilt() {
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setFilteredResults = useMapStateStore((state) => state.setFilteredResults);
   const setHeatmapVisible = useMapStateStore((state) => state.setHeatmapVisible);
+  const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
+  const updateFilter = useMapStateStore((state) => state.updateFilter);
 
   const [allEntities, setAllEntities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [askLoading, setAskLoading] = useState(false);
+  const [askMode, setAskMode] = useState(false);
+  const baseEntitiesRef = useRef([]);
+  const lastAskRef = useRef('');
+
+  const exploreParams = useMemo(() => parseExploreParams(location.search), [location.search]);
 
   useEffect(() => {
     let mounted = true;
@@ -42,27 +59,20 @@ export default function ExploreRebuilt() {
     (async () => {
       setLoading(true);
       try {
-        const response = await base44.functions.invoke('getSharedMapFeed', {
-          search: '',
-          filters: {},
-          limit: 1000,
-        });
-
-        const remoteItems = Array.isArray(response?.data?.items) ? response.data.items : [];
-        const fallbackItems = Array.isArray(MAP_ENTITIES) ? MAP_ENTITIES : [];
-        const safeItems = filterValidEntities(remoteItems.length ? remoteItems : fallbackItems).filter(
+        const feedItems = await mapRepository.getMapFeed({ query: '', filters: {}, limit: 1000 });
+        const safeItems = filterValidEntities(feedItems).filter(
           (item) => item.isPlotted !== false
         );
 
         if (!mounted) return;
+        baseEntitiesRef.current = safeItems;
         setAllEntities(safeItems);
         setFilteredResults(safeItems);
       } catch (error) {
         console.error('Failed to load map feed:', error);
         if (!mounted) return;
-        const safeItems = filterValidEntities(MAP_ENTITIES).filter((item) => item.isPlotted !== false);
-        setAllEntities(safeItems);
-        setFilteredResults(safeItems);
+        setAllEntities([]);
+        setFilteredResults([]);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -72,6 +82,85 @@ export default function ExploreRebuilt() {
       mounted = false;
     };
   }, [setFilteredResults]);
+
+  useEffect(() => {
+    const nextAskMode = exploreParams.mode === 'ask';
+    setAskMode(nextAskMode);
+
+    // Apply URL query into the map store for consistent filtering/highlights
+    if (typeof exploreParams.query === 'string') {
+      setSearchQuery(exploreParams.query);
+    }
+
+    const rawCategory = String(exploreParams.category || '').trim().toLowerCase();
+    if (!rawCategory) return;
+
+    // Landing categories are plural; store expects entityTypes.
+    if (rawCategory === 'venues' || rawCategory === 'venue') {
+      updateFilter('entityTypes', new Set(['venue']));
+    } else if (rawCategory === 'events' || rawCategory === 'event') {
+      updateFilter('entityTypes', new Set(['event']));
+    } else if (rawCategory === 'perks' || rawCategory === 'perk') {
+      updateFilter('entityTypes', new Set(['perk']));
+    } else if (
+      rawCategory === 'buildings' ||
+      rawCategory === 'building' ||
+      rawCategory === 'properties' ||
+      rawCategory === 'property'
+    ) {
+      updateFilter('entityTypes', new Set(['building']));
+    } else if (rawCategory === 'walk' || rawCategory === '5min' || rawCategory === '5-min') {
+      updateFilter('walkMinutes', 5);
+    }
+  }, [exploreParams.category, exploreParams.mode, exploreParams.query, setSearchQuery, updateFilter]);
+
+  useEffect(() => {
+    if (askMode) return;
+    if (!lastAskRef.current) return;
+
+    // Leaving ask mode restores the base feed so explore doesn't get "stuck" on an AI subset.
+    lastAskRef.current = '';
+    const base = baseEntitiesRef.current;
+    if (Array.isArray(base) && base.length > 0) {
+      setAllEntities(base);
+      setFilteredResults(base);
+    }
+  }, [askMode, setFilteredResults]);
+
+  const handleAsk = async (q) => {
+    const query = String(q || '').trim();
+    if (!query) return;
+    if (askLoading) return;
+    if (lastAskRef.current === query) return;
+
+    setAskLoading(true);
+    lastAskRef.current = query;
+
+    try {
+      const { items } = await mapRepository.searchWithIntent({
+        query,
+        userLocation: {
+          latitude: mapCenter?.[0],
+          longitude: mapCenter?.[1],
+        },
+      });
+
+      const safeItems = filterValidEntities(items).filter((item) => item.isPlotted !== false);
+      setAllEntities(safeItems);
+      setFilteredResults(safeItems);
+    } catch (error) {
+      console.error('Ask the map failed:', error);
+    } finally {
+      setAskLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!askMode) return;
+    if (!exploreParams.query?.trim()) return;
+    handleAsk(exploreParams.query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [askMode]);
 
   useEffect(() => {
     if (!allEntities.length) return;
@@ -214,7 +303,7 @@ export default function ExploreRebuilt() {
             </motion.div>
 
             <div className="pointer-events-auto">
-              <UnifiedSearchBar />
+              <UnifiedSearchBar mode={askMode ? 'ask' : 'search'} onAsk={handleAsk} askLoading={askLoading} />
             </div>
             <div className="pointer-events-auto space-y-2">
               <TimeFilter />
@@ -268,7 +357,7 @@ export default function ExploreRebuilt() {
             </motion.div>
 
             <div className="pointer-events-auto">
-              <UnifiedSearchBar />
+              <UnifiedSearchBar mode={askMode ? 'ask' : 'search'} onAsk={handleAsk} askLoading={askLoading} />
             </div>
             <div className="pointer-events-auto space-y-2">
               <TimeFilter />

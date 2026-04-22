@@ -4,8 +4,8 @@
 import { Link } from 'react-router-dom';
 
 const PARTNER_NAV = [
-  { label: 'Residential', href: '/partners/residential' },
-  { label: 'Hospitality', href: '/partners/hotels' },
+  { label: 'Properties', href: '/partners/properties' },
+  { label: 'Hospitality', href: '/partners/hospitality' },
   { label: 'Venues', href: '/partners/venues' },
   { label: 'Brands', href: '/partners/brands' },
   { label: 'Civic', href: '/partners/civic' },

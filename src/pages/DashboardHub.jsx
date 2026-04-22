@@ -1,40 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Map, Sparkles, UserRound } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 
 const ENTRY_OPTIONS = [
   {
     id: "resident",
     eyebrow: "Resident mode",
     title: "Open the live map, saved places, and your perks card.",
-    body: "Use the resident surface when you want the day-to-day downtown product: search, explore, save, and move.",
+    body: "Browse first, then save, RSVP, unlock perks, and use the QR card when intent is clear.",
     to: "/resident-app",
     icon: UserRound,
   },
   {
     id: "partner",
-    eyebrow: "Partner mode",
-    title: "Manage building, venue, or hospitality performance.",
-    body: "Use the partner surface to track activity, keep offers current, and understand what residents are opening and using.",
+    eyebrow: "Partner / property mode",
+    title: "Run the operating layer behind downtown activity.",
+    body: "Manage residents, campaigns, amenities, maintenance, reports, partners, map activity, perks, and events from one intelligence hub.",
     to: "/dashboard/partner",
     icon: Building2,
   },
 ];
 
 export default function DashboardHub() {
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    base44.auth
-      .me()
-      .then((user) => setUserName(user?.full_name || ""))
-      .catch(() => setUserName(""));
-  }, []);
+  const [userName] = useState("");
 
   return (
-    <div className="min-h-screen bg-[hsl(42,24%,96%)] pt-[68px] text-[hsl(218,42%,14%)]">
-      <section className="border-b border-[rgba(19,36,67,0.12)] px-6 py-16 md:py-20">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.10),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] pt-[68px] text-[hsl(218,42%,14%)]">
+      <section className="border-b border-[rgba(19,36,67,0.08)] px-6 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,46%)]">
             Dashboard
@@ -42,18 +34,18 @@ export default function DashboardHub() {
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <h1 className="max-w-3xl text-5xl font-semibold tracking-[-0.05em] md:text-6xl">
-                Choose the surface that matches how you use downtown.
+                Choose your layer in the downtown system.
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-7 text-[rgba(19,36,67,0.7)]">
                 {userName
-                  ? `Signed in as ${userName}. Continue into the resident experience or the partner management flow.`
-                  : "Enter as a resident or partner. Both routes are now linked to the same live product system."}
+                  ? `Signed in as ${userName}. Continue into the resident surface or the partner/property intelligence hub.`
+                  : "Residents get the live map and card. Partners and properties get the backend operating layer: residents, campaigns, amenities, maintenance, reports, partners, and map intelligence."}
               </p>
             </div>
 
             <Link
               to="/downtown-perks/explore"
-              className="inline-flex h-12 items-center gap-2 border border-[rgba(19,36,67,0.14)] bg-white px-5 text-sm font-semibold uppercase tracking-[0.14em] transition-all hover:border-[rgba(200,151,58,0.7)]"
+              className="inline-flex h-12 items-center gap-2 rounded-[12px] bg-white/42 px-5 text-sm font-semibold uppercase tracking-[0.14em] transition-all hover:bg-white/68"
             >
               Open live map
               <Map className="h-4 w-4 text-[hsl(40,62%,46%)]" />
@@ -63,12 +55,12 @@ export default function DashboardHub() {
       </section>
 
       <section className="px-6 py-8 md:py-12">
-        <div className="mx-auto max-w-6xl border-y border-[rgba(19,36,67,0.12)]">
+        <div className="mx-auto max-w-6xl divide-y divide-[rgba(19,36,67,0.08)] border-y border-[rgba(19,36,67,0.08)]">
           {ENTRY_OPTIONS.map((option) => {
             const Icon = option.icon;
             return (
-              <div key={option.id} className="grid gap-5 border-b border-[rgba(19,36,67,0.12)] py-7 md:grid-cols-[120px_1fr_auto] md:items-start">
-                <div className="flex h-11 w-11 items-center justify-center border border-[rgba(19,36,67,0.14)] bg-white text-[hsl(218,42%,14%)]">
+              <div key={option.id} className="grid gap-5 py-7 transition hover:bg-white/24 md:grid-cols-[120px_1fr_auto] md:items-start">
+                <div className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[rgba(11,31,51,0.06)] text-[hsl(218,42%,14%)]">
                   <Icon className="h-5 w-5" />
                 </div>
 
@@ -83,7 +75,7 @@ export default function DashboardHub() {
                 <div>
                   <Link
                     to={option.to}
-                    className="inline-flex h-11 items-center gap-2 bg-[hsl(218,42%,14%)] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(42,24%,96%)] transition-all hover:bg-[hsl(218,42%,12%)]"
+                    className="inline-flex h-11 items-center gap-2 rounded-[12px] bg-[hsl(218,42%,14%)] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(42,24%,96%)] transition-all hover:bg-[hsl(218,42%,12%)]"
                   >
                     Enter
                     <ArrowRight className="h-4 w-4 text-[hsl(40,62%,46%)]" />
@@ -96,7 +88,7 @@ export default function DashboardHub() {
       </section>
 
       <section className="px-6 py-14">
-        <div className="mx-auto max-w-6xl border-t border-[rgba(19,36,67,0.12)] pt-10">
+        <div className="mx-auto max-w-6xl border-t border-[rgba(19,36,67,0.08)] pt-10">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,46%)]">
@@ -110,8 +102,8 @@ export default function DashboardHub() {
             <div className="space-y-4">
               {[
                 "Resident search and Ask the map both feed the live explore route.",
-                "Partner teams can manage activity, offers, and performance without leaving the product system.",
-                "Pricing, dashboard, and map now link to each other instead of splitting the experience.",
+                "Partner/property teams manage residents, campaigns, amenities, maintenance, reports, partner content, and conversion without leaving the product system.",
+                "Pricing, dashboard, map, card, workspace, and partner routes now describe one operating layer instead of separate brochures.",
               ].map((line) => (
                 <div key={line} className="flex items-start gap-3 border-b border-[rgba(19,36,67,0.08)] pb-4">
                   <Sparkles className="mt-1 h-4 w-4 text-[hsl(40,62%,46%)]" />

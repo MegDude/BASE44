@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, ArrowRight, Check, AlertCircle } from "lucide-react";
+import { PARTNER_DASHBOARD_LINK } from "@/lib/partnerContent";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check } from "lucide-react";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -26,35 +27,32 @@ const CAT_LABELS = {
   run_club: "Run Club", yoga: "Yoga",
 };
 
+const DEMO_PARTNER_USER = {
+  id: "demo-partner",
+  full_name: "Downtown Perks Partner",
+  email: "partner@downtownperks.demo",
+  role: "partner",
+  organization_name: "Downtown Perks Demo Partner",
+  partner_type: "venue",
+  is_demo: true,
+};
+
 export default function PartnerWorkspace() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("overview");
-  const navigate = useNavigate();
 
   useEffect(() => {
-    base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
+    base44.auth
+      .me()
+      .then(u => setUser(u || DEMO_PARTNER_USER))
+      .catch(() => setUser(DEMO_PARTNER_USER))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-7 h-7 border-2 border-border border-t-primary rounded-full animate-spin" />
-    </div>
-  );
-
-  if (!user) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="text-center max-w-sm">
-        <div className="w-12 h-12 rounded-full border border-border/50 flex items-center justify-center mx-auto mb-4">
-          <AlertCircle className="w-5 h-5 text-muted-foreground" />
-        </div>
-        <h2 className="font-heading text-xl font-medium mb-2">Sign in to continue</h2>
-        <p className="text-muted-foreground text-[13px] mb-6">Access your partner workspace to manage perks, events, and your downtown presence.</p>
-        <button onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-          Sign in <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
     </div>
   );
 
@@ -75,7 +73,7 @@ export default function PartnerWorkspace() {
               <Link to="/partners" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
                 Partner types
               </Link>
-              <Link to="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
+              <Link to={PARTNER_DASHBOARD_LINK} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
               </Link>
             </div>
@@ -544,8 +542,12 @@ function ProfileSection({ user, setUser }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    const updated = await base44.auth.updateMe(form);
-    setUser(updated);
+    if (user?.is_demo) {
+      setUser({ ...user, ...form });
+    } else {
+      const updated = await base44.auth.updateMe(form);
+      setUser(updated);
+    }
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);

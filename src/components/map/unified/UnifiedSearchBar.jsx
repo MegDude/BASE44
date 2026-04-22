@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, X, Sparkles, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMapStateStore } from '@/store/mapStateStore';
@@ -10,15 +10,38 @@ const QUICK_PROMPTS = [
   'open now',
 ];
 
-export default function UnifiedSearchBar() {
+const ASK_SUGGESTIONS = [
+  {
+    title: 'Where do you want to go?',
+    subtitle: 'Coffee. Dinner. Groceries. Fitness. Drinks. All within walking distance.',
+    query: 'coffee right now',
+  },
+  {
+    title: 'What do you want to do?',
+    subtitle: "See what's on tonight. Find something worth showing up for.",
+    query: 'events tonight',
+  },
+  {
+    title: 'Who do you want to meet?',
+    subtitle: "See who's going. Join in. Make a plan.",
+    query: 'live music nearby',
+  },
+];
+
+export default function UnifiedSearchBar({ mode = 'search', onAsk, askLoading = false } = {}) {
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
   const clearFilters = useMapStateStore((state) => state.clearFilters);
   const resultCount = useMapStateStore((state) => state.filteredResults.length);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showAskPanel, setShowAskPanel] = useState(mode === 'ask');
   const inputRef = useRef(null);
 
   const hasQuery = useMemo(() => searchQuery.trim().length > 0, [searchQuery]);
+
+  useEffect(() => {
+    setShowAskPanel(mode === 'ask');
+  }, [mode]);
 
   return (
     <motion.div
@@ -39,6 +62,14 @@ export default function UnifiedSearchBar() {
             onChange={(event) => setSearchQuery(event.target.value)}
             onFocus={() => setIsExpanded(true)}
             onBlur={() => window.setTimeout(() => setIsExpanded(false), 120)}
+            onKeyDown={(event) => {
+              if (event.key !== 'Enter') return;
+              if (mode === 'ask') {
+                event.preventDefault();
+                const q = searchQuery.trim();
+                if (q) onAsk?.(q);
+              }
+            }}
             placeholder="Search venues, events, perks, or a corridor"
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground md:text-base"
           />
@@ -59,11 +90,49 @@ export default function UnifiedSearchBar() {
               <X className="h-4 w-4" />
             </button>
           ) : (
-            <span className="hidden text-[#b69247] md:inline-flex">
+            <span className="hidden text-gold md:inline-flex">
               <Sparkles className="h-4 w-4" />
             </span>
           )}
         </div>
+
+        <AnimatePresence>
+          {showAskPanel && mode === 'ask' && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -8, height: 0 }}
+              className="mt-2 overflow-hidden rounded-[18px] border border-[rgba(11,31,51,0.10)] bg-white shadow-[0_12px_30px_rgba(11,31,51,0.08)]"
+            >
+              <div className="divide-y divide-[rgba(11,31,51,0.10)]">
+                {ASK_SUGGESTIONS.map((item) => (
+                  <button
+                    key={item.title}
+                    type="button"
+                    disabled={askLoading}
+                    onMouseDown={() => {
+                      setSearchQuery(item.query);
+                      onAsk?.(item.query);
+                    }}
+                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-secondary/60 disabled:opacity-60"
+                  >
+                    <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
+                      {item.title}
+                    </div>
+                    <div className="text-[12px] leading-relaxed text-foreground/60">{item.subtitle}</div>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onMouseDown={() => setShowAskPanel(false)}
+                  className="w-full px-4 py-2.5 text-[11px] text-foreground/40 transition-colors hover:text-foreground/60"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <AnimatePresence>
           {isExpanded && !hasQuery && (

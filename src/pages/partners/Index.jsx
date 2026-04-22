@@ -1,298 +1,133 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Building2, Users, Utensils, Sparkles, MapPin } from 'lucide-react';
-import PartnerHero from '@/components/partner/PartnerHero';
-import PartnerCTASection from '@/components/partner/PartnerCTASection';
-import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES, PARTNER_GRIDS } from '@/lib/partner-system';
-import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
-import { FAQ_PARTNERS } from '@/lib/faq-partner-data';
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
+import PartnerTypeCard from "@/components/partner/PartnerTypeCard";
+import PartnerBrandShowcase from "@/components/partner/PartnerBrandShowcase";
+import {
+  BRAND_SHOWCASE_GROUPS,
+  PARTNER_DASHBOARD_LINK,
+  PARTNER_LANDING_SECTIONS,
+  PARTNER_PLATFORM_MODULES,
+  PARTNER_TYPE_CONTENT,
+  PARTNER_TYPE_ORDER,
+} from "@/lib/partnerContent";
 
-const PARTNER_TYPES = [
-  {
-    id: 'residential',
-    label: 'Residential',
-    description: 'Connect residents to local venues, events, and perks',
-    icon: Building2,
-    href: '/partners/residential',
-    stats: { scans: '12k+', repeat: '73%' },
-  },
-  {
-    id: 'hospitality',
-    label: 'Hospitality',
-    description: 'Drive guest discovery and foot traffic from hotels',
-    icon: Users,
-    href: '/partners/hotels',
-    stats: { guests: '8k+', conversion: '34%' },
-  },
-  {
-    id: 'venues',
-    label: 'Venues',
-    description: 'Increase visits and repeat engagement',
-    icon: Utensils,
-    href: '/partners/venues',
-    stats: { visits: '24k+', repeat: '41%' },
-  },
-  {
-    id: 'brands',
-    label: 'Brands',
-    description: 'Launch campaigns with precise placement and attribution',
-    icon: Sparkles,
-    href: '/partners/brands',
-    stats: { campaigns: '15+', roi: '3.2x' },
-  },
-  {
-    id: 'civic',
-    label: 'Civic',
-    description: 'Mobilize communities around events and initiatives',
-    icon: MapPin,
-    href: '/partners/civic',
-    stats: { events: '40+', reach: '18k+' },
-  },
-];
+function SectionLabel({ children }) {
+  return (
+    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,42%)]">
+      {children}
+    </p>
+  );
+}
 
 export default function PartnersIndex() {
-  const [selectedType, setSelectedType] = useState(null);
+  const partnerCards = PARTNER_TYPE_ORDER.map((id) => PARTNER_TYPE_CONTENT[id]);
 
   return (
-    <div className="pt-[68px] min-h-screen bg-background">
-      {/* Hero */}
-      <PartnerHero
-        eyebrow="Partner Program"
-        headline="Build with Downtown Perks"
-        description="Five ways to grow your business: residential buildings, hotels, venues, brands, and civic organizations. Each with a live map, proven metrics, and a direct path to implementation."
-        primaryCTA="Explore your role"
-        primaryCTAHref="#partners"
-        stats={[
-          { label: 'Partners active', value: '40+' },
-          { label: 'Monthly scans', value: '180k' },
-          { label: 'Avg repeat rate', value: '52%' },
-        ]}
+    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.10),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
+      <section className="px-6 py-20 md:py-24">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.92fr] lg:items-end">
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
+            <SectionLabel>Partners</SectionLabel>
+            <h1 className="mt-5 max-w-5xl text-5xl font-semibold leading-[0.94] tracking-[-0.065em] md:text-7xl">
+              One partner landing page. Five partner types. One downtown operating system.
+            </h1>
+            <p className="mt-6 max-w-3xl text-base leading-7 text-[rgba(11,31,51,0.66)]">
+              The partner section should explain the system cleanly before it sells any one example. Properties, hospitality, venues, brands, and civic partners all plug into the same live map, progressive-access resident flow, and intelligence hub.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#partner-types"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-[var(--dp-navy,#0B1F33)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[rgba(11,31,51,0.9)]"
+              >
+                Explore partner types
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <Link
+                to={PARTNER_DASHBOARD_LINK}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-white/42 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-white/68"
+              >
+                Open intelligence hub
+              </Link>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} className="grid gap-3 sm:grid-cols-3">
+            {PARTNER_LANDING_SECTIONS.map((section) => {
+              const Icon = section.icon;
+              return (
+                <div key={section.title} className="rounded-[24px] border border-[rgba(11,31,51,0.10)] bg-white/38 p-5 backdrop-blur-md">
+                  <Icon className="h-5 w-5 text-[hsl(40,62%,42%)]" strokeWidth={1.75} />
+                  <div className="mt-4 text-lg font-semibold tracking-[-0.03em]">{section.title}</div>
+                  <div className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{section.body}</div>
+                </div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      <PartnerInsightMap
+        partnerType="dashboard"
+        title="The partner map is business intelligence."
+        description="Partner mode should show visibility, campaign, coverage, source, and conversion signals. It should not reuse the resident discovery map as a fake dashboard."
       />
 
-      {/* Partner selection */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-12">
-            <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight">
-              Your role
+      <section id="partner-types" className="border-y border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 max-w-3xl">
+            <SectionLabel>Partner Types</SectionLabel>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+              Choose the layer that matches the business problem.
             </h2>
-            <p className="text-[15px] text-[#6f6b65] mt-3">
-              Choose how you want to participate in the Downtown Perks ecosystem.
+            <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
+              Each page should stay general, operational, and useful. Brand examples live separately so the main partner narrative stays clean.
             </p>
           </div>
 
-          <div className={PARTNER_GRIDS.gridCardFiveCol}>
-            {PARTNER_TYPES.map((type) => {
-              const Icon = type.icon;
-              return (
-                <Link
-                  key={type.id}
-                  to={type.href}
-                  className="group"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4 }}
-                    className="h-full p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all duration-300 cursor-pointer"
-                  >
-                    <Icon className="w-8 h-8 text-[#111] mb-3" />
-                    <h3 className="text-[16px] font-bold text-[#111] mb-1.5">{type.label}</h3>
-                    <p className="text-[13px] text-[#7a746b] leading-relaxed mb-4">
-                      {type.description}
-                    </p>
-
-                    {type.stats && (
-                      <div className="flex gap-3 text-[11px]">
-                        {Object.entries(type.stats).slice(0, 2).map(([key, val]) => (
-                          <div key={key}>
-                            <div className="font-bold text-[#111]">{val}</div>
-                            <div className="text-[#8d887f] capitalize">{key}</div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#111] group-hover:gap-2 transition-all">
-                      Learn more
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </motion.div>
-                </Link>
-              );
-            })}
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {partnerCards.map((card, index) => (
+              <PartnerTypeCard
+                key={card.id}
+                type={card.shortLabel}
+                label={card.label}
+                description={card.description}
+                headline={card.outcomes[0]}
+                proofLine="View partner details"
+                icon={card.icon}
+                href={card.route}
+                delay={index * 0.05}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How it works unified */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
-            One system, five roles
-          </h2>
+      <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.84fr_1.16fr]">
+          <div>
+            <SectionLabel>Platform Logic</SectionLabel>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+              How the partner system should flow.
+            </h2>
+            <p className="mt-5 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
+              Residents and guests browse first. The value layer unlocks later. Partner success comes from measured visibility, not early friction.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Left: System explanation */}
-            <div>
-              <div className="space-y-6">
-                {[
-                  {
-                    title: 'Map-native discovery',
-                    desc: 'Residents, guests, and neighbors explore venues, events, and brands on a live map of downtown.',
-                  },
-                  {
-                    title: 'Precise placement',
-                    desc: 'Your location, offer, or event appears contextually based on user intent and proximity.',
-                  },
-                  {
-                    title: 'Real-time engagement',
-                    desc: 'Every interaction—scan, save, visit, redemption—is tracked and attributed.',
-                  },
-                  {
-                    title: 'Flexible models',
-                    desc: 'Launch campaigns, activate venues, connect residents, or drive foot traffic. Your choice.',
-                  },
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                  >
-                    <h3 className="text-[16px] font-bold text-[#111] mb-1.5">{item.title}</h3>
-                    <p className="text-[14px] text-[#6f6b65] leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {PARTNER_PLATFORM_MODULES.map((module) => (
+              <div key={module.title} className="rounded-[22px] bg-white/30 p-5 backdrop-blur-md">
+                <div className="text-lg font-semibold tracking-[-0.03em]">{module.title}</div>
+                <div className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{module.body}</div>
               </div>
-            </div>
-
-            {/* Right: Key stats / proof */}
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Active partners', value: '40+' },
-                { label: 'Monthly scans', value: '180k' },
-                { label: 'Avg retention', value: '52%' },
-                { label: 'Campaign ROI', value: '3.2x' },
-                { label: 'Total reach', value: '120k' },
-                { label: 'Redemption rate', value: '28%' },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
-                  className="p-5 rounded-2xl border border-[#e8e5df] bg-white"
-                >
-                  <div className="text-[20px] font-bold text-[#111]">{stat.value}</div>
-                  <div className="text-[11px] text-[#8d887f] mt-1.5">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Examples / use cases */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
-            See it in action
-          </h2>
-
-          <div className={PARTNER_GRIDS.gridCardThreeCol}>
-            {[
-              {
-                type: 'Residential',
-                example: 'The Paseo',
-                desc: 'Residents discovered local venues 3x more after launch',
-                stat: '↑ 180% engagement',
-                link: '/brands/the-paseo',
-              },
-              {
-                type: 'Hospitality',
-                example: 'Hotel Van Zandt',
-                desc: 'Guest foot traffic to nearby venues increased 2.1x',
-                stat: '↑ 84 visits/week',
-                link: '/brands/hotel-van-zandt',
-              },
-              {
-                type: 'Venues',
-                example: "Banger's",
-                desc: 'Consistent foot traffic and repeat visits from map discovery',
-                stat: '↑ 41% return rate',
-                link: '#',
-              },
-            ].map((example, i) => (
-              <motion.a
-                key={i}
-                href={example.link}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all"
-              >
-                <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-1.5">
-                  {example.type}
-                </div>
-                <h3 className="text-[18px] font-bold text-[#111] mb-2">{example.example}</h3>
-                <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{example.desc}</p>
-                <div className="flex items-center gap-2">
-                  <div className="text-[14px] font-bold text-[#111]">{example.stat}</div>
-                  <ArrowRight className="w-4 h-4 text-[#7a746b]" />
-                </div>
-              </motion.a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <FAQAccordionBlock
-        sectionEyebrow="Partner FAQs"
-        sectionTitle="How the partner system works"
-        sectionIntro="Downtown Perks gives each partner type a different way into the same downtown product. These answers explain how that system works."
-        items={FAQ_PARTNERS}
-        styleVariant="default"
-        showNumbers={false}
-        allowMultipleOpen={false}
-        defaultOpenIndex={0}
-        pageType="partners"
-        backgroundVariant="light"
-      />
-
-      {/* Closing CTA */}
-      <PartnerCTASection
-        headline="Join 40+ partners"
-        description="Let's talk about how Downtown Perks can work for you."
-        primaryCTA="Get started"
-        primaryHref="#partners"
-        secondaryLink={{ label: 'View pricing', href: '#' }}
-      />
-
-      {/* Footer nav */}
-      <section className={`${PARTNER_SPACING.subsectionVertical} border-t border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap gap-6 text-[13px]">
-            {[
-              { label: 'Residential', href: PARTNER_ROUTES[PARTNER_CATEGORIES.RESIDENTIAL] },
-              { label: 'Hospitality', href: PARTNER_ROUTES[PARTNER_CATEGORIES.HOSPITALITY] },
-              { label: 'Venues', href: PARTNER_ROUTES[PARTNER_CATEGORIES.VENUES] },
-              { label: 'Brands', href: PARTNER_ROUTES[PARTNER_CATEGORIES.BRANDS] },
-              { label: 'Civic', href: PARTNER_ROUTES[PARTNER_CATEGORIES.CIVIC] },
-            ].map((link) => (
-              <a key={link.href} href={link.href} className="text-[#111] hover:text-[#7a746b] transition-colors">
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <PartnerBrandShowcase groups={BRAND_SHOWCASE_GROUPS} />
     </div>
   );
 }

@@ -2,20 +2,81 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import {
   LayoutDashboard, MapPin, Star, Calendar, TrendingUp, Settings,
   Menu, X, ChevronRight, Bell, Building2, Users, ArrowRight,
-  AlertCircle, Zap, Activity, LogOut
+  Zap, Megaphone, Wrench,
+  ClipboardList, Home, FileText, BarChart3
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "map", label: "Map activity", icon: MapPin },
+  { id: "residents", label: "Residents", icon: Users },
   { id: "perks", label: "Perks", icon: Star },
   { id: "events", label: "Events", icon: Calendar },
+  { id: "campaigns", label: "Campaigns", icon: Megaphone },
+  { id: "amenities", label: "Amenities", icon: Home },
+  { id: "maintenance", label: "Maintenance", icon: Wrench },
+  { id: "reports", label: "Reports", icon: FileText },
+  { id: "partners", label: "Partners", icon: Building2 },
   { id: "performance", label: "Performance", icon: TrendingUp },
   { id: "settings", label: "Settings", icon: Settings },
 ];
+
+const PROPERTY_CAPABILITIES = [
+  {
+    id: "residents",
+    label: "Resident CRM",
+    value: "540",
+    detail: "Profiles, building source, saved places, card status, and segments.",
+    icon: Users,
+  },
+  {
+    id: "campaigns",
+    label: "Campaigns",
+    value: "12",
+    detail: "Announcements, offer pushes, event reminders, open rate, click rate, conversion.",
+    icon: Megaphone,
+  },
+  {
+    id: "amenities",
+    label: "Amenities",
+    value: "8",
+    detail: "Amenity booking and neighborhood value surfaced from one resident hub.",
+    icon: Home,
+  },
+  {
+    id: "maintenance",
+    label: "Maintenance",
+    value: "23",
+    detail: "Resident requests, status, priority, property operations, and follow-up.",
+    icon: Wrench,
+  },
+  {
+    id: "reports",
+    label: "Reports",
+    value: "4",
+    detail: "Redemption reports, engagement trends, segmentation, and actionable recommendations.",
+    icon: BarChart3,
+  },
+  {
+    id: "partners",
+    label: "Partner network",
+    value: "31",
+    detail: "Venues, brands, hotels, civic partners, and active perk performance.",
+    icon: Building2,
+  },
+];
+
+const DEMO_PARTNER_USER = {
+  id: "demo-partner",
+  full_name: "Downtown Perks Partner",
+  email: "partner@downtownperks.demo",
+  role: "partner",
+  is_demo: true,
+};
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -24,7 +85,11 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
+    base44.auth
+      .me()
+      .then(u => setUser(u || DEMO_PARTNER_USER))
+      .catch(() => setUser(DEMO_PARTNER_USER))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return (
@@ -33,37 +98,21 @@ export default function Dashboard() {
     </div>
   );
 
-  if (!user) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="text-center max-w-sm">
-        <div className="w-12 h-12 rounded-full border border-border/50 flex items-center justify-center mx-auto mb-4">
-          <AlertCircle className="w-5 h-5 text-muted-foreground" />
-        </div>
-        <h2 className="font-heading text-xl font-medium mb-2">Sign in required</h2>
-        <p className="text-muted-foreground text-[13px] mb-6">Access your partner dashboard to view activity, manage content, and track performance.</p>
-        <button onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-          Sign in <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
-  );
-
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.09),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] flex text-[var(--dp-navy,#0B1F33)]">
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-40 w-56 bg-card/80 backdrop-blur-xl border-r border-border/50 flex flex-col
+        fixed inset-y-0 left-0 z-40 w-60 bg-[rgba(247,246,242,0.72)] backdrop-blur-xl border-r border-[rgba(11,31,51,0.08)] flex flex-col
         transition-transform duration-300
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
-        <div className="h-[68px] flex items-center px-5 border-b border-border/40 gap-2.5">
-          <div className="w-6 h-6 rounded-full border border-primary/40 flex items-center justify-center">
-            <MapPin className="w-3 h-3 text-primary" />
+        <div className="h-[68px] flex items-center px-5 border-b border-[rgba(11,31,51,0.08)] gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-[11px] bg-[rgba(11,31,51,0.06)]">
+            <MapPin className="w-4 h-4 text-[var(--dp-navy,#0B1F33)]" strokeWidth={1.75} />
           </div>
-          <span className="font-heading font-medium text-sm tracking-tight">
-            Downtown<span className="text-primary"> Perks</span>
+          <span className="font-heading text-sm font-semibold tracking-[-0.035em]">
+            Downtown Perks
           </span>
           <button onClick={() => setSidebarOpen(false)} className="ml-auto text-muted-foreground hover:text-foreground lg:hidden">
             <X className="w-4 h-4" />
@@ -72,7 +121,7 @@ export default function Dashboard() {
 
         <div className="flex-1 overflow-y-auto py-4 px-2">
           <div className="mb-2 px-3">
-            <span className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-[0.14em]">Partner Dashboard</span>
+            <span className="text-[10px] font-semibold text-[rgba(11,31,51,0.42)] uppercase tracking-[0.16em]">Intelligence Hub</span>
           </div>
           <nav className="space-y-0.5">
             {NAV_ITEMS.map(item => {
@@ -80,10 +129,10 @@ export default function Dashboard() {
               const active = section === item.id;
               return (
                 <button key={item.id} onClick={() => { setSection(item.id); setSidebarOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[12px] font-medium transition-all ${
-                    active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[11px] text-[12px] font-medium transition-all ${
+                    active ? "bg-[rgba(11,31,51,0.08)] text-[var(--dp-navy,#0B1F33)]" : "text-[rgba(11,31,51,0.54)] hover:text-[var(--dp-navy,#0B1F33)] hover:bg-white/36"
                   }`}>
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                  <Icon className="w-3.5 h-3.5 shrink-0" strokeWidth={1.75} />
                   {item.label}
                 </button>
               );
@@ -91,19 +140,19 @@ export default function Dashboard() {
           </nav>
         </div>
 
-        <div className="p-4 border-t border-border/40 space-y-1">
-          <Link to="/partner-workspace" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all">
+        <div className="p-4 border-t border-[rgba(11,31,51,0.08)] space-y-1">
+          <Link to="/partner-workspace" className="flex items-center gap-2.5 px-3 py-2 rounded-[11px] text-[12px] text-[rgba(11,31,51,0.56)] hover:text-[var(--dp-navy,#0B1F33)] hover:bg-white/36 transition-all">
             <Zap className="w-3.5 h-3.5" /> Workspace
           </Link>
-          <button onClick={() => base44.auth.logout("/")} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all">
-            <LogOut className="w-3.5 h-3.5" /> Sign out
-          </button>
+          <div className="px-3 py-2 text-[11px] text-[rgba(11,31,51,0.46)]">
+            Public preview mode
+          </div>
         </div>
 
         {/* User info */}
-        <div className="p-4 border-t border-border/40">
+        <div className="p-4 border-t border-[rgba(11,31,51,0.08)]">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-[11px] font-medium text-primary shrink-0">
+            <div className="w-7 h-7 rounded-[10px] bg-[rgba(11,31,51,0.08)] flex items-center justify-center text-[11px] font-semibold text-[var(--dp-navy,#0B1F33)] shrink-0">
               {(user.full_name || user.email || "?")[0].toUpperCase()}
             </div>
             <div className="min-w-0">
@@ -120,10 +169,10 @@ export default function Dashboard() {
       )}
 
       {/* Main content */}
-      <div className="flex-1 lg:ml-56 min-h-screen flex flex-col">
+      <div className="flex-1 lg:ml-60 min-h-screen flex flex-col">
 
         {/* Top bar */}
-        <header className="h-[68px] flex items-center justify-between px-6 border-b border-border/40 bg-background/80 backdrop-blur-xl sticky top-0 z-20">
+        <header className="h-[68px] flex items-center justify-between px-6 border-b border-[rgba(11,31,51,0.08)] bg-[rgba(247,246,242,0.58)] backdrop-blur-xl sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-muted-foreground hover:text-foreground transition-colors">
               <Menu className="w-5 h-5" />
@@ -132,7 +181,7 @@ export default function Dashboard() {
               <h1 className="font-heading font-medium text-sm tracking-tight text-foreground capitalize">
                 {NAV_ITEMS.find(n => n.id === section)?.label || "Dashboard"}
               </h1>
-              <p className="text-[11px] text-muted-foreground hidden sm:block">Downtown Perks · Partner Dashboard</p>
+              <p className="text-[11px] text-[rgba(11,31,51,0.48)] hidden sm:block">Downtown Perks · Property + partner intelligence</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -140,7 +189,7 @@ export default function Dashboard() {
               <Bell className="w-4 h-4" />
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
             </button>
-            <Link to="/partner-workspace" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
+            <Link to="/partner-workspace" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-[12px] bg-white/42 text-[12px] font-medium text-foreground/70 hover:bg-white/68 hover:text-foreground transition-all">
               Workspace <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -151,8 +200,14 @@ export default function Dashboard() {
           <AnimatePresence mode="wait">
             {section === "overview" && <DashOverview key="overview" user={user} setSection={setSection} />}
             {section === "map" && <DashMap key="map" user={user} />}
+            {section === "residents" && <DashCapability key="residents" capabilityId="residents" />}
             {section === "perks" && <DashPerks key="perks" user={user} />}
             {section === "events" && <DashEvents key="events" user={user} />}
+            {section === "campaigns" && <DashCapability key="campaigns" capabilityId="campaigns" />}
+            {section === "amenities" && <DashCapability key="amenities" capabilityId="amenities" />}
+            {section === "maintenance" && <DashCapability key="maintenance" capabilityId="maintenance" />}
+            {section === "reports" && <DashCapability key="reports" capabilityId="reports" />}
+            {section === "partners" && <DashCapability key="partners" capabilityId="partners" />}
             {section === "performance" && <DashPerformance key="performance" user={user} />}
             {section === "settings" && <DashSettings key="settings" user={user} />}
           </AnimatePresence>
@@ -193,12 +248,17 @@ function DashOverview({ user, setSection }) {
   ];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6 max-w-5xl">
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-7 max-w-6xl">
       <div>
-        <h2 className="font-heading text-xl font-medium text-foreground mb-1">
-          Good to see you{user.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}.
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[hsl(40,62%,42%)] mb-3">
+          Backend capability layer
+        </p>
+        <h2 className="font-heading text-3xl font-semibold tracking-[-0.05em] text-foreground mb-2">
+          Property operations, resident engagement, and downtown conversion in one hub.
         </h2>
-        <p className="text-muted-foreground text-[13px]">Here is a snapshot of your downtown presence.</p>
+        <p className="text-muted-foreground text-[13px] max-w-3xl">
+          Modeled from the Harmony Homes backend dashboard: residents, campaigns, amenities, maintenance, reports, partner performance, and map activity use the same Downtown Perks visual system.
+        </p>
       </div>
 
       {loadingData ? (
@@ -212,9 +272,9 @@ function DashOverview({ user, setSection }) {
             return (
               <motion.button key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
                 onClick={k.action}
-                className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 text-left transition-all group">
-                <Icon className="w-4 h-4 text-primary/60 mb-3" />
-                <div className="font-heading text-2xl font-medium text-foreground">{k.value}</div>
+                className="p-5 rounded-[20px] bg-white/34 backdrop-blur-md hover:bg-white/52 text-left transition-all group">
+                <Icon className="w-4 h-4 text-[hsl(40,62%,42%)] mb-3" strokeWidth={1.75} />
+                <div className="font-heading text-2xl font-semibold tracking-[-0.04em] text-foreground">{k.value}</div>
                 <div className="text-[11px] text-muted-foreground mt-1">{k.label}</div>
               </motion.button>
             );
@@ -222,9 +282,37 @@ function DashOverview({ user, setSection }) {
         </div>
       )}
 
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+        {PROPERTY_CAPABILITIES.map((capability) => {
+          const Icon = capability.icon;
+          return (
+            <button
+              key={capability.id}
+              type="button"
+              onClick={() => setSection(capability.id)}
+              className="group rounded-[22px] bg-white/30 p-5 text-left backdrop-blur-md transition hover:bg-white/52"
+            >
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <span className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[rgba(11,31,51,0.06)]">
+                  <Icon className="h-4 w-4 text-[var(--dp-navy,#0B1F33)]" strokeWidth={1.75} />
+                </span>
+                <span className="font-heading text-2xl font-semibold tracking-[-0.05em] text-[hsl(40,62%,42%)]">
+                  {capability.value}
+                </span>
+              </div>
+              <h3 className="text-base font-semibold tracking-[-0.025em] text-foreground">{capability.label}</h3>
+              <p className="mt-2 text-[12px] leading-5 text-muted-foreground">{capability.detail}</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.13em] text-[rgba(11,31,51,0.62)] group-hover:text-[var(--dp-navy,#0B1F33)]">
+                Open surface <ChevronRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Activity pulse */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
+        <div className="p-5 rounded-[22px] bg-white/30 backdrop-blur-md">
           <div className="flex items-center justify-between mb-4">
             <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Perks on map</div>
             <button onClick={() => setSection("perks")} className="text-[11px] text-primary hover:underline underline-offset-4">Manage</button>
@@ -238,7 +326,7 @@ function DashOverview({ user, setSection }) {
             <div className="space-y-2">
               {perks.slice(0, 4).map(p => (
                 <div key={p.id} className="flex items-center gap-2.5">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${p.status === "active" ? "bg-green-500" : "bg-muted-foreground/40"}`} />
+                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${p.status === "active" ? "bg-[hsl(40,62%,42%)]" : "bg-muted-foreground/40"}`} />
                   <span className="text-[12px] text-foreground flex-1 truncate">{p.title}</span>
                   <span className="text-[11px] text-muted-foreground">{p.redemption_count || 0} redeem</span>
                 </div>
@@ -247,7 +335,7 @@ function DashOverview({ user, setSection }) {
           )}
         </div>
 
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
+        <div className="p-5 rounded-[22px] bg-white/30 backdrop-blur-md">
           <div className="flex items-center justify-between mb-4">
             <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Events on map</div>
             <button onClick={() => setSection("events")} className="text-[11px] text-primary hover:underline underline-offset-4">Manage</button>
@@ -261,7 +349,7 @@ function DashOverview({ user, setSection }) {
             <div className="space-y-2">
               {events.slice(0, 4).map(e => (
                 <div key={e.id} className="flex items-center gap-2.5">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${e.status === "live" ? "bg-green-500 animate-pulse" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${e.status === "live" ? "bg-[hsl(40,62%,42%)] animate-pulse" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
                   <span className="text-[12px] text-foreground flex-1 truncate">{e.title}</span>
                   <span className="text-[11px] text-muted-foreground">{e.rsvp_count || 0} RSVPs</span>
                 </div>
@@ -280,7 +368,7 @@ function DashOverview({ user, setSection }) {
         ].map((l, i) => {
           const Icon = l.icon;
           return (
-            <Link key={i} to={l.href} className="flex items-center gap-3 p-4 rounded-xl border border-border/40 hover:border-primary/30 transition-all group bg-card/20">
+            <Link key={i} to={l.href} className="flex items-center gap-3 p-4 rounded-[18px] bg-white/24 hover:bg-white/48 transition-all group">
               <Icon className="w-4 h-4 text-primary/60 shrink-0" />
               <div className="flex-1 min-w-0">
                 <div className="text-[12px] font-medium text-foreground">{l.label}</div>
@@ -295,63 +383,192 @@ function DashOverview({ user, setSection }) {
   );
 }
 
-// ─── MAP ACTIVITY ─────────────────────────────────────────────────────────────
+// ─── PROPERTY OPERATING SURFACES ─────────────────────────────────────────────
 
-function DashMap({ user }) {
-  const ACTIVITY = [
-    { type: "Map view", detail: "Your perk appeared in search results", time: "2 min ago" },
-    { type: "Save", detail: "A resident saved one of your offers", time: "14 min ago" },
-    { type: "View", detail: "Profile opened from downtown map", time: "28 min ago" },
-    { type: "RSVP", detail: "New RSVP on your latest event", time: "1 hr ago" },
-    { type: "Redemption", detail: "Perk redeemed at your venue", time: "2 hr ago" },
-    { type: "Map view", detail: "Appeared in 'wellness near Congress' search", time: "3 hr ago" },
-  ];
+const CAPABILITY_DETAILS = {
+  residents: {
+    eyebrow: "Resident CRM",
+    title: "Resident access, segments, and card activity.",
+    body: "Bring the Harmony-style resident roster into Downtown Perks: active members, building attribution, saved places, QR card status, and segment-ready audience data.",
+    metrics: [
+      { label: "Active residents", value: "540" },
+      { label: "Card activations", value: "186" },
+      { label: "Building sources", value: "6" },
+      { label: "Segments", value: "9" },
+    ],
+    rows: [
+      ["The Quincy", "142 residents", "Coffee + evening offers"],
+      ["The Ashton", "118 residents", "Events tonight"],
+      ["Seaholm", "96 residents", "Wellness + lake routes"],
+      ["Waterline", "84 residents", "Premium dining"],
+    ],
+  },
+  campaigns: {
+    eyebrow: "Campaigns",
+    title: "Announcements, offers, and reminders with conversion signal.",
+    body: "Track campaign delivery like the backend dashboard: sent audience, open rate, click rate, RSVP, redemption, and downtown action.",
+    metrics: [
+      { label: "Active campaigns", value: "12" },
+      { label: "Open rate", value: "64%" },
+      { label: "CTR", value: "22%" },
+      { label: "Conversions", value: "137" },
+    ],
+    rows: [
+      ["Friday dinner push", "Resident segment", "38 redemptions"],
+      ["Waterloo Sunset Series", "Event reminder", "71 RSVPs"],
+      ["New perk drop", "Card holders", "42 saves"],
+      ["Building welcome QR", "New residents", "29 activations"],
+    ],
+  },
+  amenities: {
+    eyebrow: "Amenities",
+    title: "Building amenities connected to the neighborhood layer.",
+    body: "Use the same operating model for rooftop events, pool access, fitness reservations, lobby QR entry, and partner perks around the property.",
+    metrics: [
+      { label: "Amenity modules", value: "8" },
+      { label: "Reservations", value: "214" },
+      { label: "QR entries", value: "18" },
+      { label: "Nearby opens", value: "4.2" },
+    ],
+    rows: [
+      ["Rooftop social", "Building event", "Live tonight"],
+      ["Fitness room", "Amenity reservation", "86 bookings"],
+      ["Lobby QR", "Resident onboarding", "42 scans"],
+      ["Pool day partner perk", "Local activation", "19 saves"],
+    ],
+  },
+  maintenance: {
+    eyebrow: "Maintenance",
+    title: "Requests, status, priority, and resident follow-up.",
+    body: "The property layer can support operational requests alongside neighborhood value, keeping resident service and local activation in one managed surface.",
+    metrics: [
+      { label: "Open requests", value: "23" },
+      { label: "High priority", value: "4" },
+      { label: "Avg response", value: "1.8h" },
+      { label: "Resolved", value: "91%" },
+    ],
+    rows: [
+      ["Unit 1704", "HVAC request", "In progress"],
+      ["Amenity deck", "Lighting check", "Scheduled"],
+      ["Lobby QR stand", "Replacement needed", "Open"],
+      ["Parking gate", "Resident report", "Resolved"],
+    ],
+  },
+  reports: {
+    eyebrow: "Reports",
+    title: "Performance reports and actionable recommendations.",
+    body: "Convert raw data into operator guidance: redemption trends, venue status, category mix, building attribution, and next actions.",
+    metrics: [
+      { label: "Reports", value: "4" },
+      { label: "Top venues", value: "12" },
+      { label: "Attribution paths", value: "18" },
+      { label: "Recommendations", value: "7" },
+    ],
+    rows: [
+      ["Perks performance", "Monthly report", "Ready"],
+      ["Building attribution", "Source analysis", "Updated"],
+      ["Venue health", "Underperforming partners", "3 flagged"],
+      ["Category mix", "Dining leads", "42% share"],
+    ],
+  },
+  partners: {
+    eyebrow: "Partner network",
+    title: "Buildings, venues, hotels, brands, and civic partners.",
+    body: "Manage the full downtown ecosystem from one place: partner status, content health, campaign eligibility, and map visibility.",
+    metrics: [
+      { label: "Partners", value: "31" },
+      { label: "Active offers", value: "46" },
+      { label: "Live events", value: "18" },
+      { label: "Needs review", value: "5" },
+    ],
+    rows: [
+      ["Jo's Coffee", "Venue", "Strong performer"],
+      ["The Ashton", "Building", "Active QR source"],
+      ["Hotel Van Zandt", "Hospitality", "Guest layer"],
+      ["Fine Eyewear", "Brand", "Campaign ready"],
+    ],
+  },
+};
+
+function DashCapability({ capabilityId }) {
+  const capability = CAPABILITY_DETAILS[capabilityId] || CAPABILITY_DETAILS.reports;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-3xl space-y-6">
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-6xl space-y-7">
       <div>
-        <h2 className="font-heading text-xl font-medium text-foreground mb-1">Map activity</h2>
-        <p className="text-muted-foreground text-[13px]">Recent interactions on the downtown map linked to your account.</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[hsl(40,62%,42%)] mb-3">
+          {capability.eyebrow}
+        </p>
+        <h2 className="font-heading text-3xl font-semibold tracking-[-0.05em] text-foreground mb-3">
+          {capability.title}
+        </h2>
+        <p className="max-w-3xl text-[13px] leading-6 text-muted-foreground">{capability.body}</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        {[{ label: "Views today", value: "34" }, { label: "Saves this week", value: "12" }, { label: "Nearby searches", value: "8" }].map((s, i) => (
-          <div key={i} className="p-4 rounded-xl border border-border/50 bg-card/40 text-center">
-            <div className="font-heading text-xl font-medium text-foreground">{s.value}</div>
-            <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {capability.metrics.map((metric) => (
+          <div key={metric.label} className="rounded-[20px] bg-white/32 p-5 backdrop-blur-md">
+            <div className="font-heading text-3xl font-semibold tracking-[-0.055em] text-foreground">{metric.value}</div>
+            <div className="mt-1 text-[11px] text-muted-foreground">{metric.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="rounded-xl border border-border/50 bg-card/40 overflow-hidden">
-        <div className="p-5 border-b border-border/40 flex items-center gap-2">
-          <Activity className="w-3.5 h-3.5 text-primary/60" />
-          <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Recent map activity</span>
-        </div>
-        <div className="divide-y divide-border/40">
-          {ACTIVITY.map((a, i) => (
-            <div key={i} className="p-4 flex items-center gap-4">
-              <div className="w-2 h-2 rounded-full bg-primary/50 shrink-0" />
-              <div className="flex-1">
-                <div className="text-[12px] font-medium text-foreground">{a.type}</div>
-                <div className="text-[11px] text-muted-foreground">{a.detail}</div>
+      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="overflow-hidden rounded-[24px] bg-white/34 backdrop-blur-md">
+          <div className="flex items-center gap-2 border-b border-[rgba(11,31,51,0.08)] px-5 py-4">
+            <ClipboardList className="h-4 w-4 text-[hsl(40,62%,42%)]" strokeWidth={1.75} />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.52)]">
+              Operating queue
+            </span>
+          </div>
+          <div className="divide-y divide-[rgba(11,31,51,0.07)]">
+            {capability.rows.map(([name, detail, status]) => (
+              <div key={`${name}-${detail}`} className="grid gap-2 px-5 py-4 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
+                <div className="text-sm font-semibold tracking-[-0.02em] text-foreground">{name}</div>
+                <div className="text-[12px] text-muted-foreground">{detail}</div>
+                <span className="w-fit rounded-full bg-[rgba(11,31,51,0.06)] px-3 py-1 text-[11px] font-medium text-[rgba(11,31,51,0.66)]">
+                  {status}
+                </span>
               </div>
-              <span className="text-[11px] text-muted-foreground/60 shrink-0">{a.time}</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="p-4 rounded-xl border border-border/40 bg-primary/5 flex items-center gap-3">
-        <MapPin className="w-4 h-4 text-primary shrink-0" />
-        <div className="flex-1">
-          <p className="text-[12px] text-foreground font-medium">See your live map presence</p>
-          <p className="text-[11px] text-muted-foreground">View how your content appears to people nearby on the map.</p>
+        <div className="rounded-[24px] bg-[var(--dp-navy,#0B1F33)] p-6 text-white">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,62%)]">
+            Intelligence output
+          </p>
+          <h3 className="mt-4 text-2xl font-semibold tracking-[-0.045em]">
+            What should the operator do next?
+          </h3>
+          <div className="mt-5 space-y-3 text-sm leading-6 text-white/68">
+            <p>Prioritize high-intent residents, keep map content current, and convert property activity into partner action.</p>
+            <p>Use this surface for decisions, not just reporting: launch a campaign, tune an offer, flag a partner, or follow up with a building.</p>
+          </div>
+          <Link
+            to="/partner-workspace"
+            className="mt-6 inline-flex h-11 items-center gap-2 rounded-[12px] bg-white px-4 text-xs font-semibold uppercase tracking-[0.13em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-[hsl(42,24%,96%)]"
+          >
+            Open workspace
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
-        <Link to="/downtown-perks/explore" className="text-[12px] text-primary font-medium hover:underline underline-offset-4 shrink-0">
-          Open map →
-        </Link>
       </div>
+    </motion.div>
+  );
+}
+
+// ─── MAP ACTIVITY ─────────────────────────────────────────────────────────────
+
+function DashMap() {
+  return (
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="-m-6">
+      <PartnerInsightMap
+        partnerType="dashboard"
+        title="Map-backed business intelligence"
+        description="Partner mode shows where engagement, campaign lift, coverage gaps, and opportunity zones are forming across downtown."
+      />
     </motion.div>
   );
 }
@@ -480,7 +697,7 @@ function DashEvents({ user }) {
 
 // ─── PERFORMANCE ──────────────────────────────────────────────────────────────
 
-function DashPerformance({ user }) {
+function DashPerformance() {
   const PERIODS = ["7 days", "30 days", "90 days"];
   const [period, setPeriod] = useState("30 days");
 
@@ -592,10 +809,9 @@ function DashSettings({ user }) {
           </div>
         </div>
 
-        <button onClick={() => base44.auth.logout("/")}
-          className="w-full p-4 rounded-xl border border-destructive/30 text-destructive text-[13px] font-medium hover:bg-destructive/10 transition-all text-left flex items-center gap-2">
-          <LogOut className="w-4 h-4" /> Sign out of partner account
-        </button>
+        <div className="w-full p-4 rounded-xl border border-border/50 bg-card/40 text-[13px] text-muted-foreground">
+          This dashboard runs in public preview mode. Admin-only write protection should stay on the backend, not in the browsing shell.
+        </div>
       </div>
     </motion.div>
   );

@@ -3,14 +3,11 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClientInstance } from "@/lib/query-client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PageNotFound from "./lib/PageNotFound";
-import { AuthProvider, useAuth } from "@/lib/AuthContext";
-import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import DashboardHub from "./pages/DashboardHub";
 // Downtown Perks pages
-import Landing from "./pages/downtown-perks/Landing";
 import ExploreRebuilt from "./pages/downtown-perks/ExploreRebuilt";
 import Events from "./pages/downtown-perks/Events";
 import PerksPage from "./pages/downtown-perks/PerksPage";
@@ -46,105 +43,71 @@ import BrandsPartner from "./pages/partners/Brands";
 import ResidentApp from "./pages/resident-app";
 import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
 
-const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-
-  // Show loading spinner while checking app public settings or auth
-  if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
-  // Handle authentication errors
-  if (authError) {
-    if (authError.type === "user_not_registered") {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === "auth_required") {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
-    }
-  }
-
-  // Render the main app
-  return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-
-        {/* Canonical top-level routes */}
-        <Route path="/map" element={<ExploreRebuilt />} />
-        <Route path="/explore" element={<ExploreRebuilt />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/perks" element={<PerksPage />} />
-        <Route path="/card" element={<PerksCard />} />
-        <Route path="/about" element={<About />} />
-
-        {/* Legacy Downtown Perks routes */}
-        <Route path="/downtown-perks" element={<Landing />} />
-        <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
-        <Route path="/downtown-perks/events" element={<Events />} />
-        <Route path="/downtown-perks/perks" element={<PerksPage />} />
-        <Route path="/downtown-perks/card" element={<PerksCard />} />
-        <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
-        <Route path="/downtown-perks/about" element={<About />} />
-
-        {/* Brand routes */}
-        <Route path="/brands" element={<BrandsIndex />} />
-        <Route path="/brands/analytics" element={<BrandAnalytics />} />
-        <Route path="/brands/the-paseo" element={<ThePaseo />} />
-        <Route path="/brands/the-waterline" element={<TheWaterline />} />
-        <Route path="/brands/bangers" element={<Bangers />} />
-        <Route path="/brands/the-stay-put" element={<TheStayPut />} />
-        <Route path="/brands/yeti" element={<Yeti />} />
-        <Route path="/brands/rivian" element={<Rivian />} />
-        <Route path="/brands/lululemon" element={<Lululemon />} />
-        <Route path="/brands/equinox" element={<Equinox />} />
-        <Route path="/brands/austin-fc" element={<AustinFC />} />
-        <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
-        <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
-        <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
-        <Route path="/brands/four-seasons" element={<FourSeasons />} />
-        <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
-        <Route path="/brands/the-shore" element={<TheShore />} />
-
-        {/* Partner and app routes */}
-        <Route path="/partners" element={<PartnersIndex />} />
-        <Route path="/partners/civic" element={<CivicPartner />} />
-        <Route path="/partners/residential" element={<ResidentialPartner />} />
-        <Route path="/partners/properties" element={<PropertiesPartner />} />
-        <Route path="/property-and-building-management" element={<PropertiesPartner />} />
-        <Route path="/partners/hotels" element={<HotelsPartner />} />
-        <Route path="/partners/venues" element={<VenuesPartner />} />
-        <Route path="/partners/brands" element={<BrandsPartner />} />
-        <Route path="/partner-workspace" element={<PartnerWorkspace />} />
-        <Route path="/dashboard" element={<DashboardHub />} />
-        <Route path="/dashboard/partner" element={<Dashboard />} />
-        <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
-        <Route path="/dashboard/resident" element={<ResidentApp />} />
-        <Route path="/partner-dashboard" element={<PartnerDashboard />} />
-        <Route path="/resident-app" element={<ResidentApp />} />
-        <Route path="/pricing" element={<Pricing />} />
-        {/* Catch-all route */}
-        <Route path="*" element={<PageNotFound />} />
-      </Route>
-    </Routes>
-  );
-};
-
 function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClientInstance}>
+      <Router>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+
+            <Route path="/map" element={<ExploreRebuilt />} />
+            <Route path="/explore" element={<ExploreRebuilt />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/perks" element={<PerksPage />} />
+            <Route path="/card" element={<PerksCard />} />
+            <Route path="/about" element={<About />} />
+
+            <Route path="/downtown-perks" element={<Home />} />
+            <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
+            <Route path="/downtown-perks/events" element={<Events />} />
+            <Route path="/downtown-perks/perks" element={<PerksPage />} />
+            <Route path="/downtown-perks/card" element={<PerksCard />} />
+            <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
+            <Route path="/downtown-perks/about" element={<About />} />
+
+            <Route path="/brands" element={<BrandsIndex />} />
+            <Route path="/brands/analytics" element={<BrandAnalytics />} />
+            <Route path="/brands/the-paseo" element={<ThePaseo />} />
+            <Route path="/brands/the-waterline" element={<TheWaterline />} />
+            <Route path="/brands/bangers" element={<Bangers />} />
+            <Route path="/brands/the-stay-put" element={<TheStayPut />} />
+            <Route path="/brands/yeti" element={<Yeti />} />
+            <Route path="/brands/rivian" element={<Rivian />} />
+            <Route path="/brands/lululemon" element={<Lululemon />} />
+            <Route path="/brands/equinox" element={<Equinox />} />
+            <Route path="/brands/austin-fc" element={<AustinFC />} />
+            <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
+            <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
+            <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
+            <Route path="/brands/four-seasons" element={<FourSeasons />} />
+            <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
+            <Route path="/brands/the-shore" element={<TheShore />} />
+
+            <Route path="/partners" element={<PartnersIndex />} />
+            <Route path="/partners/civic" element={<CivicPartner />} />
+            <Route path="/partners/residential" element={<ResidentialPartner />} />
+            <Route path="/partners/properties" element={<PropertiesPartner />} />
+            <Route path="/property-and-building-management" element={<PropertiesPartner />} />
+            <Route path="/partners/hospitality" element={<HotelsPartner />} />
+            <Route path="/partners/hotels" element={<HotelsPartner />} />
+            <Route path="/partners/venues" element={<VenuesPartner />} />
+            <Route path="/partners/brands" element={<BrandsPartner />} />
+            <Route path="/partners/dashboard" element={<Dashboard />} />
+            <Route path="/partner-workspace" element={<PartnerWorkspace />} />
+            <Route path="/dashboard" element={<DashboardHub />} />
+            <Route path="/dashboard/partner" element={<Dashboard />} />
+            <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
+            <Route path="/dashboard/resident" element={<ResidentApp />} />
+            <Route path="/partner-dashboard" element={<PartnerDashboard />} />
+            <Route path="/resident-app" element={<ResidentApp />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </Router>
+      <Toaster />
+    </QueryClientProvider>
   );
 }
 

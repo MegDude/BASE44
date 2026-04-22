@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Home, LayoutDashboard } from "lucide-react";
+import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Building2, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const RESIDENT_LINKS = [
@@ -11,19 +11,19 @@ const RESIDENT_LINKS = [
 ];
 
 const PARTNER_LINKS = [
-  { to: "/partners/residential", label: "Residential", desc: "Buildings & amenity layers", icon: Home },
-  { to: "/partners/hotels", label: "Hospitality", desc: "Hotels & guest experience", icon: Hotel },
+  { to: "/partners", label: "Overview", desc: "Partner system entry point", icon: LayoutDashboard },
+  { to: "/partners/properties", label: "Properties", desc: "Buildings & amenity layers", icon: Building2 },
+  { to: "/partners/hospitality", label: "Hospitality", desc: "Hotels & guest intelligence", icon: Hotel },
   { to: "/partners/venues", label: "Venues", desc: "Restaurants, bars & fitness", icon: MapIcon },
   { to: "/partners/brands", label: "Brands", desc: "Campaigns & activations", icon: Star },
   { to: "/partners/civic", label: "Civic", desc: "District programs & events", icon: Landmark },
+  { to: "/partners/dashboard", label: "Dashboard", desc: "Business insight hub", icon: LayoutDashboard },
 ];
 
 const TOP_LINKS = [
-  
-  
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
-  { to: "/partners", label: "Pricing" },
+  { to: "/downtown-perks/for-buildings", label: "Pricing" },
 ];
 
 export default function Navbar() {
@@ -73,20 +73,21 @@ export default function Navbar() {
   };
 
   return (
-    <nav ref={dropdownRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled
-        ? "bg-white/95 backdrop-blur-lg border-b border-border/40 shadow-sm shadow-black/5"
-        : "bg-white/90 backdrop-blur-sm border-b border-border/20"
-    }`}>
+    <nav
+      ref={dropdownRef}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 backdrop-blur-xl ${
+        scrolled ? "bg-[rgba(11,31,51,0.96)]" : "bg-[rgba(11,31,51,0.92)]"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
-            <MapPin className="w-3.5 h-3.5 text-primary" />
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Downtown Perks home">
+          <div className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center">
+            <MapPin className="w-3.5 h-3.5 text-gold" />
           </div>
-          <span className="font-heading font-medium text-[15px] tracking-tight text-foreground">
-            Downtown<span className="text-primary"> Perks</span>
+          <span className="font-heading font-medium text-[15px] tracking-tight text-white">
+            Downtown<span className="text-gold"> Perks</span>
           </span>
         </Link>
 
@@ -100,11 +101,11 @@ export default function Navbar() {
                   <button
                     onClick={() => setDropdown(dropdown === link.dropdown ? null : link.dropdown)}
                     className={`flex items-center gap-1 px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                      active || dropdown === link.dropdown ? "text-primary" : "text-foreground/60 hover:text-foreground"
+                      active || dropdown === link.dropdown ? "text-white" : "text-white/75 hover:text-white"
                     }`}
                   >
                     {link.label}
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdown === link.dropdown ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-white/60 transition-transform duration-200 ${dropdown === link.dropdown ? "rotate-180" : ""}`} />
                   </button>
 
                   <AnimatePresence>
@@ -114,7 +115,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 6 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[320px] bg-white rounded-2xl border border-border/40 shadow-lg shadow-black/8 overflow-hidden"
+                        className="absolute left-1/2 top-full mt-2 w-[320px] -translate-x-1/2 overflow-hidden rounded-[18px] border border-white/10 bg-[rgba(11,31,51,0.94)] shadow-[0_20px_48px_rgba(11,31,51,0.26)] backdrop-blur-xl"
                       >
                         <div className="p-2">
                           {(link.dropdown === "residents" ? RESIDENT_LINKS : PARTNER_LINKS).map((item) => {
@@ -123,27 +124,27 @@ export default function Navbar() {
                               <Link
                                 key={item.to}
                                 to={item.to}
-                                className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-[hsl(218,30%,97%)] transition-colors group"
+                                className="flex items-center gap-3 rounded-[14px] px-3 py-3 transition-colors hover:bg-white/10 group"
                               >
                                 {Icon ? (
-                                  <div className="w-8 h-8 rounded-lg bg-primary/8 border border-primary/12 flex items-center justify-center shrink-0">
-                                    <Icon className="w-3.5 h-3.5 text-primary/70" />
+                                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-white/10 text-white/70">
+                                    <Icon className="h-3.5 w-3.5" strokeWidth={1.8} />
                                   </div>
                                 ) : (
-                                  <div className="w-8 h-8 rounded-lg bg-muted/60 border border-border/40 flex items-center justify-center shrink-0">
-                                    <MapPin className="w-3.5 h-3.5 text-muted-foreground/60" />
+                                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-white/10 text-white/70">
+                                    <MapPin className="h-3.5 w-3.5" strokeWidth={1.8} />
                                   </div>
                                 )}
                                 <div>
-                                  <div className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors">{item.label}</div>
-                                  <div className="text-[11px] text-muted-foreground/60 mt-0.5">{item.desc}</div>
+                                  <div className="text-[13px] font-medium text-white transition-colors">{item.label}</div>
+                                  <div className="text-[11px] text-white/55 mt-0.5">{item.desc}</div>
                                 </div>
                               </Link>
                             );
                           })}
                           {link.dropdown === "partners" && (
                             <div className="mx-3 mt-1 pt-2 border-t border-border/40">
-                              <Link to="/partners" className="flex items-center gap-2 px-0 py-2 text-[12px] font-medium text-primary/70 hover:text-primary transition-colors">
+                              <Link to="/partners" className="flex items-center gap-2 px-0 py-2 text-[12px] font-medium text-white/70 hover:text-white transition-colors">
                                 View all partner types →
                               </Link>
                             </div>
@@ -160,9 +161,7 @@ export default function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                  isActive(link.to) ? "text-primary" : "text-foreground/60 hover:text-foreground"
-                }`}
+                className="px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 text-white/75 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -173,15 +172,15 @@ export default function Navbar() {
         {/* CTA row */}
         <div className="hidden md:flex items-center gap-2.5">
           <Link
-            to="/dashboard"
-            className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium text-foreground/60 hover:text-foreground transition-colors"
+            to="/partners/dashboard"
+            className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium text-white/75 hover:text-white transition-colors"
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
             Dashboard
           </Link>
           <Link
             to="/card"
-            className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all duration-300 shadow-sm shadow-primary/20"
+            className="px-5 py-2 rounded-full bg-gold text-navy text-[13px] font-semibold hover:bg-gold/90 transition-all duration-300 shadow-sm shadow-black/20"
           >
             Get Your Card
           </Link>
@@ -201,7 +200,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-[68px] left-0 right-0 bg-white border-b border-border/40 shadow-sm max-h-[80vh] overflow-y-auto"
+            className="absolute left-0 right-0 top-[68px] max-h-[80vh] overflow-y-auto border-b border-white/10 bg-[rgba(11,31,51,0.97)] backdrop-blur-xl md:hidden"
           >
             <div className="px-5 py-5 space-y-1">
 
@@ -210,7 +209,7 @@ export default function Navbar() {
               {RESIDENT_LINKS.map((link) => (
                 <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
                   className={`block px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
-                    isActive(link.to) ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-foreground"
+                    isActive(link.to) ? "text-white bg-white/10" : "text-white/75 hover:text-white"
                   }`}>
                   {link.label}
                 </Link>
@@ -223,9 +222,9 @@ export default function Navbar() {
                 return (
                   <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
-                      isActive(link.to) ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-foreground"
+                      isActive(link.to) ? "text-white bg-white/10" : "text-white/75 hover:text-white"
                     }`}>
-                    {Icon && <Icon className="w-3.5 h-3.5 text-primary/50 shrink-0" />}
+                    {Icon && <Icon className="w-3.5 h-3.5 text-white/70 shrink-0" />}
                     {link.label}
                   </Link>
                 );
@@ -233,18 +232,19 @@ export default function Navbar() {
 
               {/* Other */}
               <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
-              <Link to="/partners" onClick={() => setOpen(false)}
-                className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
+              <Link to="/downtown-perks/for-buildings" onClick={() => setOpen(false)}
+                className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-white/75 hover:text-white transition-colors">
                 Pricing
               </Link>
-              <Link to="/dashboard" onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
-                <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
+              <Link to="/partners/dashboard" onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-white/75 hover:text-white transition-colors">
+                <LayoutDashboard className="w-3.5 h-3.5 text-white/70" /> Dashboard
               </Link>
 
               <div className="pt-4 pb-2">
                 <Link to="/card" onClick={() => setOpen(false)}
-                  className="block px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium text-center hover:bg-primary/90 transition-all">
+                  className="block rounded-full bg-gold px-5 py-3 text-center text-sm font-semibold text-navy transition-colors hover:bg-gold/90"
+                >
                   Get Your Card
                 </Link>
               </div>

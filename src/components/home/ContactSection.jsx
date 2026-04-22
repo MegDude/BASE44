@@ -96,7 +96,7 @@ const forms = [
     sub: "is part of Downtown Perks.",
     fields: [
       { name: "name", label: "Your Name", type: "text" },
-      { name: "phone", label: "Phone (used for QR card login)", type: "tel" },
+      { name: "phone", label: "Phone (used for card delivery)", type: "tel" },
       { name: "email", label: "Email (optional)", type: "email" },
       { name: "building", label: "Building Address", type: "text" },
     ],

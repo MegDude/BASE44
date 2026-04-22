@@ -118,6 +118,47 @@ const MARKER_CONFIG = {
     selectedScale: 2.0,
     shadowBlur: '0 3px 8px rgba(192, 57, 43, 0.4)',
   },
+
+  'insight:engagement': {
+    color: '#C8973A',
+    icon: '',
+    size: 16,
+    iconSize: 0,
+    selectedScale: 1.9,
+    shadowBlur: '0 0 0 5px rgba(200, 151, 58, 0.18), 0 10px 24px rgba(11, 31, 51, 0.18)',
+  },
+  'insight:campaign': {
+    color: '#315E7E',
+    icon: '',
+    size: 16,
+    iconSize: 0,
+    selectedScale: 1.9,
+    shadowBlur: '0 0 0 5px rgba(49, 94, 126, 0.16), 0 10px 24px rgba(11, 31, 51, 0.18)',
+  },
+  'insight:opportunity': {
+    color: '#2F6F55',
+    icon: '',
+    size: 16,
+    iconSize: 0,
+    selectedScale: 1.9,
+    shadowBlur: '0 0 0 5px rgba(47, 111, 85, 0.16), 0 10px 24px rgba(11, 31, 51, 0.18)',
+  },
+  'insight:coverage': {
+    color: '#7B6B4F',
+    icon: '',
+    size: 16,
+    iconSize: 0,
+    selectedScale: 1.9,
+    shadowBlur: '0 0 0 5px rgba(123, 107, 79, 0.16), 0 10px 24px rgba(11, 31, 51, 0.18)',
+  },
+  'insight:performance': {
+    color: '#0B1F33',
+    icon: '',
+    size: 16,
+    iconSize: 0,
+    selectedScale: 1.9,
+    shadowBlur: '0 0 0 5px rgba(11, 31, 51, 0.14), 0 10px 24px rgba(11, 31, 51, 0.18)',
+  },
 };
 
 /**

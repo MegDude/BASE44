@@ -2,8 +2,12 @@ import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
+const rawBasePath = process.env.BASE_PATH || '/'
+const basePath = rawBasePath.endsWith('/') ? rawBasePath : `${rawBasePath}/`
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: basePath,
   logLevel: 'error', // Suppress warnings, only show errors
   plugins: [
     base44({
@@ -16,5 +20,8 @@ export default defineConfig({
       visualEditAgent: true
     }),
     react(),
-  ]
+  ],
+  build: {
+    sourcemap: false,
+  },
 });

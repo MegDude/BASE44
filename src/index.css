@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Inter:opsz,wght@14..32,300..700&family=Inter+Tight:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,48 +6,56 @@
 
 @layer base {
   :root {
-    --font-heading: 'Playfair Display', Georgia, serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'Inter Tight', 'Inter', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: 'Inter', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-accent: 'Allura', 'Inter Tight', cursive;
 
-    /* Bright, warm off-white base with dark navy controls */
-    --background: 42 38% 98%;
-    --foreground: 218 50% 14%;
+    /* Downtown Perks production light mode */
+    --background: 42 33% 97%;
+    --foreground: 218 42% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 218 50% 14%;
+    --card-foreground: 218 42% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 218 50% 14%;
+    --popover-foreground: 218 42% 14%;
 
-    --primary: 218 50% 14%;
-    --primary-foreground: 42 38% 98%;
+    --primary: 218 42% 14%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 42 24% 95%;
-    --secondary-foreground: 218 44% 18%;
-    --muted: 42 20% 95%;
-    --muted-foreground: 218 16% 42%;
-    --accent: 42 24% 94%;
-    --accent-foreground: 218 50% 14%;
+    --secondary: 42 20% 94%;
+    --secondary-foreground: 218 42% 14%;
+    --muted: 42 16% 93%;
+    --muted-foreground: 218 16% 36%;
+    --accent: 40 55% 44%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 52%;
     --destructive-foreground: 0 0% 98%;
-    --border: 218 16% 86%;
-    --input: 218 16% 88%;
-    --ring: 218 50% 14%;
+    --border: 42 14% 86%;
+    --input: 42 14% 86%;
+    --ring: 40 55% 44%;
 
-    --chart-1: 218 50% 14%;
-    --chart-2: 40 44% 52%;
-    --chart-3: 200 55% 40%;
-    --chart-4: 160 45% 38%;
-    --chart-5: 350 50% 48%;
-    --radius: 0.85rem;
+    --chart-1: 218 42% 14%;
+    --chart-2: 40 55% 44%;
+    --chart-3: 218 18% 32%;
+    --chart-4: 42 12% 72%;
+    --chart-5: 42 10% 82%;
+    --radius: 0.65rem;
+    --dp-navy: #0B1F33;
+    --dp-navy-soft: #1A2E45;
+    --dp-navy-muted: #5B6B7C;
+    --dp-gold: #C6A269;
+    --dp-gold-soft: #E6CFA3;
+    --dp-surface-base: #F7F8FA;
+    --dp-surface-glass: rgba(255, 255, 255, 0.62);
 
-    --sidebar-background: 42 38% 98%;
-    --sidebar-foreground: 218 50% 14%;
-    --sidebar-primary: 218 50% 14%;
-    --sidebar-primary-foreground: 42 38% 98%;
-    --sidebar-accent: 42 24% 94%;
-    --sidebar-accent-foreground: 218 50% 14%;
-    --sidebar-border: 218 16% 88%;
-    --sidebar-ring: 218 50% 14%;
+    --sidebar-background: 42 33% 97%;
+    --sidebar-foreground: 218 42% 14%;
+    --sidebar-primary: 218 42% 14%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 42 20% 94%;
+    --sidebar-accent-foreground: 218 42% 14%;
+    --sidebar-border: 42 14% 86%;
+    --sidebar-ring: 40 55% 44%;
   }
 
   .dark {
@@ -92,17 +100,17 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
     font-feature-settings: "kern" 1, "liga" 1;
-    line-height: 1.55;
-    letter-spacing: -0.01em;
+    line-height: 1.5;
+    letter-spacing: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: radial-gradient(circle at top, rgba(201, 181, 122, 0.09), transparent 0 34%), linear-gradient(to bottom, rgba(252, 251, 248, 1), rgba(247, 244, 237, 0.92));
+    background-color: hsl(var(--background));
   }
 
   h1,
   h2 {
     font-family: var(--font-heading);
-    letter-spacing: -0.035em;
+    letter-spacing: 0;
     line-height: 1.02;
   }
 
@@ -110,12 +118,12 @@
   h4,
   h5,
   h6 {
-    letter-spacing: -0.02em;
-    line-height: 1.12;
+    letter-spacing: 0;
+    line-height: 1.15;
   }
 
   p {
-    line-height: 1.62;
+    line-height: 1.55;
   }
 
   a,
@@ -134,26 +142,26 @@
 
 @layer components {
   .dp-section {
-    padding-top: clamp(3rem, 5vw, 4.5rem);
-    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+    padding-top: clamp(2.5rem, 4vw, 4rem);
+    padding-bottom: clamp(2.5rem, 4vw, 4rem);
   }
 
   .dp-section-tight {
-    padding-top: clamp(2rem, 4vw, 3rem);
-    padding-bottom: clamp(2rem, 4vw, 3rem);
+    padding-top: clamp(1.75rem, 3vw, 2.5rem);
+    padding-bottom: clamp(1.75rem, 3vw, 2.5rem);
   }
 
   .dp-card {
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border) / 0.7);
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(11, 31, 51, 0.05);
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(11, 31, 51, 0.05);
   }
 
   .dp-card-compact {
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border) / 0.75);
-    border-radius: 18px;
+    border-radius: 12px;
     box-shadow: 0 6px 18px rgba(11, 31, 51, 0.04);
   }
 
@@ -163,11 +171,11 @@
   }
 
   .dp-map-panel {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.86);
     border: 1px solid rgba(11, 31, 51, 0.08);
-    border-radius: 24px;
-    box-shadow: 0 18px 50px rgba(11, 31, 51, 0.08);
-    backdrop-filter: blur(16px);
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(11, 31, 51, 0.08);
+    backdrop-filter: blur(14px);
   }
 
   .dp-chip {
@@ -176,9 +184,9 @@
     gap: 0.35rem;
     border-radius: 9999px;
     border: 1px solid rgba(11, 31, 51, 0.08);
-    background: rgba(255, 255, 255, 0.92);
-    color: rgb(71 85 105);
-    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--dp-navy);
+    padding: 0.45rem 0.7rem;
     font-size: 0.72rem;
     font-weight: 600;
     line-height: 1;
@@ -195,7 +203,23 @@
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #b69247;
+    color: var(--dp-gold);
+  }
+
+  .dp-script-accent {
+    font-family: var(--font-accent);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 0.74;
+    color: hsl(40 62% 42%);
+    text-wrap: balance;
+  }
+
+  .dp-script-accent-inline {
+    font-family: var(--font-accent);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: hsl(40 62% 42%);
   }
 }
 
