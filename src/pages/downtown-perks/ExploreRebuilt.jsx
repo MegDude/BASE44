@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Activity, Flame, Layers3, MapPin } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Activity, Flame, Layers3, List, MapPin, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity } from '@/store/mapStateStore';
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
@@ -36,12 +36,14 @@ export default function ExploreRebuilt() {
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
   const heatmapVisible = useMapStateStore((state) => state.heatmapVisible);
+  const showResultsList = useMapStateStore((state) => state.showResultsList);
   const setMapCenter = useMapStateStore((state) => state.setMapCenter);
   const setMapZoom = useMapStateStore((state) => state.setMapZoom);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setFilteredResults = useMapStateStore((state) => state.setFilteredResults);
   const setHeatmapVisible = useMapStateStore((state) => state.setHeatmapVisible);
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
+  const setShowResultsList = useMapStateStore((state) => state.setShowResultsList);
   const updateFilter = useMapStateStore((state) => state.updateFilter);
 
   const [allEntities, setAllEntities] = useState([]);
@@ -126,6 +128,11 @@ export default function ExploreRebuilt() {
       setFilteredResults(base);
     }
   }, [askMode, setFilteredResults]);
+
+  useEffect(() => {
+    if (!selectedEntity) return;
+    setShowResultsList(false);
+  }, [selectedEntity, setShowResultsList]);
 
   const handleAsk = async (q) => {
     const query = String(q || '').trim();
@@ -303,14 +310,81 @@ export default function ExploreRebuilt() {
             </motion.div>
 
             <div className="pointer-events-auto">
-              <UnifiedSearchBar mode={askMode ? 'ask' : 'search'} onAsk={handleAsk} askLoading={askLoading} />
+              <UnifiedSearchBar
+                mode={askMode ? 'ask' : 'search'}
+                onAsk={handleAsk}
+                askLoading={askLoading}
+                onModeChange={(nextMode) => setAskMode(nextMode === 'ask')}
+              />
             </div>
             <div className="pointer-events-auto space-y-2">
               <TimeFilter />
               <UnifiedFilterChips />
             </div>
           </div>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4">
+            <div className="pointer-events-auto flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setShowResultsList(!showResultsList)}
+                className={showResultsList ? 'dp-chip dp-chip-active min-h-11' : 'dp-chip min-h-11'}
+              >
+                {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
+                {showResultsList ? 'Hide results' : `Results (${filteredResults.length})`}
+              </button>
+
+              <div className="dp-map-panel px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                {askMode ? 'Ask mode' : 'Search mode'}
+              </div>
+            </div>
+          </div>
         </div>
+
+        <AnimatePresence>
+          {showResultsList && !selectedEntity ? (
+            <>
+              <motion.button
+                type="button"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowResultsList(false)}
+                className="fixed inset-0 z-[24] bg-[rgba(11,31,51,0.18)] md:hidden"
+                aria-label="Close results"
+              />
+
+              <motion.div
+                initial={{ y: 440 }}
+                animate={{ y: 0 }}
+                exit={{ y: 440 }}
+                transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+                className="fixed inset-x-0 bottom-0 z-[25] px-3 pb-3 md:hidden"
+              >
+                <div className="dp-map-panel max-h-[58vh] overflow-hidden rounded-2xl">
+                  <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                    <div className="h-1.5 w-12 rounded-full bg-navy/10" />
+                    <button
+                      type="button"
+                      onClick={() => setShowResultsList(false)}
+                      className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
+                      aria-label="Close results"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  <div className="max-h-[calc(58vh-56px)] overflow-y-auto">
+                    <UnifiedResultsPanel
+                      items={filteredResults}
+                      onSelectResult={() => setShowResultsList(false)}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          ) : null}
+        </AnimatePresence>
 
         <UnifiedDrawer selected={selectedEntity} />
       </div>
@@ -357,7 +431,12 @@ export default function ExploreRebuilt() {
             </motion.div>
 
             <div className="pointer-events-auto">
-              <UnifiedSearchBar mode={askMode ? 'ask' : 'search'} onAsk={handleAsk} askLoading={askLoading} />
+              <UnifiedSearchBar
+                mode={askMode ? 'ask' : 'search'}
+                onAsk={handleAsk}
+                askLoading={askLoading}
+                onModeChange={(nextMode) => setAskMode(nextMode === 'ask')}
+              />
             </div>
             <div className="pointer-events-auto space-y-2">
               <TimeFilter />

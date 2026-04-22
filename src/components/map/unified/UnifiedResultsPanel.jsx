@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, MapPin, Sparkles, Clock3 } from 'lucide-react';
 import { useMapStateStore } from '@/store/mapStateStore';
 
-export default function UnifiedResultsPanel({ items = [] }) {
+export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
   const selectedEntityId = useMapStateStore((state) => state.selectedEntityId);
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
@@ -47,7 +47,10 @@ export default function UnifiedResultsPanel({ items = [] }) {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
-                    onClick={() => selectEntity(item)}
+                    onClick={() => {
+                      selectEntity(item);
+                      onSelectResult?.(item);
+                    }}
                     className={`w-full rounded-[22px] border p-4 text-left transition-all ${
                       isSelected
                         ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.04)] shadow-sm'

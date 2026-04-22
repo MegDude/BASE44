@@ -28,7 +28,12 @@ const ASK_SUGGESTIONS = [
   },
 ];
 
-export default function UnifiedSearchBar({ mode = 'search', onAsk, askLoading = false } = {}) {
+export default function UnifiedSearchBar({
+  mode = 'search',
+  onAsk,
+  askLoading = false,
+  onModeChange,
+} = {}) {
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
   const clearFilters = useMapStateStore((state) => state.clearFilters);
@@ -42,6 +47,23 @@ export default function UnifiedSearchBar({ mode = 'search', onAsk, askLoading = 
   useEffect(() => {
     setShowAskPanel(mode === 'ask');
   }, [mode]);
+
+  const handleAskToggle = () => {
+    const nextMode = mode === 'ask' ? 'search' : 'ask';
+    onModeChange?.(nextMode);
+
+    if (nextMode === 'ask') {
+      setShowAskPanel(true);
+      window.requestAnimationFrame(() => inputRef.current?.focus());
+      if (searchQuery.trim()) {
+        onAsk?.(searchQuery.trim());
+      }
+      return;
+    }
+
+    setShowAskPanel(false);
+    inputRef.current?.focus();
+  };
 
   return (
     <motion.div
@@ -60,7 +82,12 @@ export default function UnifiedSearchBar({ mode = 'search', onAsk, askLoading = 
             type="text"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            onFocus={() => setIsExpanded(true)}
+            onFocus={() => {
+              setIsExpanded(true);
+              if (mode === 'ask') {
+                setShowAskPanel(true);
+              }
+            }}
             onBlur={() => window.setTimeout(() => setIsExpanded(false), 120)}
             onKeyDown={(event) => {
               if (event.key !== 'Enter') return;
@@ -70,13 +97,26 @@ export default function UnifiedSearchBar({ mode = 'search', onAsk, askLoading = 
                 if (q) onAsk?.(q);
               }
             }}
-            placeholder="Search venues, events, perks, or a corridor"
+            placeholder={mode === 'ask' ? 'Ask the map what fits right now' : 'Search venues, events, perks, or a corridor'}
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground md:text-base"
           />
 
           <span className="hidden rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(247,247,251,0.95)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500 md:inline-flex">
             {resultCount} live
           </span>
+
+          <button
+            type="button"
+            onMouseDown={(event) => {
+              event.preventDefault();
+              handleAskToggle();
+            }}
+            className={mode === 'ask' ? 'dp-chip dp-chip-active shrink-0' : 'dp-chip shrink-0'}
+            aria-label={mode === 'ask' ? 'Switch to search mode' : 'Switch to ask mode'}
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            {mode === 'ask' ? 'Search' : 'Ask'}
+          </button>
 
           {hasQuery ? (
             <button
@@ -89,11 +129,7 @@ export default function UnifiedSearchBar({ mode = 'search', onAsk, askLoading = 
             >
               <X className="h-4 w-4" />
             </button>
-          ) : (
-            <span className="hidden text-gold md:inline-flex">
-              <Sparkles className="h-4 w-4" />
-            </span>
-          )}
+          ) : null}
         </div>
 
         <AnimatePresence>
