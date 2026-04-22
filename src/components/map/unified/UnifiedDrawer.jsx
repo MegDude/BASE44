@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, ChevronUp, Clock3, Heart, MapPin, X } from 'lucide-react';
+import { ArrowUpRight, Calendar, ChevronUp, Clock3, Heart, Loader2, MapPin, Ticket, X } from 'lucide-react';
 import { useMapStateStore } from '@/store/mapStateStore';
+import { useResidentMutations } from '@/hooks/useResidentMutations';
 
 export default function UnifiedDrawer({ selected }) {
   const drawerState = useMapStateStore((state) => state.drawerState);
@@ -8,6 +9,7 @@ export default function UnifiedDrawer({ selected }) {
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const toggleSaved = useMapStateStore((state) => state.toggleSaved);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
+  const mutations = useResidentMutations();
 
   if (!selected || drawerState === 'closed') {
     return null;
@@ -16,14 +18,42 @@ export default function UnifiedDrawer({ selected }) {
   const isExpanded = drawerState === 'expanded' || drawerState === 'fullscreen';
   const isSaved = savedEntityIds.has(selected.id);
 
-  const openMaps = () => {
+  const openMaps = async () => {
     if (!selected.location?.valid) return;
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${selected.location.latitude},${selected.location.longitude}`,
       '_blank',
       'noopener,noreferrer'
     );
+    await mutations.logInteraction(selected, 'directions', undefined, { surface: 'unified_drawer' });
   };
+
+  const handleSave = async () => {
+    toggleSaved(selected.id);
+    await mutations.toggleSavedItem(selected);
+  };
+
+  const handlePrimaryAction = async () => {
+    if (selected.type === 'event') {
+      await mutations.upsertRsvp(selected);
+      return;
+    }
+
+    if (selected.type === 'perk' || selected.perk?.value || selected.perk_value) {
+      await mutations.createRedemption(selected);
+      return;
+    }
+
+    await openMaps();
+  };
+
+  const primaryLabel =
+    selected.type === 'event'
+      ? 'RSVP'
+      : selected.type === 'perk' || selected.perk?.value || selected.perk_value
+        ? 'Redeem'
+        : 'Directions';
+  const PrimaryIcon = selected.type === 'event' ? Calendar : selected.type === 'perk' ? Ticket : ArrowUpRight;
 
   return (
     <>
@@ -47,9 +77,9 @@ export default function UnifiedDrawer({ selected }) {
           transition={{ type: 'spring', damping: 28, stiffness: 240 }}
           className="fixed inset-x-0 bottom-0 z-30 px-3 pb-3 md:hidden"
         >
-          <div className="dp-map-panel overflow-hidden rounded-[28px]">
+          <div className="dp-map-panel overflow-hidden rounded-2xl">
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <div className="h-1.5 w-12 rounded-full bg-slate-200" />
+              <div className="h-1.5 w-12 rounded-full bg-navy/10" />
               <button
                 onClick={() => selectEntity(null)}
                 className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
@@ -61,11 +91,11 @@ export default function UnifiedDrawer({ selected }) {
 
             <div className={`overflow-y-auto px-4 pb-4 ${isExpanded ? 'max-h-[70vh]' : 'max-h-[42vh]'}`}>
               <div className="pt-4">
-                <span className="inline-flex rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
+                  <span className="inline-flex rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-navy">
                   {selected.type}
                 </span>
-                <h2 className="mt-3 text-xl font-semibold text-[#0b1f33]">{selected.name}</h2>
-                <p className="mt-2 text-sm text-slate-600">{selected.description || selected.address}</p>
+                <h2 className="mt-3 text-xl font-semibold text-navy">{selected.name}</h2>
+                <p className="mt-2 text-sm text-navy-muted">{selected.description || selected.address}</p>
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
@@ -85,18 +115,19 @@ export default function UnifiedDrawer({ selected }) {
               </div>
 
               {isExpanded && (
-                <div className="mt-4 rounded-[20px] border border-border bg-[rgba(247,247,251,0.9)] p-4 text-sm text-slate-600">
+                <div className="mt-4 rounded-xl border border-border bg-white/80 p-4 text-sm text-navy-muted">
                   <p>{selected.description || 'This downtown stop is live on the shared resident map.'}</p>
-                  {selected.eventTiming?.title && <p className="mt-2 font-medium text-[#0b1f33]">{selected.eventTiming.title}</p>}
+                  {selected.eventTiming?.title && <p className="mt-2 font-medium text-navy">{selected.eventTiming.title}</p>}
                 </div>
               )}
 
               <div className="mt-4 grid grid-cols-2 gap-2">
                 <button
-                  onClick={() => toggleSaved(selected.id)}
+                  onClick={handleSave}
+                  disabled={mutations.pendingAction === 'save'}
                   className={isSaved ? 'dp-chip dp-chip-active justify-center py-3' : 'dp-chip justify-center py-3'}
                 >
-                  <Heart className="h-3.5 w-3.5" />
+                  {mutations.pendingAction === 'save' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Heart className="h-3.5 w-3.5" />}
                   {isSaved ? 'Saved' : 'Save'}
                 </button>
                 <button onClick={openMaps} className="dp-chip justify-center py-3">
@@ -106,8 +137,17 @@ export default function UnifiedDrawer({ selected }) {
               </div>
 
               <button
+                onClick={handlePrimaryAction}
+                disabled={Boolean(mutations.pendingAction)}
+                className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3 text-sm font-medium text-white"
+              >
+                {mutations.pendingAction ? <Loader2 className="h-4 w-4 animate-spin" /> : <PrimaryIcon className="h-4 w-4" />}
+                {primaryLabel}
+              </button>
+
+              <button
                 onClick={() => setDrawerState(isExpanded ? 'preview' : 'expanded')}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0b1f33] px-4 py-3 text-sm font-medium text-white"
+                className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
               >
                 <ChevronUp className="h-4 w-4" />
                 {isExpanded ? 'Collapse details' : 'View full details'}

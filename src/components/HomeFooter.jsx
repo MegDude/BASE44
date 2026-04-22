@@ -59,8 +59,8 @@ export default function HomeFooter() {
             <div className="space-y-2">
               {[
                 { to: "/partners", label: "Partner Overview" },
-                { to: "/downtown-perks/for-buildings", label: "Pricing" },
-                { to: "/dashboard", label: "Dashboard" },
+                { to: "/pricing", label: "Pricing" },
+                { to: "/partners/dashboard", label: "Dashboard" },
                 { to: "/downtown-perks/about", label: "About" },
               ].map(l => (
                 <Link key={l.to} to={l.to} className="block text-[13px] text-foreground/60 hover:text-foreground transition-colors">{l.label}</Link>

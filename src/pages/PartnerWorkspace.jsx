@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { PARTNER_DASHBOARD_LINK } from "@/lib/partnerContent";
 import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check } from "lucide-react";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
@@ -72,7 +73,7 @@ export default function PartnerWorkspace() {
               <Link to="/partners" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
                 Partner types
               </Link>
-              <Link to="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
+              <Link to={PARTNER_DASHBOARD_LINK} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
               </Link>
             </div>

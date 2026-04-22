@@ -34,8 +34,6 @@ export default function PartnerDashboard() {
   useEffect(() => {
     const init = async () => {
       try {
-        await base44.auth.me().catch(() => DEMO_PARTNER_USER);
-
         // Load venues (for this partner)
         const venueList = await base44.entities.Venue.list().catch(() => []);
         setVenues(venueList || []);
@@ -259,9 +257,8 @@ function VenuePanel({ venue, onClose }) {
     await base44.entities.Venue.update(venue.id, formData);
     setIsEditing(false);
     // Trigger map refresh via action
-    const actor = await base44.auth.me().catch(() => DEMO_PARTNER_USER);
     await base44.entities.UserAction.create({
-      user_email: actor?.email || DEMO_PARTNER_USER.email,
+      user_email: DEMO_PARTNER_USER.email,
       entity_id: venue.id,
       action_type: 'edit',
       timestamp: new Date().toISOString(),

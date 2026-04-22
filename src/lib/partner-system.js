@@ -77,7 +77,7 @@ export const PARTNER_CATEGORIES = {
 
 export const PARTNER_ROUTES = {
   [PARTNER_CATEGORIES.RESIDENTIAL]: '/partners/residential',
-  [PARTNER_CATEGORIES.HOSPITALITY]: '/partners/hotels',
+  [PARTNER_CATEGORIES.HOSPITALITY]: '/partners/hospitality',
   [PARTNER_CATEGORIES.VENUES]: '/partners/venues',
   [PARTNER_CATEGORIES.BRANDS]: '/partners/brands',
   [PARTNER_CATEGORIES.CIVIC]: '/partners/civic',

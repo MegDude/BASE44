@@ -1,7 +1,8 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Calendar, Home, Coffee, ArrowRight, QrCode } from "lucide-react";
+import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 
 const features = [
   "Restaurants, bars, coffee shops, and services nearby",
@@ -22,6 +23,9 @@ const filterTabs = ["All", "Places", "Offers", "Events", "Properties"];
 export default function MapSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [activeCategory, setActiveCategory] = useState("all");
+  const { items, loading } = useSharedMapFeed({ activeCategory });
+  const featuredItem = items?.[0];
 
   return (
     <section ref={ref} className="py-14 md:py-16 px-6 border-t border-[hsl(218,20%,88%)] bg-background">
@@ -60,12 +64,25 @@ export default function MapSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex gap-2 mb-8 overflow-x-auto pb-0.5"
         >
-          {filterTabs.map((tab, i) => (
-            <span key={i} className={`px-4 py-1.5 rounded-full text-[12px] font-medium whitespace-nowrap border cursor-default flex-shrink-0 ${
-              i === 0 ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground"
-            }`}>
-              {tab}
-            </span>
+          {[
+            { label: "All", id: "all" },
+            { label: "Places", id: "venue" },
+            { label: "Offers", id: "perk" },
+            { label: "Events", id: "event" },
+            { label: "Properties", id: "building" },
+          ].map((tab, i) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveCategory(tab.id)}
+              className={`px-4 py-1.5 rounded-full text-[12px] font-medium whitespace-nowrap border flex-shrink-0 transition-colors ${
+                activeCategory === tab.id
+                  ? "border-primary/50 bg-primary/10 text-primary"
+                  : "border-border/40 text-muted-foreground hover:text-foreground hover:border-border/60"
+              }`}
+            >
+              {tab.label}
+            </button>
           ))}
         </motion.div>
 
@@ -89,16 +106,34 @@ export default function MapSection() {
                 ))}
               </ul>
 
-              {/* Sample venue card */}
-              <div className="p-4 rounded-lg bg-[hsl(42,24%,96%)] border border-[hsl(218,20%,90%)] mb-6">
+              {/* Featured item (live) */}
+              <div className="p-4 rounded-lg bg-[hsl(220,20%,97%)] border border-[hsl(218,20%,90%)] mb-6">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
                     <Coffee className="w-3.5 h-3.5 text-primary/60" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-sm text-foreground">Jo's Coffee</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">Coffee. Quick stops. Daily rituals.</div>
-                    <div className="text-[11px] text-primary/70 mt-1">Nearby perk · 5-minute walk</div>
+                    {loading ? (
+                      <div className="space-y-2">
+                        <div className="h-4 w-32 rounded bg-border/40 animate-pulse" />
+                        <div className="h-3 w-40 rounded bg-border/30 animate-pulse" />
+                        <div className="h-3 w-24 rounded bg-border/30 animate-pulse" />
+                      </div>
+                    ) : featuredItem ? (
+                      <>
+                        <div className="font-medium text-sm text-foreground">{featuredItem.title}</div>
+                        <div className="text-[11px] text-muted-foreground mt-0.5">
+                          {featuredItem.shortDescription || featuredItem.category || "Live nearby"}
+                        </div>
+                        <div className="text-[11px] text-primary/70 mt-1">
+                          {featuredItem.address || featuredItem.neighborhood || "Downtown"} · {featuredItem.entityType}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-[12px] text-muted-foreground">
+                        No items available for this filter.
+                      </div>
+                    )}
                   </div>
                   <span className="text-[11px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-full shrink-0">
                     Show Card

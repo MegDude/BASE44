@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import ResidentNav from "@/components/resident/ResidentNav";
 import ResidentTabs from "@/components/resident/ResidentTabs";
+import { resolveResidentContext } from "@/lib/resident/resolveResidentContext";
 
 /**
  * /resident-app — Unified Resident Dashboard
@@ -18,22 +19,14 @@ const GUEST_RESIDENT = {
 };
 
 export default function ResidentApp() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("now");
-
-  useEffect(() => {
-    base44.auth
-      .me()
-      .then((u) => {
-        setUser(u || GUEST_RESIDENT);
-        setLoading(false);
-      })
-      .catch(() => {
-        setUser(GUEST_RESIDENT);
-        setLoading(false);
-      });
-  }, []);
+  const location = useLocation();
+  const [user] = useState(GUEST_RESIDENT);
+  const [loading] = useState(false);
+  const initialContext = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return resolveResidentContext({ tab: params.get("tab") });
+  }, [location.search]);
+  const [activeTab, setActiveTab] = useState(initialContext.tab);
 
   if (loading) {
     return (

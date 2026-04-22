@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -54,7 +53,6 @@ function createPreviewCard(form, source) {
 
 export default function PerksCard() {
   const [searchParams] = useSearchParams();
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [localCard, setLocalCard] = useState(null);
@@ -68,40 +66,34 @@ export default function PerksCard() {
   const qrSource = searchParams.get("src") || searchParams.get("source") || "direct";
 
   useEffect(() => {
-    async function loadUser() {
+    function loadCardState() {
       try {
         const cachedCard = window.localStorage.getItem(LOCAL_CARD_KEY);
         if (cachedCard) {
           setLocalCard(JSON.parse(cachedCard));
         }
-
         getOrCreateSessionId();
-        const isAuth = await base44.auth.isAuthenticated();
-        if (isAuth) {
-          const me = await base44.auth.me();
-          setUser(me);
-        }
       } catch (error) {
         console.error("Unable to load perks card state:", error);
       } finally {
         setLoading(false);
       }
     }
-    loadUser();
+    loadCardState();
   }, []);
 
   const qrValue = useMemo(
-    () => buildQrValue({ user, localCard, source: qrSource }),
-    [localCard, qrSource, user]
+    () => buildQrValue({ localCard, source: qrSource }),
+    [localCard, qrSource]
   );
 
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(
     qrValue
   )}`;
 
-  const memberName = user?.full_name || localCard?.firstName || "DowntownPerks Member";
-  const memberStatus = user || localCard?.activated ? "Active Member" : "Preview access";
-  const memberId = user?.id || localCard?.memberId || "Unlock to issue member ID";
+  const memberName = localCard?.firstName || "DowntownPerks Member";
+  const memberStatus = localCard?.activated ? "Active Member" : "Preview access";
+  const memberId = localCard?.memberId || "Unlock to issue member ID";
 
   const handleSoftSignup = (event) => {
     event.preventDefault();
@@ -209,7 +201,7 @@ export default function PerksCard() {
             </button>
           </motion.section>
 
-          {!user && !localCard?.activated && (
+          {!localCard?.activated && (
             <motion.form
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -266,13 +258,12 @@ export default function PerksCard() {
                   <Sparkles className="h-4 w-4 text-[var(--dp-gold,#CFAF5A)]" strokeWidth={1.75} />
                   Text me access
                 </button>
-                <button
-                  type="button"
-                  onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
+                <Link
+                  to="/downtown-perks/explore"
                   className="inline-flex h-12 flex-1 items-center justify-center rounded-[12px] bg-white/42 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-white/68"
                 >
-                  Existing account
-                </button>
+                  Keep browsing
+                </Link>
               </div>
             </motion.form>
           )}

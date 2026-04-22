@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import {
   LayoutDashboard, MapPin, Star, Calendar, TrendingUp, Settings,
   Menu, X, ChevronRight, Bell, Building2, Users, ArrowRight,
-  Zap, Activity, LogOut, Megaphone, Wrench,
+  Zap, Megaphone, Wrench,
   ClipboardList, Home, FileText, BarChart3
 } from "lucide-react";
 
@@ -143,9 +144,9 @@ export default function Dashboard() {
           <Link to="/partner-workspace" className="flex items-center gap-2.5 px-3 py-2 rounded-[11px] text-[12px] text-[rgba(11,31,51,0.56)] hover:text-[var(--dp-navy,#0B1F33)] hover:bg-white/36 transition-all">
             <Zap className="w-3.5 h-3.5" /> Workspace
           </Link>
-          <button onClick={() => base44.auth.logout("/")} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-[11px] text-[12px] text-[rgba(11,31,51,0.56)] hover:text-destructive hover:bg-destructive/10 transition-all">
-            <LogOut className="w-3.5 h-3.5" /> Sign out
-          </button>
+          <div className="px-3 py-2 text-[11px] text-[rgba(11,31,51,0.46)]">
+            Public preview mode
+          </div>
         </div>
 
         {/* User info */}
@@ -561,60 +562,13 @@ function DashCapability({ capabilityId }) {
 // ─── MAP ACTIVITY ─────────────────────────────────────────────────────────────
 
 function DashMap() {
-  const ACTIVITY = [
-    { type: "Map view", detail: "Your perk appeared in search results", time: "2 min ago" },
-    { type: "Save", detail: "A resident saved one of your offers", time: "14 min ago" },
-    { type: "View", detail: "Profile opened from downtown map", time: "28 min ago" },
-    { type: "RSVP", detail: "New RSVP on your latest event", time: "1 hr ago" },
-    { type: "Redemption", detail: "Perk redeemed at your venue", time: "2 hr ago" },
-    { type: "Map view", detail: "Appeared in 'wellness near Congress' search", time: "3 hr ago" },
-  ];
-
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-3xl space-y-6">
-      <div>
-        <h2 className="font-heading text-xl font-medium text-foreground mb-1">Map activity</h2>
-        <p className="text-muted-foreground text-[13px]">Recent interactions on the downtown map linked to your account.</p>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3">
-        {[{ label: "Views today", value: "34" }, { label: "Saves this week", value: "12" }, { label: "Nearby searches", value: "8" }].map((s, i) => (
-          <div key={i} className="p-4 rounded-xl border border-border/50 bg-card/40 text-center">
-            <div className="font-heading text-xl font-medium text-foreground">{s.value}</div>
-            <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="rounded-xl border border-border/50 bg-card/40 overflow-hidden">
-        <div className="p-5 border-b border-border/40 flex items-center gap-2">
-          <Activity className="w-3.5 h-3.5 text-primary/60" />
-          <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Recent map activity</span>
-        </div>
-        <div className="divide-y divide-border/40">
-          {ACTIVITY.map((a, i) => (
-            <div key={i} className="p-4 flex items-center gap-4">
-              <div className="w-2 h-2 rounded-full bg-primary/50 shrink-0" />
-              <div className="flex-1">
-                <div className="text-[12px] font-medium text-foreground">{a.type}</div>
-                <div className="text-[11px] text-muted-foreground">{a.detail}</div>
-              </div>
-              <span className="text-[11px] text-muted-foreground/60 shrink-0">{a.time}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="p-4 rounded-xl border border-border/40 bg-primary/5 flex items-center gap-3">
-        <MapPin className="w-4 h-4 text-primary shrink-0" />
-        <div className="flex-1">
-          <p className="text-[12px] text-foreground font-medium">See your live map presence</p>
-          <p className="text-[11px] text-muted-foreground">View how your content appears to people nearby on the map.</p>
-        </div>
-        <Link to="/downtown-perks/explore" className="text-[12px] text-primary font-medium hover:underline underline-offset-4 shrink-0">
-          Open map →
-        </Link>
-      </div>
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="-m-6">
+      <PartnerInsightMap
+        partnerType="dashboard"
+        title="Map-backed business intelligence"
+        description="Partner mode shows where engagement, campaign lift, coverage gaps, and opportunity zones are forming across downtown."
+      />
     </motion.div>
   );
 }
@@ -855,10 +809,9 @@ function DashSettings({ user }) {
           </div>
         </div>
 
-        <button onClick={() => base44.auth.logout("/")}
-          className="w-full p-4 rounded-xl border border-destructive/30 text-destructive text-[13px] font-medium hover:bg-destructive/10 transition-all text-left flex items-center gap-2">
-          <LogOut className="w-4 h-4" /> Sign out of partner account
-        </button>
+        <div className="w-full p-4 rounded-xl border border-border/50 bg-card/40 text-[13px] text-muted-foreground">
+          This dashboard runs in public preview mode. Admin-only write protection should stay on the backend, not in the browsing shell.
+        </div>
       </div>
     </motion.div>
   );

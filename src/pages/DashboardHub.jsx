@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Map, Sparkles, UserRound } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 
 const ENTRY_OPTIONS = [
   {
@@ -23,14 +22,7 @@ const ENTRY_OPTIONS = [
 ];
 
 export default function DashboardHub() {
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    base44.auth
-      .me()
-      .then((user) => setUserName(user?.full_name || ""))
-      .catch(() => setUserName(""));
-  }, []);
+  const [userName] = useState("");
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.10),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] pt-[68px] text-[hsl(218,42%,14%)]">

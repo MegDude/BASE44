@@ -9,6 +9,7 @@ export default function VenueBookingForm({ venue, onClose }) {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
+    contact: '',
     party_size: 2,
     booking_date: new Date().toISOString().split('T')[0],
     booking_time: '19:00',
@@ -20,13 +21,11 @@ export default function VenueBookingForm({ venue, onClose }) {
     setLoading(true);
 
     try {
-      const user = await base44.auth.me().catch(() => null);
-
       const confirmation_code = `VB${Date.now().toString().slice(-8)}`;
 
       await base44.entities.Booking.create({
         type: 'venue_spot',
-        user_email: user?.email || 'guest@downtownperks.demo',
+        user_email: formData.contact || 'guest@downtownperks.demo',
         venue_id: venue.id,
         party_size: parseInt(formData.party_size),
         booking_date: new Date(`${formData.booking_date}T${formData.booking_time}`).toISOString(),
@@ -69,6 +68,19 @@ export default function VenueBookingForm({ venue, onClose }) {
 
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
+      <div>
+        <label className="text-[11px] font-bold uppercase tracking-widest text-[#8d887f] block mb-2">
+          Email or phone (optional)
+        </label>
+        <input
+          type="text"
+          value={formData.contact}
+          onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+          placeholder="Get booking details without making an account"
+          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+        />
+      </div>
+
       <div>
         <label className="text-[11px] font-bold uppercase tracking-widest text-[#8d887f] block mb-2">
           Date

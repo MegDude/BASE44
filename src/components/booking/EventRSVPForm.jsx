@@ -10,6 +10,7 @@ export default function EventRSVPForm({ event, onClose }) {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     guest_count: 1,
+    contact: '',
   });
 
   const handleSubmit = async (e) => {
@@ -17,13 +18,11 @@ export default function EventRSVPForm({ event, onClose }) {
     setLoading(true);
 
     try {
-      const user = await base44.auth.me().catch(() => null);
-
       const confirmation_code = `ER${Date.now().toString().slice(-8)}`;
 
       await base44.entities.Booking.create({
         type: 'event_rsvp',
-        user_email: user?.email || 'guest@downtownperks.demo',
+        user_email: formData.contact || 'guest@downtownperks.demo',
         event_id: event.id,
         party_size: parseInt(formData.guest_count),
         booking_date: event.date,
@@ -70,6 +69,19 @@ export default function EventRSVPForm({ event, onClose }) {
         </div>
         <div className="text-[13px] font-semibold text-[#111]">{event.title}</div>
         <div className="text-[12px] text-[#7a746b] mt-1">{event.venue_name}</div>
+      </div>
+
+      <div>
+        <label className="text-[11px] font-bold uppercase tracking-widest text-[#8d887f] block mb-2">
+          Email or phone (optional)
+        </label>
+        <input
+          type="text"
+          value={formData.contact}
+          onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+          placeholder="So we can send your RSVP details"
+          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+        />
       </div>
 
       <div>

@@ -10,7 +10,7 @@ const FOOTER_LINKS = {
     { to: "/about", label: "About" },
   ],
   Partners: [
-    { to: "/partners/residential", label: "Residential" },
+    { to: "/partners/properties", label: "Properties" },
     { to: "/partners/hotels", label: "Hospitality" },
     { to: "/partners/venues", label: "Venues" },
     { to: "/partners/brands", label: "Brands" },
@@ -19,8 +19,8 @@ const FOOTER_LINKS = {
   Platform: [
     { to: "/partners", label: "Partner Overview" },
     { to: "/partner-workspace", label: "Partner Workspace" },
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/partners", label: "Pricing" },
+    { to: "/partners/dashboard", label: "Dashboard" },
+    { to: "/pricing", label: "Pricing" },
     { to: "/brands", label: "Brand Directory" },
   ],
 };
