@@ -12,7 +12,7 @@ const RESIDENT_LINKS = [
 
 const PARTNER_LINKS = [
   { to: "/partners", label: "Overview", desc: "Partner system entry point", icon: LayoutDashboard },
-  { to: "/partners/properties", label: "Properties", desc: "Buildings & amenity layers", icon: Building2 },
+  { to: "/partners/residential", label: "Residential", desc: "Buildings & amenity layers", icon: Building2 },
   { to: "/partners/hospitality", label: "Hospitality", desc: "Hotels & guest intelligence", icon: Hotel },
   { to: "/partners/venues", label: "Venues", desc: "Restaurants, bars & fitness", icon: MapIcon },
   { to: "/partners/brands", label: "Brands", desc: "Campaigns & activations", icon: Star },
@@ -23,7 +23,6 @@ const PARTNER_LINKS = [
 const TOP_LINKS = [
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
-  { to: "/downtown-perks/for-buildings", label: "Pricing" },
 ];
 
 export default function Navbar() {
@@ -232,10 +231,6 @@ export default function Navbar() {
 
               {/* Other */}
               <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
-              <Link to="/downtown-perks/for-buildings" onClick={() => setOpen(false)}
-                className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-white/75 hover:text-white transition-colors">
-                Pricing
-              </Link>
               <Link to="/partners/dashboard" onClick={() => setOpen(false)}
                 className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-white/75 hover:text-white transition-colors">
                 <LayoutDashboard className="w-3.5 h-3.5 text-white/70" /> Dashboard

@@ -7,6 +7,7 @@ import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
 import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
 import UnifiedFilterChips from '@/components/map/unified/UnifiedFilterChips';
 import UnifiedDrawer from '@/components/map/unified/UnifiedDrawer';
+import LiveNearbyCard from '@/components/map/unified/LiveNearbyCard';
 import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
 import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
 import TimeFilter from '@/components/map/unified/TimeFilter';
@@ -50,6 +51,7 @@ export default function ExploreRebuilt() {
   const [loading, setLoading] = useState(true);
   const [askLoading, setAskLoading] = useState(false);
   const [askMode, setAskMode] = useState(false);
+  const [liveNearby, setLiveNearby] = useState(null);
   const baseEntitiesRef = useRef([]);
   const lastAskRef = useRef('');
 
@@ -61,8 +63,8 @@ export default function ExploreRebuilt() {
     (async () => {
       setLoading(true);
       try {
-        const feedItems = await mapRepository.getMapFeed({ query: '', filters: {}, limit: 1000 });
-        const safeItems = filterValidEntities(feedItems).filter(
+        const feed = await mapRepository.getIntelligenceFeed({ query: '', filters: {}, limit: 1000 });
+        const safeItems = filterValidEntities(feed.items).filter(
           (item) => item.isPlotted !== false
         );
 
@@ -70,11 +72,13 @@ export default function ExploreRebuilt() {
         baseEntitiesRef.current = safeItems;
         setAllEntities(safeItems);
         setFilteredResults(safeItems);
+        setLiveNearby(feed.liveNearby || safeItems[0] || null);
       } catch (error) {
         console.error('Failed to load map feed:', error);
         if (!mounted) return;
         setAllEntities([]);
         setFilteredResults([]);
+        setLiveNearby(null);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -126,6 +130,7 @@ export default function ExploreRebuilt() {
     if (Array.isArray(base) && base.length > 0) {
       setAllEntities(base);
       setFilteredResults(base);
+      setLiveNearby(base.find((item) => item?.metadata?.intelligence?.isLiveNearby) || base[0] || null);
     }
   }, [askMode, setFilteredResults]);
 
@@ -144,7 +149,7 @@ export default function ExploreRebuilt() {
     lastAskRef.current = query;
 
     try {
-      const { items } = await mapRepository.searchWithIntent({
+      const { items, liveNearby: nextLiveNearby } = await mapRepository.searchWithIntent({
         query,
         userLocation: {
           latitude: mapCenter?.[0],
@@ -155,6 +160,7 @@ export default function ExploreRebuilt() {
       const safeItems = filterValidEntities(items).filter((item) => item.isPlotted !== false);
       setAllEntities(safeItems);
       setFilteredResults(safeItems);
+      setLiveNearby(nextLiveNearby || safeItems[0] || null);
     } catch (error) {
       console.error('Ask the map failed:', error);
     } finally {
@@ -242,6 +248,11 @@ export default function ExploreRebuilt() {
     });
 
     setFilteredResults(results);
+    setLiveNearby(
+      results.find((item) => item?.metadata?.intelligence?.isLiveNearby) ||
+        results[0] ||
+        null
+    );
   }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults]);
 
   const summary = useMemo(
@@ -307,6 +318,11 @@ export default function ExploreRebuilt() {
                 <span className="dp-chip">{summary.events} events</span>
                 <span className="dp-chip">{summary.perks} perks</span>
               </div>
+              {liveNearby ? (
+                <div className="mt-3">
+                  <LiveNearbyCard item={liveNearby} compact onSelect={handleMarkerSelect} />
+                </div>
+              ) : null}
             </motion.div>
 
             <div className="pointer-events-auto">
@@ -428,6 +444,11 @@ export default function ExploreRebuilt() {
                 <span className="dp-chip">{summary.perks} perks</span>
                 <span className="dp-chip">{summary.properties} properties</span>
               </div>
+              {liveNearby ? (
+                <div className="mt-4 max-w-xl">
+                  <LiveNearbyCard item={liveNearby} onSelect={handleMarkerSelect} />
+                </div>
+              ) : null}
             </motion.div>
 
             <div className="pointer-events-auto">

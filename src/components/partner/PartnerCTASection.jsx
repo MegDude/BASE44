@@ -4,7 +4,14 @@ import { ArrowRight } from 'lucide-react';
 /**
  * PartnerCTASection — Closing CTA block for all pages
  */
-export default function PartnerCTASection({ headline, description, primaryCTA, primaryHref, secondaryLink }) {
+export default function PartnerCTASection({
+  headline,
+  description,
+  primaryCTA,
+  primaryHref,
+  secondaryLink,
+  footerText,
+}) {
   return (
     <section className="py-12 md:py-16 border-b border-border/70 bg-background">
       <div className="max-w-4xl mx-auto px-6 text-center">
@@ -44,6 +51,11 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
               </a>
             )}
           </div>
+          {footerText ? (
+            <p className="mt-5 text-[12px] text-foreground/56">
+              {footerText}
+            </p>
+          ) : null}
         </motion.div>
       </div>
     </section>

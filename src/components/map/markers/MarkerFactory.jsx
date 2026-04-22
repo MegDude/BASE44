@@ -12,12 +12,25 @@ const COLORS = {
 
 const SHADOW = 'filter:drop-shadow(0 8px 16px rgba(11,31,51,0.18))';
 
-function wrapPin(innerSvg, { width = 28, height = 36, active = false, className = 'custom-marker' } = {}) {
+function wrapPin(
+  innerSvg,
+  {
+    width = 28,
+    height = 36,
+    active = false,
+    className = 'custom-marker',
+    live = false,
+    topRanked = false,
+    trending = false,
+  } = {}
+) {
+  const scale = active ? 1.05 : topRanked ? 1.08 : 1;
   return L.divIcon({
-    className,
-    html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;width:${width}px;height:${height}px;transform:${active ? 'translateY(-1px) scale(1.05)' : 'translateY(0) scale(1)'};transition:all .2s ease;">
+    className: `${className}${live ? ' dp-marker-live' : ''}${topRanked ? ' dp-marker-top' : ''}${trending ? ' dp-marker-trending' : ''}`,
+    html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;width:${width}px;height:${height}px;transform:translateY(${active ? '-1px' : '0'}) scale(${scale});transition:all .2s ease;">
       ${innerSvg}
       ${active ? `<span style="position:absolute;inset:-6px;border-radius:999px;border:1.5px solid ${COLORS.goldSoft};opacity:0.82;pointer-events:none"></span>` : ''}
+      ${live ? `<span class="dp-marker-live-ring" style="position:absolute;inset:-7px;border-radius:999px;border:1.5px solid ${COLORS.goldSoft};pointer-events:none"></span>` : ''}
     </div>`,
     iconSize: [width, height],
     iconAnchor: [Math.round(width / 2), Math.round(height * 0.84)],
@@ -25,17 +38,17 @@ function wrapPin(innerSvg, { width = 28, height = 36, active = false, className 
   });
 }
 
-function makePerkIcon(active = false) {
+function makePerkIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
       <path d="M12 8.2L13.35 10.95L16.4 11.4L14.2 13.55L14.72 16.55L12 15.12L9.28 16.55L9.8 13.55L7.6 11.4L10.65 10.95L12 8.2Z" fill="${COLORS.navy}"/>
     </svg>`,
-    { active, className: 'custom-marker perk-marker-icon' }
+    { active, className: 'custom-marker perk-marker-icon', ...options }
   );
 }
 
-function makeEventIcon(active = false) {
+function makeEventIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
@@ -45,22 +58,22 @@ function makeEventIcon(active = false) {
       <rect x="8.2" y="9.4" width="7.6" height="5.8" rx="1.4" fill="${COLORS.navy}"/>
       <path d="M8.8 11.4H15.2" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
     </svg>`,
-    { active, className: 'custom-marker event-marker-icon' }
+    { active, className: 'custom-marker event-marker-icon', ...options }
   );
 }
 
-function makePlaceIcon(active = false) {
+function makePlaceIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
       <circle cx="12" cy="10.5" r="3.1" fill="${COLORS.navy}"/>
       <circle cx="12" cy="10.5" r="1.15" fill="rgba(255,255,255,0.92)"/>
     </svg>`,
-    { active, className: 'custom-marker place-marker-icon' }
+    { active, className: 'custom-marker place-marker-icon', ...options }
   );
 }
 
-function makeDiningIcon(active = false) {
+function makeDiningIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.navyDeep}" stroke="#FFFFFF" stroke-width="1.2"/>
@@ -68,11 +81,11 @@ function makeDiningIcon(active = false) {
       <path d="M12 8.2V12.7" stroke="${COLORS.goldLine}" stroke-width="1.4" stroke-linecap="round"/>
       <path d="M14.6 8.2C14.6 9.7 13.8 10.5 13.1 10.9V12.8" stroke="${COLORS.goldLine}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
-    { active, className: 'custom-marker dining-marker-icon' }
+    { active, className: 'custom-marker dining-marker-icon', ...options }
   );
 }
 
-function makeHotelIcon(active = false) {
+function makeHotelIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
@@ -80,48 +93,48 @@ function makeHotelIcon(active = false) {
       <path d="M14 8.3V12.8" stroke="${COLORS.navy}" stroke-width="1.9" stroke-linecap="round"/>
       <path d="M10 10.55H14" stroke="${COLORS.navy}" stroke-width="1.9" stroke-linecap="round"/>
     </svg>`,
-    { active, className: 'custom-marker hotel-marker-icon' }
+    { active, className: 'custom-marker hotel-marker-icon', ...options }
   );
 }
 
-function makeCivicIcon(active = false) {
+function makeCivicIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.civic}" stroke="#FFFFFF" stroke-width="1.2"/>
       <path d="M8.5 13.7H15.5" stroke="${COLORS.goldLine}" stroke-width="1.2" stroke-linecap="round"/>
       <path d="M9.3 13.7V10.2L12 8.5L14.7 10.2V13.7" stroke="${COLORS.goldLine}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
-    { active, className: 'custom-marker civic-marker-icon' }
+    { active, className: 'custom-marker civic-marker-icon', ...options }
   );
 }
 
-function makeBuildingIcon(active = false) {
+function makeBuildingIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
       <circle cx="12" cy="10.5" r="2.5" fill="${COLORS.navy}"/>
     </svg>`,
-    { active, className: 'custom-marker building-marker-icon' }
+    { active, className: 'custom-marker building-marker-icon', ...options }
   );
 }
 
-function makeBrandIcon(active = false) {
+function makeBrandIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.navyDeep}" stroke="#FFFFFF" stroke-width="1.2"/>
       <path d="M12 8.2L13.35 10.95L16.4 11.4L14.2 13.55L14.72 16.55L12 15.12L9.28 16.55L9.8 13.55L7.6 11.4L10.65 10.95L12 8.2Z" fill="${COLORS.goldLine}"/>
     </svg>`,
-    { active, className: 'custom-marker brand-marker-icon' }
+    { active, className: 'custom-marker brand-marker-icon', ...options }
   );
 }
 
-function makeMomentIcon(active = false) {
+function makeMomentIcon(active = false, options = {}) {
   return wrapPin(
     `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
       <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
       <path d="M12.9 8.2L9.6 12.1H12.05L11.1 15.95L14.45 11.95H12.05L12.9 8.2Z" fill="${COLORS.navy}"/>
     </svg>`,
-    { active, className: 'custom-marker moment-marker-icon' }
+    { active, className: 'custom-marker moment-marker-icon', ...options }
   );
 }
 
@@ -167,20 +180,27 @@ function getVenueVariant(entity) {
 
 export function createCompactMarker(entity) {
   const active = false;
-  if (entity?.markerType === 'moment' || entity?.type === 'moment') return makeMomentIcon(active);
-  if (entity?.markerType === 'perk' || entity?.type === 'perk' || entity?.perk || entity?.perk_value) return makePerkIcon(active);
-  if (entity?.markerType === 'event' || entity?.type === 'event') return makeEventIcon(active);
-  if (entity?.type === 'hotel') return makeHotelIcon(active);
-  if (entity?.markerType === 'building' || ['building', 'property'].includes(entity?.type)) return makeBuildingIcon(active);
-  if (entity?.markerType === 'brand' || entity?.type === 'brand') return makeBrandIcon(active);
-  if (entity?.markerType === 'civic' || entity?.type === 'civic') return makeCivicIcon(active);
+  const intelligence = entity?.metadata?.intelligence || {};
+  const markerOptions = {
+    live: Boolean(intelligence.isLiveNearby || intelligence.liveNow || intelligence.liveEventCount > 0),
+    topRanked: Boolean(intelligence.isTopRanked),
+    trending: Boolean(intelligence.trending),
+  };
+
+  if (entity?.markerType === 'moment' || entity?.type === 'moment') return makeMomentIcon(active, markerOptions);
+  if (entity?.markerType === 'perk' || entity?.type === 'perk' || entity?.perk || entity?.perk_value) return makePerkIcon(active, markerOptions);
+  if (entity?.markerType === 'event' || entity?.type === 'event') return makeEventIcon(active, markerOptions);
+  if (entity?.type === 'hotel') return makeHotelIcon(active, markerOptions);
+  if (entity?.markerType === 'building' || ['building', 'property'].includes(entity?.type)) return makeBuildingIcon(active, markerOptions);
+  if (entity?.markerType === 'brand' || entity?.type === 'brand') return makeBrandIcon(active, markerOptions);
+  if (entity?.markerType === 'civic' || entity?.type === 'civic') return makeCivicIcon(active, markerOptions);
 
   const venueVariant = getVenueVariant(entity);
-  if (venueVariant === 'coffee') return makePlaceIcon(active);
-  if (venueVariant === 'dining') return makeDiningIcon(active);
-  if (venueVariant === 'hotel') return makeHotelIcon(active);
-  if (venueVariant === 'civic') return makeCivicIcon(active);
-  return makePlaceIcon(active);
+  if (venueVariant === 'coffee') return makePlaceIcon(active, markerOptions);
+  if (venueVariant === 'dining') return makeDiningIcon(active, markerOptions);
+  if (venueVariant === 'hotel') return makeHotelIcon(active, markerOptions);
+  if (venueVariant === 'civic') return makeCivicIcon(active, markerOptions);
+  return makePlaceIcon(active, markerOptions);
 }
 
 export function createSelectedMarker(entity) {

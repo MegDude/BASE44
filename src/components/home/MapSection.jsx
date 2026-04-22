@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
+import LiveNearbyCard from "@/components/map/unified/LiveNearbyCard";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 import { filterValidEntities } from "@/lib/mapValidation";
@@ -171,11 +172,12 @@ export default function MapSection({ mapContext, onMapContextChange }) {
   const [askMode, setAskMode] = useState(Boolean(mapContext?.askMode));
   const [askLoading, setAskLoading] = useState(false);
   const [askResults, setAskResults] = useState([]);
+  const [askLiveNearby, setAskLiveNearby] = useState(null);
   const [selectedEntity, setSelectedEntity] = useState(null);
   const [mapCenter, setMapCenter] = useState(AUSTIN_CENTER);
   const [mapZoom, setMapZoom] = useState(14);
 
-  const { items: feedItems, loading: feedLoading } = useSharedMapFeed({
+  const { items: feedItems, liveNearby: feedLiveNearby, loading: feedLoading } = useSharedMapFeed({
     query: askMode ? "" : searchInput,
     activeCategory,
     limit: 200,
@@ -209,12 +211,14 @@ export default function MapSection({ mapContext, onMapContextChange }) {
   useEffect(() => {
     if (!askMode) {
       setAskResults([]);
+      setAskLiveNearby(null);
       return;
     }
 
     const query = String(searchInput || "").trim();
     if (!query) {
       setAskResults([]);
+      setAskLiveNearby(null);
       return;
     }
 
@@ -223,7 +227,7 @@ export default function MapSection({ mapContext, onMapContextChange }) {
     (async () => {
       setAskLoading(true);
       try {
-        const { items } = await mapRepository.searchWithIntent({
+        const { items, liveNearby } = await mapRepository.searchWithIntent({
           query,
           userLocation: {
             latitude: mapCenter?.[0],
@@ -233,10 +237,14 @@ export default function MapSection({ mapContext, onMapContextChange }) {
 
         if (mounted) {
           setAskResults(filterValidEntities(items || []));
+          setAskLiveNearby(liveNearby || null);
         }
       } catch (error) {
         console.error("Home ask-the-map failed:", error);
-        if (mounted) setAskResults([]);
+        if (mounted) {
+          setAskResults([]);
+          setAskLiveNearby(null);
+        }
       } finally {
         if (mounted) setAskLoading(false);
       }
@@ -252,6 +260,8 @@ export default function MapSection({ mapContext, onMapContextChange }) {
     const categoryFiltered = applyCategoryFilter(source || [], activeCategory);
     return filterValidEntities(applyWalkFilter(categoryFiltered, walkMinutes));
   }, [activeCategory, askMode, askResults, feedItems, walkMinutes]);
+
+  const liveNearby = askMode ? askLiveNearby : feedLiveNearby;
 
   useEffect(() => {
     if (!visibleItems.length) {
@@ -378,35 +388,35 @@ export default function MapSection({ mapContext, onMapContextChange }) {
             </ul>
 
             <div className="mb-6 rounded-lg border border-[hsl(218,20%,90%)] bg-[hsl(42,24%,96%)] p-4">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
-                  <Coffee className="w-3.5 h-3.5 text-primary/60" />
+              {feedLoading || askLoading ? (
+                <div className="space-y-2">
+                  <div className="h-4 w-32 rounded bg-border/40 animate-pulse" />
+                  <div className="h-3 w-40 rounded bg-border/30 animate-pulse" />
+                  <div className="h-3 w-24 rounded bg-border/30 animate-pulse" />
                 </div>
-                <div className="min-w-0 flex-1">
-                  {feedLoading || askLoading ? (
-                    <div className="space-y-2">
-                      <div className="h-4 w-32 rounded bg-border/40 animate-pulse" />
-                      <div className="h-3 w-40 rounded bg-border/30 animate-pulse" />
-                      <div className="h-3 w-24 rounded bg-border/30 animate-pulse" />
-                    </div>
-                  ) : selectedEntity ? (
-                    <>
-                      <div className="text-sm font-medium text-foreground">{featured.title}</div>
-                      <div className="mt-0.5 text-[11px] text-muted-foreground">{featured.subtitle}</div>
-                      <div className="mt-1 text-[11px] text-primary/70">{featured.meta}</div>
-                    </>
-                  ) : (
-                    <div className="text-[12px] text-muted-foreground">No items available for this filter.</div>
-                  )}
+              ) : liveNearby ? (
+                <LiveNearbyCard
+                  item={liveNearby}
+                  compact
+                  onSelect={(item) => {
+                    setSelectedEntity(item);
+                    mapPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                />
+              ) : selectedEntity ? (
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
+                    <Coffee className="w-3.5 h-3.5 text-primary/60" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-medium text-foreground">{featured.title}</div>
+                    <div className="mt-0.5 text-[11px] text-muted-foreground">{featured.subtitle}</div>
+                    <div className="mt-1 text-[11px] text-primary/70">{featured.meta}</div>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => mapPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                  className="shrink-0 rounded-full border border-primary/30 px-2.5 py-1 text-[11px] font-medium text-primary"
-                >
-                  Show Card
-                </button>
-              </div>
+              ) : (
+                <div className="text-[12px] text-muted-foreground">No items available for this filter.</div>
+              )}
             </div>
 
             <div className="flex gap-3">
