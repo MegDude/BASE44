@@ -11,6 +11,10 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const AUSTIN_CENTER = [30.267, -97.743];
+const DOWNTOWN_VIEW_BOUNDS = [
+  [30.2582, -97.7535],
+  [30.2795, -97.7382],
+];
 
 // Fix leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -37,6 +41,61 @@ function MapFlyTo({ position }) {
       console.warn('Map flyTo error:', error);
     }
   }, [position, map]);
+  return null;
+}
+
+function MapViewportManager({ items = [], selectedId, mapCenter }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map?._loaded) return;
+
+    const downtownBounds = L.latLngBounds(DOWNTOWN_VIEW_BOUNDS);
+    map.setMaxBounds(downtownBounds);
+
+    if (selectedId) return;
+    if (!Array.isArray(items) || items.length === 0) {
+      map.fitBounds(downtownBounds, { maxZoom: 15, animate: false });
+      return;
+    }
+
+    const coords = items
+      .map((item) => {
+        const lat = item?.location?.latitude;
+        const lng = item?.location?.longitude;
+        return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
+      })
+      .filter(Boolean);
+
+    if (coords.length === 0) {
+      map.fitBounds(downtownBounds, { maxZoom: 15, animate: false });
+      return;
+    }
+
+    const itemBounds = L.latLngBounds(coords);
+    const boundedItemBounds = itemBounds.isValid() && itemBounds.intersects(downtownBounds)
+      ? itemBounds.pad(0.08)
+      : downtownBounds;
+
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
+    map.fitBounds(boundedItemBounds, {
+      maxZoom: 15,
+      animate: false,
+      paddingTopLeft: isDesktop ? [24, 120] : [16, 140],
+      paddingBottomRight: isDesktop ? [340, 40] : [16, 180],
+    });
+  }, [items, map, selectedId]);
+
+  useEffect(() => {
+    if (!selectedId || !map?._loaded) return;
+    const safePosition = getValidMapCenter(mapCenter, AUSTIN_CENTER);
+    map.panInside(safePosition, {
+      animate: false,
+      paddingTopLeft: [24, 120],
+      paddingBottomRight: [24, 220],
+    });
+  }, [map, mapCenter, selectedId]);
+
   return null;
 }
 
@@ -81,6 +140,9 @@ export default function UnifiedMapShell({
       minZoom={12}
       maxZoom={19}
       scrollWheelZoom={true}
+      preferCanvas={true}
+      tap={true}
+      tapTolerance={20}
       onMoveend={(e) => handleDragEnd(e.target)}
       onZoomend={(e) => handleZoom(e.target)}
     >
@@ -90,6 +152,7 @@ export default function UnifiedMapShell({
       />
 
       {selectedId ? <MapFlyTo position={mapCenter} /> : null}
+      <MapViewportManager items={items} selectedId={selectedId} mapCenter={mapCenter} />
 
       {/* Heatmap and other layers */}
       {children}

@@ -1,7 +1,12 @@
 import { useMemo, useState } from "react";
 import { Activity, BarChart3, MapPin, Radar, Target } from "lucide-react";
 import MapExplorer from "@/components/partner/MapExplorer";
-import { getPartnerInsightPins } from "@/lib/map/partnerInsights";
+import ResponsiveScrollSection from "@/components/partner/ResponsiveScrollSection";
+import {
+  getPartnerInsightCards,
+  getPartnerInsightPins,
+  getPartnerInsightSummary,
+} from "@/lib/map/partnerInsights";
 
 const FILTERS = [
   { id: "all", label: "All insights" },
@@ -29,6 +34,8 @@ export default function PartnerInsightMap({
   const [selected, setSelected] = useState(null);
 
   const allItems = useMemo(() => getPartnerInsightPins({ partnerType }), [partnerType]);
+  const insightCards = useMemo(() => getPartnerInsightCards({ partnerType }), [partnerType]);
+  const summary = useMemo(() => getPartnerInsightSummary({ partnerType }), [partnerType]);
   const items = useMemo(
     () =>
       activeFilter === "all"
@@ -38,10 +45,50 @@ export default function PartnerInsightMap({
   );
 
   const activeItem = selected && items.some((item) => item.id === selected.id) ? selected : items[0];
+  const visibleCards = useMemo(
+    () =>
+      activeFilter === "all"
+        ? insightCards
+        : insightCards.filter((item) => item.insightType === activeFilter),
+    [activeFilter, insightCards]
+  );
 
   return (
-    <section className="border-y border-[rgba(11,31,51,0.08)] bg-white/20">
-      <div className="mx-auto grid max-w-7xl gap-5 px-6 py-10 lg:grid-cols-[1.35fr_0.65fr]">
+    <section className="border-y border-[rgba(11,31,51,0.08)] bg-[#f8f5ee]">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <div className="mb-6 grid gap-3 md:grid-cols-3">
+          {[
+            {
+              label: "Active zones",
+              value: summary.activeZones,
+              tone: "text-[hsl(42,55%,42%)]",
+            },
+            {
+              label: "Tracked interactions",
+              value: summary.interactions?.toLocaleString?.() || summary.interactions,
+              tone: "text-[var(--dp-navy,#0B1F33)]",
+            },
+            {
+              label: "Top signal",
+              value: summary.topInsight,
+              tone: "text-[rgba(11,31,51,0.82)]",
+            },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-[20px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]"
+            >
+              <div className="text-[11px] uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+                {item.label}
+              </div>
+              <div className={`mt-3 text-3xl font-semibold tracking-[-0.05em] ${item.tone}`}>
+                {item.value}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
         <MapExplorer
           mode="partner"
           items={items}
@@ -58,7 +105,7 @@ export default function PartnerInsightMap({
           height="h-[430px] md:h-[520px]"
         />
 
-        <aside className="rounded-[24px] border border-[rgba(11,31,51,0.10)] bg-[rgba(255,255,255,0.58)] p-4 shadow-[0_18px_42px_rgba(11,31,51,0.08)] backdrop-blur-xl lg:mt-[118px]">
+        <aside className="rounded-[24px] border border-[rgba(11,31,51,0.10)] bg-white p-4 shadow-[0_18px_42px_rgba(11,31,51,0.08)] lg:mt-[118px]">
           <div className="mb-4">
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,42%)]">
               Selected insight
@@ -115,6 +162,36 @@ export default function PartnerInsightMap({
             })}
           </div>
         </aside>
+        </div>
+
+        <div className="mt-5">
+          <ResponsiveScrollSection
+            items={visibleCards}
+            desktopClassName="md:grid-cols-3"
+            mobileCardClassName="w-[82%]"
+            getKey={(card) => card.id}
+            renderItem={(card) => (
+              <button
+                type="button"
+                onClick={() => {
+                  const next = items.find((item) => item.id === card.id);
+                  if (next) setSelected(next);
+                }}
+                className="h-full w-full rounded-[20px] border border-[rgba(11,31,51,0.08)] bg-white p-5 text-left shadow-[0_10px_24px_rgba(11,31,51,0.04)] transition hover:border-[rgba(200,151,58,0.32)]"
+              >
+                <div className="text-[11px] uppercase tracking-[0.16em] text-[hsl(40,62%,42%)]">
+                  {card.label}
+                </div>
+                <div className="mt-3 text-lg font-semibold tracking-[-0.03em] text-[var(--dp-navy,#0B1F33)]">
+                  {card.title}
+                </div>
+                <div className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">
+                  {card.summary}
+                </div>
+              </button>
+            )}
+          />
+        </div>
       </div>
     </section>
   );

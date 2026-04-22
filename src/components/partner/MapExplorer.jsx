@@ -18,8 +18,8 @@ export default function MapExplorer({
   height = 'h-[500px]',
 }) {
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_18px_42px_rgba(11,31,51,0.06)]">
+      <div>
         <div className="mb-8">
           <h2 className="text-[30px] md:text-[38px] font-semibold text-[var(--dp-navy,#0B1F33)] leading-tight tracking-[-0.045em] mb-2">
             {title}
@@ -49,7 +49,7 @@ export default function MapExplorer({
         )}
 
         {/* Map */}
-        <div className={`${height} rounded-[24px] border border-[rgba(11,31,51,0.10)] overflow-hidden shadow-[0_22px_54px_rgba(11,31,51,0.10)]`}>
+        <div className={`${height} overflow-hidden rounded-[24px] border border-[rgba(11,31,51,0.10)] shadow-[0_22px_54px_rgba(11,31,51,0.10)]`}>
           <MapShell
             mode={mode}
             items={items}

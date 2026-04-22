@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import PartnerCTASection from "@/components/partner/PartnerCTASection";
+import ResponsiveScrollSection from "@/components/partner/ResponsiveScrollSection";
 import { PARTNER_DASHBOARD_LINK } from "@/lib/partnerContent";
 
 function SectionLabel({ children }) {
@@ -17,7 +18,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
   const Icon = content.icon;
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.10),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
+    <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
       <section className="px-6 py-20 md:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
@@ -53,7 +54,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} className="rounded-[30px] bg-white/30 p-5 backdrop-blur-xl">
+          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} className="rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_20px_40px_rgba(11,31,51,0.06)]">
             <div className="rounded-[24px] bg-[var(--dp-navy,#0B1F33)] p-6 text-white">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -92,17 +93,19 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             </h2>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {content.modules.map((module) => (
+          <ResponsiveScrollSection
+            items={content.modules}
+            desktopClassName="md:grid-cols-3"
+            getKey={(module) => module.title}
+            renderItem={(module) => (
               <div
-                key={module.title}
-                className="rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white/38 p-5 backdrop-blur-md"
+                className="h-full rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]"
               >
                 <div className="text-lg font-semibold tracking-[-0.03em]">{module.title}</div>
                 <div className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{module.body}</div>
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </section>
 
@@ -125,27 +128,37 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            {content.metrics.map((metric) => (
-              <div key={metric.label} className="rounded-[20px] border border-[rgba(11,31,51,0.08)] bg-white/52 p-5">
-                <div className="font-heading text-3xl font-semibold tracking-[-0.055em] text-[hsl(40,62%,42%)]">
-                  {metric.value}
+          <div className="space-y-3">
+            <ResponsiveScrollSection
+              items={content.metrics}
+              desktopClassName="md:grid-cols-2"
+              mobileCardClassName="w-[72%]"
+              getKey={(metric) => metric.label}
+              renderItem={(metric) => (
+                <div className="rounded-[20px] border border-[rgba(11,31,51,0.08)] bg-white/52 p-5">
+                  <div className="font-heading text-3xl font-semibold tracking-[-0.055em] text-[hsl(40,62%,42%)]">
+                    {metric.value}
+                  </div>
+                  <div className="mt-1 text-[11px] text-[rgba(11,31,51,0.52)]">{metric.label}</div>
                 </div>
-                <div className="mt-1 text-[11px] text-[rgba(11,31,51,0.52)]">{metric.label}</div>
-              </div>
-            ))}
+              )}
+            />
 
-            <div className="col-span-2 rounded-[22px] bg-[var(--dp-navy,#0B1F33)] p-5 text-white">
+            <div className="rounded-[22px] bg-[var(--dp-navy,#0B1F33)] p-5 text-white">
               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,62%)]">
                 Key KPIs
               </div>
-              <div className="mt-4 grid gap-3 md:grid-cols-2">
-                {content.kpis.map((kpi) => (
-                  <div key={kpi} className="rounded-[14px] bg-white/8 px-4 py-3 text-[13px] text-white/76">
+              <ResponsiveScrollSection
+                items={content.kpis}
+                desktopClassName="md:grid-cols-2"
+                mobileCardClassName="w-[70%]"
+                getKey={(kpi) => kpi}
+                renderItem={(kpi) => (
+                  <div className="rounded-[14px] bg-white/8 px-4 py-3 text-[13px] text-white/76">
                     {kpi}
                   </div>
-                ))}
-              </div>
+                )}
+              />
             </div>
           </div>
         </div>

@@ -1,4 +1,11 @@
 import { MAP_ENTITIES } from "@/data/mapEntities";
+import {
+  perks as REPLIT_PERKS,
+  events as REPLIT_EVENTS,
+  partners as REPLIT_PARTNERS,
+  properties as REPLIT_PROPERTIES,
+  moments as REPLIT_MOMENTS,
+} from "@/data/replitApiStore";
 
 const TYPE_TO_MARKER = {
   venue: "standard",
@@ -7,6 +14,7 @@ const TYPE_TO_MARKER = {
   building: "building",
   property: "building",
   hotel: "building",
+  moment: "moment",
   brand: "brand",
   civic: "civic",
 };
@@ -15,6 +23,35 @@ const normalizeType = (type) => {
   if (type === "civic_activation") return "civic";
   if (type === "campaign") return "brand";
   return type || "venue";
+};
+
+const toWalkMinutes = (distanceValue) => {
+  if (!distanceValue) return undefined;
+  const match = String(distanceValue).match(/([\d.]+)\s*mi/i);
+  if (!match) return undefined;
+  const miles = Number.parseFloat(match[1]);
+  return Number.isFinite(miles) ? Math.max(1, Math.round(miles * 20)) : undefined;
+};
+
+const inferDistrict = (address = "") => {
+  const value = String(address).toLowerCase();
+  if (value.includes("rainey")) return "rainey";
+  if (value.includes("congress")) return "congress";
+  if (value.includes("2nd") || value.includes("second")) return "2nd-street";
+  if (value.includes("6th")) return "6th-street";
+  if (value.includes("red river")) return "red-river";
+  if (value.includes("warehouse")) return "warehouse";
+  return "downtown";
+};
+
+const dedupeById = (items) => {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = String(item?.entity_id || item?.id || item?.title || "");
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 };
 
 const toFiniteNumber = (value) => {
@@ -137,8 +174,174 @@ export function mapEntityToSharedMapItem(entity) {
   };
 }
 
+function mapReplitPerkToSharedItem(perk) {
+  return {
+    id: `perk-${perk.id}`,
+    entity_id: perk.id,
+    entity_type: "perk",
+    title: perk.title || perk.businessName,
+    subtitle: perk.businessName,
+    description: perk.description,
+    district: inferDistrict(perk.address),
+    category: perk.category,
+    latitude: perk.latitude,
+    longitude: perk.longitude,
+    status: perk.active === false ? "inactive" : "active",
+    icon: "perk",
+    source_ref: "replit-api-store",
+    metadata: {
+      address: perk.address,
+      hours: perk.hours,
+      website: perk.website,
+      phone: perk.phone,
+      tags: perk.tags || [],
+      walkMinutes: toWalkMinutes(perk.distance),
+      popularity: perk.trendingScore || perk.savedCount || perk.redemptionCount || 0,
+      rating: perk.rating,
+      reviewCount: perk.reviewCount,
+      discount: perk.discount,
+      perk_value: perk.discount,
+      perk_description: perk.description,
+      isOpenNow: Boolean(perk.isOpenNow),
+      isFeatured: Boolean(perk.isFeatured),
+      searchKeywords: [perk.businessName, perk.title, perk.category].filter(Boolean),
+      askMapIntentTags: perk.tags || [],
+    },
+  };
+}
+
+function mapReplitEventToSharedItem(event) {
+  const isLive = Boolean(event.date && new Date(event.date).getTime() <= Date.now());
+  return {
+    id: `event-${event.id}`,
+    entity_id: event.id,
+    entity_type: "event",
+    title: event.title,
+    subtitle: event.venue,
+    description: event.description,
+    district: inferDistrict(event.address),
+    category: event.category,
+    latitude: event.latitude,
+    longitude: event.longitude,
+    status: event.active === false ? "inactive" : isLive ? "live" : "upcoming",
+    icon: "event",
+    source_ref: "replit-api-store",
+    metadata: {
+      address: event.address,
+      venue_name: event.venue,
+      rsvp_count: event.rsvpCount,
+      date: event.date,
+      time: event.time,
+      isLive,
+      popularity: event.rsvpCount || 0,
+      searchKeywords: [event.title, event.venue, event.category].filter(Boolean),
+      askMapIntentTags: [event.category, "event", "tonight"].filter(Boolean),
+    },
+  };
+}
+
+function mapReplitPartnerToSharedItem(partner) {
+  const entityType = partner.category === "hotel" ? "hotel" : "venue";
+  return {
+    id: `${entityType}-${partner.id}`,
+    entity_id: partner.id,
+    entity_type: entityType,
+    title: partner.name,
+    subtitle: partner.tagline,
+    description: partner.description,
+    district: inferDistrict(partner.address),
+    category: partner.category,
+    latitude: partner.latitude,
+    longitude: partner.longitude,
+    status: "active",
+    icon: entityType,
+    source_ref: "replit-api-store",
+    metadata: {
+      address: partner.address,
+      hours: partner.hours,
+      website: partner.website,
+      phone: partner.phone,
+      offer: partner.offer,
+      offerDetail: partner.offerDetail,
+      isFeatured: Boolean(partner.featured),
+      popularity: partner.featured ? 80 : 40,
+      searchKeywords: [partner.name, partner.tagline, partner.category].filter(Boolean),
+      askMapIntentTags: [partner.category, partner.offer].filter(Boolean),
+    },
+  };
+}
+
+function mapReplitPropertyToSharedItem(property) {
+  return {
+    id: `building-${property.id}`,
+    entity_id: property.id,
+    entity_type: "building",
+    title: property.buildingName,
+    subtitle: property.priceRange,
+    description: property.description,
+    district: inferDistrict(property.address),
+    category: "building",
+    latitude: property.latitude,
+    longitude: property.longitude,
+    status: "active",
+    icon: "building",
+    source_ref: "replit-api-store",
+    metadata: {
+      address: property.address,
+      unitTypes: property.unitTypes || [],
+      unitCount: property.unitCount,
+      priceRange: property.priceRange,
+      amenities: property.amenities || [],
+      website: property.website,
+      isLegends: Boolean(property.isLegends),
+      popularity: property.isFeatured ? 75 : 45,
+      searchKeywords: [property.buildingName, property.priceRange, ...(property.unitTypes || [])].filter(Boolean),
+      askMapIntentTags: ["building", "property", "apartment", "residential"],
+    },
+  };
+}
+
+function mapReplitMomentToSharedItem(moment) {
+  return {
+    id: `moment-${moment.id}`,
+    entity_id: moment.id,
+    entity_type: "moment",
+    title: moment.title,
+    subtitle: moment.placeName,
+    description: moment.note || moment.perkNearby,
+    district: moment.district || inferDistrict(moment.address),
+    category: moment.category || "moment",
+    latitude: moment.latitude,
+    longitude: moment.longitude,
+    status: "live",
+    icon: "moment",
+    source_ref: "replit-api-store",
+    metadata: {
+      address: moment.address,
+      host: moment.host,
+      participants: moment.participants || [],
+      visibility: moment.visibility,
+      perk_value: moment.perkNearby,
+      isLive: true,
+      popularity: Array.isArray(moment.participants) ? moment.participants.length : 0,
+      searchKeywords: [moment.title, moment.placeName, moment.category].filter(Boolean),
+      askMapIntentTags: ["moment", "social", moment.category].filter(Boolean),
+    },
+  };
+}
+
 export function getFallbackSharedMapItems() {
-  return MAP_ENTITIES.map(mapEntityToSharedMapItem).filter(Boolean);
+  const replitItems = [
+    ...REPLIT_PERKS.map(mapReplitPerkToSharedItem),
+    ...REPLIT_EVENTS.filter((item) => Number.isFinite(item.latitude) && Number.isFinite(item.longitude)).map(mapReplitEventToSharedItem),
+    ...REPLIT_PARTNERS.filter((item) => Number.isFinite(item.latitude) && Number.isFinite(item.longitude)).map(mapReplitPartnerToSharedItem),
+    ...REPLIT_PROPERTIES.map(mapReplitPropertyToSharedItem),
+    ...REPLIT_MOMENTS.map(mapReplitMomentToSharedItem),
+  ];
+  const localItems = MAP_ENTITIES.filter((entity) => ["brand", "civic"].includes(entity?.type))
+    .map(mapEntityToSharedMapItem)
+    .filter(Boolean);
+  return dedupeById([...replitItems, ...localItems]);
 }
 
 export function normalizeSharedMapFeedItems(items) {

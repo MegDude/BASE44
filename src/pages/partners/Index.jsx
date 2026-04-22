@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import PartnerTypeCard from "@/components/partner/PartnerTypeCard";
 import PartnerBrandShowcase from "@/components/partner/PartnerBrandShowcase";
+import ResponsiveScrollSection from "@/components/partner/ResponsiveScrollSection";
 import {
   BRAND_SHOWCASE_GROUPS,
   PARTNER_DASHBOARD_LINK,
@@ -25,7 +26,7 @@ export default function PartnersIndex() {
   const partnerCards = PARTNER_TYPE_ORDER.map((id) => PARTNER_TYPE_CONTENT[id]);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.10),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
+    <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
       <section className="px-6 py-20 md:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.92fr] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
@@ -53,17 +54,23 @@ export default function PartnersIndex() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} className="grid gap-3 sm:grid-cols-3">
-            {PARTNER_LANDING_SECTIONS.map((section) => {
+          <motion.div initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }}>
+            <ResponsiveScrollSection
+              items={PARTNER_LANDING_SECTIONS}
+              desktopClassName="sm:grid-cols-3"
+              mobileCardClassName="w-[82%]"
+              getKey={(section) => section.title}
+              renderItem={(section) => {
               const Icon = section.icon;
               return (
-                <div key={section.title} className="rounded-[24px] border border-[rgba(11,31,51,0.10)] bg-white/38 p-5 backdrop-blur-md">
+                <div className="h-full rounded-[24px] border border-[rgba(11,31,51,0.10)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
                   <Icon className="h-5 w-5 text-[hsl(40,62%,42%)]" strokeWidth={1.75} />
                   <div className="mt-4 text-lg font-semibold tracking-[-0.03em]">{section.title}</div>
                   <div className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{section.body}</div>
                 </div>
               );
-            })}
+            }}
+            />
           </motion.div>
         </div>
       </section>
@@ -86,10 +93,13 @@ export default function PartnersIndex() {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            {partnerCards.map((card, index) => (
+          <ResponsiveScrollSection
+            items={partnerCards}
+            desktopClassName="md:grid-cols-2 xl:grid-cols-5"
+            mobileCardClassName="w-[84%]"
+            getKey={(card) => card.id}
+            renderItem={(card, index) => (
               <PartnerTypeCard
-                key={card.id}
                 type={card.shortLabel}
                 label={card.label}
                 description={card.description}
@@ -99,8 +109,8 @@ export default function PartnersIndex() {
                 href={card.route}
                 delay={index * 0.05}
               />
-            ))}
-          </div>
+            )}
+          />
         </div>
       </section>
 
@@ -116,14 +126,18 @@ export default function PartnersIndex() {
             </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            {PARTNER_PLATFORM_MODULES.map((module) => (
-              <div key={module.title} className="rounded-[22px] bg-white/30 p-5 backdrop-blur-md">
+          <ResponsiveScrollSection
+            items={PARTNER_PLATFORM_MODULES}
+            desktopClassName="sm:grid-cols-2"
+            mobileCardClassName="w-[84%]"
+            getKey={(module) => module.title}
+            renderItem={(module) => (
+              <div className="h-full rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
                 <div className="text-lg font-semibold tracking-[-0.03em]">{module.title}</div>
                 <div className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{module.body}</div>
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </section>
 

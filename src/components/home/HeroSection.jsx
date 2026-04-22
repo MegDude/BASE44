@@ -1,30 +1,71 @@
 import { ArrowRight, Search, Calendar, Gift, Sparkles, MapPin } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const FILTER_CHIPS = [
-  { id: "venues", label: "Venues", icon: MapPin },
-  { id: "events", label: "Events", icon: Calendar },
-  { id: "perks", label: "Perks", icon: Gift },
+  { id: "venue", label: "Venues", icon: MapPin },
+  { id: "event", label: "Events", icon: Calendar },
+  { id: "perk", label: "Perks", icon: Gift },
   { id: "walk", label: "5 min walk", icon: Sparkles },
 ];
 
-export default function HeroSection() {
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("venues");
+export default function HeroSection({ mapContext, onExplore, onAsk }) {
+  const [query, setQuery] = useState(mapContext?.query || "");
+  const [category, setCategory] = useState(mapContext?.category || "venue");
   const [showAskPanel, setShowAskPanel] = useState(false);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    setQuery(mapContext?.query || "");
+    setCategory(mapContext?.category === "all" ? "venue" : mapContext?.category || "venue");
+  }, [mapContext?.requestKey]);
+
+  function getCurrentSelection() {
+    if (category === "walk") {
+      return {
+        category: "all",
+        walkMinutes: 5,
+      };
+    }
+
+    return {
+      category,
+      walkMinutes: null,
+    };
+  }
 
   function handleSearch(e) {
     e.preventDefault();
-    const params = new URLSearchParams();
-    params.set("category", category);
-    if (query.trim()) params.set("query", query.trim());
-    navigate(`/downtown-perks/explore?${params.toString()}`);
+    const selection = getCurrentSelection();
+    setShowAskPanel(false);
+    onExplore?.({
+      query: query.trim(),
+      category: selection.category,
+      walkMinutes: selection.walkMinutes,
+    });
   }
 
   function handleOpenMap() {
-    navigate("/downtown-perks/explore");
+    const selection = getCurrentSelection();
+    setShowAskPanel(false);
+    onExplore?.({
+      query: query.trim(),
+      category: selection.category,
+      walkMinutes: selection.walkMinutes,
+    });
+  }
+
+  function handleAskMap(nextQuery = query) {
+    const selection = getCurrentSelection();
+    setShowAskPanel(false);
+    onAsk?.({
+      query: String(nextQuery || "").trim(),
+      category: selection.category,
+      walkMinutes: selection.walkMinutes,
+    });
+  }
+
+  function handleAskPrompt(nextQuery) {
+    setQuery(nextQuery);
+    handleAskMap(nextQuery);
   }
 
   return (
@@ -50,8 +91,8 @@ export default function HeroSection() {
         {/* Refined hero shell */}
         <div className="w-full max-w-3xl rounded-[30px] border border-white/38 bg-white/[0.68] p-5 shadow-[0_24px_60px_rgba(14,28,54,0.16)] backdrop-blur-xl md:p-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="dp-display-hero text-4xl text-[hsl(218,42%,14%)] md:text-[56px]">
-              Where downtown meets <span className="dp-script-accent-inline align-baseline text-[1.08em]">you</span>
+            <h1 className="font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[hsl(218,42%,14%)] md:text-[56px]">
+              Where downtown meets you
             </h1>
 
             <p className="mt-3 text-sm leading-6 text-[hsl(218,20%,42%)] md:mt-4 md:text-[15px]">
@@ -91,8 +132,8 @@ export default function HeroSection() {
                 <div className="divide-y divide-[hsl(218,20%,92%)]">
                   <button
                     type="button"
-                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(220,20%,97%)]"
-                    onClick={() => navigate("/downtown-perks/explore?mode=ask")}
+                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
+                    onClick={() => handleAskPrompt("coffee nearby")}
                   >
                     <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
                       Where do you want to go?
@@ -103,8 +144,8 @@ export default function HeroSection() {
                   </button>
                   <button
                     type="button"
-                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(220,20%,97%)]"
-                    onClick={() => navigate("/downtown-perks/explore?mode=ask&query=events%20tonight")}
+                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
+                    onClick={() => handleAskPrompt("events tonight")}
                   >
                     <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
                       What do you want to do?
@@ -115,8 +156,8 @@ export default function HeroSection() {
                   </button>
                   <button
                     type="button"
-                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(220,20%,97%)]"
-                    onClick={() => navigate("/downtown-perks/explore?mode=ask&query=live%20music%20nearby")}
+                    className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
+                    onClick={() => handleAskPrompt("live music nearby")}
                   >
                     <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
                       Who do you want to meet?
@@ -174,7 +215,7 @@ export default function HeroSection() {
 
             <button
               type="button"
-              onClick={() => navigate("/downtown-perks/explore?mode=ask")}
+              onClick={() => handleAskMap()}
               className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-[16px] border border-white/75 bg-white/76 px-6 py-3 text-sm font-medium text-foreground shadow-[0_8px_18px_rgba(14,28,54,0.08)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-[1px] hover:bg-white active:translate-y-0"
             >
               Ask the map

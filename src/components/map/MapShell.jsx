@@ -133,8 +133,11 @@ export default function MapShell({
 
 function createPartnerInsightIcon(item, isSelected) {
   const color = PARTNER_INSIGHT_COLORS[item.insightType] || PARTNER_INSIGHT_COLORS.performance;
-  const size = isSelected ? 28 : 18;
-  const ring = isSelected ? 7 : 4;
+  const size = isSelected ? 34 : 24;
+  const ring = isSelected ? 10 : 6;
+  const label = String(item.label || item.insightType || "•")
+    .slice(0, 2)
+    .toUpperCase();
 
   return L.divIcon({
     className: "",
@@ -142,7 +145,7 @@ function createPartnerInsightIcon(item, isSelected) {
       <div style="
         width:${size}px;
         height:${size}px;
-        border-radius:999px;
+        border-radius:${isSelected ? "14px" : "12px"};
         background:${color};
         border:2px solid rgba(255,255,255,0.92);
         box-shadow:0 0 0 ${ring}px ${color}24, 0 12px 28px rgba(11,31,51,0.22);
@@ -150,10 +153,11 @@ function createPartnerInsightIcon(item, isSelected) {
         align-items:center;
         justify-content:center;
         color:white;
-        font-size:10px;
+        font-size:${isSelected ? "9px" : "8px"};
         font-weight:800;
+        letter-spacing:0.08em;
       ">
-        ${item.value ? "•" : ""}
+        ${item.value ? label : "•"}
       </div>
     `,
     iconSize: [size, size],
