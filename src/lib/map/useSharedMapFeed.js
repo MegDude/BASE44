@@ -4,7 +4,6 @@ import { filterValidMapItems, normalizeCoordinates } from "@/lib/mapCoordinates"
 
 export function useSharedMapFeed({ query = "", district = "Downtown", activeCategory = "all", limit = 1000 } = {}) {
   const [items, setItems] = useState([]);
-  const [liveNearby, setLiveNearby] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -27,18 +26,13 @@ export function useSharedMapFeed({ query = "", district = "Downtown", activeCate
       setLoading(true);
       setError(null);
       try {
-        const feed = await mapRepository.getIntelligenceFeed(params);
-        const normalizedItems = filterValidMapItems(feed.items).map(normalizeCoordinates);
-        const normalizedLive = feed.liveNearby ? normalizeCoordinates(feed.liveNearby) : null;
-        if (mounted) {
-          setItems(normalizedItems);
-          setLiveNearby(normalizedLive);
-        }
+        const nextItems = await mapRepository.getMapFeed(params);
+        const normalizedItems = filterValidMapItems(nextItems).map(normalizeCoordinates);
+        if (mounted) setItems(normalizedItems);
       } catch (nextError) {
         console.error("useSharedMapFeed failed:", nextError);
         if (mounted) {
           setItems([]);
-          setLiveNearby(null);
           setError(nextError);
         }
       } finally {
@@ -54,12 +48,10 @@ export function useSharedMapFeed({ query = "", district = "Downtown", activeCate
   return {
     data: {
       items,
-      liveNearby,
       source: "shared-map-feed",
       query,
     },
     items,
-    liveNearby,
     loading,
     error,
   };

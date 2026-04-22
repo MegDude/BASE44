@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
-import LiveNearbyCard from "@/components/map/unified/LiveNearbyCard";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 import { filterValidEntities } from "@/lib/mapValidation";
@@ -161,7 +160,7 @@ function applyWalkFilter(items, walkMinutes) {
   return items.filter((item) => (item?.metadata?.walkMinutes ?? 999) <= walkMinutes);
 }
 
-export default function MapSection({ mapContext, onMapContextChange, mode = "full" }) {
+export default function MapSection({ mapContext, onMapContextChange }) {
   const ref = useRef(null);
   const mapPanelRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
@@ -172,12 +171,11 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
   const [askMode, setAskMode] = useState(Boolean(mapContext?.askMode));
   const [askLoading, setAskLoading] = useState(false);
   const [askResults, setAskResults] = useState([]);
-  const [askLiveNearby, setAskLiveNearby] = useState(null);
   const [selectedEntity, setSelectedEntity] = useState(null);
   const [mapCenter, setMapCenter] = useState(AUSTIN_CENTER);
   const [mapZoom, setMapZoom] = useState(14);
 
-  const { items: feedItems, liveNearby: feedLiveNearby, loading: feedLoading } = useSharedMapFeed({
+  const { items: feedItems, loading: feedLoading } = useSharedMapFeed({
     query: askMode ? "" : searchInput,
     activeCategory,
     limit: 200,
@@ -211,14 +209,12 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
   useEffect(() => {
     if (!askMode) {
       setAskResults([]);
-      setAskLiveNearby(null);
       return;
     }
 
     const query = String(searchInput || "").trim();
     if (!query) {
       setAskResults([]);
-      setAskLiveNearby(null);
       return;
     }
 
@@ -227,7 +223,7 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
     (async () => {
       setAskLoading(true);
       try {
-        const { items, liveNearby } = await mapRepository.searchWithIntent({
+        const { items } = await mapRepository.searchWithIntent({
           query,
           userLocation: {
             latitude: mapCenter?.[0],
@@ -237,14 +233,10 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
 
         if (mounted) {
           setAskResults(filterValidEntities(items || []));
-          setAskLiveNearby(liveNearby || null);
         }
       } catch (error) {
         console.error("Home ask-the-map failed:", error);
-        if (mounted) {
-          setAskResults([]);
-          setAskLiveNearby(null);
-        }
+        if (mounted) setAskResults([]);
       } finally {
         if (mounted) setAskLoading(false);
       }
@@ -260,8 +252,6 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
     const categoryFiltered = applyCategoryFilter(source || [], activeCategory);
     return filterValidEntities(applyWalkFilter(categoryFiltered, walkMinutes));
   }, [activeCategory, askMode, askResults, feedItems, walkMinutes]);
-
-  const liveNearby = askMode ? askLiveNearby : feedLiveNearby;
 
   useEffect(() => {
     if (!visibleItems.length) {
@@ -316,157 +306,6 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
     event.preventDefault();
     setAskMode(false);
     syncContext({ query: searchInput, askMode: false });
-  }
-
-  const mapModule = (
-    <div
-      id="home-live-map"
-      ref={mapPanelRef}
-      className="overflow-hidden rounded-xl border border-[hsl(218,20%,88%)] bg-white shadow-[0_2px_16px_rgba(14,28,54,.06)]"
-    >
-      <div className="border-b border-[hsl(218,20%,90%)] p-5">
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div>
-            <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/80">
-              {askMode ? "Ask the map" : "Live downtown map"}
-            </div>
-            <h3 className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
-              {askMode && searchInput.trim()
-                ? `Results for "${searchInput.trim()}"`
-                : "Everything nearby — in one map."}
-            </h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-foreground/60">
-              {askMode
-                ? "The agent prompt is wired into the same live downtown feed and updates the plotted map and result cards immediately."
-                : "Browse places, events, perks, and properties without leaving the homepage."}
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleSearchSubmit}
-            className="flex flex-col gap-2 rounded-[18px] border border-[hsl(218,20%,88%)] bg-[hsl(42,24%,97%)] p-2 md:flex-row"
-          >
-            <div className="flex h-11 items-center gap-3 rounded-[14px] border border-[hsl(218,20%,90%)] bg-white px-4 min-w-[260px]">
-              <Search className="h-4 w-4 shrink-0 text-foreground/45" />
-              <input
-                value={searchInput}
-                onChange={(event) => setSearchInput(event.target.value)}
-                placeholder="Ask the map..."
-                className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-              />
-            </div>
-            <button
-              type="submit"
-              className="inline-flex h-11 items-center justify-center rounded-[14px] border border-[hsl(218,20%,88%)] px-4 text-sm font-medium text-foreground transition-colors hover:bg-white"
-            >
-              Open map
-            </button>
-            <button
-              type="button"
-              onClick={handleAskMap}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-[hsl(218,42%,14%)] px-4 text-sm font-medium text-white"
-            >
-              Ask the map
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="h-[420px] lg:h-[720px]">
-          <UnifiedMapShell
-            items={visibleItems}
-            selectedId={selectedEntity?.id}
-            markerIcon={(entity, isSelected) => createMarker(entity, { isSelected })}
-            onMarkerSelect={setSelectedEntity}
-            mapCenter={mapCenter}
-            mapZoom={mapZoom}
-            onMapCenterChange={setMapCenter}
-            onMapZoomChange={setMapZoom}
-            className="h-full w-full"
-          />
-        </div>
-
-        <div className="border-t border-[hsl(218,20%,90%)] p-4 lg:border-l lg:border-t-0">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
-              {askMode ? "Ask results" : "Nearby results"}
-            </div>
-            {Number.isFinite(walkMinutes) ? (
-              <button
-                type="button"
-                onClick={() => {
-                  setWalkMinutes(null);
-                  syncContext({ walkMinutes: null });
-                }}
-                className="text-[11px] font-medium text-primary"
-              >
-                Clear {walkMinutes} min
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => {
-                  setWalkMinutes(5);
-                  syncContext({ walkMinutes: 5 });
-                }}
-                className="text-[11px] font-medium text-primary"
-              >
-                5 min walk
-              </button>
-            )}
-          </div>
-
-          <div className="space-y-3 overflow-y-auto pr-1 lg:max-h-[660px]">
-            {visibleItems.length === 0 ? (
-              <div className="rounded-[16px] border border-dashed border-[hsl(218,20%,88%)] bg-[hsl(42,24%,97%)] p-5 text-[13px] leading-relaxed text-muted-foreground">
-                No items available for this filter.
-              </div>
-            ) : (
-              visibleItems.map((item) => {
-                const Icon = getResultIcon(item);
-                const featuredSummary = getFeaturedSummary(item);
-                const isSelected = selectedEntity?.id === item.id;
-
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setSelectedEntity(item)}
-                    className={`w-full rounded-[16px] border px-4 py-3 text-left transition-all ${
-                      isSelected
-                        ? "border-primary/30 bg-primary/5 shadow-[0_8px_24px_rgba(14,28,54,0.08)]"
-                        : "border-[hsl(218,20%,90%)] bg-white hover:border-primary/20 hover:bg-[hsl(42,24%,97%)]"
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(198,162,105,0.08)]">
-                        <Icon className="h-4 w-4 text-[hsl(42,55%,45%)]" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-[13px] font-semibold text-foreground">{featuredSummary.title}</div>
-                        <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[10px]">
-                          <span className="flex items-center gap-[3px] text-[hsl(218,42%,18%)]">
-                            <Navigation className="h-3 w-3" />
-                            {featuredSummary.meta}
-                          </span>
-                          <span className="font-semibold text-[hsl(42,55%,38%)]">{featuredSummary.subtitle}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  if (mode === "hero") {
-    return mapModule;
   }
 
   return (
@@ -539,35 +378,35 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
             </ul>
 
             <div className="mb-6 rounded-lg border border-[hsl(218,20%,90%)] bg-[hsl(42,24%,96%)] p-4">
-              {feedLoading || askLoading ? (
-                <div className="space-y-2">
-                  <div className="h-4 w-32 rounded bg-border/40 animate-pulse" />
-                  <div className="h-3 w-40 rounded bg-border/30 animate-pulse" />
-                  <div className="h-3 w-24 rounded bg-border/30 animate-pulse" />
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
+                  <Coffee className="w-3.5 h-3.5 text-primary/60" />
                 </div>
-              ) : liveNearby ? (
-                <LiveNearbyCard
-                  item={liveNearby}
-                  compact
-                  onSelect={(item) => {
-                    setSelectedEntity(item);
-                    mapPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                />
-              ) : selectedEntity ? (
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
-                    <Coffee className="w-3.5 h-3.5 text-primary/60" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-medium text-foreground">{featured.title}</div>
-                    <div className="mt-0.5 text-[11px] text-muted-foreground">{featured.subtitle}</div>
-                    <div className="mt-1 text-[11px] text-primary/70">{featured.meta}</div>
-                  </div>
+                <div className="min-w-0 flex-1">
+                  {feedLoading || askLoading ? (
+                    <div className="space-y-2">
+                      <div className="h-4 w-32 rounded bg-border/40 animate-pulse" />
+                      <div className="h-3 w-40 rounded bg-border/30 animate-pulse" />
+                      <div className="h-3 w-24 rounded bg-border/30 animate-pulse" />
+                    </div>
+                  ) : selectedEntity ? (
+                    <>
+                      <div className="text-sm font-medium text-foreground">{featured.title}</div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">{featured.subtitle}</div>
+                      <div className="mt-1 text-[11px] text-primary/70">{featured.meta}</div>
+                    </>
+                  ) : (
+                    <div className="text-[12px] text-muted-foreground">No items available for this filter.</div>
+                  )}
                 </div>
-              ) : (
-                <div className="text-[12px] text-muted-foreground">No items available for this filter.</div>
-              )}
+                <button
+                  type="button"
+                  onClick={() => mapPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  className="shrink-0 rounded-full border border-primary/30 px-2.5 py-1 text-[11px] font-medium text-primary"
+                >
+                  Show Card
+                </button>
+              </div>
             </div>
 
             <div className="flex gap-3">
@@ -665,6 +504,150 @@ export default function MapSection({ mapContext, onMapContextChange, mode = "ful
           </div>
         </div>
 
+        <div
+          id="home-live-map"
+          ref={mapPanelRef}
+          className="mt-10 overflow-hidden rounded-xl border border-[hsl(218,20%,88%)] bg-white shadow-[0_2px_16px_rgba(14,28,54,.06)]"
+        >
+          <div className="border-b border-[hsl(218,20%,90%)] p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/80">
+                  {askMode ? "Ask the map" : "Live downtown map"}
+                </div>
+                <h3 className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
+                  {askMode && searchInput.trim()
+                    ? `Results for "${searchInput.trim()}"`
+                    : "Everything nearby — in one map."}
+                </h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-foreground/60">
+                  {askMode
+                    ? "The agent prompt is wired into the same live downtown feed and updates the plotted map and result cards immediately."
+                    : "Browse places, events, perks, and properties without leaving the homepage."}
+                </p>
+              </div>
+
+              <form
+                onSubmit={handleSearchSubmit}
+                className="flex flex-col gap-2 rounded-[18px] border border-[hsl(218,20%,88%)] bg-[hsl(42,24%,97%)] p-2 md:flex-row"
+              >
+                <div className="flex h-11 items-center gap-3 rounded-[14px] border border-[hsl(218,20%,90%)] bg-white px-4 min-w-[260px]">
+                  <Search className="h-4 w-4 shrink-0 text-foreground/45" />
+                  <input
+                    value={searchInput}
+                    onChange={(event) => setSearchInput(event.target.value)}
+                    placeholder="Ask the map..."
+                    className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="inline-flex h-11 items-center justify-center rounded-[14px] border border-[hsl(218,20%,88%)] px-4 text-sm font-medium text-foreground transition-colors hover:bg-white"
+                >
+                  Open map
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAskMap}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-[hsl(218,42%,14%)] px-4 text-sm font-medium text-white"
+                >
+                  Ask the map
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <div className="h-[420px] lg:h-[720px]">
+              <UnifiedMapShell
+                items={visibleItems}
+                selectedId={selectedEntity?.id}
+                markerIcon={(entity, isSelected) => createMarker(entity, { isSelected })}
+                onMarkerSelect={setSelectedEntity}
+                mapCenter={mapCenter}
+                mapZoom={mapZoom}
+                onMapCenterChange={setMapCenter}
+                onMapZoomChange={setMapZoom}
+                className="h-full w-full"
+              />
+            </div>
+
+            <div className="border-t border-[hsl(218,20%,90%)] p-4 lg:border-l lg:border-t-0">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
+                  {askMode ? "Ask results" : "Nearby results"}
+                </div>
+                {Number.isFinite(walkMinutes) ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWalkMinutes(null);
+                      syncContext({ walkMinutes: null });
+                    }}
+                    className="text-[11px] font-medium text-primary"
+                  >
+                    Clear {walkMinutes} min
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWalkMinutes(5);
+                      syncContext({ walkMinutes: 5 });
+                    }}
+                    className="text-[11px] font-medium text-primary"
+                  >
+                    5 min walk
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-3 overflow-y-auto pr-1 lg:max-h-[660px]">
+                {visibleItems.length === 0 ? (
+                  <div className="rounded-[16px] border border-dashed border-[hsl(218,20%,88%)] bg-[hsl(42,24%,97%)] p-5 text-[13px] leading-relaxed text-muted-foreground">
+                    No items available for this filter.
+                  </div>
+                ) : (
+                  visibleItems.map((item) => {
+                    const Icon = getResultIcon(item);
+                    const featuredSummary = getFeaturedSummary(item);
+                    const isSelected = selectedEntity?.id === item.id;
+
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setSelectedEntity(item)}
+                        className={`w-full rounded-[16px] border px-4 py-3 text-left transition-all ${
+                          isSelected
+                            ? "border-primary/30 bg-primary/5 shadow-[0_8px_24px_rgba(14,28,54,0.08)]"
+                            : "border-[hsl(218,20%,90%)] bg-white hover:border-primary/20 hover:bg-[hsl(42,24%,97%)]"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(198,162,105,0.08)]">
+                            <Icon className="h-4 w-4 text-[hsl(42,55%,45%)]" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="truncate text-[13px] font-semibold text-foreground">{featuredSummary.title}</div>
+                            <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[10px]">
+                              <span className="flex items-center gap-[3px] text-[hsl(218,42%,18%)]">
+                                <Navigation className="h-3 w-3" />
+                                {featuredSummary.meta}
+                              </span>
+                              <span className="font-semibold text-[hsl(42,55%,38%)]">{featuredSummary.subtitle}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

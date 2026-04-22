@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ResidentNav from "@/components/resident/ResidentNav";
 import ResidentTabs from "@/components/resident/ResidentTabs";
@@ -18,19 +18,15 @@ const GUEST_RESIDENT = {
   is_guest: true,
 };
 
-export default function ResidentApp({ defaultTab = "now" }) {
+export default function ResidentApp() {
   const location = useLocation();
   const [user] = useState(GUEST_RESIDENT);
   const [loading] = useState(false);
   const initialContext = useMemo(() => {
     const params = new URLSearchParams(location.search);
-    return resolveResidentContext({ tab: params.get("tab") || defaultTab });
-  }, [defaultTab, location.search]);
-  const [activeTab, setActiveTab] = useState(defaultTab || initialContext.tab);
-
-  useEffect(() => {
-    setActiveTab(defaultTab || initialContext.tab);
-  }, [defaultTab, initialContext.tab]);
+    return resolveResidentContext({ tab: params.get("tab") });
+  }, [location.search]);
+  const [activeTab, setActiveTab] = useState(initialContext.tab);
 
   if (loading) {
     return (
@@ -42,7 +38,10 @@ export default function ResidentApp({ defaultTab = "now" }) {
 
   return (
     <div className="pt-[68px] h-screen fixed inset-0 flex flex-col bg-background overflow-hidden">
-      <ResidentNav user={user} />
+      {/* Navigation */}
+      <ResidentNav activeTab={activeTab} onTabChange={setActiveTab} user={user} />
+
+      {/* Tab Content */}
       <ResidentTabs activeTab={activeTab} user={user} />
     </div>
   );

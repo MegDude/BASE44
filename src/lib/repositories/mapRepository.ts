@@ -1,7 +1,5 @@
 import { base44Api } from "@/lib/api/base44Api";
 import type { SharedMapFeedRequest } from "@/lib/contracts/entities";
-import { getLiveNearby } from "@/lib/logic/liveEngine";
-import { rankMapItems } from "@/lib/logic/rankingEngine";
 import {
   getFallbackSharedMapItems,
   normalizeSharedMapFeedItems,
@@ -63,43 +61,32 @@ function filterItems(items, params: MapFeedParams = {}) {
     results = results.filter((item) => types.has(item.type) || types.has(item.entity_type));
   }
 
-  results = rankMapItems(results);
+  results.sort((a, b) => {
+    const liveDelta = Number(Boolean(b.isLive || b.eventTiming?.isLive)) - Number(Boolean(a.isLive || a.eventTiming?.isLive));
+    if (liveDelta !== 0) return liveDelta;
+    const walkDelta = (a.metadata?.walkMinutes ?? 999) - (b.metadata?.walkMinutes ?? 999);
+    if (walkDelta !== 0) return walkDelta;
+    return (b.metadata?.popularity ?? 0) - (a.metadata?.popularity ?? 0);
+  });
 
   return Number.isFinite(limit) ? results.slice(0, limit) : results;
 }
 
-function buildIntelligence(items, params: MapFeedParams = {}) {
-  const ranked: any[] = filterItems(items, params);
-  const liveNearby: any = getLiveNearby(ranked);
-  const hydrated = ranked.map((item) => (liveNearby && item.id === liveNearby.id ? liveNearby : item));
-
-  return {
-    items: hydrated,
-    ranked: hydrated,
-    liveNearby,
-  };
-}
-
 export const mapRepository = {
   async getMapFeed(params: MapFeedParams = {}) {
-    const feed = await this.getIntelligenceFeed(params);
-    return feed.items;
-  },
-
-  async getIntelligenceFeed(params: MapFeedParams = {}) {
     try {
       const response = await base44Api.getSharedMapFeed(params);
       const payload = response?.data || response || {};
       const remoteItems = Array.isArray(payload.items) ? payload.items : [];
 
       if (remoteItems.length > 0) {
-        return buildIntelligence(remoteItems, params);
+        return filterItems(remoteItems, params);
       }
     } catch (error) {
-      console.error("getIntelligenceFeed remote error:", error);
+      console.error("getMapFeed remote error:", error);
     }
 
-    return buildIntelligence(getFallbackSharedMapItems(), params);
+    return filterItems(getFallbackSharedMapItems(), params);
   },
 
   async getMapItemById(id: string, params: MapFeedParams = {}) {
@@ -114,18 +101,18 @@ export const mapRepository = {
         context: userLocation,
       });
       const intent = intentResponse?.data || intentResponse || {};
-      const feed = await this.getIntelligenceFeed({
+      const items = await this.getMapFeed({
         query,
         filters: {
           categories: intent.categories || [],
         },
       });
 
-      return { ...feed, intent };
+      return { items, intent };
     } catch (error) {
       console.error("searchWithIntent error:", error);
-      const feed = await this.getIntelligenceFeed({ query });
-      return { ...feed, intent: null };
+      const items = await this.getMapFeed({ query });
+      return { items, intent: null };
     }
   },
 

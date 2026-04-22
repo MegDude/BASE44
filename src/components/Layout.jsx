@@ -20,15 +20,12 @@ export default function Layout() {
     pathname.startsWith("/partners") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/partner-workspace") ||
-    pathname.startsWith("/residents") ||
     ["/", "/map", "/explore", "/events", "/perks", "/card", "/about"].includes(pathname);
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
     pathname === "/downtown-perks/explore" ||
     pathname === "/downtown-perks/events" ||
-    pathname.startsWith("/resident-dashboard") ||
-    pathname.startsWith("/resident-app") ||
     pathname === "/map" ||
     pathname === "/explore" ||
     pathname === "/events";

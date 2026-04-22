@@ -40,7 +40,6 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
                 const isSaved = savedEntityIds.has(item.id);
                 const isSelected = selectedEntityId === item.id;
                 const metaWalk = item.metadata?.walkMinutes ? `${item.metadata.walkMinutes} min walk` : null;
-                const intelligence = item.metadata?.intelligence || {};
 
                 return (
                   <motion.button
@@ -81,9 +80,6 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
                     <p className="mt-2 text-sm text-slate-600">{item.description || item.address}</p>
 
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
-                      {intelligence.isLiveNearby && <span className="dp-chip dp-chip-intent">Live nearby</span>}
-                      {intelligence.isTopRanked && <span className="dp-chip dp-chip-intent">Top ranked</span>}
-                      {intelligence.trending && <span className="dp-chip">Trending</span>}
                       {item.address && (
                         <span className="dp-chip">
                           <MapPin className="h-3.5 w-3.5" />
@@ -97,7 +93,6 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult }) {
                         </span>
                       )}
                       {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
-                      {intelligence.score ? <span className="dp-chip">Score {Math.round(intelligence.score)}</span> : null}
                     </div>
                   </motion.button>
                 );

@@ -88,14 +88,12 @@ export default function Home() {
         mapContext={mapContext}
         onExplore={handleExplore}
         onAsk={handleAsk}
-      >
-        <MapSection
-          mapContext={mapContext}
-          onMapContextChange={handleMapContextChange}
-          mode="hero"
-        />
-      </HeroSection>
+      />
       <WhySection />
+      <MapSection
+        mapContext={mapContext}
+        onMapContextChange={handleMapContextChange}
+      />
       <PartnerSlides />
       <PricingSection />
       <FAQSection />
