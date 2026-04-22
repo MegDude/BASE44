@@ -56,16 +56,16 @@ export default function PartnersIndex() {
   }, [operatingPrinciples.length]);
 
   return (
-    <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
+    <div className="min-h-screen bg-[#f7f9fc] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
       <section className="px-6 py-20 md:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.92fr] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
             <SectionLabel>Partners</SectionLabel>
-            <h1 className="mt-5 max-w-5xl text-5xl font-semibold leading-[0.94] tracking-[-0.065em] md:text-7xl">
+            <h1 className="dp-display-hero mt-5 max-w-5xl text-5xl md:text-7xl">
               One partner landing page. Five partner types. One downtown operating system.
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-7 text-[rgba(11,31,51,0.66)]">
-              The partner section should explain the system cleanly before it sells any one example. Properties, hospitality, venues, brands, and civic partners all plug into the same live map, progressive-access resident flow, and intelligence hub.
+            <p className="mt-4 max-w-3xl text-[15px] leading-7 text-muted-foreground">
+              Buildings, hotels, venues, brands, and civic partners use the same downtown map, the same measurement layer, and the same operating rules.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -105,15 +105,15 @@ export default function PartnersIndex() {
         </div>
       </section>
 
-      <section id="partner-types" className="border-y border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
+      <section id="partner-types" className="border-y border-[rgba(11,31,51,0.08)] px-6 py-14 md:py-18">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
             <SectionLabel>Partner Types</SectionLabel>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+            <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
               All partner types live in one platform.
             </h2>
-            <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
-              Start with the full operating system, then move into the residential, hospitality, venue, brand, or civic view that matches the problem.
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Start with the overview, then move into the role-specific mode that matches the problem.
             </p>
           </div>
 
@@ -143,11 +143,11 @@ export default function PartnersIndex() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <SectionLabel>Operating model</SectionLabel>
-              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+              <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
                 One partner platform. Three rules.
               </h2>
-              <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
-                The partner side should read like one system: open discovery, a live downtown map, and a dashboard that turns movement into action.
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Open discovery, a live downtown map, and an intelligence layer that turns movement into action.
               </p>
             </div>
 

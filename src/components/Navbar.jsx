@@ -181,14 +181,14 @@ export default function Navbar() {
           </Link>
           <Link
             to="/card"
-            className="px-5 py-2 rounded-full bg-[#C6A269] text-[#0B1F33] text-[13px] font-semibold hover:bg-[#b69055] transition-all duration-300 shadow-sm shadow-black/10"
+            className="px-5 py-2 rounded-full bg-[#0B1A2B] text-white text-[13px] font-semibold hover:bg-[#14263B] transition-all duration-300 shadow-sm shadow-black/10"
           >
             Get Your Card
           </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33] p-2 transition-colors">
+        <button onClick={() => setOpen(!open)} className="relative z-[60] md:hidden text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33] p-2 transition-colors">
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
@@ -244,7 +244,7 @@ export default function Navbar() {
 
               <div className="pt-4 pb-2">
                 <Link to="/card" onClick={() => setOpen(false)}
-                  className="block rounded-full bg-[#C6A269] px-5 py-3 text-center text-sm font-semibold text-[#0B1F33] transition-colors hover:bg-[#b69055]"
+                  className="block rounded-full bg-[#0B1A2B] px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#14263B]"
                 >
                   Get Your Card
                 </Link>

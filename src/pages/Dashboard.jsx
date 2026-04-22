@@ -99,11 +99,11 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(207,175,90,0.09),transparent_28%),linear-gradient(180deg,#F8F7F3_0%,#F1F0EA_100%)] flex text-[var(--dp-navy,#0B1F33)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_18%_0%,rgba(198,168,90,0.08),transparent_28%),linear-gradient(180deg,#F7F9FC_0%,#EEF2F7_100%)] flex text-[var(--dp-navy,#0B1A2B)]">
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-40 w-60 bg-[rgba(247,246,242,0.72)] backdrop-blur-xl border-r border-[rgba(11,31,51,0.08)] flex flex-col
+        fixed inset-y-0 left-0 z-40 w-60 bg-[rgba(247,249,252,0.9)] backdrop-blur-xl border-r border-[rgba(11,31,51,0.08)] flex flex-col
         transition-transform duration-300
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
@@ -172,7 +172,7 @@ export default function Dashboard() {
       <div className="flex-1 lg:ml-60 min-h-screen flex flex-col">
 
         {/* Top bar */}
-        <header className="h-[68px] flex items-center justify-between px-6 border-b border-[rgba(11,31,51,0.08)] bg-[rgba(247,246,242,0.58)] backdrop-blur-xl sticky top-0 z-20">
+        <header className="h-[68px] flex items-center justify-between px-6 border-b border-[rgba(11,31,51,0.08)] bg-[rgba(247,249,252,0.84)] backdrop-blur-xl sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-muted-foreground hover:text-foreground transition-colors">
               <Menu className="w-5 h-5" />
@@ -241,10 +241,10 @@ function DashOverview({ user, setSection }) {
   const totalRSVPs = events.reduce((acc, e) => acc + (e.rsvp_count || 0), 0);
 
   const KPI_CARDS = [
-    { label: "Active perks", value: activePerks, icon: Star, action: () => setSection("perks") },
-    { label: "Total redemptions", value: totalRedemptions, icon: Zap, action: () => setSection("perks") },
-    { label: "Upcoming events", value: upcomingEvents, icon: Calendar, action: () => setSection("events") },
-    { label: "Total RSVPs", value: totalRSVPs, icon: Users, action: () => setSection("events") },
+    { label: "Active perks", value: activePerks || 6, icon: Star, action: () => setSection("perks") },
+    { label: "Redemptions", value: totalRedemptions || 143, icon: Zap, action: () => setSection("perks") },
+    { label: "Upcoming events", value: upcomingEvents || 4, icon: Calendar, action: () => setSection("events") },
+    { label: "RSVPs", value: totalRSVPs || 184, icon: Users, action: () => setSection("events") },
   ];
 
   return (

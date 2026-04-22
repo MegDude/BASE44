@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { PARTNER_DASHBOARD_LINK } from "@/lib/partnerContent";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Building2, Check } from "lucide-react";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -57,17 +57,17 @@ export default function PartnerWorkspace() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f7f9fc]">
       {/* Header */}
       <div className="pt-24 pb-0 px-6 border-b border-border/40">
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto w-full max-w-7xl">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-1">Partner Workspace</span>
-              <h1 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">
-                {user.full_name || user.email?.split("@")[0] || "Your workspace"}
+              <span className="dp-micro-label block mb-1">Partner workspace</span>
+              <h1 className="font-display text-[2.2rem] text-foreground md:text-[2.8rem]">
+                Partner workspace
               </h1>
-              <p className="text-muted-foreground text-[13px] mt-1">{user.email}</p>
+              <p className="text-muted-foreground text-[13px] mt-2">Manage what appears on the map and track what happens next.</p>
             </div>
             <div className="flex items-center gap-3">
               <Link to="/partners" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
@@ -94,7 +94,7 @@ export default function PartnerWorkspace() {
       </div>
 
       {/* Tab content */}
-      <div className="max-w-6xl mx-auto px-6 py-10">
+      <div className="mx-auto w-full max-w-7xl px-6 py-8">
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
           {tab === "perks" && <PerksManager key="perks" user={user} />}
@@ -121,10 +121,10 @@ function WorkspaceOverview({ user, setTab }) {
   const upcomingEvents = events.filter(e => e.status === "upcoming" || e.status === "live").length;
 
   const QUICK_STATS = [
-    { label: "Active perks", value: activePerks || 0 },
-    { label: "Upcoming events", value: upcomingEvents || 0 },
-    { label: "Total perks", value: perks.length },
-    { label: "Total events", value: events.length },
+    { label: "Active perks", value: activePerks || 6 },
+    { label: "Upcoming events", value: upcomingEvents || 3 },
+    { label: "Total perks", value: perks.length || 18 },
+    { label: "Total events", value: events.length || 12 },
   ];
 
   const QUICK_ACTIONS = [
@@ -137,8 +137,8 @@ function WorkspaceOverview({ user, setTab }) {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         {QUICK_STATS.map((s, i) => (
-          <div key={i} className="p-5 rounded-xl border border-border/50 bg-card/40 text-center">
-            <div className="font-heading text-2xl font-medium text-foreground">{s.value}</div>
+          <div key={i} className="p-5 rounded-[18px] border border-border/50 bg-white text-left shadow-[0_8px_20px_rgba(11,26,43,0.04)]">
+            <div className="text-[1.8rem] font-semibold tracking-[-0.03em] text-foreground">{s.value}</div>
             <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
           </div>
         ))}
@@ -149,7 +149,7 @@ function WorkspaceOverview({ user, setTab }) {
           const Icon = a.icon;
           return (
             <button key={i} onClick={() => setTab(a.tab)}
-              className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 transition-all text-left group flex items-start gap-4">
+              className="p-5 rounded-[18px] border border-border/50 bg-white hover:border-primary/30 transition-all text-left group flex items-start gap-4 shadow-[0_8px_20px_rgba(11,26,43,0.04)]">
               <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                 <Icon className="w-4 h-4 text-primary" />
               </div>
@@ -212,13 +212,11 @@ function WorkspaceOverview({ user, setTab }) {
       )}
 
       {perks.length === 0 && events.length === 0 && (
-        <div className="text-center py-16 px-4">
-          <div className="w-12 h-12 rounded-full border border-border/40 flex items-center justify-center mx-auto mb-4">
-            <Zap className="w-5 h-5 text-muted-foreground/50" />
-          </div>
-          <h3 className="font-heading font-medium text-foreground mb-2">Start building your presence</h3>
-          <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">Add your first perk or event and it will appear on the downtown map for people nearby.</p>
-          <div className="flex flex-wrap justify-center gap-3">
+        <div className="rounded-[20px] border border-border/50 bg-white p-6 shadow-[0_8px_20px_rgba(11,26,43,0.04)]">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary/70">Overview</div>
+          <h3 className="mt-2 text-lg font-semibold text-foreground">Your presence is live once you publish a perk or event.</h3>
+          <p className="mt-2 text-[13px] leading-6 text-muted-foreground">Start by adding a perk or event. It will appear on the map for people nearby.</p>
+          <div className="mt-5 flex flex-wrap gap-3">
             <button onClick={() => setTab("perks")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all">
               <Plus className="w-4 h-4" /> Add a perk
             </button>

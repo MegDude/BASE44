@@ -18,7 +18,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
   const Icon = content.icon;
 
   return (
-    <div className="min-h-screen bg-[#f6f2ea] pt-[68px] text-[var(--dp-navy,#0B1F33)]">
+    <div className="min-h-screen bg-[#f7f9fc] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
       <section className="px-6 py-20 md:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
@@ -30,10 +30,10 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
               Back to partners
             </Link>
             <SectionLabel>{content.eyebrow}</SectionLabel>
-            <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.065em] md:text-7xl">
+            <h1 className="dp-display-hero mt-5 max-w-4xl text-5xl md:text-7xl">
               {content.headline}
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-[rgba(11,31,51,0.66)]">
+            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted-foreground">
               {content.description}
             </p>
 
@@ -88,7 +88,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 max-w-3xl">
             <SectionLabel>Operating model</SectionLabel>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+            <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
               What this partner layer actually does.
             </h2>
           </div>
@@ -113,7 +113,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
           <div>
             <SectionLabel>Workflow</SectionLabel>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] md:text-5xl">
+            <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
               From launch to measurable local behavior.
             </h2>
             <div className="mt-6 space-y-4">
