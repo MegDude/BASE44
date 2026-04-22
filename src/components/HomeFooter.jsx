@@ -27,10 +27,10 @@ export default function HomeFooter() {
             <h4 className="text-[10px] font-semibold text-foreground/40 uppercase tracking-[0.14em] mb-3">Residents</h4>
             <div className="space-y-2">
               {[
-                { to: "/downtown-perks/explore", label: "Explore Map" },
-                { to: "/downtown-perks/events", label: "Events" },
-                { to: "/downtown-perks/perks", label: "Perks" },
-                { to: "/downtown-perks/card", label: "Get Your Card" },
+                { to: "/residents", label: "Resident Overview" },
+                { to: "/resident-dashboard", label: "Resident Dashboard" },
+                { to: "/resident-dashboard/map", label: "Live Map" },
+                { to: "/resident-dashboard/card", label: "Get Your Card" },
               ].map(l => (
                 <Link key={l.to} to={l.to} className="block text-[13px] text-foreground/60 hover:text-foreground transition-colors">{l.label}</Link>
               ))}

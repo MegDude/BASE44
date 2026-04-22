@@ -4,10 +4,13 @@ import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Building2
 import { motion, AnimatePresence } from "framer-motion";
 
 const RESIDENT_LINKS = [
-  { to: "/explore", label: "Live Map", desc: "Browse places, events & perks" },
-  { to: "/events", label: "Events", desc: "What's happening downtown" },
-  { to: "/perks", label: "Perks", desc: "Member offers & benefits" },
-  { to: "/card", label: "Perks Card", desc: "Your resident credential" },
+  { to: "/residents", label: "Resident Overview", desc: "Entry point to the resident layer" },
+  { to: "/resident-dashboard", label: "Resident Dashboard", desc: "Map-first resident app shell" },
+  { to: "/resident-dashboard/map", label: "Live Map", desc: "Browse nearby places, events, and perks" },
+  { to: "/resident-dashboard/saved", label: "Saved", desc: "Return to what mattered" },
+  { to: "/resident-dashboard/plan", label: "Plan", desc: "Build a shortlist for later" },
+  { to: "/resident-dashboard/card", label: "Card", desc: "Your resident credential" },
+  { to: "/resident-dashboard/profile", label: "You", desc: "Profile, building, and preferences" },
 ];
 
 const PARTNER_LINKS = [
@@ -63,6 +66,9 @@ export default function Navbar() {
   const isDropdownActive = (which) => {
     if (which === "residents") {
       return (
+        location.pathname.startsWith("/residents") ||
+        location.pathname.startsWith("/resident-dashboard") ||
+        location.pathname.startsWith("/resident-app") ||
         location.pathname.startsWith("/downtown-perks") ||
         ["/explore", "/map", "/events", "/perks", "/card", "/about"].includes(location.pathname)
       );
@@ -178,7 +184,7 @@ export default function Navbar() {
             Dashboard
           </Link>
           <Link
-            to="/card"
+            to="/resident-dashboard/card"
             className="px-5 py-2 rounded-full bg-gold text-navy text-[13px] font-semibold hover:bg-gold/90 transition-all duration-300 shadow-sm shadow-black/20"
           >
             Get Your Card
@@ -204,7 +210,7 @@ export default function Navbar() {
             <div className="px-5 py-5 space-y-1">
 
               {/* Resident links */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mb-2">Explore</div>
+              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mb-2">Residents</div>
               {RESIDENT_LINKS.map((link) => (
                 <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
                   className={`block px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
@@ -237,7 +243,7 @@ export default function Navbar() {
               </Link>
 
               <div className="pt-4 pb-2">
-                <Link to="/card" onClick={() => setOpen(false)}
+                <Link to="/resident-dashboard/card" onClick={() => setOpen(false)}
                   className="block rounded-full bg-gold px-5 py-3 text-center text-sm font-semibold text-navy transition-colors hover:bg-gold/90"
                 >
                   Get Your Card

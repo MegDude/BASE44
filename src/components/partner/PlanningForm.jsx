@@ -18,14 +18,62 @@ export default function PlanningForm({ partnerType, onSubmit }) {
     goal: '',
     notes: '',
   });
+  const [submitState, setSubmitState] = useState("idle");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit?.(formData);
+    if (onSubmit) {
+      onSubmit(formData);
+      return;
+    }
+
+    setSubmitState("submitting");
+
+    try {
+      const response = await fetch("/api/partner-leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          partner_type: config.partnerTypeKey || "property",
+          organization_name: formData.organization || formData.name,
+          contact_name: formData.contactName,
+          email: formData.email,
+          phone: formData.phone,
+          role: formData.role,
+          property_type: formData.propertyType,
+          goals: formData.goals,
+          message: formData.notes || formData.goal,
+          source_page: typeof window !== "undefined" ? window.location.pathname : "/partners",
+        }),
+      });
+
+      if (!response.ok) {
+        setSubmitState("error");
+        return;
+      }
+
+      setSubmitState("success");
+      setFormData({
+        name: '',
+        contactName: '',
+        email: '',
+        role: '',
+        organization: '',
+        phone: '',
+        propertyType: '',
+        goals: [],
+        goal: '',
+        notes: '',
+      });
+    } catch {
+      setSubmitState("error");
+    }
   };
 
   const config = partnerType || {};
@@ -190,11 +238,18 @@ export default function PlanningForm({ partnerType, onSubmit }) {
 
       <button
         type="submit"
+        disabled={submitState === "submitting"}
         className="w-full h-12 rounded-xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors flex items-center justify-center gap-2"
       >
-        {submitLabel}
+        {submitState === "submitting" ? "Submitting..." : submitLabel}
         <ArrowRight className="w-4 h-4" />
       </button>
+      {submitState === "success" ? (
+        <p className="text-[12px] text-[#6f6b65]">Thanks. We received your details.</p>
+      ) : null}
+      {submitState === "error" ? (
+        <p className="text-[12px] text-[#9b3a2f]">Submission failed. Please try again.</p>
+      ) : null}
     </>
   );
 

@@ -4,6 +4,8 @@ import ResidentPerksTab from "./tabs/ResidentPerksTab";
 import ResidentCardTab from "./tabs/ResidentCardTab";
 import ResidentSavedTab from "./tabs/ResidentSavedTab";
 import ResidentBuildingsTab from "./tabs/ResidentBuildingsTab";
+import ResidentPlanTab from "./tabs/ResidentPlanTab";
+import ResidentProfileTab from "./tabs/ResidentProfileTab";
 
 export default function ResidentTabs({ activeTab, user }) {
   const renderTab = () => {
@@ -17,8 +19,13 @@ export default function ResidentTabs({ activeTab, user }) {
         return <ResidentCardTab user={user} />;
       case "saved":
         return <ResidentSavedTab user={user} />;
+      case "plan":
+        return <ResidentPlanTab user={user} />;
       case "buildings":
         return <ResidentBuildingsTab user={user} />;
+      case "you":
+      case "profile":
+        return <ResidentProfileTab user={user} />;
       default:
         return <ResidentNowTab user={user} />;
     }

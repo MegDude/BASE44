@@ -39,6 +39,7 @@ import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import ResidentApp from "./pages/resident-app";
+import ResidentsPage from "./pages/Residents";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -103,10 +104,20 @@ const AuthenticatedApp = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/partner-dashboard" element={<PartnerDashboard />} />
 
+        <Route path="/residents" element={<ResidentsPage />} />
+        <Route path="/resident-dashboard" element={<ResidentApp defaultTab="map" />} />
+        <Route path="/resident-dashboard/map" element={<ResidentApp defaultTab="map" />} />
+        <Route path="/resident-dashboard/saved" element={<ResidentApp defaultTab="saved" />} />
+        <Route path="/resident-dashboard/plan" element={<ResidentApp defaultTab="plan" />} />
+        <Route path="/resident-dashboard/card" element={<ResidentApp defaultTab="card" />} />
+        <Route path="/resident-dashboard/perks" element={<ResidentApp defaultTab="perks" />} />
+        <Route path="/resident-dashboard/profile" element={<ResidentApp defaultTab="profile" />} />
         <Route path="/resident-app" element={<ResidentApp defaultTab="now" />} />
         <Route path="/resident-app/map" element={<ResidentApp defaultTab="map" />} />
         <Route path="/resident-app/saved" element={<ResidentApp defaultTab="saved" />} />
+        <Route path="/resident-app/plan" element={<ResidentApp defaultTab="plan" />} />
         <Route path="/resident-app/card" element={<ResidentApp defaultTab="card" />} />
+        <Route path="/resident-app/profile" element={<ResidentApp defaultTab="profile" />} />
         <Route path="/resident-app/access" element={<ResidentApp defaultTab="now" />} />
         <Route path="/resident-app/building/:slug" element={<ResidentApp defaultTab="map" />} />
         <Route path="/resident-app/place/:slug" element={<ResidentApp defaultTab="map" />} />

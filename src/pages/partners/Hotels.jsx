@@ -1,6 +1,6 @@
-import PartnerTypeTemplate from "@/components/partner/PartnerTypeTemplate";
+import PartnerLayerPage from "@/components/partner/PartnerLayerPage";
 import { PARTNER_TYPE_CONTENT } from "@/lib/partnerContent";
 
 export default function HotelsPartner() {
-  return <PartnerTypeTemplate content={PARTNER_TYPE_CONTENT.hospitality} />;
+  return <PartnerLayerPage content={PARTNER_TYPE_CONTENT.hospitality} />;
 }

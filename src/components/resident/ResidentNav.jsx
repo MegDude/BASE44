@@ -6,6 +6,8 @@ import {
   Map,
   Bookmark,
   CreditCard,
+  CalendarDays,
+  User,
   Menu,
   X,
 } from "lucide-react";
@@ -29,15 +31,29 @@ const TABS = [
     id: "saved",
     label: "Saved",
     icon: Bookmark,
-    path: "/resident-app/saved",
+    path: "/resident-dashboard/saved",
     tooltip: "Places, perks, events, and buildings you saved",
+  },
+  {
+    id: "plan",
+    label: "Plan",
+    icon: CalendarDays,
+    path: "/resident-dashboard/plan",
+    tooltip: "Build a shortlist for later",
   },
   {
     id: "card",
     label: "Card",
     icon: CreditCard,
-    path: "/resident-app/card",
+    path: "/resident-dashboard/card",
     tooltip: "Your perks card and redemptions",
+  },
+  {
+    id: "you",
+    label: "You",
+    icon: User,
+    path: "/resident-dashboard/profile",
+    tooltip: "Profile, building, and preferences",
   },
 ];
 

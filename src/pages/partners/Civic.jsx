@@ -1,6 +1,6 @@
-import PartnerTypeTemplate from "@/components/partner/PartnerTypeTemplate";
+import PartnerLayerPage from "@/components/partner/PartnerLayerPage";
 import { PARTNER_TYPE_CONTENT } from "@/lib/partnerContent";
 
 export default function CivicPartner() {
-  return <PartnerTypeTemplate content={PARTNER_TYPE_CONTENT.civic} />;
+  return <PartnerLayerPage content={PARTNER_TYPE_CONTENT.civic} />;
 }
