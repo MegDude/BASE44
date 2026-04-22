@@ -180,8 +180,9 @@ export default function ExploreRebuilt() {
 
     let results = [...allEntities].filter((item) => item.isVisibleInResults !== false);
     const q = searchQuery.trim().toLowerCase();
+    const shouldApplyTextFilter = q && !askMode;
 
-    if (q) {
+    if (shouldApplyTextFilter) {
       results = results.filter((item) => {
         const haystack = [
           item.name,
@@ -253,7 +254,7 @@ export default function ExploreRebuilt() {
         results[0] ||
         null
     );
-  }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults]);
+  }, [allEntities, askMode, searchQuery, activeFilters, savedEntityIds, setFilteredResults]);
 
   const summary = useMemo(
     () => ({
