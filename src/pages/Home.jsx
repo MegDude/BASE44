@@ -96,11 +96,6 @@ export default function Home() {
         />
       </HeroSection>
       <WhySection />
-      <MapSection
-        mapContext={mapContext}
-        onMapContextChange={handleMapContextChange}
-        mode="full"
-      />
       <PartnerSlides />
       <PricingSection />
       <FAQSection />
