@@ -3,12 +3,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
+import PartnerTypeCard from "@/components/partner/PartnerTypeCard";
 import {
   LayoutDashboard, MapPin, Star, Calendar, TrendingUp, Settings,
   Menu, X, ChevronRight, Bell, Building2, Users, ArrowRight,
   Zap, Megaphone, Wrench,
   ClipboardList, Home, FileText, BarChart3
 } from "lucide-react";
+import {
+  PARTNER_LANDING_SECTIONS,
+  PARTNER_PLATFORM_MODULES,
+  PARTNER_ROLE_PROOF,
+  PARTNER_TYPE_CONTENT,
+  PARTNER_TYPE_ORDER,
+} from "@/lib/partnerContent";
 
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -78,11 +86,15 @@ const DEMO_PARTNER_USER = {
   is_demo: true,
 };
 
-export default function Dashboard() {
+export default function Dashboard({ defaultSection = "overview" }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [section, setSection] = useState("overview");
+  const [section, setSection] = useState(defaultSection);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    setSection(defaultSection);
+  }, [defaultSection]);
 
   useEffect(() => {
     base44.auth
@@ -207,7 +219,7 @@ export default function Dashboard() {
             {section === "amenities" && <DashCapability key="amenities" capabilityId="amenities" />}
             {section === "maintenance" && <DashCapability key="maintenance" capabilityId="maintenance" />}
             {section === "reports" && <DashCapability key="reports" capabilityId="reports" />}
-            {section === "partners" && <DashCapability key="partners" capabilityId="partners" />}
+            {section === "partners" && <DashPartners key="partners" />}
             {section === "performance" && <DashPerformance key="performance" user={user} />}
             {section === "settings" && <DashSettings key="settings" user={user} />}
           </AnimatePresence>
@@ -551,6 +563,139 @@ function DashCapability({ capabilityId }) {
             className="mt-6 inline-flex h-11 items-center gap-2 rounded-[12px] bg-white px-4 text-xs font-semibold uppercase tracking-[0.13em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-[hsl(42,24%,96%)]"
           >
             Open workspace
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function DashPartners() {
+  const partnerCards = PARTNER_TYPE_ORDER.map((id) => PARTNER_TYPE_CONTENT[id]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      className="max-w-6xl space-y-7"
+    >
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[hsl(40,62%,42%)] mb-3">
+          Partner overview
+        </p>
+        <h2 className="font-heading text-3xl font-semibold tracking-[-0.05em] text-foreground mb-3">
+          One system, five partner roles.
+        </h2>
+        <p className="max-w-3xl text-[13px] leading-6 text-muted-foreground">
+          Residential, hospitality, venues, brands, and civic all run through the same downtown map,
+          measurement layer, and activation model. This tab should open on the full partner overview,
+          not a placeholder capability card.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        {PARTNER_PLATFORM_MODULES.map((item) => (
+          <div key={item.title} className="rounded-[20px] bg-white/32 p-5 backdrop-blur-md">
+            <div className="font-heading text-3xl font-semibold tracking-[-0.055em] text-foreground">{item.body}</div>
+            <div className="mt-1 text-[11px] text-muted-foreground">{item.title}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
+        {partnerCards.map((card, index) => (
+          <PartnerTypeCard
+            key={card.id}
+            type={card.shortLabel}
+            label={card.label}
+            description={card.heroDescription}
+            headline={card.heroStats?.[0] ? `${card.heroStats[0].value} ${card.heroStats[0].label.toLowerCase()}` : "Learn more"}
+            proofLine="Open role"
+            icon={card.icon}
+            href={card.route}
+            delay={index * 0.04}
+          />
+        ))}
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-4">
+        {PARTNER_LANDING_SECTIONS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.title} className="rounded-[22px] bg-white/28 p-5 backdrop-blur-md">
+              <Icon className="h-4 w-4 text-[hsl(40,62%,42%)]" strokeWidth={1.75} />
+              <h3 className="mt-4 text-base font-semibold tracking-[-0.03em] text-foreground">{item.title}</h3>
+              <p className="mt-2 text-[12px] leading-5 text-muted-foreground">{item.body}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        {PARTNER_ROLE_PROOF.map((item) => (
+          <Link
+            key={item.name}
+            to={item.href}
+            className="rounded-[22px] bg-white/28 p-5 backdrop-blur-md transition hover:bg-white/40"
+          >
+            <div className="text-[11px] uppercase tracking-[0.16em] text-[hsl(40,62%,42%)]">{item.type}</div>
+            <h3 className="mt-3 text-xl font-semibold tracking-[-0.04em] text-foreground">{item.name}</h3>
+            <p className="mt-2 text-[12px] leading-5 text-muted-foreground">{item.summary}</p>
+            <div className="mt-4 text-[12px] font-medium text-foreground">{item.proof}</div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rounded-[24px] bg-white/30 p-6 backdrop-blur-md">
+          <div className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.52)]">
+            Quick actions
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              { label: "Open partner landing", sub: "See all partner types", href: "/partners", icon: Building2 },
+              { label: "Open workspace", sub: "Manage perks and events", href: "/partner-workspace", icon: Zap },
+              { label: "Open map activity", sub: "Inspect live intelligence", href: "/dashboard", icon: MapPin },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-white/50 p-4 transition hover:bg-white"
+                >
+                  <Icon className="h-4 w-4 text-[hsl(40,62%,42%)]" />
+                  <div className="mt-3 text-[12px] font-medium text-foreground">{item.label}</div>
+                  <div className="mt-1 text-[11px] text-muted-foreground">{item.sub}</div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="rounded-[24px] bg-[var(--dp-navy,#0B1F33)] p-6 text-white">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,62%)]">
+            Partner intelligence
+          </p>
+          <h3 className="mt-4 text-2xl font-semibold tracking-[-0.045em]">
+            Start with the partner model, then go role-specific.
+          </h3>
+          <div className="mt-5 space-y-3 text-sm leading-6 text-white/68">
+            <p>
+              This dashboard tab should explain the whole ecosystem first. From there, each role
+              drills into its own operating logic, proof, and map behavior.
+            </p>
+            <p>
+              The map stays shared. The behavior changes by role. That is the product structure.
+            </p>
+          </div>
+          <Link
+            to="/partners"
+            className="mt-6 inline-flex h-11 items-center gap-2 rounded-[12px] bg-white px-4 text-xs font-semibold uppercase tracking-[0.13em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-[hsl(42,24%,96%)]"
+          >
+            View partner overview
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
