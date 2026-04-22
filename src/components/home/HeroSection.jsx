@@ -136,15 +136,28 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={handleOpenMap}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[16px] bg-[#0B1F33] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(11,31,51,0.18)] transition-all hover:-translate-y-[1px]"
-              >
-                Explore live map
-                <ArrowRight className="h-4 w-4" />
-              </button>
+            <div className="space-y-3">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+                Start with a live prompt
+              </div>
+              <div className="grid gap-2">
+                {ASK_MAP_QUESTIONS.map((item) => (
+                  <button
+                    key={item.title}
+                    type="button"
+                    onClick={() => handleAskPrompt(item.query)}
+                    className="group flex min-h-[68px] items-center justify-between gap-3 rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-4 py-3 text-left transition-all hover:-translate-y-[1px] hover:border-[rgba(11,31,51,0.14)] hover:bg-white"
+                  >
+                    <div>
+                      <div className="text-sm font-semibold text-[#0B1F33]">{item.title}</div>
+                      <div className="mt-1 text-[13px] leading-[1.45] text-[rgba(11,31,51,0.62)]">
+                        {item.subtitle}
+                      </div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.42)] transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                ))}
+              </div>
               <Link
                 to="/partners"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.10)] bg-white px-5 text-sm font-semibold text-[#0B1F33] transition-all hover:bg-[rgba(11,31,51,0.03)]"

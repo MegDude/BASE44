@@ -5,6 +5,7 @@ import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import PartnerCTASection from "@/components/partner/PartnerCTASection";
 import ResponsiveScrollSection from "@/components/partner/ResponsiveScrollSection";
 import { PARTNER_DASHBOARD_LINK } from "@/lib/partnerContent";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 function SectionLabel({ children }) {
   return (
@@ -16,6 +17,15 @@ function SectionLabel({ children }) {
 
 export default function PartnerTypeTemplate({ content, extraSection = null }) {
   const Icon = content.icon;
+  const { openFlow } = useCTAFlow();
+
+  const flowTypeByMapMode = {
+    property: "residential_onboarding",
+    hospitality: "hospitality_onboarding",
+    venue: "venue_onboarding",
+    brand: "brand_campaign",
+    civic: "civic_onboarding",
+  };
 
   return (
     <div className="min-h-screen bg-[#f7f9fc] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
@@ -45,12 +55,24 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
                 Open intelligence hub
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link
-                to="/partner-workspace"
+              <button
+                type="button"
+                onClick={() =>
+                  openFlow({
+                    type: flowTypeByMapMode[content.mapMode] || "start_here",
+                    source: `partner_type_template_${content.id}`,
+                    sourceComponent: "PartnerTypeTemplate",
+                    partnerType: content.id,
+                    pageContext: {
+                      objective: content.description,
+                    },
+                    successRoute: content.route,
+                  })
+                }
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-white/46 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-white/70"
               >
                 Manage offers and events
-              </Link>
+              </button>
             </div>
           </motion.div>
 
@@ -169,8 +191,17 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
       <PartnerCTASection
         headline={`Build the ${content.shortLabel.toLowerCase()} inside Downtown Perks.`}
         description="The partner section should read as one system: open discovery for residents, measured visibility for businesses, and a clear intelligence layer for decisions."
-        primaryCTA="Open the partner dashboard"
-        primaryHref={PARTNER_DASHBOARD_LINK}
+        primaryCTA="Get started in app"
+        primaryFlow={{
+          type: flowTypeByMapMode[content.mapMode] || "start_here",
+          source: `partner_cta_section_${content.id}`,
+          sourceComponent: "PartnerCTASection",
+          partnerType: content.id,
+          pageContext: {
+            objective: content.description,
+          },
+          successRoute: content.route,
+        }}
         secondaryLink={{ label: "Back to partner landing", href: "/partners" }}
       />
     </div>

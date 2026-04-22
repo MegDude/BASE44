@@ -167,7 +167,7 @@ function WorkspaceOverview({ user, setTab }) {
       {perks.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading font-medium text-sm text-foreground">Recent perks</h3>
+            <h3 className="text-sm font-semibold text-foreground">Recent perks</h3>
             <button onClick={() => setTab("perks")} className="text-[12px] text-primary hover:underline underline-offset-4">See all</button>
           </div>
           <div className="space-y-2">
@@ -189,7 +189,7 @@ function WorkspaceOverview({ user, setTab }) {
       {events.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading font-medium text-sm text-foreground">Recent events</h3>
+            <h3 className="text-sm font-semibold text-foreground">Recent events</h3>
             <button onClick={() => setTab("events")} className="text-[12px] text-primary hover:underline underline-offset-4">See all</button>
           </div>
           <div className="space-y-2">
@@ -258,7 +258,7 @@ function PerksManager({ user }) {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-heading font-medium text-xl text-foreground">Perks</h2>
+          <h2 className="text-xl font-semibold text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
         <button onClick={handleAdd} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all">
@@ -332,9 +332,9 @@ function PerkForm({ perk, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-      className="mb-6 p-6 rounded-xl border border-primary/20 bg-primary/5">
+      className="mb-6 rounded-[22px] border border-[rgba(13,27,42,0.10)] bg-white p-6 shadow-[0_12px_28px_rgba(11,26,43,0.05)]">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-heading font-medium text-foreground">{perk ? "Edit perk" : "New perk"}</h3>
+        <h3 className="text-lg font-semibold text-foreground">{perk ? "Edit perk" : "New perk"}</h3>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -398,7 +398,7 @@ function EventsManager({ user }) {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-heading font-medium text-xl text-foreground">Events</h2>
+          <h2 className="text-xl font-semibold text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP and discovery.</p>
         </div>
         <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all">
@@ -475,9 +475,9 @@ function EventForm({ event, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-      className="mb-6 p-6 rounded-xl border border-primary/20 bg-primary/5">
+      className="mb-6 rounded-[22px] border border-[rgba(13,27,42,0.10)] bg-white p-6 shadow-[0_12px_28px_rgba(11,26,43,0.05)]">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-heading font-medium text-foreground">{event ? "Edit event" : "New event"}</h3>
+        <h3 className="text-lg font-semibold text-foreground">{event ? "Edit event" : "New event"}</h3>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -562,7 +562,7 @@ function ProfileSection({ user, setUser }) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <div className="mb-6">
-        <h2 className="font-heading font-medium text-xl text-foreground">Profile</h2>
+        <h2 className="text-xl font-semibold text-foreground">Profile</h2>
         <p className="text-muted-foreground text-[13px] mt-0.5">Your organization info shown on the downtown map.</p>
       </div>
 
@@ -618,7 +618,7 @@ function EmptyState({ icon: Icon, headline, body, action, onAction }) {
       <div className="w-12 h-12 rounded-full border border-border/40 flex items-center justify-center mx-auto mb-4">
         <Icon className="w-5 h-5 text-muted-foreground/50" />
       </div>
-      <h3 className="font-heading font-medium text-foreground mb-2">{headline}</h3>
+      <h3 className="font-semibold text-foreground mb-2">{headline}</h3>
       <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">{body}</p>
       <button onClick={onAction} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all">
         <Plus className="w-4 h-4" /> {action}

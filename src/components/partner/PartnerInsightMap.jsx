@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   Building2,
+  Calendar,
   ChevronDown,
   ChevronUp,
+  Clock3,
   LineChart,
   MapPin,
   Navigation,
@@ -12,21 +14,31 @@ import {
   Target,
   X,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import {
+  getPartnerActivityFeed,
   getPartnerInsightPins,
   getPartnerInsightSummary,
 } from "@/lib/map/partnerInsights";
 
 const FILTERS = [
-  { id: "all", label: "All zones" },
+  { id: "all", label: "All signals" },
   { id: "demand", label: "Immediate demand" },
   { id: "radius", label: "5 min radius" },
-  { id: "events", label: "Event traffic" },
+  { id: "events", label: "Events live" },
   { id: "offers", label: "Offer performance" },
   { id: "sources", label: "Source buildings" },
   { id: "repeat", label: "Repeat signals" },
+];
+
+const PANEL_TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "conversion", label: "Conversion" },
+  { id: "audience", label: "Audience" },
+  { id: "events", label: "Events" },
+  { id: "actions", label: "Actions" },
 ];
 
 const PARTNER_PROMPTS = [
@@ -67,6 +79,7 @@ function getQueryScore(item, query) {
     item.recommendedAction,
     ...(item.tags || []),
     ...(item.sourceBreakdown || []).map((source) => source.label),
+    ...(item.relatedEvents || []).map((event) => `${event.label} ${event.value}`),
   ]
     .filter(Boolean)
     .join(" ")
@@ -81,7 +94,7 @@ function getQueryScore(item, query) {
   if (value.includes("perform") && item.insightType === "performance") score += 6;
   if ((value.includes("traffic") || value.includes("going")) && item.insightType === "engagement") score += 6;
   if ((value.includes("building") || value.includes("source")) && item.sourceBreakdown?.length) score += 4;
-  if ((value.includes("event") || value.includes("tonight")) && item.tags?.some((tag) => String(tag).includes("event"))) score += 4;
+  if ((value.includes("event") || value.includes("tonight")) && item.relatedEvents?.length) score += 4;
   return score;
 }
 
@@ -90,8 +103,8 @@ function getPerformanceState(item) {
   const conversion = Number(item.metrics?.conversionRate || 0);
   if (item.insightType === "opportunity") return "opportunity";
   if (item.insightType === "campaign") return "spike";
-  if (visits >= 600 || conversion >= 20) return "high";
-  if (visits >= 300 || conversion >= 12) return "medium";
+  if (visits >= 600 || conversion >= 35) return "high";
+  if (visits >= 300 || conversion >= 18) return "medium";
   return "low";
 }
 
@@ -103,6 +116,7 @@ function toMarkerEntity(item) {
     district: "civic",
     campaign: "brand",
     zone: "moment",
+    event: "event",
   };
 
   return {
@@ -111,6 +125,10 @@ function toMarkerEntity(item) {
     markerType: entityTypeMap[item.entityType] || "venue",
     performanceState: getPerformanceState(item),
   };
+}
+
+function getFilterLabel(activeFilter) {
+  return FILTERS.find((item) => item.id === activeFilter)?.label || "All signals";
 }
 
 export default function PartnerInsightMap({
@@ -123,15 +141,20 @@ export default function PartnerInsightMap({
   const [appliedQuery, setAppliedQuery] = useState("");
   const [selected, setSelected] = useState(null);
   const [resultsExpanded, setResultsExpanded] = useState(false);
+  const [activityExpanded, setActivityExpanded] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
   const [mapCenter, setMapCenter] = useState([30.267, -97.743]);
   const [mapZoom, setMapZoom] = useState(14);
 
   const allItems = useMemo(() => getPartnerInsightPins({ partnerType }), [partnerType]);
+  const summary = useMemo(() => getPartnerInsightSummary({ partnerType }), [partnerType]);
+  const activityFeed = useMemo(() => getPartnerActivityFeed({ partnerType }), [partnerType]);
+
   const filteredItems = useMemo(() => {
     const allowedTypes = FILTER_TO_INSIGHT_TYPES[activeFilter] || [];
     const scoped =
       activeFilter === "radius"
-        ? allItems.filter((item) => ["West 6th", "Rainey", "Congress"].includes(item.district))
+        ? allItems.filter((item) => ["West 6th", "Rainey", "Congress", "Seaholm", "Waterloo"].includes(item.district))
         : activeFilter === "sources"
           ? allItems.filter((item) => (item.sourceBreakdown || []).length > 0)
           : activeFilter === "repeat"
@@ -150,8 +173,6 @@ export default function PartnerInsightMap({
 
     return appliedQuery ? ranked.filter((item) => getQueryScore(item, appliedQuery) > 0) : ranked;
   }, [activeFilter, allItems, appliedQuery]);
-
-  const summary = useMemo(() => getPartnerInsightSummary({ partnerType }), [partnerType]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth >= 1024) {
@@ -183,46 +204,69 @@ export default function PartnerInsightMap({
 
   function handleSelect(item) {
     setSelected((current) => (current?.id === item.id ? null : item));
+    setActiveTab("overview");
   }
 
   const activeItem = selected;
   const itemsForMap = filteredItems.map(toMarkerEntity);
   const resultCount = filteredItems.length;
 
+  const summaryMetrics = [
+    { label: "Scans", value: metricValue(summary.impressions), icon: Search },
+    { label: "Conversion", value: metricValue(summary.conversionRate, "%"), icon: LineChart },
+    { label: "Redemptions", value: metricValue(summary.redemptions), icon: Sparkles },
+    {
+      label: partnerType === "civic" ? "Events live" : "Active perks / events",
+      value: `${metricValue(summary.activePerks)} / ${metricValue(summary.activeEvents)}`,
+      icon: Calendar,
+    },
+  ];
+
   return (
     <section className="border-y border-[rgba(10,20,40,0.08)] bg-[#f7f9fc]">
       <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
-        <div className="mb-6 grid gap-3 md:grid-cols-3">
-          {[
-            { label: "Active zones", value: summary.activeZones, icon: MapPin },
-            { label: "Tracked visits", value: metricValue(summary.interactions), icon: LineChart },
-            { label: "Redemptions", value: metricValue(summary.redemptions), icon: Sparkles },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.label}
-                className="rounded-[20px] border border-[rgba(10,20,40,0.08)] bg-white p-4 shadow-[0_8px_20px_rgba(11,26,43,0.04)]"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                      {item.label}
-                    </div>
-                    <div className="mt-2 text-[1.8rem] font-semibold tracking-[-0.03em] text-foreground">
-                      {item.value}
-                    </div>
-                  </div>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#f1f4f8] text-primary">
-                    <Icon className="h-4.5 w-4.5" />
-                  </div>
-                </div>
+        <div className="rounded-[24px] border border-[rgba(10,20,40,0.08)] bg-[var(--dp-navy)] p-4 text-white shadow-[0_14px_34px_rgba(11,26,43,0.08)] md:p-5">
+          <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(255,255,255,0.68)]">
+                Live venue intelligence
               </div>
-            );
-          })}
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-[13px]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5">
+                  <Clock3 className="h-3.5 w-3.5" />
+                  Peak window: {summary.peakWindow}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {summary.recentActions} recent actions
+                </span>
+              </div>
+              <div className="mt-3 text-[16px] font-semibold tracking-[-0.02em]">{summary.leadingLabel}</div>
+              <div className="mt-1 max-w-3xl text-[13px] leading-6 text-[rgba(255,255,255,0.72)]">
+                {summary.narrative}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {summaryMetrics.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.label} className="rounded-[18px] border border-white/10 bg-white/6 p-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="text-[10px] uppercase tracking-[0.12em] text-[rgba(255,255,255,0.62)]">
+                        {item.label}
+                      </div>
+                      <Icon className="h-3.5 w-3.5 text-[rgba(255,255,255,0.58)]" />
+                    </div>
+                    <div className="mt-2 text-[1.15rem] font-semibold tracking-[-0.03em]">{item.value}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        <div className="overflow-hidden rounded-[28px] border border-[rgba(10,20,40,0.08)] bg-white shadow-[0_18px_40px_rgba(11,26,43,0.06)]">
+        <div className="mt-4 overflow-hidden rounded-[28px] border border-[rgba(10,20,40,0.08)] bg-white shadow-[0_18px_40px_rgba(11,26,43,0.06)]">
           <div className="border-b border-[rgba(10,20,40,0.08)] p-4 md:p-5">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
@@ -247,27 +291,37 @@ export default function PartnerInsightMap({
                 </div>
               </div>
 
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-2 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f1f4f8] p-2 md:flex-row"
-              >
-                <div className="flex h-11 min-w-[280px] items-center gap-3 rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white px-4">
-                  <Search className="h-4 w-4 shrink-0 text-foreground/45" />
-                  <input
-                    value={queryInput}
-                    onChange={(event) => setQueryInput(event.target.value)}
-                    placeholder="Ask what is happening here"
-                    className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-primary px-4 text-sm font-medium text-white"
+              <div className="flex flex-col items-stretch gap-2">
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-2 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f1f4f8] p-2 md:flex-row"
                 >
-                  Analyze map
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </form>
+                  <div className="flex h-11 min-w-[280px] items-center gap-3 rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white px-4">
+                    <Search className="h-4 w-4 shrink-0 text-foreground/45" />
+                    <input
+                      value={queryInput}
+                      onChange={(event) => setQueryInput(event.target.value)}
+                      placeholder="Ask what is happening here"
+                      className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-primary px-4 text-sm font-medium text-white"
+                  >
+                    Analyze map
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </form>
+
+                <Link
+                  to="/downtown-perks/explore"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white px-4 text-sm font-medium text-foreground transition-colors hover:bg-[#f7f9fc]"
+                >
+                  View resident app
+                  <Navigation className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
 
             <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
@@ -289,9 +343,48 @@ export default function PartnerInsightMap({
                 </button>
               ))}
             </div>
+
+            <div className="mt-4 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] p-3">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/52">
+                    Live activity
+                  </div>
+                  <div className="mt-1 text-[12px] text-muted-foreground">
+                    {summary.leadingLabel}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActivityExpanded((current) => !current)}
+                  className="inline-flex items-center gap-1 rounded-full border border-[rgba(10,20,40,0.08)] bg-white px-3 py-1.5 text-[11px] font-medium text-foreground"
+                >
+                  {activityExpanded ? "Hide activity" : "Show activity"}
+                  {activityExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                </button>
+              </div>
+              {activityExpanded ? (
+                <div className="mt-3 grid gap-2 md:grid-cols-3 xl:grid-cols-4">
+                  {activityFeed.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        const next = filteredItems.find((entry) => entry.id === item.entityId);
+                        if (next) handleSelect(next);
+                      }}
+                      className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white px-3 py-3 text-left transition-colors hover:bg-[#fbfcff]"
+                    >
+                      <div className="text-[12px] font-semibold text-foreground">{item.title}</div>
+                      <div className="mt-1 text-[11px] leading-5 text-muted-foreground">{item.detail}</div>
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px]">
             <div className="h-[460px] lg:h-[720px]">
               <UnifiedMapShell
                 items={itemsForMap}
@@ -312,25 +405,22 @@ export default function PartnerInsightMap({
             <div className="relative z-10 -mt-16 px-3 pb-3 lg:mt-0 lg:border-l lg:border-[rgba(10,20,40,0.08)] lg:p-4">
               <div className="rounded-[22px] border border-[rgba(10,20,40,0.08)] bg-white/96 p-4 shadow-[0_14px_34px_rgba(11,26,43,0.12)] backdrop-blur lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
-                    Ranked intelligence
+                  <div>
+                    <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
+                      Ranked intelligence
+                    </div>
+                    <div className="mt-1 text-[12px] text-muted-foreground">
+                      {getFilterLabel(activeFilter)} · {resultCount} {resultCount === 1 ? "result" : "results"}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#f1f4f8] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/70">
-                      {activeFilter === "all" ? "All signals" : FILTERS.find((item) => item.id === activeFilter)?.label}
-                    </span>
-                    <span className="text-[11px] text-muted-foreground">
-                      {resultCount} {resultCount === 1 ? "zone" : "zones"}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setResultsExpanded((current) => !current)}
-                      className="inline-flex items-center gap-1 rounded-full border border-[rgba(10,20,40,0.08)] px-3 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-[#f7f9fc]"
-                    >
-                      {resultsExpanded ? "Hide results" : "Show results"}
-                      {resultsExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setResultsExpanded((current) => !current)}
+                    className="inline-flex items-center gap-1 rounded-full border border-[rgba(10,20,40,0.08)] px-3 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-[#f7f9fc]"
+                  >
+                    {resultsExpanded ? "Hide results" : "Show results"}
+                    {resultsExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                  </button>
                 </div>
 
                 {activeItem ? (
@@ -366,63 +456,133 @@ export default function PartnerInsightMap({
                       </button>
                     </div>
 
-                    <div className="mt-4 grid grid-cols-2 gap-2">
-                      {[
-                        { label: "Impressions", value: metricValue(activeItem.metrics?.impressions) },
-                        { label: "Visits", value: metricValue(activeItem.metrics?.visits) },
-                        { label: "Saves / RSVP", value: metricValue(activeItem.metrics?.saves) },
-                        { label: "Redemptions", value: metricValue(activeItem.metrics?.redemptions) },
-                        { label: "Conversion", value: metricValue(activeItem.metrics?.conversionRate, "%") },
-                        { label: "Repeat rate", value: metricValue(activeItem.metrics?.repeatRate, "%") },
-                      ].map((metric) => (
-                        <div key={metric.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
-                          <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                            {metric.label}
-                          </div>
-                          <div className="mt-1 text-[15px] font-semibold text-foreground">{metric.value}</div>
-                        </div>
+                    <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+                      {PANEL_TABS.map((tab) => (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`rounded-full border px-3 py-1.5 text-[11px] font-medium whitespace-nowrap transition-all ${
+                            activeTab === tab.id
+                              ? "border-primary bg-primary text-white"
+                              : "border-[rgba(10,20,40,0.08)] bg-white text-foreground/70"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
                       ))}
                     </div>
 
-                    <div className="mt-4 rounded-[14px] bg-[var(--dp-navy)] p-4">
-                      <div className="text-[10px] uppercase tracking-[0.14em] dp-dark-copy-muted">
-                        Context
-                      </div>
-                      <div className="mt-2 text-[13px] font-medium leading-5 dp-dark-copy">
-                        {activeItem.shortInsight}
-                      </div>
-                      <div className="mt-2 text-[12px] leading-5 dp-dark-copy-muted">
-                        {activeItem.summary}
-                      </div>
-                    </div>
+                    {activeTab === "overview" ? (
+                      <>
+                        <div className="mt-4 grid grid-cols-2 gap-2">
+                          {[
+                            { label: "Scans", value: metricValue(activeItem.metrics?.impressions) },
+                            { label: "Visits", value: metricValue(activeItem.metrics?.visits) },
+                            { label: "Redemptions", value: metricValue(activeItem.metrics?.redemptions) },
+                            { label: "Peak", value: activeItem.relatedEvents?.[0]?.value || activeItem.trend?.window || "Live now" },
+                          ].map((metric) => (
+                            <div key={metric.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
+                              <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                                {metric.label}
+                              </div>
+                              <div className="mt-1 text-[15px] font-semibold text-foreground">{metric.value}</div>
+                            </div>
+                          ))}
+                        </div>
 
-                    <div className="mt-4 grid gap-2 md:grid-cols-3 lg:grid-cols-1">
-                      {(activeItem.sourceBreakdown || []).slice(0, 3).map((source) => (
-                        <div key={source.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
-                          <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
-                            Source
+                        <div className="mt-4 rounded-[14px] bg-[var(--dp-navy)] p-4">
+                          <div className="text-[10px] uppercase tracking-[0.14em] dp-dark-copy-muted">
+                            Context
                           </div>
-                          <div className="mt-1 flex items-center justify-between gap-3">
-                            <span className="text-[12px] font-medium text-foreground">{source.label}</span>
-                            <span className="text-[12px] font-semibold text-[var(--dp-gold-muted)]">{source.value}%</span>
+                          <div className="mt-2 text-[13px] font-medium leading-5 dp-dark-copy">
+                            {activeItem.shortInsight}
+                          </div>
+                          <div className="mt-2 text-[12px] leading-5 dp-dark-copy-muted">
+                            {activeItem.summary}
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </>
+                    ) : null}
 
-                    <div className="mt-4 rounded-[14px] border border-[rgba(198,168,90,0.24)] bg-[rgba(198,168,90,0.08)] p-4">
-                      <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
-                        <Target className="h-3.5 w-3.5" />
-                        Recommended action
+                    {activeTab === "conversion" ? (
+                      <div className="mt-4 grid grid-cols-2 gap-2">
+                        {[
+                          { label: "Saves / RSVP", value: metricValue(activeItem.metrics?.saves) },
+                          { label: "Redemptions", value: metricValue(activeItem.metrics?.redemptions) },
+                          { label: "Conversion", value: metricValue(activeItem.metrics?.conversionRate, "%") },
+                          { label: "Repeat rate", value: metricValue(activeItem.metrics?.repeatRate, "%") },
+                        ].map((metric) => (
+                          <div key={metric.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
+                            <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                              {metric.label}
+                            </div>
+                            <div className="mt-1 text-[15px] font-semibold text-foreground">{metric.value}</div>
+                          </div>
+                        ))}
                       </div>
-                      <div className="mt-2 text-[13px] font-medium leading-5 text-foreground">
-                        {activeItem.recommendedAction}
+                    ) : null}
+
+                    {activeTab === "audience" ? (
+                      <div className="mt-4 grid gap-2">
+                        {(activeItem.sourceBreakdown || []).slice(0, 3).map((source) => (
+                          <div key={source.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
+                            <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">Source</div>
+                            <div className="mt-1 flex items-center justify-between gap-3">
+                              <span className="text-[12px] font-medium text-foreground">{source.label}</span>
+                              <span className="text-[12px] font-semibold text-[var(--dp-gold-muted)]">{source.value}%</span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    </div>
+                    ) : null}
+
+                    {activeTab === "events" ? (
+                      <div className="mt-4 grid gap-2">
+                        {(activeItem.relatedEvents || []).length ? (
+                          activeItem.relatedEvents.map((event) => (
+                            <div key={`${activeItem.id}-${event.label}`} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
+                              <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary/70">
+                                <Calendar className="h-3.5 w-3.5" />
+                                Related activity
+                              </div>
+                              <div className="mt-2 text-[12px] font-medium text-foreground">{event.label}</div>
+                              <div className="mt-1 text-[11px] text-muted-foreground">{event.value}</div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="rounded-[14px] border border-dashed border-[rgba(10,20,40,0.12)] bg-white p-3 text-[12px] text-muted-foreground">
+                            No live event layer is attached to this signal right now.
+                          </div>
+                        )}
+                      </div>
+                    ) : null}
+
+                    {activeTab === "actions" ? (
+                      <div className="mt-4 rounded-[14px] border border-[rgba(198,168,90,0.24)] bg-[rgba(198,168,90,0.08)] p-4">
+                        <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
+                          <Target className="h-3.5 w-3.5" />
+                          Recommended action
+                        </div>
+                        <div className="mt-2 text-[13px] font-medium leading-5 text-foreground">
+                          {activeItem.recommendedAction}
+                        </div>
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                          <div className="rounded-[12px] bg-white px-3 py-3">
+                            <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">Active perks</div>
+                            <div className="mt-1 text-[14px] font-semibold text-foreground">{metricValue(activeItem.metrics?.activePerks)}</div>
+                          </div>
+                          <div className="rounded-[12px] bg-white px-3 py-3">
+                            <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">Members in play</div>
+                            <div className="mt-1 text-[14px] font-semibold text-foreground">{metricValue(activeItem.metrics?.activeMembers)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : (
                   <div className="mt-3 rounded-[18px] border border-dashed border-[rgba(10,20,40,0.12)] bg-[#f7f9fc] p-5 text-[13px] leading-6 text-muted-foreground">
-                    Select a pin to see metrics, source attribution, and the next action for that zone.
+                    Select a pin to see performance, audience sources, event context, and the next action for that location or zone.
                   </div>
                 )}
 
@@ -445,6 +605,8 @@ export default function PartnerInsightMap({
                             <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${isSelected ? "bg-primary text-white" : "bg-[#f1f4f8] text-primary"}`}>
                               {item.entityType === "building" || item.entityType === "hotel" ? (
                                 <Building2 className="h-4 w-4" />
+                              ) : item.entityType === "event" ? (
+                                <Calendar className="h-4 w-4" />
                               ) : item.insightType === "opportunity" ? (
                                 <Target className="h-4 w-4" />
                               ) : (
@@ -455,11 +617,23 @@ export default function PartnerInsightMap({
                               <div className="truncate text-[13px] font-semibold text-foreground">{item.title}</div>
                               <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[10px]">
                                 <span className="flex items-center gap-[3px] text-[hsl(214,52%,18%)]">
+                                  <MapPin className="h-3 w-3" />
+                                  {item.entityType}
+                                </span>
+                                <span className="flex items-center gap-[3px] text-[hsl(214,52%,18%)]">
                                   <Navigation className="h-3 w-3" />
                                   {item.district}
                                 </span>
                                 <span className="font-medium text-[var(--dp-gold-muted)]">
-                                  {metricValue(item.metrics?.visits)} visits today
+                                  {item.entityType === "building"
+                                    ? `${metricValue(item.metrics?.activeMembers)} resident actions`
+                                    : item.entityType === "hotel"
+                                      ? `${metricValue(item.metrics?.conversionRate, "%")} guest conversion`
+                                      : item.entityType === "campaign"
+                                        ? `${metricValue(item.metrics?.visits)} campaign visits`
+                                        : item.entityType === "district"
+                                          ? `${metricValue(item.metrics?.visits)} district visits`
+                                          : `${metricValue(item.metrics?.visits)} visits today`}
                                 </span>
                               </div>
                               <div className="mt-1 text-[11px] leading-5 text-muted-foreground">

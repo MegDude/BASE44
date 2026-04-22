@@ -1,7 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, Calendar, ChevronUp, Clock3, Heart, Loader2, MapPin, Ticket, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { useResidentMutations } from '@/hooks/useResidentMutations';
+import {
+  IconCalendarCheck,
+  IconChevronUp,
+  IconClock,
+  IconClose,
+  getEntityIcon,
+  getEntityLabel,
+  IconNavigation,
+  IconPerk,
+  IconSave,
+} from '@/components/icons/DPIcons';
 
 export default function UnifiedDrawer({ selected }) {
   const drawerState = useMapStateStore((state) => state.drawerState);
@@ -17,6 +28,8 @@ export default function UnifiedDrawer({ selected }) {
 
   const isExpanded = drawerState === 'expanded' || drawerState === 'fullscreen';
   const isSaved = savedEntityIds.has(selected.id);
+  const EntityIcon = getEntityIcon(selected);
+  const entityLabel = getEntityLabel(selected);
 
   const openMaps = async () => {
     if (!selected.location?.valid) return;
@@ -53,7 +66,12 @@ export default function UnifiedDrawer({ selected }) {
       : selected.type === 'perk' || selected.perk?.value || selected.perk_value
         ? 'Redeem'
         : 'Directions';
-  const PrimaryIcon = selected.type === 'event' ? Calendar : selected.type === 'perk' ? Ticket : ArrowUpRight;
+  const PrimaryIcon =
+    selected.type === 'event'
+      ? IconCalendarCheck
+      : selected.type === 'perk' || selected.perk?.value || selected.perk_value
+        ? IconPerk
+        : IconNavigation;
 
   const closeDrawer = () => {
     selectEntity(null);
@@ -63,8 +81,9 @@ export default function UnifiedDrawer({ selected }) {
   const detailBody = (
     <>
       <div className="pt-4">
-        <span className="inline-flex rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-navy">
-          {selected.type}
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-navy">
+          <EntityIcon className="h-3.5 w-3.5" />
+          {entityLabel}
         </span>
         <h2 className="mt-3 text-xl font-semibold text-navy">{selected.name}</h2>
         <p className="mt-2 text-sm text-navy-muted">{selected.description || selected.address}</p>
@@ -73,13 +92,13 @@ export default function UnifiedDrawer({ selected }) {
       <div className="mt-4 flex flex-wrap gap-2">
         {selected.address && (
           <span className="dp-chip">
-            <MapPin className="h-3.5 w-3.5" />
+            <IconNavigation className="h-3.5 w-3.5" />
             {selected.address.split(',')[0]}
           </span>
         )}
         {selected.metadata?.walkMinutes && (
           <span className="dp-chip">
-            <Clock3 className="h-3.5 w-3.5" />
+            <IconClock className="h-3.5 w-3.5" />
             {selected.metadata.walkMinutes} min walk
           </span>
         )}
@@ -99,11 +118,11 @@ export default function UnifiedDrawer({ selected }) {
           disabled={mutations.pendingAction === 'save'}
           className={isSaved ? 'dp-chip dp-chip-active justify-center py-3' : 'dp-chip justify-center py-3'}
         >
-          {mutations.pendingAction === 'save' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Heart className="h-3.5 w-3.5" />}
+          {mutations.pendingAction === 'save' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <IconSave className="h-3.5 w-3.5" />}
           {isSaved ? 'Saved' : 'Save'}
         </button>
         <button onClick={openMaps} className="dp-chip justify-center py-3">
-          <ArrowUpRight className="h-3.5 w-3.5" />
+          <IconNavigation className="h-3.5 w-3.5" />
           Directions
         </button>
       </div>
@@ -122,7 +141,7 @@ export default function UnifiedDrawer({ selected }) {
           onClick={() => setDrawerState(isExpanded ? 'preview' : 'expanded')}
           className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
         >
-          <ChevronUp className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          <IconChevronUp className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
           {isExpanded ? 'Roll up details' : 'View full details'}
         </button>
         <button
@@ -130,7 +149,7 @@ export default function UnifiedDrawer({ selected }) {
           className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
           aria-label="Close details"
         >
-          <X className="h-4 w-4" />
+          <IconClose className="h-4 w-4" />
         </button>
       </div>
     </>
@@ -166,7 +185,7 @@ export default function UnifiedDrawer({ selected }) {
                 className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
                 aria-label="Close details"
               >
-                <X className="h-4 w-4" />
+                <IconClose className="h-4 w-4" />
               </button>
             </div>
 
@@ -194,7 +213,7 @@ export default function UnifiedDrawer({ selected }) {
                 className="rounded-full p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
                 aria-label="Close details"
               >
-                <X className="h-4 w-4" />
+                <IconClose className="h-4 w-4" />
               </button>
             </div>
             <div className={`overflow-y-auto px-5 pb-5 ${isExpanded ? 'max-h-[70vh]' : 'max-h-[46vh]'}`}>

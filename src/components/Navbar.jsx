@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Building2, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 const RESIDENT_LINKS = [
   { to: "/resident-app", label: "Resident App", desc: "Map, card, saved, and plan" },
@@ -32,6 +33,7 @@ export default function Navbar() {
   const [dropdown, setDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { openFlow } = useCTAFlow();
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -193,6 +195,15 @@ export default function Navbar() {
           </Link>
           <Link
             to="/card"
+            onClick={(event) => {
+              event.preventDefault();
+              openFlow({
+                type: "resident_card",
+                source: "navbar_get_your_card",
+                sourceComponent: "Navbar",
+                successRoute: "/resident-app/card",
+              });
+            }}
             className="px-5 py-2 rounded-full bg-[#0B1A2B] text-white text-[13px] font-semibold hover:bg-[#14263B] transition-all duration-300 shadow-sm shadow-black/10"
           >
             Get Your Card
@@ -255,7 +266,16 @@ export default function Navbar() {
               </Link>
 
               <div className="pt-4 pb-2">
-                <Link to="/card" onClick={() => setOpen(false)}
+                <Link to="/card" onClick={(event) => {
+                  event.preventDefault();
+                  setOpen(false);
+                  openFlow({
+                    type: "resident_card",
+                    source: "navbar_mobile_get_your_card",
+                    sourceComponent: "Navbar",
+                    successRoute: "/resident-app/card",
+                  });
+                }}
                   className="block rounded-full bg-[#0B1A2B] px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-[#14263B]"
                 >
                   Get Your Card

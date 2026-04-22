@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Search, X, Sparkles, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { ASK_MAP_QUESTIONS } from '@/lib/map/searchUiConfig';
+import { IconAsk, IconClose, IconSearch } from '@/components/icons/DPIcons';
 
 const QUICK_PROMPTS = [
   'coffee nearby',
@@ -57,7 +58,7 @@ export default function UnifiedSearchBar({
       <div className="relative">
         <div className="dp-map-panel flex items-center gap-3 px-4 py-3">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(11,31,51,0.06)] text-[#0b1f33]">
-            <Search className="h-4 w-4" />
+            {mode === 'ask' ? <IconAsk className="h-4 w-4" /> : <IconSearch className="h-4 w-4" />}
           </span>
 
           <input
@@ -99,7 +100,7 @@ export default function UnifiedSearchBar({
             className={mode === 'ask' ? 'dp-chip dp-chip-active shrink-0' : 'dp-chip shrink-0'}
             aria-label={mode === 'ask' ? 'Switch to search mode' : 'Switch to ask mode'}
           >
-            <Sparkles className="h-3.5 w-3.5" />
+            <IconAsk className="h-3.5 w-3.5" />
             {mode === 'ask' ? 'Search' : 'Ask'}
           </button>
 
@@ -112,7 +113,7 @@ export default function UnifiedSearchBar({
               className="rounded-full p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
               aria-label="Clear search"
             >
-              <X className="h-4 w-4" />
+              <IconClose className="h-4 w-4" />
             </button>
           ) : null}
         </div>

@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import SwipeRail from "@/components/home/SwipeRail";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 const forms = [
   {
@@ -107,8 +108,113 @@ const forms = [
 
 function ContactForm({ form }) {
   const [values, setValues] = useState({});
+  const { openFlow } = useCTAFlow();
+
+  const flowTypeByForm = {
+    buildings: "pilot_request",
+    hotels: "hospitality_onboarding",
+    venues: "venue_onboarding",
+    brands: "brand_campaign",
+    civic: "civic_onboarding",
+    realestate: "availability_check",
+    residents: "resident_card",
+  };
+
+  function mapInitialValues() {
+    if (form.id === "buildings") {
+      return {
+        propertyName: values.property || "",
+        organization: values.property || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        units: values.units || "",
+        goal: values.goals || "",
+        partnerType: "properties",
+      };
+    }
+    if (form.id === "hotels") {
+      return {
+        hotelName: values.property || "",
+        organization: values.property || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        rooms: values.rooms || "",
+        partnerType: "hospitality",
+      };
+    }
+    if (form.id === "venues") {
+      return {
+        venueName: values.business || "",
+        organization: values.business || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        address: values.address || "",
+        goal: values.perk || "",
+        intent: "Both",
+        partnerType: "venues",
+      };
+    }
+    if (form.id === "brands") {
+      return {
+        brandName: values.brand || "",
+        organization: values.brand || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        partnerType: "brands",
+      };
+    }
+    if (form.id === "civic") {
+      return {
+        organization: values.org || "",
+        initiative: values.focus || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        goal: values.focus || "",
+        partnerType: "civic",
+      };
+    }
+    if (form.id === "residents") {
+      return {
+        name: values.name || "",
+        phone: values.phone || "",
+        email: values.email || "",
+        building: values.building || "",
+      };
+    }
+    return values;
+  }
+
   return (
-    <div className="space-y-3">
+    <form
+      className="space-y-3"
+      onSubmit={(event) => {
+        event.preventDefault();
+        openFlow({
+          type: flowTypeByForm[form.id] || "start_here",
+          source: `contact_section_${form.id}`,
+          sourceComponent: "ContactSection",
+          partnerType: form.id === "buildings" ? "properties" : form.id,
+          initialValues: mapInitialValues(),
+          successRoute:
+            form.id === "residents"
+              ? "/resident-app/card"
+              : form.id === "brands"
+                ? "/partners/brands"
+                : form.id === "civic"
+                  ? "/partners/civic"
+                  : form.id === "venues"
+                    ? "/partners/venues"
+                    : form.id === "hotels"
+                      ? "/partners/hotels"
+                      : "/partners",
+        });
+      }}
+    >
       {form.fields.map((f) => (
         <div key={f.name}>
           <label className="block text-[11px] font-medium text-foreground/50 uppercase tracking-[0.1em] mb-1.5">
@@ -122,10 +228,13 @@ function ContactForm({ form }) {
           />
         </div>
       ))}
-      <button className="mt-4 w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300">
+      <button
+        type="submit"
+        className="mt-4 w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+      >
         {form.cta}
       </button>
-    </div>
+    </form>
   );
 }
 
@@ -133,6 +242,7 @@ export default function ContactSection() {
   const [activeForm, setActiveForm] = useState("buildings");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { openFlow } = useCTAFlow();
 
   const current = forms.find((f) => f.id === activeForm);
 
@@ -257,9 +367,20 @@ export default function ContactSection() {
           <Link to="/downtown-perks/for-buildings" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,84%)] text-foreground/70 font-medium text-sm hover:text-foreground hover:border-foreground/30 transition-all duration-300">
             Become a Partner
           </Link>
-          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,88%)] text-foreground/50 font-medium text-sm hover:text-foreground transition-all duration-300">
+          <button
+            type="button"
+            onClick={() =>
+              openFlow({
+                type: "availability_check",
+                source: "contact_section_check_availability",
+                sourceComponent: "ContactSection",
+                successRoute: "/partners",
+              })
+            }
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,88%)] text-foreground/50 font-medium text-sm hover:text-foreground transition-all duration-300"
+          >
             Check Availability
-          </Link>
+          </button>
         </motion.div>
       </div>
     </section>

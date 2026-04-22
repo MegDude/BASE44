@@ -12,6 +12,7 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 import SwipeRail from "@/components/home/SwipeRail";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 const partnerCards = [
   {
@@ -103,6 +104,7 @@ const includeCards = [
 export default function PricingSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { openFlow } = useCTAFlow();
 
   return (
     <section
@@ -255,6 +257,15 @@ export default function PricingSection() {
           </Link>
           <Link
             to="/partner-workspace"
+            onClick={(event) => {
+              event.preventDefault();
+              openFlow({
+                type: "pilot_request",
+                source: "pricing_section_start_pilot",
+                sourceComponent: "PricingSection",
+                successRoute: "/partners",
+              });
+            }}
             className="inline-flex items-center gap-2 rounded-full border border-[rgba(10,20,40,0.12)] px-6 py-3 text-sm font-medium text-foreground/70 transition-all hover:text-foreground"
           >
             Start a pilot

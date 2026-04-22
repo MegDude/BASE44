@@ -1,5 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 export function BrandSection({ label = "", title = "", children, className = "" }) {
   const ref = useRef(null);
@@ -101,6 +103,10 @@ export function UseCaseCard({ title = "", detail = "", tag = "", delay = 0 }) {
 }
 
 export function BrandCTA({ headline = "", sub = "", ctaLabel = "Start the Conversation", ctaHref = "mailto:partners@downtownperks.com" }) {
+  const location = useLocation();
+  const { openFlow } = useCTAFlow();
+  const isMailto = String(ctaHref || "").startsWith("mailto:");
+
   return (
     <section className="py-24 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
@@ -125,12 +131,29 @@ export function BrandCTA({ headline = "", sub = "", ctaLabel = "Start the Conver
               <p className="text-muted-foreground text-base leading-relaxed">{sub}</p>
             )}
             <div className="flex flex-col sm:flex-row items-start gap-3">
-              <a
-                href={ctaHref || "mailto:partners@downtownperks.com"}
+              <button
+                type="button"
+                onClick={() => {
+                  if (isMailto) {
+                    openFlow({
+                      type: "brand_campaign",
+                      source: `brand_cta_${location.pathname}`,
+                      sourceComponent: "BrandCTA",
+                      partnerType: "brands",
+                      pageContext: {
+                        campaignName: headline,
+                        objective: sub,
+                      },
+                      successRoute: "/partners/brands",
+                    });
+                    return;
+                  }
+                  window.location.assign(ctaHref || "mailto:partners@downtownperks.com");
+                }}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
               >
                 {ctaLabel || "Start the Conversation"}
-              </a>
+              </button>
               <a
                 href="/downtown-perks/for-buildings"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300"

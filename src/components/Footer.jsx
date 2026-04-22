@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin } from "lucide-react";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 const FOOTER_LINKS = {
   Explore: [
@@ -26,6 +27,8 @@ const FOOTER_LINKS = {
 };
 
 export default function Footer() {
+  const { openFlow } = useCTAFlow();
+
   return (
     <footer className="border-t border-border/60 bg-background">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -46,6 +49,15 @@ export default function Footer() {
             </p>
             <Link
               to="/card"
+              onClick={(event) => {
+                event.preventDefault();
+                openFlow({
+                  type: "resident_card",
+                  source: "footer_get_your_card",
+                  sourceComponent: "Footer",
+                  successRoute: "/resident-app/card",
+                });
+              }}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all"
             >
               Get Your Card
