@@ -13,11 +13,11 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        display: ['var(--font-heading)'],
-        heading: ['var(--font-heading)'],
-        body: ['var(--font-body)'],
-        accent: ['var(--font-accent)'],
-        serif: ['var(--font-heading)'],
+        display: ['var(--dp-font-display)'],
+        heading: ['var(--dp-font-display)'],
+        body: ['var(--dp-font-body)'],
+        accent: ['var(--dp-font-accent)'],
+        serif: ['var(--dp-font-display)'],
       },
       fontSize: {
         xs: ['12px', '16px'],

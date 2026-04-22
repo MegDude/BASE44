@@ -41,10 +41,10 @@ export default function MapSection() {
             <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               What You Can Do
             </span>
-            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
+            <h2 className="dp-display-section text-3xl text-foreground md:text-[38px]">
               Everything works together —
               <br />
-              <em className="text-primary">so you show up more.</em>
+              <span className="dp-script-accent-inline text-[1.08em]">so you show up more.</span>
             </h2>
           </motion.div>
           <motion.p
@@ -169,7 +169,7 @@ export default function MapSection() {
                 ))}
               </div>
               <div className="mt-6 pt-6 border-t border-[hsl(218,20%,92%)] space-y-1">
-                <p className="font-heading text-base font-medium text-foreground italic">That's how friction dies.</p>
+                <p className="dp-ui-title text-base text-foreground">That's how friction dies.</p>
                 <p className="text-[12px] text-foreground/55 leading-relaxed">No extra steps. No guesswork. Just the shortest distance between "maybe" and "I'm going."</p>
               </div>
             </motion.div>
@@ -211,7 +211,7 @@ export default function MapSection() {
               <div className="w-8 h-8 rounded-full border border-[hsl(218,20%,88%)] flex items-center justify-center mb-4">
                 <item.icon className="w-3.5 h-3.5 text-primary/70" />
               </div>
-              <div className="font-heading font-medium text-sm text-foreground mb-2">{item.label}</div>
+              <div className="dp-ui-title text-sm text-foreground mb-2">{item.label}</div>
               <div className="text-[12px] text-foreground/60 leading-relaxed mb-4">{item.detail}</div>
               <Link to={item.to} className="inline-flex items-center gap-1 text-[12px] text-primary font-medium hover:underline underline-offset-4">
                 {item.cta} <ArrowRight className="w-3 h-3" />
@@ -229,7 +229,7 @@ export default function MapSection() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="font-heading text-2xl font-medium leading-[1.1] mb-2 text-foreground">What's Around the Corner</h3>
+              <h3 className="dp-ui-title text-2xl mb-2 text-foreground">What's Around the Corner</h3>
               <p className="text-foreground/60 text-[13px] leading-relaxed">
                 Everything you need, within walking distance. See what's close, decide quickly, and go.
               </p>

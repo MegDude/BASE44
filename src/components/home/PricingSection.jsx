@@ -65,10 +65,10 @@ export default function PricingSection() {
             <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               Pricing
             </span>
-            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
+            <h2 className="dp-display-section text-3xl text-foreground md:text-[38px]">
               Spend less.
               <br />
-              <em className="text-primary">Do more.</em>
+              <span className="dp-script-accent-inline text-[1.08em]">Do more.</span>
             </h2>
           </motion.div>
           <motion.p
@@ -95,9 +95,9 @@ export default function PricingSection() {
               onClick={() => {}}
             >
               {(() => { const Icon = TIER_ICONS[tier.label]; return Icon ? <Icon className="w-4 h-4 text-primary/60 mb-3" /> : null; })()}
-              <div className="font-heading font-medium text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>
+              <div className="dp-ui-title text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>
               <div className="text-[11px] text-foreground/45 mb-3">{tier.sub}</div>
-              <div className="font-heading font-medium text-primary text-[13px] mb-1">{tier.price}</div>
+              <div className="font-sans font-semibold text-primary text-[13px] mb-1">{tier.price}</div>
               <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
               <div className="text-[11px] text-foreground/45 italic leading-relaxed mb-3">{tier.detail}</div>
               <Link to={tier.href} className="text-[11px] text-primary font-medium hover:underline underline-offset-4">

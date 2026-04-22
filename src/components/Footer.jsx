@@ -37,7 +37,7 @@ export default function Footer() {
               <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
                 <MapPin className="w-3.5 h-3.5 text-primary" />
               </div>
-              <span className="font-heading font-medium text-[15px] text-foreground">
+              <span className="dp-brand-wordmark text-[15px] text-foreground">
                 Downtown<span className="text-primary"> Perks</span>
               </span>
             </div>
@@ -77,7 +77,7 @@ export default function Footer() {
           <p className="text-[12px] text-muted-foreground/70">
             © {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701
           </p>
-          <p className="text-[12px] text-muted-foreground/50 italic font-heading">
+          <p className="text-[12px] text-muted-foreground/50">
             Where downtown works like a system.
           </p>
         </div>

@@ -50,8 +50,8 @@ export default function HeroSection() {
         {/* Refined hero shell */}
         <div className="w-full max-w-3xl rounded-[30px] border border-white/38 bg-white/[0.68] p-5 shadow-[0_24px_60px_rgba(14,28,54,0.16)] backdrop-blur-xl md:p-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[hsl(218,42%,14%)] md:text-[56px]">
-              Where downtown meets you
+            <h1 className="dp-display-hero text-4xl text-[hsl(218,42%,14%)] md:text-[56px]">
+              Where downtown meets <span className="dp-script-accent-inline align-baseline text-[1.08em]">you</span>
             </h1>
 
             <p className="mt-3 text-sm leading-6 text-[hsl(218,20%,42%)] md:mt-4 md:text-[15px]">

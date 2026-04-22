@@ -13,7 +13,7 @@ export default function HomeFooter() {
               <div className="w-6 h-6 rounded-full border border-primary/40 flex items-center justify-center">
                 <MapPin className="w-3 h-3 text-primary" />
               </div>
-              <span className="font-heading text-sm font-medium text-foreground">
+              <span className="dp-brand-wordmark text-sm text-foreground">
                 Downtown <span className="text-primary">Perks</span>
               </span>
             </div>
@@ -73,7 +73,7 @@ export default function HomeFooter() {
           <p className="text-[12px] text-foreground/40">
             © {new Date().getFullYear()} Downtown Perks · Austin, TX
           </p>
-          <p className="text-[12px] text-foreground/30 italic font-heading">
+          <p className="text-[12px] text-foreground/30">
             Where downtown works like a system.
           </p>
         </div>

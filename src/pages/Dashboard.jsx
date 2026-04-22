@@ -253,7 +253,7 @@ function DashOverview({ user, setSection }) {
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[hsl(40,62%,42%)] mb-3">
           Backend capability layer
         </p>
-        <h2 className="font-heading text-3xl font-semibold tracking-[-0.05em] text-foreground mb-2">
+        <h2 className="dp-display-section text-3xl text-foreground mb-2">
           Property operations, resident engagement, and downtown conversion in one hub.
         </h2>
         <p className="text-muted-foreground text-[13px] max-w-3xl">
@@ -274,7 +274,7 @@ function DashOverview({ user, setSection }) {
                 onClick={k.action}
                 className="p-5 rounded-[20px] bg-white/34 backdrop-blur-md hover:bg-white/52 text-left transition-all group">
                 <Icon className="w-4 h-4 text-[hsl(40,62%,42%)] mb-3" strokeWidth={1.75} />
-                <div className="font-heading text-2xl font-semibold tracking-[-0.04em] text-foreground">{k.value}</div>
+                <div className="dp-ui-title text-2xl text-foreground">{k.value}</div>
                 <div className="text-[11px] text-muted-foreground mt-1">{k.label}</div>
               </motion.button>
             );
@@ -296,7 +296,7 @@ function DashOverview({ user, setSection }) {
                 <span className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[rgba(11,31,51,0.06)]">
                   <Icon className="h-4 w-4 text-[var(--dp-navy,#0B1F33)]" strokeWidth={1.75} />
                 </span>
-                <span className="font-heading text-2xl font-semibold tracking-[-0.05em] text-[hsl(40,62%,42%)]">
+                <span className="dp-ui-title text-2xl text-[hsl(40,62%,42%)]">
                   {capability.value}
                 </span>
               </div>

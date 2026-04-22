@@ -86,7 +86,7 @@ export default function Navbar() {
           <div className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center">
             <MapPin className="w-3.5 h-3.5 text-gold" />
           </div>
-          <span className="font-heading font-medium text-[15px] tracking-tight text-white">
+          <span className="dp-brand-wordmark text-[15px] text-white">
             Downtown<span className="text-gold"> Perks</span>
           </span>
         </Link>

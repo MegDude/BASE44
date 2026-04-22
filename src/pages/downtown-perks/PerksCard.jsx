@@ -127,7 +127,7 @@ export default function PerksCard() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--dp-gold-deep,#A97816)]">
             Your Membership
           </p>
-          <h1 className="mt-4 text-5xl font-semibold leading-[0.92] tracking-[-0.065em] md:text-6xl">
+          <h1 className="dp-display-hero mt-4 text-5xl md:text-6xl">
             Perks{" "}
             <span className="dp-script-accent-inline whitespace-nowrap text-[1.28em]">Card</span>
           </h1>
@@ -169,7 +169,7 @@ export default function PerksCard() {
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(11,31,51,0.48)]">
                     Downtown Perks
                   </p>
-                  <p className="font-heading text-xl font-semibold tracking-[-0.04em]">
+                  <p className="dp-ui-title text-xl">
                     Member access
                   </p>
                 </div>
