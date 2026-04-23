@@ -5,38 +5,36 @@ import {
   Calendar,
   Clock3,
   Compass,
+  Filter,
   Gift,
   MapPin,
   Search,
   Sparkles,
+  Users,
+  X,
 } from "lucide-react";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
+import MapFilterBars from "@/components/map/shared/MapFilterBars";
+import {
+  ASK_MAP_QUESTIONS,
+  PRIMARY_SEARCH_PRESETS,
+  SECONDARY_SEARCH_PRESETS,
+  getPrimaryPresetDefinition,
+} from "@/lib/map/searchUiConfig";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80";
 
 const AUSTIN_CENTER = [30.267, -97.743];
 
-const HERO_CHIPS = [
-  { id: "venues", label: "Venues" },
-  { id: "events", label: "Events" },
-  { id: "perks", label: "Perks" },
-  { id: "walk5", label: "5 min walk" },
-];
-
-const ASK_PROMPTS = [
-  "coffee right now",
-  "dinner tonight on Rainey",
-  "live music nearby",
-];
-
 function getSearchDefaults(view) {
-  if (view === "events") return { query: "events nearby", walkMinutes: null };
-  if (view === "perks") return { query: "perks nearby", walkMinutes: null };
-  if (view === "walk5") return { query: "", walkMinutes: 5 };
-  return { query: "", walkMinutes: null };
+  const preset = getPrimaryPresetDefinition(view);
+  return {
+    query: preset?.query || "",
+    walkMinutes: null,
+  };
 }
 
 function getPreviewMeta(item) {
@@ -59,36 +57,55 @@ function getPreviewMeta(item) {
 
 function filterPreviewItems(items, view) {
   if (!Array.isArray(items)) return [];
+  const preset = getPrimaryPresetDefinition(view);
+  const allowedTypes = new Set((preset?.entityTypes || []).map((type) => (type === "building" ? "property" : type)));
+  const allowedCategories = new Set((preset?.categories || []).map((category) => String(category).toLowerCase()));
 
-  if (view === "venues") {
-    return items.filter((item) => item?.type === "venue");
-  }
+  return items.filter((item) => {
+    const itemType = item?.type === "building" ? "property" : item?.type;
+    const itemCategory = String(item?.category || item?.subcategory || "").toLowerCase();
 
-  if (view === "events") {
-    return items.filter((item) => item?.type === "event");
-  }
+    if (allowedTypes.size > 0 && !allowedTypes.has(itemType)) {
+      return false;
+    }
 
-  if (view === "perks") {
-    return items.filter((item) => item?.type === "perk" || Boolean(item?.perk?.value || item?.perk_value));
-  }
+    if (allowedCategories.size > 0 && !allowedCategories.has(itemCategory)) {
+      return false;
+    }
 
-  if (view === "walk5") {
-    return items.filter((item) => (item?.metadata?.walkMinutes ?? 999) <= 5);
-  }
-
-  return items;
+    return true;
+  });
 }
 
 export default function HeroSection({ mapContext, onExplore, onAsk }) {
   const [query, setQuery] = useState(mapContext?.query || "");
-  const [activeView, setActiveView] = useState("venues");
+  const [interactionMode, setInteractionMode] = useState(mapContext?.askMode ? "ask" : "search");
+  const [activePrimary, setActivePrimary] = useState(mapContext?.category || "all");
+  const [activeSecondary, setActiveSecondary] = useState(
+    Array.isArray(mapContext?.toggles) ? mapContext.toggles : []
+  );
+  const [walkMinutes, setWalkMinutes] = useState(
+    Number.isFinite(mapContext?.walkMinutes) ? mapContext.walkMinutes : null
+  );
   const [selectedEntity, setSelectedEntity] = useState(null);
+  const [selectionDismissed, setSelectionDismissed] = useState(false);
+  const [resultsExpanded, setResultsExpanded] = useState(false);
 
   useEffect(() => {
     setQuery(mapContext?.query || "");
+    setInteractionMode(mapContext?.askMode ? "ask" : "search");
+    setActivePrimary(mapContext?.category || "all");
+    setActiveSecondary(Array.isArray(mapContext?.toggles) ? mapContext.toggles : []);
+    setWalkMinutes(Number.isFinite(mapContext?.walkMinutes) ? mapContext.walkMinutes : null);
   }, [mapContext?.requestKey]);
 
-  const searchDefaults = useMemo(() => getSearchDefaults(activeView), [activeView]);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setResultsExpanded(window.innerWidth >= 1024);
+  }, []);
+
+  const activeSecondarySet = useMemo(() => new Set(activeSecondary), [activeSecondary]);
+  const searchDefaults = useMemo(() => getSearchDefaults(activePrimary), [activePrimary]);
   const previewQuery = String(query || "").trim() || searchDefaults.query;
 
   const { items } = useSharedMapFeed({
@@ -98,13 +115,37 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
   });
 
   const previewItems = useMemo(
-    () => filterPreviewItems(items, activeView).slice(0, 18),
-    [activeView, items]
+    () =>
+      filterPreviewItems(items, activePrimary)
+        .filter((item) => {
+          if (walkMinutes && (item?.metadata?.walkMinutes ?? 999) > walkMinutes) {
+            return false;
+          }
+
+          if (
+            activeSecondarySet.has("perks") &&
+            !(item?.type === "perk" || item?.perk?.value || item?.perk_value)
+          ) {
+            return false;
+          }
+
+          if (
+            activeSecondarySet.has("crowd") &&
+            !(item?.isTrending || item?.isLive || item?.metadata?.crowdLevel)
+          ) {
+            return false;
+          }
+
+          return true;
+        })
+        .slice(0, 18),
+    [activePrimary, activeSecondarySet, items, walkMinutes]
   );
 
   useEffect(() => {
     if (!previewItems.length) {
       setSelectedEntity(null);
+      setSelectionDismissed(false);
       return;
     }
 
@@ -112,34 +153,70 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
       if (current && previewItems.some((item) => item.id === current.id)) {
         return previewItems.find((item) => item.id === current.id) || current;
       }
+
+      if (selectionDismissed) {
+        return null;
+      }
+
       return previewItems[0];
     });
-  }, [previewItems]);
+  }, [previewItems, selectionDismissed]);
 
   const featuredCards = previewItems.slice(0, 3);
   const mapCenter = selectedEntity?.location
     ? [selectedEntity.location.latitude, selectedEntity.location.longitude]
-    : featuredCards[0]?.location
-      ? [featuredCards[0].location.latitude, featuredCards[0].location.longitude]
-      : AUSTIN_CENTER;
+      : featuredCards[0]?.location
+        ? [featuredCards[0].location.latitude, featuredCards[0].location.longitude]
+        : AUSTIN_CENTER;
 
   function buildPayload(nextQuery = query) {
     const trimmedQuery = String(nextQuery || "").trim();
     return {
       query: trimmedQuery || searchDefaults.query,
-      category: "all",
-      walkMinutes: searchDefaults.walkMinutes,
-      toggles: [],
+      category: activePrimary || "all",
+      walkMinutes,
+      toggles: activeSecondary,
     };
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    onExplore?.(buildPayload(query));
+    const payload = buildPayload(query);
+    if (interactionMode === "ask") {
+      onAsk?.(payload);
+      return;
+    }
+    onExplore?.(payload);
+  }
+
+  function handlePrimarySelect(nextValue) {
+    setActivePrimary(nextValue);
+    setSelectionDismissed(false);
+  }
+
+  function handleSecondaryToggle(nextValue) {
+    setActiveSecondary((current) =>
+      current.includes(nextValue)
+        ? current.filter((value) => value !== nextValue)
+        : [...current, nextValue]
+    );
+    setSelectionDismissed(false);
   }
 
   function handleAsk(nextQuery = query) {
+    setInteractionMode("ask");
+    setSelectionDismissed(false);
     onAsk?.(buildPayload(nextQuery));
+  }
+
+  function handleSelectEntity(item) {
+    setSelectionDismissed(false);
+    setSelectedEntity(item);
+  }
+
+  function handleCloseDetail() {
+    setSelectionDismissed(true);
+    setSelectedEntity(null);
   }
 
   return (
@@ -184,61 +261,73 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
                       type="text"
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
-                      placeholder="Ask the map..."
+                      placeholder={
+                        interactionMode === "ask"
+                          ? "Ask where to go, what to do, or who to meet"
+                          : "Search places, events, perks, or what is nearby"
+                      }
                       className="flex-1 bg-transparent text-sm text-[#0B1F33] outline-none placeholder:text-[rgba(11,31,51,0.40)]"
                     />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setInteractionMode((current) => (current === "ask" ? "search" : "ask"))
+                      }
+                      className={`inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                        interactionMode === "ask"
+                          ? "border-[#0B1F33] bg-[#0B1F33] text-white"
+                          : "border-[rgba(11,31,51,0.10)] text-[rgba(11,31,51,0.68)] hover:bg-[rgba(11,31,51,0.04)]"
+                      }`}
+                    >
+                      <Sparkles className="h-3.5 w-3.5" />
+                      {interactionMode === "ask" ? "Ask on" : "Ask"}
+                    </button>
                   </div>
 
                   <button
                     type="submit"
-                    className="inline-flex h-12 items-center justify-center rounded-[18px] border border-[rgba(11,31,51,0.10)] px-4 text-sm font-semibold text-[#0B1F33] transition-colors hover:bg-white"
-                  >
-                    Open map
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleAsk(query)}
                     className="inline-flex h-12 items-center justify-center gap-2 rounded-[18px] bg-[#0B1F33] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#122743]"
                   >
-                    Ask the map
+                    Explore
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {HERO_CHIPS.map((chip) => {
-                    const isActive = activeView === chip.id;
-
-                    return (
-                      <button
-                        key={chip.id}
-                        type="button"
-                        onClick={() => setActiveView(chip.id)}
-                        className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
-                          isActive
-                            ? "border-[#0B1F33] bg-[#0B1F33] text-white"
-                            : "border-[rgba(11,31,51,0.10)] bg-white text-[rgba(11,31,51,0.76)] hover:bg-[rgba(11,31,51,0.04)]"
-                        }`}
-                      >
-                        {chip.label}
-                      </button>
-                    );
-                  })}
+                <div className="mt-3 overflow-hidden rounded-[18px] border border-[rgba(11,31,51,0.10)] bg-white shadow-[0_10px_24px_rgba(11,31,51,0.08)]">
+                  <MapFilterBars
+                    primaryOptions={PRIMARY_SEARCH_PRESETS}
+                    secondaryOptions={SECONDARY_SEARCH_PRESETS}
+                    activePrimary={activePrimary}
+                    activeSecondary={activeSecondary}
+                    onPrimarySelect={handlePrimarySelect}
+                    onSecondaryToggle={handleSecondaryToggle}
+                  />
                 </div>
 
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {ASK_PROMPTS.map((prompt) => (
+                  <button
+                    type="button"
+                    onClick={() => setWalkMinutes((current) => (current === 5 ? null : 5))}
+                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                      walkMinutes === 5
+                        ? "border-[#0B1F33] bg-[#0B1F33] text-white"
+                        : "border-[rgba(11,31,51,0.10)] bg-white text-[rgba(11,31,51,0.76)] hover:bg-[rgba(11,31,51,0.04)]"
+                    }`}
+                  >
+                    5 min walk
+                  </button>
+
+                  {ASK_MAP_QUESTIONS.map((item) => (
                     <button
-                      key={prompt}
+                      key={item.title}
                       type="button"
                       onClick={() => {
-                        setQuery(prompt);
-                        handleAsk(prompt);
+                        setQuery(item.query);
+                        handleAsk(item.query);
                       }}
                       className="rounded-full border border-[rgba(11,31,51,0.10)] bg-[rgba(11,31,51,0.03)] px-3 py-1.5 text-xs font-medium text-[rgba(11,31,51,0.72)] transition-colors hover:bg-white"
                     >
-                      {prompt}
+                      {item.title}
                     </button>
                   ))}
                 </div>
@@ -326,12 +415,67 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
             </div>
 
             <div className="border-t border-white/12 bg-[rgba(11,23,48,0.34)] p-4 lg:border-l lg:border-t-0 lg:bg-[rgba(255,255,255,0.08)]">
-              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
-                Nearby results
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
+                    Nearby results
+                  </div>
+                  <div className="mt-1 text-sm text-white/78">
+                    {previewItems.length} live results {walkMinutes ? `within ${walkMinutes} min walk` : "nearby now"}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setResultsExpanded((current) => !current)}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/78 transition-colors hover:bg-white/14"
+                >
+                  <Filter className="h-3.5 w-3.5" />
+                  {resultsExpanded ? "Hide list" : "Show list"}
+                </button>
               </div>
 
-              <div className="space-y-3">
-                {(previewItems.length ? previewItems : []).slice(0, 4).map((item) => {
+              {selectedEntity ? (
+                <div className="mb-3 rounded-[18px] border border-white/16 bg-white/14 px-4 py-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/58">
+                        Selected now
+                      </div>
+                      <div className="mt-1 text-base font-semibold text-white">
+                        {getPreviewMeta(selectedEntity).title}
+                      </div>
+                      <div className="mt-2 text-[13px] leading-5 text-white/74">
+                        {getPreviewMeta(selectedEntity).supporting}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleCloseDetail}
+                      className="rounded-full border border-white/12 bg-white/10 p-2 text-white/76 transition-colors hover:bg-white/16"
+                      aria-label="Close selected location"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-3 text-[11px] font-medium uppercase tracking-[0.1em] text-white/54">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock3 className="h-3.5 w-3.5" />
+                      {getPreviewMeta(selectedEntity).detail}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Users className="h-3.5 w-3.5" />
+                      {interactionMode === "ask" ? "Ask result" : "Nearby pick"}
+                    </span>
+                  </div>
+                </div>
+              ) : null}
+
+              {resultsExpanded ? (
+                <div className="space-y-3 lg:max-h-[360px] lg:overflow-y-auto lg:pr-1">
+                  {(previewItems.length ? previewItems : []).slice(0, 6).map((item) => {
                   const meta = getPreviewMeta(item);
                   const isEvent = item?.type === "event";
                   const isPerk = item?.type === "perk" || Boolean(item?.perk?.value || item?.perk_value);
@@ -340,7 +484,7 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => setSelectedEntity(item)}
+                      onClick={() => handleSelectEntity(item)}
                       className={`w-full rounded-[18px] border px-4 py-3 text-left transition-colors ${
                         item.id === selectedEntity?.id
                           ? "border-white/26 bg-white/18"
@@ -376,7 +520,12 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
                     No items available for this filter yet.
                   </div>
                 ) : null}
-              </div>
+                </div>
+              ) : (
+                <div className="rounded-[18px] border border-white/12 bg-white/8 px-4 py-4 text-[13px] leading-6 text-white/68">
+                  Keep the list rolled up and use the map or the selected card to stay focused.
+                </div>
+              )}
             </div>
           </div>
         </div>
