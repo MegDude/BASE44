@@ -1,302 +1,172 @@
-/**
- * Downtown Perks Marker Factory
- * Unified marker rendering system for all entity types
- * Ensures consistent visual language across the product
- */
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import L from "leaflet";
+import {
+  IconActivity,
+  IconBrand,
+  IconCivic,
+  IconCoffee,
+  IconDining,
+  IconEvent,
+  IconHotel,
+  IconPerk,
+  IconProperty,
+  IconTarget,
+  MarkerPin,
+} from "@/components/icons/DPIcons";
 
-import L from 'leaflet';
-
-/**
- * Marker configuration library
- * Aligned with Downtown Perks brand system
- */
-const MARKER_CONFIG = {
-  // Standard venues (coffee, dining, retail, etc.)
-  'standard:restaurant': {
-    color: '#C8973A', // Gold
-    icon: '🍽️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(200, 151, 58, 0.4)',
-  },
-  'standard:coffee': {
-    color: '#8B6F47', // Deep brown
-    icon: '☕',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(139, 111, 71, 0.4)',
-  },
-  'standard:bar': {
-    color: '#9C5BA3', // Wine/purple
-    icon: '🍷',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(156, 91, 163, 0.4)',
-  },
-  'standard:fitness': {
-    color: '#2ECC71', // Teal/green
-    icon: '💪',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(46, 204, 113, 0.4)',
-  },
-  'standard:wellness': {
-    color: '#A67BC4', // Soft purple
-    icon: '🧘',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(166, 123, 196, 0.4)',
-  },
-  'standard:retail': {
-    color: '#7D7D7D', // Neutral gray
-    icon: '🛍️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(125, 125, 125, 0.4)',
-  },
-  'standard:entertainment': {
-    color: '#3498DB', // Light blue
-    icon: '🎭',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(52, 152, 219, 0.4)',
-  },
-
-  // Buildings and properties (navy with building icon)
-  'building:default': {
-    color: '#1A3A52', // Navy
-    icon: '🏢',
-    size: 16,
-    iconSize: 10,
-    selectedScale: 1.8,
-    shadowBlur: '0 4px 12px rgba(26, 58, 82, 0.5)',
-  },
-
-  // Events (light blue with calendar)
-  'event:default': {
-    color: '#4A90E2', // Event blue
-    icon: '📅',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(74, 144, 226, 0.4)',
-  },
-
-  // Perks (green with tag)
-  'perk:default': {
-    color: '#27AE60', // Perk green
-    icon: '🏷️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(39, 174, 96, 0.4)',
-  },
-
-  // Brands (orange with star)
-  'brand:default': {
-    color: '#E67E22', // Brand orange
-    icon: '⭐',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(230, 126, 34, 0.4)',
-  },
-
-  // Civic (red with landmark)
-  'civic:default': {
-    color: '#C0392B', // Civic red
-    icon: '🏛️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(192, 57, 43, 0.4)',
-  },
+const COLORS = {
+  navy: "#0B1A2B",
+  navySoft: "#22405C",
+  low: "#8AA0B6",
+  civic: "#18314A",
+  opportunity: "#2F6F55",
+  surface: "#FFFFFF",
+  stroke: "rgba(11,26,43,0.16)",
+  accent: "#C6A85A",
 };
 
-/**
- * Get marker configuration for an entity
- */
-function getMarkerConfig(entity) {
-  // Try category-specific config first
-  const categoryKey = `${entity.markerType}:${entity.category || entity.type}`;
-  if (MARKER_CONFIG[categoryKey]) {
-    return MARKER_CONFIG[categoryKey];
-  }
+const SHADOW = "drop-shadow(0 8px 16px rgba(11,26,43,0.12))";
+const ACTIVE_SHADOW = "drop-shadow(0 12px 22px rgba(11,26,43,0.18))";
 
-  // Fall back to type-specific config
-  const typeKey = `${entity.markerType}:default`;
-  if (MARKER_CONFIG[typeKey]) {
-    return MARKER_CONFIG[typeKey];
-  }
-
-  // Ultimate fallback
-  return MARKER_CONFIG['standard:restaurant'];
+function renderMarkerIcon(glyph, options = {}) {
+  return renderToStaticMarkup(<MarkerPin glyph={glyph} {...options} />);
 }
 
-/**
- * Create a compact marker icon (unselected state)
- */
-export function createCompactMarker(entity) {
-  const config = getMarkerConfig(entity);
-
-  const html = `
-    <div style="
-      width: ${config.size}px;
-      height: ${config.size}px;
-      border-radius: 50%;
-      background-color: ${config.color};
-      border: 2px solid white;
-      box-shadow: ${config.shadowBlur};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${config.iconSize}px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    ">
-      ${config.icon}
-    </div>
-  `;
-
+function wrapPin(
+  glyph,
+  {
+    width = 32,
+    height = 42,
+    active = false,
+    className = "custom-marker",
+    color = COLORS.navy,
+    accent = false,
+    topRanked = false,
+  } = {}
+) {
   return L.divIcon({
-    className: '',
-    html,
-    iconSize: [config.size, config.size],
-    iconAnchor: [config.size / 2, config.size / 2],
-    popupAnchor: [0, -config.size / 2],
+    className,
+    html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;width:${width}px;height:${height}px;transform:${active ? "translateY(-2px) scale(1.08)" : topRanked ? "translateY(-1px) scale(1.03)" : "translateY(0) scale(1)"};transition:transform .2s ease, filter .2s ease;filter:${active ? ACTIVE_SHADOW : SHADOW};">${renderMarkerIcon(glyph, { selected: active, color, accent, accentColor: COLORS.accent })}</div>`,
+    iconSize: [width, height],
+    iconAnchor: [Math.round(width / 2), Math.round(height * 0.84)],
+    popupAnchor: [0, -Math.round(height * 0.84)],
   });
 }
 
-/**
- * Create a selected marker icon (larger, highlighted)
- */
-export function createSelectedMarker(entity) {
-  const config = getMarkerConfig(entity);
-  const selectedSize = config.size * config.selectedScale;
-  const selectedIconSize = config.iconSize * config.selectedScale;
-
-  const html = `
-    <div style="
-      width: ${selectedSize}px;
-      height: ${selectedSize}px;
-      border-radius: 50%;
-      background-color: ${config.color};
-      border: 3px solid white;
-      box-shadow: 
-        0 0 0 2px ${config.color}40,
-        ${config.shadowBlur};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${selectedIconSize}px;
-      cursor: pointer;
-      animation: markerPulse 0.5s ease-out;
-    ">
-      ${config.icon}
-    </div>
-    <style>
-      @keyframes markerPulse {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-    </style>
-  `;
+function createPillMarker(entity) {
+  const label = String(entity?.name || entity?.title || "Downtown place");
+  const darkSurface = entity?.type === "building" || entity?.type === "hotel" || entity?.type === "property";
+  const bg = darkSurface ? "rgba(20,38,59,0.95)" : "rgba(255,255,255,0.96)";
+  const border = darkSurface ? "rgba(198,168,90,0.38)" : "rgba(11,26,43,0.10)";
+  const textColor = darkSurface ? "#F7F9FC" : COLORS.navy;
+  const dot = COLORS.accent;
 
   return L.divIcon({
-    className: '',
-    html,
-    iconSize: [selectedSize, selectedSize],
-    iconAnchor: [selectedSize / 2, selectedSize / 2],
-    popupAnchor: [0, -selectedSize / 2],
-  });
-}
-
-/**
- * Create a pill marker (for detail/expanded state)
- * Shows entity name and category
- */
-export function createPillMarker(entity) {
-  const config = getMarkerConfig(entity);
-
-  const html = `
-    <div style="
-      background: white;
-      border: 2px solid ${config.color};
-      border-radius: 20px;
-      padding: 6px 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 12px;
-      font-weight: 600;
-      color: #1a3a52;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    ">
-      <span style="font-size: 14px;">${config.icon}</span>
-      <span>${entity.name}</span>
-    </div>
-  `;
-
-  return L.divIcon({
-    className: '',
-    html,
-    iconSize: [200, 32], // Approximate, will auto-size
-    iconAnchor: [100, 16],
+    className: "pill-marker",
+    html: `<div style="position:relative;display:inline-flex;align-items:center;gap:5px;padding:6px 11px 6px 9px;background:${bg};border:1.5px solid ${border};border-radius:22px;box-shadow:0 6px 18px rgba(11,31,51,0.16);white-space:nowrap;font-family:Inter,system-ui,sans-serif;font-size:11px;font-weight:600;color:${textColor};backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
+      <span style="width:6px;height:6px;border-radius:50%;background:${dot};flex-shrink:0;display:inline-block"></span>
+      <span>${label}</span>
+    </div>`,
+    iconSize: null,
+    iconAnchor: [0, 0],
     popupAnchor: [0, -32],
   });
 }
 
-/**
- * Marker factory function
- * Returns appropriate marker based on state and entity type
- */
+function getVenueGlyph(entity) {
+  const raw = `${entity?.iconType || entity?.category || entity?.subcategory || ""}`.toLowerCase();
+  if (raw.includes("coffee") || raw.includes("cafe")) return IconCoffee;
+  if (
+    raw.includes("restaurant") ||
+    raw.includes("dining") ||
+    raw.includes("food") ||
+    raw.includes("bar") ||
+    raw.includes("nightlife")
+  ) {
+    return IconDining;
+  }
+  return IconDining;
+}
+
+function getPerformanceConfig(state = "medium") {
+  if (state === "high") return { color: COLORS.navy, glyph: IconActivity };
+  if (state === "medium") return { color: COLORS.navySoft, glyph: IconActivity };
+  if (state === "low") return { color: COLORS.low, glyph: IconActivity };
+  if (state === "spike") return { color: COLORS.navySoft, glyph: IconEvent, accent: true };
+  if (state === "opportunity") return { color: COLORS.opportunity, glyph: IconTarget, accent: true };
+  return { color: COLORS.navySoft, glyph: IconActivity };
+}
+
+function createEntityMarker(entity, active = false) {
+  if (entity?.performanceState) {
+    const config = getPerformanceConfig(entity.performanceState);
+    return wrapPin(config.glyph, {
+      active,
+      className: `custom-marker insight-marker insight-${entity.performanceState}`,
+      color: config.color,
+      accent: config.accent,
+    });
+  }
+
+  if (entity?.markerType === "moment" || entity?.type === "moment") {
+    return wrapPin(IconActivity, { active, className: "custom-marker moment-marker-icon", color: COLORS.navySoft, accent: true });
+  }
+  if (entity?.markerType === "perk" || entity?.type === "perk" || entity?.perk || entity?.perk_value) {
+    return wrapPin(IconPerk, { active, className: "custom-marker perk-marker-icon", color: COLORS.navy, accent: true });
+  }
+  if (entity?.markerType === "event" || entity?.type === "event") {
+    return wrapPin(IconEvent, { active, className: "custom-marker event-marker-icon", color: COLORS.navySoft, accent: true });
+  }
+  if (entity?.type === "hotel") {
+    return wrapPin(IconHotel, { active, className: "custom-marker hotel-marker-icon", color: COLORS.navy });
+  }
+  if (entity?.markerType === "building" || ["building", "property"].includes(entity?.type)) {
+    return wrapPin(IconProperty, { active, className: "custom-marker building-marker-icon", color: COLORS.navy });
+  }
+  if (entity?.markerType === "brand" || entity?.type === "brand") {
+    return wrapPin(IconBrand, { active, className: "custom-marker brand-marker-icon", color: COLORS.navy, accent: true });
+  }
+  if (entity?.markerType === "civic" || entity?.type === "civic") {
+    return wrapPin(IconCivic, { active, className: "custom-marker civic-marker-icon", color: COLORS.civic });
+  }
+
+  return wrapPin(getVenueGlyph(entity), {
+    active,
+    className: "custom-marker place-marker-icon",
+    color: COLORS.navy,
+  });
+}
+
+export function createCompactMarker(entity) {
+  return createEntityMarker(entity, false);
+}
+
+export function createSelectedMarker(entity) {
+  return createEntityMarker(entity, true);
+}
+
 export function createMarker(entity, options = {}) {
-  if (options?.showPill) {
-    return createPillMarker(entity);
-  }
-
-  if (options?.isSelected) {
-    return createSelectedMarker(entity);
-  }
-
+  if (options?.showPill) return createPillMarker(entity);
+  if (options?.isSelected) return createSelectedMarker(entity);
   return createCompactMarker(entity);
 }
 
-/**
- * Get all available marker colors (for legend, filters, etc.)
- */
 export function getMarkerColors() {
-  const colors = {};
-
-  Object.entries(MARKER_CONFIG).forEach(([key, config]) => {
-    const [markerType, category] = key.split(':');
-    colors[`${markerType}:${category}`] = config.color;
-  });
-
-  return colors;
+  return {
+    standard: COLORS.navy,
+    building: COLORS.navy,
+    event: COLORS.navySoft,
+    perk: COLORS.navy,
+    brand: COLORS.navy,
+    civic: COLORS.civic,
+  };
 }
 
-/**
- * Check if entity should have a special marker variant
- */
 export function getMarkerVariant(entity) {
-  if (entity.isLive) return 'live';
-  if (entity.isSaved) return 'saved';
-  if (entity.perk && entity.perk.isActive) return 'perk-active';
-  return 'default';
+  if (entity?.isLive) return "live";
+  if (entity?.isSaved) return "saved";
+  if (entity?.perk?.isActive) return "perk-active";
+  return "default";
 }
+

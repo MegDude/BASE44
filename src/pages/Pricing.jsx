@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 const PLANS = [
   {
@@ -48,6 +48,13 @@ export default function Pricing() {
     <div className="min-h-screen bg-[hsl(42,24%,96%)] pt-[68px] text-[hsl(218,42%,14%)]">
       <section className="border-b border-[rgba(19,36,67,0.12)] px-6 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
+          <Link
+            to="/"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(19,36,67,0.10)] bg-white px-4 text-sm font-medium text-[hsl(218,42%,14%)]"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </Link>
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,46%)]">
             Pricing
           </p>

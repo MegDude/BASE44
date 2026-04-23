@@ -13,6 +13,14 @@ L.Icon.Default.mergeOptions({
 
 const AUSTIN_CENTER = [30.267, -97.743];
 
+const PARTNER_INSIGHT_COLORS = {
+  engagement: "#C8973A",
+  campaign: "#315E7E",
+  opportunity: "#2F6F55",
+  coverage: "#7B6B4F",
+  performance: "#0B1F33",
+};
+
 /**
  * MapShell — Canonical shared map component
  * Replaces all page-specific map implementations
@@ -58,7 +66,7 @@ function MapFlyTo({ position }) {
  * @param {MapShellProps & CampaignPreviewProps} props
  */
 export default function MapShell({
-  mode = 'default',
+  mode = 'resident',
   campaignId,
   placementTypes,
   sourceContext,
@@ -101,7 +109,11 @@ export default function MapShell({
           const coords = getValidLatLng(item);
           if (!coords) return null; // Silent fail for invalid coordinates
           
-          const icon = markerIcon ? markerIcon(item, selected?.id === item.id) : undefined;
+          const icon = markerIcon
+            ? markerIcon(item, selected?.id === item.id)
+            : mode === "partner"
+              ? createPartnerInsightIcon(item, selected?.id === item.id)
+              : undefined;
           
           return (
             <Marker
@@ -117,4 +129,38 @@ export default function MapShell({
       {/* Detail drawer — NOT rendered here on mobile (handled by bottom sheet) */}
     </div>
   );
+}
+
+function createPartnerInsightIcon(item, isSelected) {
+  const color = PARTNER_INSIGHT_COLORS[item.insightType] || PARTNER_INSIGHT_COLORS.performance;
+  const size = isSelected ? 34 : 24;
+  const ring = isSelected ? 10 : 6;
+  const label = String(item.label || item.insightType || "•")
+    .slice(0, 2)
+    .toUpperCase();
+
+  return L.divIcon({
+    className: "",
+    html: `
+      <div style="
+        width:${size}px;
+        height:${size}px;
+        border-radius:${isSelected ? "14px" : "12px"};
+        background:${color};
+        border:2px solid rgba(255,255,255,0.92);
+        box-shadow:0 0 0 ${ring}px ${color}24, 0 12px 28px rgba(11,31,51,0.22);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:white;
+        font-size:${isSelected ? "9px" : "8px"};
+        font-weight:800;
+        letter-spacing:0.08em;
+      ">
+        ${item.value ? label : "•"}
+      </div>
+    `,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
 }

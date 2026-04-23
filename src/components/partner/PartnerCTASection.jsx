@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 /**
  * PartnerCTASection — Closing CTA block for all pages
  */
-export default function PartnerCTASection({ headline, description, primaryCTA, primaryHref, secondaryLink }) {
+export default function PartnerCTASection({ headline, description, primaryCTA, primaryHref, primaryFlow = null, secondaryLink }) {
+  const { openFlow } = useCTAFlow();
+
   return (
     <section className="py-12 md:py-16 border-b border-border/70 bg-background">
       <div className="max-w-4xl mx-auto px-6 text-center">
@@ -26,13 +29,20 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
 
           <div className="flex flex-wrap gap-3 justify-center">
             {primaryCTA && (
-              <a
-                href={primaryHref || '#'}
+              <button
+                type="button"
+                onClick={() => {
+                  if (primaryFlow) {
+                    openFlow(primaryFlow);
+                    return;
+                  }
+                  window.location.assign(primaryHref || "#");
+                }}
                 className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-primary text-primary-foreground font-semibold text-[14px] hover:bg-primary/92"
               >
                 {primaryCTA}
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             )}
 
             {secondaryLink && (

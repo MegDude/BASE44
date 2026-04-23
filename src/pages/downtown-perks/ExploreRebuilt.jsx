@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Activity, Flame, Layers3, MapPin } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Activity, ChevronLeft, Flame, Layers3, List, MapPin, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity } from '@/store/mapStateStore';
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
 import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
@@ -11,14 +11,25 @@ import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
 import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
 import TimeFilter from '@/components/map/unified/TimeFilter';
 import { createMarker } from '@/components/map/markers/MarkerFactory';
-import { MAP_ENTITIES } from '@/data/mapEntities';
 import { filterValidEntities } from '@/lib/mapValidation';
+import { mapRepository } from '@/lib/repositories/mapRepository';
+import { getPrimaryPresetDefinition } from '@/lib/map/searchUiConfig';
 
 function getMarkerIcon(entity, isSelected) {
   return createMarker(entity, { isSelected });
 }
 
+function parseExploreParams(search) {
+  const params = new URLSearchParams(search || '');
+  const query = params.get('query') || params.get('q') || '';
+  const category = params.get('category') || '';
+  const mode = params.get('mode') || '';
+  const toggles = params.get('toggles') || '';
+  return { query, category, mode, toggles };
+}
+
 export default function ExploreRebuilt() {
+  const location = useLocation();
   const filteredResults = useMapStateStore(selectFilteredResults);
   const selectedEntity = useMapStateStore(selectSelectedEntity);
   const mapCenter = useMapStateStore((state) => state.mapCenter);
@@ -27,14 +38,25 @@ export default function ExploreRebuilt() {
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
   const heatmapVisible = useMapStateStore((state) => state.heatmapVisible);
+  const showResultsList = useMapStateStore((state) => state.showResultsList);
   const setMapCenter = useMapStateStore((state) => state.setMapCenter);
   const setMapZoom = useMapStateStore((state) => state.setMapZoom);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setFilteredResults = useMapStateStore((state) => state.setFilteredResults);
   const setHeatmapVisible = useMapStateStore((state) => state.setHeatmapVisible);
+  const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
+  const setShowResultsList = useMapStateStore((state) => state.setShowResultsList);
+  const updateFilter = useMapStateStore((state) => state.updateFilter);
+  const clearFilters = useMapStateStore((state) => state.clearFilters);
 
   const [allEntities, setAllEntities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [askLoading, setAskLoading] = useState(false);
+  const [askMode, setAskMode] = useState(false);
+  const baseEntitiesRef = useRef([]);
+  const lastAskRef = useRef('');
+
+  const exploreParams = useMemo(() => parseExploreParams(location.search), [location.search]);
 
   useEffect(() => {
     let mounted = true;
@@ -42,27 +64,20 @@ export default function ExploreRebuilt() {
     (async () => {
       setLoading(true);
       try {
-        const response = await base44.functions.invoke('getSharedMapFeed', {
-          search: '',
-          filters: {},
-          limit: 1000,
-        });
-
-        const remoteItems = Array.isArray(response?.data?.items) ? response.data.items : [];
-        const fallbackItems = Array.isArray(MAP_ENTITIES) ? MAP_ENTITIES : [];
-        const safeItems = filterValidEntities(remoteItems.length ? remoteItems : fallbackItems).filter(
+        const feedItems = await mapRepository.getMapFeed({ query: '', filters: {}, limit: 1000 });
+        const safeItems = filterValidEntities(feedItems).filter(
           (item) => item.isPlotted !== false
         );
 
         if (!mounted) return;
+        baseEntitiesRef.current = safeItems;
         setAllEntities(safeItems);
         setFilteredResults(safeItems);
       } catch (error) {
         console.error('Failed to load map feed:', error);
         if (!mounted) return;
-        const safeItems = filterValidEntities(MAP_ENTITIES).filter((item) => item.isPlotted !== false);
-        setAllEntities(safeItems);
-        setFilteredResults(safeItems);
+        setAllEntities([]);
+        setFilteredResults([]);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -72,6 +87,136 @@ export default function ExploreRebuilt() {
       mounted = false;
     };
   }, [setFilteredResults]);
+
+  useEffect(() => {
+    const nextAskMode = exploreParams.mode === 'ask';
+    setAskMode(nextAskMode);
+    clearFilters();
+
+    // Apply URL query into the map store for consistent filtering/highlights
+    if (typeof exploreParams.query === 'string') {
+      setSearchQuery(exploreParams.query);
+    }
+
+    const rawCategory = String(exploreParams.category || '').trim().toLowerCase();
+    if (rawCategory) {
+      if (rawCategory === 'walk' || rawCategory === '5min' || rawCategory === '5-min') {
+        updateFilter('walkMinutes', 5);
+      } else if (
+        rawCategory === 'venues' ||
+        rawCategory === 'venue' ||
+        rawCategory === 'events' ||
+        rawCategory === 'event' ||
+        rawCategory === 'perks' ||
+        rawCategory === 'perk' ||
+        rawCategory === 'buildings' ||
+        rawCategory === 'building' ||
+        rawCategory === 'properties' ||
+        rawCategory === 'property'
+      ) {
+        const entityMap = {
+          venues: ['venue'],
+          venue: ['venue'],
+          events: ['event'],
+          event: ['event'],
+          perks: ['perk'],
+          perk: ['perk'],
+          buildings: ['building'],
+          building: ['building'],
+          properties: ['building'],
+          property: ['building'],
+        };
+        updateFilter('entityTypes', new Set(entityMap[rawCategory] || ['venue', 'event', 'perk', 'building']));
+      } else {
+        const preset = getPrimaryPresetDefinition(rawCategory);
+        updateFilter('entityTypes', new Set(preset.entityTypes || ['venue', 'event', 'perk', 'building']));
+        updateFilter('categories', new Set(preset.categories || []));
+        if (!exploreParams.query && preset.query) {
+          setSearchQuery(preset.query);
+        }
+      }
+    }
+
+    const toggleSet = new Set(
+      String(exploreParams.toggles || '')
+        .split(',')
+        .map((item) => item.trim().toLowerCase())
+        .filter(Boolean)
+    );
+
+    if (toggleSet.has('crowd')) {
+      updateFilter('isTrending', true);
+      updateFilter('isLive', true);
+    }
+
+    if (toggleSet.has('perks')) {
+      updateFilter('hasPerk', true);
+    }
+
+    if (toggleSet.has('walk')) {
+      updateFilter('walkMinutes', 5);
+    }
+  }, [clearFilters, exploreParams.category, exploreParams.mode, exploreParams.query, exploreParams.toggles, setSearchQuery, updateFilter]);
+
+  useEffect(() => {
+    if (askMode) return;
+    if (!lastAskRef.current) return;
+
+    // Leaving ask mode restores the base feed so explore doesn't get "stuck" on an AI subset.
+    lastAskRef.current = '';
+    const base = baseEntitiesRef.current;
+    if (Array.isArray(base) && base.length > 0) {
+      setAllEntities(base);
+      setFilteredResults(base);
+    }
+  }, [askMode, setFilteredResults]);
+
+  useEffect(() => {
+    if (!selectedEntity) return;
+    setShowResultsList(false);
+  }, [selectedEntity, setShowResultsList]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.innerWidth >= 768) {
+      setShowResultsList(true);
+    }
+  }, [setShowResultsList]);
+
+  const handleAsk = async (q) => {
+    const query = String(q || '').trim();
+    if (!query) return;
+    if (askLoading) return;
+    if (lastAskRef.current === query) return;
+
+    setAskLoading(true);
+    lastAskRef.current = query;
+
+    try {
+      const { items } = await mapRepository.searchWithIntent({
+        query,
+        userLocation: {
+          latitude: mapCenter?.[0],
+          longitude: mapCenter?.[1],
+        },
+      });
+
+      const safeItems = filterValidEntities(items).filter((item) => item.isPlotted !== false);
+      setAllEntities(safeItems);
+      setFilteredResults(safeItems);
+    } catch (error) {
+      console.error('Ask the map failed:', error);
+    } finally {
+      setAskLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!askMode) return;
+    if (!exploreParams.query?.trim()) return;
+    handleAsk(exploreParams.query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [askMode]);
 
   useEffect(() => {
     if (!allEntities.length) return;
@@ -135,6 +280,10 @@ export default function ExploreRebuilt() {
       results = results.filter((item) => Boolean(item.metadata?.isTrending || (item.metadata?.popularity ?? 0) >= 70));
     }
 
+    if (activeFilters.hasPerk) {
+      results = results.filter((item) => Boolean(item.perk?.value || item.perk_value || item.type === 'perk'));
+    }
+
     results.sort((a, b) => {
       const liveDelta = Number(Boolean(b.isLive || b.eventTiming?.isLive)) - Number(Boolean(a.isLive || a.eventTiming?.isLive));
       if (liveDelta !== 0) return liveDelta;
@@ -192,6 +341,15 @@ export default function ExploreRebuilt() {
           </UnifiedMapShell>
 
           <div className="pointer-events-none absolute inset-x-0 top-0 z-20 space-y-3 p-4">
+            <div className="pointer-events-auto">
+              <Link
+                to="/"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Back
+              </Link>
+            </div>
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-3">
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -214,14 +372,81 @@ export default function ExploreRebuilt() {
             </motion.div>
 
             <div className="pointer-events-auto">
-              <UnifiedSearchBar />
+              <UnifiedSearchBar
+                mode={askMode ? 'ask' : 'search'}
+                onAsk={handleAsk}
+                askLoading={askLoading}
+                onModeChange={(nextMode) => setAskMode(nextMode === 'ask')}
+              />
             </div>
             <div className="pointer-events-auto space-y-2">
               <TimeFilter />
               <UnifiedFilterChips />
             </div>
           </div>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4">
+            <div className="pointer-events-auto flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setShowResultsList(!showResultsList)}
+                className={showResultsList ? 'dp-chip dp-chip-active min-h-11' : 'dp-chip min-h-11'}
+              >
+                {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
+                {showResultsList ? 'Hide results' : `Results (${filteredResults.length})`}
+              </button>
+
+              <div className="dp-map-panel px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                {askMode ? 'Ask mode' : 'Search mode'}
+              </div>
+            </div>
+          </div>
         </div>
+
+        <AnimatePresence>
+          {showResultsList && !selectedEntity ? (
+            <>
+              <motion.button
+                type="button"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowResultsList(false)}
+                className="fixed inset-0 z-[24] bg-[rgba(11,31,51,0.18)] md:hidden"
+                aria-label="Close results"
+              />
+
+              <motion.div
+                initial={{ y: 440 }}
+                animate={{ y: 0 }}
+                exit={{ y: 440 }}
+                transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+                className="fixed inset-x-0 bottom-0 z-[25] px-3 pb-3 md:hidden"
+              >
+                <div className="dp-map-panel max-h-[58vh] overflow-hidden rounded-2xl">
+                  <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                    <div className="h-1.5 w-12 rounded-full bg-navy/10" />
+                    <button
+                      type="button"
+                      onClick={() => setShowResultsList(false)}
+                      className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
+                      aria-label="Close results"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  <div className="max-h-[calc(58vh-56px)] overflow-y-auto">
+                    <UnifiedResultsPanel
+                      items={filteredResults}
+                      onSelectResult={() => setShowResultsList(false)}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          ) : null}
+        </AnimatePresence>
 
         <UnifiedDrawer selected={selectedEntity} />
       </div>
@@ -242,7 +467,16 @@ export default function ExploreRebuilt() {
             <HeatmapLayer items={filteredResults} />
           </UnifiedMapShell>
 
-          <div className="pointer-events-none absolute left-8 right-8 top-8 z-20 space-y-3 pr-[32%]">
+          <div className={`pointer-events-none absolute left-8 right-8 top-8 z-20 space-y-3 ${showResultsList ? 'pr-[32%]' : 'pr-0'}`}>
+            <div className="pointer-events-auto">
+              <Link
+                to="/"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Back
+              </Link>
+            </div>
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-4">
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -268,18 +502,48 @@ export default function ExploreRebuilt() {
             </motion.div>
 
             <div className="pointer-events-auto">
-              <UnifiedSearchBar />
+              <UnifiedSearchBar
+                mode={askMode ? 'ask' : 'search'}
+                onAsk={handleAsk}
+                askLoading={askLoading}
+                onModeChange={(nextMode) => setAskMode(nextMode === 'ask')}
+              />
             </div>
             <div className="pointer-events-auto space-y-2">
               <TimeFilter />
               <UnifiedFilterChips />
             </div>
           </div>
+
+          <div className="pointer-events-none absolute bottom-8 right-8 z-20">
+            <button
+              type="button"
+              onClick={() => setShowResultsList(!showResultsList)}
+              className={`pointer-events-auto ${showResultsList ? 'dp-chip dp-chip-active' : 'dp-chip'} min-h-11`}
+            >
+              {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
+              {showResultsList ? 'Roll up results' : `Show results (${filteredResults.length})`}
+            </button>
+          </div>
         </div>
 
-        <aside className="flex w-[32%] flex-col border-l border-border bg-[#fbfbfd]">
-          <UnifiedResultsPanel items={filteredResults} />
-        </aside>
+        <AnimatePresence initial={false}>
+          {showResultsList ? (
+            <motion.aside
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: '32%', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="flex flex-col border-l border-border bg-[#fbfbfd] overflow-hidden"
+            >
+              <UnifiedResultsPanel
+                items={filteredResults}
+                onClose={() => setShowResultsList(false)}
+                title="Downtown results"
+              />
+            </motion.aside>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
   );

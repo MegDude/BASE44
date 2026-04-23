@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { QrCode, Copy, Check } from "lucide-react";
+import { Copy, Check, ShieldCheck } from "lucide-react";
 
 export default function ResidentCardTab({ user }) {
-  const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const cardCode = "DP-USER-" + (user?.id || "123456").slice(0, 8).toUpperCase();
+  const qrValue = JSON.stringify({
+    type: "downtown_perks_member_card",
+    memberId: cardCode,
+    name: user?.full_name || "DowntownPerks Member",
+    status: "active",
+    source: "resident_app",
+  });
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(qrValue)}`;
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(cardCode);
@@ -28,23 +35,28 @@ export default function ResidentCardTab({ user }) {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h2 className="font-heading text-2xl font-medium mb-6">Your Card</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80 mb-2">
+            Your Membership
+          </p>
+          <h2 className="font-heading text-3xl font-semibold tracking-[-0.05em] mb-6">Perks Card</h2>
 
           {/* QR Code Display */}
           <motion.div
-            onClick={() => setShowQR(!showQR)}
             whileHover={{ scale: 1.02 }}
-            className="p-8 rounded-2xl border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5 cursor-pointer transition-all mb-6"
+            className="rounded-[28px] bg-white/42 p-6 shadow-[0_18px_52px_rgba(11,31,51,0.08)] backdrop-blur-xl transition-all mb-6"
           >
-            <motion.div
-              animate={{ rotate: showQR ? 0 : 360 }}
-              transition={{ duration: 0.4 }}
-            >
-              <QrCode className="w-32 h-32 text-primary mx-auto" />
-            </motion.div>
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              {showQR ? "Tap to hide" : "Tap to show QR code"}
-            </p>
+            <div className="mx-auto w-fit rounded-[24px] bg-white p-4 shadow-[0_12px_32px_rgba(11,31,51,0.10)]">
+              <img src={qrUrl} alt="Downtown Perks resident QR code" className="h-52 w-52 rounded-[16px]" />
+            </div>
+            <div className="mt-5 text-center">
+              <h3 className="text-xl font-semibold tracking-[-0.04em]">
+                {user?.full_name || "DowntownPerks Member"}
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">Active Member</p>
+              <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                Scan or show this code at partner venues to redeem perks and verify membership.
+              </p>
+            </div>
           </motion.div>
 
           {/* Card Code */}
@@ -57,7 +69,7 @@ export default function ResidentCardTab({ user }) {
                 className="p-2 hover:bg-white rounded-lg transition-colors"
               >
                 {copied ? (
-                  <Check className="w-4 h-4 text-green-600" />
+                  <Check className="w-4 h-4 text-primary" />
                 ) : (
                   <Copy className="w-4 h-4 text-muted-foreground" />
                 )}
@@ -99,12 +111,12 @@ export default function ResidentCardTab({ user }) {
           className="grid grid-cols-3 gap-3 py-6 border-t border-border/20"
         >
           {[
+            { label: "Verified", value: <ShieldCheck className="mx-auto h-6 w-6" /> },
             { label: "Scans", value: "24" },
             { label: "Redeemed", value: "8" },
-            { label: "Saved", value: "12" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+              <div className="text-2xl font-bold text-foreground">{stat.value}</div>
               <p className="text-xs text-muted-foreground">{stat.label}</p>
             </div>
           ))}

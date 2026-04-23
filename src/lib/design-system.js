@@ -3,7 +3,7 @@
  * 
  * Foundation:
  * - Token-based color system (index.css, tailwind.config.js)
- * - Typography: Playfair Display (heading), Inter (body)
+ * - Typography: Inter Tight (display), Inter (body), Allura (accent)
  * - Spacing: 4px base unit grid (0.5rem radius)
  * - Motion: Framer Motion (precise, fast, purposeful)
  * - Glass/Overlay system: refined, light-touch, map-aware

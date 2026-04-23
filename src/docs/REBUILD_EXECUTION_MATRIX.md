@@ -907,17 +907,12 @@
 - **HomeFooter:** `components/HomeFooter` (home-specific footer)
 - **Used By:** All routes via Layout wrapper
 
-### Auth System
-- **Provider:** `lib/AuthContext` (useAuth hook)
-- **Methods:**
-  - `base44.auth.me()` - get current user
-  - `base44.auth.redirectToLogin()` - trigger login flow
-  - `base44.auth.updateMe(data)` - update user profile
-  - `base44.auth.logout()` - logout
-- **Used By:** 
-  - `/partner-workspace` (gated)
-  - `/dashboard` (gated)
-  - All pages (auth state awareness)
+### Public Access System
+- **Provider:** none
+- **Pattern:** public router with optional identity capture at action time
+- **Used By:**
+  - Homepage, map, events, perks, resident app, partner pages
+  - Dashboard previews without a frontend auth gate
 
 ### Query System
 - **Provider:** `@tanstack/react-query` via `QueryClientProvider`
@@ -951,7 +946,7 @@
 | **Building** | Explore, Properties, Civic, Home | (Not writable in current UI) | Dashboard | Core property entity; used in property showcase + district map |
 | **Event** | Events, Civic, Brands, Venues, Hotels | PartnerWorkspace (create/edit/delete) | Dashboard | Partner-created events; tied to venues |
 | **Perk** | PerksPage, Explore (smart filters), Hotels, Venues | PartnerWorkspace (create/edit/delete) | Dashboard | Partner-created perks; tied to venues |
-| **User** | PartnerWorkspace (profile), Dashboard | PartnerWorkspace (profile update), Dashboard (settings) | Dashboard | Stores partner/operator profile; used for auth gating |
+| **User** | PartnerWorkspace (profile), Dashboard | PartnerWorkspace (profile update), Dashboard (settings) | Dashboard | Optional identity/profile data only; no frontend auth gate |
 | **Hotel** | Hotels partner page, Dashboard | (Not writable in current UI) | Dashboard | Reference entity for hotel partnerships |
 | **Brand** | Brands pages, Brands partner page | (Not writable in current UI) | Dashboard | Hardcoded brand data; not currently dynamic |
 | **Amenity** | ForBuildings (feature list reference) | (Not writable in current UI) | — | Building amenities; listed in property description |
@@ -993,10 +988,10 @@
    - Dependency: None
    - Risk: Low
 
-2. **Auth System** (AuthContext, login/logout flows)
-   - User state management
-   - Protected route wrapping
-   - Profile data persistence
+2. **Public Shell System** (public router + action-based capture flows)
+   - Public route access
+   - Optional contact capture at value exchange moments
+   - Profile persistence only where explicitly needed
    - Dependency: None
    - Risk: Low
 

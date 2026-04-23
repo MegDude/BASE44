@@ -2,6 +2,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import SwipeRail from "@/components/home/SwipeRail";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 const forms = [
   {
@@ -96,7 +98,7 @@ const forms = [
     sub: "is part of Downtown Perks.",
     fields: [
       { name: "name", label: "Your Name", type: "text" },
-      { name: "phone", label: "Phone (used for QR card login)", type: "tel" },
+      { name: "phone", label: "Phone (used for card delivery)", type: "tel" },
       { name: "email", label: "Email (optional)", type: "email" },
       { name: "building", label: "Building Address", type: "text" },
     ],
@@ -106,8 +108,113 @@ const forms = [
 
 function ContactForm({ form }) {
   const [values, setValues] = useState({});
+  const { openFlow } = useCTAFlow();
+
+  const flowTypeByForm = {
+    buildings: "pilot_request",
+    hotels: "hospitality_onboarding",
+    venues: "venue_onboarding",
+    brands: "brand_campaign",
+    civic: "civic_onboarding",
+    realestate: "availability_check",
+    residents: "resident_card",
+  };
+
+  function mapInitialValues() {
+    if (form.id === "buildings") {
+      return {
+        propertyName: values.property || "",
+        organization: values.property || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        units: values.units || "",
+        goal: values.goals || "",
+        partnerType: "properties",
+      };
+    }
+    if (form.id === "hotels") {
+      return {
+        hotelName: values.property || "",
+        organization: values.property || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        rooms: values.rooms || "",
+        partnerType: "hospitality",
+      };
+    }
+    if (form.id === "venues") {
+      return {
+        venueName: values.business || "",
+        organization: values.business || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        address: values.address || "",
+        goal: values.perk || "",
+        intent: "Both",
+        partnerType: "venues",
+      };
+    }
+    if (form.id === "brands") {
+      return {
+        brandName: values.brand || "",
+        organization: values.brand || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        partnerType: "brands",
+      };
+    }
+    if (form.id === "civic") {
+      return {
+        organization: values.org || "",
+        initiative: values.focus || "",
+        name: values.name || "",
+        email: values.email || "",
+        phone: values.phone || "",
+        goal: values.focus || "",
+        partnerType: "civic",
+      };
+    }
+    if (form.id === "residents") {
+      return {
+        name: values.name || "",
+        phone: values.phone || "",
+        email: values.email || "",
+        building: values.building || "",
+      };
+    }
+    return values;
+  }
+
   return (
-    <div className="space-y-3">
+    <form
+      className="space-y-3"
+      onSubmit={(event) => {
+        event.preventDefault();
+        openFlow({
+          type: flowTypeByForm[form.id] || "start_here",
+          source: `contact_section_${form.id}`,
+          sourceComponent: "ContactSection",
+          partnerType: form.id === "buildings" ? "properties" : form.id,
+          initialValues: mapInitialValues(),
+          successRoute:
+            form.id === "residents"
+              ? "/resident-app/card"
+              : form.id === "brands"
+                ? "/partners/brands"
+                : form.id === "civic"
+                  ? "/partners/civic"
+                  : form.id === "venues"
+                    ? "/partners/venues"
+                    : form.id === "hotels"
+                      ? "/partners/hotels"
+                      : "/partners",
+        });
+      }}
+    >
       {form.fields.map((f) => (
         <div key={f.name}>
           <label className="block text-[11px] font-medium text-foreground/50 uppercase tracking-[0.1em] mb-1.5">
@@ -121,10 +228,13 @@ function ContactForm({ form }) {
           />
         </div>
       ))}
-      <button className="mt-4 w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300">
+      <button
+        type="submit"
+        className="mt-4 w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+      >
         {form.cta}
       </button>
-    </div>
+    </form>
   );
 }
 
@@ -132,6 +242,7 @@ export default function ContactSection() {
   const [activeForm, setActiveForm] = useState("buildings");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { openFlow } = useCTAFlow();
 
   const current = forms.find((f) => f.id === activeForm);
 
@@ -210,21 +321,25 @@ export default function ContactSection() {
                 <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-4">
                   Also Available
                 </div>
-                <div className="space-y-2">
-                  {forms.filter(f => f.id !== activeForm).slice(0, 4).map(f => (
+                <SwipeRail
+                  items={forms.filter(f => f.id !== activeForm).slice(0, 4)}
+                  getKey={(item) => item.id}
+                  cardClassName="w-[88%] sm:w-[72%] md:w-[88%]"
+                  showDots={false}
+                  renderItem={(form) => (
                     <button
-                      key={f.id}
-                      onClick={() => setActiveForm(f.id)}
-                      className="flex items-center justify-between w-full p-3 rounded-lg border border-[hsl(218,20%,90%)] bg-white hover:border-primary/30 text-left transition-all group"
+                      key={form.id}
+                      onClick={() => setActiveForm(form.id)}
+                      className="flex h-full w-full items-center justify-between rounded-[18px] border border-[hsl(218,20%,90%)] bg-white p-4 text-left transition-all group hover:border-primary/30"
                     >
                       <div>
-                        <div className="text-[13px] font-medium text-foreground">{f.label}</div>
-                        <div className="text-[11px] text-foreground/50 mt-0.5">{f.headline} {f.sub}</div>
+                        <div className="text-[13px] font-medium text-foreground">{form.label}</div>
+                        <div className="mt-1 text-[11px] leading-5 text-foreground/50">{form.headline} {form.sub}</div>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-foreground/25 group-hover:text-primary transition-colors shrink-0" />
+                      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-foreground/25 transition-colors group-hover:text-primary" />
                     </button>
-                  ))}
-                </div>
+                  )}
+                />
               </div>
               <div className="mt-8 pt-6 border-t border-[hsl(218,20%,90%)] space-y-1">
                 <p className="text-[12px] text-foreground/50 italic">
@@ -252,9 +367,20 @@ export default function ContactSection() {
           <Link to="/downtown-perks/for-buildings" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,84%)] text-foreground/70 font-medium text-sm hover:text-foreground hover:border-foreground/30 transition-all duration-300">
             Become a Partner
           </Link>
-          <Link to="/downtown-perks/explore" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,88%)] text-foreground/50 font-medium text-sm hover:text-foreground transition-all duration-300">
+          <button
+            type="button"
+            onClick={() =>
+              openFlow({
+                type: "availability_check",
+                source: "contact_section_check_availability",
+                sourceComponent: "ContactSection",
+                successRoute: "/partners",
+              })
+            }
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[hsl(218,20%,88%)] text-foreground/50 font-medium text-sm hover:text-foreground transition-all duration-300"
+          >
             Check Availability
-          </Link>
+          </button>
         </motion.div>
       </div>
     </section>

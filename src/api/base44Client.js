@@ -1,7 +1,7 @@
 import { createClient } from '@base44/sdk';
 import { appParams } from '@/lib/app-params';
 
-const { appId, token, functionsVersion, appBaseUrl } = appParams;
+const { appId, functionsVersion, appBaseUrl } = appParams;
 const isConfigured = Boolean(appId);
 
 const createEntityStub = () => ({
@@ -14,13 +14,6 @@ const createEntityStub = () => ({
 });
 
 const createNoopClient = () => ({
-  auth: {
-    isAuthenticated: async () => false,
-    me: async () => null,
-    updateMe: async () => null,
-    logout: () => {},
-    redirectToLogin: () => {},
-  },
   functions: {
     invoke: async () => null,
   },
@@ -43,7 +36,6 @@ const createNoopClient = () => ({
 export const base44 = isConfigured
   ? createClient({
       appId,
-      token,
       functionsVersion,
       serverUrl: '',
       requiresAuth: false,

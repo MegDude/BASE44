@@ -1,0 +1,65 @@
+{
+  "name": "SharedMapItem",
+  "type": "object",
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "title": "Source Entity ID"
+    },
+    "entity_type": {
+      "type": "string",
+      "title": "Entity Type",
+      "enum": ["venue", "event", "perk", "building", "property", "hotel", "brand", "civic"]
+    },
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "subtitle": {
+      "type": "string",
+      "title": "Subtitle"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "district": {
+      "type": "string",
+      "title": "District"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "default": "active"
+    },
+    "image": {
+      "type": "string",
+      "title": "Image URL"
+    },
+    "icon": {
+      "type": "string",
+      "title": "Icon"
+    },
+    "source_ref": {
+      "type": "string",
+      "title": "Source Reference"
+    },
+    "metadata": {
+      "type": "object",
+      "title": "Metadata"
+    }
+  },
+  "required": ["entity_id", "entity_type", "title", "latitude", "longitude"]
+}

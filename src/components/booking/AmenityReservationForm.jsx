@@ -10,6 +10,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     amenity: amenities[0] || 'fitness center',
+    contact: '',
     booking_date: new Date().toISOString().split('T')[0],
     booking_time: '10:00',
     duration_minutes: 60,
@@ -20,17 +21,11 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
     setLoading(true);
 
     try {
-      const user = await base44.auth.me();
-      if (!user) {
-        alert('Please sign in to reserve an amenity');
-        return;
-      }
-
       const confirmation_code = `AR${Date.now().toString().slice(-8)}`;
 
       await base44.entities.Booking.create({
         type: 'amenity_reservation',
-        user_email: user.email,
+        user_email: formData.contact || 'guest@downtownperks.demo',
         building_id: building.id,
         amenity: formData.amenity,
         booking_date: new Date(`${formData.booking_date}T${formData.booking_time}`).toISOString(),
@@ -42,7 +37,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
 
       setSubmitted(true);
       setTimeout(() => onClose?.(), 2000);
-    } catch (error) {
+    } catch {
       alert('Reservation failed. Please try again.');
     } finally {
       setLoading(false);
@@ -73,6 +68,19 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
 
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
+      <div>
+        <label className="text-[11px] font-bold uppercase tracking-widest text-[#8d887f] block mb-2">
+          Email or phone (optional)
+        </label>
+        <input
+          type="text"
+          value={formData.contact}
+          onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+          placeholder="Send reservation details to yourself"
+          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+        />
+      </div>
+
       <div>
         <label className="text-[11px] font-bold uppercase tracking-widest text-[#8d887f] block mb-2">
           Amenity

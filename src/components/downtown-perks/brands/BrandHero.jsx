@@ -1,8 +1,13 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 export default function BrandHero({ eyebrow = "", headline = "", support = "", ctaLabel = "Get Started", ctaHref = "/downtown-perks/card", demoPanel = null, bgAccent = "from-primary/5" }) {
+  const location = useLocation();
+  const { openFlow } = useCTAFlow();
+  const isMailto = String(ctaHref || "").startsWith("mailto:");
+
   return (
     <section className="relative pt-36 pb-20 px-6 overflow-hidden">
       <div className={`absolute inset-x-0 top-0 h-64 bg-gradient-to-b ${bgAccent} to-transparent pointer-events-none`} />
@@ -38,12 +43,34 @@ export default function BrandHero({ eyebrow = "", headline = "", support = "", c
                 {support}
               </p>
               <div className="flex flex-col sm:flex-row items-start gap-3">
+                {isMailto ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openFlow({
+                        type: "brand_campaign",
+                        source: `brand_hero_${location.pathname}`,
+                        sourceComponent: "BrandHero",
+                        partnerType: "brands",
+                        pageContext: {
+                          campaignName: headline,
+                          objective: support,
+                        },
+                        successRoute: "/partners/brands",
+                      })
+                    }
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
+                  >
+                    {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
+                  </button>
+                ) : (
                 <Link
                   to={ctaHref || "/downtown-perks/card"}
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
                 >
                   {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
                 </Link>
+                )}
                 <Link
                   to="/downtown-perks/for-buildings"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground hover:border-border transition-all duration-300"
