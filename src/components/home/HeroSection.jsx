@@ -1,135 +1,101 @@
-import { ArrowRight, Search, Calendar, Gift, Sparkles, MapPin } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, Compass, Search, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
+import { createMarker } from "@/components/map/markers/MarkerFactory";
+import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
+import MapFilterBars from "@/components/map/shared/MapFilterBars";
+import {
+  ASK_MAP_QUESTIONS,
+  PRIMARY_SEARCH_PRESETS,
+  SECONDARY_SEARCH_PRESETS,
+  getPrimaryPresetDefinition,
+} from "@/lib/map/searchUiConfig";
 
-const FILTER_CHIPS = [
-  { id: "venue", label: "Venues", icon: MapPin },
-  { id: "event", label: "Events", icon: Calendar },
-  { id: "perk", label: "Perks", icon: Gift },
-  { id: "walk", label: "5 min walk", icon: Sparkles },
-];
-
-const CHIP_PROMPTS = {
-  venue: [
-    {
-      title: "Where should I eat or drink?",
-      subtitle: "Coffee, dinner, patios, and everyday stops that are actually nearby.",
-      query: "best venues nearby right now",
-    },
-    {
-      title: "What is open close by?",
-      subtitle: "Useful places you can walk to without leaving the map flow.",
-      query: "open now nearby",
-    },
-  ],
-  event: [
-    {
-      title: "What is on tonight?",
-      subtitle: "Live events, music, and things worth showing up for nearby.",
-      query: "events tonight",
-    },
-    {
-      title: "What can I do right now?",
-      subtitle: "Immediate options for a plan without extra searching.",
-      query: "live events nearby",
-    },
-  ],
-  perk: [
-    {
-      title: "What perks can I actually use?",
-      subtitle: "Real resident value at places you would go anyway.",
-      query: "resident perks nearby",
-    },
-    {
-      title: "What is worth saving?",
-      subtitle: "Offers tied to actual locations instead of decorative coupons.",
-      query: "best perks downtown",
-    },
-  ],
-  walk: [
-    {
-      title: "What is within five minutes?",
-      subtitle: "The shortest useful options around you right now.",
-      query: "5 minute walk nearby",
-    },
-    {
-      title: "What can I do fast?",
-      subtitle: "Quick nearby places, events, and perks without a long walk.",
-      query: "quick nearby options",
-    },
-  ],
-};
-
-const DEFAULT_ASK_PROMPTS = [
-  {
-    title: "Where do you want to go?",
-    subtitle: "Coffee. Dinner. Groceries. Fitness. Drinks. All within walking distance.",
-    query: "coffee nearby",
-  },
-  {
-    title: "What do you want to do?",
-    subtitle: "See what's on tonight. Find something worth showing up for.",
-    query: "events tonight",
-  },
-  {
-    title: "Who do you want to meet?",
-    subtitle: "See who's going. Join in. Make a plan.",
-    query: "live music nearby",
-  },
+const AUSTIN_CENTER = [30.267, -97.743];
+const VALUE_POINTS = [
+  "One map",
+  "Everything nearby",
+  "No app download",
+  "No login friction",
 ];
 
 export default function HeroSection({ mapContext, onExplore, onAsk }) {
   const [query, setQuery] = useState(mapContext?.query || "");
-  const [category, setCategory] = useState(mapContext?.category || "venue");
+  const [activePrimary, setActivePrimary] = useState(mapContext?.category || "all");
+  const [activeSecondary, setActiveSecondary] = useState(mapContext?.toggles || []);
   const [showAskPanel, setShowAskPanel] = useState(false);
 
   useEffect(() => {
     setQuery(mapContext?.query || "");
-    setCategory(mapContext?.category === "all" ? "venue" : mapContext?.category || "venue");
+    setActivePrimary(mapContext?.category || "all");
+    setActiveSecondary(mapContext?.toggles || []);
   }, [mapContext?.requestKey]);
 
-  function getCurrentSelection() {
-    if (category === "walk") {
-      return {
-        category: "all",
-        walkMinutes: 5,
-      };
+  const preset = useMemo(() => getPrimaryPresetDefinition(activePrimary), [activePrimary]);
+  const previewCategory = preset.categories?.[0] || "all";
+  const previewQuery = query.trim() || preset.query || "";
+  const { items } = useSharedMapFeed({
+    query: previewQuery,
+    activeCategory: previewCategory,
+    limit: 30,
+  });
+
+  const previewItems = useMemo(() => {
+    let nextItems = [...(items || [])];
+
+    if (preset.categories?.length) {
+      nextItems = nextItems.filter((item) => preset.categories.includes(item.category));
     }
 
+    if (activeSecondary.includes("crowd")) {
+      nextItems = nextItems.filter(
+        (item) => Boolean(item.metadata?.isTrending || (item.metadata?.popularity ?? 0) >= 70)
+      );
+    }
+
+    if (activeSecondary.includes("perks")) {
+      nextItems = nextItems.filter((item) => Boolean(item.perk?.value || item.type === "perk"));
+    }
+
+    return nextItems;
+  }, [activeSecondary, items, preset.categories]);
+
+  const featuredItems = previewItems.slice(0, 3);
+  const mapCenter = featuredItems[0]?.location
+    ? [featuredItems[0].location.latitude, featuredItems[0].location.longitude]
+    : AUSTIN_CENTER;
+
+  function toggleSecondary(id) {
+    setActiveSecondary((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    );
+  }
+
+  function getSearchPayload(nextQuery = query, askMode = false) {
     return {
-      category,
+      query: String(nextQuery || "").trim(),
+      category: activePrimary,
       walkMinutes: null,
+      askMode,
+      toggles: activeSecondary,
     };
   }
 
   function handleSearch(e) {
     e.preventDefault();
-    const selection = getCurrentSelection();
     setShowAskPanel(false);
-    onExplore?.({
-      query: query.trim(),
-      category: selection.category,
-      walkMinutes: selection.walkMinutes,
-    });
+    onExplore?.(getSearchPayload(query, false));
   }
 
   function handleOpenMap() {
-    const selection = getCurrentSelection();
     setShowAskPanel(false);
-    onExplore?.({
-      query: query.trim(),
-      category: selection.category,
-      walkMinutes: selection.walkMinutes,
-    });
+    onExplore?.(getSearchPayload(query, false));
   }
 
   function handleAskMap(nextQuery = query) {
-    const selection = getCurrentSelection();
     setShowAskPanel(false);
-    onAsk?.({
-      query: String(nextQuery || "").trim(),
-      category: selection.category,
-      walkMinutes: selection.walkMinutes,
-    });
+    onAsk?.(getSearchPayload(nextQuery, true));
   }
 
   function handleAskPrompt(nextQuery) {
@@ -137,144 +103,206 @@ export default function HeroSection({ mapContext, onExplore, onAsk }) {
     handleAskMap(nextQuery);
   }
 
-  function handleChipClick(chipId) {
-    setCategory(chipId);
-    setShowAskPanel(true);
-  }
-
-  const promptSet = CHIP_PROMPTS[category] || DEFAULT_ASK_PROMPTS;
-
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-[#f6f3ee]">
-      {/* Background image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80"
-          alt="Downtown Austin"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/26 via-white/10 to-[rgba(15,23,42,0.14)]" />
-      </div>
-
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-24 md:py-28">
-        {/* Brand tag */}
-        <div className="mb-5 flex items-center gap-2">
-          <span className="rounded-full border border-white/40 bg-white/42 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(218,24%,28%)] backdrop-blur-md">
-            Downtown Perks
-          </span>
-        </div>
-
-        {/* Refined hero shell */}
-        <div className="w-full max-w-3xl rounded-[30px] border border-white/38 bg-white/[0.68] p-5 shadow-[0_24px_60px_rgba(14,28,54,0.16)] backdrop-blur-xl md:p-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[hsl(218,42%,14%)] md:text-[56px]">
-              Where downtown meets you
-            </h1>
-
-            <p className="mt-3 text-sm leading-6 text-[hsl(218,20%,42%)] md:mt-4 md:text-[15px]">
-              Everything nearby — in one map.
-            </p>
-          </div>
-
-          {/* Search shell stays more solid than outer card */}
-          <form
-            onSubmit={handleSearch}
-            className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white/[0.92] p-2 shadow-[0_12px_30px_rgba(14,28,54,0.10)] md:mt-6"
-          >
-            <div className="flex flex-col gap-2 md:flex-row md:items-center">
-              <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-[hsl(218,20%,86%)] bg-white px-4 transition-colors focus-within:border-primary/40">
-                <Search className="h-4 w-4 flex-shrink-0 text-foreground/45" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onFocus={() => setShowAskPanel(true)}
-                  placeholder="Where should I go right now?"
-                  className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowAskPanel((current) => !current)}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[hsl(218,20%,86%)] bg-[hsl(42,26%,96%)] text-[hsl(218,42%,14%)] transition hover:border-primary/25 hover:bg-white"
-                  aria-label="Ask the map"
-                >
-                  <Sparkles className="h-4 w-4" />
-                </button>
+    <section className="relative overflow-hidden border-b border-[rgba(11,31,51,0.08)] bg-[#fbfaf7] pt-[84px]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(198,162,105,0.16),transparent_24rem)]" />
+      <div className="mx-auto max-w-7xl px-4 pb-8 md:px-6 md:pb-12">
+        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+          <div className="flex flex-col justify-between gap-5 rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_18px_48px_rgba(11,31,51,0.07)] md:p-6">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(198,162,105,0.10)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0B1F33]">
+                Downtown Perks
               </div>
 
-              <button
-                type="submit"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-5 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
-              >
-                Open map
-                <ArrowRight className="h-4 w-4" />
-              </button>
+              <h1 className="mt-4 font-heading text-[40px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#0B1F33] md:text-[64px]">
+                Where downtown
+                <br />
+                meets you
+              </h1>
+
+              <p className="mt-4 max-w-xl text-[15px] leading-7 text-[rgba(11,31,51,0.68)]">
+                One map. Everything nearby. No app download. No login friction. Search less, do more.
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {VALUE_POINTS.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.62)]"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {showAskPanel && (
-              <div className="mt-2 overflow-hidden rounded-[18px] border border-[hsl(218,20%,88%)] bg-white shadow-lg">
-                <div className="divide-y divide-[hsl(218,20%,92%)]">
-                  {promptSet.map((item) => (
-                    <button
-                      key={item.title}
-                      type="button"
-                      className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
-                      onClick={() => handleAskPrompt(item.query)}
-                    >
-                      <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
-                        {item.title}
-                      </div>
-                      <div className="text-[12px] leading-relaxed text-foreground/60">
+            <div className="space-y-3">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+                Start with a live prompt
+              </div>
+              <div className="grid gap-2">
+                {ASK_MAP_QUESTIONS.map((item) => (
+                  <button
+                    key={item.title}
+                    type="button"
+                    onClick={() => handleAskPrompt(item.query)}
+                    className="group flex min-h-[68px] items-center justify-between gap-3 rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-4 py-3 text-left transition-all hover:-translate-y-[1px] hover:border-[rgba(11,31,51,0.14)] hover:bg-white"
+                  >
+                    <div>
+                      <div className="text-sm font-semibold text-[#0B1F33]">{item.title}</div>
+                      <div className="mt-1 text-[13px] leading-[1.45] text-[rgba(11,31,51,0.62)]">
                         {item.subtitle}
                       </div>
-                    </button>
-                  ))}
-                  <button
-                    type="button"
-                    className="w-full px-4 py-2.5 text-[11px] text-foreground/40 transition-colors hover:text-foreground/60"
-                    onClick={() => setShowAskPanel(false)}
-                  >
-                    Dismiss
+                    </div>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.42)] transition-transform group-hover:translate-x-0.5" />
                   </button>
+                ))}
+              </div>
+              <Link
+                to="/partners"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.10)] bg-white px-5 text-sm font-semibold text-[#0B1F33] transition-all hover:bg-[rgba(11,31,51,0.03)]"
+              >
+                Partner platform
+                <Compass className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_24px_60px_rgba(11,31,51,0.08)]">
+            <div className="relative h-[560px] overflow-hidden md:h-[640px]">
+              <UnifiedMapShell
+                items={previewItems}
+                markerIcon={(item, active) => createMarker(item, { isSelected: active })}
+                onMarkerSelect={() => {}}
+                mapCenter={mapCenter}
+                mapZoom={14}
+                selectedId={featuredItems[0]?.id}
+                className="h-full w-full"
+              />
+
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-3 md:p-4">
+                <div className="pointer-events-auto mx-auto max-w-[560px] overflow-hidden rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white/94 shadow-[0_18px_42px_rgba(11,31,51,0.10)] backdrop-blur">
+                  <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C6A269]">
+                          Ask the map
+                        </div>
+                        <div className="mt-1 text-sm font-semibold text-[#0B1F33]">
+                          Search less. Do more.
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAskPanel((current) => !current)}
+                        className="inline-flex h-10 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-3 text-xs font-semibold text-[#0B1F33]"
+                      >
+                        <Sparkles className="h-3.5 w-3.5" />
+                        {showAskPanel ? "Hide prompts" : "Open prompts"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleSearch} className="px-3 py-3">
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-[rgba(11,31,51,0.10)] bg-white px-4">
+                        <Search className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.48)]" />
+                        <input
+                          type="text"
+                          value={query}
+                          onChange={(e) => setQuery(e.target.value)}
+                          onFocus={() => setShowAskPanel(true)}
+                          placeholder="Where should I go right now?"
+                          className="flex-1 bg-transparent text-sm text-[#0B1F33] outline-none placeholder:text-[rgba(11,31,51,0.40)]"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[#0B1F33] px-5 text-sm font-semibold text-white"
+                      >
+                        Open map
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </form>
+
+                  <MapFilterBars
+                    primaryOptions={PRIMARY_SEARCH_PRESETS}
+                    secondaryOptions={SECONDARY_SEARCH_PRESETS}
+                    activePrimary={activePrimary}
+                    activeSecondary={activeSecondary}
+                    onPrimarySelect={setActivePrimary}
+                    onSecondaryToggle={toggleSecondary}
+                  />
+
+                  {showAskPanel ? (
+                    <div className="divide-y divide-[rgba(11,31,51,0.08)] bg-white">
+                      {ASK_MAP_QUESTIONS.map((item) => (
+                        <button
+                          key={item.title}
+                          type="button"
+                          onClick={() => handleAskPrompt(item.query)}
+                          className="block w-full px-4 py-4 text-left transition-colors hover:bg-[rgba(11,31,51,0.03)]"
+                        >
+                          <h3 className="font-heading text-[28px] font-semibold tracking-[-0.03em] text-foreground">
+                            {item.title}
+                          </h3>
+                          <p className="mt-2 text-[15px] leading-[1.8] text-muted-foreground">
+                            {item.subtitle}
+                          </p>
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => setShowAskPanel(false)}
+                        className="w-full px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.46)]"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               </div>
-            )}
 
-            {/* Filter chips */}
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-              {FILTER_CHIPS.map((chip) => {
-                const Icon = chip.icon;
-                const isActive = category === chip.id;
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-3 md:p-4">
+                <div className="pointer-events-auto mx-auto grid max-w-[560px] gap-2 rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white/94 p-3 shadow-[0_18px_42px_rgba(11,31,51,0.10)] backdrop-blur">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+                      Everything nearby
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleOpenMap}
+                      className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]"
+                    >
+                      Open full map
+                    </button>
+                  </div>
 
-                return (
-                  <button
-                    key={chip.id}
-                    type="button"
-                    onClick={() => handleChipClick(chip.id)}
-                    className={`inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all ${
-                      isActive
-                        ? "border-gold/40 bg-gold/10 text-[hsl(218,42%,14%)]"
-                        : "border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
-                    }`}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {chip.label}
-                  </button>
-                );
-              })}
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {featuredItems.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={handleOpenMap}
+                        className="rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-white px-3 py-3 text-left transition-all hover:border-[rgba(11,31,51,0.18)]"
+                      >
+                        <div className="text-xs font-semibold uppercase tracking-[0.12em] text-[#C6A269]">
+                          {item.type}
+                        </div>
+                        <div className="mt-1 text-sm font-semibold text-[#0B1F33]">
+                          {item.name}
+                        </div>
+                        <div className="mt-1 text-xs leading-5 text-[rgba(11,31,51,0.58)]">
+                          {item.perk?.value || item.description || item.address}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </form>
-
-          {/* CTA row */}
-          <div className="mt-5 flex flex-wrap justify-center gap-3 md:mt-6">
-            <button
-              type="button"
-              onClick={handleOpenMap}
-              className="inline-flex min-w-[190px] items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-6 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
-            >
-              Explore downtown
-              <ArrowRight className="h-4 w-4" />
-            </button>
           </div>
         </div>
       </div>

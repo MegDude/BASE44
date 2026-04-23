@@ -3,6 +3,8 @@ import { motion, useInView } from "framer-motion";
 import {
   ArrowRight,
   Calendar,
+  ChevronDown,
+  ChevronUp,
   Coffee,
   Home,
   MapPin,
@@ -10,6 +12,7 @@ import {
   QrCode,
   Search,
   Sparkles,
+  X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
@@ -85,6 +88,24 @@ const HOW_STEPS = [
   { label: "Tap. Learn. Decide.", detail: "See what it is, why it matters, and how close you are." },
   { label: "Save it or go now.", detail: "Plan ahead — or decide in the moment." },
   { label: "Flash your card. Get the perk.", detail: "They scan. You save. Done." },
+];
+
+const ASK_THE_MAP_PROMPTS = [
+  {
+    title: "Where do you want to go?",
+    description: "Coffee, dinner, groceries, fitness, or drinks within walking distance.",
+    prompt: "Show me coffee, dinner, groceries, fitness, and drinks within walking distance",
+  },
+  {
+    title: "What do you want to do?",
+    description: "See what is on tonight and find something worth showing up for.",
+    prompt: "Show me what is happening tonight nearby",
+  },
+  {
+    title: "Who do you want to meet?",
+    description: "See who is going, join in, and make a plan.",
+    prompt: "Show me places and events where people are gathering nearby",
+  },
 ];
 
 const SECTION_CARDS = [
@@ -172,6 +193,7 @@ export default function MapSection({ mapContext, onMapContextChange }) {
   const [askLoading, setAskLoading] = useState(false);
   const [askResults, setAskResults] = useState([]);
   const [selectedEntity, setSelectedEntity] = useState(null);
+  const [resultsExpanded, setResultsExpanded] = useState(false);
   const [mapCenter, setMapCenter] = useState(AUSTIN_CENTER);
   const [mapZoom, setMapZoom] = useState(14);
 
@@ -263,9 +285,16 @@ export default function MapSection({ mapContext, onMapContextChange }) {
       if (current && visibleItems.some((item) => item.id === current.id)) {
         return visibleItems.find((item) => item.id === current.id) || current;
       }
-      return visibleItems[0];
+      return null;
     });
   }, [visibleItems]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.innerWidth >= 1024) {
+      setResultsExpanded(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!selectedEntity?.location) return;
@@ -308,36 +337,54 @@ export default function MapSection({ mapContext, onMapContextChange }) {
     syncContext({ query: searchInput, askMode: false });
   }
 
+  function handlePromptSelect(prompt) {
+    setSearchInput(prompt);
+    setAskMode(true);
+    mapPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    syncContext({ query: prompt, askMode: true });
+  }
+
+  function handleSelectEntity(item) {
+    setSelectedEntity((current) => {
+      if (current?.id === item.id) {
+        return null;
+      }
+      return item;
+    });
+  }
+
+  const resultCount = visibleItems.length;
+
   return (
     <section
       ref={ref}
-      className="border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)] px-6 py-20"
+      className="border-t border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] px-4 py-16 md:px-6 md:py-18"
     >
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-10 grid grid-cols-1 items-end gap-10 md:grid-cols-2">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-8 grid grid-cols-1 items-end gap-6 md:grid-cols-[1.15fr_0.85fr]">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.16em] text-primary/80">
+            <span className="dp-micro-label mb-3 block">
               What You Can Do
             </span>
-            <h2 className="font-heading text-3xl font-medium leading-[1.1] tracking-tight text-foreground md:text-[38px]">
-              Everything works together —
-              <br />
-              <em className="text-primary">so you show up more.</em>
+            <h2 className="dp-display-section max-w-3xl text-[2.25rem] text-foreground md:text-[3.25rem]">
+              Everything works together so you show up more.
             </h2>
+            <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
+              Search less. Decide faster. The map keeps places, events, perks, and nearby context in one live layer.
+            </p>
           </motion.div>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-[13px] leading-relaxed text-foreground/60"
+            className="rounded-[20px] border border-[rgba(10,20,40,0.08)] bg-white px-5 py-4 text-[13px] leading-6 text-muted-foreground shadow-[0_8px_24px_rgba(11,26,43,0.05)]"
           >
-            Spend less time searching and more time showing up. Everything you need to move through
-            downtown is in one place.
+            Ask a question, open the map, tap a pin, and keep the result list rolled up until you need it. The homepage should behave like a product surface, not a directory.
           </motion.p>
         </div>
 
@@ -363,8 +410,8 @@ export default function MapSection({ mapContext, onMapContextChange }) {
           ))}
         </motion.div>
 
-        <div className="mb-10 grid grid-cols-1 overflow-hidden rounded-xl border border-[hsl(218,20%,88%)] bg-white shadow-[0_2px_16px_rgba(14,28,54,.06)] md:grid-cols-2">
-          <div className="border-[hsl(218,20%,90%)] p-8 md:border-r">
+        <div className="mb-8 grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-[24px] border border-[rgba(10,20,40,0.08)] bg-white p-6 shadow-[0_10px_28px_rgba(11,26,43,0.05)]">
             <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50 mb-5">
               {summaryCopy.title}
             </div>
@@ -377,9 +424,9 @@ export default function MapSection({ mapContext, onMapContextChange }) {
               ))}
             </ul>
 
-            <div className="mb-6 rounded-lg border border-[hsl(218,20%,90%)] bg-[hsl(42,24%,96%)] p-4">
+            <div className="mb-5 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f1f4f8] p-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[rgba(10,20,40,0.08)] bg-white">
                   <Coffee className="w-3.5 h-3.5 text-primary/60" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -389,7 +436,7 @@ export default function MapSection({ mapContext, onMapContextChange }) {
                       <div className="h-3 w-40 rounded bg-border/30 animate-pulse" />
                       <div className="h-3 w-24 rounded bg-border/30 animate-pulse" />
                     </div>
-                  ) : selectedEntity ? (
+                  ) : visibleItems.length > 0 ? (
                     <>
                       <div className="text-sm font-medium text-foreground">{featured.title}</div>
                       <div className="mt-0.5 text-[11px] text-muted-foreground">{featured.subtitle}</div>
@@ -409,7 +456,7 @@ export default function MapSection({ mapContext, onMapContextChange }) {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={handleOpenMap}
@@ -427,40 +474,40 @@ export default function MapSection({ mapContext, onMapContextChange }) {
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="rounded-[24px] border border-[rgba(10,20,40,0.08)] bg-white p-6 shadow-[0_10px_28px_rgba(11,26,43,0.05)]">
             <div className="mb-5 text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
               How It Works
             </div>
-            <div className="divide-y divide-[hsl(218,20%,92%)]">
+            <div className="dp-carousel md:grid md:grid-cols-1 md:gap-3 md:overflow-visible">
               {HOW_STEPS.map((step) => (
-                <div key={step.label} className="py-5 first:pt-0 last:pb-0">
-                  <div className="mb-1.5 text-sm font-medium text-foreground">{step.label}</div>
-                  <div className="text-[13px] leading-relaxed text-foreground/60">{step.detail}</div>
+                <div key={step.label} className="min-w-[80%] rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] p-4 md:min-w-0">
+                  <div className="mb-1.5 text-sm font-semibold text-foreground">{step.label}</div>
+                  <div className="text-[13px] leading-6 text-muted-foreground">{step.detail}</div>
                 </div>
               ))}
             </div>
-            <div className="mt-6 space-y-1 border-t border-[hsl(218,20%,92%)] pt-6">
-              <p className="font-heading text-base font-medium italic text-foreground">That's how friction dies.</p>
-              <p className="text-[12px] leading-relaxed text-foreground/55">
-                No extra steps. No guesswork. Just the shortest distance between "maybe" and "I'm going."
+            <div className="mt-5 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[var(--dp-navy)] p-4">
+              <p className="font-ui text-sm font-semibold dp-dark-copy">Less friction. More follow-through.</p>
+              <p className="mt-1 text-[12px] leading-5 dp-dark-copy-muted">
+                The shortest path between “maybe” and “I’m going” stays inside one map.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="dp-carousel mb-8 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible">
           {SECTION_CARDS.map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.label}
-                className="group rounded-xl border border-[hsl(218,20%,88%)] bg-white p-6 shadow-[0_1px_4px_rgba(14,28,54,.04)] transition-all hover:border-primary/30 hover:shadow-[0_4px_16px_rgba(14,28,54,.06)]"
+                className="group min-w-[84%] rounded-[22px] border border-[rgba(10,20,40,0.08)] bg-white p-5 shadow-[0_6px_20px_rgba(11,26,43,0.04)] transition-all hover:border-primary/20 hover:shadow-[0_10px_24px_rgba(11,26,43,0.06)] md:min-w-0"
               >
                 <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(218,20%,88%)]">
                   <Icon className="w-3.5 h-3.5 text-primary/70" />
                 </div>
-                <div className="mb-2 font-heading text-sm font-medium text-foreground">{item.label}</div>
-                <div className="mb-4 text-[12px] leading-relaxed text-foreground/60">{item.detail}</div>
+                <div className="mb-2 font-ui text-sm font-semibold text-foreground">{item.label}</div>
+                <div className="mb-4 text-[12px] leading-6 text-muted-foreground">{item.detail}</div>
                 {item.href ? (
                   <Link to={item.href} className="inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline">
                     {item.actionLabel} <ArrowRight className="w-3 h-3" />
@@ -483,12 +530,12 @@ export default function MapSection({ mapContext, onMapContextChange }) {
           })}
         </div>
 
-        <div className="rounded-xl border border-[hsl(218,20%,88%)] bg-white p-8 shadow-[0_1px_8px_rgba(14,28,54,.04)]">
+        <div className="rounded-[24px] border border-[rgba(10,20,40,0.08)] bg-white p-6 shadow-[0_6px_20px_rgba(11,26,43,0.04)]">
           <div className="grid grid-cols-1 gap-8 items-center md:grid-cols-2">
             <div>
-              <h3 className="font-heading text-2xl font-medium leading-[1.1] mb-2 text-foreground">What's Around the Corner</h3>
-              <p className="text-[13px] leading-relaxed text-foreground/60">
-                Everything you need, within walking distance. See what's close, decide quickly, and go.
+              <h3 className="font-display text-[2rem] text-foreground">What’s around the corner</h3>
+              <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
+                Open the map, keep the list compact, and move from pin to decision without losing context.
               </p>
             </div>
             <div className="flex gap-3">
@@ -507,36 +554,49 @@ export default function MapSection({ mapContext, onMapContextChange }) {
         <div
           id="home-live-map"
           ref={mapPanelRef}
-          className="mt-10 overflow-hidden rounded-xl border border-[hsl(218,20%,88%)] bg-white shadow-[0_2px_16px_rgba(14,28,54,.06)]"
+          className="mt-8 overflow-hidden rounded-[28px] border border-[rgba(10,20,40,0.08)] bg-white shadow-[0_14px_36px_rgba(11,26,43,0.06)]"
         >
-          <div className="border-b border-[hsl(218,20%,90%)] p-5">
+          <div className="border-b border-[rgba(10,20,40,0.08)] p-4 md:p-5">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/80">
+                <div className="dp-micro-label">
                   {askMode ? "Ask the map" : "Live downtown map"}
                 </div>
-                <h3 className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
+                <h3 className="mt-2 font-ui text-[1.6rem] font-semibold tracking-[-0.02em] text-foreground md:text-[1.9rem]">
                   {askMode && searchInput.trim()
                     ? `Results for "${searchInput.trim()}"`
                     : "Everything nearby — in one map."}
                 </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-foreground/60">
+                <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
                   {askMode
-                    ? "The agent prompt is wired into the same live downtown feed and updates the plotted map and result cards immediately."
+                    ? "The ask layer uses the same downtown feed and updates the map, selected detail, and result list together."
                     : "Browse places, events, perks, and properties without leaving the homepage."}
                 </p>
+                <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                  {ASK_THE_MAP_PROMPTS.map((item) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={() => handlePromptSelect(item.prompt)}
+                      className="min-w-[220px] rounded-[16px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] px-4 py-3 text-left transition-all hover:border-primary/20 hover:bg-white"
+                    >
+                      <div className="text-[13px] font-semibold text-foreground">{item.title}</div>
+                      <div className="mt-1 text-[12px] leading-5 text-muted-foreground">{item.description}</div>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <form
                 onSubmit={handleSearchSubmit}
-                className="flex flex-col gap-2 rounded-[18px] border border-[hsl(218,20%,88%)] bg-[hsl(42,24%,97%)] p-2 md:flex-row"
+                className="flex flex-col gap-2 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f1f4f8] p-2 md:flex-row"
               >
                 <div className="flex h-11 items-center gap-3 rounded-[14px] border border-[hsl(218,20%,90%)] bg-white px-4 min-w-[260px]">
                   <Search className="h-4 w-4 shrink-0 text-foreground/45" />
                   <input
                     value={searchInput}
                     onChange={(event) => setSearchInput(event.target.value)}
-                    placeholder="Ask the map..."
+                    placeholder="Search nearby"
                     className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
                   />
                 </div>
@@ -558,13 +618,13 @@ export default function MapSection({ mapContext, onMapContextChange }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px]">
-            <div className="h-[420px] lg:h-[720px]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="h-[460px] lg:h-[720px]">
               <UnifiedMapShell
                 items={visibleItems}
                 selectedId={selectedEntity?.id}
                 markerIcon={(entity, isSelected) => createMarker(entity, { isSelected })}
-                onMarkerSelect={setSelectedEntity}
+                onMarkerSelect={handleSelectEntity}
                 mapCenter={mapCenter}
                 mapZoom={mapZoom}
                 onMapCenterChange={setMapCenter}
@@ -573,77 +633,136 @@ export default function MapSection({ mapContext, onMapContextChange }) {
               />
             </div>
 
-            <div className="border-t border-[hsl(218,20%,90%)] p-4 lg:border-l lg:border-t-0">
+            <div className="relative z-10 -mt-16 px-3 pb-3 lg:mt-0 lg:border-l lg:border-[rgba(10,20,40,0.08)] lg:p-4">
+              <div className="rounded-[22px] border border-[rgba(10,20,40,0.08)] bg-white/96 p-4 shadow-[0_14px_34px_rgba(11,26,43,0.12)] backdrop-blur lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
                   {askMode ? "Ask results" : "Nearby results"}
                 </div>
-                {Number.isFinite(walkMinutes) ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setWalkMinutes(null);
-                      syncContext({ walkMinutes: null });
-                    }}
-                    className="text-[11px] font-medium text-primary"
-                  >
-                    Clear {walkMinutes} min
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setWalkMinutes(5);
-                      syncContext({ walkMinutes: 5 });
-                    }}
-                    className="text-[11px] font-medium text-primary"
-                  >
-                    5 min walk
-                  </button>
-                )}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-[#f1f4f8] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/70">
+                    {Number.isFinite(walkMinutes) ? `${walkMinutes} min walk` : "Downtown"}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
+                    {resultCount} {resultCount === 1 ? "result" : "results"}
+                  </span>
+                  <div className="ml-auto flex items-center gap-2">
+                    {Number.isFinite(walkMinutes) ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setWalkMinutes(null);
+                          syncContext({ walkMinutes: null });
+                        }}
+                        className="text-[11px] font-medium text-primary"
+                      >
+                        Clear filter
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setWalkMinutes(5);
+                          syncContext({ walkMinutes: 5 });
+                        }}
+                        className="text-[11px] font-medium text-primary"
+                      >
+                        5 min walk
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setResultsExpanded((current) => !current)}
+                      className="inline-flex items-center gap-1 rounded-full border border-[rgba(10,20,40,0.08)] px-3 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:bg-[#f7f9fc]"
+                    >
+                      {resultsExpanded ? "Hide results" : "Show results"}
+                      {resultsExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-3 overflow-y-auto pr-1 lg:max-h-[660px]">
-                {visibleItems.length === 0 ? (
-                  <div className="rounded-[16px] border border-dashed border-[hsl(218,20%,88%)] bg-[hsl(42,24%,97%)] p-5 text-[13px] leading-relaxed text-muted-foreground">
-                    No items available for this filter.
+              {selectedEntity ? (
+                <div className="mt-3 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/70">
+                        Selected place
+                      </div>
+                      <div className="mt-1 text-[15px] font-semibold text-foreground">
+                        {getFeaturedSummary(selectedEntity).title}
+                      </div>
+                      <div className="mt-1 text-[12px] leading-5 text-muted-foreground">
+                        {getFeaturedSummary(selectedEntity).subtitle}
+                      </div>
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-foreground/70">
+                        <span className="inline-flex items-center gap-1">
+                          <Navigation className="h-3.5 w-3.5" />
+                          {getFeaturedSummary(selectedEntity).meta}
+                        </span>
+                        {selectedEntity?.type ? (
+                          <span className="rounded-full bg-white px-2 py-1 font-medium capitalize text-foreground/70">
+                            {selectedEntity.type}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedEntity(null)}
+                      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[rgba(10,20,40,0.08)] bg-white text-foreground/70 transition-colors hover:text-foreground"
+                      aria-label="Close selected place"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   </div>
-                ) : (
-                  visibleItems.map((item) => {
-                    const Icon = getResultIcon(item);
-                    const featuredSummary = getFeaturedSummary(item);
-                    const isSelected = selectedEntity?.id === item.id;
+                </div>
+              ) : null}
 
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setSelectedEntity(item)}
-                        className={`w-full rounded-[16px] border px-4 py-3 text-left transition-all ${
-                          isSelected
-                            ? "border-primary/30 bg-primary/5 shadow-[0_8px_24px_rgba(14,28,54,0.08)]"
-                            : "border-[hsl(218,20%,90%)] bg-white hover:border-primary/20 hover:bg-[hsl(42,24%,97%)]"
-                        }`}
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgba(198,162,105,0.08)]">
-                            <Icon className="h-4 w-4 text-[hsl(42,55%,45%)]" />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="truncate text-[13px] font-semibold text-foreground">{featuredSummary.title}</div>
-                            <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[10px]">
-                              <span className="flex items-center gap-[3px] text-[hsl(218,42%,18%)]">
-                                <Navigation className="h-3 w-3" />
-                                {featuredSummary.meta}
-                              </span>
-                              <span className="font-semibold text-[hsl(42,55%,38%)]">{featuredSummary.subtitle}</span>
+              {resultsExpanded ? (
+                <div className="mt-3 space-y-3 overflow-y-auto pr-1 lg:max-h-[420px]">
+                  {visibleItems.length === 0 ? (
+                    <div className="rounded-[16px] border border-dashed border-[rgba(10,20,40,0.12)] bg-[#f7f9fc] p-5 text-[13px] leading-6 text-muted-foreground">
+                      Nothing nearby right now.
+                    </div>
+                  ) : (
+                    visibleItems.map((item) => {
+                      const Icon = getResultIcon(item);
+                      const featuredSummary = getFeaturedSummary(item);
+                      const isSelected = selectedEntity?.id === item.id;
+
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => handleSelectEntity(item)}
+                          className={`w-full rounded-[16px] border px-4 py-3 text-left transition-all ${
+                            isSelected
+                              ? "border-primary/20 bg-primary/[0.04] shadow-[0_8px_18px_rgba(11,26,43,0.06)]"
+                              : "border-[rgba(10,20,40,0.08)] bg-white hover:border-primary/15 hover:bg-[#f7f9fc]"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${isSelected ? "bg-primary text-white" : "bg-[#f1f4f8] text-primary"}`}>
+                              <Icon className="h-4 w-4" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="truncate text-[13px] font-semibold text-foreground">{featuredSummary.title}</div>
+                              <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[10px]">
+                                <span className="flex items-center gap-[3px] text-[hsl(214,52%,18%)]">
+                                  <Navigation className="h-3 w-3" />
+                                  {featuredSummary.meta}
+                                </span>
+                                <span className="font-medium text-[var(--dp-gold-muted)]">{featuredSummary.subtitle}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </button>
-                    );
-                  })
-                )}
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              ) : null}
               </div>
             </div>
           </div>

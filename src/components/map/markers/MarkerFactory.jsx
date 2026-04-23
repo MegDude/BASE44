@@ -1,155 +1,69 @@
-import L from 'leaflet';
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import L from "leaflet";
+import {
+  IconActivity,
+  IconBrand,
+  IconCivic,
+  IconCoffee,
+  IconDining,
+  IconEvent,
+  IconHotel,
+  IconPerk,
+  IconProperty,
+  IconTarget,
+  MarkerPin,
+} from "@/components/icons/DPIcons";
 
 const COLORS = {
-  gold: 'rgba(212,175,55,0.98)',
-  goldSoft: 'rgba(212,175,55,0.38)',
-  goldLine: '#F4D78A',
-  navy: '#0B1F33',
-  navySoft: 'rgba(11,31,51,0.18)',
-  navyDeep: 'rgba(15,38,66,0.98)',
-  civic: 'rgba(15,38,66,0.98)',
+  navy: "#0B1A2B",
+  navySoft: "#22405C",
+  low: "#8AA0B6",
+  civic: "#18314A",
+  opportunity: "#2F6F55",
+  surface: "#FFFFFF",
+  stroke: "rgba(11,26,43,0.16)",
+  accent: "#C6A85A",
 };
 
-const SHADOW = 'filter:drop-shadow(0 8px 16px rgba(11,31,51,0.18))';
+const SHADOW = "drop-shadow(0 8px 16px rgba(11,26,43,0.12))";
+const ACTIVE_SHADOW = "drop-shadow(0 12px 22px rgba(11,26,43,0.18))";
+
+function renderMarkerIcon(glyph, options = {}) {
+  return renderToStaticMarkup(<MarkerPin glyph={glyph} {...options} />);
+}
 
 function wrapPin(
-  innerSvg,
+  glyph,
   {
     width = 32,
     height = 42,
     active = false,
-    className = 'custom-marker',
-    live = false,
+    className = "custom-marker",
+    color = COLORS.navy,
+    accent = false,
     topRanked = false,
-    trending = false,
   } = {}
 ) {
-  const scale = active ? 1.08 : topRanked ? 1.06 : 1;
   return L.divIcon({
     className,
-    html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;width:${width}px;height:${height}px;transform:${active ? 'translateY(-1px) scale(1.05)' : 'translateY(0) scale(1)'};transition:all .2s ease;">
-      ${innerSvg}
-      ${active ? `<span style="position:absolute;inset:-6px;border-radius:999px;border:1.5px solid ${COLORS.goldSoft};opacity:0.82;pointer-events:none"></span>` : ''}
-    </div>`,
+    html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;width:${width}px;height:${height}px;transform:${active ? "translateY(-2px) scale(1.08)" : topRanked ? "translateY(-1px) scale(1.03)" : "translateY(0) scale(1)"};transition:transform .2s ease, filter .2s ease;filter:${active ? ACTIVE_SHADOW : SHADOW};">${renderMarkerIcon(glyph, { selected: active, color, accent, accentColor: COLORS.accent })}</div>`,
     iconSize: [width, height],
     iconAnchor: [Math.round(width / 2), Math.round(height * 0.84)],
     popupAnchor: [0, -Math.round(height * 0.84)],
   });
 }
 
-function makePerkIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M12 8.2L13.35 10.95L16.4 11.4L14.2 13.55L14.72 16.55L12 15.12L9.28 16.55L9.8 13.55L7.6 11.4L10.65 10.95L12 8.2Z" fill="${COLORS.navy}"/>
-    </svg>`,
-    { active, className: 'custom-marker perk-marker-icon' }
-  );
-}
-
-function makeEventIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M9 9.5H15V12.5H9z" fill="${COLORS.navy}" opacity="0.14"/>
-      <path d="M9 7.8V10.2" stroke="${COLORS.navy}" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M15 7.8V10.2" stroke="${COLORS.navy}" stroke-width="1.4" stroke-linecap="round"/>
-      <rect x="8.2" y="9.4" width="7.6" height="5.8" rx="1.4" fill="${COLORS.navy}"/>
-      <path d="M8.8 11.4H15.2" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
-    </svg>`,
-    { active, className: 'custom-marker event-marker-icon' }
-  );
-}
-
-function makePlaceIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <circle cx="12" cy="10.5" r="3.1" fill="${COLORS.navy}"/>
-      <circle cx="12" cy="10.5" r="1.15" fill="rgba(255,255,255,0.92)"/>
-    </svg>`,
-    { active, className: 'custom-marker place-marker-icon' }
-  );
-}
-
-function makeDiningIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.navyDeep}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M10 8.2V12.7" stroke="${COLORS.goldLine}" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M12 8.2V12.7" stroke="${COLORS.goldLine}" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M14.6 8.2C14.6 9.7 13.8 10.5 13.1 10.9V12.8" stroke="${COLORS.goldLine}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`,
-    { active, className: 'custom-marker dining-marker-icon' }
-  );
-}
-
-function makeHotelIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M10 8.3V12.8" stroke="${COLORS.navy}" stroke-width="1.9" stroke-linecap="round"/>
-      <path d="M14 8.3V12.8" stroke="${COLORS.navy}" stroke-width="1.9" stroke-linecap="round"/>
-      <path d="M10 10.55H14" stroke="${COLORS.navy}" stroke-width="1.9" stroke-linecap="round"/>
-    </svg>`,
-    { active, className: 'custom-marker hotel-marker-icon' }
-  );
-}
-
-function makeCivicIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.civic}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M8.5 13.7H15.5" stroke="${COLORS.goldLine}" stroke-width="1.2" stroke-linecap="round"/>
-      <path d="M9.3 13.7V10.2L12 8.5L14.7 10.2V13.7" stroke="${COLORS.goldLine}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`,
-    { active, className: 'custom-marker civic-marker-icon' }
-  );
-}
-
-function makeBuildingIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <circle cx="12" cy="10.5" r="2.5" fill="${COLORS.navy}"/>
-    </svg>`,
-    { active, className: 'custom-marker building-marker-icon' }
-  );
-}
-
-function makeBrandIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.navyDeep}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M12 8.2L13.35 10.95L16.4 11.4L14.2 13.55L14.72 16.55L12 15.12L9.28 16.55L9.8 13.55L7.6 11.4L10.65 10.95L12 8.2Z" fill="${COLORS.goldLine}"/>
-    </svg>`,
-    { active, className: 'custom-marker brand-marker-icon' }
-  );
-}
-
-function makeMomentIcon(active = false) {
-  return wrapPin(
-    `<svg width="28" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;${SHADOW}">
-      <path d="M12 21C12 21 18 15.6 18 10.5C18 7.46243 15.3137 5 12 5C8.68629 5 6 7.46243 6 10.5C6 15.6 12 21 12 21Z" fill="${COLORS.gold}" stroke="#FFFFFF" stroke-width="1.2"/>
-      <path d="M12.9 8.2L9.6 12.1H12.05L11.1 15.95L14.45 11.95H12.05L12.9 8.2Z" fill="${COLORS.navy}"/>
-    </svg>`,
-    { active, className: 'custom-marker moment-marker-icon' }
-  );
-}
-
 function createPillMarker(entity) {
-  const label = String(entity?.name || entity?.title || 'Downtown place');
-  const bg = entity?.type === 'building' || entity?.type === 'hotel' || entity?.type === 'property'
-    ? 'rgba(15,38,66,0.95)'
-    : 'rgba(255,255,255,0.96)';
-  const border = entity?.type === 'building' || entity?.type === 'hotel' || entity?.type === 'property'
-    ? 'rgba(212,175,55,0.70)'
-    : 'rgba(11,31,51,0.10)';
-  const textColor = bg.includes('255') ? COLORS.navy : '#F8E7B0';
-  const dot = bg.includes('255') ? COLORS.gold : COLORS.goldLine;
+  const label = String(entity?.name || entity?.title || "Downtown place");
+  const darkSurface = entity?.type === "building" || entity?.type === "hotel" || entity?.type === "property";
+  const bg = darkSurface ? "rgba(20,38,59,0.95)" : "rgba(255,255,255,0.96)";
+  const border = darkSurface ? "rgba(198,168,90,0.38)" : "rgba(11,26,43,0.10)";
+  const textColor = darkSurface ? "#F7F9FC" : COLORS.navy;
+  const dot = COLORS.accent;
 
   return L.divIcon({
-    className: 'pill-marker',
+    className: "pill-marker",
     html: `<div style="position:relative;display:inline-flex;align-items:center;gap:5px;padding:6px 11px 6px 9px;background:${bg};border:1.5px solid ${border};border-radius:22px;box-shadow:0 6px 18px rgba(11,31,51,0.16);white-space:nowrap;font-family:Inter,system-ui,sans-serif;font-size:11px;font-weight:600;color:${textColor};backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
       <span style="width:6px;height:6px;border-radius:50%;background:${dot};flex-shrink:0;display:inline-block"></span>
       <span>${label}</span>
@@ -160,56 +74,76 @@ function createPillMarker(entity) {
   });
 }
 
-function getVenueVariant(entity) {
-  const raw = `${entity?.iconType || entity?.category || entity?.subcategory || ''}`.toLowerCase();
-  if (raw.includes('coffee') || raw.includes('cafe')) return 'coffee';
+function getVenueGlyph(entity) {
+  const raw = `${entity?.iconType || entity?.category || entity?.subcategory || ""}`.toLowerCase();
+  if (raw.includes("coffee") || raw.includes("cafe")) return IconCoffee;
   if (
-    raw.includes('restaurant') ||
-    raw.includes('dining') ||
-    raw.includes('food') ||
-    raw.includes('bar') ||
-    raw.includes('nightlife')
+    raw.includes("restaurant") ||
+    raw.includes("dining") ||
+    raw.includes("food") ||
+    raw.includes("bar") ||
+    raw.includes("nightlife")
   ) {
-    return 'dining';
+    return IconDining;
   }
-  if (raw.includes('hotel')) return 'hotel';
-  if (raw.includes('civic') || raw.includes('landmark')) return 'civic';
-  return 'place';
+  return IconDining;
+}
+
+function getPerformanceConfig(state = "medium") {
+  if (state === "high") return { color: COLORS.navy, glyph: IconActivity };
+  if (state === "medium") return { color: COLORS.navySoft, glyph: IconActivity };
+  if (state === "low") return { color: COLORS.low, glyph: IconActivity };
+  if (state === "spike") return { color: COLORS.navySoft, glyph: IconEvent, accent: true };
+  if (state === "opportunity") return { color: COLORS.opportunity, glyph: IconTarget, accent: true };
+  return { color: COLORS.navySoft, glyph: IconActivity };
+}
+
+function createEntityMarker(entity, active = false) {
+  if (entity?.performanceState) {
+    const config = getPerformanceConfig(entity.performanceState);
+    return wrapPin(config.glyph, {
+      active,
+      className: `custom-marker insight-marker insight-${entity.performanceState}`,
+      color: config.color,
+      accent: config.accent,
+    });
+  }
+
+  if (entity?.markerType === "moment" || entity?.type === "moment") {
+    return wrapPin(IconActivity, { active, className: "custom-marker moment-marker-icon", color: COLORS.navySoft, accent: true });
+  }
+  if (entity?.markerType === "perk" || entity?.type === "perk" || entity?.perk || entity?.perk_value) {
+    return wrapPin(IconPerk, { active, className: "custom-marker perk-marker-icon", color: COLORS.navy, accent: true });
+  }
+  if (entity?.markerType === "event" || entity?.type === "event") {
+    return wrapPin(IconEvent, { active, className: "custom-marker event-marker-icon", color: COLORS.navySoft, accent: true });
+  }
+  if (entity?.type === "hotel") {
+    return wrapPin(IconHotel, { active, className: "custom-marker hotel-marker-icon", color: COLORS.navy });
+  }
+  if (entity?.markerType === "building" || ["building", "property"].includes(entity?.type)) {
+    return wrapPin(IconProperty, { active, className: "custom-marker building-marker-icon", color: COLORS.navy });
+  }
+  if (entity?.markerType === "brand" || entity?.type === "brand") {
+    return wrapPin(IconBrand, { active, className: "custom-marker brand-marker-icon", color: COLORS.navy, accent: true });
+  }
+  if (entity?.markerType === "civic" || entity?.type === "civic") {
+    return wrapPin(IconCivic, { active, className: "custom-marker civic-marker-icon", color: COLORS.civic });
+  }
+
+  return wrapPin(getVenueGlyph(entity), {
+    active,
+    className: "custom-marker place-marker-icon",
+    color: COLORS.navy,
+  });
 }
 
 export function createCompactMarker(entity) {
-  const active = false;
-  if (entity?.markerType === 'moment' || entity?.type === 'moment') return makeMomentIcon(active);
-  if (entity?.markerType === 'perk' || entity?.type === 'perk' || entity?.perk || entity?.perk_value) return makePerkIcon(active);
-  if (entity?.markerType === 'event' || entity?.type === 'event') return makeEventIcon(active);
-  if (entity?.type === 'hotel') return makeHotelIcon(active);
-  if (entity?.markerType === 'building' || ['building', 'property'].includes(entity?.type)) return makeBuildingIcon(active);
-  if (entity?.markerType === 'brand' || entity?.type === 'brand') return makeBrandIcon(active);
-  if (entity?.markerType === 'civic' || entity?.type === 'civic') return makeCivicIcon(active);
-
-  const venueVariant = getVenueVariant(entity);
-  if (venueVariant === 'coffee') return makePlaceIcon(active);
-  if (venueVariant === 'dining') return makeDiningIcon(active);
-  if (venueVariant === 'hotel') return makeHotelIcon(active);
-  if (venueVariant === 'civic') return makeCivicIcon(active);
-  return makePlaceIcon(active);
+  return createEntityMarker(entity, false);
 }
 
 export function createSelectedMarker(entity) {
-  if (entity?.markerType === 'moment' || entity?.type === 'moment') return makeMomentIcon(true);
-  if (entity?.markerType === 'perk' || entity?.type === 'perk' || entity?.perk || entity?.perk_value) return makePerkIcon(true);
-  if (entity?.markerType === 'event' || entity?.type === 'event') return makeEventIcon(true);
-  if (entity?.type === 'hotel') return makeHotelIcon(true);
-  if (entity?.markerType === 'building' || ['building', 'property'].includes(entity?.type)) return makeBuildingIcon(true);
-  if (entity?.markerType === 'brand' || entity?.type === 'brand') return makeBrandIcon(true);
-  if (entity?.markerType === 'civic' || entity?.type === 'civic') return makeCivicIcon(true);
-
-  const venueVariant = getVenueVariant(entity);
-  if (venueVariant === 'coffee') return makePlaceIcon(true);
-  if (venueVariant === 'dining') return makeDiningIcon(true);
-  if (venueVariant === 'hotel') return makeHotelIcon(true);
-  if (venueVariant === 'civic') return makeCivicIcon(true);
-  return makePlaceIcon(true);
+  return createEntityMarker(entity, true);
 }
 
 export function createMarker(entity, options = {}) {
@@ -220,18 +154,19 @@ export function createMarker(entity, options = {}) {
 
 export function getMarkerColors() {
   return {
-    standard: COLORS.gold,
+    standard: COLORS.navy,
     building: COLORS.navy,
-    event: COLORS.gold,
-    perk: COLORS.gold,
-    brand: COLORS.navyDeep,
+    event: COLORS.navySoft,
+    perk: COLORS.navy,
+    brand: COLORS.navy,
     civic: COLORS.civic,
   };
 }
 
 export function getMarkerVariant(entity) {
-  if (entity?.isLive) return 'live';
-  if (entity?.isSaved) return 'saved';
-  if (entity?.perk?.isActive) return 'perk-active';
-  return 'default';
+  if (entity?.isLive) return "live";
+  if (entity?.isSaved) return "saved";
+  if (entity?.perk?.isActive) return "perk-active";
+  return "default";
 }
+

@@ -1,12 +1,15 @@
 const LEGACY_MAP = {
-  perks: { tab: "perks", subview: "perks" },
+  perks: { tab: "map", subview: "perks" },
   saved: { tab: "saved" },
-  buildings: { tab: "buildings", subview: "building" },
+  buildings: { tab: "map", subview: "building" },
   now: { tab: "now" },
   card: { tab: "card" },
+  map: { tab: "map" },
+  plan: { tab: "plan" },
+  you: { tab: "you" },
 };
 
-const VALID_TABS = new Set(["now", "perks", "card", "saved", "buildings"]);
+const VALID_TABS = new Set(["now", "map", "card", "saved", "plan", "you"]);
 
 export function resolveResidentContext(input = {}) {
   const fromUrl = String(input?.tab || "").trim().toLowerCase();

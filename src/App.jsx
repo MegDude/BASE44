@@ -43,13 +43,15 @@ import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
 import ResidentApp from "./pages/resident-app";
 import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
+import { CTAFlowProvider } from "./components/cta/CTAFlowProvider";
 
 function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>
-        <Routes>
-          <Route element={<Layout />}>
+        <CTAFlowProvider>
+          <Routes>
+            <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
 
             <Route path="/map" element={<ExploreRebuilt />} />
@@ -95,6 +97,21 @@ function App() {
             <Route path="/partners/venues" element={<VenuesPartner />} />
             <Route path="/partners/brands" element={<BrandsPartner />} />
             <Route path="/partners/dashboard" element={<Dashboard />} />
+            <Route path="/partners/dashboard/overview" element={<Dashboard />} />
+            <Route path="/partners/dashboard/map" element={<Dashboard />} />
+            <Route path="/partners/dashboard/residential" element={<Dashboard />} />
+            <Route path="/partners/dashboard/hospitality" element={<Dashboard />} />
+            <Route path="/partners/dashboard/venues" element={<Dashboard />} />
+            <Route path="/partners/dashboard/brands" element={<Dashboard />} />
+            <Route path="/partners/dashboard/civic" element={<Dashboard />} />
+            <Route path="/partners/dashboard/perks" element={<Dashboard />} />
+            <Route path="/partners/dashboard/events" element={<Dashboard />} />
+            <Route path="/partners/dashboard/campaigns" element={<Dashboard />} />
+            <Route path="/partners/dashboard/redemptions" element={<Dashboard />} />
+            <Route path="/partners/dashboard/integrations" element={<Dashboard />} />
+            <Route path="/partners/dashboard/performance" element={<Dashboard />} />
+            <Route path="/partners/dashboard/reports" element={<Dashboard />} />
+            <Route path="/partners/dashboard/settings" element={<Dashboard />} />
             <Route path="/partner-workspace" element={<PartnerWorkspace />} />
             <Route path="/dashboard" element={<DashboardHub />} />
             <Route path="/dashboard/partner" element={<Dashboard />} />
@@ -114,10 +131,16 @@ function App() {
             <Route path="/dashboard/resident" element={<ResidentApp />} />
             <Route path="/partner-dashboard" element={<PartnerDashboard />} />
             <Route path="/resident-app" element={<ResidentApp />} />
+            <Route path="/resident-app/map" element={<ResidentApp />} />
+            <Route path="/resident-app/saved" element={<ResidentApp />} />
+            <Route path="/resident-app/plan" element={<ResidentApp />} />
+            <Route path="/resident-app/card" element={<ResidentApp />} />
+            <Route path="/resident-app/you" element={<ResidentApp />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="*" element={<PageNotFound />} />
-          </Route>
-        </Routes>
+            </Route>
+          </Routes>
+        </CTAFlowProvider>
       </Router>
       <Toaster />
     </QueryClientProvider>

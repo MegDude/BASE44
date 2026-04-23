@@ -1,31 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Search, X, Sparkles, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMapStateStore } from '@/store/mapStateStore';
+import { ASK_MAP_QUESTIONS } from '@/lib/map/searchUiConfig';
+import { IconAsk, IconClose, IconSearch } from '@/components/icons/DPIcons';
 
 const QUICK_PROMPTS = [
-  'coffee near Rainey',
+  'coffee nearby',
+  'dinner tonight',
   'live music tonight',
   'resident perks',
-  'open now',
-];
-
-const ASK_SUGGESTIONS = [
-  {
-    title: 'Where do you want to go?',
-    subtitle: 'Coffee. Dinner. Groceries. Fitness. Drinks. All within walking distance.',
-    query: 'coffee right now',
-  },
-  {
-    title: 'What do you want to do?',
-    subtitle: "See what's on tonight. Find something worth showing up for.",
-    query: 'events tonight',
-  },
-  {
-    title: 'Who do you want to meet?',
-    subtitle: "See who's going. Join in. Make a plan.",
-    query: 'live music nearby',
-  },
 ];
 
 export default function UnifiedSearchBar({
@@ -74,7 +58,7 @@ export default function UnifiedSearchBar({
       <div className="relative">
         <div className="dp-map-panel flex items-center gap-3 px-4 py-3">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(11,31,51,0.06)] text-[#0b1f33]">
-            <Search className="h-4 w-4" />
+            {mode === 'ask' ? <IconAsk className="h-4 w-4" /> : <IconSearch className="h-4 w-4" />}
           </span>
 
           <input
@@ -95,9 +79,11 @@ export default function UnifiedSearchBar({
                 event.preventDefault();
                 const q = searchQuery.trim();
                 if (q) onAsk?.(q);
+                return;
               }
+              event.preventDefault();
             }}
-            placeholder={mode === 'ask' ? 'Ask the map what fits right now' : 'Search venues, events, perks, or a corridor'}
+            placeholder={mode === 'ask' ? 'Ask the map where to go, what to do, or who to meet' : 'Search venues, events, perks, or a corridor'}
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground md:text-base"
           />
 
@@ -114,7 +100,7 @@ export default function UnifiedSearchBar({
             className={mode === 'ask' ? 'dp-chip dp-chip-active shrink-0' : 'dp-chip shrink-0'}
             aria-label={mode === 'ask' ? 'Switch to search mode' : 'Switch to ask mode'}
           >
-            <Sparkles className="h-3.5 w-3.5" />
+            <IconAsk className="h-3.5 w-3.5" />
             {mode === 'ask' ? 'Search' : 'Ask'}
           </button>
 
@@ -127,7 +113,7 @@ export default function UnifiedSearchBar({
               className="rounded-full p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
               aria-label="Clear search"
             >
-              <X className="h-4 w-4" />
+              <IconClose className="h-4 w-4" />
             </button>
           ) : null}
         </div>
@@ -141,7 +127,7 @@ export default function UnifiedSearchBar({
               className="mt-2 overflow-hidden rounded-[18px] border border-[rgba(11,31,51,0.10)] bg-white shadow-[0_12px_30px_rgba(11,31,51,0.08)]"
             >
               <div className="divide-y divide-[rgba(11,31,51,0.10)]">
-                {ASK_SUGGESTIONS.map((item) => (
+                {ASK_MAP_QUESTIONS.map((item) => (
                   <button
                     key={item.title}
                     type="button"
@@ -181,7 +167,12 @@ export default function UnifiedSearchBar({
               {QUICK_PROMPTS.map((prompt) => (
                 <button
                   key={prompt}
-                  onMouseDown={() => setSearchQuery(prompt)}
+                  onMouseDown={() => {
+                    setSearchQuery(prompt);
+                    if (mode === 'ask') {
+                      onAsk?.(prompt);
+                    }
+                  }}
                   className="dp-chip hover:border-[rgba(11,31,51,0.24)]"
                 >
                   {prompt}
