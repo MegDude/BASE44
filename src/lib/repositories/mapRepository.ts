@@ -1,4 +1,5 @@
 import { base44Api } from "@/lib/api/base44Api";
+import { parseIntent } from "@/lib/map/intent-parser";
 import type { SharedMapFeedRequest } from "@/lib/contracts/entities";
 import {
   getFallbackSharedMapItems,
@@ -24,9 +25,13 @@ function getTextIndex(item) {
     item?.description,
     item?.address,
     item?.category,
+    item?.subcategory,
     item?.district,
     item?.type,
     item?.entity_type,
+    item?.metadata?.shortDescription,
+    item?.metadata?.whyItMatters,
+    item?.metadata?.highlightedFeatures,
     ...(item?.metadata?.tags || []),
     ...(item?.metadata?.searchKeywords || []),
     ...(item?.metadata?.askMapIntentTags || []),
@@ -34,6 +39,33 @@ function getTextIndex(item) {
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
+}
+
+function getFallbackIntentFilters(query = "") {
+  const intent = parseIntent(query);
+
+  if (intent.intentMode === "perks") {
+    return {
+      categories: [],
+      types: ["perk"],
+      intent,
+    };
+  }
+
+  const byCategory = {
+    coffee: { categories: ["coffee"], types: ["venue"] },
+    dining: { categories: ["restaurant", "bar"], types: ["venue"] },
+    fitness: { categories: ["fitness"], types: ["venue"] },
+    wellness: { categories: ["wellness"], types: ["venue"] },
+    entertainment: { categories: ["entertainment", "bar"], types: ["venue", "event"] },
+    event: { categories: [], types: ["event"] },
+  };
+
+  return {
+    categories: byCategory[intent.category]?.categories || [],
+    types: byCategory[intent.category]?.types || [],
+    intent,
+  };
 }
 
 function filterItems(items, params: MapFeedParams = {}) {
@@ -111,8 +143,15 @@ export const mapRepository = {
       return { items, intent };
     } catch (error) {
       console.error("searchWithIntent error:", error);
-      const items = await this.getMapFeed({ query });
-      return { items, intent: null };
+      const fallback = getFallbackIntentFilters(query);
+      const items = await this.getMapFeed({
+        query,
+        filters: {
+          categories: fallback.categories,
+          types: fallback.types,
+        },
+      });
+      return { items, intent: fallback.intent };
     }
   },
 
