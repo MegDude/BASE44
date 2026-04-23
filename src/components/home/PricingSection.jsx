@@ -110,10 +110,10 @@ export default function PricingSection() {
     <section
       id="start-here"
       ref={ref}
-      className="border-t border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] px-4 py-14 md:px-6 md:py-16"
+      className="bg-[var(--dp-surface-base)] px-4 py-10 md:px-6 md:py-12"
     >
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+      <div className="dp-page-shell">
+        <div className="dp-band dp-band-muted mb-6 grid grid-cols-1 gap-6 p-6 md:grid-cols-[1.05fr_0.95fr] md:items-end md:p-8 lg:p-10">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -132,13 +132,13 @@ export default function PricingSection() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="rounded-[20px] border border-[rgba(10,20,40,0.08)] bg-white px-5 py-4 text-[13px] leading-6 text-muted-foreground shadow-[0_8px_24px_rgba(11,26,43,0.04)]"
+            className="rounded-[24px] bg-[linear-gradient(180deg,rgba(11,26,43,0.98),rgba(18,36,60,0.95))] px-5 py-5 text-[13px] leading-6 text-white/74 shadow-[0_20px_48px_rgba(11,26,43,0.16)]"
           >
             Start with a pilot, go live quickly, measure what happens, then decide whether to expand the footprint.
           </motion.div>
         </div>
 
-        <div className="space-y-10">
+        <div className="space-y-6">
           <div>
             <div className="mb-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               Partner fit
@@ -156,8 +156,8 @@ export default function PricingSection() {
                     transition={{ duration: 0.45, delay: 0.06 * index }}
                     className={`h-full rounded-[24px] border p-5 shadow-[0_8px_20px_rgba(11,26,43,0.04)] ${
                       isActive
-                        ? "border-primary/18 bg-white"
-                        : "border-[rgba(10,20,40,0.08)] bg-[#fbfcfe]"
+                        ? "border-primary/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,245,238,0.96))]"
+                        : "border-transparent bg-[linear-gradient(180deg,rgba(255,255,255,0.82),rgba(255,255,255,0.94))]"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-4">
@@ -201,7 +201,7 @@ export default function PricingSection() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.45, delay: 0.05 * index }}
-                    className="h-full rounded-[22px] border border-[rgba(10,20,40,0.08)] bg-white p-5 shadow-[0_8px_20px_rgba(11,26,43,0.04)]"
+                    className="h-full rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.98))] p-5 shadow-[0_14px_28px_rgba(11,26,43,0.05)]"
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
@@ -232,7 +232,7 @@ export default function PricingSection() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.45, delay: 0.04 * index }}
-                  className="h-full rounded-[20px] border border-[rgba(10,20,40,0.08)] bg-white p-5 shadow-[0_8px_20px_rgba(11,26,43,0.04)]"
+                  className="h-full rounded-[22px] bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(248,245,238,0.9))] p-5 shadow-[0_12px_24px_rgba(11,26,43,0.04)]"
                 >
                   <div className="text-sm font-semibold text-foreground">{item.title}</div>
                   <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{item.copy}</p>
@@ -246,11 +246,11 @@ export default function PricingSection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 flex flex-wrap items-center gap-3"
+          className="dp-band mt-2 flex flex-wrap items-center gap-3 p-5"
         >
           <Link
             to="/partners"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90"
+            className="dp-cta-primary"
           >
             Explore partner types
             <ArrowRight className="h-3.5 w-3.5" />
@@ -266,7 +266,7 @@ export default function PricingSection() {
                 successRoute: "/partners",
               });
             }}
-            className="inline-flex items-center gap-2 rounded-full border border-[rgba(10,20,40,0.12)] px-6 py-3 text-sm font-medium text-foreground/70 transition-all hover:text-foreground"
+            className="dp-cta-secondary"
           >
             Start a pilot
           </Link>

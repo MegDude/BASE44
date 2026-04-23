@@ -1,187 +1,185 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MapPinned, Sparkles, Target, Waves } from "lucide-react";
+
+const pillars = [
+  {
+    title: "The map is the product",
+    body: "People do not need another feed. They need one live surface that makes nearby decisions easier.",
+    icon: MapPinned,
+  },
+  {
+    title: "Timing matters more than volume",
+    body: "Downtown Perks works when proximity, time of day, and intent line up in one system.",
+    icon: Target,
+  },
+  {
+    title: "Community is repeated context",
+    body: "The product should help people see the same places, people, and moments more often without forcing social behavior.",
+    icon: Waves,
+  },
+];
+
+const proofPoints = [
+  { value: "1 map", label: "for places, events, perks, and properties" },
+  { value: "5 lenses", label: "resident, property, hotel, venue, and brand context" },
+  { value: "Real time", label: "trending, pulses, and intent-based visibility" },
+  { value: "1 decision", label: "what to do next, without switching apps" },
+];
+
+const storyBands = [
+  {
+    eyebrow: "The shift",
+    title: "Density without connection is still friction.",
+    body: "Downtown already has the density. The missing layer is a live operating surface that turns density into clarity.",
+  },
+  {
+    eyebrow: "The human layer",
+    title: "Repeated context creates actual neighborhood behavior.",
+    body: "The goal is not to invent another social network. The goal is to make daily movement feel connected, familiar, and easier to step into.",
+  },
+  {
+    eyebrow: "The category",
+    title: "This is the neighborhood layer for vertical downtown life.",
+    body: "Not Yelp. Not Eventbrite. Not a loyalty card. Downtown Perks combines timing, place, and membership in one decision system.",
+  },
+];
 
 export default function About() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <div className="pt-24 pb-20 px-6 min-h-screen">
-      <div className="max-w-3xl mx-auto">
-        {/* Hero */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-20"
-        >
-          <span className="text-primary text-sm font-medium uppercase tracking-widest">
-            The Vision
-          </span>
-          <h1 className="font-heading text-4xl md:text-6xl font-bold mt-4 mb-8 leading-tight">
-            The operating system
-            <br />
-            <span className="text-primary">for downtown life.</span>
-          </h1>
-        </motion.div>
+    <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[84px] pb-12">
+      <div className="dp-page-shell dp-page-stack">
+        <section className="relative overflow-hidden rounded-[34px] bg-[#0b1730] text-white shadow-[0_28px_70px_rgba(11,26,43,0.18)]">
+          <img
+            src="https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80"
+            alt="Downtown Austin skyline"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,16,34,0.7)_0%,rgba(11,23,48,0.84)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(198,168,90,0.22),transparent_30%)]" />
 
-        {/* Narrative blocks */}
-        <div ref={ref} className="space-y-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 }}
-          >
-            <h2 className="font-heading text-2xl font-bold mb-4">The Shift</h2>
-            <p className="text-secondary-foreground leading-relaxed mb-4">
-              Downtown Perks isn't a perks program. It isn't a map. It isn't a
-              community app. It isn't a building amenity.
-            </p>
-            <p className="text-secondary-foreground leading-relaxed">
-              It <em className="text-primary font-medium">uses</em> all of
-              those. But the real idea is bigger:{" "}
-              <strong className="text-foreground">
-                Downtown Perks is the operating system for downtown life.
-              </strong>
-            </p>
-          </motion.div>
+          <div className="relative grid gap-8 p-6 md:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:p-10">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+              <span className="dp-kicker">About Downtown Perks</span>
+              <h1 className="dp-display-hero mt-5 max-w-3xl text-[2.7rem] md:text-[4.5rem]">
+                Where downtown meets you.
+              </h1>
+              <p className="mt-4 max-w-2xl text-[15px] leading-7 text-white/76 md:text-[16px]">
+                Downtown Perks is the live neighborhood layer for people who live downtown and the partners trying to meet them there.
+              </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2 }}
-          >
-            <h2 className="font-heading text-2xl font-bold mb-4">
-              The Real Problem
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/downtown-perks/explore" className="dp-cta-primary">
+                  Open Map
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/perks/card" className="dp-cta-secondary border-white/16 bg-white/12 text-white">
+                  Get the Perks Card
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 18 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="grid gap-3 self-end"
+            >
+              {proofPoints.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-[22px] border border-white/12 bg-white/10 px-4 py-4 backdrop-blur-xl"
+                >
+                  <div className="font-heading text-[1.7rem] font-semibold tracking-[-0.04em] text-white">
+                    {item.value}
+                  </div>
+                  <div className="mt-1 text-[13px] leading-6 text-white/68">{item.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="dp-band dp-band-muted p-6 md:p-8 lg:p-10">
+          <div className="grid gap-4 lg:grid-cols-3">
+            {pillars.map((pillar, index) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={pillar.title}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="rounded-[24px] bg-white/78 p-5 shadow-[0_14px_30px_rgba(11,26,43,0.05)]"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-[16px] bg-[rgba(11,26,43,0.06)] text-[var(--dp-navy)]">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h2 className="mt-5 font-heading text-[1.5rem] font-semibold tracking-[-0.03em] text-foreground">
+                    {pillar.title}
+                  </h2>
+                  <p className="mt-3 text-[14px] leading-7 text-foreground/66">{pillar.body}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="dp-band p-6 md:p-8">
+            <div className="dp-eyebrow">Product truth</div>
+            <h2 className="dp-display-section mt-4 text-[2rem] md:text-[2.8rem]">
+              Search less. Do more.
             </h2>
-            <p className="text-secondary-foreground leading-relaxed mb-4">
-              The issue isn't "people don't know what to do." The issue is:{" "}
-              <strong className="text-foreground">
-                downtown has density without connection.
-              </strong>
+            <p className="dp-body-copy mt-4">
+              People do not want more options. They want confidence in what to do next. That is the role of the map, the card, and the live context layer.
             </p>
-            <p className="text-secondary-foreground leading-relaxed">
-              Thousands of people. Hundreds of places. Zero shared layer tying
-              them together. Isolated residents. Underutilized businesses.
-              Buildings that feel interchangeable.
-            </p>
-          </motion.div>
+            <div className="mt-6 rounded-[24px] bg-[rgba(11,26,43,0.04)] p-5">
+              <div className="flex items-center gap-2 text-[var(--dp-gold-muted)]">
+                <Sparkles className="h-4 w-4" />
+                <span className="dp-eyebrow">Decision-first behavior</span>
+              </div>
+              <p className="mt-3 text-[15px] leading-7 text-foreground/74">
+                Places, events, perks, and properties should always resolve back into one next action: go now, save, RSVP, redeem, or open the map.
+              </p>
+            </div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3 }}
-            className="p-8 rounded-2xl border border-primary/20 bg-primary/5"
-          >
-            <p className="font-heading text-xl md:text-2xl font-bold leading-relaxed text-center">
-              "A live, member-powered layer over the city that connects where you
-              live to what you do —{" "}
-              <span className="text-primary">in real time.</span>"
-            </p>
-          </motion.div>
+          <div className="grid gap-4">
+            {storyBands.map((band) => (
+              <div key={band.title} className="dp-band p-5 md:p-6">
+                <div className="dp-eyebrow">{band.eyebrow}</div>
+                <h3 className="mt-3 font-heading text-[1.45rem] font-semibold tracking-[-0.03em] text-foreground">
+                  {band.title}
+                </h3>
+                <p className="mt-3 text-[14px] leading-7 text-foreground/66">{band.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.4 }}
-          >
-            <h2 className="font-heading text-2xl font-bold mb-4">
-              The Human Layer
-            </h2>
-            <p className="text-secondary-foreground leading-relaxed mb-4">
-              This is not a social network. This is not a dating app. This is a
-              system where people{" "}
-              <strong className="text-foreground">
-                naturally run into each other again
-              </strong>
-              .
-            </p>
-            <p className="text-secondary-foreground leading-relaxed">
-              Familiar faces. Repeated interactions. Shared routines. That's
-              what creates real community — without forcing it. Downtown Perks
-              is a digital overlay that restores "village energy" to vertical
-              urban living.
-            </p>
-          </motion.div>
+        <section className="dp-band dp-band-dark p-6 md:p-8 lg:p-10">
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <div className="dp-eyebrow text-[hsl(40,62%,62%)]">Bottom line</div>
+              <h2 className="dp-display-section mt-4 text-[2rem] text-white md:text-[2.8rem]">
+                The map is the interface. The system is the product.
+              </h2>
+              <p className="mt-4 max-w-2xl text-[15px] leading-7 text-white/72">
+                Downtown Perks should feel like one premium city layer with multiple lenses, not a set of disconnected landing pages and admin screens.
+              </p>
+            </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5 }}
-          >
-            <h2 className="font-heading text-2xl font-bold mb-4">
-              The Product Truth
-            </h2>
-            <p className="text-secondary-foreground leading-relaxed mb-4">
-              People don't want more options. More apps. More feeds. They want{" "}
-              <strong className="text-foreground">
-                confidence in what to do next.
-              </strong>
-            </p>
-            <p className="text-secondary-foreground leading-relaxed">
-              That's the wedge. Timing + proximity + membership in one system.
-              That's what no one else has. The map is the interface. The system
-              is the product.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.6 }}
-          >
-            <h2 className="font-heading text-2xl font-bold mb-4">
-              The Category
-            </h2>
-            <p className="text-secondary-foreground leading-relaxed mb-4">
-              Downtown Perks is not Yelp. Not ClassPass. Not Eventbrite. Not
-              BuildingLink. Not a loyalty app.
-            </p>
-            <p className="text-secondary-foreground leading-relaxed">
-              It's{" "}
-              <strong className="text-foreground">
-                the real-time neighborhood layer for cities.
-              </strong>{" "}
-              The infrastructure for how people experience downtown.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.7 }}
-            className="p-8 rounded-2xl bg-card border border-border"
-          >
-            <h2 className="font-heading text-2xl font-bold mb-4">
-              The Emotional Story
-            </h2>
-            <blockquote className="text-muted-foreground italic text-lg leading-relaxed mb-4">
-              "You live in one of the most dense, vibrant parts of the city…
-              and still feel like you're doing it alone."
-            </blockquote>
-            <p className="text-foreground font-medium text-lg">
-              Downtown Perks flips that to: "Everything around you is alive,
-              connected, and easier to step into."
-            </p>
-          </motion.div>
-        </div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-20 text-center"
-        >
-          <Link
-            to="/downtown-perks/explore"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30"
-          >
-            Explore the System
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/downtown-perks/explore" className="dp-cta-primary bg-white text-[var(--dp-navy)]">
+                Explore Downtown
+              </Link>
+              <Link to="/partners" className="dp-cta-secondary border-white/16 bg-white/10 text-white">
+                View Partner Types
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

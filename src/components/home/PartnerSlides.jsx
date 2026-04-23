@@ -69,9 +69,9 @@ export default function PartnerSlides() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="border-t border-[rgba(10,20,40,0.08)] bg-white px-4 py-14 md:px-6 md:py-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+    <section ref={ref} className="bg-[var(--dp-surface-base)] px-4 py-10 md:px-6 md:py-12">
+      <div className="dp-page-shell">
+        <div className="dp-band grid grid-cols-1 gap-8 p-6 md:grid-cols-[1.05fr_0.95fr] md:items-end md:p-8 lg:p-10">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -90,59 +90,61 @@ export default function PartnerSlides() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="rounded-[20px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] px-5 py-4 text-[13px] leading-6 text-muted-foreground"
+            className="rounded-[24px] bg-[linear-gradient(180deg,rgba(11,26,43,0.98),rgba(18,36,60,0.95))] px-5 py-5 text-[13px] leading-6 text-white/74 shadow-[0_20px_48px_rgba(11,26,43,0.16)]"
           >
             Start with the partner type, then move into map intelligence, rollout, and the right entry model.
           </motion.div>
         </div>
 
-        <SwipeRail
-          items={slides}
-          getKey={(item) => item.id}
-          cardClassName="w-[88%] sm:w-[72%] lg:w-[46%] xl:w-[36%]"
-          renderItem={(slide, index, isActive) => {
-            const Icon = slide.icon;
-            return (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: 0.08 * index }}
-                className={`h-full rounded-[24px] border p-5 shadow-[0_10px_24px_rgba(11,26,43,0.05)] transition-all ${
-                  isActive
-                    ? "border-primary/18 bg-white"
-                    : "border-[rgba(10,20,40,0.08)] bg-[#fbfcfe]"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#f1f4f8] text-primary">
-                    <Icon className="h-4.5 w-4.5" />
-                  </div>
-                  <div className="rounded-full bg-[rgba(198,168,90,0.10)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-gold-muted)]">
-                    {slide.label}
-                  </div>
-                </div>
-
-                <h3 className="mt-5 text-[1.35rem] font-semibold tracking-[-0.03em] text-foreground">
-                  {slide.headline}
-                </h3>
-                <p className="mt-3 text-[13px] leading-6 text-muted-foreground">
-                  {slide.sentence}
-                </p>
-                <div className="mt-4 rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] px-3.5 py-3 text-[12px] font-medium text-foreground/80">
-                  {slide.proof}
-                </div>
-
-                <Link
-                  to={slide.href}
-                  className="mt-5 inline-flex items-center gap-2 text-[12px] font-semibold text-primary hover:underline"
+        <div className="mt-5">
+          <SwipeRail
+            items={slides}
+            getKey={(item) => item.id}
+            cardClassName="w-[88%] sm:w-[72%] lg:w-[46%] xl:w-[36%]"
+            renderItem={(slide, index, isActive) => {
+              const Icon = slide.icon;
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.45, delay: 0.08 * index }}
+                  className={`h-full rounded-[28px] p-5 shadow-[0_18px_42px_rgba(11,26,43,0.08)] transition-all ${
+                    isActive
+                      ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,245,238,0.96))] ring-1 ring-[rgba(198,168,90,0.22)]"
+                      : "bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(255,255,255,0.94))]"
+                  }`}
                 >
-                  {slide.cta}
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </motion.div>
-            );
-          }}
-        />
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-[16px] bg-[rgba(11,26,43,0.06)] text-primary">
+                      <Icon className="h-4.5 w-4.5" />
+                    </div>
+                    <div className="rounded-full bg-[rgba(198,168,90,0.10)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-gold-muted)]">
+                      {slide.label}
+                    </div>
+                  </div>
+
+                  <h3 className="mt-5 font-heading text-[1.45rem] font-semibold tracking-[-0.03em] text-foreground">
+                    {slide.headline}
+                  </h3>
+                  <p className="mt-3 text-[13px] leading-6 text-muted-foreground">
+                    {slide.sentence}
+                  </p>
+                  <div className="mt-5 rounded-[18px] bg-[rgba(11,26,43,0.04)] px-4 py-3 text-[12px] font-medium text-foreground/80">
+                    {slide.proof}
+                  </div>
+
+                  <Link
+                    to={slide.href}
+                    className="mt-5 inline-flex items-center gap-2 text-[12px] font-semibold text-primary hover:underline"
+                  >
+                    {slide.cta}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </motion.div>
+              );
+            }}
+          />
+        </div>
       </div>
     </section>
   );
