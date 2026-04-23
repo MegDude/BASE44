@@ -6,7 +6,6 @@ import PageNotFound from "./lib/PageNotFound";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import DashboardHub from "./pages/DashboardHub";
 // Downtown Perks pages
@@ -19,6 +18,7 @@ import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
 // Brands pages
 import BrandsIndex from "./pages/downtown-perks/brands/Index";
+import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
 import TheWaterline from "./pages/downtown-perks/brands/TheWaterline";
 import Bangers from "./pages/downtown-perks/brands/Bangers";
@@ -33,44 +33,37 @@ import HotelVanZandt from "./pages/downtown-perks/brands/HotelVanZandt";
 import FourSeasons from "./pages/downtown-perks/brands/FourSeasons";
 import FourSeasonsResidences from "./pages/downtown-perks/brands/FourSeasonsResidences";
 import TheShore from "./pages/downtown-perks/brands/TheShore";
+// Partners pages
 import PartnersIndex from "./pages/partners/Index";
 import ResidentialPartner from "./pages/partners/Residential";
-import CivicPartner from "./pages/partners/Civic";
-import PartnerWorkspace from "./pages/PartnerWorkspace";
-import Dashboard from "./pages/Dashboard";
-import PartnerDashboard from "./pages/PartnerDashboard";
-import PropertiesPartner from "./pages/partners/Properties";
 import HotelsPartner from "./pages/partners/Hotels";
 import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
+import CivicPartner from "./pages/partners/Civic";
+// App pages
+import PartnerWorkspace from "./pages/PartnerWorkspace";
+import Dashboard from "./pages/Dashboard";
+import PartnerDashboard from "./pages/PartnerDashboard";
 import ResidentApp from "./pages/resident-app";
-import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
 
 const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
+        {/* Canonical homepage */}
+        <Route path="/" element={<Landing />} />
 
-        {/* Canonical top-level routes */}
+        {/* Top-level product routes */}
         <Route path="/map" element={<ExploreRebuilt />} />
         <Route path="/explore" element={<ExploreRebuilt />} />
         <Route path="/events" element={<Events />} />
         <Route path="/perks" element={<PerksPage />} />
         <Route path="/card" element={<PerksCard />} />
         <Route path="/about" element={<About />} />
+        <Route path="/pricing" element={<Pricing />} />
 
-        {/* Legacy Downtown Perks routes */}
-        <Route path="/downtown-perks" element={<Landing />} />
-        <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
-        <Route path="/downtown-perks/events" element={<Events />} />
-        <Route path="/downtown-perks/perks" element={<PerksPage />} />
-        <Route path="/downtown-perks/card" element={<PerksCard />} />
-        <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
-        <Route path="/downtown-perks/about" element={<About />} />
-
-        {/* Brand routes */}
+        {/* Brands routes */}
         <Route path="/brands" element={<BrandsIndex />} />
         <Route path="/brands/analytics" element={<BrandAnalytics />} />
         <Route path="/brands/the-paseo" element={<ThePaseo />} />
@@ -82,31 +75,43 @@ const AuthenticatedApp = () => {
         <Route path="/brands/lululemon" element={<Lululemon />} />
         <Route path="/brands/equinox" element={<Equinox />} />
         <Route path="/brands/austin-fc" element={<AustinFC />} />
-        <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
         <Route path="/brands/four-seasons" element={<FourSeasons />} />
         <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
         <Route path="/brands/the-shore" element={<TheShore />} />
 
-        {/* Partner and app routes */}
+        {/* Partners routes — canonical taxonomy */}
         <Route path="/partners" element={<PartnersIndex />} />
-        <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="/partners/residential" element={<ResidentialPartner />} />
-        <Route path="/partners/properties" element={<PropertiesPartner />} />
-        <Route path="/property-and-building-management" element={<PropertiesPartner />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
         <Route path="/partners/brands" element={<BrandsPartner />} />
+        <Route path="/partners/civic" element={<CivicPartner />} />
+
+        {/* App surfaces */}
+        <Route path="/resident-app" element={<ResidentApp />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
         <Route path="/dashboard" element={<DashboardHub />} />
         <Route path="/dashboard/partner" element={<Dashboard />} />
-        <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
         <Route path="/dashboard/resident" element={<ResidentApp />} />
         <Route path="/partner-dashboard" element={<PartnerDashboard />} />
-        <Route path="/resident-app" element={<ResidentApp />} />
-        <Route path="/pricing" element={<Pricing />} />
-        {/* Catch-all route */}
+
+        {/* Legacy aliases — downtown-perks namespace */}
+        <Route path="/downtown-perks" element={<Landing />} />
+        <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
+        <Route path="/downtown-perks/events" element={<Events />} />
+        <Route path="/downtown-perks/perks" element={<PerksPage />} />
+        <Route path="/downtown-perks/card" element={<PerksCard />} />
+        <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
+        <Route path="/downtown-perks/about" element={<About />} />
+
+        {/* Legacy aliases — old partner/brand slugs */}
+        <Route path="/partners/properties" element={<ResidentialPartner />} />
+        <Route path="/property-and-building-management" element={<ResidentialPartner />} />
+        <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
+
+        {/* Catch-all */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
