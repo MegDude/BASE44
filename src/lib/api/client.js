@@ -27,3 +27,18 @@ export async function postJson(url, payload) {
 
   return body;
 }
+
+export async function getJson(url) {
+  const response = await fetch(url, {
+    method: "GET",
+  });
+
+  const body = await parseJson(response);
+
+  if (!response.ok) {
+    const message = body?.error || `Request failed with status ${response.status}`;
+    throw new Error(message);
+  }
+
+  return body;
+}

@@ -27,16 +27,6 @@ const CAT_LABELS = {
   run_club: "Run Club", yoga: "Yoga",
 };
 
-const DEMO_PARTNER_USER = {
-  id: "demo-partner",
-  full_name: "Downtown Perks Partner",
-  email: "partner@downtownperks.demo",
-  role: "partner",
-  organization_name: "Downtown Perks Demo Partner",
-  partner_type: "venue",
-  is_demo: true,
-};
-
 export default function PartnerWorkspace() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,8 +35,8 @@ export default function PartnerWorkspace() {
   useEffect(() => {
     base44.auth
       .me()
-      .then(u => setUser(u || DEMO_PARTNER_USER))
-      .catch(() => setUser(DEMO_PARTNER_USER))
+      .then((u) => setUser(u || null))
+      .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
 
@@ -95,14 +85,50 @@ export default function PartnerWorkspace() {
 
       {/* Tab content */}
       <div className="mx-auto w-full max-w-7xl px-6 py-8">
-        <AnimatePresence mode="wait">
-          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
-          {tab === "perks" && <PerksManager key="perks" user={user} />}
-          {tab === "events" && <EventsManager key="events" user={user} />}
-          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
-        </AnimatePresence>
+        {!user ? (
+          <WorkspaceAccessRequired />
+        ) : (
+          <AnimatePresence mode="wait">
+            {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
+            {tab === "perks" && <PerksManager key="perks" user={user} />}
+            {tab === "events" && <EventsManager key="events" user={user} />}
+            {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
+          </AnimatePresence>
+        )}
       </div>
     </div>
+  );
+}
+
+function WorkspaceAccessRequired() {
+  return (
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <div className="max-w-2xl rounded-[22px] border border-border/50 bg-white p-8 shadow-[0_12px_28px_rgba(11,26,43,0.05)]">
+        <div className="dp-micro-label mb-2">Partner workspace</div>
+        <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">
+          Sign in with your partner account to manage perks, events, and profile settings.
+        </h2>
+        <p className="mt-3 text-[13px] leading-6 text-muted-foreground">
+          This workspace is now account-bound. Public visitors can browse the partner overview and dashboard, but publishing and editing surfaces require the authenticated production actor flow.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            to={PARTNER_DASHBOARD_LINK}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            View dashboard
+          </Link>
+          <Link
+            to="/partners"
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 px-5 py-2.5 text-sm font-medium text-foreground/70 transition-all hover:text-foreground"
+          >
+            Partner types
+            <ChevronRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -121,10 +147,10 @@ function WorkspaceOverview({ user, setTab }) {
   const upcomingEvents = events.filter(e => e.status === "upcoming" || e.status === "live").length;
 
   const QUICK_STATS = [
-    { label: "Active perks", value: activePerks || 6 },
-    { label: "Upcoming events", value: upcomingEvents || 3 },
-    { label: "Total perks", value: perks.length || 18 },
-    { label: "Total events", value: events.length || 12 },
+    { label: "Active perks", value: activePerks },
+    { label: "Upcoming events", value: upcomingEvents },
+    { label: "Total perks", value: perks.length },
+    { label: "Total events", value: events.length },
   ];
 
   const QUICK_ACTIONS = [
@@ -540,12 +566,8 @@ function ProfileSection({ user, setUser }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    if (user?.is_demo) {
-      setUser({ ...user, ...form });
-    } else {
-      const updated = await base44.auth.updateMe(form);
-      setUser(updated);
-    }
+    const updated = await base44.auth.updateMe(form);
+    setUser(updated);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);

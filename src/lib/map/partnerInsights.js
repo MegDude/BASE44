@@ -1,420 +1,195 @@
+import { useEffect, useMemo, useState } from "react";
+import { mapRepository } from "@/lib/repositories/mapRepository";
 import { adaptEntityToInsightCard, adaptEntityToInsightPin } from "@/lib/mappers/sharedMapMappers";
 
-const RAW_PARTNER_INSIGHTS = [
-  {
-    id: "venue-le-cafe-crepe",
-    title: "Le Cafe Crepe",
-    insightType: "performance",
-    partnerType: "venue",
-    entityType: "venue",
-    latitude: 30.2678,
-    longitude: -97.7429,
-    district: "Congress",
-    address: "200 Congress Ave",
-    label: "Leading redemptions",
-    summary: "Breakfast and coffee traffic is converting early from nearby residential towers and office walkups.",
-    shortInsight: "Strong morning conversion from Seaholm and Congress residents",
-    recommendedAction: "Extend the breakfast perk window by one hour and keep coffee visibility high through 11 AM.",
-    trend: { direction: "up", delta: "+18%", window: "since 7 AM" },
-    metrics: {
-      impressions: 2280,
-      visits: 412,
-      saves: 168,
-      redemptions: 301,
-      conversionRate: 73,
-      repeatRate: 36,
-      activePerks: 3,
-      activeEvents: 0,
-      activeMembers: 54,
-    },
-    sourceBreakdown: [
-      { label: "The Independent", value: 29 },
-      { label: "Seaholm residents", value: 24 },
-      { label: "Congress offices", value: 18 },
-    ],
-    relatedEvents: [],
-    tags: ["coffee", "breakfast", "morning peak"],
-  },
-  {
-    id: "venue-bangers-rainey",
-    title: "Banger's",
-    insightType: "performance",
-    partnerType: "venue",
-    entityType: "venue",
-    latitude: 30.2592,
-    longitude: -97.7393,
-    district: "Rainey",
-    address: "79 Rainey St",
-    label: "Top performer tonight",
-    summary: "Evening traffic on Rainey is driving a high save-to-redemption rate with hotel and residential crossover.",
-    shortInsight: "High conversion from nearby residents and hotel guests",
-    recommendedAction: "Extend the active offer window through late evening and increase visibility around live music hours.",
-    trend: { direction: "up", delta: "+31%", window: "since 4 PM" },
-    metrics: {
-      impressions: 2410,
-      visits: 682,
-      saves: 318,
-      redemptions: 143,
-      conversionRate: 21,
-      repeatRate: 29,
-      activePerks: 4,
-      activeEvents: 1,
-      activeMembers: 88,
-    },
-    sourceBreakdown: [
-      { label: "Hotel Van Zandt guests", value: 29 },
-      { label: "Rainey towers", value: 27 },
-      { label: "Event spillover", value: 19 },
-    ],
-    relatedEvents: [{ label: "Live music spillover", value: "84 RSVPs nearby" }],
-    tags: ["nightlife", "late-day", "conversion"],
-  },
-  {
-    id: "property-the-shore",
-    title: "The Shore",
-    insightType: "engagement",
-    partnerType: "property",
-    entityType: "building",
-    latitude: 30.2584,
-    longitude: -97.7383,
-    district: "Rainey",
-    address: "603 Davis St",
-    label: "Resident demand cluster",
-    summary: "Residents activate toward Rainey in the evening and skew toward dining, drinks, and event-led plans.",
-    shortInsight: "Residents strongly activate toward the Rainey corridor in evenings",
-    recommendedAction: "Add two to three more perks within a five-minute radius and push weekday activation to balance the weekend spike.",
-    trend: { direction: "up", delta: "+22%", window: "last 2 hours" },
-    metrics: {
-      impressions: 1840,
-      visits: 462,
-      saves: 214,
-      redemptions: 76,
-      conversionRate: 25,
-      repeatRate: 34,
-      activePerks: 6,
-      activeEvents: 2,
-      activeMembers: 186,
-    },
-    sourceBreakdown: [
-      { label: "Rainey dining", value: 62 },
-      { label: "Coffee destinations", value: 18 },
-      { label: "Waterfront walkups", value: 11 },
-    ],
-    relatedEvents: [{ label: "Cocktail class", value: "34 RSVPs" }],
-    tags: ["resident origin", "after work", "repeat behavior"],
-  },
-  {
-    id: "zone-seaholm-opportunity",
-    title: "Seaholm zone",
-    insightType: "opportunity",
-    partnerType: "property",
-    entityType: "zone",
-    latitude: 30.2697,
-    longitude: -97.7512,
-    district: "Seaholm",
-    address: "Seaholm district core",
-    label: "High demand, low coverage",
-    summary: "Morning and lunch searches are frequent here, but offer density drops outside a small number of anchors.",
-    shortInsight: "Demand exists, but there are not enough nearby offers",
-    recommendedAction: "Add coffee and lunch partners, then introduce a weekday perk cluster to capture morning activity.",
-    trend: { direction: "up", delta: "+18%", window: "today vs yesterday" },
-    metrics: {
-      impressions: 1260,
-      visits: 284,
-      saves: 136,
-      redemptions: 34,
-      conversionRate: 12,
-      repeatRate: 28,
-      activePerks: 1,
-      activeEvents: 0,
-      activeMembers: 92,
-    },
-    sourceBreakdown: [
-      { label: "The Independent", value: 32 },
-      { label: "Seaholm offices", value: 26 },
-      { label: "Trail walkups", value: 15 },
-    ],
-    relatedEvents: [],
-    tags: ["coffee", "lunch", "coverage gap"],
-  },
-  {
-    id: "hotel-van-zandt",
-    title: "Hotel Van Zandt",
-    insightType: "engagement",
-    partnerType: "hospitality",
-    entityType: "hotel",
-    latitude: 30.2586,
-    longitude: -97.7396,
-    district: "Rainey",
-    address: "605 Davis St",
-    label: "Strong guest-local flow",
-    summary: "Guests are choosing drinks, live music, and rooftop destinations within a short walking radius.",
-    shortInsight: "Guests favor nightlife and short walking distance experiences",
-    recommendedAction: "Highlight three nightlife partners in the lobby QR flow and add a late-night perk bundle.",
-    trend: { direction: "up", delta: "+19%", window: "this week" },
-    metrics: {
-      impressions: 1984,
-      visits: 544,
-      saves: 188,
-      redemptions: 74,
-      conversionRate: 41,
-      repeatRate: 27,
-      activePerks: 5,
-      activeEvents: 2,
-      activeMembers: 92,
-    },
-    sourceBreakdown: [
-      { label: "Lobby QR", value: 33 },
-      { label: "Room QR", value: 28 },
-      { label: "Concierge handoff", value: 12 },
-    ],
-    relatedEvents: [{ label: "Rooftop before the show", value: "27 guest opens" }],
-    tags: ["hospitality", "guest flow", "nightlife"],
-  },
-  {
-    id: "hotel-four-seasons",
-    title: "Four Seasons Hotel Austin",
-    insightType: "performance",
-    partnerType: "hospitality",
-    entityType: "hotel",
-    latitude: 30.2637,
-    longitude: -97.7406,
-    district: "Waterfront",
-    address: "98 San Jacinto Blvd",
-    label: "High-value guest intent",
-    summary: "Waterfront and dining recommendations are converting well from premium guest traffic with a slightly longer walking radius.",
-    shortInsight: "Guests convert best on dining, rooftop, and waterfront event choices",
-    recommendedAction: "Bundle three premium downtown stops into the guest flow and keep evening events prominent.",
-    trend: { direction: "up", delta: "+14%", window: "this week" },
-    metrics: {
-      impressions: 1720,
-      visits: 394,
-      saves: 121,
-      redemptions: 59,
-      conversionRate: 41,
-      repeatRate: 24,
-      activePerks: 4,
-      activeEvents: 3,
-      activeMembers: 61,
-    },
-    sourceBreakdown: [
-      { label: "Lobby staff handoff", value: 31 },
-      { label: "Guest QR card", value: 26 },
-      { label: "Waterfront events", value: 18 },
-    ],
-    relatedEvents: [{ label: "Comedy Mothership", value: "18 booked walks" }],
-    tags: ["guest flow", "premium", "waterfront"],
-  },
-  {
-    id: "brand-yeti-activation",
-    title: "YETI Pop-Up Activation",
-    insightType: "campaign",
-    partnerType: "brand",
-    entityType: "campaign",
-    latitude: 30.2671,
-    longitude: -97.7442,
-    district: "Rainey to 2nd",
-    address: "Activation corridor",
-    label: "Campaign lift zone",
-    summary: "Campaign scans and revisits cluster around mixed-use buildings, event tie-ins, and hospitality sources.",
-    shortInsight: "Strong engagement is being driven by event spillover traffic",
-    recommendedAction: "Extend the activation during the evening peak and replicate the format in the Seaholm corridor.",
-    trend: { direction: "up", delta: "+26%", window: "campaign week" },
-    metrics: {
-      impressions: 6240,
-      visits: 1240,
-      saves: 312,
-      redemptions: 118,
-      conversionRate: 10,
-      repeatRate: 32,
-      activePerks: 1,
-      activeEvents: 2,
-      activeMembers: 312,
-    },
-    sourceBreakdown: [
-      { label: "Event QR", value: 37 },
-      { label: "Mixed-use towers", value: 24 },
-      { label: "Venue placements", value: 18 },
-    ],
-    relatedEvents: [{ label: "Peak window", value: "5 PM - 8 PM" }],
-    tags: ["brand", "campaign", "event-driven"],
-  },
-  {
-    id: "brand-rivian-seaholm",
-    title: "Rivian Activation",
-    insightType: "campaign",
-    partnerType: "brand",
-    entityType: "campaign",
-    latitude: 30.2689,
-    longitude: -97.7508,
-    district: "Seaholm",
-    address: "Seaholm trail edge",
-    label: "High lifestyle fit",
-    summary: "Engagement is clustering where trail movement, coffee routes, and residential density overlap.",
-    shortInsight: "High engagement near trail and coffee routes",
-    recommendedAction: "Deploy a second activation in Seaholm and pair it with morning fitness and coffee touchpoints.",
-    trend: { direction: "up", delta: "+16%", window: "this week" },
-    metrics: {
-      impressions: 4180,
-      visits: 812,
-      saves: 204,
-      redemptions: 97,
-      conversionRate: 12,
-      repeatRate: 28,
-      activePerks: 1,
-      activeEvents: 1,
-      activeMembers: 188,
-    },
-    sourceBreakdown: [
-      { label: "Trail walkers", value: 33 },
-      { label: "Coffee routes", value: 21 },
-      { label: "The Independent", value: 19 },
-    ],
-    relatedEvents: [{ label: "Morning demo block", value: "52 scans" }],
-    tags: ["brand", "trail", "coffee route"],
-  },
-  {
-    id: "civic-rainey-district",
-    title: "Rainey Street District",
-    insightType: "engagement",
-    partnerType: "civic",
-    entityType: "district",
-    latitude: 30.2591,
-    longitude: -97.7392,
-    district: "Rainey",
-    address: "Rainey Street district core",
-    label: "High district activity",
-    summary: "District-wide demand is strong, but performance is uneven across participating venues and event nodes.",
-    shortInsight: "High density engagement with uneven distribution across venues",
-    recommendedAction: "Promote underperforming venues through perk visibility and cluster activations around live events.",
-    trend: { direction: "up", delta: "+24%", window: "this week" },
-    metrics: {
-      impressions: 4820,
-      visits: 1120,
-      saves: 620,
-      redemptions: 620,
-      conversionRate: 55,
-      repeatRate: 22,
-      activePerks: 9,
-      activeEvents: 3,
-      activeMembers: 420,
-    },
-    sourceBreakdown: [
-      { label: "Rainey towers", value: 28 },
-      { label: "Hotel guests", value: 22 },
-      { label: "Weekend walkups", value: 17 },
-    ],
-    relatedEvents: [{ label: "Events live", value: "3 district events" }],
-    tags: ["civic", "district", "events"],
-  },
-  {
-    id: "civic-waterloo-events",
-    title: "Waterloo Park programming",
-    insightType: "engagement",
-    partnerType: "civic",
-    entityType: "event",
-    latitude: 30.2722,
-    longitude: -97.7395,
-    district: "Waterloo",
-    address: "Waterloo Park",
-    label: "Participation lift",
-    summary: "Event RSVPs and repeat opens are strongest where district programming is dense and easy to find from the map.",
-    shortInsight: "Programming density is lifting repeat participation",
-    recommendedAction: "Increase visibility for nearby initiatives with low RSVP follow-through and keep evening programming grouped.",
-    trend: { direction: "up", delta: "+17%", window: "this week" },
-    metrics: {
-      impressions: 2860,
-      visits: 790,
-      saves: 184,
-      redemptions: 63,
-      conversionRate: 22,
-      repeatRate: 22,
-      activePerks: 0,
-      activeEvents: 3,
-      activeMembers: 184,
-    },
-    sourceBreakdown: [
-      { label: "District homepage", value: 31 },
-      { label: "Nearby residents", value: 23 },
-      { label: "Waterfront visitors", value: 16 },
-    ],
-    relatedEvents: [{ label: "RSVPs", value: "84 active RSVPs" }],
-    tags: ["civic", "events", "participation"],
-  },
-];
-
-const PARTNER_SUMMARY_DEFAULTS = {
+const DEFAULT_SUMMARY = {
   dashboard: {
-    peakWindow: "6:30 PM - 8:00 PM",
-    recentActions: 3,
-    leader: "Rainey Street leading activity",
-    summary: "Live venue intelligence is strongest where buildings, hotels, events, and offers overlap.",
+    peakWindow: "Awaiting live activity",
+    recentActions: 0,
+    leadingLabel: "No partner analytics captured yet",
+    narrative: "Live partner intelligence will appear here once scans, saves, visits, and redemptions are flowing into the system.",
   },
   property: {
-    peakWindow: "6:00 PM - 8:30 PM",
-    recentActions: 2,
-    leader: "Rainey corridor leading resident activation",
-    summary: "Residential demand is strongest after work when nearby offers are visible and walkable.",
+    peakWindow: "Awaiting live activity",
+    recentActions: 0,
+    leadingLabel: "No property analytics captured yet",
+    narrative: "Property-level insight appears once building-linked activity starts writing to the analytics layer.",
   },
   hospitality: {
-    peakWindow: "5:00 PM - 8:00 PM",
-    recentActions: 3,
-    leader: "Guest traffic is concentrating around nightlife and waterfront routes",
-    summary: "Hotels perform best when dining, music, and short-walk plans are surfaced at the right moment.",
+    peakWindow: "Awaiting live activity",
+    recentActions: 0,
+    leadingLabel: "No hospitality analytics captured yet",
+    narrative: "Guest-local crossover appears here once hotel-linked scans and visits are flowing into the system.",
   },
   venue: {
-    peakWindow: "4:30 PM - 7:30 PM",
-    recentActions: 3,
-    leader: "Banger's leading redemptions tonight",
-    summary: "Venue performance accelerates when nearby residents and hotel guests are already deciding where to go.",
+    peakWindow: "Awaiting live activity",
+    recentActions: 0,
+    leadingLabel: "No venue analytics captured yet",
+    narrative: "Venue intelligence appears here once scans, visits, and redemptions are flowing into the system.",
   },
   brand: {
-    peakWindow: "5:00 PM - 8:00 PM",
-    recentActions: 4,
-    leader: "YETI activation leading event-linked engagement",
-    summary: "Brand lift is strongest when activations tie directly to districts, events, and live map behavior.",
+    peakWindow: "Awaiting live activity",
+    recentActions: 0,
+    leadingLabel: "No campaign analytics captured yet",
+    narrative: "Brand and campaign intelligence appears here once activations are writing measurable signals into the system.",
   },
   civic: {
-    peakWindow: "6:00 PM - 9:00 PM",
-    recentActions: 2,
-    leader: "Waterloo and Rainey are driving participation",
-    summary: "Civic participation rises when districts, initiatives, and nearby venue activity are easy to discover together.",
+    peakWindow: "Awaiting live activity",
+    recentActions: 0,
+    leadingLabel: "No civic analytics captured yet",
+    narrative: "District and civic intelligence appears here once event and district interactions are flowing into the system.",
   },
 };
 
-function scopedItems(partnerType = "dashboard") {
-  return partnerType && partnerType !== "dashboard"
-    ? RAW_PARTNER_INSIGHTS.filter((item) => item.partnerType === partnerType)
-    : RAW_PARTNER_INSIGHTS;
+function normalizePartnerType(partnerType = "dashboard") {
+  if (partnerType === "properties") return "property";
+  if (partnerType === "venues") return "venue";
+  if (partnerType === "brands") return "brand";
+  return partnerType;
 }
 
-function weightedRate(items, metricKey, weightKey) {
-  const weighted = items.reduce(
-    (acc, item) => {
-      const rate = Number(item.metrics?.[metricKey] || 0);
-      const weight = Number(item.metrics?.[weightKey] || 0);
-      acc.total += rate * weight;
-      acc.weight += weight;
-      return acc;
-    },
-    { total: 0, weight: 0 }
+function sanitizeText(value, fallback) {
+  const text = String(value || "").trim();
+  return text || fallback;
+}
+
+function getEntityPartnerType(item) {
+  if (item?.type === "hotel") return "hospitality";
+  if (item?.type === "building" || item?.type === "property") return "property";
+  if (item?.type === "brand") return "brand";
+  if (item?.type === "civic") return "civic";
+  if (item?.type === "venue") return "venue";
+  return "dashboard";
+}
+
+function isRelevantEntity(item, partnerType) {
+  const normalized = normalizePartnerType(partnerType);
+  if (normalized === "dashboard") {
+    return ["venue", "building", "property", "hotel", "brand", "civic"].includes(item?.type);
+  }
+
+  return getEntityPartnerType(item) === normalized;
+}
+
+function getMetricEntry(metricsByEntity, item) {
+  const id = String(item?.entity_id || item?.id || "").trim();
+  const prefixed = item?.type && id ? `${item.type}:${id}` : null;
+  const itemId = String(item?.id || "").trim();
+  return (
+    metricsByEntity[id] ||
+    (prefixed ? metricsByEntity[prefixed] : null) ||
+    metricsByEntity[itemId] ||
+    null
   );
-
-  if (!weighted.weight) return 0;
-  return Math.round(weighted.total / weighted.weight);
 }
 
-export function getPartnerInsightPins({ partnerType = "dashboard" } = {}) {
-  return scopedItems(partnerType).map(adaptEntityToInsightPin).filter(Boolean);
+function buildLabel(item, metrics) {
+  if (Number(metrics.redemptions || 0) > 0) {
+    return `${metrics.redemptions} redemptions`;
+  }
+  if (Number(metrics.visits || 0) > 0) {
+    return `${metrics.visits} visits`;
+  }
+  if (Number(metrics.impressions || 0) > 0) {
+    return `${metrics.impressions} scans`;
+  }
+  return "Awaiting activity";
 }
 
-export function getPartnerInsightCards(options = {}) {
-  return getPartnerInsightPins(options).map(adaptEntityToInsightCard).filter(Boolean);
+function buildEntitySummary(item, metrics) {
+  const venueLike = item.type === "venue" || item.type === "hotel";
+  if (metrics.visits > 0 || metrics.redemptions > 0 || metrics.impressions > 0) {
+    return venueLike
+      ? `${item.title || item.name} is receiving measurable downtown activity from the live map and action layer.`
+      : `${item.title || item.name} is now receiving measurable activity from the live downtown system.`;
+  }
+  return `${item.title || item.name} is mapped and ready, but no live partner analytics have been captured for this entity yet.`;
 }
 
-export function getPartnerInsightSummary({ partnerType = "dashboard" } = {}) {
-  const items = getPartnerInsightPins({ partnerType });
-  const defaults = PARTNER_SUMMARY_DEFAULTS[partnerType] || PARTNER_SUMMARY_DEFAULTS.dashboard;
+function buildRecommendation(item, metrics) {
+  if (metrics.redemptions > 0) {
+    return "Keep this surface live and expand nearby offer visibility during the periods already converting.";
+  }
+  if (metrics.visits > 0) {
+    return "Increase offer and event visibility around this node to convert current intent into redemptions.";
+  }
+  if (metrics.impressions > 0) {
+    return "This node is being discovered. Add a stronger action layer to convert map activity into visits.";
+  }
+  if (item.type === "hotel") {
+    return "Add guest QR entry points and nearby venue bundles to start capturing hotel-linked movement.";
+  }
+  if (item.type === "building" || item.type === "property") {
+    return "Add building-linked perks and QR entry points to start capturing resident-driven activity.";
+  }
+  return "Publish offers, campaigns, or events here to start building measurable partner intelligence.";
+}
+
+function buildInsightType(item, metrics) {
+  if (item.type === "brand") return "campaign";
+  if (item.type === "civic") return "coverage";
+  if (metrics.redemptions > 0 || metrics.visits > 0) return "performance";
+  if (metrics.impressions > 0 || metrics.saves > 0) return "engagement";
+  return "opportunity";
+}
+
+function buildInsightEntity(item, metrics) {
+  const trendDirection =
+    metrics.redemptions > 0 || metrics.visits > 0 ? "up" : metrics.impressions > 0 ? "stable" : "flat";
+
+  return {
+    id: `insight-${item.entity_id || item.id}`,
+    entity_id: item.entity_id || item.id,
+    title: sanitizeText(item.title || item.name, "Partner insight"),
+    insightType: buildInsightType(item, metrics),
+    partnerType: getEntityPartnerType(item),
+    entityType: item.type,
+    latitude: item.location?.latitude ?? item.latitude ?? item.lat,
+    longitude: item.location?.longitude ?? item.longitude ?? item.lng,
+    district: sanitizeText(item.district, "Downtown"),
+    address: sanitizeText(item.address, "Downtown Austin"),
+    label: buildLabel(item, metrics),
+    summary: buildEntitySummary(item, metrics),
+    shortInsight:
+      metrics.redemptions > 0
+        ? `${metrics.redemptions} redemptions captured`
+        : metrics.visits > 0
+          ? `${metrics.visits} visits captured`
+          : metrics.impressions > 0
+            ? `${metrics.impressions} scans captured`
+            : "Mapped but waiting for live analytics",
+    recommendedAction: buildRecommendation(item, metrics),
+    trend: {
+      direction: trendDirection,
+      delta:
+        metrics.redemptions > 0
+          ? `+${metrics.redemptions}`
+          : metrics.visits > 0
+            ? `+${metrics.visits}`
+            : metrics.impressions > 0
+              ? `+${metrics.impressions}`
+              : "0",
+      window: "captured activity",
+    },
+    metrics: {
+      impressions: Number(metrics.impressions || 0),
+      visits: Number(metrics.visits || 0),
+      saves: Number(metrics.saves || 0),
+      redemptions: Number(metrics.redemptions || 0),
+      conversionRate: Number(metrics.conversionRate || 0),
+      repeatRate: Number(metrics.repeatRate || 0),
+      activePerks: 0,
+      activeEvents: 0,
+      activeMembers: 0,
+    },
+    sourceBreakdown: [],
+    relatedEvents: [],
+    tags: [item.category, item.type, item.district].filter(Boolean),
+  };
+}
+
+function buildSummary(items, partnerType, hasLiveData) {
+  const defaults = DEFAULT_SUMMARY[normalizePartnerType(partnerType)] || DEFAULT_SUMMARY.dashboard;
 
   const totals = items.reduce(
     (acc, item) => {
@@ -436,6 +211,12 @@ export function getPartnerInsightSummary({ partnerType = "dashboard" } = {}) {
     }
   );
 
+  const weightedVisits = items.reduce((sum, item) => sum + Number(item.metrics?.visits || 0), 0);
+  const weightedConversion = items.reduce(
+    (sum, item) => sum + Number(item.metrics?.conversionRate || 0) * Number(item.metrics?.visits || 0),
+    0
+  );
+
   return {
     interactions: totals.interactions,
     impressions: totals.impressions,
@@ -444,38 +225,109 @@ export function getPartnerInsightSummary({ partnerType = "dashboard" } = {}) {
     activeEvents: totals.activeEvents,
     activeMembers: totals.activeMembers,
     activeZones: items.length,
-    partnerLocations: items.filter((item) => ["venue", "building", "hotel", "campaign", "district", "event"].includes(item.entityType)).length,
-    conversionRate: weightedRate(items, "conversionRate", "visits"),
-    repeatRate: weightedRate(items, "repeatRate", "visits"),
-    topInsight: items[0]?.shortInsight || items[0]?.title || "Downtown partner intelligence",
+    partnerLocations: items.length,
+    conversionRate: weightedVisits > 0 ? Math.round(weightedConversion / weightedVisits) : 0,
+    repeatRate: 0,
+    topInsight: items[0]?.shortInsight || defaults.leadingLabel,
     peakWindow: defaults.peakWindow,
-    recentActions: defaults.recentActions,
-    leadingLabel: defaults.leader,
-    narrative: defaults.summary,
+    recentActions: hasLiveData ? items.filter((item) => Number(item.metrics?.visits || 0) > 0 || Number(item.metrics?.redemptions || 0) > 0).length : 0,
+    leadingLabel: items[0]?.title ? `${items[0].title} leading live activity` : defaults.leadingLabel,
+    narrative: hasLiveData
+      ? "This view is now reading real captured partner activity from the analytics tables instead of shipping hardcoded dashboard metrics."
+      : defaults.narrative,
   };
 }
 
-export function getPartnerActivityFeed({ partnerType = "dashboard" } = {}) {
-  const items = scopedItems(partnerType)
-    .slice()
-    .sort((a, b) => Number(b.metrics?.visits || 0) - Number(a.metrics?.visits || 0));
-
+function buildActivityFeed(items) {
   return items.slice(0, 4).map((item, index) => ({
     id: `${item.id}-activity`,
     title:
       index === 0
         ? `${item.title} leading`
-        : item.entityType === "event"
-          ? `${item.title} drawing RSVP activity`
-          : `${item.title} active now`,
+        : `${item.title} active`,
     detail:
-      item.entityType === "hotel"
-        ? `${item.metrics?.visits || 0} guest interactions this week`
-        : item.entityType === "building"
-          ? `${item.metrics?.activeMembers || 0} resident actions this week`
-          : item.entityType === "campaign"
-            ? `${item.metrics?.redemptions || 0} conversions from activation traffic`
-            : `${item.metrics?.redemptions || 0} recent redemptions`,
+      Number(item.metrics?.redemptions || 0) > 0
+        ? `${item.metrics.redemptions} redemptions captured`
+        : Number(item.metrics?.visits || 0) > 0
+          ? `${item.metrics.visits} visits captured`
+          : Number(item.metrics?.impressions || 0) > 0
+            ? `${item.metrics.impressions} scans captured`
+            : "Mapped and waiting for live activity",
     entityId: item.id,
   }));
+}
+
+export function usePartnerInsights(partnerType = "dashboard") {
+  const [state, setState] = useState({
+    items: [],
+    summary: buildSummary([], partnerType, false),
+    activityFeed: [],
+    loading: true,
+    hasLiveData: false,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const [mapItems, metricsResponse] = await Promise.all([
+          mapRepository.getMapFeed({ limit: 1000 }),
+          fetch("/api/partner-insights").then(async (response) => {
+            if (!response.ok) return { metricsByEntity: {}, hasLiveData: false };
+            return response.json();
+          }).catch(() => ({ metricsByEntity: {}, hasLiveData: false })),
+        ]);
+
+        if (cancelled) return;
+
+        const relevantItems = (Array.isArray(mapItems) ? mapItems : [])
+          .filter((item) => isRelevantEntity(item, partnerType))
+          .map((item) => {
+            const metrics = getMetricEntry(metricsResponse.metricsByEntity || {}, item) || {};
+            return buildInsightEntity(item, metrics);
+          })
+          .sort((a, b) => {
+            const redemptionDelta = Number(b.metrics?.redemptions || 0) - Number(a.metrics?.redemptions || 0);
+            if (redemptionDelta !== 0) return redemptionDelta;
+            const visitDelta = Number(b.metrics?.visits || 0) - Number(a.metrics?.visits || 0);
+            if (visitDelta !== 0) return visitDelta;
+            return Number(b.metrics?.impressions || 0) - Number(a.metrics?.impressions || 0);
+          })
+          .slice(0, 12)
+          .map(adaptEntityToInsightPin)
+          .filter(Boolean);
+
+        const hasLiveData = Boolean(metricsResponse.hasLiveData);
+
+        setState({
+          items: relevantItems,
+          summary: buildSummary(relevantItems, partnerType, hasLiveData),
+          activityFeed: buildActivityFeed(relevantItems),
+          loading: false,
+          hasLiveData,
+        });
+      } catch (error) {
+        if (cancelled) return;
+        setState({
+          items: [],
+          summary: buildSummary([], partnerType, false),
+          activityFeed: [],
+          loading: false,
+          hasLiveData: false,
+        });
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [partnerType]);
+
+  return state;
+}
+
+export function getPartnerInsightCardsFromItems(items) {
+  return (Array.isArray(items) ? items : []).map(adaptEntityToInsightCard).filter(Boolean);
 }

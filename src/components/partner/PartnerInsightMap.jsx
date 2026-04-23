@@ -17,11 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
-import {
-  getPartnerActivityFeed,
-  getPartnerInsightPins,
-  getPartnerInsightSummary,
-} from "@/lib/map/partnerInsights";
+import { usePartnerInsights } from "@/lib/map/partnerInsights";
 
 const FILTERS = [
   { id: "all", label: "All signals" },
@@ -146,9 +142,13 @@ export default function PartnerInsightMap({
   const [mapCenter, setMapCenter] = useState([30.267, -97.743]);
   const [mapZoom, setMapZoom] = useState(14);
 
-  const allItems = useMemo(() => getPartnerInsightPins({ partnerType }), [partnerType]);
-  const summary = useMemo(() => getPartnerInsightSummary({ partnerType }), [partnerType]);
-  const activityFeed = useMemo(() => getPartnerActivityFeed({ partnerType }), [partnerType]);
+  const {
+    items: allItems,
+    summary,
+    activityFeed,
+    loading: insightsLoading,
+    hasLiveData,
+  } = usePartnerInsights(partnerType);
 
   const filteredItems = useMemo(() => {
     const allowedTypes = FILTER_TO_INSIGHT_TYPES[activeFilter] || [];
@@ -239,6 +239,10 @@ export default function PartnerInsightMap({
                 <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5">
                   <Sparkles className="h-3.5 w-3.5" />
                   {summary.recentActions} recent actions
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5">
+                  <Target className="h-3.5 w-3.5" />
+                  {insightsLoading ? "Loading analytics" : hasLiveData ? "Live analytics" : "Map + empty analytics"}
                 </span>
               </div>
               <div className="mt-3 text-[16px] font-semibold tracking-[-0.02em]">{summary.leadingLabel}</div>
