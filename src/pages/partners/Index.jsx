@@ -56,9 +56,9 @@ export default function PartnersIndex() {
   }, [operatingPrinciples.length]);
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
-      <section className="px-6 py-20 md:py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.92fr] lg:items-end">
+    <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
+      <section className="px-4 py-8 md:px-6 md:py-10">
+        <div className="dp-page-shell dp-band grid gap-12 p-6 lg:grid-cols-[1fr_0.92fr] lg:items-end lg:p-10">
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
             <SectionLabel>Partners</SectionLabel>
             <h1 className="dp-display-hero mt-5 max-w-5xl text-5xl md:text-7xl">
@@ -70,14 +70,14 @@ export default function PartnersIndex() {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#partner-types"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-[var(--dp-navy,#0B1F33)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[rgba(11,31,51,0.9)]"
+                className="dp-cta-primary"
               >
                 Explore partner types
                 <ArrowRight className="h-4 w-4" />
               </a>
               <Link
                 to={PARTNER_DASHBOARD_LINK}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-white/42 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-white/68"
+                className="dp-cta-secondary"
               >
                 Open intelligence hub
               </Link>
@@ -93,7 +93,7 @@ export default function PartnersIndex() {
               renderItem={(section) => {
               const Icon = section.icon;
               return (
-                <div className="h-full rounded-[24px] border border-[rgba(11,31,51,0.10)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
+                <div className="h-full rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(248,245,238,0.9))] p-5 shadow-[0_14px_28px_rgba(11,31,51,0.05)]">
                   <Icon className="h-5 w-5 text-[hsl(40,62%,42%)]" strokeWidth={1.75} />
                   <div className="mt-4 text-lg font-semibold tracking-[-0.03em]">{section.title}</div>
                   <div className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{section.body}</div>
@@ -105,8 +105,8 @@ export default function PartnersIndex() {
         </div>
       </section>
 
-      <section id="partner-types" className="border-y border-[rgba(11,31,51,0.08)] px-6 py-14 md:py-18">
-        <div className="mx-auto max-w-7xl">
+      <section id="partner-types" className="px-4 py-2 md:px-6">
+        <div className="dp-page-shell dp-band dp-band-muted p-6 md:p-8 lg:p-10">
           <div className="mb-10 max-w-3xl">
             <SectionLabel>Partner Types</SectionLabel>
             <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
@@ -138,8 +138,8 @@ export default function PartnersIndex() {
         </div>
       </section>
 
-      <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
-        <div className="mx-auto max-w-7xl space-y-8">
+      <section className="px-4 py-2 md:px-6">
+        <div className="dp-page-shell dp-band space-y-8 p-6 md:p-8 lg:p-10">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <SectionLabel>Operating model</SectionLabel>
@@ -166,7 +166,7 @@ export default function PartnersIndex() {
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-[26px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_18px_44px_rgba(11,31,51,0.06)]">
+          <div className="overflow-hidden rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(248,245,238,0.94))] shadow-[0_18px_44px_rgba(11,31,51,0.06)]">
             <motion.div
               animate={{ x: `-${activePrinciple * 100}%` }}
               transition={{ duration: 0.35, ease: "easeOut" }}
@@ -194,7 +194,7 @@ export default function PartnersIndex() {
             mobileCardClassName="w-[84%]"
             getKey={(module) => module.title}
             renderItem={(module) => (
-              <div className="h-full rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
+              <div className="h-full rounded-[22px] bg-[rgba(255,255,255,0.84)] p-5 shadow-[0_12px_26px_rgba(11,31,51,0.04)]">
                 <div className="text-lg font-semibold tracking-[-0.03em]">{module.title}</div>
                 <div className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{module.body}</div>
               </div>

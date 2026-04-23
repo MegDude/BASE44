@@ -28,9 +28,9 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
-      <section className="px-6 py-20 md:py-24">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
+    <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
+      <section className="px-4 py-8 md:px-6 md:py-10">
+        <div className="dp-page-shell dp-band grid gap-10 p-6 lg:grid-cols-[1fr_0.9fr] lg:items-end lg:p-10">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <Link
               to="/partners"
@@ -50,7 +50,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to={PARTNER_DASHBOARD_LINK}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-[var(--dp-navy,#0B1F33)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[rgba(11,31,51,0.9)]"
+                className="dp-cta-primary"
               >
                 Open intelligence hub
                 <ArrowRight className="h-4 w-4" />
@@ -69,15 +69,15 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
                     successRoute: content.route,
                   })
                 }
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-white/46 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)] transition hover:bg-white/70"
+                className="dp-cta-secondary"
               >
                 Manage offers and events
               </button>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} className="rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_20px_40px_rgba(11,31,51,0.06)]">
-            <div className="rounded-[24px] bg-[var(--dp-navy,#0B1F33)] p-6 text-white">
+          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} className="rounded-[30px] bg-[linear-gradient(180deg,rgba(11,26,43,0.98),rgba(18,36,60,0.95))] p-5 shadow-[0_20px_40px_rgba(11,31,51,0.12)]">
+            <div className="rounded-[24px] bg-white/6 p-6 text-white backdrop-blur-xl">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,62%)]">
@@ -106,8 +106,8 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
         description={content.intelligenceDescription}
       />
 
-      <section className="border-y border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-4 py-2 md:px-6">
+        <div className="dp-page-shell dp-band dp-band-muted p-6 md:p-8 lg:p-10">
           <div className="mb-8 max-w-3xl">
             <SectionLabel>Operating model</SectionLabel>
             <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
@@ -121,7 +121,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             getKey={(module) => module.title}
             renderItem={(module) => (
               <div
-                className="h-full rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]"
+                className="h-full rounded-[22px] bg-[rgba(255,255,255,0.84)] p-5 shadow-[0_12px_26px_rgba(11,31,51,0.04)]"
               >
                 <div className="text-lg font-semibold tracking-[-0.03em]">{module.title}</div>
                 <div className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">{module.body}</div>
@@ -131,8 +131,8 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
         </div>
       </section>
 
-      <section className="border-b border-[rgba(11,31,51,0.08)] px-6 py-16 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+      <section className="px-4 py-2 md:px-6">
+        <div className="dp-page-shell dp-band grid gap-10 p-6 lg:grid-cols-[0.95fr_1.05fr] lg:p-10">
           <div>
             <SectionLabel>Workflow</SectionLabel>
             <h2 className="dp-display-section mt-4 text-4xl md:text-5xl">
@@ -141,9 +141,9 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             <div className="mt-6 space-y-4">
               {content.workflow.map((step, index) => (
                 <div key={step} className="flex gap-4">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[rgba(11,31,51,0.10)] bg-white/54 text-[12px] font-semibold">
-                    {index + 1}
-                  </div>
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[rgba(11,31,51,0.08)] text-[12px] font-semibold">
+                  {index + 1}
+                </div>
                   <div className="text-sm leading-6 text-[rgba(11,31,51,0.66)]">{step}</div>
                 </div>
               ))}
@@ -157,7 +157,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
               mobileCardClassName="w-[72%]"
               getKey={(metric) => metric.label}
               renderItem={(metric) => (
-                <div className="rounded-[20px] border border-[rgba(11,31,51,0.08)] bg-white/52 p-5">
+                <div className="rounded-[20px] bg-[rgba(255,255,255,0.72)] p-5 shadow-[0_12px_24px_rgba(11,31,51,0.04)]">
                   <div className="font-heading text-3xl font-semibold tracking-[-0.055em] text-[hsl(40,62%,42%)]">
                     {metric.value}
                   </div>
@@ -166,7 +166,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
               )}
             />
 
-            <div className="rounded-[22px] bg-[var(--dp-navy,#0B1F33)] p-5 text-white">
+            <div className="rounded-[22px] bg-[linear-gradient(180deg,rgba(11,26,43,0.98),rgba(18,36,60,0.95))] p-5 text-white">
               <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(40,62%,62%)]">
                 Key KPIs
               </div>

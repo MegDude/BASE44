@@ -223,9 +223,9 @@ export default function PartnerInsightMap({
   ];
 
   return (
-    <section className="border-y border-[rgba(10,20,40,0.08)] bg-[#f7f9fc]">
-      <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
-        <div className="rounded-[24px] border border-[rgba(10,20,40,0.08)] bg-[var(--dp-navy)] p-4 text-white shadow-[0_14px_34px_rgba(11,26,43,0.08)] md:p-5">
+    <section className="bg-[var(--dp-surface-base)] px-4 py-2 md:px-6">
+      <div className="dp-page-shell">
+        <div className="rounded-[28px] bg-[linear-gradient(180deg,rgba(11,26,43,0.98),rgba(18,36,60,0.95))] p-4 text-white shadow-[0_18px_44px_rgba(11,26,43,0.12)] md:p-5">
           <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(255,255,255,0.68)]">
@@ -270,7 +270,7 @@ export default function PartnerInsightMap({
           </div>
         </div>
 
-        <div className="mt-4 overflow-hidden rounded-[28px] border border-[rgba(10,20,40,0.08)] bg-white shadow-[0_18px_40px_rgba(11,26,43,0.06)]">
+        <div className="mt-4 overflow-hidden rounded-[30px] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,245,238,0.9))] shadow-[0_20px_46px_rgba(11,26,43,0.07)]">
           <div className="border-b border-[rgba(10,20,40,0.08)] p-4 md:p-5">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
@@ -287,7 +287,7 @@ export default function PartnerInsightMap({
                       key={prompt}
                       type="button"
                       onClick={() => handlePrompt(prompt)}
-                      className="min-w-[220px] rounded-[16px] border border-[rgba(10,20,40,0.08)] bg-[#f7f9fc] px-4 py-3 text-left transition-all hover:border-primary/20 hover:bg-white"
+                      className="min-w-[220px] rounded-[18px] bg-[rgba(11,26,43,0.04)] px-4 py-3 text-left transition-all hover:translate-y-[-1px] hover:bg-white"
                     >
                       <div className="text-[12px] font-semibold text-foreground">{prompt}</div>
                     </button>
@@ -298,9 +298,9 @@ export default function PartnerInsightMap({
               <div className="flex flex-col items-stretch gap-2">
                 <form
                   onSubmit={handleSubmit}
-                  className="flex flex-col gap-2 rounded-[18px] border border-[rgba(10,20,40,0.08)] bg-[#f1f4f8] p-2 md:flex-row"
+                  className="flex flex-col gap-2 rounded-[20px] bg-[rgba(11,26,43,0.04)] p-2 md:flex-row"
                 >
-                  <div className="flex h-11 min-w-[280px] items-center gap-3 rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white px-4">
+                  <div className="flex h-11 min-w-[280px] items-center gap-3 rounded-[16px] bg-white px-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
                     <Search className="h-4 w-4 shrink-0 text-foreground/45" />
                     <input
                       value={queryInput}
@@ -311,7 +311,7 @@ export default function PartnerInsightMap({
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-primary px-4 text-sm font-medium text-white"
+                    className="dp-cta-primary"
                   >
                     Analyze map
                     <ArrowRight className="h-4 w-4" />
@@ -320,7 +320,7 @@ export default function PartnerInsightMap({
 
                 <Link
                   to="/downtown-perks/explore"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white px-4 text-sm font-medium text-foreground transition-colors hover:bg-[#f7f9fc]"
+                  className="dp-cta-secondary"
                 >
                   View resident app
                   <Navigation className="h-4 w-4" />
@@ -340,7 +340,7 @@ export default function PartnerInsightMap({
                   className={`rounded-full border px-3 py-2 text-[12px] font-medium whitespace-nowrap transition-all ${
                     activeFilter === filter.id
                       ? "border-primary bg-primary text-white"
-                      : "border-[rgba(10,20,40,0.08)] bg-white text-foreground/70 hover:bg-[#f7f9fc]"
+                      : "border-[rgba(10,20,40,0.08)] bg-white/76 text-foreground/70 hover:bg-white"
                   }`}
                 >
                   {filter.label}
@@ -407,7 +407,7 @@ export default function PartnerInsightMap({
             </div>
 
             <div className="relative z-10 -mt-16 px-3 pb-3 lg:mt-0 lg:border-l lg:border-[rgba(10,20,40,0.08)] lg:p-4">
-              <div className="rounded-[22px] border border-[rgba(10,20,40,0.08)] bg-white/96 p-4 shadow-[0_14px_34px_rgba(11,26,43,0.12)] backdrop-blur lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+              <div className="rounded-[22px] bg-white/96 p-4 shadow-[0_14px_34px_rgba(11,26,43,0.12)] backdrop-blur lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-foreground/50">
