@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { MapPin, QrCode, Sparkles, Shield, ArrowRight } from "lucide-react";
+import { MapPin, QrCode, Shield, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function PerksCard() {
@@ -9,15 +8,9 @@ export default function PerksCard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadUser() {
-      const isAuth = await base44.auth.isAuthenticated();
-      if (isAuth) {
-        const me = await base44.auth.me();
-        setUser(me);
-      }
-      setLoading(false);
-    }
-    loadUser();
+    // Mock user for demo purposes
+    setUser({ name: "Demo User", email: "demo@user.com" });
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -112,15 +105,6 @@ export default function PerksCard() {
           transition={{ delay: 0.5 }}
           className="mt-12 space-y-4 max-w-md mx-auto"
         >
-          {!user && (
-            <button
-              onClick={() => base44.auth.redirectToLogin()}
-              className="w-full px-6 py-4 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
-            >
-              <Sparkles className="w-4 h-4" />
-              Activate Your Card
-            </button>
-          )}
           <Link
             to="/downtown-perks/explore"
             className="w-full px-6 py-4 rounded-2xl border border-border text-foreground font-semibold text-sm hover:bg-secondary transition-all flex items-center justify-center gap-2"

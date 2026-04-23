@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, ArrowRight, Check, AlertCircle } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check } from "lucide-react";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -33,28 +33,14 @@ export default function PartnerWorkspace() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
+    // Mock user for demo purposes
+    setUser({ name: "Demo Partner", email: "demo@partner.com", full_name: "Demo Partner" });
+    setLoading(false);
   }, []);
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-7 h-7 border-2 border-border border-t-primary rounded-full animate-spin" />
-    </div>
-  );
-
-  if (!user) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="text-center max-w-sm">
-        <div className="w-12 h-12 rounded-full border border-border/50 flex items-center justify-center mx-auto mb-4">
-          <AlertCircle className="w-5 h-5 text-muted-foreground" />
-        </div>
-        <h2 className="font-heading text-xl font-medium mb-2">Sign in to continue</h2>
-        <p className="text-muted-foreground text-[13px] mb-6">Access your partner workspace to manage perks, events, and your downtown presence.</p>
-        <button onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-          Sign in <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
     </div>
   );
 
