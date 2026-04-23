@@ -1,4 +1,5 @@
 import { MAP_ENTITIES } from "@/data/mapEntities";
+import { getProductGradePlace } from "@/data/productGradePlaces";
 import {
   perks as REPLIT_PERKS,
   events as REPLIT_EVENTS,
@@ -43,6 +44,40 @@ const inferDistrict = (address = "") => {
   if (value.includes("warehouse")) return "warehouse";
   return "downtown";
 };
+
+const normalizeEnrichedDistrict = (value = "") => {
+  const district = String(value).toLowerCase();
+  if (!district) return undefined;
+  if (district.includes("rainey")) return "rainey";
+  if (district.includes("2nd")) return "2nd-street";
+  if (district.includes("congress")) return "congress";
+  if (district.includes("seaholm")) return "seaholm";
+  if (district.includes("west 6th") || district.includes("west-6th")) return "west-6th";
+  if (district.includes("red river")) return "red-river";
+  return "other";
+};
+
+const normalizeEnrichedCategory = (value = "", type = "venue") => {
+  const category = String(value).toLowerCase();
+  if (type === "hotel") return "hotel";
+  if (category.includes("coffee")) return "coffee";
+  if (category.includes("restaurant")) return "restaurant";
+  if (category.includes("nightlife") || category.includes("bar")) return "bar";
+  if (category.includes("retail")) return "retail";
+  if (category.includes("event") || category.includes("music")) return "entertainment";
+  if (category.includes("civic") || category.includes("cultural") || category.includes("landmark")) return "services";
+  return type;
+};
+
+const mergeListValues = (...values) => [
+  ...new Set(
+    values
+      .flat()
+      .filter(Boolean)
+      .map((item) => String(item).trim())
+      .filter(Boolean)
+  ),
+];
 
 const dedupeById = (items) => {
   const seen = new Set();
@@ -92,7 +127,34 @@ export function sharedMapItemToMapEntity(item) {
   const type = normalizeType(item.entity_type ?? item.type);
   const id = String(item.id || item.entity_id || `${type}-${item.title || item.name}`);
   const name = item.name || item.title || "Downtown place";
-  const address = item.address || item.metadata?.address || item.subtitle || "Downtown Austin";
+  const enrichment = getProductGradePlace(name);
+  const address =
+    item.address ||
+    item.metadata?.address ||
+    item.subtitle ||
+    enrichment?.district ||
+    "Downtown Austin";
+  const category =
+    item.category ||
+    item.metadata?.category ||
+    normalizeEnrichedCategory(enrichment?.category, type);
+  const district =
+    item.district ||
+    item.metadata?.district ||
+    normalizeEnrichedDistrict(enrichment?.district) ||
+    "other";
+  const baseDescription = item.description || item.metadata?.description;
+  const enrichedKeywords = mergeListValues(
+    item.metadata?.searchKeywords,
+    enrichment?.tags,
+    [enrichment?.subcategory, enrichment?.category, enrichment?.district]
+  );
+  const enrichedIntentTags = mergeListValues(
+    item.metadata?.askMapIntentTags,
+    enrichment?.tags,
+    [normalizeEnrichedCategory(enrichment?.category, type), type]
+  );
+  const enrichedTags = mergeListValues(item.metadata?.tags, enrichment?.tags);
 
   return {
     ...item,
@@ -102,10 +164,11 @@ export function sharedMapItemToMapEntity(item) {
     title: item.title || name,
     type,
     entity_type: type,
-    category: item.category || item.metadata?.category || type,
-    description: item.description || item.metadata?.description,
+    category,
+    subcategory: item.subcategory || item.metadata?.subcategory || enrichment?.subcategory,
+    description: baseDescription || enrichment?.shortDescription || enrichment?.whyItMatters,
     address,
-    district: item.district || item.metadata?.district || "other",
+    district,
     location: {
       latitude,
       longitude,
@@ -135,6 +198,14 @@ export function sharedMapItemToMapEntity(item) {
     metadata: {
       ...(item.metadata || {}),
       sourceRef: item.source_ref || item.metadata?.sourceRef,
+      shortDescription: item.metadata?.shortDescription || enrichment?.shortDescription,
+      whyItMatters: item.metadata?.whyItMatters || enrichment?.whyItMatters,
+      highlightedFeatures: item.metadata?.highlightedFeatures || enrichment?.subcategory,
+      sourceConfidence: item.metadata?.sourceConfidence || enrichment?.sourceConfidence,
+      productStatus: item.metadata?.productStatus || enrichment?.status,
+      tags: enrichedTags,
+      searchKeywords: enrichedKeywords,
+      askMapIntentTags: enrichedIntentTags,
     },
   };
 }
