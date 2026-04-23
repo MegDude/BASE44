@@ -35,6 +35,109 @@ function sendFile(res, filePath) {
   createReadStream(filePath).pipe(res);
 }
 
+function readRequestBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+
+    req.on("data", (chunk) => {
+      chunks.push(chunk);
+    });
+
+    req.on("end", () => {
+      resolve(Buffer.concat(chunks).toString("utf8"));
+    });
+
+    req.on("error", reject);
+  });
+}
+
+async function parseRequestBody(req) {
+  const rawBody = await readRequestBody(req);
+  if (!rawBody) return {};
+
+  const contentType = String(req.headers["content-type"] || "").toLowerCase();
+  if (contentType.includes("application/json")) {
+    try {
+      return JSON.parse(rawBody);
+    } catch {
+      return {};
+    }
+  }
+
+  return rawBody;
+}
+
+function attachResponseHelpers(res) {
+  res.status = (code) => {
+    res.statusCode = code;
+    return res;
+  };
+
+  res.json = (payload) => {
+    if (!res.headersSent) {
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+    }
+    res.end(JSON.stringify(payload));
+    return res;
+  };
+
+  res.send = (payload) => {
+    if (typeof payload === "object" && payload !== null) {
+      return res.json(payload);
+    }
+    if (!res.headersSent) {
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    }
+    res.end(String(payload));
+    return res;
+  };
+
+  return res;
+}
+
+const API_ROUTE_MAP = new Map([
+  ["/api/ask-map", "./api/ask-map.js"],
+  ["/api/impression", "./api/impression.js"],
+  ["/api/places", "./api/places.js"],
+  ["/api/redeem", "./api/redeem.js"],
+  ["/api/save", "./api/save.js"],
+  ["/api/search-log", "./api/search-log.js"],
+  ["/api/visit", "./api/visit.js"],
+]);
+
+async function handleApiRoute(req, res, requestUrl) {
+  const routeModule = API_ROUTE_MAP.get(requestUrl.pathname);
+  if (!routeModule) {
+    return false;
+  }
+
+  try {
+    const moduleUrl = new URL(routeModule, import.meta.url);
+    const { default: handler } = await import(moduleUrl.href);
+    req.query = Object.fromEntries(requestUrl.searchParams.entries());
+    req.body = await parseRequestBody(req);
+    attachResponseHelpers(res);
+    await handler(req, res);
+    if (!res.writableEnded) {
+      res.end();
+    }
+  } catch (error) {
+    console.error(`API route failed for ${requestUrl.pathname}:`, error);
+    if (!res.headersSent) {
+      res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+    }
+    if (!res.writableEnded) {
+      res.end(
+        JSON.stringify({
+          error: error instanceof Error ? error.message : "Unknown API error",
+        })
+      );
+    }
+  }
+
+  return true;
+}
+
 async function resolvePath(urlPath) {
   const safePath = path.normalize(urlPath).replace(/^(\.\.[/\\])+/, "");
   const requestedPath = path.join(distPath, safePath);
@@ -50,6 +153,10 @@ async function resolvePath(urlPath) {
 const server = http.createServer(async (req, res) => {
   try {
     const requestUrl = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
+    const handledApi = await handleApiRoute(req, res, requestUrl);
+    if (handledApi) {
+      return;
+    }
     const filePath = await resolvePath(requestUrl.pathname);
     sendFile(res, filePath);
   } catch (error) {
