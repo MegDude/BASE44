@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroSection from "@/components/home/HeroSection";
 import WhySection from "@/components/home/WhySection";
-import MapSection from "@/components/home/MapSection";
 import PartnerSlides from "@/components/home/PartnerSlides";
 import PricingSection from "@/components/home/PricingSection";
 import FAQSection from "@/components/home/FAQSection";
@@ -80,13 +79,6 @@ export default function Home() {
     [openExploreRoute, updateMapContext]
   );
 
-  const handleMapContextChange = useCallback((nextState) => {
-    setMapContext((current) => ({
-      ...current,
-      ...nextState,
-    }));
-  }, []);
-
   return (
     <div className="bg-background">
       <HeroSection
@@ -95,10 +87,6 @@ export default function Home() {
         onAsk={handleAsk}
       />
       <WhySection />
-      <MapSection
-        mapContext={mapContext}
-        onMapContextChange={handleMapContextChange}
-      />
       <PartnerSlides />
       <PricingSection />
       <FAQSection />

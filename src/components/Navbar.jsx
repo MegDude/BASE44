@@ -35,6 +35,7 @@ export default function Navbar() {
   const location = useLocation();
   const { openFlow } = useCTAFlow();
   const dropdownRef = useRef(null);
+  const isHomeHero = location.pathname === "/" && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -78,18 +79,24 @@ export default function Navbar() {
   return (
     <nav
       ref={dropdownRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-[rgba(11,31,51,0.08)] backdrop-blur-xl ${
-        scrolled ? "bg-[rgba(255,255,255,0.97)]" : "bg-[rgba(255,255,255,0.92)]"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-xl ${
+        isHomeHero
+          ? "border-b border-white/10 bg-[rgba(9,17,34,0.24)]"
+          : "border-b border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.97)]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Downtown Perks home">
-          <div className="w-7 h-7 rounded-full border border-[rgba(11,31,51,0.10)] flex items-center justify-center bg-[rgba(198,162,105,0.10)]">
+          <div className={`w-7 h-7 rounded-full flex items-center justify-center ${
+            isHomeHero
+              ? "border border-white/18 bg-white/10"
+              : "border border-[rgba(11,31,51,0.10)] bg-[rgba(198,162,105,0.10)]"
+          }`}>
             <MapPin className="w-3.5 h-3.5 text-[#C6A269]" />
           </div>
-          <span className="dp-brand-wordmark text-[15px] text-[#0B1F33]">
+          <span className={`dp-brand-wordmark text-[15px] ${isHomeHero ? "text-white" : "text-[#0B1F33]"}`}>
             Downtown<span className="text-[#C6A269]"> Perks</span>
           </span>
         </Link>
@@ -104,11 +111,17 @@ export default function Navbar() {
                   <button
                     onClick={() => setDropdown(dropdown === link.dropdown ? null : link.dropdown)}
                     className={`flex items-center gap-1 px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                      active || dropdown === link.dropdown ? "text-[#0B1F33]" : "text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+                      isHomeHero
+                        ? active || dropdown === link.dropdown
+                          ? "text-white"
+                          : "text-white/74 hover:text-white"
+                        : active || dropdown === link.dropdown
+                          ? "text-[#0B1F33]"
+                          : "text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
                     }`}
                   >
                     {link.label}
-                    <ChevronDown className={`w-3.5 h-3.5 text-[rgba(11,31,51,0.48)] transition-transform duration-200 ${dropdown === link.dropdown ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdown === link.dropdown ? "rotate-180" : ""} ${isHomeHero ? "text-white/60" : "text-[rgba(11,31,51,0.48)]"}`} />
                   </button>
 
                   <AnimatePresence>
@@ -165,7 +178,9 @@ export default function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+                  className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
+                    isHomeHero ? "text-white/74 hover:text-white" : "text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+                  }`}
                 >
                   {link.label}
                 </a>
@@ -176,7 +191,9 @@ export default function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className="px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+                className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
+                  isHomeHero ? "text-white/74 hover:text-white" : "text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+                }`}
               >
                 {link.label}
               </Link>
@@ -188,7 +205,9 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-2.5">
           <Link
             to="/partners/dashboard"
-            className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33] transition-colors"
+            className={`flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors ${
+              isHomeHero ? "text-white/76 hover:text-white" : "text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+            }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
             Dashboard
@@ -211,7 +230,9 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} className="relative z-[60] md:hidden text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33] p-2 transition-colors">
+        <button onClick={() => setOpen(!open)} className={`relative z-[60] md:hidden p-2 transition-colors ${
+          isHomeHero ? "text-white/80 hover:text-white" : "text-[rgba(11,31,51,0.70)] hover:text-[#0B1F33]"
+        }`}>
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>

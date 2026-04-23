@@ -1,306 +1,381 @@
-import { ArrowRight, Compass, Search, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  Calendar,
+  Clock3,
+  Compass,
+  Gift,
+  MapPin,
+  Search,
+  Sparkles,
+} from "lucide-react";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
-import MapFilterBars from "@/components/map/shared/MapFilterBars";
-import {
-  ASK_MAP_QUESTIONS,
-  PRIMARY_SEARCH_PRESETS,
-  SECONDARY_SEARCH_PRESETS,
-  getPrimaryPresetDefinition,
-} from "@/lib/map/searchUiConfig";
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80";
 
 const AUSTIN_CENTER = [30.267, -97.743];
-const VALUE_POINTS = [
-  "One map",
-  "Everything nearby",
-  "No app download",
-  "No login friction",
+
+const HERO_CHIPS = [
+  { id: "venues", label: "Venues" },
+  { id: "events", label: "Events" },
+  { id: "perks", label: "Perks" },
+  { id: "walk5", label: "5 min walk" },
 ];
+
+const ASK_PROMPTS = [
+  "coffee right now",
+  "dinner tonight on Rainey",
+  "live music nearby",
+];
+
+function getSearchDefaults(view) {
+  if (view === "events") return { query: "events nearby", walkMinutes: null };
+  if (view === "perks") return { query: "perks nearby", walkMinutes: null };
+  if (view === "walk5") return { query: "", walkMinutes: 5 };
+  return { query: "", walkMinutes: null };
+}
+
+function getPreviewMeta(item) {
+  const walkMinutes = item?.metadata?.walkMinutes;
+  const supporting =
+    item?.perk?.value ||
+    item?.perk_value ||
+    item?.description ||
+    item?.category ||
+    "Live nearby";
+
+  return {
+    title: item?.title || item?.name || "Downtown pick",
+    supporting,
+    detail: Number.isFinite(walkMinutes)
+      ? `${walkMinutes} min walk`
+      : item?.district || item?.address || "Downtown Austin",
+  };
+}
+
+function filterPreviewItems(items, view) {
+  if (!Array.isArray(items)) return [];
+
+  if (view === "venues") {
+    return items.filter((item) => item?.type === "venue");
+  }
+
+  if (view === "events") {
+    return items.filter((item) => item?.type === "event");
+  }
+
+  if (view === "perks") {
+    return items.filter((item) => item?.type === "perk" || Boolean(item?.perk?.value || item?.perk_value));
+  }
+
+  if (view === "walk5") {
+    return items.filter((item) => (item?.metadata?.walkMinutes ?? 999) <= 5);
+  }
+
+  return items;
+}
 
 export default function HeroSection({ mapContext, onExplore, onAsk }) {
   const [query, setQuery] = useState(mapContext?.query || "");
-  const [activePrimary, setActivePrimary] = useState(mapContext?.category || "all");
-  const [activeSecondary, setActiveSecondary] = useState(mapContext?.toggles || []);
-  const [showAskPanel, setShowAskPanel] = useState(false);
+  const [activeView, setActiveView] = useState("venues");
+  const [selectedEntity, setSelectedEntity] = useState(null);
 
   useEffect(() => {
     setQuery(mapContext?.query || "");
-    setActivePrimary(mapContext?.category || "all");
-    setActiveSecondary(mapContext?.toggles || []);
   }, [mapContext?.requestKey]);
 
-  const preset = useMemo(() => getPrimaryPresetDefinition(activePrimary), [activePrimary]);
-  const previewCategory = preset.categories?.[0] || "all";
-  const previewQuery = query.trim() || preset.query || "";
+  const searchDefaults = useMemo(() => getSearchDefaults(activeView), [activeView]);
+  const previewQuery = String(query || "").trim() || searchDefaults.query;
+
   const { items } = useSharedMapFeed({
     query: previewQuery,
-    activeCategory: previewCategory,
-    limit: 30,
+    activeCategory: "all",
+    limit: 40,
   });
 
-  const previewItems = useMemo(() => {
-    let nextItems = [...(items || [])];
+  const previewItems = useMemo(
+    () => filterPreviewItems(items, activeView).slice(0, 18),
+    [activeView, items]
+  );
 
-    if (preset.categories?.length) {
-      nextItems = nextItems.filter((item) => preset.categories.includes(item.category));
+  useEffect(() => {
+    if (!previewItems.length) {
+      setSelectedEntity(null);
+      return;
     }
 
-    if (activeSecondary.includes("crowd")) {
-      nextItems = nextItems.filter(
-        (item) => Boolean(item.metadata?.isTrending || (item.metadata?.popularity ?? 0) >= 70)
-      );
-    }
+    setSelectedEntity((current) => {
+      if (current && previewItems.some((item) => item.id === current.id)) {
+        return previewItems.find((item) => item.id === current.id) || current;
+      }
+      return previewItems[0];
+    });
+  }, [previewItems]);
 
-    if (activeSecondary.includes("perks")) {
-      nextItems = nextItems.filter((item) => Boolean(item.perk?.value || item.type === "perk"));
-    }
+  const featuredCards = previewItems.slice(0, 3);
+  const mapCenter = selectedEntity?.location
+    ? [selectedEntity.location.latitude, selectedEntity.location.longitude]
+    : featuredCards[0]?.location
+      ? [featuredCards[0].location.latitude, featuredCards[0].location.longitude]
+      : AUSTIN_CENTER;
 
-    return nextItems;
-  }, [activeSecondary, items, preset.categories]);
-
-  const featuredItems = previewItems.slice(0, 3);
-  const mapCenter = featuredItems[0]?.location
-    ? [featuredItems[0].location.latitude, featuredItems[0].location.longitude]
-    : AUSTIN_CENTER;
-
-  function toggleSecondary(id) {
-    setActiveSecondary((current) =>
-      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
-    );
-  }
-
-  function getSearchPayload(nextQuery = query, askMode = false) {
+  function buildPayload(nextQuery = query) {
+    const trimmedQuery = String(nextQuery || "").trim();
     return {
-      query: String(nextQuery || "").trim(),
-      category: activePrimary,
-      walkMinutes: null,
-      askMode,
-      toggles: activeSecondary,
+      query: trimmedQuery || searchDefaults.query,
+      category: "all",
+      walkMinutes: searchDefaults.walkMinutes,
+      toggles: [],
     };
   }
 
-  function handleSearch(e) {
-    e.preventDefault();
-    setShowAskPanel(false);
-    onExplore?.(getSearchPayload(query, false));
+  function handleSubmit(event) {
+    event.preventDefault();
+    onExplore?.(buildPayload(query));
   }
 
-  function handleOpenMap() {
-    setShowAskPanel(false);
-    onExplore?.(getSearchPayload(query, false));
-  }
-
-  function handleAskMap(nextQuery = query) {
-    setShowAskPanel(false);
-    onAsk?.(getSearchPayload(nextQuery, true));
-  }
-
-  function handleAskPrompt(nextQuery) {
-    setQuery(nextQuery);
-    handleAskMap(nextQuery);
+  function handleAsk(nextQuery = query) {
+    onAsk?.(buildPayload(nextQuery));
   }
 
   return (
-    <section className="relative overflow-hidden border-b border-[rgba(11,31,51,0.08)] bg-[#fbfaf7] pt-[84px]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(198,162,105,0.16),transparent_24rem)]" />
-      <div className="mx-auto max-w-7xl px-4 pb-8 md:px-6 md:pb-12">
-        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
-          <div className="flex flex-col justify-between gap-5 rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_18px_48px_rgba(11,31,51,0.07)] md:p-6">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(198,162,105,0.10)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0B1F33]">
+    <section className="relative overflow-hidden bg-[#0b1730] pt-[84px] text-white">
+      <div className="absolute inset-0">
+        <img
+          src={HERO_IMAGE}
+          alt="Downtown Austin skyline"
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,16,34,0.64)_0%,rgba(11,23,48,0.55)_40%,rgba(11,23,48,0.86)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(168,197,255,0.42),transparent_22rem)]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-[linear-gradient(180deg,rgba(11,23,48,0)_0%,rgba(11,23,48,0.92)_100%)]" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 pb-12 md:px-6 md:pb-16">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,560px)_1fr] lg:items-end">
+          <div className="pt-10 md:pt-16 lg:pt-20">
+            <div className="max-w-[560px] rounded-[28px] border border-white/18 bg-white/14 p-5 shadow-[0_24px_80px_rgba(3,10,24,0.28)] backdrop-blur-xl md:p-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/16 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78">
                 Downtown Perks
               </div>
 
-              <h1 className="mt-4 font-heading text-[40px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#0B1F33] md:text-[64px]">
+              <h1 className="mt-4 font-heading text-[42px] font-semibold leading-[0.94] tracking-[-0.05em] text-white md:text-[68px]">
                 Where downtown
                 <br />
                 meets you
               </h1>
 
-              <p className="mt-4 max-w-xl text-[15px] leading-7 text-[rgba(11,31,51,0.68)]">
-                One map. Everything nearby. No app download. No login friction. Search less, do more.
+              <p className="mt-3 max-w-[40rem] text-[15px] leading-7 text-white/78 md:text-[16px]">
+                Everything nearby — in one map.
               </p>
 
-              <div className="mt-5 flex flex-wrap gap-2">
-                {VALUE_POINTS.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.62)]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
-                Start with a live prompt
-              </div>
-              <div className="grid gap-2">
-                {ASK_MAP_QUESTIONS.map((item) => (
-                  <button
-                    key={item.title}
-                    type="button"
-                    onClick={() => handleAskPrompt(item.query)}
-                    className="group flex min-h-[68px] items-center justify-between gap-3 rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-4 py-3 text-left transition-all hover:-translate-y-[1px] hover:border-[rgba(11,31,51,0.14)] hover:bg-white"
-                  >
-                    <div>
-                      <div className="text-sm font-semibold text-[#0B1F33]">{item.title}</div>
-                      <div className="mt-1 text-[13px] leading-[1.45] text-[rgba(11,31,51,0.62)]">
-                        {item.subtitle}
-                      </div>
-                    </div>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.42)] transition-transform group-hover:translate-x-0.5" />
-                  </button>
-                ))}
-              </div>
-              <Link
-                to="/partners"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.10)] bg-white px-5 text-sm font-semibold text-[#0B1F33] transition-all hover:bg-[rgba(11,31,51,0.03)]"
+              <form
+                onSubmit={handleSubmit}
+                className="mt-6 rounded-[24px] border border-white/22 bg-white/88 p-2 shadow-[0_18px_46px_rgba(6,16,34,0.18)]"
               >
-                Partner platform
-                <Compass className="h-4 w-4" />
-              </Link>
+                <div className="flex flex-col gap-2 md:flex-row">
+                  <div className="flex h-12 flex-1 items-center gap-3 rounded-[18px] border border-[rgba(11,31,51,0.12)] bg-white px-4">
+                    <Search className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.46)]" />
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      placeholder="Ask the map..."
+                      className="flex-1 bg-transparent text-sm text-[#0B1F33] outline-none placeholder:text-[rgba(11,31,51,0.40)]"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="inline-flex h-12 items-center justify-center rounded-[18px] border border-[rgba(11,31,51,0.10)] px-4 text-sm font-semibold text-[#0B1F33] transition-colors hover:bg-white"
+                  >
+                    Open map
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleAsk(query)}
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-[18px] bg-[#0B1F33] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#122743]"
+                  >
+                    Ask the map
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {HERO_CHIPS.map((chip) => {
+                    const isActive = activeView === chip.id;
+
+                    return (
+                      <button
+                        key={chip.id}
+                        type="button"
+                        onClick={() => setActiveView(chip.id)}
+                        className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                          isActive
+                            ? "border-[#0B1F33] bg-[#0B1F33] text-white"
+                            : "border-[rgba(11,31,51,0.10)] bg-white text-[rgba(11,31,51,0.76)] hover:bg-[rgba(11,31,51,0.04)]"
+                        }`}
+                      >
+                        {chip.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {ASK_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => {
+                        setQuery(prompt);
+                        handleAsk(prompt);
+                      }}
+                      className="rounded-full border border-[rgba(11,31,51,0.10)] bg-[rgba(11,31,51,0.03)] px-3 py-1.5 text-xs font-medium text-[rgba(11,31,51,0.72)] transition-colors hover:bg-white"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              </form>
+
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-medium text-white/74">
+                <span>One map</span>
+                <span>Everything nearby</span>
+                <span>No app download</span>
+                <span>No login friction</span>
+              </div>
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_24px_60px_rgba(11,31,51,0.08)]">
-            <div className="relative h-[560px] overflow-hidden md:h-[640px]">
+          <div className="hidden lg:flex lg:justify-end">
+            <Link
+              to="/partners"
+              className="inline-flex h-12 items-center gap-2 rounded-full border border-white/16 bg-white/10 px-5 text-sm font-semibold text-white/92 shadow-[0_12px_32px_rgba(3,10,24,0.16)] backdrop-blur-xl transition-colors hover:bg-white/14"
+            >
+              Partner platform
+              <Compass className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-8 overflow-hidden rounded-[30px] border border-white/14 bg-white/10 shadow-[0_24px_70px_rgba(3,10,24,0.24)] backdrop-blur-md">
+          <div className="flex items-center justify-between gap-3 border-b border-white/12 px-4 py-3 md:px-5">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
+                Live downtown map
+              </div>
+              <div className="mt-1 text-sm font-semibold text-white">
+                The map is the product.
+              </div>
+            </div>
+
+            <div className="hidden items-center gap-2 text-[12px] text-white/70 md:flex">
+              <Sparkles className="h-3.5 w-3.5 text-[#d6ba7a]" />
+              Nearby now
+            </div>
+          </div>
+
+          <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <div className="relative h-[360px] overflow-hidden md:h-[440px]">
               <UnifiedMapShell
                 items={previewItems}
                 markerIcon={(item, active) => createMarker(item, { isSelected: active })}
-                onMarkerSelect={() => {}}
+                onMarkerSelect={setSelectedEntity}
                 mapCenter={mapCenter}
                 mapZoom={14}
-                selectedId={featuredItems[0]?.id}
+                selectedId={selectedEntity?.id}
                 className="h-full w-full"
               />
 
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-3 md:p-4">
-                <div className="pointer-events-auto mx-auto max-w-[560px] overflow-hidden rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white/94 shadow-[0_18px_42px_rgba(11,31,51,0.10)] backdrop-blur">
-                  <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-3">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C6A269]">
-                          Ask the map
-                        </div>
-                        <div className="mt-1 text-sm font-semibold text-[#0B1F33]">
-                          Search less. Do more.
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setShowAskPanel((current) => !current)}
-                        className="inline-flex h-10 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-3 text-xs font-semibold text-[#0B1F33]"
-                      >
-                        <Sparkles className="h-3.5 w-3.5" />
-                        {showAskPanel ? "Hide prompts" : "Open prompts"}
-                      </button>
-                    </div>
-                  </div>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 md:p-4">
+                <div className="pointer-events-auto flex gap-3 overflow-x-auto pb-1">
+                  {featuredCards.map((item) => {
+                    const meta = getPreviewMeta(item);
+                    const isActive = item.id === selectedEntity?.id;
 
-                  <form onSubmit={handleSearch} className="px-3 py-3">
-                    <div className="flex flex-col gap-2 sm:flex-row">
-                      <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-[rgba(11,31,51,0.10)] bg-white px-4">
-                        <Search className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.48)]" />
-                        <input
-                          type="text"
-                          value={query}
-                          onChange={(e) => setQuery(e.target.value)}
-                          onFocus={() => setShowAskPanel(true)}
-                          placeholder="Where should I go right now?"
-                          className="flex-1 bg-transparent text-sm text-[#0B1F33] outline-none placeholder:text-[rgba(11,31,51,0.40)]"
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[#0B1F33] px-5 text-sm font-semibold text-white"
-                      >
-                        Open map
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </form>
-
-                  <MapFilterBars
-                    primaryOptions={PRIMARY_SEARCH_PRESETS}
-                    secondaryOptions={SECONDARY_SEARCH_PRESETS}
-                    activePrimary={activePrimary}
-                    activeSecondary={activeSecondary}
-                    onPrimarySelect={setActivePrimary}
-                    onSecondaryToggle={toggleSecondary}
-                  />
-
-                  {showAskPanel ? (
-                    <div className="divide-y divide-[rgba(11,31,51,0.08)] bg-white">
-                      {ASK_MAP_QUESTIONS.map((item) => (
-                        <button
-                          key={item.title}
-                          type="button"
-                          onClick={() => handleAskPrompt(item.query)}
-                          className="block w-full px-4 py-4 text-left transition-colors hover:bg-[rgba(11,31,51,0.03)]"
-                        >
-                          <h3 className="font-heading text-[28px] font-semibold tracking-[-0.03em] text-foreground">
-                            {item.title}
-                          </h3>
-                          <p className="mt-2 text-[15px] leading-[1.8] text-muted-foreground">
-                            {item.subtitle}
-                          </p>
-                        </button>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={() => setShowAskPanel(false)}
-                        className="w-full px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.46)]"
-                      >
-                        Dismiss
-                      </button>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-3 md:p-4">
-                <div className="pointer-events-auto mx-auto grid max-w-[560px] gap-2 rounded-[22px] border border-[rgba(11,31,51,0.10)] bg-white/94 p-3 shadow-[0_18px_42px_rgba(11,31,51,0.10)] backdrop-blur">
-                  <div className="flex items-center justify-between">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
-                      Everything nearby
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleOpenMap}
-                      className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]"
-                    >
-                      Open full map
-                    </button>
-                  </div>
-
-                  <div className="grid gap-2 sm:grid-cols-3">
-                    {featuredItems.map((item) => (
+                    return (
                       <button
                         key={item.id}
                         type="button"
-                        onClick={handleOpenMap}
-                        className="rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-white px-3 py-3 text-left transition-all hover:border-[rgba(11,31,51,0.18)]"
+                        onClick={() => setSelectedEntity(item)}
+                        className={`min-w-[220px] rounded-[20px] border px-4 py-3 text-left shadow-[0_14px_36px_rgba(6,16,34,0.16)] backdrop-blur-xl transition-all ${
+                          isActive
+                            ? "border-white/28 bg-white/92"
+                            : "border-white/18 bg-white/84 hover:bg-white/92"
+                        }`}
                       >
-                        <div className="text-xs font-semibold uppercase tracking-[0.12em] text-[#C6A269]">
-                          {item.type}
+                        <div className="text-sm font-semibold text-[#0B1F33]">{meta.title}</div>
+                        <div className="mt-1 text-[13px] leading-5 text-[rgba(11,31,51,0.66)]">
+                          {meta.supporting}
                         </div>
-                        <div className="mt-1 text-sm font-semibold text-[#0B1F33]">
-                          {item.name}
-                        </div>
-                        <div className="mt-1 text-xs leading-5 text-[rgba(11,31,51,0.58)]">
-                          {item.perk?.value || item.description || item.address}
+                        <div className="mt-3 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[rgba(11,31,51,0.54)]">
+                          <Clock3 className="h-3.5 w-3.5" />
+                          {meta.detail}
                         </div>
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
+              </div>
+            </div>
+
+            <div className="border-t border-white/12 bg-[rgba(11,23,48,0.34)] p-4 lg:border-l lg:border-t-0 lg:bg-[rgba(255,255,255,0.08)]">
+              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
+                Nearby results
+              </div>
+
+              <div className="space-y-3">
+                {(previewItems.length ? previewItems : []).slice(0, 4).map((item) => {
+                  const meta = getPreviewMeta(item);
+                  const isEvent = item?.type === "event";
+                  const isPerk = item?.type === "perk" || Boolean(item?.perk?.value || item?.perk_value);
+
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setSelectedEntity(item)}
+                      className={`w-full rounded-[18px] border px-4 py-3 text-left transition-colors ${
+                        item.id === selectedEntity?.id
+                          ? "border-white/26 bg-white/18"
+                          : "border-white/12 bg-white/8 hover:bg-white/14"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="text-sm font-semibold text-white">{meta.title}</div>
+                          <div className="mt-1 text-[13px] leading-5 text-white/70">
+                            {meta.supporting}
+                          </div>
+                        </div>
+
+                        {isEvent ? (
+                          <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ba7a]" />
+                        ) : isPerk ? (
+                          <Gift className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ba7a]" />
+                        ) : (
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ba7a]" />
+                        )}
+                      </div>
+
+                      <div className="mt-3 text-[11px] font-medium uppercase tracking-[0.1em] text-white/52">
+                        {meta.detail}
+                      </div>
+                    </button>
+                  );
+                })}
+
+                {!previewItems.length ? (
+                  <div className="rounded-[18px] border border-white/12 bg-white/8 px-4 py-5 text-[13px] leading-6 text-white/68">
+                    No items available for this filter yet.
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
