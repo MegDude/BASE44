@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroSection from "@/components/home/HeroSection";
 import WhySection from "@/components/home/WhySection";
+import LiveTonight from "@/components/home/LiveTonight";
 import PartnerSlides from "@/components/home/PartnerSlides";
 import PricingSection from "@/components/home/PricingSection";
 import FAQSection from "@/components/home/FAQSection";
@@ -87,6 +88,7 @@ export default function Home() {
         onAsk={handleAsk}
       />
       <WhySection />
+      <LiveTonight />
       <PartnerSlides />
       <PricingSection />
       <FAQSection />

@@ -13,11 +13,11 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        display: ['var(--dp-font-display)'],
-        heading: ['var(--dp-font-display)'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         body: ['var(--dp-font-body)'],
         accent: ['var(--dp-font-accent)'],
-        serif: ['var(--dp-font-display)'],
+        serif: ['"Plus Jakarta Sans"', 'Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
       fontSize: {
         xs: ['12px', '16px'],
@@ -43,7 +43,10 @@ module.exports = {
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 4px)',
+        'dp-card': 'var(--dp-radius-card)',
+        'dp-drawer': 'var(--dp-radius-drawer)',
+        'dp-pill': 'var(--dp-radius-pill)',
       },
       letterSpacing: {
         tightest: '-0.04em',
@@ -70,6 +73,22 @@ module.exports = {
         surface: {
           base: '#F7F8FA',
           glass: 'rgba(255,255,255,0.6)',
+        },
+        dp: {
+          bg: 'var(--dp-bg)',
+          surface: 'var(--dp-surface)',
+          'surface-main': 'var(--dp-surface-main)',
+          'surface-subtle': 'var(--dp-surface-subtle)',
+          navy: 'var(--dp-navy)',
+          'navy-soft': 'var(--dp-navy-soft)',
+          text: 'var(--dp-text)',
+          'text-soft': 'var(--dp-text-soft)',
+          gold: 'var(--dp-gold)',
+          'gold-deep': 'var(--dp-gold-deep)',
+          border: 'var(--dp-border)',
+          'border-soft': 'var(--dp-border-soft)',
+          hover: 'var(--dp-hover)',
+          active: 'var(--dp-active)',
         },
         cream: {
           DEFAULT: 'hsl(42, 24%, 96%)',
@@ -124,6 +143,19 @@ module.exports = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
         }
+      },
+      boxShadow: {
+        'dp-soft': 'var(--dp-shadow-soft)',
+        'dp-float': 'var(--dp-shadow-float)',
+        'dp-glass': 'var(--dp-shadow-glass)',
+      },
+      backdropBlur: {
+        dp: '12px',
+        'dp-subtle': '10px',
+      },
+      transitionDuration: {
+        180: '180ms',
+        220: '220ms',
       },
       keyframes: {
         'accordion-down': {

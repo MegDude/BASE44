@@ -9,9 +9,8 @@ export default function BrandHero({ eyebrow = "", headline = "", support = "", c
   const isMailto = String(ctaHref || "").startsWith("mailto:");
 
   return (
-    <section className="relative pt-36 pb-20 px-6 overflow-hidden">
-      <div className={`absolute inset-x-0 top-0 h-64 bg-gradient-to-b ${bgAccent} to-transparent pointer-events-none`} />
-      <div className="relative max-w-6xl mx-auto">
+    <section className="px-4 py-8 md:px-6 md:py-10">
+      <div className="dp-page-shell">
 
         {/* Back link */}
         <motion.div
@@ -19,13 +18,13 @@ export default function BrandHero({ eyebrow = "", headline = "", support = "", c
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Link to="/brands" className="inline-flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-primary transition-colors mb-10 group">
+          <Link to="/brands" className="inline-flex items-center gap-1.5 text-[12px] text-[rgba(11,31,51,0.56)] hover:text-[var(--dp-navy)] transition-colors mb-6 group">
             <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
             Partner Directory
           </Link>
         </motion.div>
 
-        <div className={`grid grid-cols-1 ${demoPanel ? "md:grid-cols-2" : ""} gap-16 items-start`}>
+        <div className={`dp-band grid grid-cols-1 ${demoPanel ? "md:grid-cols-2" : ""} gap-10 items-start p-6 md:p-10`}>
           {/* Left — copy */}
           <div>
             <motion.div
@@ -33,13 +32,13 @@ export default function BrandHero({ eyebrow = "", headline = "", support = "", c
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+              <span className="dp-micro-label block mb-4">
                 {eyebrow}
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight mb-6 text-foreground">
+              <h1 className="dp-display-hero mb-6 text-[2.5rem] md:text-[4rem] text-[var(--dp-navy)]">
                 {headline}
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-10 max-w-lg">
+              <p className="mb-10 max-w-lg text-[15px] leading-7 text-[rgba(11,31,51,0.68)]">
                 {support}
               </p>
               <div className="flex flex-col sm:flex-row items-start gap-3">
@@ -59,21 +58,21 @@ export default function BrandHero({ eyebrow = "", headline = "", support = "", c
                         successRoute: "/partners/brands",
                       })
                     }
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
+                    className="dp-cta-primary"
                   >
                     {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
                   </button>
                 ) : (
                 <Link
                   to={ctaHref || "/downtown-perks/card"}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
+                  className="dp-cta-primary"
                 >
                   {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
                 </Link>
                 )}
                 <Link
                   to="/downtown-perks/for-buildings"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground hover:border-border transition-all duration-300"
+                  className="dp-cta-secondary"
                 >
                   Partnership Details
                 </Link>

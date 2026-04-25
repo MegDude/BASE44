@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronDown, ArrowRight } from "lucide-react";
 
@@ -12,10 +13,16 @@ export default function PartnerBrandShowcase({ groups = [] }) {
           <p className="dp-eyebrow">
             Brand Showcase
           </p>
-          <h2 className="dp-display-section mt-4 text-4xl text-[var(--dp-navy,#0B1F33)] md:text-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="dp-heading-modern mt-4 max-w-3xl text-[2rem] md:text-[2.8rem]"
+          >
             Keep proof examples separate from the general partner story.
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-[rgba(11,31,51,0.62)]">
+          </motion.h2>
+          <p className="mt-4 text-sm leading-6 text-muted-foreground">
             These examples are for pitch context when relevant. They should not be carrying the core partner narrative on every page.
           </p>
         </div>
@@ -54,13 +61,13 @@ export default function PartnerBrandShowcase({ groups = [] }) {
                       <Link
                         key={item.route}
                         to={item.route}
-                        className="rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,245,238,0.92))] p-4 transition hover:translate-y-[-1px] hover:bg-white"
+                        className="rounded-[20px] bg-white/88 p-4 transition hover:translate-y-[-1px] hover:bg-white"
                       >
                         <div className="text-sm font-semibold text-[var(--dp-navy,#0B1F33)]">{item.name}</div>
                         <div className="mt-2 text-[12px] leading-5 text-[rgba(11,31,51,0.58)]">
                           {item.summary}
                         </div>
-                        <div className="mt-4 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(40,62%,42%)]">
+                        <div className="mt-4 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
                           Open example
                           <ArrowRight className="h-3.5 w-3.5" />
                         </div>

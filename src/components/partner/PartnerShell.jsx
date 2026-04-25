@@ -7,7 +7,7 @@ import { ROUTES } from '@/lib/routes';
 const PARTNER_NAV = [
   { label: 'Overview', href: ROUTES.partners },
   { label: 'Properties', href: ROUTES.partnerProperties },
-  { label: 'Hotels', href: ROUTES.partnerHotels },
+  { label: 'Hospitality', href: ROUTES.partnerHospitality },
   { label: 'Venues', href: ROUTES.partnerVenues },
   { label: 'Brands', href: ROUTES.partnerBrands },
   { label: 'Civic', href: ROUTES.partnerCivic },

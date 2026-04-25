@@ -10,6 +10,7 @@ import {
   Store,
   Users,
 } from "lucide-react";
+import { ROUTES } from "@/lib/routes";
 
 export const PARTNER_TYPE_ORDER = [
   "properties",
@@ -24,18 +25,18 @@ export const PARTNER_TYPE_CONTENT = {
     id: "properties",
     label: "Properties",
     shortLabel: "Property layer",
-    route: "/partners/properties",
-    legacyRoutes: ["/partners/residential"],
+    route: ROUTES.partnerProperties,
+    legacyRoutes: [ROUTES.partnerResidential],
     mapMode: "property",
     icon: Building2,
-    eyebrow: "Property Partner Layer",
-    headline: "Turn the building into a live neighborhood entry point.",
+    eyebrow: "For properties",
+    headline: "Turn the building into a stronger way into downtown.",
     description:
-      "Downtown Perks gives residential properties a mapped local utility for residents and a measurable neighborhood layer for operators. The value is not just the building itself. It is the building connected to what is walkable around it.",
+      "Downtown Perks helps property teams make downtown feel easier to use. Residents can see what is nearby, worth going to, and easy to act on. Property teams can see what people actually open, save, visit, and use.",
     outcomes: [
-      "Resident activation and card adoption",
-      "Building-level attribution for scans, saves, RSVPs, and redemptions",
-      "Neighborhood relevance for leasing, onboarding, and retention",
+      "Give residents one clear downtown layer instead of a scattered mix of apps and links",
+      "See which buildings lead to visits, saves, RSVPs, and redemptions",
+      "Make the building feel more useful in everyday life, not just on move-in day",
     ],
     metrics: [
       { label: "Buildings live", value: "6" },
@@ -46,48 +47,48 @@ export const PARTNER_TYPE_CONTENT = {
     modules: [
       {
         title: "Resident access",
-        body: "Building-specific QR entry, card issuance, building context, and resident onboarding without forcing a hard auth wall before browsing.",
+        body: "Give residents a simple way in through QR, text, card access, and building-linked entry.",
       },
       {
         title: "Neighborhood utility",
-        body: "Nearby places, events, and perks positioned as an amenity extension, not a directory.",
+        body: "Show nearby places, events, and perks as part of the building experience, not as a separate extra step.",
       },
       {
         title: "Attribution and retention",
-        body: "Track which buildings drive discovery, which categories convert, and what becomes habit over time.",
+        body: "See what residents use most, what brings them back, and what actually adds day-to-day value.",
       },
     ],
     workflow: [
-      "Register the building and QR entry points.",
-      "Let residents browse immediately and unlock the special layer at high-intent moments.",
-      "Track building-driven scans, saves, card activations, and repeat neighborhood use.",
+      "Connect the building and set up the QR and access points.",
+      "Let residents browse first and unlock more when they are ready to act.",
+      "Track scans, saves, card signups, visits, and repeat use in one system.",
     ],
     kpis: [
-      "Card activation rate",
-      "Building source attribution",
-      "Repeat weekly usage",
-      "Resident perk unlock rate",
+      "Card signups",
+      "Building-led visits",
+      "Weekly repeat use",
+      "Perk unlocks",
     ],
     intelligenceTitle: "Property intelligence map",
     intelligenceDescription:
-      "See residential engagement clusters, walkable opportunity zones, and building-to-venue relationships without mixing in the resident discovery UI.",
+      "See where residents are engaging, what is close enough to matter, and which buildings are actually driving activity.",
   },
   hospitality: {
     id: "hospitality",
     label: "Hospitality",
     shortLabel: "Guest layer",
-    route: "/partners/hospitality",
-    legacyRoutes: ["/partners/hotels"],
+    route: ROUTES.partnerHospitality,
+    legacyRoutes: [ROUTES.partnerHotelsLegacy],
     mapMode: "hospitality",
     icon: Hotel,
-    eyebrow: "Hospitality Partner Layer",
-    headline: "Give guests a better way into downtown from the moment they arrive.",
+    eyebrow: "For hospitality",
+    headline: "Help guests figure out downtown faster.",
     description:
-      "Hospitality partners use Downtown Perks as a QR-led guest layer: instant nearby guidance, walkable discovery, and measurable crossover from stay to local action.",
+      "Hotels can use Downtown Perks to show guests what is nearby, what is happening, and where to go next without sending them through a long front-desk process.",
     outcomes: [
-      "Faster guest discovery without front-desk friction",
-      "Track guest-to-venue movement and local engagement",
-      "Extend the stay beyond the lobby with a live downtown layer",
+      "Help guests find places faster",
+      "See where guests go after they scan in",
+      "Make the hotel feel more connected to downtown",
     ],
     metrics: [
       { label: "Hotels active", value: "9" },
@@ -98,31 +99,31 @@ export const PARTNER_TYPE_CONTENT = {
     modules: [
       {
         title: "Guest QR entry",
-        body: "Open the map instantly from lobby, room, concierge, or welcome materials with source attribution intact.",
+        body: "Let guests open the map from the lobby, room, concierge desk, or welcome materials.",
       },
       {
         title: "Nearby guidance",
-        body: "Dining, events, perks, and walkable places shown in context instead of static recommendation lists.",
+        body: "Show dining, events, perks, and walkable places instead of handing out a static list.",
       },
       {
         title: "Stay-to-visit measurement",
-        body: "Understand which guests browse, save, RSVP, and convert into nearby venue visits.",
+        body: "See which guests browse, save, RSVP, and actually head out to nearby places.",
       },
     ],
     workflow: [
-      "Place dynamic QR entry points across the property.",
-      "Let guests browse immediately and unlock offers only when value is clear.",
-      "Measure local movement, saves, RSVP activity, and perk redemptions by source.",
+      "Place QR entry points around the property.",
+      "Let guests browse right away and unlock offers when they want them.",
+      "Measure local movement, saves, RSVPs, and redemptions.",
     ],
     kpis: [
-      "QR open-to-map rate",
-      "Guest save rate",
-      "Stay-to-visit conversion",
-      "Repeat local engagement",
+      "QR opens",
+      "Guest saves",
+      "Guest-to-visit rate",
+      "Repeat local use",
     ],
     intelligenceTitle: "Hospitality intelligence map",
     intelligenceDescription:
-      "See guest-local crossover, hotel QR engagement, and nearby activity clusters around hospitality locations.",
+      "See guest activity, QR use, and what nearby places are getting attention.",
   },
   venues: {
     id: "venues",
@@ -131,14 +132,14 @@ export const PARTNER_TYPE_CONTENT = {
     route: "/partners/venues",
     mapMode: "venue",
     icon: Store,
-    eyebrow: "Venue Partner Layer",
-    headline: "Show up when downtown intent is already forming.",
+    eyebrow: "For venues",
+    headline: "Show up when people nearby are deciding where to go.",
     description:
-      "Venue partners do not need broader noise. They need relevance in the moment: nearby discovery, live map visibility, and offers tied to actual conversion behavior.",
+      "Venues do not need more noise. They need to be easy to notice when someone nearby is ready to choose a place.",
     outcomes: [
-      "Appear in high-intent nearby searches",
-      "Publish perks and events in context",
-      "Measure saves, visits, redemptions, and repeat behavior",
+      "Show up in nearby searches that matter",
+      "Post perks and events at the right time",
+      "Track saves, visits, redemptions, and repeat use",
     ],
     metrics: [
       { label: "Venues live", value: "24" },
@@ -149,31 +150,31 @@ export const PARTNER_TYPE_CONTENT = {
     modules: [
       {
         title: "Map placement",
-        body: "Pins, category visibility, live states, and walkable context across the resident map.",
+        body: "Show your pin, category, hours, and walking distance on the live map.",
       },
       {
         title: "Offer and event tools",
-        body: "Timed perks, RSVP moments, and category-specific placements that match the venue type.",
+        body: "Run perks and events that match your venue and your busiest hours.",
       },
       {
         title: "Conversion intelligence",
-        body: "Track which nearby conditions, hours, and source locations actually drive foot traffic and repeat use.",
+        body: "See what brings people in and what keeps them coming back.",
       },
     ],
     workflow: [
-      "List the venue, category, and live offer or event.",
-      "Appear in nearby search and map discovery without forcing the user through signup.",
-      "Use the dashboard to tune timing, offers, and category mix.",
+      "Add your venue, category, and current offer or event.",
+      "Show up on the map without forcing people to sign up first.",
+      "Use the dashboard to adjust timing, offers, and placement.",
     ],
     kpis: [
-      "Offer view-to-redemption rate",
+      "Offer-to-redemption rate",
       "Repeat customer rate",
-      "Time-of-day lift",
-      "Map save rate",
+      "Busy-hour lift",
+      "Map saves",
     ],
     intelligenceTitle: "Venue performance map",
     intelligenceDescription:
-      "See where saves, visit intent, offer redemptions, and coverage gaps cluster around active business nodes.",
+      "See where visits, saves, redemptions, and missed opportunities are showing up around your venue.",
   },
   brands: {
     id: "brands",
@@ -182,14 +183,14 @@ export const PARTNER_TYPE_CONTENT = {
     route: "/partners/brands",
     mapMode: "brand",
     icon: Sparkles,
-    eyebrow: "Brand Campaign Layer",
-    headline: "Use downtown as a live campaign surface, not a generic media buy.",
+    eyebrow: "For brands",
+    headline: "Show up in the moments when people are already paying attention.",
     description:
-      "Brand partners use Downtown Perks to run place-aware campaigns tied to buildings, venues, events, and real movement. The focus is timing, context, and measurable action.",
+      "Brands can use Downtown Perks to run campaigns tied to real places, real timing, and real activity across downtown.",
     outcomes: [
-      "Activation tied to district context and audience intent",
-      "Campaign placement across buildings, venues, and events",
-      "Track scans, saves, visits, redemptions, and repeat behavior",
+      "Reach people based on where they are and what they are doing",
+      "Run campaigns across buildings, venues, and events",
+      "Track scans, saves, visits, and redemptions",
     ],
     metrics: [
       { label: "Campaigns live", value: "12" },
@@ -200,31 +201,31 @@ export const PARTNER_TYPE_CONTENT = {
     modules: [
       {
         title: "Campaign formats",
-        body: "Launch campaigns, resident activations, event-led campaigns, and utility-led placements across downtown.",
+        body: "Run brand campaigns, resident offers, event tie-ins, and location-based placements.",
       },
       {
         title: "Source-aware measurement",
-        body: "Track scans, visits, and conversions by placement, building, campaign surface, and timing.",
+        body: "See which placement, building, or event is driving action.",
       },
       {
         title: "Brand showcase",
-        body: "Case studies live separately from the core partner narrative so sales examples stay optional and relevant.",
+        body: "Use examples when needed, without turning the whole page into a pitch deck.",
       },
     ],
     workflow: [
-      "Choose the campaign format based on downtown context and partner surfaces.",
-      "Launch through properties, hospitality, venues, events, or civic nodes.",
-      "Measure source, conversion, repeat behavior, and loyalty lift in the dashboard.",
+      "Pick the campaign type that fits the moment.",
+      "Launch through buildings, hotels, venues, events, or civic placements.",
+      "Track source, conversion, and repeat engagement in the dashboard.",
     ],
     kpis: [
-      "Scan-to-visit proxy",
+      "Scan-to-visit rate",
       "Campaign conversion rate",
-      "Building source attribution",
+      "Top source location",
       "Repeat redemption rate",
     ],
     intelligenceTitle: "Brand campaign map",
     intelligenceDescription:
-      "See activation zones, campaign reach, and conversion clusters across buildings, venues, and event nodes.",
+      "See where campaigns are being noticed and where they are leading to action.",
   },
   civic: {
     id: "civic",
@@ -233,14 +234,14 @@ export const PARTNER_TYPE_CONTENT = {
     route: "/partners/civic",
     mapMode: "civic",
     icon: Landmark,
-    eyebrow: "Civic Partner Layer",
-    headline: "Make downtown participation easier to see, join, and measure.",
+    eyebrow: "For civic groups",
+    headline: "Make it easier for people to see what is happening and join in.",
     description:
-      "Civic partners use Downtown Perks to surface district activity, event participation, and public-serving guidance through the same downtown map system.",
+      "Civic groups can use Downtown Perks to show district activity, public events, and useful local information in one place.",
     outcomes: [
-      "District visibility and event participation",
-      "Public-facing layers that remain useful, not promotional",
-      "Measure civic engagement by place, source, and activity type",
+      "Help more people find what is happening",
+      "Keep public information useful and easy to understand",
+      "Measure engagement by place and event type",
     ],
     metrics: [
       { label: "Monthly opens", value: "28k+" },
@@ -251,48 +252,48 @@ export const PARTNER_TYPE_CONTENT = {
     modules: [
       {
         title: "District visibility",
-        body: "Always-on district presence, event markers, and useful civic information across the map.",
+        body: "Keep district events and useful public information easy to find on the map.",
       },
       {
         title: "Participation design",
-        body: "Use QR, event-linked prompts, and building outreach to increase turnout and useful engagement.",
+        body: "Use QR codes, event prompts, and building outreach to help more people show up.",
       },
       {
         title: "Measurement and governance",
-        body: "Track event opens, RSVPs, district movement, and source-based participation patterns.",
+        body: "Track opens, RSVPs, visits, and where engagement is coming from.",
       },
     ],
     workflow: [
-      "Define the district, initiative, or public moment.",
-      "Launch the layer on the map with event, utility, or outreach surfaces.",
-      "Use the dashboard to monitor participation and refine what gets surfaced.",
+      "Set up the district, initiative, or public moment.",
+      "Put it on the map with events, guidance, and outreach points.",
+      "Use the dashboard to see what people are responding to.",
     ],
     kpis: [
       "District engagement",
-      "Event participation rate",
-      "Civic source attribution",
-      "Repeat local engagement",
+      "Event turnout",
+      "Top source locations",
+      "Repeat local use",
     ],
     intelligenceTitle: "Civic district intelligence map",
     intelligenceDescription:
-      "See event density, district engagement, coverage gaps, and public participation zones without mixing in resident discovery cards.",
+      "See where events are active, where engagement is growing, and where more visibility is needed.",
   },
 };
 
 export const PARTNER_LANDING_SECTIONS = [
   {
-    title: "Discovery stays open",
-    body: "Residents and guests should be able to browse immediately. Access layers, card issuance, and redemption unlock when the intent is real.",
+    title: "Let people browse first",
+    body: "People open the map, look around, and see what is nearby right away. The card, sign-up, and scan steps only appear when they want to save, RSVP, or redeem.",
     icon: Route,
   },
   {
-    title: "The map is the operating surface",
-    body: "Partner value comes from visibility in context: time, distance, neighborhood, building source, and current demand.",
+    title: "Show up when the choice is happening",
+    body: "The map works because it puts your place, offer, or event in front of someone while they are already downtown and already deciding what to do next.",
     icon: Users,
   },
   {
-    title: "The dashboard is the intelligence hub",
-    body: "Scans, saves, RSVPs, redemptions, repeat behavior, and source attribution should turn into clear next actions.",
+    title: "See what worked and what to change",
+    body: "The dashboard turns scans, saves, RSVPs, visits, and redemptions into something simple: what is working now, what needs help, and what to do next.",
     icon: BarChart3,
   },
 ];
@@ -300,19 +301,19 @@ export const PARTNER_LANDING_SECTIONS = [
 export const PARTNER_PLATFORM_MODULES = [
   {
     title: "Progressive-access resident flow",
-    body: "Browse first, then unlock the special layer for saves, RSVP, perks card, and redemption.",
+    body: "Let people browse first, then unlock saves, RSVP, the card, and redemption when they need it.",
   },
   {
     title: "Dynamic QR infrastructure",
-    body: "Track source, building, venue, campaign, placement, and time for every QR-led entry path.",
+    body: "Track where each QR scan came from, including the building, venue, campaign, and timing.",
   },
   {
     title: "Partner offer manager",
-    body: "Publish and manage offers, events, listings, timing, and category visibility from one workspace.",
+    body: "Manage offers, events, listings, timing, and visibility from one place.",
   },
   {
     title: "Attribution and loyalty signals",
-    body: "Measure repeat behavior, strongest source locations, and what turns intent into a regular customer base.",
+    body: "See what brings people back and which locations are doing the most work.",
   },
 ];
 
@@ -337,6 +338,11 @@ export const BRAND_SHOWCASE_GROUPS = [
         route: "/brands/yeti",
         summary: "Branded downtown activation with timing, source tracking, and event tie-ins.",
       },
+      {
+        name: "Inspired Closets Austin",
+        route: "/brands/inspired-closets-austin",
+        summary: "Home-services brand tied to downtown move-ins, upgrades, and everyday resident needs.",
+      },
     ],
   },
   {
@@ -357,7 +363,7 @@ export const BRAND_SHOWCASE_GROUPS = [
       {
         name: "Waterline",
         route: "/brands/the-waterline",
-        summary: "Mixed-use example showing premium positioning and neighborhood utility together.",
+        summary: "Mixed-use example showing how building value and neighborhood value work together.",
       },
     ],
   },

@@ -16,9 +16,9 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="dp-band dp-band-dark px-6 py-10 text-center md:px-8"
+          className="dp-band dp-band-dark px-6 py-10 text-left md:px-8"
         >
-          <h2 className="dp-display-section text-[30px] leading-[1.04] tracking-tight text-white md:text-[40px] mb-4">
+          <h2 className="dp-heading-modern-light mb-4 max-w-3xl text-[2rem] md:text-[2.8rem]">
             {headline}
           </h2>
 
@@ -28,7 +28,7 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
             </p>
           )}
 
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-start">
             {primaryCTA && (
               <button
                 type="button"

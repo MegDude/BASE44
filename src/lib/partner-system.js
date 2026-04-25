@@ -2,6 +2,7 @@
  * Unified Partner System Constants
  * Single source of truth for spacing, rhythm, and visual standards
  */
+import { ROUTES } from "@/lib/routes";
 
 export const PARTNER_SPACING = {
   // Section spacing
@@ -76,9 +77,9 @@ export const PARTNER_CATEGORIES = {
 };
 
 export const PARTNER_ROUTES = {
-  [PARTNER_CATEGORIES.RESIDENTIAL]: '/partners/residential',
-  [PARTNER_CATEGORIES.HOSPITALITY]: '/partners/hospitality',
-  [PARTNER_CATEGORIES.VENUES]: '/partners/venues',
-  [PARTNER_CATEGORIES.BRANDS]: '/partners/brands',
-  [PARTNER_CATEGORIES.CIVIC]: '/partners/civic',
+  [PARTNER_CATEGORIES.RESIDENTIAL]: ROUTES.partnerResidential,
+  [PARTNER_CATEGORIES.HOSPITALITY]: ROUTES.partnerHotels,
+  [PARTNER_CATEGORIES.VENUES]: ROUTES.partnerVenues,
+  [PARTNER_CATEGORIES.BRANDS]: ROUTES.partnerBrands,
+  [PARTNER_CATEGORIES.CIVIC]: ROUTES.partnerCivic,
 };

@@ -4,13 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { ASK_MAP_QUESTIONS } from '@/lib/map/searchUiConfig';
 import { IconAsk, IconClose, IconSearch } from '@/components/icons/DPIcons';
-
-const QUICK_PROMPTS = [
-  'coffee nearby',
-  'dinner tonight',
-  'live music tonight',
-  'resident perks',
-];
+import { APPROVED_HOME_COPY } from '@/lib/approvedCopy';
 
 export default function UnifiedSearchBar({
   mode = 'search',
@@ -22,7 +16,6 @@ export default function UnifiedSearchBar({
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
   const clearFilters = useMapStateStore((state) => state.clearFilters);
   const resultCount = useMapStateStore((state) => state.filteredResults.length);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [showAskPanel, setShowAskPanel] = useState(mode === 'ask');
   const inputRef = useRef(null);
 
@@ -67,12 +60,10 @@ export default function UnifiedSearchBar({
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             onFocus={() => {
-              setIsExpanded(true);
               if (mode === 'ask') {
                 setShowAskPanel(true);
               }
             }}
-            onBlur={() => window.setTimeout(() => setIsExpanded(false), 120)}
             onKeyDown={(event) => {
               if (event.key !== 'Enter') return;
               if (mode === 'ask') {
@@ -83,13 +74,13 @@ export default function UnifiedSearchBar({
               }
               event.preventDefault();
             }}
-            placeholder={mode === 'ask' ? 'Ask the map where to go, what to do, or who to meet' : 'Search venues, events, perks, or a corridor'}
+            placeholder={APPROVED_HOME_COPY.explore.searchPlaceholder}
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground md:text-base"
           />
 
           <span className="hidden rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(247,247,251,0.95)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500 md:inline-flex">
-            {resultCount} live
-          </span>
+              {resultCount} nearby
+            </span>
 
           <button
             type="button"
@@ -101,7 +92,7 @@ export default function UnifiedSearchBar({
             aria-label={mode === 'ask' ? 'Switch to search mode' : 'Switch to ask mode'}
           >
             <IconAsk className="h-3.5 w-3.5" />
-            {mode === 'ask' ? 'Search' : 'Ask'}
+              {mode === 'ask' ? 'Search' : 'Ask'}
           </button>
 
           {hasQuery ? (
@@ -139,7 +130,7 @@ export default function UnifiedSearchBar({
                     className="group w-full px-4 py-3 text-left transition-colors hover:bg-secondary/60 disabled:opacity-60"
                   >
                     <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
-                      {item.title}
+                      {APPROVED_HOME_COPY.hero.prompts[ASK_MAP_QUESTIONS.indexOf(item)] || item.title}
                     </div>
                     <div className="text-[12px] leading-relaxed text-foreground/60">{item.subtitle}</div>
                   </button>
@@ -156,42 +147,20 @@ export default function UnifiedSearchBar({
           )}
         </AnimatePresence>
 
-        <AnimatePresence>
-          {isExpanded && !hasQuery && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              className="mt-2 flex flex-wrap gap-2"
+        {!showAskPanel && !hasQuery ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button
+              onMouseDown={() => {
+                clearFilters();
+                setSearchQuery('');
+              }}
+              className="dp-chip hover:border-[rgba(11,31,51,0.24)]"
             >
-              {QUICK_PROMPTS.map((prompt) => (
-                <button
-                  key={prompt}
-                  onMouseDown={() => {
-                    setSearchQuery(prompt);
-                    if (mode === 'ask') {
-                      onAsk?.(prompt);
-                    }
-                  }}
-                  className="dp-chip hover:border-[rgba(11,31,51,0.24)]"
-                >
-                  {prompt}
-                </button>
-              ))}
-
-              <button
-                onMouseDown={() => {
-                  clearFilters();
-                  setSearchQuery('');
-                }}
-                className="dp-chip hover:border-[rgba(11,31,51,0.24)]"
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-                Reset map
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <RotateCcw className="h-3.5 w-3.5" />
+              Reset map
+            </button>
+          </div>
+        ) : null}
       </div>
     </motion.div>
   );

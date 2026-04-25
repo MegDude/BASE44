@@ -85,7 +85,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 pt-8 border-t border-border/40 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-14 flex flex-col items-start gap-2 border-t border-border/40 pt-8">
           <p className="text-[12px] text-muted-foreground/70">
             © {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701
           </p>

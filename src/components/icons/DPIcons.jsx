@@ -112,6 +112,17 @@ export function IconProperty(props) {
   );
 }
 
+export function IconLegends(props) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M7 4v16h10" />
+      <path d="M10 8h6" />
+      <path d="M10 12h5" />
+      <path d="M10 16h6" />
+    </BaseIcon>
+  );
+}
+
 export function IconUser(props) {
   return (
     <BaseIcon {...props}>
@@ -312,11 +323,19 @@ export function getEntityIcon(item) {
   const name = String(item?.name || item?.title || "").toLowerCase();
   const searchable = `${type} ${category} ${name}`;
 
+  if (type === "cluster") {
+    if (category === "property") return IconProperty;
+    if (category === "event") return IconEvent;
+    if (category === "partner") return IconPerk;
+    if (category === "civic") return IconCivic;
+    return IconMap;
+  }
   if (type === "event") return IconEvent;
   if (type === "perk" || item?.perk || item?.perk_value) return IconPerk;
   if (type === "hotel") return IconHotel;
   if (type === "brand" || type === "campaign") return IconBrand;
   if (type === "civic" || type === "district") return IconCivic;
+  if (item?.isLegends || item?.metadata?.isLegends) return IconLegends;
   if (type === "property" || type === "building") return IconProperty;
   if (searchable.includes("coffee") || searchable.includes("cafe")) return IconCoffee;
   if (searchable.includes("bar") || searchable.includes("cocktail") || searchable.includes("drink")) return IconDrink;
@@ -330,11 +349,19 @@ export function getEntityLabel(item) {
   const category = String(item?.category || item?.subcategory || item?.iconType || "").toLowerCase();
   const searchable = `${type} ${category}`;
 
+  if (type === "cluster") {
+    if (category === "property") return "Nearby Homes";
+    if (category === "event") return "Nearby Events";
+    if (category === "partner") return "Nearby Perks";
+    if (category === "civic") return "Nearby Places";
+    return "Nearby Places";
+  }
   if (type === "event") return "Event";
   if (type === "perk" || item?.perk || item?.perk_value) return "Perk";
   if (type === "hotel") return "Hotel";
   if (type === "brand" || type === "campaign") return "Brand";
   if (type === "civic" || type === "district") return "Civic";
+  if (item?.isLegends || item?.metadata?.isLegends) return "Legends Property";
   if (type === "property" || type === "building") return "Property";
   if (searchable.includes("coffee") || searchable.includes("cafe")) return "Coffee";
   if (searchable.includes("bar") || searchable.includes("cocktail") || searchable.includes("drink")) return "Drinks";
@@ -360,30 +387,72 @@ export function MarkerPin({
   accent = false,
   color = "#0B1A2B",
   accentColor = "#C6A85A",
+  variant = "venue",
+  saved = false,
+  live = false,
 }) {
+  const isProperty = variant === "property";
+  const isEvent = variant === "event";
+  const isPerk = variant === "perk";
+  const shellFill = selected
+    ? color
+    : isProperty
+      ? "#EEF3F8"
+      : isPerk
+        ? "#FFF9EC"
+        : "#FFFFFF";
+  const glyphColor = selected ? "#FFFFFF" : color;
+
   return (
     <svg
-      width="28"
-      height="36"
+      width="32"
+      height="42"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{ display: "block", color }}
     >
+      {isEvent ? (
+        <circle
+          cx="12"
+          cy="10.5"
+          r="7.6"
+          fill={selected ? "rgba(198,168,90,0.28)" : "rgba(198,168,90,0.16)"}
+          stroke="none"
+        />
+      ) : null}
       <path
         d="M12 21s6-5.4 6-10.5A6 6 0 0 0 6 10.5C6 15.6 12 21 12 21z"
-        fill={selected ? color : "#FFFFFF"}
+        fill={shellFill}
         stroke={color}
         strokeWidth="1.2"
       />
+      {isProperty ? (
+        <rect
+          x="8.2"
+          y="6.9"
+          width="7.6"
+          height="7.2"
+          rx="1.8"
+          fill={selected ? "rgba(255,255,255,0.18)" : "#FFFFFF"}
+          stroke={selected ? "rgba(255,255,255,0.6)" : "rgba(11,26,43,0.12)"}
+          strokeWidth="0.6"
+        />
+      ) : null}
       {Glyph ? (
-        <g transform="translate(7.8 6.5) scale(0.35)" style={{ color: selected ? "#FFFFFF" : color }}>
+        <g transform="translate(7.8 6.5) scale(0.35)" style={{ color: glyphColor }}>
           <Glyph size={24} />
         </g>
       ) : (
         <circle cx="12" cy="10.5" r="2.5" stroke={color} fill={selected ? "#FFFFFF" : "none"} />
       )}
-      {accent ? <circle cx="16.75" cy="7.6" r="1.25" fill={accentColor} stroke="none" /> : null}
+      {accent || isPerk ? <circle cx="16.75" cy="7.6" r="1.25" fill={accentColor} stroke="none" /> : null}
+      {saved ? (
+        <circle cx="7.1" cy="6.8" r="1.35" fill="#0B1A2B" stroke="#FFFFFF" strokeWidth="0.7" />
+      ) : null}
+      {live ? (
+        <circle cx="18.1" cy="13.8" r="1.2" fill="#2F6F55" stroke="#FFFFFF" strokeWidth="0.7" />
+      ) : null}
     </svg>
   );
 }

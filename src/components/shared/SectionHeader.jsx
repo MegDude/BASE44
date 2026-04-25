@@ -20,7 +20,7 @@ export default function SectionHeader({
 
   const alignClass = {
     left: "text-left",
-    center: "text-center",
+    center: "text-left",
     right: "text-right",
   }[align];
 
@@ -40,7 +40,7 @@ export default function SectionHeader({
       </h2>
 
       {intro && (
-        <p className={`${TYPOGRAPHY.bodyLarge} text-muted-foreground max-w-2xl ${align === "center" ? "mx-auto" : ""}`}>
+        <p className={`${TYPOGRAPHY.bodyLarge} text-muted-foreground max-w-2xl`}>
           {intro}
         </p>
       )}

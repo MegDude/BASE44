@@ -96,12 +96,20 @@ function attachResponseHelpers(res) {
 }
 
 const API_ROUTE_MAP = new Map([
+  ["/api/archive-manifest", "./api/archive-manifest.js"],
+  ["/api/archive-search", "./api/archive-search.js"],
   ["/api/ask-map", "./api/ask-map.js"],
+  ["/api/card-capture", "./api/card-capture.js"],
+  ["/api/civic-dashboard", "./api/civic-dashboard.js"],
+  ["/api/dashboard-snapshot", "./api/dashboard-snapshot.js"],
   ["/api/impression", "./api/impression.js"],
+  ["/api/partner-intake", "./api/partner-intake.js"],
+  ["/api/partner-insights", "./api/partner-insights.js"],
   ["/api/places", "./api/places.js"],
   ["/api/redeem", "./api/redeem.js"],
   ["/api/save", "./api/save.js"],
   ["/api/search-log", "./api/search-log.js"],
+  ["/api/venue-intel-capture", "./api/venue-intel-capture.js"],
   ["/api/visit", "./api/visit.js"],
 ]);
 

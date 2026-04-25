@@ -91,11 +91,11 @@ export default function FAQAccordionBlock({
   return (
     <section
       ref={ref}
-      className={`py-14 px-6 border-t border-border/40 ${sectionBg}`}
+      className={`px-4 py-8 border-t border-border/40 md:px-6 md:py-10 ${sectionBg}`}
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="dp-page-shell max-w-5xl">
         {isSplit ? (
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-10 items-start">
+          <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[1fr_1.6fr] md:gap-10">
             {/* Left: intro */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -112,7 +112,7 @@ export default function FAQAccordionBlock({
                 {sectionTitle}
               </h2>
               {sectionIntro && (
-                <p className={`text-[13px] leading-relaxed mb-8 ${isDark ? "text-[hsl(42,18%,70%)]" : "text-muted-foreground"}`}>
+                <p className={`mb-6 text-[13px] leading-6 ${isDark ? "text-[hsl(42,18%,70%)]" : "text-muted-foreground"}`}>
                   {sectionIntro}
                 </p>
               )}
@@ -130,7 +130,7 @@ export default function FAQAccordionBlock({
               initial={{ opacity: 0, y: 14 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7 }}
-              className="mb-10"
+              className="mb-8"
             >
               {sectionEyebrow && (
                 <span className={`text-[11px] font-medium uppercase tracking-[0.16em] block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
@@ -142,7 +142,7 @@ export default function FAQAccordionBlock({
                   {sectionTitle}
                 </h2>
                 {sectionIntro && (
-                  <p className={`text-[13px] leading-relaxed ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
+                  <p className={`text-[13px] leading-6 ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
                     {sectionIntro}
                   </p>
                 )}
@@ -156,7 +156,7 @@ export default function FAQAccordionBlock({
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ delay: 0.5 }}
-                className="mt-8"
+                className="mt-6"
               >
                 <CTAButton label={ctaLabel} href={ctaHref} isDark={isDark} />
               </motion.div>
@@ -252,7 +252,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
             className="overflow-hidden"
           >
             <div className={`${isCard ? "px-6 pb-4" : "px-2 pb-4"} ${showNumber ? "pl-11" : ""}`}>
-              <p className={`text-[13px] leading-relaxed ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
+              <p className={`text-[13px] leading-6 ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
                 {item.answer}
               </p>
               {item.linkLabel && item.linkHref && (

@@ -1,15 +1,192 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMapStateStore } from '@/store/mapStateStore';
+import { useResidentMutations } from '@/hooks/useResidentMutations';
 import {
   IconArrowRight,
   IconAsk,
+  IconCalendarCheck,
   IconClock,
   IconClose,
   getEntityIcon,
   getEntityLabel,
   IconNavigation,
+  IconPerk,
   IconSave,
 } from '@/components/icons/DPIcons';
+
+function getStatus(item) {
+  if (item?.isLive || item?.eventTiming?.isLive) return { label: 'Live now', tone: 'live' };
+  if (item?.isOpenNow) return { label: 'Open now', tone: 'open' };
+  if (item?.eventTiming?.startsSoon || item?.eventTiming?.startTime) {
+    return { label: 'Starting soon', tone: 'soon' };
+  }
+  return null;
+}
+
+function rankItems(items = [], savedEntityIds) {
+  return [...items].sort((a, b) => {
+    const aLive = Number(Boolean(a?.isLive || a?.eventTiming?.isLive));
+    const bLive = Number(Boolean(b?.isLive || b?.eventTiming?.isLive));
+    if (bLive !== aLive) return bLive - aLive;
+
+    const aOpen = Number(Boolean(a?.isOpenNow));
+    const bOpen = Number(Boolean(b?.isOpenNow));
+    if (bOpen !== aOpen) return bOpen - aOpen;
+
+    const aSaved = Number(savedEntityIds.has(a.id));
+    const bSaved = Number(savedEntityIds.has(b.id));
+    if (bSaved !== aSaved) return bSaved - aSaved;
+
+    const aWalk = a?.metadata?.walkMinutes ?? 999;
+    const bWalk = b?.metadata?.walkMinutes ?? 999;
+    if (aWalk !== bWalk) return aWalk - bWalk;
+
+    return (b?.metadata?.popularity ?? 0) - (a?.metadata?.popularity ?? 0);
+  });
+}
+
+function groupItems(items = [], savedEntityIds) {
+  const ranked = rankItems(items, savedEntityIds);
+
+  const liveNow = ranked.filter((item) => item?.isLive || item?.eventTiming?.isLive);
+  const happeningSoon = ranked.filter(
+    (item) =>
+      !(item?.isLive || item?.eventTiming?.isLive) &&
+      (item?.eventTiming?.startsSoon || item?.eventTiming?.startTime)
+  );
+  const openNearby = ranked.filter(
+    (item) =>
+      !(item?.isLive || item?.eventTiming?.isLive) &&
+      !(item?.eventTiming?.startsSoon || item?.eventTiming?.startTime) &&
+      item?.isOpenNow
+  );
+
+  const used = new Set([...liveNow, ...happeningSoon, ...openNearby].map((item) => item.id));
+  const rest = ranked.filter((item) => !used.has(item.id));
+
+  return [
+    { id: 'live', label: 'Live now', items: liveNow },
+    { id: 'soon', label: 'Happening soon', items: happeningSoon },
+    { id: 'open', label: 'Open nearby', items: openNearby },
+    { id: 'rest', label: 'More nearby', items: rest },
+  ].filter((group) => group.items.length > 0);
+}
+
+function ResultCard({ item, isSelected, isSaved, onSelect, onToggleSave, onPrimaryAction }) {
+  const metaWalk = item.metadata?.walkMinutes ? `${item.metadata.walkMinutes} min walk` : null;
+  const EntityIcon = getEntityIcon(item);
+  const entityLabel = getEntityLabel(item);
+  const status = getStatus(item);
+  const primaryAction =
+    item.type === 'event'
+      ? { label: 'RSVP', icon: IconCalendarCheck }
+      : item.type === 'perk' || item.perk?.value || item.perk_value
+        ? { label: 'Redeem', icon: IconPerk }
+        : { label: 'Details', icon: IconArrowRight };
+  const PrimaryIcon = primaryAction.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      className={`w-full rounded-[22px] border p-4 text-left transition-all ${
+        isSelected
+          ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.05)] shadow-[0_16px_32px_rgba(11,31,51,0.08)]'
+          : 'border-border bg-white hover:border-[rgba(11,31,51,0.22)] hover:shadow-sm'
+      }`}
+    >
+      <div className="w-full">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
+                <EntityIcon className="h-3.5 w-3.5" />
+                {entityLabel}
+              </span>
+              {status ? (
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${
+                    status.tone === 'live'
+                      ? 'bg-[rgba(47,111,85,0.12)] text-[#2F6F55]'
+                      : status.tone === 'soon'
+                        ? 'bg-[rgba(198,168,90,0.16)] text-[#7E622A]'
+                        : 'bg-[rgba(11,31,51,0.08)] text-[#0b1f33]'
+                  }`}
+                >
+                  {status.label}
+                </span>
+              ) : null}
+            </div>
+            <h3 className="mt-2 text-base font-semibold text-[#0b1f33]">{item.name}</h3>
+          </div>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleSave();
+            }}
+            className={isSaved ? 'dp-chip dp-chip-active' : 'dp-chip'}
+            aria-label={isSaved ? `Remove ${item.name} from saved` : `Save ${item.name}`}
+          >
+            <IconSave className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        <button type="button" onClick={onSelect} className="mt-2 w-full text-left">
+          <p className="text-sm text-slate-600">{item.description || item.address}</p>
+
+          <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
+            {item.address && (
+              <span className="dp-chip">
+                <IconNavigation className="h-3.5 w-3.5" />
+                {item.address.split(',')[0]}
+              </span>
+            )}
+            {metaWalk && (
+              <span className="dp-chip">
+                <IconClock className="h-3.5 w-3.5" />
+                {metaWalk}
+              </span>
+            )}
+            {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
+          </div>
+        </button>
+      </div>
+
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        <button
+          type="button"
+          onClick={onPrimaryAction}
+          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-[#0b1f33] px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white"
+          aria-label={`${primaryAction.label} ${item.name}`}
+        >
+          <PrimaryIcon className="h-3.5 w-3.5" />
+          {primaryAction.label}
+        </button>
+        <button
+          type="button"
+          onClick={onToggleSave}
+          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b1f33]"
+          aria-label={isSaved ? `Unsave ${item.name}` : `Save ${item.name}`}
+        >
+          <IconSave className="h-3.5 w-3.5" />
+          {isSaved ? 'Saved' : 'Save'}
+        </button>
+        <button
+          type="button"
+          onClick={onSelect}
+          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-[rgba(11,31,51,0.04)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b1f33]"
+          aria-label={`View details for ${item.name}`}
+        >
+          Details
+          <IconArrowRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function UnifiedResultsPanel({ items = [], onSelectResult, onClose = null, title = null }) {
   const selectedEntityId = useMapStateStore((state) => state.selectedEntityId);
@@ -17,17 +194,21 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult, onClos
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const toggleSaved = useMapStateStore((state) => state.toggleSaved);
+  const mutations = useResidentMutations();
+  const groups = groupItems(items, savedEntityIds);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col" aria-live="polite">
       <div className="border-b border-border px-5 py-4">
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-semibold text-foreground">
-              {title || 'Downtown results'}
+              {title || `${items.length} live near you`}
               {searchQuery ? ` for “${searchQuery}”` : ''}
             </h2>
-            <p className="mt-1 text-xs text-slate-500">Pins, perks, events, and properties in one live view.</p>
+            <p className="mt-1 text-xs text-slate-500">
+              Ranked for the next 5 to 30 minutes: live now, open now, and closest first.
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
@@ -51,83 +232,64 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult, onClos
         {items.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center rounded-[24px] border border-dashed border-border bg-white px-6 py-12 text-center">
             <IconAsk className="mb-3 h-8 w-8 text-slate-300" />
-            <p className="text-sm font-medium text-foreground">No results yet</p>
-            <p className="mt-1 text-xs text-slate-500">Try a different search or clear a few filters.</p>
+            <p className="text-sm font-medium text-foreground">Nothing nearby right now</p>
+            <p className="mt-1 text-xs text-slate-500">Try a different search, clear a filter, or move the map.</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-5">
             <AnimatePresence>
-              {items.map((item) => {
-                const isSaved = savedEntityIds.has(item.id);
-                const isSelected = selectedEntityId === item.id;
-                const metaWalk = item.metadata?.walkMinutes ? `${item.metadata.walkMinutes} min walk` : null;
-                const EntityIcon = getEntityIcon(item);
-                const entityLabel = getEntityLabel(item);
+              {groups.map((group) => (
+                <section key={group.id}>
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <h3 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                      {group.label}
+                    </h3>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      {group.items.length}
+                    </span>
+                  </div>
 
-                return (
-                  <motion.button
-                    key={item.id}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    onClick={() => {
-                      selectEntity(item);
-                      onSelectResult?.(item);
-                    }}
-                    className={`w-full rounded-[22px] border p-4 text-left transition-all ${
-                      isSelected
-                        ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.04)] shadow-sm'
-                        : 'border-border bg-white hover:border-[rgba(11,31,51,0.22)] hover:shadow-sm'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
-                          <EntityIcon className="h-3.5 w-3.5" />
-                          {entityLabel}
-                        </span>
-                        <h3 className="mt-2 text-base font-semibold text-[#0b1f33]">{item.name}</h3>
-                      </div>
+                  <div className="space-y-3">
+                    {group.items.map((item) => {
+                      const isSaved = savedEntityIds.has(item.id);
+                      const isSelected = selectedEntityId === item.id;
 
-                      <button
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          toggleSaved(item.id);
-                        }}
-                        className={isSaved ? 'dp-chip dp-chip-active' : 'dp-chip'}
-                        aria-label="Save location"
-                      >
-                        <IconSave className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
+                      return (
+                        <ResultCard
+                          key={item.id}
+                          item={item}
+                          isSelected={isSelected}
+                          isSaved={isSaved}
+                          onSelect={() => {
+                            selectEntity(item);
+                            onSelectResult?.(item);
+                          }}
+                          onToggleSave={async () => {
+                            toggleSaved(item.id);
+                            await mutations.toggleSavedItem(item);
+                          }}
+                          onPrimaryAction={async () => {
+                            selectEntity(item);
+                            onSelectResult?.(item);
 
-                    <p className="mt-2 text-sm text-slate-600">{item.description || item.address}</p>
+                            if (item.type === 'event') {
+                              await mutations.upsertRsvp(item);
+                              return;
+                            }
 
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
-                      {item.address && (
-                        <span className="dp-chip">
-                          <IconNavigation className="h-3.5 w-3.5" />
-                          {item.address.split(',')[0]}
-                        </span>
-                      )}
-                      {metaWalk && (
-                        <span className="dp-chip">
-                          <IconClock className="h-3.5 w-3.5" />
-                          {metaWalk}
-                        </span>
-                      )}
-                      {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
-                    </div>
+                            if (item.type === 'perk' || item.perk?.value || item.perk_value) {
+                              await mutations.createRedemption(item);
+                              return;
+                            }
 
-                    <div className="mt-3 flex items-center justify-end text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                      <span className="inline-flex items-center gap-1">
-                        View details
-                        <IconArrowRight className="h-3.5 w-3.5" />
-                      </span>
-                    </div>
-                  </motion.button>
-                );
-              })}
+                            await mutations.logInteraction(item, 'detail_open', undefined, { surface: 'results_panel' });
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
             </AnimatePresence>
           </div>
         )}

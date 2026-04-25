@@ -2,533 +2,810 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  Building2,
   Calendar,
+  ChevronDown,
   Clock3,
-  Compass,
   Filter,
-  Gift,
   MapPin,
   Search,
   Sparkles,
   Users,
-  X,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
-import MapFilterBars from "@/components/map/shared/MapFilterBars";
+import { APPROVED_HOME_COPY } from "@/lib/approvedCopy";
+import { ROUTES } from "@/lib/routes";
+import MobileActionPanel from "@/components/shared/MobileActionPanel";
 import {
   ASK_MAP_QUESTIONS,
   PRIMARY_SEARCH_PRESETS,
-  SECONDARY_SEARCH_PRESETS,
   getPrimaryPresetDefinition,
 } from "@/lib/map/searchUiConfig";
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80";
-
 const AUSTIN_CENTER = [30.267, -97.743];
 
-function getSearchDefaults(view) {
-  const preset = getPrimaryPresetDefinition(view);
-  return {
-    query: preset?.query || "",
-    walkMinutes: null,
-  };
+const SEARCH_PRESETS = [
+  {
+    id: "walkable",
+    label: "Restaurants, bars, coffee shops, and services nearby",
+    query: "restaurants bars coffee and services nearby",
+    activeView: "five-minute",
+    activePrimary: "all",
+  },
+  {
+    id: "tonight",
+    label: "Events happening tonight, ready to RSVP",
+    query: "events happening tonight downtown Austin",
+    activeView: "people",
+    activePrimary: "all",
+  },
+  {
+    id: "perks",
+    label: "Local perks from places you'd go anyway",
+    query: "local perks nearby",
+    activeView: "resident",
+    activePrimary: "all",
+  },
+  {
+    id: "saved",
+    label: "Places worth coming back to",
+    query: "best places worth coming back to downtown Austin",
+    activeView: "resident",
+    activePrimary: "all",
+  },
+];
+
+const ROTATING_SEARCH_LINES = [
+  "Where do you want to go",
+  "What do you want to do",
+  "Who do you want to meet",
+];
+
+const MAP_VIEWS = [
+  {
+    id: "five-minute",
+    label: "The 5-Minute Neighborhood",
+    description: "Walkable neighborhood",
+    defaultPins: ["venue", "event", "building"],
+  },
+  {
+    id: "people",
+    label: "Not Just Places. People.",
+    description: "Social and trending activity",
+    defaultPins: ["venue", "event", "moment"],
+  },
+  {
+    id: "resident",
+    label: "Live Here. Get Everything.",
+    description: "Homes, perks, events, and access",
+    defaultPins: ["building", "perk", "event", "brand"],
+  },
+];
+
+const PIN_TOGGLES = [
+  { id: "venue", label: "Places", icon: MapPin },
+  { id: "perk", label: "Perks", icon: Sparkles },
+  { id: "event", label: "Events", icon: Calendar },
+  { id: "building", label: "Homes", icon: Building2 },
+  { id: "moment", label: "People", icon: Users },
+  { id: "brand", label: "Brands", icon: Sparkles },
+];
+
+function normalizePinType(item) {
+  if (!item) return "venue";
+  const type = String(item?.type || item?.entity_type || "").toLowerCase();
+  if (["building", "property", "hotel"].includes(type)) return "building";
+  if (type === "perk") return "perk";
+  if (type === "event") return "event";
+  if (type === "moment") return "moment";
+  if (type === "brand") return "brand";
+  return "venue";
+}
+
+function getPromptSeed(question) {
+  if (question?.query) return question.query;
+  return "coffee nearby";
+}
+
+function itemMatchesPrimaryPreset(item, activePrimary) {
+  const preset = getPrimaryPresetDefinition(activePrimary);
+  const normalizedType = normalizePinType(item) === "building" ? "property" : normalizePinType(item);
+  const category = String(item?.category || item?.subcategory || "").toLowerCase();
+
+  if (preset.entityTypes?.length && !preset.entityTypes.includes(normalizedType)) return false;
+  if (preset.categories?.length && !preset.categories.includes(category)) return false;
+  return true;
+}
+
+function itemMatchesMapView(item, activeView) {
+  const walkMinutes = item?.metadata?.walkMinutes ?? 999;
+  const popularity = Number(item?.metadata?.popularity ?? 0);
+  const pinType = normalizePinType(item);
+
+  if (activeView === "people") {
+    return (
+      pinType === "moment" ||
+      pinType === "event" ||
+      item?.isLive ||
+      item?.eventTiming?.isLive ||
+      popularity >= 55
+    );
+  }
+
+  if (activeView === "resident") {
+    return (
+      ["building", "perk", "event", "brand"].includes(pinType) ||
+      Boolean(item?.perk?.value || item?.perk_value)
+    );
+  }
+
+  return (
+    pinType === "building" ||
+    pinType === "event" ||
+    walkMinutes <= 8 ||
+    ["coffee", "restaurant", "bar", "entertainment", "retail", "wellness", "services"].includes(
+      String(item?.category || "").toLowerCase()
+    )
+  );
+}
+
+function getMapMetrics(items = [], activeView = "five-minute") {
+  const liveNow = items.some((item) => item?.isLive || item?.eventTiming?.isLive);
+  const hasEvents = items.some((item) => normalizePinType(item) === "event");
+  const hasShortWalk = items.some((item) => (item?.metadata?.walkMinutes ?? 999) <= 8);
+  const hasPerks = items.some((item) => normalizePinType(item) === "perk" || item?.perk?.value || item?.perk_value);
+  const hasCardReady = items.some((item) => item?.perk?.value || item?.perk_value || normalizePinType(item) === "perk");
+  const hasDistrict = items.some((item) => item?.district);
+
+  if (activeView === "people") {
+    return [
+      liveNow ? "Open now" : "Open nearby",
+      hasEvents ? "Events tonight" : "People nearby",
+      hasDistrict ? "District relevance" : "Nearby now",
+    ];
+  }
+
+  if (activeView === "resident") {
+    return [
+      hasShortWalk ? "Walk time" : "Nearby now",
+      hasPerks ? "Nearby perks" : "Card-ready access",
+      hasCardReady ? "Card-ready access" : "District relevance",
+    ];
+  }
+
+  return [
+    liveNow ? "Open now" : "Nearby now",
+    hasEvents ? "Events tonight" : "Walk time",
+    hasPerks ? "Nearby perks" : hasDistrict ? "District relevance" : "Card-ready access",
+  ];
 }
 
 function getPreviewMeta(item) {
   const walkMinutes = item?.metadata?.walkMinutes;
-  const supporting =
-    item?.perk?.value ||
-    item?.perk_value ||
-    item?.description ||
-    item?.category ||
-    "Live nearby";
-
   return {
     title: item?.title || item?.name || "Downtown pick",
-    supporting,
     detail: Number.isFinite(walkMinutes)
       ? `${walkMinutes} min walk`
       : item?.district || item?.address || "Downtown Austin",
+    summary:
+      item?.perk?.value ||
+      item?.perk_value ||
+      item?.description ||
+      item?.category ||
+      "Nearby now",
   };
 }
 
-function filterPreviewItems(items, view) {
-  if (!Array.isArray(items)) return [];
-  const preset = getPrimaryPresetDefinition(view);
-  const allowedTypes = new Set((preset?.entityTypes || []).map((type) => (type === "building" ? "property" : type)));
-  const allowedCategories = new Set((preset?.categories || []).map((category) => String(category).toLowerCase()));
-
-  return items.filter((item) => {
-    const itemType = item?.type === "building" ? "property" : item?.type;
-    const itemCategory = String(item?.category || item?.subcategory || "").toLowerCase();
-
-    if (allowedTypes.size > 0 && !allowedTypes.has(itemType)) {
-      return false;
-    }
-
-    if (allowedCategories.size > 0 && !allowedCategories.has(itemCategory)) {
-      return false;
-    }
-
-    return true;
-  });
+function buildResultHref(item) {
+  const type = normalizePinType(item);
+  if (type === "building") return ROUTES.partnerProperties;
+  if (type === "brand") return ROUTES.partnerBrands;
+  if (type === "event") return ROUTES.events;
+  if (type === "perk") return ROUTES.perks;
+  return ROUTES.explore;
 }
 
-export default function HeroSection({ mapContext, onExplore, onAsk }) {
+function buildResidentCardHref(item, query) {
+  const params = new URLSearchParams();
+  params.set("query", String(item?.title || item?.name || query || "nearby perks"));
+
+  const type = normalizePinType(item);
+  if (type === "event") params.set("chip", "event");
+  else if (type === "perk") params.set("chip", "perk");
+  else params.set("chip", "venue");
+
+  return `${ROUTES.residentAppCard}?${params.toString()}`;
+}
+
+export default function HeroSection({ mapContext, onAsk }) {
   const [query, setQuery] = useState(mapContext?.query || "");
-  const [interactionMode, setInteractionMode] = useState(mapContext?.askMode ? "ask" : "search");
-  const [activePrimary, setActivePrimary] = useState(mapContext?.category || "all");
-  const [activeSecondary, setActiveSecondary] = useState(
-    Array.isArray(mapContext?.toggles) ? mapContext.toggles : []
-  );
-  const [walkMinutes, setWalkMinutes] = useState(
-    Number.isFinite(mapContext?.walkMinutes) ? mapContext.walkMinutes : null
-  );
+  const [activePrimary, setActivePrimary] = useState("all");
+  const [activeView, setActiveView] = useState("five-minute");
+  const [selectedQuestion, setSelectedQuestion] = useState(ASK_MAP_QUESTIONS[0]);
+  const [activePins, setActivePins] = useState(MAP_VIEWS[0].defaultPins);
   const [selectedEntity, setSelectedEntity] = useState(null);
-  const [selectionDismissed, setSelectionDismissed] = useState(false);
-  const [resultsExpanded, setResultsExpanded] = useState(false);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [showMoreResults, setShowMoreResults] = useState(false);
+  const [showResultsPanel, setShowResultsPanel] = useState(false);
+  const [rotatingPromptIndex, setRotatingPromptIndex] = useState(0);
 
   useEffect(() => {
     setQuery(mapContext?.query || "");
-    setInteractionMode(mapContext?.askMode ? "ask" : "search");
-    setActivePrimary(mapContext?.category || "all");
-    setActiveSecondary(Array.isArray(mapContext?.toggles) ? mapContext.toggles : []);
-    setWalkMinutes(Number.isFinite(mapContext?.walkMinutes) ? mapContext.walkMinutes : null);
   }, [mapContext?.requestKey]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    setResultsExpanded(window.innerWidth >= 1024);
+    const nextDefaults = MAP_VIEWS.find((view) => view.id === activeView)?.defaultPins || [];
+    setActivePins(nextDefaults);
+  }, [activeView]);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setRotatingPromptIndex((current) => (current + 1) % ROTATING_SEARCH_LINES.length);
+    }, 2600);
+
+    return () => window.clearInterval(intervalId);
   }, []);
 
-  const activeSecondarySet = useMemo(() => new Set(activeSecondary), [activeSecondary]);
-  const searchDefaults = useMemo(() => getSearchDefaults(activePrimary), [activePrimary]);
-  const previewQuery = String(query || "").trim() || searchDefaults.query;
+  const primaryPreset = useMemo(() => getPrimaryPresetDefinition(activePrimary), [activePrimary]);
+  const previewQuery = String(query || "").trim() || primaryPreset.query || "";
 
   const { items } = useSharedMapFeed({
     query: previewQuery,
     activeCategory: "all",
-    limit: 40,
+    limit: 260,
   });
 
-  const previewItems = useMemo(
-    () =>
-      filterPreviewItems(items, activePrimary)
-        .filter((item) => {
-          if (walkMinutes && (item?.metadata?.walkMinutes ?? 999) > walkMinutes) {
-            return false;
-          }
-
-          if (
-            activeSecondarySet.has("perks") &&
-            !(item?.type === "perk" || item?.perk?.value || item?.perk_value)
-          ) {
-            return false;
-          }
-
-          if (
-            activeSecondarySet.has("crowd") &&
-            !(item?.isTrending || item?.isLive || item?.metadata?.crowdLevel)
-          ) {
-            return false;
-          }
-
-          return true;
-        })
-        .slice(0, 18),
-    [activePrimary, activeSecondarySet, items, walkMinutes]
-  );
+  const visibleItems = useMemo(() => {
+    const activePinSet = new Set(activePins);
+    return (items || [])
+      .filter((item) => itemMatchesMapView(item, activeView))
+      .filter((item) => itemMatchesPrimaryPreset(item, activePrimary))
+      .filter((item) => activePinSet.has(normalizePinType(item)))
+      .slice(0, 180);
+  }, [activePins, activePrimary, activeView, items]);
 
   useEffect(() => {
-    if (!previewItems.length) {
+    if (!visibleItems.length) {
       setSelectedEntity(null);
-      setSelectionDismissed(false);
       return;
     }
 
     setSelectedEntity((current) => {
-      if (current && previewItems.some((item) => item.id === current.id)) {
-        return previewItems.find((item) => item.id === current.id) || current;
+      if (current && visibleItems.some((item) => item.id === current.id)) {
+        return visibleItems.find((item) => item.id === current.id) || current;
       }
-
-      if (selectionDismissed) {
-        return null;
-      }
-
-      return previewItems[0];
+      return visibleItems[0];
     });
-  }, [previewItems, selectionDismissed]);
+  }, [visibleItems]);
 
-  const featuredCards = previewItems.slice(0, 3);
+  useEffect(() => {
+    setShowMoreResults(false);
+  }, [selectedEntity?.id, query, activePrimary, activeView, activePins.join("|")]);
+
+  const results = visibleItems.slice(0, 10);
+  const additionalResults = results.filter((item) => item.id !== selectedEntity?.id);
   const mapCenter = selectedEntity?.location
     ? [selectedEntity.location.latitude, selectedEntity.location.longitude]
-      : featuredCards[0]?.location
-        ? [featuredCards[0].location.latitude, featuredCards[0].location.longitude]
-        : AUSTIN_CENTER;
+    : AUSTIN_CENTER;
+  const metrics = getMapMetrics(visibleItems, activeView);
+  const withinFiveCount = visibleItems.filter((item) => (item?.metadata?.walkMinutes ?? 999) <= 5).length;
+  const homesCount = visibleItems.filter((item) => normalizePinType(item) === "building").length;
+  const nearbyCount = visibleItems.length;
+  const groupedCategorySummaries = [
+    {
+      id: "all",
+      label: "Nearby",
+      count: nearbyCount,
+    },
+    {
+      id: "coffee",
+      label: "Coffee",
+      count: visibleItems.filter((item) => String(item?.category || "").toLowerCase() === "coffee").length,
+    },
+    {
+      id: "dining",
+      label: "Dining",
+      count: visibleItems.filter((item) =>
+        ["restaurant", "bar", "food", "dining"].includes(String(item?.category || "").toLowerCase())
+      ).length,
+    },
+    {
+      id: "nightlife",
+      label: "Nightlife",
+      count: visibleItems.filter((item) =>
+        ["nightlife", "bar", "music", "entertainment"].includes(String(item?.category || "").toLowerCase())
+      ).length,
+    },
+    {
+      id: "wellness",
+      label: "Wellness",
+      count: visibleItems.filter((item) =>
+        ["wellness", "fitness", "spa"].includes(String(item?.category || "").toLowerCase())
+      ).length,
+    },
+  ].filter((item) => item.count > 0);
+  const activePromptText = ROTATING_SEARCH_LINES[rotatingPromptIndex];
+  const selectedMeta = selectedEntity ? getPreviewMeta(selectedEntity) : null;
+  const searchRailItems = [
+    ...SEARCH_PRESETS.map((preset) => ({
+      id: `preset-${preset.id}`,
+      label: preset.label,
+      active:
+        activeView === preset.activeView &&
+        String(query || "").trim().toLowerCase() === preset.query.toLowerCase(),
+      onClick: () => handleSearchPreset(preset),
+    })),
+    ...ASK_MAP_QUESTIONS.map((question) => ({
+      id: `question-${question.title}`,
+      label: question.title.replace("?", ""),
+      active: selectedQuestion?.title === question.title,
+      onClick: () => handleQuestion(question),
+    })),
+  ];
 
   function buildPayload(nextQuery = query) {
     const trimmedQuery = String(nextQuery || "").trim();
     return {
-      query: trimmedQuery || searchDefaults.query,
+      query: trimmedQuery || primaryPreset.query || "",
       category: activePrimary || "all",
-      walkMinutes,
-      toggles: activeSecondary,
+      walkMinutes: activeView === "five-minute" ? 5 : null,
+      toggles: activePins,
     };
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    const payload = buildPayload(query);
-    if (interactionMode === "ask") {
-      onAsk?.(payload);
-      return;
-    }
-    onExplore?.(payload);
+    onAsk?.(buildPayload(query));
   }
 
-  function handlePrimarySelect(nextValue) {
-    setActivePrimary(nextValue);
-    setSelectionDismissed(false);
+  function handlePrompt(prompt) {
+    setQuery(prompt.query);
+    onAsk?.(buildPayload(prompt.query));
   }
 
-  function handleSecondaryToggle(nextValue) {
-    setActiveSecondary((current) =>
-      current.includes(nextValue)
-        ? current.filter((value) => value !== nextValue)
-        : [...current, nextValue]
-    );
-    setSelectionDismissed(false);
+  function handleSearchPreset(preset) {
+    setActiveView(preset.activeView);
+    setActivePrimary(preset.activePrimary);
+    const nextDefaults = MAP_VIEWS.find((view) => view.id === preset.activeView)?.defaultPins || [];
+    setActivePins(nextDefaults);
+    setQuery(preset.query);
+    onAsk?.({
+      query: preset.query,
+      category: preset.activePrimary,
+      walkMinutes: preset.activeView === "five-minute" ? 5 : null,
+      toggles: nextDefaults,
+    });
   }
 
-  function handleAsk(nextQuery = query) {
-    setInteractionMode("ask");
-    setSelectionDismissed(false);
-    onAsk?.(buildPayload(nextQuery));
+  function handleQuestion(question) {
+    setSelectedQuestion(question);
+    const seed = getPromptSeed(question);
+    setQuery(seed);
   }
 
-  function handleSelectEntity(item) {
-    setSelectionDismissed(false);
-    setSelectedEntity(item);
-  }
-
-  function handleCloseDetail() {
-    setSelectionDismissed(true);
-    setSelectedEntity(null);
+  function togglePin(pinId) {
+    setActivePins((current) => {
+      if (current.includes(pinId)) {
+        const next = current.filter((value) => value !== pinId);
+        return next.length ? next : current;
+      }
+      return [...current, pinId];
+    });
   }
 
   return (
     <section className="relative overflow-hidden bg-[#0b1730] pt-[84px] text-white">
       <div className="absolute inset-0">
-        <img
-          src={HERO_IMAGE}
-          alt="Downtown Austin skyline"
-          className="h-full w-full object-cover"
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(198,168,90,0.14),transparent_28%),linear-gradient(180deg,rgba(8,17,36,0.8)_0%,rgba(10,22,44,0.9)_44%,rgba(11,23,48,1)_100%)]" />
+        <div
+          className="absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,16,34,0.64)_0%,rgba(11,23,48,0.55)_40%,rgba(11,23,48,0.86)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(168,197,255,0.42),transparent_22rem)]" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-[linear-gradient(180deg,rgba(11,23,48,0)_0%,rgba(11,23,48,0.92)_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-[280px] bg-[radial-gradient(circle_at_center,rgba(198,168,90,0.14),transparent_62%)] blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-12 md:px-6 md:pb-16">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,560px)_1fr] lg:items-end">
-          <div className="pt-10 md:pt-16 lg:pt-20">
-            <div className="max-w-[560px] rounded-[28px] border border-white/18 bg-white/14 p-5 shadow-[0_24px_80px_rgba(3,10,24,0.28)] backdrop-blur-xl md:p-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/16 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78">
-                Downtown Perks
-              </div>
-
-              <h1 className="mt-4 font-heading text-[42px] font-semibold leading-[0.94] tracking-[-0.05em] text-white md:text-[68px]">
-                Where downtown
-                <br />
-                meets you
-              </h1>
-
-              <p className="mt-3 max-w-[40rem] text-[15px] leading-7 text-white/78 md:text-[16px]">
-                Everything nearby — in one map.
-              </p>
-
-              <form
-                onSubmit={handleSubmit}
-                className="mt-6 rounded-[24px] border border-white/22 bg-white/88 p-2 shadow-[0_18px_46px_rgba(6,16,34,0.18)]"
-              >
-                <div className="flex flex-col gap-2 md:flex-row">
-                  <div className="flex h-12 flex-1 items-center gap-3 rounded-[18px] border border-[rgba(11,31,51,0.12)] bg-white px-4">
-                    <Search className="h-4 w-4 shrink-0 text-[rgba(11,31,51,0.46)]" />
-                    <input
-                      type="text"
-                      value={query}
-                      onChange={(event) => setQuery(event.target.value)}
-                      placeholder={
-                        interactionMode === "ask"
-                          ? "Ask where to go, what to do, or who to meet"
-                          : "Search places, events, perks, or what is nearby"
-                      }
-                      className="flex-1 bg-transparent text-sm text-[#0B1F33] outline-none placeholder:text-[rgba(11,31,51,0.40)]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setInteractionMode((current) => (current === "ask" ? "search" : "ask"))
-                      }
-                      className={`inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
-                        interactionMode === "ask"
-                          ? "border-[#0B1F33] bg-[#0B1F33] text-white"
-                          : "border-[rgba(11,31,51,0.10)] text-[rgba(11,31,51,0.68)] hover:bg-[rgba(11,31,51,0.04)]"
-                      }`}
-                    >
-                      <Sparkles className="h-3.5 w-3.5" />
-                      {interactionMode === "ask" ? "Ask on" : "Ask"}
-                    </button>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="inline-flex h-12 items-center justify-center gap-2 rounded-[18px] bg-[#0B1F33] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#122743]"
-                  >
-                    Explore
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="mt-3 overflow-hidden rounded-[18px] border border-[rgba(11,31,51,0.10)] bg-white shadow-[0_10px_24px_rgba(11,31,51,0.08)]">
-                  <MapFilterBars
-                    primaryOptions={PRIMARY_SEARCH_PRESETS}
-                    secondaryOptions={SECONDARY_SEARCH_PRESETS}
-                    activePrimary={activePrimary}
-                    activeSecondary={activeSecondary}
-                    onPrimarySelect={handlePrimarySelect}
-                    onSecondaryToggle={handleSecondaryToggle}
-                  />
-                </div>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setWalkMinutes((current) => (current === 5 ? null : 5))}
-                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
-                      walkMinutes === 5
-                        ? "border-[#0B1F33] bg-[#0B1F33] text-white"
-                        : "border-[rgba(11,31,51,0.10)] bg-white text-[rgba(11,31,51,0.76)] hover:bg-[rgba(11,31,51,0.04)]"
-                    }`}
-                  >
-                    5 min walk
-                  </button>
-
-                  {ASK_MAP_QUESTIONS.map((item) => (
-                    <button
-                      key={item.title}
-                      type="button"
-                      onClick={() => {
-                        setQuery(item.query);
-                        handleAsk(item.query);
-                      }}
-                      className="rounded-full border border-[rgba(11,31,51,0.10)] bg-[rgba(11,31,51,0.03)] px-3 py-1.5 text-xs font-medium text-[rgba(11,31,51,0.72)] transition-colors hover:bg-white"
-                    >
-                      {item.title}
-                    </button>
-                  ))}
-                </div>
-              </form>
-
-              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-medium text-white/74">
-                <span>One map</span>
-                <span>Everything nearby</span>
-                <span>No app download</span>
-                <span>No login friction</span>
-              </div>
-            </div>
+      <div className="relative mx-auto max-w-7xl px-4 pb-10 md:px-6 md:pb-14">
+        <div className="mx-auto max-w-[58rem] pt-8 text-center md:pt-12 lg:pt-16">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/82">
+            {APPROVED_HOME_COPY.hero.eyebrow}
           </div>
-
-          <div className="hidden lg:flex lg:justify-end">
+          <h1 className="mx-auto mt-4 max-w-[13ch] font-heading text-[2.7rem] font-semibold leading-[0.92] tracking-[-0.055em] text-white md:text-[4.5rem]">
+            {APPROVED_HOME_COPY.hero.title}
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-7 text-[rgba(255,255,255,0.9)] md:text-[17px]">
+            {APPROVED_HOME_COPY.hero.lead}
+          </p>
+          <p className="mx-auto mt-3 max-w-[42rem] text-[13px] leading-6 text-[rgba(255,255,255,0.78)]">
+            {APPROVED_HOME_COPY.hero.body}
+          </p>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link
-              to="/partners"
-              className="inline-flex h-12 items-center gap-2 rounded-full border border-white/16 bg-white/10 px-5 text-sm font-semibold text-white/92 shadow-[0_12px_32px_rgba(3,10,24,0.16)] backdrop-blur-xl transition-colors hover:bg-white/14"
+              to={ROUTES.explore}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-white px-5 text-sm font-semibold text-[var(--dp-navy)] shadow-[0_12px_28px_rgba(4,10,22,0.12)] transition-colors hover:bg-white/94"
             >
-              Partner platform
-              <Compass className="h-4 w-4" />
+              {APPROVED_HOME_COPY.hero.primaryCta}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to={ROUTES.residentAppCard}
+              className="inline-flex h-12 items-center justify-center rounded-[16px] bg-white/10 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/14"
+            >
+              {APPROVED_HOME_COPY.hero.secondaryCta}
+            </Link>
+            <Link
+              to={ROUTES.partners}
+              className="inline-flex h-12 items-center justify-center rounded-[16px] border border-[var(--dp-gold)]/28 bg-[rgba(207,175,90,0.14)] px-5 text-sm font-semibold text-[var(--dp-gold)] transition-colors hover:bg-[rgba(207,175,90,0.2)]"
+            >
+              {APPROVED_HOME_COPY.hero.tertiaryCta}
             </Link>
           </div>
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-[30px] border border-white/14 bg-white/10 shadow-[0_24px_70px_rgba(3,10,24,0.24)] backdrop-blur-md">
-          <div className="flex items-center justify-between gap-3 border-b border-white/12 px-4 py-3 md:px-5">
-            <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
-                Live downtown map
+        <div className="mx-auto mt-8 max-w-6xl">
+          <div className="px-4 py-4 md:px-5 md:py-5">
+            <div className="mx-auto max-w-5xl">
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/88">
+                  <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
+                  One Search. Go Everywhere.
+                </div>
+                <div className="mt-3 font-ui text-[1.28rem] font-semibold tracking-[-0.03em] text-white md:text-[1.6rem]">
+                  One Search. Go Everywhere.
+                </div>
+                <div className="mt-2 flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68">
+                  <span>Where to go</span>
+                  <span className="text-white/34">•</span>
+                  <span>What to do</span>
+                  <span className="text-white/34">•</span>
+                  <span>Who to meet</span>
+                </div>
               </div>
-              <div className="mt-1 text-sm font-semibold text-white">
-                The map is the product.
-              </div>
-            </div>
 
-            <div className="hidden items-center gap-2 text-[12px] text-white/70 md:flex">
-              <Sparkles className="h-3.5 w-3.5 text-[#d6ba7a]" />
-              Nearby now
+              <form onSubmit={handleSubmit} className="mt-5">
+                <div className="relative mx-auto max-w-4xl">
+                  <div className="flex min-h-[64px] items-center gap-3 rounded-[18px] border border-white/14 bg-[rgba(255,255,255,0.95)] px-4 py-3 shadow-[0_18px_40px_rgba(6,16,34,0.12)] backdrop-blur-xl md:min-h-[70px] md:px-5">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-[rgba(11,31,51,0.05)] text-[var(--dp-gold-muted)]">
+                      <Sparkles className="h-4.5 w-4.5" />
+                    </div>
+
+                    <div className="min-w-0 flex-1 text-left">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.4)]">
+                        {activePromptText}
+                      </div>
+                      <input
+                        type="text"
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        placeholder={APPROVED_HOME_COPY.hero.searchPlaceholder}
+                        className="mt-1 w-full bg-transparent text-[15px] font-medium text-[#0B1F33] outline-none placeholder:text-[rgba(11,31,51,0.32)] md:text-[16px]"
+                      />
+                    </div>
+
+                    <div className="relative flex shrink-0 items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowFilterMenu((current) => !current)}
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white text-[var(--dp-navy)] transition-colors hover:bg-[rgba(11,31,51,0.04)]"
+                        aria-label="Open search filters"
+                      >
+                        <Filter className="h-4 w-4" />
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="inline-flex h-11 items-center justify-center gap-2 rounded-[12px] bg-[#0B1F33] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#122743] md:px-5"
+                      >
+                        <Search className="h-4 w-4" />
+                        Ask
+                      </button>
+
+                      {showFilterMenu ? (
+                        <div className="absolute right-0 top-[calc(100%+10px)] z-20 w-[320px] rounded-[20px] border border-[rgba(11,31,51,0.08)] bg-white p-4 text-left text-[var(--dp-navy)] shadow-[0_22px_60px_rgba(6,16,34,0.18)]">
+                          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                            Search mode
+                          </div>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {PRIMARY_SEARCH_PRESETS.map((preset) => {
+                              const Icon = preset.icon;
+                              const active = activePrimary === preset.id;
+                              return (
+                                <button
+                                  key={preset.id}
+                                  type="button"
+                                  onClick={() => setActivePrimary(preset.id)}
+                                  className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                                    active
+                                      ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]"
+                                      : "bg-[rgba(11,31,51,0.05)] text-[rgba(11,31,51,0.74)] hover:bg-[rgba(11,31,51,0.08)]"
+                                  }`}
+                                >
+                                  {Icon ? <Icon className="h-3.5 w-3.5" /> : null}
+                                  {preset.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                            Show on map
+                          </div>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {PIN_TOGGLES.map((toggle) => {
+                              const Icon = toggle.icon;
+                              const active = activePins.includes(toggle.id);
+                              return (
+                                <button
+                                  key={toggle.id}
+                                  type="button"
+                                  onClick={() => togglePin(toggle.id)}
+                                  className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                                    active
+                                      ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]"
+                                      : "bg-[rgba(11,31,51,0.05)] text-[rgba(11,31,51,0.74)] hover:bg-[rgba(11,31,51,0.08)]"
+                                  }`}
+                                >
+                                  <Icon className="h-3.5 w-3.5" />
+                                  {toggle.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                {searchRailItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={item.onClick}
+                    className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                      item.active
+                        ? "border-white bg-white text-[var(--dp-navy)]"
+                        : "border-[rgba(255,255,255,0.14)] bg-white/8 text-white/88 hover:bg-white/14"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-3 flex items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/72">
+                <Filter className="h-3.5 w-3.5" />
+                Filters tucked into the search bar
+              </div>
             </div>
           </div>
 
-          <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_340px]">
-            <div className="relative h-[360px] overflow-hidden md:h-[440px]">
+          <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="relative h-[420px] overflow-hidden rounded-[24px] shadow-[0_24px_70px_rgba(3,10,24,0.18)] md:h-[540px]">
               <UnifiedMapShell
-                items={previewItems}
+                items={visibleItems}
                 markerIcon={(item, active) => createMarker(item, { isSelected: active })}
                 onMarkerSelect={setSelectedEntity}
                 mapCenter={mapCenter}
-                mapZoom={14}
+                mapZoom={13.25}
                 selectedId={selectedEntity?.id}
                 className="h-full w-full"
+                enableClustering={false}
               />
+            </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 md:p-4">
-                <div className="pointer-events-auto flex gap-3 overflow-x-auto pb-1">
-                  {featuredCards.map((item) => {
-                    const meta = getPreviewMeta(item);
-                    const isActive = item.id === selectedEntity?.id;
+            <div className="hidden lg:block">
+              <div className="overflow-hidden rounded-[22px] bg-[rgba(255,255,255,0.06)]">
+                <button
+                  type="button"
+                  onClick={() => setShowResultsPanel((current) => !current)}
+                  className="flex w-full items-start justify-between gap-3 px-4 py-4 text-left"
+                >
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/72">
+                      Nearby Results
+                    </div>
+                    <div className="mt-1 text-[14px] font-semibold text-white">
+                      {showResultsPanel ? "Hide result details" : "Open result details"}
+                    </div>
+                  </div>
+                  <ChevronDown
+                    className={`mt-0.5 h-4 w-4 text-white/72 transition-transform ${showResultsPanel ? "rotate-180" : ""}`}
+                  />
+                </button>
 
-                    return (
+                <div className="border-t border-white/12 px-4 py-3">
+                  <div className="flex flex-wrap gap-2">
+                    <span className="rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/84">
+                      {withinFiveCount} Within 5 Min
+                    </span>
+                    <span className="rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/84">
+                      {homesCount} Homes
+                    </span>
+                    <span className="rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/84">
+                      {nearbyCount} Nearby
+                    </span>
+                    {groupedCategorySummaries.map((item) => (
                       <button
                         key={item.id}
                         type="button"
-                        onClick={() => setSelectedEntity(item)}
-                        className={`min-w-[220px] rounded-[20px] border px-4 py-3 text-left shadow-[0_14px_36px_rgba(6,16,34,0.16)] backdrop-blur-xl transition-all ${
-                          isActive
-                            ? "border-white/28 bg-white/92"
-                            : "border-white/18 bg-white/84 hover:bg-white/92"
-                        }`}
+                        onClick={() => {
+                          if (item.id === "all") {
+                            setActivePrimary("all");
+                            return;
+                          }
+                          setActivePrimary(item.id);
+                        }}
+                        className="rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/82 transition-colors hover:bg-white/14"
                       >
-                        <div className="text-sm font-semibold text-[#0B1F33]">{meta.title}</div>
-                        <div className="mt-1 text-[13px] leading-5 text-[rgba(11,31,51,0.66)]">
-                          {meta.supporting}
-                        </div>
-                        <div className="mt-3 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[rgba(11,31,51,0.54)]">
-                          <Clock3 className="h-3.5 w-3.5" />
-                          {meta.detail}
-                        </div>
+                        {item.count} {item.label}
                       </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t border-white/12 bg-[rgba(11,23,48,0.34)] p-4 lg:border-l lg:border-t-0 lg:bg-[rgba(255,255,255,0.08)]">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
-                    Nearby results
-                  </div>
-                  <div className="mt-1 text-sm text-white/78">
-                    {previewItems.length} live results {walkMinutes ? `within ${walkMinutes} min walk` : "nearby now"}
+                    ))}
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setResultsExpanded((current) => !current)}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/78 transition-colors hover:bg-white/14"
-                >
-                  <Filter className="h-3.5 w-3.5" />
-                  {resultsExpanded ? "Hide list" : "Show list"}
-                </button>
-              </div>
-
-              {selectedEntity ? (
-                <div className="mb-3 rounded-[18px] border border-white/16 bg-white/14 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/58">
-                        Selected now
+                {showResultsPanel ? (
+                  <div className="border-t border-white/12">
+                    <div className="flex items-start justify-between gap-3 px-4 py-4">
+                      <div>
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/72">
+                          Top Result
+                        </div>
+                        <div className="mt-1 text-[15px] font-semibold text-white">
+                          {selectedEntity?.title || selectedEntity?.name || "Nearby now"}
+                        </div>
+                        <div className="mt-1 text-[12px] leading-5 text-white/82">
+                          RSVP-ready, nearby, and close enough to make the decision easy.
+                        </div>
                       </div>
-                      <div className="mt-1 text-base font-semibold text-white">
-                        {getPreviewMeta(selectedEntity).title}
-                      </div>
-                      <div className="mt-2 text-[13px] leading-5 text-white/74">
-                        {getPreviewMeta(selectedEntity).supporting}
+                      <div className="flex flex-wrap justify-end gap-2">
+                        {metrics.map((metric) => (
+                          <span
+                            key={metric}
+                            className="rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/84"
+                          >
+                            {metric}
+                          </span>
+                        ))}
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={handleCloseDetail}
-                      className="rounded-full border border-white/12 bg-white/10 p-2 text-white/76 transition-colors hover:bg-white/16"
-                      aria-label="Close selected location"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap items-center gap-3 text-[11px] font-medium uppercase tracking-[0.1em] text-white/54">
-                    <span className="inline-flex items-center gap-1.5">
-                      <Clock3 className="h-3.5 w-3.5" />
-                      {getPreviewMeta(selectedEntity).detail}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Users className="h-3.5 w-3.5" />
-                      {interactionMode === "ask" ? "Ask result" : "Nearby pick"}
-                    </span>
-                  </div>
-                </div>
-              ) : null}
-
-              {resultsExpanded ? (
-                <div className="space-y-3 lg:max-h-[360px] lg:overflow-y-auto lg:pr-1">
-                  {(previewItems.length ? previewItems : []).slice(0, 6).map((item) => {
-                  const meta = getPreviewMeta(item);
-                  const isEvent = item?.type === "event";
-                  const isPerk = item?.type === "perk" || Boolean(item?.perk?.value || item?.perk_value);
-
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => handleSelectEntity(item)}
-                      className={`w-full rounded-[18px] border px-4 py-3 text-left transition-colors ${
-                        item.id === selectedEntity?.id
-                          ? "border-white/26 bg-white/18"
-                          : "border-white/12 bg-white/8 hover:bg-white/14"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <div className="text-sm font-semibold text-white">{meta.title}</div>
-                          <div className="mt-1 text-[13px] leading-5 text-white/70">
-                            {meta.supporting}
+                    {selectedEntity ? (
+                      <div className="border-t border-white/12 p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5 shrink-0 rounded-[12px] bg-white/12 p-2">
+                            {normalizePinType(selectedEntity) === "event" ? (
+                              <Calendar className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
+                            ) : normalizePinType(selectedEntity) === "perk" ? (
+                              <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
+                            ) : normalizePinType(selectedEntity) === "building" ? (
+                              <Building2 className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
+                            ) : normalizePinType(selectedEntity) === "moment" ? (
+                              <Users className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
+                            ) : (
+                              <MapPin className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[15px] font-semibold text-white">{selectedMeta?.title}</div>
+                            <div className="mt-2 text-[13px] leading-6 text-white/84">{selectedMeta?.summary}</div>
+                            <div className="mt-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/66">
+                              <Clock3 className="h-3.5 w-3.5" />
+                              {selectedMeta?.detail}
+                            </div>
+                            <div className="mt-4 flex flex-col gap-2">
+                              <Link
+                                to={buildResultHref(selectedEntity)}
+                                className="inline-flex items-center gap-2 rounded-[12px] bg-white/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white/14"
+                              >
+                                Open detail
+                                <ArrowRight className="h-3.5 w-3.5" />
+                              </Link>
+                              <Link
+                                to={buildResidentCardHref(selectedEntity, query)}
+                                className="inline-flex items-center gap-2 rounded-[12px] bg-[var(--dp-gold)] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--dp-navy)] transition-colors hover:bg-[#d2b46a]"
+                              >
+                                Save to perks card
+                                <Sparkles className="h-3.5 w-3.5" />
+                              </Link>
+                            </div>
                           </div>
                         </div>
-
-                        {isEvent ? (
-                          <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ba7a]" />
-                        ) : isPerk ? (
-                          <Gift className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ba7a]" />
-                        ) : (
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ba7a]" />
-                        )}
                       </div>
+                    ) : null}
 
-                      <div className="mt-3 text-[11px] font-medium uppercase tracking-[0.1em] text-white/52">
-                        {meta.detail}
+                    {additionalResults.length ? (
+                      <div className="border-t border-white/10">
+                        <button
+                          type="button"
+                          onClick={() => setShowMoreResults((current) => !current)}
+                          className="flex w-full items-center justify-between px-4 py-3 text-left"
+                        >
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/76">
+                            {showMoreResults ? "Hide other results" : `More results (${additionalResults.length})`}
+                          </span>
+                          <ChevronDown
+                            className={`h-4 w-4 text-white/72 transition-transform ${showMoreResults ? "rotate-180" : ""}`}
+                          />
+                        </button>
+
+                        {showMoreResults ? (
+                          <div className="divide-y divide-white/10">
+                            {additionalResults.map((item) => {
+                              const meta = getPreviewMeta(item);
+                              return (
+                                <button
+                                  key={item.id}
+                                  type="button"
+                                  onClick={() => setSelectedEntity(item)}
+                                  className="w-full px-4 py-3 text-left transition-colors hover:bg-white/6"
+                                >
+                                  <div className="text-[13px] font-semibold text-white">{meta.title}</div>
+                                  <div className="mt-1 text-[12px] leading-5 text-white/80">{meta.summary}</div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : null}
                       </div>
-                    </button>
-                  );
-                })}
+                    ) : null}
 
-                {!previewItems.length ? (
-                  <div className="rounded-[18px] border border-white/12 bg-white/8 px-4 py-5 text-[13px] leading-6 text-white/68">
-                    No items available for this filter yet.
+                    {!visibleItems.length ? (
+                      <div className="border-t border-white/12 px-4 py-4 text-[13px] leading-6 text-white/80">
+                        No map results for this combination yet.
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
-                </div>
-              ) : (
-                <div className="rounded-[18px] border border-white/12 bg-white/8 px-4 py-4 text-[13px] leading-6 text-white/68">
-                  Keep the list rolled up and use the map or the selected card to stay focused.
-                </div>
-              )}
+              </div>
+            </div>
             </div>
           </div>
-        </div>
+
+          <AnimatePresence>
+            {selectedEntity ? (
+              <motion.div
+                key={selectedEntity.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+              >
+                <MobileActionPanel
+                  eyebrow={String(selectedEntity?.category || normalizePinType(selectedEntity) || "Nearby").toLowerCase()}
+                  title={selectedMeta?.title || "Nearby now"}
+                  meta={selectedMeta?.detail}
+                  onClose={() => setSelectedEntity(null)}
+                  closeLabel="Close selected result"
+                  actions={
+                    <>
+                      <Link to={buildResultHref(selectedEntity)} className="dp-cta-primary flex-1 justify-center">
+                        Open detail
+                      </Link>
+                      <Link
+                        to={buildResidentCardHref(selectedEntity, query)}
+                        className="dp-cta-secondary flex-1 justify-center"
+                      >
+                        Save to perks card
+                      </Link>
+                    </>
+                  }
+                >
+                  <div className="text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">
+                    {selectedMeta?.summary}
+                  </div>
+                </MobileActionPanel>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
       </div>
     </section>
   );

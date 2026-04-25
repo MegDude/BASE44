@@ -63,8 +63,8 @@ export default function EventRSVPForm({ event, onClose }) {
 
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
-      <div className="bg-[#f8f6f2] border border-[#e8e5df] rounded-lg p-3">
-        <div className="text-[11px] font-bold uppercase tracking-widest text-[#8d887f] mb-2">
+      <div className="rounded-lg border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] p-3">
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
           Event details
         </div>
         <div className="text-[13px] font-semibold text-[#111]">{event.title}</div>
@@ -80,7 +80,7 @@ export default function EventRSVPForm({ event, onClose }) {
           value={formData.contact}
           onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
           placeholder="So we can send your RSVP details"
-          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+          className="w-full rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
         />
       </div>
 
@@ -91,7 +91,7 @@ export default function EventRSVPForm({ event, onClose }) {
         <select
           value={formData.guest_count}
           onChange={(e) => setFormData({ ...formData, guest_count: e.target.value })}
-          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+          className="w-full rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
             <option key={n} value={n}>

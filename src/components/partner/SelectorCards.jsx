@@ -29,7 +29,7 @@ export default function SelectorCards({
           className={`text-left p-5 rounded-2xl border transition-all duration-200 ${
             selectedId === item.id
               ? 'border-[#111] bg-[#111] text-white shadow-lg'
-              : 'border-[#e8e5df] bg-white text-[#111] hover:border-[#bbb] hover:shadow-md'
+              : 'border-[rgba(11,31,51,0.08)] bg-white text-[#111] hover:border-[rgba(11,31,51,0.18)] hover:shadow-md'
           }`}
         >
           <div className="flex items-start justify-between gap-2 mb-2">
@@ -44,7 +44,7 @@ export default function SelectorCards({
           {item.description && (
             <div
               className={`text-[13px] leading-relaxed ${
-                selectedId === item.id ? 'text-white/80' : 'text-[#7a746b]'
+                selectedId === item.id ? 'text-white/80' : 'text-muted-foreground'
               }`}
             >
               {item.description}
@@ -56,7 +56,7 @@ export default function SelectorCards({
               {item.stats.map((stat, j) => (
                 <div key={j} className="text-[11px]">
                   <div className="font-semibold">{stat.value}</div>
-                  <div className={selectedId === item.id ? 'text-white/60' : 'text-[#8d887f]'}>
+                  <div className={selectedId === item.id ? 'text-white/60' : 'text-muted-foreground'}>
                     {stat.label}
                   </div>
                 </div>

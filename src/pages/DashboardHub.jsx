@@ -27,7 +27,7 @@ export default function DashboardHub() {
   const { openFlow } = useCTAFlow();
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] pt-[68px] text-[var(--dp-navy,#0B1B2A)]">
+    <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1B2A)]">
       <section className="border-b border-[rgba(19,36,67,0.08)] px-6 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--dp-gold-muted,#B79B56)]">
@@ -41,13 +41,13 @@ export default function DashboardHub() {
               <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
                 {userName
                   ? `Signed in as ${userName}. Continue into the resident surface or the partner/property intelligence hub.`
-                  : "Residents get the live map and card. Partners and properties get the backend operating layer: residents, campaigns, amenities, maintenance, reports, partners, and map intelligence."}
+                  : "Residents get the live map and card. Partners and properties get the operating view for residents, campaigns, amenities, reports, partner activity, and map intelligence."}
               </p>
             </div>
 
             <Link
               to="/downtown-perks/explore"
-              className="inline-flex h-12 items-center gap-2 rounded-[12px] border border-[rgba(13,27,42,0.10)] bg-white px-5 text-sm font-semibold uppercase tracking-[0.14em] text-foreground transition-all hover:bg-[#fbfcfe]"
+              className="inline-flex h-12 items-center gap-2 rounded-[12px] border border-[rgba(13,27,42,0.10)] bg-white px-5 text-sm font-semibold uppercase tracking-[0.14em] text-foreground transition-all hover:bg-[var(--dp-surface-base)]"
             >
               Open live map
               <Map className="h-4 w-4 text-[var(--dp-gold-muted,#B79B56)]" />
@@ -77,10 +77,10 @@ export default function DashboardHub() {
                 <div>
                   <Link
                     to={option.to}
-                    className="inline-flex h-11 items-center gap-2 rounded-[12px] bg-[hsl(218,42%,14%)] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(42,24%,96%)] transition-all hover:bg-[hsl(218,42%,12%)]"
+                    className="dp-cta-primary inline-flex h-11 items-center gap-2 rounded-[12px] px-4 text-xs font-semibold uppercase tracking-[0.14em]"
                   >
                     Enter
-                    <ArrowRight className="h-4 w-4 text-[hsl(40,62%,46%)]" />
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               </div>

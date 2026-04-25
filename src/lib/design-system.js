@@ -1,33 +1,72 @@
 /**
- * DOWNTOWN PERKS — Unified Design System
- * 
- * Foundation:
- * - Token-based color system (index.css, tailwind.config.js)
- * - Typography: Inter Tight (display), Inter (body), Allura (accent)
- * - Spacing: 4px base unit grid (0.5rem radius)
- * - Motion: Framer Motion (precise, fast, purposeful)
- * - Glass/Overlay system: refined, light-touch, map-aware
- * 
- * Principles:
- * - Minimalism as default (strip noise, tighten spacing)
- * - Big typography only where hierarchy needs it
- * - Glass selective (overlays, previews, map modules)
- * - Brutalism only for emphasis (proof, ROI, statements)
- * - Immersive scroll on narrative surfaces only
- * - Dark mode deliberate (map contexts, night use)
- * - Bento grids for mixed content structure
- * - One coherent interaction language across all surfaces
+ * DOWNTOWN PERKS — Product System Tokens
+ *
+ * This file is the repo-facing contract for the systemization pass:
+ * - one typography pairing
+ * - one spacing scale
+ * - one radius scale
+ * - one glass-first surface hierarchy
+ * - one CTA and section archetype model
+ *
+ * Keep values here deliberately narrow so routes do not drift into
+ * page-by-page visual inventions.
  */
+
+export const TYPOGRAPHY_STACK = {
+  display: "Canela",
+  body: "Inter",
+};
+
+export const SECTION_ARCHETYPES = [
+  "hero",
+  "mode-switch",
+  "live-intelligence",
+  "proof-module",
+  "workflow",
+  "final-cta",
+];
+
+export const CTA_LABELS = {
+  openMap: "Open Map",
+  exploreNearby: "Explore Nearby",
+  viewEvents: "View Events",
+  getPerksCard: "Get the Perks Card",
+  getMyCard: "Get My Card",
+  viewPartnerTypes: "View Partner Types",
+  startPilot: "Start the Pilot",
+  checkAvailability: "Apply to Be a Partner",
+};
+
+export const COPY_MODEL = {
+  productPromise: "One map. Everything nearby.",
+  behavioralPromise: "Search less. Do more.",
+  residentValue:
+    "See what is nearby, what is on, and what is worth doing right now.",
+  partnerValue: "Show up when nearby intent is already forming.",
+  cardValue: "One simple card for local perks, access, and resident rewards.",
+  platformValue:
+    "Places, events, perks, and properties in one live downtown layer.",
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SHARED SPACING & LAYOUT
 // ─────────────────────────────────────────────────────────────────────────────
 
+export const SPACE = {
+  8: "8px",
+  12: "12px",
+  16: "16px",
+  24: "24px",
+  32: "32px",
+  48: "48px",
+  64: "64px",
+};
+
 export const SPACING = {
   // Vertical section rhythm
-  heroVertical: "py-20 md:py-32 lg:py-40",
-  sectionVertical: "py-16 md:py-24 lg:py-32",
-  subsectionVertical: "py-12 md:py-16 lg:py-20",
+  heroVertical: "py-16 md:py-24 lg:py-28",
+  sectionVertical: "py-12 md:py-16 lg:py-20",
+  subsectionVertical: "py-8 md:py-12 lg:py-16",
   denseVertical: "py-8 md:py-12",
 
   // Horizontal padding
@@ -41,12 +80,12 @@ export const SPACING = {
   containerNarrow: "max-w-2xl",
 
   // Card/module spacing
-  cardGapTight: "gap-3",
-  cardGapStandard: "gap-6",
-  cardGapLarge: "gap-8",
+  cardGapTight: "gap-2 md:gap-3",
+  cardGapStandard: "gap-4 md:gap-6",
+  cardGapLarge: "gap-6 md:gap-8",
 
   // Typography spacing
-  headlineSpacing: "mb-5 md:mb-6 lg:mb-8",
+  headlineSpacing: "mb-4 md:mb-5 lg:mb-6",
   bodySpacing: "mb-3 md:mb-4",
 };
 
@@ -56,27 +95,30 @@ export const SPACING = {
 
 export const TYPOGRAPHY = {
   // Hero headlines (narrative surfaces)
-  heroHeadline: "font-heading text-5xl md:text-6xl font-medium leading-[1.05] tracking-tight",
+  heroHeadline:
+    "font-heading text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-semibold leading-[0.94] tracking-[-0.04em]",
   
   // Section headlines (major transitions)
-  sectionHeadline: "font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight",
+  sectionHeadline:
+    "font-heading text-[1.9rem] md:text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.03em]",
   
   // Subsection headlines
-  subsectionHeadline: "font-heading text-2xl md:text-3xl font-medium leading-[1.15] tracking-tight",
+  subsectionHeadline:
+    "font-heading text-[1.4rem] md:text-[1.75rem] font-semibold leading-[1.08] tracking-[-0.02em]",
   
   // Card/module headlines
-  cardHeadline: "font-heading text-lg md:text-xl font-medium leading-[1.2]",
+  cardHeadline: "font-heading text-lg md:text-xl font-semibold leading-[1.15]",
   
   // Body text (standard)
-  bodyLarge: "text-base md:text-lg leading-relaxed",
-  bodyStandard: "text-base leading-relaxed",
-  bodySmall: "text-sm leading-relaxed",
+  bodyLarge: "text-[1rem] md:text-[1.125rem] leading-[1.6]",
+  bodyStandard: "text-[0.95rem] md:text-base leading-[1.55]",
+  bodySmall: "text-sm leading-[1.5]",
   
   // UI text (compact, operational)
-  uiLarge: "text-[14px] font-medium",
-  uiStandard: "text-[13px] font-medium",
+  uiLarge: "text-[15px] font-semibold",
+  uiStandard: "text-[14px] font-medium",
   uiSmall: "text-[12px] font-medium",
-  uiTiny: "text-[11px] font-medium uppercase tracking-[0.12em]",
+  uiTiny: "text-[11px] font-semibold uppercase tracking-[0.14em]",
   
   // Supporting text
   caption: "text-[12px] text-muted-foreground",
@@ -93,7 +135,7 @@ export const MOTION = {
     initial: { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.6 },
+    transition: { duration: 0.45 },
   },
 
   // Staggered card animations
@@ -101,7 +143,7 @@ export const MOTION = {
     initial: { opacity: 0, y: 8 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.4, delay },
+    transition: { duration: 0.3, delay },
   }),
 
   // Drawer entrance
@@ -109,7 +151,7 @@ export const MOTION = {
     initial: { opacity: 0, y: 12 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: 12 },
-    transition: { duration: 0.3 },
+    transition: { duration: 0.22 },
   },
 
   // Overlay/popover
@@ -117,19 +159,19 @@ export const MOTION = {
     initial: { opacity: 0, scale: 0.95 },
     animate: { opacity: 1, scale: 1 },
     exit: { opacity: 0, scale: 0.95 },
-    transition: { duration: 0.2 },
+    transition: { duration: 0.18 },
   },
 
   // Hover elevation (cards, buttons)
   hoverLift: {
     whileHover: { y: -2 },
-    transition: { duration: 0.2 },
+    transition: { duration: 0.18 },
   },
 
   // Tap feedback
   tapPress: {
     whileTap: { scale: 0.98 },
-    transition: { duration: 0.15 },
+    transition: { duration: 0.14 },
   },
 };
 
@@ -137,19 +179,30 @@ export const MOTION = {
 // SURFACE TREATMENTS
 // ─────────────────────────────────────────────────────────────────────────────
 
+export const SURFACE_LEVELS = {
+  surface0: "bg-[var(--dp-surface-base)]",
+  surface1:
+    "bg-white/72 backdrop-blur-xl border border-white/40 shadow-[0_12px_36px_rgba(11,26,43,0.06)]",
+  surface2:
+    "bg-white/92 backdrop-blur-xl border border-[rgba(11,26,43,0.08)] shadow-[0_18px_40px_rgba(11,26,43,0.08)]",
+};
+
 export const SURFACES = {
   // Glass overlays (map, hero, floating modules)
-  glassLight: "bg-white/75 backdrop-blur-xl border border-white/40 shadow-lg shadow-black/5",
-  glassDark: "bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/30",
+  glassLight: SURFACE_LEVELS.surface1,
+  glassDark:
+    "bg-[rgba(11,26,43,0.84)] backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_rgba(2,6,23,0.36)]",
 
   // Solid card surfaces
-  cardPrimary: "bg-white border border-border/40 rounded-2xl",
-  cardMuted: "bg-muted rounded-2xl",
-  cardSelected: "bg-primary/5 border border-primary/20 rounded-2xl",
+  cardPrimary: `${SURFACE_LEVELS.surface2} rounded-[20px]`,
+  cardMuted: "bg-[rgba(241,244,248,0.78)] rounded-[20px]",
+  cardSelected:
+    "bg-[rgba(11,31,51,0.06)] border border-[rgba(11,31,51,0.12)] rounded-[20px]",
 
-  // Brutalist emphasis (proof, ROI, statements)
-  brutalistDark: "bg-slate-950 text-white rounded-3xl",
-  brutalistContrast: "bg-navy-900 border-2 border-primary rounded-2xl",
+  // Emphasis surfaces
+  brutalistDark: "bg-[var(--dp-navy)] text-white rounded-[24px]",
+  brutalistContrast:
+    "bg-[var(--dp-navy)] border border-[rgba(198,168,90,0.32)] rounded-[20px]",
 
   // Minimal divider
   divider: "border-t border-border/40",
@@ -167,7 +220,7 @@ export const STATES = {
   cardHover: "hover:border-border hover:shadow-md transition-all duration-200",
   
   // Active state
-  active: "text-primary border-primary/40 bg-primary/5",
+  active: "text-primary border-primary/40 bg-primary text-primary-foreground",
   
   // Disabled state
   disabled: "opacity-50 cursor-not-allowed pointer-events-none",
@@ -182,15 +235,15 @@ export const STATES = {
 
 export const GRIDS = {
   // Bento grids (mixed content)
-  bentoTwo: "grid grid-cols-1 md:grid-cols-2 gap-6",
-  bentoThree: "grid grid-cols-1 md:grid-cols-3 gap-6",
+  bentoTwo: "grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6",
+  bentoThree: "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6",
   bentoCompact: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4",
 
   // Fluid card grids
-  cardFluid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6",
+  cardFluid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6",
 
   // Tight listing grids
-  listingCompact: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
+  listingCompact: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -199,12 +252,14 @@ export const GRIDS = {
 
 export const DEFAULTS = {
   // Tap target minimum
-  minTapTarget: "min-h-12 md:min-h-14",
+  minTapTarget: "min-h-[52px] md:min-h-[56px]",
 
   // Border radius (consistent)
-  radius: "rounded-2xl",
-  radiusSm: "rounded-xl",
-  radiusLg: "rounded-3xl",
+  radiusSm: "rounded-[12px]",
+  radius: "rounded-[16px]",
+  radiusMd: "rounded-[16px]",
+  radiusLg: "rounded-[22px]",
+  radiusXl: "rounded-[28px]",
 
   // Shadow depth
   shadowSoft: "shadow-sm shadow-black/5",

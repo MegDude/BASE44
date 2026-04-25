@@ -3,6 +3,8 @@
  * Single typed interface layer for all entities
  */
 
+export * from "./partnerPlatform";
+
 // ── SHARED MAP ITEM ──────────────────────────────────────────────
 export interface SharedMapItem {
   id: string;

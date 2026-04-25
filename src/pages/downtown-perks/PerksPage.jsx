@@ -30,7 +30,7 @@ export default function PerksPage() {
     <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[84px] pb-12">
       <div className="dp-page-shell dp-page-stack">
         <section className="dp-band relative overflow-hidden p-6 md:p-8 lg:p-10">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(46,139,136,0.14),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(198,168,90,0.16),transparent_30%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(46,139,136,0.10),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(194,143,84,0.10),transparent_30%)]" />
           <div className="relative grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <div>
               <span className="dp-eyebrow">Perks nearby</span>
@@ -38,7 +38,7 @@ export default function PerksPage() {
                 Offers tied to places you would actually go.
               </h1>
               <p className="dp-body-copy mt-4 max-w-2xl">
-                One card. One map. Everything nearby. Downtown Perks keeps the offer layer useful by tying it back to live downtown behavior.
+                One map. Everything nearby. The offer layer stays useful because it is tied back to live downtown behavior, not isolated in a coupon grid.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/downtown-perks/explore?category=perks" className="dp-cta-primary">
@@ -56,7 +56,7 @@ export default function PerksPage() {
                 { value: "Live", label: "offer layer synced to map context" },
                 { value: "1 tap", label: "from discovery to redeem flow" },
               ].map((item) => (
-                <div key={item.label} className="rounded-[22px] bg-white/76 p-4 shadow-[0_12px_28px_rgba(11,26,43,0.05)]">
+                <div key={item.label} className="rounded-[22px] bg-white/64 p-4 shadow-[0_12px_28px_rgba(11,26,43,0.05)]">
                   <div className="font-heading text-[1.45rem] font-semibold tracking-[-0.04em] text-foreground">
                     {item.value}
                   </div>
@@ -86,10 +86,10 @@ export default function PerksPage() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
-                  className="rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,245,238,0.92))] p-5 shadow-[0_18px_34px_rgba(11,26,43,0.05)]"
+                  className="rounded-[28px] bg-white/88 p-5 shadow-[0_18px_34px_rgba(11,26,43,0.05)] backdrop-blur-md"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <span className="rounded-full bg-[rgba(198,168,90,0.10)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
+                    <span className="rounded-full bg-[var(--dp-gold-soft)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
                       {formatCategory(perk.category)}
                     </span>
                     <Gift className="h-5 w-5 text-[var(--dp-navy)]" />

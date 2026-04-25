@@ -151,15 +151,15 @@ export default function BottomSheet({
             {/* Drag handle + close button */}
             {isDraggable && (
               <div
-                className="w-full py-3 px-4 flex items-center justify-between shrink-0 border-b border-[#e8e5df] cursor-grab active:cursor-grabbing"
+                className="flex w-full shrink-0 cursor-grab items-center justify-between border-b border-[rgba(11,31,51,0.08)] px-4 py-3 active:cursor-grabbing"
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
               >
-                <div className="w-12 h-1 rounded-full bg-[#e8e5df]" />
+                <div className="h-1 w-12 rounded-full bg-[rgba(11,31,51,0.10)]" />
                 {state === 'full' && (
                   <button
                     onClick={() => onStateChange?.('mid')}
-                    className="w-8 h-8 rounded-full bg-[#f5f4f2] flex items-center justify-center hover:bg-[#eceae6] transition-colors"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--dp-surface-base)] transition-colors hover:bg-[rgba(11,31,51,0.08)]"
                   >
                     <X className="w-4 h-4 text-[#111]" />
                   </button>

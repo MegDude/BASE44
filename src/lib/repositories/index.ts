@@ -71,6 +71,7 @@ export const mapRepository = {
 
 export { mapRepository as sharedMapRepository } from "./mapRepository";
 export { residentMutationsRepository } from "./residentMutationsRepository";
+export { partnerPlatformRepository } from "./partnerPlatformRepository";
 
 /* =========================================================
    RESIDENT REPOSITORY

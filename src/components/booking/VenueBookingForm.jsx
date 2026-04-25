@@ -55,7 +55,7 @@ export default function VenueBookingForm({ venue, onClose }) {
           <span className="text-2xl">✓</span>
         </div>
         <h3 className="text-[18px] font-bold text-[#111] mb-1">Booking confirmed!</h3>
-        <p className="text-[13px] text-[#7a746b] mb-3">Check your email for details.</p>
+        <p className="mb-3 text-[13px] text-muted-foreground">Check your email for details.</p>
         <button
           onClick={onClose}
           className="w-full h-10 rounded-lg bg-[#111] text-white font-medium text-[13px] hover:bg-[#2a2a2a] transition-colors"
@@ -77,7 +77,7 @@ export default function VenueBookingForm({ venue, onClose }) {
           value={formData.contact}
           onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
           placeholder="Get booking details without making an account"
-          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+          className="w-full rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
         />
       </div>
 
@@ -89,7 +89,7 @@ export default function VenueBookingForm({ venue, onClose }) {
           type="date"
           value={formData.booking_date}
           onChange={(e) => setFormData({ ...formData, booking_date: e.target.value })}
-          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+          className="w-full rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
           required
         />
       </div>
@@ -103,7 +103,7 @@ export default function VenueBookingForm({ venue, onClose }) {
             type="time"
             value={formData.booking_time}
             onChange={(e) => setFormData({ ...formData, booking_time: e.target.value })}
-            className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+            className="w-full rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
             required
           />
         </div>
@@ -114,7 +114,7 @@ export default function VenueBookingForm({ venue, onClose }) {
           <select
             value={formData.party_size}
             onChange={(e) => setFormData({ ...formData, party_size: e.target.value })}
-            className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111]"
+            className="w-full rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
           >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
               <option key={n} value={n}>
@@ -133,7 +133,7 @@ export default function VenueBookingForm({ venue, onClose }) {
           value={formData.special_requests}
           onChange={(e) => setFormData({ ...formData, special_requests: e.target.value })}
           placeholder="e.g., window seat, high chair needed..."
-          className="w-full px-3 py-2 rounded-lg border border-[#e8e5df] bg-white text-[13px] focus:outline-none focus:border-[#111] resize-none h-20"
+          className="h-20 w-full resize-none rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[13px] focus:border-[#111] focus:outline-none"
         />
       </div>
 

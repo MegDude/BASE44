@@ -1,5 +1,8 @@
 import { MAP_ENTITIES } from "@/data/mapEntities";
+import { FEATURED_BRANDS } from "@/data/featuredBrands";
+import { LEGENDS_IMPORTED_PROPERTIES } from "@/data/legendsImportData";
 import { getProductGradePlace } from "@/data/productGradePlaces";
+import { SUPPLEMENTAL_DOWNTOWN_LOCATIONS } from "@/data/supplementalDowntownLocations";
 import {
   perks as REPLIT_PERKS,
   events as REPLIT_EVENTS,
@@ -186,6 +189,7 @@ export function sharedMapItemToMapEntity(item) {
     isEvent: type === "event",
     isPerk: type === "perk",
     isBuilding: type === "building" || type === "property" || type === "hotel",
+    isLegends: Boolean(item?.isLegends || item?.metadata?.isLegends),
     markerType: item.markerType || TYPE_TO_MARKER[type] || "standard",
     markerVariant: item.markerVariant || "default",
     iconType: item.iconType || item.icon,
@@ -206,6 +210,7 @@ export function sharedMapItemToMapEntity(item) {
       tags: enrichedTags,
       searchKeywords: enrichedKeywords,
       askMapIntentTags: enrichedIntentTags,
+      isLegends: Boolean(item?.isLegends || item?.metadata?.isLegends),
     },
   };
 }
@@ -358,6 +363,8 @@ function mapReplitPropertyToSharedItem(property) {
     icon: "building",
     source_ref: "replit-api-store",
     metadata: {
+      buildingId: property.id,
+      buildingName: property.buildingName,
       address: property.address,
       unitTypes: property.unitTypes || [],
       unitCount: property.unitCount,
@@ -401,6 +408,117 @@ function mapReplitMomentToSharedItem(moment) {
   };
 }
 
+function mapFeaturedBrandToSharedItem(brand) {
+  return {
+    id: `brand-${brand.slug}`,
+    entity_id: brand.slug,
+    entity_type: "brand",
+    title: brand.name,
+    subtitle: brand.category,
+    description: brand.description,
+    district: brand.district,
+    category: "brand",
+    latitude: brand.latitude,
+    longitude: brand.longitude,
+    status: "active",
+    icon: brand.iconType || "brand",
+    markerVariant: brand.markerVariant || "gold",
+    route: brand.route,
+    source_ref: "featured-brands-directory",
+    metadata: {
+      address: brand.address,
+      popularity: 72,
+      tag: brand.tag,
+      route: brand.route,
+      searchKeywords: [brand.name, brand.category, brand.tag, ...(brand.searchKeywords || [])].filter(Boolean),
+      askMapIntentTags: [...(brand.askMapIntentTags || []), "brand", "partner"].filter(Boolean),
+    },
+  };
+}
+
+function mapSupplementalLocationToSharedItem(place) {
+  return {
+    id: place.id,
+    entity_id: place.id,
+    entity_type: place.entityType,
+    title: place.name,
+    subtitle: place.sourceCategory,
+    description: place.alignment || place.summary,
+    district: inferDistrict(place.address),
+    category: place.category,
+    latitude: place.latitude,
+    longitude: place.longitude,
+    status: "active",
+    icon: place.icon,
+    source_ref: "downtown-austin-locations-csv",
+    metadata: {
+      address: place.address,
+      website: place.website,
+      shortDescription: place.summary,
+      whyItMatters: place.alignment,
+      sourceCategory: place.sourceCategory,
+      popularity: 18,
+      searchKeywords: [
+        place.name,
+        place.sourceCategory,
+        place.category,
+        place.address,
+      ].filter(Boolean),
+      askMapIntentTags: [place.category, place.entityType, place.sourceCategory].filter(Boolean),
+    },
+  };
+}
+
+function mapLegendsImportedPropertyToSharedItem(property) {
+  const isCommercial = Array.isArray(property.categoryKeys)
+    ? property.categoryKeys.includes("commercial_property")
+    : false;
+
+  return {
+    id: `building-${property.id}`,
+    entity_id: property.id,
+    entity_type: "building",
+    title: property.address || property.name,
+    subtitle: `${property.groupedListingCount} imported listing${property.groupedListingCount === 1 ? "" : "s"}`,
+    description: isCommercial
+      ? "Imported Legends commercial property record grouped into the downtown property layer."
+      : "Imported Legends residential property record grouped into the downtown property layer.",
+    district: inferDistrict(property.address),
+    category: "building",
+    latitude: property.latitude,
+    longitude: property.longitude,
+    status: "active",
+    icon: "building",
+    source_ref: "legends-property-import-report",
+    isLegends: true,
+    metadata: {
+      buildingId: property.id,
+      buildingName: property.address || property.name,
+      address: property.address,
+      isLegends: true,
+      listingType: isCommercial ? "commercial" : "residential",
+      listingTypes: [isCommercial ? "commercial" : "residential"],
+      groupedListingCount: property.groupedListingCount || 1,
+      resolutionMethods: property.resolutions || [],
+      importedCategoryKeys: property.categoryKeys || [],
+      popularity: 58 + Number(property.groupedListingCount || 1),
+      searchKeywords: [
+        property.name,
+        property.address,
+        "legends",
+        "property",
+        ...(property.categoryKeys || []),
+      ].filter(Boolean),
+      askMapIntentTags: [
+        "building",
+        "property",
+        "legends",
+        isCommercial ? "commercial" : "residential",
+      ],
+    },
+  };
+}
+
 export function getFallbackSharedMapItems() {
   const replitItems = [
     ...REPLIT_PERKS.map(mapReplitPerkToSharedItem),
@@ -409,14 +527,203 @@ export function getFallbackSharedMapItems() {
     ...REPLIT_PROPERTIES.map(mapReplitPropertyToSharedItem),
     ...REPLIT_MOMENTS.map(mapReplitMomentToSharedItem),
   ];
+  const featuredBrandItems = FEATURED_BRANDS.map(mapFeaturedBrandToSharedItem);
+  const supplementalLocationItems = SUPPLEMENTAL_DOWNTOWN_LOCATIONS.map(mapSupplementalLocationToSharedItem);
+  const legendsImportItems = LEGENDS_IMPORTED_PROPERTIES.map(mapLegendsImportedPropertyToSharedItem);
   const localItems = MAP_ENTITIES.filter((entity) => ["brand", "civic"].includes(entity?.type))
     .map(mapEntityToSharedMapItem)
     .filter(Boolean);
-  return dedupeById([...replitItems, ...localItems]);
+  return dedupeById([
+    ...replitItems,
+    ...featuredBrandItems,
+    ...supplementalLocationItems,
+    ...legendsImportItems,
+    ...localItems,
+  ]);
 }
 
 export function normalizeSharedMapFeedItems(items) {
   return (Array.isArray(items) ? items : []).map(sharedMapItemToMapEntity).filter(Boolean);
+}
+
+function normalizeBuildingAddress(value = "") {
+  return String(value)
+    .replace(/,\s*(austin|tx|texas|7870\d).*$/i, "")
+    .replace(/\s+#\s*[\w-]+.*$/i, "")
+    .replace(/\s+unit:?\s*[\w-]+.*$/i, "")
+    .replace(/\s+apt\.?\s+[\w-]+.*$/i, "")
+    .replace(/\s+suite\s+[\w-]+.*$/i, "")
+    .replace(/\bstreet\b/gi, "st")
+    .replace(/\bavenue\b/gi, "ave")
+    .replace(/\bboulevard\b/gi, "blvd")
+    .replace(/\broad\b/gi, "rd")
+    .replace(/\bdrive\b/gi, "dr")
+    .replace(/\s*,\s*/g, " ")
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .trim();
+}
+
+const CANONICAL_BUILDING_ALIASES = [
+  { canonical: "70 Rainey", patterns: ["70 rainey"] },
+  { canonical: "44 East Ave", patterns: ["44 east ave", "44 east avenue"] },
+  { canonical: "700 River", patterns: ["700 river"] },
+  { canonical: "Natiivo Austin", patterns: ["48 east ave", "natiivo"] },
+  { canonical: "Milago", patterns: ["54 rainey", "milago"] },
+  { canonical: "Waterloo Tower", patterns: ["700 e 11th", "700 east 11th", "waterloo tower"] },
+  { canonical: "360 Condos", patterns: ["360 nueces", "360 condos", "360 condo"] },
+  { canonical: "The Independent", patterns: ["301 west ave", "301 west avenue", "the independent"] },
+  { canonical: "Austonian", patterns: ["200 congress", "austonian"] },
+  { canonical: "Four Seasons Residences", patterns: ["98 san jacinto", "four seasons residences"] },
+  { canonical: "The Bowie", patterns: ["311 w 5th", "311 west 5th", "the bowie"] },
+  { canonical: "Fifth & West", patterns: ["501 west ave", "501 west avenue", "fifth west"] },
+  { canonical: "Towers of Town Lake", patterns: ["40 n interstate 35", "towers of town lake"] },
+];
+
+function getCanonicalBuildingName(item) {
+  const candidates = [
+    item?.metadata?.buildingName,
+    item?.buildingName,
+    item?.name,
+    item?.title,
+    item?.address,
+    item?.metadata?.address,
+    item?.id,
+    item?.entity_id,
+  ]
+    .filter(Boolean)
+    .map((value) => normalizeBuildingAddress(String(value)));
+
+  for (const candidate of candidates) {
+    const match = CANONICAL_BUILDING_ALIASES.find((alias) =>
+      alias.patterns.some((pattern) => candidate.includes(pattern))
+    );
+    if (match) return match.canonical;
+  }
+
+  return item?.metadata?.buildingName || item?.buildingName || null;
+}
+
+function getPropertyGroupingKey(item) {
+  const canonicalName = getCanonicalBuildingName(item);
+  if (canonicalName) return `canonical:${canonicalName.toLowerCase()}`;
+
+  const buildingId = item?.buildingId || item?.metadata?.buildingId;
+  if (buildingId) return `building:${String(buildingId).toLowerCase()}`;
+
+  const buildingName = item?.buildingName || item?.metadata?.buildingName;
+  if (buildingName) return `name:${String(buildingName).toLowerCase()}`;
+
+  const address = normalizeBuildingAddress(item?.address || item?.metadata?.address || "");
+  if (address) return `address:${address.toLowerCase()}`;
+
+  const latitude = Number(item?.latitude ?? item?.lat ?? item?.location?.latitude);
+  const longitude = Number(item?.longitude ?? item?.lng ?? item?.location?.longitude);
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    return `coords:${latitude.toFixed(4)}:${longitude.toFixed(4)}`;
+  }
+
+  return null;
+}
+
+function sortPropertyPrimary(a, b) {
+  const rank = (item) => {
+    let score = 0;
+    if (item?.type === "building") score += 40;
+    if (item?.metadata?.buildingName) score += 20;
+    if (item?.name && !String(item.name).includes("#")) score += 12;
+    if (item?.metadata?.priceRange) score += 10;
+    if (item?.metadata?.unitCount) score += 8;
+    return score;
+  };
+
+  return rank(b) - rank(a);
+}
+
+export function groupPropertyMapEntities(items) {
+  const sourceItems = Array.isArray(items) ? items.filter(Boolean) : [];
+  const grouped = new Map();
+  const passthrough = [];
+
+  for (const item of sourceItems) {
+    const isProperty = item?.type === "building" || item?.type === "property";
+    if (!isProperty) {
+      passthrough.push(item);
+      continue;
+    }
+
+    const key = getPropertyGroupingKey(item);
+    if (!key) {
+      passthrough.push(item);
+      continue;
+    }
+
+    const existing = grouped.get(key) || [];
+    existing.push(item);
+    grouped.set(key, existing);
+  }
+
+  const collapsed = Array.from(grouped.values()).map((itemsInGroup) => {
+    const sorted = [...itemsInGroup].sort(sortPropertyPrimary);
+    const primary = sorted[0];
+    const allPrices = sorted
+      .map((item) => item?.metadata?.priceRange || item?.subtitle || "")
+      .filter(Boolean);
+    const listingTypes = mergeListValues(
+      sorted.map((item) => item?.metadata?.listingType || item?.listingType),
+      sorted.flatMap((item) => item?.metadata?.listingTypes || [])
+    );
+    const listingAddresses = mergeListValues(
+      sorted.map((item) => item?.address || item?.metadata?.address),
+      sorted.flatMap((item) => item?.metadata?.listingAddresses || [])
+    );
+    const unitTypes = mergeListValues(
+      sorted.flatMap((item) => item?.metadata?.unitTypes || []),
+      sorted.map((item) => item?.unitTypes || [])
+    );
+    const groupedListingCount = sorted.reduce((total, item) => {
+      return total + Number(item?.metadata?.groupedListingCount || 1);
+    }, 0);
+
+    return {
+      ...primary,
+      name:
+        getCanonicalBuildingName(primary) ||
+        primary?.metadata?.buildingName ||
+        primary?.buildingName ||
+        primary?.name ||
+        primary?.title,
+      title:
+        getCanonicalBuildingName(primary) ||
+        primary?.metadata?.buildingName ||
+        primary?.buildingName ||
+        primary?.title ||
+        primary?.name,
+      subtitle: primary?.metadata?.priceRange || primary?.subtitle,
+      address: primary?.address || primary?.metadata?.address || "",
+      metadata: {
+        ...(primary?.metadata || {}),
+        buildingId: primary?.buildingId || primary?.metadata?.buildingId || primary?.entity_id,
+        buildingName:
+          getCanonicalBuildingName(primary) ||
+          primary?.metadata?.buildingName ||
+          primary?.buildingName ||
+          primary?.name ||
+          primary?.title,
+        groupedListingCount,
+        groupedEntityCount: sorted.length,
+        listingTypes,
+        listingAddresses,
+        groupedItems: sorted,
+        unitTypes,
+        allPriceRanges: allPrices,
+        rollupKind: "building",
+      },
+    };
+  });
+
+  return [...passthrough, ...collapsed];
 }
 
 export function adaptEntityToMapPin(entity) {

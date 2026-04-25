@@ -69,7 +69,7 @@ export default function HomeFooter() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[hsl(218,20%,90%)] flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="flex flex-col items-start gap-2 border-t border-[hsl(218,20%,90%)] pt-8">
           <p className="text-[12px] text-foreground/40">
             © {new Date().getFullYear()} Downtown Perks · Austin, TX
           </p>

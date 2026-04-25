@@ -53,8 +53,8 @@ export default function ProductEntryLayer() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#f8f5ef] pt-[68px] pb-12">
-      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[#cfaf5a]/[0.06] blur-3xl" />
+    <section className="relative overflow-hidden bg-[var(--dp-surface-base)] pt-[68px] pb-12">
+      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[var(--dp-gold-soft)] blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[hsl(218,42%,14%)]/[0.035] blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-6">
@@ -62,18 +62,18 @@ export default function ProductEntryLayer() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="text-center"
+          className="text-left"
         >
-          <div className="mx-auto max-w-3xl">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(218,18%,42%)]">
+          <div className="max-w-3xl">
+            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
               Live downtown context
             </p>
 
-            <h2 className="font-heading text-4xl font-medium leading-[1.02] tracking-[-0.04em] text-[hsl(218,42%,14%)] md:text-[56px]">
+            <h2 className="font-heading text-4xl font-medium leading-[1.02] tracking-[-0.04em] text-foreground md:text-[56px]">
               The operating system for downtown life.
             </h2>
 
-            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[hsl(218,16%,42%)]">
+            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted-foreground">
               Open one map. See what is nearby. Decide faster and go.
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function ProductEntryLayer() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.08 }}
-            className="mt-8 flex justify-center"
+            className="mt-8 flex justify-start"
           >
             <div
               className={`relative w-full max-w-2xl transition-all duration-200 ${
@@ -93,7 +93,7 @@ export default function ProductEntryLayer() {
               <div
                 className={`flex items-center gap-3 rounded-[20px] border px-5 py-4 transition-all ${
                   isFocused
-                    ? "border-[#cfaf5a]/45 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.10)]"
+                    ? "border-[rgba(194,143,84,0.28)] bg-white shadow-[0_18px_40px_rgba(15,23,42,0.10)]"
                     : "border-[hsl(218,18%,86%)] bg-white/88 shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
                 }`}
               >
@@ -124,13 +124,13 @@ export default function ProductEntryLayer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.55, delay: 0.14 }}
-            className="flex flex-wrap justify-center gap-2.5 pt-5"
+            className="flex flex-wrap justify-start gap-2.5 pt-5"
           >
             {PROMPT_CHIPS.map((prompt) => (
               <button
                 key={prompt}
                 onClick={() => handlePromptClick(prompt)}
-                className="rounded-full border border-[hsl(218,18%,86%)] bg-white px-4 py-2 text-sm font-medium text-[hsl(218,32%,20%)] transition-all duration-200 hover:border-[#cfaf5a]/40 hover:bg-[#cfaf5a]/[0.06]"
+                className="rounded-full border border-[hsl(218,18%,86%)] bg-white px-4 py-2 text-sm font-medium text-[hsl(218,32%,20%)] transition-all duration-200 hover:border-[rgba(194,143,84,0.28)] hover:bg-[var(--dp-gold-soft)]"
               >
                 {prompt}
               </button>
@@ -160,20 +160,20 @@ export default function ProductEntryLayer() {
               <button
                 key={card.name}
                 onClick={() => navigate("/downtown-perks/explore")}
-                className="rounded-[22px] border border-[hsl(218,18%,88%)] bg-white p-4 text-left shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[#cfaf5a]/35 hover:shadow-[0_16px_32px_rgba(15,23,42,0.08)]"
+                className="rounded-[22px] border border-[hsl(218,18%,88%)] bg-white p-4 text-left shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[rgba(194,143,84,0.24)] hover:shadow-[0_16px_32px_rgba(15,23,42,0.08)]"
               >
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <div>
                     <h4 className="text-sm font-semibold text-[hsl(218,42%,14%)]">{card.name}</h4>
                     <p className="text-xs text-[hsl(218,12%,52%)]">{card.distance}</p>
                   </div>
-                  <MapPin className="h-4 w-4 shrink-0 text-[#cfaf5a]" />
+                  <MapPin className="h-4 w-4 shrink-0 text-[var(--dp-gold-muted)]" />
                 </div>
 
                 <p className="mb-3 text-xs leading-5 text-[hsl(218,14%,44%)]">{card.line}</p>
 
                 {card.perk && (
-                  <div className="inline-flex rounded-full bg-[#cfaf5a]/[0.10] px-2.5 py-1 text-[10px] font-medium text-[hsl(218,42%,14%)]">
+                  <div className="inline-flex rounded-full bg-[var(--dp-gold-soft)] px-2.5 py-1 text-[10px] font-medium text-[hsl(218,42%,14%)]">
                     {card.perk}
                   </div>
                 )}
@@ -189,7 +189,7 @@ export default function ProductEntryLayer() {
           className="mt-10 grid grid-cols-3 gap-4 border-y border-[hsl(218,18%,88%)] py-7"
         >
           {PROOF_METRICS.map((metric) => (
-            <div key={metric.label} className="text-center">
+            <div key={metric.label} className="text-left">
               <div className="text-2xl font-bold text-[hsl(218,42%,14%)] md:text-3xl">{metric.value}</div>
               <div className="mt-1 text-xs text-[hsl(218,12%,50%)] md:text-sm">{metric.label}</div>
             </div>
@@ -200,7 +200,7 @@ export default function ProductEntryLayer() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.32 }}
-          className="flex flex-wrap justify-center gap-3 pt-8"
+          className="flex flex-wrap justify-start gap-3 pt-8"
         >
           <button
             onClick={() => navigate("/downtown-perks/card")}

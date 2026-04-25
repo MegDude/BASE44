@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { normalizeCoordinates, filterValidMapItems, getValidLatLng, isValidLatLngArray } from "@/lib/mapCoordinates";
+import MapContextOverlays from "@/components/map/MapContextOverlays";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -102,6 +103,7 @@ export default function MapShell({
           attribution="&copy; CARTO"
         />
         <MapFlyTo position={flyTarget} />
+        <MapContextOverlays items={validItems} selectedId={selected?.id} />
 
         {validItems.map(item => {
           // CRITICAL: Every marker gets re-validated through getValidLatLng
@@ -126,7 +128,13 @@ export default function MapShell({
         })}
       </MapContainer>
 
-      {/* Detail drawer — NOT rendered here on mobile (handled by bottom sheet) */}
+      {selected && renderDetailDrawer ? (
+        <div className="pointer-events-auto absolute bottom-4 left-4 right-4 z-20 md:left-auto md:right-4 md:top-4 md:bottom-4 md:w-[360px]">
+          <div className="h-full overflow-hidden rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white/96 shadow-[0_18px_44px_rgba(11,31,51,0.14)] backdrop-blur">
+            {renderDetailDrawer(selected, () => onSelect?.(null))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

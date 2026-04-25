@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -31,7 +31,7 @@ export default function Layout() {
     pathname === "/events";
 
   return (
-    <div className="min-h-screen bg-background font-body">
+    <div className="min-h-screen bg-[var(--dp-bg)] font-body text-[var(--dp-text)]">
       <ScrollToTop />
       <Navbar />
       <main>

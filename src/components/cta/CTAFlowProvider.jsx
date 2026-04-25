@@ -44,8 +44,11 @@ export function CTAFlowProvider({ children }) {
   const [activeFlow, setActiveFlow] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [values, setValues] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const flowDefinition = activeFlow ? CTA_FLOW_DEFINITIONS[activeFlow.type] : null;
+  const hiddenContext = activeFlow ? buildContextPayload(location, activeFlow) : null;
 
   const openFlow = (config) => {
     const definition = CTA_FLOW_DEFINITIONS[config.type];
@@ -62,6 +65,8 @@ export function CTAFlowProvider({ children }) {
     setActiveFlow(nextFlow);
     setValues(getDefaultFlowValues(config.type, nextFlow));
     setSubmitted(false);
+    setSubmitting(false);
+    setSubmitError("");
     trackCTAEvent("cta_clicked", buildContextPayload(location, config));
     trackCTAEvent("form_opened", buildContextPayload(location, config));
   };
@@ -73,6 +78,8 @@ export function CTAFlowProvider({ children }) {
     setActiveFlow(null);
     setSubmitted(false);
     setValues({});
+    setSubmitting(false);
+    setSubmitError("");
   };
 
   const updateValue = (name, value) => {
@@ -83,9 +90,68 @@ export function CTAFlowProvider({ children }) {
     });
   };
 
-  const submitFlow = (event) => {
+  function getSubmissionEndpoint(type) {
+    if (type === "resident_card") return "/api/card-capture";
+    return "/api/partner-intake";
+  }
+
+  function buildSubmissionPayload(type, hiddenValues, formValues) {
+    if (type === "resident_card") {
+      return {
+        firstName: formValues.name || "Downtown Perks Member",
+        mobile: formValues.phone,
+        email: formValues.email || "",
+        building: formValues.building || hiddenValues.entityName || "",
+        source: hiddenValues.source || "",
+        sessionId: typeof window !== "undefined" ? window.localStorage.getItem("dp_session_id") || "" : "",
+        pagePath: hiddenValues.sourcePage || "",
+        currentUrl: typeof window !== "undefined" ? window.location.href : "",
+        referrer: typeof document !== "undefined" ? document.referrer : "",
+      };
+    }
+
+    return {
+      flowType: type,
+      source: hiddenValues.source || "",
+      sourcePage: hiddenValues.sourcePage || "",
+      sourceComponent: hiddenValues.sourceComponent || "",
+      partnerType: hiddenValues.partnerType || formValues.partnerType || "",
+      organization:
+        formValues.organization ||
+        formValues.propertyName ||
+        formValues.hotelName ||
+        formValues.venueName ||
+        formValues.brandName ||
+        formValues.organization ||
+        "",
+      name: formValues.name || "",
+      email: formValues.email || "",
+      phone: formValues.phone || "",
+      venueName: formValues.venueName || "",
+      propertyName: formValues.propertyName || "",
+      brandName: formValues.brandName || "",
+      category: formValues.category || "",
+      address: formValues.address || "",
+      website: formValues.website || "",
+      intent: formValues.intent || "",
+      perkTitle: formValues.perkTitle || "",
+      perkValue: formValues.perkValue || "",
+      perkDetails: formValues.perkDetails || formValues.goal || "",
+      qrPlacement: formValues.qrPlacement || "",
+      pilotWindow: formValues.pilotWindow || "",
+      hours: formValues.hours || "",
+      budget: formValues.budget || "",
+      district: formValues.district || hiddenValues.district || "",
+      objective: formValues.objective || formValues.goal || "",
+      campaignName: formValues.campaignName || "",
+      currentUrl: typeof window !== "undefined" ? window.location.href : "",
+      referrer: typeof document !== "undefined" ? document.referrer : "",
+    };
+  }
+
+  const submitFlow = async (event) => {
     event?.preventDefault?.();
-    if (!activeFlow || !flowDefinition) return;
+    if (!activeFlow || !flowDefinition || submitting) return;
 
     const submission = {
       id: `cta-${Date.now()}`,
@@ -100,11 +166,36 @@ export function CTAFlowProvider({ children }) {
       ...buildContextPayload(location, activeFlow),
       prefilledKeys: Object.keys(values).filter((key) => Boolean(values[key])),
     });
-    trackCTAEvent("form_submitted", {
-      ...buildContextPayload(location, activeFlow),
-      payload: values,
-    });
-    setSubmitted(true);
+
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const payload = buildSubmissionPayload(activeFlow.type, hiddenContext || {}, values);
+      const response = await fetch(getSubmissionEndpoint(activeFlow.type), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responsePayload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(responsePayload.error || "Could not submit this request.");
+      }
+
+      trackCTAEvent("form_submitted", {
+        ...buildContextPayload(location, activeFlow),
+        payload: values,
+        destination: responsePayload.destination || "backend",
+      });
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Could not submit this request.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const continueAfterSuccess = () => {
@@ -159,11 +250,23 @@ export function CTAFlowProvider({ children }) {
             <div className="max-h-[calc(88vh-84px)] overflow-y-auto px-5 py-5 md:max-h-[calc(86vh-84px)]">
               {!submitted ? (
                 <form onSubmit={submitFlow} className="space-y-5">
-                  <div className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4 text-[12px] leading-6 text-muted-foreground">
-                    <div><span className="font-semibold text-foreground">Source:</span> {activeFlow.source || location.pathname}</div>
-                    {activeFlow.partnerType ? <div><span className="font-semibold text-foreground">Partner type:</span> {activeFlow.partnerType}</div> : null}
-                    {activeFlow.entity?.name ? <div><span className="font-semibold text-foreground">Context:</span> {activeFlow.entity.name}</div> : null}
-                  </div>
+                  {hiddenContext
+                    ? Object.entries(hiddenContext).map(([key, value]) => (
+                        <input
+                          key={key}
+                          type="hidden"
+                          name={key}
+                          value={value ?? ""}
+                          readOnly
+                        />
+                      ))
+                    : null}
+
+                  {submitError ? (
+                    <div className="rounded-[14px] border border-[#d8b4b4] bg-[#fff7f7] px-4 py-3 text-[13px] text-[#9f2f2f]">
+                      {submitError}
+                    </div>
+                  ) : null}
 
                   <div className="grid gap-4 md:grid-cols-2">
                     {flowDefinition.fields.map((field) => (
@@ -216,9 +319,10 @@ export function CTAFlowProvider({ children }) {
                     </button>
                     <button
                       type="submit"
+                      disabled={submitting}
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-[14px] bg-primary px-5 text-sm font-medium text-white"
                     >
-                      {flowDefinition.submitLabel}
+                      {submitting ? "Submitting..." : flowDefinition.submitLabel}
                       <IconArrowRight className="h-4 w-4" />
                     </button>
                   </div>
