@@ -5,3 +5,4 @@ export { default as SignalMetric } from "./SignalMetric";
 export { default as InsightDrawer } from "./InsightDrawer";
 export { default as PartnerTypeSwitcher } from "./PartnerTypeSwitcher";
 export { default as ResidentPassCard } from "./ResidentPassCard";
+export { default as AnalyticsAnswerCard } from "./AnalyticsAnswerCard";
