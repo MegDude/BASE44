@@ -1,7 +1,20 @@
+/**
+ * UnifiedDrawer - Decision surface for map-first MVP
+ * 
+ * Design principles:
+ * - Shows decision reason near the title
+ * - Only 3 primary actions: Go/Details, Save, Redeem/RSVP (when relevant)
+ * - No repeated chips restating metadata
+ * - Mobile: bottom sheet
+ * - Desktop: right-side dock
+ * - Avoid bordered nested cards
+ */
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { useResidentMutations } from '@/hooks/useResidentMutations';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import {
   IconCalendarCheck,
   IconChevronUp,
@@ -14,13 +27,25 @@ import {
   IconSave,
 } from '@/components/icons/DPIcons';
 
-export default function UnifiedDrawer({ selected }) {
+function getStatus(item) {
+  if (item?.isLive || item?.eventTiming?.isLive) return { label: 'Live now', tone: 'live' };
+  if (item?.isOpenNow) return { label: 'Open now', tone: 'open' };
+  if (item?.eventTiming?.startsSoon || item?.eventTiming?.startTime) return { label: 'Starting soon', tone: 'soon' };
+  return null;
+}
+
+export default function UnifiedDrawer({
+  selected,
+  desktopMode = 'floating',
+  desktopClassName = '',
+}) {
   const drawerState = useMapStateStore((state) => state.drawerState);
   const setDrawerState = useMapStateStore((state) => state.setDrawerState);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const toggleSaved = useMapStateStore((state) => state.toggleSaved);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
   const mutations = useResidentMutations();
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
   if (!selected || drawerState === 'closed') {
     return null;
@@ -30,15 +55,15 @@ export default function UnifiedDrawer({ selected }) {
   const isSaved = savedEntityIds.has(selected.id);
   const EntityIcon = getEntityIcon(selected);
   const entityLabel = getEntityLabel(selected);
+  const status = getStatus(selected);
+  
+  // Decision reason - the key differentiator
+  const decisionReason = selected.reason || selected.metadata?.reason || 'Recommended from the live downtown layer.';
 
-  const openMaps = async () => {
-    if (!selected.location?.valid) return;
-    window.open(
-      `https://www.google.com/maps/search/?api=1&query=${selected.location.latitude},${selected.location.longitude}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
-    await mutations.logInteraction(selected, 'directions', undefined, { surface: 'unified_drawer' });
+  // Action handlers
+  const openDetails = async () => {
+    setDrawerState('expanded');
+    await mutations.logInteraction(selected, 'detail_open', undefined, { surface: 'unified_drawer' });
   };
 
   const handleSave = async () => {
@@ -57,171 +82,232 @@ export default function UnifiedDrawer({ selected }) {
       return;
     }
 
-    await openMaps();
+    await openDetails();
   };
 
-  const primaryLabel =
-    selected.type === 'event'
-      ? 'RSVP'
-      : selected.type === 'perk' || selected.perk?.value || selected.perk_value
-        ? 'Redeem'
-        : 'Directions';
-  const PrimaryIcon =
-    selected.type === 'event'
-      ? IconCalendarCheck
-      : selected.type === 'perk' || selected.perk?.value || selected.perk_value
-        ? IconPerk
-        : IconNavigation;
+  const handleGoAction = () => {
+    const lat = selected.location?.lat || selected.lat;
+    const lng = selected.location?.lng || selected.lng;
+    if (lat && lng) {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+    }
+  };
+
+  // Determine primary action label and icon
+  const isEvent = selected.type === 'event';
+  const isPerk = selected.type === 'perk' || selected.perk?.value || selected.perk_value;
+  
+  const primaryLabel = isEvent ? 'RSVP' : isPerk ? 'Redeem' : 'Details';
+  const PrimaryIcon = isEvent ? IconCalendarCheck : isPerk ? IconPerk : IconChevronUp;
+  const showPrimaryAction = isEvent || isPerk || !isExpanded;
 
   const closeDrawer = () => {
     selectEntity(null);
     setDrawerState('closed');
   };
 
-  const detailBody = (
-    <>
-      <div className="pt-4">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-navy">
-          <EntityIcon className="h-3.5 w-3.5" />
-          {entityLabel}
-        </span>
-        <h2 className="mt-3 text-xl font-semibold text-navy">{selected.name}</h2>
-        <p className="mt-2 text-sm text-navy-muted">{selected.description || selected.address}</p>
-      </div>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {selected.address && (
-          <span className="dp-chip">
-            <IconNavigation className="h-3.5 w-3.5" />
-            {selected.address.split(',')[0]}
-          </span>
-        )}
-        {selected.metadata?.walkMinutes && (
-          <span className="dp-chip">
-            <IconClock className="h-3.5 w-3.5" />
-            {selected.metadata.walkMinutes} min walk
-          </span>
-        )}
-        {selected.perk?.value && <span className="dp-chip">{selected.perk.value}</span>}
-      </div>
-
-      {isExpanded && (
-        <div className="mt-4 rounded-xl border border-border bg-white/80 p-4 text-sm text-navy-muted">
-          <p>{selected.description || 'This downtown stop is live on the shared resident map.'}</p>
-          {selected.eventTiming?.title && <p className="mt-2 font-medium text-navy">{selected.eventTiming.title}</p>}
-        </div>
-      )}
-
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        <button
-          onClick={handleSave}
-          disabled={mutations.pendingAction === 'save'}
-          className={isSaved ? 'dp-chip dp-chip-active justify-center py-3' : 'dp-chip justify-center py-3'}
-        >
-          {mutations.pendingAction === 'save' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <IconSave className="h-3.5 w-3.5" />}
-          {isSaved ? 'Saved' : 'Save'}
-        </button>
-        <button onClick={openMaps} className="dp-chip justify-center py-3">
-          <IconNavigation className="h-3.5 w-3.5" />
-          Directions
-        </button>
-      </div>
-
-      <button
-        onClick={handlePrimaryAction}
-        disabled={Boolean(mutations.pendingAction)}
-        className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3 text-sm font-medium text-white"
-      >
-        {mutations.pendingAction ? <Loader2 className="h-4 w-4 animate-spin" /> : <PrimaryIcon className="h-4 w-4" />}
-        {primaryLabel}
-      </button>
-
-      <div className="mt-2 flex gap-2">
-        <button
-          onClick={() => setDrawerState(isExpanded ? 'preview' : 'expanded')}
-          className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
-        >
-          <IconChevronUp className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-          {isExpanded ? 'Roll up details' : 'View full details'}
-        </button>
-        <button
-          onClick={closeDrawer}
-          className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
-          aria-label="Close details"
-        >
-          <IconClose className="h-4 w-4" />
-        </button>
-      </div>
-    </>
-  );
-
-  return (
-    <>
+  // ─── MOBILE BOTTOM SHEET ───────────────────────────────────────────────────
+  if (!isDesktop) {
+    return (
       <AnimatePresence>
         <motion.div
-          key="drawer-backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={closeDrawer}
-          className="fixed inset-0 z-[29] bg-[rgba(11,31,51,0.18)] md:hidden"
-        />
-      </AnimatePresence>
-
-      <AnimatePresence>
-        <motion.div
-          key={selected.id}
-          initial={{ y: 320 }}
+          key="drawer-mobile"
+          initial={{ y: '100%' }}
           animate={{ y: 0 }}
-          exit={{ y: 320 }}
-          transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-          className="fixed inset-x-0 bottom-0 z-30 px-3 pb-3 md:hidden"
+          exit={{ y: '100%' }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className="fixed inset-x-0 bottom-0 z-40"
         >
-          <div className="dp-map-panel overflow-hidden rounded-2xl">
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <div className="h-1.5 w-12 rounded-full bg-navy/10" />
+          <div className="bg-white rounded-t-[24px] shadow-2xl border-t border-slate-200/50 max-h-[70vh] overflow-hidden">
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-2">
+              <div className="h-1 w-10 rounded-full bg-slate-200" />
+            </div>
+
+            {/* Content */}
+            <div className="px-5 pb-6">
+              {/* Header with close */}
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="flex-1 min-w-0">
+                  {/* Entity type badge */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-navy">
+                      <EntityIcon className="h-3.5 w-3.5" />
+                      {entityLabel}
+                    </span>
+                    {status && (
+                      <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase ${
+                        status.tone === 'live'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : status.tone === 'open'
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-amber-100 text-amber-700'
+                      }`}>
+                        {status.label}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="text-xl font-semibold text-navy truncate">{selected.name}</h2>
+                  
+                  {/* Decision reason */}
+                  <p className="text-sm text-slate-500 mt-1">{decisionReason}</p>
+                </div>
+
+                <button
+                  onClick={closeDrawer}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+                >
+                  <IconClose className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Walk time if available */}
+              {selected.metadata?.walkMinutes && (
+                <div className="flex items-center gap-1.5 text-sm text-slate-500 mb-4">
+                  <IconClock className="h-4 w-4" />
+                  <span>{selected.metadata.walkMinutes} min walk</span>
+                </div>
+              )}
+
+              {/* Actions - only the essentials */}
+              <div className="flex items-center gap-3">
+                {/* Go / Navigation */}
+                <button
+                  onClick={handleGoAction}
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-navy text-white font-medium hover:bg-navy/90 transition-colors"
+                >
+                  <IconNavigation className="h-4 w-4" />
+                  <span>Go</span>
+                </button>
+
+                {/* Save */}
+                <button
+                  onClick={handleSave}
+                  className={`flex h-12 w-12 items-center justify-center rounded-full border transition-colors ${
+                    isSaved
+                      ? 'bg-gold/10 border-gold text-gold'
+                      : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                  }`}
+                >
+                  <IconSave className="h-5 w-5" filled={isSaved} />
+                </button>
+
+                {/* Primary action (Redeem/RSVP) - only when relevant */}
+                {showPrimaryAction && (isEvent || isPerk) && (
+                  <button
+                    onClick={handlePrimaryAction}
+                    className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-navy font-medium hover:bg-gold/90 transition-colors"
+                  >
+                    <PrimaryIcon className="h-4 w-4" />
+                    <span>{primaryLabel}</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  // ─── DESKTOP RIGHT DOCK ────────────────────────────────────────────────────
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="drawer-desktop"
+        initial={{ x: '100%', opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: '100%', opacity: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className={`absolute right-4 top-20 z-30 w-80 ${desktopClassName}`}
+      >
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-200/50 overflow-hidden">
+          {/* Content */}
+          <div className="p-5">
+            {/* Header with close */}
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <div className="flex-1 min-w-0">
+                {/* Entity type badge */}
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-navy">
+                    <EntityIcon className="h-3.5 w-3.5" />
+                    {entityLabel}
+                  </span>
+                  {status && (
+                    <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase ${
+                      status.tone === 'live'
+                        ? 'bg-emerald-100 text-emerald-700'
+                        : status.tone === 'open'
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-amber-100 text-amber-700'
+                    }`}>
+                      {status.label}
+                    </span>
+                  )}
+                </div>
+
+                {/* Title */}
+                <h2 className="text-lg font-semibold text-navy">{selected.name}</h2>
+                
+                {/* Decision reason */}
+                <p className="text-sm text-slate-500 mt-1">{decisionReason}</p>
+              </div>
+
               <button
                 onClick={closeDrawer}
-                className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
-                aria-label="Close details"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
               >
                 <IconClose className="h-4 w-4" />
               </button>
             </div>
 
-            <div className={`overflow-y-auto px-4 pb-4 ${isExpanded ? 'max-h-[70vh]' : 'max-h-[42vh]'}`}>
-              {detailBody}
-            </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+            {/* Walk time if available */}
+            {selected.metadata?.walkMinutes && (
+              <div className="flex items-center gap-1.5 text-sm text-slate-500 mb-4">
+                <IconClock className="h-4 w-4" />
+                <span>{selected.metadata.walkMinutes} min walk</span>
+              </div>
+            )}
 
-      <AnimatePresence>
-        <motion.div
-          key={`desktop-${selected.id}`}
-          initial={{ opacity: 0, y: 18, x: -12 }}
-          animate={{ opacity: 1, y: 0, x: 0 }}
-          exit={{ opacity: 0, y: 18, x: -12 }}
-          transition={{ duration: 0.22, ease: 'easeOut' }}
-          className="pointer-events-auto fixed bottom-6 left-6 z-30 hidden w-[min(420px,calc(100vw-32px))] md:block"
-        >
-          <div className="dp-map-panel overflow-hidden rounded-[24px] border border-border shadow-[0_24px_60px_rgba(11,31,51,0.18)]">
-            <div className="flex items-center justify-between border-b border-border px-5 py-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold">Selected pin</div>
+            {/* Actions */}
+            <div className="flex items-center gap-2">
+              {/* Go / Navigation */}
               <button
-                onClick={closeDrawer}
-                className="rounded-full p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
-                aria-label="Close details"
+                onClick={handleGoAction}
+                className="flex h-10 flex-1 items-center justify-center gap-2 rounded-full bg-navy text-white text-sm font-medium hover:bg-navy/90 transition-colors"
               >
-                <IconClose className="h-4 w-4" />
+                <IconNavigation className="h-4 w-4" />
+                <span>Go</span>
               </button>
-            </div>
-            <div className={`overflow-y-auto px-5 pb-5 ${isExpanded ? 'max-h-[70vh]' : 'max-h-[46vh]'}`}>
-              {detailBody}
+
+              {/* Save */}
+              <button
+                onClick={handleSave}
+                className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+                  isSaved
+                    ? 'bg-gold/10 border-gold text-gold'
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                }`}
+              >
+                <IconSave className="h-4 w-4" filled={isSaved} />
+              </button>
+
+              {/* Primary action (Redeem/RSVP) - only when relevant */}
+              {showPrimaryAction && (isEvent || isPerk) && (
+                <button
+                  onClick={handlePrimaryAction}
+                  className="flex h-10 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-navy text-sm font-medium hover:bg-gold/90 transition-colors"
+                >
+                  <PrimaryIcon className="h-4 w-4" />
+                  <span>{primaryLabel}</span>
+                </button>
+              )}
             </div>
           </div>
-        </motion.div>
-      </AnimatePresence>
-    </>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
