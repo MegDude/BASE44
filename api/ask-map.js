@@ -1,6 +1,18 @@
 import OpenAI from "openai";
 import { searchArchiveCatalog } from "./_utils/archiveCatalog.js";
 
+function parseBody(req) {
+  if (typeof req.body === "string") {
+    try {
+      return JSON.parse(req.body || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  return req.body && typeof req.body === "object" ? req.body : {};
+}
+
 function normalizeJson(rawText) {
   if (!rawText) {
     return "{\"places\":[]}";
@@ -74,7 +86,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { query, location = "Downtown Austin" } = req.body || {};
+    const body = parseBody(req);
+    const { query, location = "Downtown Austin" } = body;
 
     if (!query || !query.trim()) {
       return res.status(400).json({ error: "Missing query" });
@@ -184,10 +197,11 @@ Rules:
     });
   } catch (error) {
     console.error("ask-map failed", error);
+    const body = parseBody(req);
     return res.status(200).json({
       source: "fallback",
-      intent: parseIntentFallback(req.body?.query || ""),
-      places: await searchArchiveCatalog(req.body?.query || "", { limit: 5 })
+      intent: parseIntentFallback(body?.query || ""),
+      places: await searchArchiveCatalog(body?.query || "", { limit: 5 })
         .then((items) =>
           items.map((item) => ({
             name: item.name,
