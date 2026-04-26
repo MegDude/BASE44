@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import { ROUTES } from "@/lib/routes";
@@ -80,6 +81,25 @@ export default function Dashboard() {
   const location = useLocation();
   const variantKey = getDashboardVariant(location.pathname);
   const variant = DASHBOARD_VARIANTS[variantKey];
+  const [liveSummary, setLiveSummary] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch("/api/partner-insights")
+      .then((response) => response.json())
+      .then((payload) => {
+        if (!active || !payload?.ok) return;
+        setLiveSummary(payload.summary || null);
+      })
+      .catch(() => {
+        if (active) setLiveSummary(null);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
@@ -123,6 +143,27 @@ export default function Dashboard() {
                 </Link>
               ))}
             </div>
+
+            {liveSummary && (
+              <div className="mt-5 grid gap-3 md:grid-cols-4">
+                {[
+                  { label: "Shown today", value: Number(liveSummary.shown || 0).toLocaleString() },
+                  { label: "Saved", value: Number(liveSummary.saves || 0).toLocaleString() },
+                  { label: "Visits", value: Number(liveSummary.visits || 0).toLocaleString() },
+                  { label: "Redemptions", value: `${Number(liveSummary.redemptions || 0).toLocaleString()} -> $${(Number(liveSummary.revenueCents || 0) / 100).toLocaleString()}` },
+                ].map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="rounded-[18px] border border-white/10 bg-white/8 px-4 py-3"
+                  >
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-white/60">
+                      {metric.label}
+                    </div>
+                    <div className="mt-2 text-xl font-semibold text-white">{metric.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

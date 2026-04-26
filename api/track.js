@@ -1,4 +1,5 @@
 import { supabaseServer } from "../src/lib/supabaseServer.js";
+import { logInteraction } from "./_utils/interactions.js";
 
 function cleanString(value, max = 160) {
   return typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null;
@@ -41,6 +42,23 @@ export default async function handler(req, res) {
 
   if (error) {
     return res.status(500).json({ error: error.message });
+  }
+
+  if (["impression", "save", "visit_confirmed", "redeem", "brand_impression", "brand_engagement", "brand_conversion", "sponsor_impression"].includes(eventType)) {
+    await logInteraction({
+      type: eventType,
+      entityId: cleanString(body.entityId, 128),
+      entityType: cleanString(body.entityType, 80),
+      partnerId: cleanString(body.partnerId, 128),
+      sponsorId: cleanString(body.sponsorId, 128),
+      userId: cleanString(body.userId, 128),
+      sessionId: cleanString(body.sessionId, 128),
+      brandKey: cleanString(body.brandKey, 128),
+      source: cleanString(body.source, 160),
+      district: cleanString(body.district, 96),
+      valueCents: cleanNumber(body.valueCents),
+      metadata: body.metadata && typeof body.metadata === "object" ? body.metadata : {},
+    });
   }
 
   return res.status(200).json({ ok: true, stored: true });

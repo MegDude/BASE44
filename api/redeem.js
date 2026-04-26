@@ -1,4 +1,5 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
+import { logInteraction } from './_utils/interactions.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,7 +10,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing Supabase server environment variables' });
   }
 
-  const { cardCode, venueOfferId, venueId } = req.body || {};
+  const { cardCode, venueOfferId, venueId, partnerId = null, qrToken = null, valueCents = 0 } = req.body || {};
   if (!cardCode || !venueOfferId || !venueId) {
     return res
       .status(400)
@@ -33,12 +34,36 @@ export default async function handler(req, res) {
   const { error: redemptionError } = await supabaseServer.from('redemptions').insert({
     perk_card_id: card.id,
     venue_offer_id: venueOfferId,
-    venue_id: venueId
+    venue_id: venueId,
+    partner_id: partnerId || null,
+    qr_token: qrToken || null,
+    value_cents: Number.isFinite(Number(valueCents)) ? Number(valueCents) : 0
   });
 
   if (redemptionError) {
     return res.status(500).json({ error: redemptionError.message });
   }
+
+  if (qrToken) {
+    await supabaseServer
+      .from('qr_tokens')
+      .update({ claimed_at: new Date().toISOString() })
+      .eq('token', qrToken);
+  }
+
+  await logInteraction({
+    type: 'redeem',
+    entityId: venueId,
+    entityType: 'venue',
+    partnerId: partnerId || null,
+    source: 'api/redeem',
+    valueCents,
+    metadata: {
+      venueOfferId,
+      perkCardId: card.id,
+      qrToken,
+    },
+  });
 
   return res.status(200).json({ ok: true });
 }

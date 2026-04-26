@@ -1,5 +1,6 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
 import { resolvePublicActor, sanitizeString } from './_utils/publicActor.js';
+import { logInteraction } from './_utils/interactions.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,6 +28,17 @@ export default async function handler(req, res) {
     if (error) {
       return res.status(500).json({ error: error.message });
     }
+
+    await logInteraction({
+      type: 'visit_confirmed',
+      entityId: venueId,
+      entityType: 'venue',
+      userId: actor.actorId,
+      source: source || 'api/visit',
+      metadata: {
+        actorType: actor.actorType,
+      },
+    });
 
     return res.status(200).json({ ok: true, actorType: actor.actorType });
   } catch (error) {

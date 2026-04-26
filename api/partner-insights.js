@@ -52,6 +52,8 @@ export default async function handler(req, res) {
     visitsResult,
     redemptionsResult,
     analyticsSignalsResult,
+    demandSnapshotsResult,
+    pricingRecsResult,
   ] = await Promise.all([
     supabaseServer.from("map_impressions").select("entity_id, entity_type").limit(5000),
     supabaseServer.from("saved_items").select("entity_id, entity_type").limit(5000),
@@ -61,6 +63,16 @@ export default async function handler(req, res) {
       .from("analytics_signals")
       .select("action_type, entity_id, entity_type, venue_id, campaign_id")
       .limit(5000),
+    supabaseServer
+      .from("demand_snapshots")
+      .select("entity_id, ts, score, saves, visits, impressions, redemptions")
+      .order("ts", { ascending: false })
+      .limit(200),
+    supabaseServer
+      .from("pricing_recs")
+      .select("entity_id, ts, recommended_bid_cents, recommended_budget_cents, confidence")
+      .order("ts", { ascending: false })
+      .limit(200),
   ]);
 
   const impressions = withStatus(impressionsResult);
@@ -127,9 +139,55 @@ export default async function handler(req, res) {
       impressionsCount > 0 ? Math.round((visitsCount / impressionsCount) * 100) : 0;
   });
 
+  const demandSnapshots = withStatus(demandSnapshotsResult);
+  const pricingRecs = withStatus(pricingRecsResult);
+
+  const latestDemandByEntity = {};
+  demandSnapshots.forEach((row) => {
+    if (!row.entity_id || latestDemandByEntity[row.entity_id]) return;
+    latestDemandByEntity[row.entity_id] = row;
+  });
+
+  const latestPricingByEntity = {};
+  pricingRecs.forEach((row) => {
+    if (!row.entity_id || latestPricingByEntity[row.entity_id]) return;
+    latestPricingByEntity[row.entity_id] = row;
+  });
+
+  const totals = Object.values(metricsByEntity).reduce(
+    (acc, entry) => {
+      acc.impressions += Number(entry.impressions || 0);
+      acc.saves += Number(entry.saves || 0);
+      acc.visits += Number(entry.visits || 0);
+      acc.redemptions += Number(entry.redemptions || 0);
+      return acc;
+    },
+    { impressions: 0, saves: 0, visits: 0, redemptions: 0 }
+  );
+
+  const scoredEntities = Object.entries(latestDemandByEntity)
+    .map(([entityId, row]) => ({
+      entityId,
+      score: Number(row.score || 0),
+      saves: Number(row.saves || 0),
+      visits: Number(row.visits || 0),
+      impressions: Number(row.impressions || 0),
+      redemptions: Number(row.redemptions || 0),
+      pricing: latestPricingByEntity[entityId] || null,
+    }))
+    .sort((a, b) => b.score - a.score);
+
   return res.status(200).json({
     ok: true,
     metricsByEntity,
     hasLiveData: Object.keys(metricsByEntity).length > 0,
+    summary: {
+      shown: totals.impressions,
+      saves: totals.saves,
+      visits: totals.visits,
+      redemptions: totals.redemptions,
+      revenueCents: totals.redemptions * 1200,
+    },
+    topDemand: scoredEntities.slice(0, 5),
   });
 }
