@@ -1,44 +1,39 @@
 /**
- * Partner Dashboard — Live behavioral system
- * Real-time metrics, actions, redemptions
- * No refresh needed—all data syncs instantly
+ * Partner Dashboard - Answer-First Design
+ * Top prompt: "What do you want to know?"
+ * Short answer modules, no metric walls
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
-  TrendingUp,
+  Search,
   Eye,
   Heart,
   CheckCircle,
-  Clock,
-  Edit2,
-  X,
+  TrendingUp,
+  ChevronRight,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 
 export default function PartnerDashboard() {
-  const [user, setUser] = useState(null);
   const [venues, setVenues] = useState([]);
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVenue, setSelectedVenue] = useState(null);
-  const [editingPerk, setEditingPerk] = useState(null);
+  const [expandedModule, setExpandedModule] = useState(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        // Mock user for demo purposes
-        setUser({ name: "Demo Partner", email: "demo@partner.com" });
-
-        // Load venues (for this partner)
         const venueList = await base44.entities.Venue.list();
         setVenues(venueList || []);
 
         // Subscribe to live actions
         const unsubscribe = base44.entities.UserAction.subscribe((event) => {
           if (event.type === 'create') {
-            setActions((prev) => [event.data, ...prev].slice(0, 50));
+            setActions((prev) => [event.data, ...prev].slice(0, 100));
           }
         });
 
@@ -53,351 +48,191 @@ export default function PartnerDashboard() {
     init();
   }, []);
 
+  const insights = useMemo(() => {
+    const impressions = actions.filter((a) => a.action_type === 'view').length;
+    const saves = actions.filter((a) => a.action_type === 'save').length;
+    const redemptions = actions.filter((a) => a.action_type === 'redeem').length;
+    
+    // Find top performing venue/perk
+    const venueViews = {};
+    actions.forEach((a) => {
+      if (a.venue_id) {
+        venueViews[a.venue_id] = (venueViews[a.venue_id] || 0) + 1;
+      }
+    });
+    const topVenueId = Object.entries(venueViews).sort((a, b) => b[1] - a[1])[0]?.[0];
+    const topVenue = venues.find((v) => v.id === topVenueId);
+
+    return {
+      impressions,
+      saves,
+      redemptions,
+      conversionRate: impressions > 0 ? saves / impressions : 0,
+      topVenue: topVenue?.name || 'No data yet',
+      trend: impressions > 10 ? 'up' : 'stable',
+    };
+  }, [actions, venues]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-4 border-border border-t-foreground rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-muted border-t-primary rounded-full animate-spin" />
       </div>
     );
   }
 
-  const metrics = calculateMetrics(actions);
+  const modules = [
+    {
+      id: 'views',
+      question: 'What residents looked at',
+      answer: `${insights.impressions} views this period`,
+      detail: 'People opened your venue or perk listing.',
+      icon: Eye,
+      color: 'text-blue-600',
+    },
+    {
+      id: 'saves',
+      question: 'Which perk moved',
+      answer: `${insights.saves} saves, ${insights.redemptions} redemptions`,
+      detail: 'Residents saved or redeemed your offers.',
+      icon: Heart,
+      color: 'text-red-500',
+    },
+    {
+      id: 'performance',
+      question: 'Which block performed',
+      answer: insights.topVenue,
+      detail: 'Your top-performing listing by engagement.',
+      icon: TrendingUp,
+      color: 'text-amber-600',
+    },
+    {
+      id: 'next',
+      question: 'What to do next',
+      answer: insights.trend === 'up' 
+        ? 'Keep momentum — consider a limited-time perk' 
+        : 'Try adding a new perk or updating your hours',
+      detail: 'Suggested action based on recent activity.',
+      icon: Sparkles,
+      color: 'text-primary',
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background pt-20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        {/* Header */}
+      <div className="max-w-2xl mx-auto px-6">
+        {/* Header - Question Prompt */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-10"
         >
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-            Partner Dashboard
+          <h1 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-2">
+            What do you want to know?
           </h1>
-          <p className="text-muted-foreground">
-            Real-time engagement metrics for your venues
+          <p className="text-muted-foreground text-sm">
+            Quick answers from your Downtown Perks activity.
           </p>
         </motion.div>
 
-        {/* KPI Cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ staggerChildren: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
-        >
-          {[
-            {
-              label: 'Impressions',
-              value: metrics.impressions,
-              icon: Eye,
-              color: 'text-blue-600',
-            },
-            {
-              label: 'Saves',
-              value: metrics.saves,
-              icon: Heart,
-              color: 'text-red-600',
-            },
-            {
-              label: 'Redemptions',
-              value: metrics.redemptions,
-              icon: CheckCircle,
-              color: 'text-green-600',
-            },
-            {
-              label: 'Trending',
-              value: `${(metrics.conversionRate * 100).toFixed(1)}%`,
-              icon: TrendingUp,
-              color: 'text-amber-600',
-            },
-          ].map((metric, i) => {
-            const Icon = metric.icon;
+        {/* Answer Modules */}
+        <div className="space-y-3">
+          {modules.map((module, i) => {
+            const Icon = module.icon;
+            const isExpanded = expandedModule === module.id;
+
             return (
-              <motion.div
-                key={i}
+              <motion.button
+                key={module.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-card rounded-xl border border-border p-5"
+                onClick={() => setExpandedModule(isExpanded ? null : module.id)}
+                className={`w-full text-left p-4 rounded-xl transition-all ${
+                  isExpanded 
+                    ? 'bg-muted/50 ring-1 ring-border' 
+                    : 'bg-card hover:bg-muted/30'
+                }`}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase">
-                    {metric.label}
-                  </span>
-                  <Icon className={`w-4 h-4 ${metric.color}`} />
+                <div className="flex items-start gap-4">
+                  <div className={`w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center shrink-0 ${module.color}`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-muted-foreground mb-0.5">
+                      {module.question}
+                    </p>
+                    <p className="font-medium text-foreground">
+                      {module.answer}
+                    </p>
+                    {isExpanded && (
+                      <motion.p
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="text-xs text-muted-foreground mt-2"
+                      >
+                        {module.detail}
+                      </motion.p>
+                    )}
+                  </div>
+                  <ChevronRight 
+                    className={`w-4 h-4 text-muted-foreground transition-transform ${
+                      isExpanded ? 'rotate-90' : ''
+                    }`} 
+                  />
                 </div>
-                <motion.div
-                  key={metric.value}
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  className="text-3xl font-bold text-foreground"
-                >
-                  {metric.value}
-                </motion.div>
-              </motion.div>
+              </motion.button>
             );
           })}
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Venues List (left) */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="lg:col-span-1"
-          >
-            <div className="bg-card rounded-xl border border-border overflow-hidden">
-              <div className="p-5 border-b border-border">
-                <h2 className="font-semibold text-foreground">Your Venues</h2>
-              </div>
-              <div className="divide-y divide-border max-h-96 overflow-y-auto">
-                {venues.length === 0 ? (
-                  <div className="p-5 text-center text-sm text-muted-foreground">
-                    No venues yet
-                  </div>
-                ) : (
-                  venues.map((venue) => (
-                    <button
-                      key={venue.id}
-                      onClick={() => setSelectedVenue(venue)}
-                      className={`w-full text-left p-4 transition-colors ${
-                        selectedVenue?.id === venue.id
-                          ? 'bg-primary/10'
-                          : 'hover:bg-secondary'
-                      }`}
-                    >
-                      <div className="font-medium text-foreground text-sm">
-                        {venue.name}
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {venue.category}
-                      </div>
-                    </button>
-                  ))
-                )}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Live Feed (right) */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="lg:col-span-2"
-          >
-            <div className="bg-card rounded-xl border border-border overflow-hidden">
-              <div className="p-5 border-b border-border flex items-center justify-between">
-                <h2 className="font-semibold text-foreground">Live Activity</h2>
-                <Clock className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <div className="divide-y divide-border max-h-96 overflow-y-auto">
-                {actions.length === 0 ? (
-                  <div className="p-5 text-center text-sm text-muted-foreground">
-                    No activity yet
-                  </div>
-                ) : (
-                  actions.map((action) => (
-                    <motion.div
-                      key={action.id}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="p-4 hover:bg-secondary/50 transition-colors"
-                    >
-                      <div className="flex items-start justify-between mb-1">
-                        <span className="font-medium text-sm text-foreground capitalize">
-                          {action.action_type}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {formatTime(action.timestamp)}
-                        </span>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {action.user_email}
-                      </div>
-                    </motion.div>
-                  ))
-                )}
-              </div>
-            </div>
-          </motion.div>
         </div>
 
-        {/* Venue Details / Edit Panel */}
-        <AnimatePresence>
-          {selectedVenue && (
-            <VenuePanel
-              venue={selectedVenue}
-              onClose={() => setSelectedVenue(null)}
-            />
-          )}
-        </AnimatePresence>
+        {/* Quick Stats - Compact */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mt-10 pt-8 border-t border-border/40"
+        >
+          <div className="flex items-center justify-between text-sm mb-4">
+            <span className="text-muted-foreground">Quick stats</span>
+            <button className="text-primary hover:underline text-xs">
+              See details
+            </button>
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-foreground">{insights.impressions}</p>
+              <p className="text-xs text-muted-foreground">Views</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-foreground">{insights.saves}</p>
+              <p className="text-xs text-muted-foreground">Saves</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-foreground">
+                {(insights.conversionRate * 100).toFixed(0)}%
+              </p>
+              <p className="text-xs text-muted-foreground">Convert</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Map CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8 text-center"
+        >
+          <a
+            href="/downtown-perks/explore"
+            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+          >
+            See your listing on the map
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </motion.div>
       </div>
     </div>
   );
-}
-
-// ── VENUE DETAILS PANEL ────────────────────────────────────
-
-function VenuePanel({ venue, onClose }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    perk_description: venue.perk_description || '',
-    perk_value: venue.perk_value || '',
-    hours: venue.hours || '',
-  });
-
-  const handleSave = async () => {
-    await base44.entities.Venue.update(venue.id, formData);
-    setIsEditing(false);
-    // Trigger map refresh via action
-    await base44.entities.UserAction.create({
-      user_email: (await base44.auth.me()).email,
-      entity_id: venue.id,
-      action_type: 'edit',
-      timestamp: new Date().toISOString(),
-      metadata: { perkUpdated: true },
-    });
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-    >
-      <motion.div
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0.9 }}
-        className="bg-card rounded-2xl max-w-2xl w-full max-h-96 overflow-y-auto"
-      >
-        <div className="p-6 border-b border-border flex items-center justify-between">
-          <h2 className="text-xl font-bold text-foreground">{venue.name}</h2>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors"
-          >
-            <X className="w-4 h-4 text-muted-foreground" />
-          </button>
-        </div>
-
-        <div className="p-6 space-y-4">
-          {isEditing ? (
-            <>
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-2">
-                  Perk Description
-                </label>
-                <input
-                  type="text"
-                  value={formData.perk_description}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      perk_description: e.target.value,
-                    })
-                  }
-                  className="w-full h-10 border border-border rounded-lg px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-2">
-                  Perk Value
-                </label>
-                <input
-                  type="text"
-                  value={formData.perk_value}
-                  onChange={(e) =>
-                    setFormData({ ...formData, perk_value: e.target.value })
-                  }
-                  className="w-full h-10 border border-border rounded-lg px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-muted-foreground mb-2">
-                  Hours
-                </label>
-                <input
-                  type="text"
-                  value={formData.hours}
-                  onChange={(e) =>
-                    setFormData({ ...formData, hours: e.target.value })
-                  }
-                  className="w-full h-10 border border-border rounded-lg px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <button
-                  onClick={handleSave}
-                  className="flex-1 h-10 rounded-lg bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="flex-1 h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <div className="text-xs text-muted-foreground mb-1">
-                  Perk Value
-                </div>
-                <p className="text-lg font-semibold text-foreground">
-                  {venue.perk_value || 'No perk'}
-                </p>
-              </div>
-
-              <div>
-                <div className="text-xs text-muted-foreground mb-1">Hours</div>
-                <p className="text-sm text-foreground">{venue.hours || 'N/A'}</p>
-              </div>
-
-              <button
-                onClick={() => setIsEditing(true)}
-                className="w-full h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2"
-              >
-                <Edit2 className="w-4 h-4" />
-                Edit details
-              </button>
-            </>
-          )}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ── HELPERS ────────────────────────────────────────────────
-
-function calculateMetrics(actions) {
-  const impressions = actions.filter((a) => a.action_type === 'scan').length;
-  const saves = actions.filter((a) => a.action_type === 'save').length;
-  const redemptions = actions.filter((a) => a.action_type === 'redeem').length;
-  const conversionRate = saves > 0 ? redemptions / saves : 0;
-
-  return { impressions, saves, redemptions, conversionRate };
-}
-
-function formatTime(timestamp) {
-  const date = new Date(timestamp);
-  const now = new Date();
-  const diff = (now - date) / 1000; // seconds
-
-  if (diff < 60) return 'just now';
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return date.toLocaleDateString();
 }
