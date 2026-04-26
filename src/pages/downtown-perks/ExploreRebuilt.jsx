@@ -1,35 +1,30 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Activity, ChevronLeft, Flame, Layers3, List, MapPin, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { ChevronLeft, List, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity } from '@/store/mapStateStore';
+import { useMapPanelStore } from '@/store/useMapPanelStore';
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
-import UnifiedSearchBar from '@/components/map/unified/UnifiedSearchBar';
-import UnifiedFilterChips from '@/components/map/unified/UnifiedFilterChips';
 import UnifiedDrawer from '@/components/map/unified/UnifiedDrawer';
 import UnifiedResultsPanel from '@/components/map/unified/UnifiedResultsPanel';
 import HeatmapLayer from '@/components/map/unified/HeatmapLayer';
-import TimeFilter from '@/components/map/unified/TimeFilter';
+import MapControlPanel from '@/components/map/MapControlPanel';
+import MapPanelHydrator from '@/components/map/MapPanelHydrator';
+import MapPanelUrlSync from '@/components/map/MapPanelUrlSync';
 import { createMarker } from '@/components/map/markers/MarkerFactory';
 import { filterValidEntities } from '@/lib/mapValidation';
 import { mapRepository } from '@/lib/repositories/mapRepository';
-import { getPrimaryPresetDefinition } from '@/lib/map/searchUiConfig';
+import { useRankedResults } from '@/hooks/useRankedResults';
+import { rankMapEntities } from '@/lib/map/rankMapEntities';
 
 function getMarkerIcon(entity, isSelected) {
-  return createMarker(entity, { isSelected });
-}
-
-function parseExploreParams(search) {
-  const params = new URLSearchParams(search || '');
-  const query = params.get('query') || params.get('q') || '';
-  const category = params.get('category') || '';
-  const mode = params.get('mode') || '';
-  const toggles = params.get('toggles') || '';
-  return { query, category, mode, toggles };
+  return createMarker(entity, {
+    isSelected,
+    radiusMinutes: useMapStateStore.getState().activeFilters.walkMinutes,
+  });
 }
 
 export default function ExploreRebuilt() {
-  const location = useLocation();
   const filteredResults = useMapStateStore(selectFilteredResults);
   const selectedEntity = useMapStateStore(selectSelectedEntity);
   const mapCenter = useMapStateStore((state) => state.mapCenter);
@@ -52,12 +47,48 @@ export default function ExploreRebuilt() {
   const [allEntities, setAllEntities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [askLoading, setAskLoading] = useState(false);
-  const [askMode, setAskMode] = useState(false);
   const baseEntitiesRef = useRef([]);
   const lastAskRef = useRef('');
 
-  const exploreParams = useMemo(() => parseExploreParams(location.search), [location.search]);
+  const {
+    mode,
+    query,
+    decision,
+    type,
+    setAgentState,
+    categories,
+    filters,
+  } = useMapPanelStore();
 
+  // ─── RANKING INTEGRATION ───────────────────────────────────────────────────
+  // Apply ranking hook first, then cap with rankMapEntities
+  const rankedResults = useRankedResults(filteredResults);
+  
+  const displayResults = useMemo(() => {
+    return rankMapEntities(rankedResults, {
+      intent: searchQuery,
+      maxResults: 30,
+      savedEntityIds,
+    });
+  }, [rankedResults, searchQuery, savedEntityIds]);
+
+  const describeType = (value) => {
+    if (value === 'venues') return 'places';
+    if (value === 'events') return 'events';
+    if (value === 'perks') return 'perks';
+    if (value === 'buildings') return 'buildings';
+    return 'results';
+  };
+
+  const describeWindow = () => {
+    if (filters.fiveMin) return 'within 5 minutes';
+    if (filters.tenMin) return 'within 10 minutes';
+    if (decision === 'open' || filters.openNow) return 'open now';
+    if (decision === 'near') return 'nearby';
+    return 'nearby right now';
+  };
+
+  // ─── DATA LOADING ──────────────────────────────────────────────────────────
   useEffect(() => {
     let mounted = true;
 
@@ -88,113 +119,88 @@ export default function ExploreRebuilt() {
     };
   }, [setFilteredResults]);
 
+  // ─── FILTER SYNC ───────────────────────────────────────────────────────────
   useEffect(() => {
-    const nextAskMode = exploreParams.mode === 'ask';
-    setAskMode(nextAskMode);
     clearFilters();
+    setSearchQuery(query);
 
-    // Apply URL query into the map store for consistent filtering/highlights
-    if (typeof exploreParams.query === 'string') {
-      setSearchQuery(exploreParams.query);
+    if (type === 'venues') {
+      updateFilter('entityTypes', new Set(['venue', 'hotel']));
+    } else if (type === 'events') {
+      updateFilter('entityTypes', new Set(['event']));
+    } else if (type === 'perks') {
+      updateFilter('entityTypes', new Set(['perk']));
+    } else if (type === 'buildings') {
+      updateFilter('entityTypes', new Set(['building', 'property', 'hotel']));
+    } else {
+      updateFilter('entityTypes', new Set(['venue', 'event', 'perk', 'building', 'property', 'hotel']));
     }
 
-    const rawCategory = String(exploreParams.category || '').trim().toLowerCase();
-    if (rawCategory) {
-      if (rawCategory === 'walk' || rawCategory === '5min' || rawCategory === '5-min') {
-        updateFilter('walkMinutes', 5);
-      } else if (
-        rawCategory === 'venues' ||
-        rawCategory === 'venue' ||
-        rawCategory === 'events' ||
-        rawCategory === 'event' ||
-        rawCategory === 'perks' ||
-        rawCategory === 'perk' ||
-        rawCategory === 'buildings' ||
-        rawCategory === 'building' ||
-        rawCategory === 'properties' ||
-        rawCategory === 'property'
-      ) {
-        const entityMap = {
-          venues: ['venue'],
-          venue: ['venue'],
-          events: ['event'],
-          event: ['event'],
-          perks: ['perk'],
-          perk: ['perk'],
-          buildings: ['building'],
-          building: ['building'],
-          properties: ['building'],
-          property: ['building'],
-        };
-        updateFilter('entityTypes', new Set(entityMap[rawCategory] || ['venue', 'event', 'perk', 'building']));
-      } else {
-        const preset = getPrimaryPresetDefinition(rawCategory);
-        updateFilter('entityTypes', new Set(preset.entityTypes || ['venue', 'event', 'perk', 'building']));
-        updateFilter('categories', new Set(preset.categories || []));
-        if (!exploreParams.query && preset.query) {
-          setSearchQuery(preset.query);
-        }
-      }
+    if (categories.length > 0) {
+      updateFilter('categories', new Set(categories));
     }
 
-    const toggleSet = new Set(
-      String(exploreParams.toggles || '')
-        .split(',')
-        .map((item) => item.trim().toLowerCase())
-        .filter(Boolean)
-    );
-
-    if (toggleSet.has('crowd')) {
-      updateFilter('isTrending', true);
+    if (decision === 'now') {
       updateFilter('isLive', true);
     }
 
-    if (toggleSet.has('perks')) {
+    if (decision === 'open' || filters.openNow) {
+      updateFilter('isOpenNow', true);
+    }
+
+    if (filters.crowd) {
+      updateFilter('isTrending', true);
+    }
+
+    if (filters.deals) {
       updateFilter('hasPerk', true);
     }
 
-    if (toggleSet.has('walk')) {
+    if (filters.fiveMin) {
       updateFilter('walkMinutes', 5);
+    } else if (filters.tenMin) {
+      updateFilter('walkMinutes', 10);
     }
-  }, [clearFilters, exploreParams.category, exploreParams.mode, exploreParams.query, exploreParams.toggles, setSearchQuery, updateFilter]);
+  }, [categories, clearFilters, decision, filters, query, setSearchQuery, type, updateFilter]);
 
+  // ─── ASK MODE RESET ────────────────────────────────────────────────────────
   useEffect(() => {
-    if (askMode) return;
+    if (mode === 'ask') return;
     if (!lastAskRef.current) return;
 
-    // Leaving ask mode restores the base feed so explore doesn't get "stuck" on an AI subset.
     lastAskRef.current = '';
     const base = baseEntitiesRef.current;
     if (Array.isArray(base) && base.length > 0) {
       setAllEntities(base);
       setFilteredResults(base);
     }
-  }, [askMode, setFilteredResults]);
+  }, [mode, setFilteredResults]);
 
+  // ─── CLOSE RESULTS ON SELECTION ────────────────────────────────────────────
   useEffect(() => {
     if (!selectedEntity) return;
     setShowResultsList(false);
   }, [selectedEntity, setShowResultsList]);
 
+  // ─── RESULTS PANEL DEFAULT: CLOSED ─────────────────────────────────────────
+  // Changed: Results panel is now closed by default on all devices
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (window.innerWidth >= 768) {
-      setShowResultsList(true);
-    }
+    setShowResultsList(false);
   }, [setShowResultsList]);
 
+  // ─── ASK HANDLER ───────────────────────────────────────────────────────────
   const handleAsk = async (q) => {
-    const query = String(q || '').trim();
-    if (!query) return;
+    const queryStr = String(q || '').trim();
+    if (!queryStr) return;
     if (askLoading) return;
-    if (lastAskRef.current === query) return;
+    if (lastAskRef.current === queryStr) return;
 
     setAskLoading(true);
-    lastAskRef.current = query;
+    lastAskRef.current = queryStr;
 
     try {
-      const { items } = await mapRepository.searchWithIntent({
-        query,
+      const { items, explanation, suggestions, source, intent } = await mapRepository.searchWithIntent({
+        query: queryStr,
         userLocation: {
           latitude: mapCenter?.[0],
           longitude: mapCenter?.[1],
@@ -202,349 +208,117 @@ export default function ExploreRebuilt() {
       });
 
       const safeItems = filterValidEntities(items).filter((item) => item.isPlotted !== false);
+      setAgentState({
+        agentExplanation: explanation || intent?.explanation || "Showing what fits nearby.",
+        agentSuggestions: suggestions || intent?.suggestions || [],
+        agentSource: source || "fallback",
+      });
       setAllEntities(safeItems);
       setFilteredResults(safeItems);
     } catch (error) {
-      console.error('Ask the map failed:', error);
+      console.error('Ask failed:', error);
     } finally {
       setAskLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (!askMode) return;
-    if (!exploreParams.query?.trim()) return;
-    handleAsk(exploreParams.query);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [askMode]);
-
-  useEffect(() => {
-    if (!allEntities.length) return;
-
-    let results = [...allEntities].filter((item) => item.isVisibleInResults !== false);
-    const q = searchQuery.trim().toLowerCase();
-
-    if (q) {
-      results = results.filter((item) => {
-        const haystack = [
-          item.name,
-          item.description,
-          item.address,
-          item.category,
-          item.district,
-          ...(item.metadata?.tags || []),
-          ...(item.metadata?.searchKeywords || []),
-          ...(item.metadata?.askMapIntentTags || []),
-        ]
-          .filter(Boolean)
-          .join(' ')
-          .toLowerCase();
-
-        return haystack.includes(q);
-      });
-    }
-
-    if (activeFilters.entityTypes.size > 0) {
-      results = results.filter(
-        (item) =>
-          activeFilters.entityTypes.has(item.type) ||
-          (item.type === 'property' && activeFilters.entityTypes.has('building'))
-      );
-    }
-
-    if (activeFilters.categories.size > 0) {
-      results = results.filter((item) => item.category && activeFilters.categories.has(item.category));
-    }
-
-    if (activeFilters.districts.size > 0) {
-      results = results.filter((item) => item.district && activeFilters.districts.has(item.district));
-    }
-
-    if (typeof activeFilters.walkMinutes === 'number') {
-      results = results.filter((item) => (item.metadata?.walkMinutes ?? 999) <= activeFilters.walkMinutes);
-    }
-
-    if (activeFilters.isOpenNow) {
-      results = results.filter((item) => Boolean(item.isOpenNow));
-    }
-
-    if (activeFilters.isLive) {
-      results = results.filter((item) => Boolean(item.isLive || item.eventTiming?.isLive));
-    }
-
-    if (activeFilters.isSaved) {
-      results = results.filter((item) => savedEntityIds.has(item.id));
-    }
-
-    if (activeFilters.isTrending) {
-      results = results.filter((item) => Boolean(item.metadata?.isTrending || (item.metadata?.popularity ?? 0) >= 70));
-    }
-
-    if (activeFilters.hasPerk) {
-      results = results.filter((item) => Boolean(item.perk?.value || item.perk_value || item.type === 'perk'));
-    }
-
-    results.sort((a, b) => {
-      const liveDelta = Number(Boolean(b.isLive || b.eventTiming?.isLive)) - Number(Boolean(a.isLive || a.eventTiming?.isLive));
-      if (liveDelta !== 0) return liveDelta;
-
-      const walkDelta = (a.metadata?.walkMinutes ?? 999) - (b.metadata?.walkMinutes ?? 999);
-      if (walkDelta !== 0) return walkDelta;
-
-      return (b.metadata?.popularity ?? 0) - (a.metadata?.popularity ?? 0);
-    });
-
-    setFilteredResults(results);
-  }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults]);
-
-  const summary = useMemo(
-    () => ({
-      venues: filteredResults.filter((item) => item.type === 'venue').length,
-      events: filteredResults.filter((item) => item.type === 'event').length,
-      perks: filteredResults.filter((item) => item.type === 'perk').length,
-      properties: filteredResults.filter((item) => ['building', 'property', 'hotel'].includes(item.type)).length,
-    }),
-    [filteredResults]
-  );
-
-  const handleMarkerSelect = (entity) => {
+  // ─── MARKER CLICK ──────────────────────────────────────────────────────────
+  const handleMarkerClick = (entity) => {
     selectEntity(entity);
   };
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-background">
-        <div className="dp-map-panel flex items-center gap-3 px-4 py-3 text-sm text-slate-600">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-[#0b1f33]" />
-          Loading the live downtown layer…
-        </div>
-      </div>
-    );
-  }
-
+  // ─── RENDER ────────────────────────────────────────────────────────────────
   return (
-    <div className="fixed inset-0 bg-background pt-[68px]">
-      <div className="flex h-[calc(100vh-68px)] flex-col md:hidden">
-        <div className="relative flex-1">
-          <UnifiedMapShell
-            items={filteredResults}
-            markerIcon={(item, active) => getMarkerIcon(item, active)}
-            onMarkerSelect={handleMarkerSelect}
-            mapCenter={mapCenter}
-            mapZoom={mapZoom}
-            onMapCenterChange={setMapCenter}
-            onMapZoomChange={setMapZoom}
-            selectedId={selectedEntity?.id}
-            className="h-full w-full"
-          >
-            <HeatmapLayer items={filteredResults} />
-          </UnifiedMapShell>
+    <div className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-[#f8f9fa]">
+      {/* URL and state hydration */}
+      <MapPanelHydrator />
+      <MapPanelUrlSync />
 
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-20 space-y-3 p-4">
-            <div className="pointer-events-auto">
-              <Link
-                to="/"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                Back
-              </Link>
-            </div>
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-3">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="dp-micro-label">Downtown live map</div>
-                  <div className="mt-1 text-sm font-semibold text-[#0b1f33]">Explore what is worth walking to right now.</div>
-                </div>
-                <button
-                  onClick={() => setHeatmapVisible(!heatmapVisible)}
-                  className={heatmapVisible ? 'dp-chip dp-chip-active' : 'dp-chip'}
-                >
-                  <Activity className="h-3.5 w-3.5" />
-                  Activity
-                </button>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <span className="dp-chip">{summary.venues} venues</span>
-                <span className="dp-chip">{summary.events} events</span>
-                <span className="dp-chip">{summary.perks} perks</span>
-              </div>
-            </motion.div>
-
-            <div className="pointer-events-auto">
-              <UnifiedSearchBar
-                mode={askMode ? 'ask' : 'search'}
-                onAsk={handleAsk}
-                askLoading={askLoading}
-                onModeChange={(nextMode) => setAskMode(nextMode === 'ask')}
-              />
-            </div>
-            <div className="pointer-events-auto space-y-2">
-              <TimeFilter />
-              <UnifiedFilterChips />
-            </div>
-          </div>
-
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4">
-            <div className="pointer-events-auto flex items-center justify-between gap-3">
-              <button
-                type="button"
-                onClick={() => setShowResultsList(!showResultsList)}
-                className={showResultsList ? 'dp-chip dp-chip-active min-h-11' : 'dp-chip min-h-11'}
-              >
-                {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
-                {showResultsList ? 'Hide results' : `Results (${filteredResults.length})`}
-              </button>
-
-              <div className="dp-map-panel px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                {askMode ? 'Ask mode' : 'Search mode'}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {showResultsList && !selectedEntity ? (
-            <>
-              <motion.button
-                type="button"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setShowResultsList(false)}
-                className="fixed inset-0 z-[24] bg-[rgba(11,31,51,0.18)] md:hidden"
-                aria-label="Close results"
-              />
-
-              <motion.div
-                initial={{ y: 440 }}
-                animate={{ y: 0 }}
-                exit={{ y: 440 }}
-                transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-                className="fixed inset-x-0 bottom-0 z-[25] px-3 pb-3 md:hidden"
-              >
-                <div className="dp-map-panel max-h-[58vh] overflow-hidden rounded-2xl">
-                  <div className="flex items-center justify-between border-b border-border px-4 py-3">
-                    <div className="h-1.5 w-12 rounded-full bg-navy/10" />
-                    <button
-                      type="button"
-                      onClick={() => setShowResultsList(false)}
-                      className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
-                      aria-label="Close results"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-
-                  <div className="max-h-[calc(58vh-56px)] overflow-y-auto">
-                    <UnifiedResultsPanel
-                      items={filteredResults}
-                      onSelectResult={() => setShowResultsList(false)}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          ) : null}
-        </AnimatePresence>
-
-        <UnifiedDrawer selected={selectedEntity} />
+      {/* Back navigation - minimal */}
+      <div className="absolute left-4 top-4 z-30">
+        <Link
+          to="/"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm shadow-sm border border-slate-200/50 text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </Link>
       </div>
 
-      <div className="hidden h-[calc(100vh-68px)] md:flex">
-        <div className="relative flex-[1.45] p-5">
-          <UnifiedMapShell
-            items={filteredResults}
-            markerIcon={(item, active) => getMarkerIcon(item, active)}
-            onMarkerSelect={handleMarkerSelect}
-            mapCenter={mapCenter}
-            mapZoom={mapZoom}
-            onMapCenterChange={setMapCenter}
-            onMapZoomChange={setMapZoom}
-            selectedId={selectedEntity?.id}
-            className="h-full w-full rounded-[28px]"
-          >
-            <HeatmapLayer items={filteredResults} />
-          </UnifiedMapShell>
-
-          <div className={`pointer-events-none absolute left-8 right-8 top-8 z-20 space-y-3 ${showResultsList ? 'pr-[32%]' : 'pr-0'}`}>
-            <div className="pointer-events-auto">
-              <Link
-                to="/"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                Back
-              </Link>
-            </div>
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto dp-map-panel px-4 py-4">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="dp-micro-label">Restored map-first system</div>
-                  <h1 className="mt-1 text-xl font-semibold text-[#0b1f33]">A live operating layer for downtown residents.</h1>
-                  <p className="mt-1 text-sm text-slate-600">Search, filter, save, and move through the neighborhood with one consistent interface.</p>
-                </div>
-                <button
-                  onClick={() => setHeatmapVisible(!heatmapVisible)}
-                  className={heatmapVisible ? 'dp-chip dp-chip-active' : 'dp-chip'}
-                >
-                  <Flame className="h-3.5 w-3.5" />
-                  {heatmapVisible ? 'Hide activity' : 'Show activity'}
-                </button>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="dp-chip"><Layers3 className="h-3.5 w-3.5" /> {summary.venues} venues</span>
-                <span className="dp-chip"><MapPin className="h-3.5 w-3.5" /> {summary.events} events</span>
-                <span className="dp-chip">{summary.perks} perks</span>
-                <span className="dp-chip">{summary.properties} properties</span>
-              </div>
-            </motion.div>
-
-            <div className="pointer-events-auto">
-              <UnifiedSearchBar
-                mode={askMode ? 'ask' : 'search'}
-                onAsk={handleAsk}
-                askLoading={askLoading}
-                onModeChange={(nextMode) => setAskMode(nextMode === 'ask')}
-              />
-            </div>
-            <div className="pointer-events-auto space-y-2">
-              <TimeFilter />
-              <UnifiedFilterChips />
-            </div>
-          </div>
-
-          <div className="pointer-events-none absolute bottom-8 right-8 z-20">
-            <button
-              type="button"
-              onClick={() => setShowResultsList(!showResultsList)}
-              className={`pointer-events-auto ${showResultsList ? 'dp-chip dp-chip-active' : 'dp-chip'} min-h-11`}
-            >
-              {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
-              {showResultsList ? 'Roll up results' : `Show results (${filteredResults.length})`}
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence initial={false}>
+      {/* Results toggle - only shows count badge when collapsed */}
+      <div className="absolute right-4 top-4 z-30 flex items-center gap-2">
+        <button
+          onClick={() => setShowResultsList(!showResultsList)}
+          className="flex h-10 items-center gap-2 rounded-full bg-white/90 backdrop-blur-sm shadow-sm border border-slate-200/50 px-4 text-sm font-medium text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
+        >
           {showResultsList ? (
-            <motion.aside
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '32%', opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.22, ease: 'easeOut' }}
-              className="flex flex-col border-l border-border bg-[#fbfbfd] overflow-hidden"
-            >
-              <UnifiedResultsPanel
-                items={filteredResults}
-                onClose={() => setShowResultsList(false)}
-                title="Downtown results"
-              />
-            </motion.aside>
-          ) : null}
-        </AnimatePresence>
+            <>
+              <X className="h-4 w-4" />
+              <span>Close</span>
+            </>
+          ) : (
+            <>
+              <List className="h-4 w-4" />
+              <span>Results</span>
+              {displayResults.length > 0 && (
+                <span className="ml-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy text-[11px] font-semibold text-white px-1.5">
+                  {displayResults.length}
+                </span>
+              )}
+            </>
+          )}
+        </button>
       </div>
+
+      {/* Map Shell - primary surface */}
+      <UnifiedMapShell
+        entities={displayResults}
+        selectedEntity={selectedEntity}
+        onMarkerClick={handleMarkerClick}
+        getMarkerIcon={getMarkerIcon}
+        center={mapCenter}
+        zoom={mapZoom}
+        onCenterChange={setMapCenter}
+        onZoomChange={setMapZoom}
+        loading={loading}
+      >
+        {heatmapVisible && <HeatmapLayer entities={displayResults} />}
+      </UnifiedMapShell>
+
+      {/* Control panel - minimal glass overlay */}
+      <MapControlPanel
+        onAsk={handleAsk}
+        askLoading={askLoading}
+        heatmapVisible={heatmapVisible}
+        onToggleHeatmap={() => setHeatmapVisible(!heatmapVisible)}
+      />
+
+      {/* Results Panel - collapsed by default, compact rows */}
+      <AnimatePresence>
+        {showResultsList && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="absolute right-0 top-0 z-20 h-full w-full max-w-sm"
+          >
+            <UnifiedResultsPanel
+              results={displayResults}
+              selectedEntity={selectedEntity}
+              savedEntityIds={savedEntityIds}
+              onSelect={selectEntity}
+              onClose={() => setShowResultsList(false)}
+              compact
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Decision Drawer - primary interaction surface */}
+      <UnifiedDrawer
+        selected={selectedEntity}
+        desktopMode="floating"
+      />
     </div>
   );
 }
