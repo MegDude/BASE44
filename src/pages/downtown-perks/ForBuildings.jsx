@@ -1,7 +1,11 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+/**
+ * For Buildings - Clean value prop, no card grids
+ * Three beats: Amenity, Visibility, Leasing
+ */
+
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Building2, Users, BarChart3, MessageSquare, ArrowRight, CheckCircle } from "lucide-react";
+import { Building2, Users, BarChart3, ArrowRight, Check } from "lucide-react";
 
 const tiers = [
   {
@@ -11,10 +15,9 @@ const tiers = [
     features: [
       "Resident access for the whole building",
       "QR card activation",
-      "Map listing and neighborhood layer",
+      "Map listing",
       "Top-line usage reports",
     ],
-    highlight: false,
   },
   {
     name: "Connected",
@@ -25,7 +28,6 @@ const tiers = [
       "Resident activity dashboard",
       "Building communication channel",
       "Monthly engagement reports",
-      "Priority partner access",
     ],
     highlight: true,
   },
@@ -36,196 +38,163 @@ const tiers = [
     features: [
       "Everything in Connected",
       "Advanced usage analytics",
-      "Behavioral and segmentation data",
-      "Custom event programming",
+      "Behavioral segmentation",
       "Leasing lead routing",
-      "Dedicated account manager",
     ],
-    highlight: false,
-  },
-];
-
-const benefits = [
-  {
-    icon: Users,
-    title: "A more useful resident amenity",
-    description: "Give residents an easier way to find nearby places, local offers, and what is happening around them in daily downtown life.",
-  },
-  {
-    icon: MessageSquare,
-    title: "A better way to use the neighborhood",
-    description: "Help people get more out of where they live by making it simpler to discover what is worth walking to, using, or joining nearby.",
-  },
-  {
-    icon: BarChart3,
-    title: "A touchpoint people come back to",
-    description: "Create a resident-facing layer that feels more useful than another building email because it connects updates with real neighborhood value.",
-  },
-  {
-    icon: Building2,
-    title: "Stronger visibility for your team",
-    description: "See what residents are opening, saving, and using while turning neighborhood interest into warmer leasing conversations.",
   },
 ];
 
 export default function ForBuildings() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <div className="min-h-screen bg-background">
-
-      {/* Hero */}
-      <section className="pt-32 pb-12 px-6">
-        <div className="max-w-4xl mx-auto">
+      {/* Hero - Clean, no boxes */}
+      <section className="pt-28 pb-16 px-6">
+        <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-xs font-medium text-primary uppercase tracking-widest mb-4 block">
               For Buildings
             </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
-              <h1 className="font-heading text-4xl md:text-5xl font-medium leading-[1.08] tracking-tight">
-                A Smarter
-                <br />
-                <em className="text-primary">Building Amenity</em>
-              </h1>
-              <p className="text-muted-foreground text-[15px] leading-relaxed md:pb-1">
-                Downtown Perks gives residents a better way to use the neighborhood around them while giving your property a stronger amenity, clearer communication, and added leasing value.
-              </p>
-            </div>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold tracking-tight mb-6">
+              A smarter
+              <br />
+              <span className="text-primary">building amenity.</span>
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-xl mb-8">
+              Give residents a better way to use the neighborhood while gaining visibility into what they actually engage with.
+            </p>
+            <Link
+              to="/downtown-perks/explore"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+            >
+              See the Map
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* Benefits */}
-      <section ref={ref} className="py-10 px-6 border-t border-border/40">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-7"
-          >
-            What You Get
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-border/40 border border-border/40 rounded-lg overflow-hidden">
-            {benefits.map((b, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.08 }}
-                className={`p-8 ${i >= 2 ? "border-t border-border/40" : ""}`}
-              >
-                <div className="w-9 h-9 rounded-full border border-border/60 flex items-center justify-center mb-5">
-                  <b.icon className="w-4 h-4 text-primary" />
-                </div>
-                <h3 className="font-heading text-lg font-medium mb-2">{b.title}</h3>
-                <p className="text-muted-foreground text-[13px] leading-relaxed">{b.description}</p>
-              </motion.div>
-            ))}
+      {/* Value Props - Simple rows, no cards */}
+      <section className="py-16 px-6 border-t border-border/40">
+        <div className="max-w-3xl mx-auto">
+          <div className="space-y-12">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex gap-6"
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Users className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-semibold mb-2">
+                  A more useful resident amenity
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Give residents an easier way to find nearby places, local offers, and what is happening around them in daily downtown life.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex gap-6"
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <BarChart3 className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-semibold mb-2">
+                  Visibility into what works
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  See what residents are opening, saving, and using. Turn neighborhood interest into actionable property insights.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex gap-6"
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Building2 className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-semibold mb-2">
+                  Stronger leasing conversations
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Show prospects a live neighborhood layer that makes your building feel more connected to what matters nearby.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="py-10 px-6 border-t border-border/40">
+      {/* Pricing - Compact */}
+      <section className="py-16 px-6 border-t border-border/40">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-7">
-            <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] block mb-4">
-              Pricing
-            </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight">
-                Simple pricing. Start with a pilot.
-              </h2>
-              <p className="text-muted-foreground text-[13px] leading-relaxed">
-                90 days free. After that, choose the level that fits your team's communication and reporting needs.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 className="font-heading text-2xl font-bold text-center mb-10">
+            Simple pricing
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {tiers.map((tier, i) => (
               <motion.div
-                key={i}
+                key={tier.name}
                 initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.08 }}
-                className={`rounded-lg border p-7 relative ${
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={`p-6 rounded-xl ${
                   tier.highlight
-                    ? "border-primary/40 bg-primary/5"
-                    : "border-border/60 bg-card/40"
+                    ? "bg-primary/5 ring-1 ring-primary/20"
+                    : "bg-muted/30"
                 }`}
               >
-                {tier.highlight && (
-                  <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-[11px] font-medium tracking-wide">
-                    Most Popular
-                  </span>
-                )}
-                <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">
-                  {tier.name}
+                <h3 className="font-heading text-lg font-semibold mb-1">{tier.name}</h3>
+                <div className="flex items-baseline gap-1 mb-4">
+                  <span className="text-2xl font-bold">{tier.price}</span>
+                  <span className="text-sm text-muted-foreground">{tier.period}</span>
                 </div>
-                <div className="mb-6">
-                  <span className="font-heading text-4xl font-medium text-foreground tracking-tight">
-                    {tier.price}
-                  </span>
-                  <span className="text-muted-foreground text-sm ml-1.5">{tier.period}</span>
-                </div>
-                <ul className="space-y-2.5 mb-8">
-                  {tier.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-2.5 text-[13px] text-muted-foreground">
-                      <CheckCircle className="w-3.5 h-3.5 text-primary/60 flex-shrink-0 mt-0.5" />
+                <ul className="space-y-2">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <button
-                  className={`w-full py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                    tier.highlight
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border"
-                  }`}
-                >
-                  {tier.price === "Free" ? "Start Free Pilot" : "Get Started"}
-                </button>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Business pitch */}
-      <section className="py-10 px-6 border-t border-border/40">
-        <div className="max-w-4xl mx-auto">
-          <div className="border border-border/60 rounded-lg p-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-              <div>
-                <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.12em] block mb-4">
-                  For Local Businesses
-                </span>
-                <h3 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] mb-4">
-                  No cost to join.
-                  <br />
-                  <em className="text-muted-foreground font-normal">The offer is the entry point.</em>
-                </h3>
-              </div>
-              <div>
-                <p className="text-muted-foreground text-[13px] leading-relaxed mb-6">
-                  Local businesses join by offering a perk to resident members. In return, they appear on the map at the moment nearby residents are deciding where to go.
-                </p>
-                <Link
-                  to="/buildings/the-waterline"
-                  className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline underline-offset-4"
-                >
-                  Open building intelligence <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-          </div>
+      {/* CTA */}
+      <section className="py-16 px-6 border-t border-border/40">
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="font-heading text-xl font-bold mb-3">
+            Ready to add Downtown Perks?
+          </h2>
+          <p className="text-muted-foreground text-sm mb-6">
+            Start with a free pilot and see how residents engage.
+          </p>
+          <Link
+            to="/downtown-perks/explore"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+          >
+            Get Started
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
     </div>
