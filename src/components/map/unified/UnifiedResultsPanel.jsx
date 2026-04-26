@@ -1,137 +1,176 @@
+/**
+ * UnifiedResultsPanel - Compact results list for map-first MVP
+ * 
+ * Design principles:
+ * - Collapsed by default
+ * - Compact rows: title, category, walk time, perk indicator
+ * - No long descriptions
+ * - No duplicate CTAs
+ * - Single tap opens drawer
+ */
+
 import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import { useMapStateStore } from '@/store/mapStateStore';
 import {
-  IconArrowRight,
-  IconAsk,
   IconClock,
-  IconClose,
   getEntityIcon,
   getEntityLabel,
-  IconNavigation,
-  IconSave,
+  IconPerk,
 } from '@/components/icons/DPIcons';
 
-export default function UnifiedResultsPanel({ items = [], onSelectResult, onClose = null, title = null }) {
-  const selectedEntityId = useMapStateStore((state) => state.selectedEntityId);
-  const searchQuery = useMapStateStore((state) => state.searchQuery);
-  const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
-  const selectEntity = useMapStateStore((state) => state.selectEntity);
-  const toggleSaved = useMapStateStore((state) => state.toggleSaved);
+function getStatus(item) {
+  if (item?.isLive || item?.eventTiming?.isLive) return { label: 'Live', tone: 'live' };
+  if (item?.isOpenNow) return { label: 'Open', tone: 'open' };
+  if (item?.eventTiming?.startsSoon) return { label: 'Soon', tone: 'soon' };
+  return null;
+}
+
+/**
+ * Compact result row - minimal info, tap to select
+ */
+function CompactResultRow({ item, isSelected, onSelect }) {
+  const EntityIcon = getEntityIcon(item);
+  const status = getStatus(item);
+  const walkMinutes = item.metadata?.walkMinutes || item.distanceMinutes;
+  const hasPerk = item.hasPerk || item.perk?.value || item.perk_value;
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="border-b border-border px-5 py-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h2 className="text-base font-semibold text-foreground">
-              {title || 'Downtown results'}
-              {searchQuery ? ` for “${searchQuery}”` : ''}
-            </h2>
-            <p className="mt-1 text-xs text-slate-500">Pins, perks, events, and properties in one live view.</p>
-          </div>
+    <button
+      onClick={() => onSelect(item)}
+      className={`w-full text-left px-4 py-3 border-b border-slate-100 transition-colors ${
+        isSelected
+          ? 'bg-navy/5'
+          : 'hover:bg-slate-50'
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        {/* Icon */}
+        <div className={`flex h-8 w-8 items-center justify-center rounded-full ${
+          isSelected ? 'bg-navy text-white' : 'bg-slate-100 text-slate-600'
+        }`}>
+          <EntityIcon className="h-4 w-4" />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-              {items.length}
+            <span className={`font-medium truncate ${
+              isSelected ? 'text-navy' : 'text-slate-900'
+            }`}>
+              {item.name}
             </span>
-            {onClose ? (
-              <button
-                type="button"
-                onClick={onClose}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(11,31,51,0.08)] bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900"
-                aria-label="Close results"
-              >
-                <IconClose className="h-4 w-4" />
-              </button>
-            ) : null}
+            {status && (
+              <span className={`shrink-0 text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${
+                status.tone === 'live'
+                  ? 'bg-emerald-100 text-emerald-700'
+                  : status.tone === 'open'
+                  ? 'bg-blue-100 text-blue-700'
+                  : 'bg-amber-100 text-amber-700'
+              }`}>
+                {status.label}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
+            <span className="capitalize">{getEntityLabel(item)}</span>
+            {walkMinutes && (
+              <>
+                <span className="text-slate-300">·</span>
+                <span className="flex items-center gap-1">
+                  <IconClock className="h-3 w-3" />
+                  {walkMinutes} min
+                </span>
+              </>
+            )}
+            {hasPerk && (
+              <>
+                <span className="text-slate-300">·</span>
+                <span className="flex items-center gap-1 text-gold">
+                  <IconPerk className="h-3 w-3" />
+                  Perk
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>
+    </button>
+  );
+}
 
-      <div className="flex-1 overflow-y-auto p-4">
-        {items.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center rounded-[24px] border border-dashed border-border bg-white px-6 py-12 text-center">
-            <IconAsk className="mb-3 h-8 w-8 text-slate-300" />
-            <p className="text-sm font-medium text-foreground">No results yet</p>
-            <p className="mt-1 text-xs text-slate-500">Try a different search or clear a few filters.</p>
+export default function UnifiedResultsPanel({
+  results = [],
+  selectedEntity,
+  savedEntityIds = new Set(),
+  onSelect,
+  onClose,
+  compact = false,
+}) {
+  const setShowResultsList = useMapStateStore((state) => state.setShowResultsList);
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      setShowResultsList(false);
+    }
+  };
+
+  return (
+    <div className="h-full bg-white/95 backdrop-blur-md shadow-xl border-l border-slate-200/50 flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <h2 className="font-semibold text-slate-900">Results</h2>
+          <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+            {results.length}
+          </span>
+        </div>
+        <button
+          onClick={handleClose}
+          className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* Results list - compact rows */}
+      <div className="flex-1 overflow-y-auto">
+        {results.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center px-6 py-12">
+            <p className="text-slate-500 text-sm">No results in this area</p>
+            <p className="text-slate-400 text-xs mt-1">Try zooming out or adjusting filters</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            <AnimatePresence>
-              {items.map((item) => {
-                const isSaved = savedEntityIds.has(item.id);
-                const isSelected = selectedEntityId === item.id;
-                const metaWalk = item.metadata?.walkMinutes ? `${item.metadata.walkMinutes} min walk` : null;
-                const EntityIcon = getEntityIcon(item);
-                const entityLabel = getEntityLabel(item);
-
-                return (
-                  <motion.button
-                    key={item.id}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    onClick={() => {
-                      selectEntity(item);
-                      onSelectResult?.(item);
-                    }}
-                    className={`w-full rounded-[22px] border p-4 text-left transition-all ${
-                      isSelected
-                        ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.04)] shadow-sm'
-                        : 'border-border bg-white hover:border-[rgba(11,31,51,0.22)] hover:shadow-sm'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
-                          <EntityIcon className="h-3.5 w-3.5" />
-                          {entityLabel}
-                        </span>
-                        <h3 className="mt-2 text-base font-semibold text-[#0b1f33]">{item.name}</h3>
-                      </div>
-
-                      <button
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          toggleSaved(item.id);
-                        }}
-                        className={isSaved ? 'dp-chip dp-chip-active' : 'dp-chip'}
-                        aria-label="Save location"
-                      >
-                        <IconSave className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-
-                    <p className="mt-2 text-sm text-slate-600">{item.description || item.address}</p>
-
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
-                      {item.address && (
-                        <span className="dp-chip">
-                          <IconNavigation className="h-3.5 w-3.5" />
-                          {item.address.split(',')[0]}
-                        </span>
-                      )}
-                      {metaWalk && (
-                        <span className="dp-chip">
-                          <IconClock className="h-3.5 w-3.5" />
-                          {metaWalk}
-                        </span>
-                      )}
-                      {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-end text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                      <span className="inline-flex items-center gap-1">
-                        View details
-                        <IconArrowRight className="h-3.5 w-3.5" />
-                      </span>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </AnimatePresence>
-          </div>
+          <AnimatePresence mode="popLayout">
+            {results.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ delay: index * 0.02 }}
+              >
+                <CompactResultRow
+                  item={item}
+                  isSelected={selectedEntity?.id === item.id}
+                  onSelect={onSelect}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         )}
       </div>
+
+      {/* Footer hint */}
+      {results.length > 0 && (
+        <div className="px-4 py-2 border-t border-slate-100 bg-slate-50/50">
+          <p className="text-[11px] text-slate-400 text-center">
+            Tap a result to see details
+          </p>
+        </div>
+      )}
     </div>
   );
 }
