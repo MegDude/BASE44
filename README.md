@@ -28,6 +28,17 @@ VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
 
 Run the app: `npm run dev`
 
+## Deployment workflow
+
+- Production deploys from `main` only
+- Preview deploys come from branch pushes
+- Always run `npm run build` before pushing
+- Install the local pre-push guard with `npm run hooks:install`
+
+Detailed workflow:
+
+- [docs/DEPLOYMENT_WORKFLOW.md](/Users/megdude/BASE44-main-guardrails/docs/DEPLOYMENT_WORKFLOW.md)
+
 **Publish your changes**
 
 Open [Base44.com](http://Base44.com) and click on Publish.
