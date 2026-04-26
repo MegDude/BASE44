@@ -1,98 +1,59 @@
-import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import HeroSection from "@/components/home/HeroSection";
-import WhySection from "@/components/home/WhySection";
-import LiveTonight from "@/components/home/LiveTonight";
-import PartnerSlides from "@/components/home/PartnerSlides";
-import PricingSection from "@/components/home/PricingSection";
-import FAQSection from "@/components/home/FAQSection";
-import ContactSection from "@/components/home/ContactSection";
-
-const DEFAULT_MAP_CONTEXT = {
-  query: "",
-  category: "all",
-  askMode: false,
-  walkMinutes: null,
-  toggles: [],
-  requestKey: 0,
-};
+import MapShell from "@/components/map/MapShell";
+import PartnerInterestForm from "@/components/forms/PartnerInterestForm";
+import AudienceStoryPanel from "@/components/sections/AudienceStoryPanel";
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [mapContext, setMapContext] = useState(DEFAULT_MAP_CONTEXT);
-
-  const updateMapContext = useCallback((nextState) => {
-    setMapContext((current) => ({
-      ...current,
-      ...nextState,
-      requestKey: current.requestKey + 1,
-    }));
-  }, []);
-
-  const openExploreRoute = useCallback(({
-    query = "",
-    category = "all",
-    walkMinutes = null,
-    askMode = false,
-    toggles = [],
-  } = {}) => {
-    const params = new URLSearchParams();
-    const trimmedQuery = String(query || "").trim();
-
-    if (trimmedQuery) params.set("query", trimmedQuery);
-    if (category && category !== "all") params.set("category", category);
-    if (Number.isFinite(walkMinutes)) params.set("category", "5min");
-    if (Array.isArray(toggles) && toggles.length > 0) params.set("toggles", toggles.join(","));
-    if (askMode) params.set("mode", "ask");
-
-    const nextUrl = params.toString()
-      ? `/downtown-perks/explore?${params.toString()}`
-      : "/downtown-perks/explore";
-
-    navigate(nextUrl);
-  }, [navigate]);
-
-  const handleExplore = useCallback(
-    ({ query = "", category = "all", walkMinutes = null, toggles = [] } = {}) => {
-      updateMapContext({
-        query,
-        category,
-        walkMinutes,
-        askMode: false,
-        toggles,
-      });
-      openExploreRoute({ query, category, walkMinutes, askMode: false, toggles });
-    },
-    [openExploreRoute, updateMapContext]
-  );
-
-  const handleAsk = useCallback(
-    ({ query = "", category = "all", walkMinutes = null, toggles = [] } = {}) => {
-      updateMapContext({
-        query,
-        category,
-        walkMinutes,
-        askMode: true,
-        toggles,
-      });
-      openExploreRoute({ query, category, walkMinutes, askMode: true, toggles });
-    },
-    [openExploreRoute, updateMapContext]
-  );
-
   return (
-    <div className="bg-background">
-      <HeroSection
-        mapContext={mapContext}
-        onExplore={handleExplore}
-        onAsk={handleAsk}
+    <main>
+      <MapShell mode="home" />
+
+      <section className="dp-section">
+        <div className="dp-page-shell">
+          <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
+            <div>
+              <p className="dp-page-kicker">Decision layer</p>
+              <h2 className="dp-heading-modern text-4xl md:text-6xl">
+                The map is the product.
+              </h2>
+            </div>
+            <p className="dp-page-intro">
+              Downtown Perks reduces the effort of deciding what to do next. Residents see nearby places, offers, events, properties, and local activity in one view. Partners show up when people are already choosing where to go.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <AudienceStoryPanel
+        items={[
+          {
+            title: "Residents stop searching and start deciding.",
+            body: "They open the map, ask what is nearby, tap one useful result, save it, RSVP, or show the perks card."
+          },
+          {
+            title: "Businesses show up at the moment of intent.",
+            body: "Restaurants, bars, coffee shops, wellness studios, hotels, and services can publish offers and events that appear inside the downtown decision flow."
+          },
+          {
+            title: "Properties turn the neighborhood into an amenity.",
+            body: "Buildings can give residents QR access, a perks card, and a live local map that supports leasing, retention, and resident engagement."
+          },
+          {
+            title: "Brands and civic partners activate with context.",
+            body: "Sponsors and civic organizations can support districts, events, and public-facing discovery without relying on vague impressions."
+          }
+        ]}
       />
-      <WhySection />
-      <LiveTonight />
-      <PartnerSlides />
-      <PricingSection />
-      <FAQSection />
-      <ContactSection />
-    </div>
+
+      <section className="dp-section">
+        <div className="dp-page-shell">
+          <PartnerInterestForm
+            partnerType="venue"
+            source="homepage_join_section"
+            title="Build your downtown layer."
+            description="Choose the role that fits you. The page captures attribution quietly and keeps the flow moving."
+          />
+        </div>
+      </section>
+    </main>
   );
 }

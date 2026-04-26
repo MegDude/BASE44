@@ -728,3 +728,46 @@
 ::-webkit-scrollbar-track { background: #f1f4f8; }
 ::-webkit-scrollbar-thumb { background: hsl(218 16% 76%); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: hsl(218 50% 14%); }
+
+@layer components {
+  .dp-close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.74);
+    border: 1px solid rgba(11,31,51,0.08);
+    color: var(--dp-navy);
+    font-weight: 700;
+  }
+
+  .dp-bottom-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 78vh;
+    overflow: auto;
+    border-radius: 28px 28px 0 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(11,31,51,0.08);
+    box-shadow: 0 -18px 42px rgba(11,31,51,0.12);
+  }
+
+  .dark .dp-bottom-sheet {
+    background: rgba(7,17,31,0.92);
+    color: rgba(255,255,255,0.94);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .dp-motion-hover {
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+  }
+
+  .dp-motion-hover:hover {
+    transform: translateY(-1px);
+  }
+}

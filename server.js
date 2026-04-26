@@ -111,6 +111,10 @@ const API_ROUTE_MAP = new Map([
   ["/api/search-log", "./api/search-log.js"],
   ["/api/venue-intel-capture", "./api/venue-intel-capture.js"],
   ["/api/visit", "./api/visit.js"],
+  ["/api/heatmap", "./api/heatmap.js"],
+  ["/api/track", "./api/track.js"],
+  ["/api/submissions", "./api/submissions.js"],
+  ["/api/map-data", "./api/map-data.js"],
 ]);
 
 async function handleApiRoute(req, res, requestUrl) {
