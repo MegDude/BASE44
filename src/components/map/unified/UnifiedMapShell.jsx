@@ -17,22 +17,35 @@ const DOWNTOWN_VIEW_BOUNDS = [
   [30.2795, -97.7382],
 ];
 
-function toTitleCase(value = "") {
-  return String(value || "")
+const MARKER_LABELS = {
+  venue: 'Place',
+  perk: 'Perk',
+  event: 'Event',
+  building: 'Building',
+  property: 'Property',
+  hotel: 'Hotel',
+  civic: 'Civic',
+  brand: 'Brand',
+  moment: 'Neighbor moment',
+  cluster: 'Cluster',
+};
+
+function toTitleCase(value = '') {
+  return String(value || '')
     .trim()
     .split(/[\s-]+/)
     .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
+    .join(' ');
 }
 
 function getClusterFamily(item) {
-  const type = String(item?.type || item?.entity_type || "").toLowerCase();
-  if (["building", "property", "hotel"].includes(type)) return "property";
-  if (["perk", "brand"].includes(type)) return "partner";
-  if (type === "event") return "event";
-  if (type === "civic") return "civic";
-  return "venue";
+  const type = String(item?.type || item?.entity_type || '').toLowerCase();
+  if (['building', 'property', 'hotel'].includes(type)) return 'property';
+  if (['perk', 'brand'].includes(type)) return 'partner';
+  if (type === 'event') return 'event';
+  if (type === 'civic') return 'civic';
+  return 'venue';
 }
 
 function getClusterThreshold(zoom = 14) {
@@ -59,7 +72,7 @@ function buildClusterEntity(itemsInCluster = []) {
   const district =
     valid[0]?.district ||
     valid.find((item) => item?.district)?.district ||
-    "Downtown";
+    'Downtown';
   const sortedItems = [...valid].sort((a, b) => {
     const aScore = Number(a?.metadata?.popularity ?? 0);
     const bScore = Number(b?.metadata?.popularity ?? 0);
@@ -70,8 +83,8 @@ function buildClusterEntity(itemsInCluster = []) {
   return {
     id: `cluster-${district}-${Math.round(latitude * 10000)}-${Math.round(longitude * 10000)}-${valid.length}`,
     entity_id: `cluster-${district}-${valid.length}`,
-    type: "cluster",
-    entity_type: "cluster",
+    type: 'cluster',
+    entity_type: 'cluster',
     name: `${toTitleCase(district)} Area`,
     title: `${toTitleCase(district)} Area`,
     description: `${valid.length} Nearby Places Around ${toTitleCase(district)}.`,
@@ -86,7 +99,7 @@ function buildClusterEntity(itemsInCluster = []) {
     longitude,
     isPlotted: true,
     isVisibleInResults: true,
-    markerType: "cluster",
+    markerType: 'cluster',
     metadata: {
       clusterCount: valid.length,
       clusterItems: sortedItems,
@@ -108,7 +121,7 @@ function clusterItems(items = [], zoom = 14) {
     const lng = item?.location?.longitude;
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
 
-    const district = String(item?.district || "downtown").toLowerCase();
+    const district = String(item?.district || 'downtown').toLowerCase();
     const family = getClusterFamily(item);
     const latBucket = Math.round(lat / threshold);
     const lngBucket = Math.round(lng / threshold);
@@ -128,6 +141,91 @@ function clusterItems(items = [], zoom = 14) {
   }
 
   return clustered.filter(Boolean);
+}
+
+function normalizeMarkerType(item) {
+  const rawType = String(item?.type || item?.entity_type || item?.category || 'venue').toLowerCase();
+  if (rawType === 'property') return 'building';
+  if (rawType === 'offer') return 'perk';
+  if (rawType === 'social') return 'moment';
+  return rawType;
+}
+
+function wasCreatedRecently(item) {
+  const raw = item?.created_at || item?.createdAt || item?.metadata?.created_at || item?.metadata?.createdAt;
+  if (!raw) return false;
+  const createdAt = new Date(raw).getTime();
+  if (!Number.isFinite(createdAt)) return false;
+  return Date.now() - createdAt < 1000 * 60 * 60;
+}
+
+function getSignalFlags(item, isSelected = false) {
+  const type = normalizeMarkerType(item);
+  const popularity = Number(item?.metadata?.popularity ?? item?.score ?? item?._score ?? 0);
+  const activity = Number(item?.metadata?.activityScore ?? item?.metadata?.redemptions ?? item?.redemptions ?? 0);
+  const isCluster = type === 'cluster';
+
+  return {
+    type,
+    isCluster,
+    isSelected: Boolean(isSelected),
+    isActive: Boolean(item?.isLive || item?.status === 'live' || popularity >= 86 || activity >= 3),
+    isNew: Boolean(item?.isNew || wasCreatedRecently(item)),
+    isSponsored: Boolean(
+      item?.isSponsored ||
+      item?.partnerTier === 'sponsor' ||
+      item?.partnerTier === 'premium' ||
+      item?.metadata?.partnerTier === 'sponsor' ||
+      item?.metadata?.sponsored
+    ),
+    isLegends: Boolean(item?.isLegends || item?.metadata?.isLegends || item?.metadata?.residentResidential),
+  };
+}
+
+function escapeHtml(value = '') {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function createSignalMarkerIcon(item, isSelected = false) {
+  const flags = getSignalFlags(item, isSelected);
+  const label = escapeHtml(item?.name || item?.title || MARKER_LABELS[flags.type] || 'Map item');
+  const count = Number(item?.metadata?.clusterCount || 0);
+  const size = flags.isCluster ? 44 : flags.isSelected ? 34 : 28;
+  const anchor = Math.round(size / 2);
+
+  const classNames = [
+    'dp-signal-marker',
+    `dp-signal-marker--${flags.type}`,
+    flags.isActive ? 'is-active' : '',
+    flags.isNew ? 'is-new' : '',
+    flags.isSelected ? 'is-selected' : '',
+    flags.isSponsored ? 'is-sponsored' : '',
+    flags.isLegends ? 'is-legends' : '',
+    flags.isCluster ? 'is-cluster' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const clusterLabel = flags.isCluster && count > 1 ? `<span class="dp-signal-marker__count">${count}</span>` : '';
+
+  return L.divIcon({
+    className: 'dp-signal-marker-wrapper',
+    html: `
+      <div class="${classNames}" aria-label="${label}">
+        <span class="dp-signal-marker__sponsor"></span>
+        <span class="dp-signal-marker__new"></span>
+        <span class="dp-signal-marker__pulse"></span>
+        <span class="dp-signal-marker__core">${clusterLabel}</span>
+      </div>
+    `,
+    iconSize: [size, size],
+    iconAnchor: [anchor, anchor],
+  });
 }
 
 // Fix leaflet icons
@@ -151,7 +249,7 @@ function MapFlyTo({ position }) {
   useEffect(() => {
     const safePosition = getValidMapCenter(position, AUSTIN_CENTER);
     const currentZoom = map?.getZoom?.();
-    const nextZoom = Number.isFinite(currentZoom) ? Math.min(Math.max(currentZoom, 13), 14) : 13;
+    const nextZoom = Number.isFinite(currentZoom) ? Math.min(Math.max(currentZoom, 13), 16) : 14;
 
     if (!map?.getContainer?.() || !safePosition || !map._loaded) {
       return;
@@ -236,17 +334,26 @@ export default function UnifiedMapShell({
   children,
   enableClustering = true,
 }) {
+  const validItems = useMemo(
+    () =>
+      (Array.isArray(items) ? items : []).filter((item) => {
+        const lat = item?.location?.latitude ?? item?.latitude ?? item?.lat;
+        const lng = item?.location?.longitude ?? item?.longitude ?? item?.lng;
+        return Number.isFinite(Number(lat)) && Number.isFinite(Number(lng));
+      }),
+    [items]
+  );
+
   const clusteredItems = useMemo(
-    () => (enableClustering ? clusterItems(items, mapZoom) : items),
-    [enableClustering, items, mapZoom]
+    () => (enableClustering ? clusterItems(validItems, mapZoom) : validItems),
+    [enableClustering, validItems, mapZoom]
   );
 
   const handleDragEnd = (map) => {
     const center = map.getCenter();
     const lat = center?.lat;
     const lng = center?.lng;
-    
-    // Only update if both are valid finite numbers
+
     if (Number.isFinite(lat) && Number.isFinite(lng)) {
       onMapCenterChange?.([lat, lng]);
     }
@@ -256,7 +363,6 @@ export default function UnifiedMapShell({
     onMapZoomChange?.(map.getZoom());
   };
 
-  // Ensure mapCenter and zoom are always valid for MapContainer
   const validCenter = getValidMapCenter(mapCenter, AUSTIN_CENTER);
   const validZoom = Number.isFinite(mapZoom) ? mapZoom : 14;
 
@@ -286,33 +392,43 @@ export default function UnifiedMapShell({
       <MapViewportManager items={clusteredItems} selectedId={selectedId} mapCenter={mapCenter} />
       <MapContextOverlays items={clusteredItems} selectedId={selectedId} />
 
-      {/* Heatmap and other layers */}
       {children}
 
-      {/* Markers */}
       {clusteredItems.map((item) => {
-        const lat = item?.location?.latitude;
-        const lng = item?.location?.longitude;
-        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+        const lat = item?.location?.latitude ?? item?.latitude ?? item?.lat;
+        const lng = item?.location?.longitude ?? item?.longitude ?? item?.lng;
+        if (!Number.isFinite(Number(lat)) || !Number.isFinite(Number(lng))) return null;
 
-        const position = [lat, lng];
+        const normalizedItem = {
+          ...item,
+          location: {
+            ...(item.location || {}),
+            latitude: Number(lat),
+            longitude: Number(lng),
+            valid: true,
+          },
+        };
+        const position = [Number(lat), Number(lng)];
+        const isSelected = selectedId === item.id;
         const icon = markerIcon
-          ? markerIcon(item, selectedId === item.id)
-          : L.divIcon({
-              className: '',
-              html: `<div style="width:12px;height:12px;border-radius:999px;background:#0b1f33;border:2px solid #fff;box-shadow:0 4px 12px rgba(11,31,51,0.18)"></div>`,
-              iconSize: [12, 12],
-              iconAnchor: [6, 6],
-            });
+          ? markerIcon(normalizedItem, isSelected)
+          : createSignalMarkerIcon(normalizedItem, isSelected);
 
         return (
           <Marker
             key={item.id}
             position={position}
             icon={icon}
+            keyboard={true}
+            title={item?.name || item?.title || MARKER_LABELS[normalizeMarkerType(item)] || 'Map item'}
             eventHandlers={{
               click: () => {
-                onMarkerSelect?.(item);
+                onMarkerSelect?.(normalizedItem);
+              },
+              keypress: (event) => {
+                if (event?.originalEvent?.key === 'Enter' || event?.originalEvent?.key === ' ') {
+                  onMarkerSelect?.(normalizedItem);
+                }
               },
             }}
           />
