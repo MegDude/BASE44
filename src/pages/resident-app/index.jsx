@@ -132,13 +132,12 @@ const TAB_CONFIG = [
 ];
 
 const FILTER_CHIPS = [
-  { id: "all", label: "All nearby" },
-  { id: "venue", label: "Venues" },
-  { id: "event", label: "Events" },
-  { id: "perk", label: "Perks" },
-  { id: "building", label: "Buildings" },
-  { id: "5min", label: "5 min walk" },
-  { id: "tonight", label: "Happening tonight" },
+  { id: "all", label: "Best nearby now" },
+  { id: "event", label: "Happening tonight" },
+  { id: "perk", label: "Perks nearby" },
+  { id: "building", label: "Want to live here" },
+  { id: "moment", label: "Neighbors nearby" },
+  { id: "5min", label: "Best within 5 minutes" },
   { id: "saved", label: "Saved" },
 ];
 
@@ -176,6 +175,7 @@ function matchesResidentFilter(item, activeChip, savedIds) {
   if (activeChip === "saved") return savedIds.has(item.id);
   if (activeChip === "5min") return (item.metadata?.walkMinutes ?? 999) <= 5;
   if (activeChip === "tonight") return item.type === "event" || item.isLive;
+  if (activeChip === "moment") return item.type === "moment";
   if (activeChip === "building") return item.type === "building" || item.type === "property";
   if (activeChip === "hotel") return item.type === "hotel";
   if (activeChip === "coffee") {
@@ -730,17 +730,7 @@ function ResidentMapSurface({
   );
 }
 
-function ResidentNowTab({ items, onOpenMap, onSelectItem, onSaveItem, onPrimaryAction, savedSet, sharedMapProps }) {
-  const liveEvents = items.filter((item) => item.type === "event").slice(0, 5);
-  const nearbyPerks = items.filter((item) => item.type === "perk" || item.perk_value).slice(0, 5);
-  const residentBuildings = items
-    .filter((item) => item.type === "building" && item.metadata?.residentResidential)
-    .slice(0, 8);
-  const residentCommunity = items
-    .filter((item) => item.type === "moment" && item.metadata?.communityConnection)
-    .slice(0, 5);
-  const topPicks = items.slice(0, 6);
-
+function ResidentNowTab({ items, onOpenMap, onSaveItem, onPrimaryAction, savedSet, sharedMapProps }) {
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-5 md:px-6">
       <div id="resident-live-map" className="overflow-hidden rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
@@ -771,57 +761,77 @@ function ResidentNowTab({ items, onOpenMap, onSelectItem, onSaveItem, onPrimaryA
         </div>
       </div>
 
-      <ResidentRail
-        eyebrow="Happening tonight"
-        title="Live events and social moments"
-        items={liveEvents}
-        onSelectItem={onSelectItem}
-        onSaveItem={onSaveItem}
-        onPrimaryAction={onPrimaryAction}
-        savedSet={savedSet}
-      />
+      <section className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-2xl">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+              Map states
+            </div>
+            <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.04em] text-foreground">
+              One map. Five useful resident views.
+            </h2>
+            <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
+              The sections now live inside the map. Switch the state, get the best nearby answer, and act without dropping into duplicate feeds.
+            </p>
+          </div>
+          <div className="grid w-full gap-2 sm:grid-cols-2 lg:w-[420px]">
+            {FILTER_CHIPS.filter((chip) => chip.id !== "saved").map((chip) => {
+              const count = sharedMapProps.presetCounts?.[chip.id] ?? 0;
+              const active = sharedMapProps.activeChip === chip.id;
+              return (
+                <button
+                  key={chip.id}
+                  type="button"
+                  onClick={() => sharedMapProps.onChipChange(chip.id)}
+                  className={`rounded-[18px] border px-4 py-3 text-left transition-all ${
+                    active
+                      ? "border-primary bg-[rgba(11,31,51,0.96)] text-white shadow-[0_12px_24px_rgba(11,31,51,0.14)]"
+                      : "border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] text-foreground hover:bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[13px] font-semibold">{chip.label}</span>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] ${
+                        active ? "bg-white/14 text-white" : "bg-white text-foreground/62"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-      <ResidentRail
-        eyebrow="Resident-only unlocks"
-        title="Perks worth using nearby"
-        items={nearbyPerks}
-        onSelectItem={onSelectItem}
-        onSaveItem={onSaveItem}
-        onPrimaryAction={onPrimaryAction}
-        savedSet={savedSet}
-      />
-
-      <ResidentRail
-        eyebrow="Want to live here"
-        title="Downtown homes on the same live map"
-        items={residentBuildings}
-        onSelectItem={onSelectItem}
-        onSaveItem={onSaveItem}
-        onPrimaryAction={onPrimaryAction}
-        savedSet={savedSet}
-      />
-
-      <ResidentRail
-        eyebrow="Neighbors nearby"
-        title="Ways people can actually meet in real life"
-        items={residentCommunity}
-        onSelectItem={onSelectItem}
-        onSaveItem={onSaveItem}
-        onPrimaryAction={onPrimaryAction}
-        savedSet={savedSet}
-      />
-
-      <ResidentRail
-        eyebrow="Best within 5 minutes"
-        title="Fast local decisions"
-        items={topPicks}
-        onSelectItem={onSelectItem}
-        onSaveItem={onSaveItem}
-        onPrimaryAction={onPrimaryAction}
-        savedSet={savedSet}
-      />
-
-      <ResidentWalkingMap />
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
+          <div className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.48)]">
+              Top result first
+            </div>
+            <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
+              The map answers with one good option before the longer list, so the resident can decide quickly.
+            </p>
+          </div>
+          <div className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.48)]">
+              Pins and feed stay synced
+            </div>
+            <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
+              Tap a result and the map moves. Tap a pin and the same selected state opens in the drawer.
+            </p>
+          </div>
+          <div className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.48)]">
+              Actions stay in loop
+            </div>
+            <p className="mt-2 text-[13px] leading-6 text-muted-foreground">
+              Save, RSVP, redeem, or open the card from the same entity state instead of jumping between sections.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
@@ -1573,6 +1583,22 @@ export default function ResidentApp() {
     const savedSet = new Set(savedIds);
     return layerFilteredItems.filter((item) => matchesResidentFilter(item, activeChip, savedSet) && matchesQuery(item, query));
   }, [activeChip, query, layerFilteredItems, savedIds]);
+  const presetItems = useMemo(
+    () => layerFilteredItems.filter((item) => matchesQuery(item, query)),
+    [layerFilteredItems, query]
+  );
+  const presetCounts = useMemo(() => {
+    const savedSet = new Set(savedIds);
+    return {
+      all: presetItems.length,
+      event: presetItems.filter((item) => item.type === "event" || item.isLive).length,
+      perk: presetItems.filter((item) => item.type === "perk" || item.perk_value).length,
+      building: presetItems.filter((item) => item.type === "building" || item.type === "property" || item.type === "hotel").length,
+      moment: presetItems.filter((item) => item.type === "moment").length,
+      "5min": presetItems.filter((item) => (item.metadata?.walkMinutes ?? 999) <= 5).length,
+      saved: presetItems.filter((item) => savedSet.has(item.id)).length,
+    };
+  }, [presetItems, savedIds]);
 
   const handleSelectItem = async (item) => {
     selectEntity(item);
@@ -1634,6 +1660,7 @@ export default function ResidentApp() {
         ...current,
         [layerId]: !current[layerId],
       })),
+    presetCounts,
   };
 
   useEffect(() => {
@@ -1678,7 +1705,6 @@ export default function ResidentApp() {
           <ResidentNowTab
             items={filteredItems}
             onOpenMap={() => setQuery(queryInput.trim())}
-            onSelectItem={handleSelectItem}
             onSaveItem={handleSaveItem}
             onPrimaryAction={handlePrimaryAction}
             savedSet={savedSet}
