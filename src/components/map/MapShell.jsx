@@ -1,259 +1,388 @@
-import { useMemo, useState } from "react";
-import SkylineEngine from "@/components/skyline/SkylineEngine";
-import SkylineSignals from "@/components/skyline/SkylineSignals";
-import SkylineFocus from "@/components/skyline/SkylineFocus";
-import { useSkylineState } from "@/lib/useSkylineState";
-import { useThemeMode } from "@/lib/useThemeMode";
-import { trackEvent } from "@/lib/trackEvent";
+import { useEffect, useMemo, useState } from "react";
+import { Sparkles } from "lucide-react";
+import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
+import UnifiedResultsPanel from "@/components/map/unified/UnifiedResultsPanel";
+import UnifiedDrawer from "@/components/map/unified/UnifiedDrawer";
+import { createMarker } from "@/components/map/markers/MarkerFactory";
+import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
+import { useMapStateStore } from "@/store/mapStateStore";
+import { sharedMapItemToMapEntity } from "@/lib/mappers/sharedMapMappers";
 
-const FILTERS = [
-  { key: "all", label: "All" },
-  { key: "venue", label: "Places" },
-  { key: "perk", label: "Offers" },
-  { key: "event", label: "Events" },
-  { key: "property", label: "Properties" }
-];
+const DEFAULT_CENTER = [30.267, -97.743];
 
-const DEMO_RESULTS = [
-  {
-    id: "merit-coffee",
-    type: "venue",
-    name: "Merit Coffee",
-    category: "Coffee",
-    district: "Seaholm",
-    lat: 30.2661,
-    lng: -97.7524,
-    distance: "0.2 mi",
-    offer: "15% off espresso drinks",
-    description: "Quick stop, daily ritual, nearby perk."
+const MODE_CONFIG = {
+  home: {
+    title: "Where downtown meets you.",
+    subtitle: "Start with one decision. The map does the rest.",
+    prompts: ["Coffee now", "Dinner tonight", "Events tonight"],
+    chips: [
+      { id: "all", label: "Best nearby now" },
+      { id: "venue", label: "Places to go" },
+      { id: "perk", label: "Perks nearby" },
+      { id: "event", label: "Happening tonight" },
+      { id: "building", label: "Want to live here" },
+    ],
   },
-  {
-    id: "line-hotel",
-    type: "hotel",
-    name: "The LINE Hotel",
-    category: "Hotel",
-    district: "CBD",
-    lat: 30.2638,
-    lng: -97.7431,
-    distance: "0.3 mi",
-    offer: "20% off spa services",
-    description: "Hospitality layer with guest discovery."
+  resident: {
+    title: "Your downtown. In one map.",
+    subtitle: "Search, save, RSVP, redeem, and move without leaving the map.",
+    prompts: ["Coffee now", "Happy hour nearby", "Places to walk to"],
+    chips: [
+      { id: "all", label: "Best nearby now" },
+      { id: "perk", label: "Perks nearby" },
+      { id: "event", label: "Happening tonight" },
+      { id: "building", label: "Want to live here" },
+      { id: "5min", label: "Best within 5 minutes" },
+    ],
   },
-  {
-    id: "easy-tiger",
-    type: "venue",
-    name: "Easy Tiger",
-    category: "Dining",
-    district: "CBD",
-    lat: 30.2655,
-    lng: -97.7438,
-    distance: "0.1 mi",
-    offer: "Complimentary pretzel with drink",
-    description: "Dining and happy hour visibility."
+  partners: {
+    title: "The people nearby are already deciding.",
+    subtitle: "See the same downtown map as a partner intelligence surface.",
+    prompts: ["properties venues brands civic downtown", "Rainey activity tonight", "best converting partners"],
+    chips: [
+      { id: "all", label: "All signals" },
+      { id: "building", label: "Properties" },
+      { id: "venue", label: "Venues" },
+      { id: "event", label: "Events" },
+      { id: "perk", label: "Perks" },
+    ],
   },
-  {
-    id: "waterline",
-    type: "property",
-    name: "The Waterline",
-    category: "Residential",
-    district: "Rainey",
-    lat: 30.259,
-    lng: -97.739,
-    distance: "5 min",
-    offer: "Resident amenity layer",
-    description: "Property discovery, leasing context, nearby perks."
-  }
-];
+  property: {
+    title: "Turn the neighborhood into an amenity.",
+    subtitle: "Buildings, nearby places, and resident value all in one live layer.",
+    prompts: ["properties and perks near residents", "best within 5 minutes", "resident activity tonight"],
+    chips: [
+      { id: "building", label: "Properties" },
+      { id: "perk", label: "Perks nearby" },
+      { id: "venue", label: "Places to go" },
+      { id: "5min", label: "Best within 5 minutes" },
+    ],
+  },
+  venue: {
+    title: "Show up when nearby intent is forming.",
+    subtitle: "The same map can rank venues, perks, and live foot-traffic moments.",
+    prompts: ["rooftop bars coffee restaurants wellness nearby", "dinner tonight", "open now nearby"],
+    chips: [
+      { id: "venue", label: "Venues" },
+      { id: "perk", label: "Perks nearby" },
+      { id: "event", label: "Events" },
+      { id: "5min", label: "Best within 5 minutes" },
+    ],
+  },
+  hospitality: {
+    title: "Give guests a live downtown layer.",
+    subtitle: "Hotels can guide dining, events, perks, and walkable decisions from one map.",
+    prompts: ["guest coffee dinner events near hotel", "things to do tonight", "walkable dining nearby"],
+    chips: [
+      { id: "venue", label: "Places to go" },
+      { id: "event", label: "Events" },
+      { id: "perk", label: "Perks nearby" },
+      { id: "5min", label: "Walkable now" },
+    ],
+  },
+  brand: {
+    title: "Brands show up as useful behavior.",
+    subtitle: "Sponsor moments, downtown movement, and visible actions in the same live map.",
+    prompts: ["brand sponsor zones events nightlife downtown", "district activity tonight", "best partner zones"],
+    chips: [
+      { id: "all", label: "All signals" },
+      { id: "event", label: "Event windows" },
+      { id: "perk", label: "Perk activations" },
+      { id: "venue", label: "Venue traffic" },
+      { id: "building", label: "Residential reach" },
+    ],
+  },
+  civic: {
+    title: "Make participation easier to see.",
+    subtitle: "Civic activity, local business visibility, and district movement in one downtown surface.",
+    prompts: ["community events civic arts downtown", "public activity downtown", "district participation"],
+    chips: [
+      { id: "all", label: "All signals" },
+      { id: "event", label: "Events" },
+      { id: "venue", label: "Places" },
+      { id: "building", label: "Buildings" },
+    ],
+  },
+};
+
+function dedupeItems(items = []) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = String(item?.id || item?.entity_id || "");
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function scoreItem(item) {
+  return (
+    Number(item?.metadata?.popularity ?? 0) +
+    (item?.isLive ? 20 : 0) +
+    (item?.isOpenNow ? 12 : 0) +
+    (item?.perk_value || item?.perk?.value || item?.type === "perk" ? 10 : 0) -
+    Number(item?.metadata?.walkMinutes ?? 0)
+  );
+}
+
+function matchesChip(item, chip) {
+  if (chip === "all") return true;
+  if (chip === "5min") return (item?.metadata?.walkMinutes ?? 999) <= 5;
+  if (chip === "building") return ["building", "property", "hotel"].includes(item?.type);
+  return item?.type === chip || item?.entity_type === chip;
+}
 
 export default function MapShell({
   mode = "resident",
   compact = false,
   initialQuery = "",
-  showSkyline = true,
-  className = ""
+  className = "",
+  items: explicitItems = [],
+  selected = null,
+  onSelect,
+  markerIcon,
 }) {
+  const config = MODE_CONFIG[mode] || MODE_CONFIG.home;
+  const [queryInput, setQueryInput] = useState(initialQuery);
   const [query, setQuery] = useState(initialQuery);
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [selected, setSelected] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [activeChip, setActiveChip] = useState(config.chips[0]?.id || "all");
+  const [resultsExpanded, setResultsExpanded] = useState(true);
+  const mapCenter = useMapStateStore((state) => state.mapCenter);
+  const mapZoom = useMapStateStore((state) => state.mapZoom);
+  const setMapCenter = useMapStateStore((state) => state.setMapCenter);
+  const setMapZoom = useMapStateStore((state) => state.setMapZoom);
+  const selectedEntity = useMapStateStore((state) => state.selectedEntity);
+  const selectEntity = useMapStateStore((state) => state.selectEntity);
+  const setDrawerState = useMapStateStore((state) => state.setDrawerState);
 
-  const skyline = useSkylineState({ query, intent: activeFilter, enabled: showSkyline });
-  const theme = useThemeMode({ activityLevel: skyline.activityLevel, intent: query || activeFilter });
+  const { items: feedItems } = useSharedMapFeed({
+    query,
+    activeCategory:
+      activeChip === "venue" || activeChip === "event" || activeChip === "perk"
+        ? activeChip
+        : "all",
+    limit: 120,
+  });
 
-  const results = useMemo(() => {
-    if (activeFilter === "all") return DEMO_RESULTS;
-    return DEMO_RESULTS.filter((item) => item.type === activeFilter || item.category.toLowerCase() === activeFilter);
-  }, [activeFilter]);
+  const normalizedExplicitItems = useMemo(
+    () => explicitItems.map(sharedMapItemToMapEntity).filter(Boolean),
+    [explicitItems]
+  );
+  const sourceItems = normalizedExplicitItems.length > 0 ? normalizedExplicitItems : feedItems;
 
-  async function handleSearch(event) {
-    event.preventDefault();
-    setDrawerOpen(true);
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = String(query || "").trim().toLowerCase();
+    return dedupeItems(sourceItems)
+      .filter((item) => matchesChip(item, activeChip))
+      .filter((item) => {
+        if (!normalizedQuery) return true;
+        const haystack = [
+          item?.name,
+          item?.title,
+          item?.description,
+          item?.address,
+          item?.category,
+          item?.district,
+          ...(item?.metadata?.searchKeywords || []),
+          ...(item?.metadata?.tags || []),
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(normalizedQuery);
+      })
+      .sort((a, b) => scoreItem(b) - scoreItem(a));
+  }, [activeChip, query, sourceItems]);
 
-    await trackEvent("search_submit", {
-      source: `${mode}_map`,
-      metadata: { query, filter: activeFilter }
-    });
-  }
+  useEffect(() => {
+    if (selected) {
+      selectEntity(selected);
+      return;
+    }
 
-  async function selectResult(item) {
-    setSelected(item);
-    setDrawerOpen(true);
+    if (!selectedEntity && filteredItems.length > 0) {
+      selectEntity(filteredItems[0]);
+    }
+  }, [filteredItems, selectEntity, selected, selectedEntity]);
 
-    await trackEvent("result_open", {
-      entityId: item.id,
-      entityType: item.type,
-      district: item.district,
-      lat: item.lat,
-      lng: item.lng,
-      source: `${mode}_map`
-    });
-  }
+  useEffect(() => {
+    if (!selected) return;
+    selectEntity(selected);
+  }, [selectEntity, selected]);
+
+  useEffect(() => {
+    setMapCenter(DEFAULT_CENTER);
+    setMapZoom(compact ? 13.5 : 14);
+  }, [compact, mode, setMapCenter, setMapZoom]);
+
+  const effectiveSelected = selected || selectedEntity;
 
   return (
     <section
-      className={`relative overflow-hidden ${compact ? "min-h-[640px]" : "min-h-screen"} ${theme === "dark" ? "dark" : ""} ${className}`}
+      className={`relative overflow-hidden bg-[#f7f9fc] ${compact ? "min-h-[720px]" : "min-h-screen"} ${className}`}
     >
-      {showSkyline && (
-        <>
-          <SkylineEngine mode={skyline.mode} />
-          <SkylineSignals signals={skyline.signals} />
-          <SkylineFocus focus={skyline.focus} />
-        </>
-      )}
+      <div className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-6 pt-20 md:px-6">
+        <div className="mb-5 max-w-3xl">
+          <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+            <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold-deep,#A8733C)]" />
+            Live downtown map
+          </div>
+          <h1 className="mt-3 font-heading text-[clamp(2.6rem,5vw,4.75rem)] font-semibold tracking-[-0.05em] text-[var(--dp-navy,#0B1F33)]">
+            {config.title}
+          </h1>
+          <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[rgba(11,31,51,0.64)]">
+            {config.subtitle}
+          </p>
+        </div>
 
-      <div className="relative z-20 flex min-h-screen flex-col">
-        <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-4 pt-20 md:px-6">
-          <div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.05fr)]">
-            <div className="flex flex-col justify-end pb-4 text-white">
-              <p className="dp-kicker w-fit">Real-time downtown</p>
-              <h1 className="mt-5 dp-display-hero text-[clamp(3.25rem,8vw,7.5rem)]">
-                Where downtown meets you.
-              </h1>
-              <p className="mt-5 max-w-xl text-base leading-7 text-white/82 md:text-lg">
-                A live map for perks, events, places, properties, and neighborhood activity across downtown Austin.
-              </p>
+        <div className="overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_18px_42px_rgba(11,31,51,0.06)]">
+          <div className="grid h-full grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)]">
+            <div className="order-2 border-t border-[rgba(11,31,51,0.08)] bg-white lg:order-1 lg:border-r lg:border-t-0">
+              <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-5">
+                <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                  <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold-deep,#A8733C)]" />
+                  Ask the map
+                </div>
 
-              <form onSubmit={handleSearch} className="mt-6 max-w-xl rounded-[24px] border border-white/15 bg-white/12 p-2 backdrop-blur-xl">
-                <div className="flex items-center gap-2">
-                  <input
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Ask the map: coffee, dinner, rooftop bars, events tonight..."
-                    className="min-h-[52px] flex-1 bg-transparent px-4 text-sm font-medium text-white outline-none placeholder:text-white/54"
-                  />
-                  <button className="rounded-[18px] bg-[var(--dp-gold)] px-4 py-3 text-sm font-bold text-[#07111f]">
-                    Search
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    setQuery(queryInput.trim());
+                  }}
+                  className="mt-4 flex gap-2"
+                >
+                  <div className="flex h-11 flex-1 items-center gap-3 rounded-[14px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-4">
+                    <Sparkles className="h-4 w-4 text-[var(--dp-gold-deep,#A8733C)]" />
+                    <input
+                      value={queryInput}
+                      onChange={(event) => setQueryInput(event.target.value)}
+                      placeholder="Ask what you want nearby"
+                      className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/42"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-primary px-4 text-sm font-medium text-white"
+                  >
+                    Ask
+                  </button>
+                </form>
+
+                <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                  {config.prompts.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => {
+                        setQueryInput(prompt);
+                        setQuery(prompt);
+                      }}
+                      className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 py-2 text-[11px] font-medium whitespace-nowrap text-foreground/78"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+                  {config.chips.map((chip) => (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      onClick={() => setActiveChip(chip.id)}
+                      className={`rounded-full border px-3 py-2 text-[12px] font-medium whitespace-nowrap transition-all ${
+                        activeChip === chip.id
+                          ? "border-primary bg-primary text-white"
+                          : "border-[rgba(11,31,51,0.08)] bg-white text-foreground/70 hover:bg-[#f7f9fc]"
+                      }`}
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="px-4 py-3 md:px-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/50">
+                      Agent results
+                    </div>
+                    <div className="mt-1 text-[12px] text-muted-foreground">
+                      {config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby"} · {filteredItems.length} Result{filteredItems.length === 1 ? "" : "s"}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setResultsExpanded((current) => !current)}
+                    className="inline-flex h-9 items-center justify-center rounded-full border border-[rgba(11,31,51,0.08)] px-3 text-[11px] font-medium text-foreground"
+                  >
+                    {resultsExpanded ? "Hide results" : "Show results"}
                   </button>
                 </div>
-              </form>
-
-              <div className="mt-4 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
-                {FILTERS.map((filter) => (
-                  <button
-                    key={filter.key}
-                    onClick={() => {
-                      setActiveFilter(filter.key);
-                      setDrawerOpen(true);
-                    }}
-                    className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold backdrop-blur-xl transition ${
-                      activeFilter === filter.key
-                        ? "border-[var(--dp-gold)] bg-[var(--dp-gold)] text-[#07111f]"
-                        : "border-white/14 bg-white/10 text-white/82 hover:bg-white/16"
-                    }`}
-                  >
-                    {filter.label}
-                  </button>
-                ))}
               </div>
+
+              {resultsExpanded ? (
+                <div className="h-[360px] border-t border-[rgba(11,31,51,0.08)] lg:h-[calc(100%-210px)]">
+                  <UnifiedResultsPanel
+                    items={filteredItems}
+                    title={config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby now"}
+                    onSelectResult={(item) => {
+                      selectEntity(item);
+                      setDrawerState("preview");
+                      onSelect?.(item);
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="px-4 pb-4 md:px-5">
+                  {effectiveSelected ? (
+                    <div className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/70">
+                        Top result
+                      </div>
+                      <div className="mt-2 text-[15px] font-semibold text-foreground">{effectiveSelected.name}</div>
+                      <div className="mt-1 text-[12px] leading-5 text-muted-foreground">
+                        {effectiveSelected.address || effectiveSelected.description}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[#f7f9fc] p-4 text-[12px] text-muted-foreground">
+                      Search or change the map state to get the best nearby answer.
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
-            <div className="relative min-h-[520px] overflow-hidden rounded-[32px] border border-white/16 bg-[#07111f]/72 shadow-2xl backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_62%_64%,rgba(207,175,90,0.30),transparent_18rem),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
-
-              <div className="absolute left-4 top-4 rounded-2xl border border-white/12 bg-black/24 px-4 py-3 text-white backdrop-blur-xl">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--dp-gold)]">
-                  {skyline.focus?.label || "Downtown Austin"}
-                </p>
-                <p className="mt-1 text-sm text-white/78">
-                  {skyline.activityLevel > 160 ? "High activity" : "Live activity"}
-                </p>
-              </div>
-
-              <div className="absolute inset-6 rounded-[28px] border border-white/10 bg-black/18">
-                <div className="absolute left-[15%] top-[25%] h-2 w-2 rounded-full bg-white/70" />
-                <div className="absolute left-[42%] top-[48%] h-3 w-3 rounded-full bg-[var(--dp-gold)] shadow-[0_0_26px_rgba(207,175,90,0.72)]" />
-                <div className="absolute left-[72%] top-[68%] h-4 w-4 rounded-full bg-[var(--dp-gold)] shadow-[0_0_32px_rgba(207,175,90,0.88)]" />
-                <div className="absolute bottom-5 left-5 right-5 h-[1px] bg-white/14" />
-                <div className="absolute bottom-10 left-10 h-[1px] w-2/3 rotate-[-8deg] bg-[var(--dp-gold)]/40" />
-              </div>
-
-              {drawerOpen && (
-                <div className="absolute bottom-0 left-0 right-0 max-h-[58%] rounded-t-[28px] border-t border-white/12 bg-[#07111f]/88 p-4 text-white shadow-2xl backdrop-blur-xl md:left-auto md:right-4 md:top-4 md:h-[calc(100%-2rem)] md:max-h-none md:w-[320px] md:rounded-[24px] md:border">
-                  <div className="mb-3 flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--dp-gold)]">Results</p>
-                      <p className="mt-1 text-sm text-white/68">{results.length} nearby signals</p>
-                    </div>
-                    <button
-                      onClick={() => setDrawerOpen(false)}
-                      className="rounded-full border border-white/12 px-3 py-1 text-sm text-white/70"
-                      aria-label="Close results"
-                    >
-                      ×
-                    </button>
-                  </div>
-
-                  <div className="space-y-2 overflow-y-auto pr-1">
-                    {results.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => selectResult(item)}
-                        className={`w-full rounded-2xl border p-3 text-left transition ${
-                          selected?.id === item.id
-                            ? "border-[var(--dp-gold)] bg-[var(--dp-gold)]/12"
-                            : "border-white/10 bg-white/[0.06] hover:bg-white/[0.10]"
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="font-semibold text-white">{item.name}</p>
-                            <p className="mt-1 text-xs text-white/60">{item.category} · {item.distance}</p>
-                          </div>
-                          <span className="rounded-full bg-white/10 px-2 py-1 text-[11px] text-white/70">
-                            {item.district}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-sm text-white/72">{item.offer || item.description}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {selected && (
-                <div className="absolute bottom-4 left-4 hidden max-w-[360px] rounded-[24px] border border-white/12 bg-black/34 p-4 text-white backdrop-blur-xl lg:block">
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="absolute right-3 top-3 text-white/60"
-                    aria-label="Close detail"
-                  >
-                    ×
-                  </button>
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--dp-gold)]">
-                    Selected
-                  </p>
-                  <h3 className="mt-2 text-2xl font-semibold">{selected.name}</h3>
-                  <p className="mt-2 text-sm text-white/72">{selected.description}</p>
-                  <div className="mt-4 flex gap-2">
-                    <button className="rounded-2xl bg-[var(--dp-gold)] px-4 py-2 text-sm font-bold text-[#07111f]">
-                      Save
-                    </button>
-                    <button className="rounded-2xl border border-white/14 px-4 py-2 text-sm font-bold text-white">
-                      Show card
-                    </button>
-                  </div>
-                </div>
-              )}
+            <div className="order-1 relative min-h-[460px] bg-[#eef2f7] lg:order-2 lg:min-h-[720px]">
+              <UnifiedMapShell
+                items={filteredItems}
+                enableClustering={false}
+                selectedId={effectiveSelected?.id}
+                markerIcon={(item, isSelected) =>
+                  markerIcon
+                    ? markerIcon(item, isSelected)
+                    : createMarker(item, {
+                        isSelected,
+                        variant:
+                          item?.metadata?.residentResidential && (item.type === "building" || item.type === "moment")
+                            ? "property-showcase"
+                            : undefined,
+                      })
+                }
+                onMarkerSelect={(item) => {
+                  selectEntity(item);
+                  setDrawerState("preview");
+                  onSelect?.(item);
+                }}
+                mapCenter={mapCenter}
+                mapZoom={mapZoom}
+                onMapCenterChange={setMapCenter}
+                onMapZoomChange={setMapZoom}
+                className="h-full w-full"
+              />
+              <UnifiedDrawer selected={effectiveSelected} desktopMode="docked" desktopClassName="right-4 top-4 bottom-4" />
             </div>
           </div>
         </div>
