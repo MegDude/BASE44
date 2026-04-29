@@ -1,4 +1,4 @@
-import { CalendarDays, MapPin, QrCode, Sparkles, Waves, Zap } from "lucide-react";
+import { CalendarDays, MapPin, QrCode, Zap } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { MapDemoPanel, QRDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";

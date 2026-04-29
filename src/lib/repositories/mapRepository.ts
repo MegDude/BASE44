@@ -89,6 +89,10 @@ function filterItems(items, params: MapFeedParams = {}) {
 
   let results = groupPropertyMapEntities(normalizeSharedMapFeedItems(items));
 
+  // Brand activations stay in the brand directory and partner pages for now,
+  // but they should not appear in the shared map surfaces.
+  results = results.filter((item) => item?.type !== "brand" && item?.entity_type !== "brand");
+
   if (query) {
     results = results.filter((item) => getTextIndex(item).includes(query));
   }
@@ -231,7 +235,7 @@ export const mapRepository = {
   async searchWithIntent({ query, userLocation }: SearchIntentParams = {}) {
     const trimmedQuery = String(query || "").trim();
     const fallback = getFallbackIntentFilters(trimmedQuery);
-    const fallbackIntent = {
+    const fallbackIntent: AgentIntent = {
       ...fallback.intent,
       categories: fallback.categories,
       types: fallback.types,

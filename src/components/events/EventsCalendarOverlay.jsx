@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CalendarDays, Clock3, ExternalLink, MapPin, Martini, Music4, Sparkles } from "lucide-react";
+import { CalendarDays, Clock3, ExternalLink, MapPin, Martini, Sparkles } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useMapStateStore } from "@/store/mapStateStore";
 import { ROUTES } from "@/lib/routes";

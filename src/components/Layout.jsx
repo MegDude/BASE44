@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -20,7 +20,7 @@ export default function Layout() {
     pathname.startsWith("/partners") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/partner-workspace") ||
-    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about"].includes(pathname);
+    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about", "/build-pack", "/implementation-spec"].includes(pathname);
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =

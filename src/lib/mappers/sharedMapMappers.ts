@@ -1,5 +1,4 @@
 import { MAP_ENTITIES } from "@/data/mapEntities";
-import { FEATURED_BRANDS } from "@/data/featuredBrands";
 import { LEGENDS_IMPORTED_PROPERTIES } from "@/data/legendsImportData";
 import { getProductGradePlace } from "@/data/productGradePlaces";
 import { SUPPLEMENTAL_DOWNTOWN_LOCATIONS } from "@/data/supplementalDowntownLocations";
@@ -527,15 +526,13 @@ export function getFallbackSharedMapItems() {
     ...REPLIT_PROPERTIES.map(mapReplitPropertyToSharedItem),
     ...REPLIT_MOMENTS.map(mapReplitMomentToSharedItem),
   ];
-  const featuredBrandItems = FEATURED_BRANDS.map(mapFeaturedBrandToSharedItem);
   const supplementalLocationItems = SUPPLEMENTAL_DOWNTOWN_LOCATIONS.map(mapSupplementalLocationToSharedItem);
   const legendsImportItems = LEGENDS_IMPORTED_PROPERTIES.map(mapLegendsImportedPropertyToSharedItem);
-  const localItems = MAP_ENTITIES.filter((entity) => ["brand", "civic"].includes(entity?.type))
+  const localItems = MAP_ENTITIES.filter((entity) => ["civic"].includes(entity?.type))
     .map(mapEntityToSharedMapItem)
     .filter(Boolean);
   return dedupeById([
     ...replitItems,
-    ...featuredBrandItems,
     ...supplementalLocationItems,
     ...legendsImportItems,
     ...localItems,

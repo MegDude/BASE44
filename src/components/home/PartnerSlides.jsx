@@ -7,7 +7,6 @@ import {
   Hotel,
   Landmark,
   Megaphone,
-  Sparkles,
   Utensils,
 } from "lucide-react";
 

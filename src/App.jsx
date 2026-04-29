@@ -16,6 +16,7 @@ import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
+import BuildPack from "./pages/BuildPack";
 // Brands pages
 import BrandsIndex from "./pages/downtown-perks/brands/Index";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
@@ -70,6 +71,8 @@ function App() {
             <Route path="/perks" element={<PerksPage />} />
             <Route path="/card" element={<PerksCard />} />
             <Route path="/about" element={<About />} />
+            <Route path="/build-pack" element={<BuildPack />} />
+            <Route path="/implementation-spec" element={<BuildPack />} />
 
             <Route path="/downtown-perks" element={<Home />} />
             <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
@@ -79,6 +82,7 @@ function App() {
             <Route path="/downtown-perks/card" element={<PerksCard />} />
             <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
             <Route path="/downtown-perks/about" element={<About />} />
+            <Route path="/downtown-perks/build-pack" element={<BuildPack />} />
 
             <Route path="/brands" element={<BrandsIndex />} />
             <Route path="/brands/analytics" element={<BrandAnalytics />} />

@@ -61,10 +61,11 @@ export default function Pricing() {
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <h1 className="dp-display-hero max-w-3xl text-5xl md:text-6xl">
-                Simple pricing for a downtown product that actually gets used.
+                Built for the places that build the neighborhood.
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-                Clear tiers, no noisy pricing wall, and a direct path into the resident or partner workflow.
+                Simple, annual, and performance-backed pricing with a direct path into the resident
+                or partner workflow.
               </p>
             </div>
 
@@ -138,10 +139,10 @@ export default function Pricing() {
               Next step
             </p>
             <h2 className="dp-display-section mt-4 text-4xl">
-              Choose the right mode and move straight into the product.
+              Ready when you are.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-              Residents should land in the live map and perks flow. Partner teams should land in the management surface.
+              People don't choose the best option. They choose the one they notice.
             </p>
           </div>
 

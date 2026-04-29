@@ -9,7 +9,7 @@ const TOP_LINKS = [
   { label: "Map", to: ROUTES.explore },
   { label: "Events", to: ROUTES.events },
   { label: "Perks Card", to: ROUTES.card },
-  { label: "About", to: "/about" },
+  { label: "Build Pack", to: ROUTES.buildPack },
 ];
 
 const PARTNER_TYPE_LINKS = [

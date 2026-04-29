@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ChevronRight, MapPinned, PlayCircle, Send, Sparkles } from "lucide-react";
+import { ArrowRight, MapPinned, PlayCircle, Send, Sparkles } from "lucide-react";
 import { LEGENDS_IMPORTED_PROPERTIES, LEGENDS_IMPORT_SUMMARY } from "@/data/legendsImportData";
 
 const LEGENDS_LOGO =
