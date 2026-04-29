@@ -1,12 +1,11 @@
 import { Toaster } from "@/components/ui/toaster";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClientInstance } from "@/lib/query-client";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import PageNotFound from "./lib/PageNotFound";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import DashboardHub from "./pages/DashboardHub";
 // Downtown Perks pages
@@ -39,7 +38,6 @@ import CivicPartner from "./pages/partners/Civic";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
 import PartnerDashboard from "./pages/PartnerDashboard";
-import PropertiesPartner from "./pages/partners/Properties";
 import HotelsPartner from "./pages/partners/Hotels";
 import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
@@ -73,7 +71,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
 
         {/* Canonical top-level routes */}
         <Route path="/map" element={<ExploreRebuilt />} />
@@ -84,13 +82,13 @@ const AuthenticatedApp = () => {
         <Route path="/about" element={<About />} />
 
         {/* Legacy Downtown Perks routes */}
-        <Route path="/downtown-perks" element={<Landing />} />
-        <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
-        <Route path="/downtown-perks/events" element={<Events />} />
-        <Route path="/downtown-perks/perks" element={<PerksPage />} />
-        <Route path="/downtown-perks/card" element={<PerksCard />} />
+        <Route path="/downtown-perks" element={<Navigate to="/" replace />} />
+        <Route path="/downtown-perks/explore" element={<Navigate to="/explore" replace />} />
+        <Route path="/downtown-perks/events" element={<Navigate to="/events" replace />} />
+        <Route path="/downtown-perks/perks" element={<Navigate to="/perks" replace />} />
+        <Route path="/downtown-perks/card" element={<Navigate to="/card" replace />} />
         <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
-        <Route path="/downtown-perks/about" element={<About />} />
+        <Route path="/downtown-perks/about" element={<Navigate to="/about" replace />} />
 
         {/* Brand routes */}
         <Route path="/brands" element={<BrandsIndex />} />
@@ -104,7 +102,7 @@ const AuthenticatedApp = () => {
         <Route path="/brands/lululemon" element={<Lululemon />} />
         <Route path="/brands/equinox" element={<Equinox />} />
         <Route path="/brands/austin-fc" element={<AustinFC />} />
-        <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
+        <Route path="/brands/laz-y-boy-park" element={<Navigate to="/brands/austin-fc" replace />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
         <Route path="/brands/four-seasons" element={<FourSeasons />} />
@@ -115,15 +113,15 @@ const AuthenticatedApp = () => {
         <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/civic" element={<CivicPartner />} />
         <Route path="/partners/residential" element={<ResidentialPartner />} />
-        <Route path="/partners/properties" element={<PropertiesPartner />} />
-        <Route path="/property-and-building-management" element={<PropertiesPartner />} />
+        <Route path="/partners/properties" element={<Navigate to="/partners/residential" replace />} />
+        <Route path="/property-and-building-management" element={<Navigate to="/partners/residential" replace />} />
         <Route path="/partners/hotels" element={<HotelsPartner />} />
         <Route path="/partners/venues" element={<VenuesPartner />} />
         <Route path="/partners/brands" element={<BrandsPartner />} />
         <Route path="/partner-workspace" element={<PartnerWorkspace />} />
         <Route path="/dashboard" element={<DashboardHub />} />
         <Route path="/dashboard/partner" element={<Dashboard />} />
-        <Route path="/dashboard/partner/properties" element={<PropertiesPartner />} />
+        <Route path="/dashboard/partner/properties" element={<Navigate to="/partners/residential" replace />} />
         <Route path="/dashboard/resident" element={<ResidentApp />} />
         <Route path="/partner-dashboard" element={<PartnerDashboard />} />
         <Route path="/resident-app" element={<ResidentApp />} />
