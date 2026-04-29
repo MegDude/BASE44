@@ -10,6 +10,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { BUILD_PACK_RESOURCES, BUILD_PACK_SECTIONS } from "@/content/buildPack";
+import BackButton from "@/components/layout/BackButton";
 
 function CalloutIcon({ tone }) {
   if (tone === "warning") return <TriangleAlert className="h-4 w-4" />;
@@ -167,6 +168,8 @@ export default function BuildPack() {
   return (
     <div className="min-h-screen bg-[var(--dp-surface-base)] pb-16 pt-[84px]">
       <div className="dp-page-shell space-y-4">
+        <BackButton fallback="/" />
+
         <section className="dp-band p-6 md:p-8 lg:p-10">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div>

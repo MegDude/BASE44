@@ -1,52 +1,100 @@
-**Welcome to your Base44 project** 
+# Downtown Perks
 
-**About**
+Downtown Perks is a Vite + React + Tailwind app for a map-first downtown Austin product. The map is the product, the card is access, and analytics are proof.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+## Product laws
 
-This project contains everything you need to run your app locally.
+- The map is the product.
+- The card is access.
+- Analytics are proof.
+- Public browse routes work before login.
+- One shared map interaction model powers home, explore, resident, and partner surfaces.
+- The runtime loop is `Ask -> Rank -> Map -> Panel -> Action -> Signal`.
 
-**Edit the code in your local development environment**
+## Local setup
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+1. Run `npm install`
+2. Copy `.env.example` to `.env.local`
+3. Start the app with `npm run dev`
 
-**Prerequisites:** 
+## Scripts
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+- `npm run dev` starts Vite
+- `npm run build` creates the production build in `dist`
+- `npm run preview` serves the built app locally
+- `npm run lint` runs ESLint on `js` and `jsx` files
+- `npm run typecheck` runs the existing repo typecheck
 
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
+## Routes
 
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
-```
+Core public routes:
 
-Run the app: `npm run dev`
+- `/`
+- `/explore`
+- `/map`
+- `/events`
+- `/perks`
+- `/card`
+- `/residents`
+- `/about`
+- `/partners`
+- `/partners/properties`
+- `/partners/hotels`
+- `/partners/venues`
+- `/partners/brands`
+- `/partners/civic`
+- `/partners/apply`
+- `/partners/dashboard`
+- `/partner-workspace`
 
-## Deployment workflow
+## Deep-link map examples
 
-- Production deploys from `main` only
-- Preview deploys come from branch pushes
-- Always run `npm run build` before pushing
-- Install the local pre-push guard with `npm run hooks:install`
+- `/explore?intent=places`
+- `/explore?type=property&intent=residential`
+- `/explore?type=event&time=now`
+- `/explore?type=perk&radius=5`
+- `/explore?saved=true`
+- `/explore?district=rainey`
+- `/explore?category=coffee`
 
-Detailed workflow:
+## Environment notes
 
-- [docs/DEPLOYMENT_WORKFLOW.md](/Users/megdude/BASE44-main-guardrails/docs/DEPLOYMENT_WORKFLOW.md)
+Safe public defaults live in `.env.example`:
 
-**Publish your changes**
+<<<<<<< ours
+- `VITE_APP_NAME`
+- `VITE_DEFAULT_CITY`
+- `VITE_DEFAULT_DISTRICT`
+- `VITE_PUBLIC_BASE_URL`
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+The repo also preserves optional Base44, Supabase, Stripe, and map-provider env vars already used elsewhere in the workspace. Do not commit private API keys or production secrets.
 
-**Docs & Support**
+## Vercel deployment
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+- Build command: `npm run build`
+- Output directory: `dist`
+- SPA refreshes are handled by [vercel.json](/Users/megdude/BASE44/vercel.json)
+- The root rewrite sends all routes to `index.html`
 
+## Shared map model
+
+The main map flow lives in the shared explore runtime and uses:
+
+- URL filter parsing in [src/hooks/useMapFilters.js](/Users/megdude/BASE44/src/hooks/useMapFilters.js)
+- Shared filtering in [src/lib/mapFilters.js](/Users/megdude/BASE44/src/lib/mapFilters.js)
+- Shared deep-link creation in [src/lib/routeHelpers.js](/Users/megdude/BASE44/src/lib/routeHelpers.js)
+- Shared drawer state in [src/store/mapStateStore.ts](/Users/megdude/BASE44/src/store/mapStateStore.ts)
+
+Invalid coordinates are guarded in [src/lib/mapValidation.ts](/Users/megdude/BASE44/src/lib/mapValidation.ts) so bad records do not render markers or crash the map.
+
+## Known next integrations
+
+- Supabase
+- Google Maps
+- Ask the Map API
+- Partner analytics database
+- Real redemption tracking
+=======
 Support: [https://app.base44.com/support](https://app.base44.com/support)
 
 ## Quick test links for map search
@@ -59,3 +107,4 @@ After running `npm run dev`, use the following in your browser:
 If the API returns a `Missing GOOGLE_MAPS_API_KEY` error, add this env var before testing:
 
 - `GOOGLE_MAPS_API_KEY=your_google_places_key`
+>>>>>>> theirs

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { MapPin } from "lucide-react";
-import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 const FOOTER_LINKS = {
   Explore: [
@@ -21,15 +20,12 @@ const FOOTER_LINKS = {
     { to: "/partners", label: "Partner Overview" },
     { to: "/partner-workspace", label: "Partner Workspace" },
     { to: "/partners/dashboard", label: "Dashboard" },
-    { to: "/build-pack", label: "Build Pack" },
     { to: "/#start-here", label: "Start Here" },
     { to: "/brands", label: "Brand Directory" },
   ],
 };
 
 export default function Footer() {
-  const { openFlow } = useCTAFlow();
-
   return (
     <footer className="border-t border-border/60 bg-background">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -48,20 +44,8 @@ export default function Footer() {
             <p className="text-muted-foreground text-[13px] leading-relaxed max-w-xs mb-6">
               A live neighborhood layer for downtown Austin — connecting residents, buildings, and local businesses through a shared map, a simple card, and real-time district intelligence.
             </p>
-            <Link
-              to="/card"
-              onClick={(event) => {
-                event.preventDefault();
-                openFlow({
-                  type: "resident_card",
-                  source: "footer_get_your_card",
-                  sourceComponent: "Footer",
-                  successRoute: "/resident-app/card",
-                });
-              }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all"
-            >
-              Get Your Card
+            <Link to="/explore" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+              Open Map
             </Link>
           </div>
 
@@ -88,7 +72,7 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-start gap-2 border-t border-border/40 pt-8">
           <p className="text-[12px] text-muted-foreground/70">
-            © {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701
+            © 2026 Downtown Perks · Austin, TX · 78701
           </p>
           <p className="text-[12px] text-muted-foreground/50">
             Where downtown works like a system.

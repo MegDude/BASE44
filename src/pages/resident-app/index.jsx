@@ -5,9 +5,11 @@ import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 import { resolveResidentContext } from "@/lib/resident/resolveResidentContext";
 import { FEATURED_BRANDS } from "@/data/featuredBrands";
 import { properties as REPLIT_PROPERTIES } from "@/data/replitApiStore";
+import { FAQ_HOMEPAGE } from "@/lib/faq-partner-data";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import UnifiedResultsPanel from "@/components/map/unified/UnifiedResultsPanel";
 import UnifiedDrawer from "@/components/map/unified/UnifiedDrawer";
+import ResidentCardForm from "@/components/forms/ResidentCardForm";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
 import {
   IconArrowRight,
@@ -134,6 +136,7 @@ const FILTER_CHIPS = [
   { id: "all", label: "Best nearby now" },
   { id: "event", label: "Happening tonight" },
   { id: "perk", label: "Perks nearby" },
+  { id: "venue", label: "Places nearby" },
   { id: "building", label: "Want to live here" },
   { id: "moment", label: "Neighbors nearby" },
   { id: "5min", label: "Best within 5 minutes" },
@@ -162,6 +165,13 @@ const RESIDENT_CROSS_APP_LINKS = [
   { label: "Meg Dude", href: "/resident-app/you" },
 ];
 
+const PARTNER_DISCOVERY_FILTERS = [
+  { id: "venue", label: "Venue" },
+  { id: "hotel", label: "Hotel" },
+  { id: "brand", label: "Brand" },
+  { id: "civic", label: "Civic" },
+];
+
 function getActiveTab(pathname, search) {
   if (pathname === "/resident-app/map") return "now";
   const pathMatch = TAB_CONFIG.find((tab) => pathname === tab.path);
@@ -174,6 +184,7 @@ function matchesResidentFilter(item, activeChip, savedIds) {
   if (activeChip === "saved") return savedIds.has(item.id);
   if (activeChip === "5min") return (item.metadata?.walkMinutes ?? 999) <= 5;
   if (activeChip === "tonight") return item.type === "event" || item.isLive;
+  if (activeChip === "venue") return item.type === "venue";
   if (activeChip === "moment") return item.type === "moment";
   if (activeChip === "building") return item.type === "building" || item.type === "property";
   if (activeChip === "hotel") return item.type === "hotel";
@@ -222,6 +233,17 @@ function sortResidentItems(items) {
     if (walkDelta !== 0) return walkDelta;
     return (b.metadata?.popularity ?? 0) - (a.metadata?.popularity ?? 0);
   });
+}
+
+function classifyPartnerCategory(item) {
+  const type = String(item?.type || item?.entity_type || "").toLowerCase();
+  const category = String(item?.category || "").toLowerCase();
+  const name = String(item?.name || item?.title || "").toLowerCase();
+
+  if (type === "hotel" || category.includes("hotel")) return "hotel";
+  if (type === "brand" || category.includes("brand") || category.includes("campaign")) return "brand";
+  if (type === "civic" || category.includes("civic") || category.includes("district") || name.includes("waterloo")) return "civic";
+  return "venue";
 }
 
 function slugifyResidentValue(value) {
@@ -394,6 +416,19 @@ function dedupeResidentItems(items) {
 }
 
 function ResidentHeader({ user, activeTab }) {
+  const location = useLocation();
+  const currentSearch = new URLSearchParams(location.search);
+  const nextCardSearch = new URLSearchParams();
+  const currentQuery = currentSearch.get("query");
+  const currentChip = currentSearch.get("chip");
+
+  if (currentQuery) nextCardSearch.set("query", currentQuery);
+  if (currentChip) nextCardSearch.set("chip", currentChip);
+
+  const cardHref = nextCardSearch.toString()
+    ? `/resident-app/card?${nextCardSearch.toString()}`
+    : "/resident-app/card";
+
   return (
     <div className="border-b border-[rgba(11,31,51,0.08)] bg-[rgba(247,249,252,0.95)] px-4 py-4 backdrop-blur md:px-6">
       <div className="mx-auto max-w-7xl">
@@ -442,7 +477,7 @@ function ResidentHeader({ user, activeTab }) {
 
           <div className="flex items-center gap-2">
             <Link
-              to="/resident-app/card"
+              to={cardHref}
               className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] border border-[rgba(11,31,51,0.08)] bg-white px-4 text-sm font-medium text-foreground transition-colors hover:bg-[#fbfcff]"
             >
               <IconCard className="h-4 w-4" />
@@ -456,6 +491,21 @@ function ResidentHeader({ user, activeTab }) {
 }
 
 function ResidentTabBar({ activeTab }) {
+  const location = useLocation();
+  const currentSearch = new URLSearchParams(location.search);
+  const currentQuery = currentSearch.get("query");
+  const currentChip = currentSearch.get("chip");
+
+  function buildTabHref(tab) {
+    if (tab.id !== "card") return tab.path;
+
+    const nextSearch = new URLSearchParams();
+    if (currentQuery) nextSearch.set("query", currentQuery);
+    if (currentChip) nextSearch.set("chip", currentChip);
+
+    return nextSearch.toString() ? `${tab.path}?${nextSearch.toString()}` : tab.path;
+  }
+
   return (
     <div className="border-b border-[rgba(11,31,51,0.08)] bg-white px-2 py-2 md:px-4">
       <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto pb-1">
@@ -465,7 +515,7 @@ function ResidentTabBar({ activeTab }) {
           return (
             <Link
               key={tab.id}
-              to={tab.path}
+              to={buildTabHref(tab)}
               className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap transition-all ${
                 isActive
                   ? "border-primary bg-primary text-white"
@@ -1399,16 +1449,56 @@ function ResidentCardTab({ user, items, onSaveItem, onPrimaryAction, savedSet })
         transition={{ delay: 0.28 }}
         className="mx-auto h-px max-w-5xl bg-[linear-gradient(90deg,transparent,rgba(11,31,51,0.18),transparent)]"
       />
+
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,0.7fr)] lg:items-start">
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+            Resident access
+          </div>
+          <h3 className="mt-2 text-[22px] font-semibold tracking-[-0.03em] text-foreground">
+            Get access in the same place you use the card
+          </h3>
+          <p className="mt-2 max-w-2xl text-[13px] leading-6 text-muted-foreground">
+            This keeps the resident request tied to the card flow, the building, and the source that brought the resident here instead of sending them off to a separate page.
+          </p>
+        </div>
+
+        <ResidentCardForm
+          source="resident_app_card"
+          sourceContext="Resident App · Card"
+          initialBuilding={user.homeBuilding}
+          compact
+        />
+      </section>
     </div>
   );
 }
 
-function ResidentYouTab({ user, items }) {
+function ResidentYouTab({ user, items, onSelectItem }) {
   const savedIds = useResidentStore((state) => state.history.saved);
   const redeemedIds = useResidentStore((state) => state.history.redeemed);
   const savedCount = savedIds.length;
   const redeemedCount = redeemedIds.length;
   const eventCount = items.filter((item) => item.type === "event").length;
+  const [activePartnerFilter, setActivePartnerFilter] = useState("venue");
+  const faqItems = FAQ_HOMEPAGE.slice(1, 4);
+
+  const partnerDiscoveryItems = useMemo(() => {
+    return items
+      .filter((item) => ["venue", "hotel", "brand", "civic"].includes(classifyPartnerCategory(item)))
+      .filter((item, index, collection) => collection.findIndex((entry) => entry.id === item.id) === index)
+      .slice(0, 24);
+  }, [items]);
+
+  const filteredPartnerItems = useMemo(() => {
+    return partnerDiscoveryItems.filter((item) => classifyPartnerCategory(item) === activePartnerFilter).slice(0, 6);
+  }, [activePartnerFilter, partnerDiscoveryItems]);
+
+  const featuredProperties = useMemo(() => {
+    return items
+      .filter((item) => item.type === "building" || item.type === "property" || item.type === "hotel")
+      .slice(0, 4);
+  }, [items]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-5 md:px-6">
@@ -1489,6 +1579,178 @@ function ResidentYouTab({ user, items }) {
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                  Our partners
+                </div>
+                <div className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-foreground">
+                  Browse the network by category.
+                </div>
+                <div className="mt-1 text-[13px] leading-6 text-muted-foreground">
+                  Filter the partner network and jump back into the map without getting lost in separate blocks.
+                </div>
+              </div>
+              <Link
+                to="/resident-app"
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 text-[12px] font-semibold text-foreground"
+              >
+                Back to Map
+                <IconArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {PARTNER_DISCOVERY_FILTERS.map((filter) => (
+                <button
+                  key={filter.id}
+                  type="button"
+                  onClick={() => setActivePartnerFilter(filter.id)}
+                  className={`rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition ${
+                    activePartnerFilter === filter.id
+                      ? "border-primary bg-primary text-white"
+                      : "border-[rgba(11,31,51,0.08)] bg-white text-foreground/70 hover:bg-[#f7f9fc]"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {filteredPartnerItems.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onSelectItem?.(item)}
+                  className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4 text-left transition hover:bg-white"
+                >
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.48)]">
+                    {classifyPartnerCategory(item)}
+                  </div>
+                  <div className="mt-2 text-[14px] font-semibold text-foreground">{item.name}</div>
+                  <div className="mt-1 text-[12px] leading-5 text-muted-foreground">
+                    {item.address || item.description || item.district}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-4 xl:grid-cols-2">
+            <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                    Neighborhood signal
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-foreground">
+                    What downtown feels like right now.
+                  </div>
+                </div>
+                <Link
+                  to="/resident-app"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 text-[12px] font-semibold text-foreground"
+                >
+                  Back to Map
+                  <IconArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-3 text-[13px] leading-6 text-muted-foreground">
+                Downtown Perks keeps the map as the main surface, then lets residents move into places, partners, events, and the card without dropping into a disconnected stack of pages.
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                    Properties
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-foreground">
+                    Homes tied to the same live layer.
+                  </div>
+                </div>
+                <Link
+                  to="/resident-app"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 text-[12px] font-semibold text-foreground"
+                >
+                  Back to Map
+                  <IconArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-4 grid gap-2">
+                {featuredProperties.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => onSelectItem?.(item)}
+                    className="rounded-[16px] bg-[#f7f9fc] px-4 py-3 text-left transition hover:bg-white"
+                  >
+                    <div className="text-[13px] font-semibold text-foreground">{item.name}</div>
+                    <div className="mt-1 text-[11px] leading-5 text-muted-foreground">
+                      {item.address || item.description}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-4 xl:grid-cols-2">
+            <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                    FAQs
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-foreground">
+                    Straight answers before you need support.
+                  </div>
+                </div>
+                <Link
+                  to="/resident-app"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 text-[12px] font-semibold text-foreground"
+                >
+                  Back to Map
+                  <IconArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-4 space-y-3">
+                {faqItems.map((item) => (
+                  <div key={item.id} className="rounded-[16px] bg-[#f7f9fc] px-4 py-4">
+                    <div className="text-[13px] font-semibold text-foreground">{item.question}</div>
+                    <div className="mt-2 text-[12px] leading-6 text-muted-foreground">{item.answer}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                    About
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-foreground">
+                    Downtown, in one place.
+                  </div>
+                </div>
+                <Link
+                  to="/resident-app"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 text-[12px] font-semibold text-foreground"
+                >
+                  Back to Map
+                  <IconArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="mt-3 text-[13px] leading-6 text-muted-foreground">
+                Downtown Perks reduces the friction of urban living by bringing places, plans, and perks into one working layer. The point is not more content. It is making the next decision easier.
+              </div>
             </div>
           </div>
         </div>
@@ -1713,7 +1975,7 @@ export default function ResidentApp() {
         {activeTab === "saved" ? <ResidentSavedTab items={residentItems} onSelectItem={handleSelectItem} /> : null}
         {activeTab === "plan" ? <ResidentPlanTab items={residentItems} /> : null}
         {activeTab === "card" ? <ResidentCardTab user={user} items={residentItems} onSaveItem={handleSaveItem} onPrimaryAction={handlePrimaryAction} savedSet={savedSet} /> : null}
-        {activeTab === "you" ? <ResidentYouTab user={user} items={residentItems} /> : null}
+        {activeTab === "you" ? <ResidentYouTab user={user} items={residentItems} onSelectItem={handleSelectItem} /> : null}
       </main>
     </div>
   );

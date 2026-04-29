@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, List, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useMapStateStore, selectFilteredResults, selectSelectedEntity } from '@/store/mapStateStore';
 import { useMapPanelStore } from '@/store/useMapPanelStore';
 import UnifiedMapShell from '@/components/map/unified/UnifiedMapShell';
@@ -15,7 +15,15 @@ import { createMarker } from '@/components/map/markers/MarkerFactory';
 import { filterValidEntities } from '@/lib/mapValidation';
 import { mapRepository } from '@/lib/repositories/mapRepository';
 import { useRankedResults } from '@/hooks/useRankedResults';
+import { useMapFilters } from '@/hooks/useMapFilters';
+import { filterEntities } from '@/lib/mapFilters';
+import { trackEvent } from '@/lib/analytics';
 
+<<<<<<< ours
+=======
+
+// Helper to get marker icon from factory
+>>>>>>> theirs
 function getMarkerIcon(entity, isSelected) {
   return createMarker(entity, {
     isSelected,
@@ -24,6 +32,8 @@ function getMarkerIcon(entity, isSelected) {
 }
 
 export default function ExploreRebuilt() {
+  const location = useLocation();
+  const exploreFilters = useMapFilters();
   const filteredResults = useMapStateStore(selectFilteredResults);
   const selectedEntity = useMapStateStore(selectSelectedEntity);
   const mapCenter = useMapStateStore((state) => state.mapCenter);
@@ -58,6 +68,19 @@ export default function ExploreRebuilt() {
     categories,
     filters,
   } = useMapPanelStore();
+  const hasExploreFilters = useMemo(
+    () => Boolean(
+      exploreFilters.type ||
+      exploreFilters.intent ||
+      exploreFilters.time ||
+      exploreFilters.radius ||
+      exploreFilters.saved ||
+      exploreFilters.district ||
+      exploreFilters.category ||
+      exploreFilters.q
+    ),
+    [exploreFilters]
+  );
 
   const describeType = (value) => {
     if (value === 'venues') return 'places';
@@ -106,6 +129,7 @@ export default function ExploreRebuilt() {
   }, [setFilteredResults]);
 
   useEffect(() => {
+    if (hasExploreFilters) return;
     clearFilters();
     setSearchQuery(query);
 
@@ -146,7 +170,64 @@ export default function ExploreRebuilt() {
     } else if (filters.tenMin) {
       updateFilter('walkMinutes', 10);
     }
-  }, [categories, clearFilters, decision, filters, query, setSearchQuery, type, updateFilter]);
+  }, [categories, clearFilters, decision, filters, hasExploreFilters, query, setSearchQuery, type, updateFilter]);
+
+  useEffect(() => {
+    if (!hasExploreFilters) return;
+
+    clearFilters();
+    setSearchQuery(exploreFilters.q || '');
+
+    if (exploreFilters.type === 'property') {
+      updateFilter('entityTypes', new Set(['property', 'building', 'hotel']));
+    } else if (exploreFilters.type === 'event') {
+      updateFilter('entityTypes', new Set(['event']));
+    } else if (exploreFilters.type === 'perk') {
+      updateFilter('entityTypes', new Set(['perk', 'venue', 'hotel', 'property']));
+      updateFilter('hasPerk', true);
+    } else if (exploreFilters.type === 'hotel') {
+      updateFilter('entityTypes', new Set(['hotel']));
+    } else if (exploreFilters.intent === 'places') {
+      updateFilter('entityTypes', new Set(['venue', 'hotel']));
+    } else if (exploreFilters.intent === 'residential') {
+      updateFilter('entityTypes', new Set(['property', 'building', 'hotel']));
+    } else {
+      updateFilter('entityTypes', new Set(['venue', 'event', 'perk', 'building', 'property', 'hotel']));
+    }
+
+    if (exploreFilters.category) {
+      if (exploreFilters.category === 'perks') {
+        updateFilter('hasPerk', true);
+      } else {
+        updateFilter('categories', new Set([exploreFilters.category]));
+      }
+    }
+
+    if (exploreFilters.district) {
+      updateFilter('districts', new Set([exploreFilters.district]));
+    }
+
+    if (exploreFilters.saved) {
+      updateFilter('isSaved', true);
+    }
+
+    if (exploreFilters.time === 'now') {
+      updateFilter('isLive', true);
+      updateFilter('isOpenNow', true);
+    }
+
+    const radius = Number(exploreFilters.radius || 0);
+    if (radius > 0) {
+      updateFilter('walkMinutes', radius);
+    } else if (exploreFilters.intent === 'nearby') {
+      updateFilter('walkMinutes', 5);
+    }
+
+    trackEvent('explore_filter_applied', {
+      source: location.pathname,
+      filters: exploreFilters,
+    });
+  }, [clearFilters, exploreFilters, hasExploreFilters, location.pathname, setSearchQuery, updateFilter]);
 
   useEffect(() => {
     if (mode === 'ask') return;
@@ -220,79 +301,18 @@ export default function ExploreRebuilt() {
   useEffect(() => {
     if (!allEntities.length) return;
 
-    let results = [...allEntities].filter((item) => item.isVisibleInResults !== false);
-    const baselineResults = [...results];
-    const q = searchQuery.trim().toLowerCase();
-
-    if (q) {
-      results = results.filter((item) => {
-        const haystack = [
-          item.name,
-          item.description,
-          item.address,
-          item.category,
-          item.district,
-          ...(item.metadata?.tags || []),
-          ...(item.metadata?.searchKeywords || []),
-          ...(item.metadata?.askMapIntentTags || []),
-        ]
-          .filter(Boolean)
-          .join(' ')
-          .toLowerCase();
-
-        return haystack.includes(q);
-      });
-    }
-
-    if (activeFilters.entityTypes.size > 0) {
-      results = results.filter(
-        (item) =>
-          activeFilters.entityTypes.has(item.type) ||
-          (item.type === 'property' && activeFilters.entityTypes.has('building'))
-      );
-    }
-
-    if (activeFilters.categories.size > 0) {
-      results = results.filter((item) => item.category && activeFilters.categories.has(item.category));
-    }
-
-    if (activeFilters.districts.size > 0) {
-      results = results.filter((item) => item.district && activeFilters.districts.has(item.district));
-    }
-
-    if (typeof activeFilters.walkMinutes === 'number') {
-      results = results.filter((item) => (item.metadata?.walkMinutes ?? 999) <= activeFilters.walkMinutes);
-    }
-
-    if (activeFilters.isOpenNow) {
-      results = results.filter((item) => Boolean(item.isOpenNow));
-    }
-
-    if (activeFilters.isLive) {
-      results = results.filter((item) => Boolean(item.isLive || item.eventTiming?.isLive));
-    }
-
-    if (activeFilters.isSaved) {
-      results = results.filter((item) => savedEntityIds.has(item.id));
-    }
-
-    if (activeFilters.isTrending) {
-      results = results.filter((item) => Boolean(item.metadata?.isTrending || (item.metadata?.popularity ?? 0) >= 70));
-    }
-
-    if (activeFilters.hasPerk) {
-      results = results.filter((item) => Boolean(item.perk?.value || item.perk_value || item.type === 'perk'));
-    }
-
-    results.sort((a, b) => {
-      const liveDelta = Number(Boolean(b.isLive || b.eventTiming?.isLive)) - Number(Boolean(a.isLive || a.eventTiming?.isLive));
-      if (liveDelta !== 0) return liveDelta;
-
-      const walkDelta = (a.metadata?.walkMinutes ?? 999) - (b.metadata?.walkMinutes ?? 999);
-      if (walkDelta !== 0) return walkDelta;
-
-      return (b.metadata?.popularity ?? 0) - (a.metadata?.popularity ?? 0);
+    let results = filterEntities(allEntities, {
+      type: activeFilters.entityTypes.has('property') || activeFilters.entityTypes.has('building') ? 'property' : '',
+      time: activeFilters.isLive || activeFilters.isOpenNow ? 'now' : '',
+      radius: activeFilters.walkMinutes,
+      saved: activeFilters.isSaved,
+      savedIds: savedEntityIds,
+      district: Array.from(activeFilters.districts)[0] || '',
+      category: activeFilters.hasPerk && activeFilters.categories.size === 0 ? 'perks' : Array.from(activeFilters.categories)[0] || '',
+      q: searchQuery,
+      intent: activeFilters.walkMinutes === 5 ? 'nearby' : '',
     });
+    const baselineResults = [...results];
 
     let finalResults = results;
     let explanation = `${results.length} ${describeType(type)} ${describeWindow()}.`;

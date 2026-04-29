@@ -138,12 +138,12 @@ export default function PartnerSlides() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.45 }}
             >
-              <span className="dp-micro-label">Who this helps</span>
+              <span className="dp-micro-label">Partner roles</span>
               <h2 className="dp-display-section mt-3 max-w-3xl text-[2rem] text-foreground md:text-[2.8rem]">
-                Turn residents into regulars.
+                One downtown layer. Five partner roles.
               </h2>
               <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-                People are already downtown, already walking, and already deciding. The point is not more attention. It is better timing, clearer context, and proof of what happened next.
+                Swipe through the role that fits, compare the operating logic, and move into the right partner view without scrolling through stacked sales blocks.
               </p>
             </motion.div>
 

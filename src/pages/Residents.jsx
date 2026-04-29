@@ -2,16 +2,17 @@ import MapShell from "@/components/map/MapShell";
 import ResidentCardForm from "@/components/forms/ResidentCardForm";
 import AudienceHero from "@/components/sections/AudienceHero";
 import AudienceStoryPanel from "@/components/sections/AudienceStoryPanel";
+import { createExploreLink } from "@/lib/routeHelpers";
 
 export default function Residents() {
   return (
     <main>
       <AudienceHero
         kicker="Resident app"
-        title="Your downtown, in one map."
-        description="Find nearby perks, events, restaurants, bars, coffee, services, properties, and local favorites without downloading another app."
+        title="Your downtown, easier to use."
+        description="Find places, events, and perks nearby without jumping between apps."
         primaryLabel="Open the map"
-        primaryHref="/map"
+        primaryHref={createExploreLink({ intent: "nearby" })}
         secondaryLabel="Get your perks card"
         secondaryHref="#resident-card"
       />
@@ -21,20 +22,20 @@ export default function Residents() {
       <AudienceStoryPanel
         items={[
           {
-            title: "Open the map.",
-            body: "The resident starts with the live downtown map instead of a directory. The Ask the Map input is prominent and lets them search for coffee, dinner, rooftop bars, events, fitness, groceries, or services."
+            title: "Places nearby",
+            body: "Open one live map for downtown coffee, dinner, drinks, services, and everyday places that are actually walkable right now."
           },
           {
-            title: "Tap, learn, decide.",
-            body: "Every location shows what it is, why it matters, how close it is, and what the resident can do next. The result drawer can be closed, rolled up, or expanded."
+            title: "Happening tonight",
+            body: "See what is live, what is starting soon, and what makes sense in the next 5 to 30 minutes."
           },
           {
-            title: "Save, RSVP, or show the card.",
-            body: "The resident can save a place, RSVP to an event, or show the perks card at a participating partner. The action is tracked without adding friction."
+            title: "Perks you can use",
+            body: "Perks stay inside the map instead of living in a separate coupon wall. If it matters, it is tied back to a real place nearby."
           },
           {
-            title: "Redeem and keep moving.",
-            body: "The partner scans or verifies the perk. The resident gets the benefit and the partner gets measurable engagement."
+            title: "Save for later",
+            body: "Save, RSVP, or show the card only when it matters. Browse first, then act when the decision is clear."
           }
         ]}
       />

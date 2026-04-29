@@ -8,32 +8,24 @@ export interface ValidationResult {
   errors: string[];
 }
 
+export function toFiniteNumber(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+}
+
 /**
  * Strict coordinate validation
  * Returns true only if both lat/lng are valid finite numbers within geographic bounds
  */
 export function isValidCoordinate(lat: unknown, lng: unknown): boolean {
-  // Check if both exist and are numbers
-  if (typeof lat !== 'number' || typeof lng !== 'number') {
-    return false;
-  }
-
-  // Check for NaN
-  if (isNaN(lat) || isNaN(lng)) {
-    return false;
-  }
-
-  // Check for Infinity
-  if (!isFinite(lat) || !isFinite(lng)) {
-    return false;
-  }
-
-  // Validate geographic bounds (approximate Austin area with margin)
-  // Austin is around 30.27°N, 97.74°W
-  const latValid = lat >= 29.5 && lat <= 30.8;
-  const lngValid = lng >= -98.5 && lng <= -97.2;
-
-  return latValid && lngValid;
+  const normalizedLat = toFiniteNumber(lat);
+  const normalizedLng = toFiniteNumber(lng);
+  if (normalizedLat === null || normalizedLng === null) return false;
+  return normalizedLat >= -90 && normalizedLat <= 90 && normalizedLng >= -180 && normalizedLng <= 180;
 }
 
 /**
@@ -60,6 +52,20 @@ export function sanitizeCoordinates(
     return [lat as number, lng as number];
   }
   return fallback;
+}
+
+export function getValidLatLng(entity: {
+  lat?: unknown;
+  lng?: unknown;
+  latitude?: unknown;
+  longitude?: unknown;
+  location?: { latitude?: unknown; longitude?: unknown };
+}): [number, number] | null {
+  const lat = toFiniteNumber(entity?.location?.latitude ?? entity?.latitude ?? entity?.lat);
+  const lng = toFiniteNumber(entity?.location?.longitude ?? entity?.longitude ?? entity?.lng);
+
+  if (!isValidCoordinate(lat, lng)) return null;
+  return [lat as number, lng as number];
 }
 
 /**

@@ -1,0 +1,374 @@
+{
+  "version": "2026-04-29",
+  "product": "Downtown Perks",
+  "purpose": "Production Firestore data contract for public browsing, private resident identity, perks card trust, redemption proof, and partner analytics boundaries.",
+  "architecturePrinciples": [
+    "Public browsing stays open without login.",
+    "Authentication is optional until a user wants identity, a card, redemption, or account history.",
+    "Cards, redemptions, points, and token validation are trust-layer concerns and must not be treated as client-owned UI state.",
+    "Partner dashboards read aggregated proof, not raw private user activity.",
+    "Realtime subscriptions should update map pins, offers, card state, and user history without full reloads."
+  ],
+  "accessModel": {
+    "publicReadableSurfaces": [
+      "website",
+      "map",
+      "events",
+      "partner overview",
+      "public offers",
+      "aggregated map signals",
+      "venues",
+      "buildings",
+      "public events"
+    ],
+    "loginRequiredFor": [
+      "save profile",
+      "link physical perks card",
+      "generate digital perks card",
+      "redeem an offer",
+      "view personal redemption history",
+      "manage account details"
+    ],
+    "serverOwnedOperations": [
+      "card generation",
+      "QR token creation",
+      "QR token validation",
+      "redemption confirmation",
+      "points balance updates",
+      "analytics aggregation",
+      "fraud checks",
+      "rate limiting"
+    ]
+  },
+  "collections": {
+    "users": {
+      "path": "users/{userId}",
+      "ownership": "private user profile",
+      "realtime": true,
+      "schema": {
+        "id": "uid_from_auth",
+        "email": "user@example.com",
+        "displayName": "Julian Carter",
+        "firstName": "Julian",
+        "lastName": "Carter",
+        "phone": "+15125550123",
+        "homeBuildingId": "building_the_paseo",
+        "residentStatus": "unverified",
+        "role": "resident",
+        "linkedCardIds": [
+          "card_abc123"
+        ],
+        "preferences": {
+          "favoriteDistricts": [
+            "rainey",
+            "seaholm"
+          ],
+          "favoriteCategories": [
+            "coffee",
+            "events",
+            "dining"
+          ],
+          "smsOptIn": false,
+          "emailOptIn": true,
+          "pushOptIn": false
+        },
+        "createdAt": "serverTimestamp",
+        "updatedAt": "serverTimestamp",
+        "lastLoginAt": "serverTimestamp",
+        "status": "active"
+      }
+    },
+    "perksCards": {
+      "path": "perksCards/{cardId}",
+      "ownership": "private card wallet and linked physical card state",
+      "realtime": true,
+      "schema": {
+        "id": "card_abc123",
+        "userId": "uid_from_auth",
+        "cardType": "digital",
+        "physicalCardCode": null,
+        "status": "active",
+        "tier": "resident",
+        "pointsBalance": 320,
+        "qrTokenHash": "hashed_token_only",
+        "issuedAt": "serverTimestamp",
+        "expiresAt": null,
+        "linkedAt": "serverTimestamp",
+        "lastUsedAt": "serverTimestamp",
+        "buildingId": "building_the_paseo",
+        "metadata": {
+          "source": "generated",
+          "activationChannel": "web"
+        }
+      },
+      "rules": [
+        "Never store raw QR tokens.",
+        "Raw QR tokens must be generated and validated server-side only.",
+        "Clients must not write pointsBalance directly."
+      ]
+    },
+    "offers": {
+      "path": "offers/{offerId}",
+      "ownership": "public offer and perk layer",
+      "realtime": true,
+      "schema": {
+        "id": "offer_bangers_20",
+        "title": "20% off weekend brunch",
+        "description": "Show your Downtown Perks Card at checkout.",
+        "partnerId": "partner_bangers",
+        "venueId": "venue_bangers",
+        "district": "rainey",
+        "category": "dining",
+        "status": "active",
+        "visibility": "public",
+        "requiresCard": true,
+        "startsAt": "timestamp",
+        "endsAt": "timestamp",
+        "redemptionLimit": {
+          "perUser": 1,
+          "global": 500
+        },
+        "location": {
+          "lat": 30.2594,
+          "lng": -97.7389,
+          "address": "79 Rainey Street, Austin, TX 78701"
+        },
+        "tags": [
+          "brunch",
+          "walkable",
+          "resident"
+        ],
+        "sortWeight": 85,
+        "createdAt": "serverTimestamp",
+        "updatedAt": "serverTimestamp"
+      }
+    },
+    "redemptions": {
+      "path": "redemptions/{redemptionId}",
+      "ownership": "transaction ledger",
+      "realtime": true,
+      "schema": {
+        "id": "redemption_001",
+        "userId": "uid_from_auth",
+        "cardId": "card_abc123",
+        "offerId": "offer_bangers_20",
+        "partnerId": "partner_bangers",
+        "venueId": "venue_bangers",
+        "district": "rainey",
+        "status": "completed",
+        "redeemedAt": "serverTimestamp",
+        "pointsUsed": 0,
+        "pointsEarned": 25,
+        "scanSource": "partner_qr",
+        "deviceContext": {
+          "platform": "web",
+          "source": "resident_app"
+        }
+      },
+      "rules": [
+        "Normal users can create redemption requests for themselves.",
+        "Normal users cannot edit completed redemptions.",
+        "Completion, points changes, and fraud checks must happen server-side."
+      ]
+    },
+    "venues": {
+      "path": "venues/{venueId}",
+      "ownership": "public map pins for places and public venue details",
+      "realtime": true
+    },
+    "partners": {
+      "path": "partners/{partnerId}",
+      "ownership": "partner account and access scope",
+      "realtime": true
+    },
+    "buildings": {
+      "path": "buildings/{buildingId}",
+      "ownership": "residential and property source layer",
+      "realtime": true
+    },
+    "events": {
+      "path": "events/{eventId}",
+      "ownership": "public downtown event layer",
+      "realtime": true
+    },
+    "analyticsEvents": {
+      "path": "analyticsEvents/{eventId}",
+      "ownership": "raw interaction stream",
+      "realtime": false
+    },
+    "mapSignals": {
+      "path": "mapSignals/{signalId}",
+      "ownership": "aggregated live intelligence for public and partner surfaces",
+      "realtime": true
+    },
+    "cardLinkRequests": {
+      "path": "cardLinkRequests/{requestId}",
+      "ownership": "secure physical card linking workflow",
+      "realtime": true
+    }
+  },
+  "securityRulesDirection": {
+    "rulesVersion": "2",
+    "helperFunctions": {
+      "signedIn": "request.auth != null",
+      "isOwner": "signedIn() && request.auth.uid == userId",
+      "isAdmin": "signedIn() && request.auth.token.role in ['admin', 'staff']",
+      "isPartner": "signedIn() && request.auth.token.role == 'partner'"
+    },
+    "collectionPolicy": {
+      "users": {
+        "create": "owner only",
+        "read": "owner or admin",
+        "update": "owner or admin",
+        "delete": "admin only"
+      },
+      "perksCards": {
+        "read": "owner only",
+        "create": "owner only",
+        "update": "owner only for safe fields; admin for privileged fields",
+        "delete": "admin only"
+      },
+      "offers": {
+        "read": "only when status=active and visibility=public",
+        "write": "admin or scoped partner"
+      },
+      "redemptions": {
+        "read": "owner or admin; partner only through aggregated outputs",
+        "create": "signed-in owner request only",
+        "update": "admin or server function only",
+        "delete": "admin only"
+      },
+      "venues": {
+        "read": "public",
+        "write": "admin or scoped partner"
+      },
+      "events": {
+        "read": "public",
+        "write": "admin or scoped partner"
+      },
+      "analyticsEvents": {
+        "create": "public or signed-in clients allowed",
+        "read": "admin or scoped partner",
+        "update": "admin only",
+        "delete": "admin only"
+      },
+      "mapSignals": {
+        "read": "public",
+        "write": "admin or server function only"
+      },
+      "cardLinkRequests": {
+        "read": "owner or admin",
+        "create": "signed-in owner",
+        "update": "admin or server function only",
+        "delete": "admin only"
+      }
+    }
+  },
+  "indexes": [
+    {
+      "collection": "offers",
+      "query": "active offers by district",
+      "fields": [
+        "status ASC",
+        "district ASC",
+        "sortWeight DESC"
+      ]
+    },
+    {
+      "collection": "offers",
+      "query": "active offers by category",
+      "fields": [
+        "status ASC",
+        "category ASC",
+        "startsAt DESC"
+      ]
+    },
+    {
+      "collection": "offers",
+      "query": "map offers by time",
+      "fields": [
+        "status ASC",
+        "startsAt ASC",
+        "endsAt ASC"
+      ]
+    },
+    {
+      "collection": "redemptions",
+      "query": "user redemption history",
+      "fields": [
+        "userId ASC",
+        "redeemedAt DESC"
+      ]
+    },
+    {
+      "collection": "redemptions",
+      "query": "partner redemptions",
+      "fields": [
+        "partnerId ASC",
+        "redeemedAt DESC"
+      ]
+    },
+    {
+      "collection": "analyticsEvents",
+      "query": "venue activity",
+      "fields": [
+        "venueId ASC",
+        "createdAt DESC"
+      ]
+    },
+    {
+      "collection": "mapSignals",
+      "query": "map signals by district",
+      "fields": [
+        "district ASC",
+        "updatedAt DESC"
+      ]
+    }
+  ],
+  "realtimeSyncPatterns": [
+    {
+      "feature": "Public map pins",
+      "pattern": "Subscribe to venues, events, and active offers."
+    },
+    {
+      "feature": "Offer detail drawer",
+      "pattern": "Fetch one offer by offerId when the drawer opens."
+    },
+    {
+      "feature": "Perks Card wallet",
+      "pattern": "Subscribe to perksCards where userId == auth.uid."
+    },
+    {
+      "feature": "Redemption history",
+      "pattern": "Subscribe to redemptions where userId == auth.uid ordered by redeemedAt desc."
+    },
+    {
+      "feature": "Partner dashboard",
+      "pattern": "Subscribe to aggregated mapSignals instead of raw per-user analytics events."
+    },
+    {
+      "feature": "Live map intelligence",
+      "pattern": "Use Cloud Functions to aggregate analyticsEvents into mapSignals."
+    }
+  ],
+  "implementationRules": [
+    "Add status fields everywhere so expired or deleted records do not leak into UI queries.",
+    "Use serverTimestamp only for write-time fields.",
+    "Separate analyticsEvents from mapSignals so dashboards stay fast and privacy-safe.",
+    "Use custom claims for admin and partner roles.",
+    "Scope partner reads to allowed partner entities and aggregated outputs.",
+    "Do not let clients complete redemptions or mutate points balances directly."
+  ],
+  "acceptanceCriteria": [
+    "Visitors can browse the public app without logging in.",
+    "Users create accounts only when they want a card or private profile state.",
+    "Users can generate or link a perks card.",
+    "Users can only read their own cards and redemption history.",
+    "Offers are public only when active and visible.",
+    "Redemptions cannot be edited by normal users after creation.",
+    "Partner dashboards read aggregated data only.",
+    "QR tokens are not stored raw in Firestore.",
+    "Indexes support district, category, time, user history, and partner analytics queries.",
+    "Realtime listeners update the map, wallet, offers, and redemption history without a full reload."
+  ]
+}

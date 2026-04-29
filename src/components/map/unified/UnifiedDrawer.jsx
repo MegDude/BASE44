@@ -1,8 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
+import { useEffect } from 'react';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { useResidentMutations } from '@/hooks/useResidentMutations';
 import useMediaQuery from '@/hooks/useMediaQuery';
+import { useCTAFlow } from '@/components/cta/CTAFlowProvider';
+import { getEntityInquiryFlow } from '@/lib/cta/partnerFlowHelpers';
 import {
   IconCalendarCheck,
   IconChevronUp,
@@ -34,6 +37,24 @@ export default function UnifiedDrawer({
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
   const mutations = useResidentMutations();
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const { openFlow } = useCTAFlow();
+  const closeDrawer = () => {
+    selectEntity(null);
+    setDrawerState('closed');
+  };
+
+  useEffect(() => {
+    if (!selected || !isDesktop) return undefined;
+
+    const handleKeydown = (event) => {
+      if (event.key === 'Escape') {
+        closeDrawer();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeydown);
+    return () => window.removeEventListener('keydown', handleKeydown);
+  }, [isDesktop, selected]);
 
   if (!selected || drawerState === 'closed') {
     return null;
@@ -92,10 +113,10 @@ export default function UnifiedDrawer({
         ? IconPerk
         : IconChevronUp;
 
-  const closeDrawer = () => {
-    selectEntity(null);
-    setDrawerState('closed');
-  };
+  const inquiryFlow = getEntityInquiryFlow(selected, {
+    source: 'unified_drawer',
+    sourceComponent: 'UnifiedDrawer',
+  });
 
   const detailBody = (
     <>
@@ -227,6 +248,15 @@ export default function UnifiedDrawer({
           {isSaved ? 'Saved' : 'Save'}
         </button>
       </div>
+
+      {inquiryFlow ? (
+        <button
+          onClick={() => openFlow(inquiryFlow)}
+          className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
+        >
+          {inquiryFlow.label}
+        </button>
+      ) : null}
 
       <div className="mt-2 flex gap-2">
         <button

@@ -18,6 +18,7 @@ export const ROUTES = {
   partnerVenues: "/partners/venues",
   partnerBrands: "/partners/brands",
   partnerCivic: "/partners/civic",
+  partnerApply: "/partners/apply",
   partnerDashboard: "/partners/dashboard",
   partnerDashboardResidential: "/partners/dashboard/residential",
   partnerDashboardHospitality: "/partners/dashboard/hospitality",

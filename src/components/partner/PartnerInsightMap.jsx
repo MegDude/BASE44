@@ -19,8 +19,10 @@ import {
   Target,
   Users2,
 } from "lucide-react";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
+import { getEntityInquiryFlow, getPartnerFlowForType } from "@/lib/cta/partnerFlowHelpers";
 import { usePartnerInsights } from "@/lib/map/partnerInsights";
 import { getPartnerDashboardRoute, ROUTES } from "@/lib/routes";
 
@@ -312,6 +314,7 @@ export default function PartnerInsightMap({
   title = "Partner map",
   description = "Use this map to see what is getting attention, what is working, and what needs help next.",
 }) {
+  const { openFlow } = useCTAFlow();
   const [activeFilter, setActiveFilter] = useState("all");
   const [queryInput, setQueryInput] = useState("");
   const [appliedQuery, setAppliedQuery] = useState("");
@@ -326,6 +329,15 @@ export default function PartnerInsightMap({
   const [openControl, setOpenControl] = useState(null);
 
   const mapConfig = MAP_CONFIG[partnerType] || MAP_CONFIG.dashboard;
+  const activeInquiryFlow = activeItem
+    ? getEntityInquiryFlow(activeItem, {
+        source: `partner_insight_map_${partnerType}`,
+        sourceComponent: "PartnerInsightMap",
+      })
+    : getPartnerFlowForType(partnerType, {
+        source: `partner_insight_map_${partnerType}`,
+        sourceComponent: "PartnerInsightMap",
+      });
 
   const {
     items: allItems,
@@ -875,6 +887,17 @@ export default function PartnerInsightMap({
                             {activeItem.recommendedAction}
                           </div>
                         </div>
+
+                        {activeInquiryFlow ? (
+                          <button
+                            type="button"
+                            onClick={() => openFlow(activeInquiryFlow)}
+                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(10,20,40,0.08)] bg-white px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-navy)] transition-colors hover:bg-[#f7f9fc]"
+                          >
+                            {activeInquiryFlow.label}
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </button>
+                        ) : null}
 
                         <Link
                           to={partnerType === "dashboard" ? ROUTES.partners : getPartnerDashboardRoute(partnerType)}

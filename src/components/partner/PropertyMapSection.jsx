@@ -11,9 +11,11 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
+import { getEntityInquiryFlow } from "@/lib/cta/partnerFlowHelpers";
 import { usePartnerInsights } from "@/lib/map/partnerInsights";
 import { ROUTES } from "@/lib/routes";
 
@@ -194,6 +196,7 @@ function MiniMetricBars({ item }) {
 }
 
 export default function PropertyMapSection() {
+  const { openFlow } = useCTAFlow();
   const [query, setQuery] = useState("");
   const [activePrompt, setActivePrompt] = useState(PROMPTS[0]);
   const [pinType, setPinType] = useState("all");
@@ -229,6 +232,12 @@ export default function PropertyMapSection() {
   const mapItems = useMemo(() => filteredItems.map(toMarkerEntity), [filteredItems]);
   const selectedItem = selected && filteredItems.find((item) => item.id === selected.id) ? selected : filteredItems[0] || null;
   const answerCopy = useMemo(() => buildPropertyAnswer(selectedItem, activeQuery), [selectedItem, activeQuery]);
+  const inquiryFlow = selectedItem
+    ? getEntityInquiryFlow(selectedItem, {
+        source: "property_map_section",
+        sourceComponent: "PropertyMapSection",
+      })
+    : null;
   const topResults = useMemo(() => filteredItems.slice(0, 4), [filteredItems]);
   const searchRailItems = [
     ...PROMPTS.map((prompt) => ({
@@ -459,6 +468,17 @@ export default function PropertyMapSection() {
                       {answerCopy.recommendedAction}
                     </div>
                   </div>
+
+                  {inquiryFlow ? (
+                    <button
+                      type="button"
+                      onClick={() => openFlow(inquiryFlow)}
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(10,20,40,0.08)] bg-white px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-navy)] transition-colors hover:bg-[#f7f9fc]"
+                    >
+                      {inquiryFlow.label}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
+                  ) : null}
 
                   <Link
                     to={ROUTES.partnerDashboardResidential}

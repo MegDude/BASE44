@@ -330,7 +330,7 @@ export default function ContactSection() {
         >
           <span className="dp-micro-label mb-3 block">Get started</span>
           <h2 className="dp-display-section max-w-3xl text-[2.1rem] text-foreground md:text-[3rem]">
-            Choose the path that fits and launch from there.
+            Ready when you are.
           </h2>
           <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
             Pick the role, see the setup, and open the right onboarding flow without leaving the page.
@@ -338,6 +338,25 @@ export default function ContactSection() {
         </motion.div>
 
         <div className="overflow-hidden rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,245,238,0.92))] shadow-[0_20px_48px_rgba(11,31,51,0.08)]">
+          <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-6">
+            <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
+                  Buildings / Properties
+                </div>
+                <div className="mt-2 text-[18px] font-semibold tracking-[-0.03em] text-foreground">
+                  Start a 90-day free pilot.
+                </div>
+                <div className="mt-1 max-w-2xl text-[13px] leading-6 text-muted-foreground">
+                  Start with the building rollout first. The other partner paths stay here too, but this is the main launch flow for properties.
+                </div>
+              </div>
+              <div className="text-[12px] font-medium text-[rgba(11,31,51,0.56)]">
+                Also available: Hospitality, Venues, Brands, Civic, Real Estate, Residents
+              </div>
+            </div>
+          </div>
+
           <div className="flex gap-2 overflow-x-auto border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-6">
             {forms.map((form) => {
               const Icon = form.icon;

@@ -187,10 +187,13 @@ export default function PerksCard() {
                 Your Membership
               </p>
               <h1 className="mt-3 font-heading text-[2.6rem] font-semibold leading-[0.94] tracking-[-0.05em] text-foreground md:text-[3.4rem]">
-                Perks Card
+                Your downtown access layer.
               </h1>
               <p className="mt-3 max-w-xl text-[14px] leading-6 text-[rgba(11,31,51,0.66)] md:text-[15px]">
-                Show one code when you need it. Use it for nearby perks, quick check-ins, and member access without turning the whole experience into a sign-up wall.
+                Use the map first. Show the card when a perk, RSVP, or access point matters.
+              </p>
+              <p className="mt-2 max-w-xl text-[14px] leading-6 text-[rgba(11,31,51,0.56)]">
+                No app download. No account setup. Your card appears when there is something to save, use, RSVP to, or redeem.
               </p>
 
               <div className="mt-5 flex flex-col gap-3 sm:flex-row">

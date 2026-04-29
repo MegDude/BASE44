@@ -10,6 +10,8 @@ export default function AudienceHero({
   secondaryHref = "/partners/dashboard",
   showBack = true
 }) {
+  const hasActions = Boolean(primaryLabel || secondaryLabel);
+
   return (
     <section className="dp-section">
       <div className="dp-page-shell">
@@ -21,10 +23,12 @@ export default function AudienceHero({
           </div>
           <div>
             <p className="dp-page-intro">{description}</p>
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-              <a href={primaryHref} className="dp-cta-primary">{primaryLabel}</a>
-              <a href={secondaryHref} className="dp-cta-secondary">{secondaryLabel}</a>
-            </div>
+            {hasActions ? (
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                {primaryLabel ? <a href={primaryHref} className="dp-cta-primary">{primaryLabel}</a> : null}
+                {secondaryLabel ? <a href={secondaryHref} className="dp-cta-secondary">{secondaryLabel}</a> : null}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

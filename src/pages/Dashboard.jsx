@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, LineChart, Search, Sparkles, Target } from "lucide-react";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
+import PartnerStoryCarousel from "@/components/partner/PartnerStoryCarousel";
+import { PARTNER_TYPE_CONTENT, PARTNER_TYPE_ORDER } from "@/lib/partnerContent";
 import { ROUTES } from "@/lib/routes";
 
 const LENS_LINKS = [
@@ -20,7 +22,7 @@ const LENS_LINKS = [
 const DASHBOARD_VARIANTS = {
   dashboard: {
     kicker: "Partner intelligence",
-    title: "Ask the map. Get the answer.",
+    title: "Not just what happened. What to do next.",
     body: "Use one question, a few small controls, and the live downtown layer.",
     mapTitle: "Ask what you want to know, see, or do.",
     mapDescription: "The map answers back with the clearest current signal.",
@@ -52,11 +54,20 @@ const DASHBOARD_VARIANTS = {
   },
   brands: {
     kicker: "Brand intelligence",
-    title: "Ask which placements are actually working.",
-    body: "Use the map to see which district, building, venue, or event source is driving response.",
+    title: "See what is driving response before you spend more on the wrong placement.",
+    body: "This view tells a brand team where attention turns into movement: which district is waking up, which building or venue is sending qualified traffic, and which event or activation source is actually earning follow-through.",
     mapTitle: "Ask where the campaign is working and what to adjust next.",
-    mapDescription: "The map returns the clearest campaign answer.",
+    mapDescription: "The map returns the clearest campaign answer, then shows the proof behind it.",
     partnerType: "brand",
+    explainerLabel: "What this block is doing",
+    explainerTitle: "The brand view is here to answer one hard question clearly.",
+    explainerBody:
+      "It should show whether the campaign is working because of the district, the building, the venue, the event moment, or the offer itself. The next section then turns that answer into a live map view with proof, sources, and the next move.",
+    explainerPoints: [
+      "See which placements are generating real response instead of broad visibility.",
+      "Separate district lift from building-led, venue-led, and event-led traffic.",
+      "Use the live map section below to decide where to keep, move, or stop the campaign."
+    ],
   },
   civic: {
     kicker: "Civic intelligence",
@@ -77,10 +88,25 @@ function getDashboardVariant(pathname) {
   return "dashboard";
 }
 
+function getContentForVariant(variantKey) {
+  if (variantKey === "residential") return PARTNER_TYPE_CONTENT.properties;
+  if (variantKey === "hospitality") return PARTNER_TYPE_CONTENT.hospitality;
+  if (variantKey === "venues") return PARTNER_TYPE_CONTENT.venues;
+  if (variantKey === "brands") return PARTNER_TYPE_CONTENT.brands;
+  if (variantKey === "civic") return PARTNER_TYPE_CONTENT.civic;
+  return null;
+}
+
+function metricValue(value, suffix = "") {
+  if (value === null || value === undefined) return "0";
+  return `${Number(value).toLocaleString()}${suffix}`;
+}
+
 export default function Dashboard() {
   const location = useLocation();
   const variantKey = getDashboardVariant(location.pathname);
   const variant = DASHBOARD_VARIANTS[variantKey];
+  const content = getContentForVariant(variantKey);
   const [liveSummary, setLiveSummary] = useState(null);
 
   useEffect(() => {
@@ -100,6 +126,49 @@ export default function Dashboard() {
       active = false;
     };
   }, []);
+
+  const heroMetrics = liveSummary
+    ? [
+        { label: "Scans", value: metricValue(liveSummary.impressions), icon: Search },
+        { label: "Action rate", value: metricValue(liveSummary.conversionRate, "%"), icon: LineChart },
+        { label: "Redemptions", value: metricValue(liveSummary.redemptions), icon: Sparkles },
+        {
+          label: variantKey === "civic" ? "Live events" : "Live offers / events",
+          value: `${metricValue(liveSummary.activePerks)} / ${metricValue(liveSummary.activeEvents)}`,
+          icon: Calendar,
+        },
+      ]
+    : [];
+
+  const overviewBlocks = [
+    {
+      title: "Direct answer",
+      body: "Ask one question and let the map bring the clearest current answer to the top instead of making people sort through raw tables first.",
+    },
+    {
+      title: "Proof",
+      body: "Once an answer surfaces, the dashboard should show the movement behind it: scans, visits, redemptions, saves, and where that response is coming from.",
+    },
+    {
+      title: "Sources",
+      body: "The useful part is knowing whether the action came from a building, event, venue cluster, offer, or district moment so the next move is obvious.",
+    },
+  ];
+
+  const usageSteps = [
+    {
+      title: "Start with the question",
+      body: "Open with what you need to know right now, not with filters for their own sake.",
+    },
+    {
+      title: "Let the map narrow it down",
+      body: "Use the live layer to cut the noise and focus attention on the strongest current signal.",
+    },
+    {
+      title: "Turn the answer into an action",
+      body: "Adjust the offer, placement, timing, or follow-up while the signal is still useful.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
@@ -144,29 +213,144 @@ export default function Dashboard() {
               ))}
             </div>
 
-            {liveSummary && (
+            {variant.explainerTitle ? (
+              <div className="mt-5 p-1 md:p-2">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold)]">
+                  {variant.explainerLabel}
+                </div>
+                <div className="mt-2 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.85fr)] lg:items-start">
+                  <div>
+                    <div className="text-[1.05rem] font-semibold tracking-[-0.03em] text-white">
+                      {variant.explainerTitle}
+                    </div>
+                    <div className="mt-2 max-w-2xl text-[13px] leading-6 text-white/74">
+                      {variant.explainerBody}
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {variant.explainerPoints?.map((point, index) => (
+                      <div key={point} className="flex items-start gap-3">
+                        <span className="shrink-0 pt-[2px] text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold)]">
+                          0{index + 1}
+                        </span>
+                        <span className="text-[12px] leading-6 text-white/76">{point}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {heroMetrics.length ? (
               <div className="mt-5 grid gap-3 md:grid-cols-4">
-                {[
-                  { label: "Shown today", value: Number(liveSummary.shown || 0).toLocaleString() },
-                  { label: "Saved", value: Number(liveSummary.saves || 0).toLocaleString() },
-                  { label: "Visits", value: Number(liveSummary.visits || 0).toLocaleString() },
-                  { label: "Redemptions", value: `${Number(liveSummary.redemptions || 0).toLocaleString()} -> $${(Number(liveSummary.revenueCents || 0) / 100).toLocaleString()}` },
-                ].map((metric) => (
+                {heroMetrics.map((metric) => {
+                  const Icon = metric.icon;
+                  return (
                   <div
                     key={metric.label}
                     className="rounded-[18px] border border-white/10 bg-white/8 px-4 py-3"
                   >
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-white/60">
-                      {metric.label}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="text-[10px] uppercase tracking-[0.12em] text-white/60">
+                        {metric.label}
+                      </div>
+                      <Icon className="h-3.5 w-3.5 text-white/46" />
                     </div>
-                    <div className="mt-2 text-xl font-semibold text-white">{metric.value}</div>
+                    <div className="mt-2 text-[0.98rem] font-semibold tracking-[-0.03em] text-white">{metric.value}</div>
                   </div>
-                ))}
+                );})}
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </section>
+
+      {content ? (
+        <PartnerStoryCarousel
+          eyebrow="What this view is for"
+          title={`${content.label} teams need answers they can use.`}
+          intro="This keeps the dashboard grounded in what the team is actually trying to figure out, not a generic analytics story."
+          items={content.storySlides || []}
+        />
+      ) : (
+        <section className="px-4 py-8 md:px-6 md:py-10">
+          <div className="dp-page-shell">
+            <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+              <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_32px_rgba(11,31,51,0.05)] md:p-6">
+                <div className="dp-micro-label">Overview</div>
+                <h2 className="mt-3 text-[1.6rem] font-semibold tracking-[-0.03em] text-foreground md:text-[2rem]">
+                  This dashboard should answer the question, not bury it.
+                </h2>
+                <p className="mt-3 max-w-2xl text-[14px] leading-7 text-muted-foreground">
+                  The point of the overview is to get from a live downtown question to one usable answer, then show the proof and the source behind it in the same surface.
+                </p>
+
+                <div className="mt-5 grid gap-3 md:grid-cols-3">
+                  {overviewBlocks.map((block, index) => (
+                    <div key={block.title} className="rounded-[18px] bg-[#f7f9fc] p-4">
+                      <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
+                        <Target className="h-3.5 w-3.5" />
+                        0{index + 1}
+                      </div>
+                      <div className="mt-2 text-[15px] font-semibold text-foreground">{block.title}</div>
+                      <div className="mt-2 text-[12px] leading-6 text-muted-foreground">{block.body}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_32px_rgba(11,31,51,0.05)] md:p-6">
+                <div className="dp-micro-label">Use it well</div>
+                <h2 className="mt-3 text-[1.6rem] font-semibold tracking-[-0.03em] text-foreground md:text-[2rem]">
+                  One downtown view, five partner angles.
+                </h2>
+                <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
+                  Each lens should be opened for a different kind of decision. The structure stays the same, but the job to be done changes by partner type.
+                </p>
+
+                <div className="mt-5 space-y-3">
+                  {usageSteps.map((step, index) => (
+                    <div key={step.title} className="rounded-[18px] bg-[#f7f9fc] p-4">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
+                        Step 0{index + 1}
+                      </div>
+                      <div className="mt-2 text-[15px] font-semibold text-foreground">{step.title}</div>
+                      <div className="mt-2 text-[12px] leading-6 text-muted-foreground">{step.body}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {PARTNER_TYPE_ORDER.map((key) => {
+                const item = PARTNER_TYPE_CONTENT[key];
+                const href = `/partners/dashboard/${key === "properties" ? "residential" : key}`;
+
+                return (
+                  <Link
+                    key={item.id}
+                    to={href}
+                    className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_32px_rgba(11,31,51,0.05)] transition hover:translate-y-[-1px]"
+                  >
+                    <div className="dp-micro-label">{item.eyebrow}</div>
+                    <h3 className="mt-3 text-[1.25rem] font-semibold tracking-[-0.03em] text-foreground">
+                      {item.label}
+                    </h3>
+                    <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
+                      {item.description}
+                    </p>
+                    <div className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-gold-muted)]">
+                      Open lens
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       <PartnerInsightMap
         partnerType={variant.partnerType}

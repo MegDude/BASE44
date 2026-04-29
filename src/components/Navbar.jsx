@@ -9,7 +9,7 @@ const TOP_LINKS = [
   { label: "Map", to: ROUTES.explore },
   { label: "Events", to: ROUTES.events },
   { label: "Perks Card", to: ROUTES.card },
-  { label: "Build Pack", to: ROUTES.buildPack },
+  { label: "About", to: ROUTES.about },
 ];
 
 const PARTNER_TYPE_LINKS = [
@@ -49,6 +49,7 @@ export default function Navbar() {
     if (to === ROUTES.residents) return location.pathname === ROUTES.residents || location.pathname.startsWith("/resident-app");
     if (to === ROUTES.events) return location.pathname.startsWith("/downtown-perks/events") || location.pathname === "/events";
     if (to === ROUTES.explore) return location.pathname.startsWith("/downtown-perks/explore") || ["/map", "/explore", ROUTES.residentApp].includes(location.pathname);
+    if (to === ROUTES.about) return location.pathname === ROUTES.about || location.pathname === "/downtown-perks/about";
     return location.pathname === to;
   };
 
@@ -215,12 +216,12 @@ export default function Navbar() {
                     {link.label}
                   </a>
                 ) : (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-[16px] px-3 py-2.5 text-[14px] font-medium text-[var(--dp-navy)] transition-colors hover:bg-white/80"
-                  >
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      onClick={() => setOpen(false)}
+                      className="block rounded-[16px] px-3 py-2.5 text-[14px] font-medium text-[var(--dp-navy)] transition-colors hover:bg-white/80"
+                    >
                     {link.label}
                   </Link>
                 )

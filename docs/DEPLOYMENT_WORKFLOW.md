@@ -22,6 +22,26 @@ git push
 
 If `npm run build` fails, stop. Fix the branch before pushing.
 
+## Production deploy helper
+
+For a production push from `main`, use:
+
+```bash
+./scripts/production-deploy.sh
+```
+
+What it does:
+
+1. installs dependencies
+2. runs lint
+3. runs a production build
+4. verifies you are on `main`
+5. stages and commits local changes if needed
+6. pushes `main`
+7. runs `vercel --prod --confirm`
+
+It does not auto-switch branches. If you are not already on `main`, it exits.
+
 ## Guardrails in this repo
 
 1. GitHub Actions now validates pushes on:

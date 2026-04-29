@@ -1,19 +1,19 @@
 export const APPROVED_HOME_COPY = {
   hero: {
-    eyebrow: "Downtown Austin, live now",
+    eyebrow: "Live Downtown Map",
     title: "Where downtown meets you.",
-    lead: "Built for people who actually live here and the places that make it feel like home.",
+    lead: "Start with one decision. The map does the rest.",
     body:
-      "From coffee to dinner, live events, and everything in between, plus the perks you did not know you had. One place. No extra apps. No login wall. No directory guessing what matters.",
+      "The friction of downtown living is not a lack of options. It is how scattered everything feels. Downtown Perks brings places, plans, and perks together so the next move is easier to make.",
     prompts: [
       "Where do you want to go?",
       "What do you want to do?",
       "Who do you want to meet?",
     ],
-    primaryCta: "Explore Downtown",
-    secondaryCta: "Get Your Card",
-    tertiaryCta: "Become a Partner",
-    searchPlaceholder: "Search downtown Austin...",
+    primaryCta: "Open Map",
+    secondaryCta: "Get the Perks Card",
+    tertiaryCta: "",
+    searchPlaceholder: "Search places, events, perks, or what is nearby",
   },
   why: {
     title: "Downtown, in one place",
@@ -33,38 +33,37 @@ export const APPROVED_HOME_COPY = {
       "No switching between apps. No piecing things together. Just what matters, in one place.",
   },
   whatYouCanDo: {
-    title: "What you can do",
+    title: "What you can do here",
     intro:
-      "Everything works together, so you spend less time searching and more time actually going.",
+      "Everything works together, so you spend less time searching and more time showing up.",
     listLabel: "Find what you need:",
     items: [
       "Restaurants, bars, coffee shops, and services nearby",
       "Events happening tonight, ready to RSVP",
       "Local perks from places you'd go anyway",
       "Places worth coming back to",
-      "People around you, when you want to be social",
     ],
     ctas: ["Explore Downtown", "Get a Perks Card"],
   },
   howItWorks: {
-    title: "How it works",
+    title: "Open it. Pick something. Go.",
     steps: [
       {
-        title: "Tap. Learn. Decide.",
-        body: "See what it is, why it matters, and how close you are.",
+        title: "Open the map.",
+        body: "Start with one live downtown layer instead of opening five different apps.",
       },
       {
-        title: "Save it or go now",
-        body: "Plan ahead - or decide in the moment.",
+        title: "Tap something that looks good.",
+        body: "See what it is, why it matters, and how close it is before you decide.",
       },
       {
-        title: "Flash your card. Get the perk.",
-        body: "They scan. You save. Done.",
+        title: "Walk there. Show your card if there is a perk.",
+        body: "No extra setup. No overthinking. Just go.",
       },
     ],
-    close: "That's how friction dies.",
+    close: "No extra steps. No overthinking. Just go.",
     note:
-      "No extra steps. No guesswork. Just the shortest distance between \"maybe\" and \"I'm going.\"",
+      "Use the map first. Add the card when saves, RSVP, member perks, or redemption actually matter.",
   },
   explore: {
     title: "Downtown live map",
@@ -77,13 +76,13 @@ export const APPROVED_HOME_COPY = {
   partnerSlides: [
       {
         id: "properties",
-        label: "Properties",
+        label: "Residential",
         headline:
-          "Be the place people choose next.",
+          "Make your address more useful.",
         body: [
-          "You are not selling square footage. You are selling everything around it.",
-          "Give people a way to see the coffee shop, dinner spot, late-night option, and neighborhood value around your address.",
+          "Connect residents to nearby places, events, and perks that make downtown easier to use.",
           "Use the live map, QR entry, and reporting layer to prove what residents actually use.",
+          "This works as a resident amenity, a leasing signal, and a neighborhood layer at the same time.",
         ],
       includes: [
         "QR access across lobby, leasing, and welcome flow",
@@ -97,13 +96,13 @@ export const APPROVED_HOME_COPY = {
       },
     {
       id: "hotels",
-      label: "Hotels",
+      label: "Hospitality",
         headline:
           "Extend the stay beyond the lobby.",
         body: [
-          "Guests do not want recommendations. They want orientation.",
+          "Give guests one live map for dining, events, wellness, and nightlife in real time.",
           "One scan gives them coffee, dinner, tonight, and what is nearby without front-desk friction.",
-          "The arrival feels complete because the city around the hotel becomes easier to use.",
+          "The city around the hotel becomes easier to use the moment they arrive.",
         ],
       includes: [
         "QR access in rooms, lobby, and guest flow",
@@ -119,11 +118,11 @@ export const APPROVED_HOME_COPY = {
       id: "venues",
       label: "Venues",
         headline:
-          "Show up when the moment counts.",
+          "Show up when intent is real.",
         body: [
-          "People do not remember ads. They remember what is nearby when they are hungry, heading out, or making a plan.",
-          "This is not reach. It is timing.",
+          "Appear in the map when people nearby are already deciding where to go next.",
           "Track scans, saves, visits, and redemptions instead of vague awareness.",
+          "This is timing, proximity, and a reason to go now.",
         ],
       includes: [
         "Map placement based on proximity",
@@ -139,9 +138,9 @@ export const APPROVED_HOME_COPY = {
     {
       id: "brands",
       label: "Brands",
-        headline: "Buy the moment, not the impression.",
+        headline: "Buy context, not broad reach.",
         body: [
-          "The best advertising does not feel like advertising. It feels useful and well-timed.",
+          "Run campaigns in the right corridor, at the right time, with measurable action afterward.",
           "Appear inside real downtown decisions instead of interrupting them.",
           "Measure source scans, visits, and response by district.",
         ],
@@ -158,9 +157,9 @@ export const APPROVED_HOME_COPY = {
     {
       id: "civic",
       label: "Civic",
-        headline: "Turn attendance into participation.",
+        headline: "Make participation visible.",
         body: [
-          "Cities work better when people know what is happening nearby.",
+          "Surface district events and initiatives where people are already looking and deciding.",
           "One place and one map makes local programming easier to find and easier to join.",
           "Measure attendance signals, RSVPs, visits, and repeat engagement.",
         ],
@@ -176,30 +175,36 @@ export const APPROVED_HOME_COPY = {
       },
   ],
   rollout: {
-    title: "A smarter way to activate downtown",
+    title: "Start Here",
     steps: [
       {
         id: "launch",
-        title: "Launch",
+        title: "Find Your Place",
         body:
-          "Set up QR entry points and map visibility so people can find you immediately.",
+          "How do you want to show up? Tell us if you are a residential building, a local venue, or a brand. We’ll set up your welcome spots (QR touchpoints) and flip the switch to make you visible to the whole neighborhood on the live map.",
       },
       {
         id: "measure",
-        title: "Measure",
+        title: "Watch the Movement",
         body:
-          "Track scans, saves, RSVPs, and redemptions - real behavior, not assumptions.",
+          "See what’s actually happening. Once you’re live, you can track how the neighborhood interacts with you. We show you exactly how many people are looking at your spot on the map, saving your offers for later, and walking through your front door.",
       },
       {
-        id: "decide",
-        title: "Decide",
+        id: "adjust",
+        title: "Make it Perfect",
         body:
-          "Keep it, scale it, or adjust based on what actually works.",
+          "Tune into the neighborhood pulse. Now that we have real data, we’ll help you adjust. We can move your digital touchpoints to better locations or change the timing of your perks to match when your neighbors are actually walking by.",
+      },
+      {
+        id: "scale",
+        title: "Anchor the District",
+        body:
+          "Become a local landmark. Once we know what works, we make it a permanent fixture. You’ll transition from a pilot to a steady, reliable part of the downtown ecosystem that residents rely on every single day.",
       },
     ],
-    closeTitle: "Spend less. Do more.",
-    closeBody: "Start small. Prove it fast. Keep it if it works.",
-    note: "Start with a 90-day pilot, then keep only the level that proves useful.",
+    closeTitle: "Pick the role, understand the rollout, and see what is included.",
+    closeBody: "Start with the partner model that fits, launch with a pilot, and scale what works with real measurement behind it.",
+    note: "Start with a pilot, go live quickly, measure what happens, then decide whether to expand the footprint.",
   },
   pricing: {
     title: "Pricing at a glance",

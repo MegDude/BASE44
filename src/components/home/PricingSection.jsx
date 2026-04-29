@@ -45,6 +45,25 @@ const partnerCards = APPROVED_HOME_COPY.pricing.cards.map((card) => ({
             : "View Civic",
 }));
 
+const INCLUDED_ITEMS = [
+  {
+    title: "Map visibility",
+    body: "Appear in the live downtown layer where decisions are forming.",
+  },
+  {
+    title: "Source access",
+    body: "QR or source-node entry points tied back to actual partner origins.",
+  },
+  {
+    title: "Analytics",
+    body: "Track visits, saves, RSVPs, redemptions, and return behavior.",
+  },
+  {
+    title: "Partner workspace",
+    body: "Manage offers, events, profile, and visibility in one control surface.",
+  },
+];
+
 export default function PricingSection() {
   const { openFlow } = useCTAFlow();
 
@@ -135,11 +154,49 @@ export default function PricingSection() {
               }}
             />
           </div>
+
+          <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 md:p-6">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Rollout path
+              </div>
+              <div className="mt-5 grid gap-4">
+                {APPROVED_HOME_COPY.rollout.steps.map((step, index) => (
+                  <div
+                    key={step.id}
+                    className="grid gap-3 border-t border-[rgba(11,31,51,0.08)] pt-4 md:grid-cols-[auto_1fr]"
+                  >
+                    <div className="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-[var(--dp-navy)] px-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <div className="text-[15px] font-semibold text-foreground">{step.title}</div>
+                      <div className="mt-1 text-[13px] leading-6 text-muted-foreground">{step.body}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 md:p-6">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Included
+              </div>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {INCLUDED_ITEMS.map((item) => (
+                  <div key={item.title} className="border-t border-[rgba(11,31,51,0.08)] pt-4">
+                    <div className="text-[14px] font-semibold text-foreground">{item.title}</div>
+                    <div className="mt-2 text-[13px] leading-6 text-muted-foreground">{item.body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="mt-2 flex flex-wrap items-center gap-3 border-t border-[rgba(11,31,51,0.08)] pt-5">
           <Link to="/partners" className="dp-cta-primary">
-            {APPROVED_HOME_COPY.pricing.cta}
+            Explore partner types
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
           <Link
@@ -155,7 +212,7 @@ export default function PricingSection() {
             }}
             className="dp-cta-secondary"
           >
-            Start the Pilot
+            Start a pilot
           </Link>
           <div className="text-[12px] leading-5 text-muted-foreground">
             Partner pricing is finalized after fit review. Resident direct access is $25 per year until a building joins, then that fee is refunded.

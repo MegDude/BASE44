@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import UnifiedResultsPanel from "@/components/map/unified/UnifiedResultsPanel";
@@ -7,20 +8,29 @@ import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 import { useMapStateStore } from "@/store/mapStateStore";
 import { sharedMapItemToMapEntity } from "@/lib/mappers/sharedMapMappers";
+import { createExploreLink } from "@/lib/routeHelpers";
 
 const DEFAULT_CENTER = [30.267, -97.743];
+const HOME_ALLOWED_DISTRICTS = new Set(["rainey", "congress", "seaholm", "red-river", "2nd-street", "downtown"]);
+const HOME_ALLOWED_ZIPS = new Set(["78701", "78702"]);
 
 const MODE_CONFIG = {
   home: {
     title: "Where downtown meets you.",
-    subtitle: "Everything nearby. In one map.",
-    prompts: ["Coffee now", "Dinner tonight", "Events tonight"],
+    subtitle: "Start with one decision. The map does the rest.",
+    prompts: ["Where do you want to go?", "Places to go", "Happening tonight", "Want to live here"],
     chips: [
       { id: "all", label: "Best nearby now" },
       { id: "venue", label: "Places to go" },
       { id: "perk", label: "Perks nearby" },
       { id: "event", label: "Happening tonight" },
       { id: "building", label: "Want to live here" },
+    ],
+    quickLinks: [
+      { label: "Places to go", href: createExploreLink({ intent: "places" }) },
+      { label: "Perks nearby", href: createExploreLink({ type: "perk", radius: 5 }) },
+      { label: "Happening tonight", href: createExploreLink({ type: "event", time: "now" }) },
+      { label: "Want to live here", href: createExploreLink({ type: "property", intent: "residential" }) },
     ],
   },
   resident: {
@@ -132,6 +142,22 @@ function matchesChip(item, chip) {
   return item?.type === chip || item?.entity_type === chip;
 }
 
+function extractZip(value = "") {
+  const match = String(value || "").match(/\b(787\d{2})\b/);
+  return match ? match[1] : null;
+}
+
+function matchesHomeCoverage(item) {
+  const district = String(item?.district || "").trim().toLowerCase();
+  const address = String(item?.address || item?.metadata?.address || "");
+  const zip = extractZip(address);
+
+  if (district && !HOME_ALLOWED_DISTRICTS.has(district)) return false;
+  if (zip && !HOME_ALLOWED_ZIPS.has(zip)) return false;
+
+  return Boolean(district || zip);
+}
+
 export default function MapShell({
   mode = "resident",
   compact = false,
@@ -174,6 +200,7 @@ export default function MapShell({
   const filteredItems = useMemo(() => {
     const normalizedQuery = String(query || "").trim().toLowerCase();
     return dedupeItems(sourceItems)
+      .filter((item) => (mode === "home" ? matchesHomeCoverage(item) : true))
       .filter((item) => matchesChip(item, activeChip))
       .filter((item) => {
         if (!normalizedQuery) return true;
@@ -236,7 +263,7 @@ export default function MapShell({
         <div className="mb-5 max-w-3xl">
           <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
             <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold-deep,#A8733C)]" />
-            Live downtown map
+            Downtown Austin
           </div>
           <h1 className="mt-3 font-heading text-[clamp(2.6rem,5vw,4.75rem)] font-semibold tracking-[-0.05em] text-[var(--dp-navy,#0B1F33)]">
             {config.title}
@@ -267,7 +294,7 @@ export default function MapShell({
                     <input
                       value={queryInput}
                       onChange={(event) => setQueryInput(event.target.value)}
-                      placeholder="Ask what you want nearby"
+                      placeholder="Search places, events, perks, or what is nearby"
                       className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/42"
                     />
                   </div>
@@ -278,6 +305,20 @@ export default function MapShell({
                     Ask
                   </button>
                 </form>
+
+                {mode === "home" && config.quickLinks?.length ? (
+                  <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                    {config.quickLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        to={link.href}
+                        className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-[var(--dp-navy)]"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
 
                 <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
                   {config.prompts.map((prompt) => (
@@ -317,7 +358,7 @@ export default function MapShell({
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/50">
-                      Agent results
+                      Nearby results
                     </div>
                     <div className="mt-1 text-[12px] text-muted-foreground">
                       {config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby"} · {filteredItems.length} Result{filteredItems.length === 1 ? "" : "s"}
@@ -359,7 +400,7 @@ export default function MapShell({
                     </div>
                   ) : (
                     <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[#f7f9fc] p-4 text-[12px] text-muted-foreground">
-                      Search or change the map state to get the best nearby answer.
+                      Search again to see more nearby.
                     </div>
                   )}
                 </div>
@@ -369,7 +410,7 @@ export default function MapShell({
             <div className="order-1 relative min-h-[460px] bg-[#eef2f7] lg:order-2 lg:min-h-[720px]">
               <UnifiedMapShell
                 items={filteredItems}
-                enableClustering={false}
+                enableClustering
                 selectedId={effectiveSelected?.id}
                 markerIcon={(item, isSelected) =>
                   markerIcon

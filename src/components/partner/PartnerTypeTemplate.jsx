@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import PartnerHeaderStage from "@/components/partner/PartnerHeaderStage";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import PartnerCTASection from "@/components/partner/PartnerCTASection";
 import WorkflowVisualizer from "@/components/partner/WorkflowVisualizer";
+import PartnerStoryCarousel from "@/components/partner/PartnerStoryCarousel";
 import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
 import PricingGlanceSection from "@/components/shared/PricingGlanceSection";
-import { getPartnerDashboardRoute } from "@/lib/routes";
-import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
+import { getPartnerFlowForType } from "@/lib/cta/partnerFlowHelpers";
 import {
   FAQ_RESIDENTIAL,
   FAQ_BRANDS,
@@ -31,16 +31,16 @@ const FAQ_BY_PARTNER_ID = {
 
 export default function PartnerTypeTemplate({ content, extraSection = null }) {
   const Icon = content.icon;
-  const { openFlow } = useCTAFlow();
-  const dashboardRoute = getPartnerDashboardRoute(content.id);
-
-  const flowTypeByMapMode = {
-    property: "residential_onboarding",
-    hospitality: "hospitality_onboarding",
-    venue: "venue_onboarding",
-    brand: "brand_campaign",
-    civic: "civic_onboarding",
-  };
+  const pageFlow = getPartnerFlowForType(content.id, {
+    source: `partner_page_${content.id}`,
+    sourceComponent: "PartnerTypeTemplate",
+    successRoute: content.route,
+    pageContext: {
+      objective: content.description,
+      organization: content.label,
+      district: "Downtown Austin",
+    },
+  });
 
   return (
     <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
@@ -57,34 +57,8 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
           <PartnerHeaderStage
             eyebrow={content.eyebrow}
             title={content.headline}
-            description={content.description}
+            description={content.audienceSummary || content.description}
             metrics={content.metrics.slice(0, 3)}
-            actions={
-              <>
-                <Link to={dashboardRoute} className="inline-flex min-h-[48px] items-center gap-2 rounded-full bg-[var(--dp-navy)] px-6 text-[13px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_8px_20px_rgba(15,23,42,0.14)] transition-colors hover:bg-[var(--dp-navy-soft)]">
-                  Open dashboard
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <button
-                  type="button"
-                  onClick={() =>
-                    openFlow({
-                      type: flowTypeByMapMode[content.mapMode] || "start_here",
-                      source: `partner_type_template_${content.id}`,
-                      sourceComponent: "PartnerTypeTemplate",
-                      partnerType: content.id,
-                      pageContext: {
-                        objective: content.description,
-                      },
-                      successRoute: content.route,
-                    })
-                  }
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-[var(--dp-border)] bg-transparent px-6 text-[13px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-navy)] transition-colors hover:bg-white/70"
-                >
-                  Start pilot
-                </button>
-              </>
-            }
           />
 
           <motion.section
@@ -102,7 +76,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
                   <Icon className="h-6 w-6 text-[var(--dp-gold)]" strokeWidth={1.75} />
                 </div>
                 <p className="mt-4 max-w-sm text-[14px] leading-7 text-white/72">
-                  One live operating surface for visibility, action, and proof instead of a page full of separate widgets.
+                  {content.description}
                 </p>
               </div>
 
@@ -128,6 +102,13 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
           </motion.section>
         </div>
       </section>
+
+      <PartnerStoryCarousel
+        eyebrow="Partner detail"
+        title={`How the ${content.shortLabel.toLowerCase()} works in real life.`}
+        intro="This keeps the page grounded in everyday use. The goal is to make the fit obvious without turning the page into a pitch deck or a reporting wall."
+        items={content.storySlides || []}
+      />
 
       <PartnerInsightMap
         partnerType={content.mapMode}
@@ -179,7 +160,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
                 <div className="border-t border-[rgba(11,31,51,0.08)] pt-4 md:border-l md:border-t-0 md:pl-5 md:pt-0">
                   <div className="dp-micro-label text-[rgba(11,31,51,0.48)]">Why it matters</div>
                   <p className="mt-3 text-[13px] leading-6 text-[rgba(11,31,51,0.72)]">
-                    This module stays inside the same operating surface, so the partner team is not bouncing between tools just to understand what to do next.
+                    {content.moduleReason || "This module stays inside the same operating surface, so the partner team is not bouncing between tools just to understand what to do next."}
                   </p>
                 </div>
               </div>
@@ -274,14 +255,13 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
         description="Use one shared system for nearby discovery, clear visibility, and measurable results."
         primaryCTA="Start pilot"
         primaryFlow={{
-          type: flowTypeByMapMode[content.mapMode] || "start_here",
+          ...pageFlow,
           source: `partner_cta_section_${content.id}`,
           sourceComponent: "PartnerCTASection",
-          partnerType: content.id,
           pageContext: {
+            ...(pageFlow.pageContext || {}),
             objective: content.description,
           },
-          successRoute: content.route,
         }}
         secondaryLink={{ label: "Back to partner landing", href: "/partners" }}
       />
