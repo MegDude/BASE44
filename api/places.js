@@ -1,17 +1,11 @@
-<<<<<<< ours
 import { searchArchiveCatalog } from "./_utils/archiveCatalog.js";
-const GOOGLE_OK_STATUSES = new Set(["OK", "ZERO_RESULTS"]);
 
-export default async function handler(req, res) {
-  if (req.method !== "GET") {
-=======
 const GOOGLE_OK_STATUSES = new Set(["OK", "ZERO_RESULTS"]);
 const SEARCH_AREA = "downtown Austin";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
->>>>>>> theirs
     return res.status(405).json({ error: "Method not allowed" });
   }
 
@@ -22,7 +16,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing query" });
   }
 
-<<<<<<< ours
   try {
     const archiveResults = await searchArchiveCatalog(trimmedQuery, {
       types: ["location"],
@@ -52,16 +45,7 @@ export default async function handler(req, res) {
     }
 
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
-      `${trimmedQuery} downtown Austin`
-=======
-  if (!process.env.GOOGLE_MAPS_API_KEY) {
-    return res.status(500).json({ error: "Missing GOOGLE_MAPS_API_KEY" });
-  }
-
-  try {
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
       `${trimmedQuery} ${SEARCH_AREA}`
->>>>>>> theirs
     )}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
 
     const googleRes = await fetch(url);
@@ -91,11 +75,7 @@ export default async function handler(req, res) {
       }))
       .filter((place) => Number.isFinite(place.lat) && Number.isFinite(place.lng));
 
-<<<<<<< ours
     return res.status(200).json({ source: "google", results });
-=======
-    return res.status(200).json({ results });
->>>>>>> theirs
   } catch (error) {
     console.error("places api failed", error);
     return res.status(500).json({ error: "Places fetch failed", results: [] });
