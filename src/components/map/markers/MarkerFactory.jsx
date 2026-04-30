@@ -7,11 +7,14 @@ import { isWithinRadius } from "@/styles/pinTokens";
 const LEGENDS_LOGO =
   "https://media.base44.com/images/public/69d94e4f5b7886cf42a2cf62/59a2b6b9d_legends-logocopy.png";
 
+function normalizeText(value = "") {
+  return String(value || "").trim().toLowerCase();
+}
+
 function getClusterVisual(entity) {
-  const family = String(entity?.category || entity?.metadata?.category || "venue").toLowerCase();
+  const family = normalizeText(entity?.category || entity?.metadata?.category || "venue");
   if (family === "property") {
     return {
-      label: "Homes nearby",
       shell: "#0B1F33",
       accent: "#C6A85A",
       icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg>`,
@@ -19,7 +22,6 @@ function getClusterVisual(entity) {
   }
   if (family === "event") {
     return {
-      label: "Events nearby",
       shell: "#0B1F33",
       accent: "#C6A85A",
       icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>`,
@@ -27,22 +29,12 @@ function getClusterVisual(entity) {
   }
   if (family === "partner") {
     return {
-      label: "Perks nearby",
       shell: "#C6A85A",
       accent: "#0B1F33",
       icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B1F33" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12 12 20 4 12l8-8 8 8Z"/></svg>`,
     };
   }
-  if (family === "civic") {
-    return {
-      label: "Places nearby",
-      shell: "#F7F9FC",
-      accent: "#0B1F33",
-      icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B1F33" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V10l6-4 6 4v10"/><path d="M9 20v-5h6v5"/></svg>`,
-    };
-  }
   return {
-    label: "Places nearby",
     shell: "#F7F9FC",
     accent: "#0B1F33",
     icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B1F33" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.2-4.2 8.6-6.8 10.8a1.7 1.7 0 0 1-2.4 0C8.2 18.6 4 14.2 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>`,
@@ -51,25 +43,17 @@ function getClusterVisual(entity) {
 
 function createClusterMarker(entity, options = {}) {
   const count = Number(entity?.metadata?.clusterCount || entity?.clusterCount || 0);
-  const district = String(entity?.district || entity?.metadata?.district || "Downtown");
   const selected = Boolean(options?.isSelected);
   const visual = getClusterVisual(entity);
   const shell = selected ? "#0B1F33" : visual.shell;
   const textColor = selected ? "#fff" : visual.accent;
-  const iconMarkup =
-    selected && visual.accent !== "#ffffff"
-      ? visual.icon.replace(/stroke="#0B1F33"/g, 'stroke="white"')
-      : visual.icon;
+  const iconMarkup = selected ? visual.icon.replace(/stroke="#0B1F33"/g, 'stroke="white"') : visual.icon;
 
   return L.divIcon({
     className: "custom-marker",
-    html: `<div style="display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:999px;background:${shell};border:1.5px solid rgba(11,31,51,0.12);box-shadow:0 12px 28px rgba(11,31,51,0.18);color:${textColor};font-family:Inter,system-ui,sans-serif;transform:translate(-50%, -50%);white-space:nowrap;">
-      <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:${selected ? "rgba(255,255,255,0.14)" : "rgba(11,31,51,0.06)"};flex-shrink:0;">${iconMarkup}
-        <span style="position:absolute;right:-2px;bottom:-2px;display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:${selected ? "#C6A85A" : "#0B1F33"};color:white;font-size:9px;font-weight:800;line-height:1;">${count}</span>
-      </span>
-      <span style="display:grid;gap:1px;">
-        <span style="font-size:11px;font-weight:700;line-height:1.1">${district}</span>
-        <span style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.72;line-height:1.1">${visual.label}</span>
+    html: `<div aria-label="${count} grouped places" style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:${shell};border:1.5px solid rgba(11,31,51,0.12);box-shadow:0 10px 24px rgba(11,31,51,0.16);color:${textColor};font-family:Inter,system-ui,sans-serif;transform:translate(-50%, -50%);">
+      <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:${selected ? "rgba(255,255,255,0.14)" : "rgba(11,31,51,0.06)"};">${iconMarkup}
+        <span style="position:absolute;right:-4px;bottom:-4px;display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:${selected ? "#C6A85A" : "#0B1F33"};color:white;font-size:9px;font-weight:800;line-height:1;">${count}</span>
       </span>
     </div>`,
     iconSize: null,
@@ -217,8 +201,7 @@ export function createMarker(entity, options = {}) {
 
   const shouldShowPill =
     (!options?.suppressPill && options?.showPill) ||
-    (!options?.suppressPill &&
-      ["hotel", "brand", "civic"].includes(entity?.type));
+    (!options?.suppressPill && ["hotel", "brand", "civic"].includes(entity?.type));
 
   if (shouldShowPill && !options?.isSelected) return createPillMarker(entity);
   if (options?.isSelected) return createSelectedMarker(entity, options);
