@@ -11,27 +11,9 @@ import { createExploreLink } from "@/lib/routeHelpers";
 
 function SparkleIcon({ className = "" }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={className}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 3.5l1.7 4.5 4.6 1.7-4.6 1.7L12 16l-1.7-4.6-4.6-1.7 4.6-1.7L12 3.5Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M18.5 15.5l.8 2.1 2.2.9-2.2.8-.8 2.2-.9-2.2-2.1-.8 2.1-.9.9-2.1ZM5.5 14.5l.6 1.5 1.4.5-1.4.6-.6 1.4-.5-1.4-1.5-.6 1.5-.5.5-1.5Z"
-        stroke="currentColor"
-        strokeWidth="1.45"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 3.5l1.7 4.5 4.6 1.7-4.6 1.7L12 16l-1.7-4.6-4.6-1.7 4.6-1.7L12 3.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M18.5 15.5l.8 2.1 2.2.9-2.2.8-.8 2.2-.9-2.2-2.1-.8 2.1-.9.9-2.1ZM5.5 14.5l.6 1.5 1.4.5-1.4.6-.6 1.4-.5-1.4-1.5-.6 1.5-.5.5-1.5Z" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -211,16 +193,11 @@ export default function MapShell({
   const { items: feedItems } = useSharedMapFeed({
     query,
     activeCategory:
-      activeChip === "venue" || activeChip === "event" || activeChip === "perk"
-        ? activeChip
-        : "all",
+      activeChip === "venue" || activeChip === "event" || activeChip === "perk" ? activeChip : "all",
     limit: 120,
   });
 
-  const normalizedExplicitItems = useMemo(
-    () => explicitItems.map(sharedMapItemToMapEntity).filter(Boolean),
-    [explicitItems]
-  );
+  const normalizedExplicitItems = useMemo(() => explicitItems.map(sharedMapItemToMapEntity).filter(Boolean), [explicitItems]);
   const sourceItems = normalizedExplicitItems.length > 0 ? normalizedExplicitItems : feedItems;
 
   const filteredItems = useMemo(() => {
@@ -239,40 +216,22 @@ export default function MapShell({
           item?.district,
           ...(item?.metadata?.searchKeywords || []),
           ...(item?.metadata?.tags || []),
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
+        ].filter(Boolean).join(" ").toLowerCase();
         return haystack.includes(normalizedQuery);
       })
       .sort((a, b) => scoreItem(b) - scoreItem(a));
   }, [activeChip, mode, query, sourceItems]);
 
   useEffect(() => {
-    if (selected) {
-      selectEntity(selected);
-      return;
-    }
-
-    if (filteredItems.length === 0) {
-      if (selectedEntity || drawerState !== "closed") {
-        selectEntity(null);
-      }
-      return;
-    }
-
-    const hasMatchingSelection =
-      selectedEntity && filteredItems.some((item) => item.id === selectedEntity.id);
-
-    if (!hasMatchingSelection && (selectedEntity || drawerState !== "closed")) {
-      selectEntity(null);
-    }
-  }, [drawerState, filteredItems, mode, selectEntity, selected, selectedEntity]);
+    selectEntity(null);
+    setDrawerState("closed");
+  }, [mode, selectEntity, setDrawerState]);
 
   useEffect(() => {
     if (!selected) return;
     selectEntity(selected);
-  }, [selectEntity, selected]);
+    setDrawerState("preview");
+  }, [selectEntity, selected, setDrawerState]);
 
   useEffect(() => {
     setMapCenter(DEFAULT_CENTER);
@@ -283,21 +242,15 @@ export default function MapShell({
   const shouldShowDrawer = Boolean(effectiveSelected && drawerState !== "closed");
 
   return (
-    <section
-      className={`pearl-page relative overflow-hidden ${compact ? "min-h-[720px]" : "min-h-screen"} ${className}`}
-    >
+    <section className={`pearl-page relative overflow-hidden ${compact ? "min-h-[720px]" : "min-h-screen"} ${className}`}>
       <div className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-6 pt-20 md:px-6">
         <div className="mb-6 max-w-3xl">
           <div className="dp-page-kicker inline-flex items-center gap-2">
             <SparkleIcon className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
             Downtown Austin
           </div>
-          <h1 className="dp-display-hero mt-3 text-[clamp(2.6rem,5vw,4.75rem)]">
-            {config.title}
-          </h1>
-          <p className="dp-page-intro mt-4 max-w-2xl">
-            {config.subtitle}
-          </p>
+          <h1 className="dp-display-hero mt-3 text-[clamp(2.6rem,5vw,4.75rem)]">{config.title}</h1>
+          <p className="dp-page-intro mt-4 max-w-2xl">{config.subtitle}</p>
         </div>
 
         <div className="pearl-surface overflow-hidden rounded-[28px]">
@@ -313,6 +266,8 @@ export default function MapShell({
                   onSubmit={(event) => {
                     event.preventDefault();
                     setQuery(queryInput.trim());
+                    selectEntity(null);
+                    setDrawerState("closed");
                   }}
                   className="mt-4 flex gap-2"
                 >
@@ -325,10 +280,7 @@ export default function MapShell({
                       className="flex-1 bg-transparent text-sm text-[var(--dp-navy)] outline-none placeholder:text-[rgba(20,32,51,0.42)]"
                     />
                   </div>
-                  <button
-                    type="submit"
-                    className="dp-cta-primary h-11 min-h-0 px-4 text-sm normal-case tracking-normal"
-                  >
+                  <button type="submit" className="dp-cta-primary h-11 min-h-0 px-4 text-sm normal-case tracking-normal">
                     Ask
                   </button>
                 </form>
@@ -336,11 +288,7 @@ export default function MapShell({
                 {mode === "home" && config.quickLinks?.length ? (
                   <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
                     {config.quickLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        to={link.href}
-                        className="dp-chip whitespace-nowrap text-[11px] uppercase tracking-[0.12em]"
-                      >
+                      <Link key={link.href} to={link.href} className="dp-chip whitespace-nowrap text-[11px] uppercase tracking-[0.12em]">
                         {link.label}
                       </Link>
                     ))}
@@ -355,6 +303,8 @@ export default function MapShell({
                       onClick={() => {
                         setQueryInput(prompt);
                         setQuery(prompt);
+                        selectEntity(null);
+                        setDrawerState("closed");
                       }}
                       className="dp-chip whitespace-nowrap text-[11px]"
                     >
@@ -368,7 +318,11 @@ export default function MapShell({
                     <button
                       key={chip.id}
                       type="button"
-                      onClick={() => setActiveChip(chip.id)}
+                      onClick={() => {
+                        setActiveChip(chip.id);
+                        selectEntity(null);
+                        setDrawerState("closed");
+                      }}
                       className={`dp-chip whitespace-nowrap text-[12px] ${activeChip === chip.id ? "dp-chip-active" : ""}`}
                     >
                       {chip.label}
@@ -385,11 +339,7 @@ export default function MapShell({
                       {config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby"} · {filteredItems.length} Result{filteredItems.length === 1 ? "" : "s"}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setResultsExpanded((current) => !current)}
-                    className="dp-cta-secondary h-9 min-h-0 px-3 text-[11px] normal-case tracking-normal"
-                  >
+                  <button type="button" onClick={() => setResultsExpanded((current) => !current)} className="dp-cta-secondary h-9 min-h-0 px-3 text-[11px] normal-case tracking-normal">
                     {resultsExpanded ? "Hide results" : "Show results"}
                   </button>
                 </div>
@@ -409,19 +359,9 @@ export default function MapShell({
                 </div>
               ) : (
                 <div className="px-4 pb-4 md:px-5">
-                  {effectiveSelected ? (
-                    <div className="pearl-surface rounded-[18px] p-4">
-                      <div className="dp-micro-label text-[var(--dp-gold-muted)]">Top result</div>
-                      <div className="mt-2 text-[15px] font-semibold text-[var(--dp-navy)]">{effectiveSelected.name}</div>
-                      <div className="mt-1 text-[12px] leading-5 text-[rgba(20,32,51,0.64)]">
-                        {effectiveSelected.address || effectiveSelected.description}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[rgba(255,255,255,0.48)] p-4 text-[12px] text-[rgba(20,32,51,0.62)]">
-                      Search again to see more nearby.
-                    </div>
-                  )}
+                  <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[rgba(255,255,255,0.48)] p-4 text-[12px] text-[rgba(20,32,51,0.62)]">
+                    Select a result or tap a pin to see details.
+                  </div>
                 </div>
               )}
             </div>
@@ -430,16 +370,13 @@ export default function MapShell({
               <UnifiedMapShell
                 items={filteredItems}
                 enableClustering
-                selectedId={effectiveSelected?.id}
+                selectedId={shouldShowDrawer ? effectiveSelected?.id : undefined}
                 markerIcon={(item, isSelected) =>
                   markerIcon
                     ? markerIcon(item, isSelected)
                     : createMarker(item, {
                         isSelected,
-                        variant:
-                          item?.metadata?.residentResidential && (item.type === "building" || item.type === "moment")
-                            ? "property-showcase"
-                            : undefined,
+                        variant: item?.metadata?.residentResidential && (item.type === "building" || item.type === "moment") ? "property-showcase" : undefined,
                       })
                 }
                 onMarkerSelect={(item) => {
@@ -453,9 +390,7 @@ export default function MapShell({
                 onMapZoomChange={setMapZoom}
                 className="h-full w-full"
               />
-              {shouldShowDrawer ? (
-                <UnifiedDrawer selected={effectiveSelected} desktopMode="docked" desktopClassName="right-4 top-4 bottom-4" />
-              ) : null}
+              {shouldShowDrawer ? <UnifiedDrawer selected={effectiveSelected} desktopMode="docked" desktopClassName="right-4 top-4 bottom-4" /> : null}
             </div>
           </div>
         </div>
