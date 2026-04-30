@@ -1,0 +1,156 @@
+{
+  "search": {
+    "mode": "for rent",
+    "totalVisibleSearchResults": 75,
+    "visibleExtractedListings": 4,
+    "mapCenterApprox": {
+      "lat": 30.268698412292952,
+      "lng": -97.74815711076583
+    },
+    "zoom": 14,
+    "filters": {
+      "price": "Any price",
+      "beds": "All beds",
+      "baths": "All baths",
+      "propertyTypes": "All property types"
+    },
+    "communityFeatures": [
+      "Concierge",
+      "Game Room",
+      "Property Manager On-Site",
+      "Rooftop Lounge",
+      "Suburban",
+      "Smart Car Charging",
+      "Planned Social Activities",
+      "Package Service",
+      "Maintenance On-Site",
+      "Google Fiber",
+      "Creative Office Space",
+      "Dog Park",
+      "Clubhouse",
+      "Car Share Available"
+    ]
+  },
+  "listings": [
+    {
+      "mls": "9378249",
+      "building": "48 East Avenue / Natiivo Austin",
+      "unit": "2509",
+      "address": "48 East Ave #2509, Austin, TX 78701",
+      "status": "Active",
+      "price": 3800,
+      "beds": 2,
+      "baths": 2,
+      "sqft": 982,
+      "district": "Rainey / East Downtown",
+      "topline": [
+        "25th-floor residence",
+        "Skyline + Hill Country views",
+        "Floor-to-ceiling windows"
+      ],
+      "buildingAmenities": [
+        "Rooftop pool",
+        "33rd-floor clubhouse",
+        "Outdoor terrace + garden",
+        "Fitness center",
+        "Bike storage",
+        "Dog run + pet wash"
+      ],
+      "nearbyPerks": [
+        "Rainey Street nightlife",
+        "Lady Bird Lake edge",
+        "Resident-friendly dining circuit"
+      ]
+    },
+    {
+      "mls": "5638588",
+      "building": "Four Seasons Residences",
+      "unit": "1502",
+      "address": "98 San Jacinto Blvd #1502, Austin, TX 78701",
+      "status": "Active",
+      "price": 16500,
+      "beds": 3,
+      "baths": 4,
+      "sqft": 2692,
+      "district": "Waterfront / Downtown",
+      "topline": [
+        "Northwest-facing corner plan",
+        "3 entrances + covered balcony",
+        "Hotel-service lifestyle"
+      ],
+      "buildingAmenities": [
+        "24-hour concierge + valet",
+        "Saltwater pool",
+        "Fitness center",
+        "Room service",
+        "Library",
+        "Trail access"
+      ],
+      "nearbyPerks": [
+        "Lady Bird Lake trail access",
+        "Ciclo restaurant",
+        "Convention + core connectivity"
+      ]
+    },
+    {
+      "mls": "3197441",
+      "building": "Vesper Residences",
+      "unit": "1710",
+      "address": "84 East Ave #1710, Austin, TX 78701",
+      "status": "Active",
+      "price": 3625,
+      "beds": 1,
+      "baths": 2,
+      "sqft": 1058,
+      "district": "Rainey / East Downtown",
+      "topline": [
+        "Design-forward condo tower",
+        "41-story residential building",
+        "Rainey-adjacent convenience"
+      ],
+      "buildingAmenities": [
+        "Rooftop pool",
+        "Wellness floor",
+        "Resident lounges",
+        "Pet retreat area",
+        "24/7 staff",
+        "Designer finish palettes"
+      ],
+      "nearbyPerks": [
+        "Rainey Street food + bars",
+        "Convention Center access",
+        "Downtown social density"
+      ]
+    },
+    {
+      "mls": "8435712",
+      "building": "Celia's Court",
+      "unit": "45",
+      "address": "908 Nueces St #45, Austin, TX 78701",
+      "status": "Active",
+      "price": 2800,
+      "beds": 1,
+      "baths": 1,
+      "sqft": 862,
+      "district": "West Downtown / Market District edge",
+      "topline": [
+        "Boutique-scale condo option",
+        "Open-plan interiors",
+        "Private balcony + walk-in storage"
+      ],
+      "buildingAmenities": [
+        "Gated access",
+        "Parking garage",
+        "Resident courtyard",
+        "Private terraces",
+        "Storage",
+        "Energy Star appliances"
+      ],
+      "nearbyPerks": [
+        "Whole Foods run",
+        "24 Diner + Fixe corridor",
+        "BookPeople + Capitol access"
+      ]
+    }
+  ]
+}

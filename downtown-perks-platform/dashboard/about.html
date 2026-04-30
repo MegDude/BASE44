@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downtown Perks — About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container row">
+    <a class="brand" href="/"><span class="brand-badge">DP</span><span>Downtown Perks</span></a>
+    <nav class="nav">
+      <a href="/" class="">Home</a>
+      <a href="/resident-app" class="">Resident App</a>
+      <a href="/dashboard" class="active">Partner Dashboard</a>
+      <a href="/search" class="">Search</a>
+      <a href="/meg-dude" class="">Meg Dude</a>
+    </nav>
+    <div class="actions">
+      <a class="btn small ghost" href="/dashboard/about">About</a>
+      <a class="btn small primary" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="page-hero"><div class="container mast-grid"><div class="hero-copy"><div class="eyebrow">Partner dashboard</div><h1>About Downtown Perks</h1><p>Your neighborhood already has everything. We just made it impossible to miss.</p><div class="hero-cta"><a class="btn primary" href="/dashboard/about">About the platform</a><a class="btn" href="/resident-app">View resident app</a></div></div><div class="hero-card"><div class="kpi-row"><div class="kpi"><div class="eyebrow">Buildings</div><strong>33</strong><div class="muted">Across 10 districts</div></div><div class="kpi"><div class="eyebrow">Residences</div><strong>7,860+</strong><div class="muted">Mapped into one layer</div></div><div class="kpi"><div class="eyebrow">Venues</div><strong>1,600+</strong><div class="muted">Local touchpoints</div></div><div class="kpi"><div class="eyebrow">Since</div><strong>2001</strong><div class="muted">Neighborhood knowledge</div></div></div></div></div></section>
+
+<section class="section"><div class="container timeline-card" data-tabs><div class="section-head"><div><div class="eyebrow">How it works</div><h2>Four steps from sign-up to live neighborhood data.</h2></div><p>Walk through each one below. This interaction is included in the deployable clone.</p></div><div class="steps"><div class="step-nav"><button class="step-btn" data-step>1 · Connect</button><button class="step-btn" data-step>2 · People find their way in</button><button class="step-btn" data-step>3 · The neighborhood shows up</button><button class="step-btn" data-step>4 · The numbers tell the story</button></div><div><div class="step-panel" data-panel><div class="eyebrow">Step 1 of 4</div><h3>Connect your property</h3><p class="muted">Five minutes. No IT department. No excuses. We set up your property profile, connect it to the neighborhood map, and turn on the perks layer for your people.</p><div class="notice">Your building appears on the live map immediately. The people around you start seeing your property as part of the neighborhood — because it already is.</div></div><div class="step-panel" data-panel hidden><div class="eyebrow">Step 2 of 4</div><h3>People find their way in</h3><p class="muted">Residents, guests, and neighbors discover nearby places, events, and offers without downloading another bloated app.</p></div><div class="step-panel" data-panel hidden><div class="eyebrow">Step 3 of 4</div><h3>The neighborhood shows up</h3><p class="muted">Properties, venues, and local activity appear in the same layer, so context does the persuasive work instead of a pile of disconnected pages.</p></div><div class="step-panel" data-panel hidden><div class="eyebrow">Step 4 of 4</div><h3>The numbers tell the story</h3><p class="muted">Scans, saves, RSVPs, and redemptions reveal how the layer is influencing behavior while it is still useful to know.</p></div></div></div></div></section>
+<section class="section"><div class="container grid-3"><div class="panel"><div class="eyebrow">Principle 1</div><h3>Show what actually happened</h3><p class="muted">Useful data belongs on screen while you are drinking your coffee, not buried in a PDF later.</p></div><div class="panel"><div class="eyebrow">Principle 2</div><h3>Everything connects</h3><p class="muted">Coffee shop, building, pop-up, district. Downtown does not work in silos, and neither should your tools.</p></div><div class="panel"><div class="eyebrow">Principle 3</div><h3>Earn every open</h3><p class="muted">No decorative dashboards. No fake engagement loops. Useful or nothing.</p></div></div></section>
+<section id="contact" class="section"><div class="container form-card"><div class="section-head"><div><div class="eyebrow">Contact</div><h2>Let’s start a conversation.</h2></div><p>No pitch deck. No pressure. Just two people who care about the neighborhood figuring out what is possible together.</p></div><form class="form-grid" data-mailto-form data-mailto-recipient="hello@megdude.com" data-mailto-subject="Downtown Perks partner inquiry"><div class="field"><label for="about-first-name">First name</label><input id="about-first-name" name="first_name" required /></div><div class="field"><label for="about-last-name">Last name</label><input id="about-last-name" name="last_name" required /></div><div class="field"><label for="about-email">Email</label><input id="about-email" name="email" type="email" required /></div><div class="field"><label for="about-role">I am a…</label><select id="about-role" name="role"><option>Property manager</option><option>Building owner</option><option>Venue operator</option><option>Member</option><option>Real estate professional</option><option>Something else</option></select></div><div class="field" style="grid-column:1/-1"><label for="about-interest">Interested in…</label><select id="about-interest" name="interest"><option>The platform</option><option>Listings alignment</option><option>Running a perk</option><option>Events</option><option>Just a demo</option></select></div><div><button class="btn primary" type="submit">Start a conversation</button></div><div class="small muted" style="grid-column:1/-1">Submitting opens your default email app with the details prefilled.</div></form></div></section></main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="brand"><span class="brand-badge">DP</span><span>Downtown Perks · Austin, Texas</span></div>
+      <p class="small muted">Deploy-ready static clone scaffold for Vercel.</p>
+    </div>
+    <div class="small">© <span data-year></span> Downtown Perks · Powered by Boop</div>
+  </div>
+</footer>
+<script src="../assets/data.js"></script>
+<script src="../assets/script.js"></script>
+</body>
+</html>

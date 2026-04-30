@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downtown Perks — Decision Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container row">
+    <a class="brand" href="/"><span class="brand-badge">DP</span><span>Downtown Perks</span></a>
+    <nav class="nav">
+      <a href="/" class="">Home</a>
+      <a href="/resident-app" class="">Resident App</a>
+      <a href="/dashboard" class="">Partner Dashboard</a>
+      <a href="/search" class="active">Search</a>
+      <a href="/meg-dude" class="">Meg Dude</a>
+    </nav>
+    <div class="actions">
+      <a class="btn small ghost" href="/dashboard/about">About</a>
+      <a class="btn small primary" href="/dashboard/about#contact">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<main><section class="page-hero"><div class="container hero-grid"><div class="hero-copy"><div class="eyebrow">Decision engine</div><h1>Ask the map.</h1><p>Map-only answers. No guesses. No invented search results. Just what is visible in the current downtown layer.</p><div class="hero-cta"><a class="btn primary" href="#queries">Try prompts</a><a class="btn" href="/resident-app">See resident app</a></div></div><div class="hero-card"><div class="search-bar">coffee near Seaholm · dinner tonight · best building for walkable errands</div><div class="results"><div class="result"><strong>Coffee near Seaholm</strong><div class="meta">Jo's Coffee · Merit Coffee · Codependent</div></div><div class="result"><strong>Dinner tonight</strong><div class="meta">Via 313 · Red Ash · Qi Austin</div></div><div class="result"><strong>Walkable errands</strong><div class="meta">The Independent · Seaholm Residences · 360 Condominiums</div></div></div></div></div></section>
+<section id="queries" class="section"><div class="container grid-3"><div class="panel"><div class="eyebrow">Prompt</div><h3>Where should I go right now?</h3><p class="muted">Returns a short stack of nearby answers with distance, walk time, and perk visibility.</p></div><div class="panel"><div class="eyebrow">Prompt</div><h3>Dinner near Rainey</h3><p class="muted">Clusters nearby venues and helps narrow by energy, price, and walk time.</p></div><div class="panel"><div class="eyebrow">Prompt</div><h3>Best building for walkable errands</h3><p class="muted">Uses building context plus neighborhood utility, not just brochure copy.</p></div></div></section></main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="brand"><span class="brand-badge">DP</span><span>Downtown Perks · Austin, Texas</span></div>
+      <p class="small muted">Deploy-ready static clone scaffold for Vercel.</p>
+    </div>
+    <div class="small">© <span data-year></span> Downtown Perks · Powered by Boop</div>
+  </div>
+</footer>
+<script src="../assets/data.js"></script>
+<script src="../assets/script.js"></script>
+</body>
+</html>
