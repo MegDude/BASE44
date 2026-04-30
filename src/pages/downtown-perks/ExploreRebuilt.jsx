@@ -19,11 +19,6 @@ import { useMapFilters } from '@/hooks/useMapFilters';
 import { filterEntities } from '@/lib/mapFilters';
 import { trackEvent } from '@/lib/analytics';
 
-<<<<<<< ours
-=======
-
-// Helper to get marker icon from factory
->>>>>>> theirs
 function getMarkerIcon(entity, isSelected) {
   return createMarker(entity, {
     isSelected,
@@ -36,20 +31,20 @@ export default function ExploreRebuilt() {
   const exploreFilters = useMapFilters();
   const filteredResults = useMapStateStore(selectFilteredResults);
   const selectedEntity = useMapStateStore(selectSelectedEntity);
+  const drawerState = useMapStateStore((state) => state.drawerState);
   const mapCenter = useMapStateStore((state) => state.mapCenter);
   const mapZoom = useMapStateStore((state) => state.mapZoom);
   const activeFilters = useMapStateStore((state) => state.activeFilters);
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
-  const heatmapVisible = useMapStateStore((state) => state.heatmapVisible);
   const showResultsList = useMapStateStore((state) => state.showResultsList);
   const setMapCenter = useMapStateStore((state) => state.setMapCenter);
   const setMapZoom = useMapStateStore((state) => state.setMapZoom);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setFilteredResults = useMapStateStore((state) => state.setFilteredResults);
-  const setHeatmapVisible = useMapStateStore((state) => state.setHeatmapVisible);
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
   const setShowResultsList = useMapStateStore((state) => state.setShowResultsList);
+  const setDrawerState = useMapStateStore((state) => state.setDrawerState);
   const updateFilter = useMapStateStore((state) => state.updateFilter);
   const clearFilters = useMapStateStore((state) => state.clearFilters);
 
@@ -68,6 +63,7 @@ export default function ExploreRebuilt() {
     categories,
     filters,
   } = useMapPanelStore();
+
   const hasExploreFilters = useMemo(
     () => Boolean(
       exploreFilters.type ||
@@ -105,19 +101,21 @@ export default function ExploreRebuilt() {
       setLoading(true);
       try {
         const feedItems = await mapRepository.getMapFeed({ query: '', filters: {}, limit: 1000 });
-        const safeItems = filterValidEntities(feedItems).filter(
-          (item) => item.isPlotted !== false
-        );
+        const safeItems = filterValidEntities(feedItems).filter((item) => item.isPlotted !== false);
 
         if (!mounted) return;
         baseEntitiesRef.current = safeItems;
         setAllEntities(safeItems);
         setFilteredResults(safeItems);
+        selectEntity(null);
+        setDrawerState('closed');
       } catch (error) {
         console.error('Failed to load map feed:', error);
         if (!mounted) return;
         setAllEntities([]);
         setFilteredResults([]);
+        selectEntity(null);
+        setDrawerState('closed');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -126,7 +124,7 @@ export default function ExploreRebuilt() {
     return () => {
       mounted = false;
     };
-  }, [setFilteredResults]);
+  }, [selectEntity, setDrawerState, setFilteredResults]);
 
   useEffect(() => {
     if (hasExploreFilters) return;
@@ -145,31 +143,13 @@ export default function ExploreRebuilt() {
       updateFilter('entityTypes', new Set(['venue', 'event', 'perk', 'building', 'property', 'hotel']));
     }
 
-    if (categories.length > 0) {
-      updateFilter('categories', new Set(categories));
-    }
-
-    if (decision === 'now') {
-      updateFilter('isLive', true);
-    }
-
-    if (decision === 'open' || filters.openNow) {
-      updateFilter('isOpenNow', true);
-    }
-
-    if (filters.crowd) {
-      updateFilter('isTrending', true);
-    }
-
-    if (filters.deals) {
-      updateFilter('hasPerk', true);
-    }
-
-    if (filters.fiveMin) {
-      updateFilter('walkMinutes', 5);
-    } else if (filters.tenMin) {
-      updateFilter('walkMinutes', 10);
-    }
+    if (categories.length > 0) updateFilter('categories', new Set(categories));
+    if (decision === 'now') updateFilter('isLive', true);
+    if (decision === 'open' || filters.openNow) updateFilter('isOpenNow', true);
+    if (filters.crowd) updateFilter('isTrending', true);
+    if (filters.deals) updateFilter('hasPerk', true);
+    if (filters.fiveMin) updateFilter('walkMinutes', 5);
+    else if (filters.tenMin) updateFilter('walkMinutes', 10);
   }, [categories, clearFilters, decision, filters, hasExploreFilters, query, setSearchQuery, type, updateFilter]);
 
   useEffect(() => {
@@ -196,37 +176,22 @@ export default function ExploreRebuilt() {
     }
 
     if (exploreFilters.category) {
-      if (exploreFilters.category === 'perks') {
-        updateFilter('hasPerk', true);
-      } else {
-        updateFilter('categories', new Set([exploreFilters.category]));
-      }
+      if (exploreFilters.category === 'perks') updateFilter('hasPerk', true);
+      else updateFilter('categories', new Set([exploreFilters.category]));
     }
 
-    if (exploreFilters.district) {
-      updateFilter('districts', new Set([exploreFilters.district]));
-    }
-
-    if (exploreFilters.saved) {
-      updateFilter('isSaved', true);
-    }
-
+    if (exploreFilters.district) updateFilter('districts', new Set([exploreFilters.district]));
+    if (exploreFilters.saved) updateFilter('isSaved', true);
     if (exploreFilters.time === 'now') {
       updateFilter('isLive', true);
       updateFilter('isOpenNow', true);
     }
 
     const radius = Number(exploreFilters.radius || 0);
-    if (radius > 0) {
-      updateFilter('walkMinutes', radius);
-    } else if (exploreFilters.intent === 'nearby') {
-      updateFilter('walkMinutes', 5);
-    }
+    if (radius > 0) updateFilter('walkMinutes', radius);
+    else if (exploreFilters.intent === 'nearby') updateFilter('walkMinutes', 5);
 
-    trackEvent('explore_filter_applied', {
-      source: location.pathname,
-      filters: exploreFilters,
-    });
+    trackEvent('explore_filter_applied', { source: location.pathname, filters: exploreFilters });
   }, [clearFilters, exploreFilters, hasExploreFilters, location.pathname, setSearchQuery, updateFilter]);
 
   useEffect(() => {
@@ -246,25 +211,16 @@ export default function ExploreRebuilt() {
     setShowResultsList(false);
   }, [selectedEntity, setShowResultsList]);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (window.innerWidth >= 768) {
-      setShowResultsList(true);
-    }
-  }, [setShowResultsList]);
-
   const handleAsk = async (q) => {
-    const query = String(q || '').trim();
-    if (!query) return;
-    if (askLoading) return;
-    if (lastAskRef.current === query) return;
+    const queryValue = String(q || '').trim();
+    if (!queryValue || askLoading || lastAskRef.current === queryValue) return;
 
     setAskLoading(true);
-    lastAskRef.current = query;
+    lastAskRef.current = queryValue;
 
     try {
       const { items, explanation, suggestions, source, intent } = await mapRepository.searchWithIntent({
-        query,
+        query: queryValue,
         userLocation: {
           latitude: mapCenter?.[0],
           longitude: mapCenter?.[1],
@@ -273,18 +229,20 @@ export default function ExploreRebuilt() {
 
       const safeItems = filterValidEntities(items).filter((item) => item.isPlotted !== false);
       setAgentState({
-        agentExplanation: explanation || intent?.explanation || "Showing what fits nearby.",
+        agentExplanation: explanation || intent?.explanation || 'Showing what fits nearby.',
         agentSuggestions: suggestions || intent?.suggestions || [],
-        agentSource: source || "fallback",
+        agentSource: source || 'fallback',
       });
       setAllEntities(safeItems);
       setFilteredResults(safeItems);
+      selectEntity(null);
+      setDrawerState('closed');
     } catch (error) {
       console.error('Ask the map failed:', error);
       setAgentState({
-        agentExplanation: "Showing the live downtown layer.",
+        agentExplanation: 'Showing the live downtown layer.',
         agentSuggestions: [],
-        agentSource: "fallback",
+        agentSource: 'fallback',
       });
     } finally {
       setAskLoading(false);
@@ -339,39 +297,20 @@ export default function ExploreRebuilt() {
       fallback.sort((a, b) => {
         const liveDelta = Number(Boolean(b.isLive || b.eventTiming?.isLive || b.isOpenNow)) - Number(Boolean(a.isLive || a.eventTiming?.isLive || a.isOpenNow));
         if (liveDelta !== 0) return liveDelta;
-
         const walkDelta = (a.metadata?.walkMinutes ?? 999) - (b.metadata?.walkMinutes ?? 999);
         if (walkDelta !== 0) return walkDelta;
-
         return (b.metadata?.popularity ?? 0) - (a.metadata?.popularity ?? 0);
       });
 
       finalResults = fallback.slice(0, 60);
       explanation = finalResults.length
         ? `No exact matches for that filter. Showing the nearest ${describeType(type)} instead.`
-        : `Showing the live downtown layer.`;
+        : 'Showing the live downtown layer.';
     }
 
     setFilteredResults(finalResults);
-    setAgentState({
-      agentExplanation: explanation,
-    });
+    setAgentState({ agentExplanation: explanation });
   }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults, setAgentState, type, decision, filters.fiveMin, filters.tenMin, filters.openNow]);
-
-  const summary = useMemo(
-    () => ({
-      venues: filteredResults.filter((item) => item.type === 'venue').length,
-      events: filteredResults.filter((item) => item.type === 'event').length,
-      perks: filteredResults.filter((item) => item.type === 'perk').length,
-      properties: filteredResults.filter((item) => ['building', 'property', 'hotel'].includes(item.type)).length,
-    }),
-    [filteredResults]
-  );
-
-  const liveCount = useMemo(
-    () => filteredResults.filter((item) => Boolean(item.isLive || item.eventTiming?.isLive || item.isOpenNow)).length,
-    [filteredResults]
-  );
 
   const annotatedResults = useMemo(
     () =>
@@ -390,6 +329,7 @@ export default function ExploreRebuilt() {
 
   const handleMarkerSelect = (entity) => {
     selectEntity(entity);
+    setDrawerState('preview');
   };
 
   if (loading) {
@@ -403,135 +343,148 @@ export default function ExploreRebuilt() {
     );
   }
 
+  const shouldShowDrawer = Boolean(selectedEntity && drawerState !== 'closed');
+
   return (
     <>
       <MapPanelHydrator />
       <MapPanelUrlSync />
       <div className="fixed inset-0 bg-background pt-[68px]">
-      <div className="relative isolate h-[calc(100vh-68px)] overflow-hidden bg-background">
-        <UnifiedMapShell
-          items={displayResults}
-          markerIcon={(item, active) => getMarkerIcon(item, active)}
-          onMarkerSelect={handleMarkerSelect}
-          mapCenter={mapCenter}
-          mapZoom={mapZoom}
-          onMapCenterChange={setMapCenter}
-          onMapZoomChange={setMapZoom}
-          selectedId={selectedEntity?.id}
-          className="absolute inset-0 z-0 h-full w-full"
-        >
-          <HeatmapLayer items={displayResults} />
-        </UnifiedMapShell>
+        <div className="relative isolate h-[calc(100vh-68px)] overflow-hidden bg-background">
+          <UnifiedMapShell
+            items={displayResults}
+            markerIcon={(item, active) => getMarkerIcon(item, active)}
+            onMarkerSelect={handleMarkerSelect}
+            mapCenter={mapCenter}
+            mapZoom={mapZoom}
+            onMapCenterChange={setMapCenter}
+            onMapZoomChange={setMapZoom}
+            selectedId={selectedEntity?.id}
+            className="absolute inset-0 z-0 h-full w-full"
+          >
+            <HeatmapLayer items={displayResults} />
+          </UnifiedMapShell>
 
-        <div className="pointer-events-none absolute inset-0 z-20">
-          <div className="flex h-full flex-col p-4 md:p-5">
-            <div className={`space-y-3 ${showResultsList ? 'md:pr-[408px]' : 'md:pr-0'}`}>
-              <div className="pointer-events-auto">
-                <Link
-                  to="/"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Back
-                </Link>
-              </div>
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto">
-                <MapControlPanel />
-              </motion.div>
-            </div>
-
-            <div className="pointer-events-none mt-auto flex items-end justify-between gap-3">
-              <div className="pointer-events-auto md:hidden">
-                <button
-                  type="button"
-                  onClick={() => setShowResultsList(!showResultsList)}
-                  className={showResultsList ? 'dp-chip dp-chip-active min-h-11' : 'dp-chip min-h-11'}
-                >
-                  {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
-                  {showResultsList ? 'Close results' : 'Results'}
-                </button>
+          <div className="pointer-events-none absolute inset-0 z-20">
+            <div className="flex h-full flex-col p-4 md:p-5">
+              <div className={`space-y-3 ${showResultsList ? 'md:pr-[408px]' : 'md:pr-0'}`}>
+                <div className="pointer-events-auto">
+                  <Link
+                    to="/"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-white/92 px-4 text-sm font-medium text-[#0b1f33] shadow-[0_12px_30px_rgba(11,31,51,0.08)] backdrop-blur"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Back
+                  </Link>
+                </div>
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto">
+                  <MapControlPanel />
+                </motion.div>
               </div>
 
-              <div className="pointer-events-auto ml-auto hidden md:block">
-                <button
-                  type="button"
-                  onClick={() => setShowResultsList(!showResultsList)}
-                  className={`${showResultsList ? 'dp-chip dp-chip-active' : 'dp-chip'} min-h-11`}
-                >
-                  {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
-                  {showResultsList ? 'Close results' : 'Results'}
-                </button>
+              <div className="pointer-events-none mt-auto flex items-end justify-between gap-3">
+                <div className="pointer-events-auto md:hidden">
+                  <button
+                    type="button"
+                    onClick={() => setShowResultsList(!showResultsList)}
+                    className={showResultsList ? 'dp-chip dp-chip-active min-h-11' : 'dp-chip min-h-11'}
+                  >
+                    {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
+                    {showResultsList ? 'Close results' : 'Results'}
+                  </button>
+                </div>
+
+                <div className="pointer-events-auto ml-auto hidden md:block">
+                  <button
+                    type="button"
+                    onClick={() => setShowResultsList(!showResultsList)}
+                    className={`${showResultsList ? 'dp-chip dp-chip-active' : 'dp-chip'} min-h-11`}
+                  >
+                    {showResultsList ? <X className="h-3.5 w-3.5" /> : <List className="h-3.5 w-3.5" />}
+                    {showResultsList ? 'Close results' : 'Results'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <AnimatePresence initial={false}>
-          {showResultsList && !selectedEntity ? (
-            <>
-              <motion.button
-                type="button"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setShowResultsList(false)}
-                className="fixed inset-0 z-[24] bg-[rgba(11,31,51,0.18)] md:hidden"
-                aria-label="Close results"
-              />
-
-              <motion.div
-                initial={{ y: 440 }}
-                animate={{ y: 0 }}
-                exit={{ y: 440 }}
-                transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-                className="fixed inset-x-0 bottom-0 z-[25] px-3 pb-3 md:hidden"
-              >
-                <div className="dp-map-panel max-h-[58vh] overflow-hidden rounded-2xl">
-                  <div className="flex items-center justify-between border-b border-border px-4 py-3">
-                    <div className="h-1.5 w-12 rounded-full bg-navy/10" />
-                    <button
-                      type="button"
-                      onClick={() => setShowResultsList(false)}
-                      className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
-                      aria-label="Close results"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-
-                  <div className="max-h-[calc(58vh-56px)] overflow-y-auto">
-                    <UnifiedResultsPanel
-                      items={displayResults}
-                      onSelectResult={() => setShowResultsList(false)}
-                      title="Results"
-                    />
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.aside
-                initial={{ x: 420, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 420, opacity: 0 }}
-                transition={{ duration: 0.22, ease: 'easeOut' }}
-                className="pointer-events-auto absolute bottom-5 right-5 top-5 z-30 hidden w-[380px] overflow-hidden rounded-[28px] border border-border bg-[#fbfbfd] shadow-[0_24px_60px_rgba(11,31,51,0.12)] md:flex md:flex-col"
-              >
-                <UnifiedResultsPanel
-                  items={displayResults}
-                  onClose={() => setShowResultsList(false)}
-                  title="Results"
+          <AnimatePresence initial={false}>
+            {showResultsList && !selectedEntity ? (
+              <>
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowResultsList(false)}
+                  className="absolute inset-0 z-[24] bg-[rgba(11,31,51,0.18)] md:hidden"
+                  aria-label="Close results"
                 />
-              </motion.aside>
-            </>
-          ) : null}
-        </AnimatePresence>
 
-        <UnifiedDrawer
-          selected={selectedEntity}
-          desktopMode="docked"
-          desktopClassName="md:rounded-[28px]"
-        />
-      </div>
+                <motion.div
+                  initial={{ y: 440 }}
+                  animate={{ y: 0 }}
+                  exit={{ y: 440 }}
+                  transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+                  className="absolute inset-x-0 bottom-0 z-[25] px-3 pb-3 md:hidden"
+                >
+                  <div className="dp-map-panel max-h-[58vh] overflow-hidden rounded-2xl">
+                    <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                      <div className="h-1.5 w-12 rounded-full bg-navy/10" />
+                      <button
+                        type="button"
+                        onClick={() => setShowResultsList(false)}
+                        className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
+                        aria-label="Close results"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    <div className="max-h-[calc(58vh-56px)] overflow-y-auto">
+                      <UnifiedResultsPanel
+                        items={displayResults}
+                        onSelectResult={(item) => {
+                          setShowResultsList(false);
+                          selectEntity(item);
+                          setDrawerState('preview');
+                        }}
+                        title="Results"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.aside
+                  initial={{ x: 420, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: 420, opacity: 0 }}
+                  transition={{ duration: 0.22, ease: 'easeOut' }}
+                  className="pointer-events-auto absolute bottom-5 right-5 top-5 z-30 hidden w-[380px] overflow-hidden rounded-[28px] border border-border bg-[#fbfbfd] shadow-[0_24px_60px_rgba(11,31,51,0.12)] md:flex md:flex-col"
+                >
+                  <UnifiedResultsPanel
+                    items={displayResults}
+                    onClose={() => setShowResultsList(false)}
+                    onSelectResult={(item) => {
+                      setShowResultsList(false);
+                      selectEntity(item);
+                      setDrawerState('preview');
+                    }}
+                    title="Results"
+                  />
+                </motion.aside>
+              </>
+            ) : null}
+          </AnimatePresence>
+
+          {shouldShowDrawer ? (
+            <UnifiedDrawer
+              selected={selectedEntity}
+              desktopMode="docked"
+              desktopClassName="md:rounded-[28px]"
+            />
+          ) : null}
+        </div>
       </div>
     </>
   );
