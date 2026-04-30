@@ -21,7 +21,7 @@ export default function AskTheMap({
     if (onSubmit) onSubmit(value);
   }
 
-  function usePrompt(prompt) {
+  function handlePrompt(prompt) {
     const query = typeof prompt === "string" ? prompt : prompt.query || prompt.label || "";
     if (!query) return;
     if (onChange) onChange(query);
@@ -48,7 +48,7 @@ export default function AskTheMap({
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
           {quickPrompts.map((prompt) => {
             const label = typeof prompt === "string" ? prompt : prompt.label || prompt.title || prompt.query;
-            return <button key={label} type="button" onClick={() => usePrompt(prompt)} className="dp-chip whitespace-nowrap text-[11px]">{label}</button>;
+            return <button key={label} type="button" onClick={() => handlePrompt(prompt)} className="dp-chip whitespace-nowrap text-[11px]">{label}</button>;
           })}
         </div>
       ) : null}
