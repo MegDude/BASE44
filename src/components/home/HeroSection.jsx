@@ -1,224 +1,210 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Search, Calendar, Gift, Sparkles, MapPin } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import AskTheMap from "@/components/map/AskTheMap";
+import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
+import { createMarker } from "@/components/map/markers/MarkerFactory";
+import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
+import { APPROVED_HOME_COPY } from "@/lib/approvedCopy";
+import { ROUTES } from "@/lib/routes";
+import { getPrimaryPresetDefinition } from "@/lib/map/searchUiConfig";
 
-const INTENT_PROMPTS = [
-  {
-    q: "Where do you want to go?",
-    a: "Coffee. Dinner. Groceries. Fitness. Drinks. All within walking distance.",
-    fill: "Coffee near me",
-  },
-  {
-    q: "What do you want to do?",
-    a: "See what's on tonight. Find something worth showing up for.",
-    fill: "Events tonight",
-  },
-  {
-    q: "Who do you want to meet?",
-    a: "See who's going. Join in. Make a plan.",
-    fill: "What's happening nearby",
-  },
+const AUSTIN_CENTER = [30.267, -97.743];
+
+const ASK_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "coffee", label: "Coffee" },
+  { id: "dining", label: "Dining" },
+  { id: "nightlife", label: "Nightlife" },
+  { id: "wellness", label: "Wellness" },
+  { id: "shopping", label: "Shopping" },
+  { id: "perks", label: "Perks" },
+  { id: "5min", label: "5 min walk" },
 ];
 
-const FILTER_CHIPS = [
-  { label: "Venues", icon: MapPin },
-  { label: "Events", icon: Calendar },
-  { label: "Perks", icon: Gift },
-  { label: "5 min walk", icon: Sparkles },
+const QUICK_PROMPTS = ["Coffee nearby", "Happy hour now", "Events tonight"];
+const PROOF_POINTS = [
+  { title: "One map", body: "Places, events, and perks in one live view." },
+  { title: "No friction", body: "No downloads. No logins. Just open and use." },
+  { title: "Act immediately", body: "Decide and move without switching apps." },
 ];
+
+function normalizePinType(item) {
+  const type = String(item?.type || item?.entity_type || "").toLowerCase();
+  if (["building", "property", "hotel"].includes(type)) return "building";
+  if (type === "perk") return "perk";
+  if (type === "event") return "event";
+  return "venue";
+}
+
+function matchesFilter(item, filterId) {
+  if (!item || filterId === "all") return true;
+  const category = String(item?.category || item?.subcategory || "").toLowerCase();
+  const type = normalizePinType(item);
+  const walkMinutes = Number(item?.metadata?.walkMinutes ?? 999);
+
+  if (filterId === "perks") return type === "perk" || Boolean(item?.perk?.value || item?.perk_value);
+  if (filterId === "5min") return walkMinutes <= 5;
+  if (filterId === "dining") return ["restaurant", "bar", "dining"].includes(category);
+  if (filterId === "nightlife") return ["bar", "entertainment", "nightlife"].includes(category) || type === "event";
+  if (filterId === "wellness") return ["wellness", "fitness", "beauty"].includes(category);
+  if (filterId === "shopping") return ["retail", "shopping", "market"].includes(category);
+  return category === filterId;
+}
+
+function getPreviewMeta(item) {
+  const walkMinutes = item?.metadata?.walkMinutes;
+  return {
+    title: item?.title || item?.name || "Downtown pick",
+    detail: Number.isFinite(walkMinutes) ? `${walkMinutes} min walk` : item?.district || "Downtown Austin",
+    summary: item?.perk?.value || item?.perk_value || item?.description || item?.category || "Nearby now",
+  };
+}
 
 export default function HeroSection() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeChip, setActiveChip] = useState("Venues");
-  const [intentExpanded, setIntentExpanded] = useState(false);
-  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedEntity, setSelectedEntity] = useState(null);
+  const [showResults, setShowResults] = useState(false);
 
-  function handlePromptClick(fill) {
-    navigate(`/downtown-perks/explore?q=${encodeURIComponent(fill)}`);
-    setIntentExpanded(false);
+  const preset = getPrimaryPresetDefinition(activeFilter);
+  const searchQuery = String(query || "").trim() || preset.query || "";
+  const { items } = useSharedMapFeed({ query: searchQuery, activeCategory: "all", limit: 180 });
+
+  const visibleItems = useMemo(() => {
+    return (items || []).filter((item) => matchesFilter(item, activeFilter)).slice(0, 60);
+  }, [activeFilter, items]);
+
+  const selected = selectedEntity || visibleItems[0];
+  const selectedMeta = selected ? getPreviewMeta(selected) : null;
+  const mapCenter = selected?.location
+    ? [selected.location.latitude, selected.location.longitude]
+    : AUSTIN_CENTER;
+
+  function handleSubmit(nextQuery) {
+    setQuery(String(nextQuery || query || "").trim());
+    setShowResults(true);
   }
 
-  function handleSearch(e) {
-    e.preventDefault();
-    navigate(`/map${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`);
-    setSearchQuery("");
-    setIntentExpanded(false);
-  }
-
-  function handleOpenMap() {
-    navigate("/downtown-perks/explore");
+  function handleFilterChange(nextFilter) {
+    setActiveFilter(nextFilter);
+    const nextPreset = getPrimaryPresetDefinition(nextFilter);
+    if (nextPreset.query) setQuery(nextPreset.query);
   }
 
   return (
-    <section className="relative w-full min-h-[92svh] overflow-hidden bg-background">
-      {/* Background image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80"
-          alt="Downtown Austin"
-          className="absolute inset-0 h-full w-full object-cover opacity-30"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[rgba(252,251,248,0.94)] via-[rgba(252,251,248,0.82)] to-[rgba(252,251,248,0.92)]" />
+    <section id="home-map-entry" className="bg-[var(--dp-bg-primary)] bg-[image:var(--dp-bg-pearl)] pt-[84px] text-[var(--dp-navy)]">
+      <div className="dp-page-shell">
+        <div className="relative overflow-hidden rounded-[34px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.72)] shadow-[var(--dp-shadow-soft)]">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "linear-gradient(180deg,rgba(246,247,251,0.52),rgba(246,247,251,0.94)), url('/media/austin-hero-correct.png')",
+            }}
+          />
+          <div className="relative grid gap-6 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+                {APPROVED_HOME_COPY.hero.eyebrow || "Downtown Perks"}
+              </div>
+              <h1 className="mt-4 max-w-[12ch] font-heading text-[2.9rem] font-semibold leading-[0.94] tracking-[-0.055em] text-[var(--dp-navy)] md:text-[5rem]">
+                {APPROVED_HOME_COPY.hero.title || "Where downtown meets you"}
+              </h1>
+              <p className="mt-4 max-w-xl text-[1.1rem] font-medium tracking-[-0.02em] text-[rgba(11,31,51,0.82)] md:text-[1.3rem]">
+                Everything nearby — in one map.
+              </p>
+            </div>
+
+            <AskTheMap
+              value={query}
+              onChange={setQuery}
+              onSubmit={handleSubmit}
+              quickPrompts={QUICK_PROMPTS}
+              filters={ASK_FILTERS}
+              activeFilter={activeFilter}
+              onFilterChange={handleFilterChange}
+              mode="hero"
+              placeholder="Search places, events, or perks"
+              secondaryAction={{ label: "See what's nearby", href: ROUTES.explore }}
+            />
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          {PROOF_POINTS.map((point) => (
+            <div key={point.title} className="rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.62)] p-5 shadow-[var(--dp-shadow-soft)] backdrop-blur-xl">
+              <h3 className="text-[15px] font-semibold text-[var(--dp-navy)]">{point.title}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.64)]">{point.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="relative z-10 flex min-h-[92svh] flex-col items-center justify-center px-4 py-20 md:py-24">
-        {/* Brand tag */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-5 flex items-center gap-2"
-        >
-          <span className="rounded-full border border-white/40 bg-white/42 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(218,24%,28%)] backdrop-blur-md">
-            Downtown Perks
-          </span>
-        </motion.div>
+      <div className="dp-page-shell py-5 md:py-6">
+        <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">Nearby now</div>
+            <h2 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.035em] text-[var(--dp-navy)]">Search, select, and move through one map surface.</h2>
+          </div>
+          <Link to={ROUTES.partners} className="dp-cta-secondary">Partner platform</Link>
+        </div>
 
-        {/* Refined hero shell */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="w-full max-w-3xl rounded-[30px] border border-white/38 bg-white/[0.68] p-5 shadow-[0_24px_60px_rgba(14,28,54,0.16)] backdrop-blur-xl md:p-8"
-        >
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[hsl(218,42%,14%)] md:text-[56px]">
-              Where downtown meets you
-            </h1>
-
-            <p className="mt-3 text-sm leading-6 text-[hsl(218,20%,42%)] md:mt-4 md:text-[15px]">
-              Everything nearby — in one map.
-            </p>
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.72)] shadow-[var(--dp-shadow-soft)]">
+            <div className="h-[420px] md:h-[560px]">
+              <UnifiedMapShell
+                items={visibleItems}
+                markerIcon={(item, active) => createMarker(item, { isSelected: active })}
+                onMarkerSelect={setSelectedEntity}
+                mapCenter={mapCenter}
+                mapZoom={13.25}
+                selectedId={selected?.id}
+                className="h-full w-full"
+                enableClustering={false}
+              />
+            </div>
           </div>
 
-          {/* Search shell stays more solid than outer card */}
-          <form
-            onSubmit={handleSearch}
-            className="mx-auto mt-5 max-w-xl rounded-[22px] border border-white/70 bg-white/[0.92] p-2 shadow-[0_12px_30px_rgba(14,28,54,0.10)] md:mt-6"
-          >
-            <div className="flex flex-col gap-2 md:flex-row md:items-center">
-              <div className="flex h-12 flex-1 items-center gap-3 rounded-[16px] border border-[hsl(218,20%,86%)] bg-white px-4 transition-colors focus-within:border-primary/40">
-                <Search className="h-4 w-4 flex-shrink-0 text-foreground/45" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setIntentExpanded(true)}
-                  placeholder="Where should I go right now?"
-                  className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery("")}
-                    className="text-xs text-foreground/35 transition-colors hover:text-foreground/60"
-                    aria-label="Clear search"
-                  >
-                    ✕
-                  </button>
-                )}
+          <aside className="overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.72)] shadow-[var(--dp-shadow-soft)] backdrop-blur-xl">
+            <div className="flex items-start justify-between gap-3 px-4 py-4">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.46)]">Nearby results</div>
+                <div className="mt-1 text-[15px] font-semibold text-[var(--dp-navy)]">{visibleItems.length} live results nearby now</div>
               </div>
-
-              <button
-                type="submit"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-5 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
-              >
-                Open map
-                <ArrowRight className="h-4 w-4" />
+              <button type="button" onClick={() => setShowResults((current) => !current)} className="dp-cta-secondary min-h-0 px-3 py-2 text-[12px] normal-case tracking-normal">
+                {showResults ? "Hide list" : "Show list"}
               </button>
             </div>
 
-            <AnimatePresence>
-              {intentExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6, height: 0 }}
-                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                  exit={{ opacity: 0, y: -6, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="mt-2 overflow-hidden rounded-[18px] border border-[hsl(218,20%,88%)] bg-white shadow-lg"
-                >
-                  <div className="divide-y divide-[hsl(218,20%,92%)]">
-                    {INTENT_PROMPTS.map((item, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handlePromptClick(item.fill)}
-                        className="group w-full px-4 py-3 text-left transition-colors hover:bg-[hsl(42,24%,97%)]"
-                      >
-                        <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
-                          {item.q}
-                        </div>
-                        <div className="text-[12px] leading-relaxed text-foreground/60">{item.a}</div>
-                      </button>
-                    ))}
-
-                    <button
-                      type="button"
-                      onClick={() => setIntentExpanded(false)}
-                      className="w-full px-4 py-2.5 text-[11px] text-foreground/40 transition-colors hover:text-foreground/60"
-                    >
-                      Dismiss
-                    </button>
-                  </div>
-                </motion.div>
+            <div className="border-t border-[rgba(11,31,51,0.08)] px-4 py-4">
+              {selected ? (
+                <div className="rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white/80 p-4">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.46)]">Selected</div>
+                  <div className="mt-2 text-[16px] font-semibold text-[var(--dp-navy)]">{selectedMeta.title}</div>
+                  <div className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.66)]">{selectedMeta.summary}</div>
+                  <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[rgba(11,31,51,0.52)]">{selectedMeta.detail}</div>
+                </div>
+              ) : (
+                <p className="text-[13px] leading-6 text-[rgba(11,31,51,0.64)]">Search the map to see nearby results.</p>
               )}
-            </AnimatePresence>
 
-            {/* Filter chips */}
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-              {FILTER_CHIPS.map((chip) => {
-                const Icon = chip.icon;
-                const isActive = activeChip === chip.label;
-
-                return (
-                  <button
-                    key={chip.label}
-                    type="button"
-                    onClick={() => setActiveChip(chip.label)}
-                    className={`inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all ${
-                      isActive
-                        ? "border-primary/30 bg-primary/10 text-foreground"
-                        : "border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
-                    }`}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {chip.label}
-                  </button>
-                );
-              })}
+              {showResults ? (
+                <div className="mt-4 divide-y divide-[rgba(11,31,51,0.08)] rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white/72">
+                  {visibleItems.slice(0, 8).map((item) => {
+                    const meta = getPreviewMeta(item);
+                    return (
+                      <button key={item.id} type="button" onClick={() => setSelectedEntity(item)} className="w-full px-4 py-3 text-left transition-colors hover:bg-[rgba(11,31,51,0.03)]">
+                        <div className="text-[13px] font-semibold text-[var(--dp-navy)]">{meta.title}</div>
+                        <div className="mt-1 text-[12px] leading-5 text-[rgba(11,31,51,0.62)]">{meta.summary}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
             </div>
-          </form>
-
-          {/* CTA row */}
-          <div className="mt-5 flex flex-wrap justify-center gap-3 md:mt-6">
-            <button
-              type="button"
-              onClick={handleOpenMap}
-              className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-[16px] bg-[hsl(218,42%,14%)] px-6 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(14,28,54,0.18)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(14,28,54,0.24)] active:translate-y-0"
-            >
-              Explore downtown
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIntentExpanded(true)}
-              className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-[16px] border border-white/75 bg-white/76 px-6 py-3 text-sm font-medium text-foreground shadow-[0_8px_18px_rgba(14,28,54,0.08)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-[1px] hover:bg-white active:translate-y-0"
-            >
-              Ask the map
-            </button>
-          </div>
-        </motion.div>
+          </aside>
+        </div>
       </div>
-
-      {intentExpanded && (
-        <div
-          className="fixed inset-0 z-[5]"
-          onClick={() => setIntentExpanded(false)}
-          aria-hidden="true"
-        />
-      )}
     </section>
   );
 }

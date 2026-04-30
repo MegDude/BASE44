@@ -1,0 +1,770 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Downtown Perks Partner Dashboard API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: partners
+    description: Partner business operations
+  - name: perks
+    description: Perks/deals operations
+  - name: redemptions
+    description: Redemption tracking
+  - name: categories
+    description: Category management
+  - name: dashboard
+    description: Dashboard summaries
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /partners:
+    get:
+      operationId: listPartners
+      tags: [partners]
+      summary: List all partners
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, inactive, pending]
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of partners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Partner"
+    post:
+      operationId: createPartner
+      tags: [partners]
+      summary: Create a new partner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePartnerBody"
+      responses:
+        "201":
+          description: Created partner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Partner"
+
+  /partners/{id}:
+    get:
+      operationId: getPartner
+      tags: [partners]
+      summary: Get a partner by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Partner details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Partner"
+    patch:
+      operationId: updatePartner
+      tags: [partners]
+      summary: Update a partner
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePartnerBody"
+      responses:
+        "200":
+          description: Updated partner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Partner"
+    delete:
+      operationId: deletePartner
+      tags: [partners]
+      summary: Delete a partner
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Partner deleted
+
+  /perks:
+    get:
+      operationId: listPerks
+      tags: [perks]
+      summary: List all perks
+      parameters:
+        - name: partnerId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, expired, draft]
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of perks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Perk"
+    post:
+      operationId: createPerk
+      tags: [perks]
+      summary: Create a new perk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePerkBody"
+      responses:
+        "201":
+          description: Created perk
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perk"
+
+  /perks/{id}:
+    get:
+      operationId: getPerk
+      tags: [perks]
+      summary: Get a perk by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Perk details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perk"
+    patch:
+      operationId: updatePerk
+      tags: [perks]
+      summary: Update a perk
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePerkBody"
+      responses:
+        "200":
+          description: Updated perk
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perk"
+    delete:
+      operationId: deletePerk
+      tags: [perks]
+      summary: Delete a perk
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Perk deleted
+
+  /redemptions:
+    get:
+      operationId: listRedemptions
+      tags: [redemptions]
+      summary: List all redemptions
+      parameters:
+        - name: perkId
+          in: query
+          schema:
+            type: integer
+        - name: partnerId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of redemptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Redemption"
+    post:
+      operationId: createRedemption
+      tags: [redemptions]
+      summary: Record a new redemption
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRedemptionBody"
+      responses:
+        "201":
+          description: Created redemption
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Redemption"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+    post:
+      operationId: createCategory
+      tags: [categories]
+      summary: Create a new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoryBody"
+      responses:
+        "201":
+          description: Created category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+  /categories/{id}:
+    delete:
+      operationId: deleteCategory
+      tags: [categories]
+      summary: Delete a category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Category deleted
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary stats
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/recent-activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent activity feed
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  /dashboard/redemptions-by-day:
+    get:
+      operationId: getRedemptionsByDay
+      tags: [dashboard]
+      summary: Get redemptions grouped by day for charting
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: Redemptions by day
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RedemptionsByDay"
+
+  /dashboard/top-partners:
+    get:
+      operationId: getTopPartners
+      tags: [dashboard]
+      summary: Get top partners by redemption count
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+      responses:
+        "200":
+          description: Top partners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopPartner"
+
+  /dashboard/perks-by-category:
+    get:
+      operationId: getPerksByCategory
+      tags: [dashboard]
+      summary: Get perks count grouped by category
+      responses:
+        "200":
+          description: Perks by category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PerksByCategory"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Partner:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        categoryId:
+          type: integer
+        categoryName:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive, pending]
+        logoUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        perksCount:
+          type: integer
+        totalRedemptions:
+          type: integer
+      required:
+        - id
+        - name
+        - status
+        - createdAt
+
+    CreatePartnerBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        categoryId:
+          type: integer
+        status:
+          type: string
+          enum: [active, inactive, pending]
+        logoUrl:
+          type: string
+      required:
+        - name
+
+    UpdatePartnerBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        categoryId:
+          type: integer
+        status:
+          type: string
+          enum: [active, inactive, pending]
+        logoUrl:
+          type: string
+
+    Perk:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        partnerId:
+          type: integer
+        partnerName:
+          type: string
+        discountType:
+          type: string
+          enum: [percentage, fixed, bogo, freebie]
+        discountValue:
+          type: string
+        status:
+          type: string
+          enum: [active, expired, draft]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        maxRedemptions:
+          type: integer
+        currentRedemptions:
+          type: integer
+        terms:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - partnerId
+        - discountType
+        - status
+        - createdAt
+
+    CreatePerkBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        partnerId:
+          type: integer
+        discountType:
+          type: string
+          enum: [percentage, fixed, bogo, freebie]
+        discountValue:
+          type: string
+        status:
+          type: string
+          enum: [active, expired, draft]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        maxRedemptions:
+          type: integer
+        terms:
+          type: string
+      required:
+        - title
+        - partnerId
+        - discountType
+
+    UpdatePerkBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        partnerId:
+          type: integer
+        discountType:
+          type: string
+          enum: [percentage, fixed, bogo, freebie]
+        discountValue:
+          type: string
+        status:
+          type: string
+          enum: [active, expired, draft]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        maxRedemptions:
+          type: integer
+        terms:
+          type: string
+
+    Redemption:
+      type: object
+      properties:
+        id:
+          type: integer
+        perkId:
+          type: integer
+        perkTitle:
+          type: string
+        partnerId:
+          type: integer
+        partnerName:
+          type: string
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        redeemedAt:
+          type: string
+          format: date-time
+        notes:
+          type: string
+      required:
+        - id
+        - perkId
+        - redeemedAt
+
+    CreateRedemptionBody:
+      type: object
+      properties:
+        perkId:
+          type: integer
+        customerName:
+          type: string
+        customerEmail:
+          type: string
+        notes:
+          type: string
+      required:
+        - perkId
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        color:
+          type: string
+        partnersCount:
+          type: integer
+      required:
+        - id
+        - name
+
+    CreateCategoryBody:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+      required:
+        - name
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalPartners:
+          type: integer
+        activePartners:
+          type: integer
+        totalPerks:
+          type: integer
+        activePerks:
+          type: integer
+        totalRedemptions:
+          type: integer
+        redemptionsThisMonth:
+          type: integer
+        redemptionsLastMonth:
+          type: integer
+        topCategory:
+          type: string
+      required:
+        - totalPartners
+        - activePartners
+        - totalPerks
+        - activePerks
+        - totalRedemptions
+        - redemptionsThisMonth
+
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [partner_added, perk_created, redemption, partner_updated, perk_expired]
+        title:
+          type: string
+        description:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - title
+        - timestamp
+
+    RedemptionsByDay:
+      type: object
+      properties:
+        date:
+          type: string
+        count:
+          type: integer
+      required:
+        - date
+        - count
+
+    TopPartner:
+      type: object
+      properties:
+        partnerId:
+          type: integer
+        partnerName:
+          type: string
+        redemptionCount:
+          type: integer
+        activePerks:
+          type: integer
+      required:
+        - partnerId
+        - partnerName
+        - redemptionCount
+
+    PerksByCategory:
+      type: object
+      properties:
+        categoryName:
+          type: string
+        count:
+          type: integer
+      required:
+        - categoryName
+        - count

@@ -28,13 +28,8 @@ export default function PartnerDashboard() {
   useEffect(() => {
     const init = async () => {
       try {
-        const me = await base44.auth.me();
-        if (!me) {
-          base44.auth.redirectToLogin();
-          return;
-        }
-
-        setUser(me);
+        // Mock user for demo purposes
+        setUser({ name: "Demo Partner", email: "demo@partner.com" });
 
         // Load venues (for this partner)
         const venueList = await base44.entities.Venue.list();

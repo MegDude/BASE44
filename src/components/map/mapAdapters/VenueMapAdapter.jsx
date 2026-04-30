@@ -67,13 +67,13 @@ export function VenueSideCard({ venue, active, onClick }) {
         {venue.address && <p className="text-[13px] text-[#6f6b65] mb-3 truncate">{venue.address}</p>}
         <div className="flex flex-wrap gap-2">
           {venue.perk_description && (
-            <span className="flex items-center gap-1.5 bg-[#f5f3ef] border border-[#e8e5df] rounded-full px-2.5 py-1.5 text-[12px] text-[#3d3934] font-medium max-w-full truncate">
-              <Tag className="w-3 h-3 text-[#7a746b] shrink-0" /> {venue.perk_description}
+            <span className="flex max-w-full items-center gap-1.5 truncate rounded-full border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1.5 text-[12px] font-medium text-foreground/78">
+              <Tag className="h-3 w-3 shrink-0 text-muted-foreground" /> {venue.perk_description}
             </span>
           )}
           {venue.hours && (
-            <span className="flex items-center gap-1.5 bg-[#f5f3ef] border border-[#e8e5df] rounded-full px-2.5 py-1.5 text-[12px] text-[#3d3934] font-medium">
-              <Clock className="w-3 h-3 text-[#7a746b]" /> {venue.hours}
+            <span className="flex items-center gap-1.5 rounded-full border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1.5 text-[12px] font-medium text-foreground/78">
+              <Clock className="h-3 w-3 text-muted-foreground" /> {venue.hours}
             </span>
           )}
         </div>
@@ -122,7 +122,7 @@ export function BuildingSideCard({ building, active, onClick }) {
         )}
         <div className="flex flex-wrap gap-2">
           {building.developer && (
-            <span className="bg-[#f5f3ef] border border-[#e8e5df] rounded-full px-2.5 py-1.5 text-[12px] text-[#3d3934] font-medium">
+            <span className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1.5 text-[12px] font-medium text-foreground/78">
               {building.developer}
             </span>
           )}
@@ -132,7 +132,7 @@ export function BuildingSideCard({ building, active, onClick }) {
                 ? "bg-green-50 border-green-200 text-green-700"
                 : building.status === "pilot"
                 ? "bg-amber-50 border-amber-200 text-amber-700"
-                : "bg-[#f5f3ef] border-[#e8e5df] text-[#7a746b]"
+                : "bg-[var(--dp-surface-base)] border-[rgba(11,31,51,0.08)] text-muted-foreground"
             } capitalize`}
           >
             {building.status || "active"}

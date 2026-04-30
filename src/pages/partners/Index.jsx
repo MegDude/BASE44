@@ -1,298 +1,146 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Building2, Users, Utensils, Sparkles, MapPin } from 'lucide-react';
-import PartnerHero from '@/components/partner/PartnerHero';
-import PartnerCTASection from '@/components/partner/PartnerCTASection';
-import { PARTNER_SPACING, PARTNER_CATEGORIES, PARTNER_ROUTES, PARTNER_GRIDS } from '@/lib/partner-system';
-import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
-import { FAQ_PARTNERS } from '@/lib/faq-partner-data';
-
-const PARTNER_TYPES = [
-  {
-    id: 'residential',
-    label: 'Residential',
-    description: 'Connect residents to local venues, events, and perks',
-    icon: Building2,
-    href: '/partners/residential',
-    stats: { scans: '12k+', repeat: '73%' },
-  },
-  {
-    id: 'hospitality',
-    label: 'Hospitality',
-    description: 'Drive guest discovery and foot traffic from hotels',
-    icon: Users,
-    href: '/partners/hotels',
-    stats: { guests: '8k+', conversion: '34%' },
-  },
-  {
-    id: 'venues',
-    label: 'Venues',
-    description: 'Increase visits and repeat engagement',
-    icon: Utensils,
-    href: '/partners/venues',
-    stats: { visits: '24k+', repeat: '41%' },
-  },
-  {
-    id: 'brands',
-    label: 'Brands',
-    description: 'Launch campaigns with precise placement and attribution',
-    icon: Sparkles,
-    href: '/partners/brands',
-    stats: { campaigns: '15+', roi: '3.2x' },
-  },
-  {
-    id: 'civic',
-    label: 'Civic',
-    description: 'Mobilize communities around events and initiatives',
-    icon: MapPin,
-    href: '/partners/civic',
-    stats: { events: '40+', reach: '18k+' },
-  },
-];
+import PartnerInterestForm from "@/components/forms/PartnerInterestForm";
+import AudienceHero from "@/components/sections/AudienceHero";
+import MapShell from "@/components/map/MapShell";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { PARTNER_LANDING_SECTIONS, PARTNER_TYPE_CONTENT, PARTNER_TYPE_ORDER } from "@/lib/partnerContent";
 
 export default function PartnersIndex() {
-  const [selectedType, setSelectedType] = useState(null);
-
   return (
-    <div className="pt-[68px] min-h-screen bg-background">
-      {/* Hero */}
-      <PartnerHero
-        eyebrow="Partner Program"
-        headline="Build with Downtown Perks"
-        description="Five ways to grow your business: residential buildings, hotels, venues, brands, and civic organizations. Each with a live map, proven metrics, and a direct path to implementation."
-        primaryCTA="Explore your role"
-        primaryCTAHref="#partners"
-        stats={[
-          { label: 'Partners active', value: '40+' },
-          { label: 'Monthly scans', value: '180k' },
-          { label: 'Avg repeat rate', value: '52%' },
-        ]}
+    <main>
+      <AudienceHero
+        kicker="Partner ecosystem"
+        title="Show up where downtown decisions happen."
+        description="Downtown Perks helps properties, venues, brands, hospitality groups, and civic partners connect with people nearby — then measure what happens next."
+        primaryLabel={null}
+        secondaryLabel={null}
+        showBack={false}
       />
 
-      {/* Partner selection */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-12">
-            <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight">
-              Your role
+      <section id="partner-map">
+        <MapShell mode="partners" compact initialQuery="properties venues brands civic downtown" />
+      </section>
+
+      <section className="px-4 py-8 md:px-6 md:py-10">
+        <div className="dp-page-shell">
+          <div className="mb-8 max-w-3xl">
+            <div className="dp-micro-label">Partner types</div>
+            <h2 className="dp-heading-modern mt-4 text-[2rem] md:text-[2.8rem]">
+              Start with the partner type, then move into map intelligence, rollout, and the right entry model.
             </h2>
-            <p className="text-[15px] text-[#6f6b65] mt-3">
-              Choose how you want to participate in the Downtown Perks ecosystem.
+            <p className="mt-4 text-[14px] leading-7 text-muted-foreground">
+              The point is not to force different partners into the same pitch. Each page should make it obvious what that role gets, how it fits into downtown, and what the first rollout looks like.
             </p>
           </div>
 
-          <div className={PARTNER_GRIDS.gridCardFiveCol}>
-            {PARTNER_TYPES.map((type) => {
-              const Icon = type.icon;
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {PARTNER_TYPE_ORDER.map((key) => {
+              const item = PARTNER_TYPE_CONTENT[key];
+              const Icon = item.icon;
+
               return (
-                <Link
-                  key={type.id}
-                  to={type.href}
-                  className="group"
+                <div
+                  key={item.id}
+                  className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_36px_rgba(11,31,51,0.05)]"
                 >
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4 }}
-                    className="h-full p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all duration-300 cursor-pointer"
-                  >
-                    <Icon className="w-8 h-8 text-[#111] mb-3" />
-                    <h3 className="text-[16px] font-bold text-[#111] mb-1.5">{type.label}</h3>
-                    <p className="text-[13px] text-[#7a746b] leading-relaxed mb-4">
-                      {type.description}
-                    </p>
-
-                    {type.stats && (
-                      <div className="flex gap-3 text-[11px]">
-                        {Object.entries(type.stats).slice(0, 2).map(([key, val]) => (
-                          <div key={key}>
-                            <div className="font-bold text-[#111]">{val}</div>
-                            <div className="text-[#8d887f] capitalize">{key}</div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="mt-4 flex items-center gap-1 text-[12px] font-semibold text-[#111] group-hover:gap-2 transition-all">
-                      Learn more
-                      <ArrowRight className="w-3.5 h-3.5" />
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="dp-micro-label">{item.eyebrow}</div>
+                      <h3 className="mt-3 text-[1.35rem] font-semibold tracking-[-0.03em] text-foreground">
+                        {item.label}
+                      </h3>
                     </div>
-                  </motion.div>
-                </Link>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-[16px] bg-[rgba(11,31,51,0.05)] text-[var(--dp-navy)]">
+                      <Icon className="h-4.5 w-4.5" />
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-[14px] leading-7 text-muted-foreground">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-4 space-y-3">
+                    {item.outcomes.slice(0, 2).map((outcome, index) => (
+                      <div key={outcome} className="flex items-start gap-3 rounded-[18px] bg-[rgba(11,31,51,0.03)] px-4 py-3">
+                        <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-[11px] font-semibold text-[var(--dp-navy)] shadow-[0_6px_14px_rgba(11,31,51,0.05)]">
+                          {index + 1}
+                        </span>
+                        <span className="text-[13px] leading-6 text-[rgba(11,31,51,0.72)]">{outcome}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {item.metrics.slice(0, 2).map((metric) => (
+                      <span
+                        key={metric.label}
+                        className="inline-flex items-center gap-2 rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[rgba(11,31,51,0.6)]"
+                      >
+                        <span className="text-[var(--dp-navy)]">{metric.value}</span>
+                        {metric.label}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    <Link to={item.route} className="dp-cta-primary">
+                      Open page
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link to="/partners/apply" className="dp-cta-secondary">
+                      Apply to Be a Partner
+                    </Link>
+                  </div>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* How it works unified */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
-            One system, five roles
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Left: System explanation */}
-            <div>
-              <div className="space-y-6">
-                {[
-                  {
-                    title: 'Map-native discovery',
-                    desc: 'Residents, guests, and neighbors explore venues, events, and brands on a live map of downtown.',
-                  },
-                  {
-                    title: 'Precise placement',
-                    desc: 'Your location, offer, or event appears contextually based on user intent and proximity.',
-                  },
-                  {
-                    title: 'Real-time engagement',
-                    desc: 'Every interaction—scan, save, visit, redemption—is tracked and attributed.',
-                  },
-                  {
-                    title: 'Flexible models',
-                    desc: 'Launch campaigns, activate venues, connect residents, or drive foot traffic. Your choice.',
-                  },
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                  >
-                    <h3 className="text-[16px] font-bold text-[#111] mb-1.5">{item.title}</h3>
-                    <p className="text-[14px] text-[#6f6b65] leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: Key stats / proof */}
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Active partners', value: '40+' },
-                { label: 'Monthly scans', value: '180k' },
-                { label: 'Avg retention', value: '52%' },
-                { label: 'Campaign ROI', value: '3.2x' },
-                { label: 'Total reach', value: '120k' },
-                { label: 'Redemption rate', value: '28%' },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
-                  className="p-5 rounded-2xl border border-[#e8e5df] bg-white"
-                >
-                  <div className="text-[20px] font-bold text-[#111]">{stat.value}</div>
-                  <div className="text-[11px] text-[#8d887f] mt-1.5">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Examples / use cases */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
-            See it in action
-          </h2>
-
-          <div className={PARTNER_GRIDS.gridCardThreeCol}>
-            {[
-              {
-                type: 'Residential',
-                example: 'The Paseo',
-                desc: 'Residents discovered local venues 3x more after launch',
-                stat: '↑ 180% engagement',
-                link: '/brands/the-paseo',
-              },
-              {
-                type: 'Hospitality',
-                example: 'Hotel Van Zandt',
-                desc: 'Guest foot traffic to nearby venues increased 2.1x',
-                stat: '↑ 84 visits/week',
-                link: '/brands/hotel-van-zandt',
-              },
-              {
-                type: 'Venues',
-                example: "Banger's",
-                desc: 'Consistent foot traffic and repeat visits from map discovery',
-                stat: '↑ 41% return rate',
-                link: '#',
-              },
-            ].map((example, i) => (
-              <motion.a
-                key={i}
-                href={example.link}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all"
-              >
-                <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-1.5">
-                  {example.type}
+      <section className="px-4 py-8 md:px-6 md:py-10">
+        <div className="dp-page-shell">
+          <div className="grid gap-4 md:grid-cols-3">
+            {PARTNER_LANDING_SECTIONS.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.9)] p-5 shadow-[0_16px_30px_rgba(11,31,51,0.04)]">
+                  <div className="inline-flex items-center gap-3 text-[var(--dp-navy)]">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(11,31,51,0.05)]">
+                      <Icon className="h-4.5 w-4.5" />
+                    </div>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
+                      0{index + 1}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-[1.25rem] font-semibold tracking-[-0.03em] text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
+                    {item.body}
+                  </p>
                 </div>
-                <h3 className="text-[18px] font-bold text-[#111] mb-2">{example.example}</h3>
-                <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{example.desc}</p>
-                <div className="flex items-center gap-2">
-                  <div className="text-[14px] font-bold text-[#111]">{example.stat}</div>
-                  <ArrowRight className="w-4 h-4 text-[#7a746b]" />
-                </div>
-              </motion.a>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <FAQAccordionBlock
-        sectionEyebrow="Partner FAQs"
-        sectionTitle="How the partner system works"
-        sectionIntro="Downtown Perks gives each partner type a different way into the same downtown product. These answers explain how that system works."
-        items={FAQ_PARTNERS}
-        styleVariant="default"
-        showNumbers={false}
-        allowMultipleOpen={false}
-        defaultOpenIndex={0}
-        pageType="partners"
-        backgroundVariant="light"
-      />
-
-      {/* Closing CTA */}
-      <PartnerCTASection
-        headline="Join 40+ partners"
-        description="Let's talk about how Downtown Perks can work for you."
-        primaryCTA="Get started"
-        primaryHref="#partners"
-        secondaryLink={{ label: 'View pricing', href: '#' }}
-      />
-
-      {/* Footer nav */}
-      <section className={`${PARTNER_SPACING.subsectionVertical} border-t border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap gap-6 text-[13px]">
-            {[
-              { label: 'Residential', href: PARTNER_ROUTES[PARTNER_CATEGORIES.RESIDENTIAL] },
-              { label: 'Hospitality', href: PARTNER_ROUTES[PARTNER_CATEGORIES.HOSPITALITY] },
-              { label: 'Venues', href: PARTNER_ROUTES[PARTNER_CATEGORIES.VENUES] },
-              { label: 'Brands', href: PARTNER_ROUTES[PARTNER_CATEGORIES.BRANDS] },
-              { label: 'Civic', href: PARTNER_ROUTES[PARTNER_CATEGORIES.CIVIC] },
-            ].map((link) => (
-              <a key={link.href} href={link.href} className="text-[#111] hover:text-[#7a746b] transition-colors">
-                {link.label}
-              </a>
-            ))}
-          </div>
+      <section id="partner-form" className="dp-section">
+        <div className="dp-page-shell">
+          <PartnerInterestForm
+            partnerType="venue"
+            source="partners_overview_page"
+            title="Find the right partner path."
+            description="Choose your role and the system will route the request without showing internal source fields."
+            submitLabel="Apply to Be a Partner"
+            successPrimaryHref="/partners/dashboard"
+            successPrimaryLabel="View Dashboard"
+            successSecondaryHref="/explore"
+            successSecondaryLabel="Open the Map"
+          />
         </div>
       </section>
-    </div>
+    </main>
   );
 }

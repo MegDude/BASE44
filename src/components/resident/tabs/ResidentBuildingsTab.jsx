@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { MapPin, CheckCircle2, Lock } from "lucide-react";
 
 export default function ResidentBuildingsTab({ user }) {
@@ -7,6 +8,7 @@ export default function ResidentBuildingsTab({ user }) {
       id: 1,
       name: "The Waterline",
       address: "123 Rainey St",
+      route: "/buildings/the-waterline",
       verified: true,
       units: 340,
       amenities: ["Rooftop", "Gym", "Coworking"],
@@ -15,6 +17,7 @@ export default function ResidentBuildingsTab({ user }) {
       id: 2,
       name: "The Paseo",
       address: "456 Congress Ave",
+      route: "/buildings/the-paseo",
       verified: false,
       units: 285,
       amenities: ["Fitness", "Lounge"],
@@ -23,6 +26,7 @@ export default function ResidentBuildingsTab({ user }) {
       id: 3,
       name: "The Shore",
       address: "789 Lamar St",
+      route: "/buildings/seaholm-power-plant",
       verified: false,
       units: 210,
       amenities: ["Rooftop Pool", "Yoga"],
@@ -47,8 +51,9 @@ export default function ResidentBuildingsTab({ user }) {
             {buildings
               .filter((b) => b.verified)
               .map((building) => (
-                <div
+                <Link
                   key={building.id}
+                  to={building.route}
                   className="p-4 rounded-xl border-2 border-primary bg-primary/5"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -66,7 +71,7 @@ export default function ResidentBuildingsTab({ user }) {
                       </span>
                     ))}
                   </div>
-                </div>
+                </Link>
               ))}
           </motion.div>
         )}
@@ -82,8 +87,9 @@ export default function ResidentBuildingsTab({ user }) {
             {buildings
               .filter((b) => !b.verified)
               .map((building, i) => (
-                <div
+                <Link
                   key={building.id}
+                  to={building.route}
                   className="p-4 rounded-xl border border-border/40 bg-white hover:border-primary/50 hover:shadow-md transition-all cursor-pointer"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -102,7 +108,7 @@ export default function ResidentBuildingsTab({ user }) {
                       Learn more
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
           </div>
         </motion.div>

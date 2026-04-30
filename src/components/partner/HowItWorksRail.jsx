@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
  */
 export default function HowItWorksRail({ steps = [] }) {
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+    <section className="border-b border-[rgba(11,31,51,0.08)] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight">
@@ -25,12 +25,12 @@ export default function HowItWorksRail({ steps = [] }) {
             >
               {/* Visual */}
               <div className="mb-4">
-                <div className="w-16 h-16 rounded-2xl bg-[#f5f3ef] border border-[#e8e5df] flex items-center justify-center text-[24px] mb-4">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] text-[24px] shadow-[0_10px_20px_rgba(11,31,51,0.04)]">
                   {step.icon}
                 </div>
                 <div className="text-[14px] font-bold text-[#111]">{step.title}</div>
                 {step.description && (
-                  <div className="text-[13px] text-[#7a746b] mt-1.5 leading-relaxed">
+                  <div className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
                     {step.description}
                   </div>
                 )}
@@ -38,7 +38,7 @@ export default function HowItWorksRail({ steps = [] }) {
 
               {/* Connector */}
               {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 left-[calc(100%+8px)] w-[calc((100vw-200px)/5-24px)] h-0.5 bg-gradient-to-r from-[#e8e5df] to-transparent" />
+                <div className="absolute top-8 left-[calc(100%+8px)] hidden h-0.5 w-[calc((100vw-200px)/5-24px)] bg-gradient-to-r from-[rgba(11,31,51,0.12)] to-transparent md:block" />
               )}
             </motion.div>
           ))}

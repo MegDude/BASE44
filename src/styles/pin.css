@@ -1,0 +1,117 @@
+.dp-map-pin {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -100%) scale(var(--pin-scale, 1));
+  transform-origin: center bottom;
+  color: var(--pin-color, #2563eb);
+  opacity: var(--pin-opacity, 1);
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease,
+    filter 200ms ease;
+  filter: var(--pin-shadow, drop-shadow(0 8px 16px rgba(11, 26, 43, 0.14)));
+}
+
+.dp-map-pin:hover {
+  transform: translate(-50%, -100%) scale(calc(var(--pin-scale, 1) + 0.08));
+}
+
+.dp-map-pin__shell {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--pin-surface, #ffffff);
+  border: 2px solid currentColor;
+}
+
+.dp-map-pin__icon {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dp-map-pin__logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+.dp-map-pin--selected {
+  z-index: 20;
+  --pin-shadow: drop-shadow(0 0 14px rgba(255, 255, 255, 0.9));
+}
+
+.dp-map-pin--building,
+.dp-map-pin--hotel {
+  width: 30px;
+  height: 30px;
+}
+
+.dp-map-pin--building .dp-map-pin__shell,
+.dp-map-pin--hotel .dp-map-pin__shell {
+  display: none;
+}
+
+.dp-map-pin--building .dp-map-pin__icon,
+.dp-map-pin--hotel .dp-map-pin__icon {
+  color: var(--pin-color, #0b1a2b);
+}
+
+.dp-map-pin--brand .dp-map-pin__shell {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.dp-map-pin--civic .dp-map-pin__shell {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.dp-map-pin--out-of-radius {
+  filter:
+    grayscale(0.4)
+    brightness(0.78)
+    drop-shadow(0 6px 12px rgba(11, 26, 43, 0.08));
+}
+
+.dp-map-pin--boost {
+  --pin-shadow: drop-shadow(0 0 18px rgba(255, 255, 255, 0.9));
+}
+
+.dp-map-pin--perk .dp-map-pin__pulse {
+  animation: dp-perk-pulse 2.4s infinite;
+}
+
+.dp-map-pin--event .dp-map-pin__ripple {
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  animation: dp-pin-ripple 2s infinite;
+}
+
+@keyframes dp-perk-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes dp-pin-ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}

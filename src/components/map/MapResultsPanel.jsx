@@ -30,13 +30,13 @@ export default function MapResultsPanel({
   const hiddenCount = Math.max(0, results.length - previewCount);
 
   return (
-    <div className={`w-full md:w-[420px] md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[#e8e5df] flex flex-col z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)] transition-all ${
+    <div className={`w-full md:w-[420px] md:shrink-0 bg-white md:border-r border-t md:border-t-0 border-[rgba(11,31,51,0.08)] flex flex-col z-10 md:shadow-[2px_0_12px_rgba(0,0,0,.04)] transition-all ${
       isPanelExpanded
         ? 'h-auto md:h-full'
         : 'h-auto md:h-full'
     }`}>
       {/* Header */}
-      <div className="px-4 md:px-5 pt-4 md:pt-6 pb-3 md:pb-4 border-b border-[#e8e5df]">
+      <div className="px-4 md:px-5 pt-4 md:pt-6 pb-3 md:pb-4 border-b border-[rgba(11,31,51,0.08)]">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-lg md:text-[22px] font-semibold text-[#111] tracking-tight leading-tight">
             {/* Dynamic title based on context */}
@@ -46,14 +46,14 @@ export default function MapResultsPanel({
           </h1>
           <div className="flex items-center gap-2">
             {/* Result count badge */}
-            <span className="text-[12px] md:text-[13px] font-medium text-[#8d887f] border border-[#e8e5df] rounded-xl px-2.5 md:px-3 py-1 md:py-1.5 bg-[#f5f3ef]">
+            <span className="rounded-xl border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1 text-[12px] font-medium text-muted-foreground md:px-3 md:py-1.5 md:text-[13px]">
               {results.length}
             </span>
 
             {/* Menu toggle button */}
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="w-8 h-8 rounded-lg border border-[#e8e5df] bg-white flex items-center justify-center hover:bg-[#f5f4f2] transition-colors md:hidden"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(11,31,51,0.08)] bg-white transition-colors hover:bg-[var(--dp-surface-base)] md:hidden"
               title="Menu"
               aria-label="Toggle menu"
             >
@@ -63,7 +63,7 @@ export default function MapResultsPanel({
             {/* Show/Hide toggle (mobile & desktop) */}
             <button
               onClick={() => setPanelExpanded(!isPanelExpanded)}
-              className="w-8 h-8 rounded-lg border border-[#e8e5df] bg-white flex items-center justify-center hover:bg-[#f5f4f2] transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(11,31,51,0.08)] bg-white transition-colors hover:bg-[var(--dp-surface-base)]"
               title={isPanelExpanded ? 'Hide results' : 'Show results'}
               aria-label={isPanelExpanded ? 'Hide results panel' : 'Show results panel'}
             >
@@ -84,14 +84,14 @@ export default function MapResultsPanel({
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden mb-3 pb-3 border-t border-[#e8e5df] pt-3 space-y-2"
+              className="mb-3 space-y-2 border-t border-[rgba(11,31,51,0.08)] pb-3 pt-3 md:hidden"
             >
               <button
                 onClick={() => {
                   setPanelExpanded(true);
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#111] bg-[#f5f3ef] hover:bg-[#efe8df] transition-colors"
+                className="flex w-full items-center gap-2 rounded-lg bg-[var(--dp-surface-base)] px-3 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-[rgba(11,31,51,0.06)]"
               >
                 <List className="w-4 h-4" />
                 Expand Full List
@@ -101,7 +101,7 @@ export default function MapResultsPanel({
                   setPanelExpanded(false);
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#111] bg-[#f5f3ef] hover:bg-[#efe8df] transition-colors"
+                className="flex w-full items-center gap-2 rounded-lg bg-[var(--dp-surface-base)] px-3 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-[rgba(11,31,51,0.06)]"
               >
                 <Filter className="w-4 h-4" />
                 Collapse Preview
@@ -111,7 +111,7 @@ export default function MapResultsPanel({
                   clearSelection();
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#8d887f] bg-[#f5f3ef] hover:bg-[#efe8df] transition-colors"
+                className="flex w-full items-center gap-2 rounded-lg bg-[var(--dp-surface-base)] px-3 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-[rgba(11,31,51,0.06)]"
               >
                 <X className="w-4 h-4" />
                 Clear Selection
@@ -138,8 +138,8 @@ export default function MapResultsPanel({
               renderEmptyState()
             ) : (
               <div className="flex flex-col items-center justify-center py-20 text-center">
-                <p className="text-[15px] font-semibold text-[#3d3934]">No results found</p>
-                <p className="text-[13px] text-[#8d887f] mt-1">Try adjusting your filters.</p>
+                <p className="text-[15px] font-semibold text-foreground">No results found</p>
+                <p className="mt-1 text-[13px] text-muted-foreground">Try adjusting your filters.</p>
               </div>
             )
           ) : isCollapsed ? (

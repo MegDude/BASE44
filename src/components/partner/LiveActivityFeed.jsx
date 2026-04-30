@@ -5,13 +5,13 @@ import { motion } from 'framer-motion';
  */
 export default function LiveActivityFeed({ activities = [] }) {
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
+    <section className="border-b border-[rgba(11,31,51,0.08)] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8">
           <h3 className="text-[24px] md:text-[28px] font-bold text-[#111] leading-tight">
             Live activity
           </h3>
-          <p className="text-[14px] text-[#7a746b] mt-2">
+          <p className="mt-2 text-[14px] text-muted-foreground">
             Real-time engagement from the platform right now.
           </p>
         </div>
@@ -24,16 +24,16 @@ export default function LiveActivityFeed({ activities = [] }) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.05 }}
-              className="flex items-start gap-3 p-4 rounded-xl border border-[#e8e5df] bg-white/50 hover:bg-white transition-colors"
+              className="flex items-start gap-3 rounded-xl border border-[rgba(11,31,51,0.08)] bg-white/60 p-4 transition-colors hover:bg-white"
             >
               <div className="w-2 h-2 rounded-full bg-[#111] mt-2 shrink-0 animate-pulse" />
 
               <div className="flex-1 min-w-0">
                 <div className="text-[13px] font-medium text-[#111]">{activity.action}</div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[12px] text-[#7a746b]">{activity.source}</span>
-                  <span className="text-[11px] text-[#bbb]">•</span>
-                  <span className="text-[11px] text-[#7a746b]">{activity.time}</span>
+                  <span className="text-[12px] text-muted-foreground">{activity.source}</span>
+                  <span className="text-[11px] text-foreground/28">•</span>
+                  <span className="text-[11px] text-muted-foreground">{activity.time}</span>
                 </div>
               </div>
             </motion.div>

@@ -85,7 +85,11 @@ export default function BrandAnalytics() {
     // Set default brand (can be customized via params)
     const brandSlug = searchParams.get('brand');
     if (brandSlug) {
-      setBrand({ slug: brandSlug, name: 'Fine Eyewear' });
+      const brandNames = {
+        "inspired-closets-austin": "Inspired Closets Austin",
+        "fine-eyewear": "Fine Eyewear",
+      };
+      setBrand({ slug: brandSlug, name: brandNames[brandSlug] || 'Fine Eyewear' });
     } else {
       setBrand({ slug: 'all-brands', name: 'All Brands' });
     }

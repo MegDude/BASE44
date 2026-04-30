@@ -7,39 +7,39 @@ import { ArrowRight } from 'lucide-react';
  */
 export default function PartnerEntryHero() {
   return (
-    <section className="py-16 md:py-24 border-b border-border/70 bg-background">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="px-4 py-8 md:px-6 md:py-10">
+      <div className="dp-page-shell">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-3xl"
+          className="dp-band max-w-4xl p-6 md:p-10"
         >
-          <div className="text-[11px] font-bold uppercase tracking-[.16em] text-[#B7934E] mb-4">
+          <div className="dp-micro-label mb-4">
             Partner Program
           </div>
 
-          <h1 className="text-[38px] md:text-[56px] font-bold text-foreground leading-[1.02] tracking-tight mb-5">
+          <h1 className="dp-display-hero mb-5 max-w-3xl text-[2.5rem] md:text-[4rem]">
             One downtown system.
             <br />
             Five ways to grow.
           </h1>
 
-          <p className="text-[16px] text-foreground/72 leading-7 mb-6 max-w-2xl">
+          <p className="max-w-2xl text-[15px] leading-7 text-[rgba(11,31,51,0.68)]">
             Downtown Perks is a unified map-native operating layer for downtown. Whether you're a residential building, hotel, venue, brand, or civic organization—you use the same system differently. Show up on the map. Connect your people. Measure what matters.
           </p>
 
           <div className="flex flex-wrap gap-3">
             <a
               href="#partners"
-              className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-primary text-primary-foreground font-semibold text-[14px] hover:bg-primary/92"
+              className="dp-cta-primary"
             >
               Find your role
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
               href="/downtown-perks/explore"
-              className="inline-flex items-center h-11 px-5 rounded-full border border-border bg-white text-foreground font-semibold text-[14px] hover:bg-accent"
+              className="dp-cta-secondary"
             >
               Explore the map
             </a>

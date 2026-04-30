@@ -6,55 +6,75 @@
 export const FAQ_HOME = [
   {
     id: "h1",
-    question: "What is Downtown Perks?",
+    question: "Do I need to download an app?",
     answer:
-      "Downtown Perks is a live downtown map for residents, buildings, partners, and local places. It brings places, events, offers, and nearby context into one simple layer so people can decide what to do without switching between apps.",
+      "No. It's a mobile web experience. Scan a QR code, and you're in. No download. No login. No extra platform.",
   },
   {
     id: "h2",
-    question: "Do I need to download an app?",
+    question: "Does it cost anything for residents?",
     answer:
-      "No. Downtown Perks is designed to open fast and work simply. Residents can join through a QR code or text flow and use the experience without adding another app to their phone.",
+      "No. Your building covers it. Downtown Perks is included as a building amenity-you get map access, event RSVPs, and your perks card at no cost.",
   },
   {
     id: "h3",
-    question: "How do residents get access?",
+    question: "Do venues pay to join?",
     answer:
-      "If a building is already live, resident access is included as part of the amenity offering. If a building is not live yet, residents can still join directly and start using Downtown Perks right away.",
+      "Not at first. Venues get 12 months free to prove the value. After that, it's $49-$99/year if you keep it. No risk. No long-term commitment.",
   },
   {
     id: "h4",
-    question: "What does the Perks Card do?",
+    question: "What do buildings pay?",
     answer:
-      "The Perks Card is the resident credential used to unlock participating local offers and benefits. It is designed to be fast to access and simple to use when someone is already out downtown.",
+      "90-day free pilot. After that, choose: stay free forever (basic reporting), $39/year (full analytics), or $99/year (premium tier). Most start free and upgrade when they see the engagement.",
   },
   {
     id: "h5",
-    question: "Who is Downtown Perks for?",
+    question: "How fast can a partner launch?",
     answer:
-      "It is built for people who live downtown, the buildings they live in, and the local places, hospitality groups, brands, and civic organizations that want to show up more usefully in everyday downtown decisions.",
+      "7-10 days. We handle setup, map placement, QR generation, and entry point coordination. You bring your business details, perks, and events.",
   },
   {
     id: "h6",
-    question: "Is this just a list of deals?",
+    question: "What gets tracked?",
     answer:
-      "No. The value is not just the offer. The value is the context. Downtown Perks helps people see what is nearby, what is happening, and what is worth doing right now — with offers layered into that experience.",
+      "Scans (QR entry points). Saves (bookmarked places/events). RSVPs (event signups). Redemptions (perks card usage). You get reporting snapshots at 30, 60, and 90 days to see what's working.",
   },
   {
     id: "h7",
-    question: "Can buildings use this as a resident amenity?",
+    question: "What kind of perks?",
     answer:
-      "Yes. Buildings can offer Downtown Perks as a resident amenity layer that feels more current and useful than a static list of neighborhood recommendations.",
-    linkLabel: "See building partnerships",
-    linkHref: "/downtown-perks/for-buildings",
+      "Discounts on food and drinks. Priority access to events. Welcome offers for first-time visits. Members-only specials. Each business sets its own perks. They show up on the map when you're nearby.",
   },
   {
     id: "h8",
-    question: "How do partners know it is working?",
+    question: "Is my info shared with partners?",
     answer:
-      "Partners can track scans, saves, RSVPs, and redemptions — so the platform shows what people actually respond to, not just where impressions happened.",
-    linkLabel: "See partner types",
-    linkHref: "/partners",
+      "No. We track actions for reporting-not personal contact information. Your details aren't shared unless you explicitly opt in (like signing up for a venue's newsletter). Privacy is the default.",
+  },
+  {
+    id: "h9",
+    question: "Can partners update listings?",
+    answer:
+      "Yes. Partners get a simple dashboard to update hours, add perks, post events, and adjust map presence. Changes go live immediately.",
+  },
+  {
+    id: "h10",
+    question: "Where is this available?",
+    answer:
+      "Downtown Austin. We're starting with one district, proving the model, then expanding to other downtown corridors based on partner and resident demand.",
+  },
+  {
+    id: "h11",
+    question: "Who can join?",
+    answer:
+      "Downtown residents in participating buildings. It's exclusive by design-built for people who actually live here.",
+  },
+  {
+    id: "h12",
+    question: "How do resident connections work?",
+    answer:
+      "See an event or activity you want to join. Use the \"Connect Nearby\" feature to signal interest and reach out to others who are going. It's opt-in, lightweight, and designed to make it easier to show up together. No separate social platform required.",
   },
 ];
 

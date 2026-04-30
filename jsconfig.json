@@ -21,10 +21,6 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "vite.config.js"],
   "exclude": [
     "node_modules",
-    "dist",
-    "src/components/ui",
-    "src/api",
-    "src/lib",
-    "src/data"
+    "dist"
   ]
 } 

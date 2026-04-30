@@ -20,7 +20,7 @@ export default function Layout() {
     pathname.startsWith("/partners") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/partner-workspace") ||
-    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about"].includes(pathname);
+    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about", "/build-pack", "/implementation-spec"].includes(pathname);
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
@@ -31,7 +31,7 @@ export default function Layout() {
     pathname === "/events";
 
   return (
-    <div className="min-h-screen bg-background font-body">
+    <div className="min-h-screen bg-[var(--dp-bg)] font-body text-[var(--dp-text)]">
       <ScrollToTop />
       <Navbar />
       <main>

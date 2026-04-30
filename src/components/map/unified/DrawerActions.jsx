@@ -14,11 +14,15 @@ export default function DrawerActions({ item, itemType, onClose }) {
   const { trackAction, isRedeeming, redeemingId } = useUnifiedMapStore();
   const [showQR, setShowQR] = useState(false);
   const [successAction, setSuccessAction] = useState(null);
+  const hasPerk = Boolean(item?.perk_value || item?.perk?.value || item?.perk);
 
   const handlePrimaryAction = async () => {
-    if (itemType === 'venue') {
+    if (itemType === 'venue' && hasPerk) {
       setShowQR(true);
       await trackAction(item.id, 'scan', { itemType: 'venue' });
+    } else if (itemType === 'venue') {
+      await trackAction(item.id, 'save', { itemType: 'venue', actionSurface: 'primary_without_perk' });
+      setSuccessAction('save');
     } else if (itemType === 'event') {
       await trackAction(item.id, 'rsvp', { itemType: 'event' });
       setSuccessAction('rsvp');
@@ -41,16 +45,11 @@ export default function DrawerActions({ item, itemType, onClose }) {
 
   const handleNavigate = async () => {
     await trackAction(item.id, 'navigate', { itemType });
-    if (item.latitude && item.longitude) {
-      window.open(
-        `https://maps.google.com/?q=${item.latitude},${item.longitude}`,
-        '_blank'
-      );
-    }
+    setSuccessAction('route');
   };
 
   const primaryLabel =
-    itemType === 'venue' ? 'Get Perk' : itemType === 'event' ? 'RSVP' : 'Reserve';
+    itemType === 'venue' ? (hasPerk ? 'Get Perk' : 'Save') : itemType === 'event' ? 'RSVP' : 'Reserve';
   const primaryIcon =
     itemType === 'venue' ? Zap : itemType === 'event' ? Calendar : MapPin;
 
@@ -82,11 +81,13 @@ export default function DrawerActions({ item, itemType, onClose }) {
                 <CheckCircle className="w-6 h-6 text-primary" />
               </motion.div>
               <h3 className="font-bold text-lg text-foreground mb-1">
-                {successAction === 'save' ? 'Saved!' : 'Done!'}
+                {successAction === 'save' ? 'Saved!' : successAction === 'route' ? 'Pinned' : 'Done!'}
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
                 {successAction === 'save'
                   ? 'Added to your list'
+                  : successAction === 'route'
+                    ? 'Keep exploring in the live map.'
                   : 'Your action was recorded'}
               </p>
               <button

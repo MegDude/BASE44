@@ -4,12 +4,17 @@ on:
   push:
     branches:
       - main
+      - 'agent/**'
+      - 'deploy-*'
   pull_request:
 
 jobs:
   build:
     name: Build and Validate
     runs-on: ubuntu-latest
+    concurrency:
+      group: downtown-perks-ci-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout

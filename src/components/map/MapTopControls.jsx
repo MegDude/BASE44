@@ -75,7 +75,7 @@ export default function MapTopControls() {
                 className={`h-10 px-3.5 rounded-xl border text-[12px] font-medium shrink-0 transition-all ${
                   filters.category === cat.id
                     ? 'bg-[#111] text-white border-[#111]'
-                    : 'bg-white text-[#3d3934] border-[#e8e5df] hover:border-[#bbb]'
+                    : 'bg-white text-foreground/78 border-[rgba(11,31,51,0.08)] hover:border-[rgba(11,31,51,0.18)]'
                 }`}
               >
                 {cat.label}
@@ -90,7 +90,7 @@ export default function MapTopControls() {
                 setQueryFilter('');
                 setExplanation('');
               }}
-              className="w-8 h-8 rounded-lg border border-[#e8e5df] bg-white flex items-center justify-center hover:bg-[#f5f4f2] transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(11,31,51,0.08)] bg-white transition-colors hover:bg-[var(--dp-surface-base)]"
             >
               <X className="w-3.5 h-3.5 text-[#111]" />
             </button>
@@ -99,7 +99,7 @@ export default function MapTopControls() {
           {/* Filter menu toggle (mobile) */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:bg-[#f5f4f2] transition-all md:hidden"
+            className="h-10 rounded-xl border border-[rgba(11,31,51,0.08)] bg-white px-3.5 text-[12px] font-medium text-foreground/78 transition-all hover:bg-[var(--dp-surface-base)] md:hidden"
           >
             <Settings className="w-4 h-4" />
           </button>
@@ -155,7 +155,7 @@ export default function MapTopControls() {
                     setShowFilters(false);
                   }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
-                    filters.category === cat.id ? 'bg-[#111] text-white' : 'text-[#3d3934] hover:bg-[#f5f4f2]'
+                    filters.category === cat.id ? 'bg-[#111] text-white' : 'text-foreground/78 hover:bg-[var(--dp-surface-base)]'
                   }`}
                 >
                   {cat.label}
