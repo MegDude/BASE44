@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import AskTheMap from "@/components/map/AskTheMap";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import UnifiedResultsPanel from "@/components/map/unified/UnifiedResultsPanel";
 import UnifiedDrawer from "@/components/map/unified/UnifiedDrawer";
@@ -7,7 +7,6 @@ import { createMarker } from "@/components/map/markers/MarkerFactory";
 import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 import { useMapStateStore } from "@/store/mapStateStore";
 import { sharedMapItemToMapEntity } from "@/lib/mappers/sharedMapMappers";
-import { createExploreLink } from "@/lib/routeHelpers";
 
 function SparkleIcon({ className = "" }) {
   return (
@@ -26,37 +25,33 @@ const MODE_CONFIG = {
   home: {
     title: "Where downtown meets you.",
     subtitle: "Start with one decision. The map does the rest.",
-    prompts: ["Where do you want to go?", "Places to go", "Happening tonight", "Want to live here"],
+    prompts: ["Coffee nearby", "Happy hour now", "Events tonight"],
     chips: [
-      { id: "all", label: "Best nearby now" },
-      { id: "venue", label: "Places to go" },
-      { id: "perk", label: "Perks nearby" },
-      { id: "event", label: "Happening tonight" },
-      { id: "building", label: "Want to live here" },
-    ],
-    quickLinks: [
-      { label: "Places to go", href: createExploreLink({ intent: "places" }) },
-      { label: "Perks nearby", href: createExploreLink({ type: "perk", radius: 5 }) },
-      { label: "Happening tonight", href: createExploreLink({ type: "event", time: "now" }) },
-      { label: "Want to live here", href: createExploreLink({ type: "property", intent: "residential" }) },
+      { id: "all", label: "All" },
+      { id: "venue", label: "Places" },
+      { id: "perk", label: "Perks" },
+      { id: "event", label: "Events" },
+      { id: "building", label: "Homes" },
+      { id: "5min", label: "5 min walk" },
     ],
   },
   resident: {
     title: "Where downtown meets you.",
     subtitle: "One map. Everything nearby. No app download. No login friction.",
-    prompts: ["Coffee now", "Happy hour nearby", "Places to walk to"],
+    prompts: ["Coffee nearby", "Happy hour now", "Events tonight"],
     chips: [
-      { id: "all", label: "Best nearby now" },
-      { id: "perk", label: "Perks nearby" },
-      { id: "event", label: "Happening tonight" },
-      { id: "building", label: "Want to live here" },
-      { id: "5min", label: "Best within 5 minutes" },
+      { id: "all", label: "All" },
+      { id: "venue", label: "Places" },
+      { id: "perk", label: "Perks" },
+      { id: "event", label: "Events" },
+      { id: "building", label: "Homes" },
+      { id: "5min", label: "5 min walk" },
     ],
   },
   partners: {
     title: "One downtown layer. Five partner roles.",
     subtitle: "Start with the partner type, then move into map intelligence, rollout, and the right entry model.",
-    prompts: ["properties venues brands civic downtown", "Rainey activity tonight", "best converting partners"],
+    prompts: ["Rainey activity tonight", "Best converting partners", "Source buildings"],
     chips: [
       { id: "all", label: "All signals" },
       { id: "building", label: "Properties" },
@@ -68,40 +63,40 @@ const MODE_CONFIG = {
   property: {
     title: "Turn a building into a neighborhood.",
     subtitle: "Make your address more useful. Connect residents to nearby places, events, and perks.",
-    prompts: ["properties and perks near residents", "best within 5 minutes", "resident activity tonight"],
+    prompts: ["Perks near residents", "Best within 5 minutes", "Resident activity tonight"],
     chips: [
       { id: "building", label: "Properties" },
-      { id: "perk", label: "Perks nearby" },
-      { id: "venue", label: "Places to go" },
-      { id: "5min", label: "Best within 5 minutes" },
+      { id: "perk", label: "Perks" },
+      { id: "venue", label: "Places" },
+      { id: "5min", label: "5 min walk" },
     ],
   },
   venue: {
     title: "Be the answer to what's next.",
     subtitle: "Show up when intent is real. Appear in the map when people nearby are already deciding.",
-    prompts: ["rooftop bars coffee restaurants wellness nearby", "dinner tonight", "open now nearby"],
+    prompts: ["Dinner tonight", "Open now nearby", "Happy hour now"],
     chips: [
       { id: "venue", label: "Venues" },
-      { id: "perk", label: "Perks nearby" },
+      { id: "perk", label: "Perks" },
       { id: "event", label: "Events" },
-      { id: "5min", label: "Best within 5 minutes" },
+      { id: "5min", label: "5 min walk" },
     ],
   },
   hospitality: {
     title: "Extend the stay beyond the lobby.",
     subtitle: "Give guests one live map for dining, events, wellness, and nightlife.",
-    prompts: ["guest coffee dinner events near hotel", "things to do tonight", "walkable dining nearby"],
+    prompts: ["Things to do tonight", "Walkable dining nearby", "Coffee near hotel"],
     chips: [
-      { id: "venue", label: "Places to go" },
+      { id: "venue", label: "Places" },
       { id: "event", label: "Events" },
-      { id: "perk", label: "Perks nearby" },
+      { id: "perk", label: "Perks" },
       { id: "5min", label: "Walkable now" },
     ],
   },
   brand: {
     title: "Run campaigns that live in the city.",
     subtitle: "Buy context, not broad reach. Run campaigns in the right corridor at the right time.",
-    prompts: ["brand sponsor zones events nightlife downtown", "district activity tonight", "best partner zones"],
+    prompts: ["District activity tonight", "Best partner zones", "Event windows"],
     chips: [
       { id: "all", label: "All signals" },
       { id: "event", label: "Event windows" },
@@ -113,7 +108,7 @@ const MODE_CONFIG = {
   civic: {
     title: "Scale the pulse of the district.",
     subtitle: "Make participation visible. Surface district events where people are already looking.",
-    prompts: ["community events civic arts downtown", "public activity downtown", "district participation"],
+    prompts: ["Community events", "Public activity downtown", "District participation"],
     chips: [
       { id: "all", label: "All signals" },
       { id: "event", label: "Events" },
@@ -159,10 +154,8 @@ function matchesHomeCoverage(item) {
   const district = String(item?.district || "").trim().toLowerCase();
   const address = String(item?.address || item?.metadata?.address || "");
   const zip = extractZip(address);
-
   if (district && !HOME_ALLOWED_DISTRICTS.has(district)) return false;
   if (zip && !HOME_ALLOWED_ZIPS.has(zip)) return false;
-
   return Boolean(district || zip);
 }
 
@@ -192,8 +185,7 @@ export default function MapShell({
 
   const { items: feedItems } = useSharedMapFeed({
     query,
-    activeCategory:
-      activeChip === "venue" || activeChip === "event" || activeChip === "perk" ? activeChip : "all",
+    activeCategory: activeChip === "venue" || activeChip === "event" || activeChip === "perk" ? activeChip : "all",
     limit: 120,
   });
 
@@ -241,6 +233,21 @@ export default function MapShell({
   const effectiveSelected = selected || selectedEntity;
   const shouldShowDrawer = Boolean(effectiveSelected && drawerState !== "closed");
 
+  function clearSelection() {
+    selectEntity(null);
+    setDrawerState("closed");
+  }
+
+  function handleSubmit(nextQuery) {
+    setQuery(String(nextQuery || queryInput || "").trim());
+    clearSelection();
+  }
+
+  function handleFilterChange(nextChip) {
+    setActiveChip(nextChip);
+    clearSelection();
+  }
+
   return (
     <section className={`pearl-page relative overflow-hidden ${compact ? "min-h-[720px]" : "min-h-screen"} ${className}`}>
       <div className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-6 pt-20 md:px-6">
@@ -257,78 +264,17 @@ export default function MapShell({
           <div className="grid h-full grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)]">
             <div className="order-2 border-t border-[var(--dp-border)] bg-[rgba(255,255,255,0.48)] lg:order-1 lg:border-r lg:border-t-0">
               <div className="border-b border-[var(--dp-border)] px-4 py-4 md:px-5">
-                <div className="dp-page-kicker inline-flex items-center gap-2">
-                  <SparkleIcon className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
-                  Ask the map
-                </div>
-
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    setQuery(queryInput.trim());
-                    selectEntity(null);
-                    setDrawerState("closed");
-                  }}
-                  className="mt-4 flex gap-2"
-                >
-                  <div className="pearl-glass flex h-11 flex-1 items-center gap-3 rounded-[14px] px-4">
-                    <SparkleIcon className="h-4 w-4 text-[var(--dp-gold)]" />
-                    <input
-                      value={queryInput}
-                      onChange={(event) => setQueryInput(event.target.value)}
-                      placeholder="Search places, events, perks, or what is nearby"
-                      className="flex-1 bg-transparent text-sm text-[var(--dp-navy)] outline-none placeholder:text-[rgba(20,32,51,0.42)]"
-                    />
-                  </div>
-                  <button type="submit" className="dp-cta-primary h-11 min-h-0 px-4 text-sm normal-case tracking-normal">
-                    Ask
-                  </button>
-                </form>
-
-                {mode === "home" && config.quickLinks?.length ? (
-                  <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
-                    {config.quickLinks.map((link) => (
-                      <Link key={link.href} to={link.href} className="dp-chip whitespace-nowrap text-[11px] uppercase tracking-[0.12em]">
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                ) : null}
-
-                <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
-                  {config.prompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      type="button"
-                      onClick={() => {
-                        setQueryInput(prompt);
-                        setQuery(prompt);
-                        selectEntity(null);
-                        setDrawerState("closed");
-                      }}
-                      className="dp-chip whitespace-nowrap text-[11px]"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mt-4 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
-                  {config.chips.map((chip) => (
-                    <button
-                      key={chip.id}
-                      type="button"
-                      onClick={() => {
-                        setActiveChip(chip.id);
-                        selectEntity(null);
-                        setDrawerState("closed");
-                      }}
-                      className={`dp-chip whitespace-nowrap text-[12px] ${activeChip === chip.id ? "dp-chip-active" : ""}`}
-                    >
-                      {chip.label}
-                    </button>
-                  ))}
-                </div>
+                <AskTheMap
+                  value={queryInput}
+                  onChange={setQueryInput}
+                  onSubmit={handleSubmit}
+                  quickPrompts={config.prompts}
+                  filters={config.chips}
+                  activeFilter={activeChip}
+                  onFilterChange={handleFilterChange}
+                  mode="compact"
+                  placeholder="Search places, events, perks, or what is nearby"
+                />
               </div>
 
               <div className="px-4 py-3 md:px-5">
