@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 import PearlPartnerInsightMap from "@/components/partner/PearlPartnerInsightMap";
 import PartnerStoryCarousel from "@/components/partner/PartnerStoryCarousel";
 import { PARTNER_TYPE_CONTENT } from "@/lib/partnerContent";
