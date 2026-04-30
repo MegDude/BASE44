@@ -12,14 +12,14 @@ import type {
 
 export const navLinks: LinkAction[] = [
   { label: "Explore", href: "/explore" },
-  { label: "For Buildings", href: "/downtown-perks/for-buildings" },
+  { label: "For Buildings", href: "/partners/properties" },
   { label: "Partners", href: "/partners" },
   { label: "Pricing", href: "/pricing" },
 ];
 
 export const navCta: LinkAction = {
   label: "Get Started",
-  href: "/downtown-perks/for-buildings",
+  href: "/partners/properties",
 };
 
 export const heroChips: ChipItem[] = [
@@ -36,7 +36,7 @@ export const heroPrimaryAction: LinkAction = {
 
 export const heroSecondaryAction: LinkAction = {
   label: "For Buildings",
-  href: "/downtown-perks/for-buildings",
+  href: "/partners/properties",
 };
 
 export const capabilityTabs: ChipItem[] = [
@@ -177,7 +177,7 @@ export const partnerPreviews: ValueCardItem[] = [
     title: "Residential buildings",
     description:
       "Offer residents a neighborhood layer that strengthens community and demonstrates property value.",
-    action: { label: "For buildings", href: "/downtown-perks/for-buildings" },
+    action: { label: "For buildings", href: "/partners/properties" },
   },
   {
     id: "p2",
@@ -191,7 +191,7 @@ export const partnerPreviews: ValueCardItem[] = [
     title: "Hotels & hospitality",
     description:
       "Give guests a concierge-quality downtown guide from the moment they check in.",
-    action: { label: "For hospitality", href: "/partners/hospitality" },
+    action: { label: "For hospitality", href: "/partners/hotels" },
   },
 ];
 
@@ -212,7 +212,7 @@ export const pricingPlans: PricingPlan[] = [
     price: "Starting at $299/mo",
     description:
       "Resident layer, building intelligence dashboard, and engagement reporting.",
-    action: { label: "Start a pilot", href: "/downtown-perks/for-buildings" },
+    action: { label: "Start a pilot", href: "/partners/properties" },
     featured: true,
   },
   {
@@ -234,16 +234,16 @@ export const footerGroups: FooterGroup[] = [
       { label: "Live Map", href: "/explore" },
       { label: "Events", href: "/events" },
       { label: "Perks", href: "/perks" },
-      { label: "About", href: "/downtown-perks/about" },
+      { label: "About", href: "/about" },
     ],
   },
   {
     id: "partners",
     title: "For Partners",
     links: [
-      { label: "Buildings", href: "/downtown-perks/for-buildings" },
+      { label: "Buildings", href: "/partners/properties" },
       { label: "Businesses", href: "/partners" },
-      { label: "Hospitality", href: "/partners/hospitality" },
+      { label: "Hospitality", href: "/partners/hotels" },
       { label: "Pricing", href: "/pricing" },
     ],
   },
@@ -251,7 +251,7 @@ export const footerGroups: FooterGroup[] = [
     id: "company",
     title: "Company",
     links: [
-      { label: "About", href: "/downtown-perks/about" },
+      { label: "About", href: "/about" },
       { label: "Dashboard", href: "/dashboard" },
     ],
   },

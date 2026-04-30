@@ -36,17 +36,17 @@ export default function DashboardHub() {
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <h1 className="max-w-3xl text-5xl font-semibold tracking-[-0.05em] text-foreground md:text-6xl">
-                Choose your layer in the downtown system.
+                Choose how you want to use downtown.
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
                 {userName
-                  ? `Signed in as ${userName}. Continue into the resident surface or the partner/property intelligence hub.`
-                  : "Residents get the live map and card. Partners and properties get the operating view for residents, campaigns, amenities, reports, partner activity, and map intelligence."}
+                  ? `Signed in as ${userName}. Continue into the resident map or the partner dashboard.`
+                  : "Residents use the map and card. Partners and properties use the dashboard to see what people viewed, saved, scanned, and redeemed."}
               </p>
             </div>
 
             <Link
-              to="/downtown-perks/explore"
+              to="/explore"
               className="inline-flex h-12 items-center gap-2 rounded-[12px] border border-[rgba(13,27,42,0.10)] bg-white px-5 text-sm font-semibold uppercase tracking-[0.14em] text-foreground transition-all hover:bg-[var(--dp-surface-base)]"
             >
               Open live map

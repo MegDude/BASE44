@@ -1,6 +1,6 @@
-import PartnerTypeTemplate from "@/components/partner/PartnerTypeTemplate";
-import { PARTNER_TYPE_CONTENT } from "@/lib/partnerContent";
+import PartnerNarrativePage from "@/components/partners/PartnerNarrativePage";
+import { getPartnerRoleConfig } from "@/content/partnerSystem";
 
 export default function HotelsPartner() {
-  return <PartnerTypeTemplate content={PARTNER_TYPE_CONTENT.hospitality} />;
+  return <PartnerNarrativePage role={getPartnerRoleConfig("hospitality")} />;
 }

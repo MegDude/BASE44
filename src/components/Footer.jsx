@@ -1,30 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin } from "lucide-react";
-import { ROUTES } from "@/lib/routes";
-
-const FOOTER_LINKS = {
-  Explore: [
-    { to: ROUTES.explore, label: "Live Map" },
-    { to: ROUTES.events, label: "Events" },
-    { to: ROUTES.perks, label: "Perks" },
-    { to: ROUTES.card, label: "Perks Card" },
-    { to: ROUTES.about, label: "About" },
-  ],
-  Partners: [
-    { to: ROUTES.partnerProperties, label: "Properties" },
-    { to: ROUTES.partnerHospitality, label: "Hospitality" },
-    { to: ROUTES.partnerVenues, label: "Venues" },
-    { to: ROUTES.partnerBrands, label: "Brands" },
-    { to: ROUTES.partnerCivic, label: "Civic" },
-  ],
-  Platform: [
-    { to: ROUTES.partners, label: "Partner Overview" },
-    { to: ROUTES.partnerWorkspace, label: "Partner Workspace" },
-    { to: ROUTES.partnerDashboard, label: "Dashboard" },
-    { to: ROUTES.partners, label: "Start Here" },
-    { to: ROUTES.brands, label: "Brand Directory" },
-  ],
-};
+import { FOOTER_NAV_GROUPS } from "@/config/navItems";
+import { SITE_COPY } from "@/config/siteCopy";
 
 export default function Footer() {
   return (
@@ -41,7 +18,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="mb-6 max-w-xs text-[13px] leading-relaxed text-muted-foreground">
-              A live neighborhood layer for downtown Austin — connecting residents, buildings, and local businesses through a shared map, a simple card, and real-time district intelligence.
+              {SITE_COPY.footerMission}
             </p>
             <a
               href="mailto:hello@downtownperks.com"
@@ -51,21 +28,31 @@ export default function Footer() {
             </a>
           </div>
 
-          {Object.entries(FOOTER_LINKS).map(([group, links]) => (
+          {Object.entries(FOOTER_NAV_GROUPS).map(([group, links]) => (
             <div key={group} className="md:col-span-2">
               <h4 className="mb-5 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                 {group}
               </h4>
               <div className="space-y-3">
-                {links.map((link, index) => (
-                  <Link
-                    key={`${link.to}-${link.label}-${index}`}
-                    to={link.to}
-                    className="block text-[13px] text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {links.map((link, index) =>
+                  link.to.startsWith("mailto:") ? (
+                    <a
+                      key={`${link.to}-${link.label}-${index}`}
+                      href={link.to}
+                      className="block text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={`${link.to}-${link.label}-${index}`}
+                      to={link.to}
+                      className="block text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                )}
               </div>
             </div>
           ))}
@@ -73,7 +60,7 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-start gap-2 border-t border-border/40 pt-8">
           <p className="text-[12px] text-muted-foreground/70">© 2026 Downtown Perks · Austin, TX · 78701</p>
-          <p className="text-[12px] text-muted-foreground/50">The Neighborhood, Unlocked.</p>
+          <p className="text-[12px] text-muted-foreground/50">Where downtown works like a system.</p>
         </div>
       </div>
     </footer>

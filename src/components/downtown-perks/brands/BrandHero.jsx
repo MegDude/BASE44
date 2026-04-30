@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
-export default function BrandHero({ eyebrow = "", headline = "", support = "", ctaLabel = "Get Started", ctaHref = "/downtown-perks/card", demoPanel = null, bgAccent = "from-primary/5" }) {
+export default function BrandHero({ eyebrow = "", headline = "", support = "", ctaLabel = "Get Started", ctaHref = "/card", demoPanel = null, bgAccent = "from-primary/5" }) {
   const location = useLocation();
   const { openFlow } = useCTAFlow();
   const isMailto = String(ctaHref || "").startsWith("mailto:");
@@ -64,14 +64,14 @@ export default function BrandHero({ eyebrow = "", headline = "", support = "", c
                   </button>
                 ) : (
                 <Link
-                  to={ctaHref || "/downtown-perks/card"}
+                  to={ctaHref || "/card"}
                   className="dp-cta-primary"
                 >
                   {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
                 </Link>
                 )}
                 <Link
-                  to="/downtown-perks/for-buildings"
+                  to="/partners/properties"
                   className="dp-cta-secondary"
                 >
                   Partnership Details

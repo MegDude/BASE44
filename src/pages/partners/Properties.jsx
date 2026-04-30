@@ -1,6 +1,6 @@
-import PartnerTypeTemplate from "@/components/partner/PartnerTypeTemplate";
-import { PARTNER_TYPE_CONTENT } from "@/lib/partnerContent";
+import PartnerNarrativePage from "@/components/partners/PartnerNarrativePage";
+import { getPartnerRoleConfig } from "@/content/partnerSystem";
 
 export default function PropertiesPartner() {
-  return <PartnerTypeTemplate content={PARTNER_TYPE_CONTENT.properties} />;
+  return <PartnerNarrativePage role={getPartnerRoleConfig("properties")} />;
 }

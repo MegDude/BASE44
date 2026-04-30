@@ -64,13 +64,13 @@ export default function BrandsIndex() {
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    to="/downtown-perks/for-buildings"
+                    to="/partners/properties"
                     className="dp-cta-primary"
                   >
                     Become a Partner <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <Link
-                    to="/downtown-perks/explore"
+                    to="/explore"
                     className="dp-cta-secondary"
                   >
                     <MapPin className="w-3.5 h-3.5" /> View on Map
@@ -153,7 +153,7 @@ export default function BrandsIndex() {
                   Start the Conversation <ArrowRight className="w-3.5 h-3.5" />
                 </a>
                 <Link
-                  to="/downtown-perks/for-buildings"
+                  to="/partners/properties"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300"
                 >
                   Partnership Details

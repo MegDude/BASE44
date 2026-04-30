@@ -1,8 +1,20 @@
+/**
+ * Canonical route inventory
+ *
+ * /                     -> homepage / map-first public entry
+ * /explore              -> primary decision engine
+ * /card                 -> public card explainer
+ * /resident-app/card    -> resident wallet / QR / saved activity
+ * /partners             -> partner overview
+ * /partners/dashboard   -> partner signal dashboard
+ * /dashboard            -> shared dashboard hub
+ */
 export const ROUTES = {
   home: "/",
   residents: "/residents",
   residentWalkingHappyHour: "/residents/walking-happy-hour",
   explore: "/explore",
+  askMap: "/ask-map",
   map: "/map",
   events: "/events",
   happyHourWalkingMap: "/happy-hour-walking-map",
@@ -41,7 +53,7 @@ export function getCanonicalPartnerRoute(partnerType) {
     case "hotel":
     case "hospitality":
     case "hotels":
-      return ROUTES.partnerHospitality;
+      return ROUTES.partnerHotelsLegacy;
     case "bars_restaurants":
     case "local_business":
     case "venue":

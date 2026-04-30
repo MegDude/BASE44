@@ -82,7 +82,7 @@ export const partnerTypes: PartnerTypeConfig[] = [
     key: "hospitality",
     label: "Hospitality",
     layerLabel: "Guest Layer",
-    href: "/partners/hospitality",
+    href: "/partners/hotels",
     eyebrow: "For Hotels & Short-Term Stays",
     summary:
       "Extend the stay beyond the lobby with one live map for dining, events, wellness, and nightlife.",
@@ -90,7 +90,7 @@ export const partnerTypes: PartnerTypeConfig[] = [
     heroTitle: "Extend the stay beyond the lobby.",
     heroBody:
       "Guests scan once and get a curated downtown map — restaurants, events, perks — personalized to where they're staying.",
-    primaryCta: { label: "Explore the guest layer", href: "/partners/hospitality" },
+    primaryCta: { label: "Explore the guest layer", href: "/partners/hotels" },
     secondaryCta: { label: "View all partner types", href: "/partners" },
     metrics: [
       { label: "Avg. guest sessions per stay", value: "4.2" },

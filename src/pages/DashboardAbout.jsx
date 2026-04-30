@@ -12,7 +12,7 @@ const DASHBOARD_LINKS = [
   { label: "Partner", href: "/partners/dashboard/residential" },
   { label: "Redemptions", href: "/partners/dashboard/redemptions" },
   { label: "Integrations", href: "/partners/dashboard/integrations" },
-  { label: "About", href: "/partners/dashboard/about" },
+  { label: "About", href: "/partner-workspace" },
 ];
 
 const HOW_IT_WORKS_STEPS = [

@@ -1,16 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import UnifiedResultsPanel from "@/components/map/unified/UnifiedResultsPanel";
 import UnifiedDrawer from "@/components/map/unified/UnifiedDrawer";
 import { createMarker } from "@/components/map/markers/MarkerFactory";
-import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
+import { useMapData } from "@/features/map/useMapData";
 import { useMapStateStore } from "@/store/mapStateStore";
 import { sharedMapItemToMapEntity } from "@/lib/mappers/sharedMapMappers";
 import { createExploreLink } from "@/lib/routeHelpers";
-import { ROUTES } from "@/lib/routes";
 import { trackEvent } from "@/lib/analytics";
+import { askMap } from "@/lib/api/askMap";
+import { getCTA } from "@/lib/ctaRegistry";
 
 const DEFAULT_CENTER = [30.267, -97.743];
 const HOME_ALLOWED_DISTRICTS = new Set(["rainey", "congress", "seaholm", "red-river", "2nd-street", "downtown"]);
@@ -18,10 +19,10 @@ const HOME_ALLOWED_ZIPS = new Set(["78701", "78702"]);
 
 const MODE_CONFIG = {
   home: {
-    eyebrow: "The Neighborhood, Unlocked.",
+    eyebrow: "Downtown Austin",
     title: "Where downtown meets you.",
-    subtitle: "Built for people who actually live here—and the places that make it feel like home.",
-    body: "You live downtown but expect it to be easier. Easier to navigate. Easier to connect. More useful day to day. Instead, everything you want is spread across too many places.",
+    subtitle: "Built for people who actually live here and the places that make it feel like home.",
+    body: "Find what is nearby, see what is worth doing, and use your card when there is a perk.",
     chips: [
       { id: "all", label: "Best nearby now" },
       { id: "venue", label: "Places to go" },
@@ -124,12 +125,36 @@ function dedupeItems(items = []) {
 
 function scoreItem(item) {
   return (
-    Number(item?.metadata?.popularity ?? 0) +
+    Number(item?.metadata?.popularity ?? item?._score ?? 50) +
     (item?.isLive ? 20 : 0) +
     (item?.isOpenNow ? 12 : 0) +
-    (item?.perk_value || item?.perk?.value || item?.type === "perk" ? 10 : 0) -
+    (item?.perk_value || item?.perk?.value || item?.type === "perk" ? 15 : 0) +
+    (item?.type === "event" ? 12 : 0) -
     Number(item?.metadata?.walkMinutes ?? 0)
   );
+}
+
+function calculateMapScore(entity, intent) {
+  let score = Number(entity?._score || entity?.metadata?.popularity || scoreItem(entity));
+
+  const text = [
+    entity?.name,
+    entity?.category,
+    entity?.description,
+    entity?.district,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  const query = String(intent || "").toLowerCase();
+
+  if (query && text.includes(query)) score += 30;
+  if (entity?.isLive) score += 20;
+  if (entity?.type === "perk") score += 15;
+  if (entity?.type === "event") score += 12;
+
+  return Math.min(100, score);
 }
 
 function matchesChip(item, chip) {
@@ -166,9 +191,12 @@ export default function MapShell({
   markerIcon,
 }) {
   const config = MODE_CONFIG[mode] || MODE_CONFIG.home;
-  const navigate = useNavigate();
+  const openMapCta = getCTA(mode === "home" ? "HOME_EXPLORE" : "OPEN_MAP");
+  const getCardCta = getCTA(mode === "home" ? "HOME_GET_CARD" : "GET_CARD");
+  const becomePartnerCta = getCTA("BECOME_PARTNER");
   const [queryInput, setQueryInput] = useState(initialQuery);
   const [query, setQuery] = useState(initialQuery);
+  const [askedResults, setAskedResults] = useState([]);
   const [activeChip, setActiveChip] = useState(config.chips[0]?.id || "all");
   const [resultsExpanded, setResultsExpanded] = useState(mode !== "home");
   const [hasAsked, setHasAsked] = useState(Boolean(initialQuery));
@@ -176,12 +204,14 @@ export default function MapShell({
   const mapZoom = useMapStateStore((state) => state.mapZoom);
   const setMapCenter = useMapStateStore((state) => state.setMapCenter);
   const setMapZoom = useMapStateStore((state) => state.setMapZoom);
+  const setFilteredResults = useMapStateStore((state) => state.setFilteredResults);
+  const setIntent = useMapStateStore((state) => state.setIntent);
   const selectedEntity = useMapStateStore((state) => state.selectedEntity);
   const drawerState = useMapStateStore((state) => state.drawerState);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setDrawerState = useMapStateStore((state) => state.setDrawerState);
 
-  const { items: feedItems } = useSharedMapFeed({
+  const { items: feedItems } = useMapData({
     query,
     activeCategory:
       activeChip === "venue" || activeChip === "event" || activeChip === "perk"
@@ -194,7 +224,7 @@ export default function MapShell({
     () => explicitItems.map(sharedMapItemToMapEntity).filter(Boolean),
     [explicitItems]
   );
-  const sourceItems = normalizedExplicitItems.length > 0 ? normalizedExplicitItems : feedItems;
+  const sourceItems = normalizedExplicitItems.length > 0 ? normalizedExplicitItems : askedResults.length > 0 ? askedResults : feedItems;
 
   const filteredItems = useMemo(() => {
     const normalizedQuery = String(query || "").trim().toLowerCase();
@@ -218,9 +248,14 @@ export default function MapShell({
           .toLowerCase();
         return haystack.includes(normalizedQuery);
       })
-      .sort((a, b) => scoreItem(b) - scoreItem(a));
+      .sort((a, b) => calculateMapScore(b, query) - calculateMapScore(a, query));
   }, [activeChip, query, sourceItems]);
   const visibleItems = useMemo(() => filteredItems.slice(0, 30), [filteredItems]);
+
+  useEffect(() => {
+    setFilteredResults(filteredItems);
+    setIntent(query || null);
+  }, [filteredItems, query, setFilteredResults, setIntent]);
 
   const selectedChipLabel =
     config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby";
@@ -262,7 +297,7 @@ export default function MapShell({
   }, [compact, mode, setMapCenter, setMapZoom]);
 
   useEffect(() => {
-    if (!hasAsked || mode === "home" || visibleItems.length === 0) return;
+    if (!hasAsked || visibleItems.length === 0) return;
 
     const hasMatchingSelection =
       selectedEntity && visibleItems.some((item) => item.id === selectedEntity.id);
@@ -279,28 +314,22 @@ export default function MapShell({
     if (mode !== "home") return config.chips;
     return [
       {
-        id: "venue",
-        label: "Places to go",
-        support: "Restaurants, bars, coffee, wellness, shopping, and everyday stops nearby.",
-        href: createExploreLink({ intent: "places" }),
+        id: "coffee",
+        label: "Coffee right now",
+        support: "Open nearby coffee, quick stops, and easy first choices.",
+        href: createExploreLink({ query: "coffee right now", type: "venue" }),
       },
       {
-        id: "perk",
-        label: "Perks nearby",
-        support: "Useful offers tied to real places on the map.",
-        href: createExploreLink({ type: "perk", radius: 5 }),
+        id: "dinner",
+        label: "Dinner tonight",
+        support: "See what is close, open, and worth walking to tonight.",
+        href: createExploreLink({ query: "dinner tonight", type: "venue" }),
       },
       {
-        id: "event",
-        label: "Happening tonight",
-        support: "Live events, resident moments, and partner activations happening now.",
-        href: createExploreLink({ type: "event", time: "now" }),
-      },
-      {
-        id: "building",
-        label: "Want to live here",
-        support: "Downtown buildings, listings, and nearby neighborhood context.",
-        href: createExploreLink({ type: "property", intent: "residential" }),
+        id: "happy-hour",
+        label: "Happy hour nearby",
+        support: "Open the downtown map with places and timed offers ready to go.",
+        href: createExploreLink({ query: "happy hour nearby", type: "perk" }),
       },
     ];
   }, [config.chips, mode]);
@@ -310,24 +339,36 @@ export default function MapShell({
     setActiveChip(intent.id);
     setHasAsked(true);
     setResultsExpanded(mode !== "home");
+    setAskedResults([]);
     if (intent.query !== undefined) {
       setQueryInput(intent.query);
       setQuery(intent.query);
     }
   }
 
-  function handleAskSubmit(event) {
+  async function handleAskSubmit(event) {
     event.preventDefault();
     const nextQuery = queryInput.trim();
     if (!nextQuery) return;
 
     setQuery(nextQuery);
+    setAskedResults([]);
     setHasAsked(true);
     setResultsExpanded(mode !== "home");
 
+    const asked = await askMap(nextQuery, {
+      userLocation: useMapStateStore.getState().userLocation,
+      location: "Downtown Austin",
+    });
+    setIntent(
+      asked?.intent?.category ||
+      asked?.intent?.intent ||
+      nextQuery
+    );
+    setAskedResults(Array.isArray(asked?.results) ? asked.results.map(sharedMapItemToMapEntity).filter(Boolean) : []);
     if (mode === "home") {
       trackEvent("homepage_open_map_clicked", { source: "ask_submit", query: nextQuery });
-      navigate(`/explore?mode=ask&query=${encodeURIComponent(nextQuery)}`);
+      setResultsExpanded(true);
     }
   }
 
@@ -355,18 +396,26 @@ export default function MapShell({
           {mode === "home" ? (
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
-                to={ROUTES.residents}
-                onClick={() => trackEvent("homepage_open_map_clicked", { source: "hero_cta_resident" })}
-                className="inline-flex min-h-11 items-center rounded-full bg-[var(--dp-navy,#0B1F33)] px-5 text-[13px] font-semibold text-white transition hover:opacity-92"
+                to={openMapCta?.href || "/explore"}
+                className="inline-flex min-h-[44px] items-center justify-center rounded-[14px] bg-[#101827] px-5 py-3 text-sm font-semibold text-white"
               >
-                Stop searching. Start doing.
+                {openMapCta?.label || "Open the Map"}
               </Link>
               <Link
-                to={ROUTES.partners}
-                onClick={() => trackEvent("homepage_card_clicked", { source: "hero_cta_partner" })}
-                className="inline-flex min-h-11 items-center rounded-full border border-[rgba(11,31,51,0.08)] px-5 text-[13px] font-medium text-[rgba(11,31,51,0.72)] transition hover:border-[rgba(11,31,51,0.14)] hover:text-[var(--dp-navy,#0B1F33)]"
+                to={getCardCta?.href || "/card"}
+                className="inline-flex min-h-[44px] items-center justify-center rounded-[14px] border border-[rgba(16,24,39,0.12)] bg-white px-5 py-3 text-sm font-semibold text-[#101827]"
               >
-                Be the one they notice.
+                {getCardCta?.label || "Get Your Card"}
+              </Link>
+            </div>
+          ) : null}
+          {mode === "home" && becomePartnerCta?.href ? (
+            <div className="mt-4">
+              <Link
+                to={becomePartnerCta.href}
+                className="inline-flex min-h-[44px] items-center justify-center rounded-[14px] px-1 py-1 text-sm font-semibold text-[rgba(11,31,51,0.68)] transition hover:text-[var(--dp-navy,#0B1F33)]"
+              >
+                {becomePartnerCta.label}
               </Link>
             </div>
           ) : null}
@@ -376,11 +425,6 @@ export default function MapShell({
           <div className="grid h-full grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)]">
             <div className="order-2 border-t border-[rgba(11,31,51,0.08)] bg-white lg:order-1 lg:border-r lg:border-t-0">
               <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-5">
-                <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
-                  <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold-deep,#A8733C)]" />
-                  Ask the map
-                </div>
-
                 <form
                   onSubmit={handleAskSubmit}
                   className="mt-4 flex gap-2"
@@ -390,7 +434,7 @@ export default function MapShell({
                     <input
                       value={queryInput}
                       onChange={(event) => setQueryInput(event.target.value)}
-                    placeholder={mode === "home" ? "Where do you want to go?" : "Search places, events, perks, or what is nearby"}
+                    placeholder={mode === "home" ? "Coffee, dinner, events, happy hour…" : "Search places, events, perks, or what is nearby"}
                     className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/42"
                   />
                   </div>
@@ -398,16 +442,16 @@ export default function MapShell({
                     type="submit"
                     className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-primary px-4 text-sm font-medium text-white"
                   >
-                    Ask
+                    {mode === "home" ? "Ask the Map" : "Ask"}
                   </button>
                 </form>
 
                 {mode === "home" ? (
                   <div className="mt-4">
                     <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/48">
-                      What do you want to do?
+                      One Search. Go Everywhere.
                     </div>
-                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <div className="mt-3 grid gap-2">
                       {intentButtons.map((intent) => (
                         <Link
                           key={intent.id}
@@ -497,10 +541,10 @@ export default function MapShell({
                   <UnifiedResultsPanel
                     items={visibleItems}
                     onClose={() => setResultsExpanded(false)}
-                    title={mode === "home" ? "Best nearby now" : `${selectedChipLabel} now`}
+                    title={mode === "home" ? "Best matches right now" : `${selectedChipLabel} now`}
                     subtitle={
                       mode === "home"
-                        ? "Ranked for the next 5 to 30 minutes: live now, open now, and closest first."
+                        ? "Ranked for what fits now: relevance, live context, and walking distance."
                         : hasAsked
                           ? "Results update from the same ask flow and live downtown feed."
                           : "Ask a question or pick a focus to see what the map finds."
@@ -547,13 +591,13 @@ export default function MapShell({
                       </div>
                     </div>
                   ) : (
-                    mode === "home" ? null : (
-                      <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[#f7f9fc] p-4 text-[12px] text-muted-foreground">
-                        {hasAsked
-                          ? "No matching results yet. Try a broader ask or switch the focus above."
+                    <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[#f7f9fc] p-4 text-[12px] text-muted-foreground">
+                      {hasAsked
+                        ? "No matching results yet. Try a broader ask or switch the focus above."
+                        : mode === "home"
+                          ? "Ask the map what you want nearby."
                           : "Ask the map about downtown activity, perks, events, or nearby venues."}
-                      </div>
-                    )
+                    </div>
                   )}
                 </div>
               )}

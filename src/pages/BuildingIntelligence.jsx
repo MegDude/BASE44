@@ -122,7 +122,7 @@ export default function BuildingIntelligence() {
                   <Calendar className="h-4 w-4" />
                 </button>
                 <Link
-                  to="/downtown-perks/explore"
+                  to="/explore"
                   className="inline-flex h-12 items-center gap-2 rounded-[12px] border border-[rgba(11,31,51,0.10)] bg-white/40 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)]"
                 >
                   Explore nearby

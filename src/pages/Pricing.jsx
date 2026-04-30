@@ -155,7 +155,7 @@ export default function Pricing() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              to="/downtown-perks/explore"
+              to="/explore"
               className="dp-cta-secondary inline-flex h-12 items-center gap-2 px-5 text-sm font-semibold uppercase tracking-[0.14em]"
             >
               See the live map

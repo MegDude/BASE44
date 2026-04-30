@@ -112,7 +112,7 @@ export const APPROVED_HOME_COPY = {
       ],
       pricing: "From $99/year",
         cta: "Use this for guests",
-        href: "/partners/hospitality",
+        href: "/partners/hotels",
       },
     {
       id: "venues",
@@ -226,7 +226,7 @@ export const APPROVED_HOME_COPY = {
         price: "$99-$149 / year",
         detail: "90-day pilot. Then choose your level.",
         proof: "Extend the stay beyond your lobby.",
-        href: "/partners/hospitality",
+        href: "/partners/hotels",
       },
       {
         id: "venues",

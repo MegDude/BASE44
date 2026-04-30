@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Building2, Hotel, Landmark, Megaphone, Store, Users } from "lucide-react";
+import { ArrowRight, Building2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PARTNER_TYPE_CONTENT, PARTNER_TYPE_ORDER } from "@/lib/partnerContent";
 import { ROUTES } from "@/lib/routes";

@@ -23,7 +23,7 @@ const forms = [
     headline: "90-day free pilot.",
     sub: "See what residents actually do.",
     summary:
-      "Launch a building-linked downtown layer with QR entry, resident card access, measurable neighborhood use, and invoice review after the pilot.",
+      "Launch a building-linked downtown layer with QR entry, resident card access, and measurable neighborhood use.",
     fields: [
       { name: "property", label: "Building Name & Address", type: "text", span: 2 },
       { name: "name", label: "Your Name & Role", type: "text" },
@@ -43,7 +43,7 @@ const forms = [
     headline: "Extend the stay beyond your lobby.",
     sub: "Give guests one working downtown layer.",
     summary:
-      "Use the same live map to connect guests to dining, events, wellness, nightlife, and nearby local context, then move to invoicing only if the pilot is a fit.",
+      "Use the same live map to connect guests to dining, events, wellness, nightlife, and nearby local context.",
     fields: [
       { name: "property", label: "Hotel / Property Name", type: "text", span: 2 },
       { name: "name", label: "Your Name & Role", type: "text" },
@@ -63,7 +63,7 @@ const forms = [
     headline: "Free 90-day pilot.",
     sub: "No payment setup now.",
     summary:
-      "Show up when nearby intent is real, then turn map visibility into visits, RSVPs, and redemptions. If you stay live after the pilot, we invoice you after review.",
+      "Show up when nearby intent is real, then turn map visibility into visits, RSVPs, and redemptions.",
     fields: [
       { name: "business", label: "Business Name", type: "text", span: 2 },
       { name: "name", label: "Your Name", type: "text" },
@@ -85,7 +85,7 @@ const forms = [
     headline: "Buy the moment, not the impression.",
     sub: "Show up in real downtown behavior.",
     summary:
-      "Run district-aware brand visibility and card-ready campaigns through the same map people already use, with pilot pricing scoped and invoiced after alignment.",
+      "Run district-aware brand visibility and card-ready campaigns through the same map people already use.",
     fields: [
       { name: "brand", label: "Brand / Company Name", type: "text", span: 2 },
       { name: "name", label: "Your Name & Role", type: "text" },
@@ -123,7 +123,7 @@ const forms = [
     headline: "Turn foot traffic into qualified leads.",
     sub: "Use live neighborhood context as the pitch.",
     summary:
-      "Pair listings and building context with the same downtown decision layer residents are already using, then invoice only after rollout scope is approved.",
+      "Pair listings and building context with the same downtown decision layer residents are already using.",
     fields: [
       { name: "brokerage", label: "Brokerage", type: "text", span: 2 },
       { name: "name", label: "Your Name", type: "text" },
@@ -143,7 +143,7 @@ const forms = [
     headline: "$25 per year until your building joins.",
     sub: "If your building signs up later, that resident fee is refunded.",
     summary:
-      "Residents can browse first, then add the card when saves, RSVP, or redemption actually matter. We confirm access first and send invoice/payment instructions after review.",
+      "Residents can browse first, then add the card when saves, RSVP, or redemption actually matter.",
     fields: [
       { name: "name", label: "Your Name", type: "text" },
       { name: "phone", label: "Phone", type: "tel" },
@@ -293,18 +293,18 @@ function ContactForm({ form }) {
 
       <div className="flex flex-col gap-3 rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.03)] p-4">
         <p className="text-[12px] leading-5 text-muted-foreground">
-          No payment is taken here. We review the request first, then send invoice or payment instructions after follow-up.
+          No payment is taken here. We review the request first, then send next steps after follow-up.
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <button type="submit" className="dp-cta-primary w-full sm:w-auto">
             {form.cta}
           </button>
           <a
-            href="mailto:hello@downtownperks.com"
+            href="mailto:partners@downtownperks.com"
             className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.1)] px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-foreground/72 transition-colors hover:text-foreground"
           >
             <Mail className="h-3.5 w-3.5" />
-            hello@downtownperks.com
+            partners@downtownperks.com
           </a>
         </div>
       </div>
@@ -333,7 +333,7 @@ export default function ContactSection() {
             Ready when you are.
           </h2>
           <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-            People don't choose the best option. They choose the one they notice.
+            Choose the path that fits and launch from there.
           </p>
         </motion.div>
 
@@ -348,7 +348,7 @@ export default function ContactSection() {
                   Start a 90-day free pilot.
                 </div>
                 <div className="mt-1 max-w-2xl text-[13px] leading-6 text-muted-foreground">
-                  Start with the building rollout first. The other partner paths stay here too, but this is the main launch flow for properties.
+                  See what residents actually use nearby. The other partner paths stay here too, but buildings are the clearest place to start.
                 </div>
               </div>
               <div className="text-[12px] font-medium text-[rgba(11,31,51,0.56)]">
@@ -399,7 +399,7 @@ export default function ContactSection() {
               <p className="mt-3 text-[12px] leading-5 text-muted-foreground">
                 {current.id === "residents"
                   ? "Resident direct access starts at $25 per year. If your building joins later, that fee is refunded."
-                  : "Start with the pilot first. If the fit is right, pricing is confirmed and invoiced after follow-up."}
+                  : "Start with the pilot first. If the fit is right, pricing is confirmed after follow-up."}
               </p>
 
               <div className="mt-5 space-y-3">
@@ -432,14 +432,14 @@ export default function ContactSection() {
                 People do not choose the best option. They choose the one they notice.
               </h3>
               <p className="mt-4 max-w-2xl text-[14px] leading-7 text-muted-foreground">
-                For residents — Stop searching. Start doing. For partners — Be the one they notice.
+                Downtown Perks helps residents find what fits and helps partners show up when the decision is still open.
               </p>
               <a
-                href="mailto:hello@downtownperks.com"
+                href="mailto:partners@downtownperks.com"
                 className="mt-5 inline-flex items-center gap-2 text-[13px] font-medium text-foreground/84 transition-colors hover:text-foreground"
               >
                 <Mail className="h-4 w-4 text-[var(--dp-gold,#CFAF5A)]" />
-                hello@downtownperks.com
+                partners@downtownperks.com
               </a>
             </div>
 
@@ -455,7 +455,7 @@ export default function ContactSection() {
                 {current.id === "residents" ? "Become a Partner" : `Open ${current.label}`}
               </Link>
               <a
-                href="mailto:hello@downtownperks.com"
+                href="mailto:partners@downtownperks.com"
                 className="dp-cta-secondary"
               >
                 Contact Us

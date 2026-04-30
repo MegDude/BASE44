@@ -39,7 +39,7 @@ export default function Landing() {
         pageType="homepage"
         backgroundVariant="light"
         ctaLabel="Learn more about Downtown Perks"
-        ctaHref="/downtown-perks/about"
+        ctaHref="/about"
       />
     </div>
   );

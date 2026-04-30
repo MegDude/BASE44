@@ -13,6 +13,7 @@ import DashboardAbout from "./pages/DashboardAbout";
 import BuildingIntelligence from "./pages/BuildingIntelligence";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
+import AskMapAgent from "./pages/AskMapAgent";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import Residents from "./pages/Residents";
 import ResidentApp from "./pages/resident-app";
@@ -47,13 +48,14 @@ import TheShore from "./pages/downtown-perks/brands/TheShore";
 import InspiredClosetsAustin from "./pages/downtown-perks/brands/InspiredClosetsAustin";
 import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
 import PartnersIndex from "./pages/partners/Index";
-import ResidentialPartner from "./pages/partners/Residential";
 import PropertiesPartner from "./pages/partners/Properties";
 import HotelsPartner from "./pages/partners/Hotels";
 import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
 import CivicPartner from "./pages/partners/Civic";
 import PartnerApply from "./pages/partners/Apply";
+import PartnerDashboardUnified from "./pages/partners/Dashboard";
+import AdminQA from "./pages/AdminQA";
 import { CTAFlowProvider } from "./components/cta/CTAFlowProvider";
 import { ROUTES } from "@/lib/routes";
 
@@ -64,6 +66,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path={ROUTES.map} element={<Map />} />
         <Route path={ROUTES.explore} element={<ExploreRebuilt />} />
+        <Route path={ROUTES.askMap} element={<AskMapAgent />} />
         <Route path="/search" element={<Map />} />
         <Route path="/ask-the-map" element={<Map />} />
         <Route path={ROUTES.events} element={<Events />} />
@@ -73,17 +76,18 @@ function AppRoutes() {
         <Route path={ROUTES.about} element={<About />} />
         <Route path={ROUTES.buildPack} element={<BuildPack />} />
         <Route path="/implementation-spec" element={<BuildPack />} />
-        <Route path="/downtown-perks" element={<Landing />} />
-        <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
-        <Route path="/downtown-perks/events" element={<Events />} />
+        <Route path="/downtown-perks" element={<Navigate to={ROUTES.home} replace />} />
+        <Route path="/downtown-perks/explore" element={<Navigate to={ROUTES.explore} replace />} />
+        <Route path="/downtown-perks/events" element={<Navigate to={ROUTES.events} replace />} />
         <Route path="/downtown-perks/happy-hour-walking-map" element={<Navigate to={ROUTES.residentWalkingHappyHour} replace />} />
-        <Route path="/downtown-perks/perks" element={<PerksPage />} />
-        <Route path="/downtown-perks/card" element={<PerksCard />} />
-        <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
-        <Route path="/downtown-perks/about" element={<About />} />
-        <Route path="/downtown-perks/build-pack" element={<BuildPack />} />
+        <Route path="/downtown-perks/perks" element={<Navigate to={ROUTES.perks} replace />} />
+        <Route path="/downtown-perks/card" element={<Navigate to={ROUTES.card} replace />} />
+        <Route path="/downtown-perks/for-buildings" element={<Navigate to={ROUTES.partnerProperties} replace />} />
+        <Route path="/downtown-perks/about" element={<Navigate to={ROUTES.about} replace />} />
+        <Route path="/downtown-perks/build-pack" element={<Navigate to={ROUTES.buildPack} replace />} />
+        <Route path="/downtown-perks/*" element={<Navigate to={ROUTES.home} replace />} />
 
-        <Route path={ROUTES.brands} element={<BrandsIndex />} />
+        <Route path={ROUTES.brands} element={<Navigate to={ROUTES.partnerBrands} replace />} />
         <Route path="/brands/analytics" element={<BrandAnalytics />} />
         <Route path="/brands/the-paseo" element={<ThePaseo />} />
         <Route path="/brands/the-waterline" element={<TheWaterline />} />
@@ -107,34 +111,36 @@ function AppRoutes() {
         <Route path="/brands/inspired-closets-austin" element={<InspiredClosetsAustin />} />
 
         <Route path={ROUTES.partners} element={<PartnersIndex />} />
-        <Route path={ROUTES.partnerResidential} element={<ResidentialPartner />} />
+        <Route path={ROUTES.partnerResidential} element={<Navigate to={ROUTES.partnerProperties} replace />} />
         <Route path={ROUTES.partnerProperties} element={<PropertiesPartner />} />
         <Route path="/property-and-building-management" element={<PropertiesPartner />} />
         <Route path={ROUTES.partnerHotelsLegacy} element={<HotelsPartner />} />
-        <Route path={ROUTES.partnerHospitality} element={<HotelsPartner />} />
+        <Route path={ROUTES.partnerHospitality} element={<Navigate to={ROUTES.partnerHotelsLegacy} replace />} />
         <Route path={ROUTES.partnerVenues} element={<VenuesPartner />} />
         <Route path={ROUTES.partnerBrands} element={<BrandsPartner />} />
         <Route path={ROUTES.partnerCivic} element={<CivicPartner />} />
         <Route path={ROUTES.partnerApply} element={<PartnerApply />} />
 
-        <Route path={ROUTES.partnerDashboard} element={<Dashboard />} />
-        <Route path="/partners/dashboard/overview" element={<Dashboard />} />
-        <Route path="/partners/dashboard/map" element={<Dashboard />} />
-        <Route path={ROUTES.partnerDashboardResidential} element={<Dashboard />} />
-        <Route path={ROUTES.partnerDashboardHospitality} element={<Dashboard />} />
-        <Route path={ROUTES.partnerDashboardVenues} element={<Dashboard />} />
-        <Route path={ROUTES.partnerDashboardBrands} element={<Dashboard />} />
-        <Route path={ROUTES.partnerDashboardCivic} element={<Dashboard />} />
-        <Route path="/partners/dashboard/perks" element={<Dashboard />} />
-        <Route path="/partners/dashboard/events" element={<Dashboard />} />
-        <Route path="/partners/dashboard/campaigns" element={<Dashboard />} />
-        <Route path="/partners/dashboard/redemptions" element={<Dashboard />} />
-        <Route path="/partners/dashboard/integrations" element={<Dashboard />} />
-        <Route path="/partners/dashboard/performance" element={<Dashboard />} />
-        <Route path="/partners/dashboard/reports" element={<Dashboard />} />
-        <Route path="/partners/dashboard/settings" element={<Dashboard />} />
-        <Route path="/partners/dashboard/about" element={<DashboardAbout />} />
+        <Route path={ROUTES.partnerDashboard} element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/overview" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/map" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/properties" element={<PartnerDashboardUnified />} />
+        <Route path={ROUTES.partnerDashboardResidential} element={<PartnerDashboardUnified />} />
+        <Route path={ROUTES.partnerDashboardHospitality} element={<PartnerDashboardUnified />} />
+        <Route path={ROUTES.partnerDashboardVenues} element={<PartnerDashboardUnified />} />
+        <Route path={ROUTES.partnerDashboardBrands} element={<PartnerDashboardUnified />} />
+        <Route path={ROUTES.partnerDashboardCivic} element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/perks" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/events" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/campaigns" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/redemptions" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/integrations" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/performance" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/reports" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/settings" element={<PartnerDashboardUnified />} />
+        <Route path="/partners/dashboard/about" element={<Navigate to={ROUTES.partnerWorkspace} replace />} />
         <Route path={ROUTES.partnerWorkspace} element={<PartnerWorkspace />} />
+        <Route path="/admin/qa" element={<AdminQA />} />
         <Route path={ROUTES.dashboardHub} element={<DashboardHub />} />
         <Route path="/dashboard/about" element={<DashboardAbout />} />
         <Route path="/dashboard/partner" element={<Dashboard />} />

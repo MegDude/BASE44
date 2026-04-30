@@ -10,7 +10,6 @@ import {
   Eye,
   Hotel,
   Landmark,
-  MapPin,
   Megaphone,
   Sparkles,
   Store,
@@ -31,7 +30,7 @@ const DASHBOARD_TABS = [
   { label: "Civic", href: ROUTES.partnerDashboardCivic },
   { label: "Redemptions", href: "/partners/dashboard/redemptions" },
   { label: "Integrations", href: "/partners/dashboard/integrations" },
-  { label: "About", href: "/partners/dashboard/about" },
+  { label: "About", href: "/partner-workspace" },
 ];
 
 const SUGGESTED_PROMPTS = [

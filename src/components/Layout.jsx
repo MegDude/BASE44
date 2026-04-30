@@ -13,21 +13,18 @@ function ScrollToTop() {
 export default function Layout() {
   const { pathname } = useLocation();
 
-  // Pages that use the full Downtown Perks editorial footer
   const usesEditorialFooter =
-    pathname.startsWith("/downtown-perks") ||
     pathname.startsWith("/brands") ||
     pathname.startsWith("/partners") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/partner-workspace") ||
-    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about", "/build-pack", "/implementation-spec"].includes(pathname);
+    pathname.startsWith("/admin") ||
+    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about", "/build-pack", "/implementation-spec", "/residents"].includes(pathname);
 
-  // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
-    pathname === "/downtown-perks/explore" ||
-    pathname === "/downtown-perks/events" ||
     pathname === "/map" ||
     pathname === "/explore" ||
+    pathname.startsWith("/resident-app") ||
     pathname === "/events";
 
   return (

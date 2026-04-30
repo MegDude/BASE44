@@ -183,7 +183,7 @@ export function BrandCTA({ headline = "", sub = "", ctaLabel = "Get Your Card", 
                 {ctaLabel || "Get Your Card"}
               </button>
               <a
-                href="/downtown-perks/for-buildings"
+                href="/partners/properties"
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--dp-border)] px-7 py-3.5 text-sm font-medium text-foreground/70 transition-all duration-180 hover:bg-white/70 hover:text-foreground"
               >
                 See All Partnerships

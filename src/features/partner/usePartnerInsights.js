@@ -1,23 +1,31 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+import { fetchPartnerInsights } from "@/lib/api/partnerApi";
 
-export default function usePartnerInsights(items = []) {
-  return useMemo(() => {
-    if (!items.length) return [];
+export function usePartnerInsights(payload = {}) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const top = items[0];
-    const rising = items.slice(0, 3);
+  useEffect(() => {
+    let mounted = true;
 
-    return [
-      {
-        observation: `${top.name} is leading activity right now`,
-        evidence: `High interaction and proximity signals`,
-        recommendation: `Extend visibility or boost promotion`,
-      },
-      {
-        observation: `Demand clustering in ${top.meta?.category || "this category"}`,
-        evidence: `${rising.length} top items share same pattern`,
-        recommendation: `Align offer timing to peak period`,
-      },
-    ];
-  }, [items]);
+    const load = async () => {
+      setLoading(true);
+      try {
+        const next = await fetchPartnerInsights(payload);
+        if (mounted) setData(next);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    load();
+    const intervalId = window.setInterval(load, 30000);
+
+    return () => {
+      mounted = false;
+      window.clearInterval(intervalId);
+    };
+  }, [payload.partnerId, payload.partnerType]);
+
+  return { data, loading };
 }

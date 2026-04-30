@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-export default function FAQAccordion({ items = [] }) {
-  const [openIndex, setOpenIndex] = useState(null);
+export default function FAQAccordion({ items = [], defaultOpenIndex = null }) {
+  const [openIndex, setOpenIndex] = useState(defaultOpenIndex);
 
   return (
     <div className="divide-y divide-[rgba(11,31,51,0.08)]">

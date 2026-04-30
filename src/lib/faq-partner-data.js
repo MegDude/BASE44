@@ -14,43 +14,73 @@ export const FAQ_HOMEPAGE = [
     id: 'homepage-2',
     question: 'Do I need to download an app?',
     answer:
-      'No. It is a mobile web experience. Open the map, browse, save, RSVP, and use the card when access matters.',
+      'No. It is a mobile web experience. Scan a QR code, and you are in. No download. No login. No extra platform.',
   },
   {
     id: 'homepage-3',
-    question: 'Is this just a list of deals?',
+    question: 'Does it cost anything for residents?',
     answer:
-      'No. Deals and perks are one part of the system, but the map is the product. Downtown Perks brings places, events, perks, buildings, and local context into one usable downtown layer.',
+      'No. Your building covers it. Downtown Perks is included as a building amenity, so you get map access, event RSVPs, and your perks card at no cost.',
   },
   {
     id: 'homepage-4',
-    question: 'Who is it built for?',
+    question: 'Do venues pay to join?',
     answer:
-      'It is built for people who actually live downtown, and for the buildings, hotels, venues, brands, and civic groups that want to meet them there.',
+      'Not at first. Venues get 12 months free to prove the value. After that, it is $49 to $99 per year if they keep it. No risk. No long-term commitment.',
   },
   {
     id: 'homepage-5',
-    question: 'How do people use it?',
+    question: 'What do buildings pay?',
     answer:
-      'People open the map, see what is nearby, and decide what is worth doing now. The card appears later when a save, RSVP, member perk, or redemption actually matters.',
+      'Buildings start with a 90-day free pilot. After that, they can stay free forever with basic reporting, move to $39 per year for analytics, or $99 per year for the full stack.',
   },
   {
     id: 'homepage-6',
-    question: 'Why is the map central?',
+    question: 'How fast can a partner launch?',
     answer:
-      'Because the map is the product. It keeps places, events, perks, buildings, and movement in one live downtown layer instead of splitting the experience across feeds, lists, and disconnected pages.',
+      'Usually within 7 to 10 days. Setup includes map placement, QR generation, and entry point coordination.',
   },
   {
     id: 'homepage-7',
-    question: 'How is performance measured?',
+    question: 'What gets tracked?',
     answer:
-      'Performance is measured through useful actions: scans, saves, RSVPs, visits, redemptions, source scans, and repeat use. The point is to show what actually happened, not just what was shown.',
+      'Scans, saves, RSVPs, redemptions, and related activity tied to what people actually do. The point is to show real use, not vague awareness.',
   },
   {
     id: 'homepage-8',
-    question: 'Is this one system or multiple?',
+    question: 'What kind of perks?',
     answer:
-      'It is one system. The map stays central, the card works as the access layer, and the partner dashboard becomes the proof layer for buildings, hospitality, venues, brands, and civic partners.',
+      'Discounts on food and drinks, welcome offers, priority access, and members-only specials. Each business sets its own perks and they appear on the map when you are nearby.',
+  },
+  {
+    id: 'homepage-9',
+    question: 'Is my info shared with partners?',
+    answer:
+      'No. Downtown Perks tracks actions for reporting, not your personal contact information. Your details are not shared unless you explicitly opt in.',
+  },
+  {
+    id: 'homepage-10',
+    question: 'Can partners update listings?',
+    answer:
+      'Yes. Partners get a simple dashboard to update hours, add perks, post events, and adjust map presence.',
+  },
+  {
+    id: 'homepage-11',
+    question: 'Where is this available?',
+    answer:
+      'Downtown Austin. The system starts with one district, proves the model, and expands based on resident and partner demand.',
+  },
+  {
+    id: 'homepage-12',
+    question: 'Who can join?',
+    answer:
+      'Downtown residents in participating buildings, plus the buildings, venues, brands, and civic groups that want to meet them there.',
+  },
+  {
+    id: 'homepage-13',
+    question: 'How do resident connections work?',
+    answer:
+      'If you see an event or activity you want to join, the connect feature lets you signal interest and reach out to others who are going. It is opt-in and designed to make it easier to show up together.',
   },
 ];
 

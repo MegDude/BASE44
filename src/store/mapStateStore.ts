@@ -74,6 +74,8 @@ export interface MapState {
 
   // ─── Results ────────────────────────────────────
   filteredResults: MapEntity[];
+  rawResults: MapEntity[];
+  intent: string | null;
   resultsSortBy: 'distance' | 'relevance' | 'popularity' | 'newest';
   resultsLimit: number;
 
@@ -85,6 +87,7 @@ export interface MapState {
 
   // ─── Interactions ───────────────────────────────
   savedEntityIds: Set<string>;
+  userLocation: [number, number] | null;
   heatmapVisible: boolean;
   liveActionsVisible: boolean;
   lastInteractionTime: number | null;
@@ -97,10 +100,13 @@ export interface MapState {
   setViewMode: (mode: ViewMode) => void;
   setSearchQuery: (query: string) => void;
   setFilteredResults: (results: MapEntity[]) => void;
+  setRawResults: (results: MapEntity[]) => void;
+  setIntent: (intent: string | null) => void;
   updateFilter: (filterKey: keyof ActiveFilters, value: unknown) => void;
   clearFilters: () => void;
   toggleSaved: (entityId: string) => void;
   setSaved: (entityIds: string[]) => void;
+  setUserLocation: (location: [number, number] | null) => void;
   setHeatmapVisible: (visible: boolean) => void;
   setLiveActionsVisible: (visible: boolean) => void;
   setShowResultsList: (show: boolean) => void;
@@ -146,6 +152,8 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   searchQuery: '',
 
   filteredResults: [],
+  rawResults: [],
+  intent: null,
   resultsSortBy: 'distance',
   resultsLimit: 50,
 
@@ -155,6 +163,7 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   isMapLoading: false,
 
   savedEntityIds: new Set(),
+  userLocation: null,
   heatmapVisible: false,
   liveActionsVisible: false,
   lastInteractionTime: null,
@@ -232,6 +241,14 @@ export const useMapStateStore = create<MapState>((set, get) => ({
     set({ filteredResults: results, isMapLoading: false });
   },
 
+  setRawResults: (results: MapEntity[]) => {
+    set({ rawResults: results });
+  },
+
+  setIntent: (intent: string | null) => {
+    set({ intent });
+  },
+
   // ─── Saved Items Actions ───────────────────────────
   toggleSaved: (entityId: string) => {
     const saved = new Set(get().savedEntityIds);
@@ -245,6 +262,10 @@ export const useMapStateStore = create<MapState>((set, get) => ({
 
   setSaved: (entityIds: string[]) => {
     set({ savedEntityIds: new Set(entityIds) });
+  },
+
+  setUserLocation: (location: [number, number] | null) => {
+    set({ userLocation: location });
   },
 
   // ─── Visualization Actions ─────────────────────────
@@ -281,11 +302,14 @@ export const useMapStateStore = create<MapState>((set, get) => ({
       activeFilters: { ...DEFAULT_FILTERS },
       searchQuery: '',
       filteredResults: [],
+      rawResults: [],
+      intent: null,
       viewMode: 'explore',
       showResultsList: false,
       showMapOnly: false,
       isMapLoading: false,
       savedEntityIds: new Set(),
+      userLocation: null,
       heatmapVisible: false,
       liveActionsVisible: false,
     });
@@ -305,3 +329,33 @@ export const selectViewMode = (state: MapState) => state.viewMode;
 export const selectSearchQuery = (state: MapState) => state.searchQuery;
 export const selectSavedEntityIds = (state: MapState) => state.savedEntityIds;
 export const selectIsMapLoading = (state: MapState) => state.isMapLoading;
+
+export function useMapState<T = {
+  selectedPlace: MapEntity | null;
+  results: MapEntity[];
+  filters: ActiveFilters;
+  userLocation: [number, number] | null;
+  setSelectedPlace: (place: MapEntity | null) => void;
+  setResults: (results: MapEntity[]) => void;
+  setFilters: (filters: Partial<ActiveFilters>) => void;
+  setUserLocation: (location: [number, number] | null) => void;
+}>(selector?: (state: MapState) => T) {
+  const defaultSelector = (state: MapState) =>
+    ({
+      selectedPlace: state.selectedEntity,
+      results: state.filteredResults,
+      filters: state.activeFilters,
+      userLocation: state.userLocation,
+      setSelectedPlace: state.selectEntity,
+      setResults: state.setFilteredResults,
+      setFilters: (filters: Partial<ActiveFilters>) => {
+        if (!filters) return;
+        Object.entries(filters).forEach(([key, value]) => {
+          state.updateFilter(key as keyof ActiveFilters, value);
+        });
+      },
+      setUserLocation: state.setUserLocation,
+    }) as T;
+
+  return useMapStateStore(selector || defaultSelector);
+}

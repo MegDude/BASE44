@@ -15,7 +15,7 @@ function parseBody(req) {
 
 function normalizeJson(rawText) {
   if (!rawText) {
-    return "{\"places\":[]}";
+    return "{\"intent\":{}}";
   }
 
   return rawText
@@ -25,59 +25,46 @@ function normalizeJson(rawText) {
     .trim();
 }
 
-function parseIntentFallback(query = "") {
+function buildFallbackIntent(query = "") {
   const q = String(query || "").toLowerCase();
-  const categoryMap = [
-    { id: "coffee", terms: ["coffee", "cafe", "espresso", "latte"] },
-    { id: "restaurant", terms: ["dinner", "lunch", "food", "restaurant", "eat", "brunch"] },
-    { id: "nightlife", terms: ["bar", "cocktail", "drink", "nightlife", "late"] },
-    { id: "wellness", terms: ["wellness", "spa", "massage", "yoga", "fitness"] },
-    { id: "event", terms: ["event", "concert", "show", "tonight", "happening"] },
-    { id: "perk", terms: ["perk", "deal", "offer", "discount", "free"] },
+
+  const mappings = [
+    { match: ["coffee", "cafe", "espresso", "latte"], category: "coffee", types: ["venue"], categories: ["coffee"] },
+    { match: ["dinner", "lunch", "restaurant", "food", "eat", "brunch"], category: "dining", types: ["venue"], categories: ["restaurant", "bar"] },
+    { match: ["drinks", "bar", "cocktail", "nightlife", "happy hour"], category: "nightlife", types: ["venue"], categories: ["bar"] },
+    { match: ["fitness", "wellness", "spa", "yoga", "massage"], category: "wellness", types: ["venue"], categories: ["wellness", "fitness"] },
+    { match: ["event", "show", "concert", "tonight", "happening"], category: "event", types: ["event"], categories: [] },
+    { match: ["perk", "deal", "discount", "offer", "free"], category: "perk", types: ["perk"], categories: [] },
+    { match: ["building", "live here", "apartment", "condo", "property", "home"], category: "building", types: ["building"], categories: [] },
   ];
 
-  const category = categoryMap.find((item) => item.terms.some((term) => q.includes(term)))?.id;
-  const intentMode = q.includes("perk") || q.includes("deal")
-    ? "perks"
-    : q.includes("tonight") || q.includes("later") || q.includes("plan")
-      ? "plan"
-      : "now";
-
-  const types =
-    category === "event"
-      ? ["event"]
-      : category === "perk"
-        ? ["perk"]
-        : ["venue"];
-
-  const categories =
-    category && !["event", "perk"].includes(category)
-      ? [category]
-      : [];
-
-  const explanation =
-    intentMode === "perks"
-      ? `Showing active perks${category ? ` for ${category}` : ""}.`
-      : intentMode === "plan"
-        ? `Showing places and events that fit ${category || "your plan"} later today.`
-        : `Showing ${category || "downtown"} options that fit right now.`;
-
-  const suggestions = [
-    "Coffee now",
-    "Dinner tonight",
-    "Perk nearby",
-    "Something social",
-  ];
+  const matched = mappings.find((item) => item.match.some((term) => q.includes(term)));
+  const intentMode = q.includes("tonight") || q.includes("later") || q.includes("plan") ? "plan" : "now";
 
   return {
-    category,
+    category: matched?.category || null,
     intentMode,
-    categories,
-    types,
+    categories: matched?.categories || [],
+    types: matched?.types || ["venue"],
     ranking: intentMode === "plan" ? "popularity" : "live",
-    explanation,
-    suggestions,
+    explanation: matched
+      ? `Showing ${matched.category} options that best fit right now.`
+      : "Showing useful downtown options based on what you asked for.",
+    suggestions: ["Coffee now", "Dinner tonight", "Perk nearby", "Something social"],
   };
+}
+
+function archiveReason(item) {
+  if (item.type === "listing") {
+    return `${item.status || "Active"} building or listing in ${item.district || "Downtown Austin"}.`;
+  }
+  if (item.supportsEvents) {
+    return `${item.category || "Local"} option with live event potential nearby.`;
+  }
+  if (item.hasSpecials) {
+    return `${item.category || "Local"} option with active offers nearby.`;
+  }
+  return `${item.category || item.type || "Local"} option in ${item.district || "Downtown Austin"}.`;
 }
 
 export default async function handler(req, res) {
@@ -87,32 +74,35 @@ export default async function handler(req, res) {
 
   try {
     const body = parseBody(req);
-    const { query, location = "Downtown Austin" } = body;
+    const query = String(body.query || "").trim();
+    const location = String(body.location || "Downtown Austin");
 
-    if (!query || !query.trim()) {
+    if (!query) {
       return res.status(400).json({ error: "Missing query" });
     }
 
-    const fallbackIntent = parseIntentFallback(query);
+    const fallbackIntent = buildFallbackIntent(query);
     const archiveMatches = await searchArchiveCatalog(query, {
-      types: fallbackIntent.types?.includes("event")
-        ? ["location"]
-        : fallbackIntent.types?.includes("perk")
-          ? ["location"]
-          : [],
       limit: 5,
+      types: fallbackIntent.types.includes("building") ? ["listing", "location"] : ["location"],
     });
-    const archivePlaces = archiveMatches.slice(0, 5).map((item) => ({
-      name: item.name,
-      reason:
+
+    const places = (Array.isArray(archiveMatches) ? archiveMatches : []).slice(0, 5).map((item) => ({
+      id: item.id,
+      name: item.name || item.searchTerm || item.address || "Downtown place",
+      type: item.type === "listing" ? "building" : fallbackIntent.types[0] || "venue",
+      category:
         item.type === "listing"
-          ? `${item.status || "Active"} listing in ${item.district}.`
-          : item.supportsEvents
-            ? `${item.category} option in ${item.district} with event-ready programming.`
-            : item.hasSpecials
-              ? `${item.category} option in ${item.district} with tracked specials.`
-              : `${item.category} option in ${item.district}.`,
-      mapQuery: `${item.name} ${item.address || item.district || "Downtown Austin"}`,
+          ? "building"
+          : String(item.category || fallbackIntent.category || "venue").toLowerCase(),
+      description: archiveReason(item),
+      district: item.district || "Downtown Austin",
+      address: item.address || "",
+      lat: item.latitude ?? null,
+      lng: item.longitude ?? null,
+      metadata: {
+        tags: [item.category, item.district, item.type].filter(Boolean),
+      },
     }));
 
     const apiKey = String(process.env.OPENAI_API_KEY || "").trim();
@@ -121,47 +111,38 @@ export default async function handler(req, res) {
       return res.status(200).json({
         source: "fallback",
         intent: fallbackIntent,
-        places: archivePlaces,
+        places,
+        results: places,
       });
     }
 
     const openai = new OpenAI({ apiKey });
-
     const completion = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
-      temperature: 0.3,
+      temperature: 0.2,
       messages: [
         {
           role: "system",
-          content: `You are the intent layer for a live downtown map. Return only valid JSON.
+          content: `You are the structured intent layer for a live downtown map. Return valid JSON only.
 
 Format:
 {
   "intent": {
-    "category": "coffee|restaurant|nightlife|wellness|event|perk|null",
+    "category": "coffee|dining|nightlife|wellness|event|perk|building|null",
     "intentMode": "now|plan|perks",
     "categories": ["coffee"],
     "types": ["venue"],
     "ranking": "live|popularity|distance",
-    "explanation": "One short sentence describing what the map is showing",
-    "suggestions": ["Coffee now", "Dinner tonight", "Perk nearby"]
-  },
-  "places": [
-    {
-      "name": "Place name",
-      "reason": "One sentence explaining why it fits",
-      "mapQuery": "Google Maps friendly search query"
-    }
-  ]
+    "explanation": "One short sentence",
+    "suggestions": ["Coffee now", "Dinner tonight"]
+  }
 }
 
 Rules:
-- Return 3 to 5 places.
-- Keep explanations concise and operational.
-- Use categories and types that a map UI can apply.
-- Types must be drawn from: venue, event, perk.
-- Suggestions should be short, clickable prompt chips.
-- No markdown. No prose outside JSON.`,
+- Types must come from: venue, event, perk, building
+- Keep suggestions short and clickable
+- No markdown
+- No prose outside JSON`,
         },
         {
           role: "user",
@@ -172,8 +153,7 @@ Rules:
 
     const raw = completion.choices?.[0]?.message?.content || "";
     const parsed = JSON.parse(normalizeJson(raw));
-    const places = Array.isArray(parsed.places) ? parsed.places.slice(0, 5) : [];
-    const llmIntent = parsed.intent && typeof parsed.intent === "object" ? parsed.intent : {};
+    const llmIntent = parsed?.intent && typeof parsed.intent === "object" ? parsed.intent : {};
 
     return res.status(200).json({
       source: "api",
@@ -193,23 +173,18 @@ Rules:
             ? llmIntent.suggestions.slice(0, 4)
             : fallbackIntent.suggestions,
       },
-      places: places.length > 0 ? places : archivePlaces,
+      places,
+      results: places,
     });
   } catch (error) {
     console.error("ask-map failed", error);
     const body = parseBody(req);
+    const fallbackIntent = buildFallbackIntent(body?.query || "");
     return res.status(200).json({
       source: "fallback",
-      intent: parseIntentFallback(body?.query || ""),
-      places: await searchArchiveCatalog(body?.query || "", { limit: 5 })
-        .then((items) =>
-          items.map((item) => ({
-            name: item.name,
-            reason: `${item.category || item.type} in ${item.district || "Downtown Austin"}.`,
-            mapQuery: `${item.name} ${item.address || item.district || "Downtown Austin"}`,
-          }))
-        )
-        .catch(() => []),
+      intent: fallbackIntent,
+      places: [],
+      results: [],
     });
   }
 }

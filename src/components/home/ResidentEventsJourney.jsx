@@ -360,7 +360,7 @@ export default function ResidentEventsJourney() {
                     >
                       {mutations.pendingAction === "rsvp" ? <Loader2 className="h-4 w-4 animate-spin" /> : "RSVP"}
                     </button>
-                    <Link to="/downtown-perks/explore?type=events" className="dp-cta-secondary">
+                    <Link to="/explore?type=events" className="dp-cta-secondary">
                       See more nearby
                       <ArrowRight className="h-4 w-4" />
                     </Link>
@@ -398,7 +398,7 @@ export default function ResidentEventsJourney() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => navigate("/downtown-perks/explore?type=events")}
+                      onClick={() => navigate("/explore?type=events")}
                       className="dp-cta-secondary flex-1 justify-center"
                       aria-label="Open the live map"
                     >

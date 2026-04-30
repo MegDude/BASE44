@@ -3,23 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronLeft, MapPin, Menu, X } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
-
-const TOP_LINKS = [
-  { label: "Residents", to: ROUTES.residents },
-  { label: "Events", to: ROUTES.events },
-  { label: "Perks Card", to: ROUTES.card },
-  { label: "About", to: ROUTES.about },
-];
-
-const PARTNER_TYPE_LINKS = [
-  { label: "Overview", to: ROUTES.partners },
-  { label: "Properties", to: ROUTES.partnerProperties },
-  { label: "Hospitality", to: ROUTES.partnerHospitality },
-  { label: "Venues", to: ROUTES.partnerVenues },
-  { label: "Brands", to: ROUTES.partnerBrands },
-  { label: "Civic", to: ROUTES.partnerCivic },
-  { label: "Dashboard", to: ROUTES.partnerDashboard },
-];
+import { PRIMARY_NAV_ITEMS, PARTNER_NAV_ITEMS } from "@/config/navItems";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -52,15 +36,15 @@ export default function Navbar() {
         location.pathname.startsWith("/resident-app")
       );
     }
-    if (to === ROUTES.events) return location.pathname.startsWith("/downtown-perks/events") || location.pathname === "/events";
-    if (to === ROUTES.explore) return location.pathname.startsWith("/downtown-perks/explore") || ["/map", "/explore", ROUTES.residentApp].includes(location.pathname);
-    if (to === ROUTES.about) return location.pathname === ROUTES.about || location.pathname === "/downtown-perks/about";
+    if (to === ROUTES.events) return location.pathname === ROUTES.events;
+    if (to === ROUTES.explore) return [ROUTES.map, ROUTES.explore, ROUTES.residentApp].includes(location.pathname);
+    if (to === ROUTES.partners) return location.pathname.startsWith("/partners");
     return location.pathname === to;
   };
 
   const showBackButton = location.pathname !== "/";
   const isPartnersActive =
-    location.pathname.startsWith("/partners") || PARTNER_TYPE_LINKS.some((link) => location.pathname === link.to);
+    location.pathname.startsWith("/partners") || PARTNER_NAV_ITEMS.some((link) => location.pathname === link.to);
 
   const handleBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
@@ -106,33 +90,19 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-1 md:flex">
-          {TOP_LINKS.map((link) => {
-            if (link.href) {
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="rounded-full px-3 py-2 text-[13px] font-medium text-[rgba(11,31,51,0.62)] transition-colors hover:bg-white/70 hover:text-[var(--dp-navy)]"
-                >
-                  {link.label}
-                </a>
-              );
-            }
-
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`rounded-full px-3 py-2 text-[13px] font-medium transition-colors ${
-                  isActive(link.to)
-                    ? "bg-white/70 text-[var(--dp-navy)]"
-                    : "text-[rgba(11,31,51,0.62)] hover:bg-white/70 hover:text-[var(--dp-navy)]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+          {PRIMARY_NAV_ITEMS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`rounded-full px-3 py-2 text-[13px] font-medium transition-colors ${
+                isActive(link.to)
+                  ? "bg-white/70 text-[var(--dp-navy)]"
+                  : "text-[rgba(11,31,51,0.62)] hover:bg-white/70 hover:text-[var(--dp-navy)]"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
           <div className="relative">
             <button
               type="button"
@@ -151,7 +121,7 @@ export default function Navbar() {
 
             {partnersOpen ? (
               <div className="absolute right-0 top-[calc(100%+10px)] z-30 w-56 rounded-[18px] border border-[rgba(15,23,42,0.08)] bg-[rgba(255,255,255,0.94)] p-2 shadow-[0_18px_40px_rgba(15,23,42,0.12)] backdrop-blur-dp">
-                {PARTNER_TYPE_LINKS.map((link) => (
+                {PARTNER_NAV_ITEMS.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
@@ -193,7 +163,7 @@ export default function Navbar() {
                 <div className="px-3 pb-1 pt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.44)]">
                   Partners
                 </div>
-                {PARTNER_TYPE_LINKS.map((link) => (
+                {PARTNER_NAV_ITEMS.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
@@ -204,27 +174,16 @@ export default function Navbar() {
                   </Link>
                 ))}
               </div>
-              {TOP_LINKS.map((link) =>
-                link.href ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-[16px] px-3 py-2.5 text-[14px] font-medium text-[var(--dp-navy)] transition-colors hover:bg-white/80"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                    <Link
-                      key={link.to}
-                      to={link.to}
-                      onClick={() => setOpen(false)}
-                      className="block rounded-[16px] px-3 py-2.5 text-[14px] font-medium text-[var(--dp-navy)] transition-colors hover:bg-white/80"
-                    >
-                    {link.label}
-                  </Link>
-                )
-              )}
+              {PRIMARY_NAV_ITEMS.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-[16px] px-3 py-2.5 text-[14px] font-medium text-[var(--dp-navy)] transition-colors hover:bg-white/80"
+                >
+                  {link.label}
+                </Link>
+              ))}
               {showBackButton ? (
                 <button
                   type="button"

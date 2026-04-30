@@ -22,47 +22,47 @@ import { ROUTES } from "@/lib/routes";
 const PARTNER_FIT = [
   {
     title: "Residential",
-    badge: "Free pilot · annual plan",
-    sublabel: "Buildings, multifamily, condos",
-    body: "Connect residents to nearby places, events, and perks.",
-    cta: "Start residential",
+    badge: "Free · $39 · $99 / year",
+    sublabel: "Multifamily, condos, apartments, and residential buildings",
+    body: "90-day pilot. Then choose your level. Management pays. Residents stay.",
+    cta: "See how it works for properties",
     href: ROUTES.partnerProperties,
     icon: Building2,
     active: true,
   },
   {
     title: "Hospitality",
-    badge: "Annual plan",
-    sublabel: "Hotels, boutiques, extended stay",
-    body: "Extend the guest experience beyond the lobby.",
-    cta: "Start hospitality",
+    badge: "$99-$149 / year",
+    sublabel: "Hotels, boutiques, extended stays, and hospitality",
+    body: "90-day pilot. Then choose your level. Extend the stay beyond your lobby.",
+    cta: "See how it works for hospitality",
     href: ROUTES.partnerHospitality,
     icon: Hotel,
   },
   {
     title: "Venues",
-    badge: "Free launch period",
-    sublabel: "Restaurants, bars, fitness, wellness",
-    body: "Show up when nearby intent is already forming.",
-    cta: "Start venue rollout",
+    badge: "Free for 12 months",
+    sublabel: "Restaurants, bars, cafes, fitness, wellness, and experiences",
+    body: "Then $49-$99 / year. Show up in the moment that counts.",
+    cta: "See how it works for venues",
     href: ROUTES.partnerVenues,
     icon: UtensilsCrossed,
   },
   {
     title: "Brands",
-    badge: "Campaign pricing",
-    sublabel: "Campaigns, activations, sponsorships",
-    body: "Buy the moment, not the broad impression.",
-    cta: "Start brand planning",
+    badge: "$99-$149 / year",
+    sublabel: "Brands, activations, campaigns, and corridor sponsorships",
+    body: "Buy the moment, not the impression. Context beats scale.",
+    cta: "See how it works for brands",
     href: ROUTES.partnerBrands,
     icon: Megaphone,
   },
   {
     title: "Civic",
-    badge: "District / initiative pricing",
-    sublabel: "Districts, chambers, public initiatives",
-    body: "Make participation easier to find and easier to join.",
-    cta: "Start civic rollout",
+    badge: "$49-$79 / year",
+    sublabel: "Cities, districts, chambers, and community partners",
+    body: "Turn attendance into participation. Discovery drives turnout.",
+    cta: "See how it works for civic",
     href: ROUTES.partnerCivic,
     icon: Landmark,
   },
@@ -70,28 +70,22 @@ const PARTNER_FIT = [
 
 const ROLLOUT = [
   {
-    step: "Step 1",
+    step: "Launch",
     title: "Launch",
-    body: "Choose the partner type, set the entry points, and go live quickly with the right map visibility.",
+    body: "Set up QR entry points and map visibility so people can find you immediately.",
     icon: Route,
   },
   {
-    step: "Step 2",
+    step: "Measure",
     title: "Measure",
-    body: "Track scans, saves, visits, RSVPs, redemptions, and source performance in the same system.",
+    body: "Track scans, saves, RSVPs, and redemptions - real behavior, not assumptions.",
     icon: CircleCheck,
   },
   {
-    step: "Step 3",
-    title: "Adjust",
-    body: "Tune placement, offers, timing, and activation windows based on what is actually working.",
+    step: "Decide",
+    title: "Decide",
+    body: "Keep it, scale it, or adjust based on what actually works.",
     icon: ArrowRight,
-  },
-  {
-    step: "Step 4",
-    title: "Scale",
-    body: "Keep the pilot, expand the footprint, and move into a wider annual model with real data behind it.",
-    icon: Building2,
   },
 ];
 
@@ -140,8 +134,8 @@ const ONBOARDING_FORMS = [
     id: "hospitality",
     label: "Hospitality",
     headline: "Extend the stay beyond your lobby.",
-    sub: "Give guests one working downtown layer.",
-    summary: "Use the same live map to connect guests to dining, events, wellness, nightlife, and nearby local context.",
+    sub: "90-day pilot. Extend the stay beyond your lobby.",
+    summary: "One scan and guests know where to go for coffee, dinner, and tonight. Better orientation, zero extra friction.",
     bullets: ["Guest map handoff", "Event-linked stays", "Attributed local visits"],
     route: ROUTES.partnerHospitality,
     flowType: "hospitality_onboarding",
@@ -160,8 +154,8 @@ const ONBOARDING_FORMS = [
   {
     id: "venues",
     label: "Venues",
-    headline: "Free 90-day pilot.",
-    sub: "No payment setup now.",
+    headline: "Free for 12 months.",
+    sub: "Zero sign-up fees.",
     summary: "Show up when nearby intent is real, then turn map visibility into visits, RSVPs, and redemptions.",
     bullets: ["Live map visibility", "Offer and event routing", "Repeat local use"],
     route: ROUTES.partnerVenues,
@@ -182,7 +176,7 @@ const ONBOARDING_FORMS = [
     id: "brands",
     label: "Brands",
     headline: "Buy the moment, not the impression.",
-    sub: "Show up in real downtown behavior.",
+    sub: "Appear inside real downtown decisions.",
     summary: "Run district-aware brand visibility and card-ready campaigns through the same map people already use.",
     bullets: ["District activations", "Sponsor-ready placement", "Measured post-action proof"],
     route: ROUTES.partnerBrands,
@@ -202,7 +196,7 @@ const ONBOARDING_FORMS = [
     id: "civic",
     label: "Civic",
     headline: "Turn attendance into participation.",
-    sub: "Make downtown easier to navigate and measure.",
+    sub: "Make what is happening easier to find.",
     summary: "Support public-facing navigation, event visibility, and local business discovery without turning it into a generic dashboard pitch.",
     bullets: ["District context", "Event participation", "Privacy-safe civic reporting"],
     route: ROUTES.partnerCivic,
@@ -241,8 +235,8 @@ const ONBOARDING_FORMS = [
   {
     id: "residents",
     label: "Residents",
-    headline: "$25 per year until your building joins.",
-    sub: "If your building signs up later, that resident fee is refunded.",
+    headline: "Check if your building is part of Downtown Perks.",
+    sub: "Browse first, then add the card when access matters.",
     summary: "Residents can browse first, then add the card when saves, RSVP, or redemption actually matter.",
     bullets: ["Browse first", "$25 annual direct access", "Refunded if your building joins"],
     route: ROUTES.residentAppCard,
@@ -332,14 +326,14 @@ export default function PricingSection() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.4 }}
           >
-            <span className="dp-micro-label mb-3 block">Start Here</span>
-            <h2 className="dp-display-section max-w-3xl text-[2.15rem] text-foreground md:text-[3rem]">
-              Pick the role, understand the rollout, and see what is included.
-            </h2>
-            <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-              Start with the partner model that fits, launch with a pilot, and scale what works with real measurement behind it.
-            </p>
-          </motion.div>
+              <span className="dp-micro-label mb-3 block">A smarter way to activate downtown</span>
+              <h2 className="dp-display-section max-w-3xl text-[2.15rem] text-foreground md:text-[3rem]">
+                Start with a pilot. Decide with real data.
+              </h2>
+              <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
+                No setup. No long-term commitment. Just a live test. You go live. People use it. You see what actually happens.
+              </p>
+            </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -348,14 +342,14 @@ export default function PricingSection() {
             transition={{ duration: 0.4, delay: 0.05 }}
             className="rounded-[20px] border border-[rgba(10,20,40,0.08)] bg-white px-5 py-4 text-[13px] leading-6 text-muted-foreground shadow-[0_8px_24px_rgba(11,26,43,0.04)]"
           >
-            Start with a pilot, go live quickly, measure what happens, then decide whether to expand the footprint.
+            Spend less. Do more. Start small. Prove it fast. Keep it if it works. Most partners start here.
           </motion.div>
         </div>
 
         <div className="space-y-10">
           <div>
             <div className="mb-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Partner fit
+              Pricing at a glance
             </div>
             <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 md:-mx-6 md:px-6">
               {PARTNER_FIT.map((card, index) => {
@@ -402,7 +396,7 @@ export default function PricingSection() {
 
           <div>
             <div className="mb-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Rollout path
+              How it works
             </div>
             <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 md:-mx-6 md:px-6">
               {ROLLOUT.map((card, index) => {
@@ -468,7 +462,7 @@ export default function PricingSection() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-[rgba(10,20,40,0.08)] pt-8">
+        <div id="get-started" className="mt-10 border-t border-[rgba(10,20,40,0.08)] pt-8">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -481,7 +475,7 @@ export default function PricingSection() {
                 Ready when you are.
               </h2>
               <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-                Pick the role, review the setup, and open the right onboarding flow from one place.
+                Pick the role, see the setup, and open the right onboarding flow without leaving the page.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
@@ -578,16 +572,19 @@ export default function PricingSection() {
                   People don't choose the best option. They choose the one they notice.
                 </h3>
                 <p className="mt-4 max-w-2xl text-[14px] leading-7 text-muted-foreground">
-                  For residents — Stop searching. Start doing. For partners — Be the one they notice.
+                  What's close. What's clear. What's easy.
                 </p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Link to={ROUTES.explore} className="dp-cta-primary">
                     Explore Downtown
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link to={currentForm.route} className="dp-cta-secondary">
-                    Open {currentForm.label}
+                  <Link to={ROUTES.partners} className="dp-cta-secondary">
+                    Become a Partner
                   </Link>
+                  <a href="mailto:hello@downtownperks.com" className="dp-cta-secondary">
+                    Contact us
+                  </a>
                 </div>
               </div>
             </motion.form>

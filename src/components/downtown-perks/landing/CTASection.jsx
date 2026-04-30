@@ -38,7 +38,7 @@ export default function CTASection() {
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-3 pt-2">
               <Link
-                to="/downtown-perks/card"
+                to="/card"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
               >
                 Get Your Perks Card

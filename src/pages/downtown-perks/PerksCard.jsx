@@ -7,7 +7,6 @@ import {
   CreditCard,
   MapPin,
   QrCode,
-  ShieldCheck,
   Sparkles,
   WalletCards,
 } from "lucide-react";

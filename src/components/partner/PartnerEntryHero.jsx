@@ -38,7 +38,7 @@ export default function PartnerEntryHero() {
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
-              href="/downtown-perks/explore"
+              href="/explore"
               className="dp-cta-secondary"
             >
               Explore the map

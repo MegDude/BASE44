@@ -179,7 +179,7 @@ export const FAQ_PROPERTY = [
     answer:
       "A 90-day free pilot can start within a week. After that, choose a plan based on the level of reporting your team wants.",
     linkLabel: "See pricing",
-    linkHref: "/downtown-perks/for-buildings",
+    linkHref: "/partners/properties",
   },
 ];
 
@@ -202,7 +202,7 @@ export const FAQ_HOSPITALITY = [
     answer:
       "Setup includes mapping your hotel as an access point and linking nearby dining, events, and offers that are relevant to your guests during their stay.",
     linkLabel: "See hotel partnerships",
-    linkHref: "/partners/hospitality",
+    linkHref: "/partners/hotels",
   },
   {
     id: "ho4",
