@@ -214,7 +214,7 @@ export default function ExploreRebuilt() {
     if (mode !== 'ask') return;
     if (!query?.trim()) return;
     handleAsk(query);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [mode, query]);
 
   useEffect(() => {

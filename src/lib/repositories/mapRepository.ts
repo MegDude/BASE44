@@ -64,7 +64,7 @@ function getFallbackIntentFilters(query = "") {
     };
   }
 
-  const byCategory = {
+  const byCategory: Record<string, { categories: string[]; types: string[] }> = {
     coffee: { categories: ["coffee"], types: ["venue"] },
     dining: { categories: ["restaurant", "bar"], types: ["venue"] },
     fitness: { categories: ["fitness"], types: ["venue"] },
@@ -231,11 +231,12 @@ export const mapRepository = {
   async searchWithIntent({ query, userLocation }: SearchIntentParams = {}) {
     const trimmedQuery = String(query || "").trim();
     const fallback = getFallbackIntentFilters(trimmedQuery);
-    const fallbackIntent = {
+    const fallbackRanking: AgentIntent["ranking"] = fallback.intent?.intentMode === "perks" ? "popularity" : "live";
+    const fallbackIntent: AgentIntent = {
       ...fallback.intent,
       categories: fallback.categories,
       types: fallback.types,
-      ranking: fallback.intent?.intentMode === "perks" ? "popularity" : "live",
+      ranking: fallbackRanking,
       suggestions: [],
     };
 
@@ -261,7 +262,7 @@ export const mapRepository = {
         });
         const base44Intent = intentResponse?.data || intentResponse || {};
         if (base44Intent && (base44Intent.categories || base44Intent.types || base44Intent.explanation)) {
-          apiIntent = base44Intent;
+          apiIntent = base44Intent as AgentIntent;
           source = "base44";
         }
       } catch (error) {

@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import {
   Bike,
   Building2,
-  Coffee,
   Hotel,
   Landmark,
   MapPin,

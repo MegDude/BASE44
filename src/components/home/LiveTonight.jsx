@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarDays, Clock3, MapPin, Users } from "lucide-react";
+import { ArrowRight, MapPin, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { mapRepository } from "@/lib/repositories/mapRepository";
 import { openHomeMapIntent } from "@/lib/homeMapIntent";

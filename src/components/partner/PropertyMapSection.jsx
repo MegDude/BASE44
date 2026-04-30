@@ -9,7 +9,6 @@ import {
   MapPin,
   Search,
   Sparkles,
-  Ticket,
   Users,
 } from "lucide-react";
 

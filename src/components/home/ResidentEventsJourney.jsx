@@ -123,7 +123,7 @@ export default function ResidentEventsJourney() {
 
   useEffect(() => {
     loadEvents();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   function handleSelect(eventItem) {
