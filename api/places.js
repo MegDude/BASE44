@@ -16,34 +16,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing query" });
   }
 
+  if (!process.env.GOOGLE_MAPS_API_KEY) {
+    return res.status(500).json({ error: "Missing GOOGLE_MAPS_API_KEY" });
+  }
+
   try {
-    const archiveResults = await searchArchiveCatalog(trimmedQuery, {
-      types: ["location"],
-      limit: 10,
-    });
-
-    if (archiveResults.length > 0) {
-      return res.status(200).json({
-        source: "archive",
-        results: archiveResults.map((place) => ({
-          id: place.id,
-          name: place.name,
-          address: place.address,
-          category: place.category,
-          district: place.district,
-          lat: place.latitude,
-          lng: place.longitude,
-          website: place.website,
-          operatingHours: place.operatingHours,
-          specials: place.specials,
-        })),
-      });
-    }
-
-    if (!process.env.GOOGLE_MAPS_API_KEY) {
-      return res.status(200).json({ source: "archive", results: [] });
-    }
-
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
       `${trimmedQuery} ${SEARCH_AREA}`
     )}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
@@ -75,6 +52,7 @@ export default async function handler(req, res) {
       }))
       .filter((place) => Number.isFinite(place.lat) && Number.isFinite(place.lng));
 
+    // Resolved conflict: Kept the "source" property
     return res.status(200).json({ source: "google", results });
   } catch (error) {
     console.error("places api failed", error);
