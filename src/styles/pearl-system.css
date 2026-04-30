@@ -1,5 +1,8 @@
 @layer base {
   :root {
+    --primary-navy: #0B1F33;
+    --accent-gold: #D4AF37;
+    --bg-pearl: #F9FAFB;
     --dp-bg-primary: #f6f8fb;
     --dp-bg-secondary: #fbfcff;
     --dp-bg-soft: #fbfcff;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, ChevronLeft, MapPin, Menu, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, Compass, CreditCard, Info, MapPin, Menu, User, X } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
 const TOP_LINKS = [
@@ -67,11 +67,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      ref={dropdownRef}
-      className="fixed left-0 right-0 top-0 z-50 border-b border-[rgba(15,23,42,0.08)] bg-[rgba(248,250,252,0.82)] backdrop-blur-dp"
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
+    <nav ref={dropdownRef} className="fixed left-0 right-0 top-0 z-50">
+      <div className="mx-auto mt-3 flex h-14 w-[min(96%,1100px)] items-center justify-between rounded-full pearl-surface px-4 md:px-6">
         <div className="flex items-center gap-3">
           {showBackButton ? (
             <button
@@ -100,34 +97,24 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="hidden items-center gap-1 md:flex">
-          {TOP_LINKS.map((link) => {
-            if (link.href) {
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="rounded-full px-3 py-2 text-[13px] font-medium text-[rgba(11,31,51,0.62)] transition-colors hover:bg-white/70 hover:text-[var(--dp-navy)]"
-                >
-                  {link.label}
-                </a>
-              );
-            }
-
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`rounded-full px-3 py-2 text-[13px] font-medium transition-colors ${
-                  isActive(link.to)
-                    ? "bg-white/70 text-[var(--dp-navy)]"
-                    : "text-[rgba(11,31,51,0.62)] hover:bg-white/70 hover:text-[var(--dp-navy)]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        <div className="hidden items-center gap-2 md:flex">
+          {[
+            { to: ROUTES.residents, icon: User, label: "Residents" },
+            { to: ROUTES.explore, icon: Compass, label: "Map" },
+            { to: ROUTES.card, icon: CreditCard, label: "Perks Card" },
+            { to: ROUTES.about, icon: Info, label: "About" },
+          ].map(({ to, icon: Icon, label }) => (
+            <Link
+              key={to}
+              to={to}
+              aria-label={label}
+              className={`inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                isActive(to) ? "bg-[rgba(212,175,55,0.2)] text-[var(--primary-navy)]" : "text-[rgba(11,31,51,0.62)] hover:bg-white/70 hover:text-[var(--primary-navy)]"
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+            </Link>
+          ))}
           <div className="relative">
             <button
               type="button"
