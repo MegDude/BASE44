@@ -21,7 +21,10 @@ import { properties as REPLIT_PROPERTIES } from "@/data/replitApiStore";
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 import { FAQ_HOMEPAGE } from "@/lib/faq-partner-data";
+=======
+>>>>>>> theirs
 =======
 >>>>>>> theirs
 =======

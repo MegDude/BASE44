@@ -251,6 +251,10 @@ export const mapRepository = {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+=======
+    const fallbackRanking: AgentIntent["ranking"] = fallback.intent?.intentMode === "perks" ? "popularity" : "live";
+>>>>>>> theirs
 =======
     const fallbackRanking: AgentIntent["ranking"] = fallback.intent?.intentMode === "perks" ? "popularity" : "live";
 >>>>>>> theirs
