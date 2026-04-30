@@ -1,34 +1,47 @@
 import { ROUTES } from "@/lib/routes";
 
-export const CTA_TYPES = {
+export const CTA_TYPES = Object.freeze({
   ROUTE: "route",
   MUTATION: "mutation",
   MODAL: "modal",
-} as const;
+});
 
-export const CTA_REGISTRY = {
+export const CTA_ROUTES = Object.freeze({
+  openMap: ROUTES.explore,
+  askMap: ROUTES.explore,
+  explore: ROUTES.explore,
+  events: ROUTES.events,
+  perks: ROUTES.perks,
+  card: ROUTES.card,
+  venues: ROUTES.partnerVenues,
+  partners: ROUTES.partners,
+  fiveMinWalk: `${ROUTES.explore}?radius=5min`,
+  dashboard: ROUTES.partnerDashboard,
+});
+
+export const CTA_REGISTRY = Object.freeze({
   OPEN_MAP: {
     id: "OPEN_MAP",
     label: "Open Map",
-    href: ROUTES.explore,
+    href: CTA_ROUTES.openMap,
     type: CTA_TYPES.ROUTE,
   },
   EXPLORE_DOWNTOWN: {
     id: "EXPLORE_DOWNTOWN",
     label: "Explore Downtown",
-    href: ROUTES.explore,
+    href: CTA_ROUTES.explore,
     type: CTA_TYPES.ROUTE,
   },
   GET_CARD: {
     id: "GET_CARD",
     label: "Get Your Card",
-    href: ROUTES.card,
+    href: CTA_ROUTES.card,
     type: CTA_TYPES.ROUTE,
   },
   VIEW_EVENTS: {
     id: "VIEW_EVENTS",
     label: "View Events",
-    href: ROUTES.events,
+    href: CTA_ROUTES.events,
     type: CTA_TYPES.ROUTE,
   },
   VIEW_RESIDENTS: {
@@ -40,19 +53,19 @@ export const CTA_REGISTRY = {
   VIEW_PARTNERS: {
     id: "VIEW_PARTNERS",
     label: "View Partners",
-    href: ROUTES.partners,
+    href: CTA_ROUTES.partners,
     type: CTA_TYPES.ROUTE,
   },
   BECOME_PARTNER: {
     id: "BECOME_PARTNER",
     label: "Become a Partner",
-    href: ROUTES.partners,
+    href: CTA_ROUTES.partners,
     type: CTA_TYPES.ROUTE,
   },
   PARTNER_DASHBOARD: {
     id: "PARTNER_DASHBOARD",
     label: "View Partner Dashboard",
-    href: ROUTES.partnerDashboard,
+    href: CTA_ROUTES.dashboard,
     type: CTA_TYPES.ROUTE,
   },
   SAVE: {
@@ -73,7 +86,7 @@ export const CTA_REGISTRY = {
     apiAction: "REDEEM_ENTITY",
     type: CTA_TYPES.MUTATION,
   },
-} as const;
+});
 
 export function getCta(id) {
   const cta = CTA_REGISTRY[id];
