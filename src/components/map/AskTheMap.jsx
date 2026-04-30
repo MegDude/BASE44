@@ -29,35 +29,74 @@ export default function AskTheMap({
   }
 
   return (
-    <div className={`rounded-[24px] border border-[rgba(255,255,255,0.62)] bg-[rgba(255,255,255,0.58)] shadow-[var(--dp-shadow-glow)] backdrop-blur-xl ${compact ? "p-3" : "p-4 md:p-5"} ${className}`}>
-      <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">Ask the Map</div>
+    <div
+      className={`min-w-0 rounded-[22px] bg-[rgba(255,255,255,0.70)] p-3 shadow-[var(--dp-shadow-glass)] backdrop-blur-xl md:rounded-[24px] ${
+        compact ? "md:p-3" : "md:p-5"
+      } ${className}`}
+    >
+      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.13em] text-[rgba(11,31,51,0.46)] md:text-[11px]">
+        Ask the Map
+      </div>
 
-      <form onSubmit={submit} className={`flex gap-2 ${compact ? "flex-col sm:flex-row" : "flex-col lg:flex-row"}`}>
+      <form onSubmit={submit} className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
         <input
           type="text"
           value={value}
           onChange={(event) => onChange && onChange(event.target.value)}
           placeholder={placeholder}
-          className="min-h-[48px] flex-1 rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.86)] px-4 text-[14px] font-medium text-[var(--dp-navy)] outline-none placeholder:text-[rgba(11,31,51,0.34)]"
+          inputMode="search"
+          className="min-h-[46px] min-w-0 rounded-[15px] bg-[rgba(255,255,255,0.9)] px-4 text-[14px] font-medium text-[var(--dp-navy)] outline-none placeholder:text-[rgba(11,31,51,0.34)]"
         />
-        <button type="submit" className="dp-cta-primary min-h-[48px] px-5 text-sm normal-case tracking-normal">{primaryActionLabel}</button>
-        {secondaryAction?.href ? <Link to={secondaryAction.href} className="dp-cta-secondary min-h-[48px] px-5 text-sm normal-case tracking-normal">{secondaryAction.label}</Link> : null}
+        <button
+          type="submit"
+          className="dp-cta-primary min-h-[46px] w-full rounded-[15px] px-4 text-sm normal-case tracking-normal sm:w-auto"
+        >
+          {primaryActionLabel}
+        </button>
+        {secondaryAction?.href ? (
+          <Link
+            to={secondaryAction.href}
+            className="dp-cta-primary min-h-[46px] rounded-[15px] px-4 text-sm normal-case tracking-normal sm:col-span-2"
+          >
+            {secondaryAction.label}
+          </Link>
+        ) : null}
       </form>
 
       {quickPrompts.length ? (
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
+        <div className="mt-2 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar" aria-label="Suggested map searches">
           {quickPrompts.map((prompt) => {
             const label = typeof prompt === "string" ? prompt : prompt.label || prompt.title || prompt.query;
-            return <button key={label} type="button" onClick={() => handlePrompt(prompt)} className="dp-chip whitespace-nowrap text-[11px]">{label}</button>;
+            return (
+              <button
+                key={label}
+                type="button"
+                onClick={() => handlePrompt(prompt)}
+                className="dp-chip min-h-[38px] shrink-0 whitespace-nowrap px-3 text-[11px]"
+              >
+                {label}
+              </button>
+            );
           })}
         </div>
       ) : null}
 
       {filters.length ? (
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
+        <div className="mt-2 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar" aria-label="Map filters">
           {filters.map((filter) => {
             const id = filter.id || filter.label;
-            return <button key={id} type="button" onClick={() => onFilterChange && onFilterChange(id)} className={`dp-chip whitespace-nowrap text-[12px] ${activeFilter === id ? "dp-chip-active" : ""}`}>{filter.label}</button>;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => onFilterChange && onFilterChange(id)}
+                className={`dp-chip min-h-[38px] shrink-0 whitespace-nowrap px-3 text-[12px] ${
+                  activeFilter === id ? "dp-chip-active" : ""
+                }`}
+              >
+                {filter.label}
+              </button>
+            );
           })}
         </div>
       ) : null}
