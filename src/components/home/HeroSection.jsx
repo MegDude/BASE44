@@ -92,9 +92,9 @@ export default function HeroSection() {
   }
 
   return (
-    <section id="home-map-entry" className="bg-[var(--dp-bg-primary)] bg-[image:var(--dp-bg-pearl)] pt-[84px] text-[var(--dp-navy)]">
+    <section id="home-map-entry" className="bg-[var(--dp-bg-primary)] bg-[image:var(--dp-bg-pearl)] pt-[64px] text-[var(--dp-navy)] md:pt-[84px]">
       <div className="dp-page-shell">
-        <div className="relative overflow-hidden rounded-[34px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.72)] shadow-[var(--dp-shadow-soft)]">
+        <div className="relative overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.72)] shadow-[var(--dp-shadow-soft)] md:rounded-[34px]">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -102,15 +102,15 @@ export default function HeroSection() {
                 "linear-gradient(180deg,rgba(246,247,251,0.52),rgba(246,247,251,0.94)), url('/media/austin-hero-correct.png')",
             }}
           />
-          <div className="relative grid gap-6 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+          <div className="relative grid gap-4 px-4 py-5 sm:px-5 sm:py-6 md:gap-6 md:px-8 md:py-9 lg:grid-cols-[0.98fr_1.02fr] lg:items-end">
             <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[rgba(11,31,51,0.48)] md:text-[11px]">
                 {APPROVED_HOME_COPY.hero.eyebrow || "Downtown Perks"}
               </div>
-              <h1 className="mt-4 max-w-[12ch] font-heading text-[2.9rem] font-semibold leading-[0.94] tracking-[-0.055em] text-[var(--dp-navy)] md:text-[5rem]">
+              <h1 className="mt-3 max-w-[12ch] font-heading text-[2.25rem] font-semibold leading-[0.92] tracking-[-0.055em] text-[var(--dp-navy)] sm:text-[2.7rem] md:mt-4 md:text-[4.25rem] lg:text-[4.75rem]">
                 {APPROVED_HOME_COPY.hero.title || "Where downtown meets you"}
               </h1>
-              <p className="mt-4 max-w-xl text-[1.1rem] font-medium tracking-[-0.02em] text-[rgba(11,31,51,0.82)] md:text-[1.3rem]">
+              <p className="mt-3 max-w-xl text-[0.95rem] font-medium leading-6 tracking-[-0.02em] text-[rgba(11,31,51,0.78)] md:mt-4 md:text-[1.15rem] md:leading-7">
                 Everything nearby — in one map.
               </p>
             </div>
@@ -123,7 +123,7 @@ export default function HeroSection() {
               filters={ASK_FILTERS}
               activeFilter={activeFilter}
               onFilterChange={handleFilterChange}
-              mode="hero"
+              mode="compact"
               placeholder="Search places, events, or perks"
               secondaryAction={{ label: "See what's nearby", href: ROUTES.explore }}
             />
