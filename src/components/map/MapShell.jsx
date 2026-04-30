@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
 import UnifiedResultsPanel from "@/components/map/unified/UnifiedResultsPanel";
 import UnifiedDrawer from "@/components/map/unified/UnifiedDrawer";
@@ -9,6 +8,33 @@ import { useSharedMapFeed } from "@/lib/map/useSharedMapFeed";
 import { useMapStateStore } from "@/store/mapStateStore";
 import { sharedMapItemToMapEntity } from "@/lib/mappers/sharedMapMappers";
 import { createExploreLink } from "@/lib/routeHelpers";
+
+function SparkleIcon({ className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 3.5l1.7 4.5 4.6 1.7-4.6 1.7L12 16l-1.7-4.6-4.6-1.7 4.6-1.7L12 3.5Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M18.5 15.5l.8 2.1 2.2.9-2.2.8-.8 2.2-.9-2.2-2.1-.8 2.1-.9.9-2.1ZM5.5 14.5l.6 1.5 1.4.5-1.4.6-.6 1.4-.5-1.4-1.5-.6 1.5-.5.5-1.5Z"
+        stroke="currentColor"
+        strokeWidth="1.45"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 const DEFAULT_CENTER = [30.267, -97.743];
 const HOME_ALLOWED_DISTRICTS = new Set(["rainey", "congress", "seaholm", "red-river", "2nd-street", "downtown"]);
@@ -258,28 +284,28 @@ export default function MapShell({
 
   return (
     <section
-      className={`relative overflow-hidden bg-[#f7f9fc] ${compact ? "min-h-[720px]" : "min-h-screen"} ${className}`}
+      className={`pearl-page relative overflow-hidden ${compact ? "min-h-[720px]" : "min-h-screen"} ${className}`}
     >
       <div className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-6 pt-20 md:px-6">
-        <div className="mb-5 max-w-3xl">
-          <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
-            <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold-deep,#A8733C)]" />
+        <div className="mb-6 max-w-3xl">
+          <div className="dp-page-kicker inline-flex items-center gap-2">
+            <SparkleIcon className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
             Downtown Austin
           </div>
-          <h1 className="mt-3 font-heading text-[clamp(2.6rem,5vw,4.75rem)] font-semibold tracking-[-0.05em] text-[var(--dp-navy,#0B1F33)]">
+          <h1 className="dp-display-hero mt-3 text-[clamp(2.6rem,5vw,4.75rem)]">
             {config.title}
           </h1>
-          <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[rgba(11,31,51,0.64)]">
+          <p className="dp-page-intro mt-4 max-w-2xl">
             {config.subtitle}
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_18px_42px_rgba(11,31,51,0.06)]">
+        <div className="pearl-surface overflow-hidden rounded-[28px]">
           <div className="grid h-full grid-cols-1 lg:grid-cols-[390px_minmax(0,1fr)]">
-            <div className="order-2 border-t border-[rgba(11,31,51,0.08)] bg-white lg:order-1 lg:border-r lg:border-t-0">
-              <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-5">
-                <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
-                  <Sparkles className="h-3.5 w-3.5 text-[var(--dp-gold-deep,#A8733C)]" />
+            <div className="order-2 border-t border-[var(--dp-border)] bg-[rgba(255,255,255,0.48)] lg:order-1 lg:border-r lg:border-t-0">
+              <div className="border-b border-[var(--dp-border)] px-4 py-4 md:px-5">
+                <div className="dp-page-kicker inline-flex items-center gap-2">
+                  <SparkleIcon className="h-3.5 w-3.5 text-[var(--dp-gold)]" />
                   Ask the map
                 </div>
 
@@ -290,30 +316,30 @@ export default function MapShell({
                   }}
                   className="mt-4 flex gap-2"
                 >
-                  <div className="flex h-11 flex-1 items-center gap-3 rounded-[14px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-4">
-                    <Sparkles className="h-4 w-4 text-[var(--dp-gold-deep,#A8733C)]" />
+                  <div className="pearl-glass flex h-11 flex-1 items-center gap-3 rounded-[14px] px-4">
+                    <SparkleIcon className="h-4 w-4 text-[var(--dp-gold)]" />
                     <input
                       value={queryInput}
                       onChange={(event) => setQueryInput(event.target.value)}
                       placeholder="Search places, events, perks, or what is nearby"
-                      className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/42"
+                      className="flex-1 bg-transparent text-sm text-[var(--dp-navy)] outline-none placeholder:text-[rgba(20,32,51,0.42)]"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-primary px-4 text-sm font-medium text-white"
+                    className="dp-cta-primary h-11 min-h-0 px-4 text-sm normal-case tracking-normal"
                   >
                     Ask
                   </button>
                 </form>
 
                 {mode === "home" && config.quickLinks?.length ? (
-                  <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                  <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
                     {config.quickLinks.map((link) => (
                       <Link
                         key={link.href}
                         to={link.href}
-                        className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] whitespace-nowrap text-[var(--dp-navy)]"
+                        className="dp-chip whitespace-nowrap text-[11px] uppercase tracking-[0.12em]"
                       >
                         {link.label}
                       </Link>
@@ -321,7 +347,7 @@ export default function MapShell({
                   </div>
                 ) : null}
 
-                <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                <div className="mt-3 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
                   {config.prompts.map((prompt) => (
                     <button
                       key={prompt}
@@ -330,24 +356,20 @@ export default function MapShell({
                         setQueryInput(prompt);
                         setQuery(prompt);
                       }}
-                      className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] px-3 py-2 text-[11px] font-medium whitespace-nowrap text-foreground/78"
+                      className="dp-chip whitespace-nowrap text-[11px]"
                     >
                       {prompt}
                     </button>
                   ))}
                 </div>
 
-                <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+                <div className="mt-4 flex gap-2 overflow-x-auto pb-1 dp-no-scrollbar">
                   {config.chips.map((chip) => (
                     <button
                       key={chip.id}
                       type="button"
                       onClick={() => setActiveChip(chip.id)}
-                      className={`rounded-full border px-3 py-2 text-[12px] font-medium whitespace-nowrap transition-all ${
-                        activeChip === chip.id
-                          ? "border-primary bg-primary text-white"
-                          : "border-[rgba(11,31,51,0.08)] bg-white text-foreground/70 hover:bg-[#f7f9fc]"
-                      }`}
+                      className={`dp-chip whitespace-nowrap text-[12px] ${activeChip === chip.id ? "dp-chip-active" : ""}`}
                     >
                       {chip.label}
                     </button>
@@ -358,17 +380,15 @@ export default function MapShell({
               <div className="px-4 py-3 md:px-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/50">
-                      Nearby results
-                    </div>
-                    <div className="mt-1 text-[12px] text-muted-foreground">
+                    <div className="dp-micro-label">Nearby results</div>
+                    <div className="mt-1 text-[12px] text-[rgba(20,32,51,0.62)]">
                       {config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby"} · {filteredItems.length} Result{filteredItems.length === 1 ? "" : "s"}
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => setResultsExpanded((current) => !current)}
-                    className="inline-flex h-9 items-center justify-center rounded-full border border-[rgba(11,31,51,0.08)] px-3 text-[11px] font-medium text-foreground"
+                    className="dp-cta-secondary h-9 min-h-0 px-3 text-[11px] normal-case tracking-normal"
                   >
                     {resultsExpanded ? "Hide results" : "Show results"}
                   </button>
@@ -376,7 +396,7 @@ export default function MapShell({
               </div>
 
               {resultsExpanded ? (
-                <div className="h-[360px] border-t border-[rgba(11,31,51,0.08)] lg:h-[calc(100%-210px)]">
+                <div className="h-[360px] border-t border-[var(--dp-border)] lg:h-[calc(100%-210px)]">
                   <UnifiedResultsPanel
                     items={filteredItems}
                     title={config.chips.find((chip) => chip.id === activeChip)?.label || "Nearby now"}
@@ -390,17 +410,15 @@ export default function MapShell({
               ) : (
                 <div className="px-4 pb-4 md:px-5">
                   {effectiveSelected ? (
-                    <div className="rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[#f7f9fc] p-4">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/70">
-                        Top result
-                      </div>
-                      <div className="mt-2 text-[15px] font-semibold text-foreground">{effectiveSelected.name}</div>
-                      <div className="mt-1 text-[12px] leading-5 text-muted-foreground">
+                    <div className="pearl-surface rounded-[18px] p-4">
+                      <div className="dp-micro-label text-[var(--dp-gold-muted)]">Top result</div>
+                      <div className="mt-2 text-[15px] font-semibold text-[var(--dp-navy)]">{effectiveSelected.name}</div>
+                      <div className="mt-1 text-[12px] leading-5 text-[rgba(20,32,51,0.64)]">
                         {effectiveSelected.address || effectiveSelected.description}
                       </div>
                     </div>
                   ) : (
-                    <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[#f7f9fc] p-4 text-[12px] text-muted-foreground">
+                    <div className="rounded-[18px] border border-dashed border-[rgba(11,31,51,0.12)] bg-[rgba(255,255,255,0.48)] p-4 text-[12px] text-[rgba(20,32,51,0.62)]">
                       Search again to see more nearby.
                     </div>
                   )}
