@@ -220,7 +220,7 @@ export default function MapShell({
         return haystack.includes(normalizedQuery);
       })
       .sort((a, b) => scoreItem(b) - scoreItem(a));
-  }, [activeChip, query, sourceItems]);
+  }, [activeChip, mode, query, sourceItems]);
 
   useEffect(() => {
     if (selected) {
@@ -241,7 +241,7 @@ export default function MapShell({
     if (!hasMatchingSelection && (selectedEntity || drawerState !== "closed")) {
       selectEntity(null);
     }
-  }, [drawerState, filteredItems, mode, selectEntity, selected, selectedEntity, setDrawerState]);
+  }, [drawerState, filteredItems, mode, selectEntity, selected, selectedEntity]);
 
   useEffect(() => {
     if (!selected) return;
@@ -254,6 +254,7 @@ export default function MapShell({
   }, [compact, mode, setMapCenter, setMapZoom]);
 
   const effectiveSelected = selected || selectedEntity;
+  const shouldShowDrawer = Boolean(effectiveSelected && drawerState !== "closed");
 
   return (
     <section
@@ -434,7 +435,9 @@ export default function MapShell({
                 onMapZoomChange={setMapZoom}
                 className="h-full w-full"
               />
-              <UnifiedDrawer selected={effectiveSelected} desktopMode="docked" desktopClassName="right-4 top-4 bottom-4" />
+              {shouldShowDrawer ? (
+                <UnifiedDrawer selected={effectiveSelected} desktopMode="docked" desktopClassName="right-4 top-4 bottom-4" />
+              ) : null}
             </div>
           </div>
         </div>
