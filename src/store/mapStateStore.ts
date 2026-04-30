@@ -135,7 +135,7 @@ const AUSTIN_CENTER: [number, number] = [30.267, -97.743];
 export const useMapStateStore = create<MapState>((set, get) => ({
   // Initial state
   mapCenter: AUSTIN_CENTER,
-  mapZoom: 14,
+  mapZoom: 15,
   mapBounds: undefined,
 
   selectedEntityId: null,
@@ -274,7 +274,7 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   reset: () => {
     set({
       mapCenter: AUSTIN_CENTER,
-      mapZoom: 14,
+      mapZoom: 15,
       selectedEntityId: null,
       selectedEntity: null,
       drawerState: 'closed',

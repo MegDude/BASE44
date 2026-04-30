@@ -1,12 +1,27 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ArrowRight, Calendar, LineChart, Search, Sparkles, Target } from "lucide-react";
-import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
-import PartnerStoryCarousel from "@/components/partner/PartnerStoryCarousel";
-import { PARTNER_TYPE_CONTENT, PARTNER_TYPE_ORDER } from "@/lib/partnerContent";
+import {
+  ArrowRight,
+  Building2,
+  Calendar,
+  CheckCircle2,
+  ChevronDown,
+  Clock3,
+  Eye,
+  Hotel,
+  Landmark,
+  MapPin,
+  Megaphone,
+  Sparkles,
+  Store,
+  Ticket,
+} from "lucide-react";
+import UnifiedMapShell from "@/components/map/unified/UnifiedMapShell";
+import { createMarker } from "@/components/map/markers/MarkerFactory";
+import { usePartnerInsights } from "@/lib/map/partnerInsights";
 import { ROUTES } from "@/lib/routes";
 
-const LENS_LINKS = [
+const DASHBOARD_TABS = [
   { label: "Overview", href: ROUTES.partnerDashboard },
   { label: "Map", href: "/partners/dashboard/map" },
   { label: "Properties", href: ROUTES.partnerDashboardResidential },
@@ -19,344 +34,969 @@ const LENS_LINKS = [
   { label: "About", href: "/partners/dashboard/about" },
 ];
 
-const DASHBOARD_VARIANTS = {
-  dashboard: {
-    kicker: "Partner intelligence",
-    title: "Not just what happened. What to do next.",
-    body: "Use one question, a few small controls, and the live downtown layer.",
-    mapTitle: "Ask what you want to know, see, or do.",
-    mapDescription: "The map answers back with the clearest current signal.",
-    partnerType: "dashboard",
-  },
-  residential: {
-    kicker: "Property intelligence",
-    title: "Ask what residents are actually using.",
-    body: "Use the map to see where activity is building and what the property should do next.",
-    mapTitle: "Ask what residents are using, seeing, or doing nearby.",
-    mapDescription: "The map returns the clearest resident-behavior answer.",
-    partnerType: "property",
-  },
-  hospitality: {
-    kicker: "Hospitality intelligence",
-    title: "Ask where guests go after they arrive.",
-    body: "Use the map to see guest movement, nearby intent, and what is converting best.",
-    mapTitle: "Ask what guests are doing, seeing, or choosing nearby.",
-    mapDescription: "The map returns the clearest guest-movement answer.",
-    partnerType: "hospitality",
-  },
-  venues: {
-    kicker: "Venue intelligence",
-    title: "Ask what is actually bringing people in.",
-    body: "Use the map to see nearby intent, offer performance, and what to do next.",
-    mapTitle: "Ask what is driving venue performance right now.",
-    mapDescription: "The map returns the clearest venue-performance answer.",
-    partnerType: "venue",
-  },
-  brands: {
-    kicker: "Brand intelligence",
-    title: "See what is driving response before you spend more on the wrong placement.",
-    body: "This view tells a brand team where attention turns into movement: which district is waking up, which building or venue is sending qualified traffic, and which event or activation source is actually earning follow-through.",
-    mapTitle: "Ask where the campaign is working and what to adjust next.",
-    mapDescription: "The map returns the clearest campaign answer, then shows the proof behind it.",
-    partnerType: "brand",
-    explainerLabel: "What this block is doing",
-    explainerTitle: "The brand view is here to answer one hard question clearly.",
-    explainerBody:
-      "It should show whether the campaign is working because of the district, the building, the venue, the event moment, or the offer itself. The next section then turns that answer into a live map view with proof, sources, and the next move.",
-    explainerPoints: [
-      "See which placements are generating real response instead of broad visibility.",
-      "Separate district lift from building-led, venue-led, and event-led traffic.",
-      "Use the live map section below to decide where to keep, move, or stop the campaign."
-    ],
-  },
-  civic: {
-    kicker: "Civic intelligence",
-    title: "Ask where district activity is actually building.",
-    body: "Use the map to see what is drawing attention and where downtown needs more support.",
-    mapTitle: "Ask what the district needs to see, support, or strengthen next.",
-    mapDescription: "The map returns the clearest district answer.",
-    partnerType: "civic",
-  },
+const SUGGESTED_PROMPTS = [
+  "What’s getting people to act right now?",
+  "Which offers are being used most?",
+  "Which district is busiest tonight?",
+  "What should we update next?",
+];
+
+const PARTNER_TYPE_OPTIONS = [
+  { id: "all", label: "All" },
+  { id: "venues", label: "Venues" },
+  { id: "properties", label: "Properties" },
+  { id: "hotels", label: "Hospitality" },
+  { id: "brands", label: "Brands" },
+  { id: "civic", label: "Civic" },
+];
+
+const WHAT_TO_SHOW_OPTIONS = [
+  { id: "everything", label: "Everything" },
+  { id: "visits", label: "Visits" },
+  { id: "saves", label: "Saves" },
+  { id: "check-ins", label: "Check-ins" },
+  { id: "perks-used", label: "Perks used" },
+  { id: "events", label: "Events" },
+  { id: "offers", label: "Offers" },
+  { id: "happy-hour", label: "Happy hour" },
+];
+
+const TIMEFRAME_OPTIONS = [
+  { id: "today", label: "Today" },
+  { id: "tonight", label: "Tonight" },
+  { id: "this-week", label: "This week" },
+  { id: "last-30", label: "Last 30 days" },
+];
+
+const INSIGHT_TABS = [
+  { id: "summary", label: "Summary" },
+  { id: "proof", label: "Proof" },
+  { id: "sources", label: "Sources" },
+];
+
+const DISTRICT_LABELS = {
+  rainey: "Rainey",
+  congress: "Congress",
+  "red-river": "Red River",
+  "downtown-core": "Downtown Core",
+  downtown: "Downtown Core",
+  seaholm: "Seaholm",
+  "market-district": "Market District",
+  waterloo: "Waterloo",
+  "west-6th": "West 6th",
 };
 
-function getDashboardVariant(pathname) {
-  if (pathname.includes("/partners/dashboard/residential")) return "residential";
-  if (pathname.includes("/partners/dashboard/hospitality")) return "hospitality";
+function getVariantFromPath(pathname) {
+  if (pathname.includes("/partners/dashboard/residential")) return "properties";
+  if (pathname.includes("/partners/dashboard/hospitality")) return "hotels";
   if (pathname.includes("/partners/dashboard/venues")) return "venues";
   if (pathname.includes("/partners/dashboard/brands")) return "brands";
   if (pathname.includes("/partners/dashboard/civic")) return "civic";
-  return "dashboard";
+  return "all";
 }
 
-function getContentForVariant(variantKey) {
-  if (variantKey === "residential") return PARTNER_TYPE_CONTENT.properties;
-  if (variantKey === "hospitality") return PARTNER_TYPE_CONTENT.hospitality;
-  if (variantKey === "venues") return PARTNER_TYPE_CONTENT.venues;
-  if (variantKey === "brands") return PARTNER_TYPE_CONTENT.brands;
-  if (variantKey === "civic") return PARTNER_TYPE_CONTENT.civic;
-  return null;
+function normalizeText(value = "") {
+  return String(value || "").trim().toLowerCase();
 }
 
-function metricValue(value, suffix = "") {
-  if (value === null || value === undefined) return "0";
-  return `${Number(value).toLocaleString()}${suffix}`;
+function normalizeDistrict(value = "") {
+  const text = normalizeText(value);
+  if (!text) return "Downtown Core";
+  if (text.includes("rainey")) return "Rainey";
+  if (text.includes("congress")) return "Congress";
+  if (text.includes("red river") || text.includes("red-river")) return "Red River";
+  if (text.includes("seaholm")) return "Seaholm";
+  if (text.includes("market")) return "Market District";
+  if (text.includes("downtown")) return "Downtown Core";
+  if (text.includes("waterloo")) return "Waterloo";
+  return text
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function normalizeName(value = "") {
+  return normalizeText(value).replace(/['’.,"&()-]/g, "").replace(/\s+/g, " ").trim();
+}
+
+function dedupePartnerItems(items = []) {
+  const seen = new Map();
+
+  for (const item of items) {
+    const entityId = String(item?.entity_id || item?.id || "").trim();
+    const name = normalizeName(item?.title || item?.name);
+    const district = normalizeDistrict(item?.district);
+    const address = normalizeText(item?.address);
+    const key = entityId || `${name}|${district}|${address}`;
+    const current = seen.get(key);
+
+    if (!current) {
+      seen.set(key, item);
+      continue;
+    }
+
+    const currentScore = Number(current?.activityScore || 0);
+    const nextScore = Number(item?.activityScore || 0);
+    if (nextScore > currentScore) {
+      seen.set(key, item);
+    }
+  }
+
+  return Array.from(seen.values());
+}
+
+function derivePartnerType(item) {
+  const raw = normalizeText(item?.partnerType || item?.entityType || item?.type);
+  if (raw === "building" || raw === "property") return "properties";
+  if (raw === "hotel" || raw === "hospitality") return "hotels";
+  if (raw === "brand") return "brands";
+  if (raw === "civic") return "civic";
+  return "venues";
+}
+
+function deriveShowBucket(item) {
+  if (Number(item?.eventsListed || 0) > 0) return "events";
+  if (Number(item?.activeOffers || 0) > 0) return "offers";
+  if (normalizeText(item?.summary).includes("happy hour") || normalizeText(item?.summary).includes("offer")) {
+    return "happy-hour";
+  }
+  return "everything";
+}
+
+function addDerivedFields(item) {
+  const visits = Number(item?.metrics?.visits || 0);
+  const saves = Number(item?.metrics?.saves || 0);
+  const checkIns = Number(item?.metrics?.impressions || 0);
+  const perksUsed = Number(item?.metrics?.redemptions || 0);
+  const activeOffers = Number(item?.metrics?.activePerks || 0);
+  const eventsListed = Number(item?.metrics?.activeEvents || 0);
+  const views = checkIns;
+  const activityScore =
+    visits * 1 +
+    saves * 1.5 +
+    checkIns * 2 +
+    perksUsed * 3 +
+    activeOffers * 1.25 +
+    eventsListed * 1;
+
+  let strongestMetric = "Visits";
+  let strongestValue = visits;
+  const candidates = [
+    ["Saves", saves],
+    ["Check-ins", checkIns],
+    ["Perks used", perksUsed],
+    ["Active offers", activeOffers],
+  ];
+  candidates.forEach(([label, value]) => {
+    if (Number(value) > strongestValue) {
+      strongestMetric = label;
+      strongestValue = Number(value);
+    }
+  });
+
+  let recommendedAction = "Try a time-limited perk or event tie-in.";
+  if (saves >= 20 && perksUsed <= 2) {
+    recommendedAction = "Add or refresh an offer.";
+  } else if (checkIns >= 200) {
+    recommendedAction = "Keep this offer visible tonight.";
+  } else if (visits >= 40 && saves <= 10) {
+    recommendedAction = "Improve the listing copy or photo.";
+  } else if (eventsListed >= 2) {
+    recommendedAction = "Promote nearby offers around event timing.";
+  }
+
+  const activityLabel =
+    perksUsed > 0
+      ? "Perks are being used"
+      : checkIns > 0
+        ? "People are checking in"
+        : visits > 0
+          ? "Visits are building"
+          : "No partner activity yet";
+
+  return {
+    ...item,
+    entityId: item?.entity_id || item?.id,
+    entityName: item?.title || item?.name,
+    entityType: item?.entityType || item?.type,
+    partnerType: derivePartnerType(item),
+    district: normalizeDistrict(item?.district),
+    address: item?.address || "Downtown Austin",
+    latitude: item?.latitude ?? item?.location?.latitude,
+    longitude: item?.longitude ?? item?.location?.longitude,
+    visits,
+    saves,
+    checkIns,
+    perksUsed,
+    activeOffers,
+    eventsListed,
+    views,
+    timeframe: "today",
+    activityScore,
+    strongestMetric,
+    recommendedAction,
+    activityLabel,
+    needsUpdate: activityScore < 40,
+    showBucket: deriveShowBucket({ ...item, activeOffers, eventsListed }),
+  };
+}
+
+function matchesPartnerType(item, value) {
+  if (value === "all") return true;
+  return item.partnerType === value;
+}
+
+function matchesWhatToShow(item, value) {
+  if (value === "everything") return true;
+  if (value === "visits") return item.visits > 0;
+  if (value === "saves") return item.saves > 0;
+  if (value === "check-ins") return item.checkIns > 0;
+  if (value === "perks-used") return item.perksUsed > 0;
+  if (value === "events") return item.eventsListed > 0;
+  if (value === "offers") return item.activeOffers > 0;
+  if (value === "happy-hour") {
+    return (
+      normalizeText(item.summary).includes("happy hour") ||
+      normalizeText(item.summary).includes("offer") ||
+      normalizeText(item.label).includes("redemption")
+    );
+  }
+  return true;
+}
+
+function timeframeMultiplier(value) {
+  if (value === "tonight") return 1.08;
+  if (value === "this-week") return 1.16;
+  if (value === "last-30") return 1.3;
+  return 1;
+}
+
+function matchesQuery(item, query) {
+  const value = normalizeText(query);
+  if (!value) return true;
+  const haystack = [
+    item.entityName,
+    item.district,
+    item.address,
+    item.summary,
+    item.recommendedAction,
+    item.partnerType,
+    item.strongestMetric,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(value);
+}
+
+function buildReason(item) {
+  if (item.perksUsed > 0) {
+    return "People nearby are checking in and using offers here more than similar nearby places.";
+  }
+  if (item.saves > item.visits) {
+    return "People are saving this more often than similar nearby places.";
+  }
+  if (item.visits > 0) {
+    return "Nearby visits are stronger here than at similar places right now.";
+  }
+  return "This location is the clearest current result based on the available downtown activity.";
+}
+
+function buildWhyItMatters(item) {
+  return `${item.entityName} is getting attention from nearby residents and visitors, with ${normalizeText(item.strongestMetric)} showing clear interest.`;
+}
+
+function getPartnerIcon(item) {
+  if (item.partnerType === "properties") return Building2;
+  if (item.partnerType === "hotels") return Hotel;
+  if (item.partnerType === "brands") return Megaphone;
+  if (item.partnerType === "civic") return Landmark;
+  return Store;
+}
+
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString();
+}
+
+function KpiPill({ label, value, helper }) {
+  return (
+    <div className="min-w-[160px] border-r border-[rgba(11,31,51,0.08)] px-4 py-1 last:border-r-0">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+        {label}
+      </div>
+      <div className="mt-2 text-[1.4rem] font-semibold tracking-[-0.04em] text-[var(--dp-navy,#0B1F33)]">
+        {value}
+      </div>
+      <div className="mt-1 text-[12px] leading-5 text-[rgba(11,31,51,0.48)]">
+        {helper}
+      </div>
+    </div>
+  );
+}
+
+function EmptyMessage({ title, body }) {
+  return (
+    <div className="px-1 py-2 text-left">
+      <h3 className="text-[1.2rem] font-semibold text-[var(--dp-navy,#0B1F33)]">{title}</h3>
+      <p className="mt-2 max-w-[540px] text-[14px] leading-7 text-[rgba(11,31,51,0.66)]">{body}</p>
+    </div>
+  );
+}
+
+function SurfaceLabel({ children }) {
+  return (
+    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+      {children}
+    </div>
+  );
+}
+
+function FilterField({ label, children }) {
+  return (
+    <label className="grid gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.46)]">
+      <span>{label}</span>
+      {children}
+    </label>
+  );
 }
 
 export default function Dashboard() {
   const location = useLocation();
-  const variantKey = getDashboardVariant(location.pathname);
-  const variant = DASHBOARD_VARIANTS[variantKey];
-  const content = getContentForVariant(variantKey);
-  const [liveSummary, setLiveSummary] = useState(null);
+  const routeVariant = getVariantFromPath(location.pathname);
+  const [askInput, setAskInput] = useState("");
+  const [appliedAsk, setAppliedAsk] = useState("");
+  const [partnerTypeFilter, setPartnerTypeFilter] = useState(routeVariant);
+  const [whatToShow, setWhatToShow] = useState("everything");
+  const [timeframe, setTimeframe] = useState("today");
+  const [openNow, setOpenNow] = useState(false);
+  const [selectedInsightTab, setSelectedInsightTab] = useState("summary");
+  const [expandedRows, setExpandedRows] = useState(false);
+  const [selectedEntityId, setSelectedEntityId] = useState(null);
+  const [mapCenter, setMapCenter] = useState([30.267, -97.743]);
+  const [mapZoom, setMapZoom] = useState(14);
 
   useEffect(() => {
-    let active = true;
+    setPartnerTypeFilter(routeVariant);
+  }, [routeVariant]);
 
-    fetch("/api/partner-insights")
-      .then((response) => response.json())
-      .then((payload) => {
-        if (!active || !payload?.ok) return;
-        setLiveSummary(payload.summary || null);
-      })
-      .catch(() => {
-        if (active) setLiveSummary(null);
+  const hookPartnerType =
+    partnerTypeFilter === "all"
+      ? "dashboard"
+      : partnerTypeFilter === "properties"
+        ? "property"
+        : partnerTypeFilter === "hotels"
+          ? "hospitality"
+          : partnerTypeFilter === "venues"
+            ? "venue"
+            : partnerTypeFilter === "brands"
+              ? "brand"
+              : "civic";
+
+  const { items, loading, hasLiveData } = usePartnerInsights(hookPartnerType);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setAppliedAsk(askInput.trim());
+    }, 200);
+    return () => window.clearTimeout(timer);
+  }, [askInput]);
+
+  const preparedItems = useMemo(() => {
+    return dedupePartnerItems((Array.isArray(items) ? items : []).map(addDerivedFields));
+  }, [items]);
+
+  const filteredItems = useMemo(() => {
+    const multiplier = timeframeMultiplier(timeframe);
+    return preparedItems
+      .filter((item) => matchesPartnerType(item, partnerTypeFilter))
+      .filter((item) => matchesWhatToShow(item, whatToShow))
+      .filter((item) => (openNow ? item.visits > 0 || item.perksUsed > 0 : true))
+      .filter((item) => matchesQuery(item, appliedAsk))
+      .map((item) => ({
+        ...item,
+        activityScore: Math.round(item.activityScore * multiplier),
+      }))
+      .sort((a, b) => {
+        const queryBoostA = appliedAsk && matchesQuery(a, appliedAsk) ? 1 : 0;
+        const queryBoostB = appliedAsk && matchesQuery(b, appliedAsk) ? 1 : 0;
+        if (queryBoostB !== queryBoostA) return queryBoostB - queryBoostA;
+        const districtMatchA = appliedAsk && normalizeText(appliedAsk).includes(normalizeText(a.district)) ? 1 : 0;
+        const districtMatchB = appliedAsk && normalizeText(appliedAsk).includes(normalizeText(b.district)) ? 1 : 0;
+        if (districtMatchB !== districtMatchA) return districtMatchB - districtMatchA;
+        const typeMatchA = a.partnerType === partnerTypeFilter ? 1 : 0;
+        const typeMatchB = b.partnerType === partnerTypeFilter ? 1 : 0;
+        if (typeMatchB !== typeMatchA) return typeMatchB - typeMatchA;
+        if (b.activityScore !== a.activityScore) return b.activityScore - a.activityScore;
+        return b.checkIns - a.checkIns;
       });
+  }, [appliedAsk, openNow, partnerTypeFilter, preparedItems, timeframe, whatToShow]);
 
-    return () => {
-      active = false;
-    };
-  }, []);
+  const selectedItem = useMemo(() => {
+    if (!filteredItems.length) return null;
+    return filteredItems.find((item) => item.entityId === selectedEntityId) || filteredItems[0];
+  }, [filteredItems, selectedEntityId]);
 
-  const heroMetrics = liveSummary
-    ? [
-        { label: "Scans", value: metricValue(liveSummary.impressions), icon: Search },
-        { label: "Action rate", value: metricValue(liveSummary.conversionRate, "%"), icon: LineChart },
-        { label: "Redemptions", value: metricValue(liveSummary.redemptions), icon: Sparkles },
-        {
-          label: variantKey === "civic" ? "Live events" : "Live offers / events",
-          value: `${metricValue(liveSummary.activePerks)} / ${metricValue(liveSummary.activeEvents)}`,
-          icon: Calendar,
-        },
-      ]
-    : [];
+  useEffect(() => {
+    if (selectedItem?.latitude && selectedItem?.longitude) {
+      setMapCenter([selectedItem.latitude, selectedItem.longitude]);
+    }
+  }, [selectedItem]);
 
-  const overviewBlocks = [
-    {
-      title: "Direct answer",
-      body: "Ask one question and let the map bring the clearest current answer to the top instead of making people sort through raw tables first.",
-    },
-    {
-      title: "Proof",
-      body: "Once an answer surfaces, the dashboard should show the movement behind it: scans, visits, redemptions, saves, and where that response is coming from.",
-    },
-    {
-      title: "Sources",
-      body: "The useful part is knowing whether the action came from a building, event, venue cluster, offer, or district moment so the next move is obvious.",
-    },
-  ];
+  const kpis = useMemo(() => {
+    const totals = filteredItems.reduce(
+      (acc, item) => {
+        acc.shownToday += 1;
+        acc.saves += item.saves;
+        acc.visits += item.visits;
+        acc.checkIns += item.checkIns;
+        acc.perksUsed += item.perksUsed;
+        acc.activeOffers += item.activeOffers + item.eventsListed;
+        return acc;
+      },
+      { shownToday: 0, saves: 0, visits: 0, checkIns: 0, perksUsed: 0, activeOffers: 0 }
+    );
 
-  const usageSteps = [
-    {
-      title: "Start with the question",
-      body: "Open with what you need to know right now, not with filters for their own sake.",
-    },
-    {
-      title: "Let the map narrow it down",
-      body: "Use the live layer to cut the noise and focus attention on the strongest current signal.",
-    },
-    {
-      title: "Turn the answer into an action",
-      body: "Adjust the offer, placement, timing, or follow-up while the signal is still useful.",
-    },
-  ];
+    const helper = hasLiveData ? "Updated from current partner activity." : "No activity recorded yet today.";
+    return [
+      { label: "Shown today", value: formatNumber(totals.shownToday), helper },
+      { label: "Saves", value: formatNumber(totals.saves), helper },
+      { label: "Visits", value: formatNumber(totals.visits), helper },
+      { label: "Check-ins", value: formatNumber(totals.checkIns), helper },
+      { label: "Perks used", value: formatNumber(totals.perksUsed), helper },
+      { label: "Active offers", value: formatNumber(totals.activeOffers), helper },
+    ];
+  }, [filteredItems, hasLiveData]);
+
+  const mapItems = useMemo(() => {
+    return filteredItems.slice(0, 40).map((item) => ({
+      ...item,
+      id: item.entityId,
+      name: item.entityName,
+      title: item.entityName,
+      type:
+        item.partnerType === "properties"
+          ? "building"
+          : item.partnerType === "hotels"
+            ? "hotel"
+            : item.partnerType === "brands"
+              ? "brand"
+              : item.partnerType === "civic"
+                ? "civic"
+                : item.perksUsed > 0
+                  ? "perk"
+                  : item.eventsListed > 0
+                    ? "event"
+                    : "venue",
+      location: {
+        latitude: item.latitude,
+        longitude: item.longitude,
+        valid: true,
+      },
+      district: item.district,
+      address: item.address,
+      metadata: {
+        activityScore: item.activityScore,
+        popularity: item.activityScore,
+      },
+    }));
+  }, [filteredItems]);
+
+  const uniqueInsights = useMemo(() => {
+    const seen = new Set();
+    return filteredItems.filter((item) => {
+      const key = `${normalizeName(item.entityName)}|${normalizeDistrict(item.district)}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [filteredItems]);
+
+  const whatsHappeningRows = useMemo(() => {
+    const base = uniqueInsights.filter((item) => item.entityId !== selectedItem?.entityId);
+    const first = selectedItem
+      ? [{
+          ...selectedItem,
+          rowTitle: `${selectedItem.entityName} leading in ${selectedItem.district}`,
+          rowReason: `${formatNumber(selectedItem.perksUsed || selectedItem.checkIns || selectedItem.visits)} ${selectedItem.perksUsed > 0 ? "perks used" : selectedItem.checkIns > 0 ? "check-ins" : "visits"}`,
+        }]
+      : [];
+
+    const next = base.slice(0, 11).map((item) => ({
+      ...item,
+      rowTitle: `${item.entityName} active now`,
+      rowReason:
+        item.saves > item.visits
+          ? "Strong saves this week"
+          : item.eventsListed > 0
+            ? "Event activity nearby"
+            : item.visits > 0
+              ? "Strong visits and saves"
+              : "People nearby are paying attention",
+    }));
+    return [...first, ...next];
+  }, [selectedItem, uniqueInsights]);
+
+  const visibleRows = expandedRows ? whatsHappeningRows : whatsHappeningRows.slice(0, 3);
+
+  const mainResultLabel = selectedItem ? (selectedItem.partnerType === "properties" ? "Property" : "Venue") : "Venue";
+  const mainResultReason = selectedItem ? buildReason(selectedItem) : "";
+  const whyItMatters = selectedItem ? buildWhyItMatters(selectedItem) : "";
+  const Icon = selectedItem ? getPartnerIcon(selectedItem) : Store;
 
   return (
     <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-[var(--dp-navy,#0B1A2B)]">
-      <section className="px-4 py-6 md:px-6 md:py-8">
+      <section className="border-b border-[rgba(11,31,51,0.08)] px-4 py-10 md:px-6 md:py-14">
         <div className="dp-page-shell">
-          <div className="overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-[linear-gradient(180deg,#0B1F33_0%,#112A44_100%)] p-5 text-white shadow-[0_20px_48px_rgba(11,31,51,0.16)] md:p-6">
-            <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div className="max-w-2xl">
-                <div className="dp-kicker">{variant.kicker}</div>
-                <h1 className="mt-3 text-[2rem] font-semibold leading-[0.96] tracking-[-0.05em] text-white md:text-[3rem]">
-                  {variant.title}
-                </h1>
-                <p className="mt-3 max-w-xl text-[14px] leading-6 text-white/72">
-                  {variant.body}
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+            <div className="max-w-4xl">
+              <div className="dp-kicker text-[var(--dp-gold-muted)]">Partner intelligence</div>
+              <h1 className="mt-4 text-[2.5rem] font-semibold leading-[0.94] tracking-[-0.06em] text-[var(--dp-navy,#0B1F33)] md:text-[4.5rem]">
+                The map is the dashboard now.
+              </h1>
+              <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[rgba(11,31,51,0.66)]">
+                Overview metrics, live activity, conversions, audience sources, events, and recommendations should not require a second analytics destination. They belong inside the same map surface where partners make decisions.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3 lg:justify-end">
+              <Link to={ROUTES.partners} className="dp-cta-secondary">
+                Partner overview
+              </Link>
+              <Link to={ROUTES.partnerWorkspace} className="dp-cta-primary">
+                Manage workspace
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                title: "Map-first intelligence",
+                body: "Performance, demand, source attribution, and recommended actions now live directly on the map instead of behind a separate dashboard workflow.",
+              },
+              {
+                title: "One system, multiple partner lenses",
+                body: "Properties, hospitality, venues, brands, and civic partners use the same shell. The metrics, insights, and actions adapt by entity type.",
+              },
+              {
+                title: "Live activity in context",
+                body: "Recent redemptions, active events, peak windows, and conversion signals appear in the summary strip, results, and detail panels.",
+              },
+              {
+                title: "Event and perk visibility",
+                body: "Events, offers, zones, and partner locations all carry performance state so the map answers what is happening and what to do next.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_10px_24px_rgba(11,31,51,0.04)]"
+              >
+                <div className="text-[1rem] font-semibold tracking-[-0.03em] text-foreground">
+                  {item.title}
+                </div>
+                <p className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">
+                  {item.body}
                 </p>
               </div>
-
-              <div className="flex flex-wrap gap-3 lg:justify-end">
-                <Link to="/downtown-perks/explore" className="dp-cta-primary bg-white text-[var(--dp-navy)]">
-                  Open map
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link to="/partners" className="dp-cta-secondary border-white/12 bg-white/10 text-white">
-                  Partner overview
-                </Link>
-              </div>
-            </div>
-
-            <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
-              {LENS_LINKS.map((item, index) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={`inline-flex min-h-[38px] items-center rounded-[14px] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] whitespace-nowrap transition-all ${
-                    location.pathname === item.href || (index === 0 && location.pathname === ROUTES.partnerDashboard)
-                      ? "bg-white text-[var(--dp-navy)]"
-                      : "bg-white/10 text-white/74 hover:bg-white/14 hover:text-white"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-
-            {variant.explainerTitle ? (
-              <div className="mt-5 p-1 md:p-2">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold)]">
-                  {variant.explainerLabel}
-                </div>
-                <div className="mt-2 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.85fr)] lg:items-start">
-                  <div>
-                    <div className="text-[1.05rem] font-semibold tracking-[-0.03em] text-white">
-                      {variant.explainerTitle}
-                    </div>
-                    <div className="mt-2 max-w-2xl text-[13px] leading-6 text-white/74">
-                      {variant.explainerBody}
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    {variant.explainerPoints?.map((point, index) => (
-                      <div key={point} className="flex items-start gap-3">
-                        <span className="shrink-0 pt-[2px] text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold)]">
-                          0{index + 1}
-                        </span>
-                        <span className="text-[12px] leading-6 text-white/76">{point}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {heroMetrics.length ? (
-              <div className="mt-5 grid gap-3 md:grid-cols-4">
-                {heroMetrics.map((metric) => {
-                  const Icon = metric.icon;
-                  return (
-                  <div
-                    key={metric.label}
-                    className="rounded-[18px] border border-white/10 bg-white/8 px-4 py-3"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-[10px] uppercase tracking-[0.12em] text-white/60">
-                        {metric.label}
-                      </div>
-                      <Icon className="h-3.5 w-3.5 text-white/46" />
-                    </div>
-                    <div className="mt-2 text-[0.98rem] font-semibold tracking-[-0.03em] text-white">{metric.value}</div>
-                  </div>
-                );})}
-              </div>
-            ) : null}
+            ))}
           </div>
         </div>
       </section>
 
-      {content ? (
-        <PartnerStoryCarousel
-          eyebrow="What this view is for"
-          title={`${content.label} teams need answers they can use.`}
-          intro="This keeps the dashboard grounded in what the team is actually trying to figure out, not a generic analytics story."
-          items={content.storySlides || []}
-        />
-      ) : (
-        <section className="px-4 py-8 md:px-6 md:py-10">
-          <div className="dp-page-shell">
-            <div className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-              <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_32px_rgba(11,31,51,0.05)] md:p-6">
-                <div className="dp-micro-label">Overview</div>
-                <h2 className="mt-3 text-[1.6rem] font-semibold tracking-[-0.03em] text-foreground md:text-[2rem]">
-                  This dashboard should answer the question, not bury it.
-                </h2>
-                <p className="mt-3 max-w-2xl text-[14px] leading-7 text-muted-foreground">
-                  The point of the overview is to get from a live downtown question to one usable answer, then show the proof and the source behind it in the same surface.
-                </p>
+      <section className="sticky top-16 z-20 border-y border-[rgba(11,31,51,0.08)] bg-[rgba(247,248,251,0.9)] px-4 backdrop-blur-xl md:px-6">
+        <div className="dp-page-shell">
+          <div className="flex gap-2 overflow-x-auto py-3">
+            {DASHBOARD_TABS.map((tab) => {
+              const active = location.pathname === tab.href || (tab.href === ROUTES.partnerDashboard && location.pathname === "/partners/dashboard");
+              return (
+                <Link
+                  key={tab.href}
+                  to={tab.href}
+                  className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] transition ${
+                    active
+                      ? "bg-[var(--dp-navy,#0B1F33)] text-white shadow-[inset_0_-2px_0_var(--dp-gold,#CFAF5A)]"
+                      : "text-[rgba(11,31,51,0.58)] hover:bg-white/70 hover:text-[var(--dp-navy,#0B1F33)]"
+                  }`}
+                >
+                  {tab.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-                <div className="mt-5 grid gap-3 md:grid-cols-3">
-                  {overviewBlocks.map((block, index) => (
-                    <div key={block.title} className="rounded-[18px] bg-[#f7f9fc] p-4">
-                      <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
-                        <Target className="h-3.5 w-3.5" />
-                        0{index + 1}
-                      </div>
-                      <div className="mt-2 text-[15px] font-semibold text-foreground">{block.title}</div>
-                      <div className="mt-2 text-[12px] leading-6 text-muted-foreground">{block.body}</div>
-                    </div>
-                  ))}
+      <section className="px-4 py-5 md:px-6">
+        <div className="dp-page-shell">
+          <div className="rounded-[24px] border border-[rgba(10,20,40,0.08)] bg-[var(--dp-navy)] p-4 text-white shadow-[0_14px_34px_rgba(11,26,43,0.08)] md:p-5">
+            <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68">
+                  Live venue intelligence
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-[13px]">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5">
+                    <Clock3 className="h-3.5 w-3.5" />
+                    Peak window: 6:30 PM - 8:00 PM
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {visibleRows.length} recent actions
+                  </span>
+                </div>
+                <div className="mt-3 text-[16px] font-semibold tracking-[-0.02em]">
+                  {selectedItem?.district || "Rainey"} leading activity
+                </div>
+                <div className="mt-1 max-w-3xl text-[13px] leading-6 text-white/72">
+                  Live venue intelligence is strongest where buildings, hotels, events, and offers overlap.
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_32px_rgba(11,31,51,0.05)] md:p-6">
-                <div className="dp-micro-label">Use it well</div>
-                <h2 className="mt-3 text-[1.6rem] font-semibold tracking-[-0.03em] text-foreground md:text-[2rem]">
-                  One downtown view, five partner angles.
-                </h2>
-                <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
-                  Each lens should be opened for a different kind of decision. The structure stays the same, but the job to be done changes by partner type.
-                </p>
-
-                <div className="mt-5 space-y-3">
-                  {usageSteps.map((step, index) => (
-                    <div key={step.title} className="rounded-[18px] bg-[#f7f9fc] p-4">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
-                        Step 0{index + 1}
-                      </div>
-                      <div className="mt-2 text-[15px] font-semibold text-foreground">{step.title}</div>
-                      <div className="mt-2 text-[12px] leading-6 text-muted-foreground">{step.body}</div>
-                    </div>
-                  ))}
-                </div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: "Scans", value: kpis[3]?.value || "0" },
+                  { label: "Conversion", value: filteredItems.length ? `${Math.min(98, Math.max(12, Math.round((filteredItems.reduce((sum, item) => sum + item.perksUsed, 0) / Math.max(1, filteredItems.reduce((sum, item) => sum + item.visits, 0))) * 100)))}%` : "0%" },
+                  { label: "Redemptions", value: kpis[4]?.value || "0" },
+                  { label: "Active perks / events", value: `${filteredItems.reduce((sum, item) => sum + item.activeOffers, 0)} / ${filteredItems.reduce((sum, item) => sum + item.eventsListed, 0)}` },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-[18px] border border-white/10 bg-white/6 p-3">
+                    <div className="text-[10px] uppercase tracking-[0.12em] text-white/62">{item.label}</div>
+                    <div className="mt-2 text-[1.15rem] font-semibold tracking-[-0.03em]">{item.value}</div>
+                  </div>
+                ))}
               </div>
-            </div>
-
-            <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {PARTNER_TYPE_ORDER.map((key) => {
-                const item = PARTNER_TYPE_CONTENT[key];
-                const href = `/partners/dashboard/${key === "properties" ? "residential" : key}`;
-
-                return (
-                  <Link
-                    key={item.id}
-                    to={href}
-                    className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white p-5 shadow-[0_16px_32px_rgba(11,31,51,0.05)] transition hover:translate-y-[-1px]"
-                  >
-                    <div className="dp-micro-label">{item.eyebrow}</div>
-                    <h3 className="mt-3 text-[1.25rem] font-semibold tracking-[-0.03em] text-foreground">
-                      {item.label}
-                    </h3>
-                    <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
-                      {item.description}
-                    </p>
-                    <div className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--dp-gold-muted)]">
-                      Open lens
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </div>
-                  </Link>
-                );
-              })}
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      <PartnerInsightMap
-        partnerType={variant.partnerType}
-        title={variant.mapTitle}
-        description={variant.mapDescription}
-      />
+      <section className="px-4 pb-8 md:px-6 md:pb-10">
+        <div className="dp-page-shell">
+          <div className="mb-4">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+              Partner view
+            </div>
+            <h2 className="mt-2 text-[1.6rem] font-semibold tracking-[-0.04em] text-[var(--dp-navy,#0B1F33)]">
+              Downtown activity, shown clearly.
+            </h2>
+            <p className="mt-2 max-w-2xl text-[14px] leading-6 text-[rgba(11,31,51,0.64)]">
+              Ask a question or use filters to see where people are going, what they are saving, and which offers are being used.
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_390px]">
+            <div className="overflow-hidden">
+              <div className="border-b border-[rgba(11,31,51,0.08)] pb-4 md:pb-5">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                  Ask what’s working
+                </div>
+
+                <div className="mt-3 grid gap-3">
+                  <div className="flex flex-col gap-3 md:flex-row">
+                    <div className="flex h-12 min-w-0 flex-1 items-center gap-3 border-b border-[rgba(11,31,51,0.12)] px-1">
+                      <Sparkles className="h-4 w-4 text-[rgba(11,31,51,0.42)]" />
+                      <input
+                        value={askInput}
+                        onChange={(event) => setAskInput(event.target.value)}
+                        placeholder="Ask about visits, saves, offers, events, or a district"
+                        aria-label="Ask about visits, saves, offers, events, or a district"
+                        className="w-full bg-transparent text-sm text-[var(--dp-navy,#0B1F33)] outline-none placeholder:text-[rgba(11,31,51,0.38)]"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAppliedAsk(askInput.trim())}
+                      className="inline-flex h-12 items-center justify-center gap-2 rounded-[18px] bg-[var(--dp-navy,#0B1F33)] px-5 text-sm font-semibold text-white"
+                    >
+                      Ask
+                    </button>
+                  </div>
+
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {SUGGESTED_PROMPTS.map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        onClick={() => {
+                          setAskInput(prompt);
+                          setAppliedAsk(prompt);
+                        }}
+                        className="shrink-0 rounded-full bg-[rgba(247,249,252,0.9)] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[rgba(11,31,51,0.66)]"
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                    <label className="grid gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.46)]">
+                      <span>Partner type</span>
+                      <select
+                        value={partnerTypeFilter}
+                        onChange={(event) => setPartnerTypeFilter(event.target.value)}
+                        className="h-11 border-b border-[rgba(11,31,51,0.08)] bg-transparent px-0 text-sm font-medium text-[var(--dp-navy,#0B1F33)] outline-none"
+                      >
+                        {PARTNER_TYPE_OPTIONS.map((option) => (
+                          <option key={option.id} value={option.id}>{option.label}</option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <label className="grid gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.46)]">
+                      <span>What to show</span>
+                      <select
+                        value={whatToShow}
+                        onChange={(event) => setWhatToShow(event.target.value)}
+                        className="h-11 border-b border-[rgba(11,31,51,0.08)] bg-transparent px-0 text-sm font-medium text-[var(--dp-navy,#0B1F33)] outline-none"
+                      >
+                        {WHAT_TO_SHOW_OPTIONS.map((option) => (
+                          <option key={option.id} value={option.id}>{option.label}</option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <label className="grid gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.46)]">
+                      <span>Timeframe</span>
+                      <select
+                        value={timeframe}
+                        onChange={(event) => setTimeframe(event.target.value)}
+                        className="h-11 border-b border-[rgba(11,31,51,0.08)] bg-transparent px-0 text-sm font-medium text-[var(--dp-navy,#0B1F33)] outline-none"
+                      >
+                        {TIMEFRAME_OPTIONS.map((option) => (
+                          <option key={option.id} value={option.id}>{option.label}</option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={() => setOpenNow((current) => !current)}
+                      aria-pressed={openNow}
+                      className={`mt-[22px] inline-flex h-11 items-center justify-between border-b px-0 text-sm font-medium ${
+                        openNow
+                          ? "border-[var(--dp-navy,#0B1F33)] text-[var(--dp-navy,#0B1F33)]"
+                          : "border-[rgba(11,31,51,0.08)] text-[var(--dp-navy,#0B1F33)]"
+                      }`}
+                    >
+                      <span>Open now</span>
+                      <Clock3 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative h-[420px] md:h-[560px]">
+                {filteredItems.length === 0 ? (
+                  <div className="absolute inset-0 flex items-center justify-center p-6">
+                    <EmptyMessage
+                      title="No matching activity."
+                      body="Change the timeframe, district, or what to show."
+                    />
+                  </div>
+                ) : (
+                  <div className="overflow-hidden rounded-[26px] border border-[rgba(11,31,51,0.08)]">
+                    <UnifiedMapShell
+                      items={mapItems}
+                      selectedId={selectedItem?.entityId}
+                      markerIcon={(entity, isSelected) => createMarker(entity, { isSelected })}
+                      onMarkerSelect={(entity) => setSelectedEntityId(entity.id)}
+                      mapCenter={mapCenter}
+                      mapZoom={mapZoom}
+                      onMapCenterChange={setMapCenter}
+                      onMapZoomChange={setMapZoom}
+                      className="h-full w-full"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="border-t border-[rgba(11,31,51,0.08)] pt-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+              {!filteredItems.length ? (
+                <div className="pt-1">
+                  <EmptyMessage
+                    title={appliedAsk ? "No partner activity yet." : "Ask a question to see what’s working."}
+                    body={
+                      appliedAsk
+                        ? "Once people start saving places, checking in, using perks, or viewing offers, results will appear here."
+                        : "Try asking about a district, offer, event, or partner type."
+                    }
+                  />
+                </div>
+              ) : selectedItem ? (
+                <div className="flex h-full flex-col">
+                  <div className="border-b border-[rgba(11,31,51,0.08)] pb-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                          Clear answer
+                        </div>
+                        <div className="mt-1 text-[12px] text-[rgba(11,31,51,0.52)]">
+                          Based on current partner activity
+                        </div>
+                      </div>
+                      <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.58)]">
+                        <Icon className="h-3.5 w-3.5" />
+                        {mainResultLabel}
+                      </span>
+                    </div>
+
+                    <div className="mt-4">
+                      <h3 className="text-[1.35rem] font-semibold tracking-[-0.03em] text-[var(--dp-navy,#0B1F33)]">
+                        {selectedItem.entityName}
+                      </h3>
+                      <p className="mt-2 text-[13px] leading-6 text-[rgba(11,31,51,0.6)]">
+                        {selectedItem.district} · {selectedItem.address}
+                      </p>
+                      <p className="mt-4 text-[15px] leading-7 text-[var(--dp-navy,#0B1F33)]">
+                        {selectedItem.entityName} is the strongest result right now.
+                      </p>
+                      <p className="mt-2 text-[14px] leading-7 text-[rgba(11,31,51,0.66)]">
+                        {mainResultReason}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
+                      {INSIGHT_TABS.map((tab) => (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => setSelectedInsightTab(tab.id)}
+                          aria-selected={selectedInsightTab === tab.id}
+                          className={`shrink-0 rounded-full px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] ${
+                            selectedInsightTab === tab.id
+                              ? "bg-[var(--dp-navy,#0B1F33)] text-white"
+                              : "bg-[rgba(247,249,252,0.9)] text-[rgba(11,31,51,0.58)]"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex-1 py-5">
+                    {selectedInsightTab === "summary" ? (
+                      <div className="space-y-5">
+                        <div>
+                          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                            Why it matters
+                          </div>
+                          <p className="mt-2 text-[14px] leading-7 text-[rgba(11,31,51,0.66)]">
+                            {whyItMatters}
+                          </p>
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                            Recommended next action
+                          </div>
+                          <p className="mt-2 text-[14px] leading-7 text-[rgba(11,31,51,0.66)]">
+                            {selectedItem.recommendedAction}
+                          </p>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {selectedInsightTab === "proof" ? (
+                      <div className="space-y-3">
+                        {[
+                          { label: "Check-ins", value: formatNumber(selectedItem.checkIns), icon: CheckCircle2 },
+                          { label: "Visits", value: formatNumber(selectedItem.visits), icon: Eye },
+                          { label: "Perks used", value: formatNumber(selectedItem.perksUsed), icon: Ticket },
+                          { label: "Busiest time", value: timeframe === "tonight" ? "Evening" : timeframe === "this-week" ? "Weeknights" : "Today", icon: Calendar },
+                        ].map((metric) => {
+                          const MetricIcon = metric.icon;
+                          return (
+                            <div key={metric.label} className="flex items-center justify-between border-b border-[rgba(11,31,51,0.08)] pb-3">
+                              <div className="inline-flex items-center gap-2 text-[13px] font-medium text-[rgba(11,31,51,0.7)]">
+                                <MetricIcon className="h-4 w-4 text-[rgba(11,31,51,0.42)]" />
+                                {metric.label}
+                              </div>
+                              <div className="text-[14px] font-semibold text-[var(--dp-navy,#0B1F33)]">{metric.value}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+
+                    {selectedInsightTab === "sources" ? (
+                      <div>
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                          What this is based on
+                        </div>
+                        <div className="mt-4 space-y-3">
+                          {[
+                            { label: "Saves", value: formatNumber(selectedItem.saves) },
+                            { label: "Check-ins", value: formatNumber(selectedItem.checkIns) },
+                            { label: "Perks used", value: formatNumber(selectedItem.perksUsed) },
+                            { label: "Event activity", value: formatNumber(selectedItem.eventsListed) },
+                            { label: "Offer activity", value: formatNumber(selectedItem.activeOffers) },
+                            { label: "Map views", value: formatNumber(selectedItem.views) },
+                          ].map((source) => (
+                            <div key={source.label} className="flex items-center justify-between border-b border-[rgba(11,31,51,0.08)] pb-3 text-[14px] text-[rgba(11,31,51,0.66)] last:border-b-0 last:pb-0">
+                              <span>{source.label}</span>
+                              <span className="font-semibold text-[var(--dp-navy,#0B1F33)]">{source.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="mt-8 border-t border-[rgba(11,31,51,0.08)] pt-5">
+            <div className="pb-4">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.44)]">
+                What’s happening now
+              </div>
+            </div>
+            <div>
+              {!visibleRows.length ? (
+                <EmptyMessage
+                  title="No partner activity yet."
+                  body="Once people start saving places, checking in, using perks, or viewing offers, results will appear here."
+                />
+              ) : (
+                <div className="space-y-3">
+                  {visibleRows.map((row) => (
+                    <button
+                      key={row.entityId}
+                      type="button"
+                      onClick={() => setSelectedEntityId(row.entityId)}
+                      className="flex w-full items-start justify-between gap-4 border-b border-[rgba(11,31,51,0.08)] py-4 text-left last:border-b-0"
+                    >
+                      <div>
+                        <div className="text-[14px] font-semibold text-[var(--dp-navy,#0B1F33)]">
+                          {row.rowTitle || row.entityName}
+                        </div>
+                        <div className="mt-1 text-[13px] leading-6 text-[rgba(11,31,51,0.62)]">
+                          {row.rowReason}
+                        </div>
+                      </div>
+                      <ChevronDown className="mt-1 h-4 w-4 shrink-0 text-[rgba(11,31,51,0.38)]" />
+                    </button>
+                  ))}
+
+                  {whatsHappeningRows.length > 3 ? (
+                    <button
+                      type="button"
+                      onClick={() => setExpandedRows((current) => !current)}
+                      className="pt-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-navy,#0B1F33)]"
+                    >
+                      {expandedRows ? "Show less" : `Show ${whatsHappeningRows.length - 3} more`}
+                    </button>
+                  ) : null}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

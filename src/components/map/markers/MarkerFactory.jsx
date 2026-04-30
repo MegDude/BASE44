@@ -218,7 +218,7 @@ export function createMarker(entity, options = {}) {
   const shouldShowPill =
     (!options?.suppressPill && options?.showPill) ||
     (!options?.suppressPill &&
-      ["hotel", "brand", "civic"].includes(entity?.type));
+      ["brand", "civic"].includes(entity?.type));
 
   if (shouldShowPill && !options?.isSelected) return createPillMarker(entity);
   if (options?.isSelected) return createSelectedMarker(entity, options);

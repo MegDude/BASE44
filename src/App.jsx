@@ -16,11 +16,11 @@ import Dashboard from "./pages/Dashboard";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import Residents from "./pages/Residents";
 import ResidentApp from "./pages/resident-app";
+import WalkingHappyHour from "./pages/residents/WalkingHappyHour";
 import BuildPack from "./pages/BuildPack";
 import Landing from "./pages/downtown-perks/Landing";
 import ExploreRebuilt from "./pages/downtown-perks/ExploreRebuilt";
 import Events from "./pages/downtown-perks/Events";
-import HappyHourWalkingMap from "./pages/downtown-perks/HappyHourWalkingMap";
 import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
@@ -67,7 +67,7 @@ function AppRoutes() {
         <Route path="/search" element={<Map />} />
         <Route path="/ask-the-map" element={<Map />} />
         <Route path={ROUTES.events} element={<Events />} />
-        <Route path={ROUTES.happyHourWalkingMap} element={<HappyHourWalkingMap />} />
+        <Route path={ROUTES.happyHourWalkingMap} element={<Navigate to={ROUTES.residentWalkingHappyHour} replace />} />
         <Route path={ROUTES.perks} element={<PerksPage />} />
         <Route path={ROUTES.card} element={<PerksCard />} />
         <Route path={ROUTES.about} element={<About />} />
@@ -76,7 +76,7 @@ function AppRoutes() {
         <Route path="/downtown-perks" element={<Landing />} />
         <Route path="/downtown-perks/explore" element={<ExploreRebuilt />} />
         <Route path="/downtown-perks/events" element={<Events />} />
-        <Route path="/downtown-perks/happy-hour-walking-map" element={<HappyHourWalkingMap />} />
+        <Route path="/downtown-perks/happy-hour-walking-map" element={<Navigate to={ROUTES.residentWalkingHappyHour} replace />} />
         <Route path="/downtown-perks/perks" element={<PerksPage />} />
         <Route path="/downtown-perks/card" element={<PerksCard />} />
         <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
@@ -156,6 +156,7 @@ function AppRoutes() {
         <Route path="/properties/:buildingId/partners" element={<BuildingIntelligence />} />
 
         <Route path={ROUTES.residents} element={<Residents />} />
+        <Route path={ROUTES.residentWalkingHappyHour} element={<WalkingHappyHour />} />
         <Route path={ROUTES.residentApp} element={<ResidentApp />} />
         <Route path="/resident-app/map" element={<ResidentApp />} />
         <Route path="/resident-app/events" element={<ResidentApp />} />

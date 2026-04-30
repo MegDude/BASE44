@@ -12,49 +12,45 @@ export const FAQ_HOMEPAGE = [
   },
   {
     id: 'homepage-2',
-    question: 'Does the map work before login?',
-    answer: 'Yes. Browsing stays open. You can look around first and only add the card when you want to save, RSVP, redeem, or unlock member access.',
-  },
-  {
-    id: 'homepage-3',
     question: 'Do I need to download an app?',
     answer:
       'No. It is a mobile web experience. Open the map, browse, save, RSVP, and use the card when access matters.',
   },
   {
+    id: 'homepage-3',
+    question: 'Is this just a list of deals?',
+    answer:
+      'No. Deals and perks are one part of the system, but the map is the product. Downtown Perks brings places, events, perks, buildings, and local context into one usable downtown layer.',
+  },
+  {
     id: 'homepage-4',
-    question: 'What makes the card different?',
-    answer: 'The card unlocks actions, not browsing. The map is the product. The card comes in when access matters.',
+    question: 'Who is it built for?',
+    answer:
+      'It is built for people who actually live downtown, and for the buildings, hotels, venues, brands, and civic groups that want to meet them there.',
   },
   {
     id: 'homepage-5',
-    question: 'Does it cost anything for residents?',
-    answer: 'Residents can join directly for $25 per year if their building is not already live. If their building joins later, that resident fee is refunded.',
+    question: 'How do people use it?',
+    answer:
+      'People open the map, see what is nearby, and decide what is worth doing now. The card appears later when a save, RSVP, member perk, or redemption actually matters.',
   },
   {
     id: 'homepage-6',
-    question: 'Do venues pay to join?',
-    answer: 'Not at first. Venues can launch with a free 90-day pilot and can stay free for 12 months before moving into the paid venue layer.',
+    question: 'Why is the map central?',
+    answer:
+      'Because the map is the product. It keeps places, events, perks, buildings, and movement in one live downtown layer instead of splitting the experience across feeds, lists, and disconnected pages.',
   },
   {
     id: 'homepage-7',
-    question: 'What do buildings pay?',
-    answer: 'Buildings start with a 90-day pilot and then choose their level: free, $39 per year, or $99 per year depending on how much reporting and activation they want.',
+    question: 'How is performance measured?',
+    answer:
+      'Performance is measured through useful actions: scans, saves, RSVPs, visits, redemptions, source scans, and repeat use. The point is to show what actually happened, not just what was shown.',
   },
   {
     id: 'homepage-8',
-    question: 'What gets tracked?',
-    answer: 'Scans, saves, RSVPs, redemptions, visits, and repeat use. The point is to show what actually happened, not just what was shown.',
-  },
-  {
-    id: 'homepage-9',
-    question: 'How fast can a partner launch?',
-    answer: 'Most partners can launch in 7 to 10 days. The setup is light: map placement, QR entry, offer or event setup, and the right access path.',
-  },
-  {
-    id: 'homepage-10',
-    question: 'Who can join?',
-    answer: 'Residents, buildings, hotels, venues, brands, civic groups, and real estate teams can all use the same system through role-specific views.',
+    question: 'Is this one system or multiple?',
+    answer:
+      'It is one system. The map stays central, the card works as the access layer, and the partner dashboard becomes the proof layer for buildings, hospitality, venues, brands, and civic partners.',
   },
 ];
 

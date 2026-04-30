@@ -300,11 +300,11 @@ function ContactForm({ form }) {
             {form.cta}
           </button>
           <a
-            href="mailto:partners@downtownperks.com"
+            href="mailto:hello@downtownperks.com"
             className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(11,31,51,0.1)] px-4 text-[12px] font-semibold uppercase tracking-[0.08em] text-foreground/72 transition-colors hover:text-foreground"
           >
             <Mail className="h-3.5 w-3.5" />
-            partners@downtownperks.com
+            hello@downtownperks.com
           </a>
         </div>
       </div>
@@ -320,7 +320,7 @@ export default function ContactSection() {
   const ActiveIcon = current.icon;
 
   return (
-    <section ref={ref} className="bg-[var(--dp-surface-base)] px-4 py-10 md:px-6 md:py-12">
+    <section ref={ref} className="bg-[var(--dp-surface-base)] px-4 py-7 md:px-6 md:py-8">
       <div className="dp-page-shell">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -333,12 +333,12 @@ export default function ContactSection() {
             Ready when you are.
           </h2>
           <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-            Pick the role, see the setup, and open the right onboarding flow without leaving the page.
+            People don't choose the best option. They choose the one they notice.
           </p>
         </motion.div>
 
-        <div className="overflow-hidden rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,245,238,0.92))] shadow-[0_20px_48px_rgba(11,31,51,0.08)]">
-          <div className="border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-6">
+        <div className="border-t border-[rgba(11,31,51,0.08)] pt-4">
+          <div className="px-0 py-0">
             <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(11,31,51,0.48)]">
@@ -352,12 +352,12 @@ export default function ContactSection() {
                 </div>
               </div>
               <div className="text-[12px] font-medium text-[rgba(11,31,51,0.56)]">
-                Also available: Hospitality, Venues, Brands, Civic, Real Estate, Residents
+                Also available: Hotels, Venues, Brands, Civic, Real Estate, Residents
               </div>
             </div>
           </div>
 
-          <div className="flex gap-2 overflow-x-auto border-b border-[rgba(11,31,51,0.08)] px-4 py-4 md:px-6">
+          <div className="mt-4 flex gap-2 overflow-x-auto border-b border-[rgba(11,31,51,0.08)] pb-4">
             {forms.map((form) => {
               const Icon = form.icon;
               const isActive = form.id === activeForm;
@@ -385,7 +385,7 @@ export default function ContactSection() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.28 }}
-              className="border-b border-[rgba(11,31,51,0.08)] p-6 md:border-b-0 md:border-r md:p-8"
+              className="border-b border-[rgba(11,31,51,0.08)] py-5 pr-0 md:border-b-0 md:border-r md:py-6 md:pr-8"
             >
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[rgba(11,31,51,0.05)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/58">
                 <ActiveIcon className="h-3.5 w-3.5" />
@@ -402,7 +402,7 @@ export default function ContactSection() {
                   : "Start with the pilot first. If the fit is right, pricing is confirmed and invoiced after follow-up."}
               </p>
 
-              <div className="mt-6 space-y-3 rounded-[22px] bg-[rgba(11,31,51,0.04)] p-4">
+              <div className="mt-5 space-y-3">
                 {current.bullets.map((bullet) => (
                   <div key={bullet} className="flex items-start gap-3 text-[13px] leading-6 text-foreground/76">
                     <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-[var(--dp-gold,#CFAF5A)]" />
@@ -417,46 +417,46 @@ export default function ContactSection() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.28 }}
-              className="p-6 md:p-8"
+              className="py-5 pl-0 md:py-6 md:pl-8"
             >
               <ContactForm form={current} />
             </motion.div>
           </div>
         </div>
 
-        <div className="mt-8 rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-[linear-gradient(180deg,#0B1F33_0%,#112A44_100%)] p-6 text-white shadow-[0_20px_48px_rgba(11,31,51,0.14)] md:p-8">
+        <div className="mt-6 border-t border-[rgba(11,31,51,0.08)] pt-5 text-left">
           <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
             <div>
-              <div className="dp-micro-label text-[var(--dp-gold,#CFAF5A)]">Ready when you are</div>
-              <h3 className="mt-3 text-[1.9rem] font-semibold leading-[1] tracking-[-0.04em] md:text-[2.6rem]">
+              <div className="dp-micro-label">Ready when you are</div>
+              <h3 className="mt-3 text-[1.9rem] font-semibold leading-[1] tracking-[-0.04em] text-foreground md:text-[2.6rem]">
                 People do not choose the best option. They choose the one they notice.
               </h3>
-              <p className="mt-4 max-w-2xl text-[14px] leading-7 text-white/72">
-                What is close, clear, and easy usually wins. Downtown Perks helps you be that option.
+              <p className="mt-4 max-w-2xl text-[14px] leading-7 text-muted-foreground">
+                For residents — Stop searching. Start doing. For partners — Be the one they notice.
               </p>
               <a
-                href="mailto:partners@downtownperks.com"
-                className="mt-5 inline-flex items-center gap-2 text-[13px] font-medium text-white/84 transition-colors hover:text-white"
+                href="mailto:hello@downtownperks.com"
+                className="mt-5 inline-flex items-center gap-2 text-[13px] font-medium text-foreground/84 transition-colors hover:text-foreground"
               >
                 <Mail className="h-4 w-4 text-[var(--dp-gold,#CFAF5A)]" />
-                partners@downtownperks.com
+                hello@downtownperks.com
               </a>
             </div>
 
             <div className="flex flex-wrap gap-3 md:justify-end">
-              <Link to={ROUTES.explore} className="dp-cta-primary bg-white text-[var(--dp-navy)]">
+              <Link to={ROUTES.explore} className="dp-cta-primary">
                 Explore Downtown
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to={current.id === "residents" ? ROUTES.partners : current.route}
-                className="dp-cta-secondary border-white/12 bg-white/10 text-white"
+                className="dp-cta-secondary"
               >
                 {current.id === "residents" ? "Become a Partner" : `Open ${current.label}`}
               </Link>
               <a
-                href="mailto:partners@downtownperks.com"
-                className="dp-cta-secondary border-white/12 bg-white/10 text-white"
+                href="mailto:hello@downtownperks.com"
+                className="dp-cta-secondary"
               >
                 Contact Us
               </a>

@@ -43,8 +43,8 @@ export function mapType(entity) {
   if (entity?.type === "event") return "event";
   if (entity?.type === "brand") return "brand";
   if (entity?.type === "civic") return "civic";
-  if (entity?.type === "property" || entity?.type === "building" || entity?.type === "hotel") return "building";
   if (entity?.type === "hotel") return "hotel";
+  if (entity?.type === "property" || entity?.type === "building") return "building";
   if (raw.includes("coffee") || raw.includes("cafe")) return "coffee";
   if (raw.includes("wellness") || raw.includes("yoga") || raw.includes("spa") || raw.includes("fitness")) return "wellness";
   if (raw.includes("retail") || raw.includes("shop")) return "retail";

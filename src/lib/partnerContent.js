@@ -30,9 +30,9 @@ export const PARTNER_TYPE_CONTENT = {
     mapMode: "property",
     icon: Building2,
     eyebrow: "For properties",
-    headline: "Make your address more useful.",
+    headline: "Turn the building into a stronger way into downtown.",
     description:
-      "Give residents one live map for nearby places, events, perks, and card-ready access.",
+      "Downtown Perks helps property teams make downtown feel easier to use. Residents can see what is nearby, worth going to, and easy to act on. Property teams can see what people actually open, save, visit, and use.",
     audienceSummary:
       "For apartment communities, condo towers, mixed-use buildings, leasing teams, and portfolio groups that want the neighborhood to feel like part of the building.",
     outcomes: [
@@ -103,9 +103,9 @@ export const PARTNER_TYPE_CONTENT = {
     mapMode: "hospitality",
     icon: Hotel,
     eyebrow: "For hospitality",
-    headline: "Extend the stay beyond the lobby.",
+    headline: "Help guests figure out downtown faster.",
     description:
-      "Give guests one live map for dining, events, wellness, nightlife, and local perks.",
+      "Hotels can use Downtown Perks to show guests what is nearby, what is happening, and where to go next without sending them through a long front-desk process.",
     audienceSummary:
       "For hotels, concierge teams, hospitality groups, and guest-experience operators that want the stay to feel local from the minute someone checks in.",
     outcomes: [
@@ -175,7 +175,7 @@ export const PARTNER_TYPE_CONTENT = {
     mapMode: "venue",
     icon: Store,
     eyebrow: "For venues",
-    headline: "Show up when intent is real.",
+    headline: "Show up when people nearby are deciding where to go.",
     description:
       "Venues do not need more noise. They need to be easy to notice when someone nearby is ready to choose a place.",
     audienceSummary:
@@ -247,7 +247,7 @@ export const PARTNER_TYPE_CONTENT = {
     mapMode: "brand",
     icon: Sparkles,
     eyebrow: "For brands",
-    headline: "Buy context, not broad reach.",
+    headline: "Show up in the moments when people are already paying attention.",
     description:
       "Brands can use Downtown Perks to run campaigns tied to real places, real timing, and real activity across downtown.",
     audienceSummary:

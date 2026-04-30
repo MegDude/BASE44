@@ -44,7 +44,7 @@ const LAYER_OPTIONS = [
 ];
 
 const PANEL_TABS = [
-  { id: "answer", label: "Answer" },
+  { id: "answer", label: "Summary" },
   { id: "proof", label: "Proof" },
   { id: "sources", label: "Sources" },
 ];
@@ -131,6 +131,30 @@ const FILTER_TO_INSIGHT_TYPES = {
 function metricValue(value, suffix = "") {
   if (value === null || value === undefined) return "0";
   return `${Number(value).toLocaleString()}${suffix}`;
+}
+
+function toTitleCase(value) {
+  return String(value || "")
+    .replace(/[_-]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(" ");
+}
+
+function formatEntityLabel(entityType) {
+  if (entityType === "venue") return "Venue";
+  if (entityType === "building") return "Building";
+  if (entityType === "hotel") return "Hotel";
+  if (entityType === "district") return "District";
+  if (entityType === "campaign") return "Campaign";
+  if (entityType === "event") return "Event";
+  return toTitleCase(entityType);
+}
+
+function formatDistrictLabel(district) {
+  if (!district) return "Downtown";
+  return toTitleCase(district);
 }
 
 function buildAnswerCopy(item, activeFilter, partnerType) {
@@ -283,9 +307,9 @@ function getFilterLabel(activeFilter) {
 
 function MiniMetricBars({ item }) {
   const metrics = [
-    { label: "Scans", value: Number(item?.metrics?.impressions || 0), color: "bg-[rgba(11,31,51,0.72)]" },
+    { label: "Map views", value: Number(item?.metrics?.impressions || 0), color: "bg-[rgba(11,31,51,0.72)]" },
     { label: "Visits", value: Number(item?.metrics?.visits || 0), color: "bg-[rgba(194,143,84,0.88)]" },
-    { label: "Redemptions", value: Number(item?.metrics?.redemptions || 0), color: "bg-[rgba(25,94,58,0.82)]" },
+    { label: "Perks used", value: Number(item?.metrics?.redemptions || 0), color: "bg-[rgba(25,94,58,0.82)]" },
   ];
   const max = Math.max(...metrics.map((metric) => metric.value), 1);
 
@@ -433,9 +457,9 @@ export default function PartnerInsightMap({
   const answerCopy = buildAnswerCopy(activeItem, activeFilter, partnerType);
 
   const summaryMetrics = [
-    { label: "Scans", value: metricValue(summary.impressions), icon: Search },
-    { label: "Action rate", value: metricValue(summary.conversionRate, "%"), icon: LineChart },
-    { label: "Redemptions", value: metricValue(summary.redemptions), icon: Sparkles },
+    { label: "Shown today", value: metricValue(summary.impressions), icon: Search },
+    { label: "People taking action", value: metricValue(summary.conversionRate, "%"), icon: LineChart },
+    { label: "Perks used", value: metricValue(summary.redemptions), icon: Sparkles },
     {
       label: partnerType === "civic" ? "Live events" : "Live offers / events",
       value: `${metricValue(summary.activePerks)} / ${metricValue(summary.activeEvents)}`,
@@ -446,7 +470,7 @@ export default function PartnerInsightMap({
 
   const shellEyebrow = "Partner view";
   const resultLabel =
-    activeFilter === "all" ? "Answer" : `${getFilterLabel(activeFilter)} answer`;
+    activeFilter === "all" ? "Clear answer" : `${getFilterLabel(activeFilter)} answer`;
   const resultSummaryLabel =
     resultCount === 0 ? "No matching answers" : `${resultCount} ${resultCount === 1 ? "answer" : "answers"}`;
   const activeViewOption = VIEW_OPTIONS.find((option) => option.id === activeFilter) || VIEW_OPTIONS[0];
@@ -709,7 +733,7 @@ export default function PartnerInsightMap({
                     </div>
                   </div>
                   <div className="text-[11px] font-medium text-foreground/56">
-                    Live from the map
+                    Based on current map activity
                   </div>
                 </div>
 
@@ -718,13 +742,13 @@ export default function PartnerInsightMap({
                     <div className="flex items-start gap-3">
                       <div className="min-w-0 flex-1">
                         <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/70">
-                          {activeItem.entityType}
+                          {formatEntityLabel(activeItem.entityType)}
                         </div>
                         <div className="mt-1 text-[15px] font-semibold text-foreground">
                           {activeItem.title}
                         </div>
                         <div className="mt-1 text-[12px] leading-5 text-muted-foreground">
-                          {activeItem.district} · {activeItem.address}
+                          {formatDistrictLabel(activeItem.district)} · {activeItem.address}
                         </div>
                         <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-foreground/70">
                           <span className="inline-flex items-center gap-1">
@@ -741,7 +765,7 @@ export default function PartnerInsightMap({
                     <div className="mt-4 rounded-[16px] border border-[rgba(194,143,84,0.22)] bg-[var(--dp-gold-soft)] p-4">
                       <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
                         <Sparkles className="h-3.5 w-3.5" />
-                        Direct answer
+                        Why this is leading
                       </div>
                       <div className="mt-2 text-[15px] font-semibold leading-6 text-foreground">
                         {answerCopy.title}
@@ -772,10 +796,10 @@ export default function PartnerInsightMap({
                       <>
                         <div className="mt-4 grid grid-cols-2 gap-2">
                           {[
-                            { label: "Scans", value: metricValue(activeItem.metrics?.impressions) },
+                            { label: "Map views", value: metricValue(activeItem.metrics?.impressions) },
                             { label: "Visits", value: metricValue(activeItem.metrics?.visits) },
-                            { label: "Redemptions", value: metricValue(activeItem.metrics?.redemptions) },
-                            { label: "Peak", value: activeItem.relatedEvents?.[0]?.value || activeItem.trend?.window || "Live now" },
+                            { label: "Perks used", value: metricValue(activeItem.metrics?.redemptions) },
+                            { label: "Busiest time", value: activeItem.relatedEvents?.[0]?.value || activeItem.trend?.window || "Live now" },
                           ].map((metric) => (
                             <div key={metric.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
                               <div className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
@@ -802,17 +826,17 @@ export default function PartnerInsightMap({
                           <div className="grid gap-2">
                             <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/48">
                               <BarChart3 className="h-3.5 w-3.5" />
-                              Quick shape of the data
+                              What this is based on
                             </div>
                             <MiniMetricBars item={activeItem} />
                           </div>
 
                           {activityFeed.length ? (
                             <div className="grid gap-2">
-                              <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/48">
-                                <Clock3 className="h-3.5 w-3.5" />
-                                Now
-                              </div>
+                            <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/48">
+                              <Clock3 className="h-3.5 w-3.5" />
+                              What’s happening now
+                            </div>
                               <div className="grid gap-2">
                                 {activityFeed.slice(0, 3).map((item) => (
                                   <button
@@ -839,8 +863,8 @@ export default function PartnerInsightMap({
                       <div className="mt-4 grid grid-cols-2 gap-2">
                           {[
                             { label: "Saves / RSVP", value: metricValue(activeItem.metrics?.saves) },
-                            { label: "Redemptions", value: metricValue(activeItem.metrics?.redemptions) },
-                          { label: "Action rate", value: metricValue(activeItem.metrics?.conversionRate, "%") },
+                            { label: "Perks used", value: metricValue(activeItem.metrics?.redemptions) },
+                          { label: "People taking action", value: metricValue(activeItem.metrics?.conversionRate, "%") },
                           { label: "Repeat rate", value: metricValue(activeItem.metrics?.repeatRate, "%") },
                         ].map((metric) => (
                           <div key={metric.label} className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
@@ -868,7 +892,7 @@ export default function PartnerInsightMap({
                           <div className="rounded-[14px] border border-[rgba(10,20,40,0.08)] bg-white p-3">
                             <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary/70">
                               <Calendar className="h-3.5 w-3.5" />
-                              Source event
+                              Related event
                             </div>
                             <div className="mt-2 text-[12px] font-medium text-foreground">
                               {activeItem.relatedEvents[0].label}
@@ -900,10 +924,10 @@ export default function PartnerInsightMap({
                         ) : null}
 
                         <Link
-                          to={partnerType === "dashboard" ? ROUTES.partners : getPartnerDashboardRoute(partnerType)}
+                          to={partnerType === "dashboard" ? ROUTES.partnerDashboard : getPartnerDashboardRoute(partnerType)}
                           className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--dp-navy)] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[hsl(214,52%,22%)]"
                         >
-                          Open view
+                          Open dashboard
                           <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
                       </div>
@@ -911,7 +935,7 @@ export default function PartnerInsightMap({
                   </div>
                 ) : (
                   <div className="mt-3 rounded-[18px] border border-dashed border-[rgba(10,20,40,0.12)] bg-[#f7f9fc] p-5 text-[13px] leading-6 text-muted-foreground">
-                    Ask a question or tap a pin. The strongest current answer appears here.
+                    Ask a question or tap a pin. The clearest current read appears here.
                   </div>
                 )}
 
@@ -926,7 +950,7 @@ export default function PartnerInsightMap({
                         {activeItem?.title || "Top answer"}
                       </div>
                       <div className="mt-1 text-[11px] text-muted-foreground">
-                        {showMoreAnswers ? "Close remaining answers" : `Open ${Math.max(filteredItems.length - 1, 0)} more`}
+                        {showMoreAnswers ? "Hide remaining answers" : `Show ${Math.max(filteredItems.length - 1, 0)} more`}
                       </div>
                     </div>
                     <ChevronDown className={`h-4 w-4 text-foreground/56 transition-transform ${showMoreAnswers ? "rotate-180" : ""}`} />
@@ -968,7 +992,7 @@ export default function PartnerInsightMap({
                               </span>
                               <span className="flex items-center gap-[3px] text-[hsl(214,52%,18%)]">
                                 <Navigation className="h-3 w-3" />
-                                {item.district}
+                                {formatDistrictLabel(item.district)}
                               </span>
                               <span className="font-medium text-[var(--dp-gold-muted)]">
                                 {item.entityType === "building"

@@ -20,6 +20,8 @@ function nowIso() {
   return new Date().toISOString();
 }
 
+const WORKSPACE_STORAGE_PREFIX = "dp_partner_workspace_v1";
+
 function normalizePartnerType(input?: string | null): PartnerType {
   switch (String(input || "").toLowerCase()) {
     case "property":
@@ -204,6 +206,59 @@ async function tryInvoke<T = any>(fn: () => Promise<{ data: T; error?: string }>
   }
 }
 
+function getWorkspaceStorage() {
+  if (typeof window === "undefined") return null;
+  return window.localStorage;
+}
+
+function getWorkspaceScope(input: {
+  partnerId?: string | null;
+  partnerType?: string | null;
+  createdBy?: string | null;
+}) {
+  const partnerType = normalizePartnerType(input.partnerType);
+  return String(input.partnerId || input.createdBy || `public-${partnerType}-workspace`);
+}
+
+function getWorkspaceStorageKey(namespace: string, scope: string) {
+  return `${WORKSPACE_STORAGE_PREFIX}:${namespace}:${scope}`;
+}
+
+function readWorkspaceStorage<T>(namespace: string, scope: string, fallback: T): T {
+  const storage = getWorkspaceStorage();
+  if (!storage) return fallback;
+
+  try {
+    const raw = storage.getItem(getWorkspaceStorageKey(namespace, scope));
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (_error) {
+    return fallback;
+  }
+}
+
+function writeWorkspaceStorage(namespace: string, scope: string, value: unknown) {
+  const storage = getWorkspaceStorage();
+  if (!storage) return;
+
+  try {
+    storage.setItem(getWorkspaceStorageKey(namespace, scope), JSON.stringify(value));
+  } catch (_error) {
+    // Ignore storage failures in non-persistent environments.
+  }
+}
+
+function upsertById<T extends { id: string }>(items: T[], nextItem: T) {
+  const next = Array.isArray(items) ? [...items] : [];
+  const index = next.findIndex((item) => item.id === nextItem.id);
+  if (index >= 0) next[index] = nextItem;
+  else next.unshift(nextItem);
+  return next;
+}
+
+function removeById<T extends { id: string }>(items: T[], id: string) {
+  return (Array.isArray(items) ? items : []).filter((item) => item.id !== id);
+}
+
 export const partnerPlatformRepository = {
   normalizePartnerType,
 
@@ -211,9 +266,15 @@ export const partnerPlatformRepository = {
     const user = await base44.auth.me().catch(() => null);
     const partnerType = normalizePartnerType(user?.partner_type);
     const partnerId = user?.partner_id || user?.id || null;
+    const scope = getWorkspaceScope({
+      partnerId,
+      partnerType,
+      createdBy: user?.email,
+    });
+    const profile = readWorkspaceStorage("profile", scope, null);
 
     return {
-      user,
+      user: profile ? { ...user, ...profile } : user,
       partnerId,
       partnerType,
       canonicalRoute: getCanonicalPartnerRoute(partnerType),
@@ -222,6 +283,7 @@ export const partnerPlatformRepository = {
   },
 
   async listOffers({ createdBy, partnerId }: { createdBy?: string; partnerId?: string } = {}) {
+    const scope = getWorkspaceScope({ partnerId, createdBy });
     const remote = await tryInvoke<OfferRecord[]>(() =>
       partnerPlatformApi.listOffers({
         created_by: createdBy,
@@ -229,33 +291,71 @@ export const partnerPlatformRepository = {
       })
     );
     if (Array.isArray(remote)) {
-      return remote.map(normalizeOfferRecord);
+      const normalized = remote.map(normalizeOfferRecord);
+      writeWorkspaceStorage("offers", scope, normalized);
+      return normalized;
     }
 
     const fallback = await base44.entities.Perk.filter({ created_by: createdBy }).catch(() => []);
-    return Array.isArray(fallback) ? fallback.map(normalizeOfferRecord) : [];
+    if (Array.isArray(fallback) && fallback.length > 0) {
+      const normalized = fallback.map(normalizeOfferRecord);
+      writeWorkspaceStorage("offers", scope, normalized);
+      return normalized;
+    }
+
+    return readWorkspaceStorage("offers", scope, []);
   },
 
   async createOffer(payload: Partial<OfferRecord>) {
+    const createdBy = (payload as Record<string, any>)?.created_by as string | undefined;
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      createdBy,
+    });
     const remote = await tryInvoke<OfferRecord>(() => partnerPlatformApi.createOffer(payload));
-    if (remote) return normalizeOfferRecord(remote);
-    return normalizeOfferRecord(await base44.entities.Perk.create(payload).catch(() => payload));
+    if (remote) {
+      const normalized = normalizeOfferRecord(remote);
+      writeWorkspaceStorage("offers", scope, upsertById(readWorkspaceStorage("offers", scope, []), normalized));
+      return normalized;
+    }
+
+    const local = normalizeOfferRecord(await base44.entities.Perk.create(payload).catch(() => payload));
+    writeWorkspaceStorage("offers", scope, upsertById(readWorkspaceStorage("offers", scope, []), local));
+    return local;
   },
 
   async updateOffer(id: string, payload: Partial<OfferRecord>) {
+    const createdBy = (payload as Record<string, any>)?.created_by as string | undefined;
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      createdBy,
+    });
     const remote = await tryInvoke<OfferRecord>(() => partnerPlatformApi.updateOffer({ id, ...payload }));
-    if (remote) return normalizeOfferRecord(remote);
-    return normalizeOfferRecord(await base44.entities.Perk.update(id, payload).catch(() => ({ id, ...payload })));
+    if (remote) {
+      const normalized = normalizeOfferRecord(remote);
+      writeWorkspaceStorage("offers", scope, upsertById(readWorkspaceStorage("offers", scope, []), normalized));
+      return normalized;
+    }
+
+    const local = normalizeOfferRecord(await base44.entities.Perk.update(id, payload).catch(() => ({ id, ...payload })));
+    writeWorkspaceStorage("offers", scope, upsertById(readWorkspaceStorage("offers", scope, []), local));
+    return local;
   },
 
-  async deleteOffer(id: string) {
+  async deleteOffer(id: string, context: { partnerId?: string; partnerType?: string; createdBy?: string } = {}) {
+    const scope = getWorkspaceScope(context);
     const remote = await tryInvoke(() => partnerPlatformApi.updateOffer({ id, visibility_status: "archived", status: "archived" }));
-    if (remote) return { success: true };
+    if (remote) {
+      writeWorkspaceStorage("offers", scope, removeById(readWorkspaceStorage("offers", scope, []), id));
+      return { success: true };
+    }
     await base44.entities.Perk.delete(id).catch(() => false);
+    writeWorkspaceStorage("offers", scope, removeById(readWorkspaceStorage("offers", scope, []), id));
     return { success: true };
   },
 
   async listEvents({ createdBy, partnerId }: { createdBy?: string; partnerId?: string } = {}) {
+    const scope = getWorkspaceScope({ partnerId, createdBy });
     const remote = await tryInvoke<PartnerEventRecord[]>(() =>
       partnerPlatformApi.listEvents({
         created_by: createdBy,
@@ -263,33 +363,71 @@ export const partnerPlatformRepository = {
       })
     );
     if (Array.isArray(remote)) {
-      return remote.map(normalizeEventRecord);
+      const normalized = remote.map(normalizeEventRecord);
+      writeWorkspaceStorage("events", scope, normalized);
+      return normalized;
     }
 
     const fallback = await base44.entities.Event.filter({ created_by: createdBy }).catch(() => []);
-    return Array.isArray(fallback) ? fallback.map(normalizeEventRecord) : [];
+    if (Array.isArray(fallback) && fallback.length > 0) {
+      const normalized = fallback.map(normalizeEventRecord);
+      writeWorkspaceStorage("events", scope, normalized);
+      return normalized;
+    }
+
+    return readWorkspaceStorage("events", scope, []);
   },
 
   async createEvent(payload: Partial<PartnerEventRecord>) {
+    const createdBy = (payload as Record<string, any>)?.created_by as string | undefined;
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      createdBy,
+    });
     const remote = await tryInvoke<PartnerEventRecord>(() => partnerPlatformApi.createEvent(payload));
-    if (remote) return normalizeEventRecord(remote);
-    return normalizeEventRecord(await base44.entities.Event.create(payload).catch(() => payload));
+    if (remote) {
+      const normalized = normalizeEventRecord(remote);
+      writeWorkspaceStorage("events", scope, upsertById(readWorkspaceStorage("events", scope, []), normalized));
+      return normalized;
+    }
+
+    const local = normalizeEventRecord(await base44.entities.Event.create(payload).catch(() => payload));
+    writeWorkspaceStorage("events", scope, upsertById(readWorkspaceStorage("events", scope, []), local));
+    return local;
   },
 
   async updateEvent(id: string, payload: Partial<PartnerEventRecord>) {
+    const createdBy = (payload as Record<string, any>)?.created_by as string | undefined;
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      createdBy,
+    });
     const remote = await tryInvoke<PartnerEventRecord>(() => partnerPlatformApi.updateEvent({ id, ...payload }));
-    if (remote) return normalizeEventRecord(remote);
-    return normalizeEventRecord(await base44.entities.Event.update(id, payload).catch(() => ({ id, ...payload })));
+    if (remote) {
+      const normalized = normalizeEventRecord(remote);
+      writeWorkspaceStorage("events", scope, upsertById(readWorkspaceStorage("events", scope, []), normalized));
+      return normalized;
+    }
+
+    const local = normalizeEventRecord(await base44.entities.Event.update(id, payload).catch(() => ({ id, ...payload })));
+    writeWorkspaceStorage("events", scope, upsertById(readWorkspaceStorage("events", scope, []), local));
+    return local;
   },
 
-  async deleteEvent(id: string) {
+  async deleteEvent(id: string, context: { partnerId?: string; partnerType?: string; createdBy?: string } = {}) {
+    const scope = getWorkspaceScope(context);
     const remote = await tryInvoke(() => partnerPlatformApi.updateEvent({ id, status: "archived" }));
-    if (remote) return { success: true };
+    if (remote) {
+      writeWorkspaceStorage("events", scope, removeById(readWorkspaceStorage("events", scope, []), id));
+      return { success: true };
+    }
     await base44.entities.Event.delete(id).catch(() => false);
+    writeWorkspaceStorage("events", scope, removeById(readWorkspaceStorage("events", scope, []), id));
     return { success: true };
   },
 
   async listSourcePoints({ partnerId, partnerType }: { partnerId?: string; partnerType?: string } = {}) {
+    const scope = getWorkspaceScope({ partnerId, partnerType });
     const remote = await tryInvoke<SourcePointRecord[]>(() =>
       partnerPlatformApi.listSourcePoints({
         partner_id: partnerId,
@@ -298,16 +436,30 @@ export const partnerPlatformRepository = {
     );
 
     if (Array.isArray(remote) && remote.length > 0) {
+      writeWorkspaceStorage("sources", scope, remote);
       return remote;
     }
 
-    return fallbackSourcePoints(partnerId);
+    const stored = readWorkspaceStorage("sources", scope, []);
+    if (stored.length > 0) return stored;
+
+    const fallback = fallbackSourcePoints(partnerId || scope);
+    writeWorkspaceStorage("sources", scope, fallback);
+    return fallback;
   },
 
   async createSourcePoint(payload: Partial<SourcePointRecord>) {
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      partnerType: payload.partner_type as string | undefined,
+    });
     const remote = await tryInvoke<SourcePointRecord>(() => partnerPlatformApi.createSourcePoint(payload));
-    if (remote) return remote;
-    return {
+    if (remote) {
+      writeWorkspaceStorage("sources", scope, upsertById(readWorkspaceStorage("sources", scope, []), remote));
+      return remote;
+    }
+
+    const local = {
       id: payload.id || `source-${Math.random().toString(36).slice(2, 8)}`,
       source_type: payload.source_type || "qr",
       source_key: payload.source_key || "new_source",
@@ -318,12 +470,22 @@ export const partnerPlatformRepository = {
       created_at: nowIso(),
       updated_at: nowIso(),
     };
+    writeWorkspaceStorage("sources", scope, upsertById(readWorkspaceStorage("sources", scope, []), local));
+    return local;
   },
 
   async updateSourcePoint(id: string, payload: Partial<SourcePointRecord>) {
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      partnerType: payload.partner_type as string | undefined,
+    });
     const remote = await tryInvoke<SourcePointRecord>(() => partnerPlatformApi.updateSourcePoint({ id, ...payload }));
-    if (remote) return remote;
-    return {
+    if (remote) {
+      writeWorkspaceStorage("sources", scope, upsertById(readWorkspaceStorage("sources", scope, []), remote));
+      return remote;
+    }
+
+    const local = {
       id,
       source_type: payload.source_type || "qr",
       source_key: payload.source_key || "updated_source",
@@ -334,15 +496,27 @@ export const partnerPlatformRepository = {
       created_at: nowIso(),
       updated_at: nowIso(),
     };
+    writeWorkspaceStorage("sources", scope, upsertById(readWorkspaceStorage("sources", scope, []), local));
+    return local;
   },
 
-  async deleteSourcePoint(id: string) {
+  async deleteSourcePoint(id: string, context: { partnerId?: string; partnerType?: string; createdBy?: string } = {}) {
+    const scope = getWorkspaceScope(context);
     const remote = await tryInvoke(() => partnerPlatformApi.deleteSourcePoint({ id }));
-    if (remote) return { success: true };
+    if (remote) {
+      writeWorkspaceStorage("sources", scope, removeById(readWorkspaceStorage("sources", scope, []), id));
+      return { success: true };
+    }
+    writeWorkspaceStorage("sources", scope, removeById(readWorkspaceStorage("sources", scope, []), id));
     return { success: true };
   },
 
   async listPartnerUsers({ partnerId, user }: { partnerId?: string; user?: any } = {}) {
+    const scope = getWorkspaceScope({
+      partnerId,
+      partnerType: user?.partner_type,
+      createdBy: user?.email,
+    });
     const remote = await tryInvoke<PartnerUserRecord[]>(() =>
       partnerPlatformApi.listPartnerUsers({
         partner_id: partnerId,
@@ -350,11 +524,15 @@ export const partnerPlatformRepository = {
     );
 
     if (Array.isArray(remote) && remote.length > 0) {
+      writeWorkspaceStorage("team", scope, remote);
       return remote;
     }
 
+    const stored = readWorkspaceStorage("team", scope, []);
+    if (stored.length > 0) return stored;
+
     if (!user) return [];
-    return [
+    const fallback = [
       {
         id: String(user.id || "current-user"),
         partner_id: partnerId || user.partner_id || user.id,
@@ -366,12 +544,22 @@ export const partnerPlatformRepository = {
         created_at: nowIso(),
       },
     ];
+    writeWorkspaceStorage("team", scope, fallback);
+    return fallback;
   },
 
   async invitePartnerUser(payload: Partial<PartnerUserRecord>) {
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id,
+      createdBy: payload.email,
+    });
     const remote = await tryInvoke<PartnerUserRecord>(() => partnerPlatformApi.invitePartnerUser(payload));
-    if (remote) return remote;
-    return {
+    if (remote) {
+      writeWorkspaceStorage("team", scope, upsertById(readWorkspaceStorage("team", scope, []), remote));
+      return remote;
+    }
+
+    const local = {
       id: `invite-${Math.random().toString(36).slice(2, 8)}`,
       partner_id: payload.partner_id,
       email: payload.email || "",
@@ -380,12 +568,25 @@ export const partnerPlatformRepository = {
       status: "invited",
       created_at: nowIso(),
     };
+    writeWorkspaceStorage("team", scope, upsertById(readWorkspaceStorage("team", scope, []), local));
+    return local;
   },
 
   async updatePartnerProfile(payload: Partial<PartnerProfileRecord> & Record<string, any>) {
+    const scope = getWorkspaceScope({
+      partnerId: payload.partner_id as string | undefined,
+      partnerType: payload.partner_type as string | undefined,
+      createdBy: payload.email as string | undefined,
+    });
     const remote = await tryInvoke(() => partnerPlatformApi.updatePartnerProfile(payload));
-    if (remote) return remote;
-    return base44.auth.updateMe(payload).catch(() => payload);
+    if (remote) {
+      writeWorkspaceStorage("profile", scope, remote);
+      return remote;
+    }
+
+    const local = await base44.auth.updateMe(payload).catch(() => payload);
+    writeWorkspaceStorage("profile", scope, local);
+    return local;
   },
 
   async submitPartnerLead(payload: Partial<LeadSubmissionRecord>) {
@@ -478,6 +679,11 @@ export const partnerPlatformRepository = {
   async getWorkspaceSnapshot({ user }: { user: any }) {
     const partnerId = user?.partner_id || user?.id || null;
     const partnerType = normalizePartnerType(user?.partner_type);
+    const scope = getWorkspaceScope({
+      partnerId,
+      partnerType,
+      createdBy: user?.email,
+    });
 
     const [offers, events, sources, analytics, team] = await Promise.all([
       this.listOffers({ createdBy: user?.email, partnerId }),
@@ -487,10 +693,14 @@ export const partnerPlatformRepository = {
       this.listPartnerUsers({ partnerId, user }),
     ]);
 
+    const storedProfile = readWorkspaceStorage("profile", scope, null);
+    const profile = storedProfile ? { ...user, ...storedProfile } : user;
+
     return {
       partnerId,
       partnerType,
       canonicalRoute: getCanonicalPartnerRoute(partnerType),
+      profile,
       offers,
       events,
       sources,

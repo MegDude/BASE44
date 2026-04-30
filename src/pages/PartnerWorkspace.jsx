@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { PARTNER_DASHBOARD_LINK } from "@/lib/partnerContent";
 import { ROUTES } from "@/lib/routes";
@@ -17,6 +17,14 @@ const TABS = PARTNER_WORKSPACE_MODULES.map((module) => ({
   label: module.label,
 }));
 
+const PARTNER_TYPE_OPTIONS = [
+  { id: "property", label: "Properties", route: ROUTES.partnerProperties },
+  { id: "hotel", label: "Hospitality", route: ROUTES.partnerHospitality },
+  { id: "venue", label: "Venues", route: ROUTES.partnerVenues },
+  { id: "brand", label: "Brands", route: ROUTES.partnerBrands },
+  { id: "civic", label: "Civic", route: ROUTES.partnerCivic },
+];
+
 const PERK_CATEGORIES = ["discount", "free_item", "priority_access", "members_rate", "experience", "class_pass"];
 const EVENT_CATEGORIES = ["fitness", "wellness", "social", "dining", "nightlife", "arts", "networking", "class", "run_club", "yoga"];
 
@@ -28,18 +36,87 @@ const CAT_LABELS = {
   run_club: "Run Club", yoga: "Yoga",
 };
 
+function createPublicWorkspaceUser(partnerType) {
+  const resolvedType = partnerPlatformRepository.normalizePartnerType(partnerType);
+  const option = PARTNER_TYPE_OPTIONS.find((item) => item.id === resolvedType) || PARTNER_TYPE_OPTIONS[2];
+
+  return {
+    id: `public-${resolvedType}-workspace`,
+    partner_id: `public-${resolvedType}-workspace`,
+    partner_type: resolvedType,
+    full_name: `${option.label} workspace`,
+    organization_name: `Downtown ${option.label}`,
+    email: `${resolvedType}.workspace@downtownperks.local`,
+    website: "",
+    phone: "",
+    bio: "",
+    isPublicWorkspace: true,
+  };
+}
+
 export default function PartnerWorkspace() {
-  const [user, setUser] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [authUser, setAuthUser] = useState(null);
+  const [workspaceUserOverride, setWorkspaceUserOverride] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState("overview");
+  const requestedTab = searchParams.get("tab");
+  const requestedPartnerType = searchParams.get("partnerType");
+  const initialTab = TABS.some((item) => item.id === requestedTab) ? requestedTab : "overview";
+  const [tab, setTab] = useState(initialTab);
 
   useEffect(() => {
     base44.auth
       .me()
-      .then((u) => setUser(u || null))
-      .catch(() => setUser(null))
+      .then((u) => setAuthUser(u || null))
+      .catch(() => setAuthUser(null))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (TABS.some((item) => item.id === requestedTab)) {
+      setTab(requestedTab);
+    }
+  }, [requestedTab]);
+
+  const activePartnerType = useMemo(() => {
+    return partnerPlatformRepository.normalizePartnerType(requestedPartnerType || authUser?.partner_type || "venue");
+  }, [authUser?.partner_type, requestedPartnerType]);
+
+  useEffect(() => {
+    if (!authUser) {
+      setWorkspaceUserOverride(null);
+    }
+  }, [activePartnerType, authUser]);
+
+  const user = useMemo(() => {
+    if (authUser) {
+      return workspaceUserOverride ? { ...authUser, ...workspaceUserOverride } : authUser;
+    }
+
+    return workspaceUserOverride
+      ? { ...createPublicWorkspaceUser(activePartnerType), ...workspaceUserOverride }
+      : createPublicWorkspaceUser(activePartnerType);
+  }, [activePartnerType, authUser, workspaceUserOverride]);
+
+  const isPublicWorkspace = !authUser;
+
+  function syncWorkspaceState(next) {
+    const updated = new URLSearchParams(searchParams);
+    Object.entries(next).forEach(([key, value]) => {
+      if (!value) updated.delete(key);
+      else updated.set(key, value);
+    });
+    setSearchParams(updated, { replace: true });
+  }
+
+  function handleTabChange(nextTab) {
+    setTab(nextTab);
+    syncWorkspaceState({ tab: nextTab, partnerType: activePartnerType });
+  }
+
+  function handlePartnerTypeChange(nextPartnerType) {
+    syncWorkspaceState({ partnerType: nextPartnerType, tab });
+  }
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -58,7 +135,14 @@ export default function PartnerWorkspace() {
               <h1 className="font-display text-[2.2rem] text-foreground md:text-[2.8rem]">
                 Partner workspace
               </h1>
-              <p className="text-muted-foreground text-[13px] mt-2">Manage what appears on the map and track what happens next.</p>
+              <p className="text-muted-foreground text-[13px] mt-2">
+                Manage offers, events, source points, team access, and profile details from one shared workspace.
+              </p>
+              <p className="text-muted-foreground text-[12px] mt-3">
+                {isPublicWorkspace
+                  ? "This workspace is open without sign-in. Changes save in this browser until a live partner account is connected."
+                  : "Signed-in partner changes stay connected to the live downtown system."}
+              </p>
             </div>
             <div className="flex items-center gap-3">
               <Link to="/partners" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
@@ -70,10 +154,28 @@ export default function PartnerWorkspace() {
             </div>
           </div>
 
+          <div className="flex flex-wrap gap-2 pb-5">
+            {PARTNER_TYPE_OPTIONS.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => handlePartnerTypeChange(option.id)}
+                className={`rounded-full px-4 py-2 text-[12px] font-medium transition-all ${
+                  activePartnerType === option.id
+                    ? "bg-[#10233b] text-white shadow-[0_10px_24px_rgba(16,35,59,0.12)]"
+                    : "border border-border/60 bg-white text-muted-foreground hover:text-foreground"
+                }`}
+                aria-pressed={activePartnerType === option.id}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
           {/* Tabs */}
           <div className="flex gap-0 -mb-px">
             {TABS.map(t => (
-              <button key={t.id} onClick={() => setTab(t.id)}
+              <button key={t.id} onClick={() => handleTabChange(t.id)}
                 className={`px-5 py-3.5 text-[12px] font-medium border-b-2 transition-all ${
                   tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
                 }`}>
@@ -86,53 +188,17 @@ export default function PartnerWorkspace() {
 
       {/* Tab content */}
       <div className="mx-auto w-full max-w-7xl px-6 py-8">
-        {!user ? (
-          <WorkspaceAccessRequired />
-        ) : (
-          <AnimatePresence mode="wait">
-            {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
-            {tab === "offers" && <PerksManager key="offers" user={user} />}
-            {tab === "events" && <EventsManager key="events" user={user} />}
-            {tab === "sources" && <SourcesManager key="sources" user={user} />}
-            {tab === "analytics" && <AnalyticsManager key="analytics" user={user} />}
-            {tab === "team" && <TeamManager key="team" user={user} />}
-            {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
-          </AnimatePresence>
-        )}
+        <AnimatePresence mode="wait">
+          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={handleTabChange} />}
+          {tab === "offers" && <PerksManager key="offers" user={user} />}
+          {tab === "events" && <EventsManager key="events" user={user} />}
+          {tab === "sources" && <SourcesManager key="sources" user={user} />}
+          {tab === "analytics" && <AnalyticsManager key="analytics" user={user} />}
+          {tab === "team" && <TeamManager key="team" user={user} />}
+          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setWorkspaceUserOverride} />}
+        </AnimatePresence>
       </div>
     </div>
-  );
-}
-
-function WorkspaceAccessRequired() {
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="max-w-2xl rounded-[22px] border border-border/50 bg-white p-8 shadow-[0_12px_28px_rgba(11,26,43,0.05)]">
-        <div className="dp-micro-label mb-2">Partner workspace</div>
-        <h2 className="text-2xl font-semibold tracking-[-0.03em] text-foreground">
-          Sign in with your partner account to manage perks, events, and profile settings.
-        </h2>
-        <p className="mt-3 text-[13px] leading-6 text-muted-foreground">
-          This workspace is now account-bound. Public visitors can browse the partner overview and dashboard, but publishing and editing surfaces require the authenticated production actor flow.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            to={PARTNER_DASHBOARD_LINK}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90"
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            View dashboard
-          </Link>
-          <Link
-            to="/partners"
-            className="inline-flex items-center gap-2 rounded-full border border-border/60 px-5 py-2.5 text-sm font-medium text-foreground/70 transition-all hover:text-foreground"
-          >
-            Partner types
-            <ChevronRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </motion.div>
   );
 }
 
@@ -389,7 +455,11 @@ function PerksManager({ user }) {
   function handleEdit(perk) { setEditing(perk); setShowForm(true); }
   function handleAdd() { setEditing(null); setShowForm(true); }
   async function handleDelete(id) {
-    await partnerPlatformRepository.deleteOffer(id);
+    await partnerPlatformRepository.deleteOffer(id, {
+      partnerId: user?.partner_id || user?.id,
+      partnerType: user?.partner_type,
+      createdBy: user?.email,
+    });
     load();
   }
 
@@ -536,7 +606,11 @@ function EventsManager({ user }) {
   useEffect(() => { load(); }, []);
 
   async function handleDelete(id) {
-    await partnerPlatformRepository.deleteEvent(id);
+    await partnerPlatformRepository.deleteEvent(id, {
+      partnerId: user?.partner_id || user?.id,
+      partnerType: user?.partner_type,
+      createdBy: user?.email,
+    });
     load();
   }
 
@@ -703,7 +777,11 @@ function SourcesManager({ user }) {
   }, [user?.id, user?.partner_id, user?.partner_type]);
 
   async function handleDelete(id) {
-    await partnerPlatformRepository.deleteSourcePoint(id);
+    await partnerPlatformRepository.deleteSourcePoint(id, {
+      partnerId: user?.partner_id || user?.id,
+      partnerType: user?.partner_type,
+      createdBy: user?.email,
+    });
     setSources((current) => current.filter((source) => source.id !== id));
   }
 
@@ -1088,7 +1166,12 @@ function ProfileSection({ user, setUser }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    const updated = await partnerPlatformRepository.updatePartnerProfile(form);
+    const updated = await partnerPlatformRepository.updatePartnerProfile({
+      ...form,
+      id: user?.id,
+      partner_id: user?.partner_id || user?.id,
+      email: user?.email,
+    });
     setUser(updated);
     setSaving(false);
     setSaved(true);

@@ -6,7 +6,6 @@ import { ROUTES } from "@/lib/routes";
 
 const TOP_LINKS = [
   { label: "Residents", to: ROUTES.residents },
-  { label: "Map", to: ROUTES.explore },
   { label: "Events", to: ROUTES.events },
   { label: "Perks Card", to: ROUTES.card },
   { label: "About", to: ROUTES.about },
@@ -15,7 +14,7 @@ const TOP_LINKS = [
 const PARTNER_TYPE_LINKS = [
   { label: "Overview", to: ROUTES.partners },
   { label: "Properties", to: ROUTES.partnerProperties },
-  { label: "Hotels", to: ROUTES.partnerHospitality },
+  { label: "Hospitality", to: ROUTES.partnerHospitality },
   { label: "Venues", to: ROUTES.partnerVenues },
   { label: "Brands", to: ROUTES.partnerBrands },
   { label: "Civic", to: ROUTES.partnerCivic },
@@ -46,7 +45,13 @@ export default function Navbar() {
 
   const isActive = (to) => {
     if (!to) return false;
-    if (to === ROUTES.residents) return location.pathname === ROUTES.residents || location.pathname.startsWith("/resident-app");
+    if (to === ROUTES.residents) {
+      return (
+        location.pathname === ROUTES.residents ||
+        location.pathname === ROUTES.residentWalkingHappyHour ||
+        location.pathname.startsWith("/resident-app")
+      );
+    }
     if (to === ROUTES.events) return location.pathname.startsWith("/downtown-perks/events") || location.pathname === "/events";
     if (to === ROUTES.explore) return location.pathname.startsWith("/downtown-perks/explore") || ["/map", "/explore", ROUTES.residentApp].includes(location.pathname);
     if (to === ROUTES.about) return location.pathname === ROUTES.about || location.pathname === "/downtown-perks/about";
@@ -162,12 +167,6 @@ export default function Navbar() {
               </div>
             ) : null}
           </div>
-          <Link
-            to={ROUTES.explore}
-            className="ml-2 inline-flex min-h-10 items-center rounded-full bg-[var(--dp-navy)] px-4 text-[13px] font-semibold text-white transition hover:opacity-92"
-          >
-            Open Map
-          </Link>
         </div>
 
         <button

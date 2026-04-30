@@ -18,12 +18,9 @@ import { useRankedResults } from '@/hooks/useRankedResults';
 import { useMapFilters } from '@/hooks/useMapFilters';
 import { filterEntities } from '@/lib/mapFilters';
 import { trackEvent } from '@/lib/analytics';
-
-<<<<<<< ours
-=======
+import { getHappyHourEntities } from '@/lib/map/happyHourEntities';
 
 // Helper to get marker icon from factory
->>>>>>> theirs
 function getMarkerIcon(entity, isSelected) {
   return createMarker(entity, {
     isSelected,
@@ -62,8 +59,12 @@ export default function ExploreRebuilt() {
   const {
     mode,
     query,
+    submittedQuery,
+    askVersion,
     decision,
     type,
+    district,
+    agentExplanation,
     setAgentState,
     categories,
     filters,
@@ -108,11 +109,12 @@ export default function ExploreRebuilt() {
         const safeItems = filterValidEntities(feedItems).filter(
           (item) => item.isPlotted !== false
         );
+        const mergedItems = [...safeItems, ...getHappyHourEntities()];
 
         if (!mounted) return;
-        baseEntitiesRef.current = safeItems;
-        setAllEntities(safeItems);
-        setFilteredResults(safeItems);
+        baseEntitiesRef.current = mergedItems;
+        setAllEntities(mergedItems);
+        setFilteredResults(mergedItems);
       } catch (error) {
         console.error('Failed to load map feed:', error);
         if (!mounted) return;
@@ -131,7 +133,7 @@ export default function ExploreRebuilt() {
   useEffect(() => {
     if (hasExploreFilters) return;
     clearFilters();
-    setSearchQuery(query);
+    setSearchQuery(mode === 'ask' ? submittedQuery : query);
 
     if (type === 'venues') {
       updateFilter('entityTypes', new Set(['venue', 'hotel']));
@@ -147,6 +149,10 @@ export default function ExploreRebuilt() {
 
     if (categories.length > 0) {
       updateFilter('categories', new Set(categories));
+    }
+
+    if (district) {
+      updateFilter('districts', new Set([district]));
     }
 
     if (decision === 'now') {
@@ -170,7 +176,7 @@ export default function ExploreRebuilt() {
     } else if (filters.tenMin) {
       updateFilter('walkMinutes', 10);
     }
-  }, [categories, clearFilters, decision, filters, hasExploreFilters, query, setSearchQuery, type, updateFilter]);
+  }, [categories, clearFilters, decision, district, filters, hasExploreFilters, mode, query, setSearchQuery, submittedQuery, type, updateFilter]);
 
   useEffect(() => {
     if (!hasExploreFilters) return;
@@ -257,10 +263,11 @@ export default function ExploreRebuilt() {
     const query = String(q || '').trim();
     if (!query) return;
     if (askLoading) return;
-    if (lastAskRef.current === query) return;
+    const askKey = `${askVersion}:${query}`;
+    if (lastAskRef.current === askKey) return;
 
     setAskLoading(true);
-    lastAskRef.current = query;
+    lastAskRef.current = askKey;
 
     try {
       const { items, explanation, suggestions, source, intent } = await mapRepository.searchWithIntent({
@@ -293,10 +300,10 @@ export default function ExploreRebuilt() {
 
   useEffect(() => {
     if (mode !== 'ask') return;
-    if (!query?.trim()) return;
-    handleAsk(query);
+    if (!submittedQuery?.trim()) return;
+    handleAsk(submittedQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, query]);
+  }, [askVersion, mode, submittedQuery]);
 
   useEffect(() => {
     if (!allEntities.length) return;
@@ -309,8 +316,14 @@ export default function ExploreRebuilt() {
       savedIds: savedEntityIds,
       district: Array.from(activeFilters.districts)[0] || '',
       category: activeFilters.hasPerk && activeFilters.categories.size === 0 ? 'perks' : Array.from(activeFilters.categories)[0] || '',
+      categories: Array.from(activeFilters.categories),
       q: searchQuery,
       intent: activeFilters.walkMinutes === 5 ? 'nearby' : '',
+      activeSpecials: filters.activeSpecials,
+      foodDeals: filters.foodDeals,
+      drinkDeals: filters.drinkDeals,
+      residentPerks: filters.residentPerks,
+      needsDetails: filters.needsDetails,
     });
     const baselineResults = [...results];
 
@@ -346,17 +359,21 @@ export default function ExploreRebuilt() {
         return (b.metadata?.popularity ?? 0) - (a.metadata?.popularity ?? 0);
       });
 
-      finalResults = fallback.slice(0, 60);
+      finalResults = fallback.slice(0, categories.includes('happy-hour') ? 40 : 60);
       explanation = finalResults.length
         ? `No exact matches for that filter. Showing the nearest ${describeType(type)} instead.`
         : `Showing the live downtown layer.`;
+    }
+
+    if (categories.includes('happy-hour') && !searchQuery.trim() && activeFilters.districts.size === 0) {
+      finalResults = finalResults.slice(0, 36);
     }
 
     setFilteredResults(finalResults);
     setAgentState({
       agentExplanation: explanation,
     });
-  }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults, setAgentState, type, decision, filters.fiveMin, filters.tenMin, filters.openNow]);
+  }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults, setAgentState, type, decision, categories, filters.activeSpecials, filters.drinkDeals, filters.fiveMin, filters.foodDeals, filters.needsDetails, filters.openNow, filters.residentPerks, filters.tenMin]);
 
   const summary = useMemo(
     () => ({
@@ -387,6 +404,12 @@ export default function ExploreRebuilt() {
     [filteredResults, savedEntityIds]
   );
   const displayResults = useRankedResults(annotatedResults);
+  const resultsPanelTitle = submittedQuery?.trim()
+    ? `Results for "${submittedQuery.trim()}"`
+    : categories.includes('happy-hour')
+      ? 'Happy hour spots'
+    : 'Nearby results';
+  const resultsPanelSubtitle = agentExplanation || 'Live now, open now, and closest first.';
 
   const handleMarkerSelect = (entity) => {
     selectEntity(entity);
@@ -436,7 +459,10 @@ export default function ExploreRebuilt() {
                 </Link>
               </div>
               <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pointer-events-auto">
-                <MapControlPanel />
+                <MapControlPanel
+                  askLoading={askLoading}
+                  resultCount={displayResults.length}
+                />
               </motion.div>
             </div>
 
@@ -503,7 +529,8 @@ export default function ExploreRebuilt() {
                     <UnifiedResultsPanel
                       items={displayResults}
                       onSelectResult={() => setShowResultsList(false)}
-                      title="Results"
+                      title={resultsPanelTitle}
+                      subtitle={resultsPanelSubtitle}
                     />
                   </div>
                 </div>
@@ -519,7 +546,8 @@ export default function ExploreRebuilt() {
                 <UnifiedResultsPanel
                   items={displayResults}
                   onClose={() => setShowResultsList(false)}
-                  title="Results"
+                  title={resultsPanelTitle}
+                  subtitle={resultsPanelSubtitle}
                 />
               </motion.aside>
             </>

@@ -697,14 +697,16 @@ function ResidentMapSurface({
           onToggleLayer={onToggleLayer}
         />
 
-        {resultsExpanded ? (
+        {resultsExpanded && !selectedEntity ? (
           <div className="h-[320px] border-t border-[rgba(11,31,51,0.08)] lg:h-[calc(100%-356px)]">
             <UnifiedResultsPanel
               items={items}
               title="Nearby now"
+              onClose={() => onToggleResults?.()}
               onSelectResult={(item) => {
                 selectEntity(item);
                 setDrawerState("preview");
+                if (resultsExpanded) onToggleResults?.();
               }}
             />
           </div>
@@ -733,6 +735,16 @@ function ResidentMapSurface({
                     className="inline-flex h-10 items-center justify-center rounded-[12px] bg-primary px-3 text-[12px] font-semibold text-white"
                   >
                     {getExternalReserveLabel(selectedEntity)}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      selectEntity(null);
+                      setDrawerState("closed");
+                    }}
+                    className="inline-flex h-10 items-center justify-center rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white px-3 text-[12px] font-semibold text-[var(--dp-navy,#0B1F33)]"
+                  >
+                    Close details
                   </button>
                 </div>
               </div>

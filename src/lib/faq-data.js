@@ -202,7 +202,7 @@ export const FAQ_HOSPITALITY = [
     answer:
       "Setup includes mapping your hotel as an access point and linking nearby dining, events, and offers that are relevant to your guests during their stay.",
     linkLabel: "See hotel partnerships",
-    linkHref: "/partners/hotels",
+    linkHref: "/partners/hospitality",
   },
   {
     id: "ho4",

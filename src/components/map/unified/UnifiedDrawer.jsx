@@ -6,9 +6,9 @@ import { useResidentMutations } from '@/hooks/useResidentMutations';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { useCTAFlow } from '@/components/cta/CTAFlowProvider';
 import { getEntityInquiryFlow } from '@/lib/cta/partnerFlowHelpers';
+import { trackEvent } from '@/lib/analytics';
 import {
   IconCalendarCheck,
-  IconChevronUp,
   IconClock,
   IconClose,
   getEntityIcon,
@@ -23,6 +23,17 @@ function getStatus(item) {
   if (item?.isOpenNow) return { label: 'Open now', tone: 'open' };
   if (item?.eventTiming?.startsSoon || item?.eventTiming?.startTime) return { label: 'Starting soon', tone: 'soon' };
   return null;
+}
+
+function getWhyThis(item) {
+  if (item?.metadata?.reason) return item.metadata.reason;
+  if (item?.isLive || item?.eventTiming?.isLive) return `Live now${item?.district ? ` near ${item.district}` : ''}`;
+  if (item?.isOpenNow && item?.metadata?.walkMinutes) return `Open now · ${item.metadata.walkMinutes} min walk`;
+  if (item?.isOpenNow) return 'Open now nearby';
+  if (item?.perk?.value || item?.perk_value || item?.type === 'perk') return 'Perk available nearby';
+  if (item?.type === 'event') return 'Happening tonight';
+  if (item?.type === 'building' || item?.type === 'property') return item?.district ? `Residential option in ${item.district}` : 'Residential option nearby';
+  return item?.category ? `Good match for ${item.category}` : 'Useful nearby option right now';
 }
 
 export default function UnifiedDrawer({
@@ -60,29 +71,26 @@ export default function UnifiedDrawer({
     return null;
   }
 
-  const isExpanded = drawerState === 'expanded' || drawerState === 'fullscreen';
   const isSaved = savedEntityIds.has(selected.id);
   const EntityIcon = getEntityIcon(selected);
   const entityLabel = getEntityLabel(selected);
   const status = getStatus(selected);
   const groupedListingCount = Number(selected?.metadata?.groupedListingCount || 0);
-  const listingTypes = Array.isArray(selected?.metadata?.listingTypes) ? selected.metadata.listingTypes : [];
-  const unitTypes = Array.isArray(selected?.metadata?.unitTypes) ? selected.metadata.unitTypes : [];
   const priceRange = selected?.metadata?.priceRange || selected?.subtitle;
-  const clusterItems = Array.isArray(selected?.metadata?.clusterItems) ? selected.metadata.clusterItems : [];
-  const clusterCount = Number(selected?.metadata?.clusterCount || clusterItems.length || 0);
 
   const openDetails = async () => {
-    setDrawerState('expanded');
+    trackEvent('drawer_action_clicked', { action: 'details', entityId: selected.id, entityType: selected.type });
     await mutations.logInteraction(selected, 'detail_open', undefined, { surface: 'unified_drawer' });
   };
 
   const handleSave = async () => {
+    trackEvent('drawer_action_clicked', { action: 'save', entityId: selected.id, entityType: selected.type });
     toggleSaved(selected.id);
     await mutations.toggleSavedItem(selected);
   };
 
   const handlePrimaryAction = async () => {
+    trackEvent('drawer_action_clicked', { action: 'primary', entityId: selected.id, entityType: selected.type });
     if (selected.type === 'event') {
       await mutations.upsertRsvp(selected);
       return;
@@ -103,15 +111,17 @@ export default function UnifiedDrawer({
       ? 'RSVP'
       : selected.type === 'perk' || selected.perk?.value || selected.perk_value
         ? 'Redeem'
-        : 'Details';
+        : selected.type === 'building' || selected.type === 'property'
+          ? 'View'
+          : 'Go';
   const PrimaryIcon =
     selected.type === 'cluster'
-      ? IconChevronUp
+      ? IconCalendarCheck
       : selected.type === 'event'
       ? IconCalendarCheck
       : selected.type === 'perk' || selected.perk?.value || selected.perk_value
         ? IconPerk
-        : IconChevronUp;
+        : IconNavigation;
 
   const inquiryFlow = getEntityInquiryFlow(selected, {
     source: 'unified_drawer',
@@ -141,7 +151,13 @@ export default function UnifiedDrawer({
           ) : null}
         </div>
         <h2 className="mt-3 text-xl font-semibold text-navy">{selected.name}</h2>
-        <p className="mt-2 text-sm text-navy-muted">{selected.description || selected.address}</p>
+        <div className="mt-3">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.46)]">
+            Why this
+          </div>
+          <p className="mt-1 text-[14px] leading-6 text-navy">{getWhyThis(selected)}</p>
+        </div>
+        <p className="mt-3 text-sm text-navy-muted">{selected.description || selected.address}</p>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
@@ -157,80 +173,13 @@ export default function UnifiedDrawer({
             {selected.metadata.walkMinutes} min walk
           </span>
         )}
-        {groupedListingCount > 1 && (
-          <span className="dp-chip">
-            {groupedListingCount} listings
-          </span>
-        )}
-        {selected.type === 'cluster' && clusterCount > 1 && (
-          <span className="dp-chip">
-            {clusterCount} grouped pins
-          </span>
-        )}
-        {listingTypes.length > 0 && (
-          <span className="dp-chip">
-            {listingTypes.map((type) => String(type).charAt(0).toUpperCase() + String(type).slice(1)).join(' + ')}
-          </span>
-        )}
+        {selected.district ? <span className="dp-chip">{selected.district}</span> : null}
+        {groupedListingCount > 1 ? <span className="dp-chip">{groupedListingCount} listings</span> : null}
         {priceRange && <span className="dp-chip">{priceRange}</span>}
         {selected.perk?.value && <span className="dp-chip">{selected.perk.value}</span>}
       </div>
 
-      {isExpanded && (
-        <div className="mt-4 rounded-xl border border-border bg-white/80 p-4 text-sm text-navy-muted">
-          <p>{selected.description || 'This downtown stop is live on the shared resident map.'}</p>
-          {(groupedListingCount > 1 || unitTypes.length > 0) && (
-            <div className="mt-3 space-y-2">
-              {groupedListingCount > 1 && (
-                <p className="font-medium text-navy">
-                  {groupedListingCount} active listings grouped in this building.
-                </p>
-              )}
-              {unitTypes.length > 0 && (
-                <p>
-                  Unit mix: {unitTypes.join(', ')}
-                </p>
-              )}
-            </div>
-          )}
-          {selected.eventTiming?.title && <p className="mt-2 font-medium text-navy">{selected.eventTiming.title}</p>}
-        </div>
-      )}
-
-      {selected.type === 'cluster' && clusterItems.length > 0 && (
-        <div className="mt-4 rounded-xl border border-border bg-white/80 p-4">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-navy/54">
-            In this area
-          </div>
-          <div className="mt-3 space-y-2">
-            {clusterItems.slice(0, 6).map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  selectEntity(item);
-                  setDrawerState('preview');
-                }}
-                className="flex w-full items-start justify-between gap-3 rounded-[14px] border border-border bg-white px-3 py-3 text-left transition-colors hover:bg-[#f8fafc]"
-              >
-                <div className="min-w-0">
-                  <div className="text-[13px] font-semibold text-navy">{item.name}</div>
-                  <div className="mt-1 text-[12px] leading-5 text-navy-muted">
-                    {item.address || item.description || item.category}
-                  </div>
-                </div>
-                {item.metadata?.walkMinutes ? (
-                  <span className="shrink-0 text-[11px] font-medium text-navy/54">
-                    {item.metadata.walkMinutes} min
-                  </span>
-                ) : null}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="mt-4 grid grid-cols-2 gap-2">
+      <div className="mt-4 grid grid-cols-3 gap-2">
         <button
           onClick={handlePrimaryAction}
           disabled={Boolean(mutations.pendingAction)}
@@ -247,25 +196,15 @@ export default function UnifiedDrawer({
           {mutations.pendingAction === 'save' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <IconSave className="h-3.5 w-3.5" />}
           {isSaved ? 'Saved' : 'Save'}
         </button>
+        <button
+          onClick={inquiryFlow ? () => openFlow(inquiryFlow) : openDetails}
+          className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
+        >
+          {inquiryFlow ? inquiryFlow.label : 'Details'}
+        </button>
       </div>
 
-      {inquiryFlow ? (
-        <button
-          onClick={() => openFlow(inquiryFlow)}
-          className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
-        >
-          {inquiryFlow.label}
-        </button>
-      ) : null}
-
-      <div className="mt-2 flex gap-2">
-        <button
-          onClick={() => setDrawerState(isExpanded ? 'preview' : 'expanded')}
-          className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
-        >
-          <IconChevronUp className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-          {isExpanded ? 'Roll up details' : 'View full details'}
-        </button>
+      <div className="mt-2 flex justify-end">
         <button
           onClick={closeDrawer}
           className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
@@ -314,7 +253,7 @@ export default function UnifiedDrawer({
                   <IconClose className="h-4 w-4" />
                 </button>
               </div>
-              <div className={`overflow-y-auto px-5 pb-5 ${desktopMode === 'docked' ? 'flex-1 pt-0' : ''} ${isExpanded ? 'max-h-[70vh]' : 'max-h-[46vh]'}`}>
+              <div className="overflow-y-auto px-5 pb-5 flex-1 pt-0">
                 {detailBody}
               </div>
             </div>
@@ -354,7 +293,7 @@ export default function UnifiedDrawer({
                   </button>
                 </div>
 
-                <div className={`overflow-y-auto px-4 pb-4 ${isExpanded ? 'max-h-[70vh]' : 'max-h-[42vh]'}`}>
+                <div className="overflow-y-auto px-4 pb-4 max-h-[42vh]">
                   {detailBody}
                 </div>
               </div>

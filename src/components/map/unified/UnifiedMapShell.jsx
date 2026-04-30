@@ -27,121 +27,7 @@ const MARKER_LABELS = {
   civic: 'Civic',
   brand: 'Brand',
   moment: 'Neighbor moment',
-  cluster: 'Cluster',
 };
-
-function toTitleCase(value = '') {
-  return String(value || '')
-    .trim()
-    .split(/[\s-]+/)
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-}
-
-function getClusterFamily(item) {
-  const type = String(item?.type || item?.entity_type || '').toLowerCase();
-  if (['building', 'property', 'hotel'].includes(type)) return 'property';
-  if (['perk', 'brand'].includes(type)) return 'partner';
-  if (type === 'event') return 'event';
-  if (type === 'civic') return 'civic';
-  return 'venue';
-}
-
-function getClusterThreshold(zoom = 14) {
-  if (zoom >= 17) return 0;
-  if (zoom >= 16) return 0.00035;
-  if (zoom >= 15) return 0.00055;
-  if (zoom >= 14) return 0.00085;
-  if (zoom >= 13) return 0.00115;
-  return 0.0015;
-}
-
-function buildClusterEntity(itemsInCluster = []) {
-  const valid = itemsInCluster.filter(
-    (item) =>
-      Number.isFinite(item?.location?.latitude) &&
-      Number.isFinite(item?.location?.longitude)
-  );
-  if (valid.length === 0) return null;
-
-  const latitude =
-    valid.reduce((sum, item) => sum + item.location.latitude, 0) / valid.length;
-  const longitude =
-    valid.reduce((sum, item) => sum + item.location.longitude, 0) / valid.length;
-  const district =
-    valid[0]?.district ||
-    valid.find((item) => item?.district)?.district ||
-    'Downtown';
-  const sortedItems = [...valid].sort((a, b) => {
-    const aScore = Number(a?.metadata?.popularity ?? 0);
-    const bScore = Number(b?.metadata?.popularity ?? 0);
-    return bScore - aScore;
-  });
-  const topNames = sortedItems.slice(0, 3).map((item) => item.name).filter(Boolean);
-
-  return {
-    id: `cluster-${district}-${Math.round(latitude * 10000)}-${Math.round(longitude * 10000)}-${valid.length}`,
-    entity_id: `cluster-${district}-${valid.length}`,
-    type: 'cluster',
-    entity_type: 'cluster',
-    name: `${toTitleCase(district)} Area`,
-    title: `${toTitleCase(district)} Area`,
-    description: `${valid.length} Nearby Places Around ${toTitleCase(district)}.`,
-    district: toTitleCase(district),
-    category: getClusterFamily(valid[0]),
-    location: {
-      latitude,
-      longitude,
-      valid: true,
-    },
-    latitude,
-    longitude,
-    isPlotted: true,
-    isVisibleInResults: true,
-    markerType: 'cluster',
-    metadata: {
-      clusterCount: valid.length,
-      clusterItems: sortedItems,
-      topNames,
-      popularity: Math.max(...sortedItems.map((item) => Number(item?.metadata?.popularity ?? 0)), 0),
-    },
-  };
-}
-
-function clusterItems(items = [], zoom = 14) {
-  const threshold = getClusterThreshold(zoom);
-  if (threshold <= 0) return items;
-
-  const source = Array.isArray(items) ? items.filter(Boolean) : [];
-  const buckets = new Map();
-
-  for (const item of source) {
-    const lat = item?.location?.latitude;
-    const lng = item?.location?.longitude;
-    if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
-
-    const district = String(item?.district || 'downtown').toLowerCase();
-    const family = getClusterFamily(item);
-    const latBucket = Math.round(lat / threshold);
-    const lngBucket = Math.round(lng / threshold);
-    const key = `${district}:${family}:${latBucket}:${lngBucket}`;
-    const existing = buckets.get(key) || [];
-    existing.push(item);
-    buckets.set(key, existing);
-  }
-
-  const clustered = [];
-  for (const group of buckets.values()) {
-    if (group.length <= 1) {
-      clustered.push(group[0]);
-      continue;
-    }
-    clustered.push(buildClusterEntity(group));
-  }
-
-  return clustered.filter(Boolean);
-}
 
 function normalizeMarkerType(item) {
   const rawType = String(item?.type || item?.entity_type || item?.category || 'venue').toLowerCase();
@@ -163,11 +49,9 @@ function getSignalFlags(item, isSelected = false) {
   const type = normalizeMarkerType(item);
   const popularity = Number(item?.metadata?.popularity ?? item?.score ?? item?._score ?? 0);
   const activity = Number(item?.metadata?.activityScore ?? item?.metadata?.redemptions ?? item?.redemptions ?? 0);
-  const isCluster = type === 'cluster';
 
   return {
     type,
-    isCluster,
     isSelected: Boolean(isSelected),
     isActive: Boolean(item?.isLive || item?.status === 'live' || popularity >= 86 || activity >= 3),
     isNew: Boolean(item?.isNew || wasCreatedRecently(item)),
@@ -194,8 +78,7 @@ function escapeHtml(value = '') {
 function createSignalMarkerIcon(item, isSelected = false) {
   const flags = getSignalFlags(item, isSelected);
   const label = escapeHtml(item?.name || item?.title || MARKER_LABELS[flags.type] || 'Map item');
-  const count = Number(item?.metadata?.clusterCount || 0);
-  const size = flags.isCluster ? 44 : flags.isSelected ? 34 : 28;
+  const size = flags.isSelected ? 34 : 28;
   const anchor = Math.round(size / 2);
 
   const classNames = [
@@ -206,12 +89,9 @@ function createSignalMarkerIcon(item, isSelected = false) {
     flags.isSelected ? 'is-selected' : '',
     flags.isSponsored ? 'is-sponsored' : '',
     flags.isLegends ? 'is-legends' : '',
-    flags.isCluster ? 'is-cluster' : '',
   ]
     .filter(Boolean)
     .join(' ');
-
-  const clusterLabel = flags.isCluster && count > 1 ? `<span class="dp-signal-marker__count">${count}</span>` : '';
 
   return L.divIcon({
     className: 'dp-signal-marker-wrapper',
@@ -220,7 +100,7 @@ function createSignalMarkerIcon(item, isSelected = false) {
         <span class="dp-signal-marker__sponsor"></span>
         <span class="dp-signal-marker__new"></span>
         <span class="dp-signal-marker__pulse"></span>
-        <span class="dp-signal-marker__core">${clusterLabel}</span>
+        <span class="dp-signal-marker__core"></span>
       </div>
     `,
     iconSize: [size, size],
@@ -239,7 +119,7 @@ L.Icon.Default.mergeOptions({
 function getOffsetCenter(map, position, zoom) {
   const latLng = L.latLng(position[0], position[1]);
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
-  const offsetY = isDesktop ? 120 : 96;
+  const offsetY = isDesktop ? 120 : 84;
   const projected = map.project(latLng, zoom).subtract([0, offsetY]);
   return map.unproject(projected, zoom);
 }
@@ -249,7 +129,7 @@ function MapFlyTo({ position }) {
   useEffect(() => {
     const safePosition = getValidMapCenter(position, AUSTIN_CENTER);
     const currentZoom = map?.getZoom?.();
-    const nextZoom = Number.isFinite(currentZoom) ? Math.min(Math.max(currentZoom, 13), 16) : 14;
+    const nextZoom = Number.isFinite(currentZoom) ? Math.min(Math.max(currentZoom, 15), 17) : 15;
 
     if (!map?.getContainer?.() || !safePosition || !map._loaded) {
       return;
@@ -326,13 +206,13 @@ export default function UnifiedMapShell({
   markerIcon,
   onMarkerSelect,
   mapCenter = AUSTIN_CENTER,
-  mapZoom = 14,
+  mapZoom = 15,
   onMapCenterChange,
   onMapZoomChange,
   selectedId,
   className = 'w-full h-full',
   children,
-  enableClustering = true,
+  enableClustering = false,
 }) {
   const validItems = useMemo(
     () =>
@@ -344,10 +224,7 @@ export default function UnifiedMapShell({
     [items]
   );
 
-  const clusteredItems = useMemo(
-    () => (enableClustering ? clusterItems(validItems, mapZoom) : validItems),
-    [enableClustering, validItems, mapZoom]
-  );
+  const clusteredItems = useMemo(() => validItems, [validItems]);
 
   const handleDragEnd = (map) => {
     const center = map.getCenter();
@@ -364,7 +241,7 @@ export default function UnifiedMapShell({
   };
 
   const validCenter = getValidMapCenter(mapCenter, AUSTIN_CENTER);
-  const validZoom = Number.isFinite(mapZoom) ? mapZoom : 14;
+  const validZoom = Number.isFinite(mapZoom) ? mapZoom : 15;
 
   return (
     <MapContainer
@@ -374,9 +251,12 @@ export default function UnifiedMapShell({
       style={{ zIndex: 0 }}
       zoomControl={false}
       attributionControl={false}
-      minZoom={12}
+      minZoom={13}
       maxZoom={19}
       scrollWheelZoom={true}
+      dragging={true}
+      doubleClickZoom={true}
+      boxZoom={false}
       preferCanvas={true}
       tap={true}
       tapTolerance={20}

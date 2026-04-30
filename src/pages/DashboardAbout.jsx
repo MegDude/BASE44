@@ -78,6 +78,18 @@ function inferDistrictLabel(address = "") {
   return "Downtown Core";
 }
 
+function normalizeBuildingName(value = "") {
+  return String(value || "")
+    .replace(/,.*$/i, "")
+    .replace(/\b(unit|#)\s*[:#-]?\s*[a-z0-9-]+.*$/i, "")
+    .replace(/\bwest\b/gi, "W")
+    .replace(/\bstreet\b/gi, "ST")
+    .replace(/\bboulevard\b/gi, "Blvd")
+    .replace(/\s+w\s+#/gi, " #")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 const LEGENDS_STATS = [
   { value: String(LEGENDS_IMPORT_SUMMARY.groupedBuildings), label: "Grouped buildings" },
   { value: String(LEGENDS_IMPORT_SUMMARY.importedInBounds), label: "Mapped listings" },
@@ -85,13 +97,29 @@ const LEGENDS_STATS = [
   { value: "Live", label: "Map status" },
 ];
 
-const LEGENDS_BUILDINGS = LEGENDS_IMPORTED_PROPERTIES.map((item) => ({
-  id: item.id,
-  name: item.address || item.name,
-  district: inferDistrictLabel(item.address || item.name),
-  type: item.categoryKeys?.includes("commercial_property") ? "Mixed-use" : "Residential",
-  listings: item.groupedListingCount,
-}));
+const LEGENDS_BUILDINGS = Object.values(
+  LEGENDS_IMPORTED_PROPERTIES.reduce((accumulator, item) => {
+    const district = inferDistrictLabel(item.address || item.name);
+    const type = item.categoryKeys?.includes("commercial_property") ? "Mixed-use" : "Residential";
+    const normalizedName = normalizeBuildingName(item.address || item.name);
+    const key = `${normalizedName}-${district}-${type}`;
+
+    if (!accumulator[key]) {
+      accumulator[key] = {
+        id: key,
+        name: normalizedName,
+        district,
+        type,
+        listings: 0,
+        unitCount: 0,
+      };
+    }
+
+    accumulator[key].listings += Number(item.groupedListingCount || 0);
+    accumulator[key].unitCount += 1;
+    return accumulator;
+  }, {})
+).sort((left, right) => right.listings - left.listings);
 
 const CONTACT_INTERESTS = [
   "Property onboarding",
@@ -125,6 +153,7 @@ export default function DashboardAbout() {
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedType, setSelectedType] = useState("All");
   const [selectedDistrict, setSelectedDistrict] = useState("All districts");
+  const [showAllBuildings, setShowAllBuildings] = useState(false);
   const [formState, setFormState] = useState({
     name: "",
     organization: "",
@@ -148,6 +177,11 @@ export default function DashboardAbout() {
       return typeMatch && districtMatch;
     });
   }, [selectedDistrict, selectedType]);
+
+  const displayedBuildings = useMemo(
+    () => (showAllBuildings ? visibleBuildings : visibleBuildings.slice(0, 6)),
+    [showAllBuildings, visibleBuildings]
+  );
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -397,19 +431,21 @@ export default function DashboardAbout() {
                   </label>
 
                   <div className="flex items-end text-[13px] text-white/64">
-                    Showing {visibleBuildings.length} of {LEGENDS_BUILDINGS.length} mapped Legends buildings
+                    Showing {displayedBuildings.length} of {visibleBuildings.length} mapped Legends buildings
                   </div>
                 </div>
 
                 <div className="mt-5 space-y-3">
-                  {visibleBuildings.map((building) => (
+                  {displayedBuildings.map((building) => (
                     <div
                       key={building.id}
                       className="flex items-start justify-between gap-4 border-b border-white/10 pb-3 last:border-b-0 last:pb-0"
                     >
                       <div className="min-w-0">
                         <div className="text-[14px] font-semibold text-white">{building.name}</div>
-                        <div className="mt-1 text-[12px] text-white/54">{building.district} · {building.type}</div>
+                        <div className="mt-1 text-[12px] text-white/54">
+                          {building.district} · {building.type} · {building.unitCount} mapped {building.unitCount === 1 ? "record" : "records"}
+                        </div>
                       </div>
                       <div className="shrink-0 text-[12px] font-medium text-[var(--dp-gold)]">
                         {building.listings} listing{building.listings === 1 ? "" : "s"}
@@ -417,6 +453,17 @@ export default function DashboardAbout() {
                     </div>
                   ))}
                 </div>
+
+                {visibleBuildings.length > 6 ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllBuildings((current) => !current)}
+                    className="mt-4 inline-flex items-center gap-2 text-[12px] font-semibold text-[var(--dp-gold)]"
+                  >
+                    {showAllBuildings ? "Show fewer buildings" : `Show ${visibleBuildings.length - 6} more buildings`}
+                    <ArrowRight className={`h-3.5 w-3.5 transition-transform ${showAllBuildings ? "-rotate-90" : "rotate-90"}`} />
+                  </button>
+                ) : null}
               </div>
             </div>
 

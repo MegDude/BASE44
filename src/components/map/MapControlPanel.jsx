@@ -1,134 +1,224 @@
+import { Search, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import { useMapPanelStore } from "@/store/useMapPanelStore";
-import { useMapStateStore } from "@/store/mapStateStore";
 import MapSearchRail from "@/components/map/MapSearchRail";
 
-const categoryOptions = ["coffee", "dining", "nightlife", "wellness"];
-const utilityFilters = [
-  { key: "crowd", label: "Popular" },
-  { key: "deals", label: "Best value" },
+const layerItems = [
+  { id: "all", label: "All" },
+  { id: "happy-hour", label: "Happy Hour" },
+  { id: "perks", label: "Perks" },
+  { id: "events", label: "Events" },
+  { id: "dining", label: "Dining" },
+  { id: "nightlife", label: "Nightlife" },
+  { id: "hotels", label: "Hotels" },
+  { id: "shopping", label: "Shopping" },
+  { id: "parks", label: "Parks" },
+  { id: "transit", label: "Transit" },
+  { id: "buildings", label: "Buildings" },
+];
+const venueCategories = ["bar", "restaurant", "hotel", "speakeasy"];
+const districtOptions = [
+  { value: "", label: "All districts" },
+  { value: "Rainey", label: "Rainey" },
+  { value: "6th Street", label: "6th Street" },
+  { value: "Red River", label: "Red River" },
+  { value: "Congress", label: "Congress" },
+  { value: "Downtown Core", label: "Downtown Core" },
+  { value: "Seaholm", label: "Seaholm" },
+  { value: "Market District", label: "Market District" },
+  { value: "West End", label: "West End" },
+  { value: "East Austin edge", label: "East Austin edge" },
+  { value: "Waterloo / Capitol edge", label: "Waterloo / Capitol edge" },
+];
+const quickPrompts = [
+  "coffee near me",
+  "best happy hour tonight",
+  "apartments with perks nearby",
 ];
 
-function getPerkValue(item) {
-  return item?.perk?.value || item?.perk_value || item?.metadata?.perkValue || null;
+function buildIntentState(setDecision, setType, setFilters, next) {
+  return () => {
+    setDecision(next.decision);
+    setType(next.type);
+    setFilters(next.filters);
+  };
 }
 
-function getWalkLabel(item) {
-  const minutes = item?.metadata?.walkMinutes ?? item?.distanceMinutes;
-  return Number.isFinite(Number(minutes)) ? `${minutes} min walk` : "nearby";
-}
-
-function getStatusLabel(item) {
-  if (item?.isLive || item?.eventTiming?.isLive) return "Live now";
-  if (item?.isOpenNow) return "Open now";
-  if (item?.eventTiming?.startsSoon || item?.eventTiming?.startTime) return "Starting soon";
-  return "Nearby";
-}
-
-export default function MapControlPanel() {
+export default function MapControlPanel({
+  askLoading = false,
+  resultCount = 0,
+  onAsk = null,
+}) {
   const [showRefine, setShowRefine] = useState(false);
   const {
     query,
+    submittedQuery,
     decision,
     type,
+    district,
+    agentExplanation,
+    agentSuggestions,
     categories,
     filters,
     setMode,
     setQuery,
     setDecision,
     setType,
+    setDistrict,
     setFilters,
+    submitAsk,
     toggleCategory,
     toggleFilter,
   } = useMapPanelStore();
 
-  const filteredResults = useMapStateStore((state) => state.filteredResults);
+  const statusText = useMemo(() => {
+    if (askLoading) return "Searching the live downtown layer...";
+    if (agentExplanation) return agentExplanation;
+    if (submittedQuery) return "Ask the map about places, events, perks, or buildings nearby.";
+    return "Ask a real question and get ranked nearby results.";
+  }, [agentExplanation, askLoading, submittedQuery]);
 
-  const rankedTopResult = useMemo(() => {
-    return [...filteredResults].sort((a, b) => {
-      const liveDelta = Number(Boolean(b?.isLive || b?.eventTiming?.isLive)) - Number(Boolean(a?.isLive || a?.eventTiming?.isLive));
-      if (liveDelta !== 0) return liveDelta;
+  const suggestionItems = useMemo(() => {
+    const source = agentSuggestions?.length ? agentSuggestions : quickPrompts;
+    return source.slice(0, 3);
+  }, [agentSuggestions]);
+  const happyHourActive = categories.includes("happy-hour");
 
-      const openDelta = Number(Boolean(b?.isOpenNow)) - Number(Boolean(a?.isOpenNow));
-      if (openDelta !== 0) return openDelta;
+  const handleLayerSelect = (layerId) => {
+    if (layerId === "all") {
+      useMapPanelStore.setState({
+        type: "all",
+        categories: [],
+        district: "",
+      });
+      return;
+    }
 
-      const dealDelta = Number(Boolean(getPerkValue(b))) - Number(Boolean(getPerkValue(a)));
-      if (dealDelta !== 0) return dealDelta;
+    if (layerId === "events") {
+      setType("events");
+      return;
+    }
 
-      const walkDelta = (a?.metadata?.walkMinutes ?? 999) - (b?.metadata?.walkMinutes ?? 999);
-      if (walkDelta !== 0) return walkDelta;
+    if (layerId === "perks") {
+      setType("perks");
+      setFilters({ deals: true });
+      return;
+    }
 
-      return (b?.metadata?.popularity ?? 0) - (a?.metadata?.popularity ?? 0);
-    })[0];
-  }, [filteredResults]);
+    if (layerId === "buildings") {
+      setType("buildings");
+      return;
+    }
 
-  const summary = useMemo(
-    () => ({
-      live: filteredResults.filter((item) => item?.isLive || item?.eventTiming?.isLive || item?.isOpenNow).length,
-      deals: filteredResults.filter((item) => Boolean(getPerkValue(item)) || item?.type === "perk").length,
-      walkable: filteredResults.filter((item) => (item?.metadata?.walkMinutes ?? 999) <= 10).length,
-    }),
-    [filteredResults]
-  );
+    if (layerId === "hotels") {
+      setType("venues");
+      useMapPanelStore.setState({ categories: ["hotel"] });
+      return;
+    }
 
-  const headline = rankedTopResult
-    ? `Best match: ${rankedTopResult.name}`
-    : "Best matches right now";
+    setType("venues");
+    useMapPanelStore.setState({ categories: [layerId] });
+  };
 
-  const decisionLine = rankedTopResult
-    ? [getWalkLabel(rankedTopResult), getStatusLabel(rankedTopResult), getPerkValue(rankedTopResult)]
-        .filter(Boolean)
-        .join(" · ")
-    : "Move the map or ask for what you need nearby.";
+  const handleSubmit = (nextQuery) => {
+    const value = String(nextQuery ?? query).trim();
+    if (!value) return;
+    submitAsk(value);
+    if (typeof onAsk === "function") {
+      onAsk(value);
+    }
+  };
 
-  const metricsLine = `${filteredResults.length} nearby options · ${summary.live} live/open · ${summary.deals} perks · ${summary.walkable} within 10 min`;
-
-  const primaryItems = [
-    { id: "now", label: "Now", active: decision === "now" && !filters.fiveMin && !filters.tenMin, onClick: () => { setDecision("now"); setType(type || "all"); setFilters({ fiveMin: false, tenMin: false }); } },
-    { id: "closest", label: "Closest", active: filters.fiveMin, onClick: () => { setDecision("near"); setType("all"); setFilters({ fiveMin: true, tenMin: false }); } },
-    { id: "value", label: "Best value", active: filters.deals || type === "perks", onClick: () => { setDecision("near"); setType("all"); setFilters({ deals: true, fiveMin: false, tenMin: false }); } },
-    { id: "popular", label: "Popular", active: filters.crowd, onClick: () => { setDecision("near"); setType("all"); setFilters({ crowd: true, fiveMin: false, tenMin: false }); } },
-  ];
-
-  const utilityItems = [
+  const intentItems = [
+    {
+      id: "best",
+      label: "Best nearby",
+      active: type === "all" && decision === "now" && !filters.fiveMin && !filters.tenMin && !filters.deals,
+      onClick: buildIntentState(setDecision, setType, setFilters, {
+        decision: "now",
+        type: "all",
+        filters: { crowd: false, deals: false, fiveMin: false, tenMin: false, openNow: false },
+      }),
+    },
+    {
+      id: "happy-hour",
+      label: "Happy Hour",
+      active: happyHourActive,
+      accent: true,
+      onClick: () => {
+        toggleCategory("happy-hour");
+        setType("venues");
+      },
+    },
     {
       id: "places",
       label: "Places",
       active: type === "venues",
-      onClick: () => setType("venues"),
-    },
-    {
-      id: "events",
-      label: "Events",
-      active: type === "events",
-      onClick: () => setType("events"),
+      onClick: buildIntentState(setDecision, setType, setFilters, {
+        decision: "near",
+        type: "venues",
+        filters: { ...filters, fiveMin: false, tenMin: false },
+      }),
     },
     {
       id: "perks",
       label: "Perks",
-      active: type === "perks",
+      active: type === "perks" || filters.deals,
       accent: true,
-      onClick: () => setType("perks"),
+      onClick: buildIntentState(setDecision, setType, setFilters, {
+        decision: "near",
+        type: "perks",
+        filters: { ...filters, deals: true, fiveMin: false, tenMin: false },
+      }),
     },
     {
-      id: "10min",
-      label: "10 min",
-      active: filters.tenMin,
-      onClick: () => {
-        setDecision("near");
-        setFilters({ fiveMin: false, tenMin: true });
-      },
+      id: "tonight",
+      label: "Tonight",
+      active: type === "events",
+      onClick: buildIntentState(setDecision, setType, setFilters, {
+        decision: "now",
+        type: "events",
+        filters: { ...filters, openNow: true, fiveMin: false, tenMin: false },
+      }),
+    },
+    {
+      id: "live",
+      label: "Live here",
+      active: type === "buildings",
+      onClick: buildIntentState(setDecision, setType, setFilters, {
+        decision: "near",
+        type: "buildings",
+        filters: { ...filters, fiveMin: false, tenMin: false, deals: false },
+      }),
     },
   ];
 
+  const refineItems = [
+    { key: "openNow", label: "Open now" },
+    { key: "fiveMin", label: "5 min" },
+    { key: "tenMin", label: "10 min" },
+    { key: "crowd", label: "Popular" },
+  ];
+  const happyHourFilterItems = [
+    { key: "activeSpecials", label: "With specials" },
+    { key: "foodDeals", label: "Food deals" },
+    { key: "drinkDeals", label: "Drink deals" },
+    { key: "residentPerks", label: "Resident perks" },
+    { key: "needsDetails", label: "Needs offer details" },
+  ];
+
   return (
-    <div className="absolute left-3 right-3 top-3 z-[500] md:right-auto md:w-[min(520px,calc(100vw-440px))]">
-      <div className="rounded-[22px] border border-white/50 bg-white/86 p-2.5 shadow-[0_10px_40px_rgba(10,20,40,0.08)] backdrop-blur-xl">
-        <div className="mb-2.5 flex items-center justify-between gap-3">
+    <div className="absolute left-3 right-3 top-3 z-[500] md:right-auto md:w-[min(560px,calc(100vw-440px))]">
+      <div className="rounded-[26px] border border-white/60 bg-white/92 p-3 shadow-[0_18px_48px_rgba(10,20,40,0.12)] backdrop-blur-xl">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="text-sm font-semibold text-[#0B1A2B]">Ask the map</div>
-            <div className="text-xs text-slate-500">One ask. One ranked next move.</div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(11,31,51,0.05)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1A2B]">
+              <Sparkles className="h-3.5 w-3.5" />
+              Ask the map
+            </div>
+            <p className="mt-2 text-sm text-slate-600">
+              Search downtown places, events, perks, and residential options from one console.
+            </p>
           </div>
 
           <button
@@ -137,13 +227,19 @@ export default function MapControlPanel() {
             className="min-h-10 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
             aria-label={showRefine ? "Hide map filters" : "Show map filters"}
           >
-            {showRefine ? "Hide filters" : "Refine"}
+            {showRefine ? "Less" : "Refine"}
           </button>
         </div>
 
-        <div className="mb-2.5 flex flex-col gap-1.5">
+        <form
+          className="mt-3 flex flex-col gap-2"
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleSubmit();
+          }}
+        >
           <div className="flex flex-col gap-2 md:flex-row md:items-center">
-            <label className="sr-only" htmlFor="ask-map-query">Search nearby places, perks, events, or buildings</label>
+            <label className="sr-only" htmlFor="ask-map-query">Ask about places, events, perks, or buildings nearby</label>
             <input
               id="ask-map-query"
               value={query}
@@ -151,46 +247,99 @@ export default function MapControlPanel() {
                 setMode("ask");
                 setQuery(event.target.value);
               }}
-              placeholder="Ask what to do nearby"
-              className="h-11 flex-1 rounded-[14px] border border-slate-200 bg-white px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#0B1A2B]/25"
+              placeholder="Search by place, district, or special"
+              aria-label="Search by place, district, or special"
+              className="h-12 flex-1 rounded-[16px] border border-slate-200 bg-white px-4 text-sm outline-none focus:ring-2 focus:ring-[#0B1A2B]/25"
             />
 
             <button
-              type="button"
-              onClick={() => setMode("ask")}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-[#0B1A2B] px-3.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
-              aria-label="Search nearby with Ask the Map"
+              type="submit"
+              disabled={askLoading || !query.trim()}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-[16px] bg-[#0B1A2B] px-4 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30 disabled:cursor-not-allowed disabled:opacity-60"
+              aria-label="Ask the map"
             >
               <Search className="h-4 w-4" />
-              Ask
+              {askLoading ? "Searching..." : "Ask"}
             </button>
           </div>
 
-          <MapSearchRail primaryItems={primaryItems} utilityItems={utilityItems} className="mt-0.5" />
+          <MapSearchRail primaryItems={intentItems} className="mt-0.5" />
+        </form>
+
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Map layers">
+          {layerItems.map((item) => {
+            const isActive =
+              item.id === "all"
+                ? categories.length === 0 && type === "all"
+                : item.id === "events"
+                  ? type === "events"
+                  : item.id === "perks"
+                    ? type === "perks" || filters.deals
+                    : item.id === "buildings"
+                      ? type === "buildings"
+                      : item.id === "hotels"
+                        ? categories.includes("hotel")
+                        : categories.includes(item.id);
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleLayerSelect(item.id)}
+                className={`min-h-10 shrink-0 rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
+                  isActive
+                    ? item.id === "happy-hour"
+                      ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]"
+                      : "bg-[#0B1A2B] text-white"
+                    : "bg-slate-100 text-slate-700"
+                }`}
+                aria-pressed={isActive}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
 
-        {showRefine && (
-          <div className="mb-3 space-y-2 border-t border-slate-200 pt-3">
-            <div className="flex flex-wrap gap-2" aria-label="Category filters">
-              {categoryOptions.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => toggleCategory(item)}
-                  className={`min-h-10 rounded-full px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
-                    categories.includes(item)
-                      ? "bg-[#0B1A2B] text-white"
-                      : "bg-slate-100 text-slate-700"
-                  }`}
-                  aria-pressed={categories.includes(item)}
+        {showRefine ? (
+          <div className="mt-3 space-y-2 border-t border-slate-200 pt-3">
+            <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_200px]">
+              <div className="flex flex-wrap gap-2" aria-label="Category filters">
+                {venueCategories.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleCategory(item)}
+                    className={`min-h-10 rounded-full px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
+                      categories.includes(item)
+                        ? "bg-[#0B1A2B] text-white"
+                        : "bg-slate-100 text-slate-700"
+                    }`}
+                    aria-pressed={categories.includes(item)}
+                  >
+                    {item === "bar" ? "Bars" : item === "restaurant" ? "Restaurants" : item === "hotel" ? "Hotels" : "Speakeasies"}
+                  </button>
+                ))}
+              </div>
+
+              <label className="flex items-center gap-2 rounded-[16px] border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
+                <span className="whitespace-nowrap font-semibold uppercase tracking-[0.08em] text-slate-500">District</span>
+                <select
+                  value={district}
+                  onChange={(event) => setDistrict(event.target.value)}
+                  className="min-w-0 flex-1 bg-transparent text-sm text-[#0B1A2B] outline-none"
+                  aria-label="Select district"
                 >
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </button>
-              ))}
+                  {districtOptions.map((item) => (
+                    <option key={item.label} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
 
             <div className="flex flex-wrap gap-2" aria-label="Decision filters">
-              {utilityFilters.map((item) => (
+              {refineItems.map((item) => (
                 <button
                   key={item.key}
                   type="button"
@@ -206,13 +355,58 @@ export default function MapControlPanel() {
                 </button>
               ))}
             </div>
-          </div>
-        )}
 
-        <div className="rounded-[16px] bg-white/70 px-3 py-2 text-xs text-slate-600" aria-live="polite">
-          <div className="font-semibold text-[#0B1A2B]">{headline}</div>
-          <div className="mt-0.5 text-[12px] text-slate-500">{decisionLine}</div>
-          <div className="mt-1 text-[11px] text-slate-400">{metricsLine}</div>
+            {happyHourActive ? (
+              <div className="flex flex-wrap gap-2" aria-label="Happy hour filters">
+                {happyHourFilterItems.map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => toggleFilter(item.key)}
+                    className={`min-h-10 rounded-full px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
+                      filters[item.key]
+                        ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]"
+                        : "bg-slate-100 text-slate-700"
+                    }`}
+                    aria-pressed={Boolean(filters[item.key])}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="mt-3 rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[rgba(248,250,252,0.88)] px-4 py-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-[#0B1A2B]">
+                {submittedQuery ? `Results for "${submittedQuery}"` : "Ready for your next move"}
+              </div>
+              <div className="mt-1 text-xs text-slate-500">{statusText}</div>
+            </div>
+            <div className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+              {resultCount} results
+            </div>
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            {suggestionItems.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => {
+                  setMode("ask");
+                  setQuery(item);
+                  handleSubmit(item);
+                }}
+                className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-3 py-1.5 text-xs text-[#0B1A2B] transition hover:border-[rgba(11,31,51,0.16)] hover:bg-slate-50"
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

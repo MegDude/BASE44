@@ -191,7 +191,7 @@ export const partnerPreviews: ValueCardItem[] = [
     title: "Hotels & hospitality",
     description:
       "Give guests a concierge-quality downtown guide from the moment they check in.",
-    action: { label: "For hotels", href: "/partners/hotels" },
+    action: { label: "For hospitality", href: "/partners/hospitality" },
   },
 ];
 
@@ -243,7 +243,7 @@ export const footerGroups: FooterGroup[] = [
     links: [
       { label: "Buildings", href: "/downtown-perks/for-buildings" },
       { label: "Businesses", href: "/partners" },
-      { label: "Hotels", href: "/partners/hotels" },
+      { label: "Hospitality", href: "/partners/hospitality" },
       { label: "Pricing", href: "/pricing" },
     ],
   },

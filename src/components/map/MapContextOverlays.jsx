@@ -1,14 +1,5 @@
 import { useMemo } from "react";
-import { CircleMarker, Marker, Polyline } from "react-leaflet";
-import L from "leaflet";
-
-const STREET_LABELS = [
-  { id: "congress", label: "Congress Ave", position: [30.2693, -97.7428], tone: "navy" },
-  { id: "rainey", label: "Rainey St", position: [30.2598, -97.7396], tone: "gold" },
-  { id: "second", label: "2nd St", position: [30.2661, -97.7462], tone: "navy" },
-  { id: "red-river", label: "Red River", position: [30.2678, -97.7369], tone: "gold" },
-  { id: "waterloo", label: "Waterloo", position: [30.2678, -97.7392], tone: "navy" },
-];
+import { CircleMarker, Polyline } from "react-leaflet";
 
 const CORRIDORS = [
   {
@@ -30,38 +21,6 @@ const CORRIDORS = [
   },
 ];
 
-function buildDistrictGroups(items = []) {
-  const groups = new Map();
-
-  items.forEach((item) => {
-    const lat = item?.location?.latitude;
-    const lng = item?.location?.longitude;
-    const district = String(item?.district || "").trim();
-    if (!district || !Number.isFinite(lat) || !Number.isFinite(lng)) return;
-
-    const existing = groups.get(district) || { district, count: 0, score: 0, latSum: 0, lngSum: 0 };
-    const score =
-      Number(item?.metadata?.popularity || 0) +
-      (item?.isLive ? 18 : 0) +
-      (item?.isOpenNow ? 8 : 0) +
-      (item?.perk || item?.perk_value ? 10 : 0);
-
-    existing.count += 1;
-    existing.score += score;
-    existing.latSum += lat;
-    existing.lngSum += lng;
-    groups.set(district, existing);
-  });
-
-  return Array.from(groups.values())
-    .map((group) => ({
-      ...group,
-      position: [group.latSum / group.count, group.lngSum / group.count],
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
-}
-
 function buildPulseItems(items = [], selectedId) {
   return [...items]
     .filter((item) => item?.id !== selectedId)
@@ -78,20 +37,7 @@ function buildPulseItems(items = [], selectedId) {
     .slice(0, 10);
 }
 
-function createLabelIcon(label, tone = "navy") {
-  const bg = tone === "gold" ? "rgba(198,168,90,0.94)" : "rgba(11,31,51,0.92)";
-  const color = tone === "gold" ? "#0B1F33" : "#F8FAFC";
-
-  return L.divIcon({
-    className: "",
-    html: `<div style="padding:4px 8px;border-radius:999px;background:${bg};color:${color};font:700 10px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 8px 18px rgba(11,31,51,0.14);white-space:nowrap;">${label}</div>`,
-    iconSize: null,
-    iconAnchor: [0, 0],
-  });
-}
-
 export default function MapContextOverlays({ items = [], selectedId = null }) {
-  const districts = useMemo(() => buildDistrictGroups(items), [items]);
   const pulses = useMemo(() => buildPulseItems(items, selectedId), [items, selectedId]);
 
   return (
@@ -106,26 +52,6 @@ export default function MapContextOverlays({ items = [], selectedId = null }) {
             opacity: 0.45,
             dashArray: "4 10",
           }}
-        />
-      ))}
-
-      {STREET_LABELS.map((street) => (
-        <Marker
-          key={street.id}
-          position={street.position}
-          icon={createLabelIcon(street.label, street.tone)}
-          interactive={false}
-          keyboard={false}
-        />
-      ))}
-
-      {districts.map((district) => (
-        <Marker
-          key={district.district}
-          position={district.position}
-          icon={createLabelIcon(`${district.district} · ${district.count}`, district.count >= 3 ? "gold" : "navy")}
-          interactive={false}
-          keyboard={false}
         />
       ))}
 

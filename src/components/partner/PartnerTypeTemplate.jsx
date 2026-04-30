@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import PartnerHeaderStage from "@/components/partner/PartnerHeaderStage";
 import PartnerInsightMap from "@/components/partner/PartnerInsightMap";
 import PartnerCTASection from "@/components/partner/PartnerCTASection";
@@ -8,6 +8,7 @@ import WorkflowVisualizer from "@/components/partner/WorkflowVisualizer";
 import PartnerStoryCarousel from "@/components/partner/PartnerStoryCarousel";
 import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
 import PricingGlanceSection from "@/components/shared/PricingGlanceSection";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 import { getPartnerFlowForType } from "@/lib/cta/partnerFlowHelpers";
 import {
   FAQ_RESIDENTIAL,
@@ -16,6 +17,8 @@ import {
   FAQ_HOSPITALITY,
   FAQ_VENUES,
 } from "@/lib/faq-partner-data";
+import { PARTNER_TYPE_CONTENT, PARTNER_TYPE_ORDER } from "@/lib/partnerContent";
+import { ROUTES, getPartnerDashboardRoute } from "@/lib/routes";
 
 function SectionLabel({ children }) {
   return <p className="dp-micro-label">{children}</p>;
@@ -30,7 +33,9 @@ const FAQ_BY_PARTNER_ID = {
 };
 
 export default function PartnerTypeTemplate({ content, extraSection = null }) {
+  const { openFlow } = useCTAFlow();
   const Icon = content.icon;
+  const dashboardRoute = getPartnerDashboardRoute(content.id);
   const pageFlow = getPartnerFlowForType(content.id, {
     source: `partner_page_${content.id}`,
     sourceComponent: "PartnerTypeTemplate",
@@ -54,59 +59,156 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
             Back to partners
           </Link>
 
+          <div className="flex flex-wrap gap-2">
+            {PARTNER_TYPE_ORDER.map((key) => (
+              <Link
+                key={key}
+                to={PARTNER_TYPE_CONTENT[key].route}
+                className={`rounded-full px-4 py-2 text-[12px] font-medium transition ${
+                  content.id === key
+                    ? "bg-[var(--dp-navy,#0B1F33)] text-white"
+                    : "border border-[rgba(11,31,51,0.08)] bg-white text-[rgba(11,31,51,0.68)] hover:text-[var(--dp-navy,#0B1F33)]"
+                }`}
+              >
+                {PARTNER_TYPE_CONTENT[key].label}
+              </Link>
+            ))}
+            <Link
+              to={dashboardRoute}
+              className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-4 py-2 text-[12px] font-medium text-[rgba(11,31,51,0.68)] transition hover:text-[var(--dp-navy,#0B1F33)]"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to={ROUTES.partnerWorkspace}
+              className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-4 py-2 text-[12px] font-medium text-[rgba(11,31,51,0.68)] transition hover:text-[var(--dp-navy,#0B1F33)]"
+            >
+              Workspace
+            </Link>
+            <Link
+              to={ROUTES.partnerApply}
+              className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-4 py-2 text-[12px] font-medium text-[rgba(11,31,51,0.68)] transition hover:text-[var(--dp-navy,#0B1F33)]"
+            >
+              Apply
+            </Link>
+          </div>
+
           <PartnerHeaderStage
             eyebrow={content.eyebrow}
             title={content.headline}
-            description={content.audienceSummary || content.description}
-            metrics={content.metrics.slice(0, 3)}
+            description={content.description}
+            metrics={content.metrics.slice(0, 4)}
+            actions={
+              <>
+                <Link to="/partners" className="dp-cta-secondary">
+                  Partner overview
+                </Link>
+                <Link to={dashboardRoute} className="dp-cta-primary">
+                  Open dashboard
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </>
+            }
           />
 
-          <motion.section
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="overflow-hidden rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-[linear-gradient(180deg,rgba(11,31,51,0.98),rgba(16,39,62,0.96))] text-white"
-          >
-            <div className="grid gap-0 lg:grid-cols-[0.86fr_1.14fr]">
-              <div className="border-b border-white/10 px-6 py-6 lg:border-b-0 lg:border-r lg:border-white/10 lg:px-8 lg:py-8">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="dp-micro-label text-[var(--dp-gold)]">What you get</p>
-                    <h2 className="dp-heading-modern-light mt-4 text-3xl">{content.shortLabel}</h2>
-                  </div>
-                  <Icon className="h-6 w-6 text-[var(--dp-gold)]" strokeWidth={1.75} />
-                </div>
-                <p className="mt-4 max-w-sm text-[14px] leading-7 text-white/72">
-                  {content.description}
+          <section className="grid gap-6 border-t border-[rgba(11,31,51,0.08)] pt-8 lg:grid-cols-[0.92fr_1.08fr]">
+            <div className="max-w-2xl">
+              <SectionLabel>Role fit</SectionLabel>
+              <h2 className="dp-heading-modern mt-4 text-[2rem] md:text-[2.7rem]">
+                One downtown layer, adapted for {content.label.toLowerCase()}.
+              </h2>
+              {content.audienceSummary ? (
+                <p className="mt-4 text-[14px] leading-7 text-[rgba(11,31,51,0.68)]">
+                  {content.audienceSummary}
                 </p>
-              </div>
+              ) : null}
 
-              <div>
+              <div className="mt-6 space-y-4">
                 {content.outcomes.map((item, index) => (
                   <div
                     key={item}
-                    className={`grid gap-3 px-6 py-5 md:grid-cols-[48px_minmax(0,1fr)] md:px-8 ${
-                      index < content.outcomes.length - 1 ? "border-b border-white/10" : ""
-                    }`}
+                    className="grid gap-3 border-t border-[rgba(11,31,51,0.08)] pt-4 md:grid-cols-[44px_minmax(0,1fr)]"
                   >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/14 text-[12px] font-semibold text-[var(--dp-gold)]">
+                    <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
                       {String(index + 1).padStart(2, "0")}
                     </div>
                     <div className="flex gap-3">
-                      <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--dp-gold)]" strokeWidth={2} />
-                      <p className="text-sm leading-7 text-white/76">{item}</p>
+                      <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--dp-gold-muted)]" strokeWidth={2} />
+                      <p className="text-[14px] leading-7 text-[rgba(11,31,51,0.74)]">{item}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </motion.section>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="overflow-hidden rounded-[30px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_18px_40px_rgba(11,31,51,0.05)]"
+            >
+              <div className="grid gap-0 border-b border-[rgba(11,31,51,0.08)] p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:p-7">
+                <div>
+                  <p className="dp-micro-label">At a glance</p>
+                  <h3 className="mt-4 text-[1.5rem] font-semibold tracking-[-0.04em] text-foreground">
+                    {content.shortLabel}
+                  </h3>
+                  <p className="mt-3 max-w-xl text-[14px] leading-7 text-muted-foreground">
+                    {content.description}
+                  </p>
+                </div>
+                <div className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[rgba(11,31,51,0.05)] text-[var(--dp-navy)]">
+                  <Icon className="h-5 w-5" strokeWidth={1.75} />
+                </div>
+              </div>
+
+              <div className="grid gap-0 md:grid-cols-2">
+                {content.metrics.map((metric, index) => (
+                  <div
+                    key={metric.label}
+                    className={`px-6 py-5 md:px-7 ${
+                      index % 2 === 0 ? "md:border-r md:border-[rgba(11,31,51,0.08)]" : ""
+                    } ${index < content.metrics.length - 2 ? "border-b border-[rgba(11,31,51,0.08)]" : ""}`}
+                  >
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.44)]">
+                      {metric.label}
+                    </div>
+                    <div className="mt-2 text-[1.55rem] font-semibold tracking-[-0.05em] text-[var(--dp-navy,#0B1F33)]">
+                      {metric.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t border-[rgba(11,31,51,0.08)] px-6 py-5 md:px-7">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.44)]">
+                  Best next move
+                </div>
+                <p className="mt-2 text-[14px] leading-7 text-[rgba(11,31,51,0.7)]">
+                  Start with the map and the dashboard together. Let people browse openly first, then measure what they actually open, save, visit, RSVP to, and redeem.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link to={ROUTES.partnerWorkspace} className="dp-cta-secondary">
+                    Manage workspace
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => openFlow(pageFlow)}
+                    className="dp-cta-primary"
+                  >
+                    Start pilot
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </section>
         </div>
       </section>
 
       <PartnerStoryCarousel
-        eyebrow="Partner detail"
+        eyebrow="In practice"
         title={`How the ${content.shortLabel.toLowerCase()} works in real life.`}
-        intro="This keeps the page grounded in everyday use. The goal is to make the fit obvious without turning the page into a pitch deck or a reporting wall."
+        intro="These examples show how the same live map, access flow, and reporting layer adapt to this partner type without turning the page into a generic sales wall."
         items={content.storySlides || []}
       />
 
@@ -120,6 +222,7 @@ export default function PartnerTypeTemplate({ content, extraSection = null }) {
         eyebrow="Sign up"
         title="Start with the pricing that fits."
         intro="Apply now, launch on a 90-day pilot, and move to paid only after the rollout is live enough to judge."
+        includeResident
         source={`partner_page_${content.id}_pricing`}
       />
 

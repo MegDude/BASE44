@@ -1,36 +1,54 @@
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
 import { FAQ_HOMEPAGE } from "@/lib/faq-partner-data";
-
-const [introItem, ...accordionItems] = FAQ_HOMEPAGE;
+import { ROUTES } from "@/lib/routes";
 
 export default function FAQSection() {
   return (
-    <section className="border-t border-border/40 bg-background px-4 py-8 md:px-6 md:py-10">
-      <div className="dp-page-shell max-w-5xl">
-        <div className="mb-6 rounded-[28px] border border-border/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,245,238,0.92))] p-6 shadow-[0_18px_38px_rgba(11,26,43,0.06)] md:p-8">
-          <div className="dp-micro-label mb-4">FAQs</div>
-          <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr] md:items-start">
-            <div>
-              <h2 className="font-heading text-[2rem] font-medium leading-[1.04] tracking-[-0.04em] text-foreground md:text-[2.7rem]">
-                {introItem.question}
-              </h2>
-            </div>
-            <p className="text-[14px] leading-7 text-muted-foreground">{introItem.answer}</p>
+    <section className="border-t border-border/40 bg-background px-6 py-14">
+      <div className="mx-auto max-w-5xl">
+        <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[1fr_1.6fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4 }}
+            className="md:sticky md:top-28"
+          >
+            <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.16em] text-primary/70">
+              FAQs
+            </span>
+            <h2 className="mb-5 font-heading text-3xl font-medium leading-[1.1] tracking-tight text-foreground md:text-4xl">
+              Questions, answered clearly
+            </h2>
+            <p className="mb-8 text-[13px] leading-relaxed text-muted-foreground">
+              Downtown Perks is built to make downtown easier to use. These are the questions people usually ask first.
+            </p>
+            <Link
+              to={ROUTES.about}
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 px-6 py-3 text-sm font-medium text-foreground/70 transition-all hover:border-border hover:text-foreground"
+            >
+              Learn more about Downtown Perks
+            </Link>
+          </motion.div>
+
+          <div>
+            <FAQAccordionBlock
+              sectionEyebrow=""
+              sectionTitle=""
+              sectionIntro=""
+              items={FAQ_HOMEPAGE}
+              styleVariant="default"
+              showNumbers={false}
+              allowMultipleOpen={false}
+              defaultOpenIndex={0}
+              pageType="homepage"
+              backgroundVariant="light"
+              className="border-0 bg-transparent p-0 shadow-none"
+            />
           </div>
         </div>
-
-        <FAQAccordionBlock
-          sectionEyebrow=""
-          sectionTitle="Questions people ask before they start."
-          sectionIntro="This covers resident access, partner pricing, launch timing, what gets tracked, and how the map actually works."
-          items={accordionItems}
-          styleVariant="default"
-          showNumbers={false}
-          allowMultipleOpen={false}
-          defaultOpenIndex={0}
-          pageType="homepage"
-          backgroundVariant="light"
-        />
       </div>
     </section>
   );

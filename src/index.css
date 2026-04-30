@@ -242,6 +242,8 @@
 
   .dp-map-canvas { z-index: 0 !important; }
   .dp-map-canvas .leaflet-container, .dp-map-canvas.leaflet-container { z-index: 0 !important; }
+  .dp-map-canvas .leaflet-container { cursor: grab; }
+  .dp-map-canvas .leaflet-container:active { cursor: grabbing; }
   .dp-map-canvas .leaflet-top, .dp-map-canvas .leaflet-bottom { z-index: 10 !important; }
   .dp-map-canvas .leaflet-pane, .dp-map-canvas .leaflet-tile-pane, .dp-map-canvas .leaflet-overlay-pane { z-index: 0 !important; }
   .dp-map-canvas .leaflet-tile { filter: saturate(0.94) contrast(1.04) brightness(1.03); }
@@ -261,9 +263,6 @@
   .dp-signal-marker.is-legends .dp-signal-marker__core, .dp-signal-marker--building .dp-signal-marker__core { background: var(--dp-navy); border-color: rgba(194,143,84,0.74); }
   .dp-signal-marker--perk .dp-signal-marker__core, .dp-signal-marker--brand .dp-signal-marker__core { background: var(--dp-gold); }
   .dp-signal-marker--event .dp-signal-marker__core { box-shadow: 0 0 0 6px rgba(194,143,84,0.13), 0 5px 16px rgba(11,31,51,0.2); }
-  .dp-signal-marker.is-cluster .dp-signal-marker__core { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--dp-navy); border-color: rgba(255,255,255,0.98); }
-  .dp-signal-marker__count { position: absolute; color: white; font-size: 10px; font-weight: 800; line-height: 1; }
-
   .dp-dark-copy { color: rgba(247, 249, 252, 0.96); }
   .dp-dark-copy-muted { color: rgba(226, 232, 240, 0.78); }
 }

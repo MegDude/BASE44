@@ -64,6 +64,11 @@ export function filterEntities(entities = [], filters = {}) {
   const time = normalizeText(filters.time);
   const radius = Number(filters.radius || 0);
   const typeSet = getTypeSet(filters.type, filters.intent, filters.category);
+  const wantsActiveSpecials = filters.activeSpecials !== false;
+  const wantsFoodDeals = Boolean(filters.foodDeals);
+  const wantsDrinkDeals = Boolean(filters.drinkDeals);
+  const wantsResidentPerks = Boolean(filters.residentPerks);
+  const wantsNeedsDetails = Boolean(filters.needsDetails);
 
   let results = [...entities].filter((entity) => entity?.isVisibleInResults !== false);
 
@@ -79,6 +84,47 @@ export function filterEntities(entities = [], filters = {}) {
   if (category) {
     if (category === "perks") {
       results = results.filter((entity) => Boolean(entity.perk?.value || entity.perk_value || entity.type === "perk"));
+    } else if (category === "happy-hour") {
+      results = results.filter((entity) => {
+        const offerType = normalizeText(entity?.offer_type || entity?.metadata?.offer_type);
+        const tags = [
+          ...(entity?.metadata?.tags || []),
+          ...(entity?.metadata?.searchKeywords || []),
+        ]
+          .map(normalizeText)
+          .filter(Boolean);
+        const kind = normalizeText(entity?.kind || entity?.category);
+        const hasHappyHourFamily =
+          offerType === "happy_hour" ||
+          offerType === "drink_special" ||
+          offerType === "food_special" ||
+          offerType === "resident_perk" ||
+          offerType === "limited_time_offer" ||
+          ["bar", "restaurant", "hotel", "speakeasy", "nightlife"].includes(kind);
+        const hasActiveSpecial = Boolean(
+          entity?.hasPublicSpecial ||
+          entity?.metadata?.hasActiveSpecials ||
+          entity?.perk?.value ||
+          entity?.perk_value
+        );
+        const needsOfferDetails = Boolean(entity?.metadata?.needsOfferDetails);
+        const matchesSubfilters =
+          (!wantsActiveSpecials || hasActiveSpecial) &&
+          (!wantsFoodDeals || tags.includes("food-deals")) &&
+          (!wantsDrinkDeals || tags.includes("drink-deals")) &&
+          (!wantsResidentPerks || tags.includes("resident-perks")) &&
+          (!wantsNeedsDetails || needsOfferDetails);
+        return (
+          hasHappyHourFamily &&
+          matchesSubfilters &&
+          (
+            tags.includes("happy-hour") ||
+            tags.includes("with-specials") ||
+            hasActiveSpecial ||
+            needsOfferDetails
+          )
+        );
+      });
     } else {
       results = results.filter((entity) => normalizeText(entity.category) === category);
     }
@@ -102,6 +148,12 @@ export function filterEntities(entities = [], filters = {}) {
   }
 
   results = results.filter((entity) => matchesQuery(entity, filters.q));
+  results = results.filter((entity) => {
+    const categories = [normalizeText(entity.category), normalizeText(entity.kind)];
+    const selectedCategories = (filters.categories || []).map(normalizeText);
+    if (!selectedCategories.length) return true;
+    return selectedCategories.some((item) => categories.includes(item));
+  });
 
   results.sort((a, b) => scoreEntity(b, filters) - scoreEntity(a, filters));
   return results;

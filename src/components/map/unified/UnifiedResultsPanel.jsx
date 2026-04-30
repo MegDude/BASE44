@@ -1,16 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { useResidentMutations } from '@/hooks/useResidentMutations';
+import { trackEvent } from '@/lib/analytics';
 import {
-  IconArrowRight,
   IconAsk,
-  IconCalendarCheck,
   IconClock,
   IconClose,
   getEntityIcon,
   getEntityLabel,
   IconNavigation,
-  IconPerk,
   IconSave,
 } from '@/components/icons/DPIcons';
 
@@ -21,6 +19,16 @@ function getStatus(item) {
     return { label: 'Starting soon', tone: 'soon' };
   }
   return null;
+}
+
+function getReason(item) {
+  if (item?.metadata?.reason) return item.metadata.reason;
+  if (item?.isLive || item?.eventTiming?.isLive) return `Live now${item?.district ? ` near ${item.district}` : ''}`;
+  if (item?.isOpenNow && item?.metadata?.walkMinutes) return `Open now · ${item.metadata.walkMinutes} min walk`;
+  if (item?.isOpenNow) return 'Open now nearby';
+  if (item?.perk?.value || item?.perk_value || item?.type === 'perk') return 'Perk available nearby';
+  if (item?.type === 'building' || item?.type === 'property') return item?.district ? `Residential option in ${item.district}` : 'Residential option nearby';
+  return item?.category ? `Good match for ${item.category}` : 'Good nearby option right now';
 }
 
 function rankItems(items = [], savedEntityIds) {
@@ -77,30 +85,24 @@ function ResultCard({ item, isSelected, isSaved, onSelect, onToggleSave, onPrima
   const EntityIcon = getEntityIcon(item);
   const entityLabel = getEntityLabel(item);
   const status = getStatus(item);
-  const primaryAction =
-    item.type === 'event'
-      ? { label: 'RSVP', icon: IconCalendarCheck }
-      : item.type === 'perk' || item.perk?.value || item.perk_value
-        ? { label: 'Redeem', icon: IconPerk }
-        : { label: 'Details', icon: IconArrowRight };
-  const PrimaryIcon = primaryAction.icon;
+  const reason = getReason(item);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -6 }}
-      className={`w-full rounded-[22px] border p-4 text-left transition-all ${
+      className={`w-full rounded-[18px] border px-4 py-3 text-left transition-all ${
         isSelected
-          ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.05)] shadow-[0_16px_32px_rgba(11,31,51,0.08)]'
-          : 'border-border bg-white hover:border-[rgba(11,31,51,0.22)] hover:shadow-sm'
+          ? 'border-[#0b1f33] bg-[rgba(11,31,51,0.04)]'
+          : 'border-border bg-white hover:border-[rgba(11,31,51,0.18)]'
       }`}
     >
       <div className="w-full">
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(182,146,71,0.12)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0b1f33]">
                 <EntityIcon className="h-3.5 w-3.5" />
                 {entityLabel}
               </span>
@@ -118,7 +120,8 @@ function ResultCard({ item, isSelected, isSaved, onSelect, onToggleSave, onPrima
                 </span>
               ) : null}
             </div>
-            <h3 className="mt-2 text-base font-semibold text-[#0b1f33]">{item.name}</h3>
+            <h3 className="mt-2 text-[15px] font-semibold text-[#0b1f33]">{item.name}</h3>
+            <p className="mt-1 text-[12px] leading-5 text-slate-600">{reason}</p>
           </div>
 
           <button
@@ -134,10 +137,8 @@ function ResultCard({ item, isSelected, isSaved, onSelect, onToggleSave, onPrima
           </button>
         </div>
 
-        <button type="button" onClick={onSelect} className="mt-2 w-full text-left">
-          <p className="text-sm text-slate-600">{item.description || item.address}</p>
-
-          <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
+        <button type="button" onClick={onSelect} className="mt-3 w-full text-left">
+          <div className="flex flex-wrap gap-2 text-xs text-slate-500">
             {item.address && (
               <span className="dp-chip">
                 <IconNavigation className="h-3.5 w-3.5" />
@@ -150,45 +151,21 @@ function ResultCard({ item, isSelected, isSaved, onSelect, onToggleSave, onPrima
                 {metaWalk}
               </span>
             )}
-            {item.perk?.value && <span className="dp-chip">{item.perk.value}</span>}
+            {item.perk?.value ? <span className="dp-chip">{item.perk.value}</span> : null}
           </div>
-        </button>
-      </div>
-
-      <div className="mt-3 grid grid-cols-3 gap-2">
-        <button
-          type="button"
-          onClick={onPrimaryAction}
-          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-[#0b1f33] px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white"
-          aria-label={`${primaryAction.label} ${item.name}`}
-        >
-          <PrimaryIcon className="h-3.5 w-3.5" />
-          {primaryAction.label}
-        </button>
-        <button
-          type="button"
-          onClick={onToggleSave}
-          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b1f33]"
-          aria-label={isSaved ? `Unsave ${item.name}` : `Save ${item.name}`}
-        >
-          <IconSave className="h-3.5 w-3.5" />
-          {isSaved ? 'Saved' : 'Save'}
-        </button>
-        <button
-          type="button"
-          onClick={onSelect}
-          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-[rgba(11,31,51,0.04)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b1f33]"
-          aria-label={`View details for ${item.name}`}
-        >
-          Details
-          <IconArrowRight className="h-3.5 w-3.5" />
         </button>
       </div>
     </motion.div>
   );
 }
 
-export default function UnifiedResultsPanel({ items = [], onSelectResult, onClose = null, title = null }) {
+export default function UnifiedResultsPanel({
+  items = [],
+  onSelectResult,
+  onClose = null,
+  title = null,
+  subtitle = null,
+}) {
   const selectedEntityId = useMapStateStore((state) => state.selectedEntityId);
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
@@ -203,11 +180,10 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult, onClos
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-semibold text-foreground">
-              {title || `${items.length} live near you`}
-              {searchQuery ? ` for “${searchQuery}”` : ''}
+              {title || `${items.length} live near you${searchQuery ? ` for “${searchQuery}”` : ''}`}
             </h2>
             <p className="mt-1 text-xs text-slate-500">
-              Ranked for the next 5 to 30 minutes: live now, open now, and closest first.
+              {subtitle || 'Ranked for the next 5 to 30 minutes: live now, open now, and closest first.'}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -261,6 +237,7 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult, onClos
                           isSelected={isSelected}
                           isSaved={isSaved}
                           onSelect={() => {
+                            trackEvent('result_selected', { source: 'results_panel', entityId: item.id, entityType: item.type });
                             selectEntity(item);
                             onSelectResult?.(item);
                           }}
@@ -271,18 +248,6 @@ export default function UnifiedResultsPanel({ items = [], onSelectResult, onClos
                           onPrimaryAction={async () => {
                             selectEntity(item);
                             onSelectResult?.(item);
-
-                            if (item.type === 'event') {
-                              await mutations.upsertRsvp(item);
-                              return;
-                            }
-
-                            if (item.type === 'perk' || item.perk?.value || item.perk_value) {
-                              await mutations.createRedemption(item);
-                              return;
-                            }
-
-                            await mutations.logInteraction(item, 'detail_open', undefined, { surface: 'results_panel' });
                           }}
                         />
                       );

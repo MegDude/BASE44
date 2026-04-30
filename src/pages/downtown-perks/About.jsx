@@ -1,239 +1,309 @@
-import { Link } from "react-router-dom";
-import { Building2, Megaphone, Users } from "lucide-react";
-import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
-import { createExploreLink } from "@/lib/routeHelpers";
-import { trackEvent } from "@/lib/analytics";
+import { ROUTES } from "@/lib/routes";
+import SectionContainer from "@/components/SectionContainer";
+import {
+  HeroSplit,
+  InlineDataPanel,
+  NarrativeSteps,
+  StepRail,
+  RuleList,
+  SegmentSwitcher,
+  Accordion,
+  ClosingStatement,
+} from "@/components/about";
+
+const NARRATIVE_STEPS = [
+  {
+    title: "A live map of downtown — not another feed to scroll.",
+    body: "See what’s nearby, what’s happening, and what’s worth your time right now. From coffee to happy hour to events, everything shows up in one place so you can make a quick decision and move.",
+  },
+  {
+    title: "Downtown has everything. It’s just hard to piece together.",
+    body: "You’re usually jumping between Google, Instagram, and random sites to figure out what to do. This fixes that. Everything is in one place, already organized around where you are.",
+  },
+  {
+    title: "Start simple. Use more when you need it.",
+    body: "You can browse freely. When you want to save something, RSVP, or use a perk, your card is there when you need it.",
+  },
+];
+
+const HOW_IT_WORKS = [
+  {
+    title: "Open the map",
+    body: "See restaurants, bars, coffee shops, events, and more — all in one view.",
+  },
+  {
+    title: "Find what fits right now",
+    body: "What’s close, what’s open, what’s happening — it’s all clear at a glance.",
+  },
+  {
+    title: "Take the next action",
+    body: "Save a spot, RSVP, or use a perk. No dead ends. No extra steps.",
+  },
+];
+
+const PRODUCT_TRUTHS = [
+  "One map instead of five apps",
+  "Browse first, no friction",
+  "Use the card only when needed",
+  "Everything is based on what’s nearby and relevant now",
+];
+
+const SEGMENTS = [
+  {
+    label: "Residents",
+    eyebrow: "Resident view",
+    linkLabel: "Residents",
+    href: ROUTES.residents,
+    headline: "Residents",
+    body: "Find places nearby, see what’s happening, and use perks — all without downloading anything.",
+    practice: "Find somewhere to go, see what’s happening tonight, and use perks when they matter.",
+    detailsTitle: "What residents can do",
+    details: [
+      "Browse nearby places and events",
+      "See what fits right now",
+      "Save places for later",
+      "RSVP when something looks good",
+      "Use the card when needed",
+    ],
+  },
+  {
+    label: "Properties",
+    eyebrow: "Property view",
+    linkLabel: "Properties",
+    href: ROUTES.partnerProperties,
+    headline: "Properties",
+    body: "Give residents something they’ll actually use, and see what they engage with around your building.",
+    practice: "Turn the neighborhood into a real amenity — not just a list.",
+    detailsTitle: "What properties can measure",
+    details: [
+      "Property views",
+      "Resident actions",
+      "Saves",
+      "Nearby engagement",
+      "Card activations",
+      "Redemption activity around the building",
+    ],
+  },
+  {
+    label: "Hospitality",
+    eyebrow: "Hospitality",
+    linkLabel: "Hospitality",
+    href: ROUTES.partnerHospitality,
+    headline: "Hospitality",
+    body: "Give guests one simple map for dining, events, wellness, and nightlife.",
+    practice: "Extend the stay beyond the lobby without making guests piece things together themselves.",
+    detailsTitle: "What hospitality partners can measure",
+    details: [
+      "Guest opens",
+      "Local guide engagement",
+      "Attributed visits",
+      "Offer usage",
+      "Event interest",
+      "Source scans",
+    ],
+  },
+  {
+    label: "Venues",
+    eyebrow: "Venues",
+    linkLabel: "Venues",
+    href: ROUTES.partnerVenues,
+    headline: "Venues",
+    body: "Show up when people nearby are deciding where to go — not after.",
+    practice: "Appear in the moment that counts, when someone is close and ready to choose.",
+    detailsTitle: "What venues can measure",
+    details: [
+      "Map views",
+      "Saves",
+      "RSVPs",
+      "Redemptions",
+      "Physical visit signals",
+      "Best-performing timing windows",
+    ],
+  },
+  {
+    label: "Brands",
+    eyebrow: "Brands",
+    linkLabel: "Brands",
+    href: ROUTES.partnerBrands,
+    headline: "Brands",
+    body: "Reach people who are already nearby and already out.",
+    practice: "Show up in the right corridor, at the right time, without relying on broad reach.",
+    detailsTitle: "What brands can measure",
+    details: [
+      "Map opens",
+      "Source scans",
+      "Campaign clicks",
+      "Event participation",
+      "Partner-location engagement",
+      "Redemptions and follow-through",
+    ],
+  },
+  {
+    label: "Civic",
+    eyebrow: "Civic",
+    linkLabel: "Civic",
+    href: ROUTES.partnerCivic,
+    headline: "Civic",
+    body: "Help more people find what’s going on and take part.",
+    practice: "Surface events and local initiatives where people are already looking and deciding.",
+    detailsTitle: "What civic partners can measure",
+    details: [
+      "RSVPs",
+      "Repeat participation",
+      "District engagement",
+      "Event visibility",
+      "Campaign source performance",
+      "Movement across public-space activations",
+    ],
+  },
+];
 
 const FAQ_ITEMS = [
-  { question: "Do I need to download an app?", answer: "No. Scan a QR code and open the map instantly. No download or login required." },
-  { question: "What gets tracked?", answer: "Only meaningful actions — saves, visits, and redemptions — to improve the experience and provide partner insights." },
-  { question: "How much does it cost?", answer: "The map is free to use. The card activates when perks or access points are used." },
-  { question: "Why is this better than a static list?", answer: "Because it’s live. What’s open, nearby, and relevant updates in real time." },
-  { question: "What kinds of organizations can join?", answer: "Properties, venues, hospitality groups, brands, and civic organizations operating downtown." },
-  { question: "What can we measure?", answer: "Engagement, visits, redemptions, and movement across downtown." },
+  {
+    q: "Do I need to download anything?",
+    a: "No. Just scan a QR code and you’re in.",
+  },
+  {
+    q: "What gets tracked?",
+    a: "Basic activity like saves, visits, and perk use — so partners can see what’s actually working.",
+  },
+  {
+    q: "How much does resident access cost?",
+    a: "Resident access is simple and low-friction. In many cases, it’s tied to a building, event, or partner setup.",
+  },
+  {
+    q: "Why is this better than a static amenity list?",
+    a: "Because it’s live. You see what’s happening now — not outdated info.",
+  },
+  {
+    q: "What kinds of organizations can join?",
+    a: "Buildings, local businesses, brands, and community groups can all join.",
+  },
+  {
+    q: "What can we measure?",
+    a: "Things like visits, saves, and redemptions — real activity, not guesses.",
+  },
 ];
-
-const ENTRY_CARDS = [
-  { icon: Users, title: "Residents", copy: "Find places, events, and perks nearby — and use your card when it matters.", href: "/residents", cta: "Go to Resident View" },
-  { icon: Building2, title: "Properties", copy: "Turn the surrounding neighborhood into a real resident amenity — and measure what drives engagement.", href: "/partners/properties", cta: "View Property Solution" },
-  { icon: Megaphone, title: "Partners", copy: "Show up where nearby intent is already forming — and measure real outcomes.", href: "/partners", cta: "Explore Partner Types" },
-];
-
-const USE_CASES = [
-  { title: "Resident utility", body: "Find somewhere to go, see what’s happening tonight, save it, and use it when you get there.", href: createExploreLink({ intent: "nearby" }) },
-  { title: "Property amenity", body: "Turn the neighborhood into something residents actually use — and track what’s working.", href: "/partners/properties" },
-  { title: "Events and nightlife", body: "Surface what’s happening in one place so people can choose faster — and partners can measure what worked.", href: createExploreLink({ type: "event", time: "now" }) },
-];
-
-function TrackedLink({ to, eventName, children, className }) {
-  return (
-    <Link to={to} onClick={() => trackEvent(eventName)} className={className}>
-      {children}
-    </Link>
-  );
-}
 
 export default function About() {
   return (
-    <main className="min-h-screen bg-[var(--dp-surface-base)] pb-14 pt-[84px]">
-      <div className="dp-page-shell space-y-4">
-        <section className="dp-band p-6 md:p-8 lg:p-10">
-          <div className="max-w-4xl">
-            <div className="dp-micro-label">About</div>
-            <h1 className="dp-display-section mt-4 text-[2.6rem] text-foreground md:text-[4.2rem]">
-              Downtown, in one map.
-            </h1>
-            <p className="mt-4 max-w-3xl text-[16px] leading-7 text-foreground/80">
-              Find what’s nearby, what’s happening, and what you can use right now.
-            </p>
-            <p className="mt-2 max-w-3xl text-[14px] leading-7 text-muted-foreground">
-              One map. One card. One working layer for downtown Austin.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <TrackedLink to="/explore" eventName="about_open_map_clicked" className="dp-cta-primary">Open the Map</TrackedLink>
-              <TrackedLink to="/partners" eventName="about_partner_type_clicked" className="dp-cta-secondary">View Partner Types</TrackedLink>
-            </div>
-          </div>
-        </section>
-
-        <section className="grid gap-4 lg:grid-cols-2">
-          <div className="dp-band p-6">
-            <div className="dp-micro-label">Section 1</div>
-            <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-              Not another feed. A working layer.
-            </h2>
-            <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
-              Downtown Perks brings places, events, perks, buildings, and local context into one live map.
-            </p>
-            <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
-              The goal is simple: help people decide what to do based on what’s nearby, relevant, and usable right now.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link to="/explore" className="dp-link-action">Open Map</Link>
-              <Link to="/events" className="dp-link-action">Browse Events</Link>
-              <Link to="/perks" className="dp-link-action">View Perks</Link>
-            </div>
-          </div>
-
-          <div className="dp-band p-6">
-            <div className="dp-micro-label">Section 2</div>
-            <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-              Downtown already works. Finding it doesn’t.
-            </h2>
-            <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
-              The places, events, and people are already here. What’s missing is the layer that connects them without switching between apps, tabs, or feeds.
-            </p>
-          </div>
-        </section>
-
-        <section className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="dp-band p-6">
-            <div className="dp-micro-label">Section 3</div>
-            <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-              Browse first. Unlock when it matters.
-            </h2>
-            <p className="mt-3 text-[14px] leading-7 text-muted-foreground">The map is the product. The card is access.</p>
-            <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
-              People can explore freely. When they save something, RSVP, or use a perk, the card becomes the access layer.
-            </p>
-            <div className="mt-5">
-              <Link to="/card" className="dp-cta-secondary">Get the Card</Link>
-            </div>
-          </div>
-
-          <div className="dp-band dp-band-muted p-6">
-            <div className="dp-micro-label">Section 4</div>
-            <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-              Ask the map. Get a real answer.
-            </h2>
-            <div className="mt-4 space-y-4">
-              <div>
-                <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">1. Open the map</div>
-                <p className="mt-1 text-[14px] leading-7 text-muted-foreground">See restaurants, bars, coffee, services, buildings, perks, and events in one place.</p>
-              </div>
-              <div>
-                <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">2. See what’s relevant</div>
-                <p className="mt-1 text-[14px] leading-7 text-muted-foreground">Nearby options, walk time, open-now context, and event timing resolve into one clear view.</p>
-              </div>
-              <div>
-                <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">3. Take the next action</div>
-                <p className="mt-1 text-[14px] leading-7 text-muted-foreground">Save a place, RSVP to an event, use a perk, or show your card.</p>
-              </div>
-            </div>
-            <div className="mt-5">
-              <Link to="/explore" className="dp-cta-primary">Open the Map</Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="dp-band p-6 md:p-8">
-          <div className="dp-micro-label">Section 5</div>
-          <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-            What this looks like
-          </h2>
-          <div className="mt-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--dp-gold-muted)]">
-            Real activity, not assumptions.
-          </div>
-          <p className="mt-4 text-[1.2rem] font-semibold text-foreground">1,284 property views · 342 resident actions</p>
-          <p className="mt-4 max-w-3xl text-[14px] leading-7 text-muted-foreground">
-            People nearby open the map. They see your building, place, brand, or district in context. They take action based on what’s relevant right now.
-          </p>
-          <p className="mt-3 text-[14px] leading-7 text-foreground/74">You see what got attention — and what to do next.</p>
-          <div className="mt-5">
-            <Link to={createExploreLink({ type: "property", intent: "residential" })} className="dp-cta-secondary">Open Residential View</Link>
-          </div>
-        </section>
-
-        <section className="dp-band p-6 md:p-8">
-          <div className="dp-micro-label">Section 6</div>
-          <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-            One system. Three ways in.
-          </h2>
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {ENTRY_CARDS.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div key={card.title} className="rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-white/86 p-5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-[16px] bg-[rgba(11,31,51,0.05)] text-[var(--dp-navy)]">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 text-[1.2rem] font-semibold text-foreground">{card.title}</h3>
-                  <p className="mt-2 text-[14px] leading-7 text-muted-foreground">{card.copy}</p>
-                  <Link to={card.href} className="mt-4 inline-flex text-[13px] font-semibold text-[var(--dp-navy)]">{card.cta}</Link>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="grid gap-4 lg:grid-cols-2">
-          <div className="dp-band dp-band-dark p-6 text-white">
-            <div className="dp-micro-label text-[var(--dp-gold-muted)]">Section 7</div>
-            <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-white">
-              Built as one system.
-            </h2>
-            <div className="mt-4 space-y-3">
-              {["The map is the interface", "The card is access", "The dashboard measures what happens next"].map((line) => (
-                <div key={line} className="rounded-[18px] border border-white/10 bg-white/5 px-4 py-3 text-[14px] text-white/78">
-                  {line}
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-[14px] leading-7 text-white/72">
-              Everything runs on one shared layer. Not disconnected pages. Not separate tools.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link to="/explore" className="dp-cta-secondary">Map</Link>
-              <Link to="/card" className="dp-cta-secondary">Card</Link>
-              <Link to="/partners/dashboard" className="dp-cta-secondary">Dashboard</Link>
-            </div>
-          </div>
-
-          <div className="dp-band p-6">
-            <div className="dp-micro-label">Section 8</div>
-            <h2 className="mt-3 font-heading text-[1.9rem] font-semibold tracking-[-0.04em] text-foreground">
-              What this looks like in use.
-            </h2>
-            <div className="mt-5 space-y-4">
-              {USE_CASES.map((item) => (
-                <Link key={item.title} to={item.href} className="block rounded-[22px] border border-[rgba(11,31,51,0.08)] bg-white/86 p-4 transition hover:bg-white">
-                  <div className="text-[15px] font-semibold text-foreground">{item.title}</div>
-                  <div className="mt-2 text-[14px] leading-7 text-muted-foreground">{item.body}</div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <FAQAccordionBlock
-          sectionEyebrow="FAQ"
-          sectionTitle="Questions, answered clearly."
-          sectionIntro="One item open at a time."
-          items={FAQ_ITEMS}
-          styleVariant="default"
-          defaultOpenIndex={0}
-          allowMultipleOpen={false}
-          pageType="about"
-          ctaLabel="Apply to Be a Partner"
-          ctaHref="/partners/apply"
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(207,175,90,0.12),transparent_16%),linear-gradient(180deg,#F7F8FB_0%,#F3F6FA_42%,#F7F8FB_100%)] pb-24 pt-[88px] text-[var(--dp-navy,#0B1F33)]">
+      <div className="space-y-20 md:space-y-28">
+        <HeroSplit
+          eyebrow="About"
+          title="Downtown Perks helps you use downtown Austin better."
+          subtitle="It puts places, events, and perks in one simple map so you can quickly decide where to go and what to do."
+          body={[
+            "No apps to download. No switching between tabs. Just one place to look.",
+          ]}
+          actions={[
+            { label: "Open Map", to: ROUTES.explore },
+            { label: "View Partner Types", to: ROUTES.partners, variant: "secondary" },
+          ]}
+          side={
+            <InlineDataPanel
+              items={[
+                {
+                  label: "Places",
+                  meta: "Live",
+                  body: "Restaurants, bars, coffee, wellness, shopping, services, hotels, and everyday stops nearby.",
+                },
+                {
+                  label: "Events",
+                  meta: "Live",
+                  body: "Live events, resident moments, partner activations, and district programming.",
+                },
+                {
+                  label: "Perks",
+                  meta: "Live",
+                  body: "Useful offers tied to real places on the map, activated by the card when it matters.",
+                },
+              ]}
+            />
+          }
         />
 
-        <section className="dp-band p-6 md:p-8 lg:p-10">
-          <div className="max-w-3xl">
-            <div className="dp-micro-label">Final CTA</div>
-            <h2 className="mt-3 font-heading text-[2rem] font-semibold tracking-[-0.04em] text-foreground">
-              One working layer for downtown.
-            </h2>
-            <p className="mt-4 text-[14px] leading-7 text-muted-foreground">
-              Use the map first. Use the card when it matters. Measure what happens next.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link to="/explore" className="dp-cta-primary">Open Map</Link>
-              <Link to="/card" className="dp-cta-secondary">Get Your Card</Link>
-              <Link to="/partners/apply" className="dp-cta-secondary">Apply to Be a Partner</Link>
+        <NarrativeSteps steps={NARRATIVE_STEPS} />
+
+        <StepRail
+          eyebrow="How to use it"
+          title="Start simple. Use more when you need it."
+          description="Browse freely first. Save, RSVP, or use a perk when the next step actually matters."
+          steps={HOW_IT_WORKS}
+          detail={{
+            title: "Closing line",
+            body: "The point is fewer dead ends and faster decisions.",
+          }}
+        />
+
+        <RuleList
+          items={PRODUCT_TRUTHS}
+          title="What makes it different"
+        />
+
+        <SegmentSwitcher
+          segments={SEGMENTS}
+          eyebrow="Who it serves"
+          title="Built for the people already here — and the places that make downtown work."
+          description="It stays useful for residents first, while also helping buildings, venues, brands, and local groups show up at the right time."
+        />
+
+        <SectionContainer width="wide">
+          <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr]">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(11,31,51,0.48)]">
+                What you can do
+              </div>
+              <h2 className="mt-3 font-heading text-[2rem] font-semibold leading-[1.02] tracking-[-0.04em] text-[var(--dp-navy,#0B1F33)] md:text-[2.6rem]">
+                Simple to use for people. Useful for the places around them.
+              </h2>
+              <p className="mt-4 max-w-[620px] text-[15px] leading-7 text-[rgba(11,31,51,0.68)]">
+                The experience stays simple: find, go, save, use. Behind that, the same actions help buildings and partners understand what people actually respond to.
+              </p>
             </div>
-          </div>
-        </section>
+            <div className="border-t border-[rgba(11,31,51,0.08)]">
+              {[
+                {
+                  title: "Resident utility",
+                  body: "Find somewhere to go, see what’s happening tonight, and use perks when they matter.",
+                },
+                {
+                  title: "For buildings",
+                  body: "Turn the neighborhood into a real amenity — not just a list.",
+                },
+                {
+                  title: "For partners",
+                  body: "Reach people who are already nearby and ready to go out.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="border-b border-[rgba(11,31,51,0.08)] py-4 last:border-b-0">
+                  <h3 className="text-[1rem] font-semibold text-[var(--dp-navy,#0B1F33)]">{item.title}</h3>
+                  <p className="mt-2 max-w-[620px] text-[14px] leading-7 text-[rgba(11,31,51,0.68)]">
+                    {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </SectionContainer>
+
+        <Accordion
+          items={FAQ_ITEMS}
+          eyebrow="Common questions"
+          title="Questions people ask first"
+          description="The basics: what it is, how it works, and why it’s easier than the usual way of figuring downtown out."
+        />
+
+        <ClosingStatement
+          title="Everything downtown, just easier to use"
+          lines={[
+            "You open one map, find something nearby, and go.",
+          ]}
+          actions={[
+            { label: "Open Map", to: ROUTES.explore },
+            { label: "Apply to Be a Partner", to: ROUTES.partnerApply, variant: "secondary" },
+          ]}
+        />
       </div>
     </main>
   );

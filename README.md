@@ -7,9 +7,23 @@ Downtown Perks is a Vite + React + Tailwind app for a map-first downtown Austin 
 - The map is the product.
 - The card is access.
 - Analytics are proof.
+- The dashboard explains what happened and what to do next.
 - Public browse routes work before login.
 - One shared map interaction model powers home, explore, resident, and partner surfaces.
+- The decision loop is `Open -> See -> Decide -> Act`.
 - The runtime loop is `Ask -> Rank -> Map -> Panel -> Action -> Signal`.
+
+## Project overview
+
+Downtown Perks is a live neighborhood layer for downtown Austin. The homepage, explore map, resident surfaces, partner overview, partner workspace, and partner dashboard all consolidate around one map interaction model instead of separate map implementations.
+
+The current production direction is:
+
+- homepage stays map-first
+- public routes work before login
+- one shared drawer system powers details
+- ranking and filter state route people back into the map
+- supporting pages explain or route into the map instead of replacing it
 
 ## Local setup
 
@@ -56,12 +70,34 @@ Core public routes:
 - `/explore?saved=true`
 - `/explore?district=rainey`
 - `/explore?category=coffee`
+- `/explore?category=nightlife`
+- `/explore?type=event&time=now`
+
+## Shared map model
+
+The main map flow uses shared URL filter parsing, ranking, drawer state, and map normalization:
+
+- [src/hooks/useMapFilters.js](/Users/megdude/BASE44/src/hooks/useMapFilters.js)
+- [src/lib/mapFilters.js](/Users/megdude/BASE44/src/lib/mapFilters.js)
+- [src/lib/routeHelpers.js](/Users/megdude/BASE44/src/lib/routeHelpers.js)
+- [src/store/mapStateStore.ts](/Users/megdude/BASE44/src/store/mapStateStore.ts)
+- [src/components/map/MapShell.jsx](/Users/megdude/BASE44/src/components/map/MapShell.jsx)
+- [src/components/map/unified/UnifiedMapShell.jsx](/Users/megdude/BASE44/src/components/map/unified/UnifiedMapShell.jsx)
+
+Invalid coordinates are guarded in [src/lib/mapValidation.ts](/Users/megdude/BASE44/src/lib/mapValidation.ts) so bad records never render markers or crash the runtime.
+
+## Consolidation guardrails
+
+- Preserve working map-first routes instead of replacing them with placeholder scaffolds.
+- Production routes must not render stubs.
+- One shared panel system should handle entity details.
+- Marker click and result click should resolve to the same selected entity state.
+- Use the best existing live implementation when duplicate surfaces exist.
 
 ## Environment notes
 
 Safe public defaults live in `.env.example`:
 
-<<<<<<< ours
 - `VITE_APP_NAME`
 - `VITE_DEFAULT_CITY`
 - `VITE_DEFAULT_DISTRICT`
@@ -76,17 +112,6 @@ The repo also preserves optional Base44, Supabase, Stripe, and map-provider env 
 - SPA refreshes are handled by [vercel.json](/Users/megdude/BASE44/vercel.json)
 - The root rewrite sends all routes to `index.html`
 
-## Shared map model
-
-The main map flow lives in the shared explore runtime and uses:
-
-- URL filter parsing in [src/hooks/useMapFilters.js](/Users/megdude/BASE44/src/hooks/useMapFilters.js)
-- Shared filtering in [src/lib/mapFilters.js](/Users/megdude/BASE44/src/lib/mapFilters.js)
-- Shared deep-link creation in [src/lib/routeHelpers.js](/Users/megdude/BASE44/src/lib/routeHelpers.js)
-- Shared drawer state in [src/store/mapStateStore.ts](/Users/megdude/BASE44/src/store/mapStateStore.ts)
-
-Invalid coordinates are guarded in [src/lib/mapValidation.ts](/Users/megdude/BASE44/src/lib/mapValidation.ts) so bad records do not render markers or crash the map.
-
 ## Known next integrations
 
 - Supabase
@@ -94,17 +119,3 @@ Invalid coordinates are guarded in [src/lib/mapValidation.ts](/Users/megdude/BAS
 - Ask the Map API
 - Partner analytics database
 - Real redemption tracking
-=======
-Support: [https://app.base44.com/support](https://app.base44.com/support)
-
-## Quick test links for map search
-
-After running `npm run dev`, use the following in your browser:
-
-- UI route test: `http://localhost:5173/map?q=coffee%20near%20me`
-- API test: `http://localhost:5173/api/places?query=coffee%20near%20me`
-
-If the API returns a `Missing GOOGLE_MAPS_API_KEY` error, add this env var before testing:
-
-- `GOOGLE_MAPS_API_KEY=your_google_places_key`
->>>>>>> theirs

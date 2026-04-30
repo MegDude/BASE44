@@ -438,6 +438,53 @@ src/
     ],
   },
   {
+    id: "urban-os",
+    eyebrow: "Master system spec",
+    title: "The Urban OS ties copy, schema, map behavior, and revenue together.",
+    intro:
+      "This is the canonical Codex-level system framing for Downtown Perks. It connects the map-first product story to the underlying verification, interaction, partner, event, campaign, and revenue model.",
+    blocks: [
+      {
+        type: "table",
+        columns: ["Layer", "Purpose", "Core objects"],
+        rows: [
+          ["Identity", "Verification and progression", "users, resident_verification"],
+          ["Map entities", "Partners and offers", "partners, perks, events"],
+          ["Signal loop", "Behavior capture", "interactions, saves, visits, redemptions"],
+          ["Partner action", "Insights and campaigns", "action queue, journeys, ask-the-map, campaigns"],
+          ["Revenue", "Proof of value", "partner_revenue, attribution weights, ROI"],
+        ],
+      },
+      {
+        type: "list",
+        title: "Functional systems locked by this spec",
+        items: [
+          "website conversion engine with vertical partner routes and role-specific pricing",
+          "resident app now engine, building gateway, walkability controller, and gamification",
+          "partner dashboard action queue, journey builder, and B2B ask-the-map layer",
+          "sms loyalty loop, event pulse sync, and signal-strength-driven trending logic",
+          "copy, schema, UI, and measurement working as one enforced operating model",
+        ],
+      },
+      {
+        type: "code",
+        title: "Master system loop",
+        code: `Map -> Behavior -> Signals -> Insight -> Action -> Revenue -> Feedback loop
+
+Scan -> Context -> Prompt -> Action -> Outcome
+
+Signal Strength = (Map Impressions x Interaction Rate) / Distance`,
+      },
+      {
+        type: "callout",
+        tone: "info",
+        title: "Visual DNA rule",
+        body:
+          "Use Navy (#071A2C) for structure, Off-White (#F8F7F3) for space, and Gold (#C9A24A) only for signals and active states. Typography should do more of the work than stacked cards or boxed layouts.",
+      },
+    ],
+  },
+  {
     id: "order",
     eyebrow: "Implementation order",
     title: "Build the product loop first, then the proof layer.",
@@ -486,6 +533,10 @@ src/
 ];
 
 export const BUILD_PACK_RESOURCES = [
+  {
+    label: "Master Codex Spec (repo)",
+    href: "/build-pack#urban-os",
+  },
   {
     label: "Master Build Instruction",
     href: "https://www.notion.so/Downtown-Perks-Master-Build-Instruction-Copilot-Replit-aed73075955c4b0f9c6cd2b4e66cf70a?pvs=21",

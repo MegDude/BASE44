@@ -1,19 +1,19 @@
 export const APPROVED_HOME_COPY = {
   hero: {
-    eyebrow: "Live Downtown Map",
+    eyebrow: "The Neighborhood, Unlocked.",
     title: "Where downtown meets you.",
-    lead: "Start with one decision. The map does the rest.",
+    lead: "Built for people who actually live here—and the places that make it feel like home.",
     body:
-      "The friction of downtown living is not a lack of options. It is how scattered everything feels. Downtown Perks brings places, plans, and perks together so the next move is easier to make.",
+      "You live downtown but expect it to be easier. Easier to navigate. Easier to connect. More useful day to day. Instead, everything you want is spread across too many places: Google for restaurants, Instagram for events, and texting friends to find the best happy hour.",
     prompts: [
       "Where do you want to go?",
       "What do you want to do?",
       "Who do you want to meet?",
     ],
-    primaryCta: "Open Map",
-    secondaryCta: "Get the Perks Card",
+    primaryCta: "Stop searching. Start doing.",
+    secondaryCta: "Be the one they notice.",
     tertiaryCta: "",
-    searchPlaceholder: "Search places, events, perks, or what is nearby",
+    searchPlaceholder: "Where should I go right now?",
   },
   why: {
     title: "Downtown, in one place",
@@ -112,7 +112,7 @@ export const APPROVED_HOME_COPY = {
       ],
       pricing: "From $99/year",
         cta: "Use this for guests",
-        href: "/partners/hotels",
+        href: "/partners/hospitality",
       },
     {
       id: "venues",
@@ -221,12 +221,12 @@ export const APPROVED_HOME_COPY = {
       },
       {
         id: "hotels",
-        label: "Hotels",
+        label: "Hospitality",
         audience: "Hotels, boutiques, extended stays, and hospitality.",
         price: "$99-$149 / year",
         detail: "90-day pilot. Then choose your level.",
         proof: "Extend the stay beyond your lobby.",
-        href: "/partners/hotels",
+        href: "/partners/hospitality",
       },
       {
         id: "venues",
@@ -263,13 +263,13 @@ export const APPROVED_HOME_COPY = {
   contact: {
     title: "Ready when you are.",
     body: [
-      "People usually choose what feels close, clear, and easy.",
+      "People don't choose the best option. They choose the one they notice.",
       "Downtown Perks helps you be that option.",
     ],
     residentLabel: "For residents",
-    residentBody: "Spend less time deciding and more time going.",
+    residentBody: "Stop searching. Start doing.",
     partnerLabel: "For partners",
-    partnerBody: "Show up when people nearby are ready to choose.",
+    partnerBody: "Be the one they notice.",
     ctas: ["Explore Downtown", "Become a Partner", "Apply to Be a Partner"],
   },
 };
