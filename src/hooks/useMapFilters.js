@@ -8,6 +8,7 @@ export function useMapFilters() {
     const params = new URLSearchParams(location.search);
 
     return {
+      mode: params.get("mode") || "",
       type: params.get("type") || "",
       intent: params.get("intent") || "",
       time: params.get("time") || "",
