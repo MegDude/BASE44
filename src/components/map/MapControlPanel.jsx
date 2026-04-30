@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { useMapPanelStore } from "@/store/useMapPanelStore";
 import { useMapStateStore } from "@/store/mapStateStore";
 import MapSearchRail from "@/components/map/MapSearchRail";
@@ -82,7 +82,7 @@ export default function MapControlPanel() {
         .join(" · ")
     : "Move the map or ask for what you need nearby.";
 
-  const metricsLine = `${filteredResults.length} nearby options · ${summary.live} live/open · ${summary.deals} perks · ${summary.walkable} within 10 min`;
+  const metricsLine = `${filteredResults.length} options · ${summary.live} live/open · ${summary.deals} perks · ${summary.walkable} within 10 min`;
 
   const primaryItems = [
     { id: "now", label: "Now", active: decision === "now" && !filters.fiveMin && !filters.tenMin, onClick: () => { setDecision("now"); setType(type || "all"); setFilters({ fiveMin: false, tenMin: false }); } },
@@ -92,25 +92,9 @@ export default function MapControlPanel() {
   ];
 
   const utilityItems = [
-    {
-      id: "places",
-      label: "Places",
-      active: type === "venues",
-      onClick: () => setType("venues"),
-    },
-    {
-      id: "events",
-      label: "Events",
-      active: type === "events",
-      onClick: () => setType("events"),
-    },
-    {
-      id: "perks",
-      label: "Perks",
-      active: type === "perks",
-      accent: true,
-      onClick: () => setType("perks"),
-    },
+    { id: "places", label: "Places", active: type === "venues", onClick: () => setType("venues") },
+    { id: "events", label: "Events", active: type === "events", onClick: () => setType("events") },
+    { id: "perks", label: "Perks", active: type === "perks", accent: true, onClick: () => setType("perks") },
     {
       id: "10min",
       label: "10 min",
@@ -123,64 +107,67 @@ export default function MapControlPanel() {
   ];
 
   return (
-    <div className="absolute left-3 right-3 top-3 z-[500] md:right-auto md:w-[min(520px,calc(100vw-440px))]">
-      <div className="rounded-[22px] border border-white/50 bg-white/86 p-2.5 shadow-[0_10px_40px_rgba(10,20,40,0.08)] backdrop-blur-xl">
-        <div className="mb-2.5 flex items-center justify-between gap-3">
-          <div>
-            <div className="text-sm font-semibold text-[#0B1A2B]">Ask the map</div>
-            <div className="text-xs text-slate-500">One ask. One ranked next move.</div>
+    <div className="absolute left-3 right-3 top-3 z-[500] md:left-5 md:right-auto md:top-5 md:w-[min(540px,calc(100vw-460px))]">
+      <div className="rounded-[24px] border border-white/70 bg-white/72 p-2.5 shadow-[0_8px_24px_rgba(15,23,42,0.06)] backdrop-blur-[18px]">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-[12px] font-semibold tracking-[-0.01em] text-[var(--dp-navy,#0B1F33)]">Ask the map</div>
+            <div className="text-[11px] leading-4 text-slate-500">See what’s happening nearby.</div>
           </div>
 
           <button
             type="button"
             onClick={() => setShowRefine((value) => !value)}
-            className="min-h-10 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
+            className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-[12px] bg-[#f6f8fb] px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25"
             aria-label={showRefine ? "Hide map filters" : "Show map filters"}
           >
-            {showRefine ? "Hide filters" : "Refine"}
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            {showRefine ? "Hide" : "Refine"}
           </button>
         </div>
 
-        <div className="mb-2.5 flex flex-col gap-1.5">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center">
+        <div className="mb-2 flex flex-col gap-2">
+          <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
             <label className="sr-only" htmlFor="ask-map-query">Search nearby places, perks, events, or buildings</label>
-            <input
-              id="ask-map-query"
-              value={query}
-              onChange={(event) => {
-                setMode("ask");
-                setQuery(event.target.value);
-              }}
-              placeholder="Ask what to do nearby"
-              className="h-11 flex-1 rounded-[14px] border border-slate-200 bg-white px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#0B1A2B]/25"
-            />
+            <div className="flex h-10 items-center gap-2 rounded-[14px] border border-[rgba(7,27,47,0.08)] bg-white/86 px-3 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+              <Search className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+              <input
+                id="ask-map-query"
+                value={query}
+                onChange={(event) => {
+                  setMode("ask");
+                  setQuery(event.target.value);
+                }}
+                placeholder="Ask what to do nearby"
+                className="h-full min-w-0 flex-1 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-400"
+              />
+            </div>
 
             <button
               type="button"
               onClick={() => setMode("ask")}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-[14px] bg-[#0B1A2B] px-3.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-[14px] bg-[#0B1F33] px-4 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(11,31,51,0.16)] focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
               aria-label="Search nearby with Ask the Map"
             >
-              <Search className="h-4 w-4" />
               Ask
             </button>
           </div>
 
-          <MapSearchRail primaryItems={primaryItems} utilityItems={utilityItems} className="mt-0.5" />
+          <MapSearchRail primaryItems={primaryItems} utilityItems={utilityItems} className="mt-0" />
         </div>
 
         {showRefine && (
-          <div className="mb-3 space-y-2 border-t border-slate-200 pt-3">
-            <div className="flex flex-wrap gap-2" aria-label="Category filters">
+          <div className="mb-2 space-y-2 border-t border-[rgba(7,27,47,0.08)] pt-2">
+            <div className="flex flex-wrap gap-1.5" aria-label="Category filters">
               {categoryOptions.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => toggleCategory(item)}
-                  className={`min-h-10 rounded-full px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
+                  className={`min-h-9 rounded-full px-3 py-1.5 text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
                     categories.includes(item)
                       ? "bg-[#0B1A2B] text-white"
-                      : "bg-slate-100 text-slate-700"
+                      : "bg-white text-slate-600"
                   }`}
                   aria-pressed={categories.includes(item)}
                 >
@@ -189,16 +176,16 @@ export default function MapControlPanel() {
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-2" aria-label="Decision filters">
+            <div className="flex flex-wrap gap-1.5" aria-label="Decision filters">
               {utilityFilters.map((item) => (
                 <button
                   key={item.key}
                   type="button"
                   onClick={() => toggleFilter(item.key)}
-                  className={`min-h-10 rounded-full px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
+                  className={`min-h-9 rounded-full px-3 py-1.5 text-[11px] font-semibold focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
                     filters[item.key]
                       ? "bg-[#0B1A2B] text-white"
-                      : "bg-slate-100 text-slate-700"
+                      : "bg-white text-slate-600"
                   }`}
                   aria-pressed={Boolean(filters[item.key])}
                 >
@@ -209,10 +196,10 @@ export default function MapControlPanel() {
           </div>
         )}
 
-        <div className="rounded-[16px] bg-white/70 px-3 py-2 text-xs text-slate-600" aria-live="polite">
-          <div className="font-semibold text-[#0B1A2B]">{headline}</div>
-          <div className="mt-0.5 text-[12px] text-slate-500">{decisionLine}</div>
-          <div className="mt-1 text-[11px] text-slate-400">{metricsLine}</div>
+        <div className="rounded-[15px] bg-[#fbfcff]/86 px-3 py-2 text-xs text-slate-600" aria-live="polite">
+          <div className="truncate font-semibold text-[#0B1F33]">{headline}</div>
+          <div className="mt-0.5 truncate text-[11px] text-slate-500">{decisionLine}</div>
+          <div className="mt-1 truncate text-[10px] text-slate-400">{metricsLine}</div>
         </div>
       </div>
     </div>
