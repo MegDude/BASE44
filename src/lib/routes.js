@@ -27,6 +27,7 @@ export const ROUTES = {
   partnerResidential: "/partners/residential",
   partnerProperties: "/partners/properties",
   partnerHospitality: "/partners/hospitality",
+  partnerHotels: "/partners/hotels",
   partnerHotelsLegacy: "/partners/hotels",
   partnerVenues: "/partners/venues",
   partnerBrands: "/partners/brands",
@@ -41,6 +42,7 @@ export const ROUTES = {
   partnerWorkspace: "/partner-workspace",
   residentApp: "/resident-app",
   residentAppCard: "/resident-app/card",
+  residentAppSaved: "/resident-app/saved",
   dashboardHub: "/dashboard",
 };
 

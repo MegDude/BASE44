@@ -1,11 +1,22 @@
 import SectionShell from "@/components/shared/SectionShell";
+import { Link } from "react-router-dom";
+import { getSharedCta } from "@/components/shared/CTARegistry";
 
 export default function HomeResidentStory({ copy }) {
+  const residentApp = getSharedCta("openResidentApp");
   return (
     <SectionShell eyebrow={copy.eyebrow} title={copy.title} body={copy.body} className="border-t border-[rgba(15,23,42,0.08)]">
       <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
         <div>
           <p className="text-[15px] leading-8 text-[rgba(71,85,105,0.94)]">{copy.support}</p>
+          <div className="mt-5">
+            <Link
+              to={residentApp.href}
+              className="inline-flex min-h-[44px] items-center justify-center rounded-[14px] bg-[var(--dp-navy,#111827)] px-5 py-3 text-sm font-semibold text-white"
+            >
+              {copy.cta || residentApp.label}
+            </Link>
+          </div>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {copy.points.map((point) => (

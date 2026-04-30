@@ -1,22 +1,32 @@
 import PageShell from "@/components/layout/PageShell";
-import HomeEventsPreview from "@/components/home/HomeEventsPreview";
+import HomeCanDoSummary from "@/components/home/HomeCanDoSummary";
 import HomeFAQ from "@/components/home/HomeFAQ";
 import HomeFinalCTA from "@/components/home/HomeFinalCTA";
-import HomeGetStarted from "@/components/home/HomeGetStarted";
+import HomeFeaturedExample from "@/components/home/HomeFeaturedExample";
+import HomeGetStartedForm from "@/components/home/HomeGetStartedForm";
 import HomeHero from "@/components/home/HomeHero";
 import HomeHowItWorks from "@/components/home/HomeHowItWorks";
-import HomePartnerOverview from "@/components/home/HomePartnerOverview";
-import HomePartnerValueSection from "@/components/home/PartnerValueSection";
-import HomePerksCard from "@/components/home/HomePerksCard";
-import HomePricingPreviewSection from "@/components/home/PricingPreviewSection";
-import HomeProductExplanationSection from "@/components/home/ProductExplanationSection";
-import HomePropertiesPreviewSection from "@/components/home/PropertiesPreviewSection";
-import HomeResidentStory from "@/components/home/HomeResidentStory";
+import HomeIntroSection from "@/components/home/HomeIntroSection";
+import HomeEverythingNearby from "@/components/home/HomeEverythingNearby";
+import HomeEventsPropertiesSplit from "@/components/home/HomeEventsPropertiesSplit";
+import HomeNearbyDiscovery from "@/components/home/HomeNearbyDiscovery";
+import HomePartnerSummary from "@/components/home/HomePartnerSummary";
+import HomePartnerTabs from "@/components/home/HomePartnerTabs";
+import HomePerksCardSummary from "@/components/home/HomePerksCardSummary";
+import HomePricingSection from "@/components/home/HomePricingSection";
+import HomeProductSection from "@/components/home/HomeProductSection";
 import HomeSearchMap from "@/components/home/HomeSearchMap";
-import HomeWhatYouCanDoSection from "@/components/home/WhatYouCanDoSection";
-import HomeNearbySection from "@/components/home/NearbySection";
 import { homePageCopy } from "@/content/homePageCopy";
-import { faqItems, getStartedRoles, homeEvents } from "@/data/homePageData";
+import {
+  featuredNearbyExample,
+  getStartedFields,
+  homeEventsPreview,
+  homeFaqItems,
+  nearbyDiscoveryGroups,
+  partnerTabPanels,
+  pricingCards,
+  propertyPreview,
+} from "@/data/homePageData";
 
 const heroMetrics = [
   { value: "Map", label: "discovery" },
@@ -29,19 +39,20 @@ export default function Home() {
     <PageShell>
       <HomeHero copy={homePageCopy.hero} metrics={heroMetrics} />
       <HomeSearchMap searchCopy={homePageCopy.search} mapCopy={homePageCopy.mapPreview} />
-      <HomeResidentStory copy={homePageCopy.residentStory} />
-      <HomeProductExplanationSection copy={homePageCopy.productExplanation} />
-      <HomeWhatYouCanDoSection copy={homePageCopy.whatYouCanDo} />
+      <HomeIntroSection copy={homePageCopy.intro} />
+      <HomeProductSection copy={homePageCopy.product} />
+      <HomeEverythingNearby copy={homePageCopy.everythingNearby} />
+      <HomeCanDoSummary copy={homePageCopy.canDo} />
+      <HomeFeaturedExample copy={homePageCopy.featured} example={featuredNearbyExample} />
       <HomeHowItWorks copy={homePageCopy.howItWorks} />
-      <HomePerksCard copy={homePageCopy.card} />
-      <HomeEventsPreview copy={homePageCopy.events} events={homeEvents} />
-      <HomePropertiesPreviewSection copy={homePageCopy.propertiesPreview} />
-      <HomeNearbySection copy={homePageCopy.nearby} />
-      <HomePartnerValueSection copy={homePageCopy.partnerValue} />
-      <HomePartnerOverview copy={homePageCopy.partners} />
-      <HomePricingPreviewSection copy={homePageCopy.partnerFit} />
-      <HomeFAQ copy={homePageCopy.faq} items={faqItems} />
-      <HomeGetStarted copy={homePageCopy.getStarted} roles={getStartedRoles} />
+      <HomeEventsPropertiesSplit copy={homePageCopy.eventsProperties} events={homeEventsPreview} property={propertyPreview} />
+      <HomePerksCardSummary copy={homePageCopy.card} />
+      <HomeNearbyDiscovery copy={homePageCopy.nearbyDiscovery} groups={nearbyDiscoveryGroups} />
+      <HomePartnerSummary copy={homePageCopy.partners} />
+      <HomePartnerTabs tabs={partnerTabPanels} />
+      <HomePricingSection copy={homePageCopy.pricing} cards={pricingCards} />
+      <HomeFAQ copy={homePageCopy.faq} items={homeFaqItems} />
+      <HomeGetStartedForm copy={homePageCopy.getStarted} fields={getStartedFields} />
       <HomeFinalCTA copy={homePageCopy.finalCta} />
     </PageShell>
   );

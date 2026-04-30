@@ -3,11 +3,11 @@ import SectionShell from "@/components/shared/SectionShell";
 import GlassPanel from "@/components/shared/GlassPanel";
 import MetricPill from "@/components/shared/MetricPill";
 import { getSharedCta } from "@/components/shared/CTARegistry";
-import { ROUTES } from "@/lib/routes";
 
 export default function HomeHero({ copy, metrics = [] }) {
   const primary = getSharedCta("explore");
   const secondary = getSharedCta("getCard");
+  const tertiary = getSharedCta("becomePartner");
 
   return (
     <section className="relative overflow-hidden border-b border-[rgba(15,23,42,0.08)] bg-[var(--dp-bg,#f7f8fb)] pt-[88px]">
@@ -39,8 +39,8 @@ export default function HomeHero({ copy, metrics = [] }) {
               </Link>
             </div>
             <div className="mt-4">
-              <Link to={ROUTES.askMap} className="inline-flex min-h-[44px] items-center justify-center text-sm font-semibold text-white/88">
-                {copy.tertiaryCta}
+              <Link to={tertiary.href} className="inline-flex min-h-[44px] items-center justify-center text-sm font-semibold text-white/88">
+                {copy.tertiaryCta || tertiary.label}
               </Link>
             </div>
           </div>

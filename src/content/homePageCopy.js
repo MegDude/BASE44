@@ -2,28 +2,31 @@ export const homePageCopy = {
   hero: {
     eyebrow: "Downtown Austin, live now",
     title: "Where downtown meets you.",
-    subtitle: "Find nearby places, events, perks, and buildings in one simple downtown map.",
-    body: "Built for people who actually live here and the places that make it feel like home.",
+    subtitle: "Built for people who actually live here and the places that make it feel like home.",
+    body: "Find nearby places, events, perks, and buildings in one simple downtown map. No extra apps. No login wall. No directory guessing what matters.",
     primaryCta: "Open the Map",
     secondaryCta: "Get Your Card",
-    tertiaryCta: "Ask the Map",
+    tertiaryCta: "Become a Partner",
   },
+
   search: {
     title: "One Search. Go Everywhere.",
     eyebrowItems: ["Where to go", "What to do", "Who to meet"],
     label: "Where do you want to go?",
-    placeholder: "Where should I go right now?",
+    placeholder: "Search downtown Austin...",
     askButton: "Ask",
     promptChips: ["Coffee right now", "Dinner tonight", "Happy hour nearby"],
     filterChips: [
-      { label: "Venues", ariaLabel: "Nearby venues and local places" },
-      { label: "Events", ariaLabel: "Events happening nearby" },
-      { label: "Perks", ariaLabel: "Local perks from places you would go anyway" },
-      { label: "5 min walk", ariaLabel: "Only places within a five minute walk" },
+      { label: "Nearby", ariaLabel: "Nearby places, events, and useful downtown results" },
+      { label: "Tonight", ariaLabel: "Things happening tonight" },
+      { label: "Perks", ariaLabel: "Places with perks and card-ready access" },
+      { label: "Saved", ariaLabel: "Saved places and events" },
     ],
+    summary: "Search once, then open the full map when you want the live downtown view.",
   },
+
   mapPreview: {
-    title: "Nearby Results",
+    title: "Nearby results",
     subtitle: "Open result details",
     metrics: [
       { value: "5 min", label: "Walk radius" },
@@ -40,182 +43,137 @@ export const homePageCopy = {
       secondaryCta: "Save to card",
     },
   },
-  residentStory: {
+
+  intro: {
     eyebrow: "Downtown, in one place",
     title: "Downtown should be easier to use.",
-    body: "You live nearby, but deciding where to go still takes too much effort. Restaurants are in one place. Events are somewhere else. Perks are easy to miss. Downtown Perks brings the useful parts together so the next move is easier.",
-    support: "The problem is not what to do next. It is the effort it takes to decide.",
-    points: [
-      { label: "Nearby", body: "See what is actually close." },
-      { label: "Useful", body: "Know what is worth opening now." },
-      { label: "Ready", body: "Save, RSVP, or redeem when you need to." },
-    ],
+    body: "You live here, but deciding what to do still takes too much effort. Restaurants are in one place. Events are somewhere else. Perks are easy to miss.",
+    support: "Downtown Perks brings the useful parts together so the next move is easier.",
   },
-  productExplanation: {
-    eyebrow: "Product",
+
+  product: {
+    eyebrow: "Search less. Do more.",
+    title: "Find nearby places, events, perks, and buildings in one simple map.",
+    body: "See what is worth checking out without jumping between apps, feeds, and group chats.",
+  },
+
+  everythingNearby: {
+    eyebrow: "One map. Everything nearby.",
+    title: "No app download. No account setup. No piecing things together.",
+    body: "Just what matters, close by, with one downtown view that makes the next decision easier.",
+  },
+
+  canDo: {
+    eyebrow: "What you can do",
     title: "Search less. Do more.",
     body: "See what is nearby, what is happening, and what is worth checking out without jumping between apps, feeds, and group chats.",
-    bullets: [
-      "One map for places, events, perks, and buildings",
-      "Filters that match what you need right now",
-      "A cleaner path from discovery to card-ready access",
+    tabs: [
+      {
+        label: "All",
+        title: "See what is close enough to use.",
+        body: "Restaurants, bars, coffee, wellness, events, and buildings stay in one map view.",
+        cta: "Open Map",
+        href: "/explore",
+      },
+      {
+        label: "Places",
+        title: "Find the spots that fit the moment.",
+        body: "Coffee, dinner, drinks, shopping, and daily-use places stay visible without losing the map context.",
+        cta: "Open Venues",
+        href: "/partners/venues",
+      },
+      {
+        label: "Offers",
+        title: "Use perks when they are actually relevant.",
+        body: "Card-ready offers show up alongside the places you would go anyway.",
+        cta: "Get Your Card",
+        href: "/resident-app/card",
+      },
+      {
+        label: "Events",
+        title: "Find what is happening before you miss it.",
+        body: "See what is on tonight, save it, RSVP, and keep moving through the same downtown layer.",
+        cta: "Open Events",
+        href: "/events",
+      },
+      {
+        label: "Properties",
+        title: "See the neighborhood around where you live.",
+        body: "Buildings, walkable places, nearby events, and useful local context all live together.",
+        cta: "Open Buildings",
+        href: "/partners/properties",
+      },
     ],
   },
-  whatYouCanDo: {
-    eyebrow: "What You Can Do",
-    title: "Use the downtown layer like a local.",
-    body: "Move between places, events, perks, and live-here context without losing your spot.",
-    tabs: {
-      Venues: {
-        title: "Find somewhere worth walking to.",
-        body: "Open nearby coffee, dinner, drinks, and quick choices without scrolling through noise.",
-        bullets: ["Coffee and dinner now", "Open nearby", "Short walk options"],
-      },
-      Events: {
-        title: "See what is happening before you miss it.",
-        body: "Tonight plans, RSVP moments, and event context stay tied to the same downtown map.",
-        bullets: ["Tonight and this week", "RSVP-ready picks", "Map-linked event detail"],
-      },
-      Perks: {
-        title: "Use perks when they actually matter.",
-        body: "See which places are card-ready and what is worth saving for later.",
-        bullets: ["Perk-ready venues", "Card access when needed", "No separate deal feed"],
-      },
-      Properties: {
-        title: "See the neighborhood around where you live.",
-        body: "Buildings, parks, destinations, and everyday anchors stay in one nearby layer.",
-        bullets: ["Homes and towers", "Walkable landmarks", "Live-here context"],
-      },
-    },
+
+  featured: {
+    eyebrow: "Featured nearby",
+    title: "One good answer beats five tabs.",
+    body: "Open a nearby route, save it for later, or use the card when a stop is perk-ready.",
   },
+
   howItWorks: {
     eyebrow: "How it works",
     title: "Open. Decide. Go.",
     steps: [
       { title: "Open the map", body: "See places, events, perks, and buildings nearby." },
-      { title: "Decide what fits", body: "Tap into the detail, see why it matters, and choose whether to go now or save it for later." },
-      { title: "Show your card. Use the perk.", body: "When access matters, show the card. They scan. You save. Done." },
+      { title: "Pick what fits", body: "Filter by what you need now — coffee, dinner, offers, events, or a short walk." },
+      { title: "Use your card", body: "Show your Downtown Perks card when a perk is available." },
     ],
   },
+
+  eventsProperties: {
+    eyebrow: "Events and properties",
+    title: "What is on tonight, and where could you live tomorrow?",
+    body: "Events and homes both make more sense when they stay connected to the same downtown map.",
+  },
+
   card: {
     eyebrow: "Perks Card",
     title: "The card is access, not the product.",
-    body: "Use the map first. Add the card when you want to save places, RSVP to events, unlock member perks, or redeem something nearby.",
+    body: "Use the map first. Add the card when you want to save places, RSVP to events, unlock resident perks, or redeem something nearby.",
     primaryCta: "Get Your Card",
-    secondaryCta: "Open Map",
+    secondaryCta: "Learn how the card works",
   },
-  events: {
-    eyebrow: "Live tonight",
-    title: "See what is worth stepping out for.",
-    body: "Pick a day, see what is happening nearby, and open the live events map when you want the full downtown view.",
-    calendarTitle: "Calendar",
-    calendarBody: "Pick a day, then open the event that feels most relevant.",
-    primaryCta: "Open events",
-    secondaryCta: "Happy hour walking map",
-  },
-  propertiesPreview: {
-    eyebrow: "Live here",
-    title: "See the neighborhood around the building.",
-    body: "Properties sit inside the same downtown layer as events, venues, and perks so living nearby feels easier to understand.",
-    properties: ["The Shore", "The Independent", "70 Rainey", "Four Seasons Residences"],
-  },
-  nearby: {
+
+  nearbyDiscovery: {
     eyebrow: "Nearby discovery",
-    title: "Everything nearby, without the tab juggling.",
-    body: "Browse the downtown layer by what matters most right now: coffee, events, perks, places to live, and a quick walk.",
-    cards: [
-      { title: "Coffee right now", body: "Fast nearby picks when the answer needs to be easy." },
-      { title: "What is on tonight", body: "Events and plans tied to the same map you already opened." },
-      { title: "Card-ready perks", body: "Places worth saving when there is a perk available." },
-      { title: "Live nearby", body: "Buildings and districts that make the neighborhood easier to read." },
-    ],
+    title: "Downtown stays more useful when the right categories stay close.",
+    body: "Keep the everyday layer readable: coffee, dinner, hotels, parks, perks, and places worth revisiting.",
   },
-  partnerValue: {
-    eyebrow: "Partners",
+
+  partners: {
+    eyebrow: "For partners",
     title: "Help people choose you next.",
     body: "People are already downtown, already walking, and already deciding where to go. Downtown Perks helps partners show up at the moment that decision happens.",
+    proofLine: "The dashboard turns saves, scans, RSVPs, visits, and redemptions into a clear view of what worked.",
   },
-  partners: {
-    eyebrow: "Partner types",
-    title: "Turn residents into regulars.",
-    body: "People are already downtown, already walking, and already deciding. The point is not more attention. It is better timing, clearer context, and proof of what happened next.",
-    steps: [
-      { number: "1", title: "You show up on the map", body: "Your building, venue, brand, or district appears in the same downtown layer people already use." },
-      { number: "2", title: "People choose what is nearby", body: "They see what is close, what is open, and what gives them a reason to go." },
-      { number: "3", title: "You see what worked", body: "The dashboard shows visits, saves, RSVPs, scans, and redemptions without turning it into a reporting maze." },
-    ],
-    tabs: ["Residential", "Hospitality", "Venues", "Brands", "Civic"],
-    panels: {
-      Residential: {
-        title: "Turn the neighborhood into a resident amenity.",
-        body: "Buildings can give residents a useful map of nearby places, events, perks, and services tied to where they live.",
-        bullets: ["Lobby QR entry", "Resident card access", "Building-level proof"],
-        cta: "Open Buildings",
-        href: "/partners/properties",
-      },
-      Hospitality: {
-        title: "Give guests a live downtown layer beyond the lobby.",
-        body: "Hotels can help guests find nearby dining, events, wellness, and perks without relying on static guides.",
-        bullets: ["Front desk QR", "Nearby recommendations", "Guest activity signals"],
-        cta: "Open Hospitality",
-        href: "/partners/hotels",
-      },
-      Venues: {
-        title: "Show up when nearby intent is already forming.",
-        body: "Restaurants, bars, cafes, wellness, fitness, and experiences can appear while people are nearby and deciding.",
-        bullets: ["Live map placement", "Offers and events", "Redemption tracking"],
-        cta: "Open Venues",
-        href: "/partners/venues",
-      },
-      Brands: {
-        title: "Show up inside real downtown behavior.",
-        body: "Instead of broad reach, brands enter the map where people are already moving, deciding, and showing up.",
-        bullets: ["District and venue placement", "Campaign visibility tied to real movement", "Proof of scans, visits, and response"],
-        cta: "Open brand view",
-        href: "/partners/brands",
-      },
-      Civic: {
-        title: "Make participation easier to see and measure.",
-        body: "Civic groups can surface public events, programs, and district activity in the same live layer people already use.",
-        bullets: ["Public programming", "Participation signals", "District visibility"],
-        cta: "Open Civic",
-        href: "/partners/civic",
-      },
-    },
-  },
-  partnerFit: {
+
+  pricing: {
     eyebrow: "Pricing",
-    title: "Start small. Prove it fast. Keep it if it works.",
-    body: "Start with a 90-day pilot, then keep the level that proves useful.",
-    note: "Partner pricing is finalized after fit review. Resident direct access is $25 per year until a building joins, then that fee is refunded.",
-    roles: [
-      { label: "Properties", title: "Turn the neighborhood into a measurable resident amenity.", price: "Free · $39 · $99 / year", atAGlance: "90-day pilot. Then choose your level. Management pays. Residents stay.", body: "Multifamily, condos, apartments, and residential buildings.", href: "/partners/properties", cta: "View Properties" },
-      { label: "Hotels", title: "Give guests one live downtown layer beyond the lobby.", price: "$99–$149 / year", atAGlance: "90-day pilot. Then choose your level.", body: "Hotels, boutiques, extended stays, and hospitality.", href: "/partners/hotels", cta: "View Hospitality" },
-      { label: "Venues", title: "Show up when nearby intent is already forming.", price: "Free for 12 months, then $49–$99 / year", atAGlance: "Free 90-day pilot. Then keep the venue layer live.", body: "Restaurants, bars, cafes, fitness, wellness, and experiences.", href: "/partners/venues", cta: "View Venues" },
-      { label: "Brands", title: "Activate the right corridor at the right time.", price: "$99–$149 / year", atAGlance: "Final pricing reflects footprint, visibility, and activation.", body: "Brands, activations, campaigns, and corridor sponsorships.", href: "/partners/brands", cta: "View Brands" },
-      { label: "Civic", title: "Make district participation easier to see and measure.", price: "$49–$79 / year", atAGlance: "Turn attendance into participation.", body: "Cities, districts, chambers, and community partners.", href: "/partners/civic", cta: "View Civic" },
-    ],
-    primaryCta: "See how it works for you",
-    secondaryCta: "Start the Pilot",
+    title: "One pricing section. Clear next steps.",
+    body: "Start with a pilot, prove the fit, and keep the level that stays useful.",
+    note: "Final pricing reflects footprint, visibility, activation, and reporting scope after fit review.",
   },
+
   faq: {
     eyebrow: "FAQs",
     title: "Questions people ask before they start.",
     introTitle: "What is Downtown Perks?",
     introBody: "Downtown Perks is a live downtown map that brings places, events, perks, buildings, and local context into one working layer. It helps people decide what to do based on what is actually nearby and useful right now.",
-    body: "This covers resident access, partner pricing, launch timing, what gets tracked, and how the map actually works.",
   },
+
   getStarted: {
     eyebrow: "Get started",
-    title: "Choose the path that fits and launch from there.",
-    body: "Pick the role, see the setup, and open the right onboarding flow without leaving the page.",
-    tabs: ["Buildings", "Hospitality", "Venues", "Brands", "Civic", "Real Estate", "Residents"],
+    title: "Start with the path that fits.",
+    body: "Tell us what kind of partner you are, what you run, and what you want people to do next.",
   },
+
   finalCta: {
     eyebrow: "Ready when you are",
     title: "People do not choose the best option. They choose the one they notice.",
     body: "What is close, clear, and easy usually wins. Downtown Perks helps you be that option.",
-    email: "partners@downtownperks.com",
     ctas: ["Explore Downtown", "Open Buildings", "Contact Us"],
+    email: "hello@downtownperks.com",
   },
 };

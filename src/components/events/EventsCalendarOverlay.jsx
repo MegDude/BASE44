@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CalendarDays, ChevronDown, ChevronUp, Clock3, ExternalLink, MapPin, Martini, Sparkles } from "lucide-react";
+import { CalendarDays, Clock3, ExternalLink, MapPin, Martini } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useMapStateStore } from "@/store/mapStateStore";
 import { ROUTES } from "@/lib/routes";
@@ -229,7 +229,6 @@ export default function EventsCalendarOverlay() {
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const [selectedDate, setSelectedDate] = useState(startOfDay(new Date()));
   const [entryFilter, setEntryFilter] = useState("all");
-  const [isMobileSheetExpanded, setIsMobileSheetExpanded] = useState(false);
 
   const entries = useMemo(() => buildEntries(filteredResults), [filteredResults]);
 
@@ -255,13 +254,6 @@ export default function EventsCalendarOverlay() {
   const venueCount = visibleEntries.filter((entry) => entry.kind !== "event").length;
   const eventCount = visibleEntries.filter((entry) => entry.kind === "event").length;
   const formUrl = import.meta.env.VITE_GOOGLE_FORMS_VENUE_URL || "";
-  const previewEntries = visibleEntries.slice(0, 8);
-
-  const handleMobileEntrySelect = (entity) => {
-    selectEntity(entity);
-    setIsMobileSheetExpanded(false);
-  };
-
   return (
     <>
       <aside className="pointer-events-auto fixed bottom-4 left-4 top-[154px] z-[35] hidden w-[420px] overflow-hidden rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.95)] shadow-[0_24px_60px_rgba(11,31,51,0.14)] backdrop-blur-xl lg:flex lg:flex-col">
@@ -452,114 +444,6 @@ export default function EventsCalendarOverlay() {
         </div>
       </aside>
 
-      <div className="pointer-events-auto fixed inset-x-3 bottom-3 z-[35] overflow-hidden rounded-[24px] border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.94)] shadow-[0_18px_44px_rgba(11,31,51,0.14)] backdrop-blur-xl lg:hidden">
-        <button
-          type="button"
-          onClick={() => setIsMobileSheetExpanded((current) => !current)}
-          aria-expanded={isMobileSheetExpanded}
-          className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left"
-        >
-          <div className="min-w-0">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.48)]">
-              Events and specials
-            </div>
-            <div className="mt-1 text-[13px] text-[rgba(11,31,51,0.64)]">
-              {visibleEntries.length} things you can open on the map right now.
-            </div>
-            {!isMobileSheetExpanded ? (
-              <div className="mt-2 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-[rgba(11,31,51,0.56)]">
-                <span className="rounded-full bg-[rgba(11,31,51,0.05)] px-2.5 py-1">{eventCount} events</span>
-                <span className="rounded-full bg-[rgba(11,31,51,0.05)] px-2.5 py-1">{venueCount} places</span>
-              </div>
-            ) : null}
-          </div>
-          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[rgba(11,31,51,0.08)] bg-white text-[var(--dp-navy)]">
-            {isMobileSheetExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
-          </span>
-        </button>
-
-        {!isMobileSheetExpanded ? (
-          <div className="border-t border-[rgba(11,31,51,0.08)] px-4 pb-4 pt-3">
-            <div className="flex items-center gap-2 overflow-x-auto pb-1">
-              {ENTRY_FILTERS.slice(0, 4).map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setEntryFilter(item.id)}
-                  className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-semibold ${
-                    entryFilter === item.id
-                      ? "bg-[var(--dp-navy)] text-white"
-                      : "bg-[rgba(11,31,51,0.05)] text-[rgba(11,31,51,0.62)]"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="border-t border-[rgba(11,31,51,0.08)]">
-            <div className="max-h-[34vh] overflow-y-auto px-3 py-3">
-              <Link
-                to={ROUTES.happyHourWalkingMap}
-                className="mb-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-white px-3 text-[12px] font-semibold text-[var(--dp-navy)]"
-              >
-                <Martini className="h-4 w-4" />
-                Happy hour walking map
-              </Link>
-              <div className="mb-3 flex gap-2 overflow-x-auto pb-1">
-                {ENTRY_FILTERS.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setEntryFilter(item.id)}
-                    className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] font-semibold ${
-                      entryFilter === item.id
-                        ? "bg-[var(--dp-navy)] text-white"
-                        : "bg-[rgba(11,31,51,0.05)] text-[rgba(11,31,51,0.62)]"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-              <div className="space-y-2">
-                {previewEntries.map((entry) => (
-                  <button
-                    key={entry.id}
-                    type="button"
-                    onClick={() => handleMobileEntrySelect(entry.sourceEntity)}
-                    className="flex w-full items-start gap-3 rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-white p-3 text-left"
-                  >
-                    <img src={entry.imageUrl} alt={entry.title} className="h-16 w-16 shrink-0 rounded-[14px] object-cover" />
-                    <div className="min-w-0">
-                      <div className="line-clamp-2 font-heading text-[1rem] leading-[1.05] text-[var(--dp-navy)]">
-                        {entry.title}
-                      </div>
-                      <div className="mt-1 text-[11px] text-[rgba(11,31,51,0.58)]">
-                        {entry.subtitle}
-                      </div>
-                      <div className="mt-1 text-[11px] text-[rgba(11,31,51,0.58)]">
-                        {entry.kind === "event" ? entry.timeLabel : entry.hoursLabel || entry.timeLabel}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              {formUrl ? (
-                <button
-                  type="button"
-                  onClick={() => window.open(formUrl, "_blank", "noopener,noreferrer")}
-                  className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-[16px] border border-[rgba(11,31,51,0.08)] bg-white px-3 text-[12px] font-semibold text-[var(--dp-navy)]"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  Submit venue or event update
-                </button>
-              ) : null}
-            </div>
-          </div>
-        )}
-      </div>
     </>
   );
 }

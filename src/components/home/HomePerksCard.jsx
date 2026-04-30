@@ -5,7 +5,7 @@ import { getSharedCta } from "@/components/shared/CTARegistry";
 
 export default function HomePerksCard({ copy }) {
   const primary = getSharedCta("getCard");
-  const secondary = getSharedCta("openMap");
+  const secondary = getSharedCta("getCard");
 
   return (
     <SectionShell eyebrow={copy.eyebrow} title={copy.title} body={copy.body} className="border-t border-[rgba(15,23,42,0.08)]">

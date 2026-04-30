@@ -1,5 +1,5 @@
 import { Search, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useMapPanelStore } from "@/store/useMapPanelStore";
 import MapSearchRail from "@/components/map/MapSearchRail";
 
@@ -30,12 +30,6 @@ const districtOptions = [
   { value: "East Austin edge", label: "East Austin edge" },
   { value: "Waterloo / Capitol edge", label: "Waterloo / Capitol edge" },
 ];
-const quickPrompts = [
-  "coffee near me",
-  "best happy hour tonight",
-  "apartments with perks nearby",
-];
-
 function buildIntentState(setDecision, setType, setFilters, next) {
   return () => {
     setDecision(next.decision);
@@ -46,18 +40,14 @@ function buildIntentState(setDecision, setType, setFilters, next) {
 
 export default function MapControlPanel({
   askLoading = false,
-  resultCount = 0,
   onAsk = null,
 }) {
   const [showRefine, setShowRefine] = useState(false);
   const {
     query,
-    submittedQuery,
     decision,
     type,
     district,
-    agentExplanation,
-    agentSuggestions,
     categories,
     filters,
     setMode,
@@ -70,18 +60,6 @@ export default function MapControlPanel({
     toggleCategory,
     toggleFilter,
   } = useMapPanelStore();
-
-  const statusText = useMemo(() => {
-    if (askLoading) return "Searching the live downtown layer...";
-    if (agentExplanation) return agentExplanation;
-    if (submittedQuery) return "Ask the map about places, events, perks, or buildings nearby.";
-    return "Ask a real question and get ranked nearby results.";
-  }, [agentExplanation, askLoading, submittedQuery]);
-
-  const suggestionItems = useMemo(() => {
-    const source = agentSuggestions?.length ? agentSuggestions : quickPrompts;
-    return source.slice(0, 3);
-  }, [agentSuggestions]);
   const happyHourActive = categories.includes("happy-hour");
 
   const handleLayerSelect = (layerId) => {
@@ -209,22 +187,22 @@ export default function MapControlPanel({
 
   return (
     <div className="absolute left-3 right-3 top-3 z-[500] md:right-auto md:w-[min(560px,calc(100vw-440px))]">
-      <div className="rounded-[26px] border border-white/60 bg-white/92 p-3 shadow-[0_18px_48px_rgba(10,20,40,0.12)] backdrop-blur-xl">
+      <div className="rounded-[24px] border border-white/60 bg-white/92 p-3 shadow-[0_18px_48px_rgba(10,20,40,0.12)] backdrop-blur-xl">
         <div className="flex items-start justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(11,31,51,0.05)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1A2B]">
               <Sparkles className="h-3.5 w-3.5" />
               Ask the map
             </div>
             <p className="mt-2 text-sm text-slate-600">
-              Search downtown places, events, perks, and residential options from one console.
+              Search places, events, perks, and homes from one downtown view.
             </p>
           </div>
 
           <button
             type="button"
             onClick={() => setShowRefine((value) => !value)}
-            className="min-h-10 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
+            className="min-h-10 shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/30"
             aria-label={showRefine ? "Hide map filters" : "Show map filters"}
           >
             {showRefine ? "Less" : "Refine"}
@@ -266,42 +244,47 @@ export default function MapControlPanel({
           <MapSearchRail primaryItems={intentItems} className="mt-0.5" />
         </form>
 
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Map layers">
-          {layerItems.map((item) => {
-            const isActive =
-              item.id === "all"
-                ? categories.length === 0 && type === "all"
-                : item.id === "events"
-                  ? type === "events"
-                  : item.id === "perks"
-                    ? type === "perks" || filters.deals
-                    : item.id === "buildings"
-                      ? type === "buildings"
-                      : item.id === "hotels"
-                        ? categories.includes("hotel")
-                        : categories.includes(item.id);
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleLayerSelect(item.id)}
-                className={`min-h-10 shrink-0 rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
-                  isActive
-                    ? item.id === "happy-hour"
-                      ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]"
-                      : "bg-[#0B1A2B] text-white"
-                    : "bg-slate-100 text-slate-700"
-                }`}
-                aria-pressed={isActive}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
-
         {showRefine ? (
-          <div className="mt-3 space-y-2 border-t border-slate-200 pt-3">
+          <div className="mt-3 space-y-3 border-t border-slate-200 pt-3">
+            <div>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Browse layers
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-1" aria-label="Map layers">
+                {layerItems.map((item) => {
+                  const isActive =
+                    item.id === "all"
+                      ? categories.length === 0 && type === "all"
+                      : item.id === "events"
+                        ? type === "events"
+                        : item.id === "perks"
+                          ? type === "perks" || filters.deals
+                          : item.id === "buildings"
+                            ? type === "buildings"
+                            : item.id === "hotels"
+                              ? categories.includes("hotel")
+                              : categories.includes(item.id);
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleLayerSelect(item.id)}
+                      className={`min-h-10 shrink-0 rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] focus:outline-none focus:ring-2 focus:ring-[#0B1A2B]/25 ${
+                        isActive
+                          ? item.id === "happy-hour"
+                            ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]"
+                            : "bg-[#0B1A2B] text-white"
+                          : "bg-slate-100 text-slate-700"
+                      }`}
+                      aria-pressed={isActive}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_200px]">
               <div className="flex flex-wrap gap-2" aria-label="Category filters">
                 {venueCategories.map((item) => (
@@ -377,37 +360,6 @@ export default function MapControlPanel({
             ) : null}
           </div>
         ) : null}
-
-        <div className="mt-3 rounded-[18px] border border-[rgba(11,31,51,0.08)] bg-[rgba(248,250,252,0.88)] px-4 py-3">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <div className="text-sm font-semibold text-[#0B1A2B]">
-                {submittedQuery ? `Results for "${submittedQuery}"` : "Ready for your next move"}
-              </div>
-              <div className="mt-1 text-xs text-slate-500">{statusText}</div>
-            </div>
-            <div className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-              {resultCount} results
-            </div>
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-2">
-            {suggestionItems.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => {
-                  setMode("ask");
-                  setQuery(item);
-                  handleSubmit(item);
-                }}
-                className="rounded-full border border-[rgba(11,31,51,0.08)] bg-white px-3 py-1.5 text-xs text-[#0B1A2B] transition hover:border-[rgba(11,31,51,0.16)] hover:bg-slate-50"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

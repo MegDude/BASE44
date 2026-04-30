@@ -19,6 +19,7 @@ import { useMapFilters } from '@/hooks/useMapFilters';
 import { filterEntities } from '@/lib/mapFilters';
 import { trackEvent } from '@/lib/analytics';
 import { getHappyHourEntities } from '@/lib/map/happyHourEntities';
+import { toFiniteNumber } from '@/lib/mapValidation';
 
 // Helper to get marker icon from factory
 function getMarkerIcon(entity, isSelected) {
@@ -26,6 +27,49 @@ function getMarkerIcon(entity, isSelected) {
     isSelected,
     radiusMinutes: useMapStateStore.getState().activeFilters.walkMinutes,
   });
+}
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function normalizeMapEntities(items = []) {
+  const seenIds = new Map();
+
+  return (Array.isArray(items) ? items : [])
+    .map((item, index) => {
+      const latitude = toFiniteNumber(
+        item?.location?.latitude ?? item?.latitude ?? item?.lat
+      );
+      const longitude = toFiniteNumber(
+        item?.location?.longitude ?? item?.longitude ?? item?.lng
+      );
+
+      if (latitude === null || longitude === null) return null;
+
+      const baseId =
+        item?.id ||
+        item?.entity_id ||
+        `${item?.type || 'entity'}-${slugify(item?.name || item?.title || item?.address || `item-${index}`)}`;
+      const collisionCount = seenIds.get(baseId) || 0;
+      seenIds.set(baseId, collisionCount + 1);
+      const resolvedId = collisionCount === 0 ? baseId : `${baseId}-${collisionCount + 1}`;
+
+      return {
+        ...item,
+        id: resolvedId,
+        location: {
+          ...(item?.location || {}),
+          latitude,
+          longitude,
+          valid: true,
+        },
+      };
+    })
+    .filter((item) => Boolean(item) && item.isPlotted !== false);
 }
 
 export default function ExploreRebuilt() {
@@ -38,13 +82,11 @@ export default function ExploreRebuilt() {
   const activeFilters = useMapStateStore((state) => state.activeFilters);
   const searchQuery = useMapStateStore((state) => state.searchQuery);
   const savedEntityIds = useMapStateStore((state) => state.savedEntityIds);
-  const heatmapVisible = useMapStateStore((state) => state.heatmapVisible);
   const showResultsList = useMapStateStore((state) => state.showResultsList);
   const setMapCenter = useMapStateStore((state) => state.setMapCenter);
   const setMapZoom = useMapStateStore((state) => state.setMapZoom);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setFilteredResults = useMapStateStore((state) => state.setFilteredResults);
-  const setHeatmapVisible = useMapStateStore((state) => state.setHeatmapVisible);
   const setSearchQuery = useMapStateStore((state) => state.setSearchQuery);
   const setShowResultsList = useMapStateStore((state) => state.setShowResultsList);
   const updateFilter = useMapStateStore((state) => state.updateFilter);
@@ -106,10 +148,8 @@ export default function ExploreRebuilt() {
       setLoading(true);
       try {
         const feedItems = await mapRepository.getMapFeed({ query: '', filters: {}, limit: 1000 });
-        const safeItems = filterValidEntities(feedItems).filter(
-          (item) => item.isPlotted !== false
-        );
-        const mergedItems = [...safeItems, ...getHappyHourEntities()];
+        const safeItems = normalizeMapEntities(filterValidEntities(feedItems));
+        const mergedItems = normalizeMapEntities([...safeItems, ...getHappyHourEntities()]);
 
         if (!mounted) return;
         baseEntitiesRef.current = mergedItems;
@@ -278,7 +318,7 @@ export default function ExploreRebuilt() {
         },
       });
 
-      const safeItems = filterValidEntities(items).filter((item) => item.isPlotted !== false);
+      const safeItems = normalizeMapEntities(filterValidEntities(items));
       setAgentState({
         agentExplanation: explanation || intent?.explanation || "Showing what fits nearby.",
         agentSuggestions: suggestions || intent?.suggestions || [],
@@ -302,7 +342,6 @@ export default function ExploreRebuilt() {
     if (mode !== 'ask') return;
     if (!submittedQuery?.trim()) return;
     handleAsk(submittedQuery);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [askVersion, mode, submittedQuery]);
 
   useEffect(() => {
@@ -374,21 +413,6 @@ export default function ExploreRebuilt() {
       agentExplanation: explanation,
     });
   }, [allEntities, searchQuery, activeFilters, savedEntityIds, setFilteredResults, setAgentState, type, decision, categories, filters.activeSpecials, filters.drinkDeals, filters.fiveMin, filters.foodDeals, filters.needsDetails, filters.openNow, filters.residentPerks, filters.tenMin]);
-
-  const summary = useMemo(
-    () => ({
-      venues: filteredResults.filter((item) => item.type === 'venue').length,
-      events: filteredResults.filter((item) => item.type === 'event').length,
-      perks: filteredResults.filter((item) => item.type === 'perk').length,
-      properties: filteredResults.filter((item) => ['building', 'property', 'hotel'].includes(item.type)).length,
-    }),
-    [filteredResults]
-  );
-
-  const liveCount = useMemo(
-    () => filteredResults.filter((item) => Boolean(item.isLive || item.eventTiming?.isLive || item.isOpenNow)).length,
-    [filteredResults]
-  );
 
   const annotatedResults = useMemo(
     () =>
