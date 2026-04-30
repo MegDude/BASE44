@@ -25,6 +25,18 @@ function getStatus(item) {
   return null;
 }
 
+function getMobilePanelHeight(drawerState) {
+  if (drawerState === 'collapsed') return 'h-[76px]';
+  if (drawerState === 'expanded' || drawerState === 'fullscreen') return 'h-[84vh]';
+  return 'h-[48vh]';
+}
+
+function getMobileToggleLabel(drawerState) {
+  if (drawerState === 'expanded' || drawerState === 'fullscreen') return 'Collapse';
+  if (drawerState === 'collapsed') return 'Open';
+  return 'Expand';
+}
+
 export default function UnifiedDrawer({
   selected,
   desktopMode = 'floating',
@@ -61,6 +73,7 @@ export default function UnifiedDrawer({
   }
 
   const isExpanded = drawerState === 'expanded' || drawerState === 'fullscreen';
+  const isCollapsed = drawerState === 'collapsed';
   const isSaved = savedEntityIds.has(selected.id);
   const EntityIcon = getEntityIcon(selected);
   const entityLabel = getEntityLabel(selected);
@@ -94,6 +107,18 @@ export default function UnifiedDrawer({
     }
 
     await openDetails();
+  };
+
+  const toggleMobilePanel = () => {
+    if (drawerState === 'collapsed') {
+      setDrawerState('preview');
+      return;
+    }
+    if (isExpanded) {
+      setDrawerState('preview');
+      return;
+    }
+    setDrawerState('expanded');
   };
 
   const primaryLabel =
@@ -157,16 +182,8 @@ export default function UnifiedDrawer({
             {selected.metadata.walkMinutes} min walk
           </span>
         )}
-        {groupedListingCount > 1 && (
-          <span className="dp-chip">
-            {groupedListingCount} listings
-          </span>
-        )}
-        {selected.type === 'cluster' && clusterCount > 1 && (
-          <span className="dp-chip">
-            {clusterCount} grouped pins
-          </span>
-        )}
+        {groupedListingCount > 1 && <span className="dp-chip">{groupedListingCount} listings</span>}
+        {selected.type === 'cluster' && clusterCount > 1 && <span className="dp-chip">{clusterCount} grouped pins</span>}
         {listingTypes.length > 0 && (
           <span className="dp-chip">
             {listingTypes.map((type) => String(type).charAt(0).toUpperCase() + String(type).slice(1)).join(' + ')}
@@ -182,15 +199,9 @@ export default function UnifiedDrawer({
           {(groupedListingCount > 1 || unitTypes.length > 0) && (
             <div className="mt-3 space-y-2">
               {groupedListingCount > 1 && (
-                <p className="font-medium text-navy">
-                  {groupedListingCount} active listings grouped in this building.
-                </p>
+                <p className="font-medium text-navy">{groupedListingCount} active listings grouped in this building.</p>
               )}
-              {unitTypes.length > 0 && (
-                <p>
-                  Unit mix: {unitTypes.join(', ')}
-                </p>
-              )}
+              {unitTypes.length > 0 && <p>Unit mix: {unitTypes.join(', ')}</p>}
             </div>
           )}
           {selected.eventTiming?.title && <p className="mt-2 font-medium text-navy">{selected.eventTiming.title}</p>}
@@ -199,9 +210,7 @@ export default function UnifiedDrawer({
 
       {selected.type === 'cluster' && clusterItems.length > 0 && (
         <div className="mt-4 rounded-xl border border-border bg-white/80 p-4">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-navy/54">
-            In this area
-          </div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-navy/54">In this area</div>
           <div className="mt-3 space-y-2">
             {clusterItems.slice(0, 6).map((item) => (
               <button
@@ -220,9 +229,7 @@ export default function UnifiedDrawer({
                   </div>
                 </div>
                 {item.metadata?.walkMinutes ? (
-                  <span className="shrink-0 text-[11px] font-medium text-navy/54">
-                    {item.metadata.walkMinutes} min
-                  </span>
+                  <span className="shrink-0 text-[11px] font-medium text-navy/54">{item.metadata.walkMinutes} min</span>
                 ) : null}
               </button>
             ))}
@@ -260,11 +267,11 @@ export default function UnifiedDrawer({
 
       <div className="mt-2 flex gap-2">
         <button
-          onClick={() => setDrawerState(isExpanded ? 'preview' : 'expanded')}
+          onClick={toggleMobilePanel}
           className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
         >
           <IconChevronUp className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-          {isExpanded ? 'Roll up details' : 'View full details'}
+          {getMobileToggleLabel(drawerState)}
         </button>
         <button
           onClick={closeDrawer}
@@ -277,35 +284,27 @@ export default function UnifiedDrawer({
     </>
   );
 
+  const mobilePanelHeight = getMobilePanelHeight(drawerState);
+
   return (
     <>
       {isDesktop ? (
         <AnimatePresence>
           <motion.div
             key={`desktop-${selected.id}`}
-            initial={
-              desktopMode === 'docked'
-                ? { opacity: 0, x: 420 }
-                : { opacity: 0, y: 18, x: -12 }
-            }
+            initial={desktopMode === 'docked' ? { opacity: 0, x: 420 } : { opacity: 0, y: 18, x: -12 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
-            exit={
-              desktopMode === 'docked'
-                ? { opacity: 0, x: 420 }
-                : { opacity: 0, y: 18, x: -12 }
-            }
+            exit={desktopMode === 'docked' ? { opacity: 0, x: 420 } : { opacity: 0, y: 18, x: -12 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
             className={
               desktopMode === 'docked'
                 ? `pointer-events-auto absolute bottom-5 right-5 top-5 z-30 w-[380px] overflow-hidden rounded-[28px] border border-border bg-[#fbfbfd] shadow-[0_24px_60px_rgba(11,31,51,0.12)] md:flex md:flex-col ${desktopClassName}`.trim()
-                : `pointer-events-auto fixed bottom-6 left-6 z-30 w-[min(420px,calc(100vw-32px))] md:block ${desktopClassName}`.trim()
+                : `pointer-events-auto absolute bottom-6 left-6 z-30 w-[min(420px,calc(100vw-32px))] md:block ${desktopClassName}`.trim()
             }
           >
             <div className={desktopMode === 'docked' ? 'flex h-full flex-col bg-[#fbfbfd]' : 'dp-map-panel overflow-hidden rounded-[24px] border border-border shadow-[0_24px_60px_rgba(11,31,51,0.18)]'}>
               <div className="flex items-center justify-between border-b border-border px-5 py-4">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--dp-gold-muted)]">
-                  Selected place
-                </div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--dp-gold-muted)]">Selected place</div>
                 <button
                   onClick={closeDrawer}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(11,31,51,0.08)] bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900"
@@ -321,46 +320,54 @@ export default function UnifiedDrawer({
           </motion.div>
         </AnimatePresence>
       ) : (
-        <>
-          <AnimatePresence>
-            <motion.div
-              key="drawer-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeDrawer}
-              className="fixed inset-0 z-[29] bg-[rgba(11,31,51,0.18)]"
-            />
-          </AnimatePresence>
+        <AnimatePresence>
+          <motion.div
+            key={selected.id}
+            initial={{ y: 320 }}
+            animate={{ y: 0 }}
+            exit={{ y: 320 }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.08}
+            onDragEnd={(_, info) => {
+              if (info.offset.y > 80) setDrawerState('collapsed');
+              if (info.offset.y < -80) setDrawerState('expanded');
+            }}
+            transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+            className="absolute inset-x-0 bottom-0 z-30 px-3 pb-3"
+          >
+            <div className={`dp-map-panel overflow-hidden rounded-2xl transition-[height] duration-200 ease-out ${mobilePanelHeight}`}>
+              <button
+                type="button"
+                onClick={() => setDrawerState(isCollapsed ? 'preview' : 'collapsed')}
+                className="flex w-full cursor-pointer justify-center py-2"
+                aria-label={isCollapsed ? 'Open details' : 'Collapse details'}
+              >
+                <div className="h-1.5 w-12 rounded-full bg-navy/20" />
+              </button>
 
-          <AnimatePresence>
-            <motion.div
-              key={selected.id}
-              initial={{ y: 320 }}
-              animate={{ y: 0 }}
-              exit={{ y: 320 }}
-              transition={{ type: 'spring', damping: 28, stiffness: 240 }}
-              className="fixed inset-x-0 bottom-0 z-30 px-3 pb-3"
-            >
-              <div className="dp-map-panel overflow-hidden rounded-2xl">
-                <div className="flex items-center justify-between border-b border-border px-4 py-3">
-                  <div className="h-1.5 w-12 rounded-full bg-navy/10" />
-                  <button
-                    onClick={closeDrawer}
-                    className="rounded-full p-1 text-slate-500 hover:bg-slate-100"
-                    aria-label="Close details"
-                  >
-                    <IconClose className="h-4 w-4" />
-                  </button>
+              <div className="flex items-center justify-between border-b border-border px-4 pb-3">
+                <div className="min-w-0 pr-3">
+                  <div className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-navy/48">{entityLabel}</div>
+                  <div className="truncate text-sm font-semibold text-navy">{selected.name}</div>
                 </div>
+                <button
+                  onClick={closeDrawer}
+                  className="shrink-0 rounded-full p-1 text-slate-500 hover:bg-slate-100"
+                  aria-label="Close details"
+                >
+                  <IconClose className="h-4 w-4" />
+                </button>
+              </div>
 
-                <div className={`overflow-y-auto px-4 pb-4 ${isExpanded ? 'max-h-[70vh]' : 'max-h-[42vh]'}`}>
+              {!isCollapsed ? (
+                <div className="h-[calc(100%-72px)] overflow-y-auto px-4 pb-4">
                   {detailBody}
                 </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </>
+              ) : null}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       )}
     </>
   );
