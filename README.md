@@ -107,4 +107,7 @@ After running `npm run dev`, use the following in your browser:
 If the API returns a `Missing GOOGLE_MAPS_API_KEY` error, add this env var before testing:
 
 - `GOOGLE_MAPS_API_KEY=your_google_places_key`
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs

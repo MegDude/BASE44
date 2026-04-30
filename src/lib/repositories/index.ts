@@ -48,9 +48,9 @@ export const mapRepository = {
     }
   },
 
-  async getMapFeed(params = {}) {
+  async getMapFeed(params: Record<string, any> = {}) {
     try {
-      const res = await base44Api.invoke("getSharedMapFeed", params);
+      const res: any = await base44Api.invoke("getSharedMapFeed", params);
       return res?.data?.items || res?.items || [];
     } catch (err) {
       console.error("getMapFeed error:", err);
@@ -58,7 +58,7 @@ export const mapRepository = {
     }
   },
 
-  async getMapItemsByType(type, options = {}) {
+  async getMapItemsByType(type: string, options: { limit?: number } = {}) {
     const items = await this.getMapFeed();
 
     const filtered = items.filter(
@@ -80,7 +80,7 @@ export { partnerPlatformRepository } from "./partnerPlatformRepository";
 export const residentRepository = {
   async getResidentProfile() {
     try {
-      const res = await base44Api.invoke("getResidentProfile");
+      const res: any = await base44Api.invoke("getResidentProfile", {});
       return res?.data || res || null;
     } catch (error) {
       console.error("getResidentProfile error:", error);
@@ -90,7 +90,7 @@ export const residentRepository = {
 
   async getSavedItems(residentEmail) {
     try {
-      const res = await base44Api.invoke("getSavedItems", {
+      const res: any = await base44Api.invoke("getSavedItems", {
         email: residentEmail,
       });
       return res?.data?.items || res?.items || [];
@@ -125,7 +125,7 @@ export const residentRepository = {
 export const partnerRepository = {
   async getPartnerData() {
     try {
-      const res = await base44Api.invoke("getPartnerData");
+      const res: any = await base44Api.invoke("getPartnerData", {});
       return res || null;
     } catch (error) {
       console.error("getPartnerData error:", error);
@@ -138,7 +138,7 @@ export const partnerRepository = {
    UI ADAPTER (CRITICAL FIX)
 ========================================================= */
 
-function adaptToUI(item) {
+function adaptToUI(item: any) {
   const lat = Number(item?.lat);
   const lng = Number(item?.lng);
 
@@ -171,7 +171,7 @@ function adaptToUI(item) {
    RANKING SYSTEM
 ========================================================= */
 
-function rankItems(items, ranking, userLocation) {
+function rankItems(items: any[], ranking: string | undefined, userLocation: any) {
   if (!Array.isArray(items)) return [];
 
   switch (ranking) {
@@ -199,7 +199,7 @@ function rankItems(items, ranking, userLocation) {
   }
 }
 
-function distance(item, userLocation) {
+function distance(item: any, userLocation: any) {
   if (!userLocation) return 0;
   if (!item?.lat || !item?.lng) return 0;
 

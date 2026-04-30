@@ -16,6 +16,8 @@ import type {
   SourcePointRecord,
 } from "@/lib/contracts/partnerPlatform";
 
+const base44Client: any = base44;
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -208,7 +210,7 @@ export const partnerPlatformRepository = {
   normalizePartnerType,
 
   async getWorkspaceContext() {
-    const user = await base44.auth.me().catch(() => null);
+    const user = await base44Client.auth.me().catch(() => null);
     const partnerType = normalizePartnerType(user?.partner_type);
     const partnerId = user?.partner_id || user?.id || null;
 
@@ -232,26 +234,26 @@ export const partnerPlatformRepository = {
       return remote.map(normalizeOfferRecord);
     }
 
-    const fallback = await base44.entities.Perk.filter({ created_by: createdBy }).catch(() => []);
+    const fallback = await base44Client.entities.Perk.filter({ created_by: createdBy }).catch(() => []);
     return Array.isArray(fallback) ? fallback.map(normalizeOfferRecord) : [];
   },
 
   async createOffer(payload: Partial<OfferRecord>) {
     const remote = await tryInvoke<OfferRecord>(() => partnerPlatformApi.createOffer(payload));
     if (remote) return normalizeOfferRecord(remote);
-    return normalizeOfferRecord(await base44.entities.Perk.create(payload).catch(() => payload));
+    return normalizeOfferRecord(await base44Client.entities.Perk.create(payload).catch(() => payload));
   },
 
   async updateOffer(id: string, payload: Partial<OfferRecord>) {
     const remote = await tryInvoke<OfferRecord>(() => partnerPlatformApi.updateOffer({ id, ...payload }));
     if (remote) return normalizeOfferRecord(remote);
-    return normalizeOfferRecord(await base44.entities.Perk.update(id, payload).catch(() => ({ id, ...payload })));
+    return normalizeOfferRecord(await base44Client.entities.Perk.update(id, payload).catch(() => ({ id, ...payload })));
   },
 
   async deleteOffer(id: string) {
     const remote = await tryInvoke(() => partnerPlatformApi.updateOffer({ id, visibility_status: "archived", status: "archived" }));
     if (remote) return { success: true };
-    await base44.entities.Perk.delete(id).catch(() => false);
+    await base44Client.entities.Perk.delete(id).catch(() => false);
     return { success: true };
   },
 
@@ -266,26 +268,26 @@ export const partnerPlatformRepository = {
       return remote.map(normalizeEventRecord);
     }
 
-    const fallback = await base44.entities.Event.filter({ created_by: createdBy }).catch(() => []);
+    const fallback = await base44Client.entities.Event.filter({ created_by: createdBy }).catch(() => []);
     return Array.isArray(fallback) ? fallback.map(normalizeEventRecord) : [];
   },
 
   async createEvent(payload: Partial<PartnerEventRecord>) {
     const remote = await tryInvoke<PartnerEventRecord>(() => partnerPlatformApi.createEvent(payload));
     if (remote) return normalizeEventRecord(remote);
-    return normalizeEventRecord(await base44.entities.Event.create(payload).catch(() => payload));
+    return normalizeEventRecord(await base44Client.entities.Event.create(payload).catch(() => payload));
   },
 
   async updateEvent(id: string, payload: Partial<PartnerEventRecord>) {
     const remote = await tryInvoke<PartnerEventRecord>(() => partnerPlatformApi.updateEvent({ id, ...payload }));
     if (remote) return normalizeEventRecord(remote);
-    return normalizeEventRecord(await base44.entities.Event.update(id, payload).catch(() => ({ id, ...payload })));
+    return normalizeEventRecord(await base44Client.entities.Event.update(id, payload).catch(() => ({ id, ...payload })));
   },
 
   async deleteEvent(id: string) {
     const remote = await tryInvoke(() => partnerPlatformApi.updateEvent({ id, status: "archived" }));
     if (remote) return { success: true };
-    await base44.entities.Event.delete(id).catch(() => false);
+    await base44Client.entities.Event.delete(id).catch(() => false);
     return { success: true };
   },
 
@@ -385,7 +387,7 @@ export const partnerPlatformRepository = {
   async updatePartnerProfile(payload: Partial<PartnerProfileRecord> & Record<string, any>) {
     const remote = await tryInvoke(() => partnerPlatformApi.updatePartnerProfile(payload));
     if (remote) return remote;
-    return base44.auth.updateMe(payload).catch(() => payload);
+    return base44Client.auth.updateMe(payload).catch(() => payload);
   },
 
   async submitPartnerLead(payload: Partial<LeadSubmissionRecord>) {

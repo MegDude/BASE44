@@ -571,7 +571,7 @@ export default function HeroDecisionLayer() {
 
   useEffect(() => {
     runAgent(query, selectedContext, activeInsightView);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   useEffect(() => {

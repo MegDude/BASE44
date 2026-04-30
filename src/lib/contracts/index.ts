@@ -18,7 +18,7 @@ export interface SharedMapItem {
   partner_type?: string;
   latitude: number;
   longitude: number;
-  status?: 'active' | 'coming_soon' | 'inactive' | 'archived';
+  status?: string;
   image?: string;
   icon?: string;
   source_ref?: string;

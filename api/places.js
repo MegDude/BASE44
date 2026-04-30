@@ -1,17 +1,13 @@
 <<<<<<< ours
 import { searchArchiveCatalog } from "./_utils/archiveCatalog.js";
-const GOOGLE_OK_STATUSES = new Set(["OK", "ZERO_RESULTS"]);
-
-export default async function handler(req, res) {
-  if (req.method !== "GET") {
 =======
+>>>>>>> theirs
 const GOOGLE_OK_STATUSES = new Set(["OK", "ZERO_RESULTS"]);
 const SEARCH_AREA = "downtown Austin";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
->>>>>>> theirs
     return res.status(405).json({ error: "Method not allowed" });
   }
 
@@ -51,17 +47,15 @@ export default async function handler(req, res) {
       return res.status(200).json({ source: "archive", results: [] });
     }
 
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
-      `${trimmedQuery} downtown Austin`
 =======
   if (!process.env.GOOGLE_MAPS_API_KEY) {
     return res.status(500).json({ error: "Missing GOOGLE_MAPS_API_KEY" });
   }
 
   try {
+>>>>>>> theirs
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
       `${trimmedQuery} ${SEARCH_AREA}`
->>>>>>> theirs
     )}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
 
     const googleRes = await fetch(url);

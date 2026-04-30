@@ -14,6 +14,10 @@ const createEntityStub = () => ({
 });
 
 const createNoopClient = () => ({
+  auth: {
+    me: async () => null,
+    updateMe: async (payload = {}) => payload,
+  },
   functions: {
     invoke: async () => null,
   },
