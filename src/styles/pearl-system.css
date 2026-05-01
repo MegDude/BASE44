@@ -1,57 +1,58 @@
 /* PEARL SYSTEM — ENFORCED LAYOUT MODE */
+/* Loaded as a standalone CSS file after src/index.css. Keep these as plain CSS rules instead of Tailwind @layer rules so Vite/PostCSS does not require duplicate @tailwind directives in this file. */
 
-@layer components {
-  /* REMOVE CARD VISUAL DOMINANCE */
-  .dp-card,
-  .dp-card-compact,
-  .dp-stage-soft,
-  .dp-band,
-  .surface {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-  }
+/* REMOVE CARD VISUAL DOMINANCE */
+.dp-card,
+.dp-card-compact,
+.dp-stage-soft,
+.dp-band,
+.surface {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
 
-  /* REPLACE WITH STRUCTURAL RHYTHM */
-  section {
-    border-bottom: 1px solid rgba(7,27,47,0.06);
-  }
+/* REPLACE WITH STRUCTURAL RHYTHM */
+section {
+  border-bottom: 1px solid rgba(7,27,47,0.06);
+}
 
-  /* MAP IS PRIMARY SURFACE — NEVER BOXED */
-  .dp-map-panel,
-  .map-container,
-  .leaflet-container {
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
+/* MAP IS PRIMARY SURFACE — NEVER BOXED */
+.dp-map-panel,
+.map-container,
+.leaflet-container {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
 
-  /* FLOATING UI ONLY */
-  .glass-control,
-  .dp-input,
-  .dp-chip {
-    background: var(--dp-glass) !important;
-    backdrop-filter: blur(14px) !important;
-    border: 1px solid rgba(255,255,255,0.64) !important;
-  }
+/* FLOATING UI ONLY */
+.glass-control,
+.dp-input,
+.dp-chip {
+  background: var(--dp-glass) !important;
+  backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255,255,255,0.64) !important;
+}
 
-  /* REMOVE GRID CARD WALLS */
-  .grid > div {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-  }
+/* REMOVE GRID CARD WALLS */
+.grid > div {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
 
-  /* TEXT + STRUCTURE PRIORITY */
-  h1, h2, h3 {
-    color: var(--dp-navy);
-    letter-spacing: -0.02em;
-  }
+/* TEXT + STRUCTURE PRIORITY */
+h1,
+h2,
+h3 {
+  color: var(--dp-navy);
+  letter-spacing: -0.02em;
+}
 
-  /* CTA CONSISTENCY */
-  .dp-cta-primary {
-    background: var(--dp-navy) !important;
-    color: white !important;
-  }
+/* CTA CONSISTENCY */
+.dp-cta-primary {
+  background: var(--dp-navy) !important;
+  color: white !important;
 }
