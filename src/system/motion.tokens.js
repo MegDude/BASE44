@@ -1,0 +1,1 @@
+export const motionTokens = { duration: { instant: 0.08, fast: 0.12, base: 0.18, slow: 0.24 }, easing: { primary: [0.22,1,0.36,1] }, scale: { tap: 0.96, hover: 1.06, focus: 1.08 } };
