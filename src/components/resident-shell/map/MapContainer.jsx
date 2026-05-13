@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet-marker-cluster/dist/MarkerCluster.css";
-import "leaflet-marker-cluster/dist/MarkerCluster.Default.css";
-import "leaflet-marker-cluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "leaflet.markercluster";
 
 // Fix marker icons
 delete L.Icon.Default.prototype._getIconUrl;
