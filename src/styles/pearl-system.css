@@ -2,63 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
   :root {
-    --primary-navy: #111F3D;
-    --accent-gold: #C6A55C;
-    --bg-pearl: #F7F6F2;
-    --dp-bg-primary: #f7f6f2;
-    --dp-bg-secondary: #fbfcff;
-    --dp-bg-soft: #fbfcff;
-    --dp-bg-pearl: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,0.92), rgba(247,246,242,0.96));
-    --dp-surface: rgba(255,255,255,0.78);
-    --dp-surface-main: rgba(255,255,255,0.78);
-    --dp-surface-subtle: rgba(255,255,255,0.62);
-    --dp-surface-strong: rgba(255,255,255,0.92);
-    --dp-surface-glass: rgba(255,255,255,0.82);
-    --dp-glass: rgba(255,255,255,0.72);
+    /* Core Colors */
     --dp-navy: #111f3d;
-    --dp-navy-base: #111f3d;
-    --dp-navy-deep: #0a1829;
-    --dp-ink: #111f3d;
-    --dp-text: #111f3d;
-    --dp-text-primary: #111f3d;
-    --dp-text-secondary: #6b7a8a;
-    --dp-slate: #64748b;
-    --dp-border: rgba(17,31,61,0.08);
-    --dp-border-soft: rgba(17,31,61,0.08);
     --dp-gold: #c6a55c;
-    --dp-accent-gold: #c6a55c;
-    --dp-gold-soft: rgba(198,165,92,0.12);
-    --dp-gold-muted: #a98544;
-    --dp-shadow-base: 0 1px 2px rgba(0,0,0,0.04);
-    --dp-shadow-soft: 0 18px 60px rgba(17,31,61,0.08);
-    --dp-shadow-float: 0 8px 24px rgba(17,31,61,0.06);
-    --dp-shadow-glow: 0 0 0 1px rgba(255,255,255,0.6), 0 8px 40px rgba(17,31,61,0.06);
-    --dp-shadow-glass: inset 0 1px 0 rgba(255,255,255,0.68), 0 8px 40px rgba(17,31,61,0.06);
+    --dp-bg-primary: #f7f6f2;
+    
+    /* Three-Depth Surface System */
+    --dp-bg: #f7f6f2;              /* Depth 1: Environmental */
+    --dp-surface: rgba(255,255,255,0.88); /* Depth 2: Operational UI */
+    --dp-card: rgba(255,255,255,0.72);    /* Depth 3: Interactive Elements */
+    
+    /* Typography */
+    --dp-text: #111f3d;
+    --dp-text-secondary: #6b7a8a;
+    
+    /* Motion */
     --dp-blur: blur(12px);
     --dp-blur-main: blur(14px);
-    --dp-blur-subtle: blur(10px);
-    --dp-radius-card: 28px;
-    --dp-radius-drawer: 28px;
-    --dp-radius-pill: 999px;
   }
 
-  html,
-  body,
-  #root { min-height: 100%; }
+  html, body, #root { 
+    min-height: 100%;
+  }
 
   body {
-    background-color: var(--dp-bg-primary) !important;
-    background-image:
-      radial-gradient(1200px 600px at 50% -12%, rgba(255,255,255,0.96), rgba(246,248,251,0.88) 58%, rgba(246,248,251,1) 100%),
-      radial-gradient(900px 420px at 4% 12%, rgba(207,175,90,0.08), transparent 60%),
-      linear-gradient(180deg, #fbfcff 0%, #f6f8fb 52%, #f2f5f9 100%) !important;
-    color: var(--dp-text-primary) !important;
+    background-color: var(--dp-bg);
+    color: var(--dp-text);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -66,188 +37,66 @@
     letter-spacing: -0.02em;
   }
 
-  p, li { color: rgba(20,32,51,0.74); }
-
-  button, a, input, textarea, select {
-    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease, opacity 180ms ease;
+  button, a {
+    transition: opacity 180ms ease, transform 180ms ease;
   }
 
-  button:active, a:active { transform: scale(0.985); }
+  button:active, a:active { 
+    transform: scale(0.98);
+  }
 }
 
 @layer components {
-  .pearl-page, .dp-pearl-page {
-    min-height: 100vh;
-    background-color: var(--dp-bg-primary);
-    background-image: var(--dp-bg-pearl);
+  /* Environmental Surface - Map background layer */
+  .bg-dp-bg {
+    background-color: var(--dp-bg);
   }
-
-  .surface, .dp-surface, .dp-card, .dp-card-compact, .dp-stage-soft, .dp-band, .dp-stat-tile, .bg-card, .bg-card\/40, .bg-card\/60, .bg-card\/80 {
-    background: linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(251,252,255,0.76) 100%) !important;
-    border: 1px solid var(--dp-border) !important;
-    box-shadow: var(--dp-shadow-soft) !important;
-    backdrop-filter: var(--dp-blur) !important;
+  
+  /* Operational Surface - UI grouping layer */
+  .bg-dp-surface {
+    background: var(--dp-surface);
+    backdrop-filter: var(--dp-blur-main);
   }
-
-  .dp-card, .dp-card-compact, .dp-stage-soft, .dp-band { border-radius: 16px !important; }
-
-  .dp-band, .dp-section, section { border-color: rgba(7,27,47,0.06) !important; }
-
-  .glass-control, .dp-glass-main, .dp-glass-subtle, .dp-map-panel, .dp-control, .dp-chip, .dp-input, .dp-bottom-sheet, input[type='search'], input[type='text'] {
-    background: var(--dp-glass) !important;
-    border: 1px solid rgba(255,255,255,0.64) !important;
-    box-shadow: var(--dp-shadow-glow) !important;
-    backdrop-filter: blur(14px) !important;
+  
+  /* Card Surface - Interactive layer */
+  .bg-dp-card {
+    background: var(--dp-card);
+    backdrop-filter: var(--dp-blur);
   }
-
-  .dp-map-panel { border-radius: 20px !important; }
-  .dp-chip, .dp-control { color: var(--dp-navy) !important; }
-
-  .dp-chip-active, [aria-selected='true'], [data-state='active'] {
-    background: rgba(11,31,51,0.08) !important;
-    color: var(--dp-navy) !important;
-    border-color: rgba(11,31,51,0.12) !important;
+  
+  /* Navy Primary Button */
+  .btn-primary {
+    background: var(--dp-navy);
+    color: #ffffff;
   }
-
-  .dp-cta-primary, .btn-primary, .button-primary, a[href*='explore'].dp-cta-primary, button[type='submit'] {
-    background: var(--dp-navy) !important;
-    color: #ffffff !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(11,31,51,0.14) !important;
-    box-shadow: 0 14px 32px rgba(11,31,51,0.14) !important;
+  
+  .btn-primary:hover {
+    opacity: 0.9;
   }
-
-  .dp-cta-secondary, .btn-secondary, .button-secondary {
-    background: rgba(255,255,255,0.72) !important;
-    color: var(--dp-navy) !important;
-    border: 1px solid var(--dp-border) !important;
-    border-radius: 12px !important;
-    backdrop-filter: blur(10px) !important;
-    box-shadow: var(--dp-shadow-base) !important;
+  
+  /* Gold Accent Button */
+  .btn-accent {
+    background: var(--dp-gold);
+    color: var(--dp-navy);
   }
-
-  .btn-accent, .button-accent, .dp-cta-accent, .dp-gold-action {
-    background: var(--dp-gold) !important;
-    color: var(--dp-navy) !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(207,175,90,0.34) !important;
-    box-shadow: 0 12px 26px rgba(207,175,90,0.18) !important;
+  
+  .btn-accent:hover {
+    opacity: 0.9;
   }
-
-  .dp-cta-primary:hover, .dp-cta-secondary:hover, .btn-primary:hover, .btn-secondary:hover, .button-primary:hover, .button-secondary:hover, .dp-card:hover, .dp-card-compact:hover, .dp-interactive:hover, .dp-motion-hover:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--dp-shadow-float) !important;
+  
+  /* Secondary Button */
+  .btn-secondary {
+    background: var(--dp-card);
+    color: var(--dp-navy);
   }
-
-  .dp-display-hero, .dp-display-section, .dp-heading-modern, .dp-page-title, .font-display {
-    color: var(--dp-navy) !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  .dp-page-intro, .dp-body-copy, .text-muted-foreground, .text-slate-500, .text-slate-600, .text-slate-700 {
-    color: rgba(20,32,51,0.68) !important;
-  }
-
-  .dp-page-kicker, .dp-eyebrow, .dp-micro-label {
-    color: rgba(11,31,51,0.54) !important;
-    letter-spacing: 0.16em;
-  }
-
-  .dp-band-dark, .dp-stage-dark, .pearl-navy-block {
-    background: linear-gradient(180deg, #0b1f33 0%, #071b2f 100%) !important;
-    color: rgba(255,255,255,0.94) !important;
-    box-shadow: 0 28px 60px rgba(11,31,51,0.18) !important;
-  }
-
-  .dp-band-dark h1, .dp-band-dark h2, .dp-band-dark h3, .dp-stage-dark h1, .dp-stage-dark h2, .dp-stage-dark h3, .pearl-navy-block h1, .pearl-navy-block h2, .pearl-navy-block h3 { color: #ffffff !important; }
-  .dp-band-dark p, .dp-stage-dark p, .pearl-navy-block p, .dp-dark-copy-muted { color: rgba(226,232,240,0.78) !important; }
-
-  .dp-gold, .text-accent, .text-primary\/50, .text-primary\/60, .text-primary\/70, .text-primary\/80 { color: var(--dp-gold-muted) !important; }
-  .bg-primary { background-color: var(--dp-navy) !important; }
-  .bg-background { background-color: var(--dp-bg-primary) !important; background-image: var(--dp-bg-pearl) !important; }
-  .border, .border-border, .border-border\/30, .border-border\/40, .border-border\/50, .border-border\/60, .border-border\/70 { border-color: var(--dp-border) !important; }
-  .shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl { box-shadow: var(--dp-shadow-soft) !important; }
-  .rounded-full:not(.dp-chip):not(.dp-control):not(.custom-marker *):not(.pill-marker *) { border-radius: 12px; }
-
-  /* Partner dashboard Pearl execution layer */
-  a[href*='/partners/dashboard'] {
-    border-radius: 14px !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) {
-    background-color: var(--dp-bg-primary) !important;
-    background-image:
-      radial-gradient(1100px 520px at 50% -12%, rgba(255,255,255,0.96), rgba(246,248,251,0.86) 64%, rgba(246,248,251,1) 100%),
-      radial-gradient(720px 360px at 8% 10%, rgba(207,175,90,0.08), transparent 70%) !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) .dp-page-shell > div,
-  section:has(a[href*='/partners/dashboard/map']) div[class*='bg-white'],
-  section:has(a[href*='/partners/dashboard/map']) div[class*='bg-\[\#f7f9fc\]'],
-  section:has(a[href*='/partners/dashboard/map']) div[class*='bg-white\/92'],
-  section:has(a[href*='/partners/dashboard/map']) div[class*='bg-white\/96'] {
-    background: linear-gradient(180deg, rgba(255,255,255,0.84) 0%, rgba(251,252,255,0.7) 100%) !important;
-    border-color: var(--dp-border) !important;
-    box-shadow: var(--dp-shadow-soft) !important;
-    backdrop-filter: blur(12px) !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) h1,
-  section:has(a[href*='/partners/dashboard/map']) h2,
-  section:has(a[href*='/partners/dashboard/map']) h3 {
-    color: var(--dp-navy) !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) input {
-    background: rgba(255,255,255,0.72) !important;
-    border: 1px solid rgba(255,255,255,0.64) !important;
-    color: var(--dp-navy) !important;
-    box-shadow: var(--dp-shadow-glow) !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) button {
-    border-color: var(--dp-border) !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) button:not([type='submit']) {
-    background: rgba(255,255,255,0.68) !important;
-    color: var(--dp-navy) !important;
-    box-shadow: var(--dp-shadow-base) !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) button:not([type='submit']):hover {
-    transform: translateY(-1px);
-    box-shadow: var(--dp-shadow-float) !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) button[class*='bg-\[var\(--dp-navy\)'],
-  section:has(a[href*='/partners/dashboard/map']) button[class*='bg-primary'],
-  section:has(a[href*='/partners/dashboard/map']) button[type='submit'] {
-    background: var(--dp-navy) !important;
-    color: #fff !important;
-    border-radius: 12px !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) img {
-    filter: saturate(0.94) contrast(1.03) brightness(1.03);
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) [class*='rounded-\[22px\]'],
-  section:has(a[href*='/partners/dashboard/map']) [class*='rounded-\[18px\]'],
-  section:has(a[href*='/partners/dashboard/map']) [class*='rounded-\[16px\]'] {
-    border-radius: 16px !important;
-  }
-
-  section:has(a[href*='/partners/dashboard/map']) [class*='shadow-\['] {
-    box-shadow: var(--dp-shadow-soft) !important;
+  
+  .btn-secondary:hover {
+    opacity: 0.8;
   }
 }
 
 @layer utilities {
-  .pearl-bg { background-color: var(--dp-bg-primary); background-image: var(--dp-bg-pearl); }
-  .pearl-surface { background: var(--dp-surface); border: 1px solid var(--dp-border); box-shadow: var(--dp-shadow-soft); backdrop-filter: var(--dp-blur); }
-  .pearl-glass { background: var(--dp-glass); border: 1px solid rgba(255,255,255,0.64); box-shadow: var(--dp-shadow-glow); backdrop-filter: blur(14px); }
-  .pearl-navy { color: var(--dp-navy) !important; }
-  .pearl-gold { color: var(--dp-gold-muted) !important; }
+  .text-dp-navy { color: var(--dp-navy); }
+  .text-dp-gold { color: var(--dp-gold); }
+  .text-dp-secondary { color: var(--dp-text-secondary); }
 }
