@@ -1,3 +1,5 @@
+@import './styles/tokens.css';
+@import './styles/fluid.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap');
 
 @tailwind base;

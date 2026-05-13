@@ -1,0 +1,21 @@
+/* Downtown Perks 2026 Design Tokens */
+:root {
+  --dp-bg: #F6F7FB;
+  --dp-bg-soft: #F9FAFD;
+  --dp-navy: #111F3D;
+  --dp-navy-rich: #0A1628;
+  --dp-ink: #111F3D;
+  --dp-slate: #6E768A;
+  --dp-gold: #CFAF5A;
+  --dp-gold-soft: rgba(207,175,90,0.12);
+  --dp-border: rgba(17,31,61,0.09);
+  --dp-card: #FFFFFF;
+  --dp-glass: rgba(255,255,255,0.78);
+  --dp-shadow-soft: 0 8px 32px rgba(17,31,61,0.07);
+  --dp-shadow-control: 0 2px 8px rgba(17,31,61,0.10);
+  --dp-radius-sm: 8px;
+  --dp-radius-md: 14px;
+  --dp-radius-lg: 20px;
+  --dp-radius-xl: 28px;
+  --dp-radius-full: 9999px;
+}
