@@ -69,7 +69,7 @@
     "input-otp": "^1.4.2",
     "jspdf": "^4.2.1",
     "leaflet": "^1.9.4",
-    "leaflet-markercluster": "^0.2.2",
+    "leaflet.markercluster": "^1.5.3",
     "lodash": "^4.18.1",
     "lucide-react": "^0.475.0",
     "moment": "^2.30.1",
