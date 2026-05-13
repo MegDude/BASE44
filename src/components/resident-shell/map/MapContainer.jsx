@@ -18,7 +18,7 @@ export default function MapContainer() {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerGroupRef = useRef(null);
-  const lastPositionRef = useRef({ center: mapCenter, zoom: mapZoom });
+  const isUserInteractingRef = useRef(false);
   const [markersLoaded, setMarkersLoaded] = useState(false);
 
   // Connect to map state store
@@ -42,8 +42,14 @@ export default function MapContainer() {
 
     mapInstanceRef.current = map;
 
-    // Handle map interactions - sync to store only
+    // Track user interaction to prevent feedback loops
+    map.on("movestart", () => {
+      isUserInteractingRef.current = true;
+    });
+
+    // Handle map interactions - sync to store only on user action
     const handleMapMove = () => {
+      isUserInteractingRef.current = false;
       const center = map.getCenter();
       setMapCenter([center.lat, center.lng]);
       setMapZoom(map.getZoom());
@@ -53,7 +59,7 @@ export default function MapContainer() {
     let moveTimeout;
     map.on("moveend", () => {
       clearTimeout(moveTimeout);
-      moveTimeout = setTimeout(handleMapMove, 100);
+      moveTimeout = setTimeout(handleMapMove, 150);
     });
 
     // Sample marker data - replace with real Supabase data
