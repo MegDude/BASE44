@@ -26,7 +26,6 @@ import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
-import BrandsIndex from "./pages/downtown-perks/brands/Index";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
 import TheWaterline from "./pages/downtown-perks/brands/TheWaterline";
 import Bangers from "./pages/downtown-perks/brands/Bangers";
@@ -61,8 +60,9 @@ import { ROUTES } from "@/lib/routes";
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<ResidentShell />} />
       <Route element={<Layout />}>
-        <Route path="/" element={<HomeV2 />} />
+        <Route path="/legacy-v2" element={<HomeV2 />} />
         <Route path="/v2" element={<HomeV2 />} />
         <Route path="/legacy-home" element={<Home />} />
         <Route path={ROUTES.map} element={<Map />} />
