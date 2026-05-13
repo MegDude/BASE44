@@ -45,7 +45,7 @@ export default function SavedTab() {
         saved.map((item, idx) => (
           <motion.div
             key={item.id}
-            className="rounded-[20px] bg-white/72 backdrop-blur-sm border border-white/40 shadow-[0_2px_8px_rgba(17,31,61,0.06)] p-4 hover:shadow-[0_8px_24px_rgba(17,31,61,0.1)] transition-all cursor-pointer group"
+            className="rounded-lg bg-white/72 backdrop-blur-sm p-4 hover:bg-white/78 transition-all cursor-pointer group"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}

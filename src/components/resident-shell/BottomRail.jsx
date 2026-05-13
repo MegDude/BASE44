@@ -8,7 +8,7 @@ export default function BottomRail({ activeTab, onTabChange, tabs }) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className="flex gap-2 bg-white/82 backdrop-blur-[14px] rounded-full px-3 py-2 border border-white/40 shadow-[0_0_0_1px_rgba(255,255,255,0.5),0_20px_60px_rgba(17,31,61,0.08)]">
+      <div className="flex gap-2 bg-white/88 backdrop-blur-[14px] rounded-full px-3 py-2">
         {Object.entries(tabs).map(([key, tab]) => {
           const Icon = tab.icon;
           const isActive = activeTab === key;

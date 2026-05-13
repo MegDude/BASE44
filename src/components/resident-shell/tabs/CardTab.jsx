@@ -19,18 +19,13 @@ export default function CardTab() {
 
   return (
     <div className="space-y-4">
-      {/* Resident Card */}
+      {/* Resident Card - Navy surface */}
       <motion.div
-        className="relative h-48 rounded-[24px] bg-gradient-to-br from-[#111f3d] to-[#0a1829] text-white shadow-[0_20px_60px_rgba(17,31,61,0.2)] overflow-hidden"
+        className="relative h-48 rounded-lg bg-[#111f3d] text-white overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Card background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-[#c6a55c] rounded-full blur-3xl"></div>
-        </div>
-
         {/* Card content */}
         <div className="relative p-6 h-full flex flex-col justify-between z-10">
           <div>
@@ -61,13 +56,13 @@ export default function CardTab() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        <div className="rounded-[20px] bg-white/72 backdrop-blur-sm border border-white/40 p-4">
+        <div className="rounded-lg bg-white/72 backdrop-blur-sm p-4">
           <p className="text-[11px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
             Perks Used
           </p>
           <p className="text-2xl font-canela font-semibold text-[#111f3d]">12</p>
         </div>
-        <div className="rounded-[20px] bg-white/72 backdrop-blur-sm border border-white/40 p-4">
+        <div className="rounded-lg bg-white/72 backdrop-blur-sm p-4">
           <p className="text-[11px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
             Value Saved
           </p>
@@ -77,7 +72,7 @@ export default function CardTab() {
 
       {/* Recent Activity */}
       <motion.div
-        className="rounded-[20px] bg-white/72 backdrop-blur-sm border border-white/40 p-4"
+        className="rounded-lg bg-white/72 backdrop-blur-sm p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
