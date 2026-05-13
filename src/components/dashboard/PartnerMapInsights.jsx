@@ -1,5 +1,3 @@
-
-
 const MOCK_DISTRICTS = [
   { name: 'Rainey Street', scans: 142, color: '#CFAF5A' },
   { name: 'Congress Ave', scans: 98, color: '#111F3D' },

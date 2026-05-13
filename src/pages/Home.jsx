@@ -97,7 +97,7 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-3 mt-8">
               <CTAButton ctaId="openMap" />
-              <CTAButton ctaId="getCard" variant="secondary" className="!bg-white/15 !text-white !border-white/25 hover:!bg-white/25" />
+              <CTAButton ctaId="getCard" variant="inverted" />
             </div>
           </div>
         </div>

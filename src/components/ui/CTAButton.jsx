@@ -14,6 +14,8 @@ export default function CTAButton({ ctaId, label, to, variant = 'primary', class
     secondary: 'border bg-[var(--dp-card)] text-[var(--dp-navy)] hover:bg-[var(--dp-bg)] disabled:opacity-50',
     gold: 'bg-[var(--dp-gold)] text-[var(--dp-navy)] font-semibold hover:brightness-105 disabled:opacity-50',
     ghost: 'text-[var(--dp-navy)] hover:bg-[var(--dp-border)] disabled:opacity-50',
+    // For use on dark/hero backgrounds
+    inverted: 'bg-white/15 text-white border border-white/25 hover:bg-white/25 disabled:opacity-50',
   };
 
   const cls = `${base} ${variants[resolvedVariant] ?? variants.primary} ${className}`;

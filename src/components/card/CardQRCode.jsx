@@ -8,7 +8,7 @@ export default function CardQRCode({ value = 'downtown-perks', size = 80 }) {
     if (r === 1 || r === 5) return c === 1 || c === 5;
     if (r === 2 || r === 4) return c === 2 || c === 4;
     if (r === 3 && c === 3) return true;
-    return ((hash * (r + 1) * (c + 1)) % 5) === 0;
+    return ((hash * (r + 1) * (c + 1)) % 5) === 0; // modulo 5 gives ~20% fill density for the interior pattern
   };
 
   return (

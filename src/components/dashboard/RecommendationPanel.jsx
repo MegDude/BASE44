@@ -1,10 +1,10 @@
 import { Lightbulb, ChevronRight } from 'lucide-react';
 
 const RECOMMENDATIONS = [
-  { id: 1, title: 'Extend your offer window to 5–9 PM', reason: 'Resident traffic peaks between 5 and 9 PM on weekdays. Your current offer ends at 6 PM.', impact: 'High impact', action: 'Edit offer' },
-  { id: 2, title: 'Add a 5–7 PM weekday event', reason: 'Happy hour slots in your district have 3× higher conversion than dinner-only offers.', impact: 'High impact', action: 'Add event' },
-  { id: 3, title: 'Feature your venue in a district route', reason: 'Venues in curated routes get 40% more map impressions per week.', impact: 'Medium impact', action: 'Request feature' },
-  { id: 4, title: 'Update your perk description', reason: 'Listings with detailed perk descriptions see 22% higher redemption rates.', impact: 'Medium impact', action: 'Edit perk' },
+  { id: 1, title: 'Extend your offer window to 5–9 PM', reason: 'Resident traffic peaks between 5 and 9 PM on weekdays. Your current offer ends at 6 PM.', impactLevel: 'High impact', action: 'Edit offer' },
+  { id: 2, title: 'Add a 5–7 PM weekday event', reason: 'Happy hour slots in your district have 3× higher conversion than dinner-only offers.', impactLevel: 'High impact', action: 'Add event' },
+  { id: 3, title: 'Feature your venue in a district route', reason: 'Venues in curated routes get 40% more map impressions per week.', impactLevel: 'Medium impact', action: 'Request feature' },
+  { id: 4, title: 'Update your perk description', reason: 'Listings with detailed perk descriptions see 22% higher redemption rates.', impactLevel: 'Medium impact', action: 'Edit perk' },
 ];
 
 export default function RecommendationPanel() {
@@ -22,8 +22,8 @@ export default function RecommendationPanel() {
                 <p className="text-sm font-semibold mb-1" style={{ color: 'var(--dp-navy)' }}>{rec.title}</p>
                 <p className="text-xs leading-relaxed" style={{ color: 'var(--dp-slate)' }}>{rec.reason}</p>
               </div>
-              <span className="flex-shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-full mt-0.5" style={{ backgroundColor: rec.impact === 'High impact' ? 'rgba(207,175,90,0.12)' : 'var(--dp-bg)', color: rec.impact === 'High impact' ? 'var(--dp-gold)' : 'var(--dp-slate)' }}>
-                {rec.impact}
+              <span className="flex-shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-full mt-0.5" style={{ backgroundColor: rec.impactLevel === 'High impact' ? 'rgba(207,175,90,0.12)' : 'var(--dp-bg)', color: rec.impactLevel === 'High impact' ? 'var(--dp-gold)' : 'var(--dp-slate)' }}>
+                {rec.impactLevel}
               </span>
             </div>
             <button type="button" className="mt-2 text-xs font-medium flex items-center gap-1 transition hover:underline focus:outline-none focus-visible:underline" style={{ color: 'var(--dp-navy)' }}>
