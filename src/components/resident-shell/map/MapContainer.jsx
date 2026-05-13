@@ -18,6 +18,7 @@ export default function MapContainer() {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerGroupRef = useRef(null);
+  const lastPositionRef = useRef({ center: mapCenter, zoom: mapZoom });
   const [markersLoaded, setMarkersLoaded] = useState(false);
 
   // Connect to map state store
@@ -41,11 +42,18 @@ export default function MapContainer() {
 
     mapInstanceRef.current = map;
 
-    // Handle map interactions
-    map.on("moveend", () => {
+    // Handle map interactions - sync to store only
+    const handleMapMove = () => {
       const center = map.getCenter();
       setMapCenter([center.lat, center.lng]);
       setMapZoom(map.getZoom());
+    };
+
+    // Debounce map move to prevent infinite loops
+    let moveTimeout;
+    map.on("moveend", () => {
+      clearTimeout(moveTimeout);
+      moveTimeout = setTimeout(handleMapMove, 100);
     });
 
     // Sample marker data - replace with real Supabase data
@@ -141,9 +149,20 @@ export default function MapContainer() {
     };
   }, []);
 
-  // Update map center and zoom when store changes
+  // Update map center and zoom when store changes (only if from external source)
   useEffect(() => {
-    if (mapInstanceRef.current) {
+    if (!mapInstanceRef.current) return;
+    
+    // Check if position has actually changed from what the map currently shows
+    const currentCenter = mapInstanceRef.current.getCenter();
+    const currentZoom = mapInstanceRef.current.getZoom();
+    
+    const hasChanged = 
+      Math.abs(currentCenter.lat - mapCenter[0]) > 0.0001 || 
+      Math.abs(currentCenter.lng - mapCenter[1]) > 0.0001 || 
+      currentZoom !== mapZoom;
+    
+    if (hasChanged) {
       mapInstanceRef.current.setView(mapCenter, mapZoom, {
         animate: true,
         duration: 0.5,
