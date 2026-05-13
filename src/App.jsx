@@ -33,6 +33,7 @@ import Bangers from "./pages/downtown-perks/brands/Bangers";
 import TheStayPut from "./pages/downtown-perks/brands/TheStayPut";
 import FineEyewear from "./pages/downtown-perks/brands/FineEyewear";
 import HeritageBoots from "./pages/downtown-perks/brands/HeritageBoots";
+import BrandsIndex from "./pages/downtown-perks/brands/Index";
 import DottieMay from "./pages/downtown-perks/brands/DottieMay";
 import TopoChico from "./pages/downtown-perks/brands/TopoChico";
 import Yeti from "./pages/downtown-perks/brands/Yeti";
