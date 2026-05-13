@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster";
+import { useMapStateStore } from "@/store/mapStateStore";
 
 // Fix marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -16,34 +17,49 @@ L.Icon.Default.mergeOptions({
 export default function MapContainer() {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
-  const markersRef = useRef([]);
+  const markerGroupRef = useRef(null);
+  const [markersLoaded, setMarkersLoaded] = useState(false);
+
+  // Connect to map state store
+  const { mapCenter, mapZoom, setMapCenter, setMapZoom, selectedEntity, selectEntity } = useMapStateStore();
 
   useEffect(() => {
     if (!mapRef.current) return;
 
     // Initialize map centered on Austin downtown
-    const map = L.map(mapRef.current).setView([30.2672, -97.7431], 15);
+    const map = L.map(mapRef.current, {
+      zoomControl: false,
+      attributionControl: false,
+    }).setView(mapCenter, mapZoom);
 
-    // Add tile layer
+    // Add tile layer with softer styling
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenStreetMap contributors',
+      attribution: "© OpenStreetMap",
       maxZoom: 19,
+      opacity: 0.95,
     }).addTo(map);
 
     mapInstanceRef.current = map;
 
-    // Sample marker data - replace with real data from API
+    // Handle map interactions
+    map.on("moveend", () => {
+      const center = map.getCenter();
+      setMapCenter([center.lat, center.lng]);
+      setMapZoom(map.getZoom());
+    });
+
+    // Sample marker data - replace with real Supabase data
     const sampleMarkers = [
       {
-        id: 1,
+        id: "1",
         lat: 30.2672,
         lng: -97.7431,
-        type: "place", // place, event, property
+        type: "place",
         title: "The Stay Put",
         category: "Dining",
       },
       {
-        id: 2,
+        id: "2",
         lat: 30.2650,
         lng: -97.7450,
         type: "event",
@@ -51,28 +67,47 @@ export default function MapContainer() {
         category: "Event",
       },
       {
-        id: 3,
+        id: "3",
         lat: 30.2700,
         lng: -97.7400,
         type: "property",
         title: "The Waterline",
         category: "Residential",
       },
+      {
+        id: "4",
+        lat: 30.2685,
+        lng: -97.7420,
+        type: "place",
+        title: "Rainey Street",
+        category: "Dining",
+      },
+      {
+        id: "5",
+        lat: 30.2660,
+        lng: -97.7460,
+        type: "event",
+        title: "Live Music Night",
+        category: "Event",
+      },
     ];
 
-    // Add markers with pearl/navy/white/gold hierarchy
+    // Create marker cluster group
     const markerGroup = L.markerClusterGroup({
-      maxClusterRadius: 50,
+      maxClusterRadius: 60,
       iconCreateFunction: (cluster) => {
         const count = cluster.getChildCount();
+        const size = count < 5 ? 32 : count < 15 ? 40 : 48;
         return L.divIcon({
-          html: `<div class="flex items-center justify-center w-8 h-8 bg-white/88 backdrop-blur-sm rounded-full border border-white/64 shadow-sm font-semibold text-xs text-slate-900">${count}</div>`,
+          html: `<div class="flex items-center justify-center w-full h-full bg-white/88 backdrop-blur-sm rounded-full border border-white/60 shadow-[0_4px_12px_rgba(17,31,61,0.1)] font-semibold text-xs text-[#111f3d]">${count}</div>`,
           className: "marker-cluster",
-          iconSize: new L.Point(32, 32),
+          iconSize: new L.Point(size, size),
+          iconAnchor: [size / 2, size / 2],
         });
       },
     });
 
+    // Add markers with pearl/navy/white/gold hierarchy
     sampleMarkers.forEach((markerData) => {
       const marker = L.marker([markerData.lat, markerData.lng], {
         icon: L.divIcon({
@@ -83,23 +118,38 @@ export default function MapContainer() {
         }),
       });
 
+      marker.on("click", () => {
+        selectEntity(markerData, { openDrawer: true, panToEntity: true });
+      });
+
       marker.bindPopup(`
-        <div class="p-2">
-          <h3 class="font-semibold text-slate-900">${markerData.title}</h3>
-          <p class="text-xs text-slate-600">${markerData.category}</p>
+        <div class="p-3 bg-white rounded-lg">
+          <h3 class="font-canela font-semibold text-[#111f3d]">${markerData.title}</h3>
+          <p class="text-xs text-[#111f3d]/60 mt-1">${markerData.category}</p>
         </div>
       `);
 
       markerGroup.addLayer(marker);
-      markersRef.current.push(marker);
     });
 
     map.addLayer(markerGroup);
+    markerGroupRef.current = markerGroup;
+    setMarkersLoaded(true);
 
     return () => {
       map.remove();
     };
   }, []);
+
+  // Update map center and zoom when store changes
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setView(mapCenter, mapZoom, {
+        animate: true,
+        duration: 0.5,
+      });
+    }
+  }, [mapCenter, mapZoom]);
 
   return (
     <div
@@ -111,15 +161,30 @@ export default function MapContainer() {
 }
 
 function createMarkerIcon(type) {
-  const colors = {
-    place: "bg-white border-2 border-slate-900", // navy
-    event: "bg-yellow-100 border-2 border-yellow-600", // gold
-    property: "bg-slate-50 border-2 border-slate-900", // pearl with navy
+  // Pearl/Navy/White/Gold hierarchy
+  const iconConfigs = {
+    place: {
+      bg: "bg-white",
+      border: "border-2 border-[#111f3d]",
+      dot: "bg-[#111f3d]",
+    },
+    event: {
+      bg: "bg-[#c6a55c]/20",
+      border: "border-2 border-[#c6a55c]",
+      dot: "bg-[#c6a55c]",
+    },
+    property: {
+      bg: "bg-[#f7f6f2]",
+      border: "border-2 border-[#111f3d]",
+      dot: "bg-[#111f3d]",
+    },
   };
 
+  const config = iconConfigs[type] || iconConfigs.place;
+
   return `
-    <div class="flex items-center justify-center w-8 h-10 ${colors[type]} rounded-full shadow-md">
-      <div class="w-2 h-2 bg-slate-900 rounded-full"></div>
+    <div class="flex items-center justify-center w-8 h-10 ${config.bg} ${config.border} rounded-full shadow-[0_2px_8px_rgba(17,31,61,0.12)]">
+      <div class="w-2 h-2 ${config.dot} rounded-full"></div>
     </div>
   `;
 }
