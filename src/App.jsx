@@ -26,6 +26,7 @@ import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
+import ResidentShell from "./components/resident-shell/ResidentShell";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
 import TheWaterline from "./pages/downtown-perks/brands/TheWaterline";
 import Bangers from "./pages/downtown-perks/brands/Bangers";
