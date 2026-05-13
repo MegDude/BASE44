@@ -34,7 +34,8 @@ export default function Landing() {
               "absolute inset-0 w-full h-full object-cover",
               "filter brightness-[0.88] saturate-[0.82]",
               "mix-blend-luminosity",
-              "transition-all duration-[1400ms] ease-out"
+              "transition-all ease-out",
+              activeIndex === index ? "duration-1000" : "duration-500"
             )}
             style={{
               opacity: activeIndex === index ? 1 : 0,
@@ -46,7 +47,12 @@ export default function Landing() {
         ))}
 
         {/* Softer Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(17,31,61,0.38)] via-[rgba(17,31,61,0.10)] to-transparent z-20 pointer-events-none" />
+        <div 
+          className="absolute inset-0 z-20 pointer-events-none"
+          style={{
+            background: "linear-gradient(to right, rgba(17,31,61,0.38), rgba(17,31,61,0.10), transparent)"
+          }}
+        />
 
         {/* Hero Copy - Minimal */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 md:px-8">
