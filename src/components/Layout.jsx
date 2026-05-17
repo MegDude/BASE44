@@ -20,7 +20,7 @@ export default function Layout() {
     pathname.startsWith("/partners") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/partner-workspace") ||
-    ["/", "/map", "/explore", "/events", "/perks", "/card", "/about"].includes(pathname);
+    ["/map", "/explore", "/events", "/perks", "/card", "/about"].includes(pathname);
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =

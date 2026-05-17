@@ -19,11 +19,9 @@ const PARTNER_LINKS = [
 ];
 
 const TOP_LINKS = [
-  
-  
   { label: "Residents", dropdown: "residents" },
   { label: "Partners", dropdown: "partners" },
-  { to: "/partners", label: "Pricing" },
+  { to: "/pricing", label: "Pricing" },
 ];
 
 export default function Navbar() {
