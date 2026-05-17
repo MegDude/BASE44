@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, ChevronLeft, Compass, CreditCard, Info, MapPin, Menu, User, X } from "lucide-react";
+import { ChevronLeft, Compass, CreditCard, Info, MapPin, Menu, X } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
 
 const MOBILE_NAV = [
