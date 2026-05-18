@@ -10,12 +10,8 @@ export default function PageNotFound({}) {
     const { data: authData, isFetched } = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
-            try {
-                const user = await base44.auth.me();
-                return { user, isAuthenticated: true };
-            } catch (error) {
-                return { user: null, isAuthenticated: false };
-            }
+            // Mock user for demo purposes
+            return { user: { name: "Demo User", email: "demo@user.com" }, isAuthenticated: true };
         }
     });
     

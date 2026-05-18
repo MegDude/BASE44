@@ -17,7 +17,7 @@ export default function HeatmapControls({ visible, onVisibilityChange, timeFilte
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[12px] font-medium transition-all ${
           visible
             ? 'border-[#111] bg-[#111] text-white'
-            : 'border-[#e8e5df] bg-white text-[#3d3934] hover:border-[#bbb]'
+            : 'border-[rgba(11,31,51,0.08)] bg-white text-foreground/78 hover:border-[rgba(11,31,51,0.18)]'
         }`}
       >
         <Zap className="w-3.5 h-3.5" />
@@ -29,7 +29,7 @@ export default function HeatmapControls({ visible, onVisibilityChange, timeFilte
         <select
           value={timeFilter}
           onChange={(e) => onTimeFilterChange(e.target.value)}
-          className="px-2.5 py-1.5 rounded-lg border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:border-[#bbb] transition-colors"
+          className="rounded-lg border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1.5 text-[12px] font-medium text-foreground/78 transition-colors hover:border-[rgba(11,31,51,0.18)]"
         >
           <option value="now">Last hour</option>
           <option value="today">Today</option>

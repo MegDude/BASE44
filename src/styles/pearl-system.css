@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --dp-navy: #111f3d;
+    --dp-gold: #c6a55c;
+    --dp-bg-primary: #f7f6f2;
+    
+    /* Three-Depth Surface System */
+    --dp-bg: #f7f6f2;              /* Depth 1: Environmental */
+    --dp-surface: rgba(255,255,255,0.88); /* Depth 2: Operational UI */
+    --dp-card: rgba(255,255,255,0.72);    /* Depth 3: Interactive Elements */
+    
+    /* Typography */
+    --dp-text: #111f3d;
+    --dp-text-secondary: #6b7a8a;
+    
+    /* Motion */
+    --dp-blur: blur(12px);
+    --dp-blur-main: blur(14px);
+  }
+
+  html, body, #root { 
+    min-height: 100%;
+  }
+
+  body {
+    background-color: var(--dp-bg);
+    color: var(--dp-text);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--dp-navy);
+    letter-spacing: -0.02em;
+  }
+
+  button, a {
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  button:active, a:active { 
+    transform: scale(0.98);
+  }
+}
+
+@layer components {
+  /* Environmental Surface - Map background layer */
+  .bg-dp-bg {
+    background-color: var(--dp-bg);
+  }
+  
+  /* Operational Surface - UI grouping layer */
+  .bg-dp-surface {
+    background: var(--dp-surface);
+    backdrop-filter: var(--dp-blur-main);
+  }
+  
+  /* Card Surface - Interactive layer */
+  .bg-dp-card {
+    background: var(--dp-card);
+    backdrop-filter: var(--dp-blur);
+  }
+  
+  /* Navy Primary Button */
+  .btn-primary {
+    background: var(--dp-navy);
+    color: #ffffff;
+  }
+  
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+  
+  /* Gold Accent Button */
+  .btn-accent {
+    background: var(--dp-gold);
+    color: var(--dp-navy);
+  }
+  
+  .btn-accent:hover {
+    opacity: 0.9;
+  }
+  
+  /* Secondary Button */
+  .btn-secondary {
+    background: var(--dp-card);
+    color: var(--dp-navy);
+  }
+  
+  .btn-secondary:hover {
+    opacity: 0.8;
+  }
+}
+
+@layer utilities {
+  .text-dp-navy { color: var(--dp-navy); }
+  .text-dp-gold { color: var(--dp-gold); }
+  .text-dp-secondary { color: var(--dp-text-secondary); }
+}

@@ -3,7 +3,7 @@
  * States: idle | scanning | success | error
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
@@ -12,6 +12,8 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
   const { trackAction } = useUnifiedMapStore();
   const [state, setState] = useState('idle'); // idle | confirming | success | error
   const [rating, setRating] = useState(0);
+  const [showCard, setShowCard] = useState(false);
+  const hasPerk = Boolean(item?.perk_value || item?.perk?.value || item?.perk);
 
   const qrValue = JSON.stringify({
     type: 'perk_redemption',
@@ -19,6 +21,12 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
     venueName: item.name,
     timestamp: new Date().toISOString(),
   });
+
+  useEffect(() => {
+    if (!hasPerk) return;
+    const timer = window.setTimeout(() => setShowCard(true), 40);
+    return () => window.clearTimeout(timer);
+  }, [hasPerk]);
 
   const handleConfirm = async () => {
     setState('confirming');
@@ -44,13 +52,14 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm md:items-center"
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white rounded-3xl p-6 max-w-sm w-full mx-4 relative"
+        initial={{ opacity: 0, y: 28, scale: 0.985 }}
+        animate={{ opacity: showCard ? 1 : 0, y: showCard ? 0 : 28, scale: showCard ? 1 : 0.985 }}
+        exit={{ opacity: 0, y: 20, scale: 0.985 }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-sm rounded-t-[28px] bg-white p-6 pb-7 md:mx-4 md:rounded-[28px]"
       >
         {/* Close button */}
         <button
@@ -80,11 +89,19 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
 
               {/* QR Code */}
               <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: showCard ? 1 : 0, y: showCard ? 0 : 10 }}
+                transition={{ duration: 0.24, delay: 0.1, ease: 'easeOut' }}
                 className="flex justify-center py-4"
               >
-                <div className="bg-white p-4 rounded-2xl border-4 border-primary/20">
+                <div className="relative bg-white p-4 rounded-2xl border-4 border-primary/20">
+                  <motion.span
+                    aria-hidden="true"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: [0, 0.22, 0], scale: [0.9, 1.04, 1.1] }}
+                    transition={{ duration: 1.05, ease: 'easeOut' }}
+                    className="pointer-events-none absolute inset-[-8px] rounded-[22px] border border-[rgba(207,175,90,0.42)]"
+                  />
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrValue)}`}
                     alt="QR Code"

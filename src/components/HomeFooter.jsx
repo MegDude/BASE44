@@ -13,7 +13,7 @@ export default function HomeFooter() {
               <div className="w-6 h-6 rounded-full border border-primary/40 flex items-center justify-center">
                 <MapPin className="w-3 h-3 text-primary" />
               </div>
-              <span className="font-heading text-sm font-medium text-foreground">
+              <span className="dp-brand-wordmark text-sm text-foreground">
                 Downtown <span className="text-primary">Perks</span>
               </span>
             </div>
@@ -59,8 +59,8 @@ export default function HomeFooter() {
             <div className="space-y-2">
               {[
                 { to: "/partners", label: "Partner Overview" },
-                { to: "/downtown-perks/for-buildings", label: "Pricing" },
-                { to: "/dashboard", label: "Dashboard" },
+                { to: "/#start-here", label: "Start Here" },
+                { to: "/partners/dashboard", label: "Dashboard" },
                 { to: "/downtown-perks/about", label: "About" },
               ].map(l => (
                 <Link key={l.to} to={l.to} className="block text-[13px] text-foreground/60 hover:text-foreground transition-colors">{l.label}</Link>
@@ -69,11 +69,11 @@ export default function HomeFooter() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[hsl(218,20%,90%)] flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="flex flex-col items-start gap-2 border-t border-[hsl(218,20%,90%)] pt-8">
           <p className="text-[12px] text-foreground/40">
             © {new Date().getFullYear()} Downtown Perks · Austin, TX
           </p>
-          <p className="text-[12px] text-foreground/30 italic font-heading">
+          <p className="text-[12px] text-foreground/30">
             Where downtown works like a system.
           </p>
         </div>

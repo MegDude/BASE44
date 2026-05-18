@@ -1,0 +1,70 @@
+import { base44Api } from "@/lib/api/base44Api";
+
+export const PARTNER_PLATFORM_ACTIONS = {
+  createPartner: "createPartner",
+  updatePartner: "updatePartner",
+  getPartner: "getPartner",
+  listPartners: "listPartners",
+  createEntity: "createPartnerEntity",
+  updateEntity: "updatePartnerEntity",
+  getEntity: "getPartnerEntity",
+  listEntities: "listPartnerEntities",
+  createOffer: "createPartnerOffer",
+  updateOffer: "updatePartnerOffer",
+  listOffers: "listPartnerOffers",
+  createEvent: "createPartnerEvent",
+  updateEvent: "updatePartnerEvent",
+  listEvents: "listPartnerEvents",
+  createSourcePoint: "createSourcePoint",
+  updateSourcePoint: "updateSourcePoint",
+  deleteSourcePoint: "deleteSourcePoint",
+  listSourcePoints: "listSourcePoints",
+  listPartnerUsers: "listPartnerUsers",
+  invitePartnerUser: "invitePartnerUser",
+  updatePartnerProfile: "updatePartnerProfile",
+  submitPartnerLead: "submitPartnerLead",
+  requestMemberCard: "requestMemberCard",
+  getPartnerAnalytics: "getPartnerAnalytics",
+  getDashboardAnalytics: "getDashboardAnalytics",
+  getPartnerRecommendations: "getPartnerRecommendations",
+  logPartnerInteraction: "logPartnerInteraction",
+} as const;
+
+async function invokeAction<T = any>(action: string, payload: Record<string, any> = {}) {
+  const response = await base44Api.invoke<T>(action, payload);
+  return {
+    data: response?.data ?? null,
+    error: response?.error,
+  };
+}
+
+export const partnerPlatformApi = {
+  invokeAction,
+  createPartner: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.createPartner, payload),
+  updatePartner: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.updatePartner, payload),
+  getPartner: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.getPartner, payload),
+  listPartners: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.listPartners, payload),
+  createEntity: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.createEntity, payload),
+  updateEntity: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.updateEntity, payload),
+  getEntity: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.getEntity, payload),
+  listEntities: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.listEntities, payload),
+  createOffer: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.createOffer, payload),
+  updateOffer: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.updateOffer, payload),
+  listOffers: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.listOffers, payload),
+  createEvent: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.createEvent, payload),
+  updateEvent: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.updateEvent, payload),
+  listEvents: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.listEvents, payload),
+  createSourcePoint: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.createSourcePoint, payload),
+  updateSourcePoint: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.updateSourcePoint, payload),
+  deleteSourcePoint: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.deleteSourcePoint, payload),
+  listSourcePoints: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.listSourcePoints, payload),
+  listPartnerUsers: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.listPartnerUsers, payload),
+  invitePartnerUser: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.invitePartnerUser, payload),
+  updatePartnerProfile: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.updatePartnerProfile, payload),
+  submitPartnerLead: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.submitPartnerLead, payload),
+  requestMemberCard: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.requestMemberCard, payload),
+  getPartnerAnalytics: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.getPartnerAnalytics, payload),
+  getDashboardAnalytics: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.getDashboardAnalytics, payload),
+  getPartnerRecommendations: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.getPartnerRecommendations, payload),
+  logPartnerInteraction: (payload: Record<string, any>) => invokeAction(PARTNER_PLATFORM_ACTIONS.logPartnerInteraction, payload),
+};

@@ -14,45 +14,33 @@
 
 import { create } from 'zustand';
 import { MapEntity, District, VenueCategory } from '@/data/mapEntities';
-import { isValidMapCenter, getValidMapCenter } from '@/lib/mapValidation';
+import { getValidMapCenter } from '@/lib/mapValidation';
 
-/**
- * View mode determines what is emphasized on the map
- */
-export type ViewMode = 
-  | 'explore'     // All entities mixed (resident view)
-  | 'places'      // Venues only
-  | 'events'      // Events only
-  | 'perks'       // Perks only
-  | 'buildings'   // Buildings/properties only
-  | 'partners'    // Partner-oriented view
-  | 'resident'    // Resident dashboard view
-  | 'list';       // List-only mode
+export type ViewMode =
+  | 'explore'
+  | 'places'
+  | 'events'
+  | 'perks'
+  | 'buildings'
+  | 'partners'
+  | 'resident'
+  | 'list';
 
-/**
- * Drawer visibility state
- */
-export type DrawerState = 'closed' | 'preview' | 'expanded' | 'fullscreen';
+export type DrawerState = 'closed' | 'preview' | 'expanded' | 'fullscreen' | 'collapsed';
 
-/**
- * Active filters configuration
- */
 export interface ActiveFilters {
-  entityTypes: Set<string>;        // venue, event, perk, building, etc.
-  categories: Set<VenueCategory>;  // coffee, bar, fitness, etc.
-  districts: Set<District>;        // rainey, congress, etc.
-  walkMinutes: number | null;      // Max walk time in minutes
+  entityTypes: Set<string>;
+  categories: Set<VenueCategory>;
+  districts: Set<District>;
+  walkMinutes: number | null;
   isOpenNow: boolean;
   isLive: boolean;
   isSaved: boolean;
   isTrending: boolean;
+  hasPerk: boolean;
 }
 
-/**
- * Map state interface
- */
 export interface MapState {
-  // ─── Map Viewport ───────────────────────────────
   mapCenter: [number, number];
   mapZoom: number;
   mapBounds?: {
@@ -62,36 +50,32 @@ export interface MapState {
     west: number;
   };
 
-  // ─── Selection & Detail ──────────────────────────
   selectedEntityId: string | null;
   selectedEntity: MapEntity | null;
   drawerState: DrawerState;
 
-  // ─── Filtering ──────────────────────────────────
   activeFilters: ActiveFilters;
   searchQuery: string;
 
-  // ─── Results ────────────────────────────────────
   filteredResults: MapEntity[];
   resultsSortBy: 'distance' | 'relevance' | 'popularity' | 'newest';
   resultsLimit: number;
 
-  // ─── View State ─────────────────────────────────
   viewMode: ViewMode;
   showResultsList: boolean;
   showMapOnly: boolean;
   isMapLoading: boolean;
 
-  // ─── Interactions ───────────────────────────────
   savedEntityIds: Set<string>;
   heatmapVisible: boolean;
   liveActionsVisible: boolean;
   lastInteractionTime: number | null;
 
-  // ─── Actions ────────────────────────────────────
   setMapCenter: (center: [number, number]) => void;
   setMapZoom: (zoom: number) => void;
-  selectEntity: (entity: MapEntity | null) => void;
+  selectEntity: (entity: MapEntity | null, options?: { openDrawer?: boolean; panToEntity?: boolean }) => void;
+  openEntity: (entity: MapEntity | null, state?: DrawerState) => void;
+  clearSelection: () => void;
   setDrawerState: (state: DrawerState) => void;
   setViewMode: (mode: ViewMode) => void;
   setSearchQuery: (query: string) => void;
@@ -108,9 +92,6 @@ export interface MapState {
   reset: () => void;
 }
 
-/**
- * Default filter state
- */
 const DEFAULT_FILTERS: ActiveFilters = {
   entityTypes: new Set(['venue', 'event', 'perk', 'building']),
   categories: new Set(),
@@ -120,18 +101,12 @@ const DEFAULT_FILTERS: ActiveFilters = {
   isLive: false,
   isSaved: false,
   isTrending: false,
+  hasPerk: false,
 };
 
-/**
- * Austin downtown center (fallback)
- */
 const AUSTIN_CENTER: [number, number] = [30.267, -97.743];
 
-/**
- * Unified map state store
- */
 export const useMapStateStore = create<MapState>((set, get) => ({
-  // Initial state
   mapCenter: AUSTIN_CENTER,
   mapZoom: 14,
   mapBounds: undefined,
@@ -157,7 +132,6 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   liveActionsVisible: false,
   lastInteractionTime: null,
 
-  // ─── Map Viewport Actions ───────────────────────────
   setMapCenter: (center: [number, number]) => {
     const validCenter = getValidMapCenter(center, AUSTIN_CENTER);
     set({ mapCenter: validCenter });
@@ -169,36 +143,51 @@ export const useMapStateStore = create<MapState>((set, get) => ({
     }
   },
 
-  // ─── Selection Actions ──────────────────────────────
-  selectEntity: (entity: MapEntity | null) => {
+  selectEntity: (entity: MapEntity | null, options = {}) => {
+    const openDrawer = Boolean(options.openDrawer);
+    const panToEntity = options.panToEntity !== false;
+
     set({
       selectedEntityId: entity?.id || null,
       selectedEntity: entity,
-      drawerState: entity ? 'preview' : 'closed',
-      lastInteractionTime: Date.now(),
+      drawerState: entity && openDrawer ? 'preview' : 'closed',
+      lastInteractionTime: entity ? Date.now() : get().lastInteractionTime,
     });
 
-    // Pan map to selected entity if valid location
-    if (entity && entity.location) {
+    if (entity && panToEntity && entity.location) {
       get().setMapCenter([entity.location.latitude, entity.location.longitude]);
     }
+  },
+
+  openEntity: (entity: MapEntity | null, state: DrawerState = 'preview') => {
+    set({
+      selectedEntityId: entity?.id || null,
+      selectedEntity: entity,
+      drawerState: entity ? state : 'closed',
+      lastInteractionTime: entity ? Date.now() : get().lastInteractionTime,
+    });
+
+    if (entity?.location) {
+      get().setMapCenter([entity.location.latitude, entity.location.longitude]);
+    }
+  },
+
+  clearSelection: () => {
+    set({ selectedEntityId: null, selectedEntity: null, drawerState: 'closed' });
   },
 
   setDrawerState: (state: DrawerState) => {
     set({ drawerState: state });
   },
 
-  // ─── View Mode Actions ──────────────────────────────
   setViewMode: (mode: ViewMode) => {
     set({ viewMode: mode, lastInteractionTime: Date.now() });
   },
 
-  // ─── Search Actions ────────────────────────────────
   setSearchQuery: (query: string) => {
     set({ searchQuery: query, isMapLoading: true });
   },
 
-  // ─── Filter Actions ────────────────────────────────
   updateFilter: (filterKey: keyof ActiveFilters, value: unknown) => {
     const filters = { ...get().activeFilters };
 
@@ -218,26 +207,17 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   },
 
   clearFilters: () => {
-    set({
-      activeFilters: { ...DEFAULT_FILTERS },
-      searchQuery: '',
-      isMapLoading: true,
-    });
+    set({ activeFilters: { ...DEFAULT_FILTERS }, searchQuery: '', isMapLoading: true });
   },
 
-  // ─── Results Actions ───────────────────────────────
   setFilteredResults: (results: MapEntity[]) => {
     set({ filteredResults: results, isMapLoading: false });
   },
 
-  // ─── Saved Items Actions ───────────────────────────
   toggleSaved: (entityId: string) => {
     const saved = new Set(get().savedEntityIds);
-    if (saved.has(entityId)) {
-      saved.delete(entityId);
-    } else {
-      saved.add(entityId);
-    }
+    if (saved.has(entityId)) saved.delete(entityId);
+    else saved.add(entityId);
     set({ savedEntityIds: saved });
   },
 
@@ -245,30 +225,12 @@ export const useMapStateStore = create<MapState>((set, get) => ({
     set({ savedEntityIds: new Set(entityIds) });
   },
 
-  // ─── Visualization Actions ─────────────────────────
-  setHeatmapVisible: (visible: boolean) => {
-    set({ heatmapVisible: visible });
-  },
+  setHeatmapVisible: (visible: boolean) => set({ heatmapVisible: visible }),
+  setLiveActionsVisible: (visible: boolean) => set({ liveActionsVisible: visible }),
+  setShowResultsList: (show: boolean) => set({ showResultsList: show }),
+  setShowMapOnly: (show: boolean) => set({ showMapOnly: show }),
+  setIsMapLoading: (loading: boolean) => set({ isMapLoading: loading }),
 
-  setLiveActionsVisible: (visible: boolean) => {
-    set({ liveActionsVisible: visible });
-  },
-
-  // ─── Layout Actions ────────────────────────────────
-  setShowResultsList: (show: boolean) => {
-    set({ showResultsList: show });
-  },
-
-  setShowMapOnly: (show: boolean) => {
-    set({ showMapOnly: show });
-  },
-
-  // ─── Loading State ─────────────────────────────────
-  setIsMapLoading: (loading: boolean) => {
-    set({ isMapLoading: loading });
-  },
-
-  // ─── Reset ──────────────────────────────────────────
   reset: () => {
     set({
       mapCenter: AUSTIN_CENTER,
@@ -290,9 +252,6 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   },
 }));
 
-/**
- * Selector hooks for efficient component subscriptions
- */
 export const selectMapCenter = (state: MapState) => state.mapCenter;
 export const selectMapZoom = (state: MapState) => state.mapZoom;
 export const selectSelectedEntity = (state: MapState) => state.selectedEntity;

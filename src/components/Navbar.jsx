@@ -1,255 +1,88 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, MapPin, ChevronDown, Hotel, MapIcon, Star, Landmark, Home, LayoutDashboard } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, Compass, CreditCard, Info, MapPin, Menu, X } from "lucide-react";
+import { ROUTES } from "@/lib/routes";
 
-const RESIDENT_LINKS = [
-  { to: "/explore", label: "Live Map", desc: "Browse places, events & perks" },
-  { to: "/events", label: "Events", desc: "What's happening downtown" },
-  { to: "/perks", label: "Perks", desc: "Member offers & benefits" },
-  { to: "/card", label: "Perks Card", desc: "Your resident credential" },
-];
-
-const PARTNER_LINKS = [
-  { to: "/partners/residential", label: "Residential", desc: "Buildings & amenity layers", icon: Home },
-  { to: "/partners/hotels", label: "Hospitality", desc: "Hotels & guest experience", icon: Hotel },
-  { to: "/partners/venues", label: "Venues", desc: "Restaurants, bars & fitness", icon: MapIcon },
-  { to: "/partners/brands", label: "Brands", desc: "Campaigns & activations", icon: Star },
-  { to: "/partners/civic", label: "Civic", desc: "District programs & events", icon: Landmark },
-];
-
-const TOP_LINKS = [
-  { label: "Residents", dropdown: "residents" },
-  { label: "Partners", dropdown: "partners" },
-  { to: "/pricing", label: "Pricing" },
+const MOBILE_NAV = [
+  { to: ROUTES.explore, icon: Compass, label: "Map" },
+  { to: ROUTES.events, icon: MapPin, label: "Events" },
+  { to: ROUTES.card, icon: CreditCard, label: "Card" },
+  { to: ROUTES.about, icon: Info, label: "More" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [dropdown, setDropdown] = useState(null);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    setDropdown(null);
     setOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    function handleClick(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdown(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+  const showBackButton = location.pathname !== "/";
 
-  const isActive = (to) => {
-    if (!to) return false;
-    if (to === "/brands") return location.pathname.startsWith("/brands");
-    if (to === "/partners") return location.pathname.startsWith("/partners");
-    return location.pathname === to;
-  };
-
-  const isDropdownActive = (which) => {
-    if (which === "residents") {
-      return (
-        location.pathname.startsWith("/downtown-perks") ||
-        ["/explore", "/map", "/events", "/perks", "/card", "/about"].includes(location.pathname)
-      );
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      navigate(-1);
+      return;
     }
-    if (which === "partners") return location.pathname.startsWith("/partners") || location.pathname.startsWith("/brands");
-    return false;
+    navigate("/");
   };
 
   return (
-    <nav ref={dropdownRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled
-        ? "bg-white/95 backdrop-blur-lg border-b border-border/40 shadow-sm shadow-black/5"
-        : "bg-white/90 backdrop-blur-sm border-b border-border/20"
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
-
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
-            <MapPin className="w-3.5 h-3.5 text-primary" />
+    <>
+      {/* TOP NAV (SLIM) */}
+      <nav ref={dropdownRef} className="fixed left-0 right-0 top-0 z-50">
+        <div className="mx-auto mt-2 flex h-12 w-[min(96%,1100px)] items-center justify-between rounded-full pearl-surface px-3">
+          <div className="flex items-center gap-2">
+            {showBackButton && (
+              <button onClick={handleBack} className="h-8 w-8 rounded-full">
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+            )}
+            <Link to="/" className="text-sm font-semibold">
+              Downtown Perks
+            </Link>
           </div>
-          <span className="font-heading font-medium text-[15px] tracking-tight text-foreground">
-            Downtown<span className="text-primary"> Perks</span>
-          </span>
-        </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-0.5">
-          {TOP_LINKS.map((link, i) => {
-            if (link.dropdown) {
-              const active = isDropdownActive(link.dropdown);
-              return (
-                <div key={i} className="relative">
-                  <button
-                    onClick={() => setDropdown(dropdown === link.dropdown ? null : link.dropdown)}
-                    className={`flex items-center gap-1 px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                      active || dropdown === link.dropdown ? "text-primary" : "text-foreground/60 hover:text-foreground"
-                    }`}
-                  >
-                    {link.label}
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdown === link.dropdown ? "rotate-180" : ""}`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {dropdown === link.dropdown && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[320px] bg-white rounded-2xl border border-border/40 shadow-lg shadow-black/8 overflow-hidden"
-                      >
-                        <div className="p-2">
-                          {(link.dropdown === "residents" ? RESIDENT_LINKS : PARTNER_LINKS).map((item) => {
-                            const Icon = item.icon;
-                            return (
-                              <Link
-                                key={item.to}
-                                to={item.to}
-                                className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-[hsl(218,30%,97%)] transition-colors group"
-                              >
-                                {Icon ? (
-                                  <div className="w-8 h-8 rounded-lg bg-primary/8 border border-primary/12 flex items-center justify-center shrink-0">
-                                    <Icon className="w-3.5 h-3.5 text-primary/70" />
-                                  </div>
-                                ) : (
-                                  <div className="w-8 h-8 rounded-lg bg-muted/60 border border-border/40 flex items-center justify-center shrink-0">
-                                    <MapPin className="w-3.5 h-3.5 text-muted-foreground/60" />
-                                  </div>
-                                )}
-                                <div>
-                                  <div className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors">{item.label}</div>
-                                  <div className="text-[11px] text-muted-foreground/60 mt-0.5">{item.desc}</div>
-                                </div>
-                              </Link>
-                            );
-                          })}
-                          {link.dropdown === "partners" && (
-                            <div className="mx-3 mt-1 pt-2 border-t border-border/40">
-                              <Link to="/partners" className="flex items-center gap-2 px-0 py-2 text-[12px] font-medium text-primary/70 hover:text-primary transition-colors">
-                                View all partner types →
-                              </Link>
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            }
-
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                  isActive(link.to) ? "text-primary" : "text-foreground/60 hover:text-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="h-9 w-9 rounded-full md:hidden"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
         </div>
 
-        {/* CTA row */}
-        <div className="hidden md:flex items-center gap-2.5">
-          <Link
-            to="/dashboard"
-            className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium text-foreground/60 hover:text-foreground transition-colors"
-          >
-            <LayoutDashboard className="w-3.5 h-3.5" />
-            Dashboard
-          </Link>
-          <Link
-            to="/card"
-            className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all duration-300 shadow-sm shadow-primary/20"
-          >
-            Get Your Card
-          </Link>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-foreground/60 hover:text-foreground p-2 transition-colors">
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-[68px] left-0 right-0 bg-white border-b border-border/40 shadow-sm max-h-[80vh] overflow-y-auto"
-          >
-            <div className="px-5 py-5 space-y-1">
-
-              {/* Resident links */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mb-2">Explore</div>
-              {RESIDENT_LINKS.map((link) => (
-                <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
-                  className={`block px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
-                    isActive(link.to) ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-foreground"
-                  }`}>
-                  {link.label}
-                </Link>
-              ))}
-
-              {/* Partner links */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">Partners</div>
-              {PARTNER_LINKS.map((link) => {
-                const Icon = link.icon;
-                return (
-                  <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
-                      isActive(link.to) ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-foreground"
-                    }`}>
-                    {Icon && <Icon className="w-3.5 h-3.5 text-primary/50 shrink-0" />}
-                    {link.label}
-                  </Link>
-                );
-              })}
-
-              {/* Other */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
-              <Link to="/partners" onClick={() => setOpen(false)}
-                className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
-                Pricing
-              </Link>
-              <Link to="/dashboard" onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
-                <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
-              </Link>
-
-              <div className="pt-4 pb-2">
-                <Link to="/card" onClick={() => setOpen(false)}
-                  className="block px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium text-center hover:bg-primary/90 transition-all">
-                  Get Your Card
-                </Link>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="mt-2 rounded-xl bg-white p-4 shadow-lg"
+            >
+              <div className="space-y-2">
+                <Link to={ROUTES.explore}>Map</Link>
+                <Link to={ROUTES.events}>Events</Link>
+                <Link to={ROUTES.card}>Card</Link>
+                <Link to={ROUTES.about}>About</Link>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* BOTTOM NAV (MOBILE FIRST) */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t bg-white/80 backdrop-blur-md md:hidden">
+        {MOBILE_NAV.map(({ to, icon: Icon, label }) => (
+          <Link key={to} to={to} className="flex flex-col items-center justify-center py-2 text-xs">
+            <Icon className="h-4 w-4" />
+            {label}
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
+import { logInteraction } from './_utils/interactions.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -35,6 +36,19 @@ export default async function handler(req, res) {
   if (error) {
     return res.status(500).json({ error: error.message });
   }
+
+  await logInteraction({
+    type: 'impression',
+    entityId,
+    entityType,
+    sessionId,
+    district: typeof req.body?.district === 'string' ? req.body.district : null,
+    source: 'api/impression',
+    metadata: {
+      lat: latitude,
+      lng: longitude,
+    },
+  });
 
   return res.status(200).json({ ok: true });
 }

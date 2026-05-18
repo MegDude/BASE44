@@ -6,6 +6,7 @@
  * - EVERY section leads to action
  */
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, MapPin, Clock, Star, ChevronRight, Share2, ExternalLink, Zap } from 'lucide-react';
 import WhyThisChip from './WhyThisChip';
@@ -15,6 +16,7 @@ import { useResidentStore } from '@/store/resident-store';
 export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   const { history, addSaved, removeSaved } = useResidentStore();
   const isSaved = history.saved.includes(entity.id);
+  const [routePinned, setRoutePinned] = useState(false);
 
   const handleSave = () => {
     if (isSaved) {
@@ -27,11 +29,11 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   };
 
   const handleDirections = () => {
-    if (entity.lat && entity.lng) {
-      const url = `https://maps.google.com/?q=${entity.lat},${entity.lng}`;
-      window.open(url, '_blank');
-      trackingEvents.directions(entity.id);
+    if (entity.address && navigator.clipboard) {
+      navigator.clipboard.writeText(entity.address);
     }
+    setRoutePinned(true);
+    trackingEvents.directions(entity.id);
   };
 
   return (
@@ -136,6 +138,12 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
               ))}
             </div>
           )}
+
+          {routePinned && (
+            <div className="rounded-lg bg-primary/5 border border-primary/20 p-3 text-[12px] font-medium text-primary">
+              Address pinned for the next step.
+            </div>
+          )}
         </div>
       </div>
 
@@ -158,7 +166,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
             className="w-full h-11 rounded-lg bg-foreground text-background font-medium text-[13px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors"
           >
             <MapPin className="w-4 h-4" />
-            Get directions
+            Use address
           </button>
         )}
 

@@ -1,12 +1,14 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
 
 export function BrandSection({ label = "", title = "", children, className = "" }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section ref={ref} className={`py-20 px-6 border-t border-border/40 ${className}`}>
+    <section ref={ref} className={`py-16 md:py-20 px-6 border-t border-border/40 ${className}`}>
       <div className="max-w-6xl mx-auto">
         {(label || title) && (
           <motion.div
@@ -16,12 +18,12 @@ export function BrandSection({ label = "", title = "", children, className = "" 
             className="mb-12"
           >
             {label && (
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+              <span className="dp-micro-label block mb-4">
                 {label}
               </span>
             )}
             {title && (
-              <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight max-w-2xl">
+              <h2 className="dp-display-section max-w-3xl text-[2rem] text-foreground md:text-[2.8rem]">
                 {title}
               </h2>
             )}
@@ -42,7 +44,7 @@ export function SignalCard({ icon = null, label = "", value = "", sub = "", dela
       initial={{ opacity: 0, y: 16 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="p-6 rounded-lg border border-border/60 bg-card/60 hover:border-border transition-all"
+      className="dp-card rounded-[var(--radius)] p-6 transition-all hover:border-border"
     >
       {icon && <div className="text-primary mb-3 opacity-70">{icon}</div>}
       {value && (
@@ -87,10 +89,10 @@ export function UseCaseCard({ title = "", detail = "", tag = "", delay = 0 }) {
       initial={{ opacity: 0, y: 16 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="p-6 rounded-lg border border-border/60 bg-card/40 hover:border-primary/20 transition-all"
+      className="dp-card rounded-[var(--radius)] p-6 transition-all hover:border-primary/20"
     >
       {tag && (
-        <span className="inline-block text-[11px] font-medium text-primary/70 uppercase tracking-[0.12em] mb-3">
+        <span className="dp-micro-label mb-3 inline-block">
           {tag}
         </span>
       )}
@@ -100,17 +102,21 @@ export function UseCaseCard({ title = "", detail = "", tag = "", delay = 0 }) {
   );
 }
 
-export function BrandCTA({ headline = "", sub = "", ctaLabel = "Start the Conversation", ctaHref = "mailto:partners@downtownperks.com" }) {
+export function BrandCTA({ headline = "", sub = "", ctaLabel = "Get Your Card", ctaHref = "mailto:partners@downtownperks.com" }) {
+  const location = useLocation();
+  const { openFlow } = useCTAFlow();
+  const isMailto = String(ctaHref || "").startsWith("mailto:");
+
   return (
-    <section className="py-24 px-6 border-t border-border/40">
+    <section className="py-16 md:py-20 px-6 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight"
+            className="dp-display-section max-w-3xl text-[2rem] text-foreground md:text-[2.8rem]"
           >
             {headline}
           </motion.h2>
@@ -124,16 +130,61 @@ export function BrandCTA({ headline = "", sub = "", ctaLabel = "Start the Conver
             {sub && (
               <p className="text-muted-foreground text-base leading-relaxed">{sub}</p>
             )}
+            <div className="overflow-hidden rounded-[24px] border border-border/50 bg-[rgba(255,255,255,0.62)]">
+              {[
+                {
+                  label: "Conversation starts here",
+                  body: "The member sees the brand inside a useful downtown moment instead of through a cold ad or generic directory listing.",
+                },
+                {
+                  label: "Intent gets captured",
+                  body: "A scan, save, RSVP, or CTA start creates a cleaner signal than broad awareness because the action is attached to place, timing, and source.",
+                },
+                {
+                  label: "Lead gets handed off",
+                  body: "The partner sees which building, event, or corridor produced the response, so follow-up can happen with real context instead of guesswork.",
+                },
+              ].map((item, index) => (
+                <div
+                  key={item.label}
+                  className={`grid gap-3 px-5 py-4 md:grid-cols-[170px_minmax(0,1fr)] ${
+                    index < 2 ? "border-b border-border/50" : ""
+                  }`}
+                >
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary/70">
+                    {item.label}
+                  </div>
+                  <div className="text-[13px] leading-6 text-muted-foreground">{item.body}</div>
+                </div>
+              ))}
+            </div>
             <div className="flex flex-col sm:flex-row items-start gap-3">
-              <a
-                href={ctaHref || "mailto:partners@downtownperks.com"}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+              <button
+                type="button"
+                onClick={() => {
+                  if (isMailto) {
+                    openFlow({
+                      type: "brand_campaign",
+                      source: `brand_cta_${location.pathname}`,
+                      sourceComponent: "BrandCTA",
+                      partnerType: "brands",
+                      pageContext: {
+                        campaignName: headline,
+                        objective: sub,
+                      },
+                      successRoute: "/partners/brands",
+                    });
+                    return;
+                  }
+                  window.location.assign(ctaHref || "mailto:partners@downtownperks.com");
+                }}
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--dp-gold)] px-7 py-3.5 text-sm font-semibold text-[var(--dp-navy)] transition-all duration-180 hover:bg-[var(--dp-gold-deep)]"
               >
-                {ctaLabel || "Start the Conversation"}
-              </a>
+                {ctaLabel || "Get Your Card"}
+              </button>
               <a
                 href="/downtown-perks/for-buildings"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--dp-border)] px-7 py-3.5 text-sm font-medium text-foreground/70 transition-all duration-180 hover:bg-white/70 hover:text-foreground"
               >
                 See All Partnerships
               </a>

@@ -23,8 +23,8 @@ export default function PlanningForm({ partnerType, onSubmit }) {
   };
 
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
-      <div className="max-w-2xl mx-auto px-6">
+    <section className="border-b border-[rgba(11,31,51,0.08)] py-16 md:py-24">
+      <div className="max-w-2xl mx-auto px-6 text-left">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
           <h3 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
             Ready to launch?
           </h3>
-          <p className="text-[15px] text-[#6f6b65] mb-8">
+          <p className="mb-8 text-[15px] text-muted-foreground">
             Tell us about your {partnerType?.toLowerCase() || 'partnership'} and we'll help you get up and running.
           </p>
 
@@ -46,7 +46,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
                 placeholder="Full name"
                 value={formData.name}
                 onChange={handleChange}
-                className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+                className="h-12 rounded-xl border border-[rgba(11,31,51,0.08)] bg-white px-4 text-[14px] placeholder:text-foreground/38 focus:border-[#111] focus:outline-none transition-colors"
               />
               <input
                 type="email"
@@ -54,7 +54,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
-                className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+                className="h-12 rounded-xl border border-[rgba(11,31,51,0.08)] bg-white px-4 text-[14px] placeholder:text-foreground/38 focus:border-[#111] focus:outline-none transition-colors"
               />
             </div>
 
@@ -64,14 +64,14 @@ export default function PlanningForm({ partnerType, onSubmit }) {
               placeholder="Organization / Property name"
               value={formData.organization}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+              className="h-12 w-full rounded-xl border border-[rgba(11,31,51,0.08)] bg-white px-4 text-[14px] placeholder:text-foreground/38 focus:border-[#111] focus:outline-none transition-colors"
             />
 
             <select
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] text-[#4a463f] focus:border-[#111] focus:outline-none transition-colors"
+              className="h-12 w-full rounded-xl border border-[rgba(11,31,51,0.08)] bg-white px-4 text-[14px] text-foreground/78 focus:border-[#111] focus:outline-none transition-colors"
             >
               <option value="">Select your role</option>
               <option value="owner">Owner / Principal</option>
@@ -89,7 +89,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
             </button>
           </form>
 
-          <p className="text-[12px] text-[#8d887f] text-center mt-6">
+          <p className="mt-6 text-left text-[12px] text-muted-foreground">
             We'll be in touch within 24 hours to discuss your next steps.
           </p>
         </motion.div>

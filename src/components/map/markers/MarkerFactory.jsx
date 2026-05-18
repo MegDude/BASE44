@@ -1,302 +1,227 @@
-/**
- * Downtown Perks Marker Factory
- * Unified marker rendering system for all entity types
- * Ensures consistent visual language across the product
- */
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import L from "leaflet";
+import Pin, { mapType } from "@/components/map/Pin";
+import { isWithinRadius } from "@/styles/pinTokens";
 
-import L from 'leaflet';
+const LEGENDS_LOGO =
+  "https://media.base44.com/images/public/69d94e4f5b7886cf42a2cf62/59a2b6b9d_legends-logocopy.png";
 
-/**
- * Marker configuration library
- * Aligned with Downtown Perks brand system
- */
-const MARKER_CONFIG = {
-  // Standard venues (coffee, dining, retail, etc.)
-  'standard:restaurant': {
-    color: '#C8973A', // Gold
-    icon: '🍽️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(200, 151, 58, 0.4)',
-  },
-  'standard:coffee': {
-    color: '#8B6F47', // Deep brown
-    icon: '☕',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(139, 111, 71, 0.4)',
-  },
-  'standard:bar': {
-    color: '#9C5BA3', // Wine/purple
-    icon: '🍷',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(156, 91, 163, 0.4)',
-  },
-  'standard:fitness': {
-    color: '#2ECC71', // Teal/green
-    icon: '💪',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(46, 204, 113, 0.4)',
-  },
-  'standard:wellness': {
-    color: '#A67BC4', // Soft purple
-    icon: '🧘',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(166, 123, 196, 0.4)',
-  },
-  'standard:retail': {
-    color: '#7D7D7D', // Neutral gray
-    icon: '🛍️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(125, 125, 125, 0.4)',
-  },
-  'standard:entertainment': {
-    color: '#3498DB', // Light blue
-    icon: '🎭',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(52, 152, 219, 0.4)',
-  },
-
-  // Buildings and properties (navy with building icon)
-  'building:default': {
-    color: '#1A3A52', // Navy
-    icon: '🏢',
-    size: 16,
-    iconSize: 10,
-    selectedScale: 1.8,
-    shadowBlur: '0 4px 12px rgba(26, 58, 82, 0.5)',
-  },
-
-  // Events (light blue with calendar)
-  'event:default': {
-    color: '#4A90E2', // Event blue
-    icon: '📅',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(74, 144, 226, 0.4)',
-  },
-
-  // Perks (green with tag)
-  'perk:default': {
-    color: '#27AE60', // Perk green
-    icon: '🏷️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(39, 174, 96, 0.4)',
-  },
-
-  // Brands (orange with star)
-  'brand:default': {
-    color: '#E67E22', // Brand orange
-    icon: '⭐',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(230, 126, 34, 0.4)',
-  },
-
-  // Civic (red with landmark)
-  'civic:default': {
-    color: '#C0392B', // Civic red
-    icon: '🏛️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(192, 57, 43, 0.4)',
-  },
-};
-
-/**
- * Get marker configuration for an entity
- */
-function getMarkerConfig(entity) {
-  // Try category-specific config first
-  const categoryKey = `${entity.markerType}:${entity.category || entity.type}`;
-  if (MARKER_CONFIG[categoryKey]) {
-    return MARKER_CONFIG[categoryKey];
-  }
-
-  // Fall back to type-specific config
-  const typeKey = `${entity.markerType}:default`;
-  if (MARKER_CONFIG[typeKey]) {
-    return MARKER_CONFIG[typeKey];
-  }
-
-  // Ultimate fallback
-  return MARKER_CONFIG['standard:restaurant'];
+function normalizeText(value = "") {
+  return String(value || "").trim().toLowerCase();
 }
 
-/**
- * Create a compact marker icon (unselected state)
- */
-export function createCompactMarker(entity) {
-  const config = getMarkerConfig(entity);
+function getClusterVisual(entity) {
+  const family = normalizeText(entity?.category || entity?.metadata?.category || "venue");
+  if (family === "property") {
+    return {
+      shell: "#0B1F33",
+      accent: "#C6A85A",
+      icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg>`,
+    };
+  }
+  if (family === "event") {
+    return {
+      shell: "#0B1F33",
+      accent: "#C6A85A",
+      icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>`,
+    };
+  }
+  if (family === "partner") {
+    return {
+      shell: "#C6A85A",
+      accent: "#0B1F33",
+      icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B1F33" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12 12 20 4 12l8-8 8 8Z"/></svg>`,
+    };
+  }
+  return {
+    shell: "#F7F9FC",
+    accent: "#0B1F33",
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B1F33" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.2-4.2 8.6-6.8 10.8a1.7 1.7 0 0 1-2.4 0C8.2 18.6 4 14.2 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>`,
+  };
+}
 
-  const html = `
-    <div style="
-      width: ${config.size}px;
-      height: ${config.size}px;
-      border-radius: 50%;
-      background-color: ${config.color};
-      border: 2px solid white;
-      box-shadow: ${config.shadowBlur};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${config.iconSize}px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    ">
-      ${config.icon}
-    </div>
-  `;
+function createClusterMarker(entity, options = {}) {
+  const count = Number(entity?.metadata?.clusterCount || entity?.clusterCount || 0);
+  const selected = Boolean(options?.isSelected);
+  const visual = getClusterVisual(entity);
+  const shell = selected ? "#0B1F33" : visual.shell;
+  const textColor = selected ? "#fff" : visual.accent;
+  const iconMarkup = selected ? visual.icon.replace(/stroke="#0B1F33"/g, 'stroke="white"') : visual.icon;
 
   return L.divIcon({
-    className: '',
-    html,
-    iconSize: [config.size, config.size],
-    iconAnchor: [config.size / 2, config.size / 2],
-    popupAnchor: [0, -config.size / 2],
+    className: "custom-marker",
+    html: `<div aria-label="${count} grouped places" style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:${shell};border:1.5px solid rgba(11,31,51,0.12);box-shadow:0 10px 24px rgba(11,31,51,0.16);color:${textColor};font-family:Inter,system-ui,sans-serif;transform:translate(-50%, -50%);">
+      <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:${selected ? "rgba(255,255,255,0.14)" : "rgba(11,31,51,0.06)"};">${iconMarkup}
+        <span style="position:absolute;right:-4px;bottom:-4px;display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:${selected ? "#C6A85A" : "#0B1F33"};color:white;font-size:9px;font-weight:800;line-height:1;">${count}</span>
+      </span>
+    </div>`,
+    iconSize: null,
+    iconAnchor: [0, 0],
+    popupAnchor: [0, -28],
   });
 }
 
-/**
- * Create a selected marker icon (larger, highlighted)
- */
-export function createSelectedMarker(entity) {
-  const config = getMarkerConfig(entity);
-  const selectedSize = config.size * config.selectedScale;
-  const selectedIconSize = config.iconSize * config.selectedScale;
+function renderPin(entity, options = {}) {
+  const score = getEntityScore(entity);
+  const type = mapType(entity);
+  const radiusMinutes = Number.isFinite(options?.radiusMinutes) ? options.radiusMinutes : null;
+  const inRadius = isWithinRadius(entity, radiusMinutes);
+  const boosted = score > 85;
+  const isLegends = Boolean(entity?.isLegends || entity?.metadata?.isLegends);
 
-  const html = `
-    <div style="
-      width: ${selectedSize}px;
-      height: ${selectedSize}px;
-      border-radius: 50%;
-      background-color: ${config.color};
-      border: 3px solid white;
-      box-shadow: 
-        0 0 0 2px ${config.color}40,
-        ${config.shadowBlur};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${selectedIconSize}px;
-      cursor: pointer;
-      animation: markerPulse 0.5s ease-out;
-    ">
-      ${config.icon}
-    </div>
-    <style>
-      @keyframes markerPulse {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-    </style>
-  `;
-
-  return L.divIcon({
-    className: '',
-    html,
-    iconSize: [selectedSize, selectedSize],
-    iconAnchor: [selectedSize / 2, selectedSize / 2],
-    popupAnchor: [0, -selectedSize / 2],
-  });
+  return renderToStaticMarkup(
+    <Pin
+      type={type}
+      selected={Boolean(options?.isSelected)}
+      score={score}
+      inRadius={inRadius}
+      boosted={boosted}
+      isLegends={isLegends}
+    />
+  );
 }
 
-/**
- * Create a pill marker (for detail/expanded state)
- * Shows entity name and category
- */
-export function createPillMarker(entity) {
-  const config = getMarkerConfig(entity);
+function getEntityScore(entity) {
+  let score = Number(entity?.metadata?.popularity ?? entity?.score ?? 0);
 
-  const html = `
-    <div style="
-      background: white;
-      border: 2px solid ${config.color};
-      border-radius: 20px;
-      padding: 6px 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 12px;
-      font-weight: 600;
-      color: #1a3a52;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    ">
-      <span style="font-size: 14px;">${config.icon}</span>
-      <span>${entity.name}</span>
-    </div>
-  `;
+  if (entity?.isLive || entity?.eventTiming?.isLive) score += 25;
+  if (entity?.isOpenNow) score += 12;
+  if (entity?.perk || entity?.perk_value || entity?.type === "perk") score += 15;
+
+  const walkMinutes = entity?.metadata?.walkMinutes;
+  if (Number.isFinite(walkMinutes)) {
+    score += Math.max(0, 20 - walkMinutes * 2);
+  }
+
+  return Math.max(0, Math.min(100, score));
+}
+
+function createPillMarker(entity) {
+  const label = String(entity?.name || entity?.title || "Downtown place");
+  const type = mapType(entity);
+  const isLegends = Boolean(entity?.isLegends || entity?.metadata?.isLegends);
+  const darkSurface = entity?.type === "building" || entity?.type === "hotel" || entity?.type === "property" || isLegends;
+  const isBrand = entity?.type === "brand";
+  const isCivic = entity?.type === "civic";
+  const bg = isBrand
+    ? "rgba(255,255,255,0.98)"
+    : isCivic
+      ? "rgba(255,255,255,0.98)"
+      : darkSurface
+        ? "rgba(20,38,59,0.95)"
+        : "rgba(255,255,255,0.98)";
+  const border = darkSurface
+    ? "rgba(198,168,90,0.42)"
+    : isBrand
+      ? "rgba(198,168,90,0.26)"
+      : isCivic
+        ? "rgba(11,26,43,0.14)"
+        : "rgba(11,26,43,0.10)";
+  const textColor = darkSurface ? "#F7F9FC" : "#0B1A2B";
+  const metaColor = darkSurface ? "rgba(247,249,252,0.72)" : "rgba(11,26,43,0.52)";
+  const dot = darkSurface ? "#C6A85A" : isCivic ? "#0B1A2B" : "#C6A85A";
+  const typeLabel =
+    entity?.type === "hotel"
+      ? "Hotel"
+      : entity?.type === "building" || entity?.type === "property"
+        ? isLegends
+          ? "Legends"
+          : "Building"
+        : entity?.type === "brand"
+          ? "Brand"
+          : entity?.type === "civic"
+            ? "Civic"
+            : type;
+  const logoMarkup = isLegends
+    ? `<img src="${LEGENDS_LOGO}" alt="" style="width:16px;height:16px;object-fit:contain;display:block" />`
+    : `<span style="width:8px;height:8px;border-radius:50%;background:${dot};flex-shrink:0;display:inline-block"></span>`;
 
   return L.divIcon({
-    className: '',
-    html,
-    iconSize: [200, 32], // Approximate, will auto-size
-    iconAnchor: [100, 16],
+    className: "pill-marker",
+    html: `<div style="position:relative;display:inline-flex;align-items:center;gap:8px;padding:7px 12px 7px 10px;background:${bg};border:1.5px solid ${border};border-radius:22px;box-shadow:0 8px 20px rgba(11,31,51,0.16);white-space:nowrap;font-family:Inter,system-ui,sans-serif;color:${textColor};">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;flex-shrink:0">${logoMarkup}</span>
+      <span style="display:grid;gap:1px">
+        <span style="font-size:11px;font-weight:700;line-height:1.1">${label}</span>
+        <span style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:${metaColor};line-height:1.1">${typeLabel}</span>
+      </span>
+    </div>`,
+    iconSize: null,
+    iconAnchor: [0, 0],
     popupAnchor: [0, -32],
   });
 }
 
-/**
- * Marker factory function
- * Returns appropriate marker based on state and entity type
- */
-export function createMarker(entity, options = {}) {
-  if (options?.showPill) {
-    return createPillMarker(entity);
-  }
+function createPropertyShowcaseMarker(entity, options = {}) {
+  const isLegends = Boolean(entity?.isLegends || entity?.metadata?.isLegends);
+  const isSelected = Boolean(options?.isSelected);
+  const theme = options?.theme === "light" ? "light" : "dark";
+  const size = isLegends ? (isSelected ? 38 : 34) : isSelected ? 24 : 20;
+  const ring =
+    isSelected
+      ? "0 0 0 10px rgba(198,168,90,0.18)"
+      : theme === "light"
+        ? "0 0 0 6px rgba(194,143,84,0.14)"
+        : "0 0 0 6px rgba(11,31,51,0.08)";
+  const inner = isLegends
+    ? `<img src="${LEGENDS_LOGO}" alt="" style="width:${isSelected ? 28 : 24}px;height:${isSelected ? 28 : 24}px;object-fit:contain;display:block" />`
+    : `<span style="width:${isSelected ? 10 : 8}px;height:${isSelected ? 10 : 8}px;border-radius:999px;background:${theme === "light" ? "#C28F54" : isSelected ? "#C6A85A" : "#0B1A2B"};display:block"></span>`;
 
-  if (options?.isSelected) {
-    return createSelectedMarker(entity);
-  }
-
-  return createCompactMarker(entity);
-}
-
-/**
- * Get all available marker colors (for legend, filters, etc.)
- */
-export function getMarkerColors() {
-  const colors = {};
-
-  Object.entries(MARKER_CONFIG).forEach(([key, config]) => {
-    const [markerType, category] = key.split(':');
-    colors[`${markerType}:${category}`] = config.color;
+  return L.divIcon({
+    className: "property-showcase-marker",
+    html: `<div style="display:flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;border-radius:999px;background:${isLegends ? "rgba(255,255,255,0.98)" : theme === "light" ? "rgba(255,255,255,0.98)" : "rgba(11,26,43,0.96)"};border:${isLegends ? "1.5px solid rgba(198,168,90,0.42)" : theme === "light" ? "1.5px solid rgba(194,143,84,0.42)" : "1.5px solid rgba(255,255,255,0.92)"};box-shadow:${ring},0 10px 22px rgba(11,31,51,0.18);transform:translate(-50%, -50%);overflow:hidden">${inner}</div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2],
   });
-
-  return colors;
 }
 
-/**
- * Check if entity should have a special marker variant
- */
+export function createCompactMarker(entity, options = {}) {
+  return L.divIcon({
+    className: "custom-marker",
+    html: renderPin(entity, options),
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+    popupAnchor: [0, -28],
+  });
+}
+
+export function createSelectedMarker(entity, options = {}) {
+  return createCompactMarker(entity, { ...options, isSelected: true });
+}
+
+export function createMarker(entity, options = {}) {
+  if (entity?.type === "cluster" || entity?.entity_type === "cluster") {
+    return createClusterMarker(entity, options);
+  }
+
+  if (options?.variant === "property-showcase") {
+    return createPropertyShowcaseMarker(entity, options);
+  }
+
+  const shouldShowPill =
+    (!options?.suppressPill && options?.showPill) ||
+    (!options?.suppressPill && ["hotel", "brand", "civic"].includes(entity?.type));
+
+  if (shouldShowPill && !options?.isSelected) return createPillMarker(entity);
+  if (options?.isSelected) return createSelectedMarker(entity, options);
+  return createCompactMarker(entity, options);
+}
+
+export function getMarkerColors() {
+  return {
+    standard: "#0B1A2B",
+    building: "#0B1A2B",
+    event: "#0B1A2B",
+    perk: "#C6A85A",
+    coffee: "#0B1A2B",
+    nightlife: "#0B1A2B",
+  };
+}
+
 export function getMarkerVariant(entity) {
-  if (entity.isLive) return 'live';
-  if (entity.isSaved) return 'saved';
-  if (entity.perk && entity.perk.isActive) return 'perk-active';
-  return 'default';
+  if (entity?.isLive) return "live";
+  if (entity?.isSaved) return "saved";
+  if (entity?.perk?.isActive) return "perk-active";
+  return "default";
 }

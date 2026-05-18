@@ -35,7 +35,7 @@ export default function TimeFilter() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="dp-map-panel inline-flex items-center gap-2 px-2 py-1.5"
+      className="dp-map-panel flex w-full items-center gap-2 overflow-x-auto px-2 py-1.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       <span className="ml-1 flex h-7 w-7 items-center justify-center rounded-full bg-[rgba(11,31,51,0.06)] text-[#0b1f33]">
         <Clock3 className="h-3.5 w-3.5" />
@@ -45,7 +45,7 @@ export default function TimeFilter() {
         <button
           key={opt.id}
           onClick={() => applyFilter(opt.id)}
-          className={currentFilter === opt.id ? 'dp-chip dp-chip-active' : 'dp-chip'}
+          className={currentFilter === opt.id ? 'dp-chip dp-chip-active shrink-0' : 'dp-chip shrink-0'}
         >
           {opt.label}
         </button>

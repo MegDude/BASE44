@@ -1,126 +1,223 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Building2, Hotel, UtensilsCrossed, Megaphone, Landmark } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  Hotel,
+  Landmark,
+  Megaphone,
+  UtensilsCrossed,
+} from "lucide-react";
+import ExpandableShowcase from "@/components/shared/ExpandableShowcase";
+import { useCTAFlow } from "@/components/cta/CTAFlowProvider";
+import { APPROVED_HOME_COPY } from "@/lib/approvedCopy";
 
-const TIER_ICONS = { Properties: Building2, Hotels: Hotel, Venues: UtensilsCrossed, Brands: Megaphone, Civic: Landmark };
+const iconMap = {
+  properties: Building2,
+  hotels: Hotel,
+  venues: UtensilsCrossed,
+  brands: Megaphone,
+  civic: Landmark,
+};
 
-const tiers = [
+const partnerCards = APPROVED_HOME_COPY.pricing.cards.map((card) => ({
+  ...card,
+  shortLabel: card.id === "brands" ? "Brands" : card.label,
+  valueProp:
+    card.id === "properties"
+      ? "Turn the neighborhood into a measurable resident amenity."
+      : card.id === "hotels"
+        ? "Give guests one live downtown layer beyond the lobby."
+        : card.id === "venues"
+          ? "Show up when nearby intent is already forming."
+          : card.id === "brands"
+            ? "Activate the right corridor at the right time."
+            : "Make district participation easier to see and measure.",
+  icon: iconMap[card.id],
+  cta:
+    card.id === "properties"
+      ? "View Properties"
+      : card.id === "hotels"
+        ? "View Hospitality"
+        : card.id === "venues"
+          ? "View Venues"
+          : card.id === "brands"
+            ? "View Brands"
+            : "View Civic",
+}));
+
+const INCLUDED_ITEMS = [
   {
-    label: "Properties",
-    sub: "Multifamily, condos, apartments",
-    price: "Free · $39 · $99 / yr",
-    note: "Management pays. Residents stay.",
-    detail: "Your address is your key to downtown.",
-    href: "/partners/properties",
+    title: "Map visibility",
+    body: "Appear in the live downtown layer where decisions are forming.",
   },
   {
-    label: "Hotels",
-    sub: "Hotels, boutiques, extended stays",
-    price: "$99–$149 / yr",
-    note: "Extend the stay beyond your lobby.",
-    detail: "One scan. Every option nearby.",
-    href: "/partners/hotels",
+    title: "Source access",
+    body: "QR or source-node entry points tied back to actual partner origins.",
   },
   {
-    label: "Venues",
-    sub: "Restaurants, bars, fitness, wellness",
-    price: "Free for 12 months",
-    note: "Show up in the moment that counts.",
-    detail: "Not reach. Relevance. Not impressions. Intent.",
-    href: "/partners/venues",
+    title: "Analytics",
+    body: "Track visits, saves, RSVPs, redemptions, and return behavior.",
   },
   {
-    label: "Brands",
-    sub: "Activations, campaigns, sponsorships",
-    price: "$99–$149 / yr",
-    note: "Buy the moment, not the impression.",
-    detail: "Context beats scale. Timing beats frequency.",
-    href: "/partners/brands",
-  },
-  {
-    label: "Civic",
-    sub: "Cities, districts, chambers",
-    price: "$49–$79 / yr",
-    note: "Turn attendance into participation.",
-    detail: "Discovery drives turnout.",
-    href: "/partners/civic",
+    title: "Partner workspace",
+    body: "Manage offers, events, profile, and visibility in one control surface.",
   },
 ];
 
 export default function PricingSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { openFlow } = useCTAFlow();
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
-      <div className="max-w-4xl mx-auto">
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12 items-end">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
-              Pricing
-            </span>
-            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
-              Spend less.
-              <br />
-              <em className="text-primary">Do more.</em>
+    <section id="start-here" className="bg-[var(--dp-surface-base)] px-4 py-8 md:px-6 md:py-10">
+      <div className="dp-page-shell">
+        <div className="mb-6 grid grid-cols-1 gap-5 border-t border-[rgba(11,31,51,0.08)] pt-8 md:grid-cols-[1.05fr_0.95fr] md:items-end md:gap-8">
+          <div>
+            <span className="dp-micro-label mb-3 block">{APPROVED_HOME_COPY.rollout.title}</span>
+            <h2 className="dp-display-section max-w-3xl text-[2.15rem] text-foreground md:text-[3rem]">
+              {APPROVED_HOME_COPY.rollout.closeTitle}
             </h2>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-foreground/60 text-[13px] leading-relaxed"
-          >
-            Start with a pilot. Decide with real data. No setup. No long-term commitment. You go live, people use it, you see what happens.
-            <span className="block mt-2 text-[12px] text-muted-foreground/60 italic">
-              Final pricing reflects footprint, visibility, and activation.
-            </span>
-          </motion.p>
+            <p className="mt-3 max-w-2xl text-[14px] leading-6 text-muted-foreground">
+              {APPROVED_HOME_COPY.rollout.closeBody}
+            </p>
+          </div>
+
+          <div className="border-t border-[rgba(11,31,51,0.08)] pt-4 text-[13px] leading-6 text-foreground/70 md:border-t-0 md:pt-0">
+            {APPROVED_HOME_COPY.rollout.note}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-          {tiers.map((tier, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
-              className="group p-5 rounded-lg border border-[hsl(218,20%,88%)] bg-white hover:border-primary/30 hover:shadow-[0_4px_14px_rgba(14,28,54,.06)] transition-all shadow-[0_1px_4px_rgba(14,28,54,.04)] cursor-pointer"
-              onClick={() => {}}
-            >
-              {(() => { const Icon = TIER_ICONS[tier.label]; return Icon ? <Icon className="w-4 h-4 text-primary/60 mb-3" /> : null; })()}
-              <div className="font-heading font-medium text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>
-              <div className="text-[11px] text-foreground/45 mb-3">{tier.sub}</div>
-              <div className="font-heading font-medium text-primary text-[13px] mb-1">{tier.price}</div>
-              <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
-              <div className="text-[11px] text-foreground/45 italic leading-relaxed mb-3">{tier.detail}</div>
-              <Link to={tier.href} className="text-[11px] text-primary font-medium hover:underline underline-offset-4">
-                Learn more →
-              </Link>
-            </motion.div>
-          ))}
+        <div className="space-y-6">
+          <div className="rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-4 md:p-5">
+            <div className="mb-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              Partner fit
+            </div>
+            <ExpandableShowcase
+              items={partnerCards}
+              initialIndex={2}
+              getKey={(item) => item.id}
+              renderMenuMeta={(card) => {
+                const Icon = card.icon;
+                return (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[rgba(11,31,51,0.05)] text-primary">
+                    <Icon className="h-4.5 w-4.5" />
+                  </div>
+                );
+              }}
+              renderMenuBody={(card) => (
+                <>
+                  <div className="text-[13px] font-semibold text-foreground">{card.shortLabel}</div>
+                  <div className="mt-0.5 text-[11px] text-muted-foreground">{card.valueProp}</div>
+                </>
+              )}
+              renderDetail={(card, index) => {
+                const Icon = card.icon;
+                return (
+                  <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+                    <div>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[rgba(11,31,51,0.05)] text-primary">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="mt-4 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/54">
+                        {card.price}
+                      </div>
+                      <h3 className="mt-4 text-[1.5rem] font-semibold tracking-[-0.04em] text-foreground">
+                        {card.shortLabel}
+                      </h3>
+                      <p className="mt-3 text-[14px] leading-7 text-muted-foreground">{card.valueProp}</p>
+                      <Link to={card.href} className="dp-link-action mt-6">
+                        {card.cta}
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+
+                    <div className="border-t border-[rgba(11,31,51,0.08)] pt-5">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[rgba(11,31,51,0.48)]">
+                        At a glance
+                      </div>
+                      <div className="mt-4 grid gap-2">
+                        <div className="border-b border-[rgba(11,31,51,0.06)] pb-3">
+                          <div className="text-[12px] font-semibold text-foreground">{card.detail}</div>
+                          <div className="mt-1 text-[12px] leading-5 text-muted-foreground">{card.proof}</div>
+                        </div>
+                        <div className="text-[12px] leading-5 text-[rgba(11,31,51,0.72)]">
+                          {card.audience}
+                        </div>
+                        {card.id === "venues" ? (
+                          <div className="pt-1 text-[12px] leading-5 text-[rgba(11,31,51,0.72)]">
+                            Free 90-day pilot first. If it works, move into the ongoing venue layer after review and invoicing.
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }}
+            />
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 md:p-6">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Rollout path
+              </div>
+              <div className="mt-5 grid gap-4">
+                {APPROVED_HOME_COPY.rollout.steps.map((step, index) => (
+                  <div
+                    key={step.id}
+                    className="grid gap-3 border-t border-[rgba(11,31,51,0.08)] pt-4 md:grid-cols-[auto_1fr]"
+                  >
+                    <div className="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-[var(--dp-navy)] px-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <div className="text-[15px] font-semibold text-foreground">{step.title}</div>
+                      <div className="mt-1 text-[13px] leading-6 text-muted-foreground">{step.body}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-[rgba(11,31,51,0.08)] bg-white p-5 md:p-6">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Included
+              </div>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {INCLUDED_ITEMS.map((item) => (
+                  <div key={item.title} className="border-t border-[rgba(11,31,51,0.08)] pt-4">
+                    <div className="text-[14px] font-semibold text-foreground">{item.title}</div>
+                    <div className="mt-2 text-[13px] leading-6 text-muted-foreground">{item.body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-8 flex flex-wrap items-center gap-4"
-        >
-          <Link
-            to="/partners"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
-          >
-            Explore all partner types <ArrowRight className="w-3.5 h-3.5" />
+        <div className="mt-2 flex flex-wrap items-center gap-3 border-t border-[rgba(11,31,51,0.08)] pt-5">
+          <Link to="/partners" className="dp-cta-primary">
+            Explore partner types
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
-          <span className="text-[12px] text-foreground/45">No setup fee. No long-term commitment.</span>
-        </motion.div>
+          <Link
+            to="/partner-workspace"
+            onClick={(event) => {
+              event.preventDefault();
+              openFlow({
+                type: "pilot_request",
+                source: "pricing_section_start_pilot",
+                sourceComponent: "PricingSection",
+                successRoute: "/partners",
+              });
+            }}
+            className="dp-cta-secondary"
+          >
+            Start a pilot
+          </Link>
+          <div className="text-[12px] leading-5 text-muted-foreground">
+            Partner pricing is finalized after fit review. Resident direct access is $25 per year until a building joins, then that fee is refunded.
+          </div>
+        </div>
       </div>
     </section>
   );

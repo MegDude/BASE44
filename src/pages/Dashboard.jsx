@@ -1,602 +1,262 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
-import {
-  LayoutDashboard, MapPin, Star, Calendar, TrendingUp, Settings,
-  Menu, X, ChevronRight, Bell, Building2, Users, ArrowRight,
-  AlertCircle, Zap, Activity, LogOut
-} from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { ROUTES } from "@/lib/routes";
 
-const NAV_ITEMS = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "map", label: "Map activity", icon: MapPin },
-  { id: "perks", label: "Perks", icon: Star },
-  { id: "events", label: "Events", icon: Calendar },
-  { id: "performance", label: "Performance", icon: TrendingUp },
-  { id: "settings", label: "Settings", icon: Settings },
+const TABS = [
+  { label: "Overview", href: ROUTES.partnerDashboard || "/partners/dashboard" },
+  { label: "Map", href: "/partners/dashboard/map" },
+  { label: "Properties", href: ROUTES.partnerDashboardResidential || "/partners/dashboard/residential" },
+  { label: "Hospitality", href: ROUTES.partnerDashboardHospitality || "/partners/dashboard/hospitality" },
+  { label: "Venues", href: ROUTES.partnerDashboardVenues || "/partners/dashboard/venues" },
+  { label: "Brands", href: ROUTES.partnerDashboardBrands || "/partners/dashboard/brands" },
+  { label: "Civic", href: ROUTES.partnerDashboardCivic || "/partners/dashboard/civic" },
+  { label: "Redemptions", href: "/partners/dashboard/redemptions" },
+  { label: "Workspace", href: ROUTES.partnerWorkspace || "/partner-workspace" },
 ];
 
-export default function Dashboard() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [section, setSection] = useState("overview");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const VARIANTS = {
+  dashboard: {
+    eyebrow: "Partner intelligence",
+    title: "See what’s working downtown right now.",
+    description:
+      "A map-first operating view for partner activity, nearby intent, offer performance, and neighborhood movement.",
+    focus: "All partners",
+  },
+  residential: {
+    eyebrow: "Property intelligence",
+    title: "See resident activity around the building.",
+    description:
+      "Understand where residents go, what they save, and which nearby partners make the property feel more useful.",
+    focus: "Properties",
+  },
+  hospitality: {
+    eyebrow: "Hospitality intelligence",
+    title: "See guest activity after arrival.",
+    description:
+      "Track where guests are searching, saving, and moving once they are already downtown.",
+    focus: "Hotels",
+  },
+  venues: {
+    eyebrow: "Venue intelligence",
+    title: "See what is bringing people in.",
+    description:
+      "Monitor nearby searches, offer opens, saves, visits, and redemptions from the moment intent forms.",
+    focus: "Venues",
+  },
+  brands: {
+    eyebrow: "Brand intelligence",
+    title: "See where campaigns are working.",
+    description:
+      "Connect local brand visibility to neighborhood behavior, venue activity, and measurable campaign signals.",
+    focus: "Brands",
+  },
+  civic: {
+    eyebrow: "Civic intelligence",
+    title: "See where downtown is active.",
+    description:
+      "Read district activity by corridor, event window, partner type, and repeat local movement.",
+    focus: "Civic",
+  },
+};
 
-  useEffect(() => {
-    base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+const METRICS = [
+  { label: "Map views", value: "12,440", delta: "+18%", note: "Visibility from nearby searches" },
+  { label: "Saves", value: "712", delta: "+11%", note: "Intent captured before arrival" },
+  { label: "Visits", value: "289", delta: "+9%", note: "Map-to-door actions" },
+  { label: "Redemptions", value: "96", delta: "+7%", note: "Offers used on site" },
+];
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-7 h-7 border-2 border-border border-t-primary rounded-full animate-spin" />
-    </div>
-  );
+const INTENT = [
+  { query: "coffee near Seaholm", match: "Merit Coffee", type: "Offer opened", walk: "0.2 mi", score: 92 },
+  { query: "dinner near Rainey", match: "Banger's", type: "Saved nearby", walk: "0.4 mi", score: 86 },
+  { query: "wellness near Congress", match: "Equinox", type: "Trial viewed", walk: "0.5 mi", score: 79 },
+  { query: "where should I meet someone", match: "Half Step", type: "Happy hour active", walk: "0.3 mi", score: 74 },
+];
 
-  if (!user) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="text-center max-w-sm">
-        <div className="w-12 h-12 rounded-full border border-border/50 flex items-center justify-center mx-auto mb-4">
-          <AlertCircle className="w-5 h-5 text-muted-foreground" />
-        </div>
-        <h2 className="font-heading text-xl font-medium mb-2">Sign in required</h2>
-        <p className="text-muted-foreground text-[13px] mb-6">Access your partner dashboard to view activity, manage content, and track performance.</p>
-        <button onClick={() => base44.auth.redirectToLogin(window.location.pathname)}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
-          Sign in <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
-  );
+const PINS = [
+  { name: "Half Step", x: 66, y: 58, category: "Venue", signal: "+18%", tone: "gold" },
+  { name: "Banger's", x: 76, y: 66, category: "Venue", signal: "Offer", tone: "navy" },
+  { name: "Merit Coffee", x: 38, y: 44, category: "Coffee", signal: "Save", tone: "gold" },
+  { name: "The Paseo", x: 52, y: 34, category: "Property", signal: "Residents", tone: "navy" },
+  { name: "Equinox", x: 44, y: 62, category: "Wellness", signal: "Trial", tone: "gold" },
+  { name: "Hotel Van Zandt", x: 70, y: 42, category: "Hospitality", signal: "Guests", tone: "navy" },
+];
 
+const OPERATIONS = [
+  ["High-intent corridor", "Rainey + Seaholm", "Push venue offers during event windows."],
+  ["Best conversion lever", "Saved nearby", "Shorten offer copy and keep directions visible."],
+  ["Partner opportunity", "Properties", "Package resident perks around 6-minute walks."],
+];
+
+function getVariant(pathname) {
+  if (pathname.includes("residential") || pathname.includes("properties")) return "residential";
+  if (pathname.includes("hospitality") || pathname.includes("hotels")) return "hospitality";
+  if (pathname.includes("venues")) return "venues";
+  if (pathname.includes("brands")) return "brands";
+  if (pathname.includes("civic")) return "civic";
+  return "dashboard";
+}
+
+function Arrow() {
   return (
-    <div className="min-h-screen bg-background flex">
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
-      {/* Sidebar */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-40 w-56 bg-card/80 backdrop-blur-xl border-r border-border/50 flex flex-col
-        transition-transform duration-300
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-      `}>
-        <div className="h-[68px] flex items-center px-5 border-b border-border/40 gap-2.5">
-          <div className="w-6 h-6 rounded-full border border-primary/40 flex items-center justify-center">
-            <MapPin className="w-3 h-3 text-primary" />
-          </div>
-          <span className="font-heading font-medium text-sm tracking-tight">
-            Downtown<span className="text-primary"> Perks</span>
-          </span>
-          <button onClick={() => setSidebarOpen(false)} className="ml-auto text-muted-foreground hover:text-foreground lg:hidden">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto py-4 px-2">
-          <div className="mb-2 px-3">
-            <span className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-[0.14em]">Partner Dashboard</span>
-          </div>
-          <nav className="space-y-0.5">
-            {NAV_ITEMS.map(item => {
-              const Icon = item.icon;
-              const active = section === item.id;
-              return (
-                <button key={item.id} onClick={() => { setSection(item.id); setSidebarOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[12px] font-medium transition-all ${
-                    active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
-                  }`}>
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-
-        <div className="p-4 border-t border-border/40 space-y-1">
-          <Link to="/partner-workspace" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all">
-            <Zap className="w-3.5 h-3.5" /> Workspace
-          </Link>
-          <button onClick={() => base44.auth.logout("/")} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all">
-            <LogOut className="w-3.5 h-3.5" /> Sign out
-          </button>
-        </div>
-
-        {/* User info */}
-        <div className="p-4 border-t border-border/40">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-[11px] font-medium text-primary shrink-0">
-              {(user.full_name || user.email || "?")[0].toUpperCase()}
-            </div>
-            <div className="min-w-0">
-              <div className="text-[12px] font-medium text-foreground truncate">{user.full_name || "Partner"}</div>
-              <div className="text-[10px] text-muted-foreground truncate">{user.email}</div>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-30 bg-background/60 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
-      )}
-
-      {/* Main content */}
-      <div className="flex-1 lg:ml-56 min-h-screen flex flex-col">
-
-        {/* Top bar */}
-        <header className="h-[68px] flex items-center justify-between px-6 border-b border-border/40 bg-background/80 backdrop-blur-xl sticky top-0 z-20">
-          <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-muted-foreground hover:text-foreground transition-colors">
-              <Menu className="w-5 h-5" />
-            </button>
+function DashboardHero({ variant }) {
+  return (
+    <section className="px-4 pt-6 md:px-6">
+      <div className="dp-page-shell">
+        <div className="pearl-navy-block overflow-hidden rounded-[30px] p-6 md:p-8">
+          <div className="grid gap-8 lg:grid-cols-[1fr_420px] lg:items-end">
             <div>
-              <h1 className="font-heading font-medium text-sm tracking-tight text-foreground capitalize">
-                {NAV_ITEMS.find(n => n.id === section)?.label || "Dashboard"}
-              </h1>
-              <p className="text-[11px] text-muted-foreground hidden sm:block">Downtown Perks · Partner Dashboard</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors">
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
-            </button>
-            <Link to="/partner-workspace" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
-              Workspace <ChevronRight className="w-3 h-3" />
-            </Link>
-          </div>
-        </header>
-
-        {/* Section content */}
-        <main className="flex-1 p-6">
-          <AnimatePresence mode="wait">
-            {section === "overview" && <DashOverview key="overview" user={user} setSection={setSection} />}
-            {section === "map" && <DashMap key="map" user={user} />}
-            {section === "perks" && <DashPerks key="perks" user={user} />}
-            {section === "events" && <DashEvents key="events" user={user} />}
-            {section === "performance" && <DashPerformance key="performance" user={user} />}
-            {section === "settings" && <DashSettings key="settings" user={user} />}
-          </AnimatePresence>
-        </main>
-      </div>
-    </div>
-  );
-}
-
-// ─── OVERVIEW ─────────────────────────────────────────────────────────────────
-
-function DashOverview({ user, setSection }) {
-  const [perks, setPerks] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [loadingData, setLoadingData] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      base44.entities.Perk.filter({ created_by: user.email }),
-      base44.entities.Event.filter({ created_by: user.email }),
-    ]).then(([p, e]) => {
-      setPerks(p || []);
-      setEvents(e || []);
-      setLoadingData(false);
-    }).catch(() => setLoadingData(false));
-  }, [user.email]);
-
-  const activePerks = perks.filter(p => p.status === "active").length;
-  const totalRedemptions = perks.reduce((acc, p) => acc + (p.redemption_count || 0), 0);
-  const upcomingEvents = events.filter(e => e.status === "upcoming" || e.status === "live").length;
-  const totalRSVPs = events.reduce((acc, e) => acc + (e.rsvp_count || 0), 0);
-
-  const KPI_CARDS = [
-    { label: "Active perks", value: activePerks, icon: Star, action: () => setSection("perks") },
-    { label: "Total redemptions", value: totalRedemptions, icon: Zap, action: () => setSection("perks") },
-    { label: "Upcoming events", value: upcomingEvents, icon: Calendar, action: () => setSection("events") },
-    { label: "Total RSVPs", value: totalRSVPs, icon: Users, action: () => setSection("events") },
-  ];
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6 max-w-5xl">
-      <div>
-        <h2 className="font-heading text-xl font-medium text-foreground mb-1">
-          Good to see you{user.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}.
-        </h2>
-        <p className="text-muted-foreground text-[13px]">Here is a snapshot of your downtown presence.</p>
-      </div>
-
-      {loadingData ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[1,2,3,4].map(i => <div key={i} className="h-24 rounded-xl border border-border/40 bg-card/20 animate-pulse" />)}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {KPI_CARDS.map((k, i) => {
-            const Icon = k.icon;
-            return (
-              <motion.button key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-                onClick={k.action}
-                className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 text-left transition-all group">
-                <Icon className="w-4 h-4 text-primary/60 mb-3" />
-                <div className="font-heading text-2xl font-medium text-foreground">{k.value}</div>
-                <div className="text-[11px] text-muted-foreground mt-1">{k.label}</div>
-              </motion.button>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Activity pulse */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Perks on map</div>
-            <button onClick={() => setSection("perks")} className="text-[11px] text-primary hover:underline underline-offset-4">Manage</button>
-          </div>
-          {perks.length === 0 ? (
-            <div className="text-center py-6">
-              <Star className="w-5 h-5 text-muted-foreground/40 mx-auto mb-2" />
-              <p className="text-[12px] text-muted-foreground">No perks yet. <button onClick={() => setSection("perks")} className="text-primary hover:underline underline-offset-4">Add one</button></p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {perks.slice(0, 4).map(p => (
-                <div key={p.id} className="flex items-center gap-2.5">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${p.status === "active" ? "bg-green-500" : "bg-muted-foreground/40"}`} />
-                  <span className="text-[12px] text-foreground flex-1 truncate">{p.title}</span>
-                  <span className="text-[11px] text-muted-foreground">{p.redemption_count || 0} redeem</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Events on map</div>
-            <button onClick={() => setSection("events")} className="text-[11px] text-primary hover:underline underline-offset-4">Manage</button>
-          </div>
-          {events.length === 0 ? (
-            <div className="text-center py-6">
-              <Calendar className="w-5 h-5 text-muted-foreground/40 mx-auto mb-2" />
-              <p className="text-[12px] text-muted-foreground">No events yet. <button onClick={() => setSection("events")} className="text-primary hover:underline underline-offset-4">Add one</button></p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {events.slice(0, 4).map(e => (
-                <div key={e.id} className="flex items-center gap-2.5">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${e.status === "live" ? "bg-green-500 animate-pulse" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
-                  <span className="text-[12px] text-foreground flex-1 truncate">{e.title}</span>
-                  <span className="text-[11px] text-muted-foreground">{e.rsvp_count || 0} RSVPs</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Quick links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {[
-          { label: "View partner types", sub: "Properties, hotels, venues, brands, civic", href: "/partners", icon: Building2 },
-          { label: "Go to workspace", sub: "Add and edit your perks and events", href: "/partner-workspace", icon: Zap },
-          { label: "Explore the map", sub: "See your presence on the live downtown map", href: "/downtown-perks/explore", icon: MapPin },
-        ].map((l, i) => {
-          const Icon = l.icon;
-          return (
-            <Link key={i} to={l.href} className="flex items-center gap-3 p-4 rounded-xl border border-border/40 hover:border-primary/30 transition-all group bg-card/20">
-              <Icon className="w-4 h-4 text-primary/60 shrink-0" />
-              <div className="flex-1 min-w-0">
-                <div className="text-[12px] font-medium text-foreground">{l.label}</div>
-                <div className="text-[11px] text-muted-foreground">{l.sub}</div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/58">{variant.eyebrow}</p>
+              <h1 className="dp-display-hero mt-3 max-w-3xl text-white">{variant.title}</h1>
+              <p className="dp-page-intro mt-4 max-w-2xl text-white/76">{variant.description}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/partner-workspace" className="dp-cta-primary bg-white text-[var(--dp-navy)]">
+                  Manage offers <Arrow />
+                </Link>
+                <Link to="/partners" className="dp-cta-secondary border-white/20 text-white hover:bg-white/10">
+                  Partner overview
+                </Link>
               </div>
-              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 group-hover:text-primary transition-all" />
+            </div>
+            <div className="rounded-[24px] border border-white/12 bg-white/8 p-4 backdrop-blur">
+              <p className="text-xs uppercase tracking-[0.16em] text-white/50">Current focus</p>
+              <p className="mt-2 text-2xl font-semibold text-white">{variant.focus}</p>
+              <div className="mt-5 grid grid-cols-3 gap-2 text-center text-white">
+                <div className="rounded-2xl bg-white/10 p-3"><p className="text-xl font-semibold">24</p><p className="text-[11px] text-white/58">Live</p></div>
+                <div className="rounded-2xl bg-white/10 p-3"><p className="text-xl font-semibold">402</p><p className="text-[11px] text-white/58">Searches</p></div>
+                <div className="rounded-2xl bg-white/10 p-3"><p className="text-xl font-semibold">6m</p><p className="text-[11px] text-white/58">Walk</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav className="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Partner dashboard sections">
+          {TABS.map((tab) => (
+            <Link key={tab.href} to={tab.href} className="dp-chip shrink-0 text-xs">
+              {tab.label}
             </Link>
-          );
-        })}
+          ))}
+        </nav>
       </div>
-    </motion.div>
+    </section>
   );
 }
 
-// ─── MAP ACTIVITY ─────────────────────────────────────────────────────────────
-
-function DashMap({ user }) {
-  const ACTIVITY = [
-    { type: "Map view", detail: "Your perk appeared in search results", time: "2 min ago" },
-    { type: "Save", detail: "A resident saved one of your offers", time: "14 min ago" },
-    { type: "View", detail: "Profile opened from downtown map", time: "28 min ago" },
-    { type: "RSVP", detail: "New RSVP on your latest event", time: "1 hr ago" },
-    { type: "Redemption", detail: "Perk redeemed at your venue", time: "2 hr ago" },
-    { type: "Map view", detail: "Appeared in 'wellness near Congress' search", time: "3 hr ago" },
-  ];
-
+function MetricsStrip() {
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-3xl space-y-6">
-      <div>
-        <h2 className="font-heading text-xl font-medium text-foreground mb-1">Map activity</h2>
-        <p className="text-muted-foreground text-[13px]">Recent interactions on the downtown map linked to your account.</p>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3">
-        {[{ label: "Views today", value: "34" }, { label: "Saves this week", value: "12" }, { label: "Nearby searches", value: "8" }].map((s, i) => (
-          <div key={i} className="p-4 rounded-xl border border-border/50 bg-card/40 text-center">
-            <div className="font-heading text-xl font-medium text-foreground">{s.value}</div>
-            <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
-          </div>
+    <section className="px-4 pt-5 md:px-6">
+      <div className="dp-page-shell grid gap-3 md:grid-cols-4">
+        {METRICS.map((metric) => (
+          <article key={metric.label} className="rounded-[24px] bg-white/74 p-5 shadow-[0_20px_70px_rgba(7,27,47,0.08)] ring-1 ring-[rgba(7,27,47,0.08)]">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--dp-slate)]">{metric.label}</p>
+              <span className="rounded-full bg-[rgba(207,175,90,0.16)] px-2.5 py-1 text-xs font-semibold text-[var(--dp-navy)]">{metric.delta}</span>
+            </div>
+            <p className="mt-3 text-3xl font-semibold text-[var(--dp-navy)]">{metric.value}</p>
+            <p className="mt-2 text-sm text-[var(--dp-slate)]">{metric.note}</p>
+          </article>
         ))}
       </div>
-
-      <div className="rounded-xl border border-border/50 bg-card/40 overflow-hidden">
-        <div className="p-5 border-b border-border/40 flex items-center gap-2">
-          <Activity className="w-3.5 h-3.5 text-primary/60" />
-          <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Recent map activity</span>
-        </div>
-        <div className="divide-y divide-border/40">
-          {ACTIVITY.map((a, i) => (
-            <div key={i} className="p-4 flex items-center gap-4">
-              <div className="w-2 h-2 rounded-full bg-primary/50 shrink-0" />
-              <div className="flex-1">
-                <div className="text-[12px] font-medium text-foreground">{a.type}</div>
-                <div className="text-[11px] text-muted-foreground">{a.detail}</div>
-              </div>
-              <span className="text-[11px] text-muted-foreground/60 shrink-0">{a.time}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="p-4 rounded-xl border border-border/40 bg-primary/5 flex items-center gap-3">
-        <MapPin className="w-4 h-4 text-primary shrink-0" />
-        <div className="flex-1">
-          <p className="text-[12px] text-foreground font-medium">See your live map presence</p>
-          <p className="text-[11px] text-muted-foreground">View how your content appears to people nearby on the map.</p>
-        </div>
-        <Link to="/downtown-perks/explore" className="text-[12px] text-primary font-medium hover:underline underline-offset-4 shrink-0">
-          Open map →
-        </Link>
-      </div>
-    </motion.div>
+    </section>
   );
 }
 
-// ─── PERKS (DASHBOARD VIEW) ───────────────────────────────────────────────────
-
-function DashPerks({ user }) {
-  const [perks, setPerks] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    base44.entities.Perk.filter({ created_by: user.email })
-      .then(data => { setPerks(data || []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [user.email]);
-
+function MapStage() {
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-4xl space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="font-heading text-xl font-medium text-foreground mb-1">Perks</h2>
-          <p className="text-muted-foreground text-[13px]">Manage from the workspace to add, edit, or remove perks.</p>
-        </div>
-        <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all">
-          Manage perks <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
-
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
-        </div>
-      ) : perks.length === 0 ? (
-        <div className="text-center py-16">
-          <Star className="w-8 h-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-muted-foreground text-[13px]">No perks yet.</p>
-          <Link to="/partner-workspace" className="text-primary text-[13px] hover:underline underline-offset-4">Add one in the workspace →</Link>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {perks.map(p => (
-            <div key={p.id} className="p-4 rounded-xl border border-border/50 bg-card/40">
-              <div className="flex items-start justify-between gap-2 mb-3">
-                <div>
-                  <div className="font-medium text-sm text-foreground">{p.title}</div>
-                  <div className="text-[12px] text-muted-foreground mt-0.5">{p.venue_name}</div>
-                </div>
-                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                  p.status === "active" ? "bg-green-500/20 text-green-400 border-green-500/30" :
-                  "bg-muted text-muted-foreground border-border/50"
-                }`}>{p.status}</span>
-              </div>
-              <div className="flex items-center justify-between text-[12px]">
-                <span className="text-primary font-medium">{p.value}</span>
-                <span className="text-muted-foreground">{p.redemption_count || 0} redemptions</span>
-              </div>
+    <section className="px-4 pt-6 md:px-6">
+      <div className="dp-page-shell grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <article className="overflow-hidden rounded-[32px] bg-[linear-gradient(145deg,#ffffff,#f4f7fb)] p-4 shadow-[0_24px_90px_rgba(7,27,47,0.1)] ring-1 ring-[rgba(7,27,47,0.08)]">
+          <div className="flex flex-wrap items-start justify-between gap-4 px-1 pb-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--dp-gold)]">Live map layer</p>
+              <h2 className="mt-2 text-2xl font-semibold text-[var(--dp-navy)]">Partner activity by place, trigger, and walk time.</h2>
             </div>
-          ))}
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-// ─── EVENTS (DASHBOARD VIEW) ──────────────────────────────────────────────────
-
-function DashEvents({ user }) {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    base44.entities.Event.filter({ created_by: user.email })
-      .then(data => { setEvents(data || []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [user.email]);
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-4xl space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="font-heading text-xl font-medium text-foreground mb-1">Events</h2>
-          <p className="text-muted-foreground text-[13px]">Track your events, RSVPs, and activity from the dashboard.</p>
-        </div>
-        <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all">
-          Manage events <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
-
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
-        </div>
-      ) : events.length === 0 ? (
-        <div className="text-center py-16">
-          <Calendar className="w-8 h-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-muted-foreground text-[13px]">No events yet.</p>
-          <Link to="/partner-workspace" className="text-primary text-[13px] hover:underline underline-offset-4">Add one in the workspace →</Link>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {events.map(e => (
-            <div key={e.id} className="p-4 rounded-xl border border-border/50 bg-card/40">
-              <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${e.status === "live" ? "bg-green-500 animate-pulse" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm text-foreground">{e.title}</div>
-                  <div className="text-[12px] text-muted-foreground mt-0.5">{e.venue_name || "—"} · {e.category}</div>
-                </div>
-                <div className="text-right shrink-0">
-                  <div className="text-[12px] font-medium text-foreground">{e.rsvp_count || 0}</div>
-                  <div className="text-[10px] text-muted-foreground">RSVPs</div>
-                </div>
-                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                  e.status === "live" ? "bg-green-500/20 text-green-400 border-green-500/30" :
-                  e.status === "upcoming" ? "bg-primary/20 text-primary border-primary/30" :
-                  "bg-muted text-muted-foreground border-border/50"
-                }`}>{e.status}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-// ─── PERFORMANCE ──────────────────────────────────────────────────────────────
-
-function DashPerformance({ user }) {
-  const PERIODS = ["7 days", "30 days", "90 days"];
-  const [period, setPeriod] = useState("30 days");
-
-  const METRICS = [
-    { label: "Map views", value: period === "7 days" ? "284" : period === "30 days" ? "1,140" : "3,420", change: "+12%" },
-    { label: "Saves", value: period === "7 days" ? "38" : period === "30 days" ? "142" : "412", change: "+8%" },
-    { label: "Visits", value: period === "7 days" ? "22" : period === "30 days" ? "86" : "246", change: "+14%" },
-    { label: "Redemptions", value: period === "7 days" ? "9" : period === "30 days" ? "34" : "96", change: "+6%" },
-  ];
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-4xl space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h2 className="font-heading text-xl font-medium text-foreground mb-1">Performance</h2>
-          <p className="text-muted-foreground text-[13px]">How your downtown presence is converting to real activity.</p>
-        </div>
-        <div className="flex gap-1 p-1 rounded-full border border-border/50 bg-card/40">
-          {PERIODS.map(p => (
-            <button key={p} onClick={() => setPeriod(p)}
-              className={`px-3.5 py-1.5 rounded-full text-[11px] font-medium transition-all ${period === p ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-              {p}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {METRICS.map((m, i) => (
-          <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-            className="p-5 rounded-xl border border-border/50 bg-card/40">
-            <div className="font-heading text-2xl font-medium text-foreground">{m.value}</div>
-            <div className="text-[11px] text-muted-foreground mt-1">{m.label}</div>
-            <div className="text-[11px] text-green-400 mt-1.5">{m.change}</div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="p-5 rounded-xl border border-border/50 bg-card/40">
-        <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Top performing content</div>
-        <div className="space-y-3">
-          {[
-            { name: "Happy Hour offer", type: "Perk", metric: "34 redemptions", bar: 84 },
-            { name: "Wellness Walk Club", type: "Event", metric: "71 RSVPs", bar: 68 },
-            { name: "Fine Eyewear offer", type: "Perk", metric: "28 saves", bar: 52 },
-          ].map((item, i) => (
-            <div key={i} className="space-y-1.5">
-              <div className="flex items-center justify-between text-[12px]">
-                <div>
-                  <span className="font-medium text-foreground">{item.name}</span>
-                  <span className="text-muted-foreground ml-2">{item.type}</span>
-                </div>
-                <span className="text-muted-foreground">{item.metric}</span>
-              </div>
-              <div className="h-1.5 rounded-full bg-border/50 overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={{ width: `${item.bar}%` }} transition={{ duration: 0.8, delay: i * 0.1 }}
-                  className="h-full rounded-full bg-primary" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── SETTINGS ─────────────────────────────────────────────────────────────────
-
-function DashSettings({ user }) {
-  return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="max-w-2xl space-y-6">
-      <div>
-        <h2 className="font-heading text-xl font-medium text-foreground mb-1">Settings</h2>
-        <p className="text-muted-foreground text-[13px]">Manage your partner account and notification preferences.</p>
-      </div>
-
-      <div className="space-y-3">
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
-          <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Account</div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] text-muted-foreground">Name</span>
-              <span className="text-[13px] text-foreground">{user.full_name || "—"}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] text-muted-foreground">Email</span>
-              <span className="text-[13px] text-foreground">{user.email}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] text-muted-foreground">Role</span>
-              <span className="text-[13px] text-foreground capitalize">{user.role || "partner"}</span>
+            <div className="flex gap-2 text-xs text-[var(--dp-slate)]">
+              <span className="dp-chip">Offers</span>
+              <span className="dp-chip">Events</span>
+              <span className="dp-chip">Walkable</span>
             </div>
           </div>
-        </div>
+          <div className="relative min-h-[420px] overflow-hidden rounded-[26px] bg-[radial-gradient(circle_at_30%_20%,rgba(207,175,90,0.22),transparent_22%),linear-gradient(135deg,#e9edf3,#f8fafc)]">
+            <div className="absolute inset-0 opacity-50" style={{ backgroundImage: "linear-gradient(rgba(7,27,47,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(7,27,47,0.08) 1px, transparent 1px)", backgroundSize: "54px 54px" }} />
+            <div className="absolute left-[10%] top-[18%] h-[70%] w-[78%] rounded-[50%] border border-[rgba(7,27,47,0.10)]" />
+            <div className="absolute left-[24%] top-[30%] h-[44%] w-[52%] rounded-[50%] border border-[rgba(207,175,90,0.32)]" />
+            {PINS.map((pin) => (
+              <div key={pin.name} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${pin.x}%`, top: `${pin.y}%` }}>
+                <div className={pin.tone === "gold" ? "bg-[var(--dp-gold)] text-[var(--dp-navy)]" : "bg-[var(--dp-navy)] text-white" + " relative flex h-10 w-10 items-center justify-center rounded-full shadow-[0_16px_34px_rgba(7,27,47,0.24)] ring-4 ring-white/70"}>
+                  <span className="text-xs font-bold">{pin.name.charAt(0)}</span>
+                </div>
+                <div className="mt-2 min-w-[128px] rounded-2xl bg-white/86 px-3 py-2 text-xs shadow-[0_12px_30px_rgba(7,27,47,0.12)] ring-1 ring-[rgba(7,27,47,0.08)] backdrop-blur">
+                  <p className="font-semibold text-[var(--dp-navy)]">{pin.name}</p>
+                  <p className="text-[var(--dp-slate)]">{pin.category} · {pin.signal}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
 
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
-          <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Partner profile</div>
-          <p className="text-[12px] text-muted-foreground mb-3">Update your organization name, type, and contact details.</p>
-          <Link to="/partner-workspace" className="inline-flex items-center gap-2 text-[12px] text-primary font-medium hover:underline underline-offset-4">
-            Edit in workspace <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+        <aside className="rounded-[32px] bg-white/74 p-5 shadow-[0_24px_90px_rgba(7,27,47,0.08)] ring-1 ring-[rgba(7,27,47,0.08)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--dp-gold)]">Decision feed</p>
+          <h2 className="mt-2 text-2xl font-semibold text-[var(--dp-navy)]">Intent becoming action.</h2>
+          <div className="mt-5 space-y-3">
+            {INTENT.map((item) => (
+              <div key={item.query} className="rounded-[22px] bg-[rgba(247,248,251,0.78)] p-4 ring-1 ring-[rgba(7,27,47,0.06)]">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-medium text-[var(--dp-navy)]">“{item.query}”</p>
+                  <span className="text-xs font-semibold text-[var(--dp-gold)]">{item.score}</span>
+                </div>
+                <p className="mt-2 text-sm text-[var(--dp-ink)]">{item.match}</p>
+                <p className="mt-1 text-xs text-[var(--dp-slate)]">{item.walk} · {item.type}</p>
+              </div>
+            ))}
+          </div>
+        </aside>
+      </div>
+    </section>
+  );
+}
 
-        <div className="p-5 rounded-xl border border-border/50 bg-card/40">
-          <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Support</div>
-          <div className="space-y-2 text-[13px]">
-            <a href="mailto:partners@downtownperks.com" className="block text-primary hover:underline underline-offset-4">partners@downtownperks.com</a>
-            <Link to="/partners" className="block text-muted-foreground hover:text-foreground transition-colors">View partner documentation →</Link>
+function OperationsPanel() {
+  return (
+    <section className="px-4 py-6 md:px-6">
+      <div className="dp-page-shell rounded-[32px] bg-white/68 p-5 shadow-[0_24px_80px_rgba(7,27,47,0.07)] ring-1 ring-[rgba(7,27,47,0.08)] md:p-6">
+        <div className="grid gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--dp-gold)]">Operator view</p>
+            <h2 className="mt-2 text-2xl font-semibold text-[var(--dp-navy)]">What to do next.</h2>
+            <p className="mt-3 text-sm leading-6 text-[var(--dp-slate)]">
+              The dashboard is built to create decisions, not decoration. Each signal translates into an operational next step.
+            </p>
+          </div>
+          <div className="grid gap-3 md:grid-cols-3">
+            {OPERATIONS.map(([label, value, action]) => (
+              <article key={label} className="rounded-[24px] bg-white/78 p-4 ring-1 ring-[rgba(7,27,47,0.07)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--dp-slate)]">{label}</p>
+                <p className="mt-3 text-lg font-semibold text-[var(--dp-navy)]">{value}</p>
+                <p className="mt-2 text-sm leading-5 text-[var(--dp-slate)]">{action}</p>
+              </article>
+            ))}
           </div>
         </div>
-
-        <button onClick={() => base44.auth.logout("/")}
-          className="w-full p-4 rounded-xl border border-destructive/30 text-destructive text-[13px] font-medium hover:bg-destructive/10 transition-all text-left flex items-center gap-2">
-          <LogOut className="w-4 h-4" /> Sign out of partner account
-        </button>
       </div>
-    </motion.div>
+    </section>
+  );
+}
+
+export default function Dashboard() {
+  const location = useLocation();
+  const variant = VARIANTS[getVariant(location.pathname)] || VARIANTS.dashboard;
+
+  return (
+    <main className="pearl-page min-h-screen pt-[68px]">
+      <DashboardHero variant={variant} />
+      <MetricsStrip />
+      <MapStage />
+      <OperationsPanel />
+    </main>
   );
 }

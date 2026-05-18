@@ -4,6 +4,7 @@
  */
 
 import { base44Api } from "@/lib/api/base44Api";
+import { saveItem as saveItemRequest } from "@/lib/api/saveItem";
 
 /* =========================================================
    MAP REPOSITORY (CORE SYSTEM)
@@ -16,14 +17,15 @@ export const mapRepository = {
         query,
         context: userLocation,
       });
+      const intentData = intent?.data || {};
 
       const items = await this.getMapFeed({
         query,
-        categories: intent?.categories || [],
-        filters: intent?.filters || [],
+        categories: intentData?.categories || [],
+        filters: intentData?.filters || [],
       });
 
-      const ranked = rankItems(items, intent?.ranking, userLocation);
+      const ranked = rankItems(items, intentData?.ranking, userLocation);
 
       // ✅ CRITICAL FIX: sanitize + filter invalid map items
       const adapted = ranked
@@ -32,7 +34,7 @@ export const mapRepository = {
 
       return {
         items: adapted,
-        intent,
+        intent: intentData,
       };
     } catch (err) {
       console.error("searchWithIntent error:", err);
@@ -46,17 +48,17 @@ export const mapRepository = {
     }
   },
 
-  async getMapFeed(params = {}) {
+  async getMapFeed(params: Record<string, any> = {}) {
     try {
-      const res = await base44Api.invoke("getSharedMapFeed", params);
-      return res?.items || [];
+      const res: any = await base44Api.invoke("getSharedMapFeed", params);
+      return res?.data?.items || res?.items || [];
     } catch (err) {
       console.error("getMapFeed error:", err);
       return [];
     }
   },
 
-  async getMapItemsByType(type, options = {}) {
+  async getMapItemsByType(type: string, options: { limit?: number } = {}) {
     const items = await this.getMapFeed();
 
     const filtered = items.filter(
@@ -67,6 +69,10 @@ export const mapRepository = {
   },
 };
 
+export { mapRepository as sharedMapRepository } from "./mapRepository";
+export { residentMutationsRepository } from "./residentMutationsRepository";
+export { partnerPlatformRepository } from "./partnerPlatformRepository";
+
 /* =========================================================
    RESIDENT REPOSITORY
 ========================================================= */
@@ -74,8 +80,8 @@ export const mapRepository = {
 export const residentRepository = {
   async getResidentProfile() {
     try {
-      const res = await base44Api.invoke("getResidentProfile");
-      return res || null;
+      const res: any = await base44Api.invoke("getResidentProfile", {});
+      return res?.data || res || null;
     } catch (error) {
       console.error("getResidentProfile error:", error);
       return null;
@@ -84,10 +90,10 @@ export const residentRepository = {
 
   async getSavedItems(residentEmail) {
     try {
-      const res = await base44Api.invoke("getSavedItems", {
+      const res: any = await base44Api.invoke("getSavedItems", {
         email: residentEmail,
       });
-      return res?.items || [];
+      return res?.data?.items || res?.items || [];
     } catch (error) {
       console.error("getSavedItems error:", error);
       return [];
@@ -96,9 +102,13 @@ export const residentRepository = {
 
   async saveItem({ entity_id, entity_type }) {
     try {
-      await base44Api.invoke("saveItem", {
+      await saveItemRequest({
         entity_id,
         entity_type,
+        sessionId:
+          typeof window !== "undefined"
+            ? window.localStorage.getItem("dp_resident_session_id") || undefined
+            : undefined,
       });
       return { success: true };
     } catch (error) {
@@ -115,7 +125,7 @@ export const residentRepository = {
 export const partnerRepository = {
   async getPartnerData() {
     try {
-      const res = await base44Api.invoke("getPartnerData");
+      const res: any = await base44Api.invoke("getPartnerData", {});
       return res || null;
     } catch (error) {
       console.error("getPartnerData error:", error);
@@ -128,7 +138,7 @@ export const partnerRepository = {
    UI ADAPTER (CRITICAL FIX)
 ========================================================= */
 
-function adaptToUI(item) {
+function adaptToUI(item: any) {
   const lat = Number(item?.lat);
   const lng = Number(item?.lng);
 
@@ -161,7 +171,7 @@ function adaptToUI(item) {
    RANKING SYSTEM
 ========================================================= */
 
-function rankItems(items, ranking, userLocation) {
+function rankItems(items: any[], ranking: string | undefined, userLocation: any) {
   if (!Array.isArray(items)) return [];
 
   switch (ranking) {
@@ -189,7 +199,7 @@ function rankItems(items, ranking, userLocation) {
   }
 }
 
-function distance(item, userLocation) {
+function distance(item: any, userLocation: any) {
   if (!userLocation) return 0;
   if (!item?.lat || !item?.lng) return 0;
 

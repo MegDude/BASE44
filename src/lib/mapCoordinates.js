@@ -56,15 +56,34 @@ export const isValidCoordinate = (lat, lng) => {
 export const normalizeCoordinates = (entity) => {
   if (!entity) return null;
 
-  const lat = toFiniteNumber(entity.latitude ?? entity.lat);
+  const lat = toFiniteNumber(
+    entity.latitude ??
+      entity.lat ??
+      entity.location?.latitude ??
+      entity.location?.lat ??
+      entity.coordinates?.latitude ??
+      entity.coordinates?.lat
+  );
   const lng = toFiniteNumber(
-    entity.longitude ?? entity.lng ?? entity.lon
+    entity.longitude ??
+      entity.lng ??
+      entity.lon ??
+      entity.location?.longitude ??
+      entity.location?.lng ??
+      entity.location?.lon ??
+      entity.coordinates?.longitude ??
+      entity.coordinates?.lng ??
+      entity.coordinates?.lon
   );
 
   const isValid = isValidCoordinate(lat, lng);
 
   return {
     ...entity,
+    latitude: isValid ? lat : entity.latitude ?? entity.lat ?? null,
+    longitude: isValid ? lng : entity.longitude ?? entity.lng ?? entity.lon ?? null,
+    lat: isValid ? lat : entity.lat ?? entity.latitude ?? null,
+    lng: isValid ? lng : entity.lng ?? entity.longitude ?? null,
     normalizedLat: isValid ? lat : null,
     normalizedLng: isValid ? lng : null,
     hasValidCoordinates: isValid,

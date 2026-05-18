@@ -1,38 +1,67 @@
 import { supabaseServer } from '../src/lib/supabaseServer.js';
 
+function parseBody(req) {
+  if (typeof req.body === 'string') {
+    try {
+      return JSON.parse(req.body || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  return req.body && typeof req.body === 'object' ? req.body : {};
+}
+
+function getSessionId(body = {}, req) {
+  return (
+    body.sessionId ||
+    body.session_id ||
+    req.headers['x-vercel-id'] ||
+    req.headers['x-forwarded-for'] ||
+    'anonymous-session'
+  );
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const body = parseBody(req);
+  const { query, metadata = {} } = body;
+  const trimmedQuery = String(query || '').trim();
+
+  if (!trimmedQuery) {
+    return res.status(400).json({ error: 'Missing required field: query' });
+  }
+
+  const latitude = Number(body.lat ?? body.latitude ?? metadata.lat ?? metadata.latitude);
+  const longitude = Number(body.lng ?? body.longitude ?? metadata.lng ?? metadata.longitude);
+  const hasValidCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude);
+
+  const payload = {
+    session_id: String(getSessionId(body, req)),
+    query: trimmedQuery,
+    lat: hasValidCoordinates ? latitude : null,
+    lng: hasValidCoordinates ? longitude : null,
+    metadata: {
+      ...metadata,
+      source: metadata.source || 'client',
+      capturedAt: new Date().toISOString(),
+      hasLocation: hasValidCoordinates,
+    },
+  };
+
   if (!supabaseServer) {
-    return res.status(500).json({ error: 'Missing Supabase server environment variables' });
+    return res.status(200).json({ ok: true, skipped: 'missing_supabase_server_env', payload });
   }
 
-  const { sessionId, query, lat, lng } = req.body || {};
-  if (!sessionId || typeof query !== 'string' || !query.trim()) {
-    return res
-      .status(400)
-      .json({ error: 'Missing required fields: sessionId and a non-empty query are required' });
-  }
-
-  const latitude = Number(lat);
-  const longitude = Number(lng);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    return res.status(400).json({
-      error: 'Invalid coordinates: latitude and longitude must be finite numbers'
-    });
-  }
-
-  const { error } = await supabaseServer.from('search_logs').insert({
-    session_id: sessionId,
-    query: query.trim(),
-    lat: latitude,
-    lng: longitude
-  });
+  const { error } = await supabaseServer.from('search_logs').insert(payload);
 
   if (error) {
-    return res.status(500).json({ error: error.message });
+    console.error('search-log insert failed', error);
+    return res.status(200).json({ ok: true, skipped: 'insert_failed', reason: error.message });
   }
 
   return res.status(200).json({ ok: true });

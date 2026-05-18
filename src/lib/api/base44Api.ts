@@ -12,8 +12,13 @@ export const base44Api = {
   async invoke<T = any>(functionName: string, payload: any): Promise<{ data: T; error?: string }> {
     try {
       const response = await base44.functions.invoke(functionName, payload);
+      if (response && typeof response === 'object' && 'data' in response) {
+        return {
+          data: response.data as T,
+        };
+      }
       return {
-        data: response.data as T,
+        data: response as T,
       };
     } catch (error: any) {
       console.error(`Error calling ${functionName}:`, error);
@@ -28,12 +33,16 @@ export const base44Api = {
    * Get shared map feed
    */
   async getSharedMapFeed(options?: {
+    query?: string;
     search?: string;
-    filters?: { districts?: string[]; categories?: string[]; statuses?: string[] };
+    district?: string;
+    filters?: { districts?: string[]; categories?: string[]; types?: string[]; statuses?: string[] };
     limit?: number;
   }) {
     return this.invoke('getSharedMapFeed', {
-      search: options?.search,
+      query: options?.query || options?.search,
+      search: options?.search || options?.query,
+      district: options?.district,
       filters: options?.filters,
       limit: options?.limit || 1000,
     });
@@ -70,40 +79,6 @@ export const base44Api = {
       });
     } catch (error) {
       console.error('Error logging event:', error);
-    }
-  },
-
-  /**
-   * Check user authentication
-   */
-  async isAuthenticated(): Promise<boolean> {
-    try {
-      return await base44.auth.isAuthenticated();
-    } catch {
-      return false;
-    }
-  },
-
-  /**
-   * Get current user
-   */
-  async getCurrentUser() {
-    try {
-      return await base44.auth.me();
-    } catch {
-      return null;
-    }
-  },
-
-  /**
-   * Update user data
-   */
-  async updateUserData(data: Record<string, any>) {
-    try {
-      return await base44.auth.updateMe(data);
-    } catch (error) {
-      console.error('Error updating user:', error);
-      throw error;
     }
   },
 };

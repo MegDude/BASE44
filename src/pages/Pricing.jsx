@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 const PLANS = [
   {
@@ -45,23 +45,31 @@ export default function Pricing() {
   );
 
   return (
-    <div className="min-h-screen bg-[hsl(42,24%,96%)] pt-[68px] text-[hsl(218,42%,14%)]">
-      <section className="border-b border-[rgba(19,36,67,0.12)] px-6 py-16 md:py-20">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,46%)]">
+    <div className="min-h-screen bg-[var(--dp-surface-base)] pt-[68px] text-foreground">
+      <section className="px-4 py-8 md:px-6 md:py-10">
+        <div className="dp-page-shell dp-band p-6 md:p-8 lg:p-10">
+          <Link
+            to="/"
+            className="dp-cta-secondary inline-flex min-h-11 items-center gap-2 px-4 text-sm font-medium"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </Link>
+          <p className="dp-micro-label mt-6">
             Pricing
           </p>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <h1 className="max-w-3xl text-5xl font-semibold tracking-[-0.05em] md:text-6xl">
-                Simple pricing for a downtown product that actually gets used.
+              <h1 className="dp-display-hero max-w-3xl text-5xl md:text-6xl">
+                Built for the places that build the neighborhood.
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-[rgba(19,36,67,0.7)]">
-                Clear tiers, no noisy pricing wall, and a direct path into the resident or partner workflow.
+              <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+                Simple, annual, and performance-backed pricing with a direct path into the resident
+                or partner workflow.
               </p>
             </div>
 
-            <div className="inline-flex border border-[rgba(19,36,67,0.14)] bg-white/80 p-1 shadow-sm">
+            <div className="inline-flex rounded-full border border-[var(--dp-border)] bg-white/88 p-1 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
               {[
                 { id: "monthly", label: "Monthly" },
                 { id: "annual", label: "Annual" },
@@ -70,10 +78,10 @@ export default function Pricing() {
                   key={option.id}
                   type="button"
                   onClick={() => setBilling(option.id)}
-                  className={`h-10 px-4 text-xs font-semibold uppercase tracking-[0.14em] transition-all ${
+                  className={`h-10 rounded-full px-4 text-xs font-semibold uppercase tracking-[0.14em] transition-all ${
                     billing === option.id
-                      ? "bg-[hsl(218,42%,14%)] text-[hsl(42,24%,96%)]"
-                      : "text-[rgba(19,36,67,0.64)]"
+                      ? "bg-[var(--dp-navy)] text-white shadow-[0_8px_18px_rgba(11,31,51,0.14)]"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {option.label}
@@ -84,12 +92,12 @@ export default function Pricing() {
         </div>
       </section>
 
-      <section className="px-6 py-10 md:py-14">
-        <div className="mx-auto max-w-6xl border-y border-[rgba(19,36,67,0.12)]">
+      <section className="px-4 py-2 md:px-6">
+        <div className="dp-page-shell dp-band p-6 md:p-8">
           {plans.map((plan) => (
-            <div key={plan.id} className="grid gap-6 border-b border-[rgba(19,36,67,0.12)] py-7 md:grid-cols-[180px_160px_1fr_auto] md:items-start">
+            <div key={plan.id} className="grid gap-6 border-b border-[var(--dp-divider)] py-7 last:border-b-0 md:grid-cols-[180px_160px_1fr_auto] md:items-start">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(19,36,67,0.46)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   {plan.name}
                 </p>
               </div>
@@ -99,11 +107,11 @@ export default function Pricing() {
               </div>
 
               <div>
-                <p className="text-base leading-7 text-[rgba(19,36,67,0.78)]">{plan.summary}</p>
+                <p className="text-base leading-7 text-muted-foreground">{plan.summary}</p>
                 <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
                   {plan.includes.map((item) => (
-                    <span key={item} className="inline-flex items-center gap-2 text-sm text-[rgba(19,36,67,0.64)]">
-                      <Check className="h-3.5 w-3.5 text-[hsl(40,62%,46%)]" />
+                    <span key={item} className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                      <Check className="h-3.5 w-3.5 text-[var(--dp-gold-muted)]" />
                       {item}
                     </span>
                   ))}
@@ -113,7 +121,7 @@ export default function Pricing() {
               <div>
                 <Link
                   to={plan.cta.to}
-                  className="inline-flex h-11 items-center gap-2 border border-[rgba(19,36,67,0.14)] bg-white px-4 text-xs font-semibold uppercase tracking-[0.14em] transition-all hover:border-[rgba(200,151,58,0.7)] hover:text-[hsl(40,62%,46%)]"
+                  className="dp-cta-secondary inline-flex h-11 items-center gap-2 px-4 text-xs font-semibold uppercase tracking-[0.14em]"
                 >
                   {plan.cta.label}
                   <ChevronRight className="h-4 w-4" />
@@ -124,34 +132,34 @@ export default function Pricing() {
         </div>
       </section>
 
-      <section className="px-6 py-14">
-        <div className="mx-auto max-w-6xl grid gap-10 border-t border-[rgba(19,36,67,0.12)] pt-10 lg:grid-cols-[1fr_auto] lg:items-end">
+      <section className="px-4 py-2 md:px-6">
+        <div className="dp-page-shell dp-band dp-band-muted grid gap-10 p-6 md:p-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[hsl(40,62%,46%)]">
+            <p className="dp-micro-label">
               Next step
             </p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em]">
-              Choose the right mode and move straight into the product.
+            <h2 className="dp-display-section mt-4 text-4xl">
+              Ready when you are.
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-[rgba(19,36,67,0.7)]">
-              Residents should land in the live map and perks flow. Partner teams should land in the management surface.
+            <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+              People don't choose the best option. They choose the one they notice.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
             <Link
               to="/dashboard"
-              className="inline-flex h-12 items-center gap-2 bg-[hsl(218,42%,14%)] px-5 text-sm font-semibold uppercase tracking-[0.14em] text-[hsl(42,24%,96%)] transition-all hover:bg-[hsl(218,42%,12%)]"
+              className="dp-cta-primary inline-flex h-12 items-center gap-2 px-5 text-sm font-semibold uppercase tracking-[0.14em]"
             >
               Open dashboard
-              <ArrowRight className="h-4 w-4 text-[hsl(40,62%,46%)]" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/downtown-perks/explore"
-              className="inline-flex h-12 items-center gap-2 border border-[rgba(200,151,58,0.55)] px-5 text-sm font-semibold uppercase tracking-[0.14em] text-[hsl(218,42%,14%)] transition-all hover:bg-[rgba(19,36,67,0.04)]"
+              className="dp-cta-secondary inline-flex h-12 items-center gap-2 px-5 text-sm font-semibold uppercase tracking-[0.14em]"
             >
               See the live map
-              <ArrowRight className="h-4 w-4 text-[hsl(40,62%,46%)]" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

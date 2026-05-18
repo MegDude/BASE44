@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Zap, BarChart3, Star, Clock, Music, TrendingUp } from "lucide-react";
+import { MapPin, Zap, BarChart3, Star, Clock, Music, TrendingUp, QrCode, BadgeCheck, ArrowRight } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -39,6 +39,44 @@ export default function TheStayPut() {
         ctaHref="mailto:partners@downtownperks.com"
         demoPanel={demo}
       />
+
+      <BrandSection label="Quick Walkthrough" title="Scan. redeem. go.">
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            {
+              icon: QrCode,
+              step: "01",
+              title: "Scan at the bar or on the map",
+              body: "A guest finds Stay Put in the live map or scans the in-venue code tied to tonight's offer or event.",
+            },
+            {
+              icon: BadgeCheck,
+              step: "02",
+              title: "Redeem in seconds",
+              body: "The member card confirms the offer, event entry, or perk without slowing the bar team down.",
+            },
+            {
+              icon: ArrowRight,
+              step: "03",
+              title: "Go enjoy the night",
+              body: "The visit is logged, the guest keeps moving, and the venue gets clean proof of what actually converted.",
+            },
+          ].map((item) => (
+            <div key={item.step} className="rounded-2xl border border-border bg-card/60 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <item.icon className="h-4 w-4 text-primary" />
+                </div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary/70">
+                  Step {item.step}
+                </div>
+              </div>
+              <div className="mt-5 text-base font-semibold text-foreground">{item.title}</div>
+              <p className="mt-2 text-[13px] leading-6 text-muted-foreground">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </BrandSection>
 
       {/* Why it fits */}
       <BrandSection label="Why It Fits" title="Great venues don't need more noise. They need better timing.">

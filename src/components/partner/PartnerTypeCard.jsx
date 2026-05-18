@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 /**
- * PartnerTypeCard — Selector card for partner roles (Residential, Hospitality, etc.)
+ * PartnerTypeCard — Selector card for partner roles
  */
 export default function PartnerTypeCard({
   type,
@@ -23,10 +23,14 @@ export default function PartnerTypeCard({
       transition={{ duration: 0.4, delay }}
     >
       <Link to={href} className="block h-full group">
-        <div className="h-full p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all duration-300">
-          {Icon && <Icon className="w-8 h-8 text-[#111] mb-3" />}
+        <div className="h-full rounded-[26px] bg-white/88 p-6 shadow-[0_16px_34px_rgba(11,26,43,0.05)] backdrop-blur-md transition-all duration-300 group-hover:-translate-y-0.5">
+          {Icon && (
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-[16px] bg-[rgba(11,26,43,0.06)] text-[#111]">
+              <Icon className="h-5 w-5" />
+            </div>
+          )}
 
-          <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-2">
+          <div className="mb-2 text-[11px] font-bold uppercase tracking-[.12em] text-[var(--dp-gold-muted)]">
             {type}
           </div>
 
@@ -34,16 +38,16 @@ export default function PartnerTypeCard({
             {label}
           </h3>
 
-          <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{description}</p>
+          <p className="mb-4 text-[13px] leading-relaxed text-muted-foreground">{description}</p>
 
           {headline && (
-            <div className="mb-3 p-3 rounded-lg bg-[#f5f3ef] border border-[#e8e5df]">
+            <div className="mb-3 rounded-[16px] bg-[rgba(11,26,43,0.04)] p-3">
               <div className="text-[12px] font-semibold text-[#111]">{headline}</div>
             </div>
           )}
 
           {proofLine && (
-            <div className="flex items-center gap-1.5 text-[12px] font-bold text-[#111] group-hover:gap-2 transition-all">
+            <div className="dp-link-action">
               {proofLine}
               <ArrowRight className="w-3.5 h-3.5" />
             </div>

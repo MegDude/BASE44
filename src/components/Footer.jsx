@@ -10,7 +10,7 @@ const FOOTER_LINKS = {
     { to: "/about", label: "About" },
   ],
   Partners: [
-    { to: "/partners/residential", label: "Residential" },
+    { to: "/partners/properties", label: "Properties" },
     { to: "/partners/hotels", label: "Hospitality" },
     { to: "/partners/venues", label: "Venues" },
     { to: "/partners/brands", label: "Brands" },
@@ -19,8 +19,8 @@ const FOOTER_LINKS = {
   Platform: [
     { to: "/partners", label: "Partner Overview" },
     { to: "/partner-workspace", label: "Partner Workspace" },
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/partners", label: "Pricing" },
+    { to: "/partners/dashboard", label: "Dashboard" },
+    { to: "/#start-here", label: "Start Here" },
     { to: "/brands", label: "Brand Directory" },
   ],
 };
@@ -37,18 +37,15 @@ export default function Footer() {
               <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
                 <MapPin className="w-3.5 h-3.5 text-primary" />
               </div>
-              <span className="font-heading font-medium text-[15px] text-foreground">
+              <span className="dp-brand-wordmark text-[15px] text-foreground">
                 Downtown<span className="text-primary"> Perks</span>
               </span>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed max-w-xs mb-6">
               A live neighborhood layer for downtown Austin — connecting residents, buildings, and local businesses through a shared map, a simple card, and real-time district intelligence.
             </p>
-            <Link
-              to="/card"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all"
-            >
-              Get Your Card
+            <Link to="/explore" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+              Open Map
             </Link>
           </div>
 
@@ -73,11 +70,11 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 pt-8 border-t border-border/40 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-14 flex flex-col items-start gap-2 border-t border-border/40 pt-8">
           <p className="text-[12px] text-muted-foreground/70">
-            © {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701
+            © 2026 Downtown Perks · Austin, TX · 78701
           </p>
-          <p className="text-[12px] text-muted-foreground/50 italic font-heading">
+          <p className="text-[12px] text-muted-foreground/50">
             Where downtown works like a system.
           </p>
         </div>

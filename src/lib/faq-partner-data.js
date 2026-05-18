@@ -12,39 +12,49 @@ export const FAQ_HOMEPAGE = [
   },
   {
     id: 'homepage-2',
-    question: 'Do I need to download an app?',
-    answer: 'No. It opens instantly through a QR or text flow. No app required.',
+    question: 'Does the map work before login?',
+    answer: 'Yes. Browsing stays open. You can look around first and only add the card when you want to save, RSVP, redeem, or unlock member access.',
   },
   {
     id: 'homepage-3',
-    question: 'Is this just a list of deals?',
+    question: 'Do I need to download an app?',
     answer:
-      'No. The deal is only one part of it. The system is built around real-time context and decision-making.',
+      'No. It is a mobile web experience. Open the map, browse, save, RSVP, and use the card when access matters.',
   },
   {
     id: 'homepage-4',
-    question: 'Who is it built for?',
-    answer: 'Residents, buildings, hotels, venues, brands, and civic organizations.',
+    question: 'What makes the card different?',
+    answer: 'The card unlocks actions, not browsing. The map is the product. The card comes in when access matters.',
   },
   {
     id: 'homepage-5',
-    question: 'How do people use it?',
-    answer: 'Open the map → see what is nearby → tap → act.',
+    question: 'Does it cost anything for residents?',
+    answer: 'Residents can join directly for $25 per year if their building is not already live. If their building joins later, that resident fee is refunded.',
   },
   {
     id: 'homepage-6',
-    question: 'Why is the map central?',
-    answer: 'Because the map is the product. Everything connects through it.',
+    question: 'Do venues pay to join?',
+    answer: 'Not at first. Venues can launch with a free 90-day pilot and can stay free for 12 months before moving into the paid venue layer.',
   },
   {
     id: 'homepage-7',
-    question: 'How is performance measured?',
-    answer: 'Scans, saves, RSVPs, unlocks, visits, and repeat use.',
+    question: 'What do buildings pay?',
+    answer: 'Buildings start with a 90-day pilot and then choose their level: free, $39 per year, or $99 per year depending on how much reporting and activation they want.',
   },
   {
     id: 'homepage-8',
-    question: 'Is this one system or multiple?',
-    answer: 'One system with role-based views.',
+    question: 'What gets tracked?',
+    answer: 'Scans, saves, RSVPs, redemptions, visits, and repeat use. The point is to show what actually happened, not just what was shown.',
+  },
+  {
+    id: 'homepage-9',
+    question: 'How fast can a partner launch?',
+    answer: 'Most partners can launch in 7 to 10 days. The setup is light: map placement, QR entry, offer or event setup, and the right access path.',
+  },
+  {
+    id: 'homepage-10',
+    question: 'Who can join?',
+    answer: 'Residents, buildings, hotels, venues, brands, civic groups, and real estate teams can all use the same system through role-specific views.',
   },
 ];
 
@@ -53,19 +63,19 @@ export const FAQ_PARTNERS = [
     id: 'partners-1',
     question: 'Are these separate products or one shared system?',
     answer:
-      'It is one shared system. Residential, hospitality, venues, brands, and civic all connect through the same map, action model, and proof layer.',
+      'It is one shared system. Properties, hotels, venues, brands, and civic groups all use the same map and the same action flow.',
   },
   {
     id: 'partners-2',
-    question: 'Why were Properties removed from the main taxonomy?',
+    question: 'How are properties handled?',
     answer:
-      'Buildings still matter, but they now sit inside the residential logic. The structure reflects how the product is actually used.',
+      'Properties are still a core part of the system. They are handled as the residential side of the product because that is how people actually use it.',
   },
   {
     id: 'partners-3',
     question: 'What does each partner type get?',
     answer:
-      'The same core system: map visibility, contextual discovery, live actions, proof, and planning tools. Only the role changes.',
+      'Everyone gets the same core system: map visibility, nearby discovery, actions, reporting, and planning tools. What changes is how each partner uses it.',
   },
   {
     id: 'partners-4',
@@ -76,22 +86,22 @@ export const FAQ_PARTNERS = [
     id: 'partners-5',
     question: 'How do examples work?',
     answer:
-      'They are interactive demo states tied to the map and proof layer, not static case studies.',
+      'They are live examples tied to the map and the reporting layer, not static case studies.',
   },
   {
     id: 'partners-6',
-    question: 'Why is Brands the reference page?',
-    answer: 'It carries the most complete system logic and sets the standard.',
+    question: 'Why does the Brands page go deeper?',
+    answer: 'It shows the widest range of ways the system can be used, so it is a helpful reference for the rest of the partner pages.',
   },
   {
     id: 'partners-7',
     question: 'What makes this credible?',
-    answer: 'Everything connects to real actions and measurable behavior.',
+    answer: 'It is tied to real actions people take: scans, saves, RSVPs, visits, and redemptions.',
   },
   {
     id: 'partners-8',
     question: 'What should this feel like?',
-    answer: 'One system. One map. Five role-based views.',
+    answer: 'One system, one map, and different views for different partner types.',
   },
 ];
 
@@ -106,13 +116,13 @@ export const FAQ_RESIDENTIAL = [
     id: 'residential-2',
     question: 'What does a building actually offer through this?',
     answer:
-      'A building can offer resident access, move-in activation, neighborhood discovery, local partner perks, and a stronger amenity experience tied to real nearby use.',
+      'A building can give residents easy access, move-in onboarding, nearby discovery, local perks, and a stronger amenity experience.',
   },
   {
     id: 'residential-3',
     question: 'Why is this better than a static amenity list?',
     answer:
-      'Because residents need something current and usable, not a forgotten list. Downtown Perks gives them a live system built around nearby context and actual decision moments.',
+      'Because residents need something current and useful, not an old list that nobody checks. Downtown Perks shows what is nearby and worth using right now.',
   },
   {
     id: 'residential-4',
@@ -124,7 +134,7 @@ export const FAQ_RESIDENTIAL = [
     id: 'residential-5',
     question: 'What can a property measure?',
     answer:
-      'Buildings can track scans, activations, engagement, repeat use, local unlocks, and other signals that show whether residents are actually using the system.',
+      'Buildings can track scans, signups, engagement, repeat use, and local perk use.',
   },
   {
     id: 'residential-6',
@@ -136,7 +146,7 @@ export const FAQ_RESIDENTIAL = [
     id: 'residential-7',
     question: 'What is different between Downtown Perks and BuildingLink?',
     answer:
-      'BuildingLink is operational and property-centered. Downtown Perks is behavioral and resident-centered. BuildingLink helps manage life inside the building. Downtown Perks helps residents decide what to do outside it.',
+      'BuildingLink helps run the building. Downtown Perks helps residents decide what to do around it.',
   },
 ];
 
@@ -151,13 +161,13 @@ export const FAQ_HOSPITALITY = [
     id: 'hospitality-2',
     question: 'Is this meant to replace concierge recommendations?',
     answer:
-      'No. It can support concierge workflows, strengthen them, and make local discovery easier to hand off and measure.',
+      'No. It supports concierge teams by making local discovery easier to hand off and easier to measure.',
   },
   {
     id: 'hospitality-3',
     question: 'What guest actions matter most?',
     answer:
-      'Scans, nearby opens, visits, perk unlocks, event interest, repeat in-stay use, and downstream local movement all help show how guests are engaging.',
+      'Scans, map opens, visits, perk use, event interest, and repeat use all show how guests are engaging.',
   },
   {
     id: 'hospitality-4',
@@ -169,7 +179,7 @@ export const FAQ_HOSPITALITY = [
     id: 'hospitality-5',
     question: 'Does this only work for perks?',
     answer:
-      'No. Perks are one part of it. The bigger value is useful local discovery, better guest movement, and measurable downtown participation.',
+      'No. Perks are only one part of it. The bigger value is helping guests find the right place faster and showing what they actually do next.',
   },
   {
     id: 'hospitality-6',
@@ -181,7 +191,7 @@ export const FAQ_HOSPITALITY = [
     id: 'hospitality-7',
     question: 'How does Downtown Perks work with a POS?',
     answer:
-      'A POS records the transaction once a guest is already in the flow. Downtown Perks helps create the action before that by getting the guest to choose, visit, and engage in the first place.',
+      'A POS records the sale. Downtown Perks helps the guest choose, visit, and engage before the sale happens.',
   },
 ];
 
@@ -196,7 +206,7 @@ export const FAQ_VENUES = [
     id: 'venues-2',
     question: 'What makes this different from a listing site?',
     answer:
-      'A listing site waits to be searched. Downtown Perks places the venue inside live downtown context when someone nearby is deciding what to do.',
+      'A listing site waits for someone to search. Downtown Perks helps your venue show up when someone nearby is deciding where to go.',
   },
   {
     id: 'venues-3',
@@ -214,13 +224,13 @@ export const FAQ_VENUES = [
     id: 'venues-5',
     question: 'What proof matters most for venue partners?',
     answer:
-      'Useful proof includes opens, saves, scans, unlocks, redemptions, attendance-led traffic, and repeat visits.',
+      'The proof is simple: opens, saves, scans, redemptions, visits, and repeat customers.',
   },
   {
     id: 'venues-6',
     question: 'Does Downtown Perks replace inKind or our POS?',
     answer:
-      'No. Downtown Perks is not a payment system and it is not a POS. It helps drive discovery, local relevance, and action before the transaction happens. It can work alongside systems like inKind and your POS by helping create the visit those systems later capture.',
+      'No. It is not a payment tool or a POS. It helps create the visit before the transaction happens.',
   },
   {
     id: 'venues-7',
@@ -232,7 +242,7 @@ export const FAQ_VENUES = [
     id: 'venues-8',
     question: 'How does Downtown Perks work with a POS?',
     answer:
-      'A POS tells you what sold. Downtown Perks helps explain why someone showed up. It adds context before the sale and proof around the sale.',
+      'A POS tells you what sold. Downtown Perks helps show why someone came in to begin with.',
   },
 ];
 
@@ -247,7 +257,7 @@ export const FAQ_BRANDS = [
     id: 'brands-2',
     question: 'How is this different from sponsorship placement?',
     answer:
-      'This is not static sponsorship inventory. Brands appear inside map-native decision moments, live local context, and measurable user action.',
+      'This is not just a logo placement. Brands show up inside real downtown moments and real user actions.',
   },
   {
     id: 'brands-3',
@@ -265,13 +275,13 @@ export const FAQ_BRANDS = [
     id: 'brands-5',
     question: 'What makes the Brands page the highest-fidelity page?',
     answer:
-      'It carries the broadest system logic: campaign formats, map placements, interactive examples, proof, live activity, and planning. It should set the standard for every other partner page.',
+      'It covers the widest range of campaign uses, map placements, examples, and reporting, so it sets the standard for the rest of the partner pages.',
   },
   {
     id: 'brands-6',
     question: 'What should a brand be able to measure?',
     answer:
-      'Scans, unlocks, saves, attributed visits, repeat engagement, event participation, and action quality tied to the campaign objective.',
+      'Brands should be able to measure scans, saves, visits, redemptions, repeat use, and event engagement.',
   },
   {
     id: 'brands-7',
@@ -286,7 +296,7 @@ export const FAQ_CIVIC = [
     id: 'civic-1',
     question: 'How does civic fit into the Downtown Perks system?',
     answer:
-      'Civic is one of the five partner views into the same map-based product. It uses the shared downtown layer to surface public moments, districts, events, and useful guidance.',
+      'Civic is one of the partner views in the same map system. It helps show public events, districts, and useful local information.',
   },
   {
     id: 'civic-2',
@@ -298,18 +308,18 @@ export const FAQ_CIVIC = [
     id: 'civic-3',
     question: 'Can civic organizations appear on the map like other partners?',
     answer:
-      'Yes. Civic organizations, districts, public activations, and useful civic layers should all be visible and interactive inside the same shared map engine.',
+      'Yes. Civic groups, districts, public events, and useful civic information can all appear on the same map.',
   },
   {
     id: 'civic-4',
     question: 'What should civic partners be able to measure?',
     answer:
-      'Map opens, district engagement, scans, saves, RSVPs, attendance, repeat participation, and useful public interaction signals.',
+      'They should be able to measure map opens, scans, saves, RSVPs, turnout, and repeat participation.',
   },
   {
     id: 'civic-5',
     question: 'Does this still feel public-facing rather than commercial?',
     answer:
-      'Yes. The civic layer should feel useful, accessible, and grounded in public participation, while still giving organizations proof that the work is being seen and used.',
+      'Yes. The civic layer should still feel useful and public-facing while giving organizations proof that people are seeing and using it.',
   },
 ];

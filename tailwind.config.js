@@ -3,16 +3,50 @@ module.exports = {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
+    screens: {
+      sm: '480px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       fontFamily: {
-        heading: ['var(--font-heading)'],
-        body: ['var(--font-body)'],
-        serif: ['var(--font-heading)'],
+        sans: ['Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        body: ['var(--dp-font-body)'],
+        accent: ['var(--dp-font-accent)'],
+        serif: ['"Plus Jakarta Sans"', 'Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+      },
+      fontSize: {
+        xs: ['12px', '16px'],
+        sm: ['14px', '20px'],
+        base: ['16px', '24px'],
+        lg: ['18px', '26px'],
+        xl: ['20px', '28px'],
+        '2xl': ['24px', '32px'],
+        '3xl': ['28px', '36px'],
+        '4xl': ['32px', '40px'],
+        '5xl': ['40px', '48px'],
+        '6xl': ['48px', '56px'],
+      },
+      spacing: {
+        xs: '6px',
+        sm: '10px',
+        md: '16px',
+        lg: '24px',
+        xl: '32px',
+        '2xl': '48px',
+        '3xl': '64px',
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 4px)',
+        'dp-card': 'var(--dp-radius-card)',
+        'dp-drawer': 'var(--dp-radius-drawer)',
+        'dp-pill': 'var(--dp-radius-pill)',
       },
       letterSpacing: {
         tightest: '-0.04em',
@@ -22,16 +56,39 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         gold: {
-          DEFAULT: 'hsl(40, 62%, 46%)',
-          light: 'hsl(40, 62%, 62%)',
-          dark: 'hsl(40, 62%, 34%)',
-          muted: 'hsl(40, 36%, 56%)',
+          DEFAULT: '#C6A269',
+          soft: '#E6CFA3',
+          light: '#D8B978',
+          dark: '#92713F',
+          muted: '#B99B65',
         },
         navy: {
-          DEFAULT: 'hsl(218, 42%, 14%)',
-          light: 'hsl(218, 30%, 22%)',
-          mid: 'hsl(218, 28%, 32%)',
-          pale: 'hsl(218, 30%, 92%)',
+          DEFAULT: '#0B1F33',
+          soft: '#1A2E45',
+          muted: '#5B6B7C',
+          light: '#243B55',
+          mid: '#334A60',
+          pale: '#E8EDF2',
+        },
+        surface: {
+          base: '#F7F8FA',
+          glass: 'rgba(255,255,255,0.6)',
+        },
+        dp: {
+          bg: 'var(--dp-bg)',
+          surface: 'var(--dp-surface)',
+          'surface-main': 'var(--dp-surface-main)',
+          'surface-subtle': 'var(--dp-surface-subtle)',
+          navy: 'var(--dp-navy)',
+          'navy-soft': 'var(--dp-navy-soft)',
+          text: 'var(--dp-text)',
+          'text-soft': 'var(--dp-text-soft)',
+          gold: 'var(--dp-gold)',
+          'gold-deep': 'var(--dp-gold-deep)',
+          border: 'var(--dp-border)',
+          'border-soft': 'var(--dp-border-soft)',
+          hover: 'var(--dp-hover)',
+          active: 'var(--dp-active)',
         },
         cream: {
           DEFAULT: 'hsl(42, 24%, 96%)',
@@ -86,6 +143,19 @@ module.exports = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
         }
+      },
+      boxShadow: {
+        'dp-soft': 'var(--dp-shadow-soft)',
+        'dp-float': 'var(--dp-shadow-float)',
+        'dp-glass': 'var(--dp-shadow-glass)',
+      },
+      backdropBlur: {
+        dp: '12px',
+        'dp-subtle': '10px',
+      },
+      transitionDuration: {
+        180: '180ms',
+        220: '220ms',
       },
       keyframes: {
         'accordion-down': {

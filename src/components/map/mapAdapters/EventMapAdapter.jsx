@@ -100,17 +100,17 @@ export function EventCard({ event, active, onClick }) {
         )}
         <div className="flex flex-wrap gap-2">
           {event.venue_name && (
-            <span className="flex items-center gap-1.5 bg-[#f5f3ef] border border-[#e8e5df] rounded-full px-2.5 py-1.5 text-[12px] text-[#3d3934] font-medium">
+            <span className="flex items-center gap-1.5 rounded-full border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1.5 text-[12px] font-medium text-foreground/78">
               📍 {event.venue_name}
             </span>
           )}
           {date && (
-            <span className="flex items-center gap-1.5 bg-[#f5f3ef] border border-[#e8e5df] rounded-full px-2.5 py-1.5 text-[12px] text-[#3d3934] font-medium">
+            <span className="flex items-center gap-1.5 rounded-full border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1.5 text-[12px] font-medium text-foreground/78">
               🕐 {date.format("h:mm A")}
             </span>
           )}
           {event.rsvp_count > 0 && (
-            <span className="flex items-center gap-1.5 bg-[#f5f3ef] border border-[#e8e5df] rounded-full px-2.5 py-1.5 text-[12px] text-[#3d3934] font-medium">
+            <span className="flex items-center gap-1.5 rounded-full border border-[rgba(11,31,51,0.08)] bg-[var(--dp-surface-base)] px-2.5 py-1.5 text-[12px] font-medium text-foreground/78">
               👥 {event.rsvp_count} going
             </span>
           )}

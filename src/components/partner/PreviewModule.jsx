@@ -11,12 +11,12 @@ export default function PreviewModule({
   children,
 }) {
   const bgColor = {
-    residential: 'from-[#f5f3ef] to-[#efeae0]',
-    hospitality: 'from-[#f8f6f2] to-[#f0ede6]',
-    venues: 'from-[#f5f3ef] to-[#efeae0]',
-    brands: 'from-[#f8f6f2] to-[#f0ede6]',
-    civic: 'from-[#f5f3ef] to-[#efeae0]',
-    default: 'from-[#f5f3ef] to-[#efeae0]',
+    residential: 'from-[#f8fbff] to-[#eef4fa]',
+    hospitality: 'from-[#f8fbff] to-[#eff5fb]',
+    venues: 'from-[#f8fbff] to-[#eef4fa]',
+    brands: 'from-[#f8fbff] to-[#eff5fb]',
+    civic: 'from-[#f8fbff] to-[#eef4fa]',
+    default: 'from-[#f8fbff] to-[#eef4fa]',
   }[type];
 
   return (
@@ -25,11 +25,11 @@ export default function PreviewModule({
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className={`aspect-[4/3] rounded-2xl border border-[#e8e5df] bg-gradient-to-br ${bgColor} flex flex-col items-center justify-center p-8 text-center`}
+      className={`aspect-[4/3] rounded-2xl border border-[rgba(11,31,51,0.08)] bg-gradient-to-br ${bgColor} flex flex-col items-start justify-center p-8 text-left shadow-[0_14px_28px_rgba(11,31,51,0.04)]`}
     >
       {icon && <div className="text-4xl mb-4">{icon}</div>}
-      {title && <p className="text-[13px] font-semibold text-[#4a463f] mb-1">{title}</p>}
-      {description && <p className="text-[11px] text-[#8d887f]">{description}</p>}
+      {title && <p className="mb-1 text-[13px] font-semibold text-foreground">{title}</p>}
+      {description && <p className="text-[11px] text-muted-foreground">{description}</p>}
       {children}
     </motion.div>
   );

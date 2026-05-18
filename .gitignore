@@ -27,6 +27,7 @@ coverage
 # local files
 *.local
 .DS_Store
+.codex-local/
 
 # editor directories and files
 .vscode/*
