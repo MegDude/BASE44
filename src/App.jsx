@@ -26,13 +26,14 @@ import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
-import BrandsIndex from "./pages/downtown-perks/brands/Index";
+import ResidentShell from "./components/resident-shell/ResidentShell";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
 import TheWaterline from "./pages/downtown-perks/brands/TheWaterline";
 import Bangers from "./pages/downtown-perks/brands/Bangers";
 import TheStayPut from "./pages/downtown-perks/brands/TheStayPut";
 import FineEyewear from "./pages/downtown-perks/brands/FineEyewear";
 import HeritageBoots from "./pages/downtown-perks/brands/HeritageBoots";
+import BrandsIndex from "./pages/downtown-perks/brands/Index";
 import DottieMay from "./pages/downtown-perks/brands/DottieMay";
 import TopoChico from "./pages/downtown-perks/brands/TopoChico";
 import Yeti from "./pages/downtown-perks/brands/Yeti";
@@ -61,8 +62,9 @@ import { ROUTES } from "@/lib/routes";
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<ResidentShell />} />
       <Route element={<Layout />}>
-        <Route path="/" element={<HomeV2 />} />
+        <Route path="/legacy-v2" element={<HomeV2 />} />
         <Route path="/v2" element={<HomeV2 />} />
         <Route path="/legacy-home" element={<Home />} />
         <Route path={ROUTES.map} element={<Map />} />
