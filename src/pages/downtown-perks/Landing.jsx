@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { MapPin, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
 import { FAQ_HOMEPAGE } from "@/lib/faq-partner-data";
@@ -10,8 +11,21 @@ const DOWNTOWN_FRAMES = [
   "https://images.unsplash.com/photo-1549400827-0b1a0f8bf3a0?q=80&w=2670&auto=format&fit=crop",
 ];
 
+const CATEGORY_CHIPS = [
+  "Coffee",
+  "Dining",
+  "Happy Hour",
+  "Events",
+  "Fitness",
+  "Hotels",
+  "Perks",
+  "Tonight",
+  "Nearby Now",
+];
+
 export default function Landing() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [view, setView] = useState("residents");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,129 +36,169 @@ export default function Landing() {
 
   return (
     <div className="w-full bg-[#f7f6f2]">
-      {/* Hero with Rotating Environmental Images */}
-      <section className="relative w-full h-[38vh] md:h-[50vh] overflow-hidden bg-[#111f3d]">
-        {/* Rotating Downtown Environment */}
+      {/* Hero */}
+      <section className="relative w-full h-[44vh] md:h-[60vh] overflow-hidden bg-[#111f3d]">
         {DOWNTOWN_FRAMES.map((src, index) => (
           <img
             key={src}
             src={src}
-            alt="Downtown Austin"
+            alt="Downtown"
             className={cn(
               "absolute inset-0 w-full h-full object-cover",
-              "filter brightness-[0.88] saturate-[0.82]",
-              "mix-blend-luminosity",
+              "filter brightness-[0.86] saturate-[0.86]",
               "transition-all ease-out",
               activeIndex === index ? "duration-1000" : "duration-500"
             )}
             style={{
               opacity: activeIndex === index ? 1 : 0,
-              transform:
-                activeIndex === index ? "scale(1.015)" : "scale(1.03)",
+              transform: activeIndex === index ? "scale(1.01)" : "scale(1.03)",
               zIndex: activeIndex === index ? 10 : 0,
             }}
           />
         ))}
 
-        {/* Softer Gradient Overlay */}
-        <div 
-          className="absolute inset-0 z-20 pointer-events-none"
-          style={{
-            background: "linear-gradient(to right, rgba(17,31,61,0.38), rgba(17,31,61,0.10), transparent)"
-          }}
-        />
+        <div className="absolute inset-0 z-20 pointer-events-none" style={{
+          background:
+            "linear-gradient(to right, rgba(17,31,61,0.42), rgba(17,31,61,0.12), transparent)",
+        }} />
 
-        {/* Hero Copy - Minimal */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 md:px-8">
-          <div className="text-center max-w-2xl mx-auto">
-            <h1 className="text-[32px] md:text-[48px] font-canela leading-tight text-white mb-3">
-              Downtown, Made Visible
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4 md:px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="text-[11px] md:text-[12px] font-inter uppercase tracking-[0.16em] text-white/80 mb-3">
+              LIVE DOWNTOWN ACCESS
+            </div>
+            <h1 className="text-[34px] md:text-[56px] font-canela leading-tight text-white mb-4">
+              Downtown, in one place.
             </h1>
-            <p className="text-[14px] md:text-[16px] text-white/90 font-inter leading-relaxed">
-              Discover what's happening nearby. Move with intention. Experience downtown differently.
+            <p className="text-[14px] md:text-[16px] text-white/90 font-inter leading-relaxed max-w-3xl mx-auto">
+              You live downtown but expect it to be easier.
+              Downtown Perks fixes that—because the problem isn’t what to do next, it’s the effort it takes to decide.
             </p>
-          </div>
-        </div>
 
-        {/* Live Status Overlay - Subtle Live Layers */}
-        <div className="absolute bottom-6 left-6 z-30 flex flex-wrap gap-2">
-          <div className="rounded-full bg-white/72 backdrop-blur-md border border-white/30 px-4 py-2 text-[10px] tracking-[0.12em] uppercase text-[#111f3d] font-inter font-medium">
-            Rainey active now
-          </div>
-          <div className="rounded-full bg-white/72 backdrop-blur-md border border-white/30 px-4 py-2 text-[10px] tracking-[0.12em] uppercase text-[#111f3d] font-inter font-medium">
-            4 events tonight
-          </div>
-        </div>
-
-        {/* Ask-the-Map Floating Button */}
-        <div className="absolute bottom-6 right-6 z-30 pointer-events-auto">
-          <button className="flex items-center gap-2 px-5 py-3 bg-white/82 backdrop-blur-xl rounded-full border border-white/40 shadow-[0_20px_60px_rgba(17,31,61,0.12)] hover:bg-white/90 transition-all">
-            <Search className="w-4 h-4 text-[#111f3d]" />
-            <span className="text-[12px] font-inter font-medium text-[#111f3d] uppercase tracking-[0.08em]">
-              Ask the map
-            </span>
-          </button>
-        </div>
-      </section>
-
-      {/* Live Status Strip */}
-      <section className="px-4 md:px-8 py-6 bg-white/40 backdrop-blur-sm border-b border-white/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-[#c6a55c] rounded-full animate-pulse" />
-            <p className="text-[12px] font-inter uppercase tracking-[0.08em] text-[#111f3d]/70">
-              <span className="font-semibold text-[#111f3d]">12 active perks</span> nearby • 3 events today
-            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3 pointer-events-auto">
+              <Link to="/map" className="rounded-full px-6 py-3 bg-[#111f3d] text-white text-[12px] md:text-[13px] uppercase tracking-[0.12em] font-inter border border-white/40 hover:bg-white/10">
+                Open the Map
+              </Link>
+              <Link to="/residents" className="rounded-full px-6 py-3 bg-white/82 text-[#111f3d] text-[12px] md:text-[13px] uppercase tracking-[0.12em] font-inter border border-white/40 hover:bg-white">
+                Explore Resident Access
+              </Link>
+              <Link to="/partners" className="rounded-full px-6 py-3 bg-white/82 text-[#111f3d] text-[12px] md:text-[13px] uppercase tracking-[0.12em] font-inter border border-white/40 hover:bg-white">
+                For Partners
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Discovery Chips - Lightweight Utility */}
-      <section className="px-4 md:px-8 py-8">
+      {/* Category rail */}
+      <section className="px-4 md:px-8 py-8 bg-white/40 backdrop-blur-sm border-b border-white/20">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap gap-2">
-            {["Happy Hour", "Dining", "Fitness", "Events", "Savings"].map((chip) => (
-              <button
+            {CATEGORY_CHIPS.map((chip) => (
+              <span
                 key={chip}
-                className="rounded-full px-4 py-2 bg-white/72 backdrop-blur-md border border-white/40 hover:bg-white/85 transition-all text-[11px] font-inter font-medium uppercase tracking-[0.12em] text-[#111f3d]"
+                className="rounded-full px-4 py-2 bg-white/72 backdrop-blur-md border border-white/40 text-[11px] font-inter uppercase tracking-[0.12em] text-[#111f3d]"
               >
                 {chip}
-              </button>
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Operational Flow Section */}
-      <section className="px-4 md:px-8 py-12 md:py-16">
+      {/* Split experience toggle */}
+      <section className="px-4 md:px-8 py-10">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[28px] md:text-[36px] font-canela text-[#111f3d] mb-12">
-            Experience Downtown Differently
-          </h2>
+          <div className="inline-flex rounded-full bg-white/72 border border-white/40 overflow-hidden pointer-events-auto">
+            <button
+              type="button"
+              onClick={() => setView("residents")}
+              className={cn(
+                "px-6 py-3 text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]",
+                view === "residents" && "bg-white"
+              )}
+            >
+              Residents
+            </button>
+            <button
+              type="button"
+              onClick={() => setView("partners")}
+              className={cn(
+                "px-6 py-3 text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]",
+                view === "partners" && "bg-white"
+              )}
+            >
+              Partners
+            </button>
+          </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { title: "Discover", desc: "Find what's nearby" },
-              { title: "Move", desc: "Navigate your interests" },
-              { title: "Experience", desc: "Participate in events" },
-              { title: "Save", desc: "Keep track of favorites" },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="rounded-[28px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6 hover:shadow-[0_24px_72px_rgba(17,31,61,0.12)] transition-all"
-              >
-                <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
-                  {String(idx + 1).padStart(2, "0")}
+          <div className="mt-6 grid md:grid-cols-3 gap-6">
+            {view === "residents" ? (
+              <>
+                <div className="rounded-[24px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6">
+                  <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
+                    Resident preview
+                  </div>
+                  <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">Find what you need</h3>
+                  <p className="text-[14px] font-inter text-[#111f3d]/75">
+                    Nearby coffee, dining, fitness, events, perks, and properties—organized by walking distance.
+                  </p>
                 </div>
-                <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">{item.title}</h3>
-                <p className="text-[14px] font-inter text-[#111f3d]/70">{item.desc}</p>
-              </div>
-            ))}
+                <div className="rounded-[24px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6">
+                  <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
+                    Resident preview
+                  </div>
+                  <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">Events</h3>
+                  <p className="text-[14px] font-inter text-[#111f3d]/75">
+                    See what’s happening tonight and RSVP without juggling apps.
+                  </p>
+                </div>
+                <div className="rounded-[24px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6">
+                  <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
+                    Resident preview
+                  </div>
+                  <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">Perks Card</h3>
+                  <p className="text-[14px] font-inter text-[#111f3d]/75">
+                    One card unlocks resident-only perks and access experiences.
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="rounded-[24px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6">
+                  <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
+                    Partner preview
+                  </div>
+                  <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">Visibility</h3>
+                  <p className="text-[14px] font-inter text-[#111f3d]/75">
+                    Show up when nearby residents and guests are deciding where to go.
+                  </p>
+                </div>
+                <div className="rounded-[24px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6">
+                  <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
+                    Partner preview
+                  </div>
+                  <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">Activation</h3>
+                  <p className="text-[14px] font-inter text-[#111f3d]/75">
+                    Perks, events, and offers—measured against real downtown usage.
+                  </p>
+                </div>
+                <div className="rounded-[24px] bg-white/82 backdrop-blur-sm shadow-[0_18px_60px_rgba(17,31,61,0.08)] p-6">
+                  <div className="text-[12px] font-inter uppercase tracking-[0.12em] text-[#111f3d]/60 mb-2">
+                    Partner preview
+                  </div>
+                  <h3 className="text-[18px] font-canela text-[#111f3d] mb-2">Pilot</h3>
+                  <p className="text-[14px] font-inter text-[#111f3d]/75">
+                    Start with a pilot, decide with data, and scale visibility where it works.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Compact FAQ */}
+      {/* FAQ */}
       <section className="px-4 md:px-8 py-12">
         <div className="max-w-6xl mx-auto">
           <FAQAccordionBlock
@@ -162,7 +216,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Minimal Footer */}
       <footer className="px-4 md:px-8 py-8 bg-white/30 border-t border-white/20">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-[12px] font-inter text-[#111f3d]/60">
