@@ -15,7 +15,7 @@ import BuildingIntelligence from "./pages/BuildingIntelligence";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
 import PartnerDashboard from "./pages/PartnerDashboard";
-import Residents from "./pages/Residents";
+// import Residents removed
 import ResidentApp from "./pages/resident-app";
 import BuildPack from "./pages/BuildPack";
 import Landing from "./pages/downtown-perks/Landing";
@@ -62,7 +62,7 @@ import { ROUTES } from "@/lib/routes";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<ResidentShell />} />
+      <Route path="/" element={<Landing />} />
       <Route element={<Layout />}>
         <Route path="/legacy-v2" element={<HomeV2 />} />
         <Route path="/v2" element={<HomeV2 />} />
@@ -160,7 +160,7 @@ function AppRoutes() {
         <Route path="/properties/:buildingId/reports" element={<BuildingIntelligence />} />
         <Route path="/properties/:buildingId/partners" element={<BuildingIntelligence />} />
 
-        <Route path={ROUTES.residents} element={<Residents />} />
+        <Route path={ROUTES.residents} element={<ResidentShell />} />
         <Route path={ROUTES.residentApp} element={<ResidentApp />} />
         <Route path="/resident-app/map" element={<ResidentApp />} />
         <Route path="/resident-app/events" element={<ResidentApp />} />
