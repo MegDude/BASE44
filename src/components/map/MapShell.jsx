@@ -13,7 +13,7 @@ const DEFAULT_CENTER = [30.267, -97.743];
 const MODE_CONFIG = {
   home: {
     title: "Where downtown meets you.",
-    subtitle: "Start with one decision. The map does the rest.",
+    subtitle: "Everything nearby. In one map.",
     prompts: ["Coffee now", "Dinner tonight", "Events tonight"],
     chips: [
       { id: "all", label: "Best nearby now" },
@@ -24,8 +24,8 @@ const MODE_CONFIG = {
     ],
   },
   resident: {
-    title: "Your downtown. In one map.",
-    subtitle: "Search, save, RSVP, redeem, and move without leaving the map.",
+    title: "Where downtown meets you.",
+    subtitle: "One map. Everything nearby. No app download. No login friction.",
     prompts: ["Coffee now", "Happy hour nearby", "Places to walk to"],
     chips: [
       { id: "all", label: "Best nearby now" },
@@ -36,8 +36,8 @@ const MODE_CONFIG = {
     ],
   },
   partners: {
-    title: "The people nearby are already deciding.",
-    subtitle: "See the same downtown map as a partner intelligence surface.",
+    title: "One downtown layer. Five partner roles.",
+    subtitle: "Start with the partner type, then move into map intelligence, rollout, and the right entry model.",
     prompts: ["properties venues brands civic downtown", "Rainey activity tonight", "best converting partners"],
     chips: [
       { id: "all", label: "All signals" },
@@ -48,8 +48,8 @@ const MODE_CONFIG = {
     ],
   },
   property: {
-    title: "Turn the neighborhood into an amenity.",
-    subtitle: "Buildings, nearby places, and resident value all in one live layer.",
+    title: "Turn a building into a neighborhood.",
+    subtitle: "Make your address more useful. Connect residents to nearby places, events, and perks.",
     prompts: ["properties and perks near residents", "best within 5 minutes", "resident activity tonight"],
     chips: [
       { id: "building", label: "Properties" },
@@ -59,8 +59,8 @@ const MODE_CONFIG = {
     ],
   },
   venue: {
-    title: "Show up when nearby intent is forming.",
-    subtitle: "The same map can rank venues, perks, and live foot-traffic moments.",
+    title: "Be the answer to what's next.",
+    subtitle: "Show up when intent is real. Appear in the map when people nearby are already deciding.",
     prompts: ["rooftop bars coffee restaurants wellness nearby", "dinner tonight", "open now nearby"],
     chips: [
       { id: "venue", label: "Venues" },
@@ -70,8 +70,8 @@ const MODE_CONFIG = {
     ],
   },
   hospitality: {
-    title: "Give guests a live downtown layer.",
-    subtitle: "Hotels can guide dining, events, perks, and walkable decisions from one map.",
+    title: "Extend the stay beyond the lobby.",
+    subtitle: "Give guests one live map for dining, events, wellness, and nightlife.",
     prompts: ["guest coffee dinner events near hotel", "things to do tonight", "walkable dining nearby"],
     chips: [
       { id: "venue", label: "Places to go" },
@@ -81,8 +81,8 @@ const MODE_CONFIG = {
     ],
   },
   brand: {
-    title: "Brands show up as useful behavior.",
-    subtitle: "Sponsor moments, downtown movement, and visible actions in the same live map.",
+    title: "Run campaigns that live in the city.",
+    subtitle: "Buy context, not broad reach. Run campaigns in the right corridor at the right time.",
     prompts: ["brand sponsor zones events nightlife downtown", "district activity tonight", "best partner zones"],
     chips: [
       { id: "all", label: "All signals" },
@@ -93,8 +93,8 @@ const MODE_CONFIG = {
     ],
   },
   civic: {
-    title: "Make participation easier to see.",
-    subtitle: "Civic activity, local business visibility, and district movement in one downtown surface.",
+    title: "Scale the pulse of the district.",
+    subtitle: "Make participation visible. Surface district events where people are already looking.",
     prompts: ["community events civic arts downtown", "public activity downtown", "district participation"],
     chips: [
       { id: "all", label: "All signals" },
@@ -152,6 +152,7 @@ export default function MapShell({
   const setMapCenter = useMapStateStore((state) => state.setMapCenter);
   const setMapZoom = useMapStateStore((state) => state.setMapZoom);
   const selectedEntity = useMapStateStore((state) => state.selectedEntity);
+  const drawerState = useMapStateStore((state) => state.drawerState);
   const selectEntity = useMapStateStore((state) => state.selectEntity);
   const setDrawerState = useMapStateStore((state) => state.setDrawerState);
 
@@ -200,10 +201,20 @@ export default function MapShell({
       return;
     }
 
-    if (!selectedEntity && filteredItems.length > 0) {
-      selectEntity(filteredItems[0]);
+    if (filteredItems.length === 0) {
+      if (selectedEntity || drawerState !== "closed") {
+        selectEntity(null);
+      }
+      return;
     }
-  }, [filteredItems, selectEntity, selected, selectedEntity]);
+
+    const hasMatchingSelection =
+      selectedEntity && filteredItems.some((item) => item.id === selectedEntity.id);
+
+    if (!hasMatchingSelection && (selectedEntity || drawerState !== "closed")) {
+      selectEntity(null);
+    }
+  }, [drawerState, filteredItems, mode, selectEntity, selected, selectedEntity, setDrawerState]);
 
   useEffect(() => {
     if (!selected) return;

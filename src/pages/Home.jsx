@@ -11,13 +11,15 @@ export default function Home() {
         <div className="dp-page-shell">
           <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p className="dp-page-kicker">Decision layer</p>
+              <p className="dp-page-kicker">Where downtown meets you.</p>
               <h2 className="dp-heading-modern text-4xl md:text-6xl">
-                The map is the product.
+                Everything nearby. In one map.
               </h2>
             </div>
             <p className="dp-page-intro">
-              Downtown Perks reduces the effort of deciding what to do next. Residents see nearby places, offers, events, properties, and local activity in one view. Partners show up when people are already choosing where to go.
+              One map. Everything nearby. No app download. No login friction. Residents see
+              places, perks, events, properties, and local activity in one view. Partners show up
+              when people are already choosing where to go.
             </p>
           </div>
         </div>
@@ -49,8 +51,8 @@ export default function Home() {
           <PartnerInterestForm
             partnerType="venue"
             source="homepage_join_section"
-            title="Build your downtown layer."
-            description="Choose the role that fits you. The page captures attribution quietly and keeps the flow moving."
+            title="Ready when you are."
+            description="People don't choose the best option. They choose the one they notice."
           />
         </div>
       </section>

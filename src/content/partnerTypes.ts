@@ -45,11 +45,11 @@ export const partnerTypes: PartnerTypeConfig[] = [
     href: "/partners/properties",
     eyebrow: "For Buildings & Residences",
     summary:
-      "Downtown Perks gives residential properties a mapped local utility — resident activation, card adoption, and neighborhood visibility tied directly to your address.",
-    highlight: "Resident activation and card adoption",
-    heroTitle: "Give your building a downtown presence.",
+      "Make your address more useful. Connect residents to nearby places, events, and perks through one mapped neighborhood layer.",
+    highlight: "Property views and resident actions",
+    heroTitle: "Turn a building into a neighborhood.",
     heroBody:
-      "Residents discover local perks, events, and neighbors through a map tied to where they live. Your property becomes a hub, not just an address.",
+      "Residents discover local perks, events, and neighbors through a map tied to where they live. Your property becomes part of the live downtown layer, not just an address.",
     primaryCta: { label: "Partner with us", href: "/partners/properties" },
     secondaryCta: { label: "See how it works", href: "/partners" },
     metrics: [
@@ -85,9 +85,9 @@ export const partnerTypes: PartnerTypeConfig[] = [
     href: "/partners/hospitality",
     eyebrow: "For Hotels & Short-Term Stays",
     summary:
-      "QR-led guest layer that extends the stay experience beyond your lobby — faster guest discovery without front-desk friction.",
-    highlight: "Faster guest discovery without front-desk friction",
-    heroTitle: "Extend the stay beyond your lobby.",
+      "Extend the stay beyond the lobby with one live map for dining, events, wellness, and nightlife.",
+    highlight: "Guest opens and attributed visits",
+    heroTitle: "Extend the stay beyond the lobby.",
     heroBody:
       "Guests scan once and get a curated downtown map — restaurants, events, perks — personalized to where they're staying.",
     primaryCta: { label: "Explore the guest layer", href: "/partners/hospitality" },
@@ -125,9 +125,9 @@ export const partnerTypes: PartnerTypeConfig[] = [
     href: "/partners/venues",
     eyebrow: "For Restaurants, Bars & Event Spaces",
     summary:
-      "Appear in high-intent nearby searches when residents and guests are actively looking — relevance in the moment, not just in the algorithm.",
-    highlight: "Appear in high-intent nearby searches",
-    heroTitle: "Be found when it matters.",
+      "Show up when intent is real. Appear in the map when people nearby are already deciding where to go.",
+    highlight: "Map opens and physical visits",
+    heroTitle: "Be the answer to what's next.",
     heroBody:
       "Residents and guests discover your venue through the Downtown Perks map at the exact moment they're deciding where to go.",
     primaryCta: { label: "List your venue", href: "/partners/venues" },
@@ -165,9 +165,9 @@ export const partnerTypes: PartnerTypeConfig[] = [
     href: "/partners/brands",
     eyebrow: "For Local & National Brands",
     summary:
-      "Place-aware campaigns tied to buildings, venues, events, and districts — activation tied to district context and audience intent, not just demographics.",
-    highlight: "Activation tied to district context and audience intent",
-    heroTitle: "Place your brand in the moment.",
+      "Buy context, not broad reach. Run place-aware campaigns tied to buildings, venues, events, and districts.",
+    highlight: "Map opens and source scans",
+    heroTitle: "Run campaigns that live in the city.",
     heroBody:
       "Reach residents and visitors in context — near your location, your partner venue, or during relevant district events.",
     primaryCta: { label: "Explore brand partnership", href: "/partners/brands" },
@@ -205,9 +205,9 @@ export const partnerTypes: PartnerTypeConfig[] = [
     href: "/partners/civic",
     eyebrow: "For Districts, BIDs & City Partners",
     summary:
-      "Surface district activity, event participation, and neighborhood data — district visibility and event participation for civic and community organizations.",
-    highlight: "District visibility and event participation",
-    heroTitle: "Activate the district.",
+      "Make participation visible. Surface district activity, event participation, and neighborhood data where people are already looking.",
+    highlight: "RSVPs and repeat participation",
+    heroTitle: "Scale the pulse of the district.",
     heroBody:
       "Downtown Perks gives civic organizations a live data layer — events, foot traffic, resident activation — visible across the entire district map.",
     primaryCta: { label: "Explore civic partnership", href: "/partners/civic" },

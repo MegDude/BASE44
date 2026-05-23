@@ -8,6 +8,7 @@ export const ROUTES = {
   perks: "/perks",
   card: "/card",
   about: "/about",
+  buildPack: "/build-pack",
   brands: "/brands",
   partners: "/partners",
   partnerResidential: "/partners/residential",
