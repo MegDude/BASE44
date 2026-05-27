@@ -314,3 +314,65 @@
   0% { transform: scale(0.82); opacity: 0.78; }
   100% { transform: scale(2.05); opacity: 0; }
 }
+
+@layer base {
+  :root {
+    --background: 220 20% 98%;
+    --foreground: 218 42% 14%;
+    --card: 42 18% 97%;
+    --card-foreground: 218 42% 14%;
+    --primary: 218 42% 14%;
+    --primary-foreground: 42 18% 97%;
+    --secondary: 218 18% 92%;
+    --secondary-foreground: 218 42% 14%;
+    --muted: 218 16% 94%;
+    --muted-foreground: 218 20% 38%;
+    --accent: 40 36% 58%;
+    --accent-foreground: 218 42% 14%;
+    --border: 218 18% 86%;
+    --ring: 40 36% 58%;
+    --radius: 6px;
+
+    --dp-bg: hsl(220, 20%, 98%);
+    --dp-surface: rgba(255, 255, 255, 0.62);
+    --dp-surface-main: hsl(42, 18%, 97%);
+    --dp-surface-subtle: rgba(255, 255, 255, 0.90);
+
+    --dp-navy: hsl(218, 42%, 14%);
+    --dp-navy-soft: hsl(218, 38%, 10%);
+    --dp-text: hsl(218, 42%, 14%);
+    --dp-text-soft: hsl(218, 20%, 38%);
+    --dp-gold: #BFA46A;
+    --dp-gold-deep: #A88D4E;
+    --dp-border: hsl(218, 18%, 86%);
+    --dp-border-soft: rgba(15, 23, 42, 0.12);
+    --dp-hover: rgba(191, 164, 106, 0.10);
+    --dp-active: rgba(191, 164, 106, 0.16);
+
+    --dp-radius-card: 6px;
+    --dp-radius-drawer: 8px;
+    --dp-radius-pill: 4px;
+  }
+}
+
+@layer utilities {
+  .rounded-full { border-radius: 4px !important; }
+  .rounded-xl { border-radius: 6px !important; }
+  .rounded-2xl { border-radius: 6px !important; }
+  .rounded-3xl { border-radius: 6px !important; }
+  .rounded-lg { border-radius: 6px !important; }
+  .rounded-md { border-radius: 4px !important; }
+  .rounded-sm { border-radius: 2px !important; }
+  .rounded-none { border-radius: 0 !important; }
+
+  .rounded-\[30px\] { border-radius: 6px !important; }
+  .rounded-\[22px\] { border-radius: 6px !important; }
+  .rounded-\[18px\] { border-radius: 6px !important; }
+  .rounded-\[16px\] { border-radius: 4px !important; }
+
+  .bg-\[\#f6f3ee\] { background-color: hsl(220, 20%, 98%) !important; }
+  .bg-\[hsl\(42,24%,96%\)\] { background-color: hsl(42, 18%, 97%) !important; }
+  .bg-\[\#cfaf5a\] { background-color: #BFA46A !important; }
+  .text-\[\#cfaf5a\] { color: #BFA46A !important; }
+  .border-\[\#cfaf5a\] { border-color: #BFA46A !important; }
+}
