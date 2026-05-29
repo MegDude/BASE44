@@ -51,16 +51,8 @@ export const AuthProvider = ({ children }) => {
         // Handle app-level errors
         if (appError.status === 403 && appError.data?.extra_data?.reason) {
           const reason = appError.data.extra_data.reason;
-          if (reason === 'auth_required') {
-            setAuthError({
-              type: 'auth_required',
-              message: 'Authentication required'
-            });
-          } else if (reason === 'user_not_registered') {
-            setAuthError({
-              type: 'user_not_registered',
-              message: 'User not registered for this app'
-            });
+          if (reason === 'user_not_registered') {
+            setAuthError(null);
           } else {
             setAuthError({
               type: reason,
@@ -102,10 +94,7 @@ export const AuthProvider = ({ children }) => {
       
       // If user auth fails, it might be an expired token
       if (error.status === 401 || error.status === 403) {
-        setAuthError({
-          type: 'auth_required',
-          message: 'Authentication required'
-        });
+        setAuthError(null);
       }
     }
   };
@@ -124,8 +113,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    return null;
   };
 
   return (

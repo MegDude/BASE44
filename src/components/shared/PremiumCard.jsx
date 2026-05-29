@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { SURFACES, DEFAULTS, MOTION as MOTION_CONFIG } from "@/lib/design-system";
+import { SURFACES } from "@/lib/design-system";
 
 /**
  * PremiumCard — Unified card surface for consistent content modules

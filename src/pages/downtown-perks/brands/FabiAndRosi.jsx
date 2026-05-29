@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, QrCode, Utensils, Heart, CalendarDays } from "lucide-react";
+import { MapPin, Zap, TrendingUp, Utensils, Heart, CalendarDays } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -13,12 +13,12 @@ const demo = (
         { title: "New menu — tasting event this Thursday", sub: "Members-only preview · 12 seats" },
       ]}
     />
-    <div className="rounded-2xl border border-border bg-card p-7">
+    <div className="rounded-lg border border-border bg-card p-7">
       <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-5">Resident Dining Card</div>
       <div className="p-5 rounded-xl bg-primary/5 border border-primary/20 mb-4">
         <div className="font-heading text-lg font-bold mb-1">Fabi & Rosi</div>
         <div className="text-xs text-muted-foreground mb-3">Neighborhood table — Downtown Austin</div>
-        <div className="text-sm text-foreground font-medium">Members: complimentary first course on weeknights</div>
+        <div className="text-[13px] text-foreground font-medium">Members: complimentary first course on weeknights</div>
       </div>
       <div className="text-xs text-muted-foreground">Perk active for Downtown Perks members · Valid through end of month</div>
     </div>
@@ -58,7 +58,7 @@ export default function FabiAndRosi() {
                 className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
                 <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

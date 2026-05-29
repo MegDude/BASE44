@@ -55,7 +55,7 @@ export default function BrandsIndex() {
     <div className="min-h-screen bg-background">
 
       {/* Hero */}
-      <section className="relative pt-36 pb-20 px-6">
+      <section className="relative pt-36 pb-20 px-5">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -66,25 +66,25 @@ export default function BrandsIndex() {
               Partner Directory
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end mb-14">
-              <h1 className="font-heading text-5xl md:text-6xl font-medium leading-[1.05] tracking-tight">
+              <h1 className="font-heading text-4xl md:text-4xl font-medium leading-[1.05] tracking-normal">
                 Brands that belong
                 <br />
                 <em className="text-primary">downtown.</em>
               </h1>
               <div>
-                <p className="text-muted-foreground text-base leading-relaxed mb-8">
+                <p className="text-muted-foreground text-[14px] leading-relaxed mb-8">
                   Every partner here earns their place on the map. Real presence. Real activation. Real foot traffic from real residents.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link
                     to="/downtown-perks/for-buildings"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
                   >
                     Become a Partner <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <Link
-                    to="/downtown-perks/explore"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300"
+                    to="/map?mode=resident&tab=map"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all duration-300"
                   >
                     <MapPin className="w-3.5 h-3.5" /> View on Map
                   </Link>
@@ -107,7 +107,7 @@ export default function BrandsIndex() {
               { value: "Live", label: "Real-time map layer" },
             ].map((s, i) => (
               <div key={i} className="p-5 text-center">
-                <div className="font-heading text-2xl font-medium text-primary mb-1 tracking-tight">{s.value}</div>
+                <div className="font-heading text-2xl font-medium text-primary mb-1 tracking-normal">{s.value}</div>
                 <div className="text-[12px] text-muted-foreground">{s.label}</div>
               </div>
             ))}
@@ -116,7 +116,7 @@ export default function BrandsIndex() {
       </section>
 
       {/* Brand grid */}
-      <section className="py-12 px-6 border-t border-border/40">
+      <section className="py-12 px-5 border-t border-border/40">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 mb-10">
             <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">
@@ -134,7 +134,7 @@ export default function BrandsIndex() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 border-t border-border/40">
+      <section className="py-20 px-5 border-t border-border/40">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <motion.h2
@@ -142,7 +142,7 @@ export default function BrandsIndex() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight"
+              className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal"
             >
               Your brand
               <br />
@@ -155,19 +155,19 @@ export default function BrandsIndex() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="space-y-5"
             >
-              <p className="text-muted-foreground text-base leading-relaxed">
+              <p className="text-muted-foreground text-[14px] leading-relaxed">
                 If you operate downtown, serve downtown residents, or want to build a real presence in the district — let's talk.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="mailto:partners@downtownperks.com"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
                 >
                   Start the Conversation <ArrowRight className="w-3.5 h-3.5" />
                 </a>
                 <Link
                   to="/downtown-perks/for-buildings"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all duration-300"
                 >
                   Partnership Details
                 </Link>

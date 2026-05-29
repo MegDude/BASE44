@@ -12,7 +12,7 @@ export default function ProblemSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-28 px-6">
+    <section ref={ref} className="py-28 px-5">
       <div className="max-w-5xl mx-auto">
 
         {/* Editorial label */}
@@ -32,7 +32,7 @@ export default function ProblemSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-heading text-4xl md:text-5xl font-medium leading-[1.15] tracking-tight mb-6 max-w-3xl"
+          className="font-heading text-4xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-6 max-w-3xl"
         >
           You live in one of the most walkable parts of the city.
           <br />
@@ -58,12 +58,12 @@ export default function ProblemSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 + i * 0.12 }}
-              className="py-8 sm:px-10 first:pl-0 last:pr-0"
+              className="py-8 sm:px-5 first:pl-0 last:pr-0"
             >
-              <div className="font-heading text-5xl font-medium text-primary mb-2 tracking-tight">
+              <div className="font-heading text-4xl font-medium text-primary mb-2 tracking-normal">
                 {stat.number}
               </div>
-              <div className="text-foreground text-sm font-medium mb-1">{stat.label}</div>
+              <div className="text-foreground text-[13px] font-medium mb-1">{stat.label}</div>
               <div className="text-muted-foreground text-[13px] leading-relaxed">{stat.detail}</div>
             </motion.div>
           ))}
@@ -74,7 +74,7 @@ export default function ProblemSection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.85 }}
-          className="mt-16 text-muted-foreground text-base border-l-2 border-primary/40 pl-5 max-w-lg leading-relaxed"
+          className="mt-16 text-muted-foreground text-[14px] border-l-2 border-primary/40 pl-5 max-w-lg leading-relaxed"
         >
           Downtown has proximity without connection.
           <span className="block mt-1 text-foreground font-medium">

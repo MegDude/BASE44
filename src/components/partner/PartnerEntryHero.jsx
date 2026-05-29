@@ -7,19 +7,19 @@ import { ArrowRight } from 'lucide-react';
  */
 export default function PartnerEntryHero() {
   return (
-    <section className="py-24 md:py-32 border-b border-[#e8e5df]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-24 md:py-2.52 border-b border-[#0B1F33]/8">
+      <div className="max-w-7xl mx-auto px-5">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="max-w-3xl"
         >
-          <div className="text-[12px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-6">
+          <div className="text-[12px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-6">
             Partner Program
           </div>
 
-          <h1 className="text-[48px] md:text-[64px] font-bold text-[#111] leading-tight tracking-tight mb-6">
+          <h1 className="text-[48px] md:text-[64px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-6">
             One downtown system.
             <br />
             Five ways to grow.
@@ -32,14 +32,14 @@ export default function PartnerEntryHero() {
           <div className="flex flex-wrap gap-3">
             <a
               href="#partners"
-              className="inline-flex items-center gap-2 h-12 px-6 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors"
+              className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[#0B1F33] text-white font-semibold text-[14px] hover:bg-[#081521] transition-colors"
             >
               Find your role
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
-              href="/downtown-perks/explore"
-              className="inline-flex items-center h-12 px-6 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors"
+              href="/map?mode=resident&tab=map"
+              className="inline-flex items-center h-10 px-5 rounded-lg border border-[#0B1F33]/8 bg-white text-[#0B1F33] font-semibold text-[14px] hover:bg-[#F7F8FB] transition-colors"
             >
               Explore the map
             </a>

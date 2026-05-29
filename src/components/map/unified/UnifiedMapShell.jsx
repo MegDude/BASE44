@@ -7,18 +7,22 @@
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import { getValidMapCenter } from '@/lib/mapValidation';
+import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const AUSTIN_CENTER = [30.267, -97.743];
 
-// Fix leaflet icons
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
+function getFallbackPinIcon(item, selected) {
+  const pin = resolveEntityPin(item || {});
+  return L.divIcon({
+    className: 'dp-leaflet-pin',
+    html: `<div class="dp-map-pin${selected ? ' dp-map-pin--selected' : ''}" aria-hidden="true"><div class="dp-map-pin__core">${pin.glyph}</div></div>`,
+    iconSize: [34, 34],
+    iconAnchor: [17, 17],
+    popupAnchor: [0, -18],
+  });
+}
 
 function MapFlyTo({ position }) {
   const map = useMap();
@@ -99,12 +103,7 @@ export default function UnifiedMapShell({
         const position = [item.location.latitude, item.location.longitude];
         const icon = markerIcon
           ? markerIcon(item, selectedId === item.id)
-          : L.divIcon({
-              className: '',
-              html: `<div style="width:10px;height:10px;border-radius:50%;background:#C8973A;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)"></div>`,
-              iconSize: [10, 10],
-              iconAnchor: [5, 5],
-            });
+          : getFallbackPinIcon(item, selectedId === item.id);
 
         return (
           <Marker

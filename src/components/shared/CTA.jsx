@@ -19,21 +19,21 @@ export default function CTA({
   ...props
 }) {
   const variants = {
-    primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm shadow-primary/20",
-    secondary: "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border",
-    tertiary: "text-primary hover:text-primary/70",
+    primary: "border-b border-[#B38F4F]/55 text-[#0B1F33] hover:border-[#B38F4F]",
+    secondary: "border-b border-[#0B1F33]/12 text-[#0B1F33]/68 hover:border-[#B38F4F]/55 hover:text-[#0B1F33]",
+    tertiary: "text-[#0B1F33]/68 hover:text-[#0B1F33]",
   };
 
   const sizes = {
-    small: "px-4 py-2 text-[12px]",
-    standard: "px-6 py-3 text-[14px]",
-    large: "px-8 py-4 text-[15px]",
+    small: "min-h-7 text-[11px]",
+    standard: "min-h-8 text-[12px]",
+    large: "min-h-8 text-[12px]",
   };
 
   const variantClass = variants[variant];
   const sizeClass = sizes[size];
 
-  const classes = `inline-flex items-center gap-2 rounded-full font-medium transition-all duration-200 ${variantClass} ${sizeClass} ${
+  const classes = `inline-flex items-center justify-center gap-1.5 rounded-none bg-transparent px-0 font-semibold uppercase tracking-[0.09em] shadow-none transition-all duration-300 ${variantClass} ${sizeClass} ${
     disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
   }`;
 
@@ -49,8 +49,8 @@ export default function CTA({
       <motion.a
         href={href}
         className={classes}
-        whileHover={!disabled ? { scale: 1.02 } : {}}
-        whileTap={!disabled ? { scale: 0.98 } : {}}
+        whileHover={!disabled ? { y: -1 } : {}}
+        whileTap={!disabled ? { scale: 0.99 } : {}}
         {...props}
       >
         {content}
@@ -60,8 +60,8 @@ export default function CTA({
 
   return (
     <motion.div
-      whileHover={!disabled ? { scale: 1.02 } : {}}
-      whileTap={!disabled ? { scale: 0.98 } : {}}
+      whileHover={!disabled ? { y: -1 } : {}}
+      whileTap={!disabled ? { scale: 0.99 } : {}}
     >
       <Link to={href} className={classes} onClick={onClick} {...props}>
         {content}

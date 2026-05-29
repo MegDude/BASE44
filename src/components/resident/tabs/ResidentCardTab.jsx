@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { QrCode, Copy, Check } from "lucide-react";
+import { Copy, Check } from "lucide-react";
+
+const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
+
+function getQrUrl(cardCode) {
+  const cardUrl = `${LIVE_CARD_URL}?code=${encodeURIComponent(cardCode)}&source=resident-app`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent(cardUrl)}`;
+}
 
 export default function ResidentCardTab({ user }) {
   const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const cardCode = "DP-USER-" + (user?.id || "123456").slice(0, 8).toUpperCase();
+  const qrUrl = getQrUrl(cardCode);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(cardCode);
@@ -34,16 +42,19 @@ export default function ResidentCardTab({ user }) {
           <motion.div
             onClick={() => setShowQR(!showQR)}
             whileHover={{ scale: 1.02 }}
-            className="p-8 rounded-2xl border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5 cursor-pointer transition-all mb-6"
+            className="mb-6 cursor-pointer border-2 border-primary bg-white p-8 transition-all"
           >
-            <motion.div
-              animate={{ rotate: showQR ? 0 : 360 }}
-              transition={{ duration: 0.4 }}
-            >
-              <QrCode className="w-32 h-32 text-primary mx-auto" />
-            </motion.div>
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              {showQR ? "Tap to hide" : "Tap to show QR code"}
+            <div className="mx-auto flex w-fit items-center justify-center border border-border bg-background p-3">
+              <img
+                src={qrUrl}
+                alt={`Downtown Perks QR code for ${cardCode}`}
+                className="h-36 w-36"
+                width="144"
+                height="144"
+              />
+            </div>
+            <p className="text-center text-[13px] text-muted-foreground mt-4">
+              {showQR ? "Ready to scan" : "Tap to use this QR code"}
             </p>
           </motion.div>
 
@@ -57,7 +68,7 @@ export default function ResidentCardTab({ user }) {
                 className="p-2 hover:bg-white rounded-lg transition-colors"
               >
                 {copied ? (
-                  <Check className="w-4 h-4 text-green-600" />
+                  <Check className="w-4 h-4 text-[#B38F4F]" />
                 ) : (
                   <Copy className="w-4 h-4 text-muted-foreground" />
                 )}
@@ -82,7 +93,7 @@ export default function ResidentCardTab({ user }) {
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1">
                     <p className="text-xs text-muted-foreground">{item.date}</p>
-                    <p className="font-medium text-sm text-foreground">{item.place}</p>
+                    <p className="font-medium text-[13px] text-foreground">{item.place}</p>
                     <p className="text-xs text-muted-foreground">{item.offer}</p>
                   </div>
                 </div>

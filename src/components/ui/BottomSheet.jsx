@@ -116,7 +116,7 @@ export default function BottomSheet({
   const bottomSafeArea = 'env(safe-area-inset-bottom)';
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait" initial={false}>
       {state !== 'collapsed' && (
         <>
           {/* Backdrop (only on full) */}
@@ -151,17 +151,17 @@ export default function BottomSheet({
             {/* Drag handle + close button */}
             {isDraggable && (
               <div
-                className="w-full py-3 px-4 flex items-center justify-between shrink-0 border-b border-[#e8e5df] cursor-grab active:cursor-grabbing"
+                className="w-full py-2.5 px-4 flex items-center justify-between shrink-0 border-b border-[#0B1F33]/8 cursor-grab active:cursor-grabbing"
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
               >
-                <div className="w-12 h-1 rounded-full bg-[#e8e5df]" />
+                <div className="w-12 h-1 rounded-full bg-[#0B1F33]/8" />
                 {state === 'full' && (
                   <button
                     onClick={() => onStateChange?.('mid')}
-                    className="w-8 h-8 rounded-full bg-[#f5f4f2] flex items-center justify-center hover:bg-[#eceae6] transition-colors"
+                    className="w-8 h-8 rounded-full bg-[#F7F8FB] flex items-center justify-center hover:bg-[#F7F8FB] transition-colors"
                   >
-                    <X className="w-4 h-4 text-[#111]" />
+                    <X className="w-4 h-4 text-[#0B1F33]" />
                   </button>
                 )}
               </div>

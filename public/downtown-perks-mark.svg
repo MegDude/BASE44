@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Downtown Perks">
+  <rect width="64" height="64" rx="8" fill="#0B1F33"/>
+  <path d="M18 42V20h6v22h-6Zm11 0V14h6v28h-6Zm11 0V26h6v16h-6Z" fill="#FFFFFF"/>
+  <path d="M16 48h32" stroke="#B38F4F" stroke-width="4" stroke-linecap="square"/>
+</svg>

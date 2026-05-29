@@ -911,13 +911,13 @@
 - **Provider:** `lib/AuthContext` (useAuth hook)
 - **Methods:**
   - `base44.auth.me()` - get current user
-  - `base44.auth.redirectToLogin()` - trigger login flow
+  - Login redirects removed for public local preview
   - `base44.auth.updateMe(data)` - update user profile
   - `base44.auth.logout()` - logout
 - **Used By:** 
-  - `/partner-workspace` (gated)
-  - `/dashboard` (gated)
-  - All pages (auth state awareness)
+  - `/partner-workspace` (public preview)
+  - `/dashboard` (public preview)
+  - All pages (public local preview)
 
 ### Query System
 - **Provider:** `@tanstack/react-query` via `QueryClientProvider`

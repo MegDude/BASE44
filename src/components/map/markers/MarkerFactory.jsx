@@ -13,7 +13,7 @@ import L from 'leaflet';
 const MARKER_CONFIG = {
   // Standard venues (coffee, dining, retail, etc.)
   'standard:restaurant': {
-    color: '#C8973A', // Gold
+    color: '#B38F4F', // Gold
     icon: '🍽️',
     size: 12,
     iconSize: 8,
@@ -21,102 +21,102 @@ const MARKER_CONFIG = {
     shadowBlur: '0 2px 6px rgba(200, 151, 58, 0.4)',
   },
   'standard:coffee': {
-    color: '#8B6F47', // Deep brown
+    color: '#B38F4F',
     icon: '☕',
     size: 12,
     iconSize: 8,
     selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(139, 111, 71, 0.4)',
+    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
   'standard:bar': {
-    color: '#9C5BA3', // Wine/purple
+    color: '#0B1F33',
     icon: '🍷',
     size: 12,
     iconSize: 8,
     selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(156, 91, 163, 0.4)',
+    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
   'standard:fitness': {
-    color: '#2ECC71', // Teal/green
+    color: '#081521',
     icon: '💪',
     size: 12,
     iconSize: 8,
     selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(46, 204, 113, 0.4)',
+    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
   'standard:wellness': {
-    color: '#A67BC4', // Soft purple
+    color: '#B38F4F',
     icon: '🧘',
     size: 12,
     iconSize: 8,
     selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(166, 123, 196, 0.4)',
+    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
   'standard:retail': {
-    color: '#7D7D7D', // Neutral gray
+    color: '#081521',
     icon: '🛍️',
     size: 12,
     iconSize: 8,
     selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(125, 125, 125, 0.4)',
+    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
   'standard:entertainment': {
-    color: '#3498DB', // Light blue
+    color: '#0B1F33',
     icon: '🎭',
     size: 12,
     iconSize: 8,
     selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(52, 152, 219, 0.4)',
+    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
 
   // Buildings and properties (navy with building icon)
   'building:default': {
-    color: '#1A3A52', // Navy
+    color: '#0B1F33',
     icon: '🏢',
     size: 16,
     iconSize: 10,
     selectedScale: 1.8,
-    shadowBlur: '0 4px 12px rgba(26, 58, 82, 0.5)',
+    shadowBlur: '0 4px 12px rgba(11, 31, 51, 0.18)',
   },
 
-  // Events (light blue with calendar)
+  // Events
   'event:default': {
-    color: '#4A90E2', // Event blue
+    color: '#B38F4F',
     icon: '📅',
     size: 14,
     iconSize: 8,
     selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(74, 144, 226, 0.4)',
+    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
   },
 
-  // Perks (green with tag)
+  // Perks
   'perk:default': {
-    color: '#27AE60', // Perk green
+    color: '#B38F4F',
     icon: '🏷️',
     size: 14,
     iconSize: 8,
     selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(39, 174, 96, 0.4)',
+    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
   },
 
-  // Brands (orange with star)
+  // Brands
   'brand:default': {
-    color: '#E67E22', // Brand orange
+    color: '#B38F4F',
     icon: '⭐',
     size: 14,
     iconSize: 8,
     selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(230, 126, 34, 0.4)',
+    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
   },
 
-  // Civic (red with landmark)
+  // Civic
   'civic:default': {
-    color: '#C0392B', // Civic red
+    color: '#081521',
     icon: '🏛️',
     size: 14,
     iconSize: 8,
     selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(192, 57, 43, 0.4)',
+    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
   },
 };
 
@@ -242,7 +242,7 @@ export function createPillMarker(entity) {
       white-space: nowrap;
       font-size: 12px;
       font-weight: 600;
-      color: #1a3a52;
+      color: #0B1F33;
       display: flex;
       align-items: center;
       gap: 6px;

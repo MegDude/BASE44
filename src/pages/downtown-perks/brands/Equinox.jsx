@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, QrCode, Dumbbell, CalendarDays, Crown } from "lucide-react";
+import { MapPin, Users, TrendingUp, QrCode, Dumbbell, Crown } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel, QRDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -54,7 +54,7 @@ export default function Equinox() {
                 className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
                 <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

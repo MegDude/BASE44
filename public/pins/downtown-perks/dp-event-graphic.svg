@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Downtown Perks event graphic">
+  <rect width="160" height="120" rx="10" fill="#F7F8FB"/>
+  <rect x="42" y="32" width="76" height="64" rx="8" fill="#0B1F33"/>
+  <path d="M58 28v14M102 28v14M42 52h76" stroke="#B38F4F" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="64" cy="70" r="5" fill="#FFFFFF"/>
+  <circle cx="80" cy="70" r="5" fill="#FFFFFF"/>
+  <circle cx="96" cy="70" r="5" fill="#FFFFFF"/>
+</svg>

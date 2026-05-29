@@ -11,7 +11,7 @@ export default function AnalyticsKPICard({ label, value, delta, deltaType, spark
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       onClick={onClick}
-      className={`rounded-2xl border border-border/50 bg-card/40 p-6 transition-all ${
+      className={`rounded-lg border border-border/50 bg-card/40 p-6 transition-all ${
         onClick ? 'cursor-pointer hover:border-primary/30 hover:shadow-md' : ''
       }`}
     >
@@ -22,7 +22,7 @@ export default function AnalyticsKPICard({ label, value, delta, deltaType, spark
           </span>
           {delta && (
             <div className={`flex items-center gap-1 text-[12px] font-medium ${
-              isPositive ? 'text-green-600' : isNegative ? 'text-red-600' : 'text-muted-foreground'
+              isPositive ? 'text-[#B38F4F]' : isNegative ? 'text-[#0B1F33]/58' : 'text-muted-foreground'
             }`}>
               {isPositive && <TrendingUp className="w-3.5 h-3.5" />}
               {isNegative && <TrendingDown className="w-3.5 h-3.5" />}
@@ -35,14 +35,14 @@ export default function AnalyticsKPICard({ label, value, delta, deltaType, spark
           {loading ? (
             <div className="h-8 w-24 bg-muted/50 rounded animate-pulse" />
           ) : (
-            <div className="text-4xl font-bold text-foreground tracking-tight">
+            <div className="text-4xl font-bold text-foreground tracking-normal">
               {typeof value === 'number' ? value.toLocaleString() : value}
             </div>
           )}
         </div>
 
         {sparkline && (
-          <div className="mt-4 h-12 opacity-60">
+          <div className="mt-4 h-10 opacity-60">
             {sparkline}
           </div>
         )}

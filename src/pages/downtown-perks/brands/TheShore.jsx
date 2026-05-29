@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Home, MapPin, Layers, Clock, Zap, Star, RefreshCw, Waves } from "lucide-react";
+import { MapPin, Layers, Clock, Zap, Star, RefreshCw, Waves } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -70,7 +70,7 @@ export default function TheShore() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

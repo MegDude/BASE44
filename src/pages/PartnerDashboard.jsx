@@ -1,5 +1,5 @@
 /**
- * Partner Dashboard — Live behavioral system
+ * Partner Dashboard — Live partner reporting system
  * Real-time metrics, actions, redemptions
  * No refresh needed—all data syncs instantly
  */
@@ -12,14 +12,18 @@ import {
   Eye,
   Heart,
   CheckCircle,
-  BarChart3,
   Clock,
   Edit2,
   X,
 } from 'lucide-react';
 
+const PUBLIC_PARTNER_USER = {
+  email: "partner@downtownperks.local",
+  full_name: "Partner Dashboard",
+};
+
 export default function PartnerDashboard() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(PUBLIC_PARTNER_USER);
   const [venues, setVenues] = useState([]);
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,12 +34,7 @@ export default function PartnerDashboard() {
     const init = async () => {
       try {
         const me = await base44.auth.me();
-        if (!me) {
-          base44.auth.redirectToLogin();
-          return;
-        }
-
-        setUser(me);
+        setUser(me || PUBLIC_PARTNER_USER);
 
         // Load venues (for this partner)
         const venueList = await base44.entities.Venue.list();
@@ -71,7 +70,7 @@ export default function PartnerDashboard() {
 
   return (
     <div className="min-h-screen bg-background pt-20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-5 lg:px-5">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -98,25 +97,25 @@ export default function PartnerDashboard() {
               label: 'Impressions',
               value: metrics.impressions,
               icon: Eye,
-              color: 'text-blue-600',
+              color: 'text-[#B38F4F]',
             },
             {
               label: 'Saves',
               value: metrics.saves,
               icon: Heart,
-              color: 'text-red-600',
+              color: 'text-[#0B1F33]/58',
             },
             {
               label: 'Redemptions',
               value: metrics.redemptions,
               icon: CheckCircle,
-              color: 'text-green-600',
+              color: 'text-[#B38F4F]',
             },
             {
               label: 'Trending',
               value: `${(metrics.conversionRate * 100).toFixed(1)}%`,
               icon: TrendingUp,
-              color: 'text-amber-600',
+              color: 'text-[#B38F4F]',
             },
           ].map((metric, i) => {
             const Icon = metric.icon;
@@ -160,7 +159,7 @@ export default function PartnerDashboard() {
               </div>
               <div className="divide-y divide-border max-h-96 overflow-y-auto">
                 {venues.length === 0 ? (
-                  <div className="p-5 text-center text-sm text-muted-foreground">
+                  <div className="p-5 text-center text-[13px] text-muted-foreground">
                     No venues yet
                   </div>
                 ) : (
@@ -174,7 +173,7 @@ export default function PartnerDashboard() {
                           : 'hover:bg-secondary'
                       }`}
                     >
-                      <div className="font-medium text-foreground text-sm">
+                      <div className="font-medium text-foreground text-[13px]">
                         {venue.name}
                       </div>
                       <div className="text-xs text-muted-foreground mt-1">
@@ -201,7 +200,7 @@ export default function PartnerDashboard() {
               </div>
               <div className="divide-y divide-border max-h-96 overflow-y-auto">
                 {actions.length === 0 ? (
-                  <div className="p-5 text-center text-sm text-muted-foreground">
+                  <div className="p-5 text-center text-[13px] text-muted-foreground">
                     No activity yet
                   </div>
                 ) : (
@@ -214,7 +213,7 @@ export default function PartnerDashboard() {
                       className="p-4 hover:bg-secondary/50 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-1">
-                        <span className="font-medium text-sm text-foreground capitalize">
+                        <span className="font-medium text-[13px] text-foreground capitalize">
                           {action.action_type}
                         </span>
                         <span className="text-xs text-muted-foreground">
@@ -233,7 +232,7 @@ export default function PartnerDashboard() {
         </div>
 
         {/* Venue Details / Edit Panel */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait" initial={false}>
           {selectedVenue && (
             <VenuePanel
               venue={selectedVenue}
@@ -280,7 +279,7 @@ function VenuePanel({ venue, onClose }) {
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.9 }}
-        className="bg-card rounded-2xl max-w-2xl w-full max-h-96 overflow-y-auto"
+        className="bg-card rounded-lg max-w-2xl w-full max-h-96 overflow-y-auto"
       >
         <div className="p-6 border-b border-border flex items-center justify-between">
           <h2 className="text-xl font-bold text-foreground">{venue.name}</h2>
@@ -308,7 +307,7 @@ function VenuePanel({ venue, onClose }) {
                       perk_description: e.target.value,
                     })
                   }
-                  className="w-full h-10 border border-border rounded-lg px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full h-10 border border-border rounded-lg px-3 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
 
@@ -322,7 +321,7 @@ function VenuePanel({ venue, onClose }) {
                   onChange={(e) =>
                     setFormData({ ...formData, perk_value: e.target.value })
                   }
-                  className="w-full h-10 border border-border rounded-lg px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full h-10 border border-border rounded-lg px-3 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
 
@@ -336,20 +335,20 @@ function VenuePanel({ venue, onClose }) {
                   onChange={(e) =>
                     setFormData({ ...formData, hours: e.target.value })
                   }
-                  className="w-full h-10 border border-border rounded-lg px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full h-10 border border-border rounded-lg px-3 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
 
               <div className="flex gap-2 pt-2">
                 <button
                   onClick={handleSave}
-                  className="flex-1 h-10 rounded-lg bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors"
+                  className="flex-1 h-10 rounded-lg bg-foreground text-background font-semibold text-[13px] hover:bg-foreground/90 transition-colors"
                 >
                   Save
                 </button>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="flex-1 h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm"
+                  className="flex-1 h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-[13px]"
                 >
                   Cancel
                 </button>
@@ -368,12 +367,12 @@ function VenuePanel({ venue, onClose }) {
 
               <div>
                 <div className="text-xs text-muted-foreground mb-1">Hours</div>
-                <p className="text-sm text-foreground">{venue.hours || 'N/A'}</p>
+                <p className="text-[13px] text-foreground">{venue.hours || 'N/A'}</p>
               </div>
 
               <button
                 onClick={() => setIsEditing(true)}
-                className="w-full h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2"
+                className="w-full h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-[13px] flex items-center justify-center gap-2"
               >
                 <Edit2 className="w-4 h-4" />
                 Edit details

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Bookmark, MapPin, Trash2 } from "lucide-react";
+import { MapPin, Trash2 } from "lucide-react";
 
 export default function ResidentSavedTab({ user }) {
   const saved = [
@@ -14,7 +14,7 @@ export default function ResidentSavedTab({ user }) {
       <div className="p-6 space-y-6">
         <div>
           <h2 className="font-heading text-2xl font-medium mb-2">Saved</h2>
-          <p className="text-sm text-muted-foreground">{saved.length} items saved</p>
+          <p className="text-[13px] text-muted-foreground">{saved.length} items saved</p>
         </div>
 
         {/* Filter */}
@@ -22,7 +22,7 @@ export default function ResidentSavedTab({ user }) {
           {["All", "Places", "Events", "Perks"].map((filter) => (
             <button
               key={filter}
-              className="px-4 py-2 rounded-full border border-border/40 bg-white hover:border-primary/50 text-foreground text-sm font-medium transition-colors"
+              className="px-4 py-2 rounded-full border border-border/40 bg-white hover:border-primary/50 text-foreground text-[13px] font-medium transition-colors"
             >
               {filter}
             </button>

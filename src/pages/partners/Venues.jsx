@@ -1,36 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView, animate } from "framer-motion";
 import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { ArrowLeft, ArrowRight, X, MapPin, Star, Zap, Search } from "lucide-react";
-import L from "leaflet";
+import { ArrowLeft, ArrowRight, X, Search } from "lucide-react";
+import PartnerMapIntelligenceLayer from "@/components/partner/PartnerMapIntelligenceLayer";
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
 import { FAQ_VENUES } from '@/lib/faq-partner-data';
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
-
-const CAT_COLORS = { bar: "#A07830", restaurant: "#C8973A", fitness: "#5B9E6E", wellness: "#7B9EC8", retail: "#8B78C8", coffee: "#C8A058" };
-
-function venueIcon(cat, active) {
-  const color = active ? "#C8973A" : (CAT_COLORS[cat] || "#4a5568");
-  return L.divIcon({
-    className: "",
-    html: `<div style="width:10px;height:10px;border-radius:50%;background:${color};border:2px solid rgba(255,255,255,0.85);box-shadow:0 0 7px ${color}80"></div>`,
-    iconSize: [10, 10], iconAnchor: [5, 5],
-  });
-}
-
-function MapFly({ center }) {
-  const map = useMap();
-  useEffect(() => { if (center) map.flyTo(center, 15, { duration: 1.1 }); }, [center]);
-  return null;
-}
+const CAT_COLORS = { bar: "#081521", restaurant: "#B38F4F", fitness: "#0B1F33", wellness: "#B38F4F", retail: "#0B1F33", coffee: "#B38F4F" };
 
 function CountUp({ to, duration = 1.2 }) {
   const [val, setVal] = useState(0);
@@ -81,19 +58,18 @@ const PROMPTS = [
 export default function VenuesPartner() {
   const [mapFilter, setMapFilter] = useState("all");
   const [activeVenue, setActiveVenue] = useState(null);
-  const [mapCenter, setMapCenter] = useState([30.2630, -97.7400]);
   const [formType, setFormType] = useState("Venue");
   const [formText, setFormText] = useState("");
 
   const venue = activeVenue ? VENUES.find(v => v.id === activeVenue) : null;
 
-  function selectVenue(v) { setActiveVenue(v.id); setMapCenter([v.lat, v.lng]); }
+  function selectVenue(v) { setActiveVenue(v.id); }
 
   return (
     <div className="min-h-screen bg-background">
       {/* HERO */}
-      <section className={`${PARTNER_SPACING.heroVertical} px-6 relative overflow-hidden`}>
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(hsl(222 18% 40%) 1px,transparent 1px),linear-gradient(90deg,hsl(222 18% 40%) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
+      <section className={`${PARTNER_SPACING.heroVertical} px-5 relative overflow-hidden`}>
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.18) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,51,0.18) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Link to="/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
@@ -103,15 +79,15 @@ export default function VenuesPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Venue Partner Layer</span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
+              <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
                 Be on the map when people nearby are <em className="text-primary">deciding where to go.</em>
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">Your place shows up at the right moment — when someone close by is looking for food, a drink, a class, or somewhere to go.</p>
+              <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">Your place shows up at the right moment — when someone close by is looking for food, a drink, a class, or somewhere to go.</p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
                   Add your venue <ArrowRight className="w-4 h-4" />
                 </a>
-                <a href="#venue-map" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">
+                <a href="#venue-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
                   See the live map
                 </a>
               </div>
@@ -129,13 +105,13 @@ export default function VenuesPartner() {
                 <div className="grid grid-cols-3 divide-x divide-border/40 border-b border-border/40">
                   {[{ label: "Visits", v: 289 }, { label: "Redemptions", v: 96 }, { label: "Trending nearby", v: 7 }].map((s, i) => (
                     <div key={i} className="p-3.5 text-center">
-                      <div className="font-medium text-sm text-foreground"><CountUp to={s.v} /></div>
+                      <div className="font-medium text-[13px] text-foreground"><CountUp to={s.v} /></div>
                       <div className="text-[11px] text-muted-foreground/60">{s.label}</div>
                     </div>
                   ))}
                 </div>
-                <div className="px-5 py-3 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <div className="px-5 py-2.5 flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#B38F4F]" />
                   <span className="text-[11px] text-muted-foreground/60">Updated 2 min ago</span>
                 </div>
               </div>
@@ -145,12 +121,12 @@ export default function VenuesPartner() {
       </section>
 
       {/* MAP */}
-      <section id="venue-map" className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+      <section id="venue-map" className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Venue Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">Where your venue fits in the neighborhood search.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">Where your venue fits in the neighborhood search.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select any pin to see how it surfaces in context — category, distance, offer, and the moment that triggered it.</p>
           </div>
@@ -163,16 +139,15 @@ export default function VenuesPartner() {
             ))}
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 rounded-xl border border-border/50 overflow-hidden" style={{ height: 480 }}>
-              <MapContainer center={mapCenter} zoom={15} style={{ height: "100%", width: "100%" }} zoomControl={false} scrollWheelZoom={false}>
-                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution="&copy; CARTO" />
-                <MapFly center={mapCenter} />
-                {VENUES.map(v => (
-                  <Marker key={v.id} position={[v.lat, v.lng]} icon={venueIcon(v.cat, activeVenue === v.id)} eventHandlers={{ click: () => selectVenue(v) }}>
-                    <Popup><div className="text-xs"><div className="font-semibold">{v.name}</div><div className="text-gray-400 capitalize">{v.cat}</div></div></Popup>
-                  </Marker>
-                ))}
-              </MapContainer>
+            <div className="lg:col-span-2 overflow-hidden" style={{ height: 480 }}>
+              <PartnerMapIntelligenceLayer
+                activeId={activeVenue}
+                caption="Venue intelligence layer"
+                insight="Venues, offers, walkable demand, and decision moments shown in context."
+                kind="venue"
+                onSelect={selectVenue}
+                points={VENUES}
+              />
             </div>
             <div className="rounded-xl border border-border/50 bg-card/60 overflow-hidden flex flex-col">
               {!venue ? (
@@ -197,7 +172,7 @@ export default function VenuesPartner() {
                     <div className="space-y-2">
                       {VENUES.slice(0, 4).map(v => (
                         <button key={v.id} onClick={() => selectVenue(v)} className="w-full flex items-center gap-2.5 p-2.5 rounded-lg border border-border/40 hover:border-primary/30 transition-all text-left">
-                          <div className="w-2 h-2 rounded-full shrink-0" style={{ background: CAT_COLORS[v.cat] || "#4a5568" }} />
+                          <div className="w-2 h-2 rounded-full shrink-0" style={{ background: CAT_COLORS[v.cat] || "#081521" }} />
                           <span className="text-[12px] font-medium text-foreground flex-1 truncate">{v.name}</span>
                           <span className="text-[10px] text-muted-foreground">{v.views} views</span>
                         </button>
@@ -209,7 +184,7 @@ export default function VenuesPartner() {
                 <motion.div key={venue.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full">
                   <div className="p-5 border-b border-border/40 flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-foreground text-sm">{venue.name}</div>
+                      <div className="font-medium text-foreground text-[13px]">{venue.name}</div>
                       <div className="text-[11px] text-muted-foreground mt-0.5">{venue.dist}</div>
                     </div>
                     <button onClick={() => setActiveVenue(null)} className="text-muted-foreground hover:text-foreground"><X className="w-4 h-4" /></button>
@@ -228,7 +203,7 @@ export default function VenuesPartner() {
                       <div className="space-y-1">
                         {venue.live.map((l, i) => (
                           <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                            <div className="w-1 h-1 rounded-full bg-green-500 shrink-0" />{l}
+                            <div className="w-1 h-1 rounded-full bg-[#B38F4F] shrink-0" />{l}
                           </div>
                         ))}
                       </div>
@@ -255,7 +230,7 @@ export default function VenuesPartner() {
       </section>
 
       {/* IMPACT */}
-      <ImpactSection headline="From nearby intent to foot traffic."
+      <ImpactSection headline="From nearby interest to foot traffic."
         stats={[{ label: "Venue views", v: 12440 }, { label: "Saves", v: 712 }, { label: "Visits", v: 289 }, { label: "Redemptions", v: 96 }, { label: "Offer opens", v: 341 }]}
         lower={[{ label: "Venues live", v: "24" }, { label: "Active offers", v: "10" }, { label: "Avg walk time", v: "6 min" }, { label: "Nearby searches", v: "402" }, { label: "Event-linked venues", v: "8" }, { label: "Repeat saves", v: "22%" }]} />
 
@@ -286,7 +261,7 @@ export default function VenuesPartner() {
       <FAQAccordionBlock
         sectionEyebrow="Venue FAQs"
         sectionTitle="Questions about venue visibility and conversion"
-        sectionIntro="Venue partners use Downtown Perks to show up when nearby intent is already forming."
+        sectionIntro="Venue partners use Downtown Perks to show up when people nearby are already deciding where to go."
         items={FAQ_VENUES}
         styleVariant="default"
         showNumbers={false}
@@ -310,9 +285,9 @@ function ImpactSection({ headline, stats, lower }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-tight mb-8">{headline}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-normal mb-8">{headline}</motion.h2>
         <div className={`${PARTNER_GRIDS.gridCardFiveCol} mb-4`}>
           {stats.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.06 }} className="p-5 rounded-lg border border-border/50 bg-card/40 text-center">
@@ -338,11 +313,11 @@ function StepsSection({ label, headline, steps, proof }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">{headline}</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
         </motion.div>
         <div className="relative">
           <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -350,9 +325,9 @@ function StepsSection({ label, headline, steps, proof }) {
             {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }} className="flex flex-col items-center text-center md:items-start md:text-left">
                 <div className="w-10 h-10 rounded-full border border-primary/40 bg-card flex items-center justify-center mb-4 z-10">
-                  <span className="text-primary font-heading font-medium text-sm">{s.n}</span>
+                  <span className="text-primary font-heading font-medium text-[13px]">{s.n}</span>
                 </div>
-                <div className="font-medium text-sm text-foreground mb-1.5">{s.label}</div>
+                <div className="font-medium text-[13px] text-foreground mb-1.5">{s.label}</div>
                 <div className="text-[12px] text-muted-foreground leading-relaxed">{s.detail}</div>
               </motion.div>
             ))}
@@ -375,11 +350,11 @@ function DecisionMomentsSection({ moments }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How people find places</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">The moment between "I want to go somewhere" and walking in the door.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">The moment between "I want to go somewhere" and walking in the door.</h2>
         </motion.div>
         <div className={PARTNER_GRIDS.gridCardTwoCol}>
           {moments.map((m, i) => (
@@ -389,7 +364,7 @@ function DecisionMomentsSection({ moments }) {
                 <Search className="w-3.5 h-3.5 text-primary/50 shrink-0" />
                 <span className="text-[12px] text-primary/80 font-medium italic">{m.query}</span>
               </div>
-              <div className="font-heading font-medium text-base text-foreground mb-1">→ {m.result}</div>
+              <div className="font-heading font-medium text-[14px] text-foreground mb-1">→ {m.result}</div>
               <div className="text-[12px] text-muted-foreground">{m.sub}</div>
             </motion.div>
           ))}
@@ -403,19 +378,19 @@ function VenueCards({ venues, selectVenue }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live venues</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">Activity across live venues.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Activity across live venues.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {venues.slice(0, 3).map((v, i) => (
             <motion.div key={v.id} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
               onClick={() => selectVenue(v)} className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 cursor-pointer transition-all">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: CAT_COLORS[v.cat] || "#4a5568" }} />
-                <span className="font-heading font-medium text-sm text-foreground">{v.name}</span>
+                <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: CAT_COLORS[v.cat] || "#081521" }} />
+                <span className="font-heading font-medium text-[13px] text-foreground">{v.name}</span>
               </div>
               <div className="h-1.5 rounded-full bg-border/50 mb-4 overflow-hidden">
                 <motion.div initial={{ width: 0 }} animate={inView ? { width: `${Math.min(100, (v.views / 130) * 100)}%` } : {}} transition={{ duration: 1, delay: 0.3 + i * 0.1 }} className="h-full rounded-full bg-primary" />
@@ -443,19 +418,19 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
   return (
-    <section id="partner-form" ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section id="partner-form" ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Get started</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">{headline}</h2>
+            <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
         </div>
         <div className="border border-border/50 rounded-xl overflow-hidden">
           <div className="flex border-b border-border/40 overflow-x-auto">
             {TYPES.map(t => (
-              <button key={t} onClick={() => setFormType(t)} className={`px-6 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"}`}>{t}</button>
+              <button key={t} onClick={() => setFormType(t)} className={`px-5 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"}`}>{t}</button>
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -471,12 +446,12 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)} placeholder="Tell us about your venue and what you want to offer."
                   className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
               </div>
-              <button className="w-full py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">{submitLabel}</button>
+              <button className="w-full py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{submitLabel}</button>
             </div>
             <div className="p-8 bg-muted/10 flex flex-col">
               <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Prompts</div>
               <div className="space-y-2 flex-1">
-                {prompts.map(p => (<button key={p} onClick={() => setFormText(p)} className="w-full text-left px-4 py-3 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">{p}</button>))}
+                {prompts.map(p => (<button key={p} onClick={() => setFormText(p)} className="w-full text-left px-4 py-2.5 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">{p}</button>))}
               </div>
               <div className="mt-6 pt-6 border-t border-border/40">
                 <p className="text-[12px] text-muted-foreground/60 italic">Questions? <a href="mailto:partners@downtownperks.com" className="text-primary hover:underline underline-offset-4">partners@downtownperks.com</a></p>
@@ -491,18 +466,18 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
 
 function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondLabel, secondHref }) {
   return (
-    <section className="py-12 px-6 border-t border-border/40">
+    <section className="py-12 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-3">{headline}</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
             <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
           </div>
           <div className="space-y-4">
             <div className="flex flex-wrap gap-3">
-              <a href={ctaHref} className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">{ctaLabel} <ArrowRight className="w-4 h-4" /></a>
-              <a href={secondHref} className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">{secondLabel}</a>
+              <a href={ctaHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{ctaLabel} <ArrowRight className="w-4 h-4" /></a>
+              <a href={secondHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">{secondLabel}</a>
             </div>
             <p className="text-[12px] text-muted-foreground/50 italic">{proof}</p>
           </div>

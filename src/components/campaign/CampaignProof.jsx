@@ -10,9 +10,9 @@ export default function CampaignProof({ headline, metrics, secondaryMetrics }) {
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <section ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-tight mb-8">
+        <motion.h2 initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-normal mb-8">
           {headline}
         </motion.h2>
 

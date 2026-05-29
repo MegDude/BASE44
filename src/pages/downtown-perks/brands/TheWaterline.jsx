@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Building2, Star, TrendingUp, Crown, Globe, Eye } from "lucide-react";
+import { Users, Zap, Star, TrendingUp, Crown, Globe, Eye } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { MapDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -11,7 +11,7 @@ const demo = (
       tag="Premium residential flagship · Downtown Austin"
       nearbyItems={["Hotel Van Zandt", "Lady Bird Lake", "SoCo District"]}
     />
-    <div className="rounded-2xl border border-border bg-card p-7 flex flex-col justify-between">
+    <div className="rounded-lg border border-border bg-card p-7 flex flex-col justify-between">
       <div>
         <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-5">Live Resident Feed</div>
         <div className="space-y-3">
@@ -23,7 +23,7 @@ const demo = (
             <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border/50">
               <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
               <div>
-                <div className="text-sm font-medium">{item.title}</div>
+                <div className="text-[13px] font-medium">{item.title}</div>
                 <div className="text-xs text-muted-foreground">{item.tag}</div>
               </div>
             </div>
@@ -58,7 +58,7 @@ export default function TheWaterline() {
             <p className="text-muted-foreground leading-relaxed">
               Downtown Perks gives The Waterline a live intelligence layer. Curated, proximity-aware, and connected to the exact venues, events, and moments that make the address worth its premium.
             </p>
-            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20">
+            <div className="p-6 rounded-lg bg-primary/5 border border-primary/20">
               <blockquote className="text-foreground font-medium italic leading-relaxed">
                 "Living at The Waterline already tells you something about yourself. Downtown Perks makes sure your neighborhood reflects that."
               </blockquote>
@@ -83,7 +83,7 @@ export default function TheWaterline() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

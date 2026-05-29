@@ -1,833 +1,464 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, MapPin, ChevronDown, TrendingUp, Home, Utensils, Calendar, Zap } from "lucide-react";
-import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
-import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
-import { FAQ_BRANDS } from '@/lib/faq-partner-data';
+import { motion, useInView, animate } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
+  Building2,
+  CalendarDays,
+  MapPin,
+  Megaphone,
+  QrCode,
+  Sparkles,
+} from "lucide-react";
+import PartnerMapIntelligenceLayer from "@/components/partner/PartnerMapIntelligenceLayer";
+import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
+import { FAQ_BRANDS } from "@/lib/faq-partner-data";
 
-const CAMPAIGN_FORMATS = [
+const CAMPAIGN_POINTS = [
   {
-    id: "founding",
-    title: "Founding downtown partner",
-    bestFor: "Always-on visibility",
-    icon: Home,
-    placements: "Map presence, recurring perks, partner placement, building adjacency.",
-    offerModel: "Always-on downtown offer or utility-driven campaign.",
-    kpiEmphasis: "Reach, repeat engagement, attributed visits.",
-    body: "Use this format when the goal is to build steady, credible downtown presence over time.",
+    id: "legends",
+    name: "Legends Real Estate",
+    type: "Verified listing layer",
+    district: "2nd Street",
+    lat: 30.2659,
+    lng: -97.7475,
+    logo: "/pins/downtown-perks/legends-logo.avif",
+    scans: 340,
+    saves: 118,
+    redemptions: 58,
+    signal: "Listings + resident demand",
   },
   {
-    id: "launch",
-    title: "Launch campaign",
-    bestFor: "Openings & seasonal",
-    icon: TrendingUp,
-    placements: "Map feature, QR moments, SMS follow-up, timed event tie-in.",
-    offerModel: "Launch unlock, opening offer, timed push.",
-    kpiEmphasis: "Scans, unlocks, launch-week visits, conversion pace.",
-    body: "Use this format when timing matters. Built for brands introducing something new.",
+    id: "paseo",
+    name: "The Paseo",
+    type: "Building access",
+    district: "Rainey",
+    lat: 30.2578,
+    lng: -97.7388,
+    scans: 620,
+    saves: 214,
+    redemptions: 96,
+    signal: "Lobby QR + resident welcome flow",
+  },
+  {
+    id: "van-zandt",
+    name: "Hotel Van Zandt",
+    type: "Hospitality placement",
+    district: "Rainey",
+    lat: 30.2571,
+    lng: -97.7392,
+    scans: 410,
+    saves: 122,
+    redemptions: 74,
+    signal: "Guest arrival + nearby discovery",
+  },
+  {
+    id: "waterline",
+    name: "Waterline District",
+    type: "District activation",
+    district: "Congress",
+    lat: 30.2633,
+    lng: -97.7414,
+    scans: 520,
+    saves: 176,
+    redemptions: 88,
+    signal: "Event tie-in + corridor visibility",
+  },
+];
+
+const FORMATS = [
+  {
+    id: "placement",
+    title: "Map placement",
+    icon: MapPin,
+    copy: "Show up when people nearby are already deciding where to go, what to do, or what to try next.",
+    details: ["District targeting", "Category context", "Nearby resident visibility"],
+  },
+  {
+    id: "qr",
+    title: "QR entry points",
+    icon: QrCode,
+    copy: "Connect lobby, venue, event, and campaign surfaces directly into the live downtown map.",
+    details: ["Building QR", "Venue QR", "Event QR"],
+  },
+  {
+    id: "events",
+    title: "Event-linked campaigns",
+    icon: CalendarDays,
+    copy: "Tie the brand to something people can actually attend, save, scan, or redeem.",
+    details: ["RSVP flow", "Timed offer", "Post-event follow-up"],
   },
   {
     id: "resident",
-    title: "Resident activation",
-    bestFor: "Buildings & move-ins",
-    icon: Utensils,
-    placements: "Lobby QR, welcome insert, building signage, resident perks flow.",
-    offerModel: "Resident-only unlock or consultation CTA.",
-    kpiEmphasis: "Building response, scans, opt-ins, resident redemptions.",
-    body: "Use this format when the opportunity starts with where people live.",
-  },
-  {
-    id: "event",
-    title: "Event-led campaign",
-    bestFor: "Sponsorship & RSVPs",
-    icon: Calendar,
-    placements: "Live event marker, RSVP layer, timed offer, post-event follow-up.",
-    offerModel: "Event-linked perk or sponsored moment unlock.",
-    kpiEmphasis: "Event opens, RSVPs, attendance, downstream redemptions.",
-    body: "Use this format when the brand needs a live moment people can respond to.",
-  },
-  {
-    id: "utility",
-    title: "Utility-led campaign",
-    bestFor: "Service & helpful",
-    icon: Zap,
-    placements: "Map utility placement, building QR, service-led CTA, follow-up.",
-    offerModel: "Service, booking, consult, or resident utility CTA.",
-    kpiEmphasis: "Saves, scans, visit intent, repeat follow-up pool.",
-    body: "Use this format when the best brand experience is one that feels genuinely helpful.",
+    title: "Resident access",
+    icon: BadgeCheck,
+    copy: "Create useful resident-only moments without making the campaign feel like advertising.",
+    details: ["Card unlock", "Resident perk", "Building audience"],
   },
 ];
 
-const PROOF_PRIMARY = [
-  { value: "2,400+", label: "Scans", color: "text-primary" },
-  { value: "840+", label: "Visits", color: "text-emerald-600" },
-  { value: "340+", label: "Redemptions", color: "text-violet-600" },
-  { value: "68%", label: "Scan-to-visit", color: "text-amber-600" },
+const WORKFLOW = [
+  ["01", "Choose the moment", "Pick the district, building, event, venue, or resident behavior the campaign should live inside."],
+  ["02", "Place the entry points", "Set up map placement, QR access, offer logic, and the surfaces people will actually see."],
+  ["03", "Go live downtown", "The campaign appears in context while people are nearby and already making decisions."],
+  ["04", "Track what happened", "Measure scans, saves, redemptions, visits, and district activity without relying on vague impressions."],
 ];
 
-const PROOF_SECONDARY = [
-  { value: "12", label: "Campaigns live", color: "text-foreground/70" },
-  { value: "4", label: "Districts active", color: "text-foreground/70" },
-  { value: "28", label: "Venue partners", color: "text-foreground/70" },
-  { value: "9", label: "Building access", color: "text-foreground/70" },
+const PROOF = [
+  ["12", "Campaigns live"],
+  ["4", "Active districts"],
+  ["2.4k", "Campaign scans"],
+  ["340", "Redemptions"],
 ];
 
-const LIVE_ACTIVITY = [
-  { activity: "Resident scanned at The Quincy", campaign: "Downtown Welcome", time: "2 min ago", badge: "Trending" },
-  { activity: "Guest opened campaign from Hotel Van Zandt", campaign: "Hotel Welcome", time: "5 min ago" },
-  { activity: "Visit recorded near Congress Avenue", campaign: "Launch Campaign", time: "8 min ago" },
-  { activity: "Redemption completed in-store", campaign: "Resident Activation", time: "12 min ago" },
-  { activity: "QR scanned at The Paseo building", campaign: "Founding Partner", time: "15 min ago", badge: "Top venue" },
-  { activity: "Event RSVP from downtown location", campaign: "Event-led Campaign", time: "18 min ago" },
+const PROMPTS = [
+  "We want to activate a downtown district.",
+  "We want a campaign tied to residents and buildings.",
+  "We want QR entry points connected to the map.",
+  "We want to track real-world scans and redemptions.",
 ];
 
-const CAMPAIGN_EXAMPLES = [
-  {
-    name: "Fine Eyewear × Downtown Perks",
-    placement: "The Paseo + Map",
-    description: "Launch campaign for new location with QR integration.",
-    scans: 340,
-    visits: 210,
-    redemptions: 58,
-    trend: "+12%",
-  },
-  {
-    name: "Hotel Welcome Campaign",
-    placement: "Hotel Van Zandt + Resident Buildings",
-    description: "Building-led resident activation with exclusive offer.",
-    scans: 620,
-    visits: 410,
-    redemptions: 180,
-    trend: "+24%",
-  },
-  {
-    name: "Downtown Weekend Activation",
-    placement: "Multi-venue + District",
-    description: "Event-tied campaign across venues and outdoor spaces.",
-    scans: 890,
-    visits: 520,
-    redemptions: 245,
-    trend: "+18%",
-  },
-];
-
-function CampaignFormatCard({ format, isExpanded, onToggle, onUseFormat }) {
-  const Icon = format.icon;
-  return (
-    <motion.button
-      onClick={() => onToggle(format.id)}
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`w-full text-left transition-all rounded-xl border ${
-        isExpanded
-          ? "border-primary bg-white shadow-md"
-          : "border-border/40 bg-white/50 hover:border-border/60 hover:bg-white/70"
-      }`}
-    >
-      <div className="p-6">
-        <div className="flex items-start gap-4 mb-3">
-          <div className={`p-2.5 rounded-lg ${isExpanded ? "bg-primary/10" : "bg-muted"}`}>
-            <Icon className={`w-5 h-5 ${isExpanded ? "text-primary" : "text-muted-foreground"}`} />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-base">{format.title}</h3>
-            <p className="text-xs text-muted-foreground/80 mt-0.5">{format.bestFor}</p>
-          </div>
-          <ChevronDown
-            className={`w-4 h-4 text-muted-foreground transition-transform flex-shrink-0 mt-1 ${
-              isExpanded ? "rotate-180" : ""
-            }`}
-          />
-        </div>
-
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="mt-5 pt-5 border-t border-border/30 space-y-4"
-          >
-            <div>
-              <h4 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-1.5">
-                Placements
-              </h4>
-              <p className="text-sm text-foreground/70">{format.placements}</p>
-            </div>
-
-            <div>
-              <h4 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-1.5">
-                Offer model
-              </h4>
-              <p className="text-sm text-foreground/70">{format.offerModel}</p>
-            </div>
-
-            <div>
-              <h4 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-1.5">
-                KPI emphasis
-              </h4>
-              <p className="text-sm text-foreground/70">{format.kpiEmphasis}</p>
-            </div>
-
-            <div className="bg-primary/5 -mx-6 -mb-6 px-6 py-4 rounded-b-xl">
-              <p className="text-sm text-foreground/70 leading-relaxed mb-4">{format.body}</p>
-              <button 
-                onClick={() => onUseFormat(format.id)}
-                className="w-full h-10 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-              >
-                Use this format
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </div>
-    </motion.button>
-  );
-}
-
-function ProofTile({ metric, index }) {
+function CountUp({ to, suffix = "" }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const inView = useInView(ref, { once: true });
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return undefined;
+    const controls = animate(0, Number(to), {
+      duration: 1.15,
+      onUpdate: (latest) => setValue(Math.round(latest)),
+    });
+    return controls.stop;
+  }, [inView, to]);
+
+  return <span ref={ref}>{value.toLocaleString()}{suffix}</span>;
+}
+
+function Section({ id, eyebrow, title, children, className = "" }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 8 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: index * 0.06 }}
-      className="p-6 rounded-lg border border-border/40 bg-white"
-    >
-      <div className={`font-heading text-3xl font-medium mb-2 tracking-tight ${metric.color}`}>
-        {metric.value}
+    <section id={id} className={`border-t border-[#0B1F33]/8 px-5 py-14 md:py-20 ${className}`}>
+      <div className="mx-auto max-w-6xl">
+        {(eyebrow || title) && (
+          <div className="mb-8 max-w-3xl">
+            {eyebrow && <span className="dp-label mb-3 block">{eyebrow}</span>}
+            {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] text-[#0B1F33] md:text-4xl">{title}</h2>}
+          </div>
+        )}
+        {children}
       </div>
-      <div className="text-sm text-muted-foreground font-medium">{metric.label}</div>
-    </motion.div>
+    </section>
   );
 }
 
-function CampaignExampleCard({ example, index }) {
+function PrimaryButton({ href, children }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.06 }}
-      className="p-6 rounded-lg border border-border/40 bg-white hover:shadow-md transition-all"
-    >
-      <div className="mb-4">
-        <h3 className="font-semibold text-base mb-1">{example.name}</h3>
-        <p className="text-xs text-muted-foreground">{example.placement}</p>
-      </div>
-      <p className="text-sm text-foreground/70 mb-5">{example.description}</p>
-      <div className="grid grid-cols-3 gap-4 mb-5 pb-5 border-t border-border/30">
-        <div className="pt-4">
-          <div className="font-semibold text-lg text-primary">{example.scans}</div>
-          <div className="text-xs text-muted-foreground">Scans</div>
-        </div>
-        <div className="pt-4">
-          <div className="font-semibold text-lg text-emerald-600">{example.visits}</div>
-          <div className="text-xs text-muted-foreground">Visits</div>
-        </div>
-        <div className="pt-4">
-          <div className="font-semibold text-lg text-violet-600">{example.redemptions}</div>
-          <div className="text-xs text-muted-foreground">Redemptions</div>
-        </div>
-      </div>
-      <div className="text-xs font-medium text-emerald-600">{example.trend} this week</div>
-    </motion.div>
+    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#081521] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+      {children}
+      <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+    </a>
+  );
+}
+
+function SecondaryButton({ href, children }) {
+  return (
+    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+      {children}
+    </a>
   );
 }
 
 export default function BrandsPartner() {
-  const [expandedFormat, setExpandedFormat] = useState(null);
-  const [campaignType, setCampaignType] = useState(null);
-  const [formData, setFormData] = useState({
-    organizationName: "",
-    name: "",
-    email: "",
-    phone: "",
-    campaignIntent: "",
-  });
-  const [selectedPrompt, setSelectedPrompt] = useState(null);
+  const [activePoint, setActivePoint] = useState(CAMPAIGN_POINTS[0]);
+  const [selectedPrompt, setSelectedPrompt] = useState(PROMPTS[0]);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleFormatSelect = (formatId) => {
-    setExpandedFormat(expandedFormat === formatId ? null : formatId);
-  };
-
-  const handleFormChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    console.log("Campaign plan submitted:", { ...formData, campaignType, selectedPrompt });
-    // Redirect or show success state
-    alert("Campaign plan submitted! We'll contact you shortly.");
-    // Reset form
-    setFormData({ organizationName: "", name: "", email: "", phone: "", campaignIntent: "" });
-    setCampaignType(null);
-    setSelectedPrompt(null);
-  };
-
-  const handleUseFormat = (formatId) => {
-    setFormData((prev) => ({ ...prev }));
-    const element = document.querySelector("[data-section='planning-form']");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+  function submitPlan(event) {
+    event.preventDefault();
+    setSubmitted(true);
+  }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* ──── HERO ──────────────────────────────────────────────────────── */}
-      <section className={`relative ${PARTNER_SPACING.heroVertical} px-6`}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:items-start">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.12em] block mb-4">
-                Brand Partner Layer
-              </span>
-              <h1 className="font-heading text-5xl md:text-6xl font-medium leading-[1.05] tracking-tight mb-6">
-                Put your brand where people are already moving.
+    <div className="min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+      <section className="relative overflow-hidden px-5 py-16 md:py-24">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(11,31,51,0.28) 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
+        <div className="relative mx-auto max-w-6xl">
+          <Link to="/partners" className="mb-8 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:text-[#0B1F33]">
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Partner overview
+          </Link>
+
+          <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
+              <span className="dp-label mb-4 block">Brand Partner Layer</span>
+              <h1 className="font-heading text-[38px] font-medium leading-[1.03] md:text-[56px]">
+                Buy the moment, not the impression.
               </h1>
-              <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-2xl">
-                Downtown Perks helps brands show up inside real downtown behavior — through buildings, venues, map context, district activity, and timed campaign moments that lead to measurable response.
+              <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">
+                The best advertising does not feel like advertising. It feels like something useful that arrived at the right time. Downtown Perks places brands inside decisions already happening downtown: coffee, lunch, drinks, events, tonight.
               </p>
-              <div className="flex flex-wrap gap-3 mb-10">
-                <button 
-                  onClick={() => {
-                    const element = document.querySelector("[data-section='planning-form']");
-                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
-                >
-                  Plan a campaign <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button 
-                  onClick={() => {
-                    const element = document.querySelector("[data-section='placement-explorer']");
-                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-colors"
-                >
-                  See placement map
-                </button>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <PrimaryButton href="#brand-form">Start a conversation</PrimaryButton>
+                <SecondaryButton href="#brand-map">See placement map</SecondaryButton>
               </div>
 
-              {/* Live stat strip */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <button 
-                  onClick={() => {
-                    const element = document.querySelector("[data-section='proof-analytics']");
-                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
-                >
-                  <div className="font-semibold text-lg text-primary">12</div>
-                  <div className="text-xs text-muted-foreground">Campaigns live</div>
-                </button>
-                <button 
-                  onClick={() => {
-                    const element = document.querySelector("[data-section='proof-analytics']");
-                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
-                >
-                  <div className="font-semibold text-lg text-emerald-600">2.4K</div>
-                  <div className="text-xs text-muted-foreground">Total scans</div>
-                </button>
-                <button 
-                  onClick={() => {
-                    const element = document.querySelector("[data-section='proof-analytics']");
-                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
-                >
-                  <div className="font-semibold text-lg text-violet-600">840</div>
-                  <div className="text-xs text-muted-foreground">Visits</div>
-                </button>
-                <button 
-                  onClick={() => {
-                    const element = document.querySelector("[data-section='proof-analytics']");
-                    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="p-3 rounded-lg border border-border/30 bg-white/50 hover:bg-white/80 transition-colors text-left"
-                >
-                  <div className="font-semibold text-lg text-amber-600">340</div>
-                  <div className="text-xs text-muted-foreground">Redemptions</div>
-                </button>
+              <div className="mt-8 grid gap-3 sm:grid-cols-4">
+                {PROOF.map(([value, label], index) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => document.querySelector("#proof")?.scrollIntoView({ behavior: "smooth" })}
+                    className="rounded-md border border-[#0B1F33]/8 bg-white/86 p-3 text-left shadow-[0_8px_24px_rgba(11,31,51,0.05)] transition hover:border-[#B38F4F]/45"
+                  >
+                    <div className="font-heading text-2xl font-medium text-[#0B1F33]">
+                      {Number.isFinite(Number(value)) ? <CountUp to={value} /> : value}
+                    </div>
+                    <div className="mt-1 text-[11px] text-[#0B1F33]/58">{label}</div>
+                    {index === 0 && <span className="sr-only">View proof metrics</span>}
+                  </button>
+                ))}
               </div>
-              <div className="text-xs text-muted-foreground">4 districts • Updated 2 min ago</div>
             </motion.div>
 
-            {/* Campaign preview module */}
-            <motion.div
+            <motion.aside
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="p-6 rounded-xl border border-border/40 bg-white"
+              transition={{ duration: 0.55, delay: 0.1 }}
+              className="dp-glass-card p-5"
             >
-              <div className="mb-4">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">Campaign preview</span>
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Campaign preview</span>
+                <Sparkles className="h-4 w-4 text-[#B38F4F]" />
               </div>
-              <div className="aspect-video rounded-lg bg-muted/30 flex items-center justify-center mb-6">
-                <MapPin className="w-12 h-12 text-muted-foreground/30" />
+              <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
+                    <Megaphone className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-[13px] font-semibold text-[#0B1F33]">{activePoint.name}</div>
+                    <div className="text-[11px] text-[#0B1F33]/52">{activePoint.type} · {activePoint.district}</div>
+                  </div>
+                </div>
+                <p className="mt-4 text-[12px] leading-5 text-[#0B1F33]/62">{activePoint.signal}</p>
               </div>
-              <div className="space-y-3 mb-6 pb-6 border-t border-border/30">
-                <div>
-                  <div className="text-xs text-muted-foreground/70 mb-1">Campaign</div>
-                  <div className="font-medium text-sm">Fine Eyewear Launch</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground/70 mb-1">Best placement</div>
-                  <div className="text-sm text-primary font-medium">The Paseo</div>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">District: Downtown</span>
-                </div>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {[
+                  ["Scans", activePoint.scans],
+                  ["Saves", activePoint.saves],
+                  ["Redeem", activePoint.redemptions],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-md border border-[#0B1F33]/8 bg-white p-3 text-center">
+                    <div className="text-[16px] font-semibold text-[#0B1F33]">{value}</div>
+                    <div className="mt-1 text-[10px] uppercase tracking-[0.12em] text-[#0B1F33]/48">{label}</div>
+                  </div>
+                ))}
               </div>
-              <div className="grid grid-cols-3 gap-3 text-center">
-                <div>
-                  <div className="text-sm font-semibold text-primary">340</div>
-                  <div className="text-xs text-muted-foreground">Scans</div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-emerald-600">210</div>
-                  <div className="text-xs text-muted-foreground">Visits</div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-violet-600">58</div>
-                  <div className="text-xs text-muted-foreground">Redeemed</div>
-                </div>
-              </div>
-            </motion.div>
+              <p className="mt-4 text-[11px] leading-5 text-[#0B1F33]/52">Performance is grouped by placement, district, and action so the campaign can be adjusted while it is live.</p>
+            </motion.aside>
           </div>
         </div>
       </section>
 
-      {/* ──── CAMPAIGN FORMAT SELECTOR ──────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.12em] block mb-3">
-              Campaign formats
-            </span>
-            <h2 className="font-heading text-4xl font-medium mb-4 tracking-tight">
-              Choose the campaign format that fits the objective.
-            </h2>
-            <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
-              Some campaigns need steady downtown presence. Some need a launch window. Some work best through buildings, events, or useful local behavior. Start with the format that matches what needs to happen.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {CAMPAIGN_FORMATS.map((format) => (
-              <div key={format.id} data-format={format.id}>
-                <CampaignFormatCard
-                  format={format}
-                  isExpanded={expandedFormat === format.id}
-                  onToggle={handleFormatSelect}
-                  onUseFormat={handleUseFormat}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ──── PLACEMENT EXPLORER ────────────────────────────────────────── */}
-      <section data-section="placement-explorer" className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
-            <h2 className="font-heading text-4xl font-medium mb-4 tracking-tight">
-              See where campaigns actually run.
-            </h2>
-            <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
-              Every touchpoint is tied to a real place — a building lobby, a venue, a live map pin, a district moment, or a QR-triggered entry point.
-            </p>
-          </motion.div>
-
-          {/* Map layer explanation chips */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            <span className="px-3 py-1.5 rounded-full bg-white border border-border/40 text-xs font-medium text-foreground/70">Live campaigns</span>
-            <span className="px-3 py-1.5 rounded-full bg-white border border-border/40 text-xs font-medium text-foreground/70">Building QR</span>
-            <span className="px-3 py-1.5 rounded-full bg-white border border-border/40 text-xs font-medium text-foreground/70">Venue placement</span>
-            <span className="px-3 py-1.5 rounded-full bg-white border border-border/40 text-xs font-medium text-foreground/70">District activation</span>
-            <span className="px-3 py-1.5 rounded-full bg-white border border-border/40 text-xs font-medium text-foreground/70">Redemption point</span>
+      <Section id="brand-map" eyebrow="Spatial Placement" title="See where campaigns actually run.">
+        <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
+          <div className="overflow-hidden rounded-lg" style={{ height: 480 }}>
+            <PartnerMapIntelligenceLayer
+              activeId={activePoint.id}
+              caption="Campaign intelligence layer"
+              insight="Campaign placements, QR scans, resident saves, and redemptions shown by downtown context."
+              kind="brand"
+              onSelect={setActivePoint}
+              points={CAMPAIGN_POINTS}
+            />
           </div>
 
-          {/* Map placeholder */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="aspect-video rounded-xl border border-border/40 bg-card/40 flex items-center justify-center relative overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
-            <MapPin className="w-16 h-16 text-muted-foreground/20" />
-          </motion.div>
+          <div className="rounded-lg border border-[#0B1F33]/8 bg-white">
+            <div className="border-b border-[#0B1F33]/8 p-4">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Placement layer</div>
+              <h3 className="mt-2 font-heading text-2xl font-medium">{activePoint.name}</h3>
+              <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{activePoint.signal}</p>
+            </div>
+            <div className="divide-y divide-[#0B1F33]/8">
+              {CAMPAIGN_POINTS.map((point) => (
+                <button
+                  key={point.id}
+                  type="button"
+                  onClick={() => setActivePoint(point)}
+                  className={`grid w-full grid-cols-[36px_1fr_auto] items-center gap-3 p-3 text-left transition ${
+                    point.id === activePoint.id ? "bg-[#0B1F33] text-white" : "hover:bg-[#F7F8FB]"
+                  }`}
+                >
+                  <span className={`flex h-9 w-9 items-center justify-center rounded-md border ${
+                    point.id === activePoint.id ? "border-[#B38F4F]/60 bg-white/10 text-[#B38F4F]" : "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33]"
+                  }`}>
+                    <MapPin className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-[13px] font-semibold">{point.name}</span>
+                    <span className="mt-0.5 block truncate text-[11px] opacity-65">{point.type} · {point.district}</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 opacity-50" />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ──── HOW IT WORKS ──────────────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h2 className="font-heading text-4xl font-medium mb-4 tracking-tight">
-              How a downtown campaign turns into action.
-            </h2>
-          </motion.div>
-
-          {/* Timeline steps */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
-            {[
-              { num: "01", title: "Define the placement", desc: "Pick the districts, buildings, venues, and timing that shape the campaign." },
-              { num: "02", title: "Launch the touchpoints", desc: "QR codes, map placements, venue surfaces, and district ties go live together." },
-              { num: "03", title: "Show up in context", desc: "The campaign appears when someone nearby is already deciding what to do." },
-              { num: "04", title: "People scan, save, and go", desc: "The interaction starts from a useful local moment, not a passive impression." },
-              { num: "05", title: "See what converted", desc: "Scans, visits, saves, and redemptions are tracked by placement." },
-            ].map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 8 }}
+      <Section eyebrow="Operating Model" title="A brand campaign becomes useful when it belongs to a place.">
+        <div className="grid gap-3 md:grid-cols-4">
+          {FORMATS.map((format) => {
+            const Icon = format.icon;
+            return (
+              <motion.article
+                key={format.id}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="p-4 rounded-lg border border-border/40 bg-white"
+                className="dp-glass-card p-5"
               >
-                <div className="text-xs font-bold text-primary/70 mb-2 uppercase tracking-widest">{step.num}</div>
-                <h3 className="font-semibold text-sm mb-2">{step.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Campaign path strip */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="p-4 rounded-lg border border-border/40 bg-white text-center"
-          >
-            <div className="text-sm font-medium text-foreground/70">
-              Building QR <span className="text-muted-foreground mx-3">→</span>
-              Map open <span className="text-muted-foreground mx-3">→</span>
-              Save / tap <span className="text-muted-foreground mx-3">→</span>
-              Visit <span className="text-muted-foreground mx-3">→</span>
-              Redemption
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ──── CAMPAIGN EXAMPLES ─────────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <h2 className="font-heading text-4xl font-medium mb-4 tracking-tight">
-              See how campaigns come to life.
-            </h2>
-            <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
-              A strong campaign should feel grounded in place, useful in the moment, and measurable after launch.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {CAMPAIGN_EXAMPLES.map((example, i) => (
-              <CampaignExampleCard key={example.name} example={example} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ──── PROOF AND ANALYTICS ───────────────────────────────────────── */}
-      <section data-section="proof-analytics" className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h2 className="font-heading text-4xl font-medium mb-4 tracking-tight">
-              Proof that goes beyond impressions.
-            </h2>
-            <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
-              Brand campaigns inside Downtown Perks should be measured by what people actually do — scans, visits, saves, redemptions, building response, and event-linked activity.
-            </p>
-          </motion.div>
-
-          {/* Primary metrics */}
-          <div className="mb-8">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-4">Primary metrics</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {PROOF_PRIMARY.map((metric, i) => (
-                <ProofTile key={metric.label} metric={metric} index={i} />
-              ))}
-            </div>
-          </div>
-
-          {/* Secondary metrics */}
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-4">Campaign activity</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {PROOF_SECONDARY.map((metric, i) => (
-                <ProofTile key={metric.label} metric={metric} index={i + 4} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ──── LIVE ACTIVITY ────────────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-heading text-4xl font-medium mb-8 tracking-tight"
-          >
-            Live campaign activity
-          </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-lg border border-border/40 bg-white overflow-hidden"
-          >
-            <div className="divide-y divide-border/30">
-              {LIVE_ACTIVITY.map((item, i) => (
-                <div key={i} className={`px-6 py-4 flex items-start justify-between gap-4 ${i % 2 === 0 ? "bg-white/50" : "bg-white"}`}>
-                  <div className="flex items-start gap-3 flex-1">
-                    <div className="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{item.activity}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{item.campaign}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    {item.badge && (
-                      <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">{item.badge}</span>
-                    )}
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">{item.time}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ──── CAMPAIGN PLANNING FORM ────────────────────────────────────── */}
-      <section data-section="planning-form" className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <h2 className="font-heading text-4xl font-medium mb-4 tracking-tight">
-              Plan the campaign around the downtown moment.
-            </h2>
-            <p className="text-base text-muted-foreground max-w-3xl leading-relaxed">
-              Tell us what you want to achieve, where you want to show up, and what kind of response matters most. We will help map the right format, placements, and measurement plan.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Form */}
-            <motion.form
-              onSubmit={handleFormSubmit}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2 space-y-6"
-            >
-              {/* Campaign type selection */}
-              <div>
-                <label className="block text-sm font-semibold mb-3">Campaign type</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { id: "brand", label: "Brand" },
-                    { id: "property", label: "Property" },
-                    { id: "venue", label: "Venue" },
-                    { id: "hotel", label: "Hotel" },
-                  ].map((type) => (
-                    <button
-                      key={type.id}
-                      type="button"
-                      onClick={() => setCampaignType(type.id)}
-                      className={`px-4 py-3 rounded-lg border text-sm font-medium transition-colors ${
-                        campaignType === type.id
-                          ? "border-primary/60 bg-primary/10 text-primary"
-                          : "border-border/40 hover:border-primary/40"
-                      }`}
-                    >
-                      {type.label}
-                    </button>
+                <Icon className="h-5 w-5 text-[#B38F4F]" />
+                <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{format.title}</h3>
+                <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{format.copy}</p>
+                <div className="mt-4 space-y-1.5">
+                  {format.details.map((detail) => (
+                    <div key={detail} className="rounded-md border border-[#0B1F33]/8 bg-white/72 px-2.5 py-1.5 text-[11px] text-[#0B1F33]/62">{detail}</div>
                   ))}
                 </div>
-              </div>
+              </motion.article>
+            );
+          })}
+        </div>
+      </Section>
 
-              {/* Basics */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Organization name</label>
-                  <input 
-                    type="text" 
-                    placeholder="Your brand or organization" 
-                    value={formData.organizationName}
-                    onChange={(e) => handleFormChange("organizationName", e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Your name and role</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Jane Smith, Marketing Director" 
-                    value={formData.name}
-                    onChange={(e) => handleFormChange("name", e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Email</label>
-                    <input 
-                      type="email" 
-                      placeholder="your@email.com" 
-                      value={formData.email}
-                      onChange={(e) => handleFormChange("email", e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Phone</label>
-                    <input 
-                      type="tel" 
-                      placeholder="(555) 000-0000" 
-                      value={formData.phone}
-                      onChange={(e) => handleFormChange("phone", e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors" 
-                    />
-                  </div>
-                </div>
-              </div>
+      <Section eyebrow="Workflow" title="How a downtown campaign turns into action." className="bg-white">
+        <div className="grid gap-3 md:grid-cols-4">
+          {WORKFLOW.map(([num, title, copy]) => (
+            <article key={num} className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-5">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">{num}</div>
+              <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{title}</h3>
+              <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{copy}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-6 rounded-md border border-[#0B1F33]/8 bg-white p-4 text-center text-[13px] font-medium text-[#0B1F33]/70">
+          QR entry <span className="mx-3 text-[#0B1F33]/34">→</span>
+          Map open <span className="mx-3 text-[#0B1F33]/34">→</span>
+          Save or scan <span className="mx-3 text-[#0B1F33]/34">→</span>
+          Visit <span className="mx-3 text-[#0B1F33]/34">→</span>
+          Redemption
+        </div>
+      </Section>
 
-              {/* Campaign intent */}
-              <div>
-                <label className="block text-sm font-semibold mb-3">What do you want this campaign to do?</label>
-                <textarea 
-                  placeholder="Describe your campaign goal..." 
-                  value={formData.campaignIntent}
-                  onChange={(e) => handleFormChange("campaignIntent", e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-border/40 focus:border-primary/40 outline-none transition-colors resize-none" 
-                  rows="4" 
-                />
-              </div>
+      <Section id="proof" eyebrow="Measurement" title="Proof that goes beyond impressions.">
+        <div className="grid gap-4 md:grid-cols-4">
+          {[
+            ["Scans", "2,400+", "People opened the campaign from QR, map, or placement."],
+            ["Saves", "630+", "People kept the place, offer, or event for later."],
+            ["Redemptions", "340+", "People used the offer or checked in through the resident card."],
+            ["Districts", "4", "Campaign activity grouped by downtown context."],
+          ].map(([label, value, copy]) => (
+            <div key={label} className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_12px_30px_rgba(11,31,51,0.05)]">
+              <div className="font-heading text-3xl font-medium text-[#0B1F33]">{value}</div>
+              <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F]">{label}</div>
+              <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
 
-              {/* Smart prompts */}
-              <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-3">Or select a common scenario:</label>
-                <div className="space-y-2">
-                  {[
-                    "We want placement across real downtown locations",
-                    "Help us set up a QR-to-map flow",
-                    "Show us how a campaign connects to buildings and venues",
-                    "We want to track visits and redemptions by placement",
-                  ].map((prompt, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => {
-                        setSelectedPrompt(selectedPrompt === prompt ? null : prompt);
-                        handleFormChange("campaignIntent", prompt);
-                      }}
-                      className={`w-full px-4 py-2.5 text-left text-sm rounded-lg border transition-colors ${
-                        selectedPrompt === prompt
-                          ? "border-primary/60 bg-primary/5"
-                          : "border-border/40 hover:border-primary/40 hover:bg-primary/5"
-                      }`}
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button 
-                type="submit"
-                disabled={!formData.email || !formData.name}
-                className="w-full px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Submit campaign plan
-              </button>
-            </motion.form>
-
-            {/* Side panel */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="p-6 rounded-lg border border-border/40 bg-white h-fit"
-            >
-              <h3 className="font-semibold text-base mb-6">Based on your input</h3>
-              <div className="space-y-5">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">Recommended format</div>
-                  <div className="text-sm font-medium text-primary">Launch campaign</div>
-                </div>
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">Likely placements</div>
-                  <div className="text-sm text-foreground/70">Map feature, QR moments, venue surfaces</div>
-                </div>
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">Tracked metrics</div>
-                  <div className="text-sm text-foreground/70">Scans, unlocks, visit pace, conversion</div>
-                </div>
-              </div>
-            </motion.div>
+      <Section id="pricing" eyebrow="Brand pricing" title="Campaigns can start small, then add placement when the data says to.">
+        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Brand range</p>
+            <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">$99-$149/year</div>
+            <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
+              Pricing depends on footprint, timing, placements, and whether the campaign includes survey capture, event activation, or district visibility.
+            </p>
+            <Link to="/partners/pricing#surveys" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#081521] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+              View pricing matrix
+              <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+            </Link>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              ["Dumb tech entry", "QR code or text prompt. No app rollout, no complicated partner software."],
+              ["Survey learning", "Ask people why they came, what they want, and what would bring them back."],
+              ["Smart reporting", "The engine turns scans, answers, district, and timing into plain-English next steps."],
+            ].map(([title, copy]) => (
+              <article key={title} className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
+                <h3 className="text-[13px] font-semibold text-[#0B1F33]">{title}</h3>
+                <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
+              </article>
+            ))}
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ──── FAQ ────────────────────────────────────────────────────── */}
+      <Section id="brand-form" eyebrow="Get Started" title="Start a brand conversation." className="bg-white">
+        <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB] p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-body text-[14px] font-semibold">Buy the moment, not the impression.</h3>
+                <p className="mt-1 text-[12px] text-[#0B1F33]/58">From $99-$149/year depending on footprint and activation.</p>
+              </div>
+            </div>
+            <div className="mt-5 grid gap-2">
+              {PROMPTS.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => setSelectedPrompt(prompt)}
+                  className={`rounded-md border px-3 py-2 text-left text-[12px] leading-5 transition ${
+                    selectedPrompt === prompt ? "border-[#B38F4F]/60 bg-white text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white/58 text-[#0B1F33]/62 hover:border-[#B38F4F]/45"
+                  }`}
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <form onSubmit={submitPlan} className="grid gap-3 rounded-lg border border-[#0B1F33]/8 bg-white p-5">
+            {["Brand/Company Name", "Your Name & Role", "Email", "Phone", "Timeline"].map((label) => (
+              <label key={label} className="grid gap-1.5">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</span>
+                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 text-[13px] outline-none focus:border-[#B38F4F]" />
+              </label>
+            ))}
+            <label className="grid gap-1.5">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">What are you activating?</span>
+              <textarea
+                value={selectedPrompt}
+                onChange={(event) => setSelectedPrompt(event.target.value)}
+                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 py-2.5 text-[13px] outline-none focus:border-[#B38F4F]"
+              />
+            </label>
+            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#081521] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+              Start a conversation
+            </button>
+            {submitted && (
+              <p className="rounded-md border border-[#B38F4F]/35 bg-[#F7F8FB] px-3 py-2 text-[12px] text-[#0B1F33]/68">
+                Thanks. Your brand campaign request is ready for follow-up.
+              </p>
+            )}
+          </form>
+        </div>
+      </Section>
+
       <FAQAccordionBlock
         sectionEyebrow="Brand FAQs"
         sectionTitle="Questions about downtown campaigns"
         sectionIntro="Brands use Downtown Perks to show up inside real downtown movement, not beside it."
         items={FAQ_BRANDS}
-        styleVariant="default"
+        styleVariant="split"
         showNumbers={false}
         allowMultipleOpen={false}
         defaultOpenIndex={0}
@@ -835,54 +466,25 @@ export default function BrandsPartner() {
         backgroundVariant="light"
       />
 
-      {/* ──── CLOSING CTA ────────────────────────────────────────────── */}
-      <section className={`${PARTNER_SPACING.sectionVertical} px-6 border-t border-border/40`}>
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-heading text-5xl md:text-6xl font-medium mb-6 tracking-tight leading-[1.05]"
-          >
-            Build the campaign around the downtown moment.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-base text-muted-foreground leading-relaxed mb-8 max-w-2xl mx-auto"
-          >
+      <Section eyebrow="Final CTA" title="Build the campaign around the downtown moment.">
+        <div className="max-w-3xl">
+          <p className="text-[14px] leading-7 text-[#0B1F33]/68">
             Downtown Perks gives brands a way to show up inside live local behavior instead of sitting beside it. Start with the format that fits the objective, then connect placements, offer logic, and measurement into one downtown campaign system.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="flex flex-wrap gap-3 justify-center mb-6"
-          >
-            <button 
-              onClick={() => {
-                const element = document.querySelector("[data-section='planning-form']");
-                if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
-            >
-              Check availability <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            <Link
-              to="/partners"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-colors"
-            >
-              Become a partner
+          </p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <PrimaryButton href="#brand-form">Start a conversation</PrimaryButton>
+            <Link to="/partners" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45">
+              Partner overview
             </Link>
-          </motion.div>
-          <p className="text-xs text-muted-foreground">
-            Questions? <a href="mailto:partners@downtownperks.com" className="font-medium text-primary hover:text-primary/90">partners@downtownperks.com</a>
+            <Link to="/partners/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45">
+              Pricing matrix
+            </Link>
+          </div>
+          <p className="mt-5 text-[12px] text-[#0B1F33]/52">
+            Questions? <a href="mailto:partners@downtownperks.com" className="font-semibold text-[#0B1F33] underline decoration-[#B38F4F]/50 underline-offset-4">partners@downtownperks.com</a>
           </p>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }

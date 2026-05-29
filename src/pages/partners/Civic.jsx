@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, Users, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, CheckCircle2 } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
-import PartnerTypeCard from '@/components/partner/PartnerTypeCard';
-import SelectorCards from '@/components/partner/SelectorCards';
 import ProofGrid from '@/components/partner/ProofGrid';
 import LiveActivityFeed from '@/components/partner/LiveActivityFeed';
 import PlanningForm from '@/components/partner/PlanningForm';
@@ -63,7 +61,7 @@ const CIVIC_FORMATS = [
     placements: 'Feature placement, timed marker priority, sponsor recognition, event-linked context',
     activation: 'Timed civic spotlight or co-branded participation moment',
     kpi: 'Opens, engagement rate, attendance, sponsor visibility, repeat action',
-    body: 'Use this format when a public moment needs added visibility, sponsorship, or concentrated attention. This is best for limited-time civic activations that should feel visible, useful, and well-integrated into live downtown behavior.',
+    body: 'Use this format when a public moment needs more people to notice it, understand it, and show up. This is best for limited-time civic moments that should feel easy to find and useful in everyday downtown life.',
   },
 ];
 
@@ -175,9 +173,9 @@ export default function CivicPartner() {
       />
 
       {/* Intro section */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-4">
             Civic formats for downtown participation
           </h2>
           <p className="text-[16px] text-[#6f6b65] leading-relaxed max-w-2xl">
@@ -187,8 +185,8 @@ export default function CivicPartner() {
       </section>
 
       {/* Civic formats */}
-      <section id="formats" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="formats" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
           <div className="space-y-6">
             {CIVIC_FORMATS.map((format, i) => (
               <motion.button
@@ -198,10 +196,10 @@ export default function CivicPartner() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 onClick={() => setSelectedFormat(format.id)}
-                className={`w-full text-left p-6 rounded-2xl border transition-all duration-200 ${
+                className={`w-full text-left p-6 rounded-lg border transition-all duration-200 ${
                   selectedFormat === format.id
-                    ? 'border-[#111] bg-[#111] text-white shadow-lg'
-                    : 'border-[#e8e5df] bg-white hover:border-[#bbb]'
+                    ? 'border-[#0B1F33] bg-[#0B1F33] text-white shadow-lg'
+                    : 'border-[#0B1F33]/8 bg-white hover:border-[#B38F4F]/45'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3 mb-3">
@@ -209,7 +207,7 @@ export default function CivicPartner() {
                   <div className={`text-[12px] font-medium px-3 py-1 rounded-full ${
                     selectedFormat === format.id
                       ? 'bg-white/20 text-white'
-                      : 'bg-[#f5f3ef] text-[#8d887f]'
+                      : 'bg-[#F7F8FB] text-[#0B1F33]/50'
                   }`}>
                     {format.bestFor}
                   </div>
@@ -257,9 +255,9 @@ export default function CivicPartner() {
       </section>
 
       {/* Format selector helper */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h3 className="text-[24px] md:text-[28px] font-bold text-[#111] leading-tight tracking-tight mb-8">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
+          <h3 className="text-[24px] md:text-[28px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-8">
             Which civic format is right?
           </h3>
           <p className="text-[15px] text-[#6f6b65] mb-8 max-w-2xl">
@@ -271,10 +269,10 @@ export default function CivicPartner() {
               <button
                 key={item.id}
                 onClick={() => setSelectedSelector(selectedSelector === item.id ? null : item.id)}
-                className={`p-4 rounded-2xl border text-[12px] font-medium text-center transition-all ${
+                className={`p-4 rounded-lg border text-[12px] font-medium text-center transition-all ${
                   selectedSelector === item.id
-                    ? 'border-[#111] bg-[#111] text-white'
-                    : 'border-[#e8e5df] bg-white text-[#3d3934] hover:border-[#bbb]'
+                    ? 'border-[#0B1F33] bg-[#0B1F33] text-white'
+                    : 'border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#B38F4F]/45'
                 }`}
               >
                 {item.label}
@@ -286,9 +284,9 @@ export default function CivicPartner() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-6 rounded-2xl bg-[#f5f3ef] border border-[#e8e5df]"
+              className="mt-8 p-6 rounded-lg bg-[#F7F8FB] border border-[#0B1F33]/8"
             >
-              <p className="text-[13px] text-[#4a463f]">
+              <p className="text-[13px] text-[#0B1F33]/70">
                 You selected <strong>{FORMAT_SELECTOR.find((s) => s.id === selectedSelector)?.label}</strong>. This matches:
               </p>
               <div className="flex flex-wrap gap-2 mt-4">
@@ -298,7 +296,7 @@ export default function CivicPartner() {
                     <button
                       key={formatId}
                       onClick={() => setSelectedFormat(formatId)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#e8e5df] text-[11px] font-medium text-[#111] hover:border-[#111] transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#0B1F33]/8 text-[11px] font-medium text-[#0B1F33] hover:border-[#0B1F33] transition-colors"
                     >
                       <CheckCircle2 className="w-3 h-3" />
                       {format?.label}
@@ -312,9 +310,9 @@ export default function CivicPartner() {
       </section>
 
       {/* Civic examples */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-4">
             See how civic participation comes to life on the map
           </h2>
           <p className="text-[15px] text-[#6f6b65] mb-12 max-w-2xl">
@@ -325,26 +323,26 @@ export default function CivicPartner() {
             {CIVIC_EXAMPLES.map((example, i) => (
               <motion.a
                 key={i}
-                href="#"
+                href="/map?mode=partner&tab=map&filter=Events"
                 initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] hover:shadow-lg transition-all"
+                className="p-6 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33] hover:shadow-lg transition-all"
               >
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
-                    <h3 className="text-[16px] font-bold text-[#111] mb-0.5">{example.name}</h3>
-                    <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#8d887f]">
+                    <h3 className="text-[16px] font-bold text-[#0B1F33] mb-0.5">{example.name}</h3>
+                    <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50">
                       {example.type}
                     </div>
                   </div>
-                  <MapPinIcon className="w-5 h-5 text-[#C8973A]" />
+                  <MapPinIcon className="w-5 h-5 text-[#B38F4F]" />
                 </div>
 
                 <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{example.desc}</p>
 
-                <div className="flex items-center gap-1.5 text-[12px] font-bold text-[#111]">
+                <div className="flex items-center gap-1.5 text-[12px] font-bold text-[#0B1F33]">
                   <TrendingUp className="w-3.5 h-3.5" />
                   {example.proof}
                 </div>
@@ -380,7 +378,7 @@ export default function CivicPartner() {
       {/* Closing CTA */}
       <PartnerCTASection
         headline="Build civic participation into the downtown moment."
-        description="Downtown Perks gives civic organizations a way to show up inside live downtown behavior instead of outside it. Start with the format that fits the initiative, then connect visibility, participation, and proof into one civic system people can actually use."
+        description="Downtown Perks helps civic organizations meet people while they are already downtown and deciding what to do. Start with the format that fits the initiative, then make it easy to find, easy to join, and easy to understand what worked."
         primaryCTA="Check availability"
         primaryHref="#form"
         secondaryLink={{ label: 'Become a civic partner', href: '#form' }}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Downtown Perks perk graphic">
+  <rect width="160" height="120" rx="10" fill="#F7F8FB"/>
+  <rect x="42" y="34" width="76" height="52" rx="8" fill="#0B1F33"/>
+  <path d="M54 48h52M54 72h52" stroke="#B38F4F" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="65" cy="60" r="7" fill="#FFFFFF"/>
+  <path d="M94 52 66 80" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="95" cy="76" r="7" fill="#FFFFFF"/>
+</svg>

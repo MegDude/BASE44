@@ -34,7 +34,7 @@ export default function HowItWorksSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-28 px-6 border-t border-border/40">
+    <section ref={ref} className="py-28 px-5 border-t border-border/40">
       <div className="max-w-5xl mx-auto">
 
         {/* Header — split editorial */}
@@ -47,7 +47,7 @@ export default function HowItWorksSection() {
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
               How It Works
             </span>
-            <h2 className="font-heading text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight">
+            <h2 className="font-heading text-4xl md:text-4xl font-medium leading-[1.1] tracking-normal">
               Scan to connected
               <br />
               <em className="text-primary">in 60 seconds.</em>
@@ -57,7 +57,7 @@ export default function HowItWorksSection() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground text-base leading-relaxed"
+            className="text-muted-foreground text-[14px] leading-relaxed"
           >
             No app store. No account setup. A single QR code starts your entire downtown membership.
           </motion.p>

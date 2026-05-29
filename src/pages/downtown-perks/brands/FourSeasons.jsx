@@ -69,7 +69,7 @@ export default function FourSeasons() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

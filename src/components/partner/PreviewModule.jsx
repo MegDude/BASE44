@@ -11,12 +11,12 @@ export default function PreviewModule({
   children,
 }) {
   const bgColor = {
-    residential: 'from-[#f5f3ef] to-[#efeae0]',
-    hospitality: 'from-[#f8f6f2] to-[#f0ede6]',
-    venues: 'from-[#f5f3ef] to-[#efeae0]',
-    brands: 'from-[#f8f6f2] to-[#f0ede6]',
-    civic: 'from-[#f5f3ef] to-[#efeae0]',
-    default: 'from-[#f5f3ef] to-[#efeae0]',
+    residential: 'from-[#FFFFFF] to-[#F7F8FB]',
+    hospitality: 'from-[#FFFFFF] to-[#F7F8FB]',
+    venues: 'from-[#FFFFFF] to-[#F7F8FB]',
+    brands: 'from-[#FFFFFF] to-[#F7F8FB]',
+    civic: 'from-[#FFFFFF] to-[#F7F8FB]',
+    default: 'from-[#FFFFFF] to-[#F7F8FB]',
   }[type];
 
   return (
@@ -25,11 +25,11 @@ export default function PreviewModule({
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className={`aspect-[4/3] rounded-2xl border border-[#e8e5df] bg-gradient-to-br ${bgColor} flex flex-col items-center justify-center p-8 text-center`}
+      className={`aspect-[4/3] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br ${bgColor} flex flex-col items-center justify-center p-8 text-center`}
     >
       {icon && <div className="text-4xl mb-4">{icon}</div>}
-      {title && <p className="text-[13px] font-semibold text-[#4a463f] mb-1">{title}</p>}
-      {description && <p className="text-[11px] text-[#8d887f]">{description}</p>}
+      {title && <p className="text-[13px] font-semibold text-[#0B1F33]/70 mb-1">{title}</p>}
+      {description && <p className="text-[11px] text-[#0B1F33]/50">{description}</p>}
       {children}
     </motion.div>
   );

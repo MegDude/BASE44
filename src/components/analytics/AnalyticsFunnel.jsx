@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 
 const FUNNEL_STAGES = [
-  { id: 'impression', label: 'Seen on map', color: 'bg-blue-500' },
-  { id: 'open', label: 'Popup opened', color: 'bg-cyan-500' },
-  { id: 'unlock', label: 'QR scan / unlock', color: 'bg-violet-500' },
-  { id: 'save', label: 'Save / RSVP', color: 'bg-purple-500' },
-  { id: 'visit_intent', label: 'Directions / intent', color: 'bg-pink-500' },
-  { id: 'visit', label: 'In-person visit', color: 'bg-rose-500' },
-  { id: 'redemption', label: 'Redemption / booking', color: 'bg-orange-500' }
+  { id: 'impression', label: 'Seen on map', color: 'bg-[#0B1F33]' },
+  { id: 'open', label: 'Popup opened', color: 'bg-[#081521]' },
+  { id: 'unlock', label: 'Scanned QR', color: 'bg-[#0B1F33]' },
+  { id: 'save', label: 'Save / RSVP', color: 'bg-[#B38F4F]' },
+  { id: 'visit_intent', label: 'Asked for directions', color: 'bg-[#B38F4F]' },
+  { id: 'visit', label: 'Visited in person', color: 'bg-[#B38F4F]' },
+  { id: 'redemption', label: 'Used offer or booked', color: 'bg-[#0B1F33]' }
 ];
 
 export default function AnalyticsFunnel({ data = {} }) {
@@ -17,10 +17,10 @@ export default function AnalyticsFunnel({ data = {} }) {
     <div className="space-y-6">
       <div>
         <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
-          Conversion Funnel
+          What people did
         </h3>
         <p className="text-[13px] text-muted-foreground">
-          Downtown behavior journey from discovery to repeat engagement.
+          A simple view of how people move from seeing you to using an offer.
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export default function AnalyticsFunnel({ data = {} }) {
                   </span>
                   {idx > 0 && (
                     <span className="text-[11px] text-muted-foreground">
-                      {conversionRate}% conv.
+                      {conversionRate}% kept going
                     </span>
                   )}
                 </div>
@@ -68,7 +68,7 @@ export default function AnalyticsFunnel({ data = {} }) {
 
       <div className="mt-6 p-4 rounded-lg bg-primary/5 border border-primary/20">
         <div className="text-[12px] text-muted-foreground">
-          <span className="font-medium text-foreground">Overall conversion:</span>{' '}
+          <span className="font-medium text-foreground">Overall use rate:</span>{' '}
           {data.impression && data.redemption ? Math.round((data.redemption / data.impression) * 100) : '—'}%
         </div>
       </div>

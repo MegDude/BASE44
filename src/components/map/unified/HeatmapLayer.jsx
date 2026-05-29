@@ -3,7 +3,7 @@
  * Updates without map reload, respects time filters
  */
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Circle, useMap } from 'react-leaflet';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
 import L from 'leaflet';
@@ -60,7 +60,7 @@ export default function HeatmapLayer() {
     <>
       {heatmapData.map((cluster, idx) => {
         const intensity = cluster.intensity;
-        const color = intensity > 0.7 ? '#ef4444' : intensity > 0.4 ? '#f59e0b' : '#10b981';
+        const color = intensity > 0.7 ? '#B38F4F' : intensity > 0.4 ? '#0B1F33' : '#0B1F33';
         const radius = 50 + intensity * 150;
         const opacity = 0.3 + intensity * 0.4;
 

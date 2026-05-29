@@ -17,7 +17,7 @@ export default function ExperienceGrid({ images = [] }) {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-28 px-6 border-t border-border/40">
+    <section ref={ref} className="py-28 px-5 border-t border-border/40">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
@@ -30,7 +30,7 @@ export default function ExperienceGrid({ images = [] }) {
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
             The Experience
           </span>
-          <h2 className="font-heading text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight max-w-xl">
+          <h2 className="font-heading text-4xl md:text-4xl font-medium leading-[1.1] tracking-normal max-w-xl">
             What downtown life
             <br />
             <em className="text-primary">actually looks like.</em>

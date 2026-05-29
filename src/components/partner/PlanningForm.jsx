@@ -23,15 +23,15 @@ export default function PlanningForm({ partnerType, onSubmit }) {
   };
 
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
-      <div className="max-w-2xl mx-auto px-6">
+    <section className="py-16 md:py-24 border-b border-[#0B1F33]/8">
+      <div className="max-w-2xl mx-auto px-5">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-4">
+          <h3 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-4">
             Ready to launch?
           </h3>
           <p className="text-[15px] text-[#6f6b65] mb-8">
@@ -46,7 +46,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
                 placeholder="Full name"
                 value={formData.name}
                 onChange={handleChange}
-                className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+                className="h-10 px-4 rounded-xl border border-[#0B1F33]/8 bg-white text-[14px] placeholder:text-[#0B1F33]/38 focus:border-[#0B1F33] focus:outline-none transition-colors"
               />
               <input
                 type="email"
@@ -54,7 +54,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
-                className="h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+                className="h-10 px-4 rounded-xl border border-[#0B1F33]/8 bg-white text-[14px] placeholder:text-[#0B1F33]/38 focus:border-[#0B1F33] focus:outline-none transition-colors"
               />
             </div>
 
@@ -64,14 +64,14 @@ export default function PlanningForm({ partnerType, onSubmit }) {
               placeholder="Organization / Property name"
               value={formData.organization}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] placeholder:text-[#9d9890] focus:border-[#111] focus:outline-none transition-colors"
+              className="w-full h-10 px-4 rounded-xl border border-[#0B1F33]/8 bg-white text-[14px] placeholder:text-[#0B1F33]/38 focus:border-[#0B1F33] focus:outline-none transition-colors"
             />
 
             <select
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="w-full h-12 px-4 rounded-xl border border-[#e8e5df] bg-white text-[14px] text-[#4a463f] focus:border-[#111] focus:outline-none transition-colors"
+              className="w-full h-10 px-4 rounded-xl border border-[#0B1F33]/8 bg-white text-[14px] text-[#0B1F33]/70 focus:border-[#0B1F33] focus:outline-none transition-colors"
             >
               <option value="">Select your role</option>
               <option value="owner">Owner / Principal</option>
@@ -82,14 +82,14 @@ export default function PlanningForm({ partnerType, onSubmit }) {
 
             <button
               type="submit"
-              className="w-full h-12 rounded-xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors flex items-center justify-center gap-2"
+              className="w-full h-10 rounded-xl bg-[#0B1F33] text-white font-semibold text-[14px] hover:bg-[#081521] transition-colors flex items-center justify-center gap-2"
             >
               Get started
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          <p className="text-[12px] text-[#8d887f] text-center mt-6">
+          <p className="text-[12px] text-[#0B1F33]/50 text-center mt-6">
             We'll be in touch within 24 hours to discuss your next steps.
           </p>
         </motion.div>

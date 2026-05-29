@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
 import MapShell from '@/components/map/MapShell';
 
 /**
@@ -19,10 +17,10 @@ export default function MapExplorer({
   height = 'h-[500px]',
 }) {
   return (
-    <section className="py-16 md:py-24 border-b border-[#e8e5df]">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-16 md:py-24 border-b border-[#0B1F33]/8">
+      <div className="max-w-7xl mx-auto px-5">
         <div className="mb-8">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-2">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-2">
             {title}
           </h2>
           {description && (
@@ -39,8 +37,8 @@ export default function MapExplorer({
                 onClick={() => onFilterChange?.(chip.id)}
                 className={`px-4 py-2 rounded-full border text-[12px] font-medium transition-all ${
                   activeFilter === chip.id
-                    ? 'border-[#111] bg-[#111] text-white'
-                    : 'border-[#e8e5df] bg-white text-[#3d3934] hover:border-[#bbb]'
+                    ? 'border-[#0B1F33] bg-[#0B1F33] text-white'
+                    : 'border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#B38F4F]/45'
                 }`}
               >
                 {chip.label}
@@ -50,7 +48,7 @@ export default function MapExplorer({
         )}
 
         {/* Map */}
-        <div className={`${height} rounded-2xl border border-[#e8e5df] overflow-hidden shadow-lg`}>
+        <div className={`${height} rounded-lg border border-[#0B1F33]/8 overflow-hidden shadow-lg`}>
           <MapShell
             items={items}
             selected={selected}

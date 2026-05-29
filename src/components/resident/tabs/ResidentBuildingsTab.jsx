@@ -34,7 +34,7 @@ export default function ResidentBuildingsTab({ user }) {
       <div className="p-6 space-y-6">
         <div>
           <h2 className="font-heading text-2xl font-medium mb-2">Buildings</h2>
-          <p className="text-sm text-muted-foreground">Discover where to live downtown</p>
+          <p className="text-[13px] text-muted-foreground">Discover where to live downtown</p>
         </div>
 
         {/* Your Building */}
@@ -43,7 +43,7 @@ export default function ResidentBuildingsTab({ user }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h3 className="font-semibold text-foreground text-sm mb-3">Your Building</h3>
+            <h3 className="font-semibold text-foreground text-[13px] mb-3">Your Building</h3>
             {buildings
               .filter((b) => b.verified)
               .map((building) => (
@@ -77,7 +77,7 @@ export default function ResidentBuildingsTab({ user }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <h3 className="font-semibold text-foreground text-sm mb-3">Nearby Buildings</h3>
+          <h3 className="font-semibold text-foreground text-[13px] mb-3">Nearby Buildings</h3>
           <div className="space-y-3">
             {buildings
               .filter((b) => !b.verified)
@@ -87,7 +87,7 @@ export default function ResidentBuildingsTab({ user }) {
                   className="p-4 rounded-xl border border-border/40 bg-white hover:border-primary/50 hover:shadow-md transition-all cursor-pointer"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h4 className="font-semibold text-foreground text-sm">{building.name}</h4>
+                    <h4 className="font-semibold text-foreground text-[13px]">{building.name}</h4>
                     <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
                   </div>
                   <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">

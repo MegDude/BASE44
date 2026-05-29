@@ -51,7 +51,7 @@ export default function HotelVanZandt() {
           <div className="space-y-4">
             {[
               { icon: QrCode, label: "Frictionless guest access", desc: "Guests can open their neighborhood guide instantly with a simple QR flow — no app download, no registration." },
-              { icon: MapPin, label: "Curated local discovery", desc: "Dining, fitness, events, and nearby perks are surfaced in one live downtown layer." },
+              { icon: MapPin, label: "Curated local discovery", desc: "Dining, fitness, events, and nearby perks are easy to find in one downtown map." },
               { icon: Heart, label: "Better guest experience", desc: "Guests feel more connected to Austin from the start of their stay." },
               { icon: Users, label: "No staff burden", desc: "The experience runs automatically without creating extra operational work." },
             ].map((item, i) => (
@@ -67,7 +67,7 @@ export default function HotelVanZandt() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

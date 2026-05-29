@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GRIDS, MOTION as MOTION_CONFIG, TYPOGRAPHY } from "@/lib/design-system";
+import { TYPOGRAPHY } from "@/lib/design-system";
 
 /**
  * StatGrid — Unified stats/metrics display for proof, KPIs, performance
@@ -18,8 +18,8 @@ export default function StatGrid({
   }[columns] || "md:grid-cols-3";
 
   const surfaceClass = {
-    card: "border border-border/40 bg-white rounded-2xl p-5",
-    glass: "bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-5",
+    card: "border border-border/40 bg-white rounded-lg p-5",
+    glass: "bg-white/50 backdrop-blur-sm border border-white/40 rounded-lg p-5",
     minimal: "p-5",
   }[variant];
 
@@ -44,7 +44,7 @@ export default function StatGrid({
             </div>
 
             {item.change && (
-              <span className={`text-[12px] font-medium ${item.positive ? "text-green-600" : "text-red-600"}`}>
+              <span className={`text-[12px] font-medium ${item.positive ? "text-[#B38F4F]" : "text-[#0B1F33]/58"}`}>
                 {item.positive ? "↑" : "↓"} {item.change}
               </span>
             )}

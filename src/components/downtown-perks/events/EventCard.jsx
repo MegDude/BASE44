@@ -1,11 +1,11 @@
-import { Calendar, MapPin, Users, Clock } from "lucide-react";
+import { MapPin, Users, Clock } from "lucide-react";
 import moment from "moment";
 
 export default function EventCard({ event }) {
   const date = event.date ? moment(event.date) : null;
 
   return (
-    <div className="group rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/30 transition-all duration-300">
+    <div className="group rounded-lg border border-border bg-card overflow-hidden hover:border-primary/30 transition-all duration-300">
       {event.image_url && (
         <div className="relative h-48 overflow-hidden">
           <img
@@ -41,7 +41,7 @@ export default function EventCard({ event }) {
         </h3>
 
         {event.description && (
-          <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-2">
+          <p className="text-muted-foreground text-[13px] leading-relaxed mb-4 line-clamp-2">
             {event.description}
           </p>
         )}

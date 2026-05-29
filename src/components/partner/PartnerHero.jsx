@@ -18,8 +18,8 @@ export default function PartnerHero({
   alignment = 'left', // left | right
 }) {
   return (
-    <section className="pt-20 pb-16 md:pt-32 md:pb-24 border-b border-[#e8e5df]">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <section className="pt-20 pb-16 md:pt-32 md:pb-24 border-b border-[#0B1F33]/8">
+      <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left content */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -29,17 +29,17 @@ export default function PartnerHero({
           className={alignment === 'right' ? 'md:order-2' : ''}
         >
           {eyebrow && (
-            <div className="text-[12px] font-bold uppercase tracking-[.12em] text-[#8d887f] mb-4">
+            <div className="text-[12px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-4">
               {eyebrow}
             </div>
           )}
 
-          <h1 className="text-[40px] md:text-[52px] font-bold text-[#111] leading-tight tracking-tight mb-5">
+          <h1 className="text-[40px] md:text-[52px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-5">
             {headline}
           </h1>
 
           {description && (
-            <p className="text-[16px] text-[#4a463f] leading-relaxed mb-8 max-w-lg">
+            <p className="text-[16px] text-[#0B1F33]/70 leading-relaxed mb-8 max-w-lg">
               {description}
             </p>
           )}
@@ -49,7 +49,7 @@ export default function PartnerHero({
             {primaryCTA && (
               <a
                 href={primaryCTAHref || '#'}
-                className="inline-flex items-center gap-2 h-12 px-6 rounded-2xl bg-[#111] text-white font-semibold text-[14px] hover:bg-[#2a2a2a] transition-colors"
+                className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[#0B1F33] text-white font-semibold text-[14px] hover:bg-[#081521] transition-colors"
               >
                 {primaryCTA}
                 <ArrowRight className="w-4 h-4" />
@@ -58,7 +58,7 @@ export default function PartnerHero({
             {secondaryCTA && (
               <a
                 href={secondaryCTAHref || '#'}
-                className="inline-flex items-center h-12 px-6 rounded-2xl border border-[#e8e5df] bg-white text-[#111] font-semibold text-[14px] hover:bg-[#f5f4f2] transition-colors"
+                className="inline-flex items-center h-10 px-5 rounded-lg border border-[#0B1F33]/8 bg-white text-[#0B1F33] font-semibold text-[14px] hover:bg-[#F7F8FB] transition-colors"
               >
                 {secondaryCTA}
               </a>
@@ -70,8 +70,8 @@ export default function PartnerHero({
             <div className="flex flex-wrap gap-6">
               {stats.map((stat, i) => (
                 <div key={i}>
-                  <div className="text-[20px] font-bold text-[#111]">{stat.label}</div>
-                  <div className="text-[12px] text-[#8d887f] mt-1">{stat.value}</div>
+                  <div className="text-[20px] font-bold text-[#0B1F33]">{stat.label}</div>
+                  <div className="text-[12px] text-[#0B1F33]/50 mt-1">{stat.value}</div>
                 </div>
               ))}
             </div>

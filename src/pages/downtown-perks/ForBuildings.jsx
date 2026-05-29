@@ -64,7 +64,7 @@ const benefits = [
   {
     icon: Building2,
     title: "Stronger visibility for your team",
-    description: "See what residents are opening, saving, and using while turning neighborhood interest into warmer leasing conversations.",
+    description: "See what residents are opening, saving, and using while turning neighborhood interest into clearer leasing conversations.",
   },
 ];
 
@@ -76,7 +76,7 @@ export default function ForBuildings() {
     <div className="min-h-screen bg-background">
 
       {/* Hero */}
-      <section className="pt-32 pb-12 px-6">
+      <section className="pt-32 pb-12 px-5">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -87,7 +87,7 @@ export default function ForBuildings() {
               For Buildings
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
-              <h1 className="font-heading text-4xl md:text-5xl font-medium leading-[1.08] tracking-tight">
+              <h1 className="font-heading text-4xl md:text-4xl font-medium leading-[1.08] tracking-normal">
                 A Smarter
                 <br />
                 <em className="text-primary">Building Amenity</em>
@@ -101,7 +101,7 @@ export default function ForBuildings() {
       </section>
 
       {/* Benefits */}
-      <section ref={ref} className="py-10 px-6 border-t border-border/40">
+      <section ref={ref} className="py-10 px-5 border-t border-border/40">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -132,14 +132,14 @@ export default function ForBuildings() {
       </section>
 
       {/* Pricing */}
-      <section className="py-10 px-6 border-t border-border/40">
+      <section className="py-10 px-5 border-t border-border/40">
         <div className="max-w-4xl mx-auto">
           <div className="mb-7">
             <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] block mb-4">
               Pricing
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-              <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight">
+              <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal">
                 Simple pricing. Start with a pilot.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
@@ -170,10 +170,10 @@ export default function ForBuildings() {
                   {tier.name}
                 </div>
                 <div className="mb-6">
-                  <span className="font-heading text-4xl font-medium text-foreground tracking-tight">
+                  <span className="font-heading text-4xl font-medium text-foreground tracking-normal">
                     {tier.price}
                   </span>
-                  <span className="text-muted-foreground text-sm ml-1.5">{tier.period}</span>
+                  <span className="text-muted-foreground text-[13px] ml-1.5">{tier.period}</span>
                 </div>
                 <ul className="space-y-2.5 mb-8">
                   {tier.features.map((f, j) => (
@@ -184,7 +184,7 @@ export default function ForBuildings() {
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                  className={`w-full py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 ${
                     tier.highlight
                       ? "bg-primary text-primary-foreground hover:bg-primary/90"
                       : "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border"
@@ -199,7 +199,7 @@ export default function ForBuildings() {
       </section>
 
       {/* Business pitch */}
-      <section className="py-10 px-6 border-t border-border/40">
+      <section className="py-10 px-5 border-t border-border/40">
         <div className="max-w-4xl mx-auto">
           <div className="border border-border/60 rounded-lg p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
@@ -218,8 +218,8 @@ export default function ForBuildings() {
                   Local businesses join by offering a perk to resident members. In return, they appear on the map at the moment nearby residents are deciding where to go.
                 </p>
                 <Link
-                  to="/downtown-perks/explore"
-                  className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline underline-offset-4"
+                  to="/map?mode=resident&tab=map"
+                  className="inline-flex items-center gap-2 text-primary font-medium text-[13px] hover:underline underline-offset-4"
                 >
                   See the Map <ArrowRight className="w-3.5 h-3.5" />
                 </Link>

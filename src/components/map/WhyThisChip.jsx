@@ -10,12 +10,12 @@ const REASON_CONFIG = {
   nearby: {
     icon: MapPin,
     label: (distance) => `${distance || '0'} min walk`,
-    color: 'text-blue-600 bg-blue-50',
+    color: 'text-[#0B1F33] bg-[#F7F8FB]',
   },
   saved: {
     icon: Star,
     label: 'You saved this',
-    color: 'text-amber-600 bg-amber-50',
+    color: 'text-[#0B1F33] bg-[#F7F8FB]/40',
   },
   campaign: {
     icon: Zap,
@@ -25,17 +25,17 @@ const REASON_CONFIG = {
   event_now: {
     icon: Clock,
     label: 'Happening now',
-    color: 'text-green-600 bg-green-50',
+    color: 'text-[#0B1F33] bg-[#F7F8FB]/40',
   },
   perk_match: {
     icon: TrendingUp,
     label: 'Perk available',
-    color: 'text-purple-600 bg-purple-50',
+    color: 'text-[#0B1F33] bg-[#F7F8FB]/40',
   },
   trending: {
     icon: Users,
     label: 'Trending nearby',
-    color: 'text-orange-600 bg-orange-50',
+    color: 'text-[#0B1F33] bg-[#F7F8FB]/40',
   },
 };
 

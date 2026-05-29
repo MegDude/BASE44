@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 const SOURCES = [
   { id: 'building_qr', label: 'Building QR', icon: '📍' },
@@ -54,7 +54,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
       </div>
 
       {/* Desktop table */}
-      <div className="hidden md:block rounded-2xl border border-border/50 bg-card/40 overflow-hidden">
+      <div className="hidden md:block rounded-lg border border-border/50 bg-card/40 overflow-hidden">
         <table className="w-full text-[13px]">
           <thead className="border-b border-border/30 bg-muted/20">
             <tr>
@@ -98,7 +98,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
                 <td className="p-4 text-right text-foreground">{row.redemptionRate}%</td>
                 <td className="p-4 text-right">
                   <span className={`text-[12px] font-medium ${
-                    row.trend === 'up' ? 'text-green-600' : row.trend === 'down' ? 'text-red-600' : 'text-muted-foreground'
+                    row.trend === 'up' ? 'text-[#B38F4F]' : row.trend === 'down' ? 'text-[#0B1F33]/58' : 'text-muted-foreground'
                   }`}>
                     {row.trend === 'up' ? '+12%' : row.trend === 'down' ? '-8%' : 'Stable'}
                   </span>
@@ -122,7 +122,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
             <div className="flex items-center justify-between">
               <span className="font-medium text-foreground">{row.icon} {row.label}</span>
               <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
-                row.trend === 'up' ? 'bg-green-500/10 text-green-600' : row.trend === 'down' ? 'bg-red-500/10 text-red-600' : 'bg-muted/50 text-muted-foreground'
+                row.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#B38F4F]' : row.trend === 'down' ? 'bg-[#0B1F33]/8 text-[#0B1F33]/58' : 'bg-muted/50 text-muted-foreground'
               }`}>
                 {row.trend === 'up' ? '+12%' : row.trend === 'down' ? '-8%' : 'Stable'}
               </span>

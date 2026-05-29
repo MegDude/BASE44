@@ -59,7 +59,7 @@ export default function DrawerActions({ item, itemType, onClose }) {
   return (
     <>
       {/* Success overlay */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait" initial={false}>
         {successAction && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -71,20 +71,20 @@ export default function DrawerActions({ item, itemType, onClose }) {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white rounded-2xl p-6 max-w-sm text-center"
+              className="bg-white rounded-lg p-6 max-w-sm text-center"
             >
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.1 }}
-                className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4"
+                className="w-12 h-10 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4"
               >
                 <CheckCircle className="w-6 h-6 text-primary" />
               </motion.div>
               <h3 className="font-bold text-lg text-foreground mb-1">
                 {successAction === 'save' ? 'Saved!' : 'Done!'}
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-[13px] text-muted-foreground mb-4">
                 {successAction === 'save'
                   ? 'Added to your list'
                   : 'Your action was recorded'}
@@ -94,7 +94,7 @@ export default function DrawerActions({ item, itemType, onClose }) {
                   setSuccessAction(null);
                   setTimeout(() => onClose?.(), 200);
                 }}
-                className="w-full h-11 rounded-lg bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors"
+                className="w-full h-10 rounded-lg bg-foreground text-background font-semibold text-[13px] hover:bg-foreground/90 transition-colors"
               >
                 Done
               </button>
@@ -123,7 +123,7 @@ export default function DrawerActions({ item, itemType, onClose }) {
           whileTap={{ scale: 0.98 }}
           onClick={handlePrimaryAction}
           disabled={isRedeeming && redeemingId === item.id}
-          className={`w-full h-12 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
+          className={`w-full h-10 rounded-lg font-semibold text-[13px] transition-all flex items-center justify-center gap-2 ${
             isRedeeming && redeemingId === item.id
               ? 'bg-foreground/50 text-background cursor-wait'
               : 'bg-foreground text-background hover:bg-foreground/90 active:scale-95'
@@ -146,14 +146,14 @@ export default function DrawerActions({ item, itemType, onClose }) {
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={handleSave}
-            className="h-11 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2"
+            className="h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-[13px] flex items-center justify-center gap-2"
           >
             <Heart className="w-4 h-4" />
             Save
           </button>
           <button
             onClick={handleShare}
-            className="h-11 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2"
+            className="h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-[13px] flex items-center justify-center gap-2"
           >
             <Share2 className="w-4 h-4" />
             Share
@@ -164,7 +164,7 @@ export default function DrawerActions({ item, itemType, onClose }) {
         {item.latitude && item.longitude && (
           <button
             onClick={handleNavigate}
-            className="w-full h-11 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-sm flex items-center justify-center gap-2"
+            className="w-full h-10 rounded-lg border border-border bg-white hover:bg-secondary transition-colors font-medium text-[13px] flex items-center justify-center gap-2"
           >
             <MapPin className="w-4 h-4" />
             Get directions

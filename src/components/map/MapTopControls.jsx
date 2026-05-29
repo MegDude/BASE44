@@ -53,14 +53,14 @@ export default function MapTopControls() {
     <div className="absolute top-5 left-6 right-6 z-[500] flex flex-col gap-3 pointer-events-none">
       {/* Main search bar */}
       <div className="w-full flex justify-center pointer-events-auto">
-        <div className="w-full max-w-3xl flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
-          <Search className="w-4 h-4 text-[#7a746b] shrink-0" />
+        <div className="w-full max-w-3xl flex items-center gap-2.5 bg-white/95 backdrop-blur-xl border border-black/8 rounded-lg shadow-[0_16px_40px_rgba(17,17,17,.08)] px-3.5 py-2.5">
+          <Search className="w-4 h-4 text-[#0B1F33]/58 shrink-0" />
           <input
             type="search"
             value={query}
             onChange={handleSearch}
             placeholder="Search or ask (e.g. 'coffee now', 'dinner tonight')..."
-            className="flex-1 bg-transparent outline-none text-[13px] text-[#111] placeholder:text-[#9d9890]"
+            className="flex-1 bg-transparent outline-none text-[13px] text-[#0B1F33] placeholder:text-[#0B1F33]/38"
           />
 
           {/* Category buttons (desktop) */}
@@ -74,8 +74,8 @@ export default function MapTopControls() {
                 }}
                 className={`h-10 px-3.5 rounded-xl border text-[12px] font-medium shrink-0 transition-all ${
                   filters.category === cat.id
-                    ? 'bg-[#111] text-white border-[#111]'
-                    : 'bg-white text-[#3d3934] border-[#e8e5df] hover:border-[#bbb]'
+                    ? 'bg-[#0B1F33] text-white border-[#0B1F33]'
+                    : 'bg-white text-[#0B1F33]/70 border-[#0B1F33]/8 hover:border-[#B38F4F]/45'
                 }`}
               >
                 {cat.label}
@@ -90,16 +90,16 @@ export default function MapTopControls() {
                 setQueryFilter('');
                 setExplanation('');
               }}
-              className="w-8 h-8 rounded-lg border border-[#e8e5df] bg-white flex items-center justify-center hover:bg-[#f5f4f2] transition-colors"
+              className="w-8 h-8 rounded-lg border border-[#0B1F33]/8 bg-white flex items-center justify-center hover:bg-[#F7F8FB] transition-colors"
             >
-              <X className="w-3.5 h-3.5 text-[#111]" />
+              <X className="w-3.5 h-3.5 text-[#0B1F33]" />
             </button>
           )}
 
           {/* Filter menu toggle (mobile) */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="h-10 px-3.5 rounded-xl border border-[#e8e5df] bg-white text-[12px] font-medium text-[#3d3934] hover:bg-[#f5f4f2] transition-all md:hidden"
+            className="h-10 px-3.5 rounded-xl border border-[#0B1F33]/8 bg-white text-[12px] font-medium text-[#0B1F33]/70 hover:bg-[#F7F8FB] transition-all md:hidden"
           >
             <Settings className="w-4 h-4" />
           </button>
@@ -138,13 +138,13 @@ export default function MapTopControls() {
       )}
 
       {/* Mobile filter menu */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait" initial={false}>
         {showFilters && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="absolute top-20 left-6 right-6 z-[510] bg-white/95 backdrop-blur-xl border border-black/8 rounded-2xl shadow-[0_16px_40px_rgba(17,17,17,.08)] p-3 w-auto pointer-events-auto"
+            className="absolute top-20 left-6 right-6 z-[510] bg-white/95 backdrop-blur-xl border border-black/8 rounded-lg shadow-[0_16px_40px_rgba(17,17,17,.08)] p-3 w-auto pointer-events-auto"
           >
             <div className="space-y-2">
               {CATEGORIES.map((cat) => (
@@ -155,7 +155,7 @@ export default function MapTopControls() {
                     setShowFilters(false);
                   }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
-                    filters.category === cat.id ? 'bg-[#111] text-white' : 'text-[#3d3934] hover:bg-[#f5f4f2]'
+                    filters.category === cat.id ? 'bg-[#0B1F33] text-white' : 'text-[#0B1F33]/70 hover:bg-[#F7F8FB]'
                   }`}
                 >
                   {cat.label}

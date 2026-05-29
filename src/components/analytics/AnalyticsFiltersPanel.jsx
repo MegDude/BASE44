@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronDown } from 'lucide-react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 
 const FILTER_OPTIONS = {
   timeRange: [
@@ -54,9 +54,9 @@ export default function AnalyticsFiltersPanel({ activeFilters, onFilterChange, o
   const activeFilterCount = Object.values(activeFilters).flat().length;
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-card/40 p-6">
+    <div className="rounded-lg border border-border/50 bg-card/40 p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-foreground">Filters</h3>
+        <h3 className="text-[13px] font-semibold text-foreground">Filters</h3>
         {activeFilterCount > 0 && (
           <button
             onClick={onClearAll}
@@ -106,14 +106,14 @@ export default function AnalyticsFiltersPanel({ activeFilters, onFilterChange, o
               />
             </button>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait" initial={false}>
               {expandedFilter === filterType && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="pl-2 space-y-1.5 mt-2"
+                  className="mt-2 max-h-[260px] space-y-1.5 overflow-y-auto pl-2 pr-1"
                 >
                   {options.map(option => (
                     <label
@@ -129,6 +129,14 @@ export default function AnalyticsFiltersPanel({ activeFilters, onFilterChange, o
                       <span className="text-[13px] text-foreground">{option.label}</span>
                     </label>
                   ))}
+                  <button
+                    type="button"
+                    onClick={() => setExpandedFilter(null)}
+                    className="mt-1 flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/40 bg-background px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <ChevronUp className="h-3.5 w-3.5" />
+                    Roll up
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>

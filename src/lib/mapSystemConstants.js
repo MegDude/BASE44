@@ -55,37 +55,32 @@ export const FILTER_CHIPS = [
 export const SEARCH_PROMPTS = [
   {
     q: 'Where do you want to go?',
-    a: 'Coffee, dinner, fitness—all within walking distance.',
-    fill: 'coffee near me',
+    a: 'Find coffee, dinner, drinks, perks, listings, and nearby places worth leaving for.',
+    fill: 'Where do you want to go?',
+  },
+  {
+    q: 'What do you want to see?',
+    a: 'Surface events, happy hours, listings, local businesses, and useful downtown signals.',
+    fill: 'What do you want to see?',
   },
   {
     q: 'What do you want to do?',
-    a: 'See what\'s on tonight. Find something worth showing up for.',
-    fill: 'events tonight',
-  },
-  {
-    q: 'Who do you want to meet?',
-    a: 'See who\'s going. Join in. Make a plan.',
-    fill: 'what\'s happening',
-  },
-  {
-    q: 'Where should I eat?',
-    a: 'Best spots for your vibe—happy hour, quick bite, date night.',
-    fill: 'best happy hour',
+    a: 'Ask the map for a plan, a place, a perk, or a partner opportunity nearby.',
+    fill: 'What do you want to do?',
   },
 ];
 
 export const CATEGORY_COLORS = {
-  restaurant: '#f59e0b',
-  bar: '#f59e0b',
-  fitness: '#10b981',
-  wellness: '#8b5cf6',
-  beauty: '#ec4899',
-  retail: '#6b7280',
-  entertainment: '#3b82f6',
-  coworking: '#06b6d4',
-  hotel: '#f97316',
-  building: '#C8973A',
+  restaurant: '#B38F4F',
+  bar: '#B38F4F',
+  fitness: '#0B1F33',
+  wellness: '#0B1F33',
+  beauty: '#081521',
+  retail: '#425466',
+  entertainment: '#0B1F33',
+  coworking: '#081521',
+  hotel: '#B38F4F',
+  building: '#B38F4F',
 };
 
 export const MOTION_PRESETS = {

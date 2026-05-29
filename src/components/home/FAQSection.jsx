@@ -14,8 +14,6 @@ export default function FAQSection() {
       defaultOpenIndex={0}
       pageType="homepage"
       backgroundVariant="light"
-      ctaLabel="Learn more about Downtown Perks"
-      ctaHref="/downtown-perks/about"
     />
   );
 }

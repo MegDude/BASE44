@@ -15,7 +15,16 @@ export default function UnifiedSearchBar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAI, setIsAI] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
+  const [promptIndex, setPromptIndex] = useState(0);
   const inputRef = useRef(null);
+  const activePrompt = SEARCH_PROMPTS[promptIndex % SEARCH_PROMPTS.length];
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setPromptIndex((index) => (index + 1) % SEARCH_PROMPTS.length);
+    }, 3200);
+    return () => window.clearInterval(timer);
+  }, []);
 
   // Detect if query looks like an AI intent
   useEffect(() => {
@@ -69,14 +78,14 @@ export default function UnifiedSearchBar() {
 
   return (
     <motion.div
-      className="w-full max-w-4xl mx-auto px-4 md:px-6"
+      className="relative z-[1300] w-full max-w-4xl mx-auto px-4 md:px-5"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
     >
       {/* Search container */}
       <div className="relative">
-        <div className="flex items-center gap-2 bg-white/95 backdrop-blur-xl border border-black/8 rounded-xl md:rounded-2xl shadow-sm px-3 md:px-4 py-2.5 md:py-3 focus-within:ring-1 focus-within:ring-primary/30 transition-all">
-          <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+        <div className="dp-glass flex items-center gap-2 px-3 py-2.5 transition-all focus-within:border-[#B38F4F]/60 focus-within:bg-white/64 md:px-4 md:py-2.5">
+          <Search className="w-4 h-4 text-[#0B1F33]/50 shrink-0" />
 
           <input
             ref={inputRef}
@@ -86,18 +95,18 @@ export default function UnifiedSearchBar() {
             onKeyDown={handleSearch}
             onFocus={() => setIsExpanded(true)}
             onBlur={() => setTimeout(() => setIsExpanded(false), 200)}
-            placeholder="Search, ask, or explore..."
-            className="flex-1 bg-transparent outline-none text-sm md:text-base text-foreground placeholder:text-muted-foreground"
+            placeholder={activePrompt.q}
+            className="flex-1 bg-transparent outline-none text-[13px] md:text-[14px] text-[#0B1F33] placeholder:text-[#0B1F33]/42"
           />
 
-          <AnimatePresence>
+          <AnimatePresence mode="wait" initial={false}>
             {query && (
               <motion.button
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 onClick={handleClear}
-                className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                className="text-[#0B1F33]/58 hover:text-[#0B1F33] transition-colors p-1"
               >
                 <X className="w-4 h-4" />
               </motion.button>
@@ -108,15 +117,15 @@ export default function UnifiedSearchBar() {
           <button
             onClick={handleAISearch}
             disabled={!isAI || aiLoading}
-            className={`p-2 rounded-lg transition-all ${
+            className={`p-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
               isAI && !aiLoading
-                ? 'bg-primary/10 hover:bg-primary/20 text-primary'
-                : 'text-muted-foreground opacity-50'
+                ? 'bg-white/82 text-[#B38F4F] shadow-[0_0_0_1px_rgba(179,143,79,0.18),0_10px_24px_rgba(11,31,51,0.06)] hover:text-[#B38F4F] hover:shadow-[0_0_0_1px_rgba(179,143,79,0.28),0_12px_30px_rgba(11,31,51,0.08)]'
+                : 'bg-white/58 text-[#B38F4F] opacity-80 shadow-[0_0_0_1px_rgba(179,143,79,0.10)]'
             }`}
             title="Ask the Map AI"
           >
             {aiLoading ? (
-              <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/30 border-t-[#B38F4F] animate-spin" />
             ) : (
               <Sparkles className="w-4 h-4" />
             )}
@@ -124,27 +133,27 @@ export default function UnifiedSearchBar() {
         </div>
 
         {/* Intent prompts dropdown */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait" initial={false}>
           {isExpanded && !query && (
             <motion.div
               initial={{ opacity: 0, y: -8, height: 0 }}
               animate={{ opacity: 1, y: 0, height: 'auto' }}
               exit={{ opacity: 0, y: -8, height: 0 }}
-              className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl border border-black/8 rounded-xl shadow-lg overflow-hidden"
+              className="dp-glass-card absolute left-0 right-0 top-full z-[1400] mt-2 max-h-[min(420px,calc(100vh-150px))] overflow-y-auto bg-white/94 shadow-[0_24px_70px_rgba(11,31,51,0.16),0_0_0_1px_rgba(179,143,79,0.10)]"
             >
               {SEARCH_PROMPTS.map((prompt, i) => (
                 <button
                   key={i}
                   onClick={() => handlePromptClick(prompt.fill)}
-                  className="w-full text-left px-4 py-3 hover:bg-secondary/50 transition-colors border-b border-border last:border-0"
+                  className="w-full text-left px-4 py-2.5 hover:bg-white/50 transition-colors border-b border-white/44 last:border-0"
                 >
                   <div className="flex items-start gap-2">
-                    <Zap className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <Zap className="w-4 h-4 text-[#B38F4F] shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-xs font-semibold text-primary mb-0.5">
+                      <div className="text-xs font-semibold text-[#0B1F33] mb-0.5">
                         {prompt.q}
                       </div>
-                      <div className="text-xs text-muted-foreground leading-relaxed">
+                      <div className="text-xs text-[#0B1F33]/58 leading-relaxed">
                         {prompt.a}
                       </div>
                     </div>

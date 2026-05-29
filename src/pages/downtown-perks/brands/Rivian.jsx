@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, QrCode, Target, Car, BarChart2, Navigation } from "lucide-react";
+import { MapPin, Users, Zap, Target, Car, BarChart2, Navigation } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
-import { QRDemoPanel, NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
+import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
 
 const demo = (
   <div className="grid md:grid-cols-2 gap-5">
@@ -13,7 +13,7 @@ const demo = (
         { title: "Exclusive: Rivian downtown pop-up", sub: "Saturday · 2nd Street District · RSVP via card" },
       ]}
     />
-    <div className="rounded-2xl border border-border bg-card p-7">
+    <div className="rounded-lg border border-border bg-card p-7">
       <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-5">Rivian Activation Flow</div>
       <div className="space-y-4">
         {[
@@ -27,7 +27,7 @@ const demo = (
               <span className="text-primary font-heading font-bold text-xs">{s.step}</span>
             </div>
             <div>
-              <div className="text-sm font-medium">{s.label}</div>
+              <div className="text-[13px] font-medium">{s.label}</div>
               <div className="text-xs text-muted-foreground">{s.sub}</div>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function Rivian() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

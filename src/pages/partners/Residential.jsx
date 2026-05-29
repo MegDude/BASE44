@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, MapPin, Users, TrendingUp, ArrowRight } from 'lucide-react';
+import { Building2, MapPin, TrendingUp } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
 import HowItWorksRail from '@/components/partner/HowItWorksRail';
 import SelectorCards from '@/components/partner/SelectorCards';
@@ -86,20 +86,20 @@ export default function ResidentialPartner() {
           { label: 'Partner venues', value: '120+' },
         ]}
         preview={
-          <div className="aspect-[4/3] rounded-2xl border border-[#e8e5df] bg-gradient-to-br from-[#f5f3ef] to-[#efeae0] flex items-center justify-center">
+          <div className="aspect-[4/3] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#F7F8FB] flex items-center justify-center">
             <div className="text-center">
-              <Building2 className="w-12 h-12 text-[#8d887f] mx-auto mb-3" />
-              <p className="text-[13px] font-semibold text-[#4a463f]">Building + Resident Layer Preview</p>
-              <p className="text-[11px] text-[#8d887f] mt-1">Map integration coming in next section</p>
+              <Building2 className="w-12 h-10 text-[#0B1F33]/50 mx-auto mb-3" />
+              <p className="text-[13px] font-semibold text-[#0B1F33]/70">Building + Resident Layer Preview</p>
+              <p className="text-[11px] text-[#0B1F33]/50 mt-1">Map integration coming in next section</p>
             </div>
           </div>
         }
       />
 
       {/* Partner model */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-12">
             How it works for residents
           </h2>
 
@@ -116,11 +116,11 @@ export default function ResidentialPartner() {
               key={selectedFeature}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-12 p-8 rounded-2xl border border-[#e8e5df] bg-white"
+              className="mt-12 p-8 rounded-lg border border-[#0B1F33]/8 bg-white"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-[20px] font-bold text-[#111] mb-3">
+                  <h3 className="text-[20px] font-bold text-[#0B1F33] mb-3">
                     {RESIDENTIAL_FEATURES.find((f) => f.id === selectedFeature)?.label}
                   </h3>
                   <p className="text-[14px] text-[#6f6b65] leading-relaxed">
@@ -129,9 +129,9 @@ export default function ResidentialPartner() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   {RESIDENTIAL_FEATURES.find((f) => f.id === selectedFeature)?.stats.map((stat, i) => (
-                    <div key={i} className="p-4 rounded-xl bg-[#f5f3ef]">
-                      <div className="text-[16px] font-bold text-[#111]">{stat.value}</div>
-                      <div className="text-[11px] text-[#8d887f] mt-1">{stat.label}</div>
+                    <div key={i} className="p-4 rounded-xl bg-[#F7F8FB]">
+                      <div className="text-[16px] font-bold text-[#0B1F33]">{stat.value}</div>
+                      <div className="text-[11px] text-[#0B1F33]/50 mt-1">{stat.label}</div>
                     </div>
                   ))}
                 </div>
@@ -142,20 +142,20 @@ export default function ResidentialPartner() {
       </section>
 
       {/* Map placement */}
-      <section id="map" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-8">
+      <section id="map" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-8">
             Map visibility
           </h2>
           <p className="text-[15px] text-[#6f6b65] mb-12 max-w-2xl">
             Your building appears on the map with a resident layer. Residents can tap to view exclusive perks at nearby venues and save favorites.
           </p>
 
-          <div className="aspect-[16/9] rounded-2xl border border-[#e8e5df] bg-gradient-to-br from-[#f5f3ef] to-[#efeae0] flex items-center justify-center">
+          <div className="aspect-[16/9] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#F7F8FB] flex items-center justify-center">
             <div className="text-center">
-              <MapPin className="w-12 h-12 text-[#8d887f] mx-auto mb-3" />
-              <p className="text-[13px] font-semibold text-[#4a463f]">Interactive Map Placement</p>
-              <p className="text-[11px] text-[#8d887f] mt-1">Your building + resident discovery layer</p>
+              <MapPin className="w-12 h-10 text-[#0B1F33]/50 mx-auto mb-3" />
+              <p className="text-[13px] font-semibold text-[#0B1F33]/70">Interactive Map Placement</p>
+              <p className="text-[11px] text-[#0B1F33]/50 mt-1">Your building + resident discovery layer</p>
             </div>
           </div>
         </div>
@@ -165,9 +165,9 @@ export default function ResidentialPartner() {
       <HowItWorksRail steps={HOW_IT_WORKS} />
 
       {/* Use cases */}
-      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#e8e5df]`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-[32px] md:text-[40px] font-bold text-[#111] leading-tight tracking-tight mb-12">
+      <section className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
+        <div className="max-w-7xl mx-auto px-5">
+          <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-12">
             Use cases
           </h2>
 
@@ -200,11 +200,11 @@ export default function ResidentialPartner() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="p-6 rounded-2xl border border-[#e8e5df] bg-white hover:border-[#111] transition-colors"
+                className="p-6 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33] transition-colors"
               >
-                <h3 className="text-[16px] font-bold text-[#111] mb-2">{use.title}</h3>
+                <h3 className="text-[16px] font-bold text-[#0B1F33] mb-2">{use.title}</h3>
                 <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{use.desc}</p>
-                <div className="flex items-center gap-2 text-[12px] font-bold text-[#111]">
+                <div className="flex items-center gap-2 text-[12px] font-bold text-[#0B1F33]">
                   <TrendingUp className="w-3.5 h-3.5" />
                   {use.metric}
                 </div>

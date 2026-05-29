@@ -1,0 +1,22 @@
+*** Begin Patch
+*** Update File: src/index.css
+@@
+-  --primary: 40 55% 44%;
+-  --primary-foreground: 210 40% 96%;
++  /* Downtown Perks system: navy structure/buttons/text; gold is highlight-only */
++  --primary: 218 42% 14%;
++  --primary-foreground: 0 0% 100%;
+
+@@
+-  --chart-1: 40 55% 44%;
+-  --chart-2: 180 70% 42%;
+-  --chart-3: 140 65% 40%;
+-  --chart-4: 300 55% 45%;
+-  --chart-5: 220 65% 55%;
++  /* monochrome chart palette (navy + gold only) */
++  --chart-1: 218 42% 14%;
++  --chart-2: 40 55% 44%;
++  --chart-3: 218 20% 24%;
++  --chart-4: 218 15% 34%;
++  --chart-5: 218 10% 44%;
+*** End Patch

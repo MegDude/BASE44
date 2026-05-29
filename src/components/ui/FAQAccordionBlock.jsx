@@ -63,7 +63,7 @@ export default function FAQAccordionBlock({
   const isSplit = styleVariant === "split";
 
   const sectionBg = isDark
-    ? "bg-[hsl(218,42%,12%)] text-[hsl(42,18%,92%)]"
+    ? "bg-[#081521] text-[#F7F8FB]"
     : "bg-background";
 
   const AccordionList = (
@@ -91,7 +91,7 @@ export default function FAQAccordionBlock({
   return (
     <section
       ref={ref}
-      className={`py-14 px-6 border-t border-border/40 ${sectionBg}`}
+      className={`py-14 px-5 border-t border-border/40 ${sectionBg}`}
     >
       <div className="max-w-5xl mx-auto">
         {isSplit ? (
@@ -108,11 +108,11 @@ export default function FAQAccordionBlock({
                   {sectionEyebrow}
                 </span>
               )}
-              <h2 className={`font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight mb-5 ${isDark ? "text-[hsl(42,18%,92%)]" : "text-foreground"}`}>
+              <h2 className={`font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-normal mb-5 ${isDark ? "text-[#F7F8FB]" : "text-foreground"}`}>
                 {sectionTitle}
               </h2>
               {sectionIntro && (
-                <p className={`text-[13px] leading-relaxed mb-8 ${isDark ? "text-[hsl(42,18%,70%)]" : "text-muted-foreground"}`}>
+                <p className={`text-[13px] leading-relaxed mb-8 ${isDark ? "text-[rgba(255,255,255,0.70)]" : "text-muted-foreground"}`}>
                   {sectionIntro}
                 </p>
               )}
@@ -138,11 +138,11 @@ export default function FAQAccordionBlock({
                 </span>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                <h2 className={`font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight ${isDark ? "text-[hsl(42,18%,92%)]" : "text-foreground"}`}>
+                <h2 className={`font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-normal ${isDark ? "text-[#F7F8FB]" : "text-foreground"}`}>
                   {sectionTitle}
                 </h2>
                 {sectionIntro && (
-                  <p className={`text-[13px] leading-relaxed ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
+                  <p className={`text-[13px] leading-relaxed ${isDark ? "text-[rgba(255,255,255,0.65)]" : "text-muted-foreground"}`}>
                     {sectionIntro}
                   </p>
                 )}
@@ -177,16 +177,16 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
     ? `rounded-xl border transition-all duration-300 overflow-hidden ${
         isOpen
           ? isDark
-            ? "border-primary/30 bg-[hsl(218,36%,16%)] shadow-md shadow-black/20"
-            : "border-primary/20 bg-card shadow-md shadow-black/5"
+            ? "border-white/10 bg-[#0B1F33] shadow-[0_16px_44px_rgba(11,31,51,0.16)]"
+            : "border-[#0B1F33]/8 bg-card shadow-[0_12px_40px_rgba(11,31,51,0.05)]"
           : isDark
-            ? "border-[hsl(218,24%,20%)] bg-[hsl(218,36%,14%)]"
+            ? "border-white/10 bg-[#0B1F33]/72"
             : "border-border/50 bg-card/60 hover:border-border"
       }`
     : `transition-colors ${isOpen && !isDark ? "bg-muted/30 rounded-lg" : ""}`;
 
   const qColor = isDark
-    ? isOpen ? "text-[hsl(40,62%,56%)]" : "text-[hsl(42,18%,88%)]"
+    ? isOpen ? "text-[#B38F4F]" : "text-[#F7F8FB]"
     : isOpen ? "text-primary" : "text-foreground";
 
   const numColor = isDark ? "text-primary/50" : "text-primary/40";
@@ -203,7 +203,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
         onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onToggle(); } }}
         aria-expanded={isOpen}
         className={`w-full flex items-center gap-4 text-left transition-colors ${
-          isCard ? "px-6 py-4" : "px-2 py-4"
+          isCard ? "px-5 py-4" : "px-2 py-4"
         } group`}
       >
         {/* Number badge */}
@@ -229,7 +229,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
         <span className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
           isOpen
             ? isDark ? "bg-primary/20 text-primary" : "bg-primary/10 text-primary"
-            : isDark ? "bg-[hsl(218,24%,22%)] text-[hsl(42,18%,55%)]" : "bg-muted text-muted-foreground"
+            : isDark ? "bg-white/10 text-[rgba(255,255,255,0.55)]" : "bg-muted text-muted-foreground"
         }`}>
           <motion.div
             animate={{ rotate: isOpen ? 45 : 0 }}
@@ -251,8 +251,8 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
             transition={{ height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }, opacity: { duration: 0.2 } }}
             className="overflow-hidden"
           >
-            <div className={`${isCard ? "px-6 pb-4" : "px-2 pb-4"} ${showNumber ? "pl-11" : ""}`}>
-              <p className={`text-[13px] leading-relaxed ${isDark ? "text-[hsl(42,18%,65%)]" : "text-muted-foreground"}`}>
+            <div className={`${isCard ? "px-5 pb-4" : "px-2 pb-4"} ${showNumber ? "pl-11" : ""}`}>
+              <p className={`text-[13px] leading-relaxed ${isDark ? "text-[rgba(255,255,255,0.65)]" : "text-muted-foreground"}`}>
                 {item.answer}
               </p>
               {item.linkLabel && item.linkHref && (
@@ -275,7 +275,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
 
 function CTAButton({ label, href, isDark }) {
   const isExternal = href.startsWith("http") || href.startsWith("mailto");
-  const cls = `inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-sm transition-all ${
+  const cls = `inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-[13px] transition-all ${
     isDark
       ? "bg-primary text-primary-foreground hover:bg-primary/90"
       : "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border"

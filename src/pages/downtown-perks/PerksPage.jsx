@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Tag, Sparkles, Gift } from "lucide-react";
+import { Sparkles, Gift } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function PerksPage() {
@@ -19,17 +19,17 @@ export default function PerksPage() {
   const active = perks.filter((p) => p.status === "active");
 
   return (
-    <div className="pt-24 pb-20 px-6 min-h-screen">
+    <div className="pt-24 pb-20 px-5 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <span className="text-primary text-sm font-medium uppercase tracking-widest">
+          <span className="text-primary text-[13px] font-medium uppercase tracking-widest">
             Members Only
           </span>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mt-2 mb-4">
+          <h1 className="font-heading text-4xl md:text-4xl font-bold mt-2 mb-4">
             Your Perks
           </h1>
           <p className="text-muted-foreground text-lg max-w-xl">
@@ -50,7 +50,7 @@ export default function PerksPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className="group rounded-2xl border border-border bg-card p-6 hover:border-primary/30 transition-all duration-300"
+                className="group rounded-lg border border-border bg-card p-6 hover:border-primary/30 transition-all duration-300"
               >
                 <div className="flex items-center justify-between mb-4">
                   <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium capitalize">
@@ -60,7 +60,7 @@ export default function PerksPage() {
                 </div>
 
                 <h3 className="font-heading text-lg font-bold mb-1">{perk.title}</h3>
-                <p className="text-muted-foreground text-sm mb-1">{perk.venue_name}</p>
+                <p className="text-muted-foreground text-[13px] mb-1">{perk.venue_name}</p>
 
                 <div className="mt-4 p-3 rounded-xl bg-primary/5 border border-primary/10">
                   <span className="text-primary font-heading font-bold text-xl">
@@ -84,9 +84,9 @@ export default function PerksPage() {
           </div>
         ) : (
           <div className="text-center py-20">
-            <Sparkles className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <Sparkles className="w-12 h-10 text-muted-foreground mx-auto mb-4" />
             <h3 className="font-heading text-xl font-bold mb-2">Perks Coming Soon</h3>
-            <p className="text-muted-foreground text-sm max-w-sm mx-auto">
+            <p className="text-muted-foreground text-[13px] max-w-sm mx-auto">
               We're partnering with the best local businesses to bring you
               exclusive member offers. Stay tuned.
             </p>

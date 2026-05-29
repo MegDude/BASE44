@@ -28,7 +28,7 @@ export default function SystemSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-28 px-6 border-t border-border/40">
+    <section ref={ref} className="py-28 px-5 border-t border-border/40">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
@@ -41,7 +41,7 @@ export default function SystemSection() {
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
               The System
             </span>
-            <h2 className="font-heading text-4xl md:text-5xl font-medium leading-[1.1] tracking-tight">
+            <h2 className="font-heading text-4xl md:text-4xl font-medium leading-[1.1] tracking-normal">
               Three layers.
               <br />
               <em className="text-primary">Never unified.</em>
@@ -51,7 +51,7 @@ export default function SystemSection() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground text-base leading-relaxed md:pb-1"
+            className="text-muted-foreground text-[14px] leading-relaxed md:pb-1"
           >
             The map is the interface. The system is the product. Awareness, access, and alignment — built into a single neighborhood layer.
           </motion.p>
@@ -65,7 +65,7 @@ export default function SystemSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
-              className="py-8 md:px-8 first:pl-0 last:pr-0 group"
+              className="py-8 md:px-5 first:pl-0 last:pr-0 group"
             >
               <div className="w-9 h-9 rounded-full border border-border flex items-center justify-center mb-5 group-hover:border-primary/40 transition-colors">
                 <pillar.icon className="w-4 h-4 text-primary" />

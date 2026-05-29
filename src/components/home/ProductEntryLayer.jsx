@@ -43,21 +43,21 @@ export default function ProductEntryLayer() {
   const navigate = useNavigate();
 
   const handlePromptClick = (prompt) => {
-    navigate(`/downtown-perks/explore?q=${encodeURIComponent(prompt)}`);
+    navigate(`/map?mode=resident&tab=map&q=${encodeURIComponent(prompt)}`);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/downtown-perks/explore?q=${encodeURIComponent(searchQuery)}`);
+    navigate(`/map?mode=resident&tab=map&q=${encodeURIComponent(searchQuery)}`);
     setSearchQuery("");
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#f8f5ef] pt-[68px] pb-12">
-      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[#cfaf5a]/[0.06] blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[hsl(218,42%,14%)]/[0.035] blur-3xl" />
+    <section className="relative overflow-hidden bg-[#F7F8FB] pt-[68px] pb-12">
+      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[#0B1F33]/[0.06] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[#0B1F33]/[0.035] blur-3xl" />
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-6xl px-5">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,15 +65,15 @@ export default function ProductEntryLayer() {
           className="text-center"
         >
           <div className="mx-auto max-w-3xl">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[hsl(218,18%,42%)]">
+            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[#425466]">
               Live downtown context
             </p>
 
-            <h2 className="font-heading text-4xl font-medium leading-[1.02] tracking-[-0.04em] text-[hsl(218,42%,14%)] md:text-[56px]">
+            <h2 className="font-heading text-4xl font-medium leading-[1.02] tracking-normal text-[#0B1F33] md:text-[56px]">
               The operating system for downtown life.
             </h2>
 
-            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[hsl(218,16%,42%)]">
+            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#425466]">
               Open one map. See what is nearby. Decide faster and go.
             </p>
           </div>
@@ -93,11 +93,11 @@ export default function ProductEntryLayer() {
               <div
                 className={`flex items-center gap-3 rounded-[20px] border px-5 py-4 transition-all ${
                   isFocused
-                    ? "border-[#cfaf5a]/45 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.10)]"
-                    : "border-[hsl(218,18%,86%)] bg-white/88 shadow-[0_10px_24px_rgba(15,23,42,0.05)]"
+                    ? "border-[#0B1F33]/10 bg-white shadow-[0_18px_40px_rgba(11,31,51,0.06)]"
+                    : "border-[#0B1F33]/8 bg-white/88 shadow-[0_10px_24px_rgba(11,31,51,0.04)]"
                 }`}
               >
-                <Search className="h-5 w-5 text-[hsl(218,14%,52%)]" />
+                <Search className="h-5 w-5 text-[#425466]/72" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -105,15 +105,15 @@ export default function ProductEntryLayer() {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   placeholder="Ask the map..."
-                  className="flex-1 bg-transparent text-[15px] text-[hsl(218,42%,14%)] outline-none placeholder:text-[hsl(218,12%,58%)]"
+                  className="flex-1 bg-transparent text-[15px] text-[#0B1F33] outline-none placeholder:text-[#425466]/58"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="rounded-full p-1 transition-colors hover:bg-[hsl(218,18%,94%)]"
+                    className="rounded-full p-1 transition-colors hover:bg-[#F7F8FB]"
                   >
-                    <X className="h-4 w-4 text-[hsl(218,12%,52%)]" />
+                    <X className="h-4 w-4 text-[#425466]/72" />
                   </button>
                 )}
               </div>
@@ -130,7 +130,7 @@ export default function ProductEntryLayer() {
               <button
                 key={prompt}
                 onClick={() => handlePromptClick(prompt)}
-                className="rounded-full border border-[hsl(218,18%,86%)] bg-white px-4 py-2 text-sm font-medium text-[hsl(218,32%,20%)] transition-all duration-200 hover:border-[#cfaf5a]/40 hover:bg-[#cfaf5a]/[0.06]"
+                className="rounded-full border border-[#0B1F33]/8 bg-white px-4 py-2 text-[13px] font-medium text-[#0B1F33] transition-all duration-200 hover:border-[#0B1F33]/10 hover:bg-[#0B1F33]/[0.04]"
               >
                 {prompt}
               </button>
@@ -145,12 +145,12 @@ export default function ProductEntryLayer() {
           className="mt-10"
         >
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h3 className="text-sm font-medium text-[hsl(218,16%,44%)]">Selected nearby</h3>
+            <h3 className="text-[13px] font-medium text-[#425466]">Selected nearby</h3>
             <button
-              onClick={() => navigate("/downtown-perks/explore")}
-              className="inline-flex items-center gap-1 text-sm font-medium text-[hsl(218,42%,14%)] transition-opacity hover:opacity-70"
+              onClick={() => navigate("/map?mode=resident&tab=map")}
+              className="inline-flex items-center gap-1 text-[13px] font-medium text-[#0B1F33] transition-opacity hover:opacity-70"
             >
-              Open map
+              Open the Map
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -159,21 +159,21 @@ export default function ProductEntryLayer() {
             {NEARBY_CARDS.map((card) => (
               <button
                 key={card.name}
-                onClick={() => navigate("/downtown-perks/explore")}
-                className="rounded-[22px] border border-[hsl(218,18%,88%)] bg-white p-4 text-left shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[#cfaf5a]/35 hover:shadow-[0_16px_32px_rgba(15,23,42,0.08)]"
+                onClick={() => navigate("/map?mode=resident&tab=map")}
+                className="rounded-[16px] border border-[#0B1F33]/8 bg-white p-4 text-left shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[#0B1F33]/10 hover:shadow-[0_16px_42px_rgba(11,31,51,0.06)]"
               >
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <div>
-                    <h4 className="text-sm font-semibold text-[hsl(218,42%,14%)]">{card.name}</h4>
-                    <p className="text-xs text-[hsl(218,12%,52%)]">{card.distance}</p>
+                    <h4 className="text-[13px] font-semibold text-[#0B1F33]">{card.name}</h4>
+                    <p className="text-xs text-[#425466]/72">{card.distance}</p>
                   </div>
-                  <MapPin className="h-4 w-4 shrink-0 text-[#cfaf5a]" />
+                  <MapPin className="h-4 w-4 shrink-0 text-[#B38F4F]" />
                 </div>
 
-                <p className="mb-3 text-xs leading-5 text-[hsl(218,14%,44%)]">{card.line}</p>
+                <p className="mb-3 text-xs leading-5 text-[#425466]">{card.line}</p>
 
                 {card.perk && (
-                  <div className="inline-flex rounded-full bg-[#cfaf5a]/[0.10] px-2.5 py-1 text-[10px] font-medium text-[hsl(218,42%,14%)]">
+                  <div className="inline-flex rounded-full bg-[#0B1F33]/[0.08] px-2.5 py-1 text-[10px] font-medium text-[#0B1F33]">
                     {card.perk}
                   </div>
                 )}
@@ -186,12 +186,12 @@ export default function ProductEntryLayer() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.28 }}
-          className="mt-10 grid grid-cols-3 gap-4 border-y border-[hsl(218,18%,88%)] py-7"
+          className="mt-10 grid grid-cols-3 gap-4 border-y border-[#0B1F33]/8 py-7"
         >
           {PROOF_METRICS.map((metric) => (
             <div key={metric.label} className="text-center">
-              <div className="text-2xl font-bold text-[hsl(218,42%,14%)] md:text-3xl">{metric.value}</div>
-              <div className="mt-1 text-xs text-[hsl(218,12%,50%)] md:text-sm">{metric.label}</div>
+              <div className="text-2xl font-bold text-[#0B1F33] md:text-3xl">{metric.value}</div>
+              <div className="mt-1 text-xs text-[#425466]/72 md:text-[13px]">{metric.label}</div>
             </div>
           ))}
         </motion.div>
@@ -204,14 +204,14 @@ export default function ProductEntryLayer() {
         >
           <button
             onClick={() => navigate("/downtown-perks/card")}
-            className="rounded-[16px] bg-[hsl(218,42%,14%)] px-8 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(15,23,42,0.14)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_14px_28px_rgba(15,23,42,0.18)]"
+            className="rounded-[12px] bg-[#0B1F33] px-5 py-2.5 text-[13px] font-medium text-white shadow-[0_12px_30px_rgba(11,31,51,0.10)] transition-all duration-200 hover:-translate-y-[1px] hover:bg-[#081521] hover:shadow-[0_16px_34px_rgba(11,31,51,0.12)]"
           >
             Get Your Card
           </button>
 
           <button
-            onClick={() => navigate("/downtown-perks/explore")}
-            className="rounded-[16px] border border-[hsl(218,18%,84%)] bg-white px-8 py-3 text-sm font-medium text-[hsl(218,42%,14%)] transition-all duration-200 hover:bg-[hsl(42,24%,97%)]"
+            onClick={() => navigate("/map?mode=resident&tab=map")}
+            className="rounded-[12px] border border-[#0B1F33]/8 bg-white px-5 py-2.5 text-[13px] font-medium text-[#0B1F33] transition-all duration-200 hover:bg-[#F7F8FB]"
           >
             Explore the Map
           </button>

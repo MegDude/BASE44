@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, QrCode, CalendarDays, Trophy, Volume2 } from "lucide-react";
+import { MapPin, Users, TrendingUp, QrCode, Trophy, Volume2 } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -13,7 +13,7 @@ const demo = (
         { title: "Post-match at Bangers — members discount", sub: "Tonight only · Show your card at the door" },
       ]}
     />
-    <div className="rounded-2xl border border-border bg-card p-7">
+    <div className="rounded-lg border border-border bg-card p-7">
       <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-5">Match Day District Flow</div>
       <div className="space-y-4">
         {[
@@ -26,7 +26,7 @@ const demo = (
               <span className="text-primary font-heading font-bold text-xs">{s.step}</span>
             </div>
             <div>
-              <div className="text-sm font-medium">{s.label}</div>
+              <div className="text-[13px] font-medium">{s.label}</div>
               <div className="text-xs text-muted-foreground">{s.sub}</div>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function AustinFC() {
                 className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
                 <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

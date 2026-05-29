@@ -15,28 +15,24 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)'
       },
       letterSpacing: {
-        tightest: '-0.04em',
-        tighter: '-0.02em',
+        tightest: '0',
+        tighter: '0',
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         gold: {
-          DEFAULT: 'hsl(40, 62%, 46%)',
-          light: 'hsl(40, 62%, 62%)',
-          dark: 'hsl(40, 62%, 34%)',
-          muted: 'hsl(40, 36%, 56%)',
+          DEFAULT: '#B38F4F',
+          light: '#B38F4F',
+          dark: '#B38F4F',
+          muted: '#B38F4F',
         },
         navy: {
-          DEFAULT: 'hsl(218, 42%, 14%)',
+          DEFAULT: '#0B1F33',
+          deep: 'hsl(218, 38%, 10%)',
           light: 'hsl(218, 30%, 22%)',
-          mid: 'hsl(218, 28%, 32%)',
-          pale: 'hsl(218, 30%, 92%)',
-        },
-        cream: {
-          DEFAULT: 'hsl(42, 24%, 96%)',
-          warm: 'hsl(40, 20%, 94%)',
-          deep: 'hsl(40, 18%, 88%)',
+          mid: 'hsl(218, 20%, 38%)',
+          pale: '#F7F8FB',
         },
         card: {
           DEFAULT: 'hsl(var(--card))',

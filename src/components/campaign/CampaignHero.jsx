@@ -17,7 +17,7 @@ export default function CampaignHero({
   previewContent,
 }) {
   return (
-    <section className="pt-32 pb-16 px-6 relative overflow-hidden">
+    <section className="pt-32 pb-16 px-5 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Left: copy + proof */}
@@ -25,23 +25,23 @@ export default function CampaignHero({
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
               {eyebrow}
             </span>
-            <h1 className="font-heading text-4xl md:text-5xl font-medium leading-[1.05] tracking-tight mb-5">
+            <h1 className="font-heading text-4xl md:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
               {headline}
             </h1>
-            <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">{description}</p>
+            <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">{description}</p>
 
             {/* CTA row */}
             <div className="flex flex-wrap gap-3 mb-8">
               <a
                 href={ctaHref || '#'}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all shadow-md shadow-primary/15"
               >
                 {cta} <ArrowRight className="w-4 h-4" />
               </a>
               {secondaryCta && (
                 <a
                   href={secondaryCtaHref || '#'}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all"
                 >
                   {secondaryCta}
                 </a>

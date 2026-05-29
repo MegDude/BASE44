@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
 import { ArrowRight, MapPin, ArrowLeft, TrendingUp, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AnalyticsKPICard from '@/components/analytics/AnalyticsKPICard';
@@ -9,15 +8,15 @@ import AnalyticsFunnel from '@/components/analytics/AnalyticsFunnel';
 import AnalyticsAttributionTable from '@/components/analytics/AnalyticsAttributionTable';
 
 const CAMPAIGN_FORMATS = [
-  { id: 'founding', label: 'Founding Partner', icon: '🏆', color: 'from-amber-500 to-orange-500' },
-  { id: 'launch', label: 'Launch Campaign', icon: '🚀', color: 'from-blue-500 to-cyan-500' },
-  { id: 'resident', label: 'Resident Activation', icon: '👥', color: 'from-purple-500 to-pink-500' },
-  { id: 'event', label: 'Event-Led Campaign', icon: '📍', color: 'from-green-500 to-emerald-500' },
+  { id: 'founding', label: 'Founding Partner', icon: '🏆', color: 'from-[#0B1F33] to-[#0B1F33]' },
+  { id: 'launch', label: 'Launch Campaign', icon: '🚀', color: 'from-[#0B1F33] to-[#0B1F33]' },
+  { id: 'resident', label: 'Resident Activation', icon: '👥', color: 'from-[#081521] to-[#0B1F33]' },
+  { id: 'event', label: 'Event-Led Campaign', icon: '📍', color: 'from-[#0B1F33] to-[#0B1F33]' },
   { id: 'utility', label: 'Utility Campaign', icon: '✨', color: 'from-indigo-500 to-violet-500' }
 ];
 
 const VENUE_PERFORMANCE = [
-  { name: 'Fine Eyewear', district: 'Rainey', traffic: 1240, peakTime: '6–8pm', trend: 'up' },
+  { name: 'Legends Real Estate', district: 'Rainey', traffic: 1240, peakTime: '6–8pm', trend: 'up' },
   { name: 'Hotel Van Zandt', district: 'Rainey', traffic: 840, peakTime: '7–9am', trend: 'up' },
   { name: 'The Quincy', district: 'Congress', traffic: 620, peakTime: '5–7pm', trend: 'stable' },
   { name: 'Waterloo Greenway', district: 'Seaholm', traffic: 560, peakTime: '10am–12pm', trend: 'up' }
@@ -86,7 +85,7 @@ export default function BrandAnalytics() {
     // Set default brand (can be customized via params)
     const brandSlug = searchParams.get('brand');
     if (brandSlug) {
-      setBrand({ slug: brandSlug, name: 'Fine Eyewear' });
+      setBrand({ slug: brandSlug, name: 'Legends Real Estate' });
     } else {
       setBrand({ slug: 'all-brands', name: 'All Brands' });
     }
@@ -121,7 +120,7 @@ export default function BrandAnalytics() {
   return (
     <div className="min-h-screen bg-background">
       {/* ── HERO SECTION (Campaign Intelligence Layer) ──────────────────────── */}
-      <section className="border-b border-border/40 bg-gradient-to-br from-background to-muted/20 py-12 px-6">
+      <section className="border-b border-border/40 bg-gradient-to-br from-background to-muted/20 py-12 px-5">
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Link to="/partners/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-6 group">
@@ -129,7 +128,7 @@ export default function BrandAnalytics() {
               Campaign Formats
             </Link>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Campaign Proof Layer</span>
-            <h1 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-3">
+            <h1 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">
               See what downtown campaign behavior is actually converting.
             </h1>
             <p className="text-muted-foreground text-[15px] max-w-2xl leading-relaxed mb-6">
@@ -151,17 +150,17 @@ export default function BrandAnalytics() {
                 <span className="text-[11px] text-muted-foreground">Placement types</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B38F4F]" />
                 <span className="text-[11px] text-muted-foreground">Live now</span>
               </div>
             </div>
 
             {/* CTA row */}
             <div className="flex flex-wrap gap-3">
-              <Link to="/partners/brands" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
+              <Link to="/partners/brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 View campaign formats <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground font-medium text-sm hover:bg-muted/30 transition-all">
+              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 Plan a campaign
               </button>
             </div>
@@ -170,7 +169,7 @@ export default function BrandAnalytics() {
       </section>
 
       {/* ── CAMPAIGN FORMAT FILTER RAIL ────────────────────────────────────── */}
-      <section className="border-b border-border/40 bg-muted/10 px-6 py-6 sticky top-[68px] z-30">
+      <section className="border-b border-border/40 bg-muted/10 px-5 py-6 sticky top-[68px] z-30">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 overflow-x-auto pb-0.5">
             {CAMPAIGN_FORMATS.map(fmt => (
@@ -211,7 +210,7 @@ export default function BrandAnalytics() {
       </section>
 
       {/* ── MAIN CONTENT ───────────────────────────────────────────────────── */}
-      <section className="py-12 px-6">
+      <section className="py-12 px-5">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* ── SIDEBAR: FILTERS ──────────────────────────────────────── */}
@@ -245,7 +244,7 @@ export default function BrandAnalytics() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="rounded-2xl border border-border/50 bg-card/40 p-6 md:p-8"
+                className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <AnalyticsFunnel data={analytics.funnel} />
               </motion.div>
@@ -255,7 +254,7 @@ export default function BrandAnalytics() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="rounded-2xl border border-border/50 bg-card/40 p-6 md:p-8"
+                className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <div>
                   <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
@@ -284,7 +283,7 @@ export default function BrandAnalytics() {
                           <span className="text-[13px] font-medium text-foreground">{p.name}</span>
                           <span className="text-[11px] text-muted-foreground ml-2">{p.type}</span>
                         </div>
-                        <span className={`text-[11px] font-medium ${p.trend === 'up' ? 'text-green-600' : 'text-muted-foreground'}`}>
+                        <span className={`text-[11px] font-medium ${p.trend === 'up' ? 'text-[#B38F4F]' : 'text-muted-foreground'}`}>
                           {p.trend === 'up' ? '+12%' : 'Stable'}
                         </span>
                       </div>
@@ -293,7 +292,7 @@ export default function BrandAnalytics() {
                           initial={{ width: 0 }}
                           animate={{ width: `${p.intensity}%` }}
                           transition={{ duration: 0.8, delay: 0.35 + idx * 0.05 }}
-                          className="h-full rounded-full bg-gradient-to-r from-blue-400 to-primary"
+                          className="h-full rounded-full bg-gradient-to-r from-[#0B1F33] to-[#0B1F33]"
                         />
                       </div>
                     </motion.div>
@@ -315,7 +314,7 @@ export default function BrandAnalytics() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 }}
-                className="rounded-2xl border border-border/50 bg-card/40 p-6 md:p-8"
+                className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <div className="mb-6">
                   <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
@@ -341,7 +340,7 @@ export default function BrandAnalytics() {
                           <div className="text-[11px] text-muted-foreground">{v.district}</div>
                         </div>
                         <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
-                          v.trend === 'up' ? 'bg-green-500/10 text-green-600' : 'bg-muted/50 text-muted-foreground'
+                          v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#B38F4F]' : 'bg-muted/50 text-muted-foreground'
                         }`}>
                           {v.trend === 'up' ? '+18%' : 'Stable'}
                         </span>
@@ -366,7 +365,7 @@ export default function BrandAnalytics() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.38 }}
-                className="rounded-2xl border border-border/50 bg-card/40 p-6 md:p-8"
+                className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <div className="mb-6">
                   <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
@@ -391,7 +390,7 @@ export default function BrandAnalytics() {
                           <div className="font-medium text-foreground text-[13px]">{e.name}</div>
                           <div className="text-[11px] text-muted-foreground">{e.type} Campaign</div>
                         </div>
-                        <span className="text-[12px] font-semibold text-green-600">{e.lift}</span>
+                        <span className="text-[12px] font-semibold text-[#B38F4F]">{e.lift}</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-[12px]">
                         <div className="space-y-0.5">
@@ -417,7 +416,7 @@ export default function BrandAnalytics() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.41 }}
-                className="rounded-2xl border border-border/50 bg-card/40 p-6 md:p-8"
+                className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <AnalyticsAttributionTable data={analytics.attribution} />
               </motion.div>
@@ -466,7 +465,7 @@ export default function BrandAnalytics() {
                       <span className="text-[11px] font-semibold text-primary">Next step</span>
                     </div>
                     <p className="text-[13px] text-foreground leading-relaxed">
-                      Fine Eyewear and Hotel Van Zandt are your strongest venues. Consider expanding utility-led support in Congress district.
+                      Legends Real Estate and Hotel Van Zandt are your strongest partners. Consider expanding utility-led support in Congress district.
                     </p>
                   </div>
                 </div>
@@ -477,12 +476,12 @@ export default function BrandAnalytics() {
       </section>
 
       {/* ── CTA SECTION (Campaign Planning) ────────────────────────────────── */}
-      <section className="border-t border-border/40 py-12 px-6 bg-muted/20">
+      <section className="border-t border-border/40 py-12 px-5 bg-muted/20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Ready to Invest</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight mb-3">
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal mb-3">
                 Plan your next campaign.
               </h2>
               <p className="text-muted-foreground text-[14px] leading-relaxed">
@@ -490,10 +489,10 @@ export default function BrandAnalytics() {
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-3">
-              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">
+              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 Plan a campaign <ArrowRight className="w-4 h-4" />
               </button>
-              <Link to="/partners/brands" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground font-medium text-sm hover:bg-muted/30 transition-all">
+              <Link to="/partners/brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 View campaign formats
               </Link>
             </div>

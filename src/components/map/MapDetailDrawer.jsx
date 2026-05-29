@@ -7,14 +7,16 @@
  */
 
 import { motion } from 'framer-motion';
-import { X, MapPin, Clock, Star, ChevronRight, Share2, ExternalLink, Zap } from 'lucide-react';
+import { X, MapPin, Clock, Star, ChevronRight, Share2, ExternalLink, Zap, ArrowLeft } from 'lucide-react';
 import WhyThisChip from './WhyThisChip';
 import { trackingEvents } from '@/lib/analytics/track';
 import { useResidentStore } from '@/store/resident-store';
+import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 
 export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   const { history, addSaved, removeSaved } = useResidentStore();
   const isSaved = history.saved.includes(entity.id);
+  const pin = resolveEntityPin(entity);
 
   const handleSave = () => {
     if (isSaved) {
@@ -43,17 +45,28 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
     >
       {/* Header */}
       <div className="p-5 pb-4 border-b border-border/40 flex-shrink-0">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <button
+            onClick={onClose}
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border/50 bg-card px-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/70 transition-colors hover:bg-muted/50"
+            aria-label="Back to map results"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back
+          </button>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-lg border border-border/50 bg-card flex items-center justify-center hover:bg-muted/50 transition-colors shrink-0"
+            aria-label="Close drawer"
+          >
+            <X className="w-4 h-4 text-foreground/60" />
+          </button>
+        </div>
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
             {reason && <WhyThisChip reason={reason} distance={distance} variant="header" />}
             <h2 className="text-[20px] font-heading font-medium text-foreground leading-tight mt-2 truncate">{entity.name}</h2>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-lg border border-border/50 bg-card flex items-center justify-center hover:bg-muted/50 transition-colors shrink-0"
-          >
-            <X className="w-4 h-4 text-foreground/60" />
-          </button>
         </div>
 
         {/* Subtitle */}
@@ -64,10 +77,11 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
-        {/* Image */}
-        {entity.image_url && (
-          <img src={entity.image_url} alt={entity.name} className="w-full aspect-[2/1] object-cover" />
-        )}
+        <div className="flex aspect-[2/1] w-full items-center justify-center border-b border-[#0B1F33]/8 bg-[#F7F8FB]">
+          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-[#B38F4F]/50 bg-[#0B1F33] text-xl font-semibold text-[#B38F4F]">
+            <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
+          </div>
+        </div>
 
         <div className="p-5 space-y-4">
           {/* Context block */}
@@ -95,15 +109,15 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {(entity.isActive || entity.rsvp_count) && (
             <div className="space-y-2">
               {entity.isActive && (
-                <div className="flex items-center gap-2 p-2 rounded-lg bg-green-50 border border-green-200">
-                  <Zap className="w-4 h-4 text-green-600" />
-                  <span className="text-[12px] font-medium text-green-700">Open now</span>
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-[#F7F8FB]/35 border border-[#B38F4F]/30">
+                  <Zap className="w-4 h-4 text-[#B38F4F]" />
+                  <span className="text-[12px] font-medium text-[#0B1F33]">Open now</span>
                 </div>
               )}
               {entity.rsvp_count && (
-                <div className="flex items-center gap-2 p-2 rounded-lg bg-blue-50 border border-blue-200">
-                  <ChevronRight className="w-4 h-4 text-blue-600" />
-                  <span className="text-[12px] font-medium text-blue-700">{entity.rsvp_count} people going</span>
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-[#F7F8FB] border border-[#0B1F33]/8">
+                  <ChevronRight className="w-4 h-4 text-[#B38F4F]" />
+                  <span className="text-[12px] font-medium text-[#0B1F33]">{entity.rsvp_count} people going</span>
                 </div>
               )}
             </div>
@@ -147,7 +161,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
             href={entity.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full h-11 rounded-lg bg-foreground text-background font-medium text-[13px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors"
+            className="w-full h-10 rounded-lg bg-foreground text-background font-medium text-[13px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             {entity._type === 'event' ? 'View event' : 'Visit website'}
@@ -155,7 +169,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         ) : (
           <button
             onClick={handleDirections}
-            className="w-full h-11 rounded-lg bg-foreground text-background font-medium text-[13px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors"
+            className="w-full h-10 rounded-lg bg-foreground text-background font-medium text-[13px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors"
           >
             <MapPin className="w-4 h-4" />
             Get directions

@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Hotel, UtensilsCrossed, Megaphone, Landmark } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const TIER_ICONS = { Properties: Building2, Hotels: Hotel, Venues: UtensilsCrossed, Brands: Megaphone, Civic: Landmark };
 
@@ -53,7 +54,7 @@ export default function PricingSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-[hsl(218,20%,88%)] bg-[hsl(42,24%,96%)]">
+    <section ref={ref} className="py-14 md:py-20 px-5 border-t border-[#0B1F33]/8 bg-[#F7F8FB]">
       <div className="max-w-4xl mx-auto">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12 items-end">
@@ -65,7 +66,7 @@ export default function PricingSection() {
             <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
               Pricing
             </span>
-            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-tight text-foreground">
+            <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
               Spend less.
               <br />
               <em className="text-primary">Do more.</em>
@@ -84,28 +85,44 @@ export default function PricingSection() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-          {tiers.map((tier, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
-              className="group p-5 rounded-lg border border-[hsl(218,20%,88%)] bg-white hover:border-primary/30 hover:shadow-[0_4px_14px_rgba(14,28,54,.06)] transition-all shadow-[0_1px_4px_rgba(14,28,54,.04)] cursor-pointer"
-              onClick={() => {}}
-            >
-              {(() => { const Icon = TIER_ICONS[tier.label]; return Icon ? <Icon className="w-4 h-4 text-primary/60 mb-3" /> : null; })()}
-              <div className="font-heading font-medium text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>
-              <div className="text-[11px] text-foreground/45 mb-3">{tier.sub}</div>
-              <div className="font-heading font-medium text-primary text-[13px] mb-1">{tier.price}</div>
-              <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
-              <div className="text-[11px] text-foreground/45 italic leading-relaxed mb-3">{tier.detail}</div>
-              <Link to={tier.href} className="text-[11px] text-primary font-medium hover:underline underline-offset-4">
-                Learn more →
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+        <Carousel
+          opts={{ align: "start", loop: false }}
+          className="relative"
+          aria-label="Partner pricing options"
+        >
+          <div className="mb-4 flex justify-end gap-2">
+            <CarouselPrevious
+              aria-label="Previous pricing option"
+              className="static h-8 w-8 translate-x-0 translate-y-0 rounded-[6px] border-[#0B1F33]/8 bg-white shadow-[0_14px_34px_rgba(11,31,51,0.04)]"
+            />
+            <CarouselNext
+              aria-label="Next pricing option"
+              className="static h-8 w-8 translate-x-0 translate-y-0 rounded-[6px] border-[#0B1F33]/8 bg-white shadow-[0_14px_34px_rgba(11,31,51,0.04)]"
+            />
+          </div>
+          <CarouselContent className="-ml-3">
+            {tiers.map((tier, i) => (
+              <CarouselItem key={i} className="pl-3 basis-[84%] sm:basis-[52%] lg:basis-[32%]">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
+                  className="group flex h-full min-h-[232px] flex-col rounded-[6px] border border-[#0B1F33]/8 bg-white/82 p-5 shadow-[0_14px_34px_rgba(11,31,51,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#B38F4F]/50 hover:shadow-[0_18px_48px_rgba(11,31,51,0.06)]"
+                >
+                  {(() => { const Icon = TIER_ICONS[tier.label]; return Icon ? <Icon className="w-4 h-4 text-primary/60 mb-3" /> : null; })()}
+                  <div className="font-heading font-medium text-[13px] text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>
+                  <div className="text-[11px] text-foreground/45 mb-3">{tier.sub}</div>
+                  <div className="font-heading font-medium text-primary text-[13px] mb-1">{tier.price}</div>
+                  <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
+                  <div className="text-[11px] text-foreground/45 italic leading-relaxed mb-3">{tier.detail}</div>
+                  <Link to={tier.href} className="mt-auto text-[11px] text-primary font-medium hover:underline underline-offset-4">
+                    Learn more →
+                  </Link>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -115,7 +132,7 @@ export default function PricingSection() {
         >
           <Link
             to="/partners"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all duration-300"
+            className="inline-flex h-10 items-center gap-2 rounded-[6px] bg-[#0B1F33] px-5 text-[13px] font-medium text-white transition-all duration-300 hover:bg-[#081521]"
           >
             Explore all partner types <ArrowRight className="w-3.5 h-3.5" />
           </Link>

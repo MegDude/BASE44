@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
 
 export default function QRCodeModal({ item, onClose, onSuccess }) {
@@ -50,8 +50,17 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white rounded-3xl p-6 max-w-sm w-full mx-4 relative"
+        className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 relative"
       >
+        <button
+          onClick={onClose}
+          className="absolute left-4 top-4 inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/70 transition-colors hover:text-[#0B1F33]"
+          aria-label="Back from QR code"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back
+        </button>
+
         {/* Close button */}
         <button
           onClick={onClose}
@@ -73,7 +82,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
                 <h2 className="text-2xl font-bold text-foreground mb-1">
                   Get {item.perk_value}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[13px] text-muted-foreground">
                   Scan this QR at {item.name}
                 </p>
               </div>
@@ -84,7 +93,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
                 animate={{ scale: 1 }}
                 className="flex justify-center py-4"
               >
-                <div className="bg-white p-4 rounded-2xl border-4 border-primary/20">
+                <div className="bg-white p-4 rounded-lg border-4 border-primary/20">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrValue)}`}
                     alt="QR Code"
@@ -99,7 +108,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
 
               <button
                 onClick={handleConfirm}
-                className="w-full h-12 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors"
+                className="w-full h-10 rounded-lg bg-primary text-primary-foreground font-semibold text-[13px] hover:bg-primary/90 transition-colors"
               >
                 Confirm redemption
               </button>
@@ -114,8 +123,8 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
               exit={{ opacity: 0 }}
               className="text-center py-8"
             >
-              <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm font-medium text-muted-foreground">
+              <div className="w-12 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-[13px] font-medium text-muted-foreground">
                 Processing...
               </p>
             </motion.div>
@@ -142,7 +151,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
                 <h3 className="font-bold text-lg text-foreground mb-1">
                   Perk unlocked!
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[13px] text-muted-foreground">
                   {item.perk_value} at {item.name}
                 </p>
               </div>
@@ -171,7 +180,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
 
               <button
                 onClick={onClose}
-                className="w-full h-11 rounded-lg bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors"
+                className="w-full h-10 rounded-lg bg-foreground text-background font-semibold text-[13px] hover:bg-foreground/90 transition-colors"
               >
                 Close
               </button>
@@ -186,20 +195,20 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
               exit={{ opacity: 0, y: 20 }}
               className="text-center space-y-4"
             >
-              <div className="w-12 h-12 rounded-full bg-destructive/20 flex items-center justify-center mx-auto">
+              <div className="w-12 h-10 rounded-full bg-destructive/20 flex items-center justify-center mx-auto">
                 <AlertCircle className="w-6 h-6 text-destructive" />
               </div>
               <div>
                 <h3 className="font-bold text-foreground mb-1">
                   Something went wrong
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[13px] text-muted-foreground">
                   Please try again or visit the venue.
                 </p>
               </div>
               <button
                 onClick={() => setState('idle')}
-                className="w-full h-11 rounded-lg bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors"
+                className="w-full h-10 rounded-lg bg-foreground text-background font-semibold text-[13px] hover:bg-foreground/90 transition-colors"
               >
                 Try again
               </button>

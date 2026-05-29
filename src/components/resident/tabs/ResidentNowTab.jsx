@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { MapPin, Clock } from "lucide-react";
 import L from "leaflet";
+import { useEventRsvpStore } from "@/store/event-rsvp-store";
 
 const AUSTIN_CENTER = [30.267, -97.743];
 
@@ -12,7 +12,7 @@ const VENUES = [
 ];
 
 const getMarkerIcon = (category) => {
-  const colors = { coffee: "#8B4513", bar: "#C8973A", wellness: "#2D9D78", default: "#1E40AF" };
+  const colors = { coffee: "#B38F4F", bar: "#B38F4F", wellness: "#0B1F33", default: "#0B1F33" };
   return L.divIcon({
     html: `<div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background-color: ${colors[category] || colors.default}"></div>`,
     className: "",
@@ -21,6 +21,8 @@ const getMarkerIcon = (category) => {
 };
 
 export default function ResidentNowTab({ user }) {
+  const rsvps = useEventRsvpStore((state) => state.rsvps);
+
   return (
     <div className="h-full flex flex-col overflow-hidden bg-background">
       {/* Map Area */}
@@ -45,6 +47,17 @@ export default function ResidentNowTab({ user }) {
 
         {/* Floating "Now Open" Feed */}
         <div className="absolute top-4 left-4 right-4 md:right-auto md:w-80 z-20 max-h-96 overflow-y-auto space-y-2">
+          {rsvps.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="rounded-lg border border-[#B38F4F]/35 bg-white/95 p-3 shadow-sm backdrop-blur-sm"
+            >
+              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">Your RSVPs</div>
+              <div className="mt-1 text-[13px] font-semibold text-[#0B1F33]">{rsvps[0].title}</div>
+              <div className="mt-1 text-xs text-[#0B1F33]/58">{rsvps[0].time} · {rsvps[0].venue}</div>
+            </motion.div>
+          )}
           {VENUES.map((venue, i) => (
             <motion.div
               key={venue.id}
@@ -55,7 +68,7 @@ export default function ResidentNowTab({ user }) {
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <h4 className="font-semibold text-sm text-foreground">{venue.name}</h4>
+                  <h4 className="font-semibold text-[13px] text-foreground">{venue.name}</h4>
                   <p className="text-xs text-muted-foreground">{venue.distance} away</p>
                 </div>
                 <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -68,7 +81,7 @@ export default function ResidentNowTab({ user }) {
       {/* Bottom Feed Panel */}
       <div className="h-48 md:hidden border-t border-border/20 bg-background overflow-y-auto">
         <div className="p-4 space-y-3">
-          <h3 className="font-semibold text-foreground text-sm">Opening Soon</h3>
+          <h3 className="font-semibold text-foreground text-[13px]">Opening Soon</h3>
           {[
             { time: "5:00 PM", name: "Happy Hour @ Rainey" },
             { time: "7:00 PM", name: "Live Music at The Paseo" },
@@ -77,7 +90,7 @@ export default function ResidentNowTab({ user }) {
               <Clock className="w-4 h-4 text-primary" />
               <div className="flex-1">
                 <p className="text-xs text-primary font-medium">{item.time}</p>
-                <p className="text-sm text-foreground">{item.name}</p>
+                <p className="text-[13px] text-foreground">{item.name}</p>
               </div>
             </div>
           ))}

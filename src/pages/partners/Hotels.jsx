@@ -1,37 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView, animate } from "framer-motion";
 import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { ArrowLeft, ArrowRight, X, Hotel, QrCode, MapPin, Zap } from "lucide-react";
-import L from "leaflet";
+import { ArrowLeft, ArrowRight, X, Hotel, QrCode } from "lucide-react";
+import PartnerMapIntelligenceLayer from "@/components/partner/PartnerMapIntelligenceLayer";
 import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
 import { FAQ_HOSPITALITY } from '@/lib/faq-partner-data';
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
-
-function hotelIcon(active) {
-  return L.divIcon({
-    className: "",
-    html: `<div style="width:12px;height:12px;border-radius:50%;background:${active ? "#C8973A" : "#7B9EC8"};border:2px solid rgba(255,255,255,0.85);box-shadow:0 0 8px ${active ? "#C8973A80" : "#7B9EC850"}"></div>`,
-    iconSize: [12, 12], iconAnchor: [6, 6],
-  });
-}
-
-function nearbyIcon() {
-  return L.divIcon({ className: "", html: `<div style="width:7px;height:7px;border-radius:50%;background:#5B9E6E;border:1.5px solid rgba(255,255,255,0.7)"></div>`, iconSize: [7, 7], iconAnchor: [3.5, 3.5] });
-}
-
-function MapFly({ center }) {
-  const map = useMap();
-  useEffect(() => { if (center) map.flyTo(center, 14, { duration: 1.1 }); }, [center]);
-  return null;
-}
 
 function CountUp({ to, duration = 1.2 }) {
   const [val, setVal] = useState(0);
@@ -95,19 +69,18 @@ const PROMPTS = [
 export default function HotelsPartner() {
   const [mapFilter, setMapFilter] = useState("all");
   const [activeHotel, setActiveHotel] = useState(null);
-  const [mapCenter, setMapCenter] = useState([30.2640, -97.7400]);
   const [formType, setFormType] = useState("Hotel");
   const [formText, setFormText] = useState("");
 
   const hotel = activeHotel ? HOTELS.find(h => h.id === activeHotel) : null;
 
-  function selectHotel(h) { setActiveHotel(h.id); setMapCenter([h.lat, h.lng]); }
+  function selectHotel(h) { setActiveHotel(h.id); }
 
   return (
     <div className="min-h-screen bg-background">
       {/* HERO */}
-      <section className={`${PARTNER_SPACING.heroVertical} px-6 relative overflow-hidden`}>
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(hsl(222 18% 40%) 1px,transparent 1px),linear-gradient(90deg,hsl(222 18% 40%) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
+      <section className={`${PARTNER_SPACING.heroVertical} px-5 relative overflow-hidden`}>
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.18) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,51,0.18) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Link to="/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
@@ -117,15 +90,15 @@ export default function HotelsPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Hotel Partner Layer</span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] tracking-tight mb-5">
+              <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
                 Help guests find what to do <em className="text-primary">from the moment they arrive.</em>
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-lg">One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to handle it.</p>
+              <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to handle it.</p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
                   Connect your hotel <ArrowRight className="w-4 h-4" />
                 </a>
-                <a href="#hotel-map" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">
+                <a href="#hotel-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
                   See the guest layer
                 </a>
               </div>
@@ -143,13 +116,13 @@ export default function HotelsPartner() {
                 <div className="grid grid-cols-3 divide-x divide-border/40 border-b border-border/40">
                   {[{ label: "RSVPs", v: 184 }, { label: "Perk unlocks", v: 93 }, { label: "Hubs trending", v: 4 }].map((s, i) => (
                     <div key={i} className="p-3.5 text-center">
-                      <div className="font-medium text-sm text-foreground"><CountUp to={s.v} /></div>
+                      <div className="font-medium text-[13px] text-foreground"><CountUp to={s.v} /></div>
                       <div className="text-[11px] text-muted-foreground/60">{s.label}</div>
                     </div>
                   ))}
                 </div>
-                <div className="px-5 py-3 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <div className="px-5 py-2.5 flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#B38F4F]" />
                   <span className="text-[11px] text-muted-foreground/60">Updated 2 min ago</span>
                 </div>
               </div>
@@ -159,12 +132,12 @@ export default function HotelsPartner() {
       </section>
 
       {/* MAP */}
-      <section id="hotel-map" className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+      <section id="hotel-map" className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Hotel Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-tight">What guests can reach from each location.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">What guests can reach from each location.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select a hotel to see the nearby events, places, and offers your guests can access during their stay.</p>
           </div>
@@ -177,21 +150,16 @@ export default function HotelsPartner() {
             ))}
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 rounded-xl border border-border/50 overflow-hidden" style={{ height: 480 }}>
-              <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }} zoomControl={false} scrollWheelZoom={false}>
-                <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" attribution="&copy; CARTO" />
-                <MapFly center={mapCenter} />
-                {HOTELS.map(h => (
-                  <Marker key={h.id} position={[h.lat, h.lng]} icon={hotelIcon(activeHotel === h.id)} eventHandlers={{ click: () => selectHotel(h) }}>
-                    <Popup><div className="text-xs font-semibold">{h.name}</div></Popup>
-                  </Marker>
-                ))}
-                {NEARBY.map(n => (
-                  <Marker key={n.name} position={[n.lat, n.lng]} icon={nearbyIcon()}>
-                    <Popup><div className="text-xs">{n.name}</div></Popup>
-                  </Marker>
-                ))}
-              </MapContainer>
+            <div className="lg:col-span-2 overflow-hidden" style={{ height: 480 }}>
+              <PartnerMapIntelligenceLayer
+                activeId={activeHotel}
+                caption="Guest intelligence layer"
+                insight="Hotels, lobby scans, guest saves, and nearby things to do in one live view."
+                kind="hotel"
+                nearby={NEARBY}
+                onSelect={selectHotel}
+                points={HOTELS}
+              />
             </div>
             <div className="rounded-xl border border-border/50 bg-card/60 overflow-hidden flex flex-col">
               {!hotel ? (
@@ -227,7 +195,7 @@ export default function HotelsPartner() {
               ) : (
                 <motion.div key={hotel.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full">
                   <div className="p-5 border-b border-border/40 flex items-center justify-between">
-                    <div className="font-medium text-foreground text-sm">{hotel.name}</div>
+                    <div className="font-medium text-foreground text-[13px]">{hotel.name}</div>
                     <button onClick={() => setActiveHotel(null)} className="text-muted-foreground hover:text-foreground"><X className="w-4 h-4" /></button>
                   </div>
                   <div className="flex-1 p-5 space-y-4 overflow-y-auto">
@@ -331,9 +299,9 @@ function ImpactSection({ headline, stats, lower }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-tight mb-8">{headline}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-normal mb-8">{headline}</motion.h2>
         <div className={`${PARTNER_GRIDS.gridCardFiveCol} mb-4`}>
           {stats.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.06 }} className="p-5 rounded-lg border border-border/50 bg-card/40 text-center">
@@ -359,11 +327,11 @@ function StepsSection({ label, headline, steps, proof }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">{headline}</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
         </motion.div>
         <div className="relative">
           <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -371,9 +339,9 @@ function StepsSection({ label, headline, steps, proof }) {
             {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }} className="flex flex-col items-center text-center md:items-start md:text-left">
                 <div className="w-10 h-10 rounded-full border border-primary/40 bg-card flex items-center justify-center mb-4 z-10">
-                  <span className="text-primary font-heading font-medium text-sm">{s.n}</span>
+                  <span className="text-primary font-heading font-medium text-[13px]">{s.n}</span>
                 </div>
-                <div className="font-medium text-sm text-foreground mb-1.5">{s.label}</div>
+                <div className="font-medium text-[13px] text-foreground mb-1.5">{s.label}</div>
                 <div className="text-[12px] text-muted-foreground leading-relaxed">{s.detail}</div>
               </motion.div>
             ))}
@@ -396,11 +364,11 @@ function GuestFlowSection({ steps, feed }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Guest experience</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">What a guest does from scan to visit.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">What a guest does from scan to visit.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
@@ -411,7 +379,7 @@ function GuestFlowSection({ steps, feed }) {
                   <span className="text-primary text-[11px] font-medium">{i + 1}</span>
                 </div>
                 <div>
-                  <div className="font-medium text-sm text-foreground mb-0.5">{s.step}</div>
+                  <div className="font-medium text-[13px] text-foreground mb-0.5">{s.step}</div>
                   <div className="text-[12px] text-muted-foreground">{s.desc}</div>
                 </div>
               </motion.div>
@@ -424,7 +392,7 @@ function GuestFlowSection({ steps, feed }) {
             <div className="divide-y divide-border/40">
               {feed.map((item, i) => (
                 <div key={i} className="p-4 flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 shrink-0 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#B38F4F] mt-1.5 shrink-0 animate-pulse" />
                   <div className="flex-1">
                     <div className="text-[12px] text-foreground">{item.text}</div>
                     <div className="text-[11px] text-muted-foreground mt-0.5">{item.hotel}</div>
@@ -444,11 +412,11 @@ function HotelCards({ hotels, selectHotel }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-6 border-t border-border/40`}>
+    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live hotels</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">Activity across live hotels.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Activity across live hotels.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {hotels.slice(0, 3).map((h, i) => (
@@ -456,7 +424,7 @@ function HotelCards({ hotels, selectHotel }) {
               onClick={() => selectHotel(h)} className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 cursor-pointer transition-all">
               <div className="flex items-center gap-2 mb-4">
                 <Hotel className="w-4 h-4 text-primary/60" />
-                <span className="font-heading font-medium text-sm text-foreground">{h.name}</span>
+                <span className="font-heading font-medium text-[13px] text-foreground">{h.name}</span>
               </div>
               <div className="h-1.5 rounded-full bg-border/50 mb-4 overflow-hidden">
                 <motion.div initial={{ width: 0 }} animate={inView ? { width: `${Math.min(100, (h.interactions / 230) * 100)}%` } : {}} transition={{ duration: 1, delay: 0.3 + i * 0.1 }} className="h-full rounded-full bg-primary" />
@@ -484,19 +452,19 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
   return (
-    <section id="partner-form" ref={ref} className="py-10 px-6 border-t border-border/40">
+    <section id="partner-form" ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Get started</span>
-            <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-tight">{headline}</h2>
+            <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
         </div>
         <div className="border border-border/50 rounded-xl overflow-hidden">
           <div className="flex border-b border-border/40 overflow-x-auto">
             {TYPES.map(t => (
-              <button key={t} onClick={() => setFormType(t)} className={`px-6 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"}`}>{t}</button>
+              <button key={t} onClick={() => setFormType(t)} className={`px-5 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"}`}>{t}</button>
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -512,13 +480,13 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)} placeholder="Tell us about your hotel and what you want to offer guests."
                   className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
               </div>
-              <button className="w-full py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">{submitLabel}</button>
+              <button className="w-full py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{submitLabel}</button>
             </div>
             <div className="p-8 bg-muted/10 flex flex-col">
               <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Prompts</div>
               <div className="space-y-2 flex-1">
                 {prompts.map(p => (
-                  <button key={p} onClick={() => setFormText(p)} className="w-full text-left px-4 py-3 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">{p}</button>
+                  <button key={p} onClick={() => setFormText(p)} className="w-full text-left px-4 py-2.5 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">{p}</button>
                 ))}
               </div>
               <div className="mt-6 pt-6 border-t border-border/40">
@@ -534,18 +502,18 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
 
 function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondLabel, secondHref }) {
   return (
-    <section className="py-12 px-6 border-t border-border/40">
+    <section className="py-12 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-tight mb-3">{headline}</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
             <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
           </div>
           <div className="space-y-4">
             <div className="flex flex-wrap gap-3">
-              <a href={ctaHref} className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all">{ctaLabel} <ArrowRight className="w-4 h-4" /></a>
-              <a href={secondHref} className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border/70 text-foreground/70 font-medium text-sm hover:text-foreground transition-all">{secondLabel}</a>
+              <a href={ctaHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{ctaLabel} <ArrowRight className="w-4 h-4" /></a>
+              <a href={secondHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">{secondLabel}</a>
             </div>
             <p className="text-[12px] text-muted-foreground/50 italic">{proof}</p>
           </div>

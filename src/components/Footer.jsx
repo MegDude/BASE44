@@ -1,86 +1,84 @@
 import { Link } from "react-router-dom";
-import { MapPin } from "lucide-react";
 
 const FOOTER_LINKS = {
-  Explore: [
-    { to: "/downtown-perks/explore", label: "Live Map" },
-    { to: "/downtown-perks/events", label: "Events" },
-    { to: "/downtown-perks/perks", label: "Perks" },
-    { to: "/downtown-perks/card", label: "Perks Card" },
-    { to: "/downtown-perks/about", label: "About" },
+  Residents: [
+    { to: "/map?mode=resident&tab=map", label: "Map" },
+    { to: "/events", label: "Events" },
+    { to: "/card", label: "Perks Card" },
+    { to: "/residents", label: "Get Started" },
   ],
   Partners: [
-    { to: "/partners/residential", label: "Residential" },
     { to: "/partners/properties", label: "Properties" },
-    { to: "/partners/hotels", label: "Hospitality" },
+    { to: "/partners/hotels", label: "Hotels" },
     { to: "/partners/venues", label: "Venues" },
     { to: "/partners/brands", label: "Brands" },
     { to: "/partners/civic", label: "Civic" },
   ],
-  Platform: [
-    { to: "/partners", label: "Partner Overview" },
-    { to: "/partner-workspace", label: "Partner Workspace" },
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/downtown-perks/for-buildings", label: "Pricing" },
+  Directory: [
+    { to: "/contact", label: "Contact" },
+    { to: "/partners", label: "Partner Mode" },
     { to: "/brands", label: "Brand Directory" },
   ],
 };
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-background">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-
-          {/* Brand */}
-          <div className="md:col-span-4">
-            <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
-                <MapPin className="w-3.5 h-3.5 text-primary" />
+    <footer className="bg-[#0B1F33] px-5 py-9 text-[#F7F8FB] sm:px-6 sm:py-10 lg:px-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-[0.9fr_2.1fr] md:gap-10 lg:mb-10 lg:gap-12">
+          <div>
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-[#B38F4F] text-lg font-bold leading-none text-[#0B1F33]">
+                D
               </div>
-              <span className="font-heading font-medium text-[15px] text-foreground">
-                Downtown<span className="text-primary"> Perks</span>
+              <span className="font-sans text-xl font-bold tracking-tight md:text-lg">
+                Downtown Perks
               </span>
             </div>
-            <p className="text-muted-foreground text-[13px] leading-relaxed max-w-xs mb-6">
-              A live neighborhood layer for downtown Austin — connecting residents, buildings, and local businesses through a shared map, a simple card, and real-time district intelligence.
+            <p className="mb-5 max-w-sm text-[15px] font-light leading-7 text-[#F7F8FB]/72 md:text-sm md:leading-6">
+              Built for the people who actually live downtown — helping residents find what’s nearby and helping local businesses get noticed.
             </p>
-            <Link
-              to="/downtown-perks/card"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all"
-            >
-              Get Your Card
-            </Link>
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+              Austin, TX
+            </div>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(FOOTER_LINKS).map(([group, links]) => (
-            <div key={group} className="md:col-span-2-and-half">
-              <h4 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-5">
-                {group}
-              </h4>
-              <div className="space-y-3">
-                {links.map((link) => (
-                  <Link
-                    key={link.to + link.label}
-                    to={link.to}
-                    className="block text-[13px] text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+          <div className="grid min-w-0 grid-cols-3 gap-4 sm:gap-6 lg:gap-10">
+            {Object.entries(FOOTER_LINKS).map(([group, links]) => (
+              <nav key={group} aria-label={group}>
+                <h4 className="mb-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#B38F4F] sm:mb-4 sm:text-[11px]">
+                  {group}
+                </h4>
+                <ul className="space-y-2 text-[13px] font-light leading-5 text-[#F7F8FB]/72 sm:space-y-2.5 sm:text-[15px]">
+                  {links.map((link) => (
+                    <li key={link.to + link.label}>
+                      <Link
+                        to={link.to}
+                        className="transition-colors hover:text-[#F7F8FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                  {group === "Directory" && (
+                    <li className="min-w-0 pt-2">
+                      <a
+                        href="mailto:partners@downtownperks.com"
+                        className="inline-block max-w-full break-all text-[12px] leading-relaxed text-[#B38F4F] transition-colors hover:text-[#F7F8FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:text-[13px]"
+                      >
+                        partners@downtownperks.com
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-border/40 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[12px] text-muted-foreground/70">
-            © {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701
-          </p>
-          <p className="text-[12px] text-muted-foreground/50 italic font-heading">
-            Where downtown works like a system.
-          </p>
+        <div className="flex flex-col items-center justify-center gap-2 pt-5 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-[#F7F8FB]/46 sm:flex-row sm:gap-4">
+          <div>© {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701</div>
+          <div className="text-[#B38F4F]">Where downtown meets you.</div>
         </div>
       </div>
     </footer>

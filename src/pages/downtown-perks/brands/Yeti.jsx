@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Star, TrendingUp, QrCode, Target, Layers, BarChart2 } from "lucide-react";
+import { MapPin, Users, Star, TrendingUp, QrCode, Target, Layers, BarChart2 } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
-import { QRDemoPanel, NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
+import { QRDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
 
 const demo = (
   <div className="grid md:grid-cols-2 gap-5">
-    <div className="rounded-2xl border border-border bg-card p-7">
+    <div className="rounded-lg border border-border bg-card p-7">
       <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-6">YETI × Downtown Perks</div>
       <div className="space-y-4">
         {[
@@ -17,7 +17,7 @@ const demo = (
           <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-muted/40 border border-border/50">
             <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />
             <div>
-              <div className="text-sm font-medium">{e.event}</div>
+              <div className="text-[13px] font-medium">{e.event}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{e.loc}</div>
             </div>
           </div>
@@ -75,7 +75,7 @@ export default function Yeti() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>

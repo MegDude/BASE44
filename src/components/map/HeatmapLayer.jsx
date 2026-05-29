@@ -56,12 +56,12 @@ export default function HeatmapLayer({ visible = true, data = [], timeFilter = '
     setHeatZones(zones);
   }, [visible, data, timeFilter]);
 
-  // Color intensity function
+  // Navy/copper intensity function. Keep the heatmap restrained and on-brand.
   const getHeatColor = (intensity) => {
-    if (intensity > 0.75) return '#ef4444'; // Red (very hot)
-    if (intensity > 0.5) return '#f97316'; // Orange (hot)
-    if (intensity > 0.25) return '#eab308'; // Yellow (warm)
-    return '#84cc16'; // Green (mild)
+    if (intensity > 0.75) return '#B38F4F';
+    if (intensity > 0.5) return '#0B1F33';
+    if (intensity > 0.25) return '#081521';
+    return '#0B1F33';
   };
 
   if (!visible || !heatZones.length) return null;
@@ -87,11 +87,11 @@ export default function HeatmapLayer({ visible = true, data = [], timeFilter = '
           >
             <L.Popup>
               <div className="text-[12px]">
-                <div className="font-bold text-[#111] mb-1">Activity zone</div>
-                <div className="text-[#7a746b]">
+                <div className="font-bold text-[#0B1F33] mb-1">Activity zone</div>
+                <div className="text-[#0B1F33]/58">
                   {zone.count} action{zone.count !== 1 ? 's' : ''}
                 </div>
-                <div className="text-[11px] text-[#8d887f] mt-2 space-y-0.5">
+                <div className="text-[11px] text-[#0B1F33]/50 mt-2 space-y-0.5">
                   {Object.entries(zone.actions).map(([action, count]) => (
                     <div key={action}>
                       {action.replace('_', ' ')}: {count}

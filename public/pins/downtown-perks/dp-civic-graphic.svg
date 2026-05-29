@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="Downtown Perks civic graphic">
+  <rect width="160" height="120" rx="10" fill="#F7F8FB"/>
+  <path d="M80 28 42 48h76L80 28Z" fill="#0B1F33"/>
+  <path d="M54 52v34M72 52v34M90 52v34M108 52v34" stroke="#0B1F33" stroke-width="8" stroke-linecap="round"/>
+  <path d="M42 92h76" stroke="#B38F4F" stroke-width="7" stroke-linecap="round"/>
+</svg>

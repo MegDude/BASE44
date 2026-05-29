@@ -1,37 +1,128 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, MapPin, ChevronDown, Building2, Hotel, MapIcon, Users, Star, Landmark, Home, LayoutDashboard } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronUp, MapPin, Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const RESIDENT_LINKS = [
-  { to: "/downtown-perks/explore", label: "Live Map", desc: "Browse places, events & perks" },
-  { to: "/downtown-perks/events", label: "Events", desc: "What's happening downtown" },
-  { to: "/downtown-perks/perks", label: "Perks", desc: "Member offers & benefits" },
-  { to: "/downtown-perks/card", label: "Perks Card", desc: "Your resident credential" },
+  { to: "/residents", label: "Resident home", description: "Discovery, perks, events, and local life" },
+  { to: "/residents/map", label: "Live map", description: "Open the resident map layer" },
+  { to: "/residents/discover", label: "Discover", description: "Find places nearby" },
+  { to: "/residents/events", label: "Events", description: "See what is happening downtown" },
+  { to: "/residents/perks", label: "Perks", description: "Open the resident pass" },
+  { to: "/residents/card", label: "Perks card", description: "Show or manage your card" },
+  { to: "/residents/ask", label: "Ask the map", description: "Search by intent or need" },
+  { to: "/residents/about", label: "About", description: "How Downtown Perks works" },
 ];
 
 const PARTNER_LINKS = [
-  { to: "/partners/residential", label: "Residential", desc: "Buildings & amenity layers", icon: Home },
-  { to: "/partners/hotels", label: "Hospitality", desc: "Hotels & guest experience", icon: Hotel },
-  { to: "/partners/venues", label: "Venues", desc: "Restaurants, bars & fitness", icon: MapIcon },
-  { to: "/partners/brands", label: "Brands", desc: "Campaigns & activations", icon: Star },
-  { to: "/partners/civic", label: "Civic", desc: "District programs & events", icon: Landmark },
+  { to: "/partners", label: "Partner home", description: "Overview for properties, hotels, venues, brands, and civic teams" },
+  { to: "/partners/properties", label: "Properties", description: "Residential visibility and building engagement" },
+  { to: "/partners/hospitality", label: "Hotels", description: "Guest and resident activation" },
+  { to: "/partners/venues", label: "Venues", description: "Local discovery, events, and redemptions" },
+  { to: "/partners/brands", label: "Brands", description: "Campaigns and neighborhood placement" },
+  { to: "/partners/civic", label: "Civic", description: "District participation and event intelligence" },
+  { to: "/partners/dashboard", label: "Dashboard", description: "Operational district intelligence" },
+  { to: "/partners/workspace/overview", label: "Workspace", description: "Partner reports, campaigns, and activity" },
+  { to: "/partners/map", label: "Partner map", description: "Open the partner intelligence map" },
+  { to: "/partners/pricing", label: "Pricing", description: "Partner plans by category" },
 ];
 
-const TOP_LINKS = [
-  
-  
-  { label: "Residents", dropdown: "residents" },
-  { label: "Partners", dropdown: "partners" },
-  { to: "/downtown-perks/for-buildings", label: "Pricing" },
+const HAMBURGER_RESIDENT_LINKS = [
+  { to: "/residents/map", label: "Map" },
+  { to: "/residents/events", label: "Events" },
+  { to: "/residents/card", label: "Perks Card" },
 ];
+
+const HAMBURGER_PARTNER_LINKS = [
+  { to: "/partners/pricing", label: "Pricing" },
+  { to: "/partners#contact", label: "Contact" },
+];
+
+function NavLinkItem({ link, className, onClick, children }) {
+  const isHashLink = link.to.includes("#");
+
+  if (isHashLink) {
+    return (
+      <a href={link.to} onClick={onClick} className={className}>
+        {children || link.label}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={link.to} onClick={onClick} className={className}>
+      {children || link.label}
+    </Link>
+  );
+}
+
+function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup }) {
+  const isOpen = openMenu === id;
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpenMenu(isOpen ? null : id)}
+        aria-expanded={isOpen}
+        aria-controls={`${id}-navigation`}
+        className={`relative inline-flex h-9 items-center gap-1.5 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+          isActiveGroup
+            ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-1 after:h-px after:w-[calc(100%-0.5rem)] after:bg-[#B38F4F]"
+            : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
+        }`}
+      >
+        {label}
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id={`${id}-navigation`}
+            initial={{ opacity: 0, y: 6, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.99 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-0 top-11 w-[340px] overflow-hidden rounded-md border border-[#0B1F33]/8 bg-[#FAFAFC] p-2 shadow-[0_18px_58px_rgba(11,31,51,0.13)]"
+          >
+            <div className="px-2 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">
+              {label} paths
+            </div>
+            <div className="grid max-h-[min(62vh,460px)] gap-1 overflow-y-auto pr-1">
+              {links.map((link) => (
+                <NavLinkItem
+                  key={link.to}
+                  link={link}
+                  onClick={() => setOpenMenu(null)}
+                  className="group rounded-md px-3 py-2.5 text-left transition-all hover:-translate-y-0.5 hover:bg-[#F7F8FB] hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                >
+                  <span className="block text-[13px] font-semibold text-[#0B1F33]">{link.label}</span>
+                  <span className="mt-0.5 block text-[11px] leading-4 text-[#B38F4F]/80">{link.description}</span>
+                </NavLinkItem>
+              ))}
+              <button
+                type="button"
+                onClick={() => setOpenMenu(null)}
+                className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#F7F8FB] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#425466] shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition hover:-translate-y-0.5 hover:text-[#0B1F33] hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+              >
+                <ChevronUp className="h-3.5 w-3.5" />
+                Roll up
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [dropdown, setDropdown] = useState(null);
+  const [openMenu, setOpenMenu] = useState(null);
+  const [mobileAudience, setMobileAudience] = useState("residents");
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -40,213 +131,196 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setDropdown(null);
     setOpen(false);
-  }, [location.pathname]);
+    setOpenMenu(null);
+    setMobileAudience(location.pathname.startsWith("/partners") || location.search.includes("mode=partner") ? "partners" : "residents");
+  }, [location.pathname, location.search, location.hash]);
 
   useEffect(() => {
-    function handleClick(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdown(null);
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        setOpenMenu(null);
       }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (!openMenu) return undefined;
+
+    const onPointerDown = (event) => {
+      if (!event.target.closest("[data-dp-nav-root]")) {
+        setOpenMenu(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [openMenu]);
+
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-dp-nav-open", open);
+    return () => document.documentElement.removeAttribute("data-dp-nav-open");
+  }, [open]);
 
   const isActive = (to) => {
     if (!to) return false;
-    if (to === "/brands") return location.pathname.startsWith("/brands");
-    if (to === "/partners") return location.pathname.startsWith("/partners");
+    if (to === "/partners/dashboard") return location.pathname === "/partners/dashboard";
+    if (to === "/residents/card") return location.pathname === "/card" || location.pathname === "/residents/card";
     return location.pathname === to;
   };
 
-  const isDropdownActive = (which) => {
-    if (which === "residents") return location.pathname.startsWith("/downtown-perks");
-    if (which === "partners") return location.pathname.startsWith("/partners") || location.pathname.startsWith("/brands");
-    return false;
-  };
+  const residentActive =
+    location.pathname === "/" ||
+    location.pathname.startsWith("/residents") ||
+    location.pathname === "/explore" ||
+    location.pathname === "/events" ||
+    location.pathname === "/card" ||
+    location.pathname === "/ask-map" ||
+    location.pathname === "/about" ||
+    (location.pathname === "/map" && !location.search.includes("mode=partner"));
+
+  const partnerActive =
+    location.pathname.startsWith("/partners") ||
+    location.pathname.startsWith("/partner-workspace") ||
+    location.pathname.startsWith("/brands") ||
+    location.pathname === "/reports" ||
+    location.pathname === "/dashboard/partner" ||
+    location.pathname === "/partner-dashboard" ||
+    (location.pathname === "/map" && location.search.includes("mode=partner"));
 
   return (
-    <nav ref={dropdownRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled
-        ? "bg-white/95 backdrop-blur-lg border-b border-border/40 shadow-sm shadow-black/5"
-        : "bg-white/90 backdrop-blur-sm border-b border-border/20"
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
-
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-7 h-7 rounded-full border border-primary/40 flex items-center justify-center">
-            <MapPin className="w-3.5 h-3.5 text-primary" />
+    <nav
+      data-dp-nav-root
+      className={`fixed left-0 right-0 top-0 z-[1200] pointer-events-auto isolate transition-all duration-300 backdrop-blur-[16px] ${
+        scrolled
+          ? "bg-[#FAFAFC]/96 text-[#0B1F33] shadow-[0_12px_40px_rgba(11,31,51,0.08)]"
+          : "bg-[#FAFAFC]/92 text-[#0B1F33] shadow-[0_10px_34px_rgba(11,31,51,0.06)]"
+      }`}
+    >
+      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-5">
+        <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="Downtown Perks home">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white/68 text-[#B38F4F] shadow-[0_8px_24px_rgba(11,31,51,0.05)]">
+            <MapPin className="h-3.5 w-3.5" />
           </div>
-          <span className="font-heading font-medium text-[15px] tracking-tight text-foreground">
-            Downtown<span className="text-primary"> Perks</span>
+          <span className="font-heading text-[15px] font-medium tracking-normal text-[#0B1F33]">
+            Downtown Perks
           </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-0.5">
-          {TOP_LINKS.map((link, i) => {
-            if (link.dropdown) {
-              const active = isDropdownActive(link.dropdown);
-              return (
-                <div key={i} className="relative">
-                  <button
-                    onClick={() => setDropdown(dropdown === link.dropdown ? null : link.dropdown)}
-                    className={`flex items-center gap-1 px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                      active || dropdown === link.dropdown ? "text-primary" : "text-foreground/60 hover:text-foreground"
-                    }`}
-                  >
-                    {link.label}
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${dropdown === link.dropdown ? "rotate-180" : ""}`} />
-                  </button>
+        {!open && (
+          <div className="hidden items-center gap-1 transition-all duration-200 md:flex">
+            <DropdownGroup
+              id="residents"
+              label="Residents"
+              links={RESIDENT_LINKS}
+              openMenu={openMenu}
+              setOpenMenu={setOpenMenu}
+              isActiveGroup={residentActive}
+            />
+            <DropdownGroup
+              id="partners"
+              label="Partners"
+              links={PARTNER_LINKS}
+              openMenu={openMenu}
+              setOpenMenu={setOpenMenu}
+              isActiveGroup={partnerActive}
+            />
+          </div>
+        )}
 
-                  <AnimatePresence>
-                    {dropdown === link.dropdown && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[320px] bg-white rounded-2xl border border-border/40 shadow-lg shadow-black/8 overflow-hidden"
-                      >
-                        <div className="p-2">
-                          {(link.dropdown === "residents" ? RESIDENT_LINKS : PARTNER_LINKS).map((item) => {
-                            const Icon = item.icon;
-                            return (
-                              <Link
-                                key={item.to}
-                                to={item.to}
-                                className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-[hsl(218,30%,97%)] transition-colors group"
-                              >
-                                {Icon ? (
-                                  <div className="w-8 h-8 rounded-lg bg-primary/8 border border-primary/12 flex items-center justify-center shrink-0">
-                                    <Icon className="w-3.5 h-3.5 text-primary/70" />
-                                  </div>
-                                ) : (
-                                  <div className="w-8 h-8 rounded-lg bg-muted/60 border border-border/40 flex items-center justify-center shrink-0">
-                                    <MapPin className="w-3.5 h-3.5 text-muted-foreground/60" />
-                                  </div>
-                                )}
-                                <div>
-                                  <div className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors">{item.label}</div>
-                                  <div className="text-[11px] text-muted-foreground/60 mt-0.5">{item.desc}</div>
-                                </div>
-                              </Link>
-                            );
-                          })}
-                          {link.dropdown === "partners" && (
-                            <div className="mx-3 mt-1 pt-2 border-t border-border/40">
-                              <Link to="/partners" className="flex items-center gap-2 px-0 py-2 text-[12px] font-medium text-primary/70 hover:text-primary transition-colors">
-                                View all partner types →
-                              </Link>
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            }
-
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                  isActive(link.to) ? "text-primary" : "text-foreground/60 hover:text-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* CTA row */}
-        <div className="hidden md:flex items-center gap-2.5">
-          <Link
-            to="/dashboard"
-            className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium text-foreground/60 hover:text-foreground transition-colors"
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close navigation" : "Open navigation"}
+            aria-expanded={open}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-white/68 text-[#0B1F33] shadow-[0_10px_30px_rgba(11,31,51,0.05)] transition-all hover:-translate-y-px hover:bg-white hover:text-[#B38F4F] hover:shadow-[0_12px_40px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
           >
-            <LayoutDashboard className="w-3.5 h-3.5" />
-            Dashboard
-          </Link>
-          <Link
-            to="/downtown-perks/card"
-            className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all duration-300 shadow-sm shadow-primary/20"
-          >
-            Get Your Card
-          </Link>
+            {open ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
+          </button>
         </div>
-
-        {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-foreground/60 hover:text-foreground p-2 transition-colors">
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait" initial={false}>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -6 }}
+            data-dp-nav-menu
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-[68px] left-0 right-0 bg-white border-b border-border/40 shadow-sm max-h-[80vh] overflow-y-auto"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed left-0 right-0 top-[68px] z-[1400] pointer-events-auto border-t border-[#0B1F33]/8 shadow-[0_24px_80px_rgba(11,31,51,0.12),inset_0_1px_0_rgba(255,255,255,0.86)]"
+            style={{
+              backgroundColor: "rgba(250, 250, 252, 0.94)",
+              backdropFilter: "blur(18px) saturate(1.08)",
+              WebkitBackdropFilter: "blur(18px) saturate(1.08)",
+            }}
           >
-            <div className="px-5 py-5 space-y-1">
+            <div className="mx-auto max-h-[calc(100vh-68px)] max-w-4xl overflow-y-auto px-5 py-5 text-[#0B1F33]">
+              <div className="flex items-center justify-between gap-4">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#425466]">
+                  Navigation
+                </div>
+                <div className="flex shrink-0 items-center gap-5" role="tablist" aria-label="Navigation audience">
+                  {[
+                    ["residents", "Residents"],
+                    ["partners", "Partners"],
+                  ].map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="tab"
+                      aria-selected={mobileAudience === value}
+                      onClick={() => setMobileAudience(value)}
+                      className={`relative h-8 px-0 text-[11px] font-semibold uppercase tracking-[0.14em] transition focus-visible:outline-none ${
+                        mobileAudience === value
+                          ? "text-[#0B1F33] after:absolute after:bottom-1 after:left-0 after:h-px after:w-full after:bg-[#B38F4F]"
+                          : "text-[#425466] hover:text-[#0B1F33]"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-              {/* Resident links */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mb-2">Explore</div>
-              {RESIDENT_LINKS.map((link) => (
-                <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
-                  className={`block px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
-                    isActive(link.to) ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-foreground"
-                  }`}>
-                  {link.label}
-                </Link>
-              ))}
+              <div className="mt-5 h-px bg-[linear-gradient(90deg,rgba(11,31,51,0.04),rgba(11,31,51,0.07),rgba(11,31,51,0.03))]" />
 
-              {/* Partner links */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">Partners</div>
-              {PARTNER_LINKS.map((link) => {
-                const Icon = link.icon;
-                return (
-                  <Link key={link.to} to={link.to} onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
-                      isActive(link.to) ? "text-primary bg-primary/5" : "text-foreground/70 hover:text-foreground"
-                    }`}>
-                    {Icon && <Icon className="w-3.5 h-3.5 text-primary/50 shrink-0" />}
-                    {link.label}
-                  </Link>
-                );
-              })}
-
-              {/* Other */}
-              <div className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.14em] px-3 mt-4 mb-2">More</div>
-              <Link to="/downtown-perks/for-buildings" onClick={() => setOpen(false)}
-                className="block px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
-                Pricing
-              </Link>
-              <Link to="/dashboard" onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
-                <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
-              </Link>
-
-              <div className="pt-4 pb-2">
-                <Link to="/downtown-perks/card" onClick={() => setOpen(false)}
-                  className="block px-5 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium text-center hover:bg-primary/90 transition-all">
-                  Get Your Card
-                </Link>
+	              <div className="pt-5">
+	                <NavSection
+	                  links={mobileAudience === "residents" ? HAMBURGER_RESIDENT_LINKS : HAMBURGER_PARTNER_LINKS}
+	                  close={() => setOpen(false)}
+	                />
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </nav>
+  );
+}
+
+function NavSection({ links, close }) {
+  return (
+    <div>
+      <div className="grid gap-1">
+        {links.map((link) => (
+          <NavLinkItem
+            key={link.to}
+            link={link}
+            onClick={close}
+            className="group flex items-center justify-between px-0 py-2 text-[15px] font-medium text-[#0B1F33] transition-all hover:translate-x-0.5 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+          >
+            <span>{link.label}</span>
+            <span className="text-[#B38F4F]/70 transition group-hover:translate-x-0.5 group-hover:text-[#B38F4F]">→</span>
+          </NavLinkItem>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Zap, BarChart3, Star, Clock, Music, CalendarDays, TrendingUp } from "lucide-react";
+import { MapPin, Zap, BarChart3, Star, Clock, Music, TrendingUp } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { NotificationDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -70,7 +70,7 @@ export default function TheStayPut() {
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>
@@ -83,11 +83,11 @@ export default function TheStayPut() {
       <BrandSection label="How It Works" title="From discovery to arrival — connected in one downtown flow." className="bg-card/30 border-y border-border">
         <div className="grid md:grid-cols-2 gap-4">
           <FlowCard step="01" title="Stay Put goes live" desc="The venue is added to the downtown map with profile, programming, offers, and real-time venue details." delay={0} />
-          <FlowCard step="02" title="Nearby intent forms" desc="Someone downtown opens the map while deciding where to go — after work, before a show, later in the night." delay={0.1} />
+          <FlowCard step="02" title="Someone nearby is choosing" desc="Someone downtown opens the map while deciding where to go — after work, before a show, later in the night." delay={0.1} />
           <FlowCard step="03" title="Stay Put surfaces" desc="The venue appears based on proximity, timing, category, and what is happening nearby." delay={0.2} />
           <FlowCard step="04" title="Timed moment is shown" desc="Happy hour, tonight's set, trivia night, or a live reason to visit appears when it matters most." delay={0.3} />
           <FlowCard step="05" title="Person takes action" desc="They save it, tap in, RSVP, or head there directly from the map." delay={0.4} />
-          <FlowCard step="06" title="Proof is recorded" desc="Downtown Perks tracks the signals that matter — views, saves, and redemptions — across real downtown behavior." delay={0.5} />
+          <FlowCard step="06" title="You see what worked" desc="Downtown Perks shows the actions that matter: views, saves, and redemptions from people actually downtown." delay={0.5} />
         </div>
       </BrandSection>
 
@@ -126,7 +126,7 @@ export default function TheStayPut() {
 
       <BrandCTA
         headline="Give people a reason to choose Stay Put right now."
-        sub="One downtown layer. Better timing. Real local visibility. A clearer path from nearby intent to actual visits."
+        sub="One downtown map. Better timing. Real local visibility. A clearer path from nearby interest to actual visits."
         ctaLabel="Partner With Downtown Perks"
         ctaHref="mailto:partners@downtownperks.com"
       />

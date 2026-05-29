@@ -1,81 +1,84 @@
 import { Link } from "react-router-dom";
-import { MapPin } from "lucide-react";
+
+const footerGroups = {
+  Residents: [
+    { to: "/map?mode=resident&tab=map", label: "Map" },
+    { to: "/events", label: "Events" },
+    { to: "/card", label: "Perks Card" },
+    { to: "/residents", label: "Get Started" },
+  ],
+  Partners: [
+    { to: "/partners/properties", label: "Properties" },
+    { to: "/partners/hotels", label: "Hotels" },
+    { to: "/partners/venues", label: "Venues" },
+    { to: "/partners/brands", label: "Brands" },
+    { to: "/partners/civic", label: "Civic" },
+  ],
+  Directory: [
+    { to: "/contact", label: "Contact" },
+    { to: "/partners", label: "Partner Mode" },
+    { to: "/brands", label: "Brand Directory" },
+  ],
+};
 
 export default function HomeFooter() {
   return (
-    <footer className="border-t border-[hsl(218,20%,88%)] bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-6 h-6 rounded-full border border-primary/40 flex items-center justify-center">
-                <MapPin className="w-3 h-3 text-primary" />
+    <footer className="bg-[#0B1F33] px-5 py-9 text-[#F7F8FB] sm:px-6 sm:py-10 lg:px-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-[0.9fr_2.1fr] md:gap-10 lg:mb-10 lg:gap-12">
+          <div>
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-[#B38F4F] text-lg font-bold leading-none text-[#0B1F33]">
+                D
               </div>
-              <span className="font-heading text-sm font-medium text-foreground">
-                Downtown <span className="text-primary">Perks</span>
+              <span className="font-sans text-xl font-bold tracking-tight md:text-lg">
+                Downtown Perks
               </span>
             </div>
-            <p className="text-[12px] text-foreground/50 leading-relaxed">
-              Downtown Austin's live neighborhood layer.
+            <p className="mb-5 max-w-sm text-[15px] font-light leading-7 text-[#F7F8FB]/72 md:text-sm md:leading-6">
+              Built for the people who actually live downtown — helping residents find what’s nearby and helping local businesses get noticed.
             </p>
-          </div>
-
-          {/* Resident */}
-          <div>
-            <h4 className="text-[10px] font-semibold text-foreground/40 uppercase tracking-[0.14em] mb-3">Residents</h4>
-            <div className="space-y-2">
-              {[
-                { to: "/downtown-perks/explore", label: "Explore Map" },
-                { to: "/downtown-perks/events", label: "Events" },
-                { to: "/downtown-perks/perks", label: "Perks" },
-                { to: "/downtown-perks/card", label: "Get Your Card" },
-              ].map(l => (
-                <Link key={l.to} to={l.to} className="block text-[13px] text-foreground/60 hover:text-foreground transition-colors">{l.label}</Link>
-              ))}
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+              Austin, TX
             </div>
           </div>
 
-          {/* Partners */}
-          <div>
-            <h4 className="text-[10px] font-semibold text-foreground/40 uppercase tracking-[0.14em] mb-3">Partners</h4>
-            <div className="space-y-2">
-              {[
-                { to: "/partners/properties", label: "Properties" },
-                { to: "/partners/hotels", label: "Hospitality" },
-                { to: "/partners/venues", label: "Venues" },
-                { to: "/partners/brands", label: "Brands" },
-                { to: "/partners/civic", label: "Civic" },
-              ].map(l => (
-                <Link key={l.to} to={l.to} className="block text-[13px] text-foreground/60 hover:text-foreground transition-colors">{l.label}</Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Platform */}
-          <div>
-            <h4 className="text-[10px] font-semibold text-foreground/40 uppercase tracking-[0.14em] mb-3">Platform</h4>
-            <div className="space-y-2">
-              {[
-                { to: "/partners", label: "Partner Overview" },
-                { to: "/downtown-perks/for-buildings", label: "Pricing" },
-                { to: "/dashboard", label: "Dashboard" },
-                { to: "/downtown-perks/about", label: "About" },
-              ].map(l => (
-                <Link key={l.to} to={l.to} className="block text-[13px] text-foreground/60 hover:text-foreground transition-colors">{l.label}</Link>
-              ))}
-            </div>
+          <div className="grid min-w-0 grid-cols-3 gap-4 sm:gap-6 lg:gap-10">
+            {Object.entries(footerGroups).map(([group, links]) => (
+              <nav key={group} aria-label={group}>
+                <h4 className="mb-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#B38F4F] sm:mb-4 sm:text-[11px]">
+                  {group}
+                </h4>
+                <ul className="space-y-2 text-[13px] font-light leading-5 text-[#F7F8FB]/72 sm:space-y-2.5 sm:text-[15px]">
+                  {links.map((link) => (
+                    <li key={link.to + link.label}>
+                      <Link
+                        to={link.to}
+                        className="transition-colors hover:text-[#F7F8FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                  {group === "Directory" && (
+                    <li className="min-w-0 pt-2">
+                      <a
+                        href="mailto:partners@downtownperks.com"
+                        className="inline-block max-w-full break-all text-[12px] leading-relaxed text-[#B38F4F] transition-colors hover:text-[#F7F8FB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:text-[13px]"
+                      >
+                        partners@downtownperks.com
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </nav>
+            ))}
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[hsl(218,20%,90%)] flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-[12px] text-foreground/40">
-            © {new Date().getFullYear()} Downtown Perks · Austin, TX
-          </p>
-          <p className="text-[12px] text-foreground/30 italic font-heading">
-            Where downtown works like a system.
-          </p>
+        <div className="flex flex-col items-center justify-center gap-2 pt-5 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-[#F7F8FB]/46 sm:flex-row sm:gap-4">
+          <div>© {new Date().getFullYear()} Downtown Perks · Austin, TX · 78701</div>
+          <div className="text-[#B38F4F]">Where downtown meets you.</div>
         </div>
       </div>
     </footer>

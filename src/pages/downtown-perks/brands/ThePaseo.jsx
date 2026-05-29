@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Users, Zap, Building2, Star, TrendingUp, QrCode, CalendarDays, Heart } from "lucide-react";
+import { MapPin, Users, Zap, Building2, Star, TrendingUp } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandSection, SignalCard, FlowCard, UseCaseCard, BrandCTA } from "../../../components/downtown-perks/brands/BrandSection";
 import { MapDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel";
@@ -52,7 +52,7 @@ export default function ThePaseo() {
               >
                 <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
                 <div>
-                  <div className="font-semibold text-sm text-foreground mb-0.5">{item.label}</div>
+                  <div className="font-semibold text-[13px] text-foreground mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>
                 </div>
               </motion.div>
