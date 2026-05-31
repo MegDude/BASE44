@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,9 +10,9 @@
     --font-body: 'Inter', -apple-system, sans-serif;
 
     /* Downtown Perks canonical tokens */
-    --dp-bg: #F7F8FB;
+    --dp-bg: #FFFFFF;
     --dp-surface: #FFFFFF;
-    --dp-surface-alt: #F7F8FB;
+    --dp-surface-alt: #FFFFFF;
     --dp-navy: #0B1F33;
     --dp-navy-soft: #0B1F33;
     --dp-gold: #B38F4F;
@@ -21,7 +21,7 @@
     --dp-navy-elevated: var(--dp-navy-soft);
     --dp-navy-muted: rgba(11, 31, 51, 0.42);
     --dp-gold-deep: var(--dp-gold);
-    --dp-gold-tint: #F7F8FB;
+    --dp-gold-tint: #FFFFFF;
     --dp-gold-muted: var(--dp-gold);
     --dp-border: rgba(11, 31, 51, 0.08);
     --dp-border-hover: rgba(11, 31, 51, 0.10);
@@ -51,10 +51,10 @@
     --dp-safe-bottom: env(safe-area-inset-bottom);
     --dp-clearance: calc(var(--dp-bottom-nav-h) + var(--dp-safe-bottom));
     --dp-font-ui: "Inter", ui-sans-serif, system-ui, sans-serif;
-    --dp-font-display: "Canela", "Georgia", serif;
+    --dp-font-display: "Canela", "Playfair Display", "Georgia", serif;
 
     /* Shadcn-compatible aliases mapped to Downtown Perks tokens */
-    --background: 225 33% 98%;
+    --background: 0 0% 100%;
     --foreground: 213 79% 11%;
 
     --card: 0 0% 100%;
@@ -136,14 +136,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-body);
-    background: #F7F8FB;
+    background: #FFFFFF;
   }
 
   h1, h2, h3, h4 {
     letter-spacing: 0 !important;
     text-wrap: balance;
     font-family: var(--font-heading);
-    font-weight: 500;
+    font-weight: 700;
+    color: #0B1F33;
   }
 
   p {
@@ -365,8 +366,8 @@ html {
     cursor: pointer;
     position: relative;
     display: flex;
-    height: 28px;
-    width: 28px;
+    height: 26px;
+    width: 26px;
     padding: 0;
     align-items: center;
     justify-content: center;
@@ -411,7 +412,7 @@ html {
   }
 
   .dp-spatial-map {
-    background: #FAFAFC;
+    background: #FFFFFF;
   }
 
   .dp-spatial-map .leaflet-tile-pane {
@@ -424,7 +425,7 @@ html {
     inset: 0;
     z-index: 650;
     background:
-      linear-gradient(180deg, rgba(250, 250, 252, 0.2), rgba(11, 31, 51, 0.035)),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(11, 31, 51, 0.028)),
       radial-gradient(circle at 24% 22%, rgba(179, 143, 79, 0.07), transparent 34%),
       radial-gradient(circle at 76% 68%, rgba(11, 31, 51, 0.06), transparent 38%);
     mix-blend-mode: multiply;
@@ -438,7 +439,7 @@ html {
 
   .dp-spatial-map .leaflet-control-attribution {
     border-radius: 6px 0 0 0;
-    background: rgba(247, 248, 251, 0.82);
+    background: rgba(255, 255, 255, 0.82);
     box-shadow: inset 0 0 0 1px rgba(11, 31, 51, 0.045);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -497,8 +498,8 @@ html {
     display: flex;
     position: relative;
     z-index: 1;
-    height: 20px;
-    width: 20px;
+    height: 18px;
+    width: 18px;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
@@ -510,8 +511,8 @@ html {
   }
 
   .dp-live-pin--event {
-    height: 26px;
-    width: 26px;
+    height: 24px;
+    width: 24px;
     border-color: rgba(179, 143, 79, 0.08);
     background: rgba(255, 255, 255, 0.94);
     box-shadow:
@@ -520,8 +521,8 @@ html {
   }
 
   .dp-live-pin--event .dp-live-pin__core {
-    height: 19px;
-    width: 19px;
+    height: 17px;
+    width: 17px;
     background: #0B1F33;
     color: #B38F4F;
     box-shadow:
@@ -530,26 +531,26 @@ html {
   }
 
   .dp-live-pin--event .dp-pin-svg {
-    height: 14px;
-    width: 14px;
+    height: 12.5px;
+    width: 12.5px;
     stroke-width: 1.9;
   }
 
   .dp-live-pin--event.is-selected,
   .dp-live-pin--event.is-pulsing {
-    height: 29px;
-    width: 29px;
+    height: 27px;
+    width: 27px;
   }
 
   .dp-live-pin--event.is-selected .dp-live-pin__core,
   .dp-live-pin--event.is-pulsing .dp-live-pin__core {
-    height: 22px;
-    width: 22px;
+    height: 20px;
+    width: 20px;
   }
 
   .dp-live-pin--happy-hour {
-    height: 26px;
-    width: 26px;
+    height: 24px;
+    width: 24px;
     border-color: rgba(179, 143, 79, 0.08);
     background: rgba(179, 143, 79, 0.07);
     box-shadow:
@@ -558,8 +559,8 @@ html {
   }
 
   .dp-live-pin--happy-hour .dp-live-pin__core {
-    height: 19px;
-    width: 19px;
+    height: 17px;
+    width: 17px;
     background: #0B1F33;
     color: #B38F4F;
     box-shadow:
@@ -568,26 +569,26 @@ html {
   }
 
   .dp-live-pin--happy-hour .dp-pin-svg {
-    height: 14px;
-    width: 14px;
+    height: 12.5px;
+    width: 12.5px;
     stroke-width: 2;
   }
 
   .dp-live-pin--happy-hour.is-selected,
   .dp-live-pin--happy-hour.is-pulsing {
-    height: 29px;
-    width: 29px;
+    height: 27px;
+    width: 27px;
   }
 
   .dp-live-pin--happy-hour.is-selected .dp-live-pin__core,
   .dp-live-pin--happy-hour.is-pulsing .dp-live-pin__core {
-    height: 22px;
-    width: 22px;
+    height: 20px;
+    width: 20px;
   }
 
   .dp-live-pin--legends {
-    height: 36px;
-    width: 36px;
+    height: 32px;
+    width: 32px;
     border-color: transparent;
     background: transparent;
     border-radius: 0;
@@ -597,8 +598,8 @@ html {
   }
 
   .dp-live-pin--legends .dp-live-pin__core {
-    height: 36px;
-    width: 36px;
+    height: 32px;
+    width: 32px;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
@@ -606,8 +607,8 @@ html {
   }
 
   .dp-live-pin--legends .dp-pin-logo {
-    height: 36px;
-    width: 36px;
+    height: 32px;
+    width: 32px;
     border-radius: 0;
     object-fit: contain;
     padding: 0;
@@ -631,8 +632,8 @@ html {
   }
 
   .dp-live-pin--legends.is-selected {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     border-color: transparent;
     box-shadow: none;
     transform: scale(1.08);
@@ -640,14 +641,14 @@ html {
 
   .dp-live-pin--legends.is-selected .dp-live-pin__core,
   .dp-live-pin--legends.is-pulsing .dp-live-pin__core {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
   }
 
   .dp-live-pin--legends.is-selected .dp-pin-logo,
   .dp-live-pin--legends.is-pulsing .dp-pin-logo {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     filter:
       drop-shadow(0 12px 22px rgba(11, 31, 51, 0.18))
       drop-shadow(0 0 14px rgba(179, 143, 79, 0.18));
@@ -698,14 +699,14 @@ html {
   }
 
   .dp-live-pin--legends .dp-live-pin__core .dp-pin-logo {
-    height: 36px;
-    width: 36px;
+    height: 32px;
+    width: 32px;
   }
 
   .dp-live-pin--legends.is-selected .dp-live-pin__core .dp-pin-logo,
   .dp-live-pin--legends.is-pulsing .dp-live-pin__core .dp-pin-logo {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
   }
 
   [title] > .dp-pin-svg,
@@ -733,21 +734,21 @@ html {
   }
 
   .leaflet-marker-icon .dp-live-pin--legends .dp-pin-logo {
-    height: 36px !important;
-    width: 36px !important;
+    height: 32px !important;
+    width: 32px !important;
   }
 
   .leaflet-marker-icon .dp-live-pin--legends.is-selected .dp-pin-logo,
   .leaflet-marker-icon .dp-live-pin--legends.is-pulsing .dp-pin-logo {
-    height: 40px !important;
-    width: 40px !important;
+    height: 36px !important;
+    width: 36px !important;
   }
 
   .dp-map-cluster {
     position: relative;
     display: flex;
-    height: 34px;
-    width: 34px;
+    height: 30px;
+    width: 30px;
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(179, 143, 79, 0.08);
@@ -790,14 +791,14 @@ html {
 
   .dp-map-cluster span {
     display: flex;
-    height: 24px;
-    min-width: 24px;
+    height: 21px;
+    min-width: 21px;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.12);
     color: #B38F4F;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: 0;
   }
@@ -819,6 +820,52 @@ html {
     text-transform: uppercase;
     box-shadow: none;
     transition: color 220ms ease, transform 220ms ease;
+  }
+
+  .dp-console-chip {
+    display: inline-flex;
+    min-height: 1.45rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.28rem;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    padding: 0.08rem 0;
+    color: rgba(11, 31, 51, 0.62);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 220ms ease, border-color 220ms ease, transform 220ms ease;
+  }
+
+  .dp-console-chip:hover {
+    color: #0B1F33;
+    transform: translateY(-1px);
+  }
+
+  .dp-console-chip:focus-visible {
+    outline: 2px solid #B38F4F;
+    outline-offset: 2px;
+  }
+
+  .dp-console-chip.is-active {
+    border-bottom-color: #B38F4F;
+    color: #0B1F33;
+  }
+
+  .dp-console-count {
+    display: inline-flex;
+    min-width: 1rem;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    font-size: 0.6rem;
+    font-weight: 700;
+    opacity: 0.56;
   }
 
   @media (min-width: 768px) {
@@ -998,17 +1045,17 @@ html {
   }
 
   .dp-panel-shell {
-    background: rgba(250, 250, 252, 0.93);
+    background: rgba(255, 255, 255, 0.92);
     box-shadow:
-      0 18px 64px rgba(11, 31, 51, 0.10),
-      0 0 54px rgba(179, 143, 79, 0.06),
+      0 14px 48px rgba(11, 31, 51, 0.075),
+      0 0 42px rgba(179, 143, 79, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.78);
     backdrop-filter: blur(24px) saturate(1.08);
     -webkit-backdrop-filter: blur(24px) saturate(1.08);
   }
 
   .dp-panel-header {
-    background: rgba(250, 250, 252, 0.9);
+    background: rgba(255, 255, 255, 0.88);
     box-shadow: 0 10px 30px rgba(11, 31, 51, 0.035);
     backdrop-filter: blur(22px) saturate(1.08);
     -webkit-backdrop-filter: blur(22px) saturate(1.08);
@@ -1064,9 +1111,71 @@ html {
       0 12px 28px rgba(11, 31, 51, 0.055);
   }
 
+  @media (max-width: 640px) {
+    .dp-live-pin {
+      height: 24px;
+      width: 24px;
+    }
+
+    .dp-live-pin__core {
+      height: 17px;
+      width: 17px;
+    }
+
+    .dp-live-pin__core .dp-pin-svg {
+      height: 12.5px;
+      width: 12.5px;
+    }
+
+    .dp-live-pin--legends {
+      height: 30px;
+      width: 30px;
+    }
+
+    .dp-live-pin--legends .dp-live-pin__core,
+    .dp-live-pin--legends .dp-pin-logo,
+    .dp-live-pin--legends .dp-live-pin__core .dp-pin-logo,
+    .leaflet-marker-icon .dp-live-pin--legends .dp-pin-logo {
+      height: 30px !important;
+      width: 30px !important;
+    }
+
+    .dp-live-pin--legends.is-selected,
+    .dp-live-pin--legends.is-pulsing {
+      height: 34px;
+      width: 34px;
+    }
+
+    .dp-live-pin--legends.is-selected .dp-live-pin__core,
+    .dp-live-pin--legends.is-pulsing .dp-live-pin__core,
+    .dp-live-pin--legends.is-selected .dp-pin-logo,
+    .dp-live-pin--legends.is-pulsing .dp-pin-logo,
+    .dp-live-pin--legends.is-selected .dp-live-pin__core .dp-pin-logo,
+    .dp-live-pin--legends.is-pulsing .dp-live-pin__core .dp-pin-logo,
+    .leaflet-marker-icon .dp-live-pin--legends.is-selected .dp-pin-logo,
+    .leaflet-marker-icon .dp-live-pin--legends.is-pulsing .dp-pin-logo {
+      height: 34px !important;
+      width: 34px !important;
+    }
+
+    .dp-map-cluster {
+      height: 30px;
+      width: 30px;
+    }
+
+    .dp-panel-shell {
+      font-size: 0.94em;
+    }
+
+    .dp-panel-tab {
+      height: 1.45rem;
+      font-size: 0.56rem;
+    }
+  }
+
   .dp-panel-row {
     background: rgba(255, 255, 255, 0.56);
-    box-shadow: inset 0 0 0 1px rgba(11, 31, 51, 0.025);
+    box-shadow: inset 0 0 0 1px rgba(11, 31, 51, 0.018);
     transition: transform 200ms ease, background 200ms ease, box-shadow 200ms ease;
   }
 
@@ -1097,7 +1206,7 @@ html {
     position: relative;
     overflow: hidden;
     border-radius: 0.55rem;
-    background: rgba(250, 250, 252, 0.78);
+    background: rgba(255, 255, 255, 0.78);
     box-shadow:
       0 12px 34px rgba(11, 31, 51, 0.035),
       0 0 30px rgba(179, 143, 79, 0.035),
@@ -1123,7 +1232,7 @@ html {
 
   .dp-soft-panel:hover {
     transform: none;
-    background: rgba(250, 250, 252, 0.9);
+    background: rgba(255, 255, 255, 0.9);
     box-shadow:
       0 14px 38px rgba(11, 31, 51, 0.04),
       0 0 34px rgba(179, 143, 79, 0.045);
@@ -1176,11 +1285,16 @@ html {
   }
 
   .dp-copy {
-    @apply max-w-2xl text-[13px] leading-[1.62] text-[#425466];
+    @apply max-w-2xl text-[14px] font-normal leading-relaxed text-[rgba(11,31,51,0.66)];
   }
 
   .dp-label {
-    @apply text-[10px] font-medium uppercase tracking-[0.14em] text-[#B38F4F];
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F];
+  }
+
+  .font-heading {
+    font-family: var(--font-heading) !important;
+    font-weight: 700 !important;
   }
 
   .dp-card {
@@ -1211,7 +1325,7 @@ html {
   }
 
   .dp-partner-page {
-    background: #F7F8FB;
+    background: #FFFFFF;
     color: #0B1F33;
     font-family: var(--font-body);
   }
@@ -1256,6 +1370,10 @@ html {
     color: rgba(11, 31, 51, 0.64) !important;
   }
 
+  .dp-partner-page {
+    background-color: #FFFFFF !important;
+  }
+
   .dp-partner-page :where(.text-primary, [class*="text-primary"]) {
     color: #B38F4F !important;
   }
@@ -1265,7 +1383,7 @@ html {
   }
 
   .dp-partner-page :where(.bg-white, [class*="bg-white/"], [class*="bg-\\[\\#F7F8FB\\]"]) {
-    background-color: rgba(255, 255, 255, 0.74);
+    background-color: rgba(255, 255, 255, 0.84);
   }
 
   .dp-partner-page :where([class*="bg-primary/"]) {
@@ -1721,6 +1839,15 @@ html {
     border-radius: 0.5rem !important;
   }
 
+  :where(span, p, div):where([class*="uppercase"][class*="tracking"]):where([class*="bg-white"], [class*="bg-card"], [class*="bg-muted"], [class*="bg-\\["]):not(button):not(a):not([role="button"]) {
+    background: transparent !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   :where([class*="bg-white"], [class*="bg-card"], [class*="bg-\\[\\#F7F8FB\\]"])[class*="border"] {
     box-shadow: var(--dp-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.70);
   }
@@ -1801,12 +1928,12 @@ html {
   html,
   body,
   #root {
-    background: #F7F8FB !important;
+    background: #FFFFFF !important;
     color: #0B1F33;
   }
 
   :where(.bg-background, .bg-secondary, .bg-muted, .bg-card, [class*="bg-muted/"], [class*="bg-card/"], [class*="bg-\\[\\#FAFAFC\\]"]):not([class*="bg-\\[\\#0B1F33\\]"]):not([class*="text-white"]) {
-    background-color: #F7F8FB !important;
+    background-color: #FFFFFF !important;
   }
 
   :where(section, main, article, aside, form, nav, header, footer, div):where([class*="bg-white"], [class*="bg-card"], [class*="bg-muted"], [class*="bg-\\[\\#F7F8FB\\]"], [class*="bg-\\[\\#FAFAFC\\]"]):not(.leaflet-container):not(.leaflet-pane):not(.leaflet-control):not(.leaflet-marker-icon):not([class*="bg-\\[\\#0B1F33\\]"]):not([class*="text-white"]) {
@@ -1850,7 +1977,7 @@ html {
     color: rgba(66, 84, 102, 0.78) !important;
   }
 
-  :where([class*="text-primary"], [class*="text-\\[\\#B38F4F\\]"]) {
+  :where([class*="text-primary"], [class*="text-\\[\\#B38F4F\\]"], [class*="text-\\[\\#C8A96A\\]"]) {
     color: #B38F4F !important;
   }
 
@@ -1859,7 +1986,7 @@ html {
   }
 
   :where(img):not(.leaflet-tile):not([src*="logo"]):not([src*="legends"]) {
-    background-color: #F7F8FB;
+    background-color: #FFFFFF;
   }
 
   .tracking-tight,

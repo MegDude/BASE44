@@ -77,7 +77,8 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const showBackButton = pathname !== "/";
+  const isPartnerSurface = pathname === "/partners" || pathname.startsWith("/partners/");
+  const showBackButton = pathname !== "/" && !isPartnerSurface && !noFooter;
 
   function getBackFallbackPath() {
     const params = new URLSearchParams(search);

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check, MapPinned, QrCode, Radar, SlidersHorizontal, Sparkles } from "lucide-react";
 import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
+import DowntownPerksHero from "@/components/shared/DowntownPerksHero";
 import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1];
@@ -265,7 +266,7 @@ function Section({ id, eyebrow, title, children, className = "" }) {
 function CTAButton({ to, children, variant = "primary" }) {
   const classes = variant === "primary"
     ? "bg-[#0B1F33] text-white hover:bg-[#081521]"
-    : "border border-[#0B1F33]/10 bg-white text-[#0B1F33] hover:bg-[#F7F8FB]";
+    : "border border-[#0B1F33]/10 bg-white text-[#0B1F33] hover:bg-white";
 
   const className = cn("inline-flex h-10 items-center justify-center gap-2 rounded-[4px] px-5 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]", classes);
 
@@ -398,7 +399,7 @@ function PilotStepper() {
                   className="group rounded-[8px] border border-[#0B1F33]/10 bg-white/78 p-4 shadow-[0_16px_36px_rgba(11,31,51,0.05)] backdrop-blur"
                 >
                   <div className="mb-4 flex items-center gap-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-[6px] border border-[#B38F4F]/28 bg-[#F7F8FB] text-[#0B1F33] shadow-[0_0_22px_rgba(179,143,79,0.14)] transition-colors group-hover:bg-[#0B1F33] group-hover:text-[#B38F4F]">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-[6px] border border-[#B38F4F]/28 bg-white text-[#0B1F33] shadow-[0_0_22px_rgba(179,143,79,0.14)] transition-colors group-hover:bg-[#0B1F33] group-hover:text-[#B38F4F]">
                       <Icon className="h-4 w-4" />
                     </span>
                     <span className="h-px flex-1 bg-[#0B1F33]/10" />
@@ -407,7 +408,7 @@ function PilotStepper() {
                   <p className="mt-2 min-h-[70px] text-[13px] leading-[1.65] text-[#0B1F33]/64">{stage.body}</p>
                   <div className="mt-4 flex flex-wrap gap-1.5">
                     {stage.signals.map((signal) => (
-                      <span key={signal} className="rounded-[5px] border border-[#0B1F33]/8 bg-[#F7F8FB] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/58">
+                      <span key={signal} className="rounded-[5px] border border-[#0B1F33]/8 bg-white px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/58">
                         {signal}
                       </span>
                     ))}
@@ -417,7 +418,7 @@ function PilotStepper() {
             })}
           </div>
 
-          <div className="mt-4 flex flex-col gap-3 rounded-[8px] border border-[#0B1F33]/10 bg-[#F7F8FB] p-4 md:flex-row md:items-center md:justify-between">
+          <div className="mt-4 flex flex-col gap-3 rounded-[8px] border border-[#0B1F33]/10 bg-white p-4 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-[13px] font-medium leading-5 text-[#0B1F33]">One downtown layer for residents, guests, visitors, venues, sponsors, and civic teams.</p>
               <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/58">Built around what people do nearby, not what they might remember later.</p>
@@ -593,7 +594,7 @@ function PartnerTypeTabs() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-[6px] border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+              <div className="rounded-[6px] border border-[#0B1F33]/8 bg-white p-4">
                 <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#B38F4F]">Pilot and pricing</div>
                 <p className="mt-3 text-[13px] leading-[1.65] text-[#0B1F33]/68">{current.pricing}</p>
                 <a href="#get-started" className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-[6px] bg-[#0B1F33] px-4 text-[12px] font-medium text-white transition-colors hover:bg-[#081521]">
@@ -629,7 +630,7 @@ function PartnerForms() {
             onClick={() => selectTab(tab)}
             className={cn(
               "min-w-[120px] rounded-[6px] px-3 py-2 text-left text-[12px] font-medium transition-colors",
-              active === tab.id ? "bg-[#0B1F33] text-white" : "bg-[#F7F8FB] text-[#0B1F33]/68 hover:text-[#0B1F33]"
+              active === tab.id ? "bg-[#0B1F33] text-white" : "bg-white text-[#0B1F33]/68 hover:text-[#0B1F33]"
             )}
           >
             {tab.label}
@@ -651,7 +652,7 @@ function PartnerForms() {
                   onClick={() => setPrompt(item)}
                   className={cn(
                     "rounded-[6px] border px-3 py-2 text-left text-[12px] leading-relaxed transition-colors",
-                    prompt === item ? "border-[#B38F4F]/60 bg-[#0B1F33]/10 text-[#0B1F33]" : "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33]/62 hover:text-[#0B1F33]"
+                    prompt === item ? "border-[#B38F4F]/60 bg-[#0B1F33]/10 text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/62 hover:text-[#0B1F33]"
                   )}
                 >
                   {item}
@@ -664,7 +665,7 @@ function PartnerForms() {
           {(formFieldsByType[current.id] || formFieldsByType.properties).map((label) => (
             <label key={label} className="grid gap-1.5">
               <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#0B1F33]/45">{label}</span>
-              <input className="h-10 rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 text-[13px] outline-none focus:border-[#B38F4F]/60" />
+              <input className="h-10 rounded-[6px] border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#B38F4F]/60" />
             </label>
           ))}
           <label className="grid gap-1.5">
@@ -672,7 +673,7 @@ function PartnerForms() {
             <textarea
               value={prompt}
               onChange={(event) => setPrompt(event.target.value)}
-              className="min-h-28 rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 py-2.5 text-[13px] outline-none focus:border-[#B38F4F]/60"
+              className="min-h-28 rounded-[6px] border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#B38F4F]/60"
             />
           </label>
           <button type="button" className="mt-2 inline-flex h-10 items-center justify-center gap-2 rounded-[6px] bg-[#0B1F33] px-5 text-[13px] font-medium text-white transition-colors hover:bg-[#081521]">
@@ -688,25 +689,26 @@ function PartnerForms() {
 
 export default function PartnersIndex() {
   return (
-    <div className="dp-partner-page min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
-      <section className="px-5 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
-            <span className="dp-label mb-4 block">Partners</span>
-            <h1 className="font-heading text-[30px] font-medium leading-[1.04] md:text-[42px]">Turn residents into regulars.</h1>
-            <div className="mt-6 space-y-3 text-[15px] leading-[1.7] text-[#0B1F33]/70">
-              <p>People are already downtown. Already walking. Already deciding.</p>
-              <p>You don't need more attention. You need better timing. This is that moment. Downtown Perks puts you in front of them when it matters.</p>
-              <p>Not broad advertising. Not hoping they remember. Just visibility when decisions happen.</p>
-            </div>
-            <p className="mt-5 font-heading text-xl italic text-[#0B1F33]">Show up when it counts.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <CTAButton to="#get-started">See how it works for you</CTAButton>
-              <CTAButton to="#partner-types" variant="secondary">Partner types</CTAButton>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="dp-partner-page min-h-screen bg-white pt-[68px] text-[#0B1F33]">
+      <DowntownPerksHero
+        eyebrow="Partners"
+        title="Turn residents into"
+        titleAccent="regulars."
+        lead="People are already downtown. Already walking. Already deciding."
+        support={[
+          "You don't need more attention. You need better timing. This is that moment. Downtown Perks puts you in front of them when it matters.",
+          "Not broad advertising. Not hoping they remember. Just visibility when decisions happen.",
+          "Show up when it counts.",
+        ]}
+        primary="See how it works for you"
+        primaryHref="#get-started"
+        secondary="Partner types"
+        secondaryHref="#partner-types"
+        image="/images/map-entities/perks/partner_dining_patio_1779052819620.png"
+        imageAlt="Downtown Austin patio and partner hospitality moment"
+        imageLabel="LOCAL VISIBILITY"
+        className="py-16 md:py-24"
+      />
 
       <Section eyebrow="Ready when you are." title="Be the place people choose next.">
         <p className="max-w-2xl text-[15px] leading-[1.7] text-[#0B1F33]/68">

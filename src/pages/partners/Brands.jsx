@@ -181,7 +181,7 @@ export default function BrandsPartner() {
   }
 
   return (
-    <div className="dp-partner-page min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <div className="dp-partner-page min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="relative overflow-hidden px-5 py-16 md:py-24">
         <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(11,31,51,0.28) 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="relative mx-auto max-w-6xl">
@@ -232,7 +232,7 @@ export default function BrandsPartner() {
                 <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Campaign preview</span>
                 <Sparkles className="h-4 w-4 text-[#B38F4F]" />
               </div>
-              <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+              <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-white p-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
                     <Megaphone className="h-5 w-5" />
@@ -288,11 +288,11 @@ export default function BrandsPartner() {
                   type="button"
                   onClick={() => setActivePoint(point)}
                   className={`grid w-full grid-cols-[36px_1fr_auto] items-center gap-3 p-3 text-left transition ${
-                    point.id === activePoint.id ? "bg-[#0B1F33] text-white" : "hover:bg-[#F7F8FB]"
+                    point.id === activePoint.id ? "bg-[#0B1F33] text-white" : "hover:bg-white"
                   }`}
                 >
                   <span className={`flex h-9 w-9 items-center justify-center rounded-md border ${
-                    point.id === activePoint.id ? "border-[#B38F4F]/60 bg-white/10 text-[#B38F4F]" : "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33]"
+                    point.id === activePoint.id ? "border-[#B38F4F]/60 bg-white/10 text-[#B38F4F]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
                   }`}>
                     <MapPin className="h-4 w-4" />
                   </span>
@@ -337,7 +337,7 @@ export default function BrandsPartner() {
       <Section eyebrow="Workflow" title="How a downtown campaign turns into action." className="bg-white">
         <div className="grid gap-3 md:grid-cols-4">
           {WORKFLOW.map(([num, title, copy]) => (
-            <article key={num} className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-5">
+            <article key={num} className="rounded-md border border-[#0B1F33]/8 bg-white p-5">
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">{num}</div>
               <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{title}</h3>
               <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{copy}</p>
@@ -400,7 +400,7 @@ export default function BrandsPartner() {
 
       <Section id="brand-form" eyebrow="Get Started" title="Start a brand conversation." className="bg-white">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB] p-5">
+          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
                 <Building2 className="h-5 w-5" />
@@ -430,7 +430,7 @@ export default function BrandsPartner() {
             {["Brand/Company Name", "Your Name & Role", "Email", "Phone", "Timeline"].map((label) => (
               <label key={label} className="grid gap-1.5">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</span>
-                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 text-[13px] outline-none focus:border-[#B38F4F]" />
+                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#B38F4F]" />
               </label>
             ))}
             <label className="grid gap-1.5">
@@ -438,14 +438,14 @@ export default function BrandsPartner() {
               <textarea
                 value={selectedPrompt}
                 onChange={(event) => setSelectedPrompt(event.target.value)}
-                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 py-2.5 text-[13px] outline-none focus:border-[#B38F4F]"
+                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#B38F4F]"
               />
             </label>
             <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
               Start a conversation
             </button>
             {submitted && (
-              <p className="rounded-md border border-[#B38F4F]/35 bg-[#F7F8FB] px-3 py-2 text-[12px] text-[#0B1F33]/68">
+              <p className="rounded-md border border-[#B38F4F]/35 bg-white px-3 py-2 text-[12px] text-[#0B1F33]/68">
                 Thanks. Your brand campaign request is ready for follow-up.
               </p>
             )}

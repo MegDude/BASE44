@@ -581,19 +581,19 @@ function pinIcon(place, selected, pulsing = false) {
   const happyHourPinClass = isHappyHourPin ? "dp-live-pin--happy-hour" : "";
   const legendsPinClass = isLegendsPin ? "dp-live-pin--legends" : "";
   const iconSize = isLegendsPin
-    ? (selected ? [40, 40] : [36, 36])
+    ? (selected ? [36, 36] : [32, 32])
     : isEventPin || isHappyHourPin
-      ? (selected ? [29, 29] : [26, 26])
+      ? (selected ? [27, 27] : [24, 24])
       : selected
-        ? [31, 31]
-        : [28, 28];
+        ? [29, 29]
+        : [26, 26];
   const iconAnchor = isLegendsPin
-    ? (selected ? [20, 20] : [18, 18])
+    ? (selected ? [18, 18] : [16, 16])
     : isEventPin || isHappyHourPin
-      ? (selected ? [14.5, 14.5] : [13, 13])
+      ? (selected ? [13.5, 13.5] : [12, 12])
       : selected
-        ? [15.5, 15.5]
-        : [14, 14];
+        ? [14.5, 14.5]
+        : [13, 13];
   const ariaLabel = legendsListing ? `Legends listing at ${legendsListing.address}` : `${place.name} details`;
   return L.divIcon({
     className: "dp-leaflet-pin",
@@ -615,8 +615,8 @@ function clusterIcon(count) {
   return L.divIcon({
     className: "dp-leaflet-cluster",
     html: `<div class="dp-map-cluster" aria-hidden="true"><span>${count}</span></div>`,
-    iconSize: [34, 34],
-    iconAnchor: [17, 17],
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
   });
 }
 
@@ -1848,7 +1848,7 @@ export default function MapPage() {
   const overflowFilters = FILTERS.filter((filter) => !visibleFilters.includes(filter));
 
   return (
-    <div className="relative h-screen overflow-hidden bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <div className="relative h-screen overflow-hidden bg-white pt-[68px] text-[#0B1F33]">
       <div className="absolute inset-x-0 bottom-0 top-[68px]">
         <MapContainer
           center={AUSTIN_CENTER}
@@ -1906,7 +1906,7 @@ export default function MapPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell pointer-events-auto relative mx-auto max-h-[calc(100vh-124px)] max-w-3xl overflow-y-auto rounded-md p-2 pr-9 md:max-h-[calc(100vh-142px)] md:rounded-lg md:p-3 md:pr-11"
+            className="dp-panel-shell pointer-events-auto relative mx-auto max-h-[calc(100vh-124px)] max-w-2xl overflow-y-auto rounded-md p-2 pr-9 md:max-h-[calc(100vh-142px)] md:p-2.5 md:pr-10"
             role="region"
             aria-label="Map command console"
           >
@@ -2008,11 +2008,7 @@ export default function MapPage() {
                     key={filter}
                     type="button"
                     onClick={() => setFilter(filter)}
-                    className={`shrink-0 rounded-md border px-2 py-1 text-[10px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:px-2.5 md:py-1.5 md:text-[11px] ${
-                      active
-                        ? "border-[#0B1F33] bg-[#0B1F33] text-white shadow-[0_12px_30px_rgba(11,31,51,0.14)]"
-                        : "border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:-translate-y-0.5 hover:border-[#B38F4F]/60"
-                    }`}
+                    className={`dp-console-chip ${active ? "is-active" : ""}`}
                   >
                     {filter}
                   </button>
@@ -2021,9 +2017,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => setFiltersOpen((value) => !value)}
-                  className={`shrink-0 rounded-md border px-2 py-1 text-[10px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:px-2.5 md:py-1.5 md:text-[11px] ${
-                    filtersOpen ? "border-[#B38F4F]/60 bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:border-[#B38F4F]/60"
-                  }`}
+                  className={`dp-console-chip ${filtersOpen ? "is-active" : ""}`}
                   aria-expanded={filtersOpen}
                 >
                   More
@@ -2031,9 +2025,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => setNeighborhoodsOpen((value) => !value)}
-                  className={`inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] md:gap-1.5 md:px-2.5 md:py-1.5 md:text-[10px] md:tracking-[0.12em] ${
-                    neighborhoodsOpen ? "border-[#B38F4F]/60 bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
-                  }`}
+                  className={`dp-console-chip ${neighborhoodsOpen ? "is-active" : ""}`}
                   aria-expanded={neighborhoodsOpen}
                 >
                   <MapPin className="h-3.5 w-3.5" />
@@ -2043,9 +2035,7 @@ export default function MapPage() {
                   <button
                     type="button"
                     onClick={() => setIntelOpen((value) => !value)}
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] md:gap-1.5 md:px-2.5 md:py-1.5 md:text-[10px] md:tracking-[0.12em] ${
-                      intelOpen ? "border-[#B38F4F]/60 bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
-                    }`}
+                    className={`dp-console-chip ${intelOpen ? "is-active" : ""}`}
                     aria-expanded={intelOpen}
                   >
                     <Sparkles className="h-3.5 w-3.5" />
@@ -2070,11 +2060,7 @@ export default function MapPage() {
                             key={filter}
                             type="button"
                             onClick={() => setFilter(filter)}
-                            className={`shrink-0 rounded-md border px-2 py-1 text-[10px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:px-2.5 md:py-1.5 md:text-[11px] ${
-                              active
-                                ? "border-[#0B1F33] bg-[#0B1F33] text-white shadow-[0_12px_30px_rgba(11,31,51,0.14)]"
-                                : "border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:-translate-y-0.5 hover:border-[#B38F4F]/60"
-                            }`}
+                            className={`dp-console-chip ${active ? "is-active" : ""}`}
                           >
                             {filter}
                           </button>
@@ -2083,7 +2069,7 @@ export default function MapPage() {
                       <button
                         type="button"
                         onClick={() => setFiltersOpen(false)}
-                        className="inline-flex shrink-0 items-center gap-1 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:gap-1.5 md:px-2.5 md:py-1.5 md:text-[10px] md:tracking-[0.12em]"
+                        className="dp-console-chip"
                       >
                         <ChevronUp className="h-3.5 w-3.5" />
                         Roll up
@@ -2112,9 +2098,7 @@ export default function MapPage() {
                                 setMapAnswer(null);
                                 urlState.update({ radius: item });
                               }}
-                              className={`shrink-0 rounded-md border px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] md:px-2.5 md:py-1.5 md:text-[10px] md:tracking-[0.12em] ${
-                                radius === item ? "border-[#B38F4F]/60 bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
-                              }`}
+                              className={`dp-console-chip ${radius === item ? "is-active" : ""}`}
                             >
                               {item}
                             </button>
@@ -2131,17 +2115,11 @@ export default function MapPage() {
                       key={neighborhood}
                       type="button"
                       onClick={() => setNeighborhood(neighborhood)}
-                      className={`inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 text-[10px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:gap-1.5 md:px-2.5 md:py-1.5 md:text-[11px] ${
-                        active
-                          ? "border-[#B38F4F]/60 bg-[#0B1F33] text-white shadow-[0_12px_30px_rgba(11,31,51,0.14)]"
-                          : "border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:-translate-y-0.5 hover:border-[#B38F4F]/60"
-                      }`}
+                      className={`dp-console-chip ${active ? "is-active" : ""}`}
                       aria-pressed={active}
                     >
                       {label}
-                      <span className={`rounded-[4px] px-1.5 py-0.5 text-[10px] leading-none ${
-                        active ? "bg-white/12 text-white/82" : "bg-[#F7F8FB] text-[#0B1F33]/52"
-                      }`}>
+                      <span className="dp-console-count">
                         {count}
                       </span>
                     </button>
@@ -2150,7 +2128,7 @@ export default function MapPage() {
                         <button
                           type="button"
                           onClick={() => setNeighborhoodsOpen(false)}
-                          className="inline-flex shrink-0 items-center gap-1 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:gap-1.5 md:px-2.5 md:py-1.5 md:text-[10px] md:tracking-[0.12em]"
+                          className="dp-console-chip"
                         >
                           <ChevronUp className="h-3.5 w-3.5" />
                           Roll up

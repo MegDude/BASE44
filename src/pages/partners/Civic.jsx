@@ -152,7 +152,7 @@ export default function CivicPartner() {
     : [];
 
   return (
-    <div className="dp-partner-page min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <div className="dp-partner-page min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       {/* Hero */}
       <PartnerHero
         eyebrow="Civic"
@@ -207,7 +207,7 @@ export default function CivicPartner() {
                   <div className={`text-[12px] font-medium px-3 py-1 rounded-full ${
                     selectedFormat === format.id
                       ? 'bg-white/20 text-white'
-                      : 'bg-[#F7F8FB] text-[#0B1F33]/50'
+                      : 'bg-white text-[#0B1F33]/50'
                   }`}>
                     {format.bestFor}
                   </div>
@@ -284,7 +284,7 @@ export default function CivicPartner() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-6 rounded-lg bg-[#F7F8FB] border border-[#0B1F33]/8"
+              className="mt-8 p-6 rounded-lg bg-white border border-[#0B1F33]/8"
             >
               <p className="text-[13px] text-[#0B1F33]/70">
                 You selected <strong>{FORMAT_SELECTOR.find((s) => s.id === selectedSelector)?.label}</strong>. This matches:

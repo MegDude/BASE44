@@ -339,7 +339,7 @@ function AnchorBadge({ anchor, active }) {
       className={`flex h-20 w-full items-center justify-center rounded-md border ${
         active
           ? "border-[#B38F4F]/60 bg-white/10 text-[#B38F4F]"
-          : "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33]"
+          : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
       }`}
       aria-hidden="true"
     >
@@ -439,7 +439,7 @@ export default function PartnersDashboard() {
   }
 
   return (
-    <main className="dp-partner-page bg-[#F7F8FB] text-[#0B1F33]">
+    <main className="dp-partner-page bg-white text-[#0B1F33]">
       <section className="mx-auto max-w-7xl px-4 pb-12 pt-28 sm:px-5 lg:px-5">
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <div>
@@ -503,7 +503,7 @@ export default function PartnersDashboard() {
               <div className="mt-3 text-3xl font-semibold">{metric.value}</div>
               <div className="mt-2 text-[13px] leading-6 opacity-70">{metric.detail}</div>
               <div className={`mt-4 rounded-md border p-3 text-[12px] leading-5 ${
-                selectedMetric.id === metric.id ? "border-white/14 bg-white/8 text-white/78" : "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33]/64"
+                selectedMetric.id === metric.id ? "border-white/14 bg-white/8 text-white/78" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/64"
               }`}>
                 <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] opacity-70">What this shows</span>
                 <span className="mt-1 block">{metric.shows}</span>
@@ -527,7 +527,7 @@ export default function PartnersDashboard() {
             <div className="grid gap-2">
               {eventRsvps.length ? (
                 eventRsvps.slice(0, 5).map((event) => (
-                  <div key={event.id} className="grid gap-3 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-3 sm:grid-cols-[1fr_auto] sm:items-center">
+                  <div key={event.id} className="grid gap-3 rounded-md border border-[#0B1F33]/8 bg-white p-3 sm:grid-cols-[1fr_auto] sm:items-center">
                     <div className="min-w-0">
                       <div className="truncate text-[13px] font-semibold text-[#0B1F33]">{event.title}</div>
                       <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[#0B1F33]/58">
@@ -542,7 +542,7 @@ export default function PartnersDashboard() {
                   </div>
                 ))
               ) : (
-                <div className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4 text-[13px] leading-6 text-[#0B1F33]/62">
+                <div className="rounded-md border border-[#0B1F33]/8 bg-white p-4 text-[13px] leading-6 text-[#0B1F33]/62">
                   No event RSVPs yet. Once residents RSVP from the Events page, they will show up here for partner reporting.
                 </div>
               )}
@@ -565,7 +565,7 @@ export default function PartnersDashboard() {
                   <Link
                     key={item.id}
                     to={`/map?mode=partner&tab=map&filter=Happy%20Hours&entityId=${item.id}`}
-                    className="grid gap-2 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-3 text-left transition hover:-translate-y-0.5 hover:border-[#B38F4F]/45 sm:grid-cols-[1fr_auto] sm:items-center"
+                    className="grid gap-2 rounded-md border border-[#0B1F33]/8 bg-white p-3 text-left transition hover:-translate-y-0.5 hover:border-[#B38F4F]/45 sm:grid-cols-[1fr_auto] sm:items-center"
                   >
                     <span className="min-w-0">
                       <span className="block truncate text-[13px] font-semibold text-[#0B1F33]">{item.venueName || item.name}</span>
@@ -582,7 +582,7 @@ export default function PartnersDashboard() {
               </div>
             </div>
 
-            <form onSubmit={submitHappyHour} className="rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+            <form onSubmit={submitHappyHour} className="rounded-lg border border-[#0B1F33]/8 bg-white p-4">
               <div className="grid gap-3 sm:grid-cols-2">
                 {[
                   ["venueName", "Venue name"],
@@ -669,7 +669,7 @@ export default function PartnersDashboard() {
               <button
                 type="button"
                 onClick={() => setAnchorsExpanded((value) => !value)}
-                className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[#0B1F33]/8 bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
                 aria-expanded={anchorsExpanded}
               >
                 {anchorsExpanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronUp className="h-3.5 w-3.5" />}
@@ -756,7 +756,7 @@ export default function PartnersDashboard() {
                 Pick a time and a topic to see what people are doing near {selectedAnchor.name}.
               </p>
             </div>
-            <div className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+            <div className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">
                 {(() => {
                   const ActiveIcon = matrixContext.column.icon;
@@ -771,7 +771,7 @@ export default function PartnersDashboard() {
             </div>
           </div>
 
-          <div className="grid gap-3 border-b border-[#0B1F33]/8 bg-[#F7F8FB]/72 p-4 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+          <div className="grid gap-3 border-b border-[#0B1F33]/8 bg-white/72 p-4 md:grid-cols-[0.9fr_1.1fr] md:items-start">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">How to use the matrix</p>
               <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/66">
@@ -800,7 +800,7 @@ export default function PartnersDashboard() {
             <div className="overflow-x-auto p-4">
               <div className="min-w-[780px]">
                 <div className="grid grid-cols-[150px_repeat(3,minmax(180px,1fr))] gap-2">
-                  <div className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/52">
+                  <div className="rounded-md border border-[#0B1F33]/8 bg-white p-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/52">
                     Timing
                   </div>
                   {matrixColumns.map((column) => {
@@ -813,7 +813,7 @@ export default function PartnersDashboard() {
                         className={`rounded-md border p-3 text-left transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
                           matrixContext.column.id === column.id
                             ? "border-[#B38F4F]/70 bg-[#0B1F33] text-white shadow-[0_14px_34px_rgba(11,31,51,0.14)]"
-                            : "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33] hover:border-[#B38F4F]/45"
+                            : "border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:border-[#B38F4F]/45"
                         }`}
                       >
                         <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]">
@@ -856,7 +856,7 @@ export default function PartnersDashboard() {
                           >
                             <span className="flex items-center justify-between gap-3">
                               <span className="text-[13px] font-semibold">{cell.value}</span>
-                              <span className={`rounded-[4px] border px-2 py-1 text-[11px] font-semibold ${isSelected ? "border-white/20 bg-white/10" : "border-[#0B1F33]/8 bg-[#F7F8FB]"}`}>
+                              <span className={`rounded-[4px] border px-2 py-1 text-[11px] font-semibold ${isSelected ? "border-white/20 bg-white/10" : "border-[#0B1F33]/8 bg-white"}`}>
                                 {cell.score}
                               </span>
                             </span>
@@ -870,7 +870,7 @@ export default function PartnersDashboard() {
               </div>
             </div>
 
-            <aside className="border-t border-[#0B1F33]/8 bg-[#F7F8FB] p-5 lg:border-l lg:border-t-0">
+            <aside className="border-t border-[#0B1F33]/8 bg-white p-5 lg:border-l lg:border-t-0">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">What this means</p>
               <h3 className="mt-3 text-2xl font-semibold leading-tight text-[#0B1F33]">{matrixContext.cell.value}</h3>
               <div className="mt-4 grid grid-cols-2 gap-3">
@@ -932,7 +932,7 @@ export default function PartnersDashboard() {
               <Link
                 key={example.brand}
                 to={example.route}
-                className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4 transition hover:-translate-y-0.5 hover:border-[#B38F4F]/50 hover:bg-white"
+                className="rounded-md border border-[#0B1F33]/8 bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#B38F4F]/50 hover:bg-white"
               >
                 <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F]">{example.metric}</div>
                 <h3 className="mt-2 text-[13px] font-semibold text-[#0B1F33]">{example.brand}</h3>
@@ -967,7 +967,7 @@ export default function PartnersDashboard() {
               </button>
             ))}
           </div>
-          <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+          <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-white p-4">
             <div className="text-[13px] font-semibold">{activeStep} · {selectedAnchor.name}</div>
             <div className="mt-1 text-xl font-semibold text-[#0B1F33]">{campaignStepDetails[activeStep].title}</div>
             <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/62">
@@ -1018,7 +1018,7 @@ export default function PartnersDashboard() {
               <button
                 type="button"
                 onClick={() => setQueueExpanded((value) => !value)}
-                className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[#0B1F33]/8 bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
                 aria-expanded={queueExpanded}
               >
                 {queueExpanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronUp className="h-3.5 w-3.5" />}

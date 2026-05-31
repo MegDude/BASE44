@@ -70,7 +70,7 @@ export default function ResidentialPartner() {
   const [selectedFeature, setSelectedFeature] = useState('resident-activation');
 
   return (
-    <div className="dp-partner-page min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <div className="dp-partner-page min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       {/* Hero */}
       <PartnerHero
         eyebrow="Residential Partner"
@@ -86,7 +86,7 @@ export default function ResidentialPartner() {
           { label: 'Partner venues', value: '120+' },
         ]}
         preview={
-          <div className="aspect-[4/3] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#F7F8FB] flex items-center justify-center">
+          <div className="aspect-[4/3] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] flex items-center justify-center">
             <div className="text-center">
               <Building2 className="w-12 h-10 text-[#0B1F33]/50 mx-auto mb-3" />
               <p className="text-[13px] font-semibold text-[#0B1F33]/70">Building + Resident Layer Preview</p>
@@ -129,7 +129,7 @@ export default function ResidentialPartner() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   {RESIDENTIAL_FEATURES.find((f) => f.id === selectedFeature)?.stats.map((stat, i) => (
-                    <div key={i} className="p-4 rounded-xl bg-[#F7F8FB]">
+                    <div key={i} className="p-4 rounded-xl bg-white">
                       <div className="text-[16px] font-bold text-[#0B1F33]">{stat.value}</div>
                       <div className="text-[11px] text-[#0B1F33]/50 mt-1">{stat.label}</div>
                     </div>
@@ -151,7 +151,7 @@ export default function ResidentialPartner() {
             Your building appears on the map with a resident layer. Residents can tap to view exclusive perks at nearby venues and save favorites.
           </p>
 
-          <div className="aspect-[16/9] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#F7F8FB] flex items-center justify-center">
+          <div className="aspect-[16/9] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] flex items-center justify-center">
             <div className="text-center">
               <MapPin className="w-12 h-10 text-[#0B1F33]/50 mx-auto mb-3" />
               <p className="text-[13px] font-semibold text-[#0B1F33]/70">Interactive Map Placement</p>

@@ -8,6 +8,7 @@ import {
   Search,
   Sparkles,
 } from "lucide-react";
+import DowntownPerksHero from "@/components/shared/DowntownPerksHero";
 
 const partnerCategories = {
   Properties: {
@@ -93,25 +94,31 @@ export default function Home() {
     if (isPartner) {
       return {
         eyebrow: "Partner Mode",
-        title: "Turn Residents Into Regulars",
-        subhead: "Be the place people choose next.",
-        body: "People are already downtown. Already walking. Already deciding. You don't need more attention. You need better timing. Downtown Perks puts you in front of them when it matters.",
+        title: "Turn residents into",
+        titleAccent: "regulars.",
+        lead: "Be the place people choose next.",
+        support: "People are already downtown. Already walking. Already deciding. You don't need more attention. You need better timing. Downtown Perks puts you in front of them when it matters.",
         primary: "See how it works for you",
         primaryHref: "/partners#contact",
         secondary: "Explore Downtown",
         secondaryHref: "/map?mode=resident&tab=map",
+        image: "/images/map-entities/perks/partner_dining_patio_1779052819620.png",
+        imageLabel: "LOCAL VISIBILITY",
       };
     }
 
     return {
       eyebrow: "Resident View",
-      title: "Where downtown meets you",
-      subhead: "Everything nearby — in one map.",
-      body: "Built for people who actually live here — and the places that make it feel like home. From coffee to dinner, live events, and everything in between, plus the perks you didn’t know you had. All in one place. No extra apps. No logins. No platforms or directories guessing what matters.",
+      title: "Where downtown",
+      titleAccent: "meets you.",
+      lead: "Everything nearby — in one map.",
+      support: "Built for people who actually live here — and the places that make it feel like home. From coffee to dinner, live events, and everything in between, plus the perks you didn’t know you had. All in one place. No extra apps. No logins. No platforms or directories guessing what matters.",
       primary: "Explore Downtown",
       primaryHref: "/map?mode=resident&tab=map",
       secondary: "Get Your Perks Card",
       secondaryHref: "/card",
+      image: "/images/splash/rooftop-nearby.jpeg",
+      imageLabel: "LIVE DISCOVERY",
     };
   }, [isPartner]);
 
@@ -123,87 +130,22 @@ export default function Home() {
   }
 
   return (
-    <main className="bg-[#F7F8FB] text-[#0B1F33]">
-      <section className="relative overflow-hidden px-5 pb-14 pt-28 md:pb-20">
-        <div className="pointer-events-none absolute left-[6%] top-28 h-56 w-56 rounded-full bg-white/76 blur-3xl" aria-hidden="true" />
-        <div className="pointer-events-none absolute right-[10%] top-20 h-72 w-72 rounded-full bg-white/74 blur-[80px]" aria-hidden="true" />
-        <div className="relative mx-auto max-w-6xl">
-          <div className="mb-8 inline-flex bg-white/68 p-1 shadow-[0_12px_40px_rgba(11,31,51,0.05)] backdrop-blur-[16px]">
-            {["resident", "partner"].map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => {
-                  setMode(item);
-                  setOpenFaq(0);
-                }}
-                className={item === mode
-                  ? "h-10 bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-[0.16em] text-white"
-                  : "h-10 px-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/62"}
-              >
-                {item === "resident" ? "Resident View" : "Partner View"}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-[1fr_440px] lg:items-end">
-            <div>
-              <span className="dp-label mb-4 block">{hero.eyebrow}</span>
-              <h1 className="font-heading text-[40px] font-medium leading-[1.02] md:text-[64px]">{hero.title}</h1>
-              <p className="mt-4 font-heading text-2xl italic leading-tight text-[#0B1F33]">{hero.subhead}</p>
-              <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">{hero.body}</p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Link to={hero.primaryHref} className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">
-                  {hero.primary}
-                  <ArrowRight className="ml-2 h-4 w-4 text-[#B38F4F]" />
-                </Link>
-                <Link to={hero.secondaryHref} className="inline-flex h-10 items-center justify-center rounded-md bg-white/72 px-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33] shadow-[0_12px_40px_rgba(11,31,51,0.05)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_12px_40px_rgba(11,31,51,0.06)]">
-                  {hero.secondary}
-                </Link>
-                {!isPartner && (
-                  <Link to="/partners" className="inline-flex h-10 items-center justify-center rounded-md bg-white/72 px-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33] shadow-[0_12px_40px_rgba(11,31,51,0.05)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_12px_40px_rgba(11,31,51,0.06)]">
-                    Become a Partner
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            <form onSubmit={submitSearch} className="dp-glass p-3 transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(11,31,51,0.06)]">
-              <div className="mb-3">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/48">Search intent integration</span>
-              </div>
-              <label className="flex h-10 items-center gap-3 bg-white/82 px-4 shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] transition focus-within:shadow-[inset_0_0_0_1px_rgba(179,143,79,0.10),0_0_24px_rgba(179,143,79,0.08)]">
-                <Search className="h-4 w-4 text-[#0B1F33]/48" />
-                <input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder={isPartner ? "Who nearby should see this?" : "Where do you want to go?"}
-                  className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-[#425466]"
-                />
-              </label>
-              {!isPartner && (
-                <div className="mt-3 grid gap-2">
-                  {searchIntentPrompts.map(([title, detail]) => (
-                    <button
-                      key={title}
-                      type="button"
-                      onClick={() => setQuery(title)}
-                      className="rounded-md bg-white/68 p-3 text-left shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_12px_40px_rgba(11,31,51,0.06)]"
-                    >
-                      <span className="block text-[12px] font-semibold text-[#0B1F33]">{title}</span>
-                      <span className="mt-1 block text-[11px] leading-4 text-[#0B1F33]/58">{detail}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-              <button className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-md bg-[#0B1F33] px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">
-                {isPartner ? "Open partner map" : "Explore downtown"}
-                <ArrowRight className="ml-2 h-4 w-4 text-[#B38F4F]" />
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
+    <main className="bg-white text-[#0B1F33]">
+      <DowntownPerksHero
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        titleAccent={hero.titleAccent}
+        lead={hero.lead}
+        support={hero.support}
+        primary={hero.primary}
+        primaryHref={hero.primaryHref}
+        secondary={hero.secondary}
+        secondaryHref={hero.secondaryHref}
+        image={hero.image}
+        imageAlt={isPartner ? "Downtown partner patio moment" : "Downtown Austin rooftop moment"}
+        imageLabel={hero.imageLabel}
+        className="pt-28"
+      />
 
       <section className="px-5 py-12 md:py-16">
         <div className="mx-auto max-w-6xl">
@@ -360,7 +302,7 @@ export default function Home() {
             {(isPartner ? ["Organization Name", "Your Name & Role", "Email", "Phone"] : ["Your Name", "Phone Number", "Email", "Building Address", "How did you hear about us?"]).map((label) => (
               <label key={label} className="grid gap-1.5">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</span>
-                <input className="h-10 rounded-md bg-[#F7F8FB] px-3 text-[13px] shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] outline-none transition focus:shadow-[inset_0_0_0_1px_rgba(179,143,79,0.10),0_0_24px_rgba(179,143,79,0.08)]" />
+                <input className="h-10 rounded-md bg-white px-3 text-[13px] shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] outline-none transition focus:shadow-[inset_0_0_0_1px_rgba(179,143,79,0.10),0_0_24px_rgba(179,143,79,0.08)]" />
               </label>
             ))}
             <button type="button" className="mt-2 inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">
