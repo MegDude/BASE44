@@ -1921,7 +1921,7 @@ export default function MapPage() {
             <div className="grid gap-2">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
+                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase text-[#B38F4F]">
                   <Sparkles className="h-3 w-3 text-[#B38F4F] md:h-3.5 md:w-3.5" />
                   {urlState.mode === "partner" ? "PARTNER MAP AGENT" : "RESIDENT MAP AGENT"}
                 </div>
@@ -1931,16 +1931,6 @@ export default function MapPage() {
               </div>
 
                 <div className="flex shrink-0 gap-1.5">
-                {urlState.mode === "partner" ? (
-                  <>
-                    <button type="button" onClick={() => switchMode("resident")} className="dp-map-control">Resident</button>
-                    <Link to={mapRoutes.dashboard} className="dp-map-control">Dashboard</Link>
-                  </>
-	                ) : (
-	                  <>
-	                    <button type="button" onClick={() => switchMode("partner")} className="dp-map-control">Partner</button>
-	                  </>
-	                )}
                 <button type="button" onClick={() => setAboutOpen(true)} className="dp-map-control" aria-label="About Downtown Perks">
                   <Info className="h-4 w-4 text-[#B38F4F]" />
                 </button>
