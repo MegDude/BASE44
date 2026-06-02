@@ -91,7 +91,7 @@ const events = [
     date: new Date(2026, 4, 30, 16, 30),
     time: "Sat · 4:30 PM",
     venue: "Waterline District",
-    category: "Activation",
+    category: "Local",
     going: 31,
     image: "/images/properties/bowie-attached.jpg",
     imageAlt: "Downtown Austin residential building context",
@@ -139,25 +139,32 @@ const events = [
   },
   {
     id: "brand-sampling",
-    title: "Rivian Downtown Demo",
+    title: "Monday Meetups at Stay Put",
     date: new Date(2026, 5, 4, 18, 0),
     time: "Thu · 6:00 PM",
-    venue: "Seaholm",
-    category: "Activation",
+    venue: "Stay Put",
+    category: "Social",
     going: 64,
     image: "/images/partners/hospitality-rooftop-social.png",
-    imageAlt: "Downtown Austin brand activation and resident gathering",
-    imageLabel: "Brand activation",
-    description: "A resident-friendly brand moment near Seaholm. Stop by, scan in, answer a short prompt, and see what is happening nearby after.",
+    imageAlt: "Downtown Austin residents gathering for a local event",
+    imageLabel: "Low-key local",
+    description: "Start the week with something low-key, local, and easy to say yes to.",
   },
+];
+
+const happeningNowItems = [
+  ["Happy Hours", "Find what’s close, active, and worth showing up for."],
+  ["Local Programming", "See what’s happening tonight without switching apps."],
+  ["Resident Plans", "Save, RSVP, and keep the night simple."],
 ];
 
 const categoryTone = {
   "Happy Hour": "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
-  "Things to do": "border-[#0B1F33]/10 bg-[#F7F8FB] text-[#0B1F33]",
+  "Things to do": "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
   Fitness: "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
-  Access: "border-[#0B1F33]/10 bg-[#0B1F33] text-white",
-  Activation: "border-[#0B1F33]/10 bg-[#0B1F33]/8 text-[#0B1F33]",
+  Access: "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
+  Local: "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
+  Social: "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
   Perk: "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
   "Live Music": "border-[#0B1F33]/10 bg-white text-[#0B1F33]",
 };
@@ -223,7 +230,7 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
 
             <div className="max-h-[calc(82vh-56px)] overflow-y-auto p-4">
               <div className="grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
-                <div className="relative min-h-[220px] overflow-hidden rounded-[6px] border border-[#0B1F33]/8 bg-[#F7F8FB]">
+                <div className="relative min-h-[220px] overflow-hidden rounded-[6px] border border-[#0B1F33]/8 bg-white">
                   <img src={event.image} alt={event.imageAlt} className="h-full min-h-[220px] w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F33]/46 via-transparent to-transparent" />
                   <span className="absolute bottom-3 left-3 rounded-[2px] border border-white/18 bg-[#0B1F33]/42 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md">
@@ -233,7 +240,7 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
 
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className={cn("rounded-[2px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", categoryTone[event.category] || "border-[#0B1F33]/8 bg-[#F7F8FB] text-[#0B1F33]")}>
+                    <span className={cn("rounded-[2px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", categoryTone[event.category] || "border-[#0B1F33]/8 bg-white text-[#0B1F33]")}>
                       {event.category}
                     </span>
                     <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/46">
@@ -255,21 +262,25 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
                   </div>
                   <p className="mt-4 text-[14px] leading-7 text-[#0B1F33]/68">{event.description}</p>
                   <div className="mt-5 flex flex-wrap gap-2">
-                    <Link
-                      to={`/map?mode=resident&tab=map&filter=Events&q=${encodeURIComponent(event.title)}`}
-                      className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
-                    >
-                      View on map
-                    </Link>
                     <button
                       type="button"
                       onClick={() => onToggleRsvp(event)}
-                      className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:-translate-y-0.5 hover:border-[#0B1F33]/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                      className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
                       aria-pressed={rsvped}
                     >
-                      {rsvped ? "RSVP’d" : "RSVP"}
+                      {rsvped ? "Saved" : "RSVP / Save Event"}
+                      <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
                     </button>
+                    <Link
+                      to={`/map?mode=resident&tab=map&filter=Events&q=${encodeURIComponent(event.title)}`}
+                      className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                    >
+                      View on map
+                    </Link>
                   </div>
+                  <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/54">
+                    Events can show on the map, appear in building feeds, and connect to nearby perks when active.
+                  </p>
                 </div>
               </div>
             </div>
@@ -286,7 +297,7 @@ function DayAgenda({ date, eventsForDay, onSelectEvent, selectedEvent }) {
   const hiddenCount = Math.max(0, eventsForDay.length - visibleEvents.length);
 
   return (
-    <div className="mt-4 rounded-[2px] border border-[#0B1F33]/8 bg-[#F7F8FB] p-3">
+    <div className="mt-4 rounded-[2px] border border-[#0B1F33]/8 bg-white p-3">
       <div className="flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/46">Selected day</div>
@@ -359,7 +370,7 @@ function EventImagePanel({ event }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.99, y: -6 }}
         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-        className="group relative min-h-[240px] overflow-hidden rounded-[2px] border border-[#0B1F33]/8 bg-[#F7F8FB] shadow-[0_18px_44px_rgba(11,31,51,0.08)] md:min-h-[280px]"
+        className="group relative min-h-[240px] overflow-hidden rounded-[2px] border border-[#0B1F33]/8 bg-white shadow-[0_18px_44px_rgba(11,31,51,0.08)] md:min-h-[280px]"
       >
         <img
           src={event.image}
@@ -384,13 +395,79 @@ function EventImagePanel({ event }) {
   );
 }
 
+const eventMapPositions = [
+  ["18%", "28%"],
+  ["28%", "56%"],
+  ["42%", "34%"],
+  ["52%", "72%"],
+  ["62%", "42%"],
+  ["74%", "26%"],
+  ["80%", "62%"],
+  ["20%", "74%"],
+  ["38%", "78%"],
+  ["58%", "22%"],
+  ["72%", "78%"],
+];
+
+function EventMapPanel({ events: mapEvents, selectedEvent, onSelectEvent }) {
+  return (
+    <div className="dp-events-map-panel relative min-h-[380px] overflow-hidden bg-white shadow-[inset_0_0_0_1px_rgba(11,31,51,0.08),0_18px_48px_rgba(11,31,51,0.055)]">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(11,31,51,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
+      <div className="pointer-events-none absolute left-[10%] top-[14%] h-40 w-40 bg-[#B38F4F]/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-[8%] right-[10%] h-48 w-48 bg-[#0B1F33]/6 blur-3xl" />
+      <div className="pointer-events-none absolute left-[12%] right-[12%] top-[48%] h-px rotate-[-8deg] bg-[#0B1F33]/10" />
+      <div className="pointer-events-none absolute bottom-[24%] left-[18%] right-[8%] h-px rotate-[7deg] bg-[#0B1F33]/10" />
+      <div className="pointer-events-none absolute left-[32%] top-[10%] h-[72%] w-px rotate-[8deg] bg-[#0B1F33]/10" />
+
+      <div className="absolute left-4 top-4 z-10 max-w-[15rem] bg-white/82 px-3 py-2 shadow-[0_12px_30px_rgba(11,31,51,0.055)] backdrop-blur-md">
+        <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#B38F4F]">Event map</div>
+        <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/62">Tap a marker to open the full event details.</p>
+      </div>
+
+      {mapEvents.map((event, index) => {
+        const [left, top] = eventMapPositions[index % eventMapPositions.length];
+        const active = event.id === selectedEvent.id;
+        return (
+          <button
+            key={event.id}
+            type="button"
+            onClick={() => onSelectEvent(event)}
+            className="absolute z-20 -translate-x-1/2 -translate-y-1/2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            style={{ left, top }}
+            aria-label={`Open ${event.title} details`}
+          >
+            <span
+              className={cn(
+                "relative flex h-10 w-10 items-center justify-center bg-white text-[#0B1F33] shadow-[0_12px_26px_rgba(11,31,51,0.12),0_0_18px_rgba(179,143,79,0.08)] transition hover:-translate-y-px",
+                active && "bg-[#0B1F33] text-white shadow-[0_14px_30px_rgba(11,31,51,0.16),0_0_26px_rgba(179,143,79,0.22)]"
+              )}
+            >
+              {active && <span className="absolute -inset-2 bg-[#B38F4F]/18 blur-md" aria-hidden="true" />}
+              <MapPin className={cn("relative h-4 w-4", active ? "text-[#B38F4F]" : "text-[#0B1F33]/70")} />
+            </span>
+            <span
+              className={cn(
+                "mt-2 hidden min-w-[150px] max-w-[180px] bg-white/88 px-2.5 py-2 shadow-[0_10px_26px_rgba(11,31,51,0.065)] backdrop-blur-md sm:block",
+                active && "shadow-[inset_0_2px_0_#B38F4F,0_12px_28px_rgba(11,31,51,0.08)]"
+              )}
+            >
+              <span className="block truncate text-[10px] font-semibold uppercase tracking-normal text-[#B38F4F]">{event.time}</span>
+              <span className="mt-1 block truncate text-[13px] font-semibold text-[#0B1F33]">{event.title}</span>
+              <span className="mt-0.5 block truncate text-[11px] text-[#0B1F33]/56">{event.venue}</span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Events() {
   const [selected, setSelected] = useState(events[0].date);
   const [visibleMonth, setVisibleMonth] = useState(events[0].date);
   const [selectedEventId, setSelectedEventId] = useState(events[0].id);
   const [detailOpen, setDetailOpen] = useState(false);
   const [eventResultsCollapsed, setEventResultsCollapsed] = useState(false);
-  const [eventListExpanded, setEventListExpanded] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const rsvps = useEventRsvpStore((state) => state.rsvps);
   const addRsvp = useEventRsvpStore((state) => state.addRsvp);
@@ -407,8 +484,7 @@ export default function Events() {
     () => sortedEvents(activeCategory === "All" ? events : events.filter((event) => event.category === activeCategory)),
     [activeCategory]
   );
-  const visibleOrderedEvents = eventListExpanded ? orderedEvents : orderedEvents.slice(0, 4);
-  const hiddenEventCount = Math.max(0, orderedEvents.length - visibleOrderedEvents.length);
+  const visibleOrderedEvents = orderedEvents;
   const allCategoryCounts = useMemo(
     () =>
       events.reduce((acc, event) => {
@@ -438,7 +514,6 @@ export default function Events() {
 
   function chooseCategory(category) {
     setActiveCategory(category);
-    setEventListExpanded(false);
     setEventResultsCollapsed(false);
 
     const firstEvent = sortedEvents(category === "All" ? events : events.filter((event) => event.category === category))[0];
@@ -458,50 +533,99 @@ export default function Events() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <div className="min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="px-5 py-16 md:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
             <div className="max-w-3xl">
-              <span className="dp-label mb-4 block">Events</span>
-              <h1 className="font-heading text-4xl font-medium leading-[1.04] tracking-normal md:text-4xl">
-                Search less. Do more.
+              <span className="dp-label mb-4 block">Downtown Events</span>
+              <h1 className="font-heading text-[52px] font-bold leading-[0.92] tracking-[-0.04em] md:text-[92px]">
+                Search less.
+                <br />
+                <span className="text-[#B38F4F]">Do more.</span>
               </h1>
-              <div className="mt-5 max-w-2xl space-y-3 text-[15px] leading-[1.7] text-[#0B1F33]/68">
-                <p>Downtown Perks helps you figure out what’s happening nearby without bouncing between five apps and a group chat.</p>
+              <div className="mt-6 max-w-3xl space-y-3 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px]">
+                <p>Downtown Perks helps you see what’s happening, what’s worth showing up for, and what you can RSVP to without bouncing between five apps and a group chat.</p>
                 <p>
-                  A rooftop before it gets packed. The live show you almost missed. A meet-up a couple blocks away. A last-minute plan that turns into the whole night.
-                  Whatever makes leaving the apartment worth it.
+                  A rooftop before it gets packed. A live show you almost missed. A resident meetup a couple blocks away. A last-minute plan that turns into the whole night.
                 </p>
                 <p>
-                  Open the map, see what’s going on nearby, and make quicker plans before everyone says, “I don’t care, you pick.”
+                  Open the map, see what’s going on, and make the plan before everyone says, “I don’t care, you pick.”
                 </p>
+              </div>
+              <div className="mt-7 flex flex-wrap gap-2">
+                <Link to="/map?mode=resident&tab=map&filter=Events" className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white shadow-[0_12px_28px_rgba(11,31,51,0.12),0_0_18px_rgba(179,143,79,0.08)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+                  Open the Map
+                  <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
+                </Link>
+                <Link to="/card" className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+                  Get Your Perks Card
+                </Link>
               </div>
             </div>
           </div>
 
+          <div className="mb-8 grid gap-4 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <span className="dp-label mb-3 block">Events Happening Now</span>
+              <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">See what’s on. RSVP in one tap.</h2>
+              <p className="mt-4 max-w-xl text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
+                From happy hours to local programming, Downtown Perks helps you find what’s happening and RSVP without leaving the map.
+              </p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              {happeningNowItems.map(([title, body]) => (
+                <motion.div
+                  key={title}
+                  initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative pl-4"
+                >
+                  <span className="absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-[#B38F4F]/55 shadow-[0_0_18px_rgba(179,143,79,0.24)]" aria-hidden="true" />
+                  <h3 className="text-[15px] font-semibold text-[#0B1F33]">{title}</h3>
+                  <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/62">{body}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-6 max-w-3xl">
+            <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
+              Worth leaving <span className="text-[#B38F4F]">the apartment for.</span>
+            </h2>
+            <p className="mt-4 text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
+              A quick look at what’s happening downtown — resident hours, local events, live music, happy hours, wellness, and neighborhood plans.
+            </p>
+          </div>
+
           <div className="overflow-hidden rounded-[2px] border border-[#0B1F33]/8 bg-white shadow-[0_14px_34px_rgba(6,27,51,0.04)]">
               <div className="border-b border-[#0B1F33]/8 bg-white p-4">
-                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#0B1F33]/46">Calendar</div>
-                <div className="mt-2 text-[14px] leading-6 text-[#0B1F33]/62">Events, activations, happy hours, perks, and things to do in one place.</div>
-                <div className="dp-event-chip-scroll mt-3 flex gap-2 overflow-x-auto pb-1">
-                  {[["All", events.length], ...Object.entries(allCategoryCounts)].map(([category, count]) => {
-                    const active = activeCategory === category;
-                    return (
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#B38F4F]">Downtown Calendar</div>
+                    <div className="mt-2 font-heading text-[28px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33]">June events</div>
+                    <div className="mt-2 text-[14px] leading-6 text-[#0B1F33]/62">Browse what’s coming up and open any event to save or RSVP.</div>
+                  </div>
+                </div>
+	                <div className="dp-event-chip-scroll mt-3 flex gap-5 overflow-x-auto pb-1">
+	                  {["All", ...Object.keys(allCategoryCounts)].map((category) => {
+	                    const active = activeCategory === category;
+	                    return (
                     <button
                       key={category}
                       type="button"
                       onClick={() => chooseCategory(category)}
                       aria-pressed={active}
                       className={cn(
-                        "inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]",
+                        "inline-flex shrink-0 items-center gap-1.5 bg-transparent px-0 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/58 shadow-[inset_0_-1px_0_rgba(11,31,51,0.10)] transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]",
                         active
-                          ? "border-[#0B1F33] bg-[#0B1F33] text-white"
-                          : categoryTone[category] || "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
+                          ? "text-[#0B1F33] shadow-[inset_0_-2px_0_#B38F4F]"
+                          : ""
                       )}
                     >
                       {category}
-                      <span className="opacity-60">{count}</span>
                     </button>
                   )})}
                 </div>
@@ -530,7 +654,7 @@ export default function Events() {
                           head_cell: "flex h-8 items-center justify-center rounded-[2px] text-[11px] font-medium text-[#0B1F33]/46",
                           row: "mt-1 grid w-full grid-cols-7 gap-1",
                           cell: "relative p-0 text-center text-[13px]",
-                          day: "relative flex h-9 w-full items-center justify-center rounded-[2px] p-0 text-[13px] font-normal transition hover:bg-[#F7F8FB] hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B38F4F]",
+                          day: "relative flex h-9 w-full items-center justify-center rounded-[2px] p-0 text-[13px] font-normal transition hover:bg-white hover:text-[#0B1F33] hover:shadow-[0_8px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B38F4F]",
                           day_selected: "bg-[#0B1F33] text-white hover:bg-[#0B1F33] hover:text-white focus:bg-[#0B1F33] focus:text-white",
                           day_today: "bg-[#0B1F33]/15 text-[#0B1F33]",
                           day_outside: "day-outside text-[#0B1F33]/30 aria-selected:bg-[#0B1F33]/10 aria-selected:text-[#0B1F33]/50",
@@ -543,7 +667,7 @@ export default function Events() {
                   <div className="rounded-[2px] border border-[#0B1F33]/8 bg-white p-4">
                     <div className="mb-4 flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[#0B1F33]/8 bg-[#F7F8FB]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[#0B1F33]/8 bg-white">
                           <CalendarDays className="h-4 w-4 text-[#B38F4F]" />
                         </span>
                         <div className="min-w-0">
@@ -554,7 +678,7 @@ export default function Events() {
                       <button
                         type="button"
                         onClick={() => setEventResultsCollapsed((current) => !current)}
-                        className="inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-[#F7F8FB] px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
                         aria-expanded={!eventResultsCollapsed}
                       >
                         {eventResultsCollapsed ? (
@@ -579,56 +703,12 @@ export default function Events() {
                           exit={{ opacity: 0, height: 0 }}
                           className="overflow-hidden"
                         >
-                          <div className="divide-y divide-[#0B1F33]/8 border-y border-[#0B1F33]/8">
-                            {visibleOrderedEvents.map((event) => {
-                              const active = event.id === selectedEvent.id;
-                              return (
-                                <button
-                                  key={event.id}
-                                  type="button"
-                                  onClick={() => chooseEvent(event)}
-                                  className="grid w-full gap-3 py-3 text-left sm:grid-cols-[120px_1fr_auto] sm:items-center"
-                                >
-                                  <div className={cn("text-[11px] font-medium uppercase tracking-[0.14em]", active ? "text-[#B38F4F]" : "text-[#0B1F33]/42")}>
-                                    {event.time}
-                                  </div>
-                                  <div>
-                                    <div className={cn("font-heading text-lg font-medium leading-tight", active ? "text-[#0B1F33]" : "text-[#0B1F33]/78")}>{event.title}</div>
-                                    <div className="mt-1 text-[12px] text-[#0B1F33]/56">{event.venue}</div>
-                                  </div>
-                                  <span className={cn("w-fit rounded-[2px] border px-2.5 py-1 text-[11px] font-medium", active ? "border-[#0B1F33]/16 bg-white text-[#0B1F33]" : "border-[#0B1F33]/8 text-[#0B1F33]/56")}>
-                                    {event.category}
-                                  </span>
-                                </button>
-                              );
-                            })}
-                          </div>
+                          <EventMapPanel events={visibleOrderedEvents} selectedEvent={selectedEvent} onSelectEvent={chooseEvent} />
                         </motion.div>
                       )}
                     </AnimatePresence>
 
-                    {!eventResultsCollapsed && orderedEvents.length > 4 && (
-                      <button
-                        type="button"
-                        onClick={() => setEventListExpanded((current) => !current)}
-                        className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-[#F7F8FB] px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
-                        aria-expanded={eventListExpanded}
-                      >
-                        {eventListExpanded ? (
-                          <>
-                            <ChevronUp className="h-3.5 w-3.5" />
-                            Roll up events
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="h-3.5 w-3.5" />
-                            Show {hiddenEventCount} more events
-                          </>
-                        )}
-                      </button>
-                    )}
-
-                    <div className="mt-4 grid gap-3 rounded-[2px] bg-[#F7F8FB] p-3 sm:grid-cols-[1fr_auto] sm:items-center">
+                    <div className="mt-4 grid gap-3 rounded-[2px] border border-[#0B1F33]/8 bg-white p-3 sm:grid-cols-[1fr_auto] sm:items-center">
                       <p className="text-[13px] leading-[1.65] text-[#0B1F33]/64">
                         See what else is happening nearby.
                       </p>
@@ -641,7 +721,24 @@ export default function Events() {
                 </div>
               </div>
             </div>
+          <div className="mt-8 border-t border-[#0B1F33]/10 pt-8">
+          <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
+            Find the plan before <span className="text-[#B38F4F]">the group chat gives up.</span>
+          </h2>
+          <p className="mt-4 max-w-2xl text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
+            Open the map, save an event, RSVP when it makes sense, and keep downtown easy to use.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <Link to="/map?mode=resident&tab=map&filter=Events" className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+              Open the Map
+              <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
+            </Link>
+            <Link to="/card" className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+              Get Your Perks Card
+            </Link>
           </div>
+        </div>
+        </div>
       </section>
       <EventBottomDrawer
         event={selectedEvent}
