@@ -472,9 +472,9 @@ function PartnerPromiseFlow() {
     <div className="relative overflow-hidden py-2">
       <div className="pointer-events-none absolute left-1/2 top-10 h-44 w-44 -translate-x-1/2 bg-[#B38F4F]/10 blur-3xl" />
       <div className="relative">
-        <p className="max-w-[980px] font-heading text-[28px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">
+        <h2 className="max-w-[980px] font-heading text-[28px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">
           A smarter way to show up when downtown decisions are happening.
-        </p>
+        </h2>
         <p className="mt-5 max-w-3xl text-[14px] leading-[1.75] text-[#0B1F33]/66">
           No heavy buildout. Downtown Perks connects map visibility, QR paths, local intent, and clear next steps in one simple partner flow.
         </p>
@@ -547,7 +547,7 @@ function PartnerTypeTabs() {
             <div className="font-body text-[11px] font-bold uppercase tracking-normal text-[#B38F4F]">
               {type.label}
             </div>
-            <h3 className="mt-4 font-heading text-[30px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33]">
+            <h3 className="mt-4 font-body text-[25px] font-semibold leading-[1.12] tracking-normal text-[#0B1F33]">
               {type.truth}
             </h3>
             <p className="mt-4 text-[13px] font-light leading-[1.72] text-[#0B1F33]/64">{type.body}</p>

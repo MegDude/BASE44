@@ -338,10 +338,10 @@ export default function SplashPage() {
               className="max-w-[720px]"
               amount={0.22}
             >
-              <p className="font-heading text-[40px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
+              <h2 className="font-heading text-[40px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
                 <span className="block">Downtown should</span>
                 <span className="block text-[#B38F4F]">be easier to use.</span>
-              </p>
+              </h2>
               <div className="mt-5 max-w-[680px] space-y-1 font-body text-[18px] font-light leading-[1.45] text-[rgba(66,84,102,0.86)] md:text-[22px] md:leading-[1.45]">
                 <p>The coffee shop you keep meaning to try.</p>
                 <p>The workout class you always hear about too late.</p>
@@ -369,10 +369,10 @@ export default function SplashPage() {
               delay={0.04}
               amount={0.18}
             >
-              <p className="font-heading text-[34px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
+              <h2 className="font-heading text-[34px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
                 <span className="block">So we built one map</span>
                 <span className="block text-[#B38F4F]">to bring everything together.</span>
-              </p>
+              </h2>
               <p>
                 Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s nearby, what’s happening, and what feels worth going out for.
               </p>
@@ -424,7 +424,7 @@ export default function SplashPage() {
                 For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.
               </p>
             </div>
-            <p className="mt-10 max-w-[30ch] font-heading text-[24px] font-bold leading-[1.04] tracking-[-0.02em] text-[rgba(11,31,51,0.86)] md:text-[34px]">
+            <p className="mt-10 max-w-[30ch] font-body text-[24px] font-semibold leading-[1.12] tracking-normal text-[rgba(11,31,51,0.86)] md:text-[34px]">
               <span className="block">Come on in. Open the map.</span>
               <span className="block text-[#B38F4F]">And maybe grab something cold while you’re at it.</span>
             </p>

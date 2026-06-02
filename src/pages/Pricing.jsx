@@ -180,7 +180,7 @@ export default function Pricing() {
           <div className="relative grid gap-6 md:grid-cols-[240px_1fr] md:gap-10">
             <div>
               <p className="dp-editorial-eyebrow mb-4 block">{activePartner.label}</p>
-              <div className="font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[44px]">
+              <div className="font-body text-[34px] font-semibold leading-[1.08] tracking-normal text-[#0B1F33] md:text-[44px]">
                 {activePartner.price}
               </div>
             </div>

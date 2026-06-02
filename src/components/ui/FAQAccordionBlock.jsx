@@ -91,7 +91,7 @@ export default function FAQAccordionBlock({
   return (
     <section
       ref={ref}
-      className={`py-14 px-5 border-t border-border/40 ${sectionBg}`}
+      className={`dp-faq-block py-14 px-5 border-t border-border/40 ${sectionBg}`}
     >
       <div className="max-w-6xl mx-auto">
         {isSplit ? (
@@ -108,7 +108,7 @@ export default function FAQAccordionBlock({
                   {sectionEyebrow}
                 </span>
               )}
-              <h2 className={`font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] md:text-[42px] mb-5 ${isDark ? "text-[#F7F8FB]" : "text-[#0B1F33]"}`}>
+              <h2 className={`font-body text-3xl font-semibold leading-[1.08] tracking-normal md:text-[42px] mb-5 ${isDark ? "text-[#F7F8FB]" : "text-[#0B1F33]"}`}>
                 {sectionTitle}
               </h2>
               {sectionIntro && (
@@ -138,7 +138,7 @@ export default function FAQAccordionBlock({
                 </span>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                <h2 className={`font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] md:text-[42px] ${isDark ? "text-[#F7F8FB]" : "text-[#0B1F33]"}`}>
+                <h2 className={`font-body text-3xl font-semibold leading-[1.08] tracking-normal md:text-[42px] ${isDark ? "text-[#F7F8FB]" : "text-[#0B1F33]"}`}>
                   {sectionTitle}
                 </h2>
                 {sectionIntro && (

@@ -1848,7 +1848,7 @@ export default function MapPage() {
   const overflowFilters = FILTERS.filter((filter) => !visibleFilters.includes(filter));
 
   return (
-    <div className="relative h-screen overflow-hidden bg-white pt-[68px] text-[#0B1F33]">
+    <div className="dp-map-page relative h-screen overflow-hidden bg-white pt-[68px] text-[#0B1F33]">
       <div className="absolute inset-x-0 bottom-0 top-[68px]">
         <MapContainer
           center={AUSTIN_CENTER}

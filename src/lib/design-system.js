@@ -3,7 +3,7 @@
  * 
  * Foundation:
  * - Token-based color system (index.css, tailwind.config.js)
- * - Typography: Playfair Display (heading), Inter (body)
+ * - Typography: Canela only for H1 hero and major H2 editorial headlines; Inter everywhere else
  * - Spacing: compact 4px base unit grid (6px default radius)
  * - Motion: Framer Motion (precise, fast, purposeful)
  * - Surface system: architectural, light-touch, map-aware
@@ -61,10 +61,10 @@ export const TYPOGRAPHY = {
   sectionHeadline: "font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-normal",
   
   // Subsection headlines
-  subsectionHeadline: "font-heading text-2xl md:text-3xl font-medium leading-[1.15] tracking-normal",
+  subsectionHeadline: "font-body text-2xl md:text-3xl font-semibold leading-[1.15] tracking-normal",
   
   // Card/module headlines
-  cardHeadline: "font-heading text-lg md:text-xl font-medium leading-[1.2]",
+  cardHeadline: "font-body text-lg md:text-xl font-semibold leading-[1.2]",
   
   // Body text (standard)
   bodyLarge: "text-[15px] md:text-base leading-[1.7]",

@@ -209,7 +209,7 @@ export default function Navbar() {
       <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-5">
         <Link to={homeHref} className="group flex shrink-0 items-center gap-2.5" aria-label="Downtown Perks home">
           <MapPin className="h-4 w-4 shrink-0 text-[#B38F4F] drop-shadow-[0_8px_18px_rgba(11,31,51,0.10)] transition group-hover:text-[#0B1F33]" />
-          <span className="font-heading text-[15px] font-medium tracking-normal text-[#0B1F33]">
+          <span className="font-body text-[15px] font-semibold tracking-normal text-[#0B1F33]">
             Downtown Perks
           </span>
         </Link>

@@ -1361,6 +1361,39 @@ html {
     letter-spacing: 0 !important;
   }
 
+  /*
+   * Typography lock:
+   * Canela is reserved for true H1 hero headlines and major editorial H2 section
+   * headlines. Any inherited or legacy font-heading usage in operational UI,
+   * panels, forms, cards, metrics, map drawers, navigation, CTAs, FAQs, and
+   * small headings is forced back to Inter.
+   */
+  :where(h3, h4, h5, h6, p, span, div, button, a, label, input, textarea, select, li, td, th).font-heading,
+  :where(nav, footer, form, table, button, label, [role="dialog"], .dp-panel-shell, .dp-soft-panel, .dp-soft-tile, .dp-card, .dp-glass-card, .dp-glow-tile, .dp-glow-surface, .dp-map-page, .dp-faq-block)
+    :where(.font-heading, h1.font-heading, h2.font-heading, h3.font-heading, h4.font-heading) {
+    font-family: var(--font-body) !important;
+    letter-spacing: 0 !important;
+  }
+
+  :where(.dp-panel-shell, .dp-map-page, .dp-faq-block, nav, footer, form, table)
+    :where(h1, h2, h3, h4, h5, h6).font-heading {
+    font-weight: 650 !important;
+  }
+
+  :where(h1, h2).font-heading:is(
+    [class*="text-[13px]"],
+    [class*="text-[14px]"],
+    [class*="text-[16px]"],
+    [class*="text-[20px]"],
+    [class*="text-[24px]"],
+    [class*="text-xl"],
+    [class*="text-2xl"]
+  ) {
+    font-family: var(--font-body) !important;
+    font-weight: 650 !important;
+    letter-spacing: 0 !important;
+  }
+
   .dp-card {
     position: relative;
     overflow: hidden;
