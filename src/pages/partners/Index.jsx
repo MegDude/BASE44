@@ -12,47 +12,57 @@ const pricingTiles = [
   {
     id: "properties",
     label: "Properties",
-    audience: "Multifamily, condos, apartments, and residential buildings.",
+    audience: "For residential buildings, multifamily communities, condos, and apartments.",
     price: "$199/year",
-    pilot: "90-day pilot. Then choose your level.",
-    line: "Management pays. Residents stay.",
-    detail: "Your address is your key to unlock downtown.",
+    body: "Help residents discover what's nearby while making the neighborhood feel like part of the amenity.",
+    includes: ["Building access", "Resident perks", "Property visibility", "Local events", "Neighborhood discovery"],
+    line: "The neighborhood becomes part of the resident experience.",
+    cta: "Explore Property Partners",
+    href: "/partners/properties",
   },
   {
     id: "hotels",
     label: "Hotels",
-    audience: "Hotels, boutiques, extended stays, and hospitality.",
+    audience: "For hotels, boutique stays, extended stays, and hospitality groups.",
     price: "$149/year",
-    pilot: "90-day pilot. See what guests actually do.",
+    body: "Help guests discover nearby restaurants, events, experiences, and local recommendations without leaving the property.",
+    includes: ["Guest discovery", "QR touchpoints", "Local recommendations", "Event visibility", "Hospitality reporting"],
     line: "Extend the stay beyond your lobby.",
-    detail: "One scan. Every option. Guests navigate. You benefit.",
+    cta: "Explore Hotel Partners",
+    href: "/partners/hotels",
   },
   {
     id: "venues",
     label: "Venues",
-    audience: "Restaurants, bars, cafés, fitness, wellness, and experiences.",
+    audience: "For restaurants, cafés, bars, fitness studios, wellness businesses, retailers, and local services.",
     price: "$79-$149/year",
-    pilot: "Annual venue tier based on placement and reporting.",
-    line: "Show up in the moment that counts.",
-    detail: "Not reach. Relevance. Not impressions. Intent.",
+    body: "Show up when people nearby are deciding where to go, what to do, or what to try next.",
+    includes: ["Map visibility", "QR entry points", "Local offers", "Event participation", "Visit tracking"],
+    line: "Be part of the moment people are already planning.",
+    cta: "Explore Venue Partners",
+    href: "/partners/venues",
   },
   {
     id: "brands",
-    label: "Brands · Sponsors",
-    audience: "Brands, activations, campaigns, and corridor sponsorships.",
+    label: "Brands",
+    audience: "For consumer brands, sponsors, activations, campaigns, and downtown partnerships.",
     price: "$149-$199/year",
-    pilot: "Test it. Measure it. Scale it.",
-    line: "Buy the moment, not the impression.",
-    detail: "Context beats scale. Timing beats frequency.",
+    body: "Connect with people through places, events, neighborhoods, and experiences they already care about.",
+    includes: ["District placements", "Event partnerships", "QR engagement", "Audience feedback", "Performance reporting"],
+    line: "Show up in the right place at the right time.",
+    cta: "Explore Brand Partners",
+    href: "/partners/brands",
   },
   {
     id: "civic",
     label: "Civic",
-    audience: "Cities, districts, chambers, and community partners.",
+    audience: "For districts, chambers, associations, downtown organizations, and community initiatives.",
     price: "$49-$79/year",
-    pilot: "Start with 90 days. Keep what works.",
-    line: "Turn attendance into participation.",
-    detail: "Discovery drives turnout. Access drives engagement.",
+    body: "Help more people discover local programs, events, resources, and opportunities to participate.",
+    includes: ["Community visibility", "Event promotion", "Public engagement", "Local discovery", "Participation reporting"],
+    line: "Make it easier for people to get involved.",
+    cta: "Explore Civic Partners",
+    href: "/partners/civic",
   },
 ];
 
@@ -252,9 +262,9 @@ function Section({ id, eyebrow, title, children, className = "" }) {
     <section id={id} className={cn("border-t border-[#0B1F33]/8 px-5 py-14 md:py-20", className)}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
-          <div className="mb-8 max-w-3xl">
+          <div className="mb-8 max-w-[1100px]">
             {eyebrow && <span className="dp-label mb-3 block">{eyebrow}</span>}
-            {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] tracking-normal text-[#0B1F33] md:text-4xl">{title}</h2>}
+            {title && <h2 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">{title}</h2>}
           </div>
         )}
         {children}
@@ -442,7 +452,7 @@ function PartnerPromiseFlow() {
       label: "Map + QR",
     },
     {
-      title: "Signals you can use",
+      title: "Insights you can use",
       body: "Scans, saves, RSVPs, and redemptions show what people actually did after they found you.",
       label: "Real actions",
     },
@@ -460,65 +470,33 @@ function PartnerPromiseFlow() {
 
   return (
     <div className="relative overflow-hidden py-2">
-      <div className="absolute left-1/2 top-10 h-44 w-44 -translate-x-1/2 bg-[#B38F4F]/12 blur-3xl" />
-      <div className="grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
-        <div className="relative order-2 min-h-[330px] lg:order-1 lg:min-h-[420px]">
-          <motion.img
-            src="/images/buildings/lobby-to-street-arrival.png"
-            alt="Lobby entry point connecting people to downtown"
-            className="absolute left-0 top-2 h-52 w-[76%] object-cover shadow-[0_24px_60px_rgba(11,31,51,0.16)] lg:h-64"
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, ease }}
-          />
-          <motion.img
-            src="/images/partners/hospitality-rooftop-social.png"
-            alt="People using downtown places after discovery"
-            className="absolute bottom-0 right-0 h-52 w-[70%] object-cover shadow-[0_24px_60px_rgba(11,31,51,0.14)] lg:h-64"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: 0.12, ease }}
-          />
-          <motion.div
-            className="absolute left-[35%] top-[43%] h-2 w-2 bg-[#B38F4F] shadow-[0_0_26px_rgba(179,143,79,0.7)]"
-            animate={{ x: [0, 42, 78, 118], y: [0, -18, 16, 34], opacity: [0.45, 1, 1, 0.5] }}
-            transition={{ duration: 4.6, repeat: Infinity, ease }}
-          />
-          <motion.div
-            className="absolute left-[30%] right-[20%] top-[50%] h-px rotate-[14deg] bg-gradient-to-r from-transparent via-[#B38F4F]/70 to-transparent"
-            animate={{ opacity: [0.25, 0.75, 0.25] }}
-            transition={{ duration: 3.8, repeat: Infinity, ease }}
-          />
-        </div>
+      <div className="pointer-events-none absolute left-1/2 top-10 h-44 w-44 -translate-x-1/2 bg-[#B38F4F]/10 blur-3xl" />
+      <div className="relative">
+        <p className="max-w-[980px] font-heading text-[28px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">
+          A smarter way to show up when downtown decisions are happening.
+        </p>
+        <p className="mt-5 max-w-3xl text-[14px] leading-[1.75] text-[#0B1F33]/66">
+          No heavy buildout. Downtown Perks connects map visibility, QR paths, local intent, and clear next steps in one simple partner flow.
+        </p>
 
-        <div className="order-1 lg:order-2">
-          <p className="font-heading text-[28px] font-medium leading-[1.08] text-[#0B1F33] md:text-[38px]">
-            A smarter way to show up when downtown decisions are happening.
-          </p>
-          <p className="mt-5 max-w-2xl text-[14px] leading-[1.75] text-[#0B1F33]/66">
-            No heavy campaign buildout. Downtown Perks connects entry points, map visibility, offers, events, and reporting into one simple path from nearby interest to actual action.
-          </p>
-
-          <div className="mt-9 space-y-7">
-            {proofPoints.map((point, index) => (
-              <motion.div
-                key={point.title}
-                initial={{ opacity: 0, x: 18 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.42, delay: index * 0.06, ease }}
-                className="grid gap-3 border-t border-[#0B1F33]/10 pt-5 md:grid-cols-[8rem_1fr]"
-              >
-                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">{point.label}</div>
-                <div>
-                  <h3 className="font-heading text-2xl font-medium leading-tight text-[#0B1F33]">{point.title}</h3>
-                  <p className="mt-2 max-w-xl text-[13px] leading-6 text-[#0B1F33]/62">{point.body}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        <div className="mt-9 flex snap-x gap-4 overflow-x-auto pb-4 pr-5 [-webkit-overflow-scrolling:touch]">
+          {proofPoints.map((point, index) => (
+            <motion.article
+              key={point.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.46, delay: index * 0.06, ease }}
+              className="min-w-[250px] snap-start bg-white/86 p-5 shadow-[0_16px_42px_rgba(11,31,51,0.055),0_0_28px_rgba(179,143,79,0.05)] backdrop-blur-md sm:min-w-[310px] lg:min-w-[340px]"
+            >
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">{point.label}</span>
+                <span className="h-px flex-1 bg-gradient-to-r from-[#B38F4F]/30 to-transparent" aria-hidden="true" />
+              </div>
+              <h3 className="font-body text-[16px] font-semibold leading-snug text-[#0B1F33]">{point.title}</h3>
+              <p className="mt-3 text-[13px] font-light leading-6 text-[#0B1F33]/62">{point.body}</p>
+            </motion.article>
+          ))}
         </div>
       </div>
     </div>
@@ -527,18 +505,27 @@ function PartnerPromiseFlow() {
 
 function PricingTiles() {
   return (
-    <div className="grid gap-3 md:grid-cols-5">
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
       {pricingTiles.map((tile) => (
-        <div key={tile.id} className="rounded-[6px] border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.04)]">
-          <h3 className="font-heading text-xl font-medium text-[#0B1F33]">{tile.label}</h3>
-          <p className="mt-2 text-[12px] leading-[1.6] text-[#0B1F33]/58">{tile.audience}</p>
-          <div className="mt-4 text-[16px] font-medium text-[#0B1F33]">{tile.price}</div>
-          <p className="mt-2 text-[12px] leading-[1.55] text-[#0B1F33]/60">{tile.pilot}</p>
-          <div className="mt-4 border-t border-[#0B1F33]/8 pt-3">
-            <p className="text-[12px] font-medium text-[#0B1F33]">{tile.line}</p>
-            <p className="mt-1 text-[11px] leading-[1.55] text-[#0B1F33]/50">{tile.detail}</p>
-          </div>
-        </div>
+        <article key={tile.id} className="bg-white p-5 shadow-[0_16px_42px_rgba(11,31,51,0.045),0_0_24px_rgba(179,143,79,0.035)]">
+          <h3 className="font-body text-[15px] font-semibold text-[#0B1F33]">{tile.label}</h3>
+          <p className="mt-3 text-[12px] leading-[1.65] text-[#0B1F33]/58">{tile.audience}</p>
+          <div className="mt-5 font-body text-[18px] font-semibold text-[#0B1F33]">{tile.price}</div>
+          <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/66">{tile.body}</p>
+          <ul className="mt-5 space-y-2">
+            {tile.includes.map((item) => (
+              <li key={item} className="flex gap-2 text-[12px] leading-5 text-[#0B1F33]/64">
+                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#B38F4F]" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-[12px] font-medium leading-5 text-[#0B1F33]">{tile.line}</p>
+          <Link to={tile.href} className="mt-5 inline-flex items-center gap-2 border-b border-[#B38F4F]/55 py-1 text-[12px] font-semibold tracking-normal text-[#0B1F33] transition-colors hover:text-[#B38F4F]">
+            {tile.cta}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </article>
       ))}
     </div>
   );
@@ -549,8 +536,8 @@ function PartnerTypeTabs() {
   const current = partnerTypes.find((type) => type.id === active) || partnerTypes[0];
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-      <div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-2 lg:overflow-visible lg:pb-0">
+    <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
+      <div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1.5 lg:overflow-visible lg:pb-0">
         {partnerTypes.map((type) => {
           const selected = type.id === active;
           return (
@@ -559,8 +546,8 @@ function PartnerTypeTabs() {
               type="button"
               onClick={() => setActive(type.id)}
               className={cn(
-                "min-w-[170px] rounded-[6px] border px-4 py-2.5 text-left text-[13px] font-medium transition-colors lg:w-full lg:min-w-0",
-                selected ? "border-[#0B1F33] bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/68 hover:border-[#B38F4F]/50"
+                "dp-partner-type-tab min-w-[130px] rounded-[6px] border px-3 py-1.5 text-left text-[12px] font-medium normal-case tracking-normal transition-colors lg:w-full lg:min-w-0",
+                selected ? "border-[#B38F4F]/60 bg-[#F7F8FB] text-[#0B1F33] shadow-[0_0_22px_rgba(179,143,79,0.10)]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/68 hover:border-[#B38F4F]/50"
               )}
             >
               {type.label}
@@ -578,7 +565,7 @@ function PartnerTypeTabs() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.32, ease }}
           >
-            <h3 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">{current.label}</h3>
+            <h3 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33]">{current.label}</h3>
             <p className="mt-4 text-[15px] leading-[1.7] text-[#0B1F33]/76">{current.truth}</p>
             <p className="mt-4 text-[13px] leading-[1.7] text-[#0B1F33]/62">{current.body}</p>
 
@@ -640,7 +627,7 @@ function PartnerForms() {
       <div className="grid gap-6 p-5 md:grid-cols-[0.85fr_1.15fr] md:p-7">
         <div>
           <span className="dp-label mb-3 block">Get started</span>
-          <h3 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">{current.title}</h3>
+          <h3 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33]">{current.title}</h3>
           <p className="mt-3 text-[14px] leading-[1.65] text-[#0B1F33]/64">{current.promise}</p>
           <div className="mt-6">
             <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#0B1F33]/45">Quick prompts</div>
@@ -710,50 +697,58 @@ export default function PartnersIndex() {
         className="py-16 md:py-24"
       />
 
-      <Section eyebrow="Ready when you are." title="Be the place people choose next.">
-        <p className="max-w-2xl text-[15px] leading-[1.7] text-[#0B1F33]/68">
-          People don't choose the best option. They choose the one they notice. What's close. What's clear. What's easy.
-        </p>
-      </Section>
-
-      <Section id="how-it-works" eyebrow="How it works" title="Be the one they notice.">
-        <p className="mb-8 max-w-2xl text-[14px] leading-[1.7] text-[#0B1F33]/64">Choose the right annual tier. Decide with real data.</p>
-        <PilotStepper />
+      <Section id="how-it-works" eyebrow="How it works" title="Be the place people choose next.">
+        <div className="max-w-[760px] space-y-5">
+          <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#5F6B7A] md:text-[22px] md:leading-[1.62]">
+            People don't always choose the best option. They choose what's nearby, what they notice, and what feels easiest in the moment.
+          </p>
+          <p className="text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Every day, people are deciding where to eat, where to meet, what to do, and where to spend their time. Most of those decisions happen in the moment.
+          </p>
+          <p className="text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Downtown Perks helps you show up while those decisions are happening through the map, local offers, QR touchpoints, events, and neighborhood placements.
+          </p>
+          <p className="text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Start where it makes sense. Learn what people respond to. Then do more of what works.
+          </p>
+        </div>
       </Section>
 
       <Section eyebrow="Partner promise" title="Spend less. Do more." className="bg-white">
         <PartnerPromiseFlow />
-        <div className="mt-8 grid gap-3 md:grid-cols-4">
-          {[
-            ["40+", "Active partners", "Properties, venues, hotels, brands, and civic groups in one downtown layer."],
-            ["180k", "Monthly scans", "QR entry points turning lobby, venue, and event traffic into measurable action."],
-            ["28%", "Redemption rate", "Perks tied to what people are already looking for nearby."],
-            ["140+", "Integrated locations", "A connected local network residents can actually use in the moment."],
-          ].map(([value, label, body]) => (
-            <div key={label} className="rounded-md border border-[#0B1F33]/8 bg-white p-4 shadow-[0_10px_26px_rgba(11,31,51,0.04)]">
-              <div className="font-heading text-3xl font-medium text-[#0B1F33]">{value}</div>
-              <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]">{label}</div>
-              <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/58">{body}</p>
-            </div>
-          ))}
-        </div>
       </Section>
 
-      <Section id="pricing" eyebrow="Partner pricing" title="Choose the right tier. Decide with real data.">
-        <p className="mb-8 max-w-2xl text-[13px] italic leading-[1.7] text-[#0B1F33]/58">Final pricing reflects footprint, visibility, and activation.</p>
+      <Section id="pricing" eyebrow="Partner pricing" title="Spend Less. Do More.">
+        <div className="mb-10 max-w-[760px] space-y-5">
+          <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#5F6B7A] md:text-[22px] md:leading-[1.62]">
+            Start with what you need today and add more if it helps later.
+          </p>
+          <p className="text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Every partner is different. A residential building needs something different from a restaurant, hotel, brand, or community organization.
+          </p>
+          <p className="text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Choose the option that fits where you are today. You can always expand from there.
+          </p>
+        </div>
         <PricingTiles />
-        <div className="mt-8">
-          <CTAButton to="#partner-types" variant="secondary">Bring this to your property</CTAButton>
+        <div className="mt-10 max-w-[760px]">
+          <h3 className="font-body text-[16px] font-semibold text-[#0B1F33]">Not sure where to start?</h3>
+          <p className="mt-3 text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Most partners begin with a single location, event, offer, or visibility placement and build from there.
+          </p>
+          <p className="mt-3 text-[14px] font-light leading-7 text-[#0B1F33]/64 md:text-[15px]">
+            Bring Downtown Perks to your property, business, venue, hotel, organization, or district.
+          </p>
         </div>
       </Section>
 
-      <Section id="partner-types" eyebrow="Partner types" title="Ready when you are." className="bg-white">
+      <Section id="partner-types" eyebrow="Partner types" title="Choose the partner path that fits you." className="bg-white">
         <PartnerTypeTabs />
       </Section>
 
       <FAQAccordionBlock
-        sectionEyebrow="FAQs"
-        sectionTitle="Partner questions"
+        sectionEyebrow="Partner questions"
+        sectionTitle="FAQs"
         sectionIntro="The partner system is built around pilots, simple setup, and real actions: scans, saves, RSVPs, and redemptions."
         items={partnerFaqs}
         styleVariant="split"
@@ -764,16 +759,8 @@ export default function PartnersIndex() {
         backgroundVariant="light"
       />
 
-      <Section id="get-started" eyebrow="Get started" title="Choose the partner path that fits you." className="bg-white">
+      <Section id="get-started" eyebrow="Get started" title="Ready when you are." className="bg-white">
         <PartnerForms />
-      </Section>
-
-      <Section eyebrow="Final CTA" title="Turn residents into regulars.">
-        <p className="mb-6 max-w-2xl text-[15px] leading-[1.7] text-[#0B1F33]/68">People are already downtown. Already walking. Already deciding. Downtown Perks puts you in front of them when it matters — not broad advertising, better timing.</p>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <CTAButton to="#get-started">See how it works for you</CTAButton>
-          <CTAButton to="#partner-types" variant="secondary">Properties · Hotels · Venues · Brands · Civic</CTAButton>
-        </div>
       </Section>
     </div>
   );

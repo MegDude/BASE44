@@ -444,7 +444,7 @@ export default function PartnersDashboard() {
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B1F33]/58">Partner Workspace</p>
-            <h1 className="mt-4 max-w-3xl font-heading text-4xl font-medium leading-[0.96] tracking-normal text-[#0B1F33] md:text-4xl">
+            <h1 className="mt-4 max-w-[1100px] font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[46px]">
               See what is working nearby.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#0B1F33]/64">
@@ -519,7 +519,7 @@ export default function PartnersDashboard() {
           <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Event RSVPs</p>
-              <h2 className="mt-2 font-heading text-3xl font-medium">Plans residents have said yes to.</h2>
+              <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">Plans residents have said yes to.</h2>
               <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/62">
                 When someone RSVPs on the Events page, it appears here so partners can see what is pulling people out the door.
               </p>
@@ -556,7 +556,7 @@ export default function PartnersDashboard() {
           <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Happy hour map</p>
-              <h2 className="mt-2 font-heading text-3xl font-medium">Add a happy hour once. It shows up on the map.</h2>
+              <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">Add a happy hour once. It shows up on the map.</h2>
               <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/62">
                 Partners can enter the days, time, offer, and location here. The happy hour gets its own gold pin and opens with the venue details residents need.
               </p>
@@ -641,7 +641,7 @@ export default function PartnersDashboard() {
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Resident buildings</p>
-              <h2 className="mt-2 font-heading text-3xl font-medium">The Bowie is the main building here.</h2>
+              <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">The Bowie is the main building here.</h2>
             </div>
             <Building2 className="h-6 w-6 text-[#B38F4F]" />
           </div>
@@ -751,7 +751,7 @@ export default function PartnersDashboard() {
           <div className="grid gap-5 border-b border-[#0B1F33]/8 p-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Interactive activity matrix</p>
-              <h2 className="mt-2 font-heading text-3xl font-medium">What people do nearby, by time of day.</h2>
+              <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">What people do nearby, by time of day.</h2>
               <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/62">
                 Pick a time and a topic to see what people are doing near {selectedAnchor.name}.
               </p>
@@ -921,7 +921,7 @@ export default function PartnersDashboard() {
           <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Brand examples</p>
-              <h2 className="mt-2 font-heading text-3xl font-medium">Examples from existing partner pages.</h2>
+              <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">Examples from existing partner pages.</h2>
             </div>
             <Link to="/partners/brands" className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/62 transition hover:text-[#0B1F33]">
               Brand partner page
@@ -947,7 +947,7 @@ export default function PartnersDashboard() {
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-20 sm:px-5 lg:grid-cols-[1fr_0.9fr] lg:px-5">
         <div className="rounded-lg border border-[#0B1F33]/8 bg-white/82 p-5 backdrop-blur-xl">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Campaign builder</p>
-          <h2 className="mt-2 font-heading text-3xl font-medium">Build a campaign around a place and time.</h2>
+          <h2 className="mt-2 font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">Build a campaign around a place and time.</h2>
           <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/62">
             Each step is a real campaign decision. The goal is to keep the setup simple enough for a QR code, a map card, and one clear action.
           </p>

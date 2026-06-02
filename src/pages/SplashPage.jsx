@@ -18,7 +18,7 @@ const journeySteps = [
     number: "01",
     title: "What should we do?",
     label: "Start nearby",
-    copy: "Someone downtown wants coffee, dinner, a workout, or something happening tonight.",
+    copy: "Someone downtown wants coffee, dinner, a workout, or something good to do tonight.",
     image: "/images/residents/downtown-rooftop-evening.png",
     icon: Coffee,
   },
@@ -26,7 +26,7 @@ const journeySteps = [
     number: "02",
     title: "See what is close.",
     label: "Open the map",
-    copy: "Downtown Perks shows nearby places, events, perks, and local favorites in one simple view.",
+    copy: "Nearby places, events, perks, and local favorites show up in one simple view.",
     image: "/images/splash/walkable-map.png",
     icon: MapPin,
   },
@@ -34,7 +34,7 @@ const journeySteps = [
     number: "03",
     title: "Pick the next move.",
     label: "Choose the moment",
-    copy: "Save a spot, RSVP to an event, or find a place that fits right now.",
+    copy: "Save a spot, RSVP to an event, or pick the place that fits right now.",
     image: "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
     icon: CalendarDays,
   },
@@ -42,15 +42,15 @@ const journeySteps = [
     number: "04",
     title: "Show the card or use the perk.",
     label: "Use access",
-    copy: "No extra app. No complicated steps. Just find it and go.",
+    copy: "No complicated steps. Find it, use it, and go.",
     image: "/images/splash/resident-access.jpeg",
     icon: BadgePercent,
   },
   {
     number: "05",
     title: "Partners see what worked.",
-    label: "Local places learn",
-    copy: "They can see useful signals like saves, RSVPs, scans, and redemptions.",
+    label: "Partner insights",
+    copy: "Local businesses can see what people saved, used, RSVP’d to, or checked out.",
     image: "/images/splash/walkable-map.png",
     icon: BarChart3,
   },
@@ -88,7 +88,7 @@ function JourneyNarrative() {
   }, [reduceMotion]);
 
   return (
-    <section className="relative overflow-hidden bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
+    <section className="relative overflow-hidden bg-[#F7F8FB] px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179,143,79,0.16),transparent)]" aria-hidden="true" />
 
       <div className="mx-auto max-w-7xl">
@@ -99,14 +99,14 @@ function JourneyNarrative() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-[840px]"
         >
-          <p className="mb-5 font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
+          <p className="mb-5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F] md:text-[12px]">
             How Downtown Perks Works
           </p>
-          <h2 className="max-w-[18ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
+          <h2 className="max-w-[18ch] font-heading text-[42px] font-bold leading-[0.95] tracking-[-0.03em] text-[#0B1F33] max-[420px]:text-[40px] md:text-[60px] md:leading-[0.94] lg:text-[72px]">
             <span className="block">Open The Map.</span>
             <span className="block text-[#B38F4F]">Find The Moment. Go.</span>
           </h2>
-          <p className="mt-6 max-w-[700px] font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
+          <p className="mt-6 max-w-[700px] font-body text-[17px] font-light leading-[1.68] text-[rgba(66,84,102,0.80)] md:text-[20px] md:leading-[1.62]">
             Downtown Perks helps residents find nearby places, events, perks, and local favorites without bouncing between apps, websites, group chats, and screenshots. For partners, it creates visibility when people nearby are already deciding where to go.
           </p>
         </motion.div>
@@ -118,8 +118,8 @@ function JourneyNarrative() {
           transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           className="mt-10"
         >
-          <div className="grid overflow-hidden rounded-md bg-white/76 shadow-[0_18px_58px_rgba(11,31,51,0.06),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-md lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="relative min-h-[360px] overflow-hidden bg-white md:min-h-[440px]">
+          <div className="overflow-hidden rounded-md bg-white/76 shadow-[0_18px_58px_rgba(11,31,51,0.06),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-md">
+            <div className="relative min-h-[520px] overflow-hidden bg-[#F7F8FB] md:min-h-[560px]">
               {journeySteps.map((step, index) => (
                 <img
                   key={step.title}
@@ -132,9 +132,37 @@ function JourneyNarrative() {
                 />
               ))}
 
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92),rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(11,31,51,0.16))]" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.88),rgba(255,255,255,0.18)_48%,rgba(11,31,51,0.18)),linear-gradient(180deg,rgba(255,255,255,0.10),rgba(11,31,51,0.22))]" />
 
-              <div className="absolute bottom-5 left-5 right-5 z-20 sm:bottom-7 sm:left-6 sm:right-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active.number}
+                  initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(5px)" }}
+                  animate={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={reduceMotion ? undefined : { opacity: 0, y: -8, filter: "blur(4px)" }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute left-4 right-4 top-4 z-20 bg-white/68 p-4 text-[#0B1F33] sm:left-6 sm:right-6 sm:top-6 sm:p-5 lg:right-auto lg:max-w-[720px] lg:p-6"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.68)",
+                    backdropFilter: "blur(22px) saturate(1.08)",
+                    WebkitBackdropFilter: "blur(22px) saturate(1.08)",
+                    boxShadow:
+                      "0 22px 68px rgba(11,31,51,0.10), inset 0 1px 0 rgba(255,255,255,0.78), inset 0 0 0 1px rgba(255,255,255,0.42)",
+                  }}
+                >
+                  <span className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+                    {active.label}
+                  </span>
+                  <h3 className="mt-3 max-w-full whitespace-nowrap font-heading text-[clamp(1.85rem,4.6vw,3.15rem)] font-bold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] max-[560px]:whitespace-normal">
+                    {active.title}
+                  </h3>
+                  <p className="mt-4 max-w-[420px] font-body text-[14px] font-light leading-relaxed text-[rgba(66,84,102,0.82)] md:text-[16px]">
+                    {active.copy}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="absolute bottom-6 left-5 right-5 z-20 sm:bottom-7 sm:left-6 sm:right-6">
                 <div className="relative flex items-center justify-between">
                   <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#0B1F33]/12" />
                   <div
@@ -165,43 +193,6 @@ function JourneyNarrative() {
                 </div>
               </div>
             </div>
-
-            <div className="flex flex-col justify-center bg-white/78 p-5 text-[#0B1F33] backdrop-blur-[18px] md:p-8">
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#B38F4F]">
-                  {active.label}
-                </span>
-                <h3 className="mt-3 font-heading text-[38px] font-medium leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
-                  {active.title}
-                </h3>
-                <p className="mt-4 max-w-md text-[14px] leading-relaxed text-[#425466] md:text-[15px]">
-                  {active.copy}
-                </p>
-              </div>
-
-              <div className="mt-8 flex gap-2">
-                {journeySteps.map((step, index) => {
-                  const selected = index === activeStep;
-
-                  return (
-                    <button
-                      key={step.title}
-                      type="button"
-                      onClick={() => setActiveStep(index)}
-                      className={`grid h-9 w-9 place-items-center rounded-sm text-[10px] font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
-                        selected
-                          ? "bg-[#0B1F33] text-[#B38F4F] shadow-[0_10px_24px_rgba(11,31,51,0.10)]"
-                          : "bg-[#0B1F33]/6 text-[#0B1F33]/48 hover:bg-white hover:text-[#0B1F33]"
-                      }`}
-                      aria-label={`Show step ${step.number}: ${step.label}`}
-                      aria-pressed={selected}
-                    >
-                      {step.number}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </motion.div>
       </div>
@@ -213,7 +204,7 @@ export default function SplashPage() {
   const [showIntro, setShowIntro] = useState(true);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-white pt-[68px] text-[#0B1F33]">
+    <main className="min-h-screen overflow-hidden bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
       <AnimatePresence initial={false}>
         {showIntro && (
           <motion.section
@@ -258,15 +249,15 @@ export default function SplashPage() {
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                 className="mx-auto max-w-6xl"
               >
-                <div className="inline-flex items-center gap-2 font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
+                <div className="inline-flex items-center gap-2 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F] md:text-[12px]">
                   <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
                   Downtown Perks
                 </div>
-                <h1 className="mt-5 max-w-[11ch] font-heading text-[42px] font-semibold leading-[0.92] tracking-[-0.035em] text-white max-[420px]:text-[38px] md:text-[64px] lg:text-[72px]">
+                <h1 className="mt-5 max-w-[11ch] font-heading text-[42px] font-bold leading-[0.95] tracking-[-0.03em] text-white max-[420px]:text-[38px] md:text-[64px] lg:text-[72px]">
                   <span className="block">Where Downtown</span>
                   <span className="block text-[#B38F4F]">Meets You</span>
                 </h1>
-                <p className="mt-5 max-w-[34rem] font-body text-[16px] font-light leading-[1.58] tracking-[-0.005em] text-[#DCE3EB] md:text-[22px] md:leading-[1.5]">
+                <p className="mt-5 max-w-[34rem] font-body text-[16px] font-light leading-[1.6] text-[#DCE3EB] md:text-[21px] md:leading-[1.52]">
                   Built for the people who actually live downtown — and the businesses that keep it interesting.
                 </p>
               </motion.div>
@@ -275,7 +266,7 @@ export default function SplashPage() {
         )}
       </AnimatePresence>
 
-      <section className="relative bg-white px-5 py-14 md:px-8 md:py-20">
+      <section className="relative bg-[#F7F8FB] px-5 py-14 md:px-8 md:py-20">
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <video className="absolute inset-0 h-full w-full object-cover opacity-[0.18]" src={VIDEO_SRC} autoPlay muted loop playsInline preload="metadata" />
           <div className="absolute inset-0 bg-white/86" />
@@ -291,14 +282,14 @@ export default function SplashPage() {
             amount={0.28}
             className="max-w-[840px]"
           >
-            <div className="font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
+            <div className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F] md:text-[12px]">
               Live Discovery
             </div>
-            <h1 className="mt-6 max-w-[13ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] max-[420px]:leading-[0.94] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
+            <h1 className="mt-6 max-w-[13ch] font-heading text-[44px] font-bold leading-[0.95] tracking-[-0.03em] text-[#0B1F33] max-[420px]:text-[40px] max-[420px]:leading-[0.94] md:text-[68px] md:leading-[0.93] lg:text-[78px]">
               <span className="block">More Charm Than</span>
               <span className="block text-[#B38F4F]">A Biscuit With Honey.</span>
             </h1>
-            <p className="mt-6 max-w-[680px] font-body text-[20px] font-light leading-[1.55] tracking-[-0.005em] text-[#5F6B7A] md:text-[26px] md:leading-[1.55]">
+            <p className="mt-6 max-w-[680px] font-body text-[18px] font-light leading-relaxed text-[rgba(66,84,102,0.80)] md:text-[24px] md:leading-[1.56]">
               Downtown Perks brings the heat — and the hospitality.
             </p>
           </EditorialReveal>
@@ -308,10 +299,10 @@ export default function SplashPage() {
             delay={0.04}
             amount={0.24}
           >
-            <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
+            <p className="font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.74)] md:text-[19px] md:leading-[1.68]">
               Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.
             </p>
-            <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
+            <p className="font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.74)] md:text-[19px] md:leading-[1.68]">
               For the people planning around rooftop weather, happy hour, workout classes, taco runs, live music, and “just one drink” that turns into the whole night.
             </p>
           </EditorialReveal>
@@ -323,14 +314,14 @@ export default function SplashPage() {
           >
             <Link
               to="/residents"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 text-[12px] font-medium tracking-[0.08em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
+              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
             >
               Start as resident
               <ArrowRight className="ml-2 h-4 w-4 text-[#B38F4F]" />
             </Link>
             <Link
               to="/partners"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white px-6 text-[12px] font-medium tracking-[0.08em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] transition hover:-translate-y-px hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
+              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white/82 px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-md transition hover:-translate-y-px hover:bg-white hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
             >
               Start as partner
             </Link>
@@ -338,7 +329,7 @@ export default function SplashPage() {
         </div>
       </section>
 
-      <section className="relative bg-white px-5 pb-0 pt-12 md:px-8 md:pb-0 md:pt-16">
+      <section className="relative bg-[#F7F8FB] px-5 pb-0 pt-12 md:px-8 md:pb-0 md:pt-16">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179, 143, 79, 0.08),transparent)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-6xl">
           <div className="max-w-[720px] text-left">
@@ -346,11 +337,11 @@ export default function SplashPage() {
               className="max-w-[720px]"
               amount={0.22}
             >
-              <p className="font-heading text-[42px] font-semibold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[58px]">
+              <p className="font-heading text-[40px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
                 <span className="block">Downtown should</span>
                 <span className="block text-[#B38F4F]">be easier to use.</span>
               </p>
-              <div className="mt-5 max-w-[680px] space-y-1 text-[19px] leading-[1.4] tracking-[-0.01em] text-[#0B1F33]/80 md:text-[24px] md:leading-[1.42]">
+              <div className="mt-5 max-w-[680px] space-y-1 font-body text-[18px] font-light leading-[1.45] text-[rgba(66,84,102,0.86)] md:text-[22px] md:leading-[1.45]">
                 <p>The coffee shop you keep meaning to try.</p>
                 <p>The workout class you always hear about too late.</p>
                 <p>The rooftop before it gets crowded.</p>
@@ -367,17 +358,17 @@ export default function SplashPage() {
               delay={0.04}
               amount={0.2}
             >
-              <p className="text-[18px] leading-[1.8] text-[#0B1F33]/74">
+              <p className="font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.78)] md:text-[18px]">
                 Most things already exist. They’re just scattered across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.
               </p>
             </EditorialReveal>
 
             <EditorialReveal
-              className="mt-10 max-w-[660px] space-y-3 text-[16px] leading-[1.72] text-[#0B1F33]/70 md:text-[18px] md:leading-[1.72]"
+              className="mt-10 max-w-[660px] space-y-3 font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.78)] md:text-[18px] md:leading-[1.72]"
               delay={0.04}
               amount={0.18}
             >
-              <p className="font-heading text-[34px] font-semibold leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
+              <p className="font-heading text-[34px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
                 <span className="block">So we built one map</span>
                 <span className="block text-[#B38F4F]">to bring everything together.</span>
               </p>
@@ -393,13 +384,13 @@ export default function SplashPage() {
             >
               <Link
                 to="/residents"
-                className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 text-[12px] font-medium uppercase tracking-[0.08em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
+                className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
               >
                 START AS RESIDENT
               </Link>
               <Link
                 to="/partners"
-                className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white px-6 text-[12px] font-medium uppercase tracking-[0.08em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] transition hover:-translate-y-px hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
+                className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white/82 px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-md transition hover:-translate-y-px hover:bg-white hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
               >
                 START AS PARTNER
               </Link>
@@ -411,17 +402,17 @@ export default function SplashPage() {
 
       <JourneyNarrative />
 
-      <section className="relative bg-white px-5 pb-14 pt-12 md:px-8 md:pb-20 md:pt-16">
+      <section className="relative bg-[#F7F8FB] px-5 pb-14 pt-12 md:px-8 md:pb-20 md:pt-16">
         <div className="relative mx-auto max-w-[760px] text-left">
           <EditorialReveal
             className="max-w-[660px]"
             amount={0.24}
           >
-            <h2 className="max-w-[19ch] font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[52px] md:leading-[0.96]">
+            <h2 className="max-w-[19ch] font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[52px] md:leading-[0.96]">
               <span className="block">Whether you’re making plans</span>
               <span className="block text-[#B38F4F]">or part of them.</span>
             </h2>
-            <div className="mt-7 max-w-[620px] space-y-4 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px] md:leading-[1.75]">
+            <div className="mt-7 max-w-[620px] space-y-4 font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.78)] md:text-[18px] md:leading-[1.75]">
               <p>
                 Downtown Perks helps residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.
               </p>
@@ -432,7 +423,7 @@ export default function SplashPage() {
                 For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.
               </p>
             </div>
-            <p className="mt-10 max-w-[30ch] font-heading text-[24px] font-semibold leading-[1.04] tracking-[-0.02em] text-[#0B1F33]/82 md:text-[34px]">
+            <p className="mt-10 max-w-[30ch] font-heading text-[24px] font-bold leading-[1.04] tracking-[-0.02em] text-[rgba(11,31,51,0.86)] md:text-[34px]">
               <span className="block">Come on in. Open the map.</span>
               <span className="block text-[#B38F4F]">And maybe grab something cold while you’re at it.</span>
             </p>
@@ -445,13 +436,13 @@ export default function SplashPage() {
           >
             <Link
               to="/residents"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 text-[12px] font-medium tracking-[0.08em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
+              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
             >
               Enter Resident View
             </Link>
             <Link
               to="/partners"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white px-6 text-[12px] font-medium tracking-[0.08em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] transition hover:-translate-y-px hover:shadow-[0_0_0_1px_rgba(179, 143, 79, 0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
+              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white/82 px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-md transition hover:-translate-y-px hover:bg-white hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
             >
               Enter Partner View
             </Link>

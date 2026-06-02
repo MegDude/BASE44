@@ -1510,6 +1510,27 @@ html {
     box-shadow: none !important;
   }
 
+  .dp-faq-trigger,
+  .dp-partner-page .dp-faq-trigger {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+  }
+
+  .dp-faq-trigger *,
+  .dp-partner-page .dp-faq-trigger * {
+    letter-spacing: normal !important;
+  }
+
+  .dp-partner-type-tab,
+  .dp-partner-page .dp-partner-type-tab {
+    letter-spacing: normal !important;
+    text-transform: none !important;
+  }
+
   .dp-partner-page :where(button[class*="p-5"], a[href][class*="p-5"]) {
     padding: 0.85rem !important;
   }

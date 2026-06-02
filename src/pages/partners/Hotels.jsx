@@ -90,7 +90,7 @@ export default function HotelsPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Hotel Partner Layer</span>
-              <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
+              <h1 className="font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] mb-5 md:text-[42px] lg:text-[46px]">
                 Help guests find what to do <em className="text-primary">from the moment they arrive.</em>
               </h1>
               <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to handle it.</p>
@@ -507,7 +507,7 @@ function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondL
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
+            <h2 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] mb-3 md:text-[42px]">{headline}</h2>
             <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
           </div>
           <div className="space-y-4">

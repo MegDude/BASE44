@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -78,12 +79,12 @@ const ADD_ONS = [
 ];
 
 const PLACEMENTS = [
-  ["Map feature", "Best for visibility", "Pinned placement inside the map when people search by need, category, or district."],
-  ["QR surface", "Best for entry", "Lobby sign, table tent, room card, poster, sticker, or check-in surface."],
-  ["Resident card offer", "Best for action", "Resident-only perk, local rate, event access, or redemption flow."],
-  ["District spotlight", "Best for campaigns", "A timed placement around Rainey, Seaholm, 2nd Street, Congress, or another downtown zone."],
-  ["Survey moment", "Best for learning", "Short QR or text survey after a scan, visit, event, or offer interaction."],
-  ["Partner report", "Best for decisions", "Simple reporting that shows what worked and what to do next."],
+  ["Be part of the map", "Appear when people nearby are looking for somewhere to go, something to do, or a place worth saving for later."],
+  ["In the real world", "Connect people through a QR code placed in a lobby, venue, guest room, event, storefront, building, or shared space."],
+  ["Through an offer", "Offer something useful - a local perk, exclusive access, event benefit, resident discount, or reason to come back."],
+  ["Around a neighborhood", "Highlight a district, neighborhood, event, or local moment where people are already spending time."],
+  ["Through a question", "Ask a few simple questions and understand what brought people in, what caught their attention, and what they'd like to see next."],
+  ["See what happened next", "Understand what people responded to and where momentum is building. Track visits, saves, responses, redemptions, and activity in one place."],
 ];
 
 const SURVEY_STEPS = [
@@ -94,15 +95,6 @@ const SURVEY_STEPS = [
 ];
 
 function Section({ id, eyebrow, title, children, className = "" }) {
-  const titleLines = {
-    "Plans By Partner Type.": ["Plans By", "Partner Type."],
-    "What The Platform Offers.": ["What The", "Platform Offers."],
-    "Add Only What The Activation Needs.": ["Add Only What", "The Activation Needs."],
-    "Low-Tech Surveys. Better Audience Answers.": ["Low-Tech Surveys.", "Better Audience Answers."],
-    "Where A Partner Can Show Up.": ["Where A Partner", "Can Show Up."],
-    "Pick The Lightest Useful Version First.": ["Pick The Lightest", "Useful Version First."],
-  }[title];
-
   return (
     <section id={id} className={`px-5 py-12 md:py-16 ${className}`}>
       <div className="mx-auto max-w-6xl">
@@ -110,16 +102,7 @@ function Section({ id, eyebrow, title, children, className = "" }) {
           <div className="mb-8 max-w-[840px]">
             {eyebrow && <span className="dp-editorial-eyebrow mb-5 block">{eyebrow}</span>}
             {title && (
-              <h2 className="dp-editorial-section-title max-w-[12ch]">
-                {titleLines ? (
-                  <>
-                    <span className="block">{titleLines[0]}</span>
-                    <span className="block text-[#B38F4F]">{titleLines[1]}</span>
-                  </>
-                ) : (
-                  title
-                )}
-              </h2>
+              <h2 className="dp-editorial-section-title max-w-[900px]">{title}</h2>
             )}
           </div>
         )}
@@ -138,6 +121,9 @@ function PillLink({ href, children }) {
 }
 
 export default function Pricing() {
+  const [activePartnerId, setActivePartnerId] = useState(PARTNER_TYPES[0].id);
+  const activePartner = PARTNER_TYPES.find((type) => type.id === activePartnerId) ?? PARTNER_TYPES[0];
+
   return (
     <div className="dp-partner-page min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
       <section className="relative overflow-hidden px-5 py-14 md:py-20">
@@ -151,10 +137,10 @@ export default function Pricing() {
             <PillLink href="#placements">Placements</PillLink>
           </div>
           <span className="dp-editorial-eyebrow mb-5 block">Partner Pricing</span>
-          <div className="max-w-[860px]">
-            <h1 className="dp-editorial-display max-w-[12ch]">
-              <span className="block">Simple Pricing For Partners</span>
-              <span className="block text-[#B38F4F]">Who Want Downtown Action.</span>
+          <div className="max-w-[1120px]">
+            <h1 className="dp-editorial-display w-full max-w-[1120px]">
+              <span>Simple Pricing For Partners</span>
+              <span className="text-[#B38F4F]"> Who Want Downtown Action.</span>
             </h1>
             <p className="dp-editorial-copy mt-8 max-w-[790px]">
               Downtown Perks is built around easy entry points: scan a QR code, text a keyword, open the map, show the card, read the report. Dumb tech on the front end. A smart audience and analytics engine underneath.
@@ -172,34 +158,48 @@ export default function Pricing() {
         </div>
       </section>
 
-      <Section id="partner-types" eyebrow="Pricing Matrix" title="Plans By Partner Type.">
-        <div className="grid gap-10">
+      <Section id="partner-types" eyebrow="Pricing Matrix" title="Plans by Partner Type.">
+        <div className="mb-8 flex gap-5 overflow-x-auto py-2">
           {PARTNER_TYPES.map((type) => (
-            <article key={type.id} className="relative max-w-[900px] py-2">
-              <div className="pointer-events-none absolute -left-6 top-3 h-24 w-24 bg-[#B38F4F]/[0.045] blur-3xl" aria-hidden="true" />
-              <p className="dp-editorial-eyebrow relative mb-4 block">{type.label}</p>
-              <div className="relative grid gap-5 md:grid-cols-[220px_1fr] md:gap-8">
-                <div className="font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[42px]">
-                  {type.price}
-                </div>
-                <div className="max-w-[680px] space-y-4">
-                  <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
-                    {type.bestFor}
-                  </p>
-                  <p className="font-body text-[18px] font-light leading-[1.58] tracking-[-0.005em] text-[#5F6B7A] md:text-[24px]">
-                    {type.promise}
-                  </p>
-                  <p className="font-body text-[14px] font-light leading-[1.72] text-[#6D7886] md:text-[16px]">
-                    {type.notes}
-                  </p>
-                </div>
-              </div>
-            </article>
+            <button
+              key={type.id}
+              type="button"
+              className={`dp-text-chip shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+                activePartner.id === type.id ? "is-active" : ""
+              }`}
+              aria-current={activePartner.id === type.id ? "true" : undefined}
+              onClick={() => setActivePartnerId(type.id)}
+            >
+              {type.label}
+            </button>
           ))}
         </div>
+
+        <article className="relative max-w-[920px] py-3">
+          <div className="pointer-events-none absolute -left-8 top-1 h-32 w-32 bg-[#B38F4F]/[0.06] blur-3xl" aria-hidden="true" />
+          <div className="relative grid gap-6 md:grid-cols-[240px_1fr] md:gap-10">
+            <div>
+              <p className="dp-editorial-eyebrow mb-4 block">{activePartner.label}</p>
+              <div className="font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[44px]">
+                {activePartner.price}
+              </div>
+            </div>
+            <div className="max-w-[690px] space-y-4">
+              <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
+                {activePartner.bestFor}
+              </p>
+              <p className="font-body text-[18px] font-light leading-[1.58] tracking-[-0.005em] text-[#5F6B7A] md:text-[24px]">
+                {activePartner.promise}
+              </p>
+              <p className="font-body text-[14px] font-light leading-[1.72] text-[#6D7886] md:text-[16px]">
+                {activePartner.notes}
+              </p>
+            </div>
+          </div>
+        </article>
       </Section>
 
-      <Section id="modules" eyebrow="Platform Modules" title="What The Platform Offers.">
+      <Section id="modules" eyebrow="Platform Modules" title="What the Platform Offers.">
         <div className="grid gap-3 md:grid-cols-2">
           {MODULES.map(([title, availability, body]) => (
             <article key={title} className="dp-glow-tile rounded-[6px] p-4">
@@ -218,7 +218,7 @@ export default function Pricing() {
         </div>
       </Section>
 
-      <Section id="add-ons" eyebrow="Add-Ons And Campaign Additions" title="Add Only What The Activation Needs." className="bg-white">
+      <Section id="add-ons" eyebrow="Add-Ons And Campaign Additions" title="Start with what matters. Add what works." className="bg-white">
         <div className="dp-glow-surface overflow-hidden rounded-[6px]">
           <div className="overflow-x-auto">
             <table className="min-w-[720px] w-full border-collapse text-left">
@@ -246,11 +246,15 @@ export default function Pricing() {
         </p>
       </Section>
 
-      <Section id="surveys" eyebrow="Survey Engine" title="Low-Tech Surveys. Better Audience Answers.">
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <Section id="surveys" eyebrow="Survey Engine" title="Ask a question. Learn something useful.">
+        <div className="grid gap-6 lg:grid-cols-[1.18fr_0.82fr]">
           <div className="dp-glow-surface rounded-[6px] p-5">
-            <MessageSquareText className="h-6 w-6 text-[#B38F4F]" />
-            <h3 className="mt-5 font-heading text-3xl font-medium leading-[1.08]">Ask a few good questions at the exact right moment.</h3>
+            <div className="flex items-start gap-4">
+              <MessageSquareText className="mt-1 h-6 w-6 shrink-0 text-[#B38F4F]" />
+              <h3 className="font-heading text-[22px] font-medium leading-[1.08] md:text-[26px] lg:whitespace-nowrap xl:text-[28px]">
+                Ask a few good questions at the exact right moment.
+              </h3>
+            </div>
             <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
               Surveys work through a QR code or text prompt. A brand, venue, hotel, property, or civic partner can ask people what they want, why they came, what they noticed, what they would come back for, or what would make the experience better.
             </p>
@@ -270,19 +274,21 @@ export default function Pricing() {
         </div>
       </Section>
 
-      <Section id="placements" eyebrow="Placement Opportunities" title="Where A Partner Can Show Up.">
+      <Section id="placements" eyebrow="Placement Opportunities" title="How Partners Show Up">
+        <p className="mb-8 max-w-[700px] font-body text-[16px] font-light leading-7 text-[#0B1F33]/64 md:text-[18px]">
+          Different goals call for different ways to show up. Start with the option that fits what you're trying to accomplish.
+        </p>
         <div className="grid gap-3 md:grid-cols-3">
-          {PLACEMENTS.map(([title, label, body]) => (
+          {PLACEMENTS.map(([title, body]) => (
             <article key={title} className="dp-glow-tile rounded-[6px] p-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/48">{label}</p>
-              <h3 className="mt-3 text-[14px] font-semibold">{title}</h3>
+              <h3 className="text-[14px] font-semibold">{title}</h3>
               <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{body}</p>
             </article>
           ))}
         </div>
       </Section>
 
-      <Section eyebrow="Next Step" title="Pick The Lightest Useful Version First." className="bg-white">
+      <Section eyebrow="Next Step" title="Do less. Learn more." className="bg-white">
         <div className="max-w-3xl">
           <p className="text-[14px] leading-7 text-[#0B1F33]/68">
             Downtown Perks is priced so partners can begin with the right annual tier, learn what people actually do, then add campaigns, surveys, placements, or reporting when there is a clear reason.

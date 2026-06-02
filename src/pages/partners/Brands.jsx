@@ -5,10 +5,12 @@ import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
+  BarChart3,
   Building2,
   CalendarDays,
   MapPin,
   Megaphone,
+  MessageCircle,
   QrCode,
   Sparkles,
 } from "lucide-react";
@@ -106,6 +108,27 @@ const WORKFLOW = [
   ["04", "Track what happened", "Measure scans, saves, redemptions, visits, and district activity without relying on vague impressions."],
 ];
 
+const HOW_IT_WORKS = [
+  {
+    number: "01",
+    title: "Help people find you",
+    copy: "Show up through a QR code, a building, an event, a venue, or a place people are already visiting.",
+    Icon: MapPin,
+  },
+  {
+    number: "02",
+    title: "Learn what brought them in",
+    copy: "Ask a few simple questions and understand what caught their attention and what they'd like to see next.",
+    Icon: MessageCircle,
+  },
+  {
+    number: "03",
+    title: "See what worked",
+    copy: "Track visits, saves, responses, and redemptions in one place so you can make better decisions going forward.",
+    Icon: BarChart3,
+  },
+];
+
 const PROOF = [
   ["12", "Campaigns live"],
   ["4", "Active districts"],
@@ -142,9 +165,9 @@ function Section({ id, eyebrow, title, children, className = "" }) {
     <section id={id} className={`border-t border-[#0B1F33]/8 px-5 py-14 md:py-20 ${className}`}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
-          <div className="mb-8 max-w-3xl">
+          <div className="mb-8 max-w-[1100px]">
             {eyebrow && <span className="dp-label mb-3 block">{eyebrow}</span>}
-            {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] text-[#0B1F33] md:text-4xl">{title}</h2>}
+            {title && <h2 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">{title}</h2>}
           </div>
         )}
         {children}
@@ -370,31 +393,27 @@ export default function BrandsPartner() {
         </div>
       </Section>
 
-      <Section id="pricing" eyebrow="Brand pricing" title="Campaigns can start small, then add placement when the data says to.">
-        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Brand range</p>
-            <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">$149-$199/year</div>
-            <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
-              Pricing depends on footprint, timing, placements, and whether the campaign includes survey capture, event activation, or district visibility.
-            </p>
-            <Link to="/partners/pricing#surveys" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
-              View pricing matrix
-              <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
-            </Link>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {[
-              ["Dumb tech entry", "QR code or text prompt. No app rollout, no complicated partner software."],
-              ["Survey learning", "Ask people why they came, what they want, and what would bring them back."],
-              ["Smart reporting", "The engine turns scans, answers, district, and timing into plain-English next steps."],
-            ].map(([title, copy]) => (
-              <article key={title} className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
-                <h3 className="text-[13px] font-semibold text-[#0B1F33]">{title}</h3>
-                <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
-              </article>
-            ))}
-          </div>
+      <Section id="pricing" title="How it works" className="bg-[#F7F8FB]">
+        <div className="grid gap-x-8 gap-y-9 md:grid-cols-3">
+          {HOW_IT_WORKS.map(({ number, title, copy, Icon }, index) => (
+            <motion.article
+              key={title}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.58, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="relative"
+            >
+              <div className="mb-5 flex items-center gap-3">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
+                  {number}
+                </span>
+                <Icon className="h-4 w-4 text-[#B38F4F]" aria-hidden="true" />
+              </div>
+              <h3 className="font-body text-[17px] font-semibold leading-snug text-[#0B1F33] md:text-[19px]">{title}</h3>
+              <p className="mt-3 max-w-[330px] text-[14px] font-light leading-7 text-[#0B1F33]/62 md:text-[15px]">{copy}</p>
+            </motion.article>
+          ))}
         </div>
       </Section>
 

@@ -30,7 +30,7 @@ export default function DowntownPerksHero({
           initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.65, ease }}
-          className="max-w-xl"
+          className="max-w-[820px]"
         >
           {before}
           {eyebrow && (
@@ -38,9 +38,9 @@ export default function DowntownPerksHero({
               {eyebrow}
             </p>
           )}
-          <h1 className="mt-6 max-w-[13ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] max-[420px]:leading-[0.94] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
-            <span className="block">{title}</span>
-            {titleAccent && <span className="block text-[#B38F4F]">{titleAccent}</span>}
+          <h1 className="mt-6 max-w-[1100px] font-heading text-[42px] font-semibold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] max-[420px]:text-[38px] md:text-[58px] md:leading-[0.96] lg:text-[64px]">
+            <span>{title}</span>
+            {titleAccent && <span className="text-[#B38F4F]"> {titleAccent}</span>}
           </h1>
           {lead && (
             <p className="mt-6 max-w-[680px] font-body text-[20px] font-light leading-[1.55] tracking-[-0.005em] text-[#5F6B7A] md:text-[26px] md:leading-[1.55]">
