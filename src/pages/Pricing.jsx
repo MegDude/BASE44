@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -139,13 +138,6 @@ function PillLink({ href, children }) {
 }
 
 export default function Pricing() {
-  const [activeType, setActiveType] = useState("properties");
-
-  const activePartner = useMemo(
-    () => PARTNER_TYPES.find((type) => type.id === activeType) || PARTNER_TYPES[0],
-    [activeType]
-  );
-
   return (
     <div className="dp-partner-page min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
       <section className="relative overflow-hidden px-5 py-14 md:py-20">
@@ -181,55 +173,29 @@ export default function Pricing() {
       </section>
 
       <Section id="partner-types" eyebrow="Pricing Matrix" title="Plans By Partner Type.">
-        <div className="mb-5 flex gap-4 overflow-x-auto">
+        <div className="grid gap-10">
           {PARTNER_TYPES.map((type) => (
-            <button
-              key={type.id}
-              type="button"
-              onClick={() => setActiveType(type.id)}
-              className={`dp-text-chip shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${activeType === type.id ? "is-active" : ""}`}
-              aria-current={activeType === type.id ? "true" : undefined}
-            >
-              {type.label}
-            </button>
+            <article key={type.id} className="relative max-w-[900px] py-2">
+              <div className="pointer-events-none absolute -left-6 top-3 h-24 w-24 bg-[#B38F4F]/[0.045] blur-3xl" aria-hidden="true" />
+              <p className="dp-editorial-eyebrow relative mb-4 block">{type.label}</p>
+              <div className="relative grid gap-5 md:grid-cols-[220px_1fr] md:gap-8">
+                <div className="font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[42px]">
+                  {type.price}
+                </div>
+                <div className="max-w-[680px] space-y-4">
+                  <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
+                    {type.bestFor}
+                  </p>
+                  <p className="font-body text-[18px] font-light leading-[1.58] tracking-[-0.005em] text-[#5F6B7A] md:text-[24px]">
+                    {type.promise}
+                  </p>
+                  <p className="font-body text-[14px] font-light leading-[1.72] text-[#6D7886] md:text-[16px]">
+                    {type.notes}
+                  </p>
+                </div>
+              </div>
+            </article>
           ))}
-        </div>
-
-        <div className="grid gap-5 lg:grid-cols-[0.72fr_1.28fr]">
-          <div className="dp-glow-surface rounded-[6px] p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">{activePartner.label}</p>
-            <div className="mt-3 font-heading text-3xl font-medium">{activePartner.price}</div>
-            <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">{activePartner.bestFor}</p>
-            <p className="mt-4 bg-white/58 p-3 text-[13px] font-medium leading-6 text-[#0B1F33] shadow-[inset_0_0_0_1px_rgba(179,143,79,0.06)]">
-              {activePartner.promise}
-            </p>
-            <p className="mt-4 text-[12px] leading-5 text-[#0B1F33]/58">{activePartner.notes}</p>
-          </div>
-
-          <div className="dp-glow-surface overflow-hidden rounded-[6px]">
-            <div className="overflow-x-auto">
-              <table className="min-w-[760px] w-full border-collapse text-left">
-                <thead className="bg-[#0B1F33] text-white">
-                  <tr>
-                    <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em]">Partner</th>
-                    <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em]">Pricing</th>
-                    <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em]">Best fit</th>
-                    <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em]">Core expectation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {PARTNER_TYPES.map((type) => (
-                    <tr key={type.id} className="shadow-[inset_0_-1px_0_rgba(11,31,51,0.04)]">
-                      <td className="px-4 py-4 text-[13px] font-semibold">{type.label}</td>
-                      <td className="px-4 py-4 text-[13px]">{type.price}</td>
-                      <td className="px-4 py-4 text-[12px] leading-5 text-[#0B1F33]/62">{type.bestFor}</td>
-                      <td className="px-4 py-4 text-[12px] leading-5 text-[#0B1F33]/62">{type.promise}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
       </Section>
 
