@@ -65,7 +65,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
             {reason && <WhyThisChip reason={reason} distance={distance} variant="header" />}
-            <h2 className="mt-2 truncate text-[22px] font-semibold leading-[1.1] tracking-[-0.025em] text-foreground">{entity.name}</h2>
+            <h2 className="text-[20px] font-heading font-medium text-foreground leading-tight mt-2 truncate">{entity.name}</h2>
           </div>
         </div>
 
