@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, Check, MapPinned, QrCode, Radar, SlidersHorizontal, Sparkles } from "lucide-react";
 import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
 import DowntownPerksHero from "@/components/shared/DowntownPerksHero";
@@ -532,66 +532,48 @@ function PricingTiles() {
 }
 
 function PartnerTypeTabs() {
-  const [active, setActive] = useState(partnerTypes[0].id);
-  const current = partnerTypes.find((type) => type.id === active) || partnerTypes[0];
-
   return (
-    <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
-      <div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1.5 lg:overflow-visible lg:pb-0">
-        {partnerTypes.map((type) => {
-          const selected = type.id === active;
-          return (
-            <button
-              key={type.id}
-              type="button"
-              onClick={() => setActive(type.id)}
-              className={cn(
-                "dp-partner-type-tab min-w-[130px] rounded-[6px] border px-3 py-1.5 text-left text-[12px] font-medium normal-case tracking-normal transition-colors lg:w-full lg:min-w-0",
-                selected ? "border-[#B38F4F]/60 bg-[#F7F8FB] text-[#0B1F33] shadow-[0_0_22px_rgba(179,143,79,0.10)]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/68 hover:border-[#B38F4F]/50"
-              )}
-            >
-              {type.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="rounded-[10px] border border-[#0B1F33]/8 bg-white p-5 md:p-7">
-        <AnimatePresence mode="wait" initial={false}>
+    <div className="-mx-5 overflow-x-auto px-5 pb-3 md:-mx-8 md:px-8">
+      <div className="flex w-max gap-4 md:gap-5">
+        {partnerTypes.map((type, index) => (
           <motion.div
-            key={current.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.32, ease }}
+            key={type.id}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.34, delay: index * 0.04, ease }}
+            className="flex min-h-[520px] w-[min(82vw,340px)] shrink-0 flex-col bg-white px-5 py-5 shadow-[0_16px_46px_rgba(11,31,51,0.055),0_0_34px_rgba(179,143,79,0.045)] md:w-[360px] md:px-6 md:py-6"
           >
-            <h3 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33]">{current.label}</h3>
-            <p className="mt-4 text-[15px] leading-[1.7] text-[#0B1F33]/76">{current.truth}</p>
-            <p className="mt-4 text-[13px] leading-[1.7] text-[#0B1F33]/62">{current.body}</p>
+            <div className="font-body text-[11px] font-bold uppercase tracking-normal text-[#B38F4F]">
+              {type.label}
+            </div>
+            <h3 className="mt-4 font-heading text-[30px] font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33]">
+              {type.truth}
+            </h3>
+            <p className="mt-4 text-[13px] font-light leading-[1.72] text-[#0B1F33]/64">{type.body}</p>
 
-            <div className="mt-6 grid gap-6 md:grid-cols-[1fr_0.8fr]">
-              <div>
-                <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#B38F4F]">What this includes</div>
-                <ul className="mt-3 space-y-2.5">
-                  {current.includes.map((item) => (
-                    <li key={item} className="flex gap-2 text-[13px] leading-[1.6] text-[#0B1F33]/68">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#B38F4F]" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="rounded-[6px] border border-[#0B1F33]/8 bg-white p-4">
-                <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#B38F4F]">Pilot and pricing</div>
-                <p className="mt-3 text-[13px] leading-[1.65] text-[#0B1F33]/68">{current.pricing}</p>
-                <a href="#get-started" className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-[6px] bg-[#0B1F33] px-4 text-[12px] font-medium text-white transition-colors hover:bg-[#081521]">
-                  {current.cta}
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </a>
-              </div>
+            <div className="mt-6">
+              <div className="text-[11px] font-semibold uppercase tracking-normal text-[#B38F4F]">What this includes</div>
+              <ul className="mt-3 space-y-2.5">
+                {type.includes.map((item) => (
+                  <li key={item} className="flex gap-2 text-[13px] font-light leading-[1.58] text-[#0B1F33]/68">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#B38F4F]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-auto pt-6">
+              <div className="text-[11px] font-semibold uppercase tracking-normal text-[#B38F4F]">Pilot and pricing</div>
+              <p className="mt-3 text-[13px] font-light leading-[1.65] text-[#0B1F33]/68">{type.pricing}</p>
+              <a href="#get-started" className="mt-5 inline-flex items-center gap-2 border-b border-[#B38F4F]/55 py-1 text-[12px] font-semibold tracking-normal text-[#0B1F33] transition-colors hover:text-[#B38F4F]">
+                {type.cta}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
             </div>
           </motion.div>
-        </AnimatePresence>
+        ))}
       </div>
     </div>
   );

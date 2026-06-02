@@ -242,7 +242,7 @@ export default function SplashPage() {
               </button>
             </div>
 
-            <div className="absolute inset-x-0 bottom-0 px-5 pb-8 md:pb-12">
+            <div className="absolute inset-x-0 bottom-0 px-5 pb-7 md:pb-10">
               <motion.div
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
@@ -253,11 +253,11 @@ export default function SplashPage() {
                   <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
                   Downtown Perks
                 </div>
-                <h1 className="mt-5 max-w-[11ch] font-heading text-[42px] font-bold leading-[0.95] tracking-[-0.03em] text-white max-[420px]:text-[38px] md:text-[64px] lg:text-[72px]">
+                <h1 className="mt-3 max-w-[11ch] font-heading text-[42px] font-bold leading-[0.9] tracking-[-0.03em] text-white max-[420px]:text-[38px] md:text-[64px] lg:text-[72px]">
                   <span className="block">Where Downtown</span>
                   <span className="block text-[#B38F4F]">Meets You</span>
                 </h1>
-                <p className="mt-5 max-w-[34rem] font-body text-[16px] font-light leading-[1.6] text-[#DCE3EB] md:text-[21px] md:leading-[1.52]">
+                <p className="mt-3 max-w-[34rem] font-body text-[16px] font-light leading-[1.5] text-[#DCE3EB] md:text-[21px] md:leading-[1.45]">
                   Built for the people who actually live downtown — and the businesses that keep it interesting.
                 </p>
               </motion.div>

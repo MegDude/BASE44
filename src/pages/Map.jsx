@@ -2286,7 +2286,7 @@ export default function MapPage() {
           <motion.section
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="dp-panel-shell pointer-events-auto max-h-[calc(100dvh-0.75rem)] w-full max-w-xl overflow-y-auto rounded-t-xl p-2.5 sm:p-4 md:max-h-[calc(100dvh-2rem)] md:rounded-lg"
+            className="dp-panel-shell pointer-events-auto max-h-[calc(100dvh-0.75rem)] w-full max-w-xl overflow-y-auto overscroll-contain rounded-t-xl p-2.5 [-webkit-overflow-scrolling:touch] sm:p-4 md:max-h-[calc(100dvh-2rem)] md:rounded-lg"
             role="dialog"
             aria-modal="true"
             aria-label="Resident pass"
@@ -2443,13 +2443,13 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[620] mx-auto max-h-[52vh] w-full max-w-3xl overflow-hidden rounded-t-xl p-2.5 pb-[calc(0.6rem+env(safe-area-inset-bottom))] md:max-h-[56vh] md:rounded-t-2xl md:p-3 md:pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[52vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-xl p-2.5 pb-[calc(0.6rem+env(safe-area-inset-bottom))] md:max-h-[56vh] md:rounded-t-2xl md:p-3 md:pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
             role="dialog"
             aria-modal="true"
             aria-label={urlState.mode === "partner" ? "Partner map results" : "Discover results"}
           >
-            <div className="mx-auto mb-2 h-0.5 w-10 rounded-full bg-[#0B1F33]/14 md:mb-3 md:h-1 md:w-12" aria-hidden="true" />
-            <div className="mb-2 flex items-center justify-between gap-2 md:mb-3 md:gap-3">
+            <div className="mx-auto mb-2 h-0.5 w-10 shrink-0 rounded-full bg-[#0B1F33]/14 md:mb-3 md:h-1 md:w-12" aria-hidden="true" />
+            <div className="mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3">
               <div className="min-w-0 flex-1">
                 <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F] md:text-[10px] md:tracking-[0.16em]">
                   {urlState.mode === "partner" ? "Partner map" : "Downtown nearby"}
@@ -2494,7 +2494,7 @@ export default function MapPage() {
               </div>
             )}
 
-            <div className="max-h-[38vh] space-y-1.5 overflow-y-auto pr-1 md:max-h-[42vh] md:space-y-2">
+            <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] md:space-y-2">
               {previewPlaces.map((place) => (
                 <button
                   key={place.id}
@@ -2544,7 +2544,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[62vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-xl md:max-h-[68vh] md:rounded-t-2xl"
+            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[62vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-xl md:max-h-[68vh] md:rounded-t-2xl"
             role="dialog"
             aria-modal="true"
             aria-label="Grouped map places"
@@ -2574,7 +2574,7 @@ export default function MapPage() {
               </div>
             </div>
 
-            <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:space-y-2 md:px-4 md:py-4 md:pb-[calc(1rem+env(safe-area-inset-bottom))]">
+            <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] [-webkit-overflow-scrolling:touch] md:space-y-2 md:px-4 md:py-4 md:pb-[calc(1rem+env(safe-area-inset-bottom))]">
               {clusterPlacesForDrawer.map((place) => {
                 const perk = getResidentPerkDetails(place);
                 return (
@@ -2608,7 +2608,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[650] mx-auto flex max-h-[76vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-xl md:bottom-0 md:max-h-[80vh] md:rounded-t-[18px]"
+            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[650] mx-auto flex max-h-[76vh] min-h-0 w-full max-w-4xl flex-col overflow-hidden rounded-t-xl md:bottom-0 md:max-h-[80vh] md:rounded-t-[18px]"
             role="dialog"
             aria-modal="true"
             aria-label={`${selected.name} details`}
@@ -2666,7 +2666,7 @@ export default function MapPage() {
               </div>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 md:px-4 md:pb-[calc(1rem+env(safe-area-inset-bottom))] md:pt-4">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 [-webkit-overflow-scrolling:touch] md:px-4 md:pb-[calc(1rem+env(safe-area-inset-bottom))] md:pt-4">
             <div className="grid gap-3 md:grid-cols-[200px_1fr] md:items-start md:gap-4">
               <div className="group relative h-32 w-full overflow-hidden rounded-[10px] shadow-[0_12px_30px_rgba(11,31,51,.09),0_0_28px_rgba(179,143,79,0.07)] sm:h-36 md:h-40 md:rounded-[14px] md:shadow-[0_16px_40px_rgba(11,31,51,.10),0_0_36px_rgba(179,143,79,0.08)]">
                 <img
