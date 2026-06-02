@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BarChart3,
+  BadgePercent,
+  CalendarDays,
   Coffee,
-  KeyRound,
-  Map,
+  MapPin,
   Sparkles,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -15,51 +16,44 @@ const VIDEO_SRC = "/videos/downtown-austin-drone-cinematic.mp4";
 const journeySteps = [
   {
     number: "01",
-    title: "Open the map",
-    label: "Walkable map",
-    copy: "Residents see what is nearby, open, useful, and worth leaving the apartment for.",
-    image: "/images/splash/walkable-map.png",
-    icon: Map,
-  },
-  {
-    number: "02",
-    title: "Choose something nearby",
-    label: "Coffee nearby",
-    copy: "Coffee, dinner, rooftops, events, workouts, and local favorites appear in one clear place.",
-    image: "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+    title: "What should we do?",
+    label: "Start nearby",
+    copy: "Someone downtown wants coffee, dinner, a workout, or something happening tonight.",
+    image: "/images/residents/downtown-rooftop-evening.png",
     icon: Coffee,
   },
   {
+    number: "02",
+    title: "See what is close.",
+    label: "Open the map",
+    copy: "Downtown Perks shows nearby places, events, perks, and local favorites in one simple view.",
+    image: "/images/splash/walkable-map.png",
+    icon: MapPin,
+  },
+  {
     number: "03",
-    title: "Use resident access",
-    label: "Resident access",
-    copy: "Residents save plans, unlock perks, RSVP to events, and show their access card when needed.",
-    image: "/images/splash/resident-access.jpeg",
-    icon: KeyRound,
+    title: "Pick the next move.",
+    label: "Choose the moment",
+    copy: "Save a spot, RSVP to an event, or find a place that fits right now.",
+    image: "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+    icon: CalendarDays,
   },
   {
     number: "04",
-    title: "Go enjoy downtown",
-    label: "Rooftop nearby",
-    copy: "Less searching. Fewer tabs. More real-world plans that actually happen.",
-    image: "/images/splash/rooftop-nearby.jpeg",
-    icon: Sparkles,
+    title: "Show the card or use the perk.",
+    label: "Use access",
+    copy: "No extra app. No complicated steps. Just find it and go.",
+    image: "/images/splash/resident-access.jpeg",
+    icon: BadgePercent,
   },
   {
     number: "05",
-    title: "Partners learn what worked",
-    label: "Partner signal",
-    copy: "Properties and local businesses see useful signals: scans, saves, RSVPs, and redemptions.",
+    title: "Partners see what worked.",
+    label: "Local places learn",
+    copy: "They can see useful signals like saves, RSVPs, scans, and redemptions.",
     image: "/images/splash/walkable-map.png",
     icon: BarChart3,
   },
-];
-
-const journeyPins = [
-  { left: "18%", top: "32%", delay: 0 },
-  { left: "42%", top: "42%", delay: 0.18 },
-  { left: "64%", top: "30%", delay: 0.36 },
-  { left: "76%", top: "62%", delay: 0.54 },
 ];
 
 function EditorialReveal({ children, className = "", delay = 0, amount = 0.22 }) {
@@ -95,7 +89,7 @@ function JourneyNarrative() {
   }, [reduceMotion]);
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F8FB] px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
+    <section className="relative overflow-hidden bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179,143,79,0.16),transparent)]" aria-hidden="true" />
 
       <div className="mx-auto max-w-7xl">
@@ -104,18 +98,15 @@ function JourneyNarrative() {
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="grid gap-6 lg:grid-cols-[0.82fr_1fr] lg:items-end"
+          className="max-w-3xl"
         >
-          <div>
-            <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
-              How Downtown Perks works
-            </p>
-            <h2 className="font-heading text-[42px] font-medium leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[72px]">
-              Open the map. Find the moment. Go.
-            </h2>
-          </div>
-
-          <p className="max-w-2xl text-[16px] leading-[1.7] text-[#425466] md:text-[18px]">
+          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
+            How Downtown Perks works
+          </p>
+          <h2 className="font-heading text-[42px] font-medium leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[72px]">
+            Open the map. Find the moment. <span className="text-[#B38F4F]">Go.</span>
+          </h2>
+          <p className="mt-5 max-w-xl text-[16px] leading-[1.7] text-[#425466] md:text-[18px]">
             Downtown Perks helps residents find nearby places, events, perks, and local favorites without bouncing between apps, websites, group chats, and screenshots. For partners, it creates visibility when people nearby are already deciding where to go.
           </p>
         </motion.div>
@@ -127,74 +118,104 @@ function JourneyNarrative() {
           transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           className="mt-10"
         >
-          <div className="overflow-hidden rounded-md bg-white/66 shadow-[0_18px_58px_rgba(11,31,51,0.06),inset_0_1px_0_rgba(255,255,255,0.62)] backdrop-blur-md">
-            <div className="relative min-h-[310px] overflow-hidden bg-[#F7F8FB] md:min-h-[430px]">
-              <motion.img
-                key={`${active.number}-${active.image}`}
-                src={active.image}
-                alt={active.label}
-                loading="eager"
-                className="absolute inset-0 h-full w-full object-cover brightness-[1.03] contrast-[1.02] saturate-[0.92]"
-                initial={reduceMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,248,251,0.00),rgba(247,248,251,0.055))]" />
+          <div className="grid overflow-hidden rounded-md bg-white/76 shadow-[0_18px_58px_rgba(11,31,51,0.06),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-md lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="relative min-h-[360px] overflow-hidden bg-white md:min-h-[440px]">
+              {journeySteps.map((step, index) => (
+                <img
+                  key={step.title}
+                  src={step.image}
+                  alt=""
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className={`absolute inset-0 h-full w-full object-cover brightness-[1.04] contrast-[1.02] saturate-[0.9] transition-all duration-700 ${
+                    activeStep === index ? "scale-100 opacity-100" : "scale-[1.025] opacity-0"
+                  }`}
+                />
+              ))}
 
-              {(activeStep === 0 || activeStep === 4) && (
-                <div className="absolute inset-0" aria-hidden="true">
-                  <svg className="absolute inset-0 h-full w-full" viewBox="0 0 720 430" preserveAspectRatio="none">
-                    <motion.path
-                      d="M126 144 C205 118 260 180 332 170 C430 158 468 100 560 142 C610 166 604 244 546 270"
-                      fill="none"
-                      stroke="#0B1F33"
-                      strokeWidth="2"
-                      strokeOpacity="0.24"
-                      strokeDasharray="8 10"
-                      initial={reduceMotion ? false : { pathLength: 0 }}
-                      animate={{ pathLength: 1, strokeDashoffset: reduceMotion ? 0 : -30 }}
-                      transition={{ duration: reduceMotion ? 0 : 2.2, repeat: reduceMotion ? 0 : Infinity, ease: "linear" }}
-                    />
-                  </svg>
-                  {journeyPins.map((pin) => (
-                    <motion.span
-                      key={`${pin.left}-${pin.top}`}
-                      className="absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#B38F4F] shadow-[0_0_0_5px_rgba(255,255,255,0.72),0_0_22px_rgba(179,143,79,0.28)]"
-                      style={{ left: pin.left, top: pin.top }}
-                      animate={reduceMotion ? undefined : { scale: [1, 1.28, 1], opacity: [0.82, 1, 0.82] }}
-                      transition={{ duration: 2.2, delay: pin.delay, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                  ))}
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92),rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(11,31,51,0.16))]" />
+
+              <div className="absolute left-5 top-5 z-10 max-w-[20rem] sm:left-6 sm:top-6">
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+                  {active.label}
+                </span>
+                <h3 className="mt-3 font-heading text-[38px] font-medium leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
+                  {active.title}
+                </h3>
+                <p className="mt-4 text-sm leading-relaxed text-[#425466]">
+                  {active.copy}
+                </p>
+              </div>
+
+              <div className="absolute bottom-5 left-5 right-5 z-20 sm:bottom-7 sm:left-6 sm:right-6">
+                <div className="relative flex items-center justify-between">
+                  <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#0B1F33]/12" />
+                  <div
+                    className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#B38F4F] transition-all duration-700"
+                    style={{ width: `${(activeStep / (journeySteps.length - 1)) * 100}%` }}
+                  />
+
+                  {journeySteps.map((step, index) => {
+                    const Icon = step.icon;
+                    const reached = activeStep >= index;
+
+                    return (
+                      <button
+                        key={step.number}
+                        type="button"
+                        onClick={() => setActiveStep(index)}
+                        className={`relative z-10 grid h-9 w-9 place-items-center rounded-sm transition-all duration-500 sm:h-10 sm:w-10 ${
+                          reached
+                            ? "bg-[#0B1F33] text-[#B38F4F] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
+                            : "bg-white/84 text-[#0B1F33]/42 shadow-[0_8px_20px_rgba(11,31,51,0.05)]"
+                        }`}
+                        aria-label={`Show step ${step.number}: ${step.label}`}
+                      >
+                        <Icon size={15} />
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
             </div>
 
-            <div className="bg-white/62 px-4 py-4 text-[#0B1F33] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-[18px] sm:px-5 md:px-6">
-              <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">
-                <ActiveIcon className="h-3.5 w-3.5" />
-                {active.label}
+            <div className="flex flex-col justify-center bg-white/78 p-5 text-[#0B1F33] backdrop-blur-[18px] md:p-8">
+              <div className="mb-5 flex w-fit items-center gap-2 bg-transparent text-[10px] font-bold uppercase tracking-[0.16em] text-[#425466]">
+                <ActiveIcon size={15} className="text-[#B38F4F]" />
+                Scene {active.number}
               </div>
-              <div className="mt-1.5 font-heading text-[23px] font-medium leading-[0.98] tracking-[-0.025em] md:text-[31px]">
-                {active.title}
-              </div>
-              <p className="mt-1.5 max-w-2xl text-[12px] leading-[1.55] text-[#425466] md:text-[13px]">
-                {active.copy}
-              </p>
 
-              <div className="mt-3 flex gap-1.5">
+              <div className="space-y-1.5">
                 {journeySteps.map((step, index) => {
                   const selected = index === activeStep;
 
                   return (
                     <button
-                      key={step.number}
+                      key={step.title}
                       type="button"
-                      aria-label={`Show step ${step.number}: ${step.title}`}
                       onClick={() => setActiveStep(index)}
-                      className={`h-2.5 rounded-full border-0 bg-white/74 p-0 shadow-[0_6px_18px_rgba(11,31,51,0.08)] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
-                        selected ? "w-7 bg-[#B38F4F]" : "w-2.5 hover:bg-white"
+                      className={`group grid w-full grid-cols-[2rem_1fr_auto] items-center gap-3 rounded-sm px-2.5 py-2.5 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+                        selected ? "bg-white shadow-[0_10px_24px_rgba(11,31,51,0.055)]" : "bg-transparent hover:bg-white/70"
                       }`}
-                    />
+                    >
+                      <span
+                        className={`grid h-7 w-7 place-items-center rounded-sm text-[10px] font-bold ${
+                          selected ? "bg-[#0B1F33] text-[#B38F4F]" : "bg-[#0B1F33]/6 text-[#0B1F33]/45"
+                        }`}
+                      >
+                        {step.number}
+                      </span>
+
+                      <span>
+                        <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-[#B38F4F]">
+                          {step.label}
+                        </span>
+                        <span className="mt-0.5 block text-[13px] font-medium text-[#0B1F33]/74">
+                          {step.title}
+                        </span>
+                      </span>
+
+                      {selected && <ArrowRight size={14} className="text-[#B38F4F]" />}
+                    </button>
                   );
                 })}
               </div>
@@ -208,20 +229,9 @@ function JourneyNarrative() {
 
 export default function SplashPage() {
   const [showIntro, setShowIntro] = useState(true);
-  const [introReady, setIntroReady] = useState(false);
-
-  useEffect(() => {
-    if (!showIntro) return undefined;
-
-    const closeTimer = window.setTimeout(() => {
-      setShowIntro(false);
-    }, 3000);
-
-    return () => window.clearTimeout(closeTimer);
-  }, [showIntro]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <main className="min-h-screen overflow-hidden bg-white pt-[68px] text-[#0B1F33]">
       <AnimatePresence initial={false}>
         {showIntro && (
           <motion.section
@@ -235,17 +245,15 @@ export default function SplashPage() {
             <div className="dp-intro-fallback absolute inset-0 bg-[radial-gradient(circle_at_30%_24%,rgba(179,143,79,0.16),transparent_34%),radial-gradient(circle_at_74%_68%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(135deg,#0B1F33,#0B1F33)]" />
             <div className="dp-intro-sheen absolute inset-y-0 left-[-28%] w-[42%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.10),transparent)] blur-2xl" />
             <video
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-                introReady ? "opacity-100" : "opacity-0"
-              }`}
+              className="absolute inset-0 h-full w-full bg-[#0B1F33] object-contain"
               src={VIDEO_SRC}
               autoPlay
               muted
               playsInline
               preload="auto"
-              onLoadedData={() => setIntroReady(true)}
-              onLoadedMetadata={() => setIntroReady(true)}
-              onCanPlay={() => setIntroReady(true)}
+              onCanPlay={(event) => {
+                event.currentTarget.play().catch(() => {});
+              }}
               onEnded={() => setShowIntro(false)}
             />
             <div className="absolute inset-0 bg-[#0B1F33]/42" />
@@ -272,7 +280,7 @@ export default function SplashPage() {
                   <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
                   Downtown Perks
                 </div>
-                <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.45rem,12vw,4.5rem)] font-medium leading-[0.96] tracking-[-0.02em] md:leading-[0.94]">
+                <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.45rem,12vw,4.5rem)] font-medium leading-[0.96] tracking-[-0.02em] text-white md:leading-[0.94]">
                   <span className="block">Where</span>
                   <span className="block">Downtown</span>
                   <span className="block">Meets You</span>
@@ -286,11 +294,11 @@ export default function SplashPage() {
         )}
       </AnimatePresence>
 
-      <section className="relative px-5 py-14 md:px-8 md:py-20">
+      <section className="relative bg-white px-5 py-14 md:px-8 md:py-20">
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <video className="absolute inset-0 h-full w-full object-cover opacity-[0.18]" src={VIDEO_SRC} autoPlay muted loop playsInline preload="metadata" />
-          <div className="absolute inset-0 bg-[#F7F8FB]/84" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(247,248,251,0.98),rgba(247,248,251,0.78),rgba(247,248,251,1))]" />
+          <div className="absolute inset-0 bg-white/86" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.98),rgba(255,255,255,0.80),rgba(255,255,255,1))]" />
           <div className="absolute left-[4%] top-[18%] h-56 w-56 rounded-full bg-white/72 blur-3xl" />
           <div className="absolute right-[8%] top-[12%] h-72 w-72 rounded-full bg-white/52 blur-[82px]" />
           <div className="absolute bottom-[8%] right-[16%] h-64 w-64 rounded-full bg-[#0B1F33]/10 blur-3xl" />
@@ -302,7 +310,7 @@ export default function SplashPage() {
             amount={0.28}
             className="max-w-[760px]"
           >
-            <div className="inline-flex items-center gap-2 rounded-md bg-white/80 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F] shadow-[0_0_0_1px_rgba(11,31,51,0.035),0_12px_34px_rgba(11,31,51,0.06)]">
+            <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
               <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
               Downtown Perks
             </div>
@@ -351,7 +359,7 @@ export default function SplashPage() {
 
       <JourneyNarrative />
 
-      <section className="relative bg-[#F7F8FB] px-5 pb-0 pt-12 md:px-8 md:pb-0 md:pt-16">
+      <section className="relative bg-white px-5 pb-0 pt-12 md:px-8 md:pb-0 md:pt-16">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179, 143, 79, 0.08),transparent)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-6xl">
           <div className="max-w-[720px] text-left">
@@ -422,16 +430,16 @@ export default function SplashPage() {
         </div>
       </section>
 
-      <section className="relative bg-[#F7F8FB] px-5 pb-14 pt-0 md:px-8 md:pb-20 md:pt-0">
+      <section className="relative bg-white px-5 pb-14 pt-12 md:px-8 md:pb-20 md:pt-16">
         <div className="relative mx-auto max-w-[760px] text-left">
           <EditorialReveal
-            className="max-w-[700px]"
+            className="max-w-[660px]"
             amount={0.24}
           >
-            <h2 className="font-heading text-[42px] font-medium leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[64px]">
+            <h2 className="max-w-[660px] font-heading text-[42px] font-medium leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[64px]">
               Whether you’re making plans or part of them.
             </h2>
-            <div className="mt-6 space-y-4 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px] md:leading-[1.75]">
+            <div className="mt-7 max-w-[620px] space-y-4 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px] md:leading-[1.75]">
               <p>
                 Downtown Perks helps residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.
               </p>
@@ -442,7 +450,7 @@ export default function SplashPage() {
                 For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.
               </p>
             </div>
-            <p className="mt-8 max-w-[620px] font-heading text-[28px] font-medium leading-tight text-[#0B1F33]/82 md:text-[38px]">
+            <p className="mt-10 max-w-[620px] font-heading text-[28px] font-medium leading-tight text-[#0B1F33]/82 md:text-[38px]">
               Come on in. Open the map. And maybe grab something cold while you’re at it.
             </p>
           </EditorialReveal>
