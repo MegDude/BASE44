@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Building2,
-  ChevronUp,
   CreditCard,
   Gift,
   Info,
@@ -2060,9 +2059,10 @@ export default function MapPage() {
                         type="button"
                         onClick={() => setFiltersOpen(false)}
                         className="dp-console-chip"
+                        aria-label="Close filters panel"
                       >
-                        <ChevronUp className="h-3.5 w-3.5" />
-                        Roll up
+                        <X className="h-3.5 w-3.5" />
+                        Close
                       </button>
                     </div>
                   </motion.div>
@@ -2119,9 +2119,10 @@ export default function MapPage() {
                           type="button"
                           onClick={() => setNeighborhoodsOpen(false)}
                           className="dp-console-chip"
+                          aria-label="Close neighborhoods panel"
                         >
-                          <ChevronUp className="h-3.5 w-3.5" />
-                          Roll up
+                          <X className="h-3.5 w-3.5" />
+                          Close
                         </button>
                       </div>
                     </div>
@@ -2204,8 +2205,8 @@ export default function MapPage() {
                           <Link to={campaignRoute(selected || undefined)} className="dp-map-control">Campaigns</Link>
                           <Link to={mapRoutes.reports} className="dp-map-control">Reports</Link>
                           <button type="button" onClick={() => setIntelOpen(false)} className="dp-map-control">
-                            <ChevronUp className="h-3.5 w-3.5" />
-                            Roll up
+                            <X className="h-3.5 w-3.5" />
+                            Close
                           </button>
                         </div>
                       </div>
@@ -2251,9 +2252,10 @@ export default function MapPage() {
                     type="button"
                     onClick={() => setMapAnswer(null)}
                     className="dp-map-control inline-flex shrink-0 items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                    aria-label="Close map answer"
                   >
-                    <ChevronUp className="h-3.5 w-3.5" />
-                    Roll up
+                    <X className="h-3.5 w-3.5" />
+                    Close
                   </button>
                 </div>
                 {mapAnswer.picks.length > 0 && (
@@ -2525,11 +2527,18 @@ export default function MapPage() {
               {displayPlaces.length > 4 && (
                 <button
                   type="button"
-                  onClick={() => setResultsExpanded((value) => !value)}
+                  onClick={() => {
+                    if (resultsExpanded) {
+                      setResultsExpanded(false);
+                      setActiveBottomTab("map");
+                      return;
+                    }
+                    setResultsExpanded(true);
+                  }}
                   className="w-full bg-transparent px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.13em] text-[#0B1F33]/56 transition hover:-translate-y-0.5 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
                   aria-expanded={resultsExpanded}
                 >
-                  {resultsExpanded ? "Roll up results" : `Expand results (${hiddenPreviewCount} more)`}
+                  {resultsExpanded ? "Close results" : `Expand results (${hiddenPreviewCount} more)`}
                 </button>
               )}
             </div>

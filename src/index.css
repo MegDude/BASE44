@@ -2653,3 +2653,39 @@ button[aria-pressed="true"].dp-panel-tab {
   font-size: 10px;
   letter-spacing: 0.14em;
 }
+
+.dp-map-page .dp-panel-shell {
+  max-width: calc(100vw - 16px) !important;
+}
+
+.dp-map-page [role="dialog"].dp-panel-shell,
+.dp-map-page aside.dp-panel-shell {
+  max-height: min(85vh, calc(100dvh - 96px)) !important;
+}
+
+.dp-map-page .dp-panel-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.dp-map-page .dp-panel-close {
+  min-height: 32px;
+  min-width: 32px;
+  flex: 0 0 auto;
+}
+
+.dp-map-page .dp-panel-shell > .min-h-0,
+.dp-map-page .dp-panel-shell :where([class*="overflow-y-auto"]) {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 767px) {
+  .dp-map-page [role="dialog"].dp-panel-shell,
+  .dp-map-page aside.dp-panel-shell {
+    inset-inline: 8px !important;
+    width: auto !important;
+    max-height: min(82vh, calc(100dvh - 112px)) !important;
+  }
+}
