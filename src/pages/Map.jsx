@@ -31,6 +31,7 @@ const AUSTIN_CENTER = [30.2672, -97.7431];
 const INITIAL_MAP_ZOOM = 15;
 const FILTERS = [
   "All",
+  "Saved",
   "Perks",
   "Happy Hours",
   "inKind",
@@ -1841,8 +1842,8 @@ export default function MapPage() {
   }
 
   const primaryFilters = urlState.mode === "partner"
-    ? ["All", "Happy Hours", "Perks"]
-    : ["All", "Happy Hours", "Events"];
+    ? ["All", "Happy Hours", "Events"]
+    : ["Saved", "Happy Hours", "Perks"];
   const visibleFilters = Array.from(new Set([...primaryFilters, activeFilter])).filter((item) => FILTERS.includes(item));
   const overflowFilters = FILTERS.filter((filter) => !visibleFilters.includes(filter));
 
@@ -2384,25 +2385,32 @@ export default function MapPage() {
         </div>
       )}
 
-	      {urlState.tab === "map" && !selected && !clusterDrawer && activeBottomTab !== "discover" && (
+	      {(urlState.tab === "map" || urlState.tab === "pass") && (
         <div className="pointer-events-none fixed inset-x-0 bottom-2 z-[700] flex justify-center px-2 pb-[env(safe-area-inset-bottom)] md:bottom-3 md:px-4">
           <nav
-            className="pointer-events-auto flex max-w-[calc(100vw-1rem)] gap-4 overflow-x-auto bg-white/76 px-3 py-2 shadow-[0_14px_34px_rgba(11,31,51,0.07)] backdrop-blur-xl md:max-w-[min(460px,calc(100vw-2rem))] md:gap-5 md:px-4"
+            className="dp-map-bottom-nav pointer-events-auto flex max-w-[calc(100vw-1rem)] gap-4 overflow-x-auto bg-white/76 px-3 py-2 shadow-[0_14px_34px_rgba(11,31,51,0.07)] backdrop-blur-xl md:max-w-[min(520px,calc(100vw-2rem))] md:gap-5 md:px-4"
             aria-label="Map bottom navigation"
           >
             <button
               type="button"
               onClick={() => {
                 setActiveBottomTab("map");
+                if (urlState.mode === "resident") {
+                  setActiveFilter("Saved");
+                  navigate("/map?mode=resident&tab=map&filter=Saved");
+                  return;
+                }
                 if (urlState.tab !== "map") switchMode(urlState.mode, "map");
               }}
               className={`inline-flex h-5 shrink-0 items-center justify-center gap-1.5 px-0 text-[9px] font-semibold uppercase tracking-[0.13em] transition md:h-6 md:text-[10px] ${
-                urlState.tab === "map" && activeBottomTab === "map" ? "border-b border-[#B38F4F] text-[#0B1F33]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]"
+                urlState.mode === "resident"
+                  ? urlState.tab === "map" && activeFilter === "Saved" ? "border-b border-[#B38F4F] text-[#0B1F33]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]"
+                  : urlState.tab === "map" && activeBottomTab === "map" ? "border-b border-[#B38F4F] text-[#0B1F33]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]"
               }`}
-              aria-pressed={urlState.tab === "map" && activeBottomTab === "map"}
+              aria-pressed={urlState.mode === "resident" ? urlState.tab === "map" && activeFilter === "Saved" : urlState.tab === "map" && activeBottomTab === "map"}
             >
               <MapPin className="h-3 w-3 text-[#B38F4F] md:h-3.5 md:w-3.5" />
-              Map
+              {urlState.mode === "resident" ? "Saved" : "Map"}
             </button>
             <button
               type="button"
@@ -2421,6 +2429,23 @@ export default function MapPage() {
                 {contextCount > 0 ? contextCount : "Live"}
               </span>
             </button>
+            {urlState.mode === "resident" && (
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveBottomTab("map");
+                  setActiveFilter("Perks");
+                  navigate("/map?mode=resident&tab=map&filter=Perks");
+                }}
+                className={`inline-flex h-5 shrink-0 items-center justify-center gap-1.5 px-0 text-[9px] font-semibold uppercase tracking-[0.13em] transition md:h-6 md:text-[10px] ${
+                  urlState.tab === "map" && activeFilter === "Perks" ? "border-b border-[#B38F4F] text-[#0B1F33]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]"
+                }`}
+                aria-pressed={urlState.tab === "map" && activeFilter === "Perks"}
+              >
+                <Gift className="h-3 w-3 text-[#B38F4F] md:h-3.5 md:w-3.5" />
+                Perks
+              </button>
+            )}
             {urlState.mode === "resident" && (
               <button
                 type="button"

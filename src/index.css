@@ -2654,6 +2654,68 @@ button[aria-pressed="true"].dp-panel-tab {
   letter-spacing: 0.14em;
 }
 
+.dp-map-page .dp-map-bottom-nav {
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 2px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 14px 34px rgba(11, 31, 51, 0.07), 0 0 24px rgba(200, 169, 106, 0.045) !important;
+  backdrop-filter: blur(16px) saturate(1.08) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.08) !important;
+}
+
+.dp-map-page .dp-console-chip,
+.dp-map-page .dp-map-control,
+.dp-map-page .dp-panel-close,
+.dp-map-page .dp-map-bottom-nav button,
+.dp-map-page form button,
+.dp-map-page .dp-soft-field {
+  border-radius: 2px !important;
+}
+
+.dp-map-page .dp-console-chip,
+.dp-map-page .dp-map-control,
+.dp-map-page .dp-map-bottom-nav button {
+  border: 0 !important;
+  border-bottom: 1px solid transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  letter-spacing: 0.08em !important;
+}
+
+.dp-map-page .dp-console-chip:hover,
+.dp-map-page .dp-map-control:hover,
+.dp-map-page .dp-map-bottom-nav button:hover {
+  color: #0B1F33 !important;
+  border-bottom-color: rgba(200, 169, 106, 0.42) !important;
+  transform: translateY(-1px);
+}
+
+.dp-map-page .dp-console-chip.is-active,
+.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"] {
+  border-bottom-color: #C8A96A !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 8px 24px rgba(200, 169, 106, 0.055) !important;
+}
+
+.dp-map-page .dp-panel-close {
+  background: rgba(255, 255, 255, 0.66) !important;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.045) !important;
+}
+
+.dp-map-page .dp-soft-field {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.10) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  box-shadow: 0 10px 24px rgba(11, 31, 51, 0.035) !important;
+}
+
+.dp-map-page .dp-soft-field:focus-within {
+  border-bottom-color: #C8A96A !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, 0.04), 0 0 22px rgba(200, 169, 106, 0.055) !important;
+}
+
 .dp-map-page .dp-panel-shell {
   max-width: calc(100vw - 16px) !important;
 }
