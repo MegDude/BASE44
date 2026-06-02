@@ -1848,7 +1848,7 @@ export default function MapPage() {
   const overflowFilters = FILTERS.filter((filter) => !visibleFilters.includes(filter));
 
   return (
-    <div className="dp-map-page relative h-screen overflow-hidden bg-white pt-[68px] text-[#0B1F33]">
+    <div className="dp-map-page relative h-screen overflow-hidden bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
       <div className="absolute inset-x-0 bottom-0 top-[68px]">
         <MapContainer
           center={AUSTIN_CENTER}
@@ -2443,7 +2443,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[52vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-xl p-2.5 pb-[calc(0.6rem+env(safe-area-inset-bottom))] md:max-h-[56vh] md:rounded-t-2xl md:p-3 md:pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[52vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-xl p-2.5 pb-[calc(0.6rem+env(safe-area-inset-bottom))] md:inset-x-auto md:bottom-4 md:right-4 md:max-h-[56vh] md:w-[440px] md:rounded-[12px] md:p-3 md:pb-3"
             role="dialog"
             aria-modal="true"
             aria-label={urlState.mode === "partner" ? "Partner map results" : "Discover results"}
@@ -2544,7 +2544,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[62vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-xl md:max-h-[68vh] md:rounded-t-2xl"
+            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[62vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-xl md:inset-x-auto md:bottom-4 md:right-4 md:max-h-[68vh] md:w-[440px] md:rounded-[12px]"
             role="dialog"
             aria-modal="true"
             aria-label="Grouped map places"
@@ -2608,7 +2608,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[650] mx-auto flex max-h-[76vh] min-h-0 w-full max-w-4xl flex-col overflow-hidden rounded-t-xl md:bottom-0 md:max-h-[80vh] md:rounded-t-[18px]"
+            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[650] mx-auto flex max-h-[76vh] min-h-0 w-full max-w-4xl flex-col overflow-hidden rounded-t-xl md:inset-x-auto md:bottom-4 md:right-4 md:max-h-[85vh] md:w-[460px] md:rounded-[12px]"
             role="dialog"
             aria-modal="true"
             aria-label={`${selected.name} details`}

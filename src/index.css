@@ -10,12 +10,12 @@
     --font-body: 'Inter', -apple-system, sans-serif;
 
     /* Downtown Perks canonical tokens */
-    --dp-bg: #FFFFFF;
+    --dp-bg: #F7F8FB;
     --dp-surface: #FFFFFF;
     --dp-surface-alt: #FFFFFF;
     --dp-navy: #0B1F33;
-    --dp-navy-soft: #0B1F33;
-    --dp-gold: #B38F4F;
+    --dp-navy-soft: #132238;
+    --dp-gold: #C8A96A;
     --dp-muted: #425466;
     --dp-navy-secondary: var(--dp-navy-soft);
     --dp-navy-elevated: var(--dp-navy-soft);
@@ -25,15 +25,15 @@
     --dp-gold-muted: var(--dp-gold);
     --dp-border: rgba(11, 31, 51, 0.08);
     --dp-border-hover: rgba(11, 31, 51, 0.10);
-    --dp-focus: rgba(179, 143, 79, 0.10);
+    --dp-focus: rgba(200, 169, 106, 0.12);
     --dp-placeholder: rgba(11, 31, 51, 0.38);
-    --dp-glass: rgba(255, 255, 255, 0.78);
-    --dp-glass-strong: rgba(255, 255, 255, 0.9);
-    --dp-glass-blur: blur(18px) saturate(1.08);
-    --dp-shadow-sm: 0 12px 40px rgba(11, 31, 51, 0.045);
-    --dp-shadow-md: 0 16px 52px rgba(11, 31, 51, 0.06);
-    --dp-shadow-lg: 0 22px 72px rgba(11, 31, 51, 0.08);
-    --dp-shadow-glow: 0 0 80px rgba(11, 31, 51, 0.05), 0 0 60px rgba(179, 143, 79, 0.08);
+    --dp-glass: rgba(255, 255, 255, 0.72);
+    --dp-glass-strong: rgba(255, 255, 255, 0.82);
+    --dp-glass-blur: blur(16px) saturate(1.08);
+    --dp-shadow-sm: 0 12px 40px rgba(11, 31, 51, 0.05);
+    --dp-shadow-md: 0 18px 50px rgba(11, 31, 51, 0.08);
+    --dp-shadow-lg: 0 24px 60px rgba(11, 31, 51, 0.10);
+    --dp-shadow-glow: 0 18px 50px rgba(11, 31, 51, 0.08), 0 0 28px rgba(200, 169, 106, 0.06);
     --dp-radius-xs: 4px;
     --dp-radius-sm: 8px;
     --dp-radius-md: 12px;
@@ -136,48 +136,52 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-body);
-    background: #FFFFFF;
+    background: var(--dp-bg);
   }
 
-  h1, h2 {
-    letter-spacing: 0 !important;
+  h1,
+  h2,
+  h3 {
     text-wrap: balance;
-    font-family: var(--font-heading);
-    font-weight: 700;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
     color: #0B1F33;
+  }
+
+  h1 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(2.75rem, 7.2vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em !important;
+  }
+
+  h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(2rem, 4.2vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em !important;
   }
 
   h3, h4 {
-    letter-spacing: 0 !important;
-    text-wrap: balance;
     font-family: var(--font-body);
-    font-weight: 650;
-    color: #0B1F33;
+    font-weight: 600;
+    font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em !important;
   }
 
   p {
     text-wrap: pretty;
   }
 
-  h1 {
-    font-size: clamp(2.25rem, 4.2vw, 4.75rem);
-    line-height: 0.98;
-  }
-
-  h2 {
-    font-size: clamp(1.7rem, 2.6vw, 3rem);
-    line-height: 1.05;
-  }
-
-  h3 {
-    font-size: clamp(1.05rem, 1.35vw, 1.35rem);
-    line-height: 1.18;
-  }
-
   p,
   li {
-    font-size: 0.875rem;
-    line-height: 1.65;
+    font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
+    line-height: 1.7;
   }
 
   a,
@@ -1309,40 +1313,58 @@ html {
   }
 
   .dp-label {
-    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F];
+    @apply text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#C8A96A];
   }
 
   .font-heading {
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+  }
+
+  h1.font-heading,
+  h1 .font-heading,
+  .dp-h1-lock {
     font-family: var(--font-heading) !important;
-    font-weight: 700 !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.04em !important;
+    line-height: 0.92 !important;
   }
 
   .dp-editorial-eyebrow {
     font-family: var(--font-body) !important;
-    color: #B38F4F !important;
+    color: #C8A96A !important;
     font-size: 0.6875rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.24em !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.16em !important;
     line-height: 1.5 !important;
     text-transform: uppercase !important;
   }
 
   .dp-editorial-display {
-    font-family: var(--font-heading) !important;
+    font-family: var(--font-body) !important;
     color: #0B1F33 !important;
-    font-size: clamp(2.5rem, 7.5vw, 4.875rem) !important;
+    font-size: clamp(2rem, 4.2vw, 3.5rem) !important;
     font-weight: 600 !important;
-    letter-spacing: -0.035em !important;
-    line-height: 0.94 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1 !important;
+  }
+
+  h1.dp-editorial-display {
+    font-family: var(--font-heading) !important;
+    font-size: clamp(2.75rem, 7.2vw, 6.5rem) !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.04em !important;
+    line-height: 0.92 !important;
   }
 
   .dp-editorial-section-title {
-    font-family: var(--font-heading) !important;
+    font-family: var(--font-body) !important;
     color: #0B1F33 !important;
-    font-size: clamp(2.125rem, 5.5vw, 3rem) !important;
+    font-size: clamp(2rem, 4.2vw, 3.5rem) !important;
     font-weight: 600 !important;
-    letter-spacing: -0.025em !important;
-    line-height: 0.98 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1 !important;
   }
 
   .dp-editorial-copy {
@@ -1363,12 +1385,11 @@ html {
 
   /*
    * Typography lock:
-   * Canela is reserved for true H1 hero headlines and major editorial H2 section
-   * headlines. Any inherited or legacy font-heading usage in operational UI,
+   * Canela is reserved for true H1 hero headlines only. Any inherited or legacy font-heading usage in operational UI,
    * panels, forms, cards, metrics, map drawers, navigation, CTAs, FAQs, and
    * small headings is forced back to Inter.
    */
-  :where(h3, h4, h5, h6, p, span, div, button, a, label, input, textarea, select, li, td, th).font-heading,
+  :where(h2, h3, h4, h5, h6, p, span, div, button, a, label, input, textarea, select, li, td, th).font-heading,
   :where(nav, footer, form, table, button, label, [role="dialog"], .dp-panel-shell, .dp-soft-panel, .dp-soft-tile, .dp-card, .dp-glass-card, .dp-glow-tile, .dp-glow-surface, .dp-map-page, .dp-faq-block)
     :where(.font-heading, h1.font-heading, h2.font-heading, h3.font-heading, h4.font-heading) {
     font-family: var(--font-body) !important;
@@ -2146,7 +2167,7 @@ html {
   }
 
   :where([class*="text-primary"], [class*="text-\\[\\#B38F4F\\]"], [class*="text-\\[\\#C8A96A\\]"]) {
-    color: #B38F4F !important;
+    color: #C8A96A !important;
   }
 
   :where(svg):not([class*="text-white"]) {
@@ -2179,6 +2200,251 @@ html {
   .dp-intro-sheen {
     animation: dp-intro-sheen-sweep 2.8s ease-out infinite;
     will-change: transform, opacity;
+  }
+
+  /* Downtown Perks product-wide design lock. Keep this late so it wins over legacy page utilities. */
+  :where(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    max-width: min(100%, 1120px);
+  }
+
+  :where(h1, h2, h3):where([class*="max-w-"][class*="ch"]) {
+    max-width: min(100%, 1120px) !important;
+  }
+
+  :where(h1, h2, h3) > span.block {
+    display: inline !important;
+  }
+
+  :where(h1, h2, h3) > span.block:not(:last-child)::after {
+    content: " ";
+  }
+
+  h1,
+  h1.font-heading {
+    font-family: var(--font-heading) !important;
+    font-weight: 500 !important;
+    font-size: clamp(2.75rem, 7.2vw, 6.5rem) !important;
+    line-height: 0.92 !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  :where(h2, h3, h4, h5, h6, p, div, span, button, a, label, input, textarea, select, li).font-heading,
+  h2.font-heading,
+  h3.font-heading {
+    font-family: var(--font-body) !important;
+  }
+
+  h2 {
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    font-size: clamp(2rem, 4.2vw, 3.5rem) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  h3 {
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    font-size: clamp(1.375rem, 2.2vw, 1.75rem) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  html,
+  body,
+  #root {
+    background: #F7F8FB !important;
+    color: #0B1F33 !important;
+  }
+
+  :where(nav, footer, form, table, [role="dialog"], .dp-panel-shell, .dp-map-page, .dp-faq-block)
+    :where(h1, h2, h3, h4, h5, h6).font-heading,
+  :where(h1, h2).font-heading:is(
+    [class*="text-[13px]"],
+    [class*="text-[14px]"],
+    [class*="text-[16px]"],
+    [class*="text-[20px]"],
+    [class*="text-[24px]"],
+    [class*="text-xl"],
+    [class*="text-2xl"],
+    [class*="text-3xl"]
+  ) {
+    font-family: var(--font-body) !important;
+    font-weight: 650 !important;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: 0 !important;
+  }
+
+  :where([class*="text-\\[\\#B38F4F\\]"], [class*="text-primary"]) {
+    color: #C8A96A !important;
+  }
+
+  :where([class*="border-\\[\\#B38F4F\\]"], [class*="border-primary"]) {
+    border-color: rgba(200, 169, 106, 0.62) !important;
+  }
+
+  :where([class*="bg-\\[\\#B38F4F\\]"]) {
+    background-color: #C8A96A !important;
+  }
+
+  :where([class*="focus-visible:ring-\\[\\#B38F4F\\]"], [class*="ring-primary"]) {
+    --tw-ring-color: rgba(200, 169, 106, 0.72) !important;
+  }
+
+  :where(.dp-panel-shell, .dp-soft-panel, .dp-soft-tile, .dp-card, .dp-glass-card, .dp-glow-tile, .dp-glow-surface, [role="dialog"], form[class], article[class*="bg-white"], aside[class*="bg-white"]) {
+    background: rgba(255, 255, 255, 0.72) !important;
+    border: 1px solid rgba(11, 31, 51, 0.06) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 40px rgba(11, 31, 51, 0.05) !important;
+    backdrop-filter: blur(16px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.08) !important;
+  }
+
+  :where(.dp-panel-shell, [role="dialog"]) {
+    box-shadow: 0 18px 50px rgba(11, 31, 51, 0.08) !important;
+  }
+
+  :where(.dp-panel-header) {
+    background: rgba(255, 255, 255, 0.82) !important;
+    border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+    box-shadow: none !important;
+  }
+
+  :where(input, textarea, select) {
+    min-height: 44px;
+    border-width: 0 0 1px 0 !important;
+    border-color: rgba(11, 31, 51, 0.14) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-family: var(--font-body) !important;
+    font-size: 15px !important;
+  }
+
+  :where(input, textarea, select):focus {
+    border-bottom-color: #C8A96A !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  :where(label, form span):where([class*="uppercase"]) {
+    color: rgba(11, 31, 51, 0.50) !important;
+    font-family: var(--font-body) !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  :where(button, a[href], [role="button"]) {
+    font-family: var(--font-body) !important;
+    transition-duration: 220ms !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  :where(button, a[href], [role="button"]):where([class*="uppercase"], .dp-button-primary, .dp-button-secondary, .dp-drawer-action, .dp-pass-action) {
+    min-height: 44px;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase;
+  }
+
+  :where(.dp-text-chip, .dp-panel-tab, .dp-partner-type-tab) {
+    min-height: 36px;
+    border-radius: 8px !important;
+    font-family: var(--font-body) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+  }
+
+  :where(.dp-text-chip.is-active, .dp-panel-tab.is-active, button[aria-pressed="true"], button[aria-selected="true"]) {
+    background: #0B1F33 !important;
+    color: #FFFFFF !important;
+    border-color: #0B1F33 !important;
+  }
+
+  :where([class*="duration-300"], [class*="duration-500"], [class*="duration-700"], [class*="duration-1000"]) {
+    transition-duration: 240ms !important;
+  }
+
+  .dp-panel-shell h1.font-heading,
+  .dp-panel-shell h2.font-heading,
+  [role="dialog"] h1.font-heading,
+  [role="dialog"] h2.font-heading,
+  .dp-map-page h1.font-heading,
+  .dp-map-page h2.font-heading {
+    font-family: var(--font-body) !important;
+    font-size: clamp(1.375rem, 2.1vw, 1.625rem) !important;
+    font-weight: 650 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .dp-text-chip,
+  .dp-partner-page .dp-text-chip,
+  .dp-panel-tab,
+  .dp-partner-type-tab {
+    min-height: 36px !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+    font-family: var(--font-body) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .dp-text-chip.is-active,
+  .dp-partner-page .dp-text-chip.is-active,
+  .dp-partner-page .dp-text-chip[aria-current="true"],
+  .dp-panel-tab.is-active,
+  .dp-partner-type-tab.is-active,
+  button.dp-text-chip[aria-current="true"],
+  button[aria-pressed="true"].dp-panel-tab {
+    background: #0B1F33 !important;
+    color: #FFFFFF !important;
+    border-color: #0B1F33 !important;
+    box-shadow: 0 12px 34px rgba(11, 31, 51, 0.08) !important;
+  }
+
+  article[class*="shadow"],
+  aside[class*="shadow"],
+  form[class*="shadow"],
+  div[class*="shadow"]:not(.leaflet-pane):not(.leaflet-container):not(.leaflet-marker-icon) {
+    border-radius: 12px !important;
+  }
+
+  h2[class],
+  h3[class] {
+    font-family: var(--font-body) !important;
+  }
+
+  h1[class] {
+    letter-spacing: -0.04em !important;
+  }
+
+  h2[class] {
+    letter-spacing: -0.03em !important;
+  }
+
+  .dp-panel-shell h1.font-heading,
+  .dp-panel-shell h2.font-heading,
+  [role="dialog"] h1.font-heading,
+  [role="dialog"] h2.font-heading,
+  .dp-map-page h1.font-heading,
+  .dp-map-page h2.font-heading {
+    font-family: var(--font-body) !important;
+    font-size: clamp(1.375rem, 2.1vw, 1.625rem) !important;
+    font-weight: 650 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
   }
 
   @keyframes dp-intro-fallback-drift {
@@ -2247,4 +2513,90 @@ html {
       animation: none !important;
     }
   }
+}
+
+/* Final product lock outside Tailwind layers: this wins over generated utilities. */
+h1[class] {
+  font-family: var(--font-heading) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.92 !important;
+}
+
+h2[class] {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1 !important;
+}
+
+h3[class] {
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.1 !important;
+}
+
+:where(h1, h2, h3) br {
+  display: none !important;
+}
+
+:where(h1, h2, h3) > span.block {
+  display: inline !important;
+}
+
+:where(h1, h2, h3) > span.block:not(:last-child)::after {
+  content: " ";
+}
+
+:where([class*="text-\\[\\#B38F4F\\]"]) {
+  color: #C8A96A !important;
+}
+
+:where([class*="border-\\[\\#B38F4F\\]"]) {
+  border-color: rgba(200, 169, 106, 0.42) !important;
+}
+
+:where([class*="bg-\\[\\#B38F4F\\]"]) {
+  background-color: #C8A96A !important;
+}
+
+.dp-panel-shell h1.font-heading,
+.dp-panel-shell h2.font-heading,
+[role="dialog"] h1.font-heading,
+[role="dialog"] h2.font-heading,
+.dp-map-page h1.font-heading,
+.dp-map-page h2.font-heading {
+  font-family: var(--font-body) !important;
+  font-size: clamp(1.375rem, 2.1vw, 1.625rem) !important;
+  font-weight: 650 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.dp-text-chip,
+.dp-partner-page .dp-text-chip,
+.dp-panel-tab,
+.dp-partner-type-tab {
+  min-height: 36px !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.75rem !important;
+  font-family: var(--font-body) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+}
+
+.dp-text-chip.is-active,
+.dp-partner-page .dp-text-chip.is-active,
+.dp-partner-page .dp-text-chip[aria-current="true"],
+.dp-panel-tab.is-active,
+.dp-partner-type-tab.is-active,
+button.dp-text-chip[aria-current="true"],
+button[aria-pressed="true"].dp-panel-tab {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  border-color: #0B1F33 !important;
+  box-shadow: 0 12px 34px rgba(11, 31, 51, 0.08) !important;
 }
