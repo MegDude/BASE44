@@ -28,12 +28,14 @@ const PARTNER_LINKS = [
 ];
 
 const HAMBURGER_RESIDENT_LINKS = [
+  { to: "/residents", label: "Resident Home" },
   { to: "/residents/map", label: "Map" },
   { to: "/residents/events", label: "Events" },
   { to: "/residents/card", label: "Perks Card" },
 ];
 
 const HAMBURGER_PARTNER_LINKS = [
+  { to: "/partners", label: "Partner Home" },
   { to: "/partners/pricing", label: "Pricing" },
   { to: "/partners#contact", label: "Contact" },
 ];
@@ -213,7 +215,27 @@ export default function Navbar() {
         </Link>
 
         {!open && (
-          <div className="hidden items-center gap-1 transition-all duration-200 md:flex">
+          <div className="hidden items-center gap-4 transition-all duration-200 md:flex">
+            <Link
+              to="/residents"
+              className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+                location.pathname === "/residents"
+                  ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#B38F4F]"
+                  : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
+              }`}
+            >
+              Resident Home
+            </Link>
+            <Link
+              to="/partners"
+              className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+                location.pathname === "/partners"
+                  ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#B38F4F]"
+                  : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
+              }`}
+            >
+              Partner Home
+            </Link>
             <DropdownGroup
               id="residents"
               label="Residents"

@@ -258,7 +258,8 @@ export default function SplashPage() {
                   <span className="block text-[#B38F4F]">Meets You</span>
                 </h1>
                 <p className="mt-3 max-w-[34rem] font-body text-[16px] font-light leading-[1.5] text-[#DCE3EB] md:text-[21px] md:leading-[1.45]">
-                  Built for the people who actually live downtown — and the businesses that keep it interesting.
+                  <span className="block">Built for the people who actually live downtown</span>
+                  <span className="block">— and the businesses that keep it interesting.</span>
                 </p>
               </motion.div>
             </div>
