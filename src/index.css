@@ -1306,6 +1306,43 @@ html {
     font-weight: 700 !important;
   }
 
+  .dp-editorial-eyebrow {
+    font-family: var(--font-body) !important;
+    color: #B38F4F !important;
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.24em !important;
+    line-height: 1.5 !important;
+    text-transform: uppercase !important;
+  }
+
+  .dp-editorial-display {
+    font-family: var(--font-heading) !important;
+    color: #0B1F33 !important;
+    font-size: clamp(3rem, 10vw, 6.5rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.045em !important;
+    line-height: 0.9 !important;
+  }
+
+  .dp-editorial-section-title {
+    font-family: var(--font-heading) !important;
+    color: #0B1F33 !important;
+    font-size: clamp(2.625rem, 7vw, 4rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.035em !important;
+    line-height: 0.96 !important;
+  }
+
+  .dp-editorial-copy {
+    font-family: var(--font-body) !important;
+    color: #6D7886 !important;
+    font-size: clamp(1.25rem, 5vw, 1.875rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -0.005em !important;
+    line-height: 1.62 !important;
+  }
+
   .dp-card {
     position: relative;
     overflow: hidden;
@@ -1512,6 +1549,26 @@ html {
       max-width: 100%;
       white-space: normal;
     }
+  }
+
+  .dp-partner-page .dp-editorial-eyebrow {
+    font-size: 0.6875rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .dp-partner-page .dp-editorial-display {
+    font-size: clamp(3rem, 10vw, 6.5rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  .dp-partner-page .dp-editorial-section-title {
+    font-size: clamp(2.625rem, 7vw, 4rem) !important;
+    line-height: 0.96 !important;
+  }
+
+  .dp-partner-page .dp-editorial-copy {
+    font-size: clamp(1.25rem, 5vw, 1.875rem) !important;
+    line-height: 1.62 !important;
   }
 
   .dp-interactive-surface {

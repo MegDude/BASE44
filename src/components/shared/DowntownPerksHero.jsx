@@ -34,22 +34,32 @@ export default function DowntownPerksHero({
         >
           {before}
           {eyebrow && (
-            <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+            <p className="font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
               {eyebrow}
             </p>
           )}
-          <h1 className="mt-4 max-w-[12ch] font-heading text-[40px] font-bold leading-[0.95] tracking-tight text-[#0B1F33] md:max-w-[14ch] md:text-[52px] lg:text-[56px]">
-            <span>{title}</span>
-            {titleAccent && <span className="text-[#B38F4F]"> {titleAccent}</span>}
+          <h1 className="mt-7 max-w-[13ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] max-[420px]:leading-[0.92] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+            <span className="block">{title}</span>
+            {titleAccent && <span className="block text-[#B38F4F]">{titleAccent}</span>}
           </h1>
           {lead && (
-            <p className="mt-6 max-w-lg font-body text-[18px] font-normal leading-relaxed text-[#0B1F33]/76">
+            <p className="mt-8 max-w-[760px] font-body text-[28px] font-light leading-[1.52] tracking-[-0.01em] text-[#5F6B7A] md:text-[36px] md:leading-[1.58]">
               {lead}
             </p>
           )}
           {support && (
-            <div className="mt-5 max-w-xl space-y-3 font-body text-[14px] font-normal leading-relaxed text-[#0B1F33]/66">
-              {Array.isArray(support) ? support.map((item) => <p key={item}>{item}</p>) : <p>{support}</p>}
+            <div className="mt-9 max-w-[790px] space-y-6">
+              {Array.isArray(support)
+                ? support.map((item) => (
+                    <p key={item} className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+                      {item}
+                    </p>
+                  ))
+                : (
+                    <p className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+                      {support}
+                    </p>
+                  )}
             </div>
           )}
           {(primary || secondary) && (

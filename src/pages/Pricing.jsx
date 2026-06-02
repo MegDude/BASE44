@@ -100,9 +100,9 @@ function Section({ id, eyebrow, title, children, className = "" }) {
     <section id={id} className={`px-5 py-12 md:py-16 ${className}`}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
-          <div className="mb-8 max-w-3xl">
-            {eyebrow && <span className="dp-label mb-3 block">{eyebrow}</span>}
-            {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] text-[#0B1F33] md:text-4xl">{title}</h2>}
+          <div className="mb-8 max-w-[840px]">
+            {eyebrow && <span className="dp-editorial-eyebrow mb-5 block">{eyebrow}</span>}
+            {title && <h2 className="dp-editorial-section-title">{title}</h2>}
           </div>
         )}
         {children}
@@ -139,13 +139,14 @@ export default function Pricing() {
             <PillLink href="#surveys">Surveys</PillLink>
             <PillLink href="#placements">Placements</PillLink>
           </div>
-          <span className="dp-label mb-4 block">Partner pricing</span>
+          <span className="dp-editorial-eyebrow mb-5 block">Partner Pricing</span>
           <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
             <div>
-              <h1 className="font-heading text-[38px] font-medium leading-[1.03] md:text-[56px]">
-                Simple pricing for partners who want downtown action, not software homework.
+              <h1 className="dp-editorial-display max-w-[12ch]">
+                <span className="block">Simple Pricing For Partners</span>
+                <span className="block text-[#B38F4F]">Who Want Downtown Action.</span>
               </h1>
-              <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">
+              <p className="dp-editorial-copy mt-8 max-w-[790px]">
                 Downtown Perks is built around easy entry points: scan a QR code, text a keyword, open the map, show the card, read the report. Dumb tech on the front end. A smart audience and analytics engine underneath.
               </p>
               <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:gap-5">
@@ -173,7 +174,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      <Section id="partner-types" eyebrow="Pricing matrix" title="Plans by partner type.">
+      <Section id="partner-types" eyebrow="Pricing Matrix" title="Plans By Partner Type.">
         <div className="mb-5 flex gap-5 overflow-x-auto pb-2">
           {PARTNER_TYPES.map((type) => (
             <button
@@ -226,7 +227,7 @@ export default function Pricing() {
         </div>
       </Section>
 
-      <Section id="modules" eyebrow="Platform modules" title="What the platform offers.">
+      <Section id="modules" eyebrow="Platform Modules" title="What The Platform Offers.">
         <div className="grid gap-3 md:grid-cols-2">
           {MODULES.map(([title, availability, body]) => (
             <article key={title} className="dp-glow-tile rounded-[6px] p-4">
@@ -245,7 +246,7 @@ export default function Pricing() {
         </div>
       </Section>
 
-      <Section id="add-ons" eyebrow="Add-ons and campaign additions" title="Add only what the activation needs." className="bg-white">
+      <Section id="add-ons" eyebrow="Add-Ons And Campaign Additions" title="Add Only What The Activation Needs." className="bg-white">
         <div className="dp-glow-surface overflow-hidden rounded-[6px]">
           <div className="overflow-x-auto">
             <table className="min-w-[720px] w-full border-collapse text-left">
@@ -273,7 +274,7 @@ export default function Pricing() {
         </p>
       </Section>
 
-      <Section id="surveys" eyebrow="Survey engine" title="Low-tech surveys. Better audience answers.">
+      <Section id="surveys" eyebrow="Survey Engine" title="Low-Tech Surveys. Better Audience Answers.">
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="dp-glow-surface rounded-[6px] p-5">
             <MessageSquareText className="h-6 w-6 text-[#B38F4F]" />
@@ -297,7 +298,7 @@ export default function Pricing() {
         </div>
       </Section>
 
-      <Section id="placements" eyebrow="Placement opportunities" title="Where a partner can show up.">
+      <Section id="placements" eyebrow="Placement Opportunities" title="Where A Partner Can Show Up.">
         <div className="grid gap-3 md:grid-cols-3">
           {PLACEMENTS.map(([title, label, body]) => (
             <article key={title} className="dp-glow-tile rounded-[6px] p-4">
@@ -309,7 +310,7 @@ export default function Pricing() {
         </div>
       </Section>
 
-      <Section eyebrow="Next step" title="Pick the lightest useful version first." className="bg-white">
+      <Section eyebrow="Next Step" title="Pick The Lightest Useful Version First." className="bg-white">
         <div className="max-w-3xl">
           <p className="text-[14px] leading-7 text-[#0B1F33]/68">
             Downtown Perks is priced so partners can begin with the right annual tier, learn what people actually do, then add campaigns, surveys, placements, or reporting when there is a clear reason.

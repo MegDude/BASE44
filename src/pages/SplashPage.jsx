@@ -98,15 +98,16 @@ function JourneyNarrative() {
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-3xl"
+          className="max-w-[840px]"
         >
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
-            How Downtown Perks works
+          <p className="mb-5 font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
+            How Downtown Perks Works
           </p>
-          <h2 className="font-heading text-[42px] font-medium leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[72px]">
-            Open the map. Find the moment. <span className="text-[#B38F4F]">Go.</span>
+          <h2 className="max-w-[12ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+            <span className="block">Open The Map.</span>
+            <span className="block text-[#B38F4F]">Find The Moment. Go.</span>
           </h2>
-          <p className="mt-5 max-w-xl text-[16px] leading-[1.7] text-[#425466] md:text-[18px]">
+          <p className="mt-8 max-w-[790px] font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
             Downtown Perks helps residents find nearby places, events, perks, and local favorites without bouncing between apps, websites, group chats, and screenshots. For partners, it creates visibility when people nearby are already deciding where to go.
           </p>
         </motion.div>
@@ -245,7 +246,7 @@ export default function SplashPage() {
             <div className="dp-intro-fallback absolute inset-0 bg-[radial-gradient(circle_at_30%_24%,rgba(179,143,79,0.16),transparent_34%),radial-gradient(circle_at_74%_68%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(135deg,#0B1F33,#0B1F33)]" />
             <div className="dp-intro-sheen absolute inset-y-0 left-[-28%] w-[42%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.10),transparent)] blur-2xl" />
             <video
-              className="absolute inset-0 h-full w-full bg-[#0B1F33] object-contain"
+              className="absolute inset-0 h-full w-full object-cover"
               src={VIDEO_SRC}
               autoPlay
               muted
@@ -276,16 +277,15 @@ export default function SplashPage() {
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                 className="mx-auto max-w-6xl"
               >
-                <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
+                <div className="inline-flex items-center gap-2 font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
                   <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
                   Downtown Perks
                 </div>
-                <h1 className="mt-5 max-w-4xl font-heading text-[clamp(2.45rem,12vw,4.5rem)] font-medium leading-[0.96] tracking-[-0.02em] text-white md:leading-[0.94]">
-                  <span className="block">Where</span>
-                  <span className="block">Downtown</span>
-                  <span className="block">Meets You</span>
+                <h1 className="mt-7 max-w-[10ch] font-heading text-[58px] font-semibold leading-[0.88] tracking-[-0.045em] text-white max-[420px]:text-[50px] md:text-[94px] lg:text-[108px]">
+                  <span className="block">Where Downtown</span>
+                  <span className="block text-[#B38F4F]">Meets You</span>
                 </h1>
-                <p className="mt-4 max-w-[34rem] text-[14px] leading-6 text-white/72 sm:text-[15px] sm:leading-7">
+                <p className="mt-7 max-w-[42rem] font-body text-[22px] font-light leading-[1.55] tracking-[-0.01em] text-[#DCE3EB] md:text-[32px] md:leading-[1.5]">
                   Built for the people who actually live downtown — and the businesses that keep it interesting.
                 </p>
               </motion.div>
@@ -305,32 +305,32 @@ export default function SplashPage() {
           <div className="absolute left-1/2 top-[46%] h-[460px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/34 blur-[92px]" />
         </div>
 
-        <div className="relative mx-auto max-w-[840px] text-left">
+        <div className="relative mx-auto max-w-[900px] text-left">
           <EditorialReveal
             amount={0.28}
-            className="max-w-[760px]"
+            className="max-w-[840px]"
           >
-            <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
-              <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
-              Downtown Perks
+            <div className="font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
+              Live Discovery
             </div>
-            <h1 className="mt-5 font-heading text-[52px] font-medium leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] max-[420px]:leading-[0.92] md:text-[92px]">
-              More charm than a biscuit with honey.
+            <h1 className="mt-7 max-w-[13ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] max-[420px]:leading-[0.92] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+              <span className="block">More Charm Than A</span>
+              <span className="block text-[#B38F4F]">Biscuit With Honey.</span>
             </h1>
-            <p className="mt-3 max-w-[620px] font-heading text-[24px] font-medium leading-[1.08] text-[#0B1F33]/70 md:text-[34px]">
+            <p className="mt-8 max-w-[760px] font-body text-[28px] font-light leading-[1.52] tracking-[-0.01em] text-[#5F6B7A] md:text-[36px] md:leading-[1.58]">
               Downtown Perks brings the heat — and the hospitality.
             </p>
           </EditorialReveal>
 
           <EditorialReveal
-            className="mt-8 max-w-[620px] space-y-4 text-[16px] leading-[1.72] text-[#0B1F33]/70 md:text-[18px] md:leading-[1.75]"
+            className="mt-9 max-w-[790px] space-y-6"
             delay={0.04}
             amount={0.24}
           >
-            <p>
+            <p className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
               Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.
             </p>
-            <p>
+            <p className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
               For the people planning around rooftop weather, happy hour, workout classes, taco runs, live music, and “just one drink” that turns into the whole night.
             </p>
           </EditorialReveal>

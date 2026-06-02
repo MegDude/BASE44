@@ -93,8 +93,8 @@ export default function Home() {
     if (isPartner) {
       return {
         eyebrow: "Partner Mode",
-        title: "Turn residents into",
-        titleAccent: "regulars.",
+        title: "Turn Residents Into",
+        titleAccent: "Regulars.",
         lead: "Be the place people choose next.",
         support: "People are already downtown. Already walking. Already deciding. You don't need more attention. You need better timing. Downtown Perks puts you in front of them when it matters.",
         primary: "See how it works for you",
@@ -108,8 +108,8 @@ export default function Home() {
 
     return {
       eyebrow: "Resident View",
-      title: "Where downtown",
-      titleAccent: "meets you.",
+      title: "Where Downtown",
+      titleAccent: "Meets You.",
       lead: "Everything nearby — in one map.",
       support: "Built for people who actually live here — and the places that make it feel like home. From coffee to dinner, live events, and everything in between, plus the perks you didn’t know you had. All in one place. No extra apps. No logins. No platforms or directories guessing what matters.",
       primary: "Explore Downtown",
@@ -150,14 +150,17 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           {!isPartner ? (
             <>
-              <div className="mb-7 max-w-2xl">
-                <span className="dp-label mb-3 block">Residents</span>
-                <h2 className="font-heading text-3xl font-medium">Downtown, in one place</h2>
-                <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
+              <div className="mb-9 max-w-[840px]">
+                <span className="mb-5 block font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">Residents</span>
+                <h2 className="max-w-[12ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+                  <span className="block">Downtown,</span>
+                  <span className="block text-[#B38F4F]">In One Place.</span>
+                </h2>
+                <p className="mt-8 max-w-[790px] font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
                   You live downtown but expect it to be easier. Easier to navigate. Easier to connect. More useful day to day. Instead, everything you want is spread across too many places. Google for restaurants. Instagram for events. Text three friends to find the best happy hour. Downtown Perks fixes that. Because the problem isn’t what to do next — it’s the effort it takes to decide.
                 </p>
-                <h3 className="mt-6 font-heading text-2xl font-medium">Search less. Do more.</h3>
-                <p className="mt-2 text-[14px] leading-relaxed text-[#0B1F33]/64">
+                <h3 className="mt-9 font-heading text-[42px] font-semibold leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[64px] md:leading-[0.94]">Search Less. <span className="text-[#B38F4F]">Do More.</span></h3>
+                <p className="mt-5 max-w-[790px] font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
                   Downtown Perks brings places, events, and perks together so it's easier to decide what to do next. A simple live map for people who live downtown — and the businesses that want to meet them there.
                 </p>
               </div>
