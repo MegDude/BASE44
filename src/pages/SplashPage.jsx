@@ -76,7 +76,6 @@ function JourneyNarrative() {
   const reduceMotion = useReducedMotion();
   const [activeStep, setActiveStep] = useState(0);
   const active = journeySteps[activeStep];
-  const ActiveIcon = active.icon;
 
   useEffect(() => {
     if (reduceMotion) return undefined;
@@ -103,11 +102,11 @@ function JourneyNarrative() {
           <p className="mb-5 font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
             How Downtown Perks Works
           </p>
-          <h2 className="max-w-[12ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+          <h2 className="max-w-[18ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
             <span className="block">Open The Map.</span>
             <span className="block text-[#B38F4F]">Find The Moment. Go.</span>
           </h2>
-          <p className="mt-8 max-w-[790px] font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+          <p className="mt-6 max-w-[700px] font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
             Downtown Perks helps residents find nearby places, events, perks, and local favorites without bouncing between apps, websites, group chats, and screenshots. For partners, it creates visibility when people nearby are already deciding where to go.
           </p>
         </motion.div>
@@ -134,18 +133,6 @@ function JourneyNarrative() {
               ))}
 
               <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92),rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(11,31,51,0.16))]" />
-
-              <div className="absolute left-5 top-5 z-10 max-w-[20rem] sm:left-6 sm:top-6">
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
-                  {active.label}
-                </span>
-                <h3 className="mt-3 font-heading text-[38px] font-medium leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
-                  {active.title}
-                </h3>
-                <p className="mt-4 text-sm leading-relaxed text-[#425466]">
-                  {active.copy}
-                </p>
-              </div>
 
               <div className="absolute bottom-5 left-5 right-5 z-20 sm:bottom-7 sm:left-6 sm:right-6">
                 <div className="relative flex items-center justify-between">
@@ -180,12 +167,19 @@ function JourneyNarrative() {
             </div>
 
             <div className="flex flex-col justify-center bg-white/78 p-5 text-[#0B1F33] backdrop-blur-[18px] md:p-8">
-              <div className="mb-5 flex w-fit items-center gap-2 bg-transparent text-[10px] font-bold uppercase tracking-[0.16em] text-[#425466]">
-                <ActiveIcon size={15} className="text-[#B38F4F]" />
-                Scene {active.number}
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#B38F4F]">
+                  {active.label}
+                </span>
+                <h3 className="mt-3 font-heading text-[38px] font-medium leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
+                  {active.title}
+                </h3>
+                <p className="mt-4 max-w-md text-[14px] leading-relaxed text-[#425466] md:text-[15px]">
+                  {active.copy}
+                </p>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="mt-8 flex gap-2">
                 {journeySteps.map((step, index) => {
                   const selected = index === activeStep;
 
@@ -194,28 +188,15 @@ function JourneyNarrative() {
                       key={step.title}
                       type="button"
                       onClick={() => setActiveStep(index)}
-                      className={`group grid w-full grid-cols-[2rem_1fr_auto] items-center gap-3 rounded-sm px-2.5 py-2.5 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
-                        selected ? "bg-white shadow-[0_10px_24px_rgba(11,31,51,0.055)]" : "bg-transparent hover:bg-white/70"
+                      className={`grid h-9 w-9 place-items-center rounded-sm text-[10px] font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+                        selected
+                          ? "bg-[#0B1F33] text-[#B38F4F] shadow-[0_10px_24px_rgba(11,31,51,0.10)]"
+                          : "bg-[#0B1F33]/6 text-[#0B1F33]/48 hover:bg-white hover:text-[#0B1F33]"
                       }`}
+                      aria-label={`Show step ${step.number}: ${step.label}`}
+                      aria-pressed={selected}
                     >
-                      <span
-                        className={`grid h-7 w-7 place-items-center rounded-sm text-[10px] font-bold ${
-                          selected ? "bg-[#0B1F33] text-[#B38F4F]" : "bg-[#0B1F33]/6 text-[#0B1F33]/45"
-                        }`}
-                      >
-                        {step.number}
-                      </span>
-
-                      <span>
-                        <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-[#B38F4F]">
-                          {step.label}
-                        </span>
-                        <span className="mt-0.5 block text-[13px] font-medium text-[#0B1F33]/74">
-                          {step.title}
-                        </span>
-                      </span>
-
-                      {selected && <ArrowRight size={14} className="text-[#B38F4F]" />}
+                      {step.number}
                     </button>
                   );
                 })}
@@ -281,11 +262,11 @@ export default function SplashPage() {
                   <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
                   Downtown Perks
                 </div>
-                <h1 className="mt-7 max-w-[10ch] font-heading text-[58px] font-semibold leading-[0.88] tracking-[-0.045em] text-white max-[420px]:text-[50px] md:text-[94px] lg:text-[108px]">
+                <h1 className="mt-5 max-w-[11ch] font-heading text-[42px] font-semibold leading-[0.92] tracking-[-0.035em] text-white max-[420px]:text-[38px] md:text-[64px] lg:text-[72px]">
                   <span className="block">Where Downtown</span>
                   <span className="block text-[#B38F4F]">Meets You</span>
                 </h1>
-                <p className="mt-7 max-w-[42rem] font-body text-[22px] font-light leading-[1.55] tracking-[-0.01em] text-[#DCE3EB] md:text-[32px] md:leading-[1.5]">
+                <p className="mt-5 max-w-[34rem] font-body text-[16px] font-light leading-[1.58] tracking-[-0.005em] text-[#DCE3EB] md:text-[22px] md:leading-[1.5]">
                   Built for the people who actually live downtown — and the businesses that keep it interesting.
                 </p>
               </motion.div>
@@ -313,11 +294,11 @@ export default function SplashPage() {
             <div className="font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">
               Live Discovery
             </div>
-            <h1 className="mt-7 max-w-[13ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] max-[420px]:leading-[0.92] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
-              <span className="block">More Charm Than A</span>
-              <span className="block text-[#B38F4F]">Biscuit With Honey.</span>
+            <h1 className="mt-6 max-w-[13ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] max-[420px]:leading-[0.94] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
+              <span className="block">More Charm Than</span>
+              <span className="block text-[#B38F4F]">A Biscuit With Honey.</span>
             </h1>
-            <p className="mt-8 max-w-[760px] font-body text-[28px] font-light leading-[1.52] tracking-[-0.01em] text-[#5F6B7A] md:text-[36px] md:leading-[1.58]">
+            <p className="mt-6 max-w-[680px] font-body text-[20px] font-light leading-[1.55] tracking-[-0.005em] text-[#5F6B7A] md:text-[26px] md:leading-[1.55]">
               Downtown Perks brings the heat — and the hospitality.
             </p>
           </EditorialReveal>
@@ -327,10 +308,10 @@ export default function SplashPage() {
             delay={0.04}
             amount={0.24}
           >
-            <p className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+            <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
               Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.
             </p>
-            <p className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+            <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
               For the people planning around rooftop weather, happy hour, workout classes, taco runs, live music, and “just one drink” that turns into the whole night.
             </p>
           </EditorialReveal>
@@ -357,8 +338,6 @@ export default function SplashPage() {
         </div>
       </section>
 
-      <JourneyNarrative />
-
       <section className="relative bg-white px-5 pb-0 pt-12 md:px-8 md:pb-0 md:pt-16">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179, 143, 79, 0.08),transparent)]" aria-hidden="true" />
         <div className="relative mx-auto max-w-6xl">
@@ -367,9 +346,9 @@ export default function SplashPage() {
               className="max-w-[720px]"
               amount={0.22}
             >
-              <p className="font-heading text-[42px] font-medium leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[58px]">
-                Downtown should<br />
-                be easier to use.
+              <p className="font-heading text-[42px] font-semibold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[58px]">
+                <span className="block">Downtown should</span>
+                <span className="block text-[#B38F4F]">be easier to use.</span>
               </p>
               <div className="mt-5 max-w-[680px] space-y-1 text-[19px] leading-[1.4] tracking-[-0.01em] text-[#0B1F33]/80 md:text-[24px] md:leading-[1.42]">
                 <p>The coffee shop you keep meaning to try.</p>
@@ -398,9 +377,9 @@ export default function SplashPage() {
               delay={0.04}
               amount={0.18}
             >
-              <p className="font-heading text-[34px] font-medium leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
-                So we built one map<br />
-                to bring everything together.
+              <p className="font-heading text-[34px] font-semibold leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
+                <span className="block">So we built one map</span>
+                <span className="block text-[#B38F4F]">to bring everything together.</span>
               </p>
               <p>
                 Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s nearby, what’s happening, and what feels worth going out for.
@@ -430,14 +409,17 @@ export default function SplashPage() {
         </div>
       </section>
 
+      <JourneyNarrative />
+
       <section className="relative bg-white px-5 pb-14 pt-12 md:px-8 md:pb-20 md:pt-16">
         <div className="relative mx-auto max-w-[760px] text-left">
           <EditorialReveal
             className="max-w-[660px]"
             amount={0.24}
           >
-            <h2 className="max-w-[660px] font-heading text-[42px] font-medium leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[64px]">
-              Whether you’re making plans or part of them.
+            <h2 className="max-w-[19ch] font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[52px] md:leading-[0.96]">
+              <span className="block">Whether you’re making plans</span>
+              <span className="block text-[#B38F4F]">or part of them.</span>
             </h2>
             <div className="mt-7 max-w-[620px] space-y-4 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px] md:leading-[1.75]">
               <p>
@@ -450,8 +432,9 @@ export default function SplashPage() {
                 For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.
               </p>
             </div>
-            <p className="mt-10 max-w-[620px] font-heading text-[28px] font-medium leading-tight text-[#0B1F33]/82 md:text-[38px]">
-              Come on in. Open the map. And maybe grab something cold while you’re at it.
+            <p className="mt-10 max-w-[30ch] font-heading text-[24px] font-semibold leading-[1.04] tracking-[-0.02em] text-[#0B1F33]/82 md:text-[34px]">
+              <span className="block">Come on in. Open the map.</span>
+              <span className="block text-[#B38F4F]">And maybe grab something cold while you’re at it.</span>
             </p>
           </EditorialReveal>
 

@@ -152,15 +152,18 @@ export default function Home() {
             <>
               <div className="mb-9 max-w-[840px]">
                 <span className="mb-5 block font-body text-[11px] font-bold uppercase tracking-[0.24em] text-[#B38F4F] md:text-[12px]">Residents</span>
-                <h2 className="max-w-[12ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+                <h2 className="max-w-[12ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
                   <span className="block">Downtown,</span>
                   <span className="block text-[#B38F4F]">In One Place.</span>
                 </h2>
-                <p className="mt-8 max-w-[790px] font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+                <p className="mt-6 max-w-[700px] font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
                   You live downtown but expect it to be easier. Easier to navigate. Easier to connect. More useful day to day. Instead, everything you want is spread across too many places. Google for restaurants. Instagram for events. Text three friends to find the best happy hour. Downtown Perks fixes that. Because the problem isn’t what to do next — it’s the effort it takes to decide.
                 </p>
-                <h3 className="mt-9 font-heading text-[42px] font-semibold leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[64px] md:leading-[0.94]">Search Less. <span className="text-[#B38F4F]">Do More.</span></h3>
-                <p className="mt-5 max-w-[790px] font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+                <h3 className="mt-8 max-w-[12ch] font-heading text-[34px] font-semibold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[48px] md:leading-[0.96]">
+                  <span className="block">Search Less.</span>
+                  <span className="block text-[#B38F4F]">Do More.</span>
+                </h3>
+                <p className="mt-4 max-w-[700px] font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
                   Downtown Perks brings places, events, and perks together so it's easier to decide what to do next. A simple live map for people who live downtown — and the businesses that want to meet them there.
                 </p>
               </div>
@@ -181,7 +184,10 @@ export default function Home() {
             <>
               <div className="mb-7 max-w-3xl">
                 <span className="dp-label mb-3 block">Your role</span>
-                <h2 className="font-heading text-3xl font-medium">Spend less. Do more.</h2>
+                <h2 className="max-w-[12ch] font-heading text-3xl font-medium">
+                  <span className="block">Spend Less.</span>
+                  <span className="block text-[#B38F4F]">Do More.</span>
+                </h2>
                 <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
                   Start with a pilot. Decide with real data. No setup. No long-term commitment. Just a live test.
                 </p>
@@ -232,8 +238,18 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="relative">
             <span className="dp-label mb-3 block">Pricing</span>
-            <h2 className="font-heading text-3xl font-medium">
-              {isPartner ? "A smarter way to activate downtown" : "Ready when you are."}
+            <h2 className="max-w-[12ch] font-heading text-3xl font-medium">
+              {isPartner ? (
+                <>
+                  <span className="block">A Smarter Way</span>
+                  <span className="block text-[#B38F4F]">To Activate Downtown.</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Ready When</span>
+                  <span className="block text-[#B38F4F]">You Are.</span>
+                </>
+              )}
             </h2>
             <p className="mt-3 text-[14px] leading-relaxed text-[#F7F8FB]/66">
               {isPartner
@@ -267,7 +283,19 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-7 max-w-2xl">
             <span className="dp-label mb-3 block">FAQs</span>
-            <h2 className="font-heading text-3xl font-medium">{isPartner ? "Partner questions" : "Resident questions"}</h2>
+            <h2 className="max-w-[12ch] font-heading text-3xl font-medium">
+              {isPartner ? (
+                <>
+                  <span className="block">Partner</span>
+                  <span className="block text-[#B38F4F]">Questions.</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Resident</span>
+                  <span className="block text-[#B38F4F]">Questions.</span>
+                </>
+              )}
+            </h2>
           </div>
           <div className="grid gap-3 md:grid-cols-2">
             {faqs.map(([question, answer], index) => (
@@ -293,8 +321,18 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <span className="dp-label mb-3 block">{isPartner ? "Get started" : "Ready When You Are"}</span>
-            <h2 className="font-heading text-3xl font-medium">
-              {isPartner ? "Tell us what you want to activate" : "Check if your building is part of Downtown Perks."}
+            <h2 className="max-w-[12ch] font-heading text-3xl font-medium">
+              {isPartner ? (
+                <>
+                  <span className="block">Tell Us What</span>
+                  <span className="block text-[#B38F4F]">You Want To Activate.</span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Check If Your Building</span>
+                  <span className="block text-[#B38F4F]">Is Part Of Downtown Perks.</span>
+                </>
+              )}
             </h2>
             <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
               {isPartner ? "Choose your partner type and send the details. We will find the right setup." : "If you sign up now and your building joins later, you will be refunded."}

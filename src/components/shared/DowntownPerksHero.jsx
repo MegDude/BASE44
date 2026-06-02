@@ -38,12 +38,12 @@ export default function DowntownPerksHero({
               {eyebrow}
             </p>
           )}
-          <h1 className="mt-7 max-w-[13ch] font-heading text-[58px] font-semibold leading-[0.9] tracking-[-0.045em] text-[#0B1F33] max-[420px]:text-[48px] max-[420px]:leading-[0.92] md:text-[92px] md:leading-[0.88] lg:text-[104px]">
+          <h1 className="mt-6 max-w-[13ch] font-heading text-[44px] font-semibold leading-[0.94] tracking-[-0.035em] text-[#0B1F33] max-[420px]:text-[40px] max-[420px]:leading-[0.94] md:text-[68px] md:leading-[0.92] lg:text-[78px]">
             <span className="block">{title}</span>
             {titleAccent && <span className="block text-[#B38F4F]">{titleAccent}</span>}
           </h1>
           {lead && (
-            <p className="mt-8 max-w-[760px] font-body text-[28px] font-light leading-[1.52] tracking-[-0.01em] text-[#5F6B7A] md:text-[36px] md:leading-[1.58]">
+            <p className="mt-6 max-w-[680px] font-body text-[20px] font-light leading-[1.55] tracking-[-0.005em] text-[#5F6B7A] md:text-[26px] md:leading-[1.55]">
               {lead}
             </p>
           )}
@@ -51,12 +51,12 @@ export default function DowntownPerksHero({
             <div className="mt-9 max-w-[790px] space-y-6">
               {Array.isArray(support)
                 ? support.map((item) => (
-                    <p key={item} className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+                    <p key={item} className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
                       {item}
                     </p>
                   ))
                 : (
-                    <p className="font-body text-[20px] font-light leading-[1.7] tracking-[-0.005em] text-[#6D7886] md:text-[30px] md:leading-[1.62]">
+                    <p className="font-body text-[17px] font-light leading-[1.68] tracking-[-0.005em] text-[#6D7886] md:text-[22px] md:leading-[1.62]">
                       {support}
                     </p>
                   )}

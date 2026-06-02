@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BarChart3,
-  Check,
   ClipboardList,
   MapPin,
   MessageSquareText,
@@ -96,13 +95,33 @@ const SURVEY_STEPS = [
 ];
 
 function Section({ id, eyebrow, title, children, className = "" }) {
+  const titleLines = {
+    "Plans By Partner Type.": ["Plans By", "Partner Type."],
+    "What The Platform Offers.": ["What The", "Platform Offers."],
+    "Add Only What The Activation Needs.": ["Add Only What", "The Activation Needs."],
+    "Low-Tech Surveys. Better Audience Answers.": ["Low-Tech Surveys.", "Better Audience Answers."],
+    "Where A Partner Can Show Up.": ["Where A Partner", "Can Show Up."],
+    "Pick The Lightest Useful Version First.": ["Pick The Lightest", "Useful Version First."],
+  }[title];
+
   return (
     <section id={id} className={`px-5 py-12 md:py-16 ${className}`}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
           <div className="mb-8 max-w-[840px]">
             {eyebrow && <span className="dp-editorial-eyebrow mb-5 block">{eyebrow}</span>}
-            {title && <h2 className="dp-editorial-section-title">{title}</h2>}
+            {title && (
+              <h2 className="dp-editorial-section-title max-w-[12ch]">
+                {titleLines ? (
+                  <>
+                    <span className="block">{titleLines[0]}</span>
+                    <span className="block text-[#B38F4F]">{titleLines[1]}</span>
+                  </>
+                ) : (
+                  title
+                )}
+              </h2>
+            )}
           </div>
         )}
         {children}
@@ -140,42 +159,29 @@ export default function Pricing() {
             <PillLink href="#placements">Placements</PillLink>
           </div>
           <span className="dp-editorial-eyebrow mb-5 block">Partner Pricing</span>
-          <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
-            <div>
-              <h1 className="dp-editorial-display max-w-[12ch]">
-                <span className="block">Simple Pricing For Partners</span>
-                <span className="block text-[#B38F4F]">Who Want Downtown Action.</span>
-              </h1>
-              <p className="dp-editorial-copy mt-8 max-w-[790px]">
-                Downtown Perks is built around easy entry points: scan a QR code, text a keyword, open the map, show the card, read the report. Dumb tech on the front end. A smart audience and analytics engine underneath.
-              </p>
-              <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:gap-5">
-                <Link to="/partners#partner-types" className="dp-action-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
-                  Find your partner type
-                  <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
-                </Link>
-                <Link to="/partners/brands#brand-form" className="dp-action-link dp-action-link-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
-                  Discuss activation
-                </Link>
-              </div>
-            </div>
-            <div className="dp-glow-surface rounded-[6px] p-5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">What pricing reflects</p>
-              <div className="mt-4 grid gap-2.5">
-                {["Footprint", "Visibility", "Activation", "Reporting"].map((item) => (
-                  <div key={item} className="dp-glow-tile flex items-center gap-3 rounded-[4px] p-2.5">
-                    <Check className="h-4 w-4 text-[#B38F4F]" />
-                    <span className="text-[12px] font-semibold">{item}</span>
-                  </div>
-                ))}
-              </div>
+          <div className="max-w-[860px]">
+            <h1 className="dp-editorial-display max-w-[12ch]">
+              <span className="block">Simple Pricing For Partners</span>
+              <span className="block text-[#B38F4F]">Who Want Downtown Action.</span>
+            </h1>
+            <p className="dp-editorial-copy mt-8 max-w-[790px]">
+              Downtown Perks is built around easy entry points: scan a QR code, text a keyword, open the map, show the card, read the report. Dumb tech on the front end. A smart audience and analytics engine underneath.
+            </p>
+            <div className="mt-7 flex flex-row flex-wrap items-center gap-x-5 gap-y-3">
+              <Link to="/partners#partner-types" className="dp-action-link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+                Find your partner type
+                <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
+              </Link>
+              <Link to="/partners/brands#brand-form" className="dp-action-link dp-action-link-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+                Discuss activation
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       <Section id="partner-types" eyebrow="Pricing Matrix" title="Plans By Partner Type.">
-        <div className="mb-5 flex gap-5 overflow-x-auto pb-2">
+        <div className="mb-5 flex gap-4 overflow-x-auto">
           {PARTNER_TYPES.map((type) => (
             <button
               key={type.id}
