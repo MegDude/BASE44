@@ -2716,6 +2716,78 @@ button[aria-pressed="true"].dp-panel-tab {
   box-shadow: 0 10px 26px rgba(11, 31, 51, 0.04), 0 0 22px rgba(200, 169, 106, 0.055) !important;
 }
 
+.dp-map-page .dp-map-bottom-nav {
+  gap: 0.7rem !important;
+  padding: 0.38rem 0.65rem !important;
+}
+
+.dp-map-page .dp-map-bottom-nav button {
+  height: 1.1rem !important;
+  font-size: 8.5px !important;
+  letter-spacing: 0.08em !important;
+}
+
+.dp-map-page .dp-map-bottom-nav svg {
+  width: 0.72rem !important;
+  height: 0.72rem !important;
+}
+
+.dp-map-page .dp-pass-panel {
+  padding-bottom: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .dp-map-page > div.absolute.inset-x-0[class*="top-"] {
+    top: 82px !important;
+    padding-inline: 0.5rem !important;
+  }
+
+  .dp-map-page .dp-panel-shell[aria-label="Map command console"] {
+    max-height: min(34vh, 230px) !important;
+    max-width: calc(100vw - 1rem) !important;
+    padding: 0.42rem 2rem 0.42rem 0.5rem !important;
+  }
+
+  .dp-map-page .dp-panel-shell[aria-label="Map command console"] .grid {
+    gap: 0.32rem !important;
+  }
+
+  .dp-map-page .dp-panel-shell[aria-label="Map command console"] h1 {
+    font-size: 13px !important;
+    line-height: 1.08 !important;
+  }
+
+  .dp-map-page .dp-panel-shell[aria-label="Map command console"] .dp-soft-field {
+    height: 1.8rem !important;
+  }
+
+  .dp-map-page .dp-panel-shell[aria-label="Map command console"] input {
+    font-size: 11px !important;
+  }
+
+  .dp-map-page .dp-panel-shell[aria-label="Map command console"] button[type="submit"] {
+    height: 1.8rem !important;
+    min-height: 1.8rem !important;
+    padding-inline: 0.55rem !important;
+    font-size: 9.5px !important;
+  }
+
+  .dp-map-page .dp-console-chip {
+    min-height: 1.1rem !important;
+    font-size: 8.5px !important;
+  }
+
+  .dp-map-page .dp-panel-close {
+    min-height: 28px !important;
+    min-width: 28px !important;
+  }
+
+  .dp-map-page .dp-pass-panel {
+    max-height: calc(100dvh - 5rem) !important;
+    padding-inline: 0.55rem !important;
+  }
+}
+
 .dp-map-page .dp-panel-shell {
   max-width: calc(100vw - 16px) !important;
 }

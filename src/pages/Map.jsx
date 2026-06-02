@@ -2289,23 +2289,27 @@ export default function MapPage() {
           <motion.section
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="dp-panel-shell pointer-events-auto max-h-[calc(100dvh-0.75rem)] w-full max-w-xl overflow-y-auto overscroll-contain rounded-t-xl p-2.5 [-webkit-overflow-scrolling:touch] sm:p-4 md:max-h-[calc(100dvh-2rem)] md:rounded-lg"
+            className="dp-panel-shell dp-pass-panel pointer-events-auto max-h-[calc(100dvh-0.75rem)] w-full max-w-xl overflow-y-auto overscroll-contain rounded-t-xl p-2.5 [-webkit-overflow-scrolling:touch] sm:p-4 md:max-h-[calc(100dvh-2rem)] md:rounded-lg"
             role="dialog"
             aria-modal="true"
-            aria-label="Resident pass"
+            aria-label={urlState.mode === "partner" ? "Partner QR scanner" : "Resident pass"}
           >
             <div className="dp-panel-header sticky top-0 z-10 -mx-2.5 -mt-2.5 mb-2 flex items-center justify-between gap-2 px-2.5 py-1.5 sm:-mx-4 sm:-mt-4 sm:px-4 sm:py-2 md:mb-3">
-              <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F] md:text-[10px] md:tracking-[0.16em]">Resident pass</span>
-              <button type="button" onClick={() => switchMode("resident", "map")} className="dp-panel-close rounded-md p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:p-2" aria-label="Close pass">
+              <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F] md:text-[10px] md:tracking-[0.16em]">{urlState.mode === "partner" ? "Partner scanner" : "Resident pass"}</span>
+              <button type="button" onClick={() => switchMode(urlState.mode, "map")} className="dp-panel-close rounded-md p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] md:p-2" aria-label="Close scanner">
                 <X className="h-4 w-4" />
               </button>
             </div>
             <div className="flex items-start justify-between gap-3 md:gap-4">
               <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F] md:text-[10px] md:tracking-[0.16em]">Resident pass</p>
-                <h2 className="mt-1 font-heading text-[24px] font-medium leading-none md:mt-1.5 md:text-[28px]">Downtown Perks Card</h2>
+                <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F] md:text-[10px] md:tracking-[0.16em]">{urlState.mode === "partner" ? "QR verification" : "Resident pass"}</p>
+                <h2 className="mt-1 font-heading text-[22px] font-medium leading-none md:mt-1.5 md:text-[26px]">
+                  {urlState.mode === "partner" ? "Scan Resident QR" : "Downtown Perks Card"}
+                </h2>
                 <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">
-                  Show the QR. The partner scans it. Your perk is confirmed right there.
+                  {urlState.mode === "partner"
+                    ? "Scan or test a resident QR to confirm access, perks, events, or front desk moments."
+                    : "Show the QR. The partner scans it. Your perk is confirmed right there."}
                 </p>
               </div>
             </div>
@@ -2314,20 +2318,22 @@ export default function MapPage() {
                 <CreditCard className="h-5 w-5 text-[#B38F4F]" />
                 <div className="text-[10px] uppercase tracking-[0.18em] text-white/58">Downtown Perks</div>
               </div>
-              <div className="mt-1.5 text-lg font-semibold leading-tight">Resident Access</div>
+              <div className="mt-1.5 text-base font-semibold leading-tight">{urlState.mode === "partner" ? "Partner Scanner" : "Resident Access"}</div>
               <div className="mt-3 rounded-md bg-white/10 p-2 text-[11px] leading-5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
                 {scanStatus === "verified"
                   ? "Verified. The partner can apply the perk."
                   : passPresented
                     ? "Pass ready to present."
-                    : "Tap Present Pass when you are ready to redeem."}
+                    : urlState.mode === "partner"
+                      ? "Use the scanner to verify a resident code."
+                      : "Tap Present Pass when you are ready to redeem."}
               </div>
             </div>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               <div className="dp-soft-panel p-2.5">
                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">
                   <QrCode className="h-3.5 w-3.5 text-[#B38F4F]" />
-                  Resident shows
+                  {urlState.mode === "partner" ? "Demo resident QR" : "Resident shows"}
                 </div>
                 <div className="mt-2">
                   <DemoQrTile />
@@ -2339,7 +2345,7 @@ export default function MapPage() {
               <div className="dp-soft-panel p-2.5">
                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">
                   <ScanLine className="h-3.5 w-3.5 text-[#B38F4F]" />
-                  Partner scans
+                  {urlState.mode === "partner" ? "Scanner" : "Partner scans"}
                 </div>
                 <div className="mt-2 rounded-md bg-[#0B1F33] p-2.5 text-white shadow-[0_18px_42px_rgba(11,31,51,0.18),0_0_30px_rgba(179,143,79,0.10)]">
                   <div className={`flex h-16 items-center justify-center rounded-md bg-white/8 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.09)] transition ${scanStatus === "scanning" ? "animate-pulse" : ""}`}>
@@ -2375,11 +2381,11 @@ export default function MapPage() {
                 </div>
               </div>
             </div>
-            <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1">
-              <button type="button" onClick={() => setPassPresented(true)} className="dp-pass-action dp-pass-action-primary">{passPresented ? "Pass Ready" : "Present Pass"}</button>
+            <div className="mt-3 flex gap-1.5 overflow-x-auto pb-[calc(3.25rem+env(safe-area-inset-bottom))] md:pb-1">
+              <button type="button" onClick={() => setPassPresented(true)} className="dp-pass-action dp-pass-action-primary">{urlState.mode === "partner" ? "Ready Scanner" : passPresented ? "Pass Ready" : "Present Pass"}</button>
               <button type="button" onClick={() => setWalletAdded(true)} className="dp-pass-action">{walletAdded ? "Wallet Added" : "Add Wallet"}</button>
               <button type="button" onClick={() => navigate("/map?mode=resident&tab=map&filter=Perks")} className="dp-pass-action">Perks</button>
-              <button type="button" onClick={() => switchMode("partner")} className="dp-pass-action">Partner View</button>
+              <button type="button" onClick={() => switchMode(urlState.mode === "partner" ? "resident" : "partner", "pass")} className="dp-pass-action">{urlState.mode === "partner" ? "Resident View" : "Partner View"}</button>
             </div>
           </motion.section>
         </div>
@@ -2457,6 +2463,19 @@ export default function MapPage() {
               >
                 <CreditCard className="h-3 w-3 text-[#B38F4F] md:h-3.5 md:w-3.5" />
                 Card
+              </button>
+            )}
+            {urlState.mode === "partner" && (
+              <button
+                type="button"
+                onClick={() => switchMode("partner", "pass")}
+                className={`inline-flex h-5 shrink-0 items-center justify-center gap-1.5 px-0 text-[9px] font-semibold uppercase tracking-[0.13em] transition md:h-6 md:text-[10px] ${
+                  urlState.tab === "pass" ? "border-b border-[#B38F4F] text-[#0B1F33]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]"
+                }`}
+                aria-pressed={urlState.tab === "pass"}
+              >
+                <ScanLine className="h-3 w-3 text-[#B38F4F] md:h-3.5 md:w-3.5" />
+                Scan
               </button>
             )}
           </nav>
