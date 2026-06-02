@@ -16,6 +16,7 @@ import {
   ScanLine,
   Search,
   Send,
+  Share2,
   ShieldCheck,
   Sparkles,
   X,
@@ -853,7 +854,7 @@ function BusinessServiceDetails({ place }) {
             <Building2 className="h-3.5 w-3.5 text-[#B38F4F]" />
             {panel.eyebrow || "Local service"}
           </div>
-          <h3 className="mt-1 font-heading text-xl font-medium text-[#0B1F33]">
+          <h3 className="mt-1 text-[17px] font-semibold leading-tight text-[#0B1F33]">
             {panel.title || "Useful downtown service"}
           </h3>
           <p className="mt-1.5 max-w-2xl text-[13px] leading-5 text-[#425466]">
@@ -920,7 +921,7 @@ function ResidentPerkDetails({ place }) {
             <Gift className="h-3.5 w-3.5 text-[#B38F4F]" />
             {sectionLabel}
           </div>
-          <h3 className="mt-1 font-heading text-xl font-medium text-[#0B1F33]">
+          <h3 className="mt-1 text-[17px] font-semibold leading-tight text-[#0B1F33]">
             {perk.offer}
           </h3>
           <p className="mt-1.5 max-w-2xl text-[13px] leading-5 text-[#425466]">
@@ -956,7 +957,7 @@ function HappyHourDetails({ place }) {
             <Gift className="h-3.5 w-3.5 text-[#B38F4F]" />
             Happy hour
           </div>
-          <h3 className="mt-1 font-heading text-xl font-medium text-[#0B1F33]">{venueName}</h3>
+          <h3 className="mt-1 text-[17px] font-semibold leading-tight text-[#0B1F33]">{venueName}</h3>
           <p className="mt-1.5 text-[13px] leading-5 text-[#425466]">{details}</p>
         </div>
         <div className="shrink-0 rounded-md bg-[#0B1F33] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.09em] text-white shadow-[0_0_22px_rgba(179, 143, 79, 0.08),inset_0_0_0_1px_rgba(179, 143, 79, 0.08)]">
@@ -1221,7 +1222,7 @@ function PartnerBusinessInsights({ place }) {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">Partner view</div>
-          <h3 className="mt-1 font-heading text-[22px] font-medium leading-tight text-[#0B1F33] md:text-2xl">What this place can help you understand</h3>
+          <h3 className="mt-1 text-[22px] font-semibold leading-tight text-[#0B1F33] md:text-2xl">What this place can help you understand</h3>
         </div>
         <div className="text-[10px] font-semibold uppercase tracking-[0.13em] text-[#0B1F33]/70 md:text-[11px]">
           {insights.placement}
@@ -1282,7 +1283,7 @@ function PartnerMetricInsight({ place, selectedMetric, onSelectMetric }) {
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">Intel</div>
-          <h3 className="mt-1 font-heading text-[22px] font-medium leading-tight text-[#0B1F33] md:text-2xl">{activeInsight.title}</h3>
+          <h3 className="mt-1 text-[22px] font-semibold leading-tight text-[#0B1F33] md:text-2xl">{activeInsight.title}</h3>
           <p className="mt-2 max-w-2xl text-[13px] leading-5 text-[#425466]">{activeInsight.body}</p>
         </div>
       </div>
@@ -1503,7 +1504,7 @@ export default function MapPage() {
   const [scanStatus, setScanStatus] = useState("idle");
   const [resultsExpanded, setResultsExpanded] = useState(false);
   const [activeBottomTab, setActiveBottomTab] = useState("map");
-  const [selectedDrawerTab, setSelectedDrawerTab] = useState("details");
+  const [selectedDrawerTab, setSelectedDrawerTab] = useState("overview");
   const [clusterDrawer, setClusterDrawer] = useState(null);
   const [mapZoom, setMapZoom] = useState(INITIAL_MAP_ZOOM);
   const [consoleCollapsed, setConsoleCollapsed] = useState(false);
@@ -1549,8 +1550,8 @@ export default function MapPage() {
   }, [urlState.entityId]);
 
   useEffect(() => {
-    setSelectedDrawerTab("details");
-  }, [selectedId]);
+    setSelectedDrawerTab(urlState.mode === "partner" ? "details" : "overview");
+  }, [selectedId, urlState.mode]);
 
   useEffect(() => {
     setAgentFormPlaceId("");
@@ -1742,6 +1743,20 @@ export default function MapPage() {
     });
   }
 
+  function sharePlace(place) {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?mode=${urlState.mode}&tab=map&entityId=${encodeURIComponent(place.id)}`;
+    const shareData = {
+      title: place.name,
+      text: `${place.name} on Downtown Perks`,
+      url: shareUrl,
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {});
+      return;
+    }
+    navigator.clipboard?.writeText(shareUrl);
+  }
+
   function toggleRsvp(place) {
     if (eventRsvps.some((item) => item.id === place.id)) {
       removeEventRsvp(place.id);
@@ -1925,7 +1940,7 @@ export default function MapPage() {
                   <Sparkles className="h-3 w-3 text-[#B38F4F] md:h-3.5 md:w-3.5" />
                   {urlState.mode === "partner" ? "PARTNER MAP AGENT" : "RESIDENT MAP AGENT"}
                 </div>
-                <h1 className="mt-0.5 truncate font-heading text-[16px] font-medium leading-tight text-[#0B1F33] md:text-[22px]">
+                <h1 className="mt-0.5 truncate text-[16px] font-semibold leading-tight text-[#0B1F33] md:text-[22px]">
                   {activePrompt}
                 </h1>
               </div>
@@ -2300,7 +2315,7 @@ export default function MapPage() {
             <div className="flex items-start justify-between gap-3 md:gap-4">
               <div>
                 <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F] md:text-[10px] md:tracking-[0.16em]">Resident pass</p>
-                <h2 className="mt-1 font-heading text-[24px] font-medium leading-none md:mt-1.5 md:text-[28px]">Downtown Perks Card</h2>
+                <h2 className="mt-1 text-[24px] font-semibold leading-none md:mt-1.5 md:text-[28px]">Downtown Perks Card</h2>
                 <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">
                   Show the QR. The partner scans it. Your perk is confirmed right there.
                 </p>
@@ -2608,17 +2623,44 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell fixed inset-x-0 bottom-0 z-[650] mx-auto flex max-h-[76vh] min-h-0 w-full max-w-4xl flex-col overflow-hidden rounded-t-xl md:inset-x-auto md:bottom-4 md:right-4 md:max-h-[85vh] md:w-[460px] md:rounded-[12px]"
+            className="dp-panel-shell dp-resident-detail-drawer fixed inset-x-0 bottom-0 z-[650] mx-auto flex max-h-[85vh] min-h-0 w-full max-w-4xl flex-col overflow-hidden rounded-t-[18px] md:inset-x-auto md:bottom-4 md:right-4 md:w-[460px] md:rounded-[12px]"
             role="dialog"
             aria-modal="true"
             aria-label={`${selected.name} details`}
           >
-            <div className="dp-panel-header shrink-0">
-              <div className="mx-auto mt-1.5 h-0.5 w-10 rounded-full bg-[#0B1F33]/14 md:mt-2 md:h-1 md:w-12" aria-hidden="true" />
-              <div className="flex items-center justify-between gap-2 px-3 py-2 md:gap-3 md:px-4 md:py-2.5">
-                <span className="min-w-0 flex-1 truncate text-[10px] font-semibold uppercase tracking-[0.13em] text-[#B38F4F] md:text-xs md:tracking-[0.16em]">
-                  {urlState.mode === "partner" ? "Partner details" : "Perks and details"}
-                </span>
+            <div className="dp-panel-header shrink-0 px-5 pb-3 pt-3 md:px-6 md:pb-4">
+              <div className="mx-auto mb-3 h-1 w-11 rounded-full bg-[#0B1F33]/18" aria-hidden="true" />
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">
+                    <span>{selected.category || "Downtown place"}</span>
+                    <span className="text-[#0B1F33]/28" aria-hidden="true">·</span>
+                    <span>{selected.raw?.hours || selected.hours ? "Open today" : "Nearby"}</span>
+                  </div>
+                  <h2 className="mt-2 truncate text-[23px] font-semibold leading-[1.1] tracking-[-0.025em] text-[#0B1F33] md:text-[25px]">
+                    {selected.name}
+                  </h2>
+                  <p className="mt-2 text-[14px] leading-[1.58] text-[#0B1F33]/66 md:text-[15px]">
+                    {urlState.mode === "partner"
+                      ? "A quick read on nearby demand, audience fit, and the moments this location can own."
+                      : selected.raw?.summary || "A nearby downtown place worth saving, checking out, or adding to your plans."}
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-[12px] font-medium leading-snug text-[#0B1F33]/52 md:text-[13px]">
+                    {selected.address && <span>{selected.address}</span>}
+                    {selected.district && (
+                      <>
+                        <span className="text-[#0B1F33]/24" aria-hidden="true">·</span>
+                        <span>{selected.district}</span>
+                      </>
+                    )}
+                    {(selected.raw?.hours || selected.hours) && (
+                      <>
+                        <span className="text-[#0B1F33]/24" aria-hidden="true">·</span>
+                        <span>{selected.raw?.hours || selected.hours}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={() => {
@@ -2632,11 +2674,36 @@ export default function MapPage() {
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <div className="mt-0.5 flex gap-4 overflow-x-auto px-3 pb-2 md:mt-1 md:px-4 md:pb-2.5">
+              {urlState.mode === "resident" && (
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  <button type="button" onClick={() => toggleSaved(selected)} className="dp-drawer-action dp-drawer-action-compact">
+                    {savedIds.has(selected.id) ? "Saved" : "Save"}
+                  </button>
+                  <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-drawer-action dp-drawer-action-compact">
+                    Directions
+                  </a>
+                  <button type="button" onClick={() => sharePlace(selected)} className="dp-drawer-action dp-drawer-action-compact">
+                    <Share2 className="h-3.5 w-3.5" />
+                    Share
+                  </button>
+                </div>
+              )}
+              <div className="mt-3 flex h-[42px] gap-5 overflow-x-auto border-b border-[#0B1F33]/8">
+                {urlState.mode === "resident" && ["overview", "perks", "events", "nearby", "details", "contact"].map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setSelectedDrawerTab(tab)}
+                    className={`dp-map-tab ${selectedDrawerTab === tab ? "is-active" : ""}`}
+                    aria-pressed={selectedDrawerTab === tab}
+                  >
+                    {tab}
+                  </button>
+                ))}
                 <button
                   type="button"
                   onClick={() => setSelectedDrawerTab("details")}
-                  className={`dp-panel-tab ${selectedDrawerTab === "details" ? "is-active" : ""} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]`}
+                  className={`dp-panel-tab ${selectedDrawerTab === "details" ? "is-active" : ""} ${urlState.mode === "resident" ? "hidden" : ""} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]`}
                   aria-pressed={selectedDrawerTab === "details"}
                 >
                   Details
@@ -2656,10 +2723,10 @@ export default function MapPage() {
                   onClick={() => {
                     setSelectedId("");
                     setActiveBottomTab("map");
-                    setSelectedDrawerTab("details");
+                    setSelectedDrawerTab(urlState.mode === "partner" ? "details" : "overview");
                     urlState.update({ entityId: "" });
                   }}
-                  className="dp-panel-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                  className={`dp-panel-tab ${urlState.mode === "resident" ? "hidden" : ""} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]`}
                 >
                   Map
                 </button>
@@ -2667,30 +2734,15 @@ export default function MapPage() {
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 [-webkit-overflow-scrolling:touch] md:px-4 md:pb-[calc(1rem+env(safe-area-inset-bottom))] md:pt-4">
-            <div className="grid gap-3 md:grid-cols-[200px_1fr] md:items-start md:gap-4">
-              <div className="group relative h-32 w-full overflow-hidden rounded-[10px] shadow-[0_12px_30px_rgba(11,31,51,.09),0_0_28px_rgba(179,143,79,0.07)] sm:h-36 md:h-40 md:rounded-[14px] md:shadow-[0_16px_40px_rgba(11,31,51,.10),0_0_36px_rgba(179,143,79,0.08)]">
+            <div className="group relative aspect-[16/10] max-h-[min(30vh,190px)] w-full overflow-hidden rounded-[12px] shadow-[0_10px_30px_rgba(11,31,51,0.045)]">
                 <img
                   src={getLifestyleImage(selected, urlState.mode)}
                   alt={`${selected.name} downtown context`}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.01]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F33]/30 via-transparent to-transparent" />
                 <div className="absolute bottom-2 left-2">
                   <PinBadge place={selected} selected />
                 </div>
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.13em] text-[#B38F4F] md:gap-2 md:text-xs md:tracking-[0.16em]">
-                  <MapPin className="h-3.5 w-3.5 text-[#B38F4F] md:h-4 md:w-4" />
-                  {selected.category} · {selected.district}
-                </div>
-                <h2 className="mt-2 font-heading text-2xl font-medium md:mt-3 md:text-3xl">{selected.name}</h2>
-                <p className="mt-2 max-w-2xl text-[13px] leading-5 text-[#425466] md:mt-3 md:leading-6">
-                  {urlState.mode === "partner"
-                    ? "A quick read on nearby demand, audience fit, and the moments this location can own."
-                    : selected.raw?.summary || "A nearby downtown place connected to resident access, walkability, perks, events, and local context."}
-                </p>
-              </div>
             </div>
 
             {urlState.mode === "partner" ? (
@@ -2742,17 +2794,145 @@ export default function MapPage() {
                   const isService = entityKind === "service";
                   const isHappyHour = entityKind === "happy_hour";
                   const isPerk = entityKind === "perk" || entityKind === "place" || entityKind === "hotel" || entityKind === "brand" || isHappyHour;
+                  const activeResidentDrawerTab = ["overview", "perks", "events", "nearby", "details", "contact"].includes(selectedDrawerTab) ? selectedDrawerTab : "overview";
+                  const nearbyPlaces = places
+                    .filter((place) => place.id !== selected.id && place.district === selected.district)
+                    .slice(0, 4);
+                  const detailRows = [
+                    ["Address", selected.address || "Downtown Austin"],
+                    ["Hours", selected.raw?.hours || selected.hours || "Check before you go"],
+                    ["Phone", selected.raw?.contact_phone || selected.phone || "Not listed"],
+                    ["Website", selected.raw?.website || selected.website || "Not listed"],
+                    ["Category", selected.category || "Downtown place"],
+                    ["Neighborhood", selected.district || "Downtown Austin"],
+                  ];
                   return (
                     <>
-                      {legendsListing ? (
-                        <LegendsListingDetails listing={legendsListing} />
-                      ) : isService ? (
-                        <BusinessServiceDetails place={selected} />
-                      ) : isHappyHour ? (
-                        <HappyHourDetails place={selected} />
-                      ) : (
-                        <ResidentPerkDetails place={selected} />
+                      {activeResidentDrawerTab === "overview" && (
+                        <section className="mt-4 space-y-3">
+                          <div className="dp-soft-panel p-4">
+                            <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">Overview</div>
+                            <p className="mt-2 text-[14px] leading-[1.6] text-[#0B1F33]/66">
+                              {selected.raw?.summary || "Save this place, get directions, and keep it close when you are planning around downtown."}
+                            </p>
+                          </div>
+                          <div className="dp-soft-panel p-4">
+                            <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">Nearby</div>
+                            <p className="mt-2 text-[14px] leading-[1.6] text-[#0B1F33]/66">
+                              Useful when you are already around {selected.district || "downtown"} and want one clear next stop.
+                            </p>
+                          </div>
+                        </section>
                       )}
+
+                      {activeResidentDrawerTab === "perks" && (
+                        legendsListing ? (
+                          <LegendsListingDetails listing={legendsListing} />
+                        ) : isService ? (
+                          <BusinessServiceDetails place={selected} />
+                        ) : isHappyHour ? (
+                          <HappyHourDetails place={selected} />
+                        ) : (
+                          <ResidentPerkDetails place={selected} />
+                        )
+                      )}
+
+                      {activeResidentDrawerTab === "events" && (
+                        <section className="mt-4 dp-soft-panel p-4">
+                          <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">Events</div>
+                          {isEvent ? (
+                            <>
+                              <h3 className="mt-2 text-[17px] font-semibold leading-tight text-[#0B1F33]">{selected.name}</h3>
+                              <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.08em] text-[#0B1F33]/58">
+                                {selected.date || "Upcoming"} · {selected.time || selected.raw?.time || "Time TBA"}
+                              </p>
+                              <p className="mt-2 text-[14px] leading-[1.55] text-[#0B1F33]/66">
+                                {selected.description || selected.raw?.summary || "A downtown event you can save and add to your plans."}
+                              </p>
+                              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                                <button type="button" onClick={() => toggleRsvp(selected)} className="dp-drawer-action dp-drawer-action-primary">
+                                  {eventRsvps.some((item) => item.id === selected.id) ? "Cancel RSVP" : "RSVP"}
+                                </button>
+                                <a
+                                  href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(selected.name)}&details=${encodeURIComponent(selected.description || selected.raw?.summary || "Downtown Perks event")}&location=${encodeURIComponent(selected.address || selected.district || "Downtown Austin")}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="dp-drawer-action"
+                                >
+                                  Add to Calendar
+                                </a>
+                              </div>
+                            </>
+                          ) : (
+                            <p className="mt-2 text-[14px] leading-[1.6] text-[#0B1F33]/66">Nothing scheduled right now.</p>
+                          )}
+                        </section>
+                      )}
+
+                      {activeResidentDrawerTab === "nearby" && (
+                        <section className="mt-4 space-y-2">
+                          <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">Nearby</div>
+                          {nearbyPlaces.length ? nearbyPlaces.map((place) => (
+                            <button
+                              key={place.id}
+                              type="button"
+                              onClick={() => selectPlace(place)}
+                              className="dp-panel-row grid min-h-[76px] w-full grid-cols-[1fr_auto] items-center gap-3 p-3 text-left"
+                            >
+                              <span className="min-w-0">
+                                <span className="block truncate text-[15px] font-semibold leading-tight text-[#0B1F33]">{place.name}</span>
+                                <span className="mt-1 block truncate text-[12px] font-medium text-[#0B1F33]/52">{place.category || "Downtown place"} · {place.district}</span>
+                                <span className="mt-1 block truncate text-[13px] text-[#0B1F33]/62">Worth checking out nearby.</span>
+                              </span>
+                              <ArrowRight className="h-4 w-4 text-[#0B1F33]/42" />
+                            </button>
+                          )) : (
+                            <div className="dp-soft-panel p-4 text-[14px] leading-[1.6] text-[#0B1F33]/66">Try a nearby place.</div>
+                          )}
+                        </section>
+                      )}
+
+                      {activeResidentDrawerTab === "details" && (
+                        <section className="mt-4 dp-soft-panel p-4">
+                          <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">Details</div>
+                          <dl className="mt-3 grid gap-3">
+                            {detailRows.map(([label, value]) => (
+                              <div key={label} className="grid gap-1 border-b border-[#0B1F33]/6 pb-2 last:border-b-0 last:pb-0">
+                                <dt className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</dt>
+                                <dd className="text-[14px] leading-[1.55] text-[#0B1F33]/72">{value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </section>
+                      )}
+
+                      {activeResidentDrawerTab === "contact" && (
+                        <section className="mt-4 dp-soft-panel p-4">
+                          <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C8A96A]">Contact</div>
+                          <p className="mt-2 text-[14px] leading-[1.6] text-[#0B1F33]/66">
+                            Use the website, directions, or contact option connected to this place.
+                          </p>
+                          <div className="mt-3 grid gap-2">
+                            {(selected.raw?.website || selected.website) && (
+                              <a href={selected.raw?.website || selected.website} target="_blank" rel="noreferrer" className="dp-drawer-action dp-drawer-action-primary">Website</a>
+                            )}
+                            {isProperty && !legendsListing && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setAgentFormPlaceId(selected.id);
+                                  setAgentFormSubmitted(false);
+                                }}
+                                className="dp-drawer-action dp-drawer-action-primary"
+                              >
+                                Contact Agent
+                              </button>
+                            )}
+                            <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-drawer-action">Directions</a>
+                          </div>
+                        </section>
+                      )}
+
                       <div className="dp-resident-action-rail mt-4">
                         {isProperty && !legendsListing && (
                           <button
@@ -2776,12 +2956,6 @@ export default function MapPage() {
                             Show Card
                           </button>
                         )}
-                        <button type="button" onClick={() => toggleSaved(selected)} className="dp-drawer-action">
-                          {isService ? (savedIds.has(selected.id) ? "Saved" : "Save") : (savedIds.has(selected.id) ? "Added to Card" : "Save to Card")}
-                        </button>
-                        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-drawer-action">
-                          Get Directions
-                        </a>
                         {selectedResidentAction && (
                           <Link to={selectedResidentAction.href} className="dp-drawer-action">
                             {selectedResidentAction.label}
