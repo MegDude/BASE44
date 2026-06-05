@@ -997,23 +997,30 @@ body.dp-splash-lock {
   z-index: 3;
   display: inline-flex;
   height: 36px;
+  min-width: 120px;
   align-items: center;
   justify-content: center;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.72);
-  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(11, 31, 51, 0.34);
+  color: rgba(255, 255, 255, 0.86);
+  padding: 0 14px;
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   opacity: 0;
   transform: translateY(-8px);
   animation: dpOpeningFadeUp 520ms cubic-bezier(0.22, 1, 0.36, 1) 420ms forwards;
 }
 
 .dp-opening-skip:hover {
+  border-color: rgba(200, 169, 106, 0.5);
+  background: rgba(11, 31, 51, 0.48);
   color: #FFFFFF;
 }
 
@@ -1141,6 +1148,42 @@ body.dp-splash-lock {
 
 .dp-skip-link:focus {
   transform: translateY(0);
+}
+
+.dp-story-skip {
+  position: fixed;
+  right: clamp(16px, 2vw, 28px);
+  bottom: max(18px, calc(env(safe-area-inset-bottom) + 18px));
+  z-index: 118;
+  display: inline-flex;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #0B1F33;
+  padding: 0 14px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.06);
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dp-story-skip svg {
+  color: #C8A96A;
+}
+
+.dp-story-skip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(200, 169, 106, 0.38);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .dp-scene-topbar {
@@ -2495,6 +2538,20 @@ body.dp-splash-lock {
 
   .dp-scene-actions {
     margin-top: 18px;
+  }
+
+  .dp-opening-skip,
+  .dp-story-skip {
+    right: 14px;
+    height: 34px;
+    min-width: 0;
+    padding-inline: 12px;
+    font-size: 10px;
+    letter-spacing: 0.11em;
+  }
+
+  .dp-story-skip {
+    bottom: max(14px, calc(env(safe-area-inset-bottom) + 14px));
   }
 
   .dp-scene-footer {

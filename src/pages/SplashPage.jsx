@@ -474,7 +474,7 @@ export default function SplashPage() {
           <div className="dp-opening-video-overlay" aria-hidden="true" />
           <div className="dp-opening-gradient" aria-hidden="true" />
           <button type="button" className="dp-opening-skip" onClick={finishIntro}>
-            Skip
+            Skip animation
           </button>
           <div className="dp-opening-copy">
             <div className="dp-opening-label">
@@ -497,6 +497,13 @@ export default function SplashPage() {
       </a>
 
       <SplashNavigation isOpen={mobileNavOpen} setIsOpen={setMobileNavOpen} />
+
+      {!showIntro && (
+        <Link className="dp-story-skip" to="/map?mode=resident&tab=map">
+          Skip story
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      )}
 
       <aside className="dp-scene-steps" aria-label="Intro scenes">
         <ol>
