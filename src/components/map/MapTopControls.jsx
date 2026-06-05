@@ -75,7 +75,7 @@ export default function MapTopControls() {
                 className={`h-10 px-3.5 rounded-xl border text-[12px] font-medium shrink-0 transition-all ${
                   filters.category === cat.id
                     ? 'bg-[#0B1F33] text-white border-[#0B1F33]'
-                    : 'bg-white text-[#0B1F33]/70 border-[#0B1F33]/8 hover:border-[#B38F4F]/45'
+                    : 'bg-white text-[#0B1F33]/70 border-[#0B1F33]/8 hover:border-[#C8A96A]/45'
                 }`}
               >
                 {cat.label}
@@ -90,7 +90,7 @@ export default function MapTopControls() {
                 setQueryFilter('');
                 setExplanation('');
               }}
-              className="w-8 h-8 rounded-lg border border-[#0B1F33]/8 bg-white flex items-center justify-center hover:bg-[#F7F8FB] transition-colors"
+              className="w-8 h-8 rounded-lg border border-[#0B1F33]/8 bg-white flex items-center justify-center hover:bg-white transition-colors"
             >
               <X className="w-3.5 h-3.5 text-[#0B1F33]" />
             </button>
@@ -99,7 +99,7 @@ export default function MapTopControls() {
           {/* Filter menu toggle (mobile) */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="h-10 px-3.5 rounded-xl border border-[#0B1F33]/8 bg-white text-[12px] font-medium text-[#0B1F33]/70 hover:bg-[#F7F8FB] transition-all md:hidden"
+            className="h-10 px-3.5 rounded-xl border border-[#0B1F33]/8 bg-white text-[12px] font-medium text-[#0B1F33]/70 hover:bg-white transition-all md:hidden"
           >
             <Settings className="w-4 h-4" />
           </button>
@@ -155,7 +155,7 @@ export default function MapTopControls() {
                     setShowFilters(false);
                   }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-all ${
-                    filters.category === cat.id ? 'bg-[#0B1F33] text-white' : 'text-[#0B1F33]/70 hover:bg-[#F7F8FB]'
+                    filters.category === cat.id ? 'bg-[#0B1F33] text-white' : 'text-[#0B1F33]/70 hover:bg-white'
                   }`}
                 >
                   {cat.label}

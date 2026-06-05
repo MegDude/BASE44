@@ -22,10 +22,10 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         gold: {
-          DEFAULT: '#B38F4F',
-          light: '#B38F4F',
-          dark: '#B38F4F',
-          muted: '#B38F4F',
+          DEFAULT: '#C8A96A',
+          light: '#C8A96A',
+          dark: '#C8A96A',
+          muted: '#C8A96A',
         },
         navy: {
           DEFAULT: '#0B1F33',

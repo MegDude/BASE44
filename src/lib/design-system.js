@@ -3,7 +3,7 @@
  * 
  * Foundation:
  * - Token-based color system (index.css, tailwind.config.js)
- * - Typography: Canela only for H1 hero and major H2 editorial headlines; Inter everywhere else
+ * - Typography: Playfair Display (heading), Inter (body)
  * - Spacing: compact 4px base unit grid (6px default radius)
  * - Motion: Framer Motion (precise, fast, purposeful)
  * - Surface system: architectural, light-touch, map-aware
@@ -61,10 +61,10 @@ export const TYPOGRAPHY = {
   sectionHeadline: "font-heading text-3xl md:text-4xl font-medium leading-[1.1] tracking-normal",
   
   // Subsection headlines
-  subsectionHeadline: "font-body text-2xl md:text-3xl font-semibold leading-[1.15] tracking-normal",
+  subsectionHeadline: "font-heading text-2xl md:text-3xl font-medium leading-[1.15] tracking-normal",
   
   // Card/module headlines
-  cardHeadline: "font-body text-lg md:text-xl font-semibold leading-[1.2]",
+  cardHeadline: "font-heading text-lg md:text-xl font-medium leading-[1.2]",
   
   // Body text (standard)
   bodyLarge: "text-[15px] md:text-base leading-[1.7]",
@@ -143,11 +143,11 @@ export const SURFACES = {
 
   // Solid card surfaces
   cardPrimary: "bg-white/82 border border-[#0B1F33]/8 rounded-[6px] shadow-[0_14px_34px_rgba(11,31,51,0.04)]",
-  cardMuted: "bg-[#F7F8FB] rounded-[6px]",
-  cardSelected: "bg-[#0B1F33]/10 border border-[#B38F4F]/50 rounded-[6px]",
+  cardMuted: "bg-white rounded-[6px]",
+  cardSelected: "bg-[#0B1F33]/10 border border-[#C8A96A]/50 rounded-[6px]",
 
   // Brutalist emphasis (proof, ROI, statements)
-  brutalistDark: "bg-slate-950 text-white rounded-3xl",
+  brutalistDark: "bg-[#0B1F33] text-white rounded-3xl",
   brutalistContrast: "bg-navy-900 border-2 border-primary rounded-2xl",
 
   // Minimal divider
@@ -166,7 +166,7 @@ export const STATES = {
   cardHover: "hover:border-border hover:shadow-md transition-all duration-200",
   
   // Active state
-  active: "text-[#0B1F33] border-[#B38F4F]/50 bg-[#0B1F33]/10",
+  active: "text-[#0B1F33] border-[#C8A96A]/50 bg-[#0B1F33]/10",
   
   // Disabled state
   disabled: "opacity-50 cursor-not-allowed pointer-events-none",

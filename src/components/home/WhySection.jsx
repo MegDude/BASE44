@@ -66,7 +66,7 @@ export default function WhySection() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.7, delay: 0.12 + index * 0.1 }}
-                className="border border-[#0B1F33]/8 bg-[#F7F8FB] p-5 md:p-6"
+                className="border border-[#0B1F33]/8 bg-white p-5 md:p-6"
               >
                 <div className="mb-5 flex h-10 w-10 items-center justify-center border border-primary/15 bg-white text-primary">
                   <Icon className="h-4 w-4" />

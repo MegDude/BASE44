@@ -54,14 +54,14 @@ export default function ResidentPlanTab({ user }) {
                 Plans you’ve said yes to from the Downtown Perks calendar.
               </p>
             </div>
-            <Link to="/events" className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/64 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33]">
+            <Link to="/events" className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/64 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]">
               Add plans
             </Link>
           </div>
           <div className="mt-4 space-y-2">
             {rsvps.length ? (
               rsvps.slice(0, 4).map((event) => (
-                <div key={event.id} className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-3">
+                <div key={event.id} className="rounded-md border border-[#0B1F33]/8 bg-white p-3">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="truncate text-[13px] font-semibold text-[#0B1F33]">{event.title}</div>
@@ -74,7 +74,7 @@ export default function ResidentPlanTab({ user }) {
                     <button
                       type="button"
                       onClick={() => removeRsvp(event.id)}
-                      className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33]"
+                      className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
                     >
                       Remove
                     </button>
@@ -82,7 +82,7 @@ export default function ResidentPlanTab({ user }) {
                 </div>
               ))
             ) : (
-              <div className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-3 text-[13px] leading-6 text-[#0B1F33]/58">
+              <div className="rounded-md border border-[#0B1F33]/8 bg-white p-3 text-[13px] leading-6 text-[#0B1F33]/58">
                 No RSVPs yet. Open Events, pick something nearby, and it will show up here.
               </div>
             )}

@@ -24,7 +24,7 @@ export default function MapExplorer({
             {title}
           </h2>
           {description && (
-            <p className="text-[15px] text-[#6f6b65] max-w-2xl">{description}</p>
+            <p className="text-[15px] text-[#425466] max-w-2xl">{description}</p>
           )}
         </div>
 
@@ -35,10 +35,10 @@ export default function MapExplorer({
               <button
                 key={chip.id}
                 onClick={() => onFilterChange?.(chip.id)}
-                className={`px-4 py-2 rounded-full border text-[12px] font-medium transition-all ${
+                className={`rounded-[12px] border px-4 py-2 text-[12px] font-medium transition-all ${
                   activeFilter === chip.id
-                    ? 'border-[#0B1F33] bg-[#0B1F33] text-white'
-                    : 'border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#B38F4F]/45'
+                    ? 'border-[#C8A96A]/45 bg-white/82 text-[#0B1F33] shadow-[0_10px_28px_rgba(11,31,51,0.055)]'
+                    : 'border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#C8A96A]/45'
                 }`}
               >
                 {chip.label}
@@ -48,7 +48,7 @@ export default function MapExplorer({
         )}
 
         {/* Map */}
-        <div className={`${height} rounded-lg border border-[#0B1F33]/8 overflow-hidden shadow-lg`}>
+        <div className={`${height} overflow-hidden rounded-[28px] border border-[#0B1F33]/8 bg-white shadow-[0_24px_80px_rgba(11,31,51,0.08)]`}>
           <MapShell
             items={items}
             selected={selected}

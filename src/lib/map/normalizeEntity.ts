@@ -33,6 +33,9 @@ export type NormalizedEntity = {
   district: string;
   partnerType: PartnerType | string;
   address?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
   source?: string;
   brand?: string;
   raw?: Record<string, unknown>;
@@ -104,6 +107,9 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
     district: String(entity.district || inferDistrict(entity)),
     partnerType: String(entity.partnerType || type),
     address: typeof entity.address === "string" ? entity.address : undefined,
+    phone: typeof entity.contact_phone === "string" ? entity.contact_phone : typeof entity.phone === "string" ? entity.phone : undefined,
+    email: typeof entity.contact_email === "string" ? entity.contact_email : typeof entity.email === "string" ? entity.email : undefined,
+    website: typeof entity.website === "string" ? entity.website : undefined,
     source: typeof entity.source === "string" ? entity.source : undefined,
     brand: typeof entity.brand === "string" ? entity.brand : undefined,
     raw: entity,

@@ -1,455 +1,554 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  BarChart3,
-  BadgePercent,
-  CalendarDays,
-  Coffee,
-  MapPin,
-  Sparkles,
-} from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowDown, ArrowLeft, ArrowRight, MapPin, Menu, Sparkles, X } from "lucide-react";
 
-const VIDEO_SRC = "/videos/downtown-austin-drone-cinematic.mp4";
+const splashNavLinks = [
+  { label: "Resident Map", to: "/map?mode=resident&tab=map" },
+  { label: "Partner Map", to: "/map?mode=partner&tab=map&filter=All" },
+  { label: "Campaigns", to: "/partners/campaigns" },
+  { label: "Dashboard", to: "/partners/dashboard" },
+  { label: "Workspace", to: "/partner-workspace/overview" },
+  { label: "Pricing", to: "/pricing" },
+];
 
-const journeySteps = [
+const scenes = [
   {
+    id: "start",
     number: "01",
-    title: "What should we do?",
-    label: "Start nearby",
-    copy: "Someone downtown wants coffee, dinner, a workout, or something good to do tonight.",
-    image: "/images/residents/downtown-rooftop-evening.png",
-    icon: Coffee,
+    nav: "Start",
+    eyebrow: "Start here",
+    label: "Downtown Perks",
+    title: ["More charm than", "a biscuit with honey."],
+    subtitle: ["Downtown Perks brings the heat", "and the hospitality."],
+    body: [
+      "Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.",
+    ],
+    primary: { label: "Explore Downtown", to: "/map?mode=resident&tab=map" },
+    secondary: "Show me",
+    startStage: true,
   },
   {
+    id: "idea",
     number: "02",
-    title: "See what is close.",
-    label: "Open the map",
-    copy: "Nearby places, events, perks, and local favorites show up in one simple view.",
-    image: "/images/splash/walkable-map.png",
-    icon: MapPin,
+    nav: "The idea",
+    eyebrow: "Downtown should be easier to use",
+    title: ["The coffee shop you keep meaning to try.", "The workout class you always hear about too late.", "The rooftop before it gets crowded."],
+    body: [
+      "The happy hour two blocks away.",
+      "The local business you pass all the time until someone finally says, \"Wait - you've never been there?\"",
+    ],
+    variant: "list",
   },
   {
+    id: "features",
     number: "03",
-    title: "Pick the next move.",
-    label: "Choose the moment",
-    copy: "Save a spot, RSVP to an event, or pick the place that fits right now.",
-    image: "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
-    icon: CalendarDays,
+    nav: "What you get",
+    eyebrow: "Why it gets messy",
+    title: ["Most things already exist.", "They're just scattered."],
+    body: [
+      "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
+      "So we built one map to bring everything together.",
+    ],
+    movedCopy: "For the people planning around rooftop weather, happy hour, workout classes, taco runs, live music, and \"just one drink\" that turns into the whole night.",
+    variant: "center",
   },
   {
+    id: "explore",
     number: "04",
-    title: "Show the card or use the perk.",
-    label: "Use access",
-    copy: "No complicated steps. Find it, use it, and go.",
-    image: "/images/splash/resident-access.jpeg",
-    icon: BadgePercent,
+    nav: "Explore",
+    eyebrow: "What you can find",
+    title: ["Everything nearby.", "Coffee before work.", "The workout class after.", "The rooftop when the weather is right.", "All in one place."],
+    body: [
+      "The restaurant you've been meaning to try.",
+      "The event someone texts you about at 6:17 PM.",
+    ],
+    variant: "stack",
+    primary: { label: "Enter Resident View", to: "/map?mode=resident&tab=map" },
   },
   {
+    id: "partners",
     number: "05",
-    title: "Partners see what worked.",
-    label: "Partner insights",
-    copy: "Local businesses can see what people saved, used, RSVP’d to, or checked out.",
-    image: "/images/splash/walkable-map.png",
-    icon: BarChart3,
+    nav: "Partners",
+    eyebrow: "For the people part of the plan",
+    title: ["Whether you're making plans", "or part of them."],
+    body: [
+      "Downtown Perks helps residents make better plans faster - while helping local businesses stay relevant in the moments that actually matter.",
+      "And when you choose local, you unlock perks, offers, rewards, and little extras from the places that keep downtown interesting.",
+      "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
+    ],
+    variant: "closing",
+    primary: { label: "Open Partner Map", to: "/map?mode=partner&tab=map&filter=All" },
+  },
+  {
+    id: "come-in",
+    number: "06",
+    nav: "Come in",
+    eyebrow: "Ready when you are",
+    title: ["So come on in.", "Open the map."],
+    variant: "final",
+    closing: ["And maybe grab something cold", "while you're at it."],
+    primary: { label: "Explore Downtown", to: "/map?mode=resident&tab=map" },
   },
 ];
 
-function EditorialReveal({ children, className = "", delay = 0, amount = 0.22 }) {
-  const reduceMotion = useReducedMotion();
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
 
+function SceneHeader({ scene, progress, isActive, isLast, go }) {
   return (
-    <motion.div
-      className={className}
-      initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(5px)" }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, amount, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.56, delay: reduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <div className="dp-scene-kicker">
+      <div className="dp-scene-kicker-copy">
+        <span>{scene.number}</span>
+        <i aria-hidden="true" />
+        <em>{scene.eyebrow}</em>
+      </div>
+      {isActive && (
+        <div className="dp-scene-kicker-action">
+          <span aria-label="Progress">{progress}</span>
+          <button type="button" onClick={() => go(1)} aria-label="Next scene" disabled={isLast}>
+            <ArrowDown className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
-function JourneyNarrative() {
-  const reduceMotion = useReducedMotion();
-  const [activeStep, setActiveStep] = useState(0);
-  const active = journeySteps[activeStep];
+function SceneTitle({ lines, variant = "" }) {
+  return (
+    <h1 className={`dp-scene-title ${variant ? `is-${variant}` : ""}`}>
+      {lines.map((line) => (
+        <span key={line} className="dp-scene-line">
+          <span>{line}</span>
+        </span>
+      ))}
+    </h1>
+  );
+}
 
-  useEffect(() => {
-    if (reduceMotion) return undefined;
+function SceneBody({ scene }) {
+  return (
+    <div className={`dp-scene-body ${scene.variant ? `is-${scene.variant}` : ""}`}>
+      {scene.body?.map((copy) => {
+        if (copy.startsWith("Downtown Perks helps residents")) {
+          return (
+            <p key={copy} className="dp-scene-partner-opening">
+              <span>Downtown Perks helps residents make better plans faster - while helping</span>
+              <span>local businesses stay relevant in the moments that actually matter.</span>
+            </p>
+          );
+        }
+        if (copy.startsWith("And when you choose local")) {
+          return (
+            <p key={copy} className="dp-scene-partner-emphasis">
+              {copy}
+            </p>
+          );
+        }
+        if (copy.startsWith("For residents, it means")) {
+          return (
+            <p key={copy} className="dp-scene-partner-split">
+              <span>For residents, it means less searching more doing.</span>
+              <span>For local businesses, it means showing up naturally</span>
+              <span className="dp-scene-partner-nowrap">while people nearby are deciding where to go.</span>
+            </p>
+          );
+        }
+        if (!copy.includes("\"Wait - you've never been there?\"")) return <p key={copy}>{copy}</p>;
+        const [lead, quote] = copy.split("\"Wait - you've never been there?\"");
+        return (
+          <p key={copy} className="dp-scene-editorial-line">
+            {lead}
+            <span>"{quote || "Wait - you've never been there?"}"</span>
+          </p>
+        );
+      })}
+    </div>
+  );
+}
 
-    const timer = window.setInterval(() => {
-      setActiveStep((current) => (current + 1) % journeySteps.length);
-    }, 3600);
-
-    return () => window.clearInterval(timer);
-  }, [reduceMotion]);
+function FeaturesScene({ scene, index, go }) {
+  const closingLine = scene.body[1];
+  const splitClosing = "So we built one map";
+  const finalLine = "that turns into the whole night.";
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F8FB] px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179,143,79,0.16),transparent)]" aria-hidden="true" />
+    <>
+      <h1 className="dp-scene-title is-center">
+        <span className="dp-scene-line">
+          <span>{scene.title[0]}</span>
+        </span>
+        <span className="dp-scene-line is-gold">
+          <span>{scene.title[1]}</span>
+        </span>
+      </h1>
 
-      <div className="mx-auto max-w-7xl">
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 16, filter: "blur(4px)" }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[840px]"
-        >
-          <p className="mb-5 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F] md:text-[12px]">
-            How Downtown Perks Works
-          </p>
-          <h2 className="max-w-[18ch] font-heading text-[42px] font-bold leading-[0.95] tracking-[-0.03em] text-[#0B1F33] max-[420px]:text-[40px] md:text-[60px] md:leading-[0.94] lg:text-[72px]">
-            <span className="block">Open The Map.</span>
-            <span className="block text-[#B38F4F]">Find The Moment. Go.</span>
-          </h2>
-          <p className="mt-6 max-w-[700px] font-body text-[17px] font-light leading-[1.68] text-[rgba(66,84,102,0.80)] md:text-[20px] md:leading-[1.62]">
-            Downtown Perks helps residents find nearby places, events, perks, and local favorites without bouncing between apps, websites, group chats, and screenshots. For partners, it creates visibility when people nearby are already deciding where to go.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 18, filter: "blur(5px)" }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10"
-        >
-          <div className="overflow-hidden rounded-md bg-white/76 shadow-[0_18px_58px_rgba(11,31,51,0.06),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-md">
-            <div className="relative min-h-[520px] overflow-hidden bg-[#F7F8FB] md:min-h-[560px]">
-              {journeySteps.map((step, index) => (
-                <img
-                  key={step.title}
-                  src={step.image}
-                  alt=""
-                  loading={index === 0 ? "eager" : "lazy"}
-                  className={`absolute inset-0 h-full w-full object-cover brightness-[1.04] contrast-[1.02] saturate-[0.9] transition-all duration-700 ${
-                    activeStep === index ? "scale-100 opacity-100" : "scale-[1.025] opacity-0"
-                  }`}
-                />
-              ))}
-
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.88),rgba(255,255,255,0.18)_48%,rgba(11,31,51,0.18)),linear-gradient(180deg,rgba(255,255,255,0.10),rgba(11,31,51,0.22))]" />
-
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active.number}
-                  initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(5px)" }}
-                  animate={reduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={reduceMotion ? undefined : { opacity: 0, y: -8, filter: "blur(4px)" }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute left-4 right-4 top-4 z-20 bg-white/68 p-4 text-[#0B1F33] sm:left-6 sm:right-6 sm:top-6 sm:p-5 lg:right-auto lg:max-w-[720px] lg:p-6"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.68)",
-                    backdropFilter: "blur(22px) saturate(1.08)",
-                    WebkitBackdropFilter: "blur(22px) saturate(1.08)",
-                    boxShadow:
-                      "0 22px 68px rgba(11,31,51,0.10), inset 0 1px 0 rgba(255,255,255,0.78), inset 0 0 0 1px rgba(255,255,255,0.42)",
-                  }}
-                >
-                  <span className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
-                    {active.label}
-                  </span>
-                  <h3 className="mt-3 max-w-full whitespace-nowrap font-heading text-[clamp(1.85rem,4.6vw,3.15rem)] font-bold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] max-[560px]:whitespace-normal">
-                    {active.title}
-                  </h3>
-                  <p className="mt-4 max-w-[420px] font-body text-[14px] font-light leading-relaxed text-[rgba(66,84,102,0.82)] md:text-[16px]">
-                    {active.copy}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-
-              <div className="absolute bottom-6 left-5 right-5 z-20 sm:bottom-7 sm:left-6 sm:right-6">
-                <div className="relative flex items-center justify-between">
-                  <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#0B1F33]/12" />
-                  <div
-                    className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#B38F4F] transition-all duration-700"
-                    style={{ width: `${(activeStep / (journeySteps.length - 1)) * 100}%` }}
-                  />
-
-                  {journeySteps.map((step, index) => {
-                    const Icon = step.icon;
-                    const reached = activeStep >= index;
-
-                    return (
-                      <button
-                        key={step.number}
-                        type="button"
-                        onClick={() => setActiveStep(index)}
-                        className={`relative z-10 grid h-9 w-9 place-items-center rounded-sm transition-all duration-500 sm:h-10 sm:w-10 ${
-                          reached
-                            ? "bg-[#0B1F33] text-[#B38F4F] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
-                            : "bg-white/84 text-[#0B1F33]/42 shadow-[0_8px_20px_rgba(11,31,51,0.05)]"
-                        }`}
-                        aria-label={`Show step ${step.number}: ${step.label}`}
-                      >
-                        <Icon size={15} />
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+      <div className="dp-scene-body is-center">
+        <p>{scene.body[0]}</p>
       </div>
-    </section>
+
+      <div className="dp-scene-feature-closing" aria-label={closingLine}>
+        <span>{splitClosing}</span>
+        <span>to bring everything together.</span>
+      </div>
+
+      {scene.movedCopy && (
+        <p className="dp-scene-moved-copy">
+          <span>For the people planning around rooftop weather, happy hour, workout classes,</span>
+          <span>taco runs, live music, and "just one drink" that turns into the whole night.</span>
+        </p>
+      )}
+
+      <SceneActions scene={scene} index={index} go={go} />
+    </>
+  );
+}
+
+function StartScene({ scene, index, go }) {
+  const finalLine = "that turns into the whole night.";
+
+  return (
+    <div className="dp-start-stage">
+      {scene.label && <p className="dp-splash-label">{scene.label}</p>}
+      <h1 className="dp-start-title">
+        <span className="dp-scene-line">
+          <span>{scene.title[0]}</span>
+        </span>
+        <span className="dp-scene-line is-gold">
+          <span>{scene.title[1]}</span>
+        </span>
+      </h1>
+
+      {scene.subtitle && (
+        <h2 className="dp-start-subtitle">
+          {scene.subtitle.map((line) => (
+            <span key={line} className="dp-scene-line">
+              <span>{line}</span>
+            </span>
+          ))}
+        </h2>
+      )}
+
+      <div className="dp-start-body">
+        {scene.body.map((copy) => {
+          if (!copy.includes(finalLine)) return <p key={copy}>{copy}</p>;
+          const [lead] = copy.split(finalLine);
+          return (
+            <p key={copy}>
+              {lead.trimEnd()}{" "}
+              <span className="dp-start-final-line">{finalLine}</span>
+            </p>
+          );
+        })}
+      </div>
+
+      <SceneActions scene={scene} index={index} go={go} />
+    </div>
+  );
+}
+
+function SceneClosing({ scene }) {
+  if (!scene.closing?.length) return null;
+  return (
+    <div className="dp-scene-closing" aria-label="Closing message">
+      {scene.closing.map((line, index) => (
+        <span key={line} className={scene.variant !== "final" && index === scene.closing.length - 1 ? "is-gold" : ""}>
+          {line}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function SceneActions({ scene, index, go }) {
+  return (
+    <div className="dp-scene-actions">
+      {scene.primary && (
+        <Link className="dp-scene-cta is-primary" to={scene.primary.to}>
+          {scene.primary.label}
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      )}
+      {scene.secondaryLink ? (
+        <Link className="dp-scene-cta" to={scene.secondaryLink.to}>
+          {scene.secondaryLink.label}
+        </Link>
+      ) : scene.secondary ? (
+        <button type="button" className="dp-scene-cta" onClick={() => go(1)}>
+          {scene.secondary}
+        </button>
+      ) : !scene.primary ? (
+        <button type="button" className="dp-scene-cta" onClick={() => go(1)}>
+          Next
+        </button>
+      ) : null}
+      {index > 0 && (
+        <button type="button" className="dp-scene-ghost" onClick={() => go(-1)}>
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back
+        </button>
+      )}
+    </div>
+  );
+}
+
+function ScenePreview({ scene }) {
+  if (!scene.list?.length) return null;
+  return (
+    <div className="dp-scene-preview" aria-label={`${scene.nav} highlights`}>
+      {scene.list.map((item) => (
+        <div key={item}>
+          <span>{item}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SplashNavigation({ isOpen, setIsOpen }) {
+  const close = () => setIsOpen(false);
+
+  return (
+    <header className="dp-scene-topbar">
+      <div className="dp-splash-nav-left">
+        <Link to="/" className="dp-scene-brand" onClick={close} aria-label="Downtown Perks home">
+          <span aria-hidden="true" className="dp-scene-brand-icon">
+            <MapPin className="h-4 w-4" />
+          </span>
+          <span className="dp-scene-brand-wordmark">
+            <span>Downtown</span> <span>Perks</span>
+          </span>
+        </Link>
+
+        <nav className="dp-splash-nav-links" aria-label="Splash navigation">
+          {splashNavLinks.map((link) => (
+            <Link key={link.label} to={link.to}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      <div className="dp-splash-nav-actions">
+        <button
+          type="button"
+          className="dp-splash-menu-button"
+          onClick={() => setIsOpen((current) => !current)}
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+        <Link to="/map?mode=resident&tab=pass" className="dp-splash-card-cta">
+          Get Your Perks Card
+        </Link>
+      </div>
+
+      {isOpen && (
+        <nav className="dp-splash-mobile-menu" aria-label="Mobile splash navigation">
+          {splashNavLinks.map((link) => (
+            <Link key={link.label} to={link.to} onClick={close}>
+              {link.label}
+            </Link>
+          ))}
+          <Link to="/map?mode=resident&tab=pass" onClick={close} className="is-card">
+            Get Your Perks Card
+          </Link>
+        </nav>
+      )}
+    </header>
   );
 }
 
 export default function SplashPage() {
-  const [showIntro, setShowIntro] = useState(true);
+  const [active, setActive] = useState(0);
+  const [showIntro, setShowIntro] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  });
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const lockRef = useRef(false);
+  const touchStartRef = useRef(null);
+
+  const finishIntro = useCallback(() => {
+    setShowIntro(false);
+  }, []);
+
+  const activate = useCallback((next) => {
+    setActive((current) => {
+      const normalized = clamp(next, 0, scenes.length - 1);
+      return normalized === current ? current : normalized;
+    });
+  }, []);
+
+  const go = useCallback((delta) => {
+    if (showIntro) return;
+    if (lockRef.current) return;
+    lockRef.current = true;
+    setActive((current) => clamp(current + delta, 0, scenes.length - 1));
+    window.setTimeout(() => {
+      lockRef.current = false;
+    }, 680);
+  }, [showIntro]);
+
+  useEffect(() => {
+    if (!showIntro) return undefined;
+    const timeoutId = window.setTimeout(finishIntro, 45000);
+    return () => window.clearTimeout(timeoutId);
+  }, [finishIntro, showIntro]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    html.classList.add("dp-splash-lock");
+    body.classList.add("dp-splash-lock");
+
+    const onWheel = (event) => {
+      if (Math.abs(event.deltaY) < 8) return;
+      go(event.deltaY > 0 ? 1 : -1);
+    };
+
+    const onKeyDown = (event) => {
+      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        go(1);
+      }
+      if (["ArrowUp", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        go(-1);
+      }
+      if (event.key === "Home") activate(0);
+      if (event.key === "End") activate(scenes.length - 1);
+    };
+
+    const onTouchStart = (event) => {
+      touchStartRef.current = event.touches[0]?.clientY ?? null;
+    };
+
+    const onTouchEnd = (event) => {
+      if (touchStartRef.current == null) return;
+      const delta = (event.changedTouches[0]?.clientY ?? touchStartRef.current) - touchStartRef.current;
+      if (Math.abs(delta) > 42) go(delta < 0 ? 1 : -1);
+      touchStartRef.current = null;
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      html.classList.remove("dp-splash-lock");
+      body.classList.remove("dp-splash-lock");
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [activate, go]);
+
+  useEffect(() => {
+    const activeContent = document.querySelector(".dp-scene-slide.is-active .dp-scene-content");
+    if (activeContent) activeContent.scrollTop = 0;
+  }, [active]);
+
+  const progress = useMemo(() => `${active + 1} / ${scenes.length}`, [active]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
-      <AnimatePresence initial={false}>
-        {showIntro && (
-          <motion.section
-            className="fixed inset-0 z-[900] bg-[#0B1F33] text-white"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            aria-label="Downtown Perks opening animation"
-          >
-            <div className="absolute inset-0 bg-[#0B1F33]" />
-            <div className="dp-intro-fallback absolute inset-0 bg-[radial-gradient(circle_at_30%_24%,rgba(179,143,79,0.16),transparent_34%),radial-gradient(circle_at_74%_68%,rgba(255,255,255,0.08),transparent_30%),linear-gradient(135deg,#0B1F33,#0B1F33)]" />
-            <div className="dp-intro-sheen absolute inset-y-0 left-[-28%] w-[42%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.10),transparent)] blur-2xl" />
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src={VIDEO_SRC}
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              onCanPlay={(event) => {
-                event.currentTarget.play().catch(() => {});
-              }}
-              onEnded={() => setShowIntro(false)}
-            />
-            <div className="absolute inset-0 bg-[#0B1F33]/42" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(11,31,51,0.86),rgba(11,31,51,0.18)_48%,rgba(11,31,51,0.62))]" />
+    <main className="dp-splash-page dp-scene-page" aria-label="Downtown Perks introduction">
+      {showIntro && (
+        <section className="dp-opening-intro" aria-label="Downtown Perks opening animation">
+          <div className="dp-opening-fallback" aria-hidden="true" />
+          <div className="dp-opening-sheen" aria-hidden="true" />
+          <video
+            className="dp-opening-video"
+            src="/videos/downtown-austin-drone-cinematic.mp4"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            onEnded={finishIntro}
+            onError={finishIntro}
+          />
+          <div className="dp-opening-video-overlay" aria-hidden="true" />
+          <div className="dp-opening-gradient" aria-hidden="true" />
+          <button type="button" className="dp-opening-skip" onClick={finishIntro}>
+            Skip
+          </button>
+          <div className="dp-opening-copy">
+            <div className="dp-opening-label">
+              <Sparkles className="h-3.5 w-3.5" />
+              Downtown Perks
+            </div>
+            <h1>
+              <span>Where Downtown</span>
+              <span>Meets You</span>
+            </h1>
+            <p>
+              <span>Built for the people who actually live downtown</span>
+              <span>&mdash; and the businesses that keep it interesting.</span>
+            </p>
+          </div>
+        </section>
+      )}
+      <a className="dp-skip-link" href="/map?mode=resident&tab=map">
+        Skip to map
+      </a>
 
-            <div className="absolute left-4 right-4 top-[84px] z-10 flex justify-end md:left-6 md:right-6">
+      <SplashNavigation isOpen={mobileNavOpen} setIsOpen={setMobileNavOpen} />
+
+      <aside className="dp-scene-steps" aria-label="Intro scenes">
+        <ol>
+          {scenes.map((scene, index) => (
+            <li key={scene.id}>
               <button
                 type="button"
-                onClick={() => setShowIntro(false)}
-                className="inline-flex h-9 items-center px-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70 transition hover:text-white focus-visible:outline-none focus-visible:text-white"
+                className={index === active ? "is-active" : ""}
+                onClick={() => activate(index)}
+                aria-current={index === active ? "step" : undefined}
               >
-                Skip
+                <span>{scene.number}</span>
+                {scene.nav}
               </button>
-            </div>
+            </li>
+          ))}
+        </ol>
+      </aside>
 
-            <div className="absolute inset-x-0 bottom-0 px-5 pb-7 md:pb-10">
-              <motion.div
-                initial={false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                className="mx-auto max-w-6xl"
-              >
-                <div className="inline-flex items-center gap-2 font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F] md:text-[12px]">
-                  <Sparkles className="h-3.5 w-3.5 text-[#B38F4F]" />
-                  Downtown Perks
+      <div className="dp-scene-stage">
+        {scenes.map((scene, index) => (
+          <section
+            key={scene.id}
+            className={`dp-scene-slide ${index === active && !showIntro ? "is-active" : ""}`}
+            aria-hidden={index !== active || showIntro}
+            inert={index !== active || showIntro ? "" : undefined}
+          >
+            <div className="dp-scene-content">
+              <div className="dp-scene-frame">
+                <SceneHeader scene={scene} progress={progress} isActive={index === active && !showIntro} isLast={index === scenes.length - 1} go={go} />
+                <div className={`dp-scene-main ${scene.variant ? `is-${scene.variant}` : ""}`}>
+                  {scene.startStage ? (
+                    <StartScene scene={scene} index={index} go={go} />
+                  ) : scene.variant === "center" ? (
+                    <FeaturesScene scene={scene} index={index} go={go} />
+                  ) : (
+                    <>
+                      {scene.label && <p className="dp-splash-label">{scene.label}</p>}
+                      <SceneTitle lines={scene.title} variant={scene.variant} />
+                      {scene.subtitle && <SceneTitle lines={scene.subtitle} variant="subtitle" />}
+                      <SceneBody scene={scene} />
+                      <SceneClosing scene={scene} />
+                      <ScenePreview scene={scene} />
+                      <SceneActions scene={scene} index={index} go={go} />
+                    </>
+                  )}
                 </div>
-                <h1 className="mt-3 max-w-[11ch] font-heading text-[42px] font-bold leading-[0.9] tracking-[-0.03em] text-white max-[420px]:text-[38px] md:text-[64px] lg:text-[72px]">
-                  <span className="block">Where Downtown</span>
-                  <span className="block text-[#B38F4F]">Meets You</span>
-                </h1>
-                <p className="mt-3 max-w-[34rem] font-body text-[16px] font-light leading-[1.5] text-[#DCE3EB] md:text-[21px] md:leading-[1.45]">
-                  <span className="block">Built for the people who actually live downtown</span>
-                  <span className="block">— and the businesses that keep it interesting.</span>
-                </p>
-              </motion.div>
-            </div>
-          </motion.section>
-        )}
-      </AnimatePresence>
-
-      <section className="relative bg-[#F7F8FB] px-5 py-14 md:px-8 md:py-20">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-          <video className="absolute inset-0 h-full w-full object-cover opacity-[0.18]" src={VIDEO_SRC} autoPlay muted loop playsInline preload="metadata" />
-          <div className="absolute inset-0 bg-white/86" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.98),rgba(255,255,255,0.80),rgba(255,255,255,1))]" />
-          <div className="absolute left-[4%] top-[18%] h-56 w-56 rounded-full bg-white/72 blur-3xl" />
-          <div className="absolute right-[8%] top-[12%] h-72 w-72 rounded-full bg-white/52 blur-[82px]" />
-          <div className="absolute bottom-[8%] right-[16%] h-64 w-64 rounded-full bg-[#0B1F33]/10 blur-3xl" />
-          <div className="absolute left-1/2 top-[46%] h-[460px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/34 blur-[92px]" />
-        </div>
-
-        <div className="relative mx-auto max-w-[900px] text-left">
-          <EditorialReveal
-            amount={0.28}
-            className="max-w-[840px]"
-          >
-            <div className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F] md:text-[12px]">
-              Live Discovery
-            </div>
-            <h1 className="mt-6 max-w-[13ch] font-heading text-[44px] font-bold leading-[0.95] tracking-[-0.03em] text-[#0B1F33] max-[420px]:text-[40px] max-[420px]:leading-[0.94] md:text-[68px] md:leading-[0.93] lg:text-[78px]">
-              <span className="block">More Charm Than</span>
-              <span className="block text-[#B38F4F]">A Biscuit With Honey.</span>
-            </h1>
-            <p className="mt-6 max-w-[680px] font-body text-[18px] font-light leading-relaxed text-[rgba(66,84,102,0.80)] md:text-[24px] md:leading-[1.56]">
-              Downtown Perks brings the heat — and the hospitality.
-            </p>
-          </EditorialReveal>
-
-          <EditorialReveal
-            className="mt-9 max-w-[790px] space-y-6"
-            delay={0.04}
-            amount={0.24}
-          >
-            <p className="font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.74)] md:text-[19px] md:leading-[1.68]">
-              Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.
-            </p>
-            <p className="font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.74)] md:text-[19px] md:leading-[1.68]">
-              For the people planning around rooftop weather, happy hour, workout classes, taco runs, live music, and “just one drink” that turns into the whole night.
-            </p>
-          </EditorialReveal>
-
-          <EditorialReveal
-            className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
-            delay={0.06}
-            amount={0.2}
-          >
-            <Link
-              to="/residents"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
-            >
-              Start as resident
-              <ArrowRight className="ml-2 h-4 w-4 text-[#B38F4F]" />
-            </Link>
-            <Link
-              to="/partners"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white/82 px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-md transition hover:-translate-y-px hover:bg-white hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
-            >
-              Start as partner
-            </Link>
-          </EditorialReveal>
-        </div>
-      </section>
-
-      <section className="relative bg-[#F7F8FB] px-5 pb-0 pt-12 md:px-8 md:pb-0 md:pt-16">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179, 143, 79, 0.08),transparent)]" aria-hidden="true" />
-        <div className="relative mx-auto max-w-6xl">
-          <div className="max-w-[720px] text-left">
-            <EditorialReveal
-              className="max-w-[720px]"
-              amount={0.22}
-            >
-              <h2 className="font-heading text-[40px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
-                <span className="block">Downtown should</span>
-                <span className="block text-[#B38F4F]">be easier to use.</span>
-              </h2>
-              <div className="mt-5 max-w-[680px] space-y-1 font-body text-[18px] font-light leading-[1.45] text-[rgba(66,84,102,0.86)] md:text-[22px] md:leading-[1.45]">
-                <p>The coffee shop you keep meaning to try.</p>
-                <p>The workout class you always hear about too late.</p>
-                <p>The rooftop before it gets crowded.</p>
-                <p>The happy hour two blocks away.</p>
-                <p>
-                  The local business you pass all the time until someone finally says,<br />
-                  “Wait — you’ve never been there?”
-                </p>
               </div>
-            </EditorialReveal>
-
-            <EditorialReveal
-              className="mt-10 max-w-[640px]"
-              delay={0.04}
-              amount={0.2}
-            >
-              <p className="font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.78)] md:text-[18px]">
-                Most things already exist. They’re just scattered across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.
-              </p>
-            </EditorialReveal>
-
-            <EditorialReveal
-              className="mt-10 max-w-[660px] space-y-3 font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.78)] md:text-[18px] md:leading-[1.72]"
-              delay={0.04}
-              amount={0.18}
-            >
-              <h2 className="font-heading text-[34px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33] md:text-[48px]">
-                <span className="block">So we built one map</span>
-                <span className="block text-[#B38F4F]">to bring everything together.</span>
-              </h2>
-              <p>
-                Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s nearby, what’s happening, and what feels worth going out for.
-              </p>
-            </EditorialReveal>
-
-            <EditorialReveal
-              className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
-              delay={0.04}
-              amount={0.2}
-            >
-              <Link
-                to="/residents"
-                className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
-              >
-                START AS RESIDENT
-              </Link>
-              <Link
-                to="/partners"
-                className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white/82 px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-md transition hover:-translate-y-px hover:bg-white hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
-              >
-                START AS PARTNER
-              </Link>
-            </EditorialReveal>
-          </div>
-
-        </div>
-      </section>
-
-      <JourneyNarrative />
-
-      <section className="relative bg-[#F7F8FB] px-5 pb-14 pt-12 md:px-8 md:pb-20 md:pt-16">
-        <div className="relative mx-auto max-w-[760px] text-left">
-          <EditorialReveal
-            className="max-w-[660px]"
-            amount={0.24}
-          >
-            <h2 className="max-w-[19ch] font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.025em] text-[#0B1F33] md:text-[52px] md:leading-[0.96]">
-              <span className="block">Whether you’re making plans</span>
-              <span className="block text-[#B38F4F]">or part of them.</span>
-            </h2>
-            <div className="mt-7 max-w-[620px] space-y-4 font-body text-[16px] font-light leading-[1.72] text-[rgba(66,84,102,0.78)] md:text-[18px] md:leading-[1.75]">
-              <p>
-                Downtown Perks helps residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.
-              </p>
-              <p>
-                And when you choose local, you unlock perks, offers, rewards, and little extras from the places that keep downtown interesting.
-              </p>
-              <p>
-                For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.
-              </p>
             </div>
-            <p className="mt-10 max-w-[30ch] font-body text-[24px] font-semibold leading-[1.12] tracking-normal text-[rgba(11,31,51,0.86)] md:text-[34px]">
-              <span className="block">Come on in. Open the map.</span>
-              <span className="block text-[#B38F4F]">And maybe grab something cold while you’re at it.</span>
-            </p>
-          </EditorialReveal>
-
-          <EditorialReveal
-            className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
-            delay={0.04}
-            amount={0.2}
-          >
-            <Link
-              to="/residents"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#0B1F33] px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_10px_22px_rgba(11,31,51,0.12)] transition hover:-translate-y-px hover:shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_16px_rgba(179,143,79,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
-            >
-              Enter Resident View
-            </Link>
-            <Link
-              to="/partners"
-              className="inline-flex h-11 w-full items-center justify-center rounded-md bg-white/82 px-6 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.04),0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-md transition hover:-translate-y-px hover:bg-white hover:shadow-[0_0_0_1px_rgba(179,143,79,0.08),0_10px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:w-auto"
-            >
-              Enter Partner View
-            </Link>
-          </EditorialReveal>
-        </div>
-      </section>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }

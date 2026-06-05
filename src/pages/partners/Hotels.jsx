@@ -3,7 +3,7 @@ import { motion, useInView, animate } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, X, Hotel, QrCode } from "lucide-react";
 import PartnerMapIntelligenceLayer from "@/components/partner/PartnerMapIntelligenceLayer";
-import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
+import { PARTNER_SPACING } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
 import { FAQ_HOSPITALITY } from '@/lib/faq-partner-data';
 
@@ -83,22 +83,22 @@ export default function HotelsPartner() {
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.18) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,51,0.18) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Link to="/partners" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
+            <Link to="/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
               <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" /> Partner Directory
             </Link>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Hotel Partner Layer</span>
-              <h1 className="font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] mb-5 md:text-[42px] lg:text-[46px]">
+              <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
                 Help guests find what to do <em className="text-primary">from the moment they arrive.</em>
               </h1>
               <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to handle it.</p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all shadow-md shadow-primary/15">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all ">
                   Connect your hotel <ArrowRight className="w-4 h-4" />
                 </a>
-                <a href="#hotel-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
+                <a href="#hotel-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
                   See the guest layer
                 </a>
               </div>
@@ -122,7 +122,7 @@ export default function HotelsPartner() {
                   ))}
                 </div>
                 <div className="px-5 py-2.5 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#B38F4F]" />
+                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#C8A96A]" />
                   <span className="text-[11px] text-muted-foreground/60">Updated 2 min ago</span>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function HotelsPartner() {
           <div className="flex gap-2 mb-4 overflow-x-auto pb-0.5">
             {MAP_FILTERS.map(f => (
               <button key={f.id} onClick={() => setMapFilter(f.id)}
-                className={`px-3.5 py-2 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all flex-shrink-0 ${mapFilter === f.id ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground hover:text-foreground"}`}>
+                className={`px-3.5 py-2 rounded-[12px] text-[12px] font-medium whitespace-nowrap border transition-all flex-shrink-0 ${mapFilter === f.id ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground hover:text-foreground"}`}>
                 {f.label} <span className={`ml-1.5 text-[10px] ${mapFilter === f.id ? "text-primary/70" : "text-muted-foreground/50"}`}>{f.count}</span>
               </button>
             ))}
@@ -170,7 +170,7 @@ export default function HotelsPartner() {
                   <div className="flex-1 divide-y divide-border/40 overflow-y-auto">
                     {LIVE_FEED.map((item, i) => (
                       <div key={i} className="p-4 flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 shrink-0" />
+                        <div className="w-1.5 h-1.5 rounded-[12px] bg-primary/60 mt-1.5 shrink-0" />
                         <div className="flex-1">
                           <div className="text-[12px] text-foreground">{item.text}</div>
                           <div className="text-[11px] text-muted-foreground mt-0.5">{item.hotel}</div>
@@ -216,7 +216,7 @@ export default function HotelsPartner() {
                       <div className="space-y-1.5">
                         {hotel.nearby.map((n, i) => (
                           <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                            <div className="w-1 h-1 rounded-full bg-primary/40 shrink-0" />{n}
+                            <div className="w-1 h-1 rounded-[12px] bg-primary/40 shrink-0" />{n}
                           </div>
                         ))}
                       </div>
@@ -233,8 +233,8 @@ export default function HotelsPartner() {
                     </div>
                   </div>
                   <div className="p-4 border-t border-border/40 flex gap-2">
-                    <button className="flex-1 py-2.5 rounded-full bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-all">View guest activity</button>
-                    <button className="flex-1 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[12px] font-medium hover:text-foreground transition-all">Connect</button>
+                    <button className="flex-1 py-2.5 rounded-[12px] bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-all">View guest activity</button>
+                    <button className="flex-1 py-2.5 rounded-[12px] border border-border/60 text-foreground/70 text-[12px] font-medium hover:text-foreground transition-all">Connect</button>
                   </div>
                 </motion.div>
               )}
@@ -242,11 +242,6 @@ export default function HotelsPartner() {
           </div>
         </div>
       </section>
-
-      {/* IMPACT */}
-      <ImpactSection headline="What the guest layer looks like in practice."
-        stats={[{ label: "Hotel views", v: 7208 }, { label: "Guest taps", v: 1044 }, { label: "Saves", v: 312 }, { label: "RSVPs", v: 184 }, { label: "Offer unlocks", v: 93 }]}
-        lower={[{ label: "Hotels live", v: "9" }, { label: "QR access points", v: "18" }, { label: "Avg nearby opens per guest", v: "4.2" }, { label: "Guests who return to the map", v: "29%" }, { label: "Nearby venues linked", v: "16" }, { label: "Self-serve discovery rate", v: "71%" }]} />
 
       {/* HOW IT WORKS */}
       <StepsSection label="How it works" headline="From check-in to neighborhood use in one step."
@@ -295,34 +290,6 @@ export default function HotelsPartner() {
   );
 }
 
-function ImpactSection({ headline, stats, lower }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
-      <div className="max-w-6xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="font-heading text-2xl md:text-3xl font-medium tracking-normal mb-8">{headline}</motion.h2>
-        <div className={`${PARTNER_GRIDS.gridCardFiveCol} mb-4`}>
-          {stats.map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.06 }} className="p-5 rounded-lg border border-border/50 bg-card/40 text-center">
-              <div className="font-heading text-2xl font-medium text-foreground"><CountUp to={s.v} /></div>
-              <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-        <div className={PARTNER_GRIDS.gridCardCompact}>
-          {lower.map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.05 }} className="p-4 rounded-lg border border-border/40 bg-card/20">
-              <div className="font-heading text-lg font-medium text-foreground">{s.v}</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function StepsSection({ label, headline, steps, proof }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -333,28 +300,27 @@ function StepsSection({ label, headline, steps, proof }) {
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
         </motion.div>
-        <div className="relative">
-          <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
             {steps.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }} className="flex flex-col items-center text-center md:items-start md:text-left">
-                <div className="w-10 h-10 rounded-full border border-primary/40 bg-card flex items-center justify-center mb-4 z-10">
-                  <span className="text-primary font-heading font-medium text-[13px]">{s.n}</span>
+              <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }} className="grid grid-cols-[30px_1fr] gap-3 md:block">
+                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">{s.n}</div>
+                <div>
+                  <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.label}</div>
+                  <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{s.detail}</div>
                 </div>
-                <div className="font-medium text-[13px] text-foreground mb-1.5">{s.label}</div>
-                <div className="text-[12px] text-muted-foreground leading-relaxed">{s.detail}</div>
+              </motion.div>
+            ))}
+        </div>
+        {proof?.length > 0 && (
+          <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2">
+            {proof.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 + i * 0.05 }} className="flex items-center gap-2 py-2">
+                <div className="h-px w-4 shrink-0 bg-[#B38F4F]" />
+                <span className="text-[12px] leading-5 text-[#425466]">{item}</span>
               </motion.div>
             ))}
           </div>
-        </div>
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
-          {proof.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 + i * 0.05 }} className="flex items-center gap-2 p-3 rounded-lg border border-border/40 bg-card/20">
-              <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
-              <span className="text-[12px] text-muted-foreground">{item}</span>
-            </motion.div>
-          ))}
-        </div>
+        )}
       </div>
     </section>
   );
@@ -371,16 +337,14 @@ function GuestFlowSection({ steps, feed }) {
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">What a guest does from scan to visit.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
+          <div className="space-y-4">
             {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: i * 0.08 }}
-                className="flex gap-4 p-4 rounded-lg border border-border/40 bg-card/30">
-                <div className="w-7 h-7 rounded-full border border-primary/30 flex items-center justify-center shrink-0">
-                  <span className="text-primary text-[11px] font-medium">{i + 1}</span>
-                </div>
+                className="grid grid-cols-[30px_1fr] gap-3">
+                <span className="font-heading text-[16px] font-bold leading-none text-[#B38F4F]">{String(i + 1).padStart(2, "0")}</span>
                 <div>
-                  <div className="font-medium text-[13px] text-foreground mb-0.5">{s.step}</div>
-                  <div className="text-[12px] text-muted-foreground">{s.desc}</div>
+                  <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.step}</div>
+                  <div className="mt-1 text-[12px] leading-5 text-[#425466]">{s.desc}</div>
                 </div>
               </motion.div>
             ))}
@@ -392,7 +356,7 @@ function GuestFlowSection({ steps, feed }) {
             <div className="divide-y divide-border/40">
               {feed.map((item, i) => (
                 <div key={i} className="p-4 flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#B38F4F] mt-1.5 shrink-0 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#C8A96A] mt-1.5 shrink-0 animate-pulse" />
                   <div className="flex-1">
                     <div className="text-[12px] text-foreground">{item.text}</div>
                     <div className="text-[11px] text-muted-foreground mt-0.5">{item.hotel}</div>
@@ -426,8 +390,8 @@ function HotelCards({ hotels, selectHotel }) {
                 <Hotel className="w-4 h-4 text-primary/60" />
                 <span className="font-heading font-medium text-[13px] text-foreground">{h.name}</span>
               </div>
-              <div className="h-1.5 rounded-full bg-border/50 mb-4 overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={inView ? { width: `${Math.min(100, (h.interactions / 230) * 100)}%` } : {}} transition={{ duration: 1, delay: 0.3 + i * 0.1 }} className="h-full rounded-full bg-primary" />
+              <div className="h-1.5 rounded-[12px] bg-border/50 mb-4 overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={inView ? { width: `${Math.min(100, (h.interactions / 230) * 100)}%` } : {}} transition={{ duration: 1, delay: 0.3 + i * 0.1 }} className="h-full rounded-[12px] bg-primary" />
               </div>
               <div className="space-y-2 text-[12px]">
                 {[["Guest interactions", h.interactions], ["Saves", h.saves], ["Unlocks", h.unlocks]].map(([l, v]) => (
@@ -480,7 +444,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)} placeholder="Tell us about your hotel and what you want to offer guests."
                   className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
               </div>
-              <button className="w-full py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{submitLabel}</button>
+              <button className="w-full py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{submitLabel}</button>
             </div>
             <div className="p-8 bg-muted/10 flex flex-col">
               <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Prompts</div>
@@ -507,13 +471,13 @@ function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondL
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>
             <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
-            <h2 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] mb-3 md:text-[42px]">{headline}</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
             <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
           </div>
           <div className="space-y-4">
             <div className="flex flex-wrap gap-3">
-              <a href={ctaHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{ctaLabel} <ArrowRight className="w-4 h-4" /></a>
-              <a href={secondHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">{secondLabel}</a>
+              <a href={ctaHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{ctaLabel} <ArrowRight className="w-4 h-4" /></a>
+              <a href={secondHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">{secondLabel}</a>
             </div>
             <p className="text-[12px] text-muted-foreground/50 italic">{proof}</p>
           </div>

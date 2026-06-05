@@ -61,7 +61,7 @@ export default function PartnerDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-4 border-border border-t-foreground rounded-full animate-spin" />
+        <div className="h-8 w-8 border-2 border-[#0B1F33]/14 border-t-[#C8A96A] animate-spin" />
       </div>
     );
   }
@@ -97,7 +97,7 @@ export default function PartnerDashboard() {
               label: 'Impressions',
               value: metrics.impressions,
               icon: Eye,
-              color: 'text-[#B38F4F]',
+              color: 'text-[#C8A96A]',
             },
             {
               label: 'Saves',
@@ -109,13 +109,13 @@ export default function PartnerDashboard() {
               label: 'Redemptions',
               value: metrics.redemptions,
               icon: CheckCircle,
-              color: 'text-[#B38F4F]',
+              color: 'text-[#C8A96A]',
             },
             {
               label: 'Trending',
               value: `${(metrics.conversionRate * 100).toFixed(1)}%`,
               icon: TrendingUp,
-              color: 'text-[#B38F4F]',
+              color: 'text-[#C8A96A]',
             },
           ].map((metric, i) => {
             const Icon = metric.icon;
@@ -279,13 +279,13 @@ function VenuePanel({ venue, onClose }) {
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.9 }}
-        className="bg-card rounded-lg max-w-2xl w-full max-h-96 overflow-y-auto"
+        className="w-full max-w-2xl max-h-96 overflow-y-auto bg-white/88"
       >
         <div className="p-6 border-b border-border flex items-center justify-between">
           <h2 className="text-xl font-bold text-foreground">{venue.name}</h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors"
+            className="flex h-8 w-8 items-center justify-center bg-white/70 text-[#0B1F33] transition-colors hover:bg-white"
           >
             <X className="w-4 h-4 text-muted-foreground" />
           </button>

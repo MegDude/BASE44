@@ -19,8 +19,8 @@ export default function CTA({
   ...props
 }) {
   const variants = {
-    primary: "border-b border-[#B38F4F]/55 text-[#0B1F33] hover:border-[#B38F4F]",
-    secondary: "border-b border-[#0B1F33]/12 text-[#0B1F33]/68 hover:border-[#B38F4F]/55 hover:text-[#0B1F33]",
+    primary: "border-b border-[#C8A96A]/55 text-[#0B1F33] hover:border-[#C8A96A]",
+    secondary: "border-b border-[#0B1F33]/12 text-[#0B1F33]/68 hover:border-[#C8A96A]/55 hover:text-[#0B1F33]",
     tertiary: "text-[#0B1F33]/68 hover:text-[#0B1F33]",
   };
 

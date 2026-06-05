@@ -123,7 +123,7 @@ export default function BrandAnalytics() {
       <section className="border-b border-border/40 bg-gradient-to-br from-background to-muted/20 py-12 px-5">
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Link to="/partners/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-6 group">
+            <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-6 group">
               <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
               Campaign Formats
             </Link>
@@ -150,14 +150,14 @@ export default function BrandAnalytics() {
                 <span className="text-[11px] text-muted-foreground">Placement types</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B38F4F]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C8A96A]" />
                 <span className="text-[11px] text-muted-foreground">Live now</span>
               </div>
             </div>
 
             {/* CTA row */}
             <div className="flex flex-wrap gap-3">
-              <Link to="/partners/brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
+              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 View campaign formats <ArrowRight className="w-4 h-4" />
               </Link>
               <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
@@ -283,7 +283,7 @@ export default function BrandAnalytics() {
                           <span className="text-[13px] font-medium text-foreground">{p.name}</span>
                           <span className="text-[11px] text-muted-foreground ml-2">{p.type}</span>
                         </div>
-                        <span className={`text-[11px] font-medium ${p.trend === 'up' ? 'text-[#B38F4F]' : 'text-muted-foreground'}`}>
+                        <span className={`text-[11px] font-medium ${p.trend === 'up' ? 'text-[#C8A96A]' : 'text-muted-foreground'}`}>
                           {p.trend === 'up' ? '+12%' : 'Stable'}
                         </span>
                       </div>
@@ -340,7 +340,7 @@ export default function BrandAnalytics() {
                           <div className="text-[11px] text-muted-foreground">{v.district}</div>
                         </div>
                         <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
-                          v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#B38F4F]' : 'bg-muted/50 text-muted-foreground'
+                          v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#C8A96A]' : 'bg-muted/50 text-muted-foreground'
                         }`}>
                           {v.trend === 'up' ? '+18%' : 'Stable'}
                         </span>
@@ -390,7 +390,7 @@ export default function BrandAnalytics() {
                           <div className="font-medium text-foreground text-[13px]">{e.name}</div>
                           <div className="text-[11px] text-muted-foreground">{e.type} Campaign</div>
                         </div>
-                        <span className="text-[12px] font-semibold text-[#B38F4F]">{e.lift}</span>
+                        <span className="text-[12px] font-semibold text-[#C8A96A]">{e.lift}</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-[12px]">
                         <div className="space-y-0.5">
@@ -492,7 +492,7 @@ export default function BrandAnalytics() {
               <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 Plan a campaign <ArrowRight className="w-4 h-4" />
               </button>
-              <Link to="/partners/brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
+              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 View campaign formats
               </Link>
             </div>

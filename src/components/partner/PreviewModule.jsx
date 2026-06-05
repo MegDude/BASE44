@@ -11,12 +11,12 @@ export default function PreviewModule({
   children,
 }) {
   const bgColor = {
-    residential: 'from-[#FFFFFF] to-[#F7F8FB]',
-    hospitality: 'from-[#FFFFFF] to-[#F7F8FB]',
-    venues: 'from-[#FFFFFF] to-[#F7F8FB]',
-    brands: 'from-[#FFFFFF] to-[#F7F8FB]',
-    civic: 'from-[#FFFFFF] to-[#F7F8FB]',
-    default: 'from-[#FFFFFF] to-[#F7F8FB]',
+    residential: 'from-[#FFFFFF] to-[#FFFFFF]',
+    hospitality: 'from-[#FFFFFF] to-[#FFFFFF]',
+    venues: 'from-[#FFFFFF] to-[#FFFFFF]',
+    brands: 'from-[#FFFFFF] to-[#FFFFFF]',
+    civic: 'from-[#FFFFFF] to-[#FFFFFF]',
+    default: 'from-[#FFFFFF] to-[#FFFFFF]',
   }[type];
 
   return (

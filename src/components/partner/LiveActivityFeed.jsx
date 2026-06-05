@@ -26,7 +26,7 @@ export default function LiveActivityFeed({ activities = [] }) {
               transition={{ duration: 0.3, delay: i * 0.05 }}
               className="flex items-start gap-3 p-4 rounded-xl border border-[#0B1F33]/8 bg-white/50 hover:bg-white transition-colors"
             >
-              <div className="w-2 h-2 rounded-full bg-[#0B1F33] mt-2 shrink-0 animate-pulse" />
+              <div className="w-2 h-2 rounded-[2px] bg-[#0B1F33] mt-2 shrink-0 animate-pulse" />
 
               <div className="flex-1 min-w-0">
                 <div className="text-[13px] font-medium text-[#0B1F33]">{activity.action}</div>

@@ -207,7 +207,7 @@ export default function AskMapAgent() {
             </div>
 
             <label className="dp-agent-input mt-3">
-              <Search className="h-4 w-4 text-[#B38F4F]" />
+              <Search className="h-4 w-4 text-[#C8A96A]" />
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
@@ -291,7 +291,7 @@ export default function AskMapAgent() {
                             <strong>{place.name}</strong>
                             <small>{place.reason}</small>
                           </span>
-                          <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+                          <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
                         </button>
                       ))}
                     </div>
@@ -308,12 +308,12 @@ export default function AskMapAgent() {
 
               <div className="mt-6 flex flex-col gap-2 sm:flex-row">
                 <Button type="button" onClick={submit} disabled={status === "loading"} className="gap-2">
-                  <WandSparkles className="h-4 w-4 text-[#B38F4F]" />
+                  <WandSparkles className="h-4 w-4 text-[#C8A96A]" />
                   Run agent
                 </Button>
                 <Button type="button" variant="outline" onClick={openMap} className="gap-2">
                   Open on map
-                  <Navigation className="h-4 w-4 text-[#B38F4F]" />
+                  <Navigation className="h-4 w-4 text-[#C8A96A]" />
                 </Button>
               </div>
 
@@ -328,7 +328,7 @@ export default function AskMapAgent() {
               const Icon = role.icon;
               return (
                 <article key={role.title} className="dp-glass-card p-5">
-                  <div className="mb-4 flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#B38F4F] shadow-[0_0_24px_rgba(179,143,79,0.12)]">
+                  <div className="mb-4 flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#C8A96A] shadow-[0_0_24px_rgba(200,169,106,0.12)]">
                     <Icon className="h-4 w-4" />
                   </div>
                   <h3 className="font-body text-[14px] font-semibold">{role.title}</h3>
@@ -344,12 +344,12 @@ export default function AskMapAgent() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row">
           <Button asChild>
             <Link to="/map?mode=resident&tab=map">
-              Open the Map <MapPin className="h-4 w-4 text-[#B38F4F]" />
+              Open the Map <MapPin className="h-4 w-4 text-[#C8A96A]" />
             </Link>
           </Button>
           <Button asChild variant="outline">
             <Link to="/happy-hour-walking-map">
-              Happy hour walking map <Sparkles className="h-4 w-4 text-[#B38F4F]" />
+              Happy hour walking map <Sparkles className="h-4 w-4 text-[#C8A96A]" />
             </Link>
           </Button>
         </div>

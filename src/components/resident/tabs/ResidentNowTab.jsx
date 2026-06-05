@@ -12,7 +12,7 @@ const VENUES = [
 ];
 
 const getMarkerIcon = (category) => {
-  const colors = { coffee: "#B38F4F", bar: "#B38F4F", wellness: "#0B1F33", default: "#0B1F33" };
+  const colors = { coffee: "#C8A96A", bar: "#C8A96A", wellness: "#0B1F33", default: "#0B1F33" };
   return L.divIcon({
     html: `<div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background-color: ${colors[category] || colors.default}"></div>`,
     className: "",
@@ -33,6 +33,7 @@ export default function ResidentNowTab({ user }) {
           style={{ width: "100%", height: "100%" }}
           dragging={true}
           zoomControl={false}
+          attributionControl={false}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -51,7 +52,7 @@ export default function ResidentNowTab({ user }) {
             <motion.div
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
-              className="rounded-lg border border-[#B38F4F]/35 bg-white/95 p-3 shadow-sm backdrop-blur-sm"
+              className="rounded-lg border border-[#C8A96A]/35 bg-white/95 p-3 shadow-sm backdrop-blur-sm"
             >
               <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">Your RSVPs</div>
               <div className="mt-1 text-[13px] font-semibold text-[#0B1F33]">{rsvps[0].title}</div>

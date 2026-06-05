@@ -15,6 +15,7 @@ import Landing from "./pages/downtown-perks/Landing";
 import Events from "./pages/downtown-perks/Events";
 import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
+import DaaExplorer from "./pages/card/DaaExplorer";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
 // Brands pages
@@ -30,6 +31,9 @@ import Equinox from "./pages/downtown-perks/brands/Equinox";
 import AustinFC from "./pages/downtown-perks/brands/AustinFC";
 import FabiAndRosi from "./pages/downtown-perks/brands/FabiAndRosi";
 import HotelVanZandt from "./pages/downtown-perks/brands/HotelVanZandt";
+import FineEyewear from "./pages/downtown-perks/brands/FineEyewear";
+import Daa from "./pages/downtown-perks/brands/Daa";
+import Dana from "./pages/downtown-perks/brands/Dana";
 import FourSeasons from "./pages/downtown-perks/brands/FourSeasons";
 import FourSeasonsResidences from "./pages/downtown-perks/brands/FourSeasonsResidences";
 import TheShore from "./pages/downtown-perks/brands/TheShore";
@@ -44,6 +48,7 @@ import PropertiesPartner from "./pages/partners/Properties";
 import HotelsPartner from "./pages/partners/Hotels";
 import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
+import HappyHoursPartner from "./pages/partners/HappyHours";
 import PartnersDashboardPage from "./pages/partners/Dashboard";
 import ResidentApp from "./pages/resident-app";
 import BrandAnalytics from "./pages/downtown-perks/brands/BrandAnalytics";
@@ -116,6 +121,7 @@ const AuthenticatedApp = () => {
         <Route path="/perks-card" element={<PerksCard />} />
         <Route path="/downtown-perks/card" element={<PerksCard />} />
         <Route path="/card" element={<PerksCard />} />
+        <Route path="/card/explorer/daa" element={<DaaExplorer />} />
         <Route path="/downtown-perks/for-buildings" element={<ForBuildings />} />
         <Route path="/downtown-perks/about" element={<About />} />
         <Route path="/about" element={<About />} />
@@ -140,6 +146,9 @@ const AuthenticatedApp = () => {
         <Route path="/brands/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/brands/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/brands/hotel-van-zandt" element={<HotelVanZandt />} />
+        <Route path="/brands/fine-eyewear" element={<FineEyewear />} />
+        <Route path="/brands/daa" element={<Daa />} />
+        <Route path="/brands/dana" element={<Dana />} />
         <Route path="/brands/four-seasons" element={<FourSeasons />} />
         <Route path="/brands/four-seasons-residences" element={<FourSeasonsResidences />} />
         <Route path="/brands/the-shore" element={<TheShore />} />
@@ -150,7 +159,7 @@ const AuthenticatedApp = () => {
         <Route path="/partners" element={<PartnersIndex />} />
         <Route path="/partners/map" element={<MapPage />} />
         <Route path="/partners/dashboard" element={<PartnersDashboardPage />} />
-        <Route path="/partners/happy-hours" element={<PartnersDashboardPage />} />
+        <Route path="/partners/happy-hours" element={<HappyHoursPartner />} />
         <Route path="/partners/campaigns" element={<PartnersDashboardPage />} />
         <Route path="/partners/reports" element={<Dashboard />} />
         <Route path="/partners/analytics" element={<Dashboard />} />
@@ -173,6 +182,9 @@ const AuthenticatedApp = () => {
         <Route path="/partners/brand-directory/laz-y-boy-park" element={<AustinFC />} />
         <Route path="/partners/brand-directory/fabi-and-rosi" element={<FabiAndRosi />} />
         <Route path="/partners/brand-directory/hotel-van-zandt" element={<HotelVanZandt />} />
+        <Route path="/partners/brand-directory/fine-eyewear" element={<FineEyewear />} />
+        <Route path="/partners/brand-directory/daa" element={<Daa />} />
+        <Route path="/partners/brand-directory/dana" element={<Dana />} />
         <Route path="/partners/brand-directory/four-seasons" element={<FourSeasons />} />
         <Route path="/partners/brand-directory/four-seasons-residences" element={<FourSeasonsResidences />} />
         <Route path="/partners/brand-directory/the-shore" element={<TheShore />} />

@@ -29,66 +29,66 @@ type AboutDowntownPerksModalProps = {
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const features = [
-  { icon: Map, title: "Resident Map", body: "A live map for what is nearby, useful, open, and relevant right now." },
-  { icon: CreditCard, title: "Digital Perks Card", body: "A clean resident access layer for saving, redeeming, and showing eligibility." },
-  { icon: Building2, title: "Property Discovery", body: "Buildings and listings gain neighborhood context instead of standing alone." },
-  { icon: Megaphone, title: "Local Campaigns", body: "Partners can place offers and moments where downtown decisions happen." },
-  { icon: Users, title: "Building Engagement", body: "Residential teams can connect residents to local routines and events." },
-  { icon: BarChart3, title: "Simple Reports", body: "Scans, saves, RSVPs, and redemptions show what people actually used." },
-  { icon: Search, title: "Resident Directory", body: "Useful local surfaces help residents orient without another disconnected app." },
-  { icon: CalendarDays, title: "Event Discovery", body: "Events appear in the same map context as places, perks, and buildings." },
-  { icon: QrCode, title: "QR Redemption Flow", body: "QR entry points connect real-world surfaces to measurable local behavior." },
-  { icon: Sparkles, title: "Useful Neighborhood Notes", body: "The map shows which places, buildings, and moments are getting people to show up." },
+  { icon: Map, title: "Resident Map", body: "See what is nearby, open, useful, and worth leaving for." },
+  { icon: CreditCard, title: "Perks Card", body: "Save places, show your card, and use resident access when it is available." },
+  { icon: Building2, title: "Homes Nearby", body: "Browse listings with the places, perks, and routines around the address." },
+  { icon: Store, title: "Local Offers", body: "Find simple resident perks from places people already know and use." },
+  { icon: Users, title: "Building Perks", body: "Buildings can give residents an easier way to find what is close." },
+  { icon: BarChart3, title: "Simple Updates", body: "Partners can see what people saved, scanned, joined, and used." },
+  { icon: Search, title: "Ask The Map", body: "Ask for coffee, dinner, a showing, a workout, or something to do tonight." },
+  { icon: CalendarDays, title: "Events", body: "See what is happening nearby and RSVP without jumping between apps." },
+  { icon: QrCode, title: "QR Access", body: "Scan or show a code when a perk, event, or front desk moment needs it." },
+  { icon: Sparkles, title: "Local Notes", body: "Keep track of the places, buildings, and plans people actually come back to." },
 ];
 
 const audiences = [
   {
     icon: Users,
     title: "Residents",
-    gain: "A simpler way to understand what is nearby.",
-    use: "They search, save, redeem, RSVP, and return to places that fit their day.",
-    why: "It turns downtown from scattered options into a usable local layer.",
+    gain: "A simpler way to see what is nearby.",
+    use: "Search, save, RSVP, show the card, and come back to places that fit the day.",
+    why: "Downtown feels easier when the useful stuff is in one place.",
   },
   {
     icon: Building2,
     title: "Properties",
-    gain: "A stronger amenity and clearer neighborhood story.",
-    use: "Teams use QR access, map placement, and activity signals around the building.",
-    why: "It helps residents and prospects see the value around an address.",
+    gain: "A clearer way to show what life around the building feels like.",
+    use: "Share nearby perks, events, listings, and QR access residents can actually use.",
+    why: "The address makes more sense when people can see what is around it.",
   },
   {
     icon: Landmark,
     title: "Brokerages",
-    gain: "More context around listings and client decisions.",
-    use: "Agents show walkable routines, favorite local spots, and nearby activity alongside properties.",
-    why: "Neighborhood confidence is often what turns interest into action.",
+    gain: "More helpful context around listings.",
+    use: "Show walkable routines, favorite local spots, and nearby plans alongside properties.",
+    why: "People feel more confident when they can picture the neighborhood.",
   },
   {
     icon: Store,
     title: "Local Businesses",
-    gain: "Visibility when people nearby are choosing where to go.",
-    use: "Venues publish offers, events, and map presence tied to proximity.",
-    why: "It connects attention to real-world visits instead of broad impressions.",
+    gain: "A better way to be found when people nearby are choosing where to go.",
+    use: "Share offers, events, hours, and reasons to stop in.",
+    why: "People are more likely to show up when the next step is obvious.",
   },
   {
     icon: Hotel,
     title: "Hotels",
     gain: "A live local guide guests can open instantly.",
-    use: "Hotels place QR access in rooms, lobbies, and concierge workflows.",
-    why: "It extends the stay into the neighborhood without adding staff burden.",
+    use: "Place QR access in rooms, lobbies, and concierge moments.",
+    why: "Guests get a better downtown plan without adding more work for staff.",
   },
   {
     icon: Megaphone,
     title: "Brands",
-    gain: "Campaign placement inside real downtown behavior.",
-    use: "Brands activate by district, building, venue, event, or resident source.",
-    why: "Context and timing outperform generic reach.",
+    gain: "A way to show up where the brand already makes sense.",
+    use: "Connect offers, pop-ups, events, and useful moments to nearby residents.",
+    why: "A local moment works better when it feels like it belongs there.",
   },
   {
     icon: Landmark,
     title: "Downtown Organizations",
     gain: "A practical way to make participation visible.",
-    use: "Districts surface public events, wayfinding, civic moments, and activity.",
+    use: "Share public events, wayfinding, civic moments, and helpful local information.",
     why: "People show up more when local information is easy to find and act on.",
   },
 ];
@@ -96,8 +96,8 @@ const audiences = [
 const steps = [
   "Open the map",
   "Discover nearby places, events, perks, and listings",
-  "Save or redeem through the perks card",
-  "Partners track engagement and activity through the dashboard",
+  "Save a place, RSVP, or show your perks card",
+  "Partners see what people used and what helped them show up",
 ];
 
 function GlassButton({
@@ -113,8 +113,8 @@ function GlassButton({
 }) {
   const className =
     variant === "primary"
-      ? "inline-flex h-10 items-center justify-center bg-[#0B1F33] px-5 text-[13px] font-medium text-white shadow-[0_12px_26px_rgba(11,31,51,0.18)] transition-all hover:-translate-y-0.5 hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
-      : "inline-flex h-10 items-center justify-center border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.58)] px-5 text-[13px] font-medium text-[#0B1F33] backdrop-blur-[20px] transition-all hover:-translate-y-0.5 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]";
+      ? "inline-flex h-10 items-center justify-center bg-[#0B1F33] px-5 text-[13px] font-medium text-white shadow-[0_12px_26px_rgba(11,31,51,0.18)] transition-all hover:-translate-y-0.5 hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+      : "inline-flex h-10 items-center justify-center border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.58)] px-5 text-[13px] font-medium text-[#0B1F33] backdrop-blur-[20px] transition-all hover:-translate-y-0.5 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]";
 
   if (to) {
     return (
@@ -203,7 +203,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex h-9 items-center gap-1.5 border border-[rgba(11,31,51,0.08)] bg-white/58 px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="inline-flex h-9 items-center gap-1.5 border border-[rgba(11,31,51,0.08)] bg-white/58 px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                 aria-label="Back from Downtown Perks overview"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
@@ -215,7 +215,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex h-9 w-9 items-center justify-center border border-[rgba(11,31,51,0.08)] bg-white/58 text-[#0B1F33] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="inline-flex h-9 w-9 items-center justify-center border border-[rgba(11,31,51,0.08)] bg-white/58 text-[#0B1F33] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
@@ -225,21 +225,21 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
             <div className="overflow-y-auto px-5 pb-28 pt-6 md:px-5 md:pb-7 md:pt-8">
               <section className="grid gap-7 border-b border-white/44 pb-8 md:grid-cols-[1.1fr_0.9fr] md:items-end">
                 <div>
-                  <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.18em] text-[#B38F4F]">
+                  <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.18em] text-[#C8A96A]">
                     Downtown Perks
                   </span>
                   <h1 id="about-dp-title" className="font-heading text-4xl font-medium leading-[1.02] text-[#0B1F33] md:text-4xl">
                     The neighborhood, finally connected.
                   </h1>
                   <p className="mt-5 max-w-2xl text-[16px] leading-[1.7] text-[#0B1F33]/72">
-                    Downtown Perks brings residents, buildings, local businesses, events, and property discovery into one intelligent map-based experience.
+                    Downtown Perks helps residents find nearby places, perks, events, listings, and local help without bouncing between five different apps.
                   </p>
                   <p className="mt-4 max-w-2xl text-[14px] leading-[1.75] text-[#0B1F33]/58">
-                    Instead of forcing people to search across apps, tabs, websites, social feeds, and listing platforms, Downtown Perks creates one clear layer for discovering what matters nearby.
+                    Open the map, see what is close, save what looks good, and make the next move while the plan still feels easy.
                   </p>
                   <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                    <GlassButton to="/map" onClick={onClose}>Explore the Map</GlassButton>
-                    <GlassButton to="/partners" variant="secondary" onClick={onClose}>Partner With Us</GlassButton>
+                    <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Explore the Map</GlassButton>
+                    <GlassButton to="/map?mode=partner&tab=map&filter=All" variant="secondary" onClick={onClose}>Partner Map</GlassButton>
                   </div>
                 </div>
 
@@ -249,7 +249,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
                       ["Nearby", "Places, events, and services close enough to use now."],
                       ["Perks", "Resident offers from spots people already visit."],
                       ["Homes", "Buildings and listings shown with what is walkable nearby."],
-                      ["Live", "Fresh signals from saves, scans, RSVPs, and map activity."],
+                      ["Ready", "Saved places, RSVPs, card scans, and useful next steps in one place."],
                     ].map(([label, body]) => (
                       <div key={label} className="border border-white/42 bg-white/34 p-2.5 shadow-[0_8px_18px_rgba(11,31,51,0.04)]">
                         <div className="text-[13px] font-semibold text-[#0B1F33]">{label}</div>
@@ -258,7 +258,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
                     ))}
                   </div>
                   <p className="mt-3 text-[12px] leading-relaxed text-[#0B1F33]/58">
-                    Map-first context for real-world decisions: where to go, what to use, what to join, and where downtown activity is forming.
+                    Built for real downtown decisions: where to go, what to use, what to join, and what is worth checking out nearby.
                   </p>
                 </div>
               </section>
@@ -267,7 +267,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
                 <div className="mb-5 flex items-end justify-between gap-4">
                   <div>
                     <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#0B1F33]/50">What it does</span>
-                    <h2 className="mt-2 font-heading text-3xl font-medium text-[#0B1F33]">One operating layer, many surfaces.</h2>
+                    <h2 className="mt-2 font-heading text-3xl font-medium text-[#0B1F33]">One map for the day-to-day stuff.</h2>
                   </div>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -281,7 +281,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
                         className="group relative overflow-hidden border border-white/44 bg-white/46 p-4 shadow-[0_10px_28px_rgba(11,31,51,0.07)] backdrop-blur-[22px]"
                       >
                         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0B1F33]/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                        <div className="mb-4 flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#B38F4F]">
+                        <div className="mb-4 flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#C8A96A]">
                           <Icon className="h-4 w-4" />
                         </div>
                         <h3 className="font-body text-[13px] font-semibold text-[#0B1F33]">{feature.title}</h3>
@@ -294,14 +294,14 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
 
               <section className="grid gap-5 border-y border-white/44 py-9 md:grid-cols-[0.85fr_1.15fr]">
                 <h2 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">
-                  Visibility at the moment of decision.
+                  Useful when the plan is still forming.
                 </h2>
                 <div className="space-y-4 text-[14px] leading-[1.75] text-[#0B1F33]/64">
                   <p>
-                    Downtown Perks works because it connects people to places while they are already downtown and actively deciding where to go, what to do, or where to live.
+                    Downtown Perks works because it meets people while they are already downtown and deciding where to go, what to do, or where they might want to live.
                   </p>
                   <p>
-                    Proximity, timing, local context, and resident behavior are treated as one system. That makes the map useful for residents and measurable for partners without turning the experience into a coupon wall or generic dashboard.
+                    The map keeps the nearby options close to the decision, so residents get a cleaner plan and partners can see what actually helped someone show up.
                   </p>
                 </div>
               </section>
@@ -319,7 +319,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
                         className="dp-glass-card p-5"
                       >
                         <div className="mb-4 flex items-center gap-3">
-                          <span className="flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#B38F4F]">
+                          <span className="flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#C8A96A]">
                             <Icon className="h-4 w-4" />
                           </span>
                           <h3 className="font-body text-[14px] font-semibold text-[#0B1F33]">{audience.title}</h3>
@@ -338,7 +338,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
                 <div className="mt-6 grid gap-3 md:grid-cols-4">
                   {steps.map((step, index) => (
                     <div key={step} className="relative border border-white/44 bg-white/42 p-5 backdrop-blur-[20px]">
-                      <div className="mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
+                      <div className="mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">
                         0{index + 1}
                       </div>
                       <p className="text-[13px] font-medium leading-relaxed text-[#0B1F33]">{step}</p>
@@ -353,22 +353,22 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               <section className="grid gap-6 pt-9 md:grid-cols-[1fr_auto] md:items-end">
                 <div>
                   <h2 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">
-                    One map for the downtown experience.
+                    One map for using downtown.
                   </h2>
                   <p className="mt-4 max-w-2xl text-[14px] leading-[1.75] text-[#0B1F33]/64">
-                    Downtown Perks creates a cleaner connection between residents, real estate, local businesses, and the places people actually spend time.
+                    Downtown Perks connects residents, real estate, local businesses, and the places people actually spend time.
                   </p>
                 </div>
                 <div className="hidden gap-3 md:flex">
-                  <GlassButton to="/map" onClick={onClose}>Open the Live Map</GlassButton>
-                  <GlassButton to="/partners#get-started" variant="secondary" onClick={onClose}>Book a Walkthrough</GlassButton>
+                  <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Open the Map</GlassButton>
+                  <GlassButton to="/partners/campaigns" variant="secondary" onClick={onClose}>Campaigns</GlassButton>
                 </div>
               </section>
             </div>
 
             <div className="sticky bottom-0 z-20 grid grid-cols-2 gap-2 border-t border-white/44 bg-white/42 p-3 backdrop-blur-[24px] md:hidden">
-              <GlassButton to="/map" onClick={onClose}>Open the Live Map</GlassButton>
-              <GlassButton to="/partners#get-started" variant="secondary" onClick={onClose}>Book a Walkthrough</GlassButton>
+              <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Open the Map</GlassButton>
+              <GlassButton to="/partners/campaigns" variant="secondary" onClick={onClose}>Campaigns</GlassButton>
             </div>
           </motion.div>
         </motion.div>

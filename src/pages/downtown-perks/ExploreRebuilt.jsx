@@ -121,7 +121,7 @@ export default function ExploreRebuilt() {
   }
 
   return (
-    <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-[#F7F8FB]">
+    <div className="pt-[68px] fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-white">
       {/* ── MOBILE LAYOUT ────────────────────────────────── */}
       <div className="md:hidden w-full h-[calc(100vh-68px)] flex flex-col">
         {/* Map (full height) */}

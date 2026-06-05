@@ -159,7 +159,7 @@ export default function BottomSheet({
                 {state === 'full' && (
                   <button
                     onClick={() => onStateChange?.('mid')}
-                    className="w-8 h-8 rounded-full bg-[#F7F8FB] flex items-center justify-center hover:bg-[#F7F8FB] transition-colors"
+                    className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-white transition-colors"
                   >
                     <X className="w-4 h-4 text-[#0B1F33]" />
                   </button>

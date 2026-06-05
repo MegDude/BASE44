@@ -34,7 +34,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
           <h3 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-4">
             Ready to launch?
           </h3>
-          <p className="text-[15px] text-[#6f6b65] mb-8">
+          <p className="text-[15px] text-[#425466] mb-8">
             Tell us about your {partnerType?.toLowerCase() || 'partnership'} and we'll help you get up and running.
           </p>
 

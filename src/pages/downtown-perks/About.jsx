@@ -65,7 +65,7 @@ function Section({ eyebrow, title, children, className = "" }) {
 
 export default function About() {
   return (
-    <main className="min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <main className="min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="relative overflow-hidden px-5 py-16 md:py-24">
         <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.24) 1px, transparent 1px), linear-gradient(90deg, rgba(11,31,51,0.24) 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
@@ -98,7 +98,7 @@ export default function About() {
       <Section eyebrow="Why it matters" title="A good day usually has people in it." className="bg-white">
         <div className="grid gap-4 md:grid-cols-3">
           {researchPoints.map((point) => (
-            <article key={point.title} className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-5">
+            <article key={point.title} className="rounded-md border border-[#0B1F33]/8 bg-white p-5">
               <h3 className="text-[14px] font-semibold text-[#0B1F33]">{point.title}</h3>
               <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/62">{point.body}</p>
             </article>
@@ -112,7 +112,7 @@ export default function About() {
       <Section eyebrow="Austin flavor" title="More charm than a biscuit with honey.">
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-lg border border-[#0B1F33]/8 bg-[#0B1F33] p-5 text-white shadow-[0_20px_60px_rgba(11,31,51,0.18)]">
-            <Sparkles className="h-8 w-8 text-[#B38F4F]" />
+            <Sparkles className="h-8 w-8 text-[#C8A96A]" />
             <h3 className="mt-5 font-heading text-3xl font-medium leading-[1.08]">
               Downtown Perks brings the heat and the hospitality.
             </h3>
@@ -137,7 +137,7 @@ export default function About() {
       <Section eyebrow="The home question" title="People tour buildings. They forget to ask how the place lives.">
         <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
-            <Users className="h-8 w-8 text-[#B38F4F]" />
+            <Users className="h-8 w-8 text-[#C8A96A]" />
             <h3 className="mt-5 font-heading text-3xl font-medium leading-[1.08]">
               The real question is whether a place gives people easy reasons to show up.
             </h3>
@@ -157,7 +157,7 @@ export default function About() {
 
       <Section eyebrow="What changes the feel" title="A building can feel like storage, or it can feel alive." className="bg-white">
         <div className="grid gap-5 lg:grid-cols-2">
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB] p-5">
+          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
             <h3 className="font-heading text-3xl font-medium">Passive amenities fade into the background.</h3>
             <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
               Empty lounges, silent elevators, rooftops used only for listing photos, neighbors who never learn each other's names. A place can photograph beautifully and still feel flat.
@@ -193,7 +193,7 @@ export default function About() {
             ].map(([Icon, title, body]) => (
               <div key={title} className="border-b border-[#0B1F33]/8 py-4 first:pt-0 last:border-b-0 last:pb-0">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#0B1F33] text-[#C8A96A]">
                     <Icon className="h-4 w-4" />
                   </div>
                   <div>
@@ -212,8 +212,8 @@ export default function About() {
           {addOns.map((item) => {
             const Icon = item.icon;
             return (
-              <article key={item.title} className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
-                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
+              <article key={item.title} className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
+                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0B1F33] text-[#C8A96A]">
                   <Icon className="h-4 w-4" />
                 </div>
                 <h3 className="mt-4 text-[13px] font-semibold text-[#0B1F33]">{item.title}</h3>
@@ -233,11 +233,11 @@ export default function About() {
             The goal is simple: make downtown feel easier to enter, easier to know, and easier to come back to.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link to="/map?mode=resident&tab=map" className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+            <Link to="/map?mode=resident&tab=map" className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
               Open the map
-              <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+              <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
             </Link>
-            <Link to="/partners" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+            <Link to="/map?mode=partner&tab=map&filter=All" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
               Partner with us
             </Link>
           </div>

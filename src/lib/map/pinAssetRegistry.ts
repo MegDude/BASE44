@@ -53,7 +53,7 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   service: { label: "Service", glyph: icon('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/>') },
   guide: { label: "Local Guide", glyph: icon('<path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/>') },
   journal: { label: "Journal", glyph: icon('<path d="M6 4h11a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 8h7M8 12h7M8 16h5"/>') },
-  legends: { label: "Legends", glyph: logo("/pins/downtown-perks/legends-logo.avif", "Legends Real Estate") },
+  legends: { label: "Legends", glyph: logo("/pins/downtown-perks/legends-logo.png", "Legends Real Estate") },
   default: { label: "Downtown", glyph: icon('<path d="M12 21s7-5.2 7-11a7 7 0 0 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>') },
 };
 

@@ -48,15 +48,15 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="mb-3 flex items-center justify-between gap-3">
           <button
             onClick={onClose}
-            className="inline-flex h-6 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="inline-flex h-6 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
             aria-label="Back to map results"
           >
-            <ArrowLeft className="h-3 w-3 text-[#B38F4F]" />
+            <ArrowLeft className="h-3 w-3 text-[#C8A96A]" />
             Back
           </button>
           <button
             onClick={onClose}
-            className="flex h-7 w-7 shrink-0 items-center justify-center bg-transparent text-[#0B1F33]/54 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="flex h-7 w-7 shrink-0 items-center justify-center bg-transparent text-[#0B1F33]/54 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
             aria-label="Close drawer"
           >
             <X className="h-4 w-4" />
@@ -65,7 +65,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
             {reason && <WhyThisChip reason={reason} distance={distance} variant="header" />}
-            <h2 className="text-[20px] font-heading font-medium text-foreground leading-tight mt-2 truncate">{entity.name}</h2>
+            <h2 className="mt-2 truncate text-[20px] font-semibold leading-tight tracking-[-0.02em] text-[#0B1F33]">{entity.name}</h2>
           </div>
         </div>
 
@@ -77,8 +77,8 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="flex aspect-[2/1] w-full items-center justify-center bg-[#F7F8FB]">
-          <div className="flex h-20 w-20 items-center justify-center rounded-[6px] bg-[#0B1F33] text-xl font-semibold text-[#B38F4F] shadow-[0_18px_44px_rgba(11,31,51,0.12),0_0_26px_rgba(179,143,79,0.08)]">
+        <div className="flex aspect-[2/1] w-full items-center justify-center bg-white">
+          <div className="flex h-20 w-20 items-center justify-center rounded-[6px] bg-[#0B1F33] text-xl font-semibold text-[#C8A96A] shadow-[0_18px_44px_rgba(11,31,51,0.12),0_0_26px_rgba(200,169,106,0.08)]">
             <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
           </div>
         </div>
@@ -105,18 +105,18 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
             </div>
           )}
 
-          {/* Live signals */}
+          {/* Live activity */}
           {(entity.isActive || entity.rsvp_count) && (
             <div className="space-y-2">
               {entity.isActive && (
-                <div className="flex items-center gap-2 rounded-[6px] bg-white/72 p-2 shadow-[inset_0_0_0_1px_rgba(179,143,79,0.10)]">
-                  <Zap className="w-4 h-4 text-[#B38F4F]" />
+                <div className="flex items-center gap-2 rounded-[6px] bg-white/72 p-2 shadow-[inset_0_0_0_1px_rgba(200,169,106,0.10)]">
+                  <Zap className="w-4 h-4 text-[#C8A96A]" />
                   <span className="text-[12px] font-medium text-[#0B1F33]">Open now</span>
                 </div>
               )}
               {entity.rsvp_count && (
                 <div className="flex items-center gap-2 rounded-[6px] bg-white/72 p-2 shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)]">
-                  <ChevronRight className="w-4 h-4 text-[#B38F4F]" />
+                  <ChevronRight className="w-4 h-4 text-[#C8A96A]" />
                   <span className="text-[12px] font-medium text-[#0B1F33]">{entity.rsvp_count} people going</span>
                 </div>
               )}
@@ -180,9 +180,9 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="grid grid-cols-2 gap-2.5">
           <button
             onClick={handleSave}
-            className={`flex h-8 items-center justify-center gap-1.5 bg-transparent text-[11px] font-semibold uppercase tracking-[0.12em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+            className={`flex h-8 items-center justify-center gap-1.5 bg-transparent text-[11px] font-semibold uppercase tracking-[0.12em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
               isSaved
-                ? 'text-[#B38F4F]'
+                ? 'text-[#C8A96A]'
                 : 'text-[#0B1F33]/58 hover:text-[#0B1F33]'
             }`}
           >
@@ -195,7 +195,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
               navigator.clipboard.writeText(window.location.href);
               trackingEvents.save(entity.id);
             }}
-            className="flex h-8 items-center justify-center gap-1.5 bg-transparent text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="flex h-8 items-center justify-center gap-1.5 bg-transparent text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
           >
             <Share2 className="w-4 h-4" />
             Share

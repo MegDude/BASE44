@@ -42,9 +42,9 @@ export function VenueSideCard({ venue, active, onClick }) {
           : "border-[#0B1F33]/8 shadow-[0_4px_14px_rgba(17,17,17,.03)] hover:-translate-y-px hover:shadow-[0_12px_28px_rgba(17,17,17,.08)]"
       }`}
     >
-      <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden bg-[#F7F8FB]">
-        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#B38F4F]/50 bg-[#0B1F33]">
-          <MapPin className="h-7 w-7 text-[#B38F4F]" />
+      <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden bg-white">
+        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33]">
+          <MapPin className="h-7 w-7 text-[#C8A96A]" />
         </div>
         <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold backdrop-blur-md capitalize">
           {venue.category}
@@ -62,12 +62,12 @@ export function VenueSideCard({ venue, active, onClick }) {
         {venue.address && <p className="text-[13px] text-[#6f6b65] mb-3 truncate">{venue.address}</p>}
         <div className="flex flex-wrap gap-2">
           {venue.perk_description && (
-            <span className="flex items-center gap-1.5 bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium max-w-full truncate">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium max-w-full truncate">
               <Tag className="w-3 h-3 text-[#0B1F33]/58 shrink-0" /> {venue.perk_description}
             </span>
           )}
           {venue.hours && (
-            <span className="flex items-center gap-1.5 bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               <Clock className="w-3 h-3 text-[#0B1F33]/58" /> {venue.hours}
             </span>
           )}
@@ -91,9 +91,9 @@ export function BuildingSideCard({ building, active, onClick }) {
           : "border-[#0B1F33]/8 shadow-[0_4px_14px_rgba(17,17,17,.03)] hover:-translate-y-px hover:shadow-[0_12px_28px_rgba(17,17,17,.08)]"
       }`}
     >
-      <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden bg-[#F7F8FB]">
-        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#B38F4F]/50 bg-[#0B1F33]">
-          <Building2 className="h-8 w-8 text-[#B38F4F]" />
+      <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden bg-white">
+        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33]">
+          <Building2 className="h-8 w-8 text-[#C8A96A]" />
         </div>
         <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold backdrop-blur-md">
           Building
@@ -113,17 +113,17 @@ export function BuildingSideCard({ building, active, onClick }) {
         )}
         <div className="flex flex-wrap gap-2">
           {building.developer && (
-            <span className="bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               {building.developer}
             </span>
           )}
           <span
             className={`px-2.5 py-1.5 rounded-full text-[11px] font-medium border ${
               building.status === "active"
-                ? "bg-[#F7F8FB]/35 border-[#B38F4F]/30 text-[#0B1F33]"
+                ? "bg-white/35 border-[#C8A96A]/30 text-[#0B1F33]"
                 : building.status === "pilot"
-                ? "bg-[#F7F8FB] border-[#0B1F33]/8 text-[#0B1F33]"
-                : "bg-[#F7F8FB] border-[#0B1F33]/8 text-[#0B1F33]/58"
+                ? "bg-white border-[#0B1F33]/8 text-[#0B1F33]"
+                : "bg-white border-[#0B1F33]/8 text-[#0B1F33]/58"
             } capitalize`}
           >
             {building.status || "active"}

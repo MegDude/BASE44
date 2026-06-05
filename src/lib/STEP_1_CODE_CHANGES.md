@@ -234,7 +234,7 @@ Events.jsx referenced `CAT_COLORS` but the shared markerIcons module exports `EV
 import { eventIcon, EVENT_COLORS as CAT_COLORS } from "@/components/map/mapUtils/markerIcons";
 
 // Usage stays the same
-const color = CAT_COLORS[event.category] || "#B38F4F";
+const color = CAT_COLORS[event.category] || "#C8A96A";
 ```
 
 ---

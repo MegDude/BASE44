@@ -26,10 +26,10 @@ export default function SelectorCards({
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: i * 0.05 }}
           onClick={() => onSelect?.(item)}
-          className={`text-left p-5 rounded-lg border transition-all duration-200 ${
+          className={`rounded-[16px] border p-5 text-left transition-all duration-200 ${
             selectedId === item.id
-              ? 'border-[#0B1F33] bg-[#0B1F33] text-white shadow-lg'
-              : 'border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:border-[#B38F4F]/45 hover:shadow-md'
+              ? 'border-[#C8A96A]/45 bg-white/82 text-[#0B1F33] shadow-[0_14px_38px_rgba(11,31,51,0.06)]'
+              : 'border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:border-[#C8A96A]/45'
           }`}
         >
           <div className="flex items-start justify-between gap-2 mb-2">
@@ -43,9 +43,7 @@ export default function SelectorCards({
 
           {item.description && (
             <div
-              className={`text-[13px] leading-relaxed ${
-                selectedId === item.id ? 'text-white/80' : 'text-[#0B1F33]/58'
-              }`}
+              className="text-[13px] leading-relaxed text-[#425466]"
             >
               {item.description}
             </div>
@@ -56,7 +54,7 @@ export default function SelectorCards({
               {item.stats.map((stat, j) => (
                 <div key={j} className="text-[11px]">
                   <div className="font-semibold">{stat.value}</div>
-                  <div className={selectedId === item.id ? 'text-white/60' : 'text-[#0B1F33]/50'}>
+                  <div className="text-[#0B1F33]/50">
                     {stat.label}
                   </div>
                 </div>

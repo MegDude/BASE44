@@ -63,29 +63,23 @@ export default function HowItWorksSection() {
           </motion.p>
         </div>
 
-        {/* Steps — numbered, clean */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
           {steps.map((step, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
-              className={`flex gap-6 p-8 border-border/40 ${
-                i % 2 === 0 ? "md:border-r" : ""
-              } ${i < 2 ? "border-b" : ""}`}
+              className="grid grid-cols-[34px_1fr] gap-4"
             >
-              <div className="flex-shrink-0">
-                <div className="font-heading text-[11px] font-medium text-primary/50 tracking-[0.12em] mb-3">
+              <div>
+                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">
                   {step.step}
                 </div>
-                <div className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center">
-                  <step.icon className="w-4 h-4 text-primary" />
-                </div>
               </div>
-              <div className="pt-5">
-                <h3 className="font-heading text-lg font-medium mb-2">{step.title}</h3>
-                <p className="text-muted-foreground text-[13px] leading-relaxed">{step.description}</p>
+              <div>
+                <h3 className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{step.title}</h3>
+                <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">{step.description}</p>
               </div>
             </motion.div>
           ))}

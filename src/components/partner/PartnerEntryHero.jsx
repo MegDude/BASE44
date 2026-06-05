@@ -25,7 +25,7 @@ export default function PartnerEntryHero() {
             Five ways to grow.
           </h1>
 
-          <p className="text-[18px] text-[#6f6b65] leading-relaxed mb-8 max-w-2xl">
+          <p className="text-[18px] text-[#425466] leading-relaxed mb-8 max-w-2xl">
             Downtown Perks is a unified map-native operating layer for downtown. Whether you're a residential building, hotel, venue, brand, or civic organization—you use the same system differently. Show up on the map. Connect your people. Measure what matters.
           </p>
 
@@ -39,7 +39,7 @@ export default function PartnerEntryHero() {
             </a>
             <a
               href="/map?mode=resident&tab=map"
-              className="inline-flex items-center h-10 px-5 rounded-lg border border-[#0B1F33]/8 bg-white text-[#0B1F33] font-semibold text-[14px] hover:bg-[#F7F8FB] transition-colors"
+              className="inline-flex items-center h-10 px-5 rounded-lg border border-[#0B1F33]/8 bg-white text-[#0B1F33] font-semibold text-[14px] hover:bg-white transition-colors"
             >
               Explore the map
             </a>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, MapPin, TrendingUp } from 'lucide-react';
+import { MapPin, TrendingUp } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
 import HowItWorksRail from '@/components/partner/HowItWorksRail';
 import SelectorCards from '@/components/partner/SelectorCards';
@@ -85,15 +85,6 @@ export default function ResidentialPartner() {
           { label: 'Active properties', value: '28+' },
           { label: 'Partner venues', value: '120+' },
         ]}
-        preview={
-          <div className="aspect-[4/3] rounded-lg border border-[#0B1F33]/8 bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] flex items-center justify-center">
-            <div className="text-center">
-              <Building2 className="w-12 h-10 text-[#0B1F33]/50 mx-auto mb-3" />
-              <p className="text-[13px] font-semibold text-[#0B1F33]/70">Building + Resident Layer Preview</p>
-              <p className="text-[11px] text-[#0B1F33]/50 mt-1">Map integration coming in next section</p>
-            </div>
-          </div>
-        }
       />
 
       {/* Partner model */}
@@ -123,7 +114,7 @@ export default function ResidentialPartner() {
                   <h3 className="text-[20px] font-bold text-[#0B1F33] mb-3">
                     {RESIDENTIAL_FEATURES.find((f) => f.id === selectedFeature)?.label}
                   </h3>
-                  <p className="text-[14px] text-[#6f6b65] leading-relaxed">
+                  <p className="text-[14px] text-[#425466] leading-relaxed">
                     {RESIDENTIAL_FEATURES.find((f) => f.id === selectedFeature)?.description}
                   </p>
                 </div>
@@ -147,7 +138,7 @@ export default function ResidentialPartner() {
           <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-8">
             Map visibility
           </h2>
-          <p className="text-[15px] text-[#6f6b65] mb-12 max-w-2xl">
+          <p className="text-[15px] text-[#425466] mb-12 max-w-2xl">
             Your building appears on the map with a resident layer. Residents can tap to view exclusive perks at nearby venues and save favorites.
           </p>
 
@@ -203,7 +194,7 @@ export default function ResidentialPartner() {
                 className="p-6 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33] transition-colors"
               >
                 <h3 className="text-[16px] font-bold text-[#0B1F33] mb-2">{use.title}</h3>
-                <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{use.desc}</p>
+                <p className="text-[13px] text-[#425466] leading-relaxed mb-4">{use.desc}</p>
                 <div className="flex items-center gap-2 text-[12px] font-bold text-[#0B1F33]">
                   <TrendingUp className="w-3.5 h-3.5" />
                   {use.metric}

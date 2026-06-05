@@ -22,7 +22,7 @@ export default function AnalyticsKPICard({ label, value, delta, deltaType, spark
           </span>
           {delta && (
             <div className={`flex items-center gap-1 text-[12px] font-medium ${
-              isPositive ? 'text-[#B38F4F]' : isNegative ? 'text-[#0B1F33]/58' : 'text-muted-foreground'
+              isPositive ? 'text-[#C8A96A]' : isNegative ? 'text-[#0B1F33]/58' : 'text-muted-foreground'
             }`}>
               {isPositive && <TrendingUp className="w-3.5 h-3.5" />}
               {isNegative && <TrendingDown className="w-3.5 h-3.5" />}

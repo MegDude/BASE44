@@ -34,14 +34,14 @@ export default function CampaignHero({
             <div className="flex flex-wrap gap-3 mb-8">
               <a
                 href={ctaHref || '#'}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all shadow-md shadow-primary/15"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all shadow-md shadow-primary/15"
               >
                 {cta} <ArrowRight className="w-4 h-4" />
               </a>
               {secondaryCta && (
                 <a
                   href={secondaryCtaHref || '#'}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all"
                 >
                   {secondaryCta}
                 </a>

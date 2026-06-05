@@ -21,7 +21,7 @@ export const useUnifiedMapStore = create((set, get) => ({
   isLoading: false,
   drawerState: 'collapsed',
   mapCenter: initialMapState.mapCenter,
-  mapZoom: 14,
+  mapZoom: initialMapState.mapZoom,
   timeFilter: 'now', // now | today | week
   liveActions: [], // Recent user actions for heatmap
   heatmapVisible: false,

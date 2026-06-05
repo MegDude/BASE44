@@ -79,15 +79,27 @@ export default function UnifiedMapShell({
     <MapContainer
       center={validCenter}
       zoom={mapZoom}
+      minZoom={12}
+      maxZoom={20}
       className={`${className} relative`}
       zoomControl={false}
+      attributionControl={false}
       scrollWheelZoom={true}
+      zoomSnap={0.5}
+      zoomDelta={0.5}
       onMoveend={(e) => handleDragEnd(e.target)}
       onZoomend={(e) => handleZoom(e.target)}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution="&copy; CARTO"
+        maxZoom={20}
+        maxNativeZoom={20}
+        keepBuffer={8}
+        updateWhenIdle={false}
+        updateWhenZooming
+        detectRetina
+        crossOrigin
       />
 
       <MapFlyTo position={mapCenter} />

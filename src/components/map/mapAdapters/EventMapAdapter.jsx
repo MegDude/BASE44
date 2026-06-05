@@ -34,16 +34,16 @@ export function EventCard({ event, active, onClick }) {
   const CAT_COLORS = {
     fitness: "#0B1F33",
     wellness: "#0B1F33",
-    social: "#B38F4F",
-    dining: "#B38F4F",
+    social: "#C8A96A",
+    dining: "#C8A96A",
     nightlife: "#0B1F33",
     arts: "#0B1F33",
     networking: "#0B1F33",
     class: "#0B1F33",
-    run_club: "#B38F4F",
+    run_club: "#C8A96A",
     yoga: "#0B1F33",
   };
-  const color = CAT_COLORS[event.category] || "#B38F4F";
+  const color = CAT_COLORS[event.category] || "#C8A96A";
 
   return (
     <article
@@ -55,9 +55,9 @@ export function EventCard({ event, active, onClick }) {
           : "border-[#0B1F33]/8 shadow-[0_4px_14px_rgba(17,17,17,.03)] hover:-translate-y-px hover:shadow-[0_12px_28px_rgba(17,17,17,.08)]"
       }`}
     >
-      <div className="relative flex aspect-[1.75/1] items-center justify-center overflow-hidden bg-[#F7F8FB]">
-        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#B38F4F]/50 bg-[#0B1F33]">
-          <Calendar className="h-8 w-8 text-[#B38F4F]" />
+      <div className="relative flex aspect-[1.75/1] items-center justify-center overflow-hidden bg-white">
+        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33]">
+          <Calendar className="h-8 w-8 text-[#C8A96A]" />
         </div>
         <div
           className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md ${STATUS_STYLE[event.status] || STATUS_STYLE.upcoming}`}
@@ -95,17 +95,17 @@ export function EventCard({ event, active, onClick }) {
         )}
         <div className="flex flex-wrap gap-2">
           {event.venue_name && (
-            <span className="flex items-center gap-1.5 bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               📍 {event.venue_name}
             </span>
           )}
           {date && (
-            <span className="flex items-center gap-1.5 bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               🕐 {date.format("h:mm A")}
             </span>
           )}
           {event.rsvp_count > 0 && (
-            <span className="flex items-center gap-1.5 bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               👥 {event.rsvp_count} going
             </span>
           )}

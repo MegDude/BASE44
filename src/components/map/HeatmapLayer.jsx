@@ -11,7 +11,7 @@ export default function HeatmapLayer({ visible = true, data = [], timeFilter = '
   const map = useMap();
   const [heatZones, setHeatZones] = useState([]);
 
-  // Aggregate analytics signals into spatial density clusters
+  // Aggregate activity into spatial density clusters
   useEffect(() => {
     if (!visible || !data.length) {
       setHeatZones([]);
@@ -58,7 +58,7 @@ export default function HeatmapLayer({ visible = true, data = [], timeFilter = '
 
   // Navy/copper intensity function. Keep the heatmap restrained and on-brand.
   const getHeatColor = (intensity) => {
-    if (intensity > 0.75) return '#B38F4F';
+    if (intensity > 0.75) return '#C8A96A';
     if (intensity > 0.5) return '#0B1F33';
     if (intensity > 0.25) return '#0B1F33';
     return '#0B1F33';

@@ -84,7 +84,7 @@ export default function UnifiedSearchBar() {
     >
       {/* Search container */}
       <div className="relative">
-        <div className="dp-glass flex items-center gap-2 px-3 py-2.5 transition-all focus-within:border-[#B38F4F]/60 focus-within:bg-white/64 md:px-4 md:py-2.5">
+        <div className="dp-glass flex items-center gap-2 px-3 py-2.5 transition-all focus-within:border-[#C8A96A]/60 focus-within:bg-white/64 md:px-4 md:py-2.5">
           <Search className="w-4 h-4 text-[#0B1F33]/50 shrink-0" />
 
           <input
@@ -117,15 +117,15 @@ export default function UnifiedSearchBar() {
           <button
             onClick={handleAISearch}
             disabled={!isAI || aiLoading}
-            className={`p-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+            className={`p-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
               isAI && !aiLoading
-                ? 'bg-white/82 text-[#B38F4F] shadow-[0_0_0_1px_rgba(179,143,79,0.18),0_10px_24px_rgba(11,31,51,0.06)] hover:text-[#B38F4F] hover:shadow-[0_0_0_1px_rgba(179,143,79,0.28),0_12px_30px_rgba(11,31,51,0.08)]'
-                : 'bg-white/58 text-[#B38F4F] opacity-80 shadow-[0_0_0_1px_rgba(179,143,79,0.10)]'
+                ? 'bg-white/82 text-[#C8A96A] shadow-[0_0_0_1px_rgba(200,169,106,0.18),0_10px_24px_rgba(11,31,51,0.06)] hover:text-[#C8A96A] hover:shadow-[0_0_0_1px_rgba(200,169,106,0.28),0_12px_30px_rgba(11,31,51,0.08)]'
+                : 'bg-white/58 text-[#C8A96A] opacity-80 shadow-[0_0_0_1px_rgba(200,169,106,0.10)]'
             }`}
             title="Ask the Map AI"
           >
             {aiLoading ? (
-              <div className="w-4 h-4 border-2 border-white/30 border-t-[#B38F4F] animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/30 border-t-[#C8A96A] animate-spin" />
             ) : (
               <Sparkles className="w-4 h-4" />
             )}
@@ -139,7 +139,7 @@ export default function UnifiedSearchBar() {
               initial={{ opacity: 0, y: -8, height: 0 }}
               animate={{ opacity: 1, y: 0, height: 'auto' }}
               exit={{ opacity: 0, y: -8, height: 0 }}
-              className="dp-glass-card absolute left-0 right-0 top-full z-[1400] mt-2 max-h-[min(420px,calc(100vh-150px))] overflow-y-auto bg-white/94 shadow-[0_24px_70px_rgba(11,31,51,0.16),0_0_0_1px_rgba(179,143,79,0.10)]"
+              className="dp-glass-card absolute left-0 right-0 top-full z-[1400] mt-2 max-h-[min(420px,calc(100vh-150px))] overflow-y-auto bg-white/94 shadow-[0_24px_70px_rgba(11,31,51,0.16),0_0_0_1px_rgba(200,169,106,0.10)]"
             >
               {SEARCH_PROMPTS.map((prompt, i) => (
                 <button
@@ -148,7 +148,7 @@ export default function UnifiedSearchBar() {
                   className="w-full text-left px-4 py-2.5 hover:bg-white/50 transition-colors border-b border-white/44 last:border-0"
                 >
                   <div className="flex items-start gap-2">
-                    <Zap className="w-4 h-4 text-[#B38F4F] shrink-0 mt-0.5" />
+                    <Zap className="w-4 h-4 text-[#C8A96A] shrink-0 mt-0.5" />
                     <div>
                       <div className="text-xs font-semibold text-[#0B1F33] mb-0.5">
                         {prompt.q}

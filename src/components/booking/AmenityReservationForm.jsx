@@ -52,7 +52,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
         animate={{ opacity: 1 }}
         className="p-5 text-center"
       >
-        <div className="w-12 h-10 rounded-full bg-[#F7F8FB]/35 flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-10 rounded-full bg-white/35 flex items-center justify-center mx-auto mb-3">
           <span className="text-2xl">✓</span>
         </div>
         <h3 className="text-[18px] font-bold text-[#0B1F33] mb-1">Reserved!</h3>

@@ -13,7 +13,7 @@ import L from 'leaflet';
 const MARKER_CONFIG = {
   // Standard venues (coffee, dining, retail, etc.)
   'standard:restaurant': {
-    color: '#B38F4F', // Gold
+    color: '#C8A96A', // Gold
     icon: '🍽️',
     size: 12,
     iconSize: 8,
@@ -21,7 +21,7 @@ const MARKER_CONFIG = {
     shadowBlur: '0 2px 6px rgba(200, 151, 58, 0.4)',
   },
   'standard:coffee': {
-    color: '#B38F4F',
+    color: '#C8A96A',
     icon: '☕',
     size: 12,
     iconSize: 8,
@@ -45,7 +45,7 @@ const MARKER_CONFIG = {
     shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
   },
   'standard:wellness': {
-    color: '#B38F4F',
+    color: '#C8A96A',
     icon: '🧘',
     size: 12,
     iconSize: 8,
@@ -81,7 +81,7 @@ const MARKER_CONFIG = {
 
   // Events
   'event:default': {
-    color: '#B38F4F',
+    color: '#C8A96A',
     icon: '📅',
     size: 14,
     iconSize: 8,
@@ -91,7 +91,7 @@ const MARKER_CONFIG = {
 
   // Perks
   'perk:default': {
-    color: '#B38F4F',
+    color: '#C8A96A',
     icon: '🏷️',
     size: 14,
     iconSize: 8,
@@ -101,7 +101,7 @@ const MARKER_CONFIG = {
 
   // Brands
   'brand:default': {
-    color: '#B38F4F',
+    color: '#C8A96A',
     icon: '⭐',
     size: 14,
     iconSize: 8,

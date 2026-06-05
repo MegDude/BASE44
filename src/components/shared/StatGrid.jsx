@@ -44,7 +44,7 @@ export default function StatGrid({
             </div>
 
             {item.change && (
-              <span className={`text-[12px] font-medium ${item.positive ? "text-[#B38F4F]" : "text-[#0B1F33]/58"}`}>
+              <span className={`text-[12px] font-medium ${item.positive ? "text-[#C8A96A]" : "text-[#0B1F33]/58"}`}>
                 {item.positive ? "↑" : "↓"} {item.change}
               </span>
             )}

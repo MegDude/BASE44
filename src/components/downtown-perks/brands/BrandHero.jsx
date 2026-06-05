@@ -19,7 +19,7 @@ export default function BrandHero({ eyebrow, headline, support, ctaLabel, ctaHre
           </Link>
         </motion.div>
 
-        <div className={`grid grid-cols-1 ${demoPanel ? "md:grid-cols-2" : ""} gap-16 items-start`}>
+        <div className={`grid grid-cols-1 ${demoPanel ? "md:grid-cols-2" : ""} gap-10 md:gap-16 items-start`}>
           {/* Left — copy */}
           <div>
             <motion.div
@@ -37,15 +37,16 @@ export default function BrandHero({ eyebrow, headline, support, ctaLabel, ctaHre
                 {support}
               </p>
               <div className="flex flex-col sm:flex-row items-start gap-3">
-                <Link
+                <a
                   to={ctaHref || "/downtown-perks/card"}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300 shadow-md shadow-primary/15"
+                  href={ctaHref || "/downtown-perks/card"}
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#0B1F33] px-5 py-2.5 text-[13px] font-medium text-[#FFFFFF] shadow-sm transition-all duration-300 hover:bg-[#0B1F33]/90"
                 >
                   {ctaLabel || "Get Started"} <ArrowRight className="w-4 h-4" />
-                </Link>
+                </a>
                 <Link
                   to="/downtown-perks/for-buildings"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground hover:border-border transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#C8A96A] hover:text-[#0B1F33]"
                 >
                   Partnership Details
                 </Link>

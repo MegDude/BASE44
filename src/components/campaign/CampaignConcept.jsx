@@ -51,7 +51,7 @@ export default function CampaignConcept({
                 <div className="space-y-2">
                   {placements?.map((p, i) => (
                     <div key={i} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+                      <div className="w-1.5 h-1.5 rounded-[2px] bg-primary/60" />
                       <span className="text-[13px] text-foreground">{p}</span>
                     </div>
                   ))}

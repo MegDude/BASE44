@@ -53,6 +53,7 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
     entity.name,
     entity.type,
     entity.category,
+    entity.category_key,
     entity.partnerType,
     entity.brand,
     entity.source,
@@ -66,7 +67,15 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
     return getPinAsset("legends");
   }
 
+  if (/\b(in[\s-]?kind|dining credit|restaurant credit|dining perk)\b/.test(text)) {
+    return getPinAsset("offer");
+  }
+
   const categoryText = [entity.category, entity.category_key, entity.type].filter(Boolean).join(" ").toLowerCase();
+  if (/\b(brand[_\s/-]*activation|campaign|sponsor|visibility)\b/.test(categoryText) || /\b(campaign|brand activation|district activation)\b/.test(text)) {
+    return getPinAsset("campaign");
+  }
+
   const categoryMatch = CATEGORY_PIN_MAP.find(([, tokens]) => tokens.some((token) => categoryText.includes(token)));
   if (categoryMatch) return getPinAsset(categoryMatch[0]);
 

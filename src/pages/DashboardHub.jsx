@@ -33,10 +33,10 @@ export default function DashboardHub() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <div className="min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="border-b border-[#0B1F33]/8 px-5 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B38F4F]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8A96A]">
             Dashboard
           </p>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -56,7 +56,7 @@ export default function DashboardHub() {
               className="inline-flex h-10 items-center gap-2 border border-[#0B1F33]/8 bg-white px-5 text-[13px] font-semibold uppercase tracking-[0.14em] transition-all hover:border-[#0B1F33]/10"
             >
               Open the Map
-              <Map className="h-4 w-4 text-[#B38F4F]" />
+              <Map className="h-4 w-4 text-[#C8A96A]" />
             </Link>
           </div>
         </div>
@@ -83,10 +83,10 @@ export default function DashboardHub() {
                 <div>
                   <Link
                     to={option.to}
-                    className="inline-flex h-10 items-center gap-2 bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#F7F8FB] transition-all hover:bg-[#0B1F33]"
+                    className="inline-flex h-10 items-center gap-2 bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#FFFFFF] transition-all hover:bg-[#0B1F33]"
                   >
                     Enter
-                    <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+                    <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
                   </Link>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function DashboardHub() {
         <div className="mx-auto max-w-6xl border-t border-[#0B1F33]/8 pt-10">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B38F4F]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8A96A]">
                 Shared system
               </p>
               <h2 className="mt-4 text-4xl font-semibold tracking-normal">
@@ -114,7 +114,7 @@ export default function DashboardHub() {
                 "Pricing, dashboard, and map now link to each other instead of splitting the experience.",
               ].map((line) => (
                 <div key={line} className="flex items-start gap-3 border-b border-[#0B1F33]/8 pb-4">
-                  <Sparkles className="mt-1 h-4 w-4 text-[#B38F4F]" />
+                  <Sparkles className="mt-1 h-4 w-4 text-[#C8A96A]" />
                   <p className="text-[14px] leading-7 text-[#425466]">{line}</p>
                 </div>
               ))}

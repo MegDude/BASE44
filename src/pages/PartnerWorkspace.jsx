@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation } from "lucide-react";
+import { daaDashboardContent, daaTourDistricts, daaTourProgress } from "@/data/daaArtParksTour";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -43,7 +44,7 @@ export default function PartnerWorkspace() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dp-partner-page min-h-screen bg-white text-[#0B1F33]">
       {/* Header */}
       <div className="pt-24 pb-0 px-5 border-b border-border/40">
         <div className="max-w-6xl mx-auto">
@@ -56,10 +57,10 @@ export default function PartnerWorkspace() {
               <p className="text-muted-foreground text-[13px] mt-1">{user.email}</p>
             </div>
             <div className="flex items-center gap-3">
-              <Link to="/partners" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/map?mode=partner&tab=map&filter=All" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
                 Partner types
               </Link>
-              <Link to="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
+              <Link to="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
               </Link>
             </div>
@@ -149,6 +150,8 @@ function WorkspaceOverview({ user, setTab }) {
         })}
       </div>
 
+      <DaaCivicWorkspacePanel />
+
       {/* Recent perks */}
       {perks.length > 0 && (
         <div className="mb-6">
@@ -159,12 +162,12 @@ function WorkspaceOverview({ user, setTab }) {
           <div className="space-y-2">
             {perks.slice(0, 3).map(p => (
               <div key={p.id} className="flex items-center gap-3 p-3.5 rounded-lg border border-border/40 bg-card/20">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${p.status === "active" ? "bg-[#B38F4F]" : "bg-muted-foreground/40"}`} />
+                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A]" : "bg-muted-foreground/40"}`} />
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-medium text-foreground truncate">{p.title}</div>
                   <div className="text-[11px] text-muted-foreground">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
                 </div>
-                <span className="text-[11px] font-medium text-primary border border-primary/30 px-2 py-0.5 rounded-full shrink-0">{p.value}</span>
+                <span className="text-[11px] font-medium text-primary border border-primary/30 px-2 py-0.5 rounded-[2px] shrink-0">{p.value}</span>
               </div>
             ))}
           </div>
@@ -181,13 +184,13 @@ function WorkspaceOverview({ user, setTab }) {
           <div className="space-y-2">
             {events.slice(0, 3).map(e => (
               <div key={e.id} className="flex items-center gap-3 p-3.5 rounded-lg border border-border/40 bg-card/20">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${e.status === "live" ? "bg-[#B38F4F]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-medium text-foreground truncate">{e.title}</div>
                   <div className="text-[11px] text-muted-foreground">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
                 </div>
-                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                  e.status === "live" ? "bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30" :
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
+                  e.status === "live" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
                   e.status === "upcoming" ? "bg-primary/20 text-primary border-primary/30" :
                   "bg-muted text-muted-foreground border-border/50"
                 }`}>{e.status}</span>
@@ -199,22 +202,105 @@ function WorkspaceOverview({ user, setTab }) {
 
       {perks.length === 0 && events.length === 0 && (
         <div className="text-center py-16 px-4">
-          <div className="w-12 h-10 rounded-full border border-border/40 flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-10 rounded-[2px] border border-border/40 flex items-center justify-center mx-auto mb-4">
             <Zap className="w-5 h-5 text-muted-foreground/50" />
           </div>
           <h3 className="font-heading font-medium text-foreground mb-2">Start building your presence</h3>
           <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">Add your first perk or event and it will appear on the downtown map for people nearby.</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <button onClick={() => setTab("perks")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+            <button onClick={() => setTab("perks")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
               <Plus className="w-4 h-4" /> Add a perk
             </button>
-            <button onClick={() => setTab("events")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
+            <button onClick={() => setTab("events")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
               <Plus className="w-4 h-4" /> Create an event
             </button>
           </div>
         </div>
       )}
     </motion.div>
+  );
+}
+
+function DaaCivicWorkspacePanel() {
+  return (
+    <section className="mb-8 rounded-[10px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] p-5 shadow-[0_8px_24px_rgba(11,31,51,.04)]">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Downtown Austin Art & Parks Tour</div>
+          <h3 className="mt-2 text-[24px] font-semibold leading-tight tracking-[-0.02em] text-[#0B1F33]">{daaDashboardContent.title}</h3>
+          <p className="mt-2 max-w-[48ch] text-[13px] leading-6 text-[#0B1F33]/66">
+            A civic view for tour opens, stop opens, saved stops, check-ins, survey completions, directions, areas of downtown, and when people explore.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link to="/card/explorer/daa" className="inline-flex h-9 items-center justify-center rounded-[8px] bg-[#0B1F33] px-3 text-[12px] font-semibold text-white">
+            Open DAA Explorer
+          </Link>
+          <Link to="/map?mode=resident&tab=map&filter=Civic&entityId=daa-stop-01-malin-s-fountain" className="inline-flex h-9 items-center justify-center rounded-[8px] border border-[rgba(11,31,51,.08)] bg-white px-3 text-[12px] font-semibold text-[#0B1F33]">
+            View First Stop
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+        {daaDashboardContent.overview.slice(0, 8).map(([label, value]) => (
+          <div key={label} className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/86 p-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{label}</div>
+            <p className="mt-1 text-[20px] font-semibold leading-none text-[#0B1F33]">{value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-3">
+        {[
+          ["What People Are Telling Us", daaDashboardContent.whatPeopleAreTellingUs, MessageSquareText],
+          ["Places People Use Most", daaDashboardContent.placesPeopleUseMost, MapPin],
+          [daaDashboardContent.timeAnalysis.title, daaDashboardContent.timeAnalysis.buckets, Calendar],
+        ].map(([title, items, Icon]) => (
+          <div key={title} className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
+            <div className="flex items-center gap-2">
+              <Icon className="h-4 w-4 text-[#C8A96A]" />
+              <h4 className="text-[14px] font-semibold text-[#0B1F33]">{title}</h4>
+            </div>
+            <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
+              {items.map((item) => (
+                <span key={item} className="min-w-max snap-start rounded-[6px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] px-2.5 py-1.5 text-[12px] font-medium text-[#0B1F33]/70">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
+        <div className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
+          <div className="flex items-center gap-2">
+            <Check className="h-4 w-4 text-[#C8A96A]" />
+            <h4 className="text-[14px] font-semibold text-[#0B1F33]">Tour Progress</h4>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-[12px] text-[#0B1F33]/66">
+            <span>Visited {daaTourProgress.visited} / {daaTourProgress.total}</span>
+            <span>Saved {daaTourProgress.saved}</span>
+            <span>Nearby {daaTourProgress.nearby}</span>
+            <span>Last Visited: {daaTourProgress.lastVisited}</span>
+          </div>
+        </div>
+        <div className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
+          <div className="flex items-center gap-2">
+            <Navigation className="h-4 w-4 text-[#C8A96A]" />
+            <h4 className="text-[14px] font-semibold text-[#0B1F33]">Areas of Downtown</h4>
+          </div>
+          <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
+            {daaTourDistricts.map((district) => (
+              <span key={district} className="min-w-max snap-start rounded-[6px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] px-2.5 py-1.5 text-[12px] font-medium text-[#0B1F33]/70">
+                {district}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -249,7 +335,7 @@ function PerksManager({ user }) {
           <h2 className="font-heading font-medium text-xl text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
-        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
           <Plus className="w-4 h-4" /> Add perk
         </button>
       </div>
@@ -260,7 +346,7 @@ function PerksManager({ user }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-[2px] animate-spin" />
         </div>
       ) : perks.length === 0 ? (
         <EmptyState icon={Star} headline="No perks yet" body="Add your first perk and it will appear on the downtown map." action="Add a perk" onAction={handleAdd} />
@@ -268,15 +354,15 @@ function PerksManager({ user }) {
         <div className="space-y-3">
           {perks.map(p => (
             <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/50 bg-card/40 hover:border-border/70 transition-all">
-              <div className={`w-2 h-2 rounded-full shrink-0 ${p.status === "active" ? "bg-[#B38F4F]" : p.status === "paused" ? "bg-[#B38F4F]" : "bg-muted-foreground/40"}`} />
+              <div className={`w-2 h-2 rounded-[2px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A]" : p.status === "paused" ? "bg-[#C8A96A]" : "bg-muted-foreground/40"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-[13px] text-foreground">{p.title}</div>
                 <div className="text-[12px] text-muted-foreground mt-0.5">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
               </div>
-              <span className="text-[12px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-full shrink-0 hidden sm:block">{p.value}</span>
-              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                p.status === "active" ? "bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30" :
-                p.status === "paused" ? "bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30" :
+              <span className="text-[12px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-[2px] shrink-0 hidden sm:block">{p.value}</span>
+              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
+                p.status === "active" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
+                p.status === "paused" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
                 "bg-muted text-muted-foreground border-border/50"
               }`}>{p.status}</span>
               <div className="flex items-center gap-1 shrink-0">
@@ -348,10 +434,10 @@ function PerkForm({ perk, onClose, onSave }) {
           </select>
         </div>
         <div className="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
+          <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
             {saving ? "Saving…" : perk ? "Save changes" : "Create perk"}
           </button>
-          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
+          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-[2px] border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
             Cancel
           </button>
         </div>
@@ -389,7 +475,7 @@ function EventsManager({ user }) {
           <h2 className="font-heading font-medium text-xl text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP and discovery.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
           <Plus className="w-4 h-4" /> Add event
         </button>
       </div>
@@ -400,7 +486,7 @@ function EventsManager({ user }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-[2px] animate-spin" />
         </div>
       ) : events.length === 0 ? (
         <EmptyState icon={Calendar} headline="No events yet" body="Add your first event and it will appear on the downtown map with RSVP support." action="Add an event" onAction={() => { setEditing(null); setShowForm(true); }} />
@@ -408,14 +494,14 @@ function EventsManager({ user }) {
         <div className="space-y-3">
           {events.map(e => (
             <div key={e.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/50 bg-card/40 hover:border-border/70 transition-all">
-              <div className={`w-2 h-2 rounded-full shrink-0 ${e.status === "live" ? "bg-[#B38F4F]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+              <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-[13px] text-foreground">{e.title}</div>
                 <div className="text-[12px] text-muted-foreground mt-0.5">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
               </div>
               <span className="text-[11px] text-muted-foreground hidden md:block shrink-0">{e.rsvp_count || 0} RSVPs</span>
-              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                e.status === "live" ? "bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30" :
+              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
+                e.status === "live" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
                 e.status === "upcoming" ? "bg-primary/20 text-primary border-primary/30" :
                 "bg-muted text-muted-foreground border-border/50"
               }`}>{e.status}</span>
@@ -500,10 +586,10 @@ function EventForm({ event, onClose, onSave }) {
           <label htmlFor="members-only" className="text-[13px] text-muted-foreground">Members only</label>
         </div>
         <div className="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
+          <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
             {saving ? "Saving…" : event ? "Save changes" : "Create event"}
           </button>
-          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-full border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
+          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-[2px] border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
             Cancel
           </button>
         </div>
@@ -574,7 +660,7 @@ function ProfileSection({ user, setUser }) {
             className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
         </div>
 
-        <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
+        <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
           {saved ? <><Check className="w-4 h-4" /> Saved</> : saving ? "Saving…" : "Save profile"}
         </button>
       </form>
@@ -599,12 +685,12 @@ function FormField({ label, value, onChange, type = "text", required = false }) 
 function EmptyState({ icon: Icon, headline, body, action, onAction }) {
   return (
     <div className="text-center py-16 px-4">
-      <div className="w-12 h-10 rounded-full border border-border/40 flex items-center justify-center mx-auto mb-4">
+      <div className="w-12 h-10 rounded-[2px] border border-border/40 flex items-center justify-center mx-auto mb-4">
         <Icon className="w-5 h-5 text-muted-foreground/50" />
       </div>
       <h3 className="font-heading font-medium text-foreground mb-2">{headline}</h3>
       <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">{body}</p>
-      <button onClick={onAction} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+      <button onClick={onAction} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
         <Plus className="w-4 h-4" /> {action}
       </button>
     </div>

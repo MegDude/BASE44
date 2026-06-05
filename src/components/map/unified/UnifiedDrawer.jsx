@@ -92,7 +92,7 @@ export default function UnifiedDrawer({ selected, onMarkerSelect }) {
                   setDrawerState('collapsed');
                   clearSelection();
                 }}
-                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#B38F4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                 aria-label="Close drawer"
               >
                 <X className="h-4 w-4" />
@@ -174,8 +174,8 @@ function DrawerFull({ selected }) {
         <h1 className="text-2xl font-bold text-foreground">{selected.name}</h1>
       </div>
 
-      <div className="flex aspect-[2/1] w-full items-center justify-center rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB]">
-        <div className="flex h-20 w-20 items-center justify-center rounded-md border border-[#B38F4F]/50 bg-[#0B1F33] text-xl font-semibold text-[#B38F4F]">
+      <div className="flex aspect-[2/1] w-full items-center justify-center rounded-lg border border-[#0B1F33]/8 bg-white">
+        <div className="flex h-20 w-20 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33] text-xl font-semibold text-[#C8A96A]">
           <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
         </div>
       </div>

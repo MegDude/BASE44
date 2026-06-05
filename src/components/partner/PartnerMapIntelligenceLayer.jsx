@@ -1,10 +1,75 @@
-import { Building2, Hotel, MapPin, Megaphone, Navigation, Store } from "lucide-react";
+import { useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Building2,
+  Hotel,
+  MapPin,
+  Megaphone,
+  Store,
+} from "lucide-react";
 
 const KIND_ICONS = {
   brand: Megaphone,
+  civic: Megaphone,
   hotel: Hotel,
   property: Building2,
   venue: Store,
+};
+
+const VISUAL_SETS = {
+  civic: [
+    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
+    "/images/splash/walkable-map.png",
+    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
+  ],
+  brand: [
+    "/images/splash/walkable-map.png",
+    "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+    "/images/residents/downtown-rooftop-evening.png",
+  ],
+  hotel: [
+    "/images/partners/hospitality-rooftop-social.png",
+    "/images/map-entities/perks/partner_hotel_rooftop_1779052803267.png",
+    "/images/splash/walkable-map.png",
+  ],
+  property: [
+    "/images/buildings/lobby-to-street-arrival.png",
+    "/images/splash/resident-access.jpeg",
+    "/images/splash/walkable-map.png",
+  ],
+  venue: [
+    "/images/venues/downtown-dining-patio.png",
+    "/images/map-entities/perks/partner_dining_patio_1779052819620.png",
+    "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+  ],
+};
+
+const STORY_BY_KIND = {
+  civic: {
+    eyebrow: "Public participation",
+    headline: "See participation take shape.",
+    body: "Public moments, district activity, and event interest become easier to see while people are already exploring downtown.",
+  },
+  brand: {
+    eyebrow: "Campaign intelligence",
+    headline: "See what worked downtown.",
+    body: "Placements, QR scans, resident saves, and redemptions become visible by location and moment.",
+  },
+  hotel: {
+    eyebrow: "Guest intelligence",
+    headline: "See what guests used nearby.",
+    body: "Lobby access, saved plans, RSVPs, and local recommendations become clearer across the stay.",
+  },
+  property: {
+    eyebrow: "Resident intelligence",
+    headline: "See how residents use downtown.",
+    body: "Building scans, saved places, nearby perks, and event activity show which parts of the neighborhood are working.",
+  },
+  venue: {
+    eyebrow: "Venue intelligence",
+    headline: "See nearby demand in motion.",
+    body: "Offers, walkable searches, saves, visits, and redemptions show up in the same context people use to decide.",
+  },
 };
 
 function getBounds(items) {
@@ -37,10 +102,10 @@ function positionFor(item, bounds) {
   };
 }
 
-function formatMetric(value) {
-  if (value === undefined || value === null) return null;
-  if (typeof value === "number") return value.toLocaleString();
-  return value;
+function getVisualKind(kind, caption, insight) {
+  const text = `${kind} ${caption || ""} ${insight || ""}`.toLowerCase();
+  if (text.includes("civic") || text.includes("public") || text.includes("district")) return "civic";
+  return VISUAL_SETS[kind] ? kind : "brand";
 }
 
 export default function PartnerMapIntelligenceLayer({
@@ -50,115 +115,130 @@ export default function PartnerMapIntelligenceLayer({
   kind = "property",
   nearby = [],
   onSelect,
-  points,
+  points = [],
 }) {
-  const allPoints = [...points, ...nearby];
-  const bounds = getBounds(allPoints);
-  const selected = points.find((point) => point.id === activeId) || points[0];
-  const SelectedIcon = KIND_ICONS[kind] || MapPin;
-  const totalScans = points.reduce((sum, point) => sum + (point.scans || point.interactions || point.views || 0), 0);
-  const totalSaves = points.reduce((sum, point) => sum + (point.saves || 0), 0);
+  const safePoints = points.length ? points : [];
+  const allPoints = [...safePoints, ...nearby];
+  const bounds = useMemo(() => getBounds(allPoints), [allPoints]);
+  const selectedIndex = Math.max(
+    safePoints.findIndex((point) => point.id === activeId),
+    0,
+  );
+  const selected = safePoints[selectedIndex];
+  const visualKind = getVisualKind(kind, caption, insight);
+  const visuals = VISUAL_SETS[visualKind] || VISUAL_SETS.brand;
+  const visual = visuals[selectedIndex % visuals.length];
+  const story = STORY_BY_KIND[visualKind] || STORY_BY_KIND.brand;
+  const SelectedIcon = KIND_ICONS[visualKind] || KIND_ICONS[kind] || MapPin;
+  const progress =
+    safePoints.length > 1 ? (selectedIndex / (safePoints.length - 1)) * 100 : 100;
 
   return (
-    <div className="relative h-full min-h-[420px] overflow-hidden rounded-xl bg-[#0B1F33] text-white shadow-[0_0_0_1px_rgba(255,255,255,0.10),0_26px_80px_rgba(11,31,51,0.20),0_0_54px_rgba(11,31,51,0.16)]">
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(255,255,255,0.10),transparent_28%),radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.12),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_38%)]" />
-        <div className="absolute left-[14%] top-0 h-full w-px bg-white/7" />
-        <div className="absolute left-[38%] top-0 h-full w-px bg-white/5" />
-        <div className="absolute left-[66%] top-0 h-full w-px bg-white/6" />
-        <div className="absolute left-0 top-[24%] h-px w-full bg-white/6" />
-        <div className="absolute left-0 top-[52%] h-px w-full bg-white/5" />
-        <div className="absolute left-0 top-[78%] h-px w-full bg-white/6" />
-        <div className="absolute -bottom-10 left-[8%] h-32 w-[70%] rotate-[-9deg] rounded-full bg-white/8 blur-2xl" />
-      </div>
+    <div className="relative h-full min-h-[430px] overflow-hidden rounded-[18px] bg-white text-[#0B1F33] shadow-[0_24px_80px_rgba(11,31,51,0.08),inset_0_0_0_1px_rgba(11,31,51,0.06)]">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={visual}
+          src={visual}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover brightness-[1.04] contrast-[1.02] saturate-[0.92]"
+          initial={{ opacity: 0, scale: 1.025 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.015 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </AnimatePresence>
 
-      <div className="absolute left-4 right-4 top-4 z-10 flex items-start justify-between gap-3">
-        <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/58">{caption}</div>
-          <div className="mt-1 max-w-md text-[13px] leading-5 text-white/72">{insight}</div>
-        </div>
-        <div className="hidden gap-2 sm:flex">
-          <span className="rounded-md bg-white/10 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/76 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
-            {formatMetric(totalScans)} actions
-          </span>
-          <span className="rounded-md bg-white/10 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/76 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
-            {formatMetric(totalSaves)} saves
-          </span>
-        </div>
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.94),rgba(255,255,255,0.50)_42%,rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.10),rgba(11,31,51,0.16))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_24%,rgba(179,143,79,0.10),transparent_30%),radial-gradient(circle_at_74%_70%,rgba(11,31,51,0.08),transparent_32%)]" />
+
+      <div className="absolute left-5 right-5 top-5 z-20 max-w-[24rem] bg-white/72 p-4 text-[#0B1F33] shadow-[0_16px_44px_rgba(11,31,51,0.08),inset_0_1px_0_rgba(255,255,255,0.74)] backdrop-blur-[18px] sm:left-6 sm:right-auto sm:top-6">
+        <span className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+          {caption || story.eyebrow}
+        </span>
+        <h3 className="mt-3 font-heading text-[34px] font-bold leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[48px]">
+          {story.headline}
+        </h3>
+        <p className="mt-4 max-w-sm font-body text-[14px] leading-relaxed text-[#425466] md:text-[15px]">
+          {insight || story.body}
+        </p>
       </div>
 
       {nearby.map((item) => (
         <div
           key={item.name}
-          className="absolute z-[2] h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-[#B38F4F]/80 shadow-[0_0_0_4px_rgba(179,143,79,0.10),0_0_18px_rgba(179, 143, 79, 0.08)]"
+          className="absolute z-[4] h-2 w-2 -translate-x-1/2 -translate-y-1/2 bg-[#B38F4F] shadow-[0_0_0_5px_rgba(179,143,79,0.10),0_0_18px_rgba(179,143,79,0.10)]"
           style={positionFor(item, bounds)}
           title={item.name}
         />
       ))}
 
-      {points.map((point) => {
-        const active = point.id === selected?.id;
-        const Icon = KIND_ICONS[kind] || MapPin;
-        return (
-          <button
-            key={point.id}
-            type="button"
-            onClick={() => onSelect?.(point)}
-            className={`absolute z-[4] flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-md px-2.5 py-2 text-left transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
-              active
-                ? "bg-white text-[#0B1F33] shadow-[0_0_0_1px_rgba(179, 143, 79, 0.08),0_16px_34px_rgba(0,0,0,0.24),0_0_34px_rgba(179, 143, 79, 0.08)]"
-                : "bg-[#0B1F33]/88 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_14px_30px_rgba(0,0,0,0.18)] hover:-translate-y-[calc(50%+2px)] hover:bg-white hover:text-[#0B1F33] hover:shadow-[0_0_0_1px_rgba(179, 143, 79, 0.08),0_16px_34px_rgba(0,0,0,0.22),0_0_28px_rgba(179, 143, 79, 0.08)]"
-            }`}
-            style={positionFor(point, bounds)}
-          >
-            {point.logo ? (
-              <img src={point.logo} alt="" className="h-5 w-5 shrink-0 rounded-[5px] bg-[#0B1F33] object-cover" />
-            ) : (
-              <Icon className="h-3.5 w-3.5 shrink-0 text-[#B38F4F]" />
-            )}
-            <span className="hidden max-w-[128px] truncate text-[11px] font-semibold md:block">{point.name}</span>
-          </button>
-        );
-      })}
-
       {selected && (
-        <div className="absolute bottom-4 left-4 right-4 z-10 grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
-          <div className="rounded-lg bg-white/94 p-4 text-[#0B1F33] shadow-[0_18px_44px_rgba(0,0,0,0.18)]">
+        <motion.div
+          key={selected.id}
+          className="absolute bottom-[5.35rem] left-5 right-5 z-20 max-w-xl sm:left-6 sm:right-auto sm:w-[min(32rem,calc(100%-3rem))]"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="bg-white/76 p-4 text-[#0B1F33] shadow-[0_16px_44px_rgba(11,31,51,0.09),inset_0_1px_0_rgba(255,255,255,0.74)] backdrop-blur-[18px]">
             <div className="flex items-start gap-3">
               {selected.logo ? (
-                <img src={selected.logo} alt="" className="h-10 w-10 shrink-0 rounded-md bg-[#0B1F33] object-cover" />
+                <img src={selected.logo} alt="" className="h-10 w-10 shrink-0 bg-white object-cover" />
               ) : (
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
-                  <SelectedIcon className="h-5 w-5" />
-                </div>
+                <SelectedIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#B38F4F]" />
               )}
               <div className="min-w-0">
-                <div className="truncate text-[14px] font-semibold">{selected.name}</div>
-                <div className="mt-1 text-[12px] leading-5 text-[#0B1F33]/62">
-                  {selected.signal || selected.trigger || selected.top || selected.type || selected.dist || "Showing what people nearby can use right now."}
+                <div className="truncate text-[15px] font-semibold text-[#0B1F33]">{selected.name}</div>
+                <div className="mt-1 text-[12px] leading-5 text-[#425466]">
+                  {selected.signal ||
+                    selected.trigger ||
+                    selected.top ||
+                    selected.type ||
+                    selected.dist ||
+                    "Showing what people nearby can use right now."}
                 </div>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2 md:w-[250px]">
-            {[
-              ["actions", selected.scans || selected.interactions || selected.views],
-              ["saves", selected.saves],
-              ["uses", selected.redemptions || selected.unlocks || selected.rsvps || selected.visits],
-            ].map(([label, value]) => (
-              <div key={label} className="rounded-md bg-white/12 px-2 py-2 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
-                <div className="text-[14px] font-semibold text-white">{formatMetric(value) || "-"}</div>
-                <div className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-white/54">{label}</div>
-              </div>
-            ))}
+        </motion.div>
+      )}
+
+      {!!safePoints.length && (
+        <div className="absolute bottom-5 left-5 right-5 z-30">
+          <div className="relative flex items-center justify-between">
+            <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#0B1F33]/12" />
+            <div
+              className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#B38F4F] transition-all duration-700"
+              style={{ width: `${progress}%` }}
+            />
+            {safePoints.map((point, index) => {
+              const active = point.id === selected?.id;
+              const Icon = KIND_ICONS[visualKind] || KIND_ICONS[kind] || MapPin;
+              return (
+                <button
+                  key={point.id}
+                  type="button"
+                  onClick={() => onSelect?.(point)}
+                  className={`relative z-10 grid h-9 w-9 place-items-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:h-10 sm:w-10 ${
+                    active || index <= selectedIndex
+                      ? "bg-[#0B1F33] text-[#B38F4F] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
+                      : "bg-white/84 text-[#0B1F33]/42 shadow-[0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-[18px] hover:bg-white hover:text-[#0B1F33]"
+                  }`}
+                  aria-label={`Show ${point.name}`}
+                  aria-pressed={active}
+                  title={point.name}
+                >
+                  {point.logo ? (
+                    <img src={point.logo} alt="" className="h-5 w-5 bg-white object-cover" />
+                  ) : (
+                    <Icon className="h-4 w-4" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
-
-      <div className="absolute bottom-5 right-5 hidden items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/78 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.10)] lg:flex">
-        <Navigation className="h-3.5 w-3.5 text-[#B38F4F]" />
-        Downtown layer
-      </div>
     </div>
   );
 }

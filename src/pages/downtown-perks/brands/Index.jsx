@@ -1,24 +1,35 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
+import { campaignImages } from "../../../components/downtown-perks/brands/CampaignImagePanel";
 
 const brands = [
-  { slug: "the-paseo", name: "The Paseo", category: "Mixed-Use Property", description: "Neighborhood-first lifestyle positioning with walkable discovery built in.", tag: "Property" },
-  { slug: "the-waterline", name: "The Waterline", category: "Premium Residential", description: "Skyline-level positioning meets live neighborhood intelligence.", tag: "Property · Prestige" },
-  { slug: "bangers", name: "Bangers", category: "Venue & Hospitality", description: "Map discovery, event activation, and measurable district foot traffic.", tag: "Venue" },
-  { slug: "the-stay-put", name: "Stay Put", category: "Local Bar & Venue", description: "Real-time discovery, timed traffic moments, and live programming for downtown's social scene.", tag: "Venue · Social" },
-  { slug: "hotel-van-zandt", name: "Hotel Van Zandt", category: "Hospitality Partner", description: "Live neighborhood layer for guests — dining, events, wellness, and local perks on arrival.", tag: "Hospitality" },
-  { slug: "four-seasons", name: "Four Seasons", category: "Hospitality Partner", description: "Curated downtown guide that extends the quality of the stay into the city around it.", tag: "Hospitality · Premium" },
-  { slug: "four-seasons-residences", name: "Four Seasons Residences", category: "Residential Partner", description: "A live amenity layer that helps residents discover dining, wellness, events, and local perks around where they live.", tag: "Residential" },
-  { slug: "the-shore", name: "The Shore", category: "Residential Partner", description: "Residents enjoy Hotel Van Zandt pool access, local resident hotel rates, and a live neighborhood discovery layer.", tag: "Residential" },
-  { slug: "yeti", name: "YETI", category: "Austin Brand Campaign", description: "Flagship city-brand activation. QR-led product moments. District presence.", tag: "Brand Campaign" },
-  { slug: "rivian", name: "Rivian", category: "Mobility & Experiential", description: "Downtown placement. Experiential activation. Behavior-led engagement.", tag: "Mobility" },
-  { slug: "lululemon", name: "lululemon", category: "Premium Retail & Wellness", description: "Run clubs, studio tie-ins, and QR-activated product moments for members.", tag: "Retail · Wellness" },
-  { slug: "equinox", name: "Equinox", category: "Premium Fitness", description: "Class passes, building partnerships, and members-only event access.", tag: "Fitness" },
-  { slug: "laz-y-boy-park", name: "Austin FC", category: "Civic & Entertainment", description: "Match-day activation, district energy, and building-linked RSVP flows.", tag: "Civic · Sport" },
-  { slug: "fabi-and-rosi", name: "Fabi & Rosi", category: "Local Dining", description: "Neighborhood table, resident perks, and curated dining moments.", tag: "Dining" },
+  { slug: "hotel-van-zandt", name: "Hotels", category: "Hotel Van Zandt", headline: "Stay nearby. Experience more.", description: "Discover local events, resident favorites, and neighborhood experiences beyond the lobby.", tag: "Hotel", image: campaignImages.qwrFrontDesk },
+  { slug: "the-stay-put", name: "Residential", category: "The Stay Put", headline: "Live connected to downtown.", description: "See what is happening nearby, discover local perks, and make the neighborhood part of everyday life.", tag: "Residential", image: campaignImages.elevatorQr },
+  { slug: "bangers", name: "Restaurants & Venues", category: "Banger's", headline: "Show up when people are deciding.", description: "Happy hours. Events. Local perks. Reasons to come back.", tag: "Venue", image: campaignImages.bangersPoster },
+  { slug: "fine-eyewear", name: "Retail", category: "Fine Eyewear", headline: "Become part of the routine.", description: "Help nearby residents discover, save, and revisit local favorites.", tag: "Retail", image: campaignImages.fineEyewear },
+  { slug: "rivian", name: "Brand Activations", category: "Rivian", headline: "Adventure starts downtown.", description: "Bring people together through experiences, events, and moments worth showing up for.", tag: "Brand Experience", image: campaignImages.rivian },
+  { slug: "daa", name: "Civic", category: "DAA", headline: "Help shape downtown.", description: "Connect residents, businesses, and local initiatives through participation.", tag: "Civic", image: campaignImages.daa },
+  { slug: "dana", name: "Neighborhood Civic", category: "DANA", headline: "A stronger downtown starts with participation.", description: "Connect with residents, businesses, and the people helping shape what comes next.", tag: "Civic", image: campaignImages.dana },
+  { slug: "the-paseo", name: "Housing", category: "The Paseo", headline: "Live near what matters.", description: "Discover local events, restaurants, fitness, and everyday essentials within walking distance.", tag: "Residential", image: campaignImages.mapUi },
 ];
+
+function CardImage({ image, alt }) {
+  const [src, setSrc] = useState(image?.src);
+  return (
+    <div className="mb-5 aspect-[4/5] overflow-hidden rounded-[18px] border border-[#C8A96A]/20 bg-[#FFFFFF]">
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        onError={() => {
+          if (image?.fallback && src !== image.fallback) setSrc(image.fallback);
+        }}
+      />
+    </div>
+  );
+}
 
 function BrandCard({ brand, index }) {
   const ref = useRef(null);
@@ -32,16 +43,17 @@ function BrandCard({ brand, index }) {
     >
       <Link
         to={`/brands/${brand.slug}`}
-        className="group block p-6 rounded-lg border border-border/60 hover:border-border bg-card/40 hover:bg-card/80 transition-all duration-300"
+        className="group block rounded-lg border border-[#C8A96A]/20 bg-[#FFFFFF] p-4 transition-all duration-300 hover:border-[#C8A96A]/50"
       >
+        <CardImage image={brand.image} alt={`${brand.category} campaign`} />
         <div className="flex items-start justify-between mb-4">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.12em]">
+          <span className="text-[11px] font-medium text-[#C8A96A] uppercase tracking-[0.12em]">
             {brand.tag}
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#0B1F33]/35 group-hover:text-[#C8A96A] group-hover:translate-x-0.5 transition-all" />
         </div>
         <h3 className="font-heading text-xl font-medium mb-1 group-hover:text-primary transition-colors duration-300">
-          {brand.name}
+          {brand.headline}
         </h3>
         <div className="text-[11px] text-muted-foreground/60 uppercase tracking-wide mb-3">{brand.category}</div>
         <p className="text-[13px] text-muted-foreground leading-relaxed">{brand.description}</p>
@@ -73,18 +85,18 @@ export default function BrandsIndex() {
               </h1>
               <div>
                 <p className="text-muted-foreground text-[14px] leading-relaxed mb-8">
-                  Every partner here earns their place on the map. Real presence. Real activation. Real foot traffic from real residents.
+                  Each partner type gets its own expression of Downtown Perks: hotel guests, residents, venues, retail, brand experiences, and civic participation.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link
                     to="/downtown-perks/for-buildings"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#0B1F33] px-5 py-2.5 text-[13px] font-medium text-[#FFFFFF] transition-all duration-300 hover:bg-[#0B1F33]/90"
                   >
                     Become a Partner <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <Link
                     to="/map?mode=resident&tab=map"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all duration-300"
+                    className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#C8A96A] hover:text-[#0B1F33]"
                   >
                     <MapPin className="w-3.5 h-3.5" /> View on Map
                   </Link>
@@ -101,10 +113,10 @@ export default function BrandsIndex() {
             className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-border/40 border border-border/40 rounded-lg"
           >
             {[
-              { value: "10+", label: "Partner brands" },
+              { value: "8", label: "Partner types" },
               { value: "3,400+", label: "Downtown residents" },
               { value: "0.4 mi", label: "Avg walk distance" },
-              { value: "Live", label: "Real-time map layer" },
+              { value: "Live", label: "Events and offers" },
             ].map((s, i) => (
               <div key={i} className="p-5 text-center">
                 <div className="font-heading text-2xl font-medium text-primary mb-1 tracking-normal">{s.value}</div>
@@ -156,18 +168,18 @@ export default function BrandsIndex() {
               className="space-y-5"
             >
               <p className="text-muted-foreground text-[14px] leading-relaxed">
-                If you operate downtown, serve downtown residents, or want to build a real presence in the district — let's talk.
+                If you operate downtown, serve downtown residents, or want to participate in the district, let's talk.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="mailto:partners@downtownperks.com"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#0B1F33] px-5 py-2.5 text-[13px] font-medium text-[#FFFFFF] transition-all duration-300 hover:bg-[#0B1F33]/90"
                 >
                   Start the Conversation <ArrowRight className="w-3.5 h-3.5" />
                 </a>
                 <Link
                   to="/downtown-perks/for-buildings"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#C8A96A] hover:text-[#0B1F33]"
                 >
                   Partnership Details
                 </Link>

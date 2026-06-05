@@ -53,7 +53,7 @@ export function EditorialHero({ eyebrow, title, children, ctaLabel, ctaHref = "/
   );
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F8FB] px-5 pb-14 pt-28 md:pb-20 md:pt-32">
+    <section className="relative overflow-hidden bg-white px-5 pb-14 pt-28 md:pb-20 md:pt-32">
       <div className="dp-container">
         {aside ? (
           <SplitLayout className="items-end">
@@ -70,9 +70,9 @@ export function EditorialHero({ eyebrow, title, children, ctaLabel, ctaHref = "/
 
 export function InsightCard({ eyebrow, title, children, icon: Icon = MapPin, className = "" }) {
   return (
-    <div className={cn("dp-card dp-card-hover p-5", className)}>
-      <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-[6px] border border-[#0B1F33]/8 bg-[#F7F8FB]">
-        <Icon className="h-4 w-4 text-[#B38F4F]" />
+    <div className={cn("dp-surface dp-surface-hover p-5", className)}>
+      <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-[6px] border border-[#0B1F33]/8 bg-white">
+        <Icon className="h-4 w-4 text-[#C8A96A]" />
       </div>
       {eyebrow && <div className="dp-label mb-2 text-[10px]">{eyebrow}</div>}
       <h3 className="font-heading text-lg font-medium leading-tight text-[#0B1F33]">{title}</h3>
@@ -118,13 +118,13 @@ export function ProgressLoopCards({ steps, activeIndex = 0 }) {
           <div
             key={step.step}
             className={cn(
-              "dp-card p-5",
-              active ? "border-[#B38F4F]/50 shadow-[0_18px_46px_rgba(11,31,51,0.18)]" : "border-[#0B1F33]/8"
+              "dp-surface p-5",
+              active ? "border-[#C8A96A]/50 shadow-[0_18px_46px_rgba(11,31,51,0.18)]" : "border-[#0B1F33]/8"
             )}
           >
             <div className="mb-4 flex items-center justify-between">
               <span className="dp-label">{step.step}</span>
-              <span className={cn("h-1.5 w-10 rounded-sm", active ? "bg-[#B38F4F]" : "bg-[#0B1F33]/10")} />
+              <span className={cn("h-1.5 w-10 rounded-sm", active ? "bg-[#C8A96A]" : "bg-[#0B1F33]/10")} />
             </div>
             <h3 className="font-heading text-lg font-medium text-[#0B1F33]">{step.title}</h3>
           </div>
@@ -136,10 +136,10 @@ export function ProgressLoopCards({ steps, activeIndex = 0 }) {
 
 export function PerksCardCTA({ title = "Get Your Perks Card Now", body, href = "/downtown-perks/card" }) {
   return (
-    <div className="dp-card p-5 md:p-6">
+    <div className="dp-surface p-5 md:p-6">
       <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
         <div>
-          <span className="dp-label mb-3 block">Resident Access</span>
+          <span className="dp-label mb-3 block">Resident Card</span>
           <h3 className="font-heading text-2xl font-medium text-[#0B1F33]">{title}</h3>
           {body && <p className="dp-copy mt-3">{body}</p>}
         </div>
@@ -154,7 +154,7 @@ export function PerksCardCTA({ title = "Get Your Perks Card Now", body, href = "
 
 export function WalkabilityModule({ title = "What’s Around the Corner", children }) {
   return (
-    <div className="dp-card overflow-hidden">
+    <div className="dp-surface overflow-hidden">
       <div className="grid gap-0 md:grid-cols-[1fr_1.1fr]">
         <div className="p-5 md:p-6">
           <span className="dp-label mb-3 block">Nearby</span>
@@ -179,7 +179,7 @@ export function MapPreviewPanel() {
       ].map(([position, label]) => (
         <div key={label} className={cn("absolute", position)}>
           <div className="flex items-center gap-2 rounded-[6px] border border-white/12 bg-white/92 px-2.5 py-2 text-[11px] font-medium text-[#0B1F33] shadow-[0_18px_46px_rgba(11,31,51,0.18)]">
-            <span className="h-2.5 w-2.5 rounded-[999px] bg-[#B38F4F]" />
+            <span className="h-2.5 w-2.5 rounded-[999px] bg-[#C8A96A]" />
             {label}
           </div>
         </div>
@@ -208,7 +208,7 @@ export function FloatingMapFilters({ filters }) {
           key={filter}
           className={cn(
             "shrink-0 rounded-[6px] border px-3 py-2 text-[12px] font-medium",
-            index === 0 ? "border-[#B38F4F]/50 bg-[#0B1F33]/10 text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/65"
+            index === 0 ? "border-[#C8A96A]/50 bg-[#0B1F33]/10 text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/65"
           )}
         >
           {filter}
@@ -218,11 +218,11 @@ export function FloatingMapFilters({ filters }) {
   );
 }
 
-export const MapResultsPanel = ({ children }) => <div className="dp-card p-5">{children}</div>;
-export const MapBottomSheet = ({ children }) => <div className="dp-card rounded-b-none p-5">{children}</div>;
-export const MapDetailDrawer = ({ children }) => <aside className="dp-card p-5">{children}</aside>;
-export const FloatingInput = ({ className = "", ...props }) => <input className={cn("h-10 rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 text-[13px] outline-none focus:border-[#B38F4F]/60", className)} {...props} />;
-export const StructuredFormPanel = ({ children }) => <div className="dp-card p-5">{children}</div>;
+export const MapResultsPanel = ({ children }) => <div className="dp-surface p-5">{children}</div>;
+export const MapBottomSheet = ({ children }) => <div className="dp-surface rounded-b-none p-5">{children}</div>;
+export const MapDetailDrawer = ({ children }) => <aside className="dp-surface p-5">{children}</aside>;
+export const FloatingInput = ({ className = "", ...props }) => <input className={cn("h-10 rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 text-[13px] outline-none focus:border-[#C8A96A]/60", className)} {...props} />;
+export const StructuredFormPanel = ({ children }) => <div className="dp-surface p-5">{children}</div>;
 export const QRSignupModule = PerksCardCTA;
 export const ResidentHowItWorks = ProgressLoopCards;
 export const PartnerHero = EditorialHero;

@@ -13,7 +13,7 @@ export default function HowItWorksRail({ steps = [] }) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-0">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
           {steps.map((step, i) => (
             <motion.div
               key={i}
@@ -21,25 +21,20 @@ export default function HowItWorksRail({ steps = [] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="relative"
+              className="grid grid-cols-[30px_1fr] gap-3 md:block"
             >
-              {/* Visual */}
-              <div className="mb-4">
-                <div className="w-16 h-16 rounded-lg bg-[#F7F8FB] border border-[#0B1F33]/8 flex items-center justify-center text-[24px] mb-4">
-                  {step.icon}
-                </div>
-                <div className="text-[14px] font-bold text-[#0B1F33]">{step.title}</div>
+              <div className="flex items-start gap-2 font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                {step.icon && <span className="mt-0.5 text-[13px] md:hidden">{step.icon}</span>}
+              </div>
+              <div>
+                <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{step.title}</div>
                 {step.description && (
-                  <div className="text-[13px] text-[#0B1F33]/58 mt-1.5 leading-relaxed">
+                  <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">
                     {step.description}
                   </div>
                 )}
               </div>
-
-              {/* Connector */}
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 left-[calc(100%+8px)] w-[calc((100vw-200px)/5-24px)] h-0.5 bg-gradient-to-r from-[#0B1F33]/10 to-transparent" />
-              )}
             </motion.div>
           ))}
         </div>

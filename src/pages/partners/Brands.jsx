@@ -5,12 +5,10 @@ import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
-  BarChart3,
   Building2,
   CalendarDays,
   MapPin,
   Megaphone,
-  MessageCircle,
   QrCode,
   Sparkles,
 } from "lucide-react";
@@ -26,7 +24,7 @@ const CAMPAIGN_POINTS = [
     district: "2nd Street",
     lat: 30.2659,
     lng: -97.7475,
-    logo: "/pins/downtown-perks/legends-logo.avif",
+    logo: "/pins/downtown-perks/legends-logo.png",
     scans: 340,
     saves: 118,
     redemptions: 58,
@@ -108,27 +106,6 @@ const WORKFLOW = [
   ["04", "Track what happened", "Measure scans, saves, redemptions, visits, and district activity without relying on vague impressions."],
 ];
 
-const HOW_IT_WORKS = [
-  {
-    number: "01",
-    title: "Help people find you",
-    copy: "Show up through a QR code, a building, an event, a venue, or a place people are already visiting.",
-    Icon: MapPin,
-  },
-  {
-    number: "02",
-    title: "Learn what brought them in",
-    copy: "Ask a few simple questions and understand what caught their attention and what they'd like to see next.",
-    Icon: MessageCircle,
-  },
-  {
-    number: "03",
-    title: "See what worked",
-    copy: "Track visits, saves, responses, and redemptions in one place so you can make better decisions going forward.",
-    Icon: BarChart3,
-  },
-];
-
 const PROOF = [
   ["12", "Campaigns live"],
   ["4", "Active districts"],
@@ -165,9 +142,9 @@ function Section({ id, eyebrow, title, children, className = "" }) {
     <section id={id} className={`border-t border-[#0B1F33]/8 px-5 py-14 md:py-20 ${className}`}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
-          <div className="mb-8 max-w-[1100px]">
+          <div className="mb-8 max-w-3xl">
             {eyebrow && <span className="dp-label mb-3 block">{eyebrow}</span>}
-            {title && <h2 className="font-heading text-3xl font-semibold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[42px]">{title}</h2>}
+            {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] text-[#0B1F33] md:text-4xl">{title}</h2>}
           </div>
         )}
         {children}
@@ -178,16 +155,16 @@ function Section({ id, eyebrow, title, children, className = "" }) {
 
 function PrimaryButton({ href, children }) {
   return (
-    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
       {children}
-      <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+      <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
     </a>
   );
 }
 
 function SecondaryButton({ href, children }) {
   return (
-    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
       {children}
     </a>
   );
@@ -208,7 +185,7 @@ export default function BrandsPartner() {
       <section className="relative overflow-hidden px-5 py-16 md:py-24">
         <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(11,31,51,0.28) 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="relative mx-auto max-w-6xl">
-          <Link to="/partners" className="mb-8 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:text-[#0B1F33]">
+          <Link to="/map?mode=partner&tab=map&filter=All" className="mb-8 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:text-[#0B1F33]">
             <ArrowLeft className="h-3.5 w-3.5" />
             Partner overview
           </Link>
@@ -233,7 +210,7 @@ export default function BrandsPartner() {
                     key={label}
                     type="button"
                     onClick={() => document.querySelector("#proof")?.scrollIntoView({ behavior: "smooth" })}
-                    className="rounded-md border border-[#0B1F33]/8 bg-white/86 p-3 text-left shadow-[0_8px_24px_rgba(11,31,51,0.05)] transition hover:border-[#B38F4F]/45"
+                    className="rounded-md border border-[#0B1F33]/8 bg-white/86 p-3 text-left shadow-[0_8px_24px_rgba(11,31,51,0.05)] transition hover:border-[#C8A96A]/45"
                   >
                     <div className="font-heading text-2xl font-medium text-[#0B1F33]">
                       {Number.isFinite(Number(value)) ? <CountUp to={value} /> : value}
@@ -253,11 +230,11 @@ export default function BrandsPartner() {
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Campaign preview</span>
-                <Sparkles className="h-4 w-4 text-[#B38F4F]" />
+                <Sparkles className="h-4 w-4 text-[#C8A96A]" />
               </div>
               <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-white p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#C8A96A]">
                     <Megaphone className="h-5 w-5" />
                   </div>
                   <div>
@@ -315,7 +292,7 @@ export default function BrandsPartner() {
                   }`}
                 >
                   <span className={`flex h-9 w-9 items-center justify-center rounded-md border ${
-                    point.id === activePoint.id ? "border-[#B38F4F]/60 bg-white/10 text-[#B38F4F]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
+                    point.id === activePoint.id ? "border-[#C8A96A]/60 bg-white/10 text-[#C8A96A]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
                   }`}>
                     <MapPin className="h-4 w-4" />
                   </span>
@@ -343,7 +320,7 @@ export default function BrandsPartner() {
                 viewport={{ once: true }}
                 className="dp-glass-card p-5"
               >
-                <Icon className="h-5 w-5 text-[#B38F4F]" />
+                <Icon className="h-5 w-5 text-[#C8A96A]" />
                 <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{format.title}</h3>
                 <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{format.copy}</p>
                 <div className="mt-4 space-y-1.5">
@@ -361,7 +338,7 @@ export default function BrandsPartner() {
         <div className="grid gap-3 md:grid-cols-4">
           {WORKFLOW.map(([num, title, copy]) => (
             <article key={num} className="rounded-md border border-[#0B1F33]/8 bg-white p-5">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">{num}</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">{num}</div>
               <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{title}</h3>
               <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{copy}</p>
             </article>
@@ -386,34 +363,38 @@ export default function BrandsPartner() {
           ].map(([label, value, copy]) => (
             <div key={label} className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_12px_30px_rgba(11,31,51,0.05)]">
               <div className="font-heading text-3xl font-medium text-[#0B1F33]">{value}</div>
-              <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#B38F4F]">{label}</div>
+              <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{label}</div>
               <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
             </div>
           ))}
         </div>
       </Section>
 
-      <Section id="pricing" title="How it works" className="bg-[#F7F8FB]">
-        <div className="grid gap-x-8 gap-y-9 md:grid-cols-3">
-          {HOW_IT_WORKS.map(({ number, title, copy, Icon }, index) => (
-            <motion.article
-              key={title}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.58, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="relative"
-            >
-              <div className="mb-5 flex items-center gap-3">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B38F4F]">
-                  {number}
-                </span>
-                <Icon className="h-4 w-4 text-[#B38F4F]" aria-hidden="true" />
-              </div>
-              <h3 className="font-body text-[17px] font-semibold leading-snug text-[#0B1F33] md:text-[19px]">{title}</h3>
-              <p className="mt-3 max-w-[330px] text-[14px] font-light leading-7 text-[#0B1F33]/62 md:text-[15px]">{copy}</p>
-            </motion.article>
-          ))}
+      <Section id="pricing" eyebrow="Brand pricing" title="Campaigns can start small, then add placement when the data says to.">
+        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Brand range</p>
+            <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">$99-$199/month</div>
+            <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
+              Monthly brand plans cover local presence. Campaigns, surveys, broadcasts, sponsorships and placements can be added when there is a reason.
+            </p>
+            <Link to="/pricing#surveys" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
+              View pricing matrix
+              <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
+            </Link>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              ["Dumb tech entry", "QR code or text prompt. No app rollout, no complicated partner software."],
+              ["Survey learning", "Ask people why they came, what they want, and what would bring them back."],
+              ["Smart reporting", "The engine turns scans, answers, district, and timing into plain-English next steps."],
+            ].map(([title, copy]) => (
+              <article key={title} className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
+                <h3 className="text-[13px] font-semibold text-[#0B1F33]">{title}</h3>
+                <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </Section>
 
@@ -421,12 +402,12 @@ export default function BrandsPartner() {
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#B38F4F]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#C8A96A]">
                 <Building2 className="h-5 w-5" />
               </div>
               <div>
                 <h3 className="font-body text-[14px] font-semibold">Buy the moment, not the impression.</h3>
-                <p className="mt-1 text-[12px] text-[#0B1F33]/58">$149-$199/year depending on footprint and activation.</p>
+                <p className="mt-1 text-[12px] text-[#0B1F33]/58">$99-$199/month, with campaign add-ons when timing matters.</p>
               </div>
             </div>
             <div className="mt-5 grid gap-2">
@@ -436,7 +417,7 @@ export default function BrandsPartner() {
                   type="button"
                   onClick={() => setSelectedPrompt(prompt)}
                   className={`rounded-md border px-3 py-2 text-left text-[12px] leading-5 transition ${
-                    selectedPrompt === prompt ? "border-[#B38F4F]/60 bg-white text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white/58 text-[#0B1F33]/62 hover:border-[#B38F4F]/45"
+                    selectedPrompt === prompt ? "border-[#C8A96A]/60 bg-white text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white/58 text-[#0B1F33]/62 hover:border-[#C8A96A]/45"
                   }`}
                 >
                   {prompt}
@@ -449,7 +430,7 @@ export default function BrandsPartner() {
             {["Brand/Company Name", "Your Name & Role", "Email", "Phone", "Timeline"].map((label) => (
               <label key={label} className="grid gap-1.5">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</span>
-                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#B38F4F]" />
+                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#C8A96A]" />
               </label>
             ))}
             <label className="grid gap-1.5">
@@ -457,14 +438,14 @@ export default function BrandsPartner() {
               <textarea
                 value={selectedPrompt}
                 onChange={(event) => setSelectedPrompt(event.target.value)}
-                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#B38F4F]"
+                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#C8A96A]"
               />
             </label>
-            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
               Start a conversation
             </button>
             {submitted && (
-              <p className="rounded-md border border-[#B38F4F]/35 bg-white px-3 py-2 text-[12px] text-[#0B1F33]/68">
+              <p className="rounded-md border border-[#C8A96A]/35 bg-white px-3 py-2 text-[12px] text-[#0B1F33]/68">
                 Thanks. Your brand campaign request is ready for follow-up.
               </p>
             )}
@@ -492,15 +473,15 @@ export default function BrandsPartner() {
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <PrimaryButton href="#brand-form">Start a conversation</PrimaryButton>
-            <Link to="/partners" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45">
+            <Link to="/map?mode=partner&tab=map&filter=All" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
               Partner overview
             </Link>
-            <Link to="/partners/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#B38F4F]/45">
+            <Link to="/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
               Pricing matrix
             </Link>
           </div>
           <p className="mt-5 text-[12px] text-[#0B1F33]/52">
-            Questions? <a href="mailto:partners@downtownperks.com" className="font-semibold text-[#0B1F33] underline decoration-[#B38F4F]/50 underline-offset-4">partners@downtownperks.com</a>
+            Questions? <a href="mailto:partners@downtownperks.com" className="font-semibold text-[#0B1F33] underline decoration-[#C8A96A]/50 underline-offset-4">partners@downtownperks.com</a>
           </p>
         </div>
       </Section>

@@ -411,7 +411,10 @@ const eventMapPositions = [
 
 function EventMapPanel({ events: mapEvents, selectedEvent, onSelectEvent }) {
   return (
-    <div className="dp-events-map-panel relative min-h-[380px] overflow-hidden bg-white shadow-[inset_0_0_0_1px_rgba(11,31,51,0.08),0_18px_48px_rgba(11,31,51,0.055)]">
+    <div
+      className="dp-events-map-panel relative overflow-hidden bg-white shadow-[inset_0_0_0_1px_rgba(11,31,51,0.08),0_18px_48px_rgba(11,31,51,0.055)]"
+      style={{ minHeight: 380 }}
+    >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(11,31,51,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
       <div className="pointer-events-none absolute left-[10%] top-[14%] h-40 w-40 bg-[#B38F4F]/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[8%] right-[10%] h-48 w-48 bg-[#0B1F33]/6 blur-3xl" />
@@ -547,7 +550,7 @@ export default function Events() {
               <div className="mt-6 max-w-3xl space-y-3 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px]">
                 <p>Downtown Perks helps you see what’s happening, what’s worth showing up for, and what you can RSVP to without bouncing between five apps and a group chat.</p>
                 <p>
-                  A rooftop before it gets packed. A live show you almost missed. A resident meetup a couple blocks away. A last-minute plan that turns into the whole night.
+                  A rooftop before it gets packed. A live show you almost missed. A resident meetup a couple blocks away.
                 </p>
                 <p>
                   Open the map, see what’s going on, and make the plan before everyone says, “I don’t care, you pick.”
@@ -565,12 +568,14 @@ export default function Events() {
             </div>
           </div>
 
-          <div className="mb-8 grid gap-4 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-            <div>
-              <span className="dp-label mb-3 block">Events Happening Now</span>
-              <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">See what’s on. RSVP in one tap.</h2>
-              <p className="mt-4 max-w-xl text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
-                From happy hours to local programming, Downtown Perks helps you find what’s happening and RSVP without leaving the map.
+          <div className="mb-8 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+            <div className="max-w-3xl">
+              <span className="mb-3 block text-[13px] font-semibold text-[#B38F4F]">Events Happening Now</span>
+              <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
+                Worth leaving <span className="text-[#B38F4F]">the apartment for.</span>
+              </h2>
+              <p className="mt-4 text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
+                See what’s on, find what’s worth showing up for, and RSVP without leaving the map. A quick look at resident hours, local events, live music, happy hours, wellness, and neighborhood plans.
               </p>
             </div>
             <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
@@ -589,15 +594,6 @@ export default function Events() {
                 </motion.div>
               ))}
             </div>
-          </div>
-
-          <div className="mb-6 max-w-3xl">
-            <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
-              Worth leaving <span className="text-[#B38F4F]">the apartment for.</span>
-            </h2>
-            <p className="mt-4 text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
-              A quick look at what’s happening downtown — resident hours, local events, live music, happy hours, wellness, and neighborhood plans.
-            </p>
           </div>
 
           <div className="overflow-hidden rounded-[2px] border border-[#0B1F33]/8 bg-white shadow-[0_14px_34px_rgba(6,27,51,0.04)]">
@@ -671,7 +667,7 @@ export default function Events() {
                           <CalendarDays className="h-4 w-4 text-[#B38F4F]" />
                         </span>
                         <div className="min-w-0">
-                          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#B38F4F]">Happening now</div>
+                          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#B38F4F]">Event map</div>
                           <div className="font-heading text-xl font-medium text-[#0B1F33]">Find something worth showing up for.</div>
                         </div>
                       </div>
@@ -712,7 +708,7 @@ export default function Events() {
                       <p className="text-[13px] leading-[1.65] text-[#0B1F33]/64">
                         See what else is happening nearby.
                       </p>
-                      <Link to="/map" className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-[#0B1F33] px-4 text-[12px] font-medium text-white transition-colors hover:bg-[#0B1F33]">
+                      <Link to="/map?mode=resident&tab=map" className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-[#0B1F33] px-4 text-[12px] font-medium text-white transition-colors hover:bg-[#0B1F33]">
                         View on map
                         <ArrowRight className="h-3.5 w-3.5" />
                       </Link>

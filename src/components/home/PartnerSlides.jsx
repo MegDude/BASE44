@@ -17,8 +17,8 @@ const slides = [
       "Your property inside the same experience",
       "Real engagement, not passive info",
     ],
-    pricing: "$199/year",
-    pricingNote: "Full property tier with resident access and reporting.",
+    pricing: "$49-$199/month",
+    pricingNote: "Building plans with resident perks, visibility, and reporting.",
     cta: "Bring this to your property",
     href: "/partners/properties",
   },
@@ -35,8 +35,8 @@ const slides = [
       "Better experience, zero extra friction",
       "Discovery tied to actual location",
     ],
-    pricing: "$149/year",
-    pricingNote: "Guest-facing neighborhood layer and reporting.",
+    pricing: "$99-$199/month",
+    pricingNote: "Guest guide, local offers, and reporting.",
     cta: "Use this for guests",
     href: "/partners/hotels",
   },
@@ -53,8 +53,8 @@ const slides = [
       "Events surfaced in the right moment",
       "Clear engagement at 30, 60, 90 days",
     ],
-    pricing: "$79-$149/year",
-    pricingNote: "Venue placement, offers, events, and reporting.",
+    pricing: "Free-$199/month",
+    pricingNote: "Free Forever includes one active resident perk.",
     cta: "Discuss activation",
     href: "/partners/venues",
   },
@@ -71,8 +71,8 @@ const slides = [
       "Event and campaign integration",
       "Trackable actions, not vague impressions",
     ],
-    pricing: "$149-$199/year",
-    pricingNote: "Campaign placement capped at the top annual tier.",
+    pricing: "$99-$199/month",
+    pricingNote: "Campaigns and sponsorships are add-ons.",
     cta: "Start a conversation",
     href: "/partners/brands",
   },
@@ -89,7 +89,7 @@ const slides = [
       "Shared map for participation",
       "Clear access to what's happening nearby",
     ],
-    pricing: "$49-$79/year",
+    pricing: "Free-$99/month",
     pricingNote: "Community visibility without heavy rollout.",
     cta: "Talk to us",
     href: "/partners/civic",
@@ -194,7 +194,7 @@ export default function PartnerSlides() {
             </div>
 
             {/* Right — what's included */}
-            <div className="p-8 bg-[#F7F8FB]">
+            <div className="p-8 bg-white">
               <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">
                 What's Included
               </div>

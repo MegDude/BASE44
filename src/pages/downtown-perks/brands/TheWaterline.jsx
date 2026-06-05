@@ -139,7 +139,7 @@ export default function TheWaterline() {
 
       <BrandCTA
         headline="The Waterline deserves a live neighborhood. Let's build it."
-        sub="$199/year property tier. Full resident activation included."
+        sub="$199/month Property Pro plan. Resident access, reporting, and building intelligence included."
         ctaLabel="Start the Conversation"
         ctaHref="mailto:partners@downtownperks.com"
       />

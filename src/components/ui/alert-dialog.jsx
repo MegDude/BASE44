@@ -28,13 +28,13 @@ const AlertDialogContent = React.forwardRef(({ className, children, ...props }, 
     <AlertDialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-[10px] bg-[#FAFAFC]/94 p-5 shadow-[0_24px_80px_rgba(11,31,51,0.13),0_0_44px_rgba(179,143,79,0.05)] backdrop-blur-[20px] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:p-6",
+        "fixed left-[50%] top-[50%] z-50 grid w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-[10px] bg-white/94 p-5 shadow-[0_24px_80px_rgba(11,31,51,0.13),0_0_44px_rgba(200,169,106,0.05)] backdrop-blur-[20px] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:p-6",
         className
       )}
       {...props}>
       {children}
       <AlertDialogPrimitive.Cancel
-        className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+        className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
         aria-label="Close dialog"
       >
         <X className="h-4 w-4" />

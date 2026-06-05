@@ -7,8 +7,8 @@ const forms = [
   {
     id: "buildings",
     label: "Buildings",
-    headline: "$199/year property tier.",
-    sub: "Resident access, reporting, and building placement.",
+    headline: "$49-$199/month.",
+    sub: "Resident perks, reporting, and building placement.",
     fields: [
       { name: "property", label: "Building Name & Address", type: "text" },
       { name: "name", label: "Your Name & Role", type: "text" },
@@ -36,8 +36,8 @@ const forms = [
   {
     id: "venues",
     label: "Venues",
-    headline: "$79-$149/year.",
-    sub: "Placement, offers, events, and reporting.",
+    headline: "Free-$199/month.",
+    sub: "Free Forever includes one active resident perk.",
     fields: [
       { name: "business", label: "Business Name", type: "text" },
       { name: "name", label: "Your Name", type: "text" },
@@ -117,11 +117,11 @@ function ContactForm({ form }) {
             type={f.type}
             value={values[f.name] || ""}
             onChange={(e) => setValues({ ...values, [f.name]: e.target.value })}
-            className="w-full bg-[#F7F8FB] border border-[#0B1F33]/8 rounded-lg px-4 py-2.5 text-[13px] text-foreground placeholder-foreground/30 focus:outline-none focus:border-[#0B1F33]/12 transition-colors"
+            className="w-full bg-white border border-[#0B1F33]/8 rounded-lg px-4 py-2.5 text-[13px] text-foreground placeholder-foreground/30 focus:outline-none focus:border-[#0B1F33]/12 transition-colors"
           />
         </div>
       ))}
-      <button className="mt-4 w-full px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300">
+      <button className="mt-4 w-full bg-primary px-3.5 py-2 text-[12px] font-medium text-primary-foreground transition-all duration-300 hover:-translate-y-px hover:bg-primary/90">
         {form.cta}
       </button>
     </div>
@@ -136,7 +136,7 @@ export default function ContactSection() {
   const current = forms.find((f) => f.id === activeForm);
 
   return (
-    <section id="contact" ref={ref} className="py-20 px-5 border-t border-[#0B1F33]/8 bg-[#F7F8FB]">
+    <section id="contact" ref={ref} className="py-20 px-5 border-t border-[#0B1F33]/8 bg-white">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
@@ -205,7 +205,7 @@ export default function ContactSection() {
             </div>
 
             {/* Sidebar */}
-            <div className="p-8 bg-[#F7F8FB] flex flex-col justify-between">
+            <div className="p-8 bg-white flex flex-col justify-between">
               <div>
                 <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-4">
                   Also Available
@@ -244,15 +244,15 @@ export default function ContactSection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-10 flex flex-wrap gap-3"
+          className="mt-10 flex flex-wrap gap-2"
         >
-          <Link to="/map?mode=resident&tab=map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#0B1F33]/8 text-foreground/70 font-medium text-[13px] hover:text-foreground hover:border-[#0B1F33]/10 transition-all duration-300">
-            Explore Downtown
+          <Link to="/map?mode=resident&tab=map" className="inline-flex h-8 items-center gap-1.5 border border-[#0B1F33]/8 px-3.5 text-[11px] font-medium text-foreground/70 transition-all duration-300 hover:-translate-y-px hover:border-[#0B1F33]/10 hover:text-foreground">
+            Open the Map
           </Link>
-          <Link to="/downtown-perks/for-buildings" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#0B1F33]/8 text-foreground/70 font-medium text-[13px] hover:text-foreground hover:border-[#0B1F33]/10 transition-all duration-300">
+          <Link to="/downtown-perks/for-buildings" className="inline-flex h-8 items-center gap-1.5 border border-[#0B1F33]/8 px-3.5 text-[11px] font-medium text-foreground/70 transition-all duration-300 hover:-translate-y-px hover:border-[#0B1F33]/10 hover:text-foreground">
             Become a Partner
           </Link>
-          <Link to="/map?mode=resident&tab=map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#0B1F33]/8 text-foreground/50 font-medium text-[13px] hover:text-foreground transition-all duration-300">
+          <Link to="/map?mode=resident&tab=map" className="inline-flex h-8 items-center gap-1.5 border border-[#0B1F33]/8 px-3.5 text-[11px] font-medium text-foreground/50 transition-all duration-300 hover:-translate-y-px hover:text-foreground">
             Check Availability
           </Link>
         </motion.div>

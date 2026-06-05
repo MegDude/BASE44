@@ -33,7 +33,7 @@ export default function HappyHourMap() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7F8FB] pt-[68px] text-[#0B1F33]">
+    <main className="min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="border-b border-[#0B1F33]/8 px-5 py-14 md:py-20">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
@@ -46,7 +46,7 @@ export default function HappyHourMap() {
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <button onClick={openMap} className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-5 text-[13px] font-medium text-white">
-                Open in the live map <ArrowRight className="h-4 w-4 text-[#B38F4F]" />
+                Open in the live map <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
               </button>
               <Link to="/ask-map" className="inline-flex h-10 items-center justify-center gap-2 border border-[#0B1F33]/10 bg-white px-5 text-[13px] font-medium text-[#0B1F33]">
                 Ask the Map
@@ -84,7 +84,7 @@ export default function HappyHourMap() {
       <section className="px-5 py-12">
         <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_360px]">
           <div className="min-h-[430px] border border-[#0B1F33]/8 bg-white/72 p-4 shadow-[0_18px_48px_rgba(11,31,51,0.08)]">
-            <div className="relative h-full min-h-[400px] overflow-hidden bg-[#F7F8FB]">
+            <div className="relative h-full min-h-[400px] overflow-hidden bg-white">
               <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(11,31,51,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(11,31,51,0.08)_1px,transparent_1px)] [background-size:54px_54px]" />
               <div className="absolute left-[18%] top-[30%] h-px w-[58%] rotate-[14deg] bg-[#0B1F33]/14" />
               <div className="absolute left-[20%] top-[64%] h-px w-[64%] -rotate-[9deg] bg-[#0B1F33]/14" />
@@ -94,13 +94,13 @@ export default function HappyHourMap() {
                   className="absolute flex h-10 w-10 items-center justify-center border border-white/80 bg-white shadow-[0_10px_28px_rgba(11,31,51,0.12)]"
                   style={{ left: `${16 + (index % 3) * 27}%`, top: `${24 + Math.floor(index / 3) * 34}%` }}
                 >
-                  <span className="flex h-7 w-7 items-center justify-center bg-[#0B1F33] text-[11px] font-semibold text-[#B38F4F]">
+                  <span className="flex h-7 w-7 items-center justify-center bg-[#0B1F33] text-[11px] font-semibold text-[#C8A96A]">
                     {spot.name[0]}
                   </span>
                 </div>
               ))}
               <div className="absolute bottom-4 left-4 right-4 border border-white/60 bg-white/78 p-4 backdrop-blur-[20px]">
-                <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#B38F4F]">
+                <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8A96A]">
                   <Sparkles className="h-3.5 w-3.5" />
                   Live decision layer
                 </div>
@@ -119,11 +119,11 @@ export default function HappyHourMap() {
                     <h2 className="font-body text-[14px] font-semibold">{spot.name}</h2>
                     <p className="mt-1 text-[12px] text-[#0B1F33]/58">{spot.district} · {spot.type}</p>
                   </div>
-                  <Store className="h-4 w-4 text-[#B38F4F]" />
+                  <Store className="h-4 w-4 text-[#C8A96A]" />
                 </div>
                 <p className="mt-3 text-[12px] leading-relaxed text-[#0B1F33]/64">{spot.signal}</p>
                 <div className="mt-3 flex items-center gap-2 border-t border-white/50 pt-3 text-[11px] font-medium text-[#0B1F33]/62">
-                  <Clock className="h-3.5 w-3.5 text-[#B38F4F]" />
+                  <Clock className="h-3.5 w-3.5 text-[#C8A96A]" />
                   {spot.offer}
                 </div>
               </article>

@@ -68,6 +68,7 @@ export default function Layout() {
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
+    pathname === "/" ||
     pathname === "/map" ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
@@ -77,25 +78,24 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const isPartnerSurface = pathname === "/partners" || pathname.startsWith("/partners/");
-  const showBackButton = pathname !== "/" && !isPartnerSurface && !noFooter;
+  const suppressGlobalBackButton =
+    noFooter ||
+    pathname.startsWith("/partner-workspace") ||
+    pathname.startsWith("/dashboard") ||
+    pathname === "/partner-dashboard" ||
+    pathname.startsWith("/resident-workspace") ||
+    pathname.startsWith("/resident-app");
+
+  const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
 
   function getBackFallbackPath() {
     const params = new URLSearchParams(search);
     const mode = params.get("mode");
     const filter = params.get("filter");
 
-    if (pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover") {
-      if (mode === "partner") {
-        if (filter === "Properties") return "/partners/properties";
-        if (filter === "Hotels") return "/partners/hotels";
-        if (filter === "Brands") return "/partners/brands";
-        if (filter === "Venues") return "/partners/venues";
-        if (filter === "Happy Hours") return "/partners/happy-hours";
-        if (filter === "Events") return "/partners/campaigns";
-        return "/partners";
-      }
-      return "/residents";
+    if (pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover" || pathname === "/partners/map") {
+      if (mode === "partner" && filter === "Events") return "/partners/campaigns";
+      return "/";
     }
 
     if (pathname.startsWith("/partners/")) return "/partners";
@@ -125,17 +125,19 @@ export default function Layout() {
     <div className="min-h-screen bg-background font-body">
       <ScrollToTop />
       <InteractionFeedback />
-      <Navbar />
+      {pathname !== "/" && <Navbar />}
       {showBackButton && (
-        <button
-          type="button"
-          onClick={goBack}
-          className="dp-layout-back fixed left-3 top-[78px] z-[720] inline-flex h-6 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 shadow-none transition-all hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
-          aria-label="Go back"
-        >
-          <ArrowLeft className="h-3 w-3 text-[#B38F4F]" />
-          Back
-        </button>
+        <div className="dp-layout-back-row">
+          <button
+            type="button"
+            onClick={goBack}
+            className="dp-layout-back inline-flex h-7 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 shadow-none transition-all hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            aria-label="Go back"
+          >
+            <ArrowLeft className="h-3 w-3 text-[#C8A96A]" />
+            Back
+          </button>
+        </div>
       )}
       <main>
         <Outlet />

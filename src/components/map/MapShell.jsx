@@ -85,13 +85,25 @@ export default function MapShell({
       <MapContainer
         center={center}
         zoom={zoom}
+        minZoom={12}
+        maxZoom={20}
         className="h-full w-full absolute inset-0 z-0"
         zoomControl={false}
+        attributionControl={false}
         scrollWheelZoom={true}
+        zoomSnap={0.5}
+        zoomDelta={0.5}
       >
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           attribution="&copy; CARTO"
+          maxZoom={20}
+          maxNativeZoom={20}
+          keepBuffer={8}
+          updateWhenIdle={false}
+          updateWhenZooming
+          detectRetina
+          crossOrigin
         />
         <MapFlyTo position={flyTarget} />
 

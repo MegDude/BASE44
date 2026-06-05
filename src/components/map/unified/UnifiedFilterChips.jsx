@@ -58,7 +58,7 @@ export default function UnifiedFilterChips() {
               onClick={() => toggleFilter(chip.id)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`snap-start shrink-0 md:shrink inline-flex items-center gap-1.5 h-10 px-3 md:px-4 border text-xs md:text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] ${
+              className={`snap-start shrink-0 md:shrink inline-flex items-center gap-1.5 h-10 px-3 md:px-4 border text-xs md:text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
                 isActive
                   ? 'dp-glass-deep border-white/18 text-white'
                   : 'bg-white/42 border-white/44 text-[#0B1F33]/72 backdrop-blur-[18px] hover:bg-white/58 hover:text-[#0B1F33]'

@@ -89,10 +89,42 @@ const DEMO_EVENTS = [
 ];
 
 const DEMO_REPORT_ROWS = [
-  { district: "Rainey", signal: "Evening dining and nightlife", scans: "4,820", saves: "612", actions: "29%", next: "Run a 6-10 PM resident perk." },
-  { district: "Seaholm", signal: "Coffee, lunch, and property traffic", scans: "3,940", saves: "488", actions: "24%", next: "Pair coffee offers with leasing tours." },
-  { district: "West 6th", signal: "After-work drinks and event plans", scans: "3,210", saves: "371", actions: "21%", next: "Share music and dinner before 5 PM." },
-  { district: "Congress", signal: "Hotel guests and public events", scans: "2,780", saves: "304", actions: "18%", next: "Add QR entry points for guests." },
+  {
+    district: "Rainey",
+    partnerType: "Venues + hospitality",
+    signal: "Dinner, drinks, music, and hotel guest movement peak after check-in.",
+    scans: "4,820",
+    saves: "612",
+    actions: "29%",
+    next: "Run a 6-10 PM resident offer tied to dinner, music, or a nearby hotel QR.",
+  },
+  {
+    district: "Seaholm",
+    partnerType: "Properties + coffee",
+    signal: "Residents and prospects compare coffee, lunch, tours, and after-work plans.",
+    scans: "3,940",
+    saves: "488",
+    actions: "24%",
+    next: "Pair morning coffee offers with leasing tours and building welcome flows.",
+  },
+  {
+    district: "West 6th",
+    partnerType: "Venues + events",
+    signal: "After-work drinks and live-event plans form before people commit to the night.",
+    scans: "3,210",
+    saves: "371",
+    actions: "21%",
+    next: "Share venue and event placements before 5 PM so nearby people can save a plan.",
+  },
+  {
+    district: "Congress",
+    partnerType: "Hotels + civic",
+    signal: "Hotel guests, visitors, and public-event traffic need simple nearby direction.",
+    scans: "2,780",
+    saves: "304",
+    actions: "18%",
+    next: "Add QR entry points for guest guides, public events, and walkable dining.",
+  },
 ];
 
 export default function Dashboard() {
@@ -111,7 +143,7 @@ export default function Dashboard() {
   }, [isReportsRoute]);
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="dp-partner-page min-h-screen bg-white text-[#0B1F33] flex">
 
       {/* Sidebar */}
       <aside className={`
@@ -120,7 +152,7 @@ export default function Dashboard() {
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
         <div className="h-[68px] flex items-center px-5 border-b border-border/40 gap-2.5">
-          <div className="w-6 h-6 rounded-full border border-primary/40 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-[2px] border border-primary/40 flex items-center justify-center">
             <MapPin className="w-3 h-3 text-primary" />
           </div>
           <span className="font-heading font-medium text-[13px] tracking-normal">
@@ -156,7 +188,7 @@ export default function Dashboard() {
           <Link to="/partner-workspace" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all">
             <Zap className="w-3.5 h-3.5" /> Workspace
           </Link>
-          <Link to="/map?mode=partner&tab=map" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all">
+          <Link to="/map?mode=partner&tab=map&filter=All" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all">
             <MapPin className="w-3.5 h-3.5" /> Partner map
           </Link>
         </div>
@@ -164,7 +196,7 @@ export default function Dashboard() {
         {/* User info */}
         <div className="p-4 border-t border-border/40">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-[11px] font-medium text-primary shrink-0">
+            <div className="w-7 h-7 rounded-[2px] bg-primary/20 flex items-center justify-center text-[11px] font-medium text-primary shrink-0">
               {(user.full_name || user.email || "?")[0].toUpperCase()}
             </div>
             <div className="min-w-0">
@@ -199,9 +231,9 @@ export default function Dashboard() {
           <div className="flex items-center gap-2">
             <button className="relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors">
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-[2px] bg-primary" />
             </button>
-            <Link to="/partner-workspace" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
+            <Link to="/partner-workspace" className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-[2px] border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
               Workspace <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -298,7 +330,7 @@ function DashOverview({ user, setSection }) {
           <div className="space-y-2">
               {reportPerks.slice(0, 4).map(p => (
                 <div key={p.id} className="flex items-center gap-2.5">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${p.status === "active" ? "bg-[#B38F4F]" : "bg-muted-foreground/40"}`} />
+                  <div className={`w-1.5 h-1.5 rounded-[2px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A]" : "bg-muted-foreground/40"}`} />
                   <span className="text-[12px] text-foreground flex-1 truncate">{p.title}</span>
                   <span className="text-[11px] text-muted-foreground">{p.redemption_count || 0} redeem</span>
                 </div>
@@ -314,7 +346,7 @@ function DashOverview({ user, setSection }) {
           <div className="space-y-2">
               {reportEvents.slice(0, 4).map(e => (
                 <div key={e.id} className="flex items-center gap-2.5">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${e.status === "live" ? "bg-[#B38F4F]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+                  <div className={`w-1.5 h-1.5 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
                   <span className="text-[12px] text-foreground flex-1 truncate">{e.title}</span>
                   <span className="text-[11px] text-muted-foreground">{e.rsvp_count || 0} RSVPs</span>
                 </div>
@@ -325,7 +357,7 @@ function DashOverview({ user, setSection }) {
 
       {/* Quick links */}
       {!hasLiveData && (
-        <div className="rounded-xl border border-[#B38F4F]/25 bg-[#F7F8FB] p-5">
+        <div className="rounded-xl border border-[#C8A96A]/25 bg-white p-5">
           <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#0B1F33]/58">Demo report mode</div>
           <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/68">
             These sample reports use realistic Downtown Perks activity across Rainey, Seaholm, West 6th, Congress, hotels, venues, properties, and brand placements. Live data replaces them automatically when a partner account has activity.
@@ -333,26 +365,7 @@ function DashOverview({ user, setSection }) {
         </div>
       )}
 
-      <div className="rounded-xl border border-border/50 bg-card/40 overflow-hidden">
-        <div className="grid gap-0 md:grid-cols-4">
-          {DEMO_REPORT_ROWS.map((row) => (
-            <button
-              key={row.district}
-              type="button"
-              onClick={() => setSection("performance")}
-              className="border-b border-border/40 p-4 text-left transition hover:bg-muted/20 md:border-b-0 md:border-r last:border-r-0"
-            >
-              <div className="text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">{row.district}</div>
-              <div className="mt-2 text-[13px] font-medium text-foreground">{row.signal}</div>
-              <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-muted-foreground">
-                <span>{row.scans} scans</span>
-                <span>{row.saves} saves</span>
-              </div>
-              <div className="mt-2 text-[11px] text-[#B38F4F]">{row.next}</div>
-            </button>
-          ))}
-        </div>
-      </div>
+      <ReportSignalMatrix onSelect={() => setSection("performance")} compact />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {[
@@ -374,6 +387,94 @@ function DashOverview({ user, setSection }) {
         })}
       </div>
     </motion.div>
+  );
+}
+
+function ReportSignalMatrix({ onSelect, compact = false }) {
+  return (
+    <section className="overflow-hidden bg-white/76 shadow-[0_18px_58px_rgba(11,31,51,0.06),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-xl">
+      <div className="border-b border-[#0B1F33]/8 px-4 py-3 md:px-5">
+        <div className="flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner district signals</div>
+            <p className="mt-1 text-[12px] leading-5 text-[#425466]">
+              Scans, saves, and action rate by district, with the next partner move tied to the audience nearby.
+            </p>
+          </div>
+          {!compact && (
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/42">
+              Demo data · updates with live activity
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="hidden md:block">
+        <div className="grid grid-cols-[1.05fr_1.5fr_0.62fr_0.62fr_0.62fr_1.45fr] border-b border-[#0B1F33]/8 px-5 py-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/42">
+          <div>District</div>
+          <div>Signal</div>
+          <div>Scans</div>
+          <div>Saves</div>
+          <div>Action</div>
+          <div>Recommended move</div>
+        </div>
+        {DEMO_REPORT_ROWS.map((row) => (
+          <button
+            key={row.district}
+            type="button"
+            onClick={onSelect}
+            className="grid w-full grid-cols-[1.05fr_1.5fr_0.62fr_0.62fr_0.62fr_1.45fr] items-center gap-3 border-b border-[#0B1F33]/6 px-5 py-3 text-left transition hover:bg-white/90 last:border-b-0"
+          >
+            <div>
+              <div className="text-[13px] font-semibold text-[#0B1F33]">{row.district}</div>
+              <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{row.partnerType}</div>
+            </div>
+            <div className="text-[12px] leading-5 text-[#425466]">{row.signal}</div>
+            <MetricCell label="Scans" value={row.scans} />
+            <MetricCell label="Saves" value={row.saves} />
+            <MetricCell label="Action" value={row.actions} accent />
+            <div className="text-[12px] leading-5 text-[#0B1F33]/70">{row.next}</div>
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-2 p-3 md:hidden">
+        {DEMO_REPORT_ROWS.map((row) => (
+          <button
+            key={row.district}
+            type="button"
+            onClick={onSelect}
+            className="bg-white/72 p-3 text-left shadow-[inset_0_0_0_1px_rgba(11,31,51,0.045),0_10px_28px_rgba(11,31,51,0.04)] backdrop-blur-md transition hover:bg-white"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-[14px] font-semibold text-[#0B1F33]">{row.district}</div>
+                <div className="mt-0.5 text-[9px] font-semibold uppercase tracking-[0.13em] text-[#C8A96A]">{row.partnerType}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-[17px] font-semibold leading-none text-[#C8A96A]">{row.actions}</div>
+                <div className="mt-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/42">Action</div>
+              </div>
+            </div>
+            <p className="mt-2 text-[12px] leading-5 text-[#425466]">{row.signal}</p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <MetricCell label="Scans" value={row.scans} />
+              <MetricCell label="Saves" value={row.saves} />
+            </div>
+            <div className="mt-3 text-[12px] leading-5 text-[#0B1F33]/72">{row.next}</div>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MetricCell({ label, value, accent = false }) {
+  return (
+    <div>
+      <div className="text-[9px] font-semibold uppercase tracking-[0.13em] text-[#0B1F33]/42">{label}</div>
+      <div className={`mt-0.5 text-[13px] font-semibold ${accent ? "text-[#C8A96A]" : "text-[#0B1F33]"}`}>{value}</div>
+    </div>
   );
 }
 
@@ -413,7 +514,7 @@ function DashMap({ user }) {
         <div className="divide-y divide-border/40">
           {ACTIVITY.map((a, i) => (
             <div key={i} className="p-4 flex items-center gap-4">
-              <div className="w-2 h-2 rounded-full bg-primary/50 shrink-0" />
+              <div className="w-2 h-2 rounded-[2px] bg-primary/50 shrink-0" />
               <div className="flex-1">
                 <div className="text-[12px] font-medium text-foreground">{a.type}</div>
                 <div className="text-[11px] text-muted-foreground">{a.detail}</div>
@@ -457,14 +558,14 @@ function DashPerks({ user }) {
           <h2 className="font-heading text-xl font-medium text-foreground mb-1">Perks</h2>
           <p className="text-muted-foreground text-[13px]">Manage from the workspace to add, edit, or remove perks.</p>
         </div>
-        <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+        <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
           Manage perks <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-[2px] animate-spin" />
         </div>
       ) : perks.length === 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -475,7 +576,7 @@ function DashPerks({ user }) {
                   <div className="font-medium text-[13px] text-foreground">{p.title}</div>
                   <div className="text-[12px] text-muted-foreground mt-0.5">{p.venue_name}</div>
                 </div>
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30">demo</span>
+                <span className="text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30">demo</span>
               </div>
               <div className="flex items-center justify-between text-[12px]">
                 <span className="text-primary font-medium">{p.value}</span>
@@ -493,8 +594,8 @@ function DashPerks({ user }) {
                   <div className="font-medium text-[13px] text-foreground">{p.title}</div>
                   <div className="text-[12px] text-muted-foreground mt-0.5">{p.venue_name}</div>
                 </div>
-                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                  p.status === "active" ? "bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30" :
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
+                  p.status === "active" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
                   "bg-muted text-muted-foreground border-border/50"
                 }`}>{p.status}</span>
               </div>
@@ -529,21 +630,21 @@ function DashEvents({ user }) {
           <h2 className="font-heading text-xl font-medium text-foreground mb-1">Events</h2>
           <p className="text-muted-foreground text-[13px]">Track your events, RSVPs, and activity from the dashboard.</p>
         </div>
-        <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
+        <Link to="/partner-workspace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
           Manage events <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-[2px] animate-spin" />
         </div>
       ) : events.length === 0 ? (
         <div className="space-y-3">
           {DEMO_EVENTS.map(e => (
             <div key={e.id} className="p-4 rounded-xl border border-border/50 bg-card/40">
               <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${e.status === "live" ? "bg-[#B38F4F]" : "bg-primary"}`} />
+                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : "bg-primary"}`} />
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-[13px] text-foreground">{e.title}</div>
                   <div className="text-[12px] text-muted-foreground mt-0.5">{e.venue_name || "—"} · {e.category}</div>
@@ -552,7 +653,7 @@ function DashEvents({ user }) {
                   <div className="text-[12px] font-medium text-foreground">{e.rsvp_count || 0}</div>
                   <div className="text-[10px] text-muted-foreground">RSVPs</div>
                 </div>
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30">demo</span>
+                <span className="text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30">demo</span>
               </div>
             </div>
           ))}
@@ -562,7 +663,7 @@ function DashEvents({ user }) {
           {events.map(e => (
             <div key={e.id} className="p-4 rounded-xl border border-border/50 bg-card/40">
               <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${e.status === "live" ? "bg-[#B38F4F]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-[13px] text-foreground">{e.title}</div>
                   <div className="text-[12px] text-muted-foreground mt-0.5">{e.venue_name || "—"} · {e.category}</div>
@@ -571,8 +672,8 @@ function DashEvents({ user }) {
                   <div className="text-[12px] font-medium text-foreground">{e.rsvp_count || 0}</div>
                   <div className="text-[10px] text-muted-foreground">RSVPs</div>
                 </div>
-                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize shrink-0 ${
-                  e.status === "live" ? "bg-[#0B1F33]/20 text-[#B38F4F] border-[#B38F4F]/30" :
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
+                  e.status === "live" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
                   e.status === "upcoming" ? "bg-primary/20 text-primary border-primary/30" :
                   "bg-muted text-muted-foreground border-border/50"
                 }`}>{e.status}</span>
@@ -605,10 +706,10 @@ function DashPerformance({ user }) {
           <h2 className="font-heading text-xl font-medium text-foreground mb-1">Performance</h2>
           <p className="text-muted-foreground text-[13px]">See what people viewed, saved, used, and visited.</p>
         </div>
-        <div className="flex gap-1 p-1 rounded-full border border-border/50 bg-card/40">
+        <div className="flex gap-1 p-1 rounded-[2px] border border-border/50 bg-card/40">
           {PERIODS.map(p => (
             <button key={p} onClick={() => setPeriod(p)}
-              className={`px-3.5 py-1.5 rounded-full text-[11px] font-medium transition-all ${period === p ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+              className={`px-3.5 py-1.5 rounded-[2px] text-[11px] font-medium transition-all ${period === p ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
               {p}
             </button>
           ))}
@@ -621,7 +722,7 @@ function DashPerformance({ user }) {
             className="p-5 rounded-xl border border-border/50 bg-card/40">
             <div className="font-heading text-2xl font-medium text-foreground">{m.value}</div>
             <div className="text-[11px] text-muted-foreground mt-1">{m.label}</div>
-            <div className="text-[11px] text-[#B38F4F] mt-1.5">{m.change}</div>
+            <div className="text-[11px] text-[#C8A96A] mt-1.5">{m.change}</div>
           </motion.div>
         ))}
       </div>
@@ -642,44 +743,16 @@ function DashPerformance({ user }) {
                 </div>
                 <span className="text-muted-foreground">{item.metric}</span>
               </div>
-              <div className="h-1.5 rounded-full bg-border/50 overflow-hidden">
+              <div className="h-1.5 rounded-[2px] bg-border/50 overflow-hidden">
                 <motion.div initial={{ width: 0 }} animate={{ width: `${item.bar}%` }} transition={{ duration: 0.8, delay: i * 0.1 }}
-                  className="h-full rounded-full bg-primary" />
+                  className="h-full rounded-[2px] bg-primary" />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="rounded-xl border border-border/50 bg-card/40 overflow-hidden">
-        <div className="p-5 border-b border-border/40">
-          <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">District report</div>
-          <p className="mt-1 text-[12px] text-muted-foreground">Realistic demo data keeps reports useful until live partner activity is connected.</p>
-        </div>
-        <div className="divide-y divide-border/40">
-          {DEMO_REPORT_ROWS.map((row) => (
-            <div key={row.district} className="grid gap-3 p-4 md:grid-cols-[1fr_80px_80px_80px_1.2fr] md:items-center">
-              <div>
-                <div className="text-[13px] font-medium text-foreground">{row.district}</div>
-                <div className="text-[11px] text-muted-foreground">{row.signal}</div>
-              </div>
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Scans</div>
-                <div className="text-[12px] font-medium text-foreground">{row.scans}</div>
-              </div>
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Saves</div>
-                <div className="text-[12px] font-medium text-foreground">{row.saves}</div>
-              </div>
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Action</div>
-                <div className="text-[12px] font-medium text-[#B38F4F]">{row.actions}</div>
-              </div>
-              <div className="text-[12px] leading-5 text-muted-foreground">{row.next}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ReportSignalMatrix />
     </motion.div>
   );
 }
@@ -725,7 +798,7 @@ function DashSettings({ user }) {
           <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Support</div>
           <div className="space-y-2 text-[13px]">
             <a href="mailto:partners@downtownperks.com" className="block text-primary hover:underline underline-offset-4">partners@downtownperks.com</a>
-            <Link to="/partners" className="block text-muted-foreground hover:text-foreground transition-colors">View partner documentation →</Link>
+            <Link to="/partner-workspace/overview" className="block text-muted-foreground hover:text-foreground transition-colors">View partner workspace →</Link>
           </div>
         </div>
 

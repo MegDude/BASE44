@@ -125,7 +125,7 @@ const DEFAULT_FILTERS: ActiveFilters = {
 /**
  * Austin downtown center (fallback)
  */
-const AUSTIN_CENTER: [number, number] = [30.267, -97.743];
+const AUSTIN_CENTER: [number, number] = [30.25855, -97.73835];
 
 /**
  * Unified map state store
@@ -133,7 +133,7 @@ const AUSTIN_CENTER: [number, number] = [30.267, -97.743];
 export const useMapStateStore = create<MapState>((set, get) => ({
   // Initial state
   mapCenter: AUSTIN_CENTER,
-  mapZoom: 14,
+  mapZoom: 16.5,
   mapBounds: undefined,
 
   selectedEntityId: null,
@@ -272,7 +272,7 @@ export const useMapStateStore = create<MapState>((set, get) => ({
   reset: () => {
     set({
       mapCenter: AUSTIN_CENTER,
-      mapZoom: 14,
+      mapZoom: 16.5,
       selectedEntityId: null,
       selectedEntity: null,
       drawerState: 'closed',

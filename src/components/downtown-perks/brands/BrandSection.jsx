@@ -65,14 +65,12 @@ export function FlowCard({ step, title, desc, delay = 0 }) {
       initial={{ opacity: 0, x: -12 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="flex gap-5 p-6 border-b border-border/40 last:border-b-0"
+      className="grid grid-cols-[48px_1fr] gap-4 border-b border-[#0B1F33]/8 px-0 py-5 last:border-b-0 md:grid-cols-[64px_1fr]"
     >
-      <div className="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center shrink-0 mt-0.5">
-        <span className="text-primary font-heading font-medium text-[12px]">{step}</span>
-      </div>
+      <span className="font-heading text-[18px] font-medium leading-none text-[#B38F4F] md:text-[22px]">{step}</span>
       <div>
-        <div className="font-medium text-foreground text-[13px] mb-1.5">{title}</div>
-        <div className="text-[13px] text-muted-foreground leading-relaxed">{desc}</div>
+        <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{title}</div>
+        <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{desc}</div>
       </div>
     </motion.div>
   );
@@ -127,13 +125,13 @@ export function BrandCTA({ headline, sub, ctaLabel, ctaHref }) {
             <div className="flex flex-col sm:flex-row items-start gap-3">
               <a
                 href={ctaHref || "mailto:partners@downtownperks.com"}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#0B1F33] px-5 py-2.5 text-[13px] font-medium text-[#FFFFFF] transition-all duration-300 hover:bg-[#0B1F33]/90"
               >
                 {ctaLabel || "Start the Conversation"}
               </a>
               <a
                 href="/downtown-perks/for-buildings"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#C8A96A] hover:text-[#0B1F33]"
               >
                 See All Partnerships
               </a>

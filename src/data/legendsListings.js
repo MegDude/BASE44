@@ -182,14 +182,14 @@ function imageSetForAddress(address, id) {
 
 function listingCopy(type, priceDisplay, beds, baths, sqft, daysOnMarket) {
   if (beds === 0 && baths === 0 && sqft === 0) {
-    return "Legends Real Estate has this Downtown Austin listing available, with property details to confirm directly. Send a request to get the full listing notes, availability, and showing options from the Legends team.";
+    return "Want to live here? This Downtown Austin listing is available through Legends Real Estate, with property details ready to confirm. Downtown Perks residents can ask about availability, showing options, and listings that may not be easy to find on the usual listing sites.";
   }
 
   const detailText = `${beds} bed • ${baths} bath • ${withCommas(sqft)} sq ft • ${daysOnMarket} days on market.`;
   if (type === "rent") {
-    return `Legends Real Estate is representing this Downtown Austin rental listed at ${priceDisplay}/mo. ${detailText} Request availability, showing options, and next steps directly from the Legends team.`;
+    return `Want to live here? This Downtown Austin rental is listed at ${priceDisplay}/mo. ${detailText} Downtown Perks residents can contact Legends Real Estate for availability, showing times, and access to property options that may not always be surfaced on other listing sites.`;
   }
-  return `Legends Real Estate is representing this Downtown Austin residence listed at ${priceDisplay}. ${detailText} Request details, confirm availability, or schedule a private tour with the Legends team.`;
+  return `Want to live here? This Downtown Austin residence is listed at ${priceDisplay}. ${detailText} Downtown Perks residents can contact Legends Real Estate for details, availability, private tour options, and property access that may not always be visible on other listing sites.`;
 }
 
 function toListing(row, type) {
@@ -201,8 +201,8 @@ function toListing(row, type) {
   const panelCopy = listingCopy(type, price, beds, baths, sqft, daysOnMarket);
   const gallery = imageSetForAddress(address, id);
   const prefilledMessage = type === "rent"
-    ? `Hi Legends Real Estate, I’m interested in the rental listing at ${address} listed for ${price}/mo. Please send availability, showing options, and next steps.`
-    : `Hi Legends Real Estate, I’m interested in the listing at ${address} listed for ${price}. Please send details, availability, and showing options.`;
+    ? `Hi Legends Real Estate, I’m interested in living at ${address}. Please send rental availability, showing options, and anything useful to know about the building and nearby area.`
+    : `Hi Legends Real Estate, I’m interested in living at ${address}. Please send availability, showing options, and anything useful to know about the building and nearby area.`;
 
   return {
     id,
@@ -211,7 +211,7 @@ function toListing(row, type) {
     partnerType: "properties",
     brand: "Legends Real Estate",
     pinKey: "legends",
-    category: `Legends ${listingTypeLabel}`,
+    category: "Residential Property",
     category_key: `legends_${type}_listing`,
     latitude: coords[0],
     longitude: coords[1],
@@ -220,8 +220,8 @@ function toListing(row, type) {
     district: zip === "78705" ? "West Campus" : "Downtown Austin",
     address: `${address}, ${city}, ${state} ${zip}`,
     summary: panelCopy,
-    deals_offers: `Listed: ${priceDisplay}`,
-    specials: `Legends listing status: ${listingTypeLabel}`,
+    deals_offers: "Exclusive resident property discovery through Legends Real Estate",
+    specials: `${listingTypeLabel} with resident access to availability and showing options`,
     source: "Legends Real Estate verified listing layer",
     website: "",
     contact_phone: "",

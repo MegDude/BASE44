@@ -35,7 +35,7 @@ export default function HeroSection({ heroImage }) {
           >
             <div className="p-2 flex gap-2">
               <div className="flex flex-1 items-center gap-3 border rounded-[16px] px-4 h-10">
-                <MapPin className="h-4 w-4 text-[#B38F4F]" />
+                <MapPin className="h-4 w-4 text-[#C8A96A]" />
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}

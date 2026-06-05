@@ -23,7 +23,7 @@ export default function PartnerTypeCard({
       transition={{ duration: 0.4, delay }}
     >
       <Link to={href} className="block h-full group">
-        <div className="h-full p-6 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33] hover:shadow-lg transition-all duration-300">
+        <div className="h-full p-6 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33]  transition-all duration-300">
           {Icon && <Icon className="w-8 h-8 text-[#0B1F33] mb-3" />}
 
           <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-2">
@@ -34,10 +34,10 @@ export default function PartnerTypeCard({
             {label}
           </h3>
 
-          <p className="text-[13px] text-[#6f6b65] leading-relaxed mb-4">{description}</p>
+          <p className="text-[13px] text-[#425466] leading-relaxed mb-4">{description}</p>
 
           {headline && (
-            <div className="mb-3 p-3 rounded-lg bg-[#F7F8FB] border border-[#0B1F33]/8">
+            <div className="mb-3 p-3 rounded-lg bg-white border border-[#0B1F33]/8">
               <div className="text-[12px] font-semibold text-[#0B1F33]">{headline}</div>
             </div>
           )}

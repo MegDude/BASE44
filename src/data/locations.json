@@ -457,7 +457,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/cantina-512.jpg"
   },
   {
     "name": "Canvas",
@@ -3079,7 +3080,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/standard-proof-whiskey-co.webp"
   },
   {
     "name": "Star Bar",
@@ -10508,7 +10510,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/cambria-hotel-austin-downtown.jpg"
   },
   {
     "name": "Canopy by Hilton",
@@ -10738,7 +10741,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/fairfield-inn-and-suites-austin-downtown.jpg"
   },
   {
     "name": "Fairmont Austin",
@@ -10761,7 +10765,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/fairmont-austin.jpg"
   },
   {
     "name": "Four Seasons Hotel Austin",
@@ -10945,7 +10950,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/holiday-inn-austin-town-lake.webp"
   },
   {
     "name": "Holiday Inn Express & Suites Austin Downtown - University by IHG",
@@ -11175,7 +11181,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/hotel-van-zandt.webp"
   },
   {
     "name": "Hotel ZaZa",
@@ -15671,7 +15678,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/3-waller.webp"
   },
   {
     "name": "360 Condominiums",
@@ -15740,7 +15748,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/44-east.jpg"
   },
   {
     "name": "6th Street West Apartments Austin",
@@ -15776,6 +15785,7 @@
     "map_link": "https://www.openstreetmap.org/way/884211637#map=19/30.258550/-97.739166",
     "map_preview_link": "https://www.openstreetmap.org/?mlat=30.258550&mlon=-97.739166#map=18/30.258550/-97.739166",
     "address": "70, Rainey Street, Austin, TX, 78701",
+    "image": "/images/map-pins/property/70-rainey.webp",
     "summary": "Residential Property listing in Downtown Austin.",
     "alignment_to_downtown_perks": "Resident onboarding, building-level perks, and local engagement",
     "operating_hours": "Not listed",
@@ -15809,7 +15819,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/700-river.jpg"
   },
   {
     "name": "Alexan Waterloo",
@@ -16890,7 +16901,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/gables-republic-square.jpg"
   },
   {
     "name": "Gibson Flats",
@@ -16949,6 +16961,7 @@
     "map_link": "https://www.openstreetmap.org/way/850669088#map=19/30.267623/-97.745997",
     "map_preview_link": "https://www.openstreetmap.org/?mlat=30.267623&mlon=-97.745997#map=18/30.267623/-97.745997",
     "address": "305, West 5th Street, Austin, TX, 78701",
+    "image": "/buildings/hanover-republic-square.jpg",
     "summary": "Residential Property listing in Downtown Austin.",
     "alignment_to_downtown_perks": "Resident onboarding, building-level perks, and local engagement",
     "operating_hours": "Not listed",
@@ -17120,7 +17133,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/milago.webp"
   },
   {
     "name": "Millenium Rainey",
@@ -17143,7 +17157,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/millenium-rainey.jpg"
   },
   {
     "name": "Modern Austin Residences",
@@ -17166,7 +17181,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/paseo.webp"
   },
   {
     "name": "Natiivo",
@@ -20501,7 +20517,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/residential-property-west-avenue-300.webp"
   },
   {
     "name": "Rio House Apartments",
@@ -21306,7 +21323,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/the-quincy.jpg"
   },
   {
     "name": "The Shoal",
@@ -21536,7 +21554,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/towers-of-town-lake.jpeg"
   },
   {
     "name": "Towne Lake Subdivision",
@@ -21697,7 +21716,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/vesper-atx.jpg"
   },
   {
     "name": "Villas of Lost Canyon",
@@ -21927,7 +21947,8 @@
     "deals_offers": "No public deal listed in source data",
     "events_available": "No public event listing in source data",
     "source": "OpenStreetMap / Overpass",
-    "last_enriched_utc": "2026-02-26T22:37:02Z"
+    "last_enriched_utc": "2026-02-26T22:37:02Z",
+    "image": "/images/map-pins/property/windsor-on-the-lake.avif"
   },
   {
     "name": "Windsor South Lamar",
@@ -35819,7 +35840,8 @@
     "deals_offers": "Listed: N/A / $19,000.00/MONTH | MLS: 3710500",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/301-west-ave-4105.webp"
   },
   {
     "name": "311 W 5th ST # 905",
@@ -36210,7 +36232,8 @@
     "deals_offers": "Listed: N/A / $19,000.00/MONTH",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/301-west-ave-4105.webp"
   },
   {
     "name": "360 Nueces ST # 4305",
@@ -36325,7 +36348,8 @@
     "deals_offers": "Listed: N/A / $19,000.00/MONTH",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/301-west-ave-4105.webp"
   },
   {
     "name": "311 W 5th ST Unit: 806",
@@ -36532,7 +36556,8 @@
     "deals_offers": "Listed: $2,500,000.00 | MLS: 4601269",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/311-w-5th-st-unit-803.avif"
   },
   {
     "name": "311 W 5th ST Unit: 803",
@@ -36555,7 +36580,8 @@
     "deals_offers": "Listed: $2,500,000.00 | MLS: 5816720",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/311-w-5th-st-unit-803.avif"
   },
   {
     "name": "311 W 5th ST Unit: 803",
@@ -36578,7 +36604,8 @@
     "deals_offers": "Listed: N/A / $16,000.00/MONTH | MLS: 1590770",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/311-w-5th-st-unit-803.avif"
   },
   {
     "name": "311 W 5th ST Unit: 1005",
@@ -36624,7 +36651,8 @@
     "deals_offers": "Listed: N/A / $19,000.00/MONTH",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/301-west-ave-4105.webp"
   },
   {
     "name": "311 W 5th St #803",
@@ -36647,7 +36675,8 @@
     "deals_offers": "Listed: $2,800,000.00",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/311-w-5th-st-unit-803.avif"
   },
   {
     "name": "311 W 5th St #1005",
@@ -36739,7 +36768,8 @@
     "deals_offers": "Listed: N/A / $18,000.00/MONTH | MLS: 2023965",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/311-w-5th-st-unit-803.avif"
   },
   {
     "name": "311 W 5th St W #902",
@@ -36969,6 +36999,7 @@
     "deals_offers": "Listed: $2,800,000.00 | MLS: 9682559",
     "events_available": "No public event listing in source data",
     "source": "Legends Property Export (2026-02-27)",
-    "last_enriched_utc": "2026-02-27T15:25:32Z"
+    "last_enriched_utc": "2026-02-27T15:25:32Z",
+    "image": "/images/map-pins/property/311-w-5th-st-unit-803.avif"
   }
 ]

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("rounded-[6px] bg-white/74 text-card-foreground shadow-[0_14px_38px_rgba(11,31,51,0.035),0_0_28px_rgba(179,143,79,0.025),inset_0_1px_0_rgba(255,255,255,0.68)] backdrop-blur-[14px]", className)}
+    className={cn("rounded-[6px] bg-white/74 text-card-foreground shadow-[0_14px_38px_rgba(11,31,51,0.035),0_0_28px_rgba(200,169,106,0.025),inset_0_1px_0_rgba(255,255,255,0.68)] backdrop-blur-[14px]", className)}
     {...props} />
 ))
 Card.displayName = "Card"

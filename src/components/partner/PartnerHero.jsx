@@ -16,10 +16,21 @@ export default function PartnerHero({
   stats = [],
   preview,
   alignment = 'left', // left | right
+  backHref = '/partners',
+  backLabel = 'Back',
 }) {
   return (
-    <section className="pt-20 pb-16 md:pt-32 md:pb-24 border-b border-[#0B1F33]/8">
-      <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <section className="border-b border-[#0B1F33]/8 bg-white pt-20 pb-16 md:pt-32 md:pb-24">
+      <div className="max-w-7xl mx-auto px-5">
+        <a
+          href={backHref}
+          className="mb-8 inline-flex items-center gap-2 bg-transparent px-0 font-body text-[12px] font-medium text-[#0B1F33]/68 transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+        >
+          <span className="text-[#BFA46A]" aria-hidden="true">←</span>
+          {backLabel}
+        </a>
+      </div>
+      <div className={`max-w-7xl mx-auto px-5 grid grid-cols-1 gap-12 items-center ${preview ? 'md:grid-cols-2' : ''}`}>
         {/* Left content */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -29,38 +40,39 @@ export default function PartnerHero({
           className={alignment === 'right' ? 'md:order-2' : ''}
         >
           {eyebrow && (
-            <div className="text-[12px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-4">
+            <div className="mb-4 text-[11px] font-medium uppercase tracking-normal text-[#BFA46A] md:text-[13px]">
               {eyebrow}
             </div>
           )}
 
-          <h1 className="text-[40px] md:text-[52px] font-bold text-[#0B1F33] leading-tight tracking-normal mb-5">
+          <h1 className="mb-5 font-heading text-[52px] font-medium leading-[0.95] tracking-[-0.035em] text-[#0B1F33] md:text-[72px] lg:text-[96px]">
             {headline}
           </h1>
 
           {description && (
-            <p className="text-[16px] text-[#0B1F33]/70 leading-relaxed mb-8 max-w-lg">
+            <p className="mb-8 max-w-lg font-body text-[16px] leading-[1.6] text-[#0B1F33]/66 md:text-[18px]">
               {description}
             </p>
           )}
 
           {/* CTAs */}
-          <div className="flex flex-wrap gap-3 mb-8">
+          <div className="mb-8 flex flex-nowrap items-center gap-6 overflow-x-auto pb-1">
             {primaryCTA && (
               <a
                 href={primaryCTAHref || '#'}
-                className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[#0B1F33] text-white font-semibold text-[14px] hover:bg-[#0B1F33] transition-colors"
+                className="group inline-flex h-8 shrink-0 items-center gap-2 bg-transparent px-0 font-body text-[12px] font-medium uppercase tracking-normal text-[#0B1F33] shadow-none transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 {primaryCTA}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-3.5 w-3.5 text-[#BFA46A] transition-transform group-hover:translate-x-0.5" />
               </a>
             )}
             {secondaryCTA && (
               <a
                 href={secondaryCTAHref || '#'}
-                className="inline-flex items-center h-10 px-5 rounded-lg border border-[#0B1F33]/8 bg-white text-[#0B1F33] font-semibold text-[14px] hover:bg-[#F7F8FB] transition-colors"
+                className="group inline-flex h-8 shrink-0 items-center gap-2 bg-transparent px-0 font-body text-[12px] font-medium uppercase tracking-normal text-[#0B1F33]/62 shadow-none transition-colors hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 {secondaryCTA}
+                <ArrowRight className="h-3.5 w-3.5 text-[#BFA46A] transition-transform group-hover:translate-x-0.5" />
               </a>
             )}
           </div>
@@ -70,8 +82,8 @@ export default function PartnerHero({
             <div className="flex flex-wrap gap-6">
               {stats.map((stat, i) => (
                 <div key={i}>
-                  <div className="text-[20px] font-bold text-[#0B1F33]">{stat.label}</div>
-                  <div className="text-[12px] text-[#0B1F33]/50 mt-1">{stat.value}</div>
+                  <div className="font-heading text-[24px] font-medium leading-none text-[#0B1F33]">{stat.value}</div>
+                  <div className="mt-1 text-[11px] font-medium uppercase tracking-normal text-[#425466]">{stat.label}</div>
                 </div>
               ))}
             </div>

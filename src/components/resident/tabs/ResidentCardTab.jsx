@@ -68,7 +68,7 @@ export default function ResidentCardTab({ user }) {
                 className="p-2 hover:bg-white rounded-lg transition-colors"
               >
                 {copied ? (
-                  <Check className="w-4 h-4 text-[#B38F4F]" />
+                  <Check className="w-4 h-4 text-[#C8A96A]" />
                 ) : (
                   <Copy className="w-4 h-4 text-muted-foreground" />
                 )}

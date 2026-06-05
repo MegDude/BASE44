@@ -53,7 +53,7 @@ export default function ProductEntryLayer() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F8FB] pt-[68px] pb-12">
+    <section className="relative overflow-hidden bg-white pt-[68px] pb-12">
       <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[#0B1F33]/[0.06] blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[#0B1F33]/[0.035] blur-3xl" />
 
@@ -111,7 +111,7 @@ export default function ProductEntryLayer() {
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="rounded-full p-1 transition-colors hover:bg-[#F7F8FB]"
+                    className="rounded-full p-1 transition-colors hover:bg-white"
                   >
                     <X className="h-4 w-4 text-[#425466]/72" />
                   </button>
@@ -167,7 +167,7 @@ export default function ProductEntryLayer() {
                     <h4 className="text-[13px] font-semibold text-[#0B1F33]">{card.name}</h4>
                     <p className="text-xs text-[#425466]/72">{card.distance}</p>
                   </div>
-                  <MapPin className="h-4 w-4 shrink-0 text-[#B38F4F]" />
+                  <MapPin className="h-4 w-4 shrink-0 text-[#C8A96A]" />
                 </div>
 
                 <p className="mb-3 text-xs leading-5 text-[#425466]">{card.line}</p>
@@ -200,18 +200,18 @@ export default function ProductEntryLayer() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.32 }}
-          className="flex flex-wrap justify-center gap-3 pt-8"
+          className="flex flex-wrap justify-center gap-6 pt-8"
         >
           <button
             onClick={() => navigate("/downtown-perks/card")}
-            className="rounded-[12px] bg-[#0B1F33] px-5 py-2.5 text-[13px] font-medium text-white shadow-[0_12px_30px_rgba(11,31,51,0.10)] transition-all duration-200 hover:-translate-y-[1px] hover:bg-[#0B1F33] hover:shadow-[0_16px_34px_rgba(11,31,51,0.12)]"
+            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-none transition-colors duration-200 hover:text-[#B38F4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
           >
             Get Your Card
           </button>
 
           <button
             onClick={() => navigate("/map?mode=resident&tab=map")}
-            className="rounded-[12px] border border-[#0B1F33]/8 bg-white px-5 py-2.5 text-[13px] font-medium text-[#0B1F33] transition-all duration-200 hover:bg-[#F7F8FB]"
+            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33]/62 shadow-none transition-colors duration-200 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
           >
             Explore the Map
           </button>

@@ -24,7 +24,7 @@ export default function MapSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 px-5 border-t border-[#0B1F33]/8 bg-[#F7F8FB]">
+    <section ref={ref} className="py-20 px-5 border-t border-[#0B1F33]/8 bg-white">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
@@ -90,7 +90,7 @@ export default function MapSection() {
               </ul>
 
               {/* Sample venue card */}
-              <div className="p-4 rounded-lg bg-[#F7F8FB] border border-[#0B1F33]/8 mb-6">
+              <div className="p-4 rounded-lg bg-white border border-[#0B1F33]/8 mb-6">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
                     <Coffee className="w-3.5 h-3.5 text-primary/60" />
@@ -100,17 +100,17 @@ export default function MapSection() {
                     <div className="text-[11px] text-muted-foreground mt-0.5">Coffee. Quick stops. Daily rituals.</div>
                     <div className="text-[11px] text-primary/70 mt-1">Nearby perk · 5-minute walk</div>
                   </div>
-                  <span className="text-[11px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-full shrink-0">
+                  <span className="shrink-0 border border-primary/30 px-2.5 py-1 text-[11px] font-medium text-primary">
                     Show Card
                   </span>
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <Link to="/map?mode=resident&tab=map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[12px] hover:bg-primary/90 transition-all">
-                  <MapPin className="w-3.5 h-3.5" /> Explore Downtown
+              <div className="flex flex-wrap gap-2">
+                <Link to="/map?mode=resident&tab=map" className="inline-flex h-8 items-center gap-1.5 bg-primary px-3.5 text-[11px] font-medium text-primary-foreground transition-all hover:-translate-y-px hover:bg-primary/90">
+                  <MapPin className="h-3.5 w-3.5" /> Open the Map
                 </Link>
-                <Link to="/downtown-perks/card" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/60 text-foreground/70 font-medium text-[12px] hover:text-foreground transition-all">
+                <Link to="/downtown-perks/card" className="inline-flex h-8 items-center gap-1.5 border border-border/60 px-3.5 text-[11px] font-medium text-foreground/70 transition-all hover:-translate-y-px hover:text-foreground">
                   Get a Perks Card
                 </Link>
               </div>
@@ -199,9 +199,9 @@ export default function MapSection() {
                 Everything you need, within walking distance. See what's close, decide quickly, and go.
               </p>
             </div>
-            <div className="flex gap-3">
-              <Link to="/map?mode=resident&tab=map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
-                <MapPin className="w-3.5 h-3.5" /> Open the Map
+            <div className="flex gap-2">
+              <Link to="/map?mode=resident&tab=map" className="inline-flex h-8 items-center gap-1.5 bg-primary px-3.5 text-[11px] font-medium text-primary-foreground transition-all hover:-translate-y-px hover:bg-primary/90">
+                <MapPin className="h-3.5 w-3.5" /> Open the Map
               </Link>
             </div>
           </div>

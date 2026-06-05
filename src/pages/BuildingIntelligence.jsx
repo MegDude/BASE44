@@ -73,7 +73,7 @@ function getTabHref(pathname, buildingId, tabId) {
 function buildingMarkerIcon(item, active) {
   const isBuilding = item.entity_type === "building";
   const size = isBuilding ? 34 : 28;
-  const bg = active ? "#B38F4F" : isBuilding ? "#0B1F33" : "#0B1F33";
+  const bg = active ? "#C8A96A" : isBuilding ? "#0B1F33" : "#0B1F33";
   return L.divIcon({
     className: "",
     html: `<div style="height:${size}px;width:${size}px;border-radius:7px;background:${bg};border:3px solid white;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 12px 30px rgba(11,31,51,.2);font-size:11px;font-weight:700">${isBuilding ? "B" : "+"}</div>`,
@@ -95,7 +95,7 @@ function StatTile({ label, value, detail }) {
 function SectionIntro({ eyebrow, title, body }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">{eyebrow}</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">{eyebrow}</p>
       <h2 className="mt-3 font-heading text-3xl font-medium leading-tight tracking-normal text-[#0B1F33] md:text-4xl">{title}</h2>
       <p className="mt-3 text-[14px] leading-7 text-[#0B1F33]/64">{body}</p>
     </div>
@@ -130,11 +130,11 @@ export default function BuildingIntelligence() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FB] pt-[72px] text-[#0B1F33]">
+    <div className="min-h-screen bg-white pt-[72px] text-[#0B1F33]">
       <section className="border-b border-[#0B1F33]/8 bg-white px-5 py-10 md:py-14">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-center gap-2 text-[12px] text-[#0B1F33]/52">
-            <Link to="/partners/properties" className="hover:text-[#0B1F33]">Properties</Link>
+            <Link to="/map?mode=partner&tab=map&filter=Properties" className="hover:text-[#0B1F33]">Properties</Link>
             <span>/</span>
             <Link to="/map?mode=partner&filter=Properties" className="hover:text-[#0B1F33]">Map</Link>
             <span>/</span>
@@ -143,7 +143,7 @@ export default function BuildingIntelligence() {
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">Building intelligence</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Building intelligence</p>
               <h1 className="mt-3 font-heading text-4xl font-medium leading-none tracking-normal text-[#0B1F33] md:text-6xl">
                 {building.name}
               </h1>
@@ -151,7 +151,7 @@ export default function BuildingIntelligence() {
 
               <div className="mt-5 flex flex-wrap gap-2">
                 {[building.address, building.district, building.walkScore, building.availability].map((chip) => (
-                  <span key={chip} className="rounded-[3px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/64">
+                  <span key={chip} className="rounded-[3px] border border-[#0B1F33]/10 bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/64">
                     {chip}
                   </span>
                 ))}
@@ -168,14 +168,14 @@ export default function BuildingIntelligence() {
                 <button
                   type="button"
                   onClick={() => setShowReservation(true)}
-                  className="inline-flex h-10 items-center gap-2 rounded-[3px] border border-[#0B1F33]/10 bg-white px-4 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] transition-colors hover:bg-[#F7F8FB]"
+                  className="inline-flex h-10 items-center gap-2 rounded-[3px] border border-[#0B1F33]/10 bg-white px-4 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] transition-colors hover:bg-white"
                 >
                   Reserve amenity
                   <Calendar className="h-4 w-4" />
                 </button>
                 <Link
                   to={`/map?mode=partner&tab=map&filter=Properties&entityId=${building.id}`}
-                  className="inline-flex h-10 items-center gap-2 rounded-[3px] border border-[#0B1F33]/10 bg-white px-4 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] transition-colors hover:bg-[#F7F8FB]"
+                  className="inline-flex h-10 items-center gap-2 rounded-[3px] border border-[#0B1F33]/10 bg-white px-4 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] transition-colors hover:bg-white"
                 >
                   Open map
                   <ArrowRight className="h-4 w-4" />
@@ -183,7 +183,7 @@ export default function BuildingIntelligence() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+            <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-4">
               <div className="grid grid-cols-2 gap-3">
                 <StatTile label="Homes" value={building.unitCount} />
                 <StatTile label="Occupancy" value={building.occupancy} />
@@ -229,7 +229,7 @@ export default function BuildingIntelligence() {
               <div className="mt-4 space-y-3">
                 {building.lifestyleUnlocks.map((item) => (
                   <div key={item} className="flex gap-3">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#B38F4F]" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A96A]" />
                     <p className="text-[13px] leading-6 text-[#0B1F33]/66">{item}</p>
                   </div>
                 ))}
@@ -261,7 +261,7 @@ export default function BuildingIntelligence() {
                         <div className="font-heading text-xl font-medium tracking-normal">{resident.name}</div>
                         <div className="mt-1 text-[12px] text-[#0B1F33]/50">Unit {resident.unit}</div>
                       </div>
-                      <Users className="h-4 w-4 text-[#B38F4F]" />
+                      <Users className="h-4 w-4 text-[#C8A96A]" />
                     </div>
                     <div className="mt-4 space-y-2 text-[13px] text-[#0B1F33]/64">
                       <div>Status: {resident.status}</div>
@@ -302,14 +302,14 @@ export default function BuildingIntelligence() {
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div>
                         <div className="flex items-center gap-2 font-heading text-xl font-medium tracking-normal">
-                          <Wrench className="h-4 w-4 text-[#B38F4F]" />
+                          <Wrench className="h-4 w-4 text-[#C8A96A]" />
                           {ticket.title}
                         </div>
                         <div className="mt-2 text-[13px] text-[#0B1F33]/62">Location: {ticket.location}</div>
                       </div>
                       <div className="flex gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
-                        <span className="rounded-[3px] border border-[#B38F4F]/30 bg-white px-3 py-1.5 text-[#0B1F33]">{ticket.priority}</span>
-                        <span className="rounded-[3px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 py-1.5 text-[#0B1F33]/62">{ticket.status}</span>
+                        <span className="rounded-[3px] border border-[#C8A96A]/30 bg-white px-3 py-1.5 text-[#0B1F33]">{ticket.priority}</span>
+                        <span className="rounded-[3px] border border-[#0B1F33]/10 bg-white px-3 py-1.5 text-[#0B1F33]/62">{ticket.status}</span>
                       </div>
                     </div>
                   </div>
@@ -324,7 +324,7 @@ export default function BuildingIntelligence() {
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/48">{report.label}</div>
-                        <div className="mt-2 font-heading text-3xl font-medium tracking-normal text-[#B38F4F]">{report.value}</div>
+                        <div className="mt-2 font-heading text-3xl font-medium tracking-normal text-[#C8A96A]">{report.value}</div>
                       </div>
                       <ClipboardList className="h-4 w-4 text-[#0B1F33]" />
                     </div>
@@ -340,7 +340,7 @@ export default function BuildingIntelligence() {
                   <div key={partner.name} className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
                     <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/48">{partner.category}</div>
                     <div className="mt-2 font-heading text-xl font-medium tracking-normal">{partner.name}</div>
-                    <div className="mt-2 text-[13px] font-semibold text-[#B38F4F]">{partner.result}</div>
+                    <div className="mt-2 text-[13px] font-semibold text-[#C8A96A]">{partner.result}</div>
                     <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{partner.context}</p>
                   </div>
                 ))}
@@ -354,7 +354,7 @@ export default function BuildingIntelligence() {
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1.25fr_0.75fr]">
           <div>
             <div className="mb-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B38F4F]">{building.shortLabel} nearby map</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">{building.shortLabel} nearby map</p>
               <h2 className="mt-2 font-heading text-3xl font-medium tracking-normal">The building and what is close enough to matter.</h2>
             </div>
             <div className="h-[420px] overflow-hidden rounded-lg border border-[#0B1F33]/8">
@@ -368,7 +368,7 @@ export default function BuildingIntelligence() {
               />
             </div>
           </div>
-          <aside className="rounded-lg border border-[#0B1F33]/8 bg-[#F7F8FB] p-5 lg:self-end">
+          <aside className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 lg:self-end">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/48">
@@ -390,7 +390,7 @@ export default function BuildingIntelligence() {
             <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{selectedMapItem?.description}</p>
             <div className="mt-4 rounded-lg bg-[#0B1F33] p-4 text-white">
               <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/58">Activity</div>
-              <div className="mt-2 font-heading text-3xl font-medium text-[#B38F4F]">
+              <div className="mt-2 font-heading text-3xl font-medium text-[#C8A96A]">
                 {selectedMapItem?.value?.toLocaleString?.() || selectedMapItem?.value || "Live"}
               </div>
             </div>
@@ -399,7 +399,7 @@ export default function BuildingIntelligence() {
       </section>
 
       <Dialog open={showReservation} onOpenChange={setShowReservation}>
-        <DialogContent className="max-w-xl border-[#0B1F33]/10 bg-[#F7F8FB]">
+        <DialogContent className="max-w-xl border-[#0B1F33]/10 bg-white">
           <DialogHeader>
             <DialogTitle className="font-heading text-2xl font-medium tracking-normal">
               Reserve an amenity at {building.name}
@@ -420,12 +420,12 @@ function InfoBlock({ icon: Icon, title, items }) {
   return (
     <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
       <div className="mb-4 flex items-center gap-2 font-heading text-xl font-medium tracking-normal">
-        <Icon className="h-4 w-4 text-[#B38F4F]" />
+        <Icon className="h-4 w-4 text-[#C8A96A]" />
         {title}
       </div>
       <div className="flex flex-wrap gap-2">
         {items.map((item) => (
-          <span key={item} className="rounded-[3px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-3 py-1.5 text-[12px] text-[#0B1F33]/66">
+          <span key={item} className="rounded-[3px] border border-[#0B1F33]/10 bg-white px-3 py-1.5 text-[12px] text-[#0B1F33]/66">
             {item}
           </span>
         ))}

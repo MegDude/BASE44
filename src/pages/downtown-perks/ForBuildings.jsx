@@ -5,9 +5,9 @@ import { Building2, Users, BarChart3, MessageSquare, ArrowRight, CheckCircle } f
 
 const tiers = [
   {
-    name: "Starter",
-    price: "$99",
-    period: "/year",
+    name: "Building Starter",
+    price: "$49",
+    period: "/month",
     features: [
       "Resident access for the whole building",
       "QR card activation",
@@ -17,11 +17,11 @@ const tiers = [
     highlight: false,
   },
   {
-    name: "Connected",
-    price: "$149",
-    period: "/year",
+    name: "Resident Plus",
+    price: "$99",
+    period: "/month",
     features: [
-      "Everything in Pilot",
+      "Everything in Building Starter",
       "Resident activity dashboard",
       "Building communication channel",
       "Monthly engagement reports",
@@ -30,9 +30,9 @@ const tiers = [
     highlight: true,
   },
   {
-    name: "Intelligence",
+    name: "Property Pro",
     price: "$199",
-    period: "/year",
+    period: "/month",
     features: [
       "Everything in Connected",
       "Advanced usage analytics",
@@ -140,10 +140,10 @@ export default function ForBuildings() {
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
               <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal">
-                Simple annual pricing for building teams.
+                Simple monthly pricing for building teams.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                Choose the level that fits your team's communication, reporting, and resident engagement needs. The highest tier stays capped at $199/year.
+                Choose the level that fits your team's communication, reporting, and resident engagement needs. Recurring property plans stay capped at $199/month.
               </p>
             </div>
           </div>
@@ -208,14 +208,14 @@ export default function ForBuildings() {
                   For Local Businesses
                 </span>
                 <h3 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] mb-4">
-                  Annual venue plans.
+                  Free venue listings.
                   <br />
                   <em className="text-muted-foreground font-normal">The offer is the entry point.</em>
                 </h3>
               </div>
               <div>
                 <p className="text-muted-foreground text-[13px] leading-relaxed mb-6">
-                  Local businesses join through annual venue plans starting at $79/year. Their offers appear on the map at the moment nearby residents are deciding where to go.
+                  Local businesses can start with a Free Forever listing that includes one active resident perk. Paid venue plans start at $30/month when they want more.
                 </p>
                 <Link
                   to="/map?mode=resident&tab=map"

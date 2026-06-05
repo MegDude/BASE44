@@ -54,14 +54,14 @@ export default function PerksCard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FB] px-5 pb-20 pt-24 text-[#0B1F33]">
+    <div className="min-h-screen bg-white px-5 pb-20 pt-24 text-[#0B1F33]">
       <div className="mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <span className="text-[#B38F4F] text-[13px] font-medium uppercase tracking-widest">
+          <span className="text-[#C8A96A] text-[13px] font-medium uppercase tracking-widest">
             Resident Access
           </span>
           <h1 className="font-heading text-4xl md:text-4xl font-bold mt-2 mb-4 text-[#0B1F33]">
@@ -81,20 +81,20 @@ export default function PerksCard() {
             className="relative mx-auto w-full max-w-md"
           >
             <div className="relative overflow-hidden border border-[#0B1F33]/12 bg-white p-7 shadow-[0_24px_70px_rgba(6,27,51,0.12)]">
-              <div className="absolute left-0 right-0 top-0 h-1 bg-[#B38F4F]" />
+              <div className="absolute left-0 right-0 top-0 h-1 bg-[#C8A96A]" />
 
               <div className="flex items-center justify-between mb-7">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-[#B38F4F]" />
+                  <MapPin className="h-5 w-5 text-[#C8A96A]" />
                   <span className="font-heading font-bold text-[13px] text-[#0B1F33]">
-                    Downtown<span className="text-[#B38F4F]"> Perks</span>
+                    Downtown<span className="text-[#C8A96A]"> Perks</span>
                   </span>
                 </div>
                 <Shield className="w-5 h-5 text-[#0B1F33]/48" />
               </div>
 
               <div className="mb-7 flex justify-center">
-                <div className="border border-[#0B1F33]/12 bg-[#F7F8FB] p-4">
+                <div className="border border-[#0B1F33]/12 bg-white p-4">
                   <img
                     src={qrUrl}
                     alt={`Downtown Perks QR code for ${cardCode}`}
@@ -129,7 +129,7 @@ export default function PerksCard() {
             transition={{ delay: 0.45 }}
             className="group border border-[#0B1F33]/10 bg-white p-6 shadow-[0_18px_50px_rgba(11,31,51,0.08)] md:p-7"
           >
-            <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#B38F4F]">Ready when you are</span>
+            <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#C8A96A]">Ready when you are</span>
             <h2 className="mt-3 font-heading text-3xl font-medium leading-tight text-[#0B1F33]">Claim your Perks Card.</h2>
             <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/66">
               Scan the QR code to open the live card flow, connect your building, and keep your resident access ready for partner venues.
@@ -157,7 +157,7 @@ export default function PerksCard() {
               </Link>
               <Link
                 to="/map?mode=resident&tab=map"
-                className="inline-flex h-10 items-center justify-center gap-2 border border-[#0B1F33]/12 bg-[#F7F8FB] px-5 text-[13px] font-semibold text-[#0B1F33] transition-colors hover:bg-white"
+                className="inline-flex h-10 items-center justify-center gap-2 border border-[#0B1F33]/12 bg-white px-5 text-[13px] font-semibold text-[#0B1F33] transition-colors hover:bg-white"
               >
                 Explore the Map
                 <ArrowRight className="w-4 h-4" />
@@ -165,9 +165,9 @@ export default function PerksCard() {
             </div>
 
             <div className="mt-7 grid gap-3 border-t border-[#0B1F33]/10 pt-5 sm:grid-cols-2">
-              <div className="rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB]/78 p-4">
+              <div className="rounded-md border border-[#0B1F33]/8 bg-white/78 p-4">
                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">
-                  <QrCode className="h-3.5 w-3.5 text-[#B38F4F]" />
+                  <QrCode className="h-3.5 w-3.5 text-[#C8A96A]" />
                   Resident demo code
                 </div>
                 <div className="mt-3 rounded-md border border-[#0B1F33]/10 bg-white p-3 text-center">
@@ -187,17 +187,17 @@ export default function PerksCard() {
 
               <div className="rounded-md border border-[#0B1F33]/8 bg-[#0B1F33] p-4 text-white">
                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/58">
-                  <ScanLine className="h-3.5 w-3.5 text-[#B38F4F]" />
+                  <ScanLine className="h-3.5 w-3.5 text-[#C8A96A]" />
                   Partner scanner
                 </div>
                 <div className="mt-3 rounded-md border border-white/14 bg-white/8 p-3">
                   <div className="flex h-24 items-center justify-center rounded-md border border-white/18">
-                    <ScanLine className="h-10 w-10 text-[#B38F4F]" />
+                    <ScanLine className="h-10 w-10 text-[#C8A96A]" />
                   </div>
                   <div className="mt-3 grid gap-2 text-[12px] leading-5 text-white/72">
                     {["Scan resident code", "Confirm active card", "Apply perk and record visit"].map((item) => (
                       <div key={item} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[#B38F4F]" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#C8A96A]" />
                         {item}
                       </div>
                     ))}
@@ -235,9 +235,9 @@ export default function PerksCard() {
               ].map((f) => (
                 <div
                   key={f.label}
-                  className="grid grid-cols-[22px_1fr] gap-3 rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB]/78 p-3 shadow-[0_12px_32px_rgba(11,31,51,0.04)]"
+                  className="grid grid-cols-[22px_1fr] gap-3 rounded-md border border-[#0B1F33]/8 bg-white/78 p-3 shadow-[0_12px_32px_rgba(11,31,51,0.04)]"
                 >
-                  <f.icon className="mt-0.5 h-[18px] w-[18px] text-[#B38F4F]" />
+                  <f.icon className="mt-0.5 h-[18px] w-[18px] text-[#C8A96A]" />
                   <div>
                     <h4 className="font-body text-[12px] font-semibold leading-5 text-[#0B1F33]">{f.label}</h4>
                     <p className="mt-0.5 text-[11px] leading-5 text-[#0B1F33]/60">{f.detail}</p>

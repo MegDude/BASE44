@@ -51,7 +51,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-[#F7F8FB]">
+    <section className="relative w-full min-h-screen overflow-hidden bg-white">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -98,7 +98,7 @@ export default function HeroSection() {
             className="mx-auto mt-5 max-w-xl border border-white/70 bg-white/[0.92] p-2 shadow-[0_10px_28px_rgba(11,31,51,0.09)] md:mt-6"
           >
             <div className="flex flex-col gap-2 md:flex-row md:items-center">
-              <div className="flex h-10 flex-1 items-center gap-3 border border-[#0B1F33]/10 bg-white px-4 transition-colors focus-within:border-[#B38F4F]/60">
+              <div className="flex h-10 flex-1 items-center gap-3 border border-[#0B1F33]/10 bg-white px-4 transition-colors focus-within:border-[#C8A96A]/60">
                 <Search className="h-4 w-4 flex-shrink-0 text-foreground/45" />
                 <input
                   type="text"
@@ -144,7 +144,7 @@ export default function HeroSection() {
                         key={i}
                         type="button"
                         onClick={() => handlePromptClick(item.fill)}
-                        className="group w-full px-4 py-2.5 text-left transition-colors hover:bg-[#F7F8FB]"
+                        className="group w-full px-4 py-2.5 text-left transition-colors hover:bg-white"
                       >
                         <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
                           {item.q}
@@ -179,7 +179,7 @@ export default function HeroSection() {
                     onClick={() => setActiveChip(chip.label)}
                     className={`inline-flex h-9 items-center gap-2 border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all ${
                       isActive
-                        ? "border-[#B38F4F]/45 bg-[#0B1F33]/12 text-[#0B1F33]"
+                        ? "border-[#C8A96A]/45 bg-[#0B1F33]/12 text-[#0B1F33]"
                         : "border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"
                     }`}
                   >

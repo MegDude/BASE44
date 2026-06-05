@@ -71,16 +71,16 @@ export const SEARCH_PROMPTS = [
 ];
 
 export const CATEGORY_COLORS = {
-  restaurant: '#B38F4F',
-  bar: '#B38F4F',
+  restaurant: '#C8A96A',
+  bar: '#C8A96A',
   fitness: '#0B1F33',
   wellness: '#0B1F33',
   beauty: '#0B1F33',
   retail: '#425466',
   entertainment: '#0B1F33',
   coworking: '#0B1F33',
-  hotel: '#B38F4F',
-  building: '#B38F4F',
+  hotel: '#C8A96A',
+  building: '#C8A96A',
 };
 
 export const MOTION_PRESETS = {
@@ -101,7 +101,7 @@ export const MOTION_PRESETS = {
   },
 };
 
-export const AUSTIN_CENTER = [30.267, -97.743];
+export const AUSTIN_CENTER = [30.25855, -97.73835];
 
 /**
  * Map state shape (for Zustand)
@@ -115,5 +115,5 @@ export const initialMapState = {
   isLoading: false,
   drawerState: 'collapsed',
   mapCenter: AUSTIN_CENTER,
-  mapZoom: 14,
+  mapZoom: 16.5,
 };

@@ -1,0 +1,12 @@
+building_id,building_name,address,district,lat,lng,active_listings,price_range,sqft_range,average_price,source,updated_at
+luxury-building-360-condominiums,360 Condominiums,"360 Nueces ST, Austin, TX 78701",2nd Street,30.267029,-97.749595,3,"$430,000 - $465,000",748-801 sq ft,446667,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-seaholm-residences,Seaholm Residences,"222 West Ave, Austin, TX 78701",Seaholm,30.2672,-97.75148,1,"$575,000",821-821 sq ft,575000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-fifth-west,Fifth & West,"501 West Ave, Austin, TX 78701",Seaholm,30.26914,-97.75111,1,"$1,699,999","1,759-1,759 sq ft",1699999,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-the-independent,The Independent,"301 West Ave, Austin, TX 78701",Seaholm,30.267451,-97.750793,1,"$970,000",999-999 sq ft,970000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-spring-condominiums,Spring Condominiums,"300 Bowie ST, Austin, TX 78701",Seaholm,30.2692,-97.7508,1,"$1,195,000","1,687-1,687 sq ft",1195000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-the-shore,The Shore,"610 Davis ST, Austin, TX 78701",Rainey,30.25952,-97.73857,2,"$2,425,500 - $5,582,000","1,951-3,818 sq ft",4003750,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-austin-proper-residences,Austin Proper Residences,"202 Nueces ST, Austin, TX 78701",2nd Street,30.26595,-97.7496,1,"$2,995,000","1,646-1,646 sq ft",2995000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-1212-guadalupe,1212 Guadalupe,"1212 Guadalupe ST, Austin, TX 78701",Downtown Core,30.27542,-97.7431,1,"$220,000",454-454 sq ft,220000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-44-east,44 East,"44 East Ave, Austin, TX 78701",Rainey,30.25894,-97.7391,1,"$1,125,000","1,172-1,172 sq ft",1125000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-milago,Milago,"54 Rainey ST, Austin, TX 78701",Rainey,30.25878,-97.73988,1,"$550,000","1,189-1,189 sq ft",550000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04
+luxury-building-brazos-place,Brazos Place,"800 Brazos ST, Austin, TX 78701",Congress,30.269,-97.74096,1,"$335,000",623-623 sq ft,335000,Luxury Presence MLS feed enriched for Downtown Perks,2026-06-04

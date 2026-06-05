@@ -19,28 +19,29 @@ export default function PartnerCTASection({ headline, description, primaryCTA, p
           </h2>
 
           {description && (
-            <p className="text-[16px] text-[#6f6b65] mb-8 max-w-lg mx-auto leading-relaxed">
+            <p className="text-[16px] text-[#425466] mb-8 max-w-lg mx-auto leading-relaxed">
               {description}
             </p>
           )}
 
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-nowrap justify-center gap-6 overflow-x-auto pb-1">
             {primaryCTA && (
               <a
                 href={primaryHref || '#'}
-                className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[#0B1F33] text-white font-semibold text-[14px] hover:bg-[#0B1F33] transition-colors"
+                className="group inline-flex h-8 shrink-0 items-center gap-2 bg-transparent px-0 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-none transition-colors hover:text-[#B38F4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
               >
                 {primaryCTA}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F] transition-transform group-hover:translate-x-0.5" />
               </a>
             )}
 
             {secondaryLink && (
               <a
                 href={secondaryLink.href || '#'}
-                className="inline-flex items-center h-10 px-5 rounded-lg border border-[#0B1F33]/8 bg-white text-[#0B1F33] font-semibold text-[14px] hover:bg-[#F7F8FB] transition-colors"
+                className="group inline-flex h-8 shrink-0 items-center gap-2 bg-transparent px-0 font-body text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33]/62 shadow-none transition-colors hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
               >
                 {secondaryLink.label}
+                <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]/80 transition-transform group-hover:translate-x-0.5" />
               </a>
             )}
           </div>

@@ -1,3 +1,6 @@
+import { happyHourInventory } from "@/data/happyHourInventory";
+import { isHappyHourLiveNow, isHappyHourStartingSoon } from "@/utils/happyHourTime";
+
 export const HAPPY_HOUR_STORAGE_KEY = "downtown-perks-happy-hours";
 
 export const defaultHappyHours = [
@@ -121,9 +124,58 @@ export function getStoredHappyHours() {
 }
 
 export function getHappyHourPlaces() {
+  const inventoryPlaces = happyHourInventory
+    .filter((venue) => Number.isFinite(venue.lat) && Number.isFinite(venue.lng))
+    .map((venue) => {
+      const first = venue.happyHours[0] || {};
+      const mapAddress = venue.address
+        ? `${venue.address}${/78701|Austin/i.test(venue.address) ? "" : ", Austin, TX 78701"}`
+        : `${venue.district}, Austin, TX 78701`;
+      return {
+        id: venue.id,
+        venueId: venue.id.replace(/^happy-hour-/, ""),
+        name: venue.name,
+        venueName: venue.name,
+        type: "venue",
+        category: venue.category,
+        category_key: `happy_hour ${venue.category} ${venue.tags.join(" ")}`.toLowerCase().replace(/[^a-z0-9]+/g, "_"),
+        markerType: "venue",
+        detailDrawerType: "venue",
+        pinKey: venue.tags.includes("rooftop") || venue.tags.includes("cocktails") || venue.tags.includes("beer") || venue.tags.includes("martinis") ? "nightlife" : "dining",
+        latitude: venue.lat,
+        longitude: venue.lng,
+        district: venue.district,
+        address: mapAddress,
+        website: venue.website,
+        image: venue.images.heroImage || venue.images.featuredImage || venue.images.imageUrl,
+        summary: venue.description,
+        tags: venue.tags,
+        deals_offers: first.specials,
+        specials: first.specials,
+        offer: first.specials,
+        featured: Boolean(venue.featured),
+        hasHappyHour: true,
+        hasPerkPotential: venue.downtownPerksUse.residentPerkCandidate,
+        isLiveNow: isHappyHourLiveNow(venue.happyHours),
+        isStartingSoon: isHappyHourStartingSoon(venue.happyHours),
+        isFeatured: Boolean(venue.featured),
+        needsReview: venue.needsReview,
+        happyHourSources: venue.sources,
+        happyHourImageStatus: venue.images.imageStatus,
+        happyHour: {
+          days: first.days,
+          time: first.startTime && first.endTime ? `${first.startTime}-${first.endTime}` : "Confirm time",
+          offer: first.specials,
+          details: venue.description,
+          redemption: "Save it for later, get directions, or check what else is nearby.",
+        },
+        source: "Downtown Perks normalized venue inventory",
+      };
+    });
+
   const stored = getStoredHappyHours();
   const storedByVenue = new Map(stored.map((item) => [String(item.venueName || item.name || "").toLowerCase(), item]));
-  const mergedDefaults = defaultHappyHours.map((item) => {
+  const mergedDefaults = inventoryPlaces.map((item) => {
     const key = String(item.venueName || item.name || "").toLowerCase();
     const override = storedByVenue.get(key);
     if (!override) return item;

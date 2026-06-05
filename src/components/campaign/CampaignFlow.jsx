@@ -17,25 +17,22 @@ export default function CampaignFlow({ steps, title, description }) {
           {description && <p className="text-muted-foreground text-[13px]">{description}</p>}
         </motion.div>
 
-        <div className="relative">
-          <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
             {steps.map((s, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center text-center md:items-start md:text-left"
+                className="grid grid-cols-[30px_1fr] gap-3 md:block"
               >
-                <div className="w-10 h-10 rounded-full border border-primary/40 bg-card flex items-center justify-center mb-4 z-10">
-                  <span className="text-primary font-heading font-medium text-[13px]">{i + 1}</span>
+                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">{String(i + 1).padStart(2, "0")}</div>
+                <div>
+                  <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.label}</div>
+                  <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{s.description}</div>
                 </div>
-                <div className="font-medium text-[13px] text-foreground mb-1.5">{s.label}</div>
-                <div className="text-[12px] text-muted-foreground leading-relaxed">{s.description}</div>
               </motion.div>
             ))}
-          </div>
         </div>
       </div>
     </section>

@@ -47,14 +47,14 @@ export default function MapResultsPanel({
           </h1>
           <div className="flex items-center gap-2">
             {/* Result count badge */}
-            <span className="text-[12px] md:text-[13px] font-medium text-[#0B1F33]/50 border border-[#0B1F33]/8 rounded-xl px-2.5 md:px-3 py-1 md:py-1.5 bg-[#F7F8FB]">
+            <span className="text-[12px] md:text-[13px] font-medium text-[#0B1F33]/50 border border-[#0B1F33]/8 rounded-xl px-2.5 md:px-3 py-1 md:py-1.5 bg-white">
               {results.length}
             </span>
 
             {/* Menu toggle button */}
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="w-8 h-8 rounded-lg border border-[#0B1F33]/8 bg-white flex items-center justify-center hover:bg-[#F7F8FB] transition-colors md:hidden"
+              className="w-8 h-8 rounded-lg border border-[#0B1F33]/8 bg-white flex items-center justify-center hover:bg-white transition-colors md:hidden"
               title="Menu"
               aria-label="Toggle menu"
             >
@@ -64,7 +64,7 @@ export default function MapResultsPanel({
             {/* Roll up / expand toggle (mobile & desktop) */}
             <button
               onClick={() => setIsHidden((value) => !value)}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/68 transition-colors hover:bg-[#F7F8FB] hover:text-[#0B1F33]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33]"
               title={isHidden ? 'Show results' : 'Hide results'}
               aria-label={isHidden ? 'Show results list' : 'Hide results list'}
               aria-expanded={!isHidden}
@@ -75,7 +75,7 @@ export default function MapResultsPanel({
             <button
               onClick={() => setPanelExpanded(!isPanelExpanded)}
               disabled={isHidden}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/68 transition-colors hover:bg-[#F7F8FB] hover:text-[#0B1F33]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33]"
               title={isPanelExpanded ? 'Collapse results' : 'Expand results'}
               aria-label={isPanelExpanded ? 'Collapse results panel' : 'Expand results panel'}
             >
@@ -109,7 +109,7 @@ export default function MapResultsPanel({
                   setPanelExpanded(true);
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#0B1F33] bg-[#F7F8FB] hover:bg-[#FFFFFF] transition-colors"
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#0B1F33] bg-white hover:bg-[#FFFFFF] transition-colors"
               >
                 <List className="w-4 h-4" />
                 Expand Full List
@@ -119,7 +119,7 @@ export default function MapResultsPanel({
                   setPanelExpanded(false);
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#0B1F33] bg-[#F7F8FB] hover:bg-[#FFFFFF] transition-colors"
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#0B1F33] bg-white hover:bg-[#FFFFFF] transition-colors"
               >
                 <Filter className="w-4 h-4" />
                 Collapse Preview
@@ -129,7 +129,7 @@ export default function MapResultsPanel({
                   clearSelection();
                   setShowMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#0B1F33]/50 bg-[#F7F8FB] hover:bg-[#FFFFFF] transition-colors"
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#0B1F33]/50 bg-white hover:bg-[#FFFFFF] transition-colors"
               >
                 <X className="w-4 h-4" />
                 Clear Selection
@@ -142,7 +142,7 @@ export default function MapResultsPanel({
         {!isHidden && isCollapsed && hiddenCount > 0 && (
           <button
             onClick={() => setPanelExpanded(true)}
-            className="w-full rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-3 py-2 text-left text-[12px] font-medium text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33]"
+            className="w-full rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-left text-[12px] font-medium text-[#0B1F33]/62 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
             aria-label="Expand results"
           >
             Showing {previewCount} of {results.length}. Expand list to view {hiddenCount} more.
@@ -158,8 +158,8 @@ export default function MapResultsPanel({
               renderEmptyState()
             ) : (
               <div className="flex flex-col items-center justify-center py-20 text-center">
-                <p className="text-[15px] font-semibold text-[#0B1F33]/70">No results found</p>
-                <p className="text-[13px] text-[#0B1F33]/50 mt-1">Try adjusting your filters.</p>
+                <p className="text-[15px] font-semibold text-[#0B1F33]/70">Nearby picks are ready</p>
+                <p className="text-[13px] text-[#0B1F33]/50 mt-1">Open the filter rail, ask the map, or widen the district to surface the best match.</p>
               </div>
             )
           ) : isCollapsed ? (
@@ -187,7 +187,7 @@ export default function MapResultsPanel({
               {hiddenCount > 0 && (
                 <button
                   onClick={() => setPanelExpanded(true)}
-                  className="w-full rounded-md border border-[#0B1F33]/8 bg-[#F7F8FB] px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33]"
+                  className="w-full rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
                   aria-label={`View ${hiddenCount} more results`}
                 >
                   Expand list ({hiddenCount} more)
@@ -219,7 +219,7 @@ export default function MapResultsPanel({
               {results.length > previewCount && (
                 <button
                   onClick={() => setPanelExpanded(false)}
-                  className="sticky bottom-0 w-full rounded-md border border-[#0B1F33]/8 bg-white/92 px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 shadow-[0_-10px_24px_rgba(11,31,51,0.05)] backdrop-blur-xl transition hover:border-[#B38F4F]/45 hover:text-[#0B1F33]"
+                  className="sticky bottom-0 w-full rounded-md border border-[#0B1F33]/8 bg-white/92 px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 shadow-[0_-10px_24px_rgba(11,31,51,0.05)] backdrop-blur-xl transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
                   aria-label="Show preview only"
                 >
                   Roll up results
