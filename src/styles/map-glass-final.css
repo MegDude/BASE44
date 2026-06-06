@@ -5108,3 +5108,530 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
     border-radius: 12px !important;
   }
 }
+
+/* Small-screen map density sweep: compact controls without hiding close/minimize paths. */
+@media (max-width: 767px) {
+  .dp-map-page.dp-map-page [aria-label="Map command console"].dp-panel-shell {
+    width: calc(100vw - 18px) !important;
+    max-width: calc(100vw - 18px) !important;
+    max-height: min(34dvh, calc(100dvh - 13rem)) !important;
+    padding: 0.32rem 3rem 0.32rem 0.32rem !important;
+    border-radius: 8px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-search-inner {
+    gap: 0.22rem !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] form,
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-form {
+    min-height: 42px !important;
+    gap: 0.22rem !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-label,
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask {
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-input-row {
+    min-height: 28px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] input {
+    font-size: clamp(16px, 5vw, 19px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tabs {
+    top: 8px !important;
+    right: 42px !important;
+    gap: 6px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tab {
+    font-size: 9px !important;
+    min-height: 18px !important;
+    line-height: 1 !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-rollup {
+    top: 6px !important;
+    right: 7px !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-rollup svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] :is(
+    .dp-suggested-prompt-row,
+    .dp-search-context-row,
+    .dp-search-context-row-primary,
+    .dp-search-filter-rail
+  ) {
+    gap: 3px !important;
+    min-height: 0 !important;
+    padding-block: 0 !important;
+  }
+
+  .dp-map-page.dp-map-page :is(
+    .dp-suggested-prompt,
+    .dp-console-chip,
+    .dp-map-control,
+    .dp-map-audience-tab,
+    .dp-panel-action,
+    .dp-primary-action,
+    .dp-pass-action
+  ) {
+    min-height: 26px !important;
+    padding: 0 0.42rem !important;
+    border-radius: 6px !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+  }
+
+  .dp-map-page.dp-map-page :is(
+    .dp-suggested-prompt,
+    .dp-console-chip,
+    .dp-map-control
+  ) svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Collapsed map search"] {
+    height: 34px !important;
+    min-width: 112px !important;
+    padding-inline: 10px !important;
+    border-radius: 8px !important;
+    font-size: 11px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-map-bottom-nav {
+    bottom: max(6px, env(safe-area-inset-bottom)) !important;
+    padding: 0.24rem 0.32rem !important;
+    gap: 0.18rem !important;
+    border-radius: 8px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) {
+    min-width: 42px !important;
+    min-height: 32px !important;
+    gap: 2px !important;
+    padding: 0 5px !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-map-bottom-nav :is(svg, .lucide) {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-panel-shell.dp-detail-drawer.dp-destination-drawer,
+  .dp-map-page.dp-map-page aside.dp-panel-shell.dp-detail-drawer.dp-destination-drawer {
+    inset: auto 7px 7px 7px !important;
+    width: calc(100vw - 14px) !important;
+    max-width: calc(100vw - 14px) !important;
+    max-height: min(78dvh, calc(100dvh - 5.75rem)) !important;
+    border-radius: 10px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-header {
+    min-height: 38px !important;
+    padding: 5px 7px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-close {
+    width: 32px !important;
+    height: 32px !important;
+    flex-basis: 32px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-close svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-hero,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-hero img {
+    height: 184px !important;
+    min-height: 184px !important;
+    max-height: 184px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-hero-overlay {
+    padding: 10px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-hero-overlay h2 {
+    font-size: 18px !important;
+    line-height: 1.12 !important;
+    max-width: 20ch !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-hero-overlay p {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-hero-meta {
+    margin-bottom: 5px !important;
+    padding: 4px 7px !important;
+    font-size: 8.5px !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.11em !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-content {
+    gap: 12px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-section,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-info-section,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-contact-continuation {
+    padding-top: 11px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-section h3,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-entity-answer h4 {
+    font-size: 14px !important;
+    line-height: 1.18 !important;
+    margin-bottom: 5px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer :is(
+    .dp-why-people-go,
+    .dp-neighborhood-narrative p,
+    .dp-perk-module-description,
+    .dp-entity-answer p,
+    .dp-destination-list,
+    p,
+    li
+  ) {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-chip-row,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-primary-action-row,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-panel-linked-grid,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-related-rail,
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-destination-rail-list {
+    gap: 6px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-chip-row > :is(span, button),
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-primary-action-row > :is(a, button),
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-primary-action-row > .dp-panel-action-text {
+    min-height: 30px !important;
+    min-width: 82px !important;
+    max-width: 150px !important;
+    padding-inline: 9px !important;
+    font-size: 11.5px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-panel-linked-grid > :is(article, button),
+  .dp-map-page.dp-map-page .dp-destination-drawer .dp-related-place {
+    min-width: 138px !important;
+    max-width: 178px !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+  }
+
+  .dp-map-page.dp-map-page :is(
+    .dp-panel-shell[aria-label="Grouped map places"],
+    .dp-panel-shell[aria-label="Discover results"],
+    .dp-panel-shell[aria-label="Partner map results"],
+    .dp-pass-panel
+  ) {
+    width: calc(100vw - 14px) !important;
+    max-width: calc(100vw - 14px) !important;
+    max-height: min(56dvh, calc(100dvh - 8rem)) !important;
+    padding: 8px !important;
+    border-radius: 10px !important;
+  }
+
+  .dp-map-page.dp-map-page .dp-pass-panel {
+    max-height: min(72dvh, calc(100dvh - 5.5rem)) !important;
+  }
+
+  .dp-map-page.dp-map-page :is(
+    .dp-panel-shell[aria-label="Grouped map places"],
+    .dp-panel-shell[aria-label="Discover results"],
+    .dp-panel-shell[aria-label="Partner map results"],
+    .dp-pass-panel
+  ) :is(h1, h2, h3) {
+    font-size: 15px !important;
+    line-height: 1.18 !important;
+  }
+
+  .dp-map-page.dp-map-page :is(
+    .dp-panel-shell[aria-label="Grouped map places"],
+    .dp-panel-shell[aria-label="Discover results"],
+    .dp-panel-shell[aria-label="Partner map results"],
+    .dp-pass-panel
+  ) :is(p, li, span) {
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .dp-map-page.dp-map-page .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    padding: 0 !important;
+  }
+
+  .dp-map-page.dp-map-page .leaflet-popup-content {
+    width: min(240px, calc(100vw - 42px)) !important;
+    margin: 9px !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+
+  .dp-map-page.dp-map-page .leaflet-popup-close-button {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 16px !important;
+    line-height: 26px !important;
+  }
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu {
+  align-items: stretch !important;
+  gap: 6px !important;
+  max-width: 100% !important;
+  padding: 2px 2px 4px !important;
+  scroll-padding-inline: 2px !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu::-webkit-scrollbar {
+  display: none !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu .dp-scope-chip {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  max-width: 138px !important;
+  min-height: 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 6px 10px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.12 !important;
+  text-align: center !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu .dp-scope-close {
+  gap: 4px !important;
+  min-width: 72px !important;
+}
+
+@media (max-width: 430px) {
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu .dp-scope-chip {
+    max-width: 118px !important;
+    min-height: 32px !important;
+    padding-inline: 9px !important;
+    font-size: 11.5px !important;
+  }
+}
+
+/* Compact mobile map console: shared resident/partner rail treatment. */
+.dp-map-page.dp-map-page [aria-label="Map command console"].dp-map-search-surface {
+  width: min(31rem, calc(100vw - 14px)) !important;
+  max-width: calc(100vw - 14px) !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-search-inner {
+  padding: 12px 12px 11px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-label {
+  margin-bottom: 4px !important;
+  padding-right: 7.25rem !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask {
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-input-row {
+  min-height: 28px !important;
+  gap: 6px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-input-row input {
+  min-height: 26px !important;
+  font-size: 16px !important;
+  line-height: 1.15 !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tabs {
+  top: 10px !important;
+  right: 38px !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tab {
+  min-height: 18px !important;
+  padding: 0 !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tab::before {
+  display: none !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-rollup {
+  top: 7px !important;
+  right: 8px !important;
+  width: 26px !important;
+  height: 26px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-suggested-prompt-row,
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row,
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-suggested-prompt-row {
+  gap: 5px !important;
+  margin-top: 8px !important;
+  padding-bottom: 1px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row {
+  gap: 5px !important;
+  margin-top: 7px !important;
+  padding: 7px 0 1px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.055) !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row-secondary {
+  margin-top: 3px !important;
+  padding-top: 3px !important;
+  border-top: 0 !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-rail-header {
+  gap: 8px !important;
+  margin-top: 8px !important;
+  padding-top: 7px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-rail-toggle {
+  min-height: 24px !important;
+  padding-inline: 7px !important;
+  font-size: 10.5px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-suggested-prompt,
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row .dp-console-chip,
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-filter-rail .dp-console-chip,
+.dp-map-page.dp-map-page [aria-label="Map command console"] .flex > .dp-console-chip {
+  flex: 0 0 auto !important;
+  min-height: 25px !important;
+  max-width: 132px !important;
+  padding: 4px 8px !important;
+  border-radius: 7px !important;
+  font-size: 11.5px !important;
+  line-height: 1.1 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-align: center !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row .dp-console-chip-icon {
+  width: 26px !important;
+  min-width: 26px !important;
+  max-width: 26px !important;
+  padding-inline: 0 !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu {
+  gap: 5px !important;
+  padding: 1px 0 2px !important;
+}
+
+.dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu .dp-scope-chip {
+  max-width: 128px !important;
+  min-height: 31px !important;
+  padding: 5px 9px !important;
+}
+
+@media (max-width: 560px) {
+  .dp-map-page.dp-map-page [aria-label="Map command console"].dp-map-search-surface {
+    left: 7px !important;
+    right: 7px !important;
+    width: calc(100vw - 14px) !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-search-inner {
+    padding: 30px 10px 10px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-label {
+    margin-bottom: 3px !important;
+    padding-right: 0 !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tabs {
+    left: 10px !important;
+    right: 40px !important;
+    justify-content: flex-end !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-input-row input {
+    font-size: 15px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-suggested-prompt,
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row .dp-console-chip,
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-filter-rail .dp-console-chip,
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .flex > .dp-console-chip {
+    min-height: 24px !important;
+    max-width: 116px !important;
+    padding: 4px 7px !important;
+    font-size: 11px !important;
+  }
+
+  .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-scope-menu .dp-scope-chip {
+    max-width: 118px !important;
+    min-height: 30px !important;
+  }
+}

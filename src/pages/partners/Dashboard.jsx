@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
+  ArrowLeft,
   ArrowRight,
   BarChart3,
   Building2,
@@ -13,6 +14,7 @@ import {
   ChevronDown,
   ChevronUp,
   Clock,
+  X,
 } from "lucide-react";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { getHappyHourPlaces, saveHappyHour } from "@/lib/happyHours";
@@ -558,6 +560,24 @@ export default function PartnersDashboard() {
   return (
     <main className="dp-partner-page bg-white text-[#0B1F33]">
       <section className="mx-auto max-w-7xl px-4 pb-12 pt-28 sm:px-5 lg:px-5">
+        <div className="mb-8 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
+            className="inline-flex h-9 items-center gap-2 rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[12px] font-semibold text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to map
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            aria-label="Close campaign dashboard"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B1F33]/58">{dashboardView.eyebrow}</p>

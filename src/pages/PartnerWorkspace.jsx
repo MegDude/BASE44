@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation, ArrowLeft } from "lucide-react";
 import { daaDashboardContent, daaTourDistricts, daaTourProgress } from "@/data/daaArtParksTour";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
@@ -48,6 +48,24 @@ export default function PartnerWorkspace() {
       {/* Header */}
       <div className="pt-24 pb-0 px-5 border-b border-border/40">
         <div className="max-w-6xl mx-auto">
+          <div className="mb-6 flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
+              className="inline-flex h-9 items-center gap-2 rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[12px] font-semibold text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Back to map
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+              aria-label="Close partner workspace"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
           <div className="flex items-center justify-between mb-6">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-1">Partner Workspace</span>

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check } from "lucide-react";
+import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
 
 const partnerTypes = [
@@ -215,6 +216,20 @@ const placementOptions = [
   ["Through a question", "Ask a few simple questions and understand what brought people in, what caught their attention and what they would like to see next."],
   ["See what happened next", "Understand what people responded to and where momentum is building. Track visits, saves, responses, redemptions and activity in one place."],
 ].map(([title, description]) => ({ title, description }));
+
+const pricingMetrics = [
+  { label: "Free Forever", value: "$0", detail: "Venue listings can start free.", percent: 100 },
+  { label: "Entry paid plan", value: "$30", detail: "Small monthly plans start here.", percent: 15 },
+  { label: "Recurring cap", value: "$199", detail: "Partner subscriptions stay capped.", percent: 100 },
+  { label: "Add-ons", value: "Optional", detail: "Campaigns, surveys, placements and reports stay separate.", percent: 58 },
+];
+
+const partnerOutcomeMetrics = [
+  { label: "Start", value: "Listing + perk", detail: "Appear on the map with something useful to save." },
+  { label: "Test", value: "Small add-on", detail: "Try one campaign, survey, broadcast, or placement." },
+  { label: "Learn", value: "Plain report", detail: "See what people saved, scanned, used, or answered." },
+  { label: "Repeat", value: "Only if useful", detail: "Add more when there is a clear reason." },
+];
 
 const primaryCta =
   "inline-flex h-10 items-center justify-center gap-2 rounded-[6px] bg-[#0B1F33] px-5 text-[13px] font-medium text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]";
@@ -444,9 +459,33 @@ function PartnerRailIcon({ name }) {
 
 function Card({ children, className = "" }) {
   return (
-    <div className={`rounded-[6px] border border-[#0B1F33]/[0.08] bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.04)] ${className}`}>
+    <div className={`rounded-[6px] border border-[#0B1F33]/[0.08] bg-white p-5 shadow-[0_10px_26px_rgba(11,31,51,0.035)] ${className}`}>
       {children}
     </div>
+  );
+}
+
+function Rail({ children, className = "" }) {
+  return (
+    <div className={`-mx-5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] ${className}`}>
+      <div className="flex min-w-max snap-x snap-mandatory gap-4">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function RailCard({ children, className = "" }) {
+  return (
+    <motion.div
+      className={`w-[276px] shrink-0 snap-start ${className}`}
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -482,6 +521,134 @@ function CompactTable({ rows, leftLabel = "Item", rightLabel = "Price" }) {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function MetricStrip() {
+  return (
+    <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {pricingMetrics.map((metric, index) => (
+        <motion.div
+          key={metric.label}
+          className="rounded-[6px] border border-[#0B1F33]/[0.08] bg-white p-4"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.04, duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{metric.label}</div>
+          <div className="mt-2 text-[24px] font-semibold leading-tight tracking-[0.002em] text-[#0B1F33]">{metric.value}</div>
+          <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{metric.detail}</p>
+          <div className="mt-4 h-1.5 overflow-hidden rounded-[2px] bg-[#0B1F33]/[0.06]">
+            <motion.div
+              className="h-full rounded-[2px] bg-[#C8A96A]"
+              initial={{ width: 0 }}
+              whileInView={{ width: `${metric.percent}%` }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.08 + index * 0.04, duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function planMonthlyValue(plan) {
+  if (plan.price === "Free" || plan.price === "$0") return 0;
+  const match = plan.price.match(/\$(\d+)/);
+  return match ? Number(match[1]) : 0;
+}
+
+function PlanComparisonTable({ plans }) {
+  const maxPrice = Math.max(...plans.map(planMonthlyValue), 199);
+
+  return (
+    <Card className="mt-6 overflow-hidden p-0">
+      <div className="border-b border-[#0B1F33]/[0.06] px-5 py-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Plan comparison</p>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="min-w-[720px] w-full text-left">
+          <thead className="border-b border-[#0B1F33]/[0.06] text-[10.5px] uppercase tracking-[0.12em] text-[#0B1F33]/46">
+            <tr>
+              <th className="px-5 py-3 font-semibold">Plan</th>
+              <th className="px-5 py-3 font-semibold">Price</th>
+              <th className="px-5 py-3 font-semibold">Best for</th>
+              <th className="px-5 py-3 font-semibold">Included</th>
+              <th className="px-5 py-3 font-semibold">Scale</th>
+            </tr>
+          </thead>
+          <tbody>
+            {plans.map((plan) => {
+              const value = planMonthlyValue(plan);
+              const width = value === 0 ? 8 : Math.max(16, Math.round((value / maxPrice) * 100));
+              return (
+                <tr key={plan.name} className="border-b border-[#0B1F33]/[0.045] last:border-b-0">
+                  <td className="px-5 py-4 text-[13px] font-semibold text-[#0B1F33]">{plan.name}</td>
+                  <td className="px-5 py-4 text-[13px] font-semibold text-[#0B1F33]">{plan.price}</td>
+                  <td className="max-w-[260px] px-5 py-4 text-[12.5px] leading-5 text-[#0B1F33]/62">{plan.description}</td>
+                  <td className="px-5 py-4 text-[12.5px] text-[#0B1F33]/62">{plan.includes.length} items</td>
+                  <td className="px-5 py-4">
+                    <div className="h-1.5 w-28 overflow-hidden rounded-[2px] bg-[#0B1F33]/[0.06]">
+                      <div className="h-full rounded-[2px] bg-[#C8A96A]" style={{ width: `${width}%` }} />
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
+function ModuleTable({ rows }) {
+  return (
+    <Card className="mt-6 overflow-hidden p-0">
+      <div className="overflow-x-auto">
+        <table className="min-w-[680px] w-full text-left">
+          <thead className="border-b border-[#0B1F33]/[0.06] text-[10.5px] uppercase tracking-[0.12em] text-[#C8A96A]">
+            <tr>
+              <th className="px-5 py-3 font-semibold">Module</th>
+              <th className="px-5 py-3 font-semibold">Status</th>
+              <th className="px-5 py-3 font-semibold">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.name} className="border-b border-[#0B1F33]/[0.045] last:border-b-0">
+                <td className="px-5 py-4 text-[13px] font-semibold text-[#0B1F33]">{row.name}</td>
+                <td className="px-5 py-4 text-[12.5px] font-semibold text-[#0B1F33]/72">{row.status}</td>
+                <td className="px-5 py-4 text-[12.5px] leading-5 text-[#0B1F33]/62">{row.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
+function OutcomeGrid() {
+  return (
+    <div className="mt-6 grid gap-3 md:grid-cols-4">
+      {partnerOutcomeMetrics.map((item, index) => (
+        <motion.div
+          key={item.label}
+          className="border-y border-[#0B1F33]/[0.08] bg-white py-4"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.04, duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{item.label}</div>
+          <div className="mt-2 text-[16px] font-semibold text-[#0B1F33]">{item.value}</div>
+          <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{item.detail}</p>
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -541,38 +708,45 @@ export default function Pricing() {
               </ul>
             </Card>
           </div>
+          <MetricStrip />
           <PartnerPricingSectionRail activeSection={activeSection} onSectionChange={handleSectionChange} />
         </div>
       </section>
 
       <Section id="why-free" eyebrow="Why free exists" title="Why a free plan exists.">
-        <div className="grid gap-5 md:grid-cols-2">
-          <Card>
-            <p className="text-[14px] leading-7 text-[#0B1F33]/68">
-              The best downtown map is the one that actually reflects downtown. Every venue can appear on Downtown Perks for free. Every free listing includes one active resident perk.
-            </p>
-          </Card>
-          <Card>
-            <div className="grid gap-2 text-[13px] leading-6 text-[#0B1F33]/70 sm:grid-cols-2">
-              {["A free coffee upgrade.", "A welcome drink.", "10% off lunch.", "A resident special.", "Something worth saving.", "Something worth using."].map((item) => (
-                <div key={item} className="border-b border-[#0B1F33]/[0.06] pb-2">{item}</div>
-              ))}
-            </div>
-            <p className="mt-5 text-[13px] leading-6 text-[#0B1F33]/64">
-              More businesses on the map creates more reasons for residents to open it. More resident usage creates more visibility for everyone.
-            </p>
-          </Card>
-        </div>
+        <Rail>
+          <RailCard className="w-[320px] md:w-[420px]">
+            <Card className="h-full">
+              <p className="text-[14px] leading-7 text-[#0B1F33]/68">
+                The best downtown map is the one that actually reflects downtown. Every venue can appear on Downtown Perks for free. Every free listing includes one active resident perk.
+              </p>
+            </Card>
+          </RailCard>
+          {["A free coffee upgrade.", "A welcome drink.", "10% off lunch.", "A resident special.", "Something worth saving.", "Something worth using."].map((item) => (
+            <RailCard key={item} className="w-[220px]">
+              <Card className="h-full">
+                <p className="text-[13px] font-semibold leading-6 text-[#0B1F33]">{item}</p>
+              </Card>
+            </RailCard>
+          ))}
+          <RailCard className="w-[320px] md:w-[420px]">
+            <Card className="h-full">
+              <p className="text-[13px] leading-6 text-[#0B1F33]/64">
+                More businesses on the map creates more reasons for residents to open it. More resident usage creates more visibility for everyone.
+              </p>
+            </Card>
+          </RailCard>
+        </Rail>
       </Section>
 
       <Section id="partner-types" eyebrow="Partner types" title="Choose the type that fits you.">
-        <div className="grid gap-3 md:grid-cols-5">
+        <Rail>
           {partnerTypes.map((type) => (
             <button
               key={type.id}
               type="button"
               onClick={() => setActiveType(type.id)}
-              className={`rounded-[6px] border p-4 text-left transition ${
+              className={`w-[224px] shrink-0 snap-start rounded-[6px] border p-4 text-left transition ${
                 activeType === type.id ? "border-[#C8A96A]/60 bg-white shadow-[0_12px_28px_rgba(11,31,51,0.06)]" : "border-[#0B1F33]/[0.08] bg-white hover:border-[#C8A96A]/40"
               }`}
             >
@@ -580,7 +754,7 @@ export default function Pricing() {
               <span className="mt-2 block text-[11.5px] leading-5 text-[#0B1F33]/58">{type.summary}</span>
             </button>
           ))}
-        </div>
+        </Rail>
         <Card className="mt-5">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{activePartner.label}</p>
           <p className="mt-3 text-[15px] leading-7 text-[#0B1F33]/72">{activePartner.use}</p>
@@ -589,74 +763,70 @@ export default function Pricing() {
 
       <Section id="pricing" eyebrow="Pricing matrix" title="Plans by partner type." subhead="Start free. Add more only when there is a reason.">
         <span id="pricing-matrix" className="block scroll-mt-24" aria-hidden="true" />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <Rail>
           {activePlans.map((plan) => (
-            <Card key={plan.name} className="flex flex-col">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/48">{plan.name}</div>
-              <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">{plan.price}</div>
-              <p className="mt-4 text-[12.5px] leading-6 text-[#0B1F33]/64">{plan.description}</p>
-              <FeatureList items={plan.includes} />
-              {plan.examples && (
-                <div className="mt-5 border-t border-[#0B1F33]/[0.06] pt-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Example perks</p>
-                  <FeatureList items={plan.examples} />
-                </div>
-              )}
-              {plan.note && <p className="mt-5 text-[12px] font-medium text-[#0B1F33]">{plan.note}</p>}
-            </Card>
+            <RailCard key={plan.name} className="w-[292px]">
+              <Card className="flex h-full flex-col">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/48">{plan.name}</div>
+                <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">{plan.price}</div>
+                <p className="mt-4 text-[12.5px] leading-6 text-[#0B1F33]/64">{plan.description}</p>
+                <FeatureList items={plan.includes} />
+                {plan.examples && (
+                  <div className="mt-5 border-t border-[#0B1F33]/[0.06] pt-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Example perks</p>
+                    <FeatureList items={plan.examples} />
+                  </div>
+                )}
+                {plan.note && <p className="mt-5 text-[12px] font-medium text-[#0B1F33]">{plan.note}</p>}
+              </Card>
+            </RailCard>
           ))}
-        </div>
+        </Rail>
+        <PlanComparisonTable plans={activePlans} />
       </Section>
 
       <Section id="modules" eyebrow="Platform modules" title="What the platform offers.">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Rail>
           {modules.map((module) => (
-            <Card key={module.name}>
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-[15px] font-semibold text-[#0B1F33]">{module.name}</h3>
-                <span className="text-[11px] font-semibold text-[#C8A96A]">{module.status}</span>
-              </div>
-              <p className="mt-3 text-[12.5px] leading-6 text-[#0B1F33]/64">{module.description}</p>
-            </Card>
+            <RailCard key={module.name}>
+              <Card className="h-full">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-[15px] font-semibold text-[#0B1F33]">{module.name}</h3>
+                  <span className="text-[11px] font-semibold text-[#C8A96A]">{module.status}</span>
+                </div>
+                <p className="mt-3 text-[12.5px] leading-6 text-[#0B1F33]/64">{module.description}</p>
+              </Card>
+            </RailCard>
           ))}
-        </div>
+        </Rail>
+        <ModuleTable rows={modules} />
       </Section>
 
       <Section id="add-ons" eyebrow="Add-ons and campaigns" title="Start with what matters. Add what works." subhead="Add-ons are intentionally small. The point is to test real behavior quickly, then expand only when the data supports it.">
         <span id="addons" className="block scroll-mt-24" aria-hidden="true" />
-        <div className="grid gap-4 lg:grid-cols-2">
+        <Rail>
           {addOns.map((item) => (
-            <Card key={item.name}>
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-[15px] font-semibold text-[#0B1F33]">{item.name}</h3>
-                <span className="text-[13px] font-semibold text-[#0B1F33]">{item.price}</span>
-              </div>
-              <p className="mt-3 text-[12.5px] leading-6 text-[#0B1F33]/64">{item.description}</p>
-            </Card>
+            <RailCard key={item.name} className="w-[300px]">
+              <Card className="h-full">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-[15px] font-semibold text-[#0B1F33]">{item.name}</h3>
+                  <span className="text-[13px] font-semibold text-[#0B1F33]">{item.price}</span>
+                </div>
+                <p className="mt-3 text-[12.5px] leading-6 text-[#0B1F33]/64">{item.description}</p>
+              </Card>
+            </RailCard>
           ))}
-        </div>
-        <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          <Card><h3 className="text-[16px] font-semibold">Campaign modules</h3><div className="mt-4 space-y-3">{campaignModules.map((item) => <MiniRow key={item.name} {...item} />)}</div></Card>
-          <Card><h3 className="text-[16px] font-semibold">Event promotion</h3><div className="mt-4 space-y-3">{eventModules.map((item) => <MiniRow key={item.name} {...item} />)}</div></Card>
-          <Card><h3 className="text-[16px] font-semibold">Survey modules</h3><div className="mt-4 space-y-3">{surveyModules.map((item) => <MiniRow key={item.name} {...item} />)}</div></Card>
-        </div>
-        <div className="mt-8 grid gap-5 lg:grid-cols-2">
-          <Card>
-            <h3 className="text-[16px] font-semibold">Reach people when timing matters.</h3>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <CompactTable rows={nearbyBroadcasts} leftLabel="Nearby broadcast" />
-              <CompactTable rows={smsBroadcasts} leftLabel="SMS broadcast" />
-            </div>
-          </Card>
-          <Card>
-            <h3 className="text-[16px] font-semibold">Analytics, real-world support and sponsorships</h3>
-            <div className="mt-5 grid gap-4">
-              <div className="grid gap-3 sm:grid-cols-2">{analyticsModules.map((item) => <ModulePriceCard key={item.name} item={item} />)}</div>
-              <CompactTable rows={realWorldModules} leftLabel="Real-world support" />
-              <div className="grid gap-3 sm:grid-cols-2">{sponsorships.map((item) => <ModulePriceCard key={item.name} item={item} />)}</div>
-            </div>
-          </Card>
-        </div>
+        </Rail>
+        <Rail className="mt-8">
+          <RailCard className="w-[310px]"><Card className="h-full"><h3 className="text-[16px] font-semibold">Campaign modules</h3><div className="mt-4 space-y-3">{campaignModules.map((item) => <MiniRow key={item.name} {...item} />)}</div></Card></RailCard>
+          <RailCard className="w-[310px]"><Card className="h-full"><h3 className="text-[16px] font-semibold">Event promotion</h3><div className="mt-4 space-y-3">{eventModules.map((item) => <MiniRow key={item.name} {...item} />)}</div></Card></RailCard>
+          <RailCard className="w-[310px]"><Card className="h-full"><h3 className="text-[16px] font-semibold">Survey modules</h3><div className="mt-4 space-y-3">{surveyModules.map((item) => <MiniRow key={item.name} {...item} />)}</div></Card></RailCard>
+          <RailCard className="w-[340px]"><Card className="h-full"><h3 className="text-[16px] font-semibold">Nearby broadcast</h3><div className="mt-5"><CompactTable rows={nearbyBroadcasts} leftLabel="Radius" /></div></Card></RailCard>
+          <RailCard className="w-[340px]"><Card className="h-full"><h3 className="text-[16px] font-semibold">SMS broadcast</h3><div className="mt-5"><CompactTable rows={smsBroadcasts} leftLabel="Volume" /></div></Card></RailCard>
+          {analyticsModules.map((item) => <RailCard key={item.name} className="w-[300px]"><Card className="h-full"><ModulePriceCard item={item} /></Card></RailCard>)}
+          <RailCard className="w-[340px]"><Card className="h-full"><h3 className="text-[16px] font-semibold">Real-world support</h3><div className="mt-5"><CompactTable rows={realWorldModules} leftLabel="Support" /></div></Card></RailCard>
+          {sponsorships.map((item) => <RailCard key={item.name} className="w-[300px]"><Card className="h-full"><ModulePriceCard item={item} /></Card></RailCard>)}
+        </Rail>
       </Section>
 
       <Section id="surveys" eyebrow="Survey engine" title="Ask a question. Learn something useful.">
@@ -665,54 +835,75 @@ export default function Pricing() {
           <p>Surveys work through a QR code or text prompt. A brand, venue, hotel, property or civic partner can ask people what they want, why they came, what they noticed, what they would come back for or what would make the experience better.</p>
           <p>The partner does not need an app rollout or complicated software. People answer in a simple flow. The engine groups responses with scans, district, timing, event, placement and audience context.</p>
         </div>
-        <div className="mt-8 grid gap-4 md:grid-cols-4">
+        <Rail className="mt-8">
           {surveySteps.map((step) => (
-            <Card key={step.step}>
-              <div className="text-[14px] font-semibold text-[#C8A96A]">{step.step}</div>
-              <h3 className="mt-3 text-[15px] font-semibold text-[#0B1F33]">{step.title}</h3>
-              <p className="mt-3 text-[12.5px] leading-6 text-[#0B1F33]/64">{step.description}</p>
-            </Card>
+            <RailCard key={step.step}>
+              <Card className="h-full">
+                <div className="text-[14px] font-semibold text-[#C8A96A]">{step.step}</div>
+                <h3 className="mt-3 text-[15px] font-semibold text-[#0B1F33]">{step.title}</h3>
+                <p className="mt-3 text-[12.5px] leading-6 text-[#0B1F33]/64">{step.description}</p>
+              </Card>
+            </RailCard>
           ))}
-        </div>
+        </Rail>
       </Section>
 
       <Section id="placements" eyebrow="Placement opportunities" title="How partners show up." subhead="Different goals call for different ways to show up. Start with the option that fits what you are trying to accomplish.">
-        <div className="grid gap-4 md:grid-cols-2">
+        <Rail>
           {placementOptions.map((option) => (
-            <Card key={option.title}>
-              <h3 className="text-[16px] font-semibold text-[#0B1F33]">{option.title}</h3>
-              <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{option.description}</p>
-            </Card>
+            <RailCard key={option.title} className="w-[300px]">
+              <Card className="h-full">
+                <h3 className="text-[16px] font-semibold text-[#0B1F33]">{option.title}</h3>
+                <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{option.description}</p>
+              </Card>
+            </RailCard>
           ))}
-        </div>
+        </Rail>
       </Section>
 
       <Section eyebrow="What partners pay for" title="Visibility is free. Activation is optional.">
-        <div className="max-w-4xl space-y-4 text-[14px] leading-7 text-[#0B1F33]/68">
-          <p>Most partners start with a listing and a perk.</p>
-          <p>When they want more attention, more reach, deeper reporting or audience insight, they add campaigns, broadcasts, surveys, placements, analytics or activations.</p>
-          <p>Downtown Perks is priced so partners can begin with the right plan, learn what people actually do, then add only when there is a clear reason.</p>
-        </div>
+        <OutcomeGrid />
+        <Rail>
+          {[
+            "Most partners start with a listing and a perk.",
+            "When they want more attention, more reach, deeper reporting or audience insight, they add campaigns, broadcasts, surveys, placements, analytics or activations.",
+            "Downtown Perks is priced so partners can begin with the right plan, learn what people actually do, then add only when there is a clear reason.",
+          ].map((copy) => (
+            <RailCard key={copy} className="w-[300px] md:w-[360px]">
+              <Card className="h-full">
+                <p className="text-[14px] leading-7 text-[#0B1F33]/68">{copy}</p>
+              </Card>
+            </RailCard>
+          ))}
+        </Rail>
       </Section>
 
       <Section eyebrow="Enterprise and custom" title="Enterprise and custom partnerships.">
-        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
-          <p className="text-[14px] leading-7 text-[#0B1F33]/68">
-            For major developments, destination brands, downtown-wide initiatives and strategic partnerships, custom pricing is available.
-          </p>
-          <Card>
-            <FeatureList items={["Major mixed-use developments", "Multi-property portfolios", "Destination campaigns", "Civic partnerships", "District-wide sponsorships", "Large brand activations"]} />
-          </Card>
-        </div>
+        <Rail>
+          <RailCard className="w-[320px] md:w-[420px]">
+            <Card className="h-full">
+              <p className="text-[14px] leading-7 text-[#0B1F33]/68">
+                For major developments, destination brands, downtown-wide initiatives and strategic partnerships, custom pricing is available.
+              </p>
+            </Card>
+          </RailCard>
+          {["Major mixed-use developments", "Multi-property portfolios", "Destination campaigns", "Civic partnerships", "District-wide sponsorships", "Large brand activations"].map((item) => (
+            <RailCard key={item} className="w-[240px]">
+              <Card className="h-full">
+                <p className="text-[13px] font-semibold leading-6 text-[#0B1F33]">{item}</p>
+              </Card>
+            </RailCard>
+          ))}
+        </Rail>
       </Section>
 
-      <Section id="contact" eyebrow="Final CTA" title="Do less. Learn more.">
-        <div className="max-w-3xl text-[14px] leading-7 text-[#0B1F33]/68">
-          <p>Start with the right plan.</p>
+      <Section id="contact" eyebrow="GET STARTED" title="Do less. Learn more.">
+        <div className="max-w-3xl space-y-1 text-left text-[14px] leading-7 text-[#0B1F33]/68">
+          <p>Start with the right partner type.</p>
           <p>Learn what people actually do.</p>
-          <p>Add campaigns, placements, surveys, broadcasts or reporting only when there is a clear reason.</p>
+          <p>Add campaigns, placements, surveys, broadcasts, or reporting only when there is a clear reason.</p>
         </div>
-        <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:gap-5">
+        <div className="mt-7 flex flex-col items-start justify-start gap-3 text-left sm:flex-row sm:gap-5">
           <a href="#partner-types" className={primaryCta}>
             Choose partner type
             <ArrowRight className="h-3.5 w-3.5 text-[#C8A96A]" />

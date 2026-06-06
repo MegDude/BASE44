@@ -2010,11 +2010,47 @@ function getNearbyAreaItems(place, places = []) {
   });
 }
 
+function normalizeRailDedupeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\b(austin|downtown|restaurant|restaurants|bar|coffee|cafe|pizza|pizzeria|grill|kitchen|location|the)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getRailDedupeKey(item) {
+  const source = item?.candidate || item?.place || item;
+  const rawName = source?.name || source?.title || source?.label || item?.title || item?.label || item?.value || source;
+  const name = normalizeRailDedupeText(rawName);
+  if (!name) return "";
+  if (/\bvia\s*313\b/.test(name) || /\bvia313\b/.test(name)) return "place:via-313";
+  const address = normalizeRailDedupeText(source?.address || source?.raw?.address || item?.address || "");
+  return address ? `${name}:${address}` : name;
+}
+
+function dedupeRailItems(items = [], currentPlace = null, limit = Infinity) {
+  const currentKey = getRailDedupeKey(currentPlace);
+  const seen = new Set(currentKey ? [currentKey] : []);
+  const output = [];
+
+  for (const item of items) {
+    const key = getRailDedupeKey(item);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    output.push(item);
+    if (output.length >= limit) break;
+  }
+
+  return output;
+}
+
 function getNearbyAreaPlaces(place, places = [], limit = 4) {
   const originCoords = getPlaceCoords(place);
   if (!originCoords) return [];
-  const seen = new Set();
-  return places
+  const scored = places
     .filter((candidate) => candidate?.id !== place?.id)
     .filter((candidate) => getPlaceCoords(candidate))
     .filter((candidate) => getDestinationKind(candidate) !== "property")
@@ -2030,14 +2066,8 @@ function getNearbyAreaPlaces(place, places = [], limit = 4) {
       return { candidate, score, candidateKind, perk, hasPerk };
     })
     .filter((item) => item.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .filter(({ candidate }) => {
-      const name = String(candidate.name || "").trim().toLowerCase();
-      if (!name || seen.has(name)) return false;
-      seen.add(name);
-      return true;
-    })
-    .slice(0, limit);
+    .sort((a, b) => b.score - a.score);
+  return dedupeRailItems(scored, place, limit);
 }
 
 function getNearbyKindLabel(candidate, candidateKind) {
@@ -2072,26 +2102,28 @@ function getNearbyContextItems(place, places = []) {
   const raw = place?.raw || {};
   const curatedNearby = getCuratedArray(raw.nearby || raw.nearbyPlaces || raw.nearby_places || place?.nearby);
   if (curatedNearby.length) {
-    return curatedNearby.slice(0, 5).map((label) => ({ label, value: "Nearby" }));
+    return dedupeRailItems(curatedNearby.map((label) => ({ label, value: "Nearby" })), place, 5);
   }
   const luxuryBuilding = getLuxuryPresenceBuilding(place);
   if (luxuryBuilding) {
     const nearbyItems = getNearbyAreaItems(place, places);
-    return nearbyItems.length ? nearbyItems : [
+    if (nearbyItems.length) return nearbyItems;
+    return dedupeRailItems([
       { label: "Trader Joe's", value: "Grocery nearby · Seaholm" },
       { label: "Merit Coffee", value: "Coffee nearby · Seaholm" },
       { label: "Whole Foods", value: "Grocery nearby · Downtown Core" },
       { label: "Ruiz Salon", value: "Wellness nearby · Seaholm" },
-    ];
+    ], place, 5);
   }
   const legendsListing = getResolvedLegendsListing(place);
   if (legendsListing) {
     const nearbyItems = getNearbyAreaItems(place, places);
-    return nearbyItems.length ? nearbyItems : [
+    if (nearbyItems.length) return nearbyItems;
+    return dedupeRailItems([
       { label: "Austin Proper Hotel", value: "Hotel nearby · 2nd Street" },
       { label: "ACL Live", value: "Music venue nearby · 2nd Street" },
       { label: "Royal Blue Grocery", value: "Grocery nearby · Resident grocery discount" },
-    ];
+    ], place, 5);
   }
   if (kind === "property") {
     const nearbyItems = getNearbyAreaItems(place, places);
@@ -2101,7 +2133,7 @@ function getNearbyContextItems(place, places = []) {
     return [`2 min from ${district}`, "4 min from nearby lunch plans", "5 min from downtown errands"];
   }
   const nearbyFallbacks = DISTRICT_NEARBY_FALLBACKS[district] || DISTRICT_NEARBY_FALLBACKS["Downtown Austin"];
-  return nearbyFallbacks.slice(0, 5).map((label) => ({ label, value: district }));
+  return dedupeRailItems(nearbyFallbacks.map((label) => ({ label, value: district })), place, 5);
 }
 
 function getContextSectionTitle(place) {
@@ -2132,7 +2164,7 @@ function getListingFactLine(listing) {
 }
 
 function buildEntityAssistantAnswer(prompt, selected, localResults = [], mode = "resident") {
-  const pickedPlaces = localResults.filter((place) => place?.id && place.id !== selected?.id).slice(0, 4);
+  const pickedPlaces = dedupeRailItems(localResults.filter((place) => place?.id && place.id !== selected?.id), selected, 4);
   const legendsListing = getResolvedLegendsListing(selected);
   const luxuryBuilding = getLuxuryPresenceBuilding(selected);
 
@@ -2183,8 +2215,6 @@ function getRelatedPlaces(place, places = []) {
     place: ["place", "dining", "coffee", "retail"],
   };
   const allowedKinds = compatibleKinds[kind] || compatibleKinds.place;
-  const placeName = String(place?.name || "").trim().toLowerCase();
-  const seenNames = new Set();
   const related = places
     .filter((candidate) => candidate?.id !== place?.id)
     .map((candidate) => {
@@ -2199,14 +2229,8 @@ function getRelatedPlaces(place, places = []) {
     })
     .filter((item) => item.score >= 3)
     .sort((a, b) => b.score - a.score || String(a.candidate.name).localeCompare(String(b.candidate.name)))
-    .map((item) => item.candidate)
-    .filter((candidate) => {
-      const name = String(candidate.name || "").trim().toLowerCase();
-      if (!name || name === placeName || seenNames.has(name)) return false;
-      seenNames.add(name);
-      return true;
-    });
-  return related.slice(0, 6);
+    .map((item) => item.candidate);
+  return dedupeRailItems(related, place, 6);
 }
 
 function DestinationSection({ title, children, className = "", support = "" }) {
@@ -2352,7 +2376,6 @@ function getPropertyNearbyCards(place, places = []) {
     { title: "Fine Eyewear", image: "/images/map-entities/brand-fine-eyewear/ochialli.webp", meta: "Shopping nearby · Congress · Styling offer", curated: true },
     { title: "Four Seasons", image: "/hotels/four-seasons.webp", meta: "Hotel nearby · Congress · Spa and dining access", curated: true },
   ];
-  const seen = new Set();
   const preferred = preferredCards.map((card) => {
     const candidate = places.find((placeCandidate) => String(placeCandidate?.name || "").toLowerCase().includes(card.title.toLowerCase()));
     if (!candidate) return { ...card, place: null };
@@ -2367,13 +2390,9 @@ function getPropertyNearbyCards(place, places = []) {
     };
   });
   const nearby = getNearbyAreaPlaces(place, places, 8).map((item) => item.candidate);
-  return [...preferred, ...nearby]
+  return dedupeRailItems([...preferred, ...nearby], place)
     .filter((item) => {
       const candidate = item?.place ? item.place : item;
-      const title = item?.title || candidate?.name || "";
-      const key = String(candidate?.id || title).toLowerCase();
-      if (!key || seen.has(key) || candidate?.id === place?.id) return false;
-      seen.add(key);
       if (item?.curated) return true;
       return !candidate || getDestinationKind(candidate) !== "property";
     })
@@ -4211,10 +4230,21 @@ export default function MapPage() {
     navigate(`/map?mode=${mode}&tab=${tab}${tab === "map" ? `&filter=${encodeURIComponent(nextFilter)}` : ""}`);
   }
 
-  const heroPromptLabels = urlState.mode === "partner"
-    ? []
-    : ["Coffee", "Happy Hour", "Dinner", "Fitness", "Rooftops", "inKind", "Civic", "Properties"];
-  const primarySearchFilters = urlState.mode === "partner"
+  const dedupeConsoleItems = (items = []) => {
+    const seen = new Set();
+    return items.filter((item) => {
+      const key = String(item?.filter || item?.label || item || "").trim().toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+  const heroPromptLabels = dedupeConsoleItems(
+    urlState.mode === "partner"
+      ? []
+      : ["Coffee", "Happy Hour", "Dinner", "Fitness", "Rooftops"],
+  );
+  const primarySearchFilters = dedupeConsoleItems(urlState.mode === "partner"
     ? [
         { label: "Activity", filter: "All" },
         { label: "Campaigns", filter: "Brands" },
@@ -4225,25 +4255,23 @@ export default function MapPage() {
       ]
     : [
         { label: "Nearby", filter: "All" },
-        { label: "Tonight", filter: "Happy Hours" },
         { label: "Perks", filter: "Perks" },
         { label: "Events", filter: "Events" },
         { label: "Places", filter: "Venues" },
         { label: "inKind", filter: "inKind" },
         { label: "Civic", filter: "Civic" },
         { label: "Properties", filter: "Properties" },
-      ];
-  const secondarySearchFilters = urlState.mode === "partner"
+      ]);
+  const primaryFilterKeys = new Set(primarySearchFilters.map((item) => item.filter));
+  const secondarySearchFilters = dedupeConsoleItems(urlState.mode === "partner"
     ? [
         { label: "inKind", filter: "inKind" },
         { label: "Venues", filter: "Venues" },
         { label: "Hotels", filter: "Hotels" },
-        { label: "Brands", filter: "Brands" },
         { label: "Civic", filter: "Civic" },
         { label: "Services", filter: "Services" },
-        { label: "Local Guide", filter: "Local Guide" },
       ]
-    : [];
+    : []).filter((item) => !primaryFilterKeys.has(item.filter));
   const simplifiedFilterSet = new Set([
     ...primarySearchFilters.map((item) => item.filter),
     ...secondarySearchFilters.map((item) => item.filter),
@@ -4419,7 +4447,7 @@ export default function MapPage() {
               )}
               {urlState.mode === "resident" && (
                 <div className="dp-search-rail-header">
-                  <span className="dp-rail-kicker">Explore</span>
+                  <span className="dp-rail-kicker">Filters</span>
                   <button
                     type="button"
                     onClick={() => {
@@ -4521,7 +4549,7 @@ export default function MapPage() {
                         className={`dp-console-chip ${neighborhoodsOpen ? "is-active" : ""}`}
                         aria-expanded={neighborhoodsOpen}
                       >
-                        {radius}
+                        Scope
                       </button>
                     </div>
                   </motion.div>
@@ -4610,7 +4638,7 @@ export default function MapPage() {
                           ))}
                         </div>
                       )}
-                      <div className="flex gap-1.5 overflow-x-auto pb-1">
+                      <div className="dp-scope-menu flex gap-1.5 overflow-x-auto pb-1">
                       {NEIGHBORHOODS.map((neighborhood) => {
                         const active = neighborhood === district || (neighborhood === ALL_NEIGHBORHOODS && isAllNeighborhoodScope(district));
                         const label = neighborhood === ALL_NEIGHBORHOODS ? allAreaLabel : neighborhood;
@@ -4619,7 +4647,7 @@ export default function MapPage() {
                       key={neighborhood}
                       type="button"
                       onClick={() => setNeighborhood(neighborhood)}
-                      className={`dp-console-chip ${active ? "is-active" : ""}`}
+                      className={`dp-console-chip dp-scope-chip ${active ? "is-active" : ""}`}
                       aria-pressed={active}
                     >
                       {label}
@@ -4629,7 +4657,7 @@ export default function MapPage() {
                         <button
                           type="button"
                           onClick={() => setNeighborhoodsOpen(false)}
-                          className="dp-console-chip"
+                          className="dp-console-chip dp-scope-chip dp-scope-close"
                         >
                           <ChevronUp className="h-3.5 w-3.5" />
                           Close
@@ -5049,7 +5077,13 @@ export default function MapPage() {
 
             {urlState.mode === "partner" && (
               <div className="dp-partner-intel-grid mb-3 grid shrink-0 gap-2 md:grid-cols-3">
-                {(activeFilter === "Brands"
+                {(activeFilter === "Events"
+                  ? [
+                      ["What events can show", "Saves, RSVPs, direction taps, timing, and nearby places people check before and after the event."],
+                      ["Who is close enough", "Residents, hotel guests, visitors, and event-goers already moving through Rainey, Seaholm, and downtown."],
+                      ["What to try next", "Feature Hotel Van Zandt, Geraldine's, First Thursday, happy hour, or live music moments when timing matters."],
+                    ]
+                  : activeFilter === "Brands"
                   ? [
                       ["What people are noticing", "Brand moments tied to nearby residents, events, and walkable plans."],
                       ["Who is close enough", "Residents, visitors, and event-goers already moving through the selected area."],
