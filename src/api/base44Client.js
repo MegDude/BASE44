@@ -3,7 +3,7 @@ import { appParams } from '@/lib/app-params';
 
 const { appId, token, functionsVersion, appBaseUrl } = appParams;
 
-//Create a client with authentication required
+// Public-first client: auth can hydrate an existing user, but viewing the app never requires sign-in.
 export const base44 = createClient({
   appId,
   token,
