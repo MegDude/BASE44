@@ -1,216 +1,129 @@
 /**
  * Downtown Perks Marker Factory
  * Unified marker rendering system for all entity types
- * Ensures consistent visual language across the product
+ * Uses the pinAssetRegistry SVG icon system — no emoji.
  */
 
 import L from 'leaflet';
+import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 
-/**
- * Marker configuration library
- * Aligned with Downtown Perks brand system
- */
-const MARKER_CONFIG = {
-  // Standard venues (coffee, dining, retail, etc.)
-  'standard:restaurant': {
-    color: '#C8A96A', // Gold
-    icon: '🍽️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(200, 151, 58, 0.4)',
-  },
-  'standard:coffee': {
-    color: '#C8A96A',
-    icon: '☕',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
-  },
-  'standard:bar': {
-    color: '#0B1F33',
-    icon: '🍷',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
-  },
-  'standard:fitness': {
-    color: '#0B1F33',
-    icon: '💪',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
-  },
-  'standard:wellness': {
-    color: '#C8A96A',
-    icon: '🧘',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
-  },
-  'standard:retail': {
-    color: '#0B1F33',
-    icon: '🛍️',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
-  },
-  'standard:entertainment': {
-    color: '#0B1F33',
-    icon: '🎭',
-    size: 12,
-    iconSize: 8,
-    selectedScale: 2.2,
-    shadowBlur: '0 2px 6px rgba(11, 31, 51, 0.18)',
-  },
-
-  // Buildings and properties (navy with building icon)
-  'building:default': {
-    color: '#0B1F33',
-    icon: '🏢',
-    size: 16,
-    iconSize: 10,
-    selectedScale: 1.8,
-    shadowBlur: '0 4px 12px rgba(11, 31, 51, 0.18)',
-  },
-
-  // Events
-  'event:default': {
-    color: '#C8A96A',
-    icon: '📅',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
-  },
-
-  // Perks
-  'perk:default': {
-    color: '#C8A96A',
-    icon: '🏷️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
-  },
-
-  // Brands
-  'brand:default': {
-    color: '#C8A96A',
-    icon: '⭐',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
-  },
-
-  // Civic
-  'civic:default': {
-    color: '#0B1F33',
-    icon: '🏛️',
-    size: 14,
-    iconSize: 8,
-    selectedScale: 2.0,
-    shadowBlur: '0 3px 8px rgba(11, 31, 51, 0.18)',
-  },
+// Design system: pins are navy (#0B1F33) with white SVG icons.
+// Gold (#C8A96A) is reserved for selected/active state only — ring only, never fill.
+const SIZES = {
+  default: 28,
+  building: 30,
+  selected: 1.25, // scale multiplier
 };
 
 /**
- * Get marker configuration for an entity
+ * Inline styles for the SVG inside a pin.
+ * The SVG needs white stroke since the background is navy.
  */
-function getMarkerConfig(entity) {
-  // Try category-specific config first
-  const categoryKey = `${entity.markerType}:${entity.category || entity.type}`;
-  if (MARKER_CONFIG[categoryKey]) {
-    return MARKER_CONFIG[categoryKey];
-  }
+const PIN_SVG_STYLE = `
+  width: 14px;
+  height: 14px;
+  display: block;
+  flex-shrink: 0;
+  stroke: #ffffff;
+  fill: none;
+`;
 
-  // Fall back to type-specific config
-  const typeKey = `${entity.markerType}:default`;
-  if (MARKER_CONFIG[typeKey]) {
-    return MARKER_CONFIG[typeKey];
-  }
+const PIN_SVG_STYLE_LG = `
+  width: 17px;
+  height: 17px;
+  display: block;
+  flex-shrink: 0;
+  stroke: #ffffff;
+  fill: none;
+`;
 
-  // Ultimate fallback
-  return MARKER_CONFIG['standard:restaurant'];
+/**
+ * Inject inline style onto the SVG string returned by pinAssetRegistry.
+ * The registry SVGs use currentColor; we set stroke to white via direct attribute override.
+ */
+function styledGlyph(glyph, large = false) {
+  if (!glyph) return '';
+  // Replace the opening <svg tag to add inline style
+  const style = large ? PIN_SVG_STYLE_LG : PIN_SVG_STYLE;
+  return glyph.replace(
+    '<svg ',
+    `<svg style="${style}" `
+  );
 }
 
 /**
  * Create a compact marker icon (unselected state)
+ * Navy circle with white SVG icon — minimal, readable on the light Carto tile
  */
 export function createCompactMarker(entity) {
-  const config = getMarkerConfig(entity);
+  const pin = resolveEntityPin(entity);
+  const size = entity.markerType === 'building' ? SIZES.building : SIZES.default;
+  const iconSize = size - 14; // padding inside circle
+  const glyph = styledGlyph(pin.glyph);
 
   const html = `
     <div style="
-      width: ${config.size}px;
-      height: ${config.size}px;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: 50%;
-      background-color: ${config.color};
-      border: 2px solid white;
-      box-shadow: ${config.shadowBlur};
+      background: #0B1F33;
+      border: 1.5px solid rgba(255,255,255,0.9);
+      box-shadow: 0 2px 6px rgba(11,31,51,0.18), 0 4px 10px rgba(11,31,51,0.12);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: ${config.iconSize}px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      overflow: hidden;
     ">
-      ${config.icon}
+      ${glyph}
     </div>
   `;
 
   return L.divIcon({
     className: '',
     html,
-    iconSize: [config.size, config.size],
-    iconAnchor: [config.size / 2, config.size / 2],
-    popupAnchor: [0, -config.size / 2],
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -(size / 2 + 4)],
   });
 }
 
 /**
- * Create a selected marker icon (larger, highlighted)
+ * Create a selected marker icon (slightly larger, gold ring accent)
+ * Navy body + gold outline ring — gold accent used ONLY on selection
  */
 export function createSelectedMarker(entity) {
-  const config = getMarkerConfig(entity);
-  const selectedSize = config.size * config.selectedScale;
-  const selectedIconSize = config.iconSize * config.selectedScale;
+  const pin = resolveEntityPin(entity);
+  const baseSize = entity.markerType === 'building' ? SIZES.building : SIZES.default;
+  const size = Math.round(baseSize * SIZES.selected);
+  const glyph = styledGlyph(pin.glyph, true);
 
   const html = `
     <div style="
-      width: ${selectedSize}px;
-      height: ${selectedSize}px;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: 50%;
-      background-color: ${config.color};
-      border: 3px solid white;
-      box-shadow: 
-        0 0 0 2px ${config.color}40,
-        ${config.shadowBlur};
+      background: #0B1F33;
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow:
+        0 0 0 2.5px rgba(200,169,106,0.7),
+        0 4px 14px rgba(11,31,51,0.22),
+        0 8px 20px rgba(11,31,51,0.14);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: ${selectedIconSize}px;
       cursor: pointer;
-      animation: markerPulse 0.5s ease-out;
+      transform: translateY(-1px);
+      animation: dpPinSelect 0.2s cubic-bezier(0.22,1,0.36,1);
+      overflow: hidden;
     ">
-      ${config.icon}
+      ${glyph}
     </div>
     <style>
-      @keyframes markerPulse {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
+      @keyframes dpPinSelect {
+        from { transform: scale(0.85) translateY(0); opacity: 0.6; }
+        to   { transform: scale(1) translateY(-1px); opacity: 1; }
       }
     </style>
   `;
@@ -218,23 +131,27 @@ export function createSelectedMarker(entity) {
   return L.divIcon({
     className: '',
     html,
-    iconSize: [selectedSize, selectedSize],
-    iconAnchor: [selectedSize / 2, selectedSize / 2],
-    popupAnchor: [0, -selectedSize / 2],
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -(size / 2 + 4)],
   });
 }
 
 /**
  * Create a pill marker (for detail/expanded state)
- * Shows entity name and category
+ * Shows entity name and category icon
  */
 export function createPillMarker(entity) {
-  const config = getMarkerConfig(entity);
+  const pin = resolveEntityPin(entity);
+  const pillGlyph = pin.glyph.replace(
+    '<svg ',
+    `<svg style="width:14px;height:14px;display:block;flex-shrink:0;stroke:#0B1F33;fill:none;" `
+  );
 
   const html = `
     <div style="
       background: white;
-      border: 2px solid ${config.color};
+      border: 2px solid #0B1F33;
       border-radius: 20px;
       padding: 6px 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -247,7 +164,7 @@ export function createPillMarker(entity) {
       align-items: center;
       gap: 6px;
     ">
-      <span style="font-size: 14px;">${config.icon}</span>
+      ${pillGlyph}
       <span>${entity.name}</span>
     </div>
   `;
@@ -255,7 +172,7 @@ export function createPillMarker(entity) {
   return L.divIcon({
     className: '',
     html,
-    iconSize: [200, 32], // Approximate, will auto-size
+    iconSize: [200, 32],
     iconAnchor: [100, 16],
     popupAnchor: [0, -32],
   });
@@ -281,14 +198,8 @@ export function createMarker(entity, options = {}) {
  * Get all available marker colors (for legend, filters, etc.)
  */
 export function getMarkerColors() {
-  const colors = {};
-
-  Object.entries(MARKER_CONFIG).forEach(([key, config]) => {
-    const [markerType, category] = key.split(':');
-    colors[`${markerType}:${category}`] = config.color;
-  });
-
-  return colors;
+  // All pins are navy — category distinguished by icon only
+  return { default: '#0B1F33' };
 }
 
 /**

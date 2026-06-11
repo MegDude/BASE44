@@ -5,11 +5,35 @@ import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider } from "@/lib/AuthContext";
 import Layout from "./components/Layout";
-import SplashPage from "./pages/SplashPage";
 import MapPage from "./pages/Map";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
 import Dashboard from "./pages/Dashboard";
 import PartnersDashboardPage from "./pages/partners/Dashboard";
+
+// Marketing pages (lazy-loaded, not part of the app shell)
+import { lazy, Suspense } from "react";
+const SplashPage = lazy(() => import("./pages/SplashPage"));
+const HomePage = lazy(() => import("./pages/Home"));
+const PricingPage = lazy(() => import("./pages/Pricing"));
+const ContactPage = lazy(() => import("./pages/Contact"));
+const DowntownLanding = lazy(() => import("./pages/downtown-perks/Landing"));
+const ForBuildings = lazy(() => import("./pages/downtown-perks/ForBuildings"));
+const PartnersIndex = lazy(() => import("./pages/partners/Index"));
+const PartnerVenues = lazy(() => import("./pages/partners/Venues"));
+const PartnerHotels = lazy(() => import("./pages/partners/Hotels"));
+const PartnerBrands = lazy(() => import("./pages/partners/Brands"));
+const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
+const PartnerResidential = lazy(() => import("./pages/partners/Residential"));
+const PartnerCivic = lazy(() => import("./pages/partners/Civic"));
+const PartnerAccess = lazy(() => import("./pages/partners/Access"));
+
+function MarketingFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
+    </div>
+  );
+}
 
 function HashScroll() {
   const location = useLocation();
@@ -51,10 +75,14 @@ function ProductRoutes() {
       <HashScroll />
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<SplashPage />} />
+
+          {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
+          {/* Root always goes to resident map */}
+          <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
 
           <Route path="/map" element={<MapPage />} />
 
+          {/* Partner platform */}
           <Route path="/partners" element={<Navigate to="/map?mode=partner&tab=map&filter=All" replace />} />
           <Route path="/partners/dashboard" element={<PartnersDashboardPage />} />
           <Route path="/partners/campaigns" element={<PartnersDashboardPage />} />
@@ -63,6 +91,7 @@ function ProductRoutes() {
           <Route path="/partners/map" element={<MapPage />} />
           <Route path="/partners/workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
+          {/* Partner workspace */}
           <Route path="/partner-workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
           <Route path="/partner-workspace/overview" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/perks" element={<PartnerWorkspace />} />
@@ -78,7 +107,128 @@ function ProductRoutes() {
           <Route path="/partner-workspace/analytics" element={<Dashboard />} />
           <Route path="/partner-workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* ── MARKETING ROUTES (/marketing/*) ─────────────────────────── */}
+          <Route
+            path="/marketing"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <SplashPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/home"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <HomePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/pricing"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PricingPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/contact"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <ContactPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/downtown"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <DowntownLanding />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/for-buildings"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <ForBuildings />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnersIndex />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/venues"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerVenues />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/hotels"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerHotels />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/brands"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerBrands />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/properties"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerProperties />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/residential"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerResidential />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/civic"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerCivic />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/marketing/partners/access"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerAccess />
+              </Suspense>
+            }
+          />
+
+          {/* Legacy redirects for any bookmarked marketing URLs */}
+          <Route path="/home" element={<Navigate to="/marketing/home" replace />} />
+          <Route path="/pricing" element={<Navigate to="/marketing/pricing" replace />} />
+          <Route path="/contact" element={<Navigate to="/marketing/contact" replace />} />
+          <Route path="/splash" element={<Navigate to="/marketing" replace />} />
+
+          {/* Catch-all → resident map */}
+          <Route path="*" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
         </Route>
       </Routes>
     </>

@@ -13,12 +13,10 @@ const RESIDENT_LINKS = [
 const PARTNER_LINKS = [
   { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
   { to: "/partners/dashboard", label: "Dashboard", description: "Operational district intelligence" },
-  { to: "/partners/campaigns", label: "Campaigns", description: "Manage campaign builder surfaces" },
+  { to: "/partners/campaigns", label: "Campaigns", description: "Manage campaign builder" },
   { to: "/partner-workspace/overview", label: "Workspace", description: "Partner reports, campaigns, and activity" },
   { to: "/partner-workspace/reports", label: "Reports", description: "Open connected reporting" },
-  { to: "/partners/sign-in", label: "Sign in", description: "Access an authenticated partner workspace" },
-  { to: "/partners/sign-up", label: "Sign up", description: "Create a local partner workspace" },
-  { to: "/pricing", label: "Pricing", description: "Partner plans by category" },
+  { to: "/marketing/pricing", label: "Pricing", description: "Partner plans by category" },
 ];
 
 const HAMBURGER_RESIDENT_LINKS = [
@@ -33,8 +31,8 @@ const HAMBURGER_PARTNER_LINKS = [
   { to: "/partners/dashboard", label: "Dashboard" },
   { to: "/partners/campaigns", label: "Campaigns" },
   { to: "/partner-workspace/overview", label: "Workspace" },
-  { to: "/partners/sign-in", label: "Sign in" },
-  { to: "/pricing", label: "Pricing" },
+  { to: "/partner-workspace/reports", label: "Reports" },
+  { to: "/marketing/pricing", label: "Pricing" },
 ];
 
 function NavLinkItem({ link, className, onClick, children }) {
@@ -183,7 +181,6 @@ export default function Navbar() {
   };
 
   const residentActive =
-    location.pathname === "/" ||
     location.pathname.startsWith("/residents") ||
     location.pathname === "/explore" ||
     location.pathname === "/events" ||
@@ -214,7 +211,7 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex h-[64px] max-w-7xl items-center justify-between px-5 md:px-6">
-        <Link to="/" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks home">
+        <Link to="/map?mode=resident&tab=map" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks home">
           <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A] transition-colors duration-150 group-hover:text-[#B38F4F]" />
           <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
             Downtown Perks

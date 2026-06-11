@@ -282,41 +282,41 @@
   filter: none !important;
 }
 
+/* ── MAP PINS — default state: navy circle, white icon ── */
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) {
-  width: 28px !important;
-  height: 28px !important;
+  width: 30px !important;
+  height: 30px !important;
   border: 0 !important;
-  border-radius: 2px !important;
-  background: #0B1F33 !important;
-  color: #B38F4F !important;
-  box-shadow: 0 10px 24px rgba(11,31,51,0.16), 0 0 18px rgba(179,143,79,0.10) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-selected,
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-pulsing {
-  width: 31px !important;
-  height: 31px !important;
-  background: #0B1F33 !important;
-  color: #B38F4F !important;
-  box-shadow: 0 12px 28px rgba(11,31,51,0.18), 0 0 24px rgba(179,143,79,0.14) !important;
+  width: 34px !important;
+  height: 34px !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px) translateZ(0) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-live-pin__core {
-  width: 100% !important;
-  height: 100% !important;
-  border: 0 !important;
-  border-radius: 2px !important;
+  width: 30px !important;
+  height: 30px !important;
+  border: 1.5px solid rgba(255,255,255,0.9) !important;
+  border-radius: 50% !important;
   background: #0B1F33 !important;
-  color: #B38F4F !important;
-  box-shadow: none !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(11,31,51,0.18), 0 4px 12px rgba(11,31,51,0.12) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-pin-svg {
   width: 14px !important;
   height: 14px !important;
-  color: #B38F4F !important;
+  color: #FFFFFF !important;
   stroke: currentColor !important;
 }
 
@@ -388,17 +388,47 @@
 
 @media (max-width: 767px) {
   .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) {
-    width: 24px !important;
-    height: 24px !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+  }
+
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-live-pin__core {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    border-radius: 50% !important;
   }
 
   .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-pin-svg {
     width: 12px !important;
     height: 12px !important;
+    color: #FFFFFF !important;
+  }
+
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends):hover,
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-selected,
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-pulsing {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends):hover .dp-live-pin__core,
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-selected .dp-live-pin__core,
+  .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-pulsing .dp-live-pin__core {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
   }
 }
 
-/* Downtown Perks absolute final map UI lock: no boxed controls, round pins. */
+/* ── MAP PIN SYSTEM — canonical, overrides all prior rules ── */
+/* Leaflet container reset — never style the wrapper div */
 .dp-map-page .leaflet-marker-icon,
 .dp-map-page .dp-leaflet-pin,
 .dp-map-page .leaflet-div-icon {
@@ -407,6 +437,7 @@
   box-shadow: none !important;
 }
 
+/* ── Default pin: navy circle, white icon, clean shadow ── */
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) {
   display: grid !important;
   place-items: center !important;
@@ -416,9 +447,9 @@
   min-height: 30px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 2px !important;
+  border-radius: 50% !important;
   background: transparent !important;
-  color: #C8A96A !important;
+  color: #FFFFFF !important;
   box-shadow: none !important;
   outline: 0 !important;
 }
@@ -433,28 +464,23 @@
   min-width: 30px !important;
   min-height: 30px !important;
   padding: 0 !important;
-  border: 1.5px solid rgba(255,255,255,0.92) !important;
-  border-radius: 2px !important;
-  background: radial-gradient(circle at 32% 24%, rgba(255,255,255,0.18), transparent 38%), #0B1F33 !important;
-  color: currentColor !important;
-  box-shadow: 0 10px 22px rgba(11,31,51,0.18), 0 0 18px rgba(200,169,106,0.10) !important;
+  border: 1.5px solid rgba(255,255,255,0.88) !important;
+  border-radius: 50% !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(11,31,51,0.18), 0 4px 12px rgba(11,31,51,0.12) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-pin-svg {
-  width: 15px !important;
-  height: 15px !important;
-  color: currentColor !important;
+  width: 14px !important;
+  height: 14px !important;
+  color: #FFFFFF !important;
   stroke: currentColor !important;
 }
 
+/* Halo hidden by default — only appears on selected */
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-live-pin__halo {
-  position: absolute !important;
-  inset: -4px !important;
-  display: block !important;
-  border-radius: 2px !important;
-  background: rgba(255,255,255,0.42) !important;
-  box-shadow: 0 0 0 1px rgba(200,169,106,0.08), 0 0 20px rgba(11,31,51,0.08) !important;
-  opacity: 0.72 !important;
+  display: none !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends)::before,
@@ -463,6 +489,8 @@
   content: none !important;
 }
 
+/* ── Hover + selected + pulsing: elevation + subtle gold ring ── */
+/* Gold ring is the ONLY place gold appears on pins */
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends):hover,
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-selected,
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-pulsing {
@@ -470,7 +498,7 @@
   height: 34px !important;
   min-width: 34px !important;
   min-height: 34px !important;
-  transform: translateY(-1px) translateZ(0) !important;
+  transform: translateY(-2px) translateZ(0) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends):hover .dp-live-pin__core,
@@ -480,9 +508,15 @@
   height: 34px !important;
   min-width: 34px !important;
   min-height: 34px !important;
-  box-shadow: 0 14px 28px rgba(11,31,51,0.22), 0 0 0 2px rgba(200,169,106,0.13), 0 0 24px rgba(200,169,106,0.14) !important;
+  border-radius: 50% !important;
+  border-color: rgba(255,255,255,0.95) !important;
+  box-shadow:
+    0 0 0 2.5px rgba(200,169,106,0.65),
+    0 4px 14px rgba(11,31,51,0.22),
+    0 8px 22px rgba(11,31,51,0.14) !important;
 }
 
+/* Event and happy-hour pins keep white icon text */
 .dp-map-page .dp-live-pin--event .dp-live-pin__core,
 .dp-map-page .dp-live-pin--happy-hour .dp-live-pin__core {
   color: #FFFFFF !important;
