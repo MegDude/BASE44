@@ -499,6 +499,643 @@ body,
   }
 }
 
+/* =====================================================
+   DOWNTOWN PERKS FINAL MAP PANEL COMPLETION LOCK
+   All map tabs, pin details, grouped drawers, perks, events,
+   and location panels share one scroll-safe, readable system.
+===================================================== */
+
+html body #root .dp-map-page.dp-map-page {
+  --dp-panel-safe-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell.dp-map-drawer-shell,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  .dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-pass-panel
+) {
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(100vw, 760px) !important;
+  min-height: 0 !important;
+  height: min(90dvh, calc(100dvh - 20px)) !important;
+  max-height: min(90dvh, calc(100dvh - 20px)) !important;
+  overflow: hidden !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 2px 8px rgba(11, 31, 51, 0.07), 0 6px 18px rgba(11, 31, 51, 0.06) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-toolbar,
+  .dp-panel-header,
+  .dp-destination-header
+) {
+  flex: 0 0 auto !important;
+  min-height: 44px !important;
+  padding: 8px 12px 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  z-index: 8 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-close,
+  .dp-drawer-close,
+  .dp-destination-close,
+  button[aria-label="Close"]
+) {
+  position: relative !important;
+  z-index: 10 !important;
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  color: #0B1F33 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-body.dp-panel-scroll,
+  .dp-panel-body,
+  [data-panel-body],
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-drawer-scroll,
+  .dp-pass-panel-body,
+  .dp-grouped-list
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-tabs-content,
+  .dp-partner-readable-panel,
+  .dp-panel-story-stack,
+  .dp-tab-stack
+) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tabs-content.dp-partner-readable-panel,
+  .dp-panel-story-stack,
+  .dp-destination-content,
+  .dp-detail-content
+) {
+  padding: 0 14px var(--dp-panel-safe-bottom) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-tab-stack, .dp-panel-story-stack) {
+  display: grid !important;
+  gap: 14px !important;
+  align-content: start !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero,
+  .dp-campaign-hero,
+  .dp-report-hero-visual,
+  .dp-destination-section,
+  .dp-panel-section,
+  .dp-info-section,
+  .dp-panel-insight,
+  .dp-campaign-panel,
+  .dp-campaign-planner-panel,
+  .dp-campaign-plan-detail,
+  .dp-partner-info-copy,
+  .dp-perk-module,
+  .dp-property-nearby-section
+) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 12px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(11, 31, 51, 0.075) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero:first-child,
+  .dp-campaign-hero:first-child,
+  .dp-report-hero-visual:first-child,
+  .dp-destination-content > :first-child,
+  .dp-detail-content > :first-child
+) {
+  padding-top: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero h2,
+  .dp-campaign-hero h2,
+  .dp-report-hero-visual h3,
+  .dp-destination-title,
+  .dp-panel-title,
+  .dp-polished-panel-header h2,
+  .dp-panel-detail-identity h1,
+  .dp-panel-detail-identity h2
+) {
+  max-width: none !important;
+  font-family: Inter, var(--font-body), sans-serif !important;
+  font-size: clamp(20px, 5vw, 26px) !important;
+  font-weight: 600 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: #0B1F33 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero p:not(.dp-tab-eyebrow),
+  .dp-campaign-hero p,
+  .dp-report-hero-visual p,
+  .dp-partner-info-copy p,
+  .dp-destination-section-support,
+  .dp-panel-copy,
+  .dp-polished-panel-body,
+  .dp-destination-content p,
+  .dp-detail-content p,
+  .dp-panel-story-stack p,
+  .dp-partner-feed-row small,
+  .dp-campaign-row small,
+  .dp-campaign-row em,
+  .dp-partner-report-card p,
+  .dp-report-story-card p
+) {
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: block !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 12.75px !important;
+  font-weight: 400 !important;
+  line-height: 1.48 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tab-eyebrow,
+  .dp-panel-eyebrow,
+  .dp-polished-panel-kicker,
+  .dp-panel-kicker,
+  .dp-report-label,
+  .dp-action-card-eyebrow
+) {
+  font-family: Inter, var(--font-body), sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #C8A96A !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-grid,
+  .dp-partner-report-analytics,
+  .dp-partner-info-grid,
+  .dp-panel-linked-grid,
+  .dp-legends-home-facts-grid
+) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px 14px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-card,
+  .dp-panel-linked-grid > *,
+  .dp-legends-home-fact,
+  .dp-partner-info-grid > *
+) {
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 10px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(11, 31, 51, 0.075) !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-feed-list,
+  .dp-report-rail,
+  .dp-partner-report-card-grid
+) {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-feed-row,
+  .dp-tab-row.dp-partner-feed-row,
+  .dp-campaign-row,
+  .dp-partner-report-card,
+  .dp-report-story-card,
+  .dp-grouped-row,
+  .dp-legends-home-link,
+  .dp-legends-home-static
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 44px !important;
+  max-height: none !important;
+  padding: 11px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(11, 31, 51, 0.075) !important;
+  overflow: visible !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-feed-row *,
+  .dp-tab-row.dp-partner-feed-row *,
+  .dp-campaign-row *,
+  .dp-partner-report-card *,
+  .dp-report-story-card *,
+  .dp-grouped-row *,
+  .dp-legends-home-link *,
+  .dp-legends-home-static *
+) {
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-card strong,
+  .dp-partner-feed-row strong,
+  .dp-campaign-row strong,
+  .dp-partner-report-card strong,
+  .dp-report-story-card strong,
+  .dp-grouped-title,
+  .dp-legends-home-title,
+  .dp-action-card-title
+) {
+  color: #0B1F33 !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.24 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-card span,
+  .dp-partner-summary-card p,
+  .dp-partner-feed-row small,
+  .dp-campaign-row small,
+  .dp-campaign-row em,
+  .dp-grouped-meta,
+  .dp-grouped-offer,
+  .dp-legends-home-fact-label,
+  .dp-legends-home-fact-value,
+  .dp-action-card-copy,
+  .dp-action-card-examples
+) {
+  font-size: 11.5px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-card-rail,
+  .dp-horizontal-entity-rail,
+  .dp-property-image-rail,
+  .dp-related-rail,
+  .dp-campaign-plan-grid.dp-action-card-rail,
+  .dp-ask-prompts
+) {
+  display: grid !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: minmax(220px, 260px) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  align-items: start !important;
+  scroll-snap-type: x proximity !important;
+  padding-bottom: 8px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-card-rail,
+  .dp-horizontal-entity-rail,
+  .dp-property-image-rail,
+  .dp-related-rail,
+  .dp-campaign-plan-grid.dp-action-card-rail,
+  .dp-ask-prompts
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-card-rail > *,
+  .dp-horizontal-entity-rail > *,
+  .dp-property-image-rail > *,
+  .dp-related-rail > *,
+  .dp-campaign-plan-grid.dp-action-card-rail > *,
+  .dp-ask-prompts > *
+) {
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-polished-panel-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-panel-detail-hero,
+  .dp-property-hero,
+  .dp-tab-discovery-media
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  aspect-ratio: 16 / 10 !important;
+  min-height: 126px !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-polished-panel-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-panel-detail-hero,
+  .dp-property-hero,
+  .dp-tab-discovery-media
+) img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center 35% !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tab-discovery-media img,
+  .dp-card-rail img,
+  .dp-horizontal-entity-rail img,
+  .dp-property-image-rail img,
+  .dp-related-rail img
+) {
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-panel-shell.dp-map-drawer-shell,
+    aside.dp-panel-shell.dp-map-drawer-shell,
+    .dp-panel-shell.dp-detail-drawer,
+    aside.dp-panel-shell.dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-pass-panel
+  ) {
+    width: calc(100vw - 4px) !important;
+    height: min(91dvh, calc(100dvh - 14px)) !important;
+    max-height: min(91dvh, calc(100dvh - 14px)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-tabs-content.dp-partner-readable-panel,
+    .dp-panel-story-stack,
+    .dp-destination-content,
+    .dp-detail-content
+  ) {
+    padding-inline: 12px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-partner-summary-grid,
+    .dp-partner-report-analytics,
+    .dp-partner-info-grid,
+    .dp-panel-linked-grid,
+    .dp-legends-home-facts-grid
+  ) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px 12px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-partner-feed-row,
+    .dp-tab-row.dp-partner-feed-row,
+    .dp-campaign-row,
+    .dp-partner-report-card,
+    .dp-report-story-card,
+    .dp-grouped-row
+  ) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-panel-body.dp-panel-scroll,
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell [data-panel-body],
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-body,
+html body #root .dp-map-page.dp-map-page .dp-destination-scroll.dp-drawer-scroll,
+html body #root .dp-map-page.dp-map-page .dp-pass-panel-body,
+html body #root .dp-map-page.dp-map-page .dp-grouped-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-panel-body.dp-panel-scroll,
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell [data-panel-body],
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-body,
+html body #root .dp-map-page.dp-map-page .dp-destination-scroll.dp-drawer-scroll,
+html body #root .dp-map-page.dp-map-page .dp-pass-panel-body,
+html body #root .dp-map-page.dp-map-page .dp-grouped-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-panel-shell.dp-map-drawer-shell,
+    aside.dp-panel-shell.dp-map-drawer-shell,
+    .dp-panel-shell.dp-detail-drawer,
+    aside.dp-panel-shell.dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-pass-panel
+  ) {
+    height: min(88dvh, calc(100dvh - 32px)) !important;
+    max-height: min(88dvh, calc(100dvh - 32px)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-tabs-content.dp-partner-readable-panel,
+    .dp-panel-story-stack,
+    .dp-destination-content,
+    .dp-detail-content
+  ) {
+    padding-inline: 18px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-partner-summary-grid,
+    .dp-partner-report-analytics
+  ) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-partner-report-card-grid,
+    .dp-report-rail,
+    .dp-panel-linked-grid
+  ) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* =====================================================
+   DOWNTOWN PERKS LIGHT MAP CANVAS LOCK
+   Keep the basemap legible while reducing default map color
+   noise into the app's cool white, navy, and champagne system.
+===================================================== */
+
+html body #root .dp-map-page.dp-map-page :is(.dp-spatial-map, .leaflet-container) {
+  background:
+    linear-gradient(180deg, rgba(247, 248, 251, 0.96), rgba(241, 243, 247, 0.92)),
+    #F7F8FB !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-spatial-map :is(.leaflet-tile, .leaflet-tile-pane) {
+  filter: grayscale(0.16) saturate(0.66) hue-rotate(-7deg) brightness(1.04) contrast(0.94) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-spatial-map :is(.leaflet-overlay-pane, .leaflet-shadow-pane) {
+  filter: saturate(0.74) brightness(1.02) contrast(0.96) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.leaflet-control-zoom, .leaflet-control-attribution) {
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 1px 4px rgba(11, 31, 51, 0.04), 0 4px 12px rgba(11, 31, 51, 0.04) !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-control-zoom a {
+  width: 32px !important;
+  height: 32px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  font-family: Inter, var(--font-body), sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+  text-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-control-zoom a:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-control-zoom a:is(:hover, :focus-visible) {
+  background: rgba(247, 248, 251, 0.96) !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-control-attribution,
+html body #root .dp-map-page.dp-map-page .leaflet-control-attribution a {
+  color: rgba(11, 31, 51, 0.5) !important;
+  font-family: Inter, var(--font-body), sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+}
+
 /* Final specificity pass for active typography states that older Tailwind
    utility selectors had been overriding on nested spans. */
 .dp-map-page.dp-map-page [aria-label="Map command console"] button.dp-map-audience-tab[aria-selected="true"],
@@ -15494,4 +16131,391 @@ html body #root .dp-map-page.dp-map-page :is(
     padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
     scroll-padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
   }
+}
+
+/* =====================================================
+   DOWNTOWN PERKS TRUE FINAL MAP PANEL + CANVAS OVERRIDE
+   Keep this block last: it wins over earlier recovery locks.
+===================================================== */
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell.dp-map-drawer-shell,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  .dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-pass-panel
+) {
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(100vw, 760px) !important;
+  min-height: 0 !important;
+  height: min(90dvh, calc(100dvh - 20px)) !important;
+  max-height: min(90dvh, calc(100dvh - 20px)) !important;
+  overflow: hidden !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-toolbar,
+  .dp-panel-header,
+  .dp-destination-header
+) {
+  flex: 0 0 auto !important;
+  min-height: 44px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  z-index: 8 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-close,
+  .dp-drawer-close,
+  .dp-destination-close,
+  button[aria-label="Close"]
+) {
+  position: relative !important;
+  z-index: 10 !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-body.dp-panel-scroll,
+  .dp-panel-body,
+  [data-panel-body],
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-drawer-scroll,
+  .dp-pass-panel-body,
+  .dp-grouped-list
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tabs-content.dp-partner-readable-panel,
+  .dp-panel-story-stack,
+  .dp-destination-content,
+  .dp-detail-content
+) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  padding: 0 14px calc(1rem + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-tab-stack, .dp-panel-story-stack) {
+  display: grid !important;
+  gap: 14px !important;
+  align-content: start !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero,
+  .dp-campaign-hero,
+  .dp-report-hero-visual,
+  .dp-destination-section,
+  .dp-panel-section,
+  .dp-info-section,
+  .dp-panel-insight,
+  .dp-campaign-panel,
+  .dp-campaign-planner-panel,
+  .dp-campaign-plan-detail,
+  .dp-partner-info-copy,
+  .dp-perk-module,
+  .dp-property-nearby-section
+) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 12px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(11, 31, 51, 0.075) !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero h2,
+  .dp-campaign-hero h2,
+  .dp-report-hero-visual h3,
+  .dp-destination-title,
+  .dp-panel-title,
+  .dp-polished-panel-header h2,
+  .dp-panel-detail-identity h1,
+  .dp-panel-detail-identity h2
+) {
+  max-width: none !important;
+  font-family: Inter, var(--font-body), sans-serif !important;
+  font-size: clamp(20px, 5vw, 26px) !important;
+  font-weight: 600 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero p:not(.dp-tab-eyebrow),
+  .dp-campaign-hero p,
+  .dp-report-hero-visual p,
+  .dp-partner-info-copy p,
+  .dp-destination-section-support,
+  .dp-panel-copy,
+  .dp-polished-panel-body,
+  .dp-destination-content p,
+  .dp-detail-content p,
+  .dp-panel-story-stack p,
+  .dp-partner-feed-row small,
+  .dp-campaign-row small,
+  .dp-campaign-row em,
+  .dp-partner-report-card p,
+  .dp-report-story-card p
+) {
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  display: block !important;
+  font-size: 12.75px !important;
+  line-height: 1.48 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-grid,
+  .dp-partner-report-analytics,
+  .dp-partner-info-grid,
+  .dp-panel-linked-grid,
+  .dp-legends-home-facts-grid
+) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px 14px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-feed-row,
+  .dp-tab-row.dp-partner-feed-row,
+  .dp-campaign-row,
+  .dp-partner-report-card,
+  .dp-report-story-card,
+  .dp-grouped-row,
+  .dp-legends-home-link,
+  .dp-legends-home-static
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 44px !important;
+  max-height: none !important;
+  padding: 11px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(11, 31, 51, 0.075) !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-feed-row *,
+  .dp-tab-row.dp-partner-feed-row *,
+  .dp-campaign-row *,
+  .dp-partner-report-card *,
+  .dp-report-story-card *,
+  .dp-grouped-row *,
+  .dp-legends-home-link *,
+  .dp-legends-home-static *
+) {
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-card-rail,
+  .dp-horizontal-entity-rail,
+  .dp-property-image-rail,
+  .dp-related-rail,
+  .dp-campaign-plan-grid.dp-action-card-rail,
+  .dp-ask-prompts
+) {
+  display: grid !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: minmax(220px, 260px) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  align-items: start !important;
+  scroll-snap-type: x proximity !important;
+  padding-bottom: 8px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-card-rail,
+  .dp-horizontal-entity-rail,
+  .dp-property-image-rail,
+  .dp-related-rail,
+  .dp-campaign-plan-grid.dp-action-card-rail,
+  .dp-ask-prompts
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-polished-panel-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-panel-detail-hero,
+  .dp-property-hero,
+  .dp-tab-discovery-media
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  aspect-ratio: 16 / 10 !important;
+  min-height: 126px !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-polished-panel-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-panel-detail-hero,
+  .dp-property-hero,
+  .dp-tab-discovery-media
+) img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center 35% !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-spatial-map, .leaflet-container) {
+  background:
+    linear-gradient(180deg, rgba(247, 248, 251, 0.96), rgba(241, 243, 247, 0.92)),
+    #F7F8FB !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-spatial-map :is(.leaflet-tile, .leaflet-tile-pane) {
+  filter: grayscale(0.16) saturate(0.66) hue-rotate(-7deg) brightness(1.04) contrast(0.94) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.leaflet-control-zoom, .leaflet-control-attribution) {
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 1px 4px rgba(11, 31, 51, 0.04), 0 4px 12px rgba(11, 31, 51, 0.04) !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-panel-shell.dp-map-drawer-shell,
+    aside.dp-panel-shell.dp-map-drawer-shell,
+    .dp-panel-shell.dp-detail-drawer,
+    aside.dp-panel-shell.dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-pass-panel
+  ) {
+    width: calc(100vw - 4px) !important;
+    height: min(91dvh, calc(100dvh - 14px)) !important;
+    max-height: min(91dvh, calc(100dvh - 14px)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-partner-feed-row,
+    .dp-tab-row.dp-partner-feed-row,
+    .dp-campaign-row,
+    .dp-partner-report-card,
+    .dp-report-story-card,
+    .dp-grouped-row
+  ) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* DOWNTOWN PERKS LITERAL EOF SCROLL BODY LOCK */
+html body #root .dp-map-page.dp-map-page .dp-panel-body.dp-panel-scroll,
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell [data-panel-body],
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-body,
+html body #root .dp-map-page.dp-map-page .dp-destination-scroll.dp-drawer-scroll,
+html body #root .dp-map-page.dp-map-page .dp-pass-panel-body,
+html body #root .dp-map-page.dp-map-page .dp-grouped-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+}
+
+/* DOWNTOWN PERKS EOF HIGH-SPECIFICITY PANEL SCROLL LOCK */
+html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-body.dp-panel-scroll.dp-panel-scroll,
+html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-body.dp-panel-scroll.dp-panel-scroll,
+html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-scroll.dp-drawer-scroll,
+html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-scroll.dp-drawer-scroll {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
 }
