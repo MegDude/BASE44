@@ -6,6 +6,7 @@ tmp/
 # runtime assets for the production Vercel build.
 public/assets-originals/
 public/images/imported/*
+!public/images/imported/
 !public/images/imported/perks/
 public/images/imported/perks/*
 !public/images/imported/perks/02-rivian.png

@@ -15418,3 +15418,80 @@ html body #root .dp-map-page.dp-map-page
   display: inline-grid !important;
   place-items: center !important;
 }
+
+/* Final production lock: every map panel keeps a visible close control and one
+   internal scroll region, so long tab/detail content cannot fall behind nav. */
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell.dp-map-drawer-shell,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  .dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-pass-panel
+) {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  height: min(84dvh, calc(100dvh - 72px)) !important;
+  max-height: min(84dvh, calc(100dvh - 72px)) !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell.dp-map-drawer-shell,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  .dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-pass-panel
+) > :is(.dp-panel-toolbar, .dp-destination-close, .dp-drawer-close, .dp-panel-close) {
+  flex: 0 0 auto !important;
+  position: relative !important;
+  z-index: 4 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-body.dp-panel-scroll,
+  .dp-panel-body,
+  [data-panel-body],
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-drawer-scroll,
+  .dp-pass-panel-body
+) {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(3.25rem + env(safe-area-inset-bottom)) !important;
+  scroll-padding-bottom: calc(3.25rem + env(safe-area-inset-bottom)) !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-panel-shell.dp-map-drawer-shell,
+    aside.dp-panel-shell.dp-map-drawer-shell,
+    .dp-panel-shell.dp-detail-drawer,
+    aside.dp-panel-shell.dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-pass-panel
+  ) {
+    height: min(88dvh, calc(100dvh - 48px)) !important;
+    max-height: min(88dvh, calc(100dvh - 48px)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-panel-body.dp-panel-scroll,
+    .dp-panel-body,
+    [data-panel-body],
+    .dp-destination-scroll,
+    .dp-drawer-scroll,
+    .dp-map-drawer-scroll,
+    .dp-pass-panel-body
+  ) {
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
+    scroll-padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
+  }
+}
