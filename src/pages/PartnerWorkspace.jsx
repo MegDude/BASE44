@@ -1031,17 +1031,17 @@ function EventsManager({ user }) {
       ) : (
         <div className="space-y-3">
           {events.map(e => (
-            <div key={e.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/50 bg-card/40 hover:border-border/70 transition-all">
-              <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+            <div key={e.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
+              <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${e.status === "live" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-[13px] text-foreground">{e.title}</div>
-                <div className="text-[12px] text-muted-foreground mt-0.5">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
+                <div className="font-semibold text-[13px] text-[#0B1F33]">{e.title}</div>
+                <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
               </div>
-              <span className="text-[11px] text-muted-foreground hidden md:block shrink-0">{e.rsvp_count || 0} RSVPs</span>
-              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
-                e.status === "live" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
-                e.status === "upcoming" ? "bg-primary/20 text-primary border-primary/30" :
-                "bg-muted text-muted-foreground border-border/50"
+              <span className="text-[11px] font-medium text-[#0B1F33]/40 hidden md:block shrink-0">{e.rsvp_count || 0} RSVPs</span>
+              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border capitalize shrink-0 ${
+                e.status === "live" ? "bg-[rgba(200,169,106,0.1)] text-[#8B6B2F] border-[rgba(200,169,106,0.3)]" :
+                e.status === "upcoming" ? "bg-[rgba(11,31,51,0.05)] text-[#0B1F33]/60 border-[rgba(11,31,51,0.12)]" :
+                "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{e.status}</span>
               <div className="flex items-center gap-1 shrink-0">
                 <button onClick={() => { setEditing(e); setShowForm(true); }} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
@@ -1091,18 +1091,18 @@ function EventForm({ user, event, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-      className="mb-6 p-6 rounded-xl border border-primary/20 bg-primary/5">
+      className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-body text-[15px] font-semibold leading-snug tracking-normal text-foreground">{event ? "Edit event" : "New event"}</h3>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
+        <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{event ? "Edit event" : "New event"}</h3>
+        <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded-full bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/50 hover:bg-[rgba(11,31,51,0.08)] hover:text-[#0B1F33] transition-colors"><X className="w-3.5 h-3.5" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Event title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
         <FormField label="Venue name" value={form.venue_name} onChange={v => setForm(f => ({ ...f, venue_name: v }))} />
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">Category</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Category</label>
           <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
             {EVENT_CATEGORIES.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
           </select>
         </div>
@@ -1113,9 +1113,9 @@ function EventForm({ user, event, onClose, onSave }) {
           <FormField label="Description" value={form.description} onChange={v => setForm(f => ({ ...f, description: v }))} />
         </div>
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">Status</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Status</label>
           <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
             <option value="upcoming">Upcoming</option>
             <option value="live">Live</option>
             <option value="past">Past</option>
@@ -1124,14 +1124,14 @@ function EventForm({ user, event, onClose, onSave }) {
         </div>
         <div className="flex items-center gap-3 pt-5">
           <input type="checkbox" id="members-only" checked={form.is_members_only} onChange={e => setForm(f => ({ ...f, is_members_only: e.target.checked }))}
-            className="w-4 h-4 rounded border-border/60 bg-muted/30 accent-primary" />
-          <label htmlFor="members-only" className="text-[13px] text-muted-foreground">Members only</label>
+            className="w-4 h-4 rounded border-[rgba(11,31,51,0.2)] accent-[#0B1F33]" />
+          <label htmlFor="members-only" className="text-[13px] text-[#0B1F33]/60">Members only</label>
         </div>
         <div className="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
+          <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
             {saving ? "Saving…" : event ? "Save changes" : "Create event"}
           </button>
-          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-[2px] border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
+          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
             Cancel
           </button>
         </div>
@@ -1206,31 +1206,31 @@ function ProfileSection({ user, setUser }) {
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-xl space-y-5">
-        <div className="p-4 rounded-xl border border-border/40 bg-card/20 mb-2">
-          <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">Account</div>
-          <div className="text-[13px] text-foreground">{user.full_name}</div>
-          <div className="text-[12px] text-muted-foreground">{user.email}</div>
+        <div className="p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-[#F7F8FB] mb-2">
+          <div className="text-[10.5px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.12em] mb-1.5">Account</div>
+          <div className="text-[13px] font-medium text-[#0B1F33]">{user.full_name}</div>
+          <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{user.email}</div>
         </div>
 
         <FormField label="Organization name" value={form.organization_name} onChange={v => setForm(f => ({ ...f, organization_name: v }))} />
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">Partner type</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Partner type</label>
           <select value={form.partner_type} onChange={e => setForm(f => ({ ...f, partner_type: e.target.value }))}
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
             {PARTNER_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
           </select>
         </div>
         <FormField label="Website" value={form.website} onChange={v => setForm(f => ({ ...f, website: v }))} type="url" />
         <FormField label="Phone" value={form.phone} onChange={v => setForm(f => ({ ...f, phone: v }))} type="tel" />
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">About</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">About</label>
           <textarea rows={4} value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
             placeholder="Describe your organization, venue, or program."
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors resize-none placeholder:text-[#0B1F33]/25" />
         </div>
 
-        <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
-          {saved ? <><Check className="w-4 h-4" /> Saved</> : saving ? "Saving…" : "Save profile"}
+        <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          {saved ? <><Check className="w-3.5 h-3.5" /> Saved</> : saving ? "Saving…" : "Save profile"}
         </button>
       </form>
     </motion.div>
@@ -1242,10 +1242,10 @@ function ProfileSection({ user, setUser }) {
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (
     <div>
-      <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">{label}</label>
+      <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">{label}</label>
       <input
         type={type} value={value} onChange={e => onChange(e.target.value)} required={required}
-        className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors"
+        className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors placeholder:text-[#0B1F33]/25"
       />
     </div>
   );
@@ -1254,13 +1254,13 @@ function FormField({ label, value, onChange, type = "text", required = false }) 
 function EmptyState({ icon: Icon, headline, body, action, onAction }) {
   return (
     <div className="text-center py-16 px-4">
-      <div className="w-12 h-10 rounded-[2px] border border-border/40 flex items-center justify-center mx-auto mb-4">
-        <Icon className="w-5 h-5 text-muted-foreground/50" />
+      <div className="w-12 h-12 rounded-[10px] border border-[rgba(200,169,106,0.25)] bg-[rgba(200,169,106,0.07)] flex items-center justify-center mx-auto mb-4 shadow-[0_2px_8px_rgba(200,169,106,0.1)]">
+        <Icon className="w-5 h-5 text-[#C8A96A]" />
       </div>
-      <h3 className="font-body mb-2 text-[15px] font-semibold leading-snug tracking-normal text-foreground">{headline}</h3>
-      <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">{body}</p>
-      <button onClick={onAction} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
-        <Plus className="w-4 h-4" /> {action}
+      <h3 className="mb-1.5 text-[15px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{headline}</h3>
+      <p className="text-[13px] text-[#0B1F33]/50 mb-6 max-w-sm mx-auto leading-relaxed">{body}</p>
+      <button onClick={onAction} className="inline-flex items-center gap-2 px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+        <Plus className="w-3.5 h-3.5" /> {action}
       </button>
     </div>
   );
