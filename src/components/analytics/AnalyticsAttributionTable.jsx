@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown, Building2, Map, CalendarDays, MessageSquare, CreditCard, Link as LinkIcon } from 'lucide-react';
 
 const SOURCES = [
-  { id: 'building_qr', label: 'Building QR', icon: '📍' },
-  { id: 'map_discovery', label: 'Map Discovery', icon: '🗺️' },
-  { id: 'event_marker', label: 'Event Marker', icon: '📌' },
-  { id: 'sms', label: 'SMS', icon: '📱' },
-  { id: 'resident_card', label: 'Resident Card', icon: '🎫' },
-  { id: 'direct_link', label: 'Direct Link', icon: '🔗' }
+  { id: 'building_qr', label: 'Building QR', Icon: Building2 },
+  { id: 'map_discovery', label: 'Map Discovery', Icon: Map },
+  { id: 'event_marker', label: 'Event Marker', Icon: CalendarDays },
+  { id: 'sms', label: 'SMS', Icon: MessageSquare },
+  { id: 'resident_card', label: 'Resident Card', Icon: CreditCard },
+  { id: 'direct_link', label: 'Direct Link', Icon: LinkIcon }
 ];
 
 export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 'actions' }) {
@@ -92,7 +92,12 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
                 transition={{ delay: idx * 0.03 }}
                 className="border-b border-border/20 hover:bg-muted/20 transition-colors"
               >
-                <td className="p-4 text-foreground font-medium">{row.icon} {row.label}</td>
+                <td className="p-4 text-foreground font-medium">
+                  <span className="inline-flex items-center gap-2">
+                    <row.Icon className="h-3.5 w-3.5 text-[#C8A96A]" />
+                    {row.label}
+                  </span>
+                </td>
                 <td className="p-4 text-right text-foreground">{row.actions.toLocaleString()}</td>
                 <td className="p-4 text-right text-foreground">{row.visitRate}%</td>
                 <td className="p-4 text-right text-foreground">{row.redemptionRate}%</td>
@@ -120,7 +125,10 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
             className="rounded-xl border border-border/30 bg-card/40 p-4 space-y-2.5"
           >
             <div className="flex items-center justify-between">
-              <span className="font-medium text-foreground">{row.icon} {row.label}</span>
+              <span className="inline-flex items-center gap-2 font-medium text-foreground">
+                <row.Icon className="h-3.5 w-3.5 text-[#C8A96A]" />
+                {row.label}
+              </span>
               <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
                 row.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#C8A96A]' : row.trend === 'down' ? 'bg-[#0B1F33]/8 text-[#0B1F33]/58' : 'bg-muted/50 text-muted-foreground'
               }`}>

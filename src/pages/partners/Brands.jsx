@@ -398,7 +398,7 @@ export default function BrandsPartner() {
         </div>
       </Section>
 
-      <Section id="brand-form" eyebrow="Get Started" title="Start a brand conversation." className="bg-white">
+      <Section id="brand-form" eyebrow="Brand Planning" title="Start a brand conversation." className="bg-white">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
             <div className="flex items-center gap-3">

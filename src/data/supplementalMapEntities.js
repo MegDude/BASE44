@@ -1,17 +1,26 @@
-const DEFAULT_IMAGE = "/images/splash/walkable-map.png";
-const PROPERTY_IMAGE = "/images/properties/bowie-attached.jpg";
-const VENUE_IMAGE = "/images/venues/downtown-dining-patio.png";
-const BRAND_IMAGE = "/images/brands/stay-put-sign.jpg";
-const CIVIC_IMAGE = "/images/residents/downtown-rooftop-evening.png";
-const FINE_EYEWEAR_IMAGE = "/images/map-entities/brand-fine-eyewear/ochialli.webp";
-const RAINEY_CONTEXT_IMAGE = "/images/map-entities/rainey-bars/rainey-street.jpeg";
-const BANGERS_IMAGE = "/images/map-entities/rainey-bars/bangers.jpg";
-const STAY_PUT_IMAGE = "/images/map-entities/rainey-bars/stay-put.jpg";
-const GERALDINES_IMAGE = "/images/map-entities/rainey-bars/geraldines.jpg";
+const DEFAULT_IMAGE = "/images/imported/perks/places-nearby.png";
+const PROPERTY_IMAGE = "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png";
+const VENUE_IMAGE = "/images/imported/perks/downtown-dining-patio.png";
+const BRAND_IMAGE = "/images/imported/perks/yeti-store.png";
+const CIVIC_IMAGE = "/images/imported/perks/republic-square.png";
+const ART_WALK_IMAGE = "/images/imported/perks/downtown-art-walk-1779052670656.png";
+const WATERLOO_CIVIC_IMAGE = "/images/imported/perks/03-waterloo-park.jpg";
+const WATERLINE_IMAGE = "/images/imported/perks/waterline-hero.webp";
+const SHORE_IMAGE = "/images/imported/perks/the-shore.jpg";
+const HOTEL_VAN_ZANDT_IMAGE = "/images/imported/perks/hotel-van-zandt-2560x1570.webp";
+const FOUR_SEASONS_IMAGE = "/images/imported/perks/four-seasons-resi.jpg";
+const YETI_IMAGE = "/images/imported/perks/yeti-store.png";
+const RIVIAN_IMAGE = "/images/imported/perks/rivian.png";
+const LULULEMON_IMAGE = "/images/imported/perks/lululemon-yoga-leggings-64529a1e874e4.webp";
+const FINE_EYEWEAR_IMAGE = "/images/imported/perks/fine-eyewear.png";
+const RAINEY_CONTEXT_IMAGE = "/images/imported/perks/rainey-is-back.png";
+const BANGERS_IMAGE = "/images/imported/perks/bangers-outside.webp";
+const STAY_PUT_IMAGE = "/images/imported/perks/stayput.png";
+const GERALDINES_IMAGE = "/images/imported/perks/geraldine-s.jpg";
 const ANTHEM_IMAGE = "/images/map-entities/rainey-bars/anthem.jpg";
-const EMMER_RYE_IMAGE = "/images/map-entities/rainey-bars/emmer-rye.avif";
+const EMMER_RYE_IMAGE = "/images/imported/perks/emmer-rye-s-the-cacio-cocktail-photo-by-mars-tello.jpg";
 const AMAYA_IMAGE = "/images/map-entities/rainey-bars/amaya.jpeg";
-const VIA_313_IMAGE = "/images/map-entities/rainey-bars/via-313.jpeg";
+const VIA_313_IMAGE = "/images/imported/perks/via313.jpg";
 
 function entity({
   id,
@@ -68,6 +77,25 @@ function entity({
     offers,
     partner,
     pin,
+    mapLayer: datasetLayer || type,
+    resolvedMapLayer: datasetLayer || type,
+    filters: [
+      category,
+      category_key,
+      type,
+      partnerType,
+      datasetLayer,
+      brand,
+      ...(tags || []),
+    ].filter(Boolean),
+    actions: type === "civic" ? ["Open", "Save", "Get directions", "Open civic dashboard"] : ["Open", "Save"],
+    dashboardContext: type === "civic"
+      ? { type: "civic", panel: "civic-dashboard" }
+      : partnerType === "inkind"
+        ? { type: "inkind", panel: "inkind-dashboard" }
+        : type === "property"
+          ? { type: "property", panel: "property-dashboard" }
+          : undefined,
     datasetLayer,
     suggestedModule,
     annualFee,
@@ -156,8 +184,8 @@ export const supplementalMapEntities = [
     longitude: -97.74690583,
     district: "2nd Street",
     address: "210 Lavaca ST # 1910, Austin TX, 78701",
-    summary: "Downtown Austin residence connected to the Legends Real Estate investment portfolio layer.",
-    offer: "Investment Intelligence Portfolio",
+    summary: "Downtown Austin residence connected to the Legends Real Estate downtown homes portfolio.",
+    offer: "Investment planning guide",
     image: PROPERTY_IMAGE,
   }),
   entity({
@@ -173,7 +201,7 @@ export const supplementalMapEntities = [
     district: "Congress",
     address: "555 E 5th ST # 2809, Austin TX, 78701",
     summary: "Downtown residence near core hospitality, events, and daily-use neighborhood access.",
-    offer: "Hotel Privilege Pass Activation",
+    offer: "Hotel guest perk access",
     image: PROPERTY_IMAGE,
   }),
   entity({
@@ -204,18 +232,21 @@ export const supplementalMapEntities = [
     longitude: -97.7515,
     district: "Seaholm",
     address: "501 West Ave #3201, Austin TX, 78701",
-    summary: "Signature Independent residence connected to Legends Real Estate's downtown inventory layer.",
+    summary: "Signature Independent residence connected to Legends Real Estate's downtown homes portfolio.",
     offer: "Architectural Heritage Document",
     image: PROPERTY_IMAGE,
   }),
 
   entity({ id: "priority-frost-tower", name: "Frost Tower", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2662, longitude: -97.7405, district: "Congress", address: "401 Congress Ave, Austin TX, 78701", summary: "Austin's recognizable downtown tower, mapped as a priority building anchor.", image: PROPERTY_IMAGE }),
   entity({ id: "priority-6th-guadalupe", name: "6th & Guadalupe", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2691, longitude: -97.7448, district: "West 6th", address: "400 W 6th St, Austin TX, 78701", summary: "Mixed-use downtown tower at the 6th Street corridor.", image: PROPERTY_IMAGE }),
-  entity({ id: "priority-the-paseo", name: "Paseo", type: "mixed_use", partnerType: "properties", category: "Mixed Use / Residential + Retail", category_key: "mixed_use residential_property retail_business priority_building", latitude: 30.2589, longitude: -97.7381, district: "Rainey", address: "Rainey Street District, Austin TX, 78701", summary: "Mixed-use residential and retail project reshaping the Rainey district alongside the newer residential towers.", offer: "Resident welcome package", image: "/images/map-pins/property/paseo.webp", tier: "premium", tags: ["residential", "retail", "mixed-use", "rainey"], pin: "building", datasetLayer: "Residential & Mixed-Use", suggestedModule: "Resident Discovery + Building Dashboard", annualFee: 499 }),
-  entity({ id: "priority-the-waterline", name: "Waterline", type: "mixed_use", partnerType: "properties", category: "Mixed Use / Residential + Office + Hotel + Retail", category_key: "mixed_use residential_property office hotel_hospitality retail_business priority_building", latitude: 30.2598, longitude: -97.7394, district: "Rainey", address: "98 Red River St, Austin TX, 78701", summary: "Austin's tallest tower combines residences, offices, hospitality, restaurants, and retail within a single development.", offer: "Resident welcome package", image: PROPERTY_IMAGE, tier: "signature", status: "Active Delivery", tags: ["residential", "office", "hotel", "retail", "mixed-use", "rainey"], pin: "tower", datasetLayer: "Residential & Mixed-Use", suggestedModule: "Resident Discovery + Building Dashboard", annualFee: 1499 }),
+  entity({ id: "priority-the-paseo", name: "Paseo", type: "mixed_use", partnerType: "properties", category: "Mixed Use / Residential + Retail", category_key: "mixed_use residential_property retail_business priority_building", latitude: 30.2589, longitude: -97.7381, district: "Rainey", address: "Rainey Street District, Austin TX, 78701", summary: "Mixed-use residential and retail project reshaping the Rainey district alongside the newer residential towers.", offer: "Resident welcome package", image: "/images/map-pins/property/paseo.webp", tier: "premium", tags: ["residential", "retail", "mixed-use", "rainey"], pin: "building", datasetLayer: "Residential & Mixed-Use", suggestedModule: "Resident discovery and building report", annualFee: 499 }),
+  entity({ id: "priority-the-waterline", name: "Waterline", type: "mixed_use", partnerType: "properties", category: "Mixed Use / Residential + Office + Hotel + Retail", category_key: "mixed_use residential_property office hotel_hospitality retail_business priority_building", latitude: 30.2598, longitude: -97.7394, district: "Rainey", address: "98 Red River St, Austin TX, 78701", summary: "Austin's tallest tower combines residences, offices, hospitality, restaurants, and retail within a single development.", offer: "Resident welcome package", image: WATERLINE_IMAGE, tier: "signature", status: "Active Delivery", tags: ["residential", "office", "hotel", "retail", "mixed-use", "rainey"], pin: "tower", datasetLayer: "Residential & Mixed-Use", suggestedModule: "Resident discovery and building report", annualFee: 1499 }),
   entity({ id: "priority-the-independent", name: "The Independent", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2686, longitude: -97.7519, district: "Seaholm", address: "301 West Ave, Austin TX, 78701", summary: "Iconic downtown residential tower connected to resident perks and local discovery.", offer: "Skydeck guest passes", image: "/images/map-pins/property/301-west-ave.jpg" }),
+  entity({ id: "priority-the-austonian", name: "The Austonian", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.264786, longitude: -97.744493, district: "Congress", address: "200 Congress Ave, Austin TX, 78701", summary: "Downtown residential tower on Congress Avenue connected to property access, resident perks, and nearby hospitality.", offer: "Property access and neighborhood context", image: "/buildings/austonian.webp" }),
+  entity({ id: "priority-the-bowie", name: "The Bowie", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.269166, longitude: -97.753036, district: "Seaholm", address: "311 Bowie St, Austin TX, 78703", summary: "Downtown Austin 78701-adjacent residential tower connected to Seaholm, the trail, resident routines, and property access.", offer: "Property access and neighborhood context", image: "/images/map-entities/properties/BOWIE.jpeg" }),
+  entity({ id: "priority-amli-downtown", name: "AMLI Downtown", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.265318, longitude: -97.745872, district: "2nd Street", address: "201 Lavaca St, Austin TX, 78701", summary: "Downtown residential community near 2nd Street, Congress, hotels, dining, and daily-use resident perks.", offer: "Property access and neighborhood context", image: "/images/map-entities/properties/amli-downtown.jpeg" }),
   entity({ id: "priority-70-rainey", name: "70 Rainey", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2583, longitude: -97.7383, district: "Rainey", address: "70 Rainey St, Austin TX, 78701", summary: "Rainey residential tower mapped as a priority resident anchor.", offer: "Herb garden harvest share", image: "/images/map-pins/property/70-rainey.webp" }),
-  entity({ id: "priority-the-shore", name: "The Shore", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2595, longitude: -97.7395, district: "Rainey", address: "603 Davis ST, Austin TX, 78701", summary: "Lakeside residential building with verified resident access context.", offer: "Verified Resident: Lakeside Infinity Pool Access", image: PROPERTY_IMAGE }),
+  entity({ id: "priority-the-shore", name: "The Shore", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2595, longitude: -97.7395, district: "Rainey", address: "603 Davis ST, Austin TX, 78701", summary: "Lakeside residential building with verified resident access context.", offer: "Verified Resident: Lakeside Infinity Pool Access", image: SHORE_IMAGE }),
 
   entity({ id: "partner-comedor", name: "Comedor", type: "venue", partnerType: "venues", category: "Venue / Restaurant", category_key: "restaurant_food venue perk", latitude: 30.2676, longitude: -97.7424, district: "Congress", address: "501 Colorado St, Austin TX, 78701", summary: "Modern Mexican dining in the core of downtown.", offer: "Resident-Only Late Night Tequila Tasting", image: VENUE_IMAGE }),
   entity({ id: "partner-emmer-rye", name: "Emmer & Rye", type: "venue", partnerType: "venues", category: "Restaurant / Premium Dining", category_key: "restaurant_food venue perk rainey_anchor", latitude: 30.2591, longitude: -97.7386, district: "Rainey", address: "51 Rainey St, Austin TX, 78701", summary: "Michelin-recognized Rainey restaurant and a premium dining anchor for resident dinner plans.", offer: "Free appetizer with entree", image: EMMER_RYE_IMAGE, tier: "premium", tags: ["restaurant", "dining", "premium", "rainey"], pin: "dining", datasetLayer: "Venues & Hospitality", annualFee: 499 }),
@@ -225,13 +256,13 @@ export const supplementalMapEntities = [
   entity({ id: "partner-half-step", name: "Half Step", type: "venue", partnerType: "venues", category: "Craft Cocktail Bar", category_key: "bar_nightlife venue perk cocktail rainey_anchor", latitude: 30.2586, longitude: -97.7384, district: "Rainey", address: "75 1/2 Rainey St, Austin TX, 78701", summary: "Craft cocktail bar mapped for resident access, late-evening plans, and nearby hospitality loops.", offer: "Priority access for verified residents", image: RAINEY_CONTEXT_IMAGE, tier: "core", tags: ["cocktails", "bar", "nightlife", "rainey"], pin: "cocktail", datasetLayer: "Venues & Hospitality", annualFee: 199 }),
   entity({ id: "partner-geraldines", name: "Geraldine's", type: "venue", partnerType: "venues", category: "Restaurant + Music", category_key: "restaurant_food live_music venue perk rainey_anchor", latitude: 30.2587, longitude: -97.7392, district: "Rainey", address: "605 Davis St, Austin TX, 78701", summary: "Upscale dining and live music destination inside Hotel Van Zandt.", offer: "Priority reservations and resident chef tasting", image: GERALDINES_IMAGE, tier: "premium", tags: ["restaurant", "music", "hotel", "premium", "rainey"], pin: "music", datasetLayer: "Venues & Hospitality", annualFee: 499 }),
   entity({ id: "partner-via-313", name: "Via 313", type: "venue", partnerType: "venues", category: "Detroit-Style Pizza", category_key: "restaurant_food pizza_dining venue perk", latitude: 30.2585, longitude: -97.7383, district: "Rainey", address: "96 Rainey St, Austin TX, 78701", summary: "Detroit-style pizza partner for easy resident dinner plans and quick group decisions.", offer: "Free appetizer with resident card", image: VIA_313_IMAGE, tier: "core", tags: ["pizza", "restaurant", "resident-plan", "rainey"], pin: "dining", datasetLayer: "Venues & Hospitality", annualFee: 199 }),
-  entity({ id: "partner-jos-coffee", name: "Jo's Coffee", type: "venue", partnerType: "venues", category: "Venue / Coffee", category_key: "coffee_cafe venue perk", latitude: 30.2642, longitude: -97.7471, district: "2nd Street", address: "242 W 2nd St, Austin TX, 78701", summary: "Downtown coffee stop for morning resident routines.", offer: "Upgrade to a Large Belgian Bomber", image: VENUE_IMAGE }),
-  entity({ id: "partner-lustre-pearl-rainey", name: "Lustre Pearl Rainey", type: "venue", partnerType: "venues", category: "Venue / Bar", category_key: "bar_nightlife venue perk happy_hour", latitude: 30.2591, longitude: -97.7381, district: "Rainey", address: "Rainey Street, Austin TX, 78701", summary: "Rainey resident activation for new move-ins and nearby plans.", offer: "First round on us for new move-ins", image: VENUE_IMAGE }),
-  entity({ id: "partner-hotel-van-zandt", name: "Hotel Van Zandt", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2588, longitude: -97.7392, district: "Rainey", address: "605 Davis St, Austin TX, 78701", summary: "Hospitality partner connecting guests and residents to downtown recommendations.", offer: "Resident rate & rooftop access", image: VENUE_IMAGE }),
-  entity({ id: "partner-four-seasons", name: "Four Seasons", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2607, longitude: -97.7414, district: "Congress", address: "98 San Jacinto Blvd, Austin TX, 78701", summary: "Downtown hotel partner connected to dining, spa, and resident perks.", offer: "Spa & dining resident perks", image: VENUE_IMAGE }),
-  entity({ id: "partner-yeti", name: "YETI", type: "brand", partnerType: "brands", brand: "YETI", category: "Brand / Retail", category_key: "brand retail_business", latitude: 30.258, longitude: -97.746, district: "Lady Bird Lake", address: "South Congress District, Austin TX, 78701", summary: "Brand partner mapped for resident lifestyle and downtown retail moments.", offer: "Free custom engraving for verified residents", image: BRAND_IMAGE }),
-  entity({ id: "partner-rivian", name: "Rivian", type: "brand", partnerType: "brands", brand: "Rivian", category: "Brand / Mobility", category_key: "brand retail_business", latitude: 30.256, longitude: -97.748, district: "Lady Bird Lake", address: "Downtown Austin, TX 78701", summary: "Mobility brand partner connected to resident test drives and downtown charging interest.", offer: "Priority test drives & resident charging perks", image: BRAND_IMAGE }),
-  entity({ id: "partner-lululemon", name: "lululemon", type: "brand", partnerType: "brands", brand: "lululemon", category: "Brand / Wellness", category_key: "brand retail_business fitness", latitude: 30.265, longitude: -97.745, district: "2nd Street", address: "Downtown Austin, TX 78701", summary: "Wellness retail partner for resident run clubs and early access.", offer: "Private resident run club events & early access", image: BRAND_IMAGE }),
+  entity({ id: "partner-jos-coffee", name: "Jo's Coffee", type: "venue", partnerType: "venues", category: "Venue / Coffee", category_key: "coffee_cafe venue perk", latitude: 30.2642, longitude: -97.7471, district: "2nd Street", address: "242 W 2nd St, Austin TX, 78701", summary: "Downtown coffee stop for morning resident routines.", offer: "Upgrade to a Large Belgian Bomber", image: "/images/imported/perks/joes-cofffee-2.png" }),
+  entity({ id: "partner-lustre-pearl-rainey", name: "Lustre Pearl Rainey", type: "venue", partnerType: "venues", category: "Venue / Bar", category_key: "bar_nightlife venue perk happy_hour", latitude: 30.2591, longitude: -97.7381, district: "Rainey", address: "Rainey Street, Austin TX, 78701", summary: "Rainey resident welcome stop for new move-ins and nearby plans.", offer: "First round on us for new move-ins", image: RAINEY_CONTEXT_IMAGE }),
+  entity({ id: "partner-hotel-van-zandt", name: "Hotel Van Zandt", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2588, longitude: -97.7392, district: "Rainey", address: "605 Davis St, Austin TX, 78701", summary: "Hospitality partner connecting guests and residents to downtown recommendations.", offer: "Resident rate & rooftop access", image: HOTEL_VAN_ZANDT_IMAGE }),
+  entity({ id: "partner-four-seasons", name: "Four Seasons", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2607, longitude: -97.7414, district: "Congress", address: "98 San Jacinto Blvd, Austin TX, 78701", summary: "Downtown hotel partner connected to dining, spa, and resident perks.", offer: "Spa & dining resident perks", image: FOUR_SEASONS_IMAGE }),
+  entity({ id: "partner-yeti", name: "YETI", type: "brand", partnerType: "brands", brand: "YETI", category: "Brand / Retail", category_key: "brand retail_business", latitude: 30.258, longitude: -97.746, district: "Lady Bird Lake", address: "South Congress District, Austin TX, 78701", summary: "Brand partner mapped for resident lifestyle and downtown retail moments.", offer: "Free custom engraving for verified residents", image: YETI_IMAGE }),
+  entity({ id: "partner-rivian", name: "Rivian", type: "brand", partnerType: "brands", brand: "Rivian", category: "Brand / Mobility", category_key: "brand retail_business", latitude: 30.256, longitude: -97.748, district: "Lady Bird Lake", address: "Downtown Austin, TX 78701", summary: "Mobility brand partner connected to resident test drives and downtown charging interest.", offer: "Priority test drives & resident charging perks", image: RIVIAN_IMAGE }),
+  entity({ id: "partner-lululemon", name: "lululemon", type: "brand", partnerType: "brands", brand: "lululemon", category: "Brand / Wellness", category_key: "brand retail_business fitness", latitude: 30.265, longitude: -97.745, district: "2nd Street", address: "Downtown Austin, TX 78701", summary: "Wellness retail partner for resident run clubs and early access.", offer: "Private resident run club events & early access", image: LULULEMON_IMAGE }),
   entity({ id: "partner-equinox", name: "Equinox", type: "brand", partnerType: "brands", brand: "Equinox", category: "Brand / Wellness", category_key: "brand wellness fitness", latitude: 30.2685, longitude: -97.7492, district: "Seaholm", address: "Downtown Austin, TX 78701", summary: "Premium wellness partner connected to resident movement and downtown routines.", offer: "Complimentary high-tier assessment & session", image: BRAND_IMAGE }),
   entity({ id: "partner-heritage-boots", name: "Heritage Boots", type: "brand", partnerType: "brands", brand: "Heritage Boots", category: "Brand / Retail", category_key: "brand retail_business", latitude: 30.2612, longitude: -97.7421, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Local retail partner for downtown resident offers.", offer: "Exclusive resident custom boot fitting", image: BRAND_IMAGE }),
   entity({
@@ -280,9 +311,15 @@ export const supplementalMapEntities = [
       bestFor: "Adjustments, lenses, styling",
     },
   }),
-  entity({ id: "partner-topo-chico", name: "Topo Chico", type: "brand", partnerType: "brands", brand: "Topo Chico", category: "Brand / Activation", category_key: "brand activation", latitude: 30.2632, longitude: -97.7441, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Brand activation connected to downtown verification stands and resident moments.", offer: "Free mineral water at any Rainey verification stand", image: BRAND_IMAGE }),
+  entity({ id: "partner-topo-chico", name: "Topo Chico", type: "brand", partnerType: "brands", brand: "Topo Chico", category: "Brand / Nearby Offer", category_key: "brand activation", latitude: 30.2632, longitude: -97.7441, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Brand moment connected to downtown check-in stands and resident stops.", offer: "Free mineral water at any Rainey check-in stand", image: BRAND_IMAGE }),
 
-  entity({ id: "civic-dana", name: "DANA (Downtown Austin Neighborhood Assoc)", type: "civic", partnerType: "civic", category: "Civic / Resident Advocacy", category_key: "civic public district", latitude: 30.267, longitude: -97.743, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Resident advocacy and neighborhood representation for downtown Austin.", offer: "Resident advocacy & premium meetings", image: CIVIC_IMAGE }),
-  entity({ id: "civic-daa", name: "Downtown Austin Alliance (DAA)", type: "civic", partnerType: "civic", category: "Civic / Downtown District", category_key: "civic public district", latitude: 30.268, longitude: -97.742, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Downtown district organization focused on public realm, safety, and economic vitality.", offer: "Infrastructure & Public Realm Updates", image: CIVIC_IMAGE }),
-  entity({ id: "civic-waterloo-greenway", name: "Waterloo Greenway", type: "civic", partnerType: "civic", category: "Civic / Public Space", category_key: "civic public district", latitude: 30.272, longitude: -97.734, district: "Red River", address: "Waterloo Park, Austin TX, 78701", summary: "Urban park system and public space partner in downtown Austin.", offer: "Park Activation & Green Space Access", image: CIVIC_IMAGE }),
+  entity({ id: "downtown-art-walk", name: "Downtown Art Walk", type: "event", partnerType: "civic", category: "Civic / Art Walk", category_key: "civic event art_walk public_art downtown_programming community_activations", latitude: 30.2672, longitude: -97.7431, district: "Downtown Austin", address: "Downtown Austin, TX 78701", summary: "A walkable public art and district programming route through downtown.", offer: "Tour log and public art check-in reward", image: ART_WALK_IMAGE, pinKey: "civic", tags: ["Civic", "Events", "Downtown Programming", "Art Walk", "Public Art"], datasetLayer: "civic" }),
+  entity({ id: "civic-dana", name: "DANA (Downtown Austin Neighborhood Assoc)", type: "civic", partnerType: "civic", category: "Civic / Resident Advocacy", category_key: "civic public district community neighborhood association dana", latitude: 30.267, longitude: -97.743, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Resident advocacy and neighborhood representation for downtown Austin.", offer: "Resident advocacy and premium meetings", image: CIVIC_IMAGE, pinKey: "civic", tags: ["Civic", "Community", "District"], datasetLayer: "civic" }),
+  entity({ id: "civic-daa", name: "Downtown Austin Alliance (DAA)", type: "civic", partnerType: "civic", category: "Civic / Downtown District", category_key: "civic public district downtown programming walkability daa", latitude: 30.268, longitude: -97.742, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Downtown district organization focused on public realm, safety, walkability, and economic vitality.", offer: "Infrastructure and public realm updates", image: CIVIC_IMAGE, pinKey: "civic", tags: ["Civic", "Downtown Programming", "Walkability", "District"], datasetLayer: "civic" }),
+  entity({ id: "civic-waterloo-greenway", name: "Waterloo Greenway", type: "civic", partnerType: "civic", category: "Civic / Public Space", category_key: "civic public space district waterloo greenway parks activations", latitude: 30.2736, longitude: -97.7352, district: "Waterloo", address: "Waterloo Park, Austin TX, 78701", summary: "Urban greenway, public space, events, trails, and community programming in downtown Austin.", offer: "Park events and green space access", image: WATERLOO_CIVIC_IMAGE, pinKey: "civic", tags: ["Civic", "Events", "Parks", "Greenway", "Public Space"], datasetLayer: "civic" }),
+  entity({ id: "civic-republic-square-programming", name: "Republic Square Programming", type: "civic", partnerType: "civic", category: "Civic / Downtown Programming", category_key: "civic event public_space downtown_programming republic_square markets community_activations", latitude: 30.26759, longitude: -97.74722, district: "Warehouse District", address: "422 Guadalupe St, Austin, TX 78701", summary: "Public-space programming, markets, community events, and downtown gathering moments at Republic Square.", offer: "Community event visibility", image: CIVIC_IMAGE, pinKey: "civic", tags: ["Civic", "Events", "Markets", "Community Events"], datasetLayer: "civic" }),
+  entity({ id: "inkind-j-carvers", name: "J Carver's", type: "restaurant", partnerType: "inkind", category: "Dining / inKind", category_key: "inkind dining restaurant perk venues", latitude: 30.26764, longitude: -97.74615, district: "West Downtown", address: "509 Rio Grande St, Austin, TX 78701", summary: "Resident bar-seat hold and inKind dining value for prime dinner service.", offer: "Resident dining credit through inKind", image: VENUE_IMAGE, pinKey: "inkind", tags: ["inKind", "Dining", "Venues", "Perks"], datasetLayer: "venue" }),
+  entity({ id: "inkind-peche", name: "Péché", type: "restaurant", partnerType: "inkind", category: "Dining / inKind", category_key: "inkind dining restaurant perk happy_hour cocktails", latitude: 30.26671, longitude: -97.74568, district: "Warehouse District", address: "208 W 4th St, Austin, TX 78701", summary: "French-inspired downtown dining with 50% off select food, $6 cocktails, Sunday/Monday all night, and Tuesday-Friday 4-7.", offer: "50% off select food and $6 cocktails through inKind dining access", image: VENUE_IMAGE, pinKey: "inkind", tags: ["inKind", "Dining", "Venues", "Perks", "Happy Hour"], datasetLayer: "venue" }),
+  entity({ id: "inkind-parkside", name: "Parkside", type: "restaurant", partnerType: "inkind", category: "Dining / inKind", category_key: "inkind dining restaurant perk oysters happy_hour", latitude: 30.26706, longitude: -97.74156, district: "Congress", address: "301 E 6th St, Austin, TX 78701", summary: "Downtown dining and oyster-hour context with inKind-compatible resident value.", offer: "Resident dining value through inKind", image: VENUE_IMAGE, pinKey: "inkind", tags: ["inKind", "Dining", "Venues", "Perks"], datasetLayer: "venue" }),
+  entity({ id: "inkind-hopdoddy-congress", name: "Hopdoddy Burger Bar", type: "restaurant", partnerType: "inkind", category: "Dining / inKind", category_key: "inkind dining restaurant burger perk venues", latitude: 30.26491, longitude: -97.74398, district: "Congress", address: "1400 S Congress Ave, Austin, TX 78704", summary: "Casual burger stop with resident dining value and walkable downtown decision context.", offer: "Resident dining value through inKind", image: VENUE_IMAGE, pinKey: "inkind", tags: ["inKind", "Dining", "Venues", "Perks"], datasetLayer: "venue" }),
 ];

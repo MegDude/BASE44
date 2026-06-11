@@ -93,7 +93,7 @@ const events = [
     venue: "Waterline District",
     category: "Local",
     going: 31,
-    image: "/images/properties/bowie-attached.jpg",
+    image: "/images/imported/perks/w-austin-lavaca-listing.jpg",
     imageAlt: "Downtown Austin residential building context",
     imageLabel: "Neighborhood preview",
     description: "See what is opening nearby, what is walkable, and which places are worth keeping on your radar if you live downtown.",

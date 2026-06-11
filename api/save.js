@@ -16,10 +16,12 @@ export default async function handler(req, res) {
       .json({ error: 'Missing required fields: profileId, entityType, and entityId are required' });
   }
 
-  const { error } = await supabaseServer.from('saved_items').insert({
+  const { error } = await supabaseServer.from('saved_items').upsert({
     profile_id: profileId,
     entity_type: entityType,
     entity_id: entityId
+  }, {
+    onConflict: 'profile_id,entity_type,entity_id'
   });
 
   if (error) {

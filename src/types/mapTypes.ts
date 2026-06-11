@@ -2,7 +2,7 @@ import type { HappyHourVenue } from "@/data/happyHourInventory";
 import type { WaterlooParkPin } from "@/data/waterlooParkInventory";
 
 export type DowntownPerksMapInventorySource =
-  | { type: "production"; records: DowntownPerksInventoryRecord[] }
+  | { type: "production"; records: unknown[] }
   | { type: "happy-hour"; records: HappyHourVenue[] }
   | { type: "waterloo"; records: WaterlooParkPin[] }
   | { type: "waterloo-campaign"; records: unknown[] };

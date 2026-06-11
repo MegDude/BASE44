@@ -5,7 +5,7 @@ const FOOTER_LINKS = {
     { to: "/map?mode=resident&tab=map", label: "Map" },
     { to: "/events", label: "Events" },
     { to: "/card", label: "Perks Card" },
-    { to: "/residents", label: "Get Started" },
+    { to: "/residents", label: "Resident Access" },
   ],
   Partners: [
     { to: "/partners/properties", label: "Properties" },

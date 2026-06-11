@@ -36,8 +36,8 @@ const forms = [
   {
     id: "venues",
     label: "Venues",
-    headline: "Free-$199/month.",
-    sub: "Free Forever includes one active resident perk.",
+    headline: "Starter-Pro.",
+    sub: "Starter includes one active resident perk.",
     fields: [
       { name: "business", label: "Business Name", type: "text" },
       { name: "name", label: "Your Name", type: "text" },
@@ -147,7 +147,7 @@ export default function ContactSection() {
             transition={{ duration: 0.7 }}
           >
             <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
-              Get Started
+              Contact Downtown Perks
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
               Ready when

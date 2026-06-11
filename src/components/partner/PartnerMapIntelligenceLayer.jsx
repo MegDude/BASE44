@@ -18,18 +18,18 @@ const KIND_ICONS = {
 
 const VISUAL_SETS = {
   civic: [
-    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
+    "/images/imported/perks/republic-square.jpg",
     "/images/splash/walkable-map.png",
-    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
+    "/images/imported/perks/downtonw-trail.jpg",
   ],
   brand: [
     "/images/splash/walkable-map.png",
-    "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+    "/images/imported/perks/scanning-downtown-perks-in-a-cafe.png",
     "/images/residents/downtown-rooftop-evening.png",
   ],
   hotel: [
     "/images/partners/hospitality-rooftop-social.png",
-    "/images/map-entities/perks/partner_hotel_rooftop_1779052803267.png",
+    "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     "/images/splash/walkable-map.png",
   ],
   property: [
@@ -39,8 +39,8 @@ const VISUAL_SETS = {
   ],
   venue: [
     "/images/venues/downtown-dining-patio.png",
-    "/images/map-entities/perks/partner_dining_patio_1779052819620.png",
-    "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+    "/images/imported/perks/bangers-outside.webp",
+    "/images/imported/perks/daydreamer-coffee-at-paseo-tower.jpg",
   ],
 };
 

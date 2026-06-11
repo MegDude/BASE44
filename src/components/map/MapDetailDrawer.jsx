@@ -57,7 +57,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           <button
             onClick={onClose}
             className="flex h-7 w-7 shrink-0 items-center justify-center bg-transparent text-[#0B1F33]/54 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
-            aria-label="Close drawer"
+            aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>

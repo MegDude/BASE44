@@ -626,7 +626,7 @@ export default function Landing() {
         backgroundVariant="light"
       />
 
-      <Section id="get-started" eyebrow="Get Started" title="Get My Perks Card" className="bg-white">
+      <Section id="get-started" eyebrow="Resident Access" title="Get My Perks Card" className="bg-white">
         <ResidentSignupForm />
       </Section>
     </div>

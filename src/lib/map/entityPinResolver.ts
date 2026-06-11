@@ -68,7 +68,7 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   }
 
   if (/\b(in[\s-]?kind|dining credit|restaurant credit|dining perk)\b/.test(text)) {
-    return getPinAsset("offer");
+    return getPinAsset("inkind");
   }
 
   const categoryText = [entity.category, entity.category_key, entity.type].filter(Boolean).join(" ").toLowerCase();

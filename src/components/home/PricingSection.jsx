@@ -26,9 +26,9 @@ const tiers = [
   {
     label: "Venues",
     sub: "Restaurants, bars, fitness, wellness",
-    price: "Free-$199/month",
+    price: "Starter-Pro",
     note: "Show up in the moment that counts.",
-    detail: "Free Forever includes one active resident perk.",
+    detail: "Starter includes one active resident perk.",
     href: "/partners/venues",
   },
   {

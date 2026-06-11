@@ -1,4 +1,4 @@
-import { CalendarDays, Glasses, MapPin, Sparkles, Ticket, Users } from "lucide-react";
+import { CalendarDays, Glasses, Sparkles, Ticket } from "lucide-react";
 import BrandHero from "../../../components/downtown-perks/brands/BrandHero";
 import { BrandCTA, BrandSection, FlowCard, SignalCard, UseCaseCard } from "../../../components/downtown-perks/brands/BrandSection";
 import { CampaignImagePanel, campaignImages } from "../../../components/downtown-perks/brands/CampaignImagePanel";

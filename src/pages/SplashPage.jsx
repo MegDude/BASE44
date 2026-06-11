@@ -1,93 +1,101 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowDown, ArrowLeft, ArrowRight, MapPin, Menu, Sparkles, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin, Menu, Sparkles, X } from "lucide-react";
 
 const splashNavLinks = [
   { label: "Resident Map", to: "/map?mode=resident&tab=map" },
   { label: "Partner Map", to: "/map?mode=partner&tab=map&filter=All" },
-  { label: "Campaigns", to: "/partners/campaigns" },
-  { label: "Dashboard", to: "/partners/dashboard" },
+  { label: "Campaign Builder", to: "/partners/campaigns" },
   { label: "Workspace", to: "/partner-workspace/overview" },
-  { label: "Pricing", to: "/pricing" },
 ];
 
-const scenes = [
+const storyStates = [
   {
     id: "start",
     number: "01",
     nav: "Start",
-    eyebrow: "Start here",
-    label: "Downtown Perks",
-    title: ["More charm than", "a biscuit with honey."],
-    subtitle: ["Downtown Perks brings the heat", "and the hospitality."],
-    body: [
+    kicker: "Downtown flavor",
+    headline: ["More charm than", "a biscuit with honey."],
+    meaning: "Downtown Perks brings the heat — and the hospitality.",
+    supporting: [
       "Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.",
     ],
-    primary: { label: "Explore Downtown", to: "/map?mode=resident&tab=map" },
-    secondary: "Show me",
-    startStage: true,
+    scene: {
+      type: "welcome",
+      label: "Local cues",
+      items: ["Town Lake", "South Congress", "Happy hour", "Hospitality"],
+      detail: "Tap a cue to set the mood.",
+    },
   },
   {
-    id: "idea",
+    id: "scattered",
     number: "02",
-    nav: "The idea",
-    eyebrow: "Downtown should be easier to use",
-    title: ["The coffee shop you keep meaning to try.", "The workout class you always hear about too late.", "The rooftop before it gets crowded."],
-    body: [
-      "The happy hour two blocks away.",
-      "The local business you pass all the time until someone finally says, \"Wait - you've never been there?\"",
+    nav: "Scattered",
+    kicker: "The old way",
+    headline: ["Most things already exist.", "They’re just scattered."],
+    meaning: "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
+    supporting: [
+      "The coffee shop you keep meaning to try, the workout class you always hear about too late, the rooftop before it gets crowded.",
+      "The local business you pass all the time until someone finally says, “Wait — you’ve never been there?”",
     ],
-    variant: "list",
+    scene: {
+      type: "scatter",
+      label: "Scattered signals",
+      items: ["Group chat", "Screenshot", "Newsletter", "Open tab", "Saved post"],
+      detail: "Each tap pulls one loose plan into view.",
+    },
   },
   {
-    id: "features",
+    id: "easier",
     number: "03",
-    nav: "What you get",
-    eyebrow: "Why it gets messy",
-    title: ["Most things already exist.", "They're just scattered."],
-    body: [
-      "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
+    nav: "Easier",
+    kicker: "A better downtown day",
+    headline: ["Downtown should be", "easier to use."],
+    meaning: "Easier to navigate. Easier to connect. More useful day to day.",
+    supporting: [
       "So we built one map to bring everything together.",
+      "Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s happening, and worth showing up for.",
     ],
-    movedCopy: "For the people planning around rooftop weather, happy hour, workout classes, taco runs, live music, and \"just one drink\" that turns into the whole night.",
-    variant: "center",
+    scene: {
+      type: "map",
+      label: "One map",
+      items: ["Coffee", "Fitness", "Rooftop", "Dinner", "Live music"],
+      detail: "Tap a pin to watch the plan come together.",
+    },
   },
   {
-    id: "explore",
+    id: "plans",
     number: "04",
-    nav: "Explore",
-    eyebrow: "What you can find",
-    title: ["Everything nearby.", "Coffee before work.", "The workout class after.", "The rooftop when the weather is right.", "All in one place."],
-    body: [
-      "The restaurant you've been meaning to try.",
-      "The event someone texts you about at 6:17 PM.",
+    nav: "Together",
+    kicker: "Both sides of downtown",
+    headline: ["Whether you’re", "making plans or part of them."],
+    meaning: "Downtown Perks helps residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
+    supporting: [
+      "And when people choose local, they unlock perks, offers, rewards, and little extras from the places that keep downtown interesting.",
     ],
-    variant: "stack",
-    primary: { label: "Enter Resident View", to: "/map?mode=resident&tab=map" },
+    scene: {
+      type: "connection",
+      label: "Plan meets place",
+      items: ["Residents", "Hotels", "Events", "Local businesses"],
+      detail: "Tap a group to see the connection light up.",
+    },
   },
   {
-    id: "partners",
+    id: "map",
     number: "05",
-    nav: "Partners",
-    eyebrow: "For the people part of the plan",
-    title: ["Whether you're making plans", "or part of them."],
-    body: [
-      "Downtown Perks helps residents make better plans faster - while helping local businesses stay relevant in the moments that actually matter.",
-      "And when you choose local, you unlock perks, offers, rewards, and little extras from the places that keep downtown interesting.",
-      "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
+    nav: "Perks",
+    kicker: "Choosing local",
+    headline: ["Choosing local", "comes with its perks."],
+    meaning: "Downtown Perks helps residents discover more of downtown with less effort — while helping local businesses show up naturally in the moments that actually matter.",
+    supporting: [
+      "Discounts, rewards, and little extras from the places that make downtown worth exploring.",
     ],
-    variant: "closing",
-    primary: { label: "Open Partner Map", to: "/map?mode=partner&tab=map&filter=All" },
-  },
-  {
-    id: "come-in",
-    number: "06",
-    nav: "Come in",
-    eyebrow: "Ready when you are",
-    title: ["So come on in.", "Open the map."],
-    variant: "final",
-    closing: ["And maybe grab something cold", "while you're at it."],
-    primary: { label: "Explore Downtown", to: "/map?mode=resident&tab=map" },
+    scene: {
+      type: "perks",
+      label: "Perks nearby",
+      items: ["Discounts", "Rewards", "Little extras", "Worth exploring"],
+      detail: "Tap a perk to preview the payoff.",
+    },
   },
 ];
 
@@ -95,222 +103,11 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
-function SceneHeader({ scene, progress, isActive, isLast, go }) {
-  return (
-    <div className="dp-scene-kicker">
-      <div className="dp-scene-kicker-copy">
-        <span>{scene.number}</span>
-        <i aria-hidden="true" />
-        <em>{scene.eyebrow}</em>
-      </div>
-      {isActive && (
-        <div className="dp-scene-kicker-action">
-          <span aria-label="Progress">{progress}</span>
-          <button type="button" onClick={() => go(1)} aria-label="Next scene" disabled={isLast}>
-            <ArrowDown className="h-4 w-4" />
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SceneTitle({ lines, variant = "" }) {
-  return (
-    <h1 className={`dp-scene-title ${variant ? `is-${variant}` : ""}`}>
-      {lines.map((line) => (
-        <span key={line} className="dp-scene-line">
-          <span>{line}</span>
-        </span>
-      ))}
-    </h1>
-  );
-}
-
-function SceneBody({ scene }) {
-  return (
-    <div className={`dp-scene-body ${scene.variant ? `is-${scene.variant}` : ""}`}>
-      {scene.body?.map((copy) => {
-        if (copy.startsWith("Downtown Perks helps residents")) {
-          return (
-            <p key={copy} className="dp-scene-partner-opening">
-              <span>Downtown Perks helps residents make better plans faster - while helping</span>
-              <span>local businesses stay relevant in the moments that actually matter.</span>
-            </p>
-          );
-        }
-        if (copy.startsWith("And when you choose local")) {
-          return (
-            <p key={copy} className="dp-scene-partner-emphasis">
-              {copy}
-            </p>
-          );
-        }
-        if (copy.startsWith("For residents, it means")) {
-          return (
-            <p key={copy} className="dp-scene-partner-split">
-              <span>For residents, it means less searching more doing.</span>
-              <span>For local businesses, it means showing up naturally</span>
-              <span className="dp-scene-partner-nowrap">while people nearby are deciding where to go.</span>
-            </p>
-          );
-        }
-        if (!copy.includes("\"Wait - you've never been there?\"")) return <p key={copy}>{copy}</p>;
-        const [lead, quote] = copy.split("\"Wait - you've never been there?\"");
-        return (
-          <p key={copy} className="dp-scene-editorial-line">
-            {lead}
-            <span>"{quote || "Wait - you've never been there?"}"</span>
-          </p>
-        );
-      })}
-    </div>
-  );
-}
-
-function FeaturesScene({ scene, index, go }) {
-  const closingLine = scene.body[1];
-  const splitClosing = "So we built one map";
-  const finalLine = "that turns into the whole night.";
-
-  return (
-    <>
-      <h1 className="dp-scene-title is-center">
-        <span className="dp-scene-line">
-          <span>{scene.title[0]}</span>
-        </span>
-        <span className="dp-scene-line is-gold">
-          <span>{scene.title[1]}</span>
-        </span>
-      </h1>
-
-      <div className="dp-scene-body is-center">
-        <p>{scene.body[0]}</p>
-      </div>
-
-      <div className="dp-scene-feature-closing" aria-label={closingLine}>
-        <span>{splitClosing}</span>
-        <span>to bring everything together.</span>
-      </div>
-
-      {scene.movedCopy && (
-        <p className="dp-scene-moved-copy">
-          <span>For the people planning around rooftop weather, happy hour, workout classes,</span>
-          <span>taco runs, live music, and "just one drink" that turns into the whole night.</span>
-        </p>
-      )}
-
-      <SceneActions scene={scene} index={index} go={go} />
-    </>
-  );
-}
-
-function StartScene({ scene, index, go }) {
-  const finalLine = "that turns into the whole night.";
-
-  return (
-    <div className="dp-start-stage">
-      {scene.label && <p className="dp-splash-label">{scene.label}</p>}
-      <h1 className="dp-start-title">
-        <span className="dp-scene-line">
-          <span>{scene.title[0]}</span>
-        </span>
-        <span className="dp-scene-line is-gold">
-          <span>{scene.title[1]}</span>
-        </span>
-      </h1>
-
-      {scene.subtitle && (
-        <h2 className="dp-start-subtitle">
-          {scene.subtitle.map((line) => (
-            <span key={line} className="dp-scene-line">
-              <span>{line}</span>
-            </span>
-          ))}
-        </h2>
-      )}
-
-      <div className="dp-start-body">
-        {scene.body.map((copy) => {
-          if (!copy.includes(finalLine)) return <p key={copy}>{copy}</p>;
-          const [lead] = copy.split(finalLine);
-          return (
-            <p key={copy}>
-              {lead.trimEnd()}{" "}
-              <span className="dp-start-final-line">{finalLine}</span>
-            </p>
-          );
-        })}
-      </div>
-
-      <SceneActions scene={scene} index={index} go={go} />
-    </div>
-  );
-}
-
-function SceneClosing({ scene }) {
-  if (!scene.closing?.length) return null;
-  return (
-    <div className="dp-scene-closing" aria-label="Closing message">
-      {scene.closing.map((line, index) => (
-        <span key={line} className={scene.variant !== "final" && index === scene.closing.length - 1 ? "is-gold" : ""}>
-          {line}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function SceneActions({ scene, index, go }) {
-  return (
-    <div className="dp-scene-actions">
-      {scene.primary && (
-        <Link className="dp-scene-cta is-primary" to={scene.primary.to}>
-          {scene.primary.label}
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
-      )}
-      {scene.secondaryLink ? (
-        <Link className="dp-scene-cta" to={scene.secondaryLink.to}>
-          {scene.secondaryLink.label}
-        </Link>
-      ) : scene.secondary ? (
-        <button type="button" className="dp-scene-cta" onClick={() => go(1)}>
-          {scene.secondary}
-        </button>
-      ) : !scene.primary ? (
-        <button type="button" className="dp-scene-cta" onClick={() => go(1)}>
-          Next
-        </button>
-      ) : null}
-      {index > 0 && (
-        <button type="button" className="dp-scene-ghost" onClick={() => go(-1)}>
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Back
-        </button>
-      )}
-    </div>
-  );
-}
-
-function ScenePreview({ scene }) {
-  if (!scene.list?.length) return null;
-  return (
-    <div className="dp-scene-preview" aria-label={`${scene.nav} highlights`}>
-      {scene.list.map((item) => (
-        <div key={item}>
-          <span>{item}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function SplashNavigation({ isOpen, setIsOpen }) {
   const close = () => setIsOpen(false);
 
   return (
-    <header className="dp-scene-topbar">
+    <header className="dp-scene-topbar dp-fixed-story-topbar">
       <div className="dp-splash-nav-left">
         <Link to="/" className="dp-scene-brand" onClick={close} aria-label="Downtown Perks home">
           <span aria-hidden="true" className="dp-scene-brand-icon">
@@ -361,6 +158,62 @@ function SplashNavigation({ isOpen, setIsOpen }) {
   );
 }
 
+function FixedStoryStage({ state, active, go }) {
+  const isFirst = active === 0;
+  const isLast = active === storyStates.length - 1;
+
+  return (
+    <section className="dp-fixed-story-stage dp-scene-stage" aria-label="Downtown Perks story">
+      <div className="dp-fixed-story-state">
+        <div className="dp-fixed-story-copy">
+          <div className="dp-fixed-story-kicker-slot">
+            <p key={`kicker-${state.id}`} className="dp-fixed-story-kicker">{state.kicker}</p>
+          </div>
+          <div className="dp-fixed-story-headline-slot">
+            <h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
+              {state.headline.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </h1>
+          </div>
+          <div className="dp-fixed-story-meaning-slot">
+            <p key={`meaning-${state.id}`} className="dp-fixed-story-meaning">{state.meaning}</p>
+          </div>
+          <div className="dp-fixed-story-supporting-slot">
+            <div key={`supporting-${state.id}`} className="dp-fixed-story-supporting">
+              {state.supporting.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="dp-fixed-story-actions" aria-label="Story navigation">
+          <button type="button" onClick={() => go(-1)} disabled={isFirst}>
+            <ArrowLeft />
+            Back
+          </button>
+          <button type="button" onClick={() => go(1)} disabled={isLast}>
+            Next
+            <ArrowRight />
+          </button>
+        </div>
+
+        <div className="dp-fixed-map-actions" aria-label="Open map views">
+          <Link to="/map?mode=resident&tab=map">
+            Resident Map
+            <ArrowRight />
+          </Link>
+          <Link to="/map?mode=partner&tab=map&filter=All">
+            Partner Map
+            <ArrowRight />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function SplashPage() {
   const [active, setActive] = useState(0);
   const [showIntro, setShowIntro] = useState(() => {
@@ -370,26 +223,23 @@ export default function SplashPage() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const lockRef = useRef(false);
   const touchStartRef = useRef(null);
+  const state = storyStates[active];
 
   const finishIntro = useCallback(() => {
     setShowIntro(false);
   }, []);
 
   const activate = useCallback((next) => {
-    setActive((current) => {
-      const normalized = clamp(next, 0, scenes.length - 1);
-      return normalized === current ? current : normalized;
-    });
+    setActive(clamp(next, 0, storyStates.length - 1));
   }, []);
 
   const go = useCallback((delta) => {
-    if (showIntro) return;
-    if (lockRef.current) return;
+    if (showIntro || lockRef.current) return;
     lockRef.current = true;
-    setActive((current) => clamp(current + delta, 0, scenes.length - 1));
+    setActive((current) => clamp(current + delta, 0, storyStates.length - 1));
     window.setTimeout(() => {
       lockRef.current = false;
-    }, 680);
+    }, 520);
   }, [showIntro]);
 
   useEffect(() => {
@@ -419,7 +269,7 @@ export default function SplashPage() {
         go(-1);
       }
       if (event.key === "Home") activate(0);
-      if (event.key === "End") activate(scenes.length - 1);
+      if (event.key === "End") activate(storyStates.length - 1);
     };
 
     const onTouchStart = (event) => {
@@ -448,15 +298,10 @@ export default function SplashPage() {
     };
   }, [activate, go]);
 
-  useEffect(() => {
-    const activeContent = document.querySelector(".dp-scene-slide.is-active .dp-scene-content");
-    if (activeContent) activeContent.scrollTop = 0;
-  }, [active]);
-
-  const progress = useMemo(() => `${active + 1} / ${scenes.length}`, [active]);
+  const progress = useMemo(() => `${active + 1} / ${storyStates.length}`, [active]);
 
   return (
-    <main className="dp-splash-page dp-scene-page" aria-label="Downtown Perks introduction">
+    <main className={`dp-splash-page dp-fixed-story-page ${showIntro ? "is-intro-active" : ""}`} aria-label="Downtown Perks introduction">
       {showIntro && (
         <section className="dp-opening-intro" aria-label="Downtown Perks opening animation">
           <div className="dp-opening-fallback" aria-hidden="true" />
@@ -473,7 +318,7 @@ export default function SplashPage() {
           />
           <div className="dp-opening-video-overlay" aria-hidden="true" />
           <div className="dp-opening-gradient" aria-hidden="true" />
-          <button type="button" className="dp-opening-skip" onClick={finishIntro}>
+          <button type="button" className="dp-opening-skip dp-story-skip" aria-label="Skip story" onClick={finishIntro}>
             Skip animation
           </button>
           <div className="dp-opening-copy">
@@ -492,6 +337,7 @@ export default function SplashPage() {
           </div>
         </section>
       )}
+
       <a className="dp-skip-link" href="/map?mode=resident&tab=map">
         Skip to map
       </a>
@@ -499,63 +345,33 @@ export default function SplashPage() {
       <SplashNavigation isOpen={mobileNavOpen} setIsOpen={setMobileNavOpen} />
 
       {!showIntro && (
-        <Link className="dp-story-skip" to="/map?mode=resident&tab=map">
-          Skip story
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
+        <>
+          <aside className="dp-fixed-story-steps" aria-label="Intro story states">
+            <ol>
+              {storyStates.map((item, index) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    className={index === active ? "is-active" : ""}
+                    onClick={() => activate(index)}
+                    aria-current={index === active ? "step" : undefined}
+                  >
+                    <span>{item.number}</span>
+                    {item.nav}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </aside>
+
+          <div className="dp-fixed-story-progress" aria-label="Progress">
+            {progress}
+          </div>
+
+        </>
       )}
 
-      <aside className="dp-scene-steps" aria-label="Intro scenes">
-        <ol>
-          {scenes.map((scene, index) => (
-            <li key={scene.id}>
-              <button
-                type="button"
-                className={index === active ? "is-active" : ""}
-                onClick={() => activate(index)}
-                aria-current={index === active ? "step" : undefined}
-              >
-                <span>{scene.number}</span>
-                {scene.nav}
-              </button>
-            </li>
-          ))}
-        </ol>
-      </aside>
-
-      <div className="dp-scene-stage">
-        {scenes.map((scene, index) => (
-          <section
-            key={scene.id}
-            className={`dp-scene-slide ${index === active && !showIntro ? "is-active" : ""}`}
-            aria-hidden={index !== active || showIntro}
-            inert={index !== active || showIntro ? "" : undefined}
-          >
-            <div className="dp-scene-content">
-              <div className="dp-scene-frame">
-                <SceneHeader scene={scene} progress={progress} isActive={index === active && !showIntro} isLast={index === scenes.length - 1} go={go} />
-                <div className={`dp-scene-main ${scene.variant ? `is-${scene.variant}` : ""}`}>
-                  {scene.startStage ? (
-                    <StartScene scene={scene} index={index} go={go} />
-                  ) : scene.variant === "center" ? (
-                    <FeaturesScene scene={scene} index={index} go={go} />
-                  ) : (
-                    <>
-                      {scene.label && <p className="dp-splash-label">{scene.label}</p>}
-                      <SceneTitle lines={scene.title} variant={scene.variant} />
-                      {scene.subtitle && <SceneTitle lines={scene.subtitle} variant="subtitle" />}
-                      <SceneBody scene={scene} />
-                      <SceneClosing scene={scene} />
-                      <ScenePreview scene={scene} />
-                      <SceneActions scene={scene} index={index} go={go} />
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-        ))}
-      </div>
+      <FixedStoryStage state={state} active={active} go={go} />
     </main>
   );
 }

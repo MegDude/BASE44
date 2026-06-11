@@ -26,11 +26,11 @@ const partnerCategories = {
     faq: "90-day pilot. See what guests actually do.",
   },
   Venues: {
-    pricing: "Free-$199/month",
+    pricing: "Starter-Pro",
     cta: "Discuss activation",
     href: "/partners/venues",
     body: "Show up in the moment that counts. Not reach. Relevance. Not impressions. Intent.",
-    faq: "Start with a Free Forever listing and one active resident perk. Paid venue plans start at $30/month.",
+    faq: "Starter venue plans include one active resident perk. Paid venue plans start at $30/month.",
   },
   Brands: {
     pricing: "$99-$199/month",
@@ -57,7 +57,7 @@ const residentFaqs = [
 ];
 
 const partnerFaqs = [
-  ["Do venues pay to join?", "Venues can join with a Free Forever listing that includes one active resident perk. Paid venue plans start at $30/month."],
+  ["Do venues pay to join?", "Venues can start with a Starter plan that includes one active resident perk. Paid venue plans start at $30/month."],
   ["What do buildings pay?", "Properties use monthly plans at $49, $99, or $199/month depending on resident access, reporting, and building needs."],
   ["How fast can a partner launch?", "7-10 days. We handle setup, map placement, QR generation, and entry point coordination."],
   ["What gets tracked?", "Scans, saves, RSVPs, and redemptions. You get reporting snapshots at 30, 60, and 90 days to see what's working."],

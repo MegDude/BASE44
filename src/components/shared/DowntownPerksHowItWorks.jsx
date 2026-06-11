@@ -25,7 +25,7 @@ const journeySteps = [
     title: "Pick the next move.",
     label: "Choose the moment",
     copy: "Save a spot, RSVP to an event, or find a place that fits right now.",
-    image: "/images/map-entities/perks/partner_coffee_shop_1779052868356.png",
+    image: "/images/imported/perks/daydreamer-coffee-at-paseo-tower.jpg",
     icon: CalendarDays,
   },
   {

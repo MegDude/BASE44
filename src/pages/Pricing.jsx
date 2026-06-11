@@ -40,98 +40,103 @@ const partnerTypes = [
 const pricingPlans = {
   venues: [
     {
-      name: "Free Forever",
-      price: "$0",
-      description: "Perfect for businesses that simply want to be discoverable and give residents a reason to visit.",
-      includes: ["Live map listing", "Business profile", "Photos", "Website link", "Hours", "Category placement", "One active resident perk", "Basic activity reporting"],
-      examples: ["Free coffee upgrade", "10% off weekday lunch", "Free appetizer", "Resident special", "Welcome drink", "Event-day perk"],
-      note: "No monthly fee. No contract.",
-    },
-    {
-      name: "Basic",
+      name: "Starter",
       price: "$30/month",
-      description: "For businesses that want to actively participate.",
-      includes: ["Everything in Free Forever", "Up to 5 active perks", "Event publishing", "Save tracking", "Click tracking", "Redemption tracking", "Basic campaign tools"],
+      description: "For local places that want to be discoverable and give residents a reason to visit.",
+      includes: ["Live map listing", "Business profile", "Photos", "Website link", "Hours", "Category placement", "One active resident perk", "Simple activity reporting"],
+      examples: ["Free coffee upgrade", "10% off weekday lunch", "Free appetizer", "Resident special", "Welcome drink", "Event-day perk"],
     },
     {
       name: "Growth",
       price: "$79/month",
       description: "For businesses running regular promotions, events or resident offers.",
-      includes: ["Everything in Basic", "Featured placement credits", "Broadcast access", "Campaign builder", "Enhanced reporting", "Audience insights", "Event promotion tools"],
+      includes: ["Everything in Starter", "Up to 5 active perks", "Event publishing", "Save tracking", "Click tracking", "Redemption tracking", "Campaign tools"],
     },
     {
       name: "Pro",
       price: "$199/month",
       description: "For businesses using Downtown Perks as an active growth channel.",
-      includes: ["Everything in Growth", "Unlimited campaigns", "Priority placement", "Advanced analytics", "Benchmark reporting", "Heatmaps", "Resident behavior insights", "Quarterly strategy review"],
+      includes: ["Everything in Growth", "Unlimited campaigns", "Priority placement", "Deeper reporting", "Neighborhood comparisons", "Resident interest notes", "Quarterly planning review"],
     },
   ],
   properties: [
     {
-      name: "Building Starter",
+      name: "Starter",
       price: "$49/month",
       description: "For a single building that wants resident perks and local visibility.",
-      includes: ["Building profile", "Resident perks access", "Building placement", "Resident engagement reporting"],
+      includes: ["Building profile", "Resident perks access", "Building placement", "Resident activity reporting"],
     },
     {
-      name: "Resident Plus",
+      name: "Growth",
       price: "$99/month",
       description: "For active resident communities that want to use the platform as an amenity layer.",
-      includes: ["Everything in Building Starter", "Resident communications", "Property campaigns", "Building events", "Survey access"],
+      includes: ["Everything in Starter", "Resident communications", "Property campaigns", "Building events", "Survey access"],
     },
     {
-      name: "Property Pro",
+      name: "Pro",
       price: "$199/month",
       description: "For premium buildings, mixed-use developments and property portfolios.",
-      includes: ["Everything in Resident Plus", "Portfolio reporting", "Advanced analytics", "Resident insights", "Building benchmarking", "Property intelligence dashboard"],
+      includes: ["Everything in Growth", "Portfolio reporting", "Deeper resident interest notes", "Building comparisons", "Property planning dashboard"],
     },
   ],
   hotels: [
     {
-      name: "Hotel Starter",
+      name: "Starter",
       price: "$99/month",
       description: "For hotels that want guests to discover what is nearby.",
       includes: ["Hotel profile", "Guest guide", "Guest perks", "Guest map access", "Partner offers"],
     },
     {
-      name: "Hotel Pro",
+      name: "Growth",
       price: "$199/month",
       description: "For hotels that want campaigns, visitor insights and concierge-friendly local programming.",
-      includes: ["Everything in Hotel Starter", "Guest campaigns", "Visitor analytics", "Broadcast access", "Enhanced reporting"],
+      includes: ["Everything in Starter", "Guest campaigns", "Visitor interest notes", "Broadcast access", "Enhanced reporting"],
+    },
+    {
+      name: "Pro",
+      price: "Custom",
+      description: "For hospitality groups and larger teams that need portfolio reporting and planning support.",
+      includes: ["Everything in Growth", "Portfolio reporting", "Concierge planning support", "Custom local guide setup"],
     },
   ],
   brands: [
     {
-      name: "Brand Access",
+      name: "Starter",
       price: "$99/month",
       description: "For brands that want local presence, access to downtown moments and participation in resident-facing campaigns.",
       includes: ["Brand profile", "Campaign access", "Event participation", "Placement eligibility"],
     },
     {
-      name: "Brand Campaigns",
+      name: "Growth",
       price: "$199/month",
       description: "For brands running sponsorships or audience campaigns.",
-      includes: ["Campaign management", "Analytics", "Broadcasts", "Support for real-world moments"],
+      includes: ["Campaign management", "Reporting", "Broadcasts", "Support for real-world moments"],
+    },
+    {
+      name: "Pro",
+      price: "Custom",
+      description: "For brands planning larger downtown partnerships, recurring campaigns, or sponsorship programs.",
+      includes: ["Everything in Growth", "Campaign calendar", "Partner coordination", "Custom reporting"],
     },
   ],
   civic: [
     {
-      name: "Civic Basic",
-      price: "Free",
+      name: "Starter",
+      price: "$30/month",
       description: "For community groups, neighborhood initiatives and public information.",
       includes: ["Civic profile", "Event listings", "Community visibility", "Public information"],
     },
     {
-      name: "Civic Plus",
-      price: "$30/month",
+      name: "Growth",
+      price: "$79/month",
       description: "For organizations that want to promote programs, events or participation moments.",
       includes: ["Featured community events", "Community reporting", "Survey access"],
     },
     {
-      name: "Civic Pro",
+      name: "Pro",
       price: "$99/month",
-      description: "For organizations that need engagement tracking and participation reporting.",
-      includes: ["Community engagement reporting", "Broadcast tools", "Participation analytics"],
+      description: "For organizations that need participation tracking and recurring community reporting.",
+      includes: ["Community participation reporting", "Broadcast tools", "Program reporting"],
     },
   ],
 };
@@ -142,7 +147,7 @@ const modules = [
   ["Perks card connection", "Included", "Residents can save, show, redeem and come back without downloading an app."],
   ["Event placement", "Included where relevant", "Add events to the map so people can RSVP or decide in the moment."],
   ["Partner dashboard", "Included", "See scans, saves, RSVPs, redemptions and nearby activity in plain English."],
-  ["AI insight notes", "Included", "The system explains what happened, where it happened and what to try next."],
+  ["Planning notes", "Included", "The system explains what happened, where it happened and what to try next."],
   ["Monthly reporting", "Included", "A simple readout of what people did, which placements worked and where demand showed up."],
 ].map(([name, status, description]) => ({ name, status, description }));
 
@@ -185,8 +190,8 @@ const surveyModules = [
 ];
 
 const analyticsModules = [
-  { name: "Analytics Plus", price: "$30/month", includes: ["Peak times", "Top-performing offers", "Audience insights", "Engagement trends"] },
-  { name: "Analytics Pro", price: "$79/month", includes: ["Heatmaps", "Movement patterns", "Benchmarking", "Audience segmentation", "Campaign attribution"] },
+  { name: "Reporting Starter", price: "$30/month", includes: ["Peak times", "Top-performing offers", "Resident interest notes", "Activity trends"] },
+  { name: "Reporting Growth", price: "$79/month", includes: ["Movement patterns", "Comparisons", "Audience groups", "Campaign attribution"] },
 ];
 
 const realWorldModules = [
@@ -204,8 +209,8 @@ const sponsorships = [
 const surveySteps = [
   ["01", "Scan or text", "A resident, guest, customer or event attendee scans a QR code or texts a short keyword."],
   ["02", "Answer quickly", "They answer a few everyday questions. No app, no account, no long form."],
-  ["03", "Signals connect", "Answers connect to district, timing, offer, event or placement context."],
-  ["04", "Engine explains", "The insight layer turns responses into plain-English audience notes and next steps."],
+  ["03", "Context connects", "Answers connect to district, timing, offer, event or placement context."],
+  ["04", "Next steps", "Downtown Perks turns responses into plain-English audience notes and next steps."],
 ].map(([step, title, description]) => ({ step, title, description }));
 
 const placementOptions = [
@@ -218,9 +223,9 @@ const placementOptions = [
 ].map(([title, description]) => ({ title, description }));
 
 const pricingMetrics = [
-  { label: "Free Forever", value: "$0", detail: "Venue listings can start free.", percent: 100 },
-  { label: "Entry paid plan", value: "$30", detail: "Small monthly plans start here.", percent: 15 },
-  { label: "Recurring cap", value: "$199", detail: "Partner subscriptions stay capped.", percent: 100 },
+  { label: "Starter", value: "$30+", detail: "Small monthly plans start here.", percent: 15 },
+  { label: "Growth", value: "$79+", detail: "For active campaigns and recurring offers.", percent: 58 },
+  { label: "Pro", value: "$199+", detail: "For deeper reporting and portfolio planning.", percent: 100 },
   { label: "Add-ons", value: "Optional", detail: "Campaigns, surveys, placements and reports stay separate.", percent: 58 },
 ];
 
@@ -256,7 +261,7 @@ const partnerPricingSections = [
   {
     id: "modules",
     label: "Modules",
-    eyebrow: "Core tools",
+    eyebrow: "Tools included",
     copy: "Perks, redemptions, scans, and reporting.",
     image: "/images/partners/pricing/rail/cafe-perk-redemption.jpg",
     icon: "boxes",
@@ -701,7 +706,7 @@ export default function Pricing() {
             <Card>
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Quick read</p>
               <ul className="mt-4 space-y-3 text-[13px] leading-6 text-[#0B1F33]/68">
-                <li><strong className="text-[#0B1F33]">Free Forever</strong> venue listings include one active resident perk.</li>
+                <li><strong className="text-[#0B1F33]">Starter</strong> venue plans include one active resident perk.</li>
                 <li>Paid plans start at <strong className="text-[#0B1F33]">$30/month</strong>.</li>
                 <li>Recurring partner plans stay capped at <strong className="text-[#0B1F33]">$199/month</strong>.</li>
                 <li>Campaigns, broadcasts, surveys, placements, analytics, sponsorships and real-world support are add-ons.</li>
@@ -785,7 +790,7 @@ export default function Pricing() {
         <PlanComparisonTable plans={activePlans} />
       </Section>
 
-      <Section id="modules" eyebrow="Platform modules" title="What the platform offers.">
+      <Section id="modules" eyebrow="Feature Matrix" title="What every plan includes.">
         <Rail>
           {modules.map((module) => (
             <RailCard key={module.name}>
@@ -799,6 +804,10 @@ export default function Pricing() {
             </RailCard>
           ))}
         </Rail>
+        <div className="mt-8">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Dashboard Module Matrix</p>
+          <h3 className="mt-2 font-body text-[18px] font-semibold text-[#0B1F33]">Partner dashboard modules by outcome.</h3>
+        </div>
         <ModuleTable rows={modules} />
       </Section>
 
@@ -897,7 +906,24 @@ export default function Pricing() {
         </Rail>
       </Section>
 
-      <Section id="contact" eyebrow="GET STARTED" title="Do less. Learn more.">
+      <Section id="faq" eyebrow="FAQ" title="Pricing questions, answered plainly.">
+        <Rail>
+          {[
+            ["Can partners change plans?", "Yes. Start with the right fit, then move up or down as the workflow changes."],
+            ["Are campaigns required?", "No. Campaigns, surveys, broadcasts, placements, and reporting add-ons are optional."],
+            ["Where do add-ons live?", "The pricing page is the source of truth. Partner pages only preview and link back here."],
+          ].map(([question, answer]) => (
+            <RailCard key={question} className="w-[300px] md:w-[360px]">
+              <Card className="h-full">
+                <h3 className="text-[15px] font-semibold text-[#0B1F33]">{question}</h3>
+                <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{answer}</p>
+              </Card>
+            </RailCard>
+          ))}
+        </Rail>
+      </Section>
+
+      <Section id="contact" eyebrow="Contact Sales" title="Do less. Learn more.">
         <div className="max-w-3xl space-y-1 text-left text-[14px] leading-7 text-[#0B1F33]/68">
           <p>Start with the right partner type.</p>
           <p>Learn what people actually do.</p>

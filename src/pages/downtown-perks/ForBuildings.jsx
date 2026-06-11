@@ -5,7 +5,7 @@ import { Building2, Users, BarChart3, MessageSquare, ArrowRight, CheckCircle } f
 
 const tiers = [
   {
-    name: "Building Starter",
+    name: "Starter",
     price: "$49",
     period: "/month",
     features: [
@@ -17,11 +17,11 @@ const tiers = [
     highlight: false,
   },
   {
-    name: "Resident Plus",
+    name: "Growth",
     price: "$99",
     period: "/month",
     features: [
-      "Everything in Building Starter",
+      "Everything in Starter",
       "Resident activity dashboard",
       "Building communication channel",
       "Monthly engagement reports",
@@ -30,7 +30,7 @@ const tiers = [
     highlight: true,
   },
   {
-    name: "Property Pro",
+    name: "Pro",
     price: "$199",
     period: "/month",
     features: [
@@ -190,7 +190,7 @@ export default function ForBuildings() {
                       : "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border"
                   }`}
                 >
-                  Get Started
+                  Choose Plan
                 </button>
               </motion.div>
             ))}
@@ -215,7 +215,7 @@ export default function ForBuildings() {
               </div>
               <div>
                 <p className="text-muted-foreground text-[13px] leading-relaxed mb-6">
-                  Local businesses can start with a Free Forever listing that includes one active resident perk. Paid venue plans start at $30/month when they want more.
+                  Local businesses can start with a Starter plan that includes one active resident perk. Paid venue plans start at $30/month when they want more.
                 </p>
                 <Link
                   to="/map?mode=resident&tab=map"

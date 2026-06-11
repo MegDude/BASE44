@@ -113,8 +113,8 @@ function GlassButton({
 }) {
   const className =
     variant === "primary"
-      ? "inline-flex h-10 items-center justify-center bg-[#0B1F33] px-5 text-[13px] font-medium text-white shadow-[0_12px_26px_rgba(11,31,51,0.18)] transition-all hover:-translate-y-0.5 hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
-      : "inline-flex h-10 items-center justify-center border border-[rgba(11,31,51,0.08)] bg-[rgba(255,255,255,0.58)] px-5 text-[13px] font-medium text-[#0B1F33] backdrop-blur-[20px] transition-all hover:-translate-y-0.5 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]";
+      ? "dp-button dp-button-primary inline-flex items-center justify-center"
+      : "dp-button dp-button-secondary inline-flex items-center justify-center";
 
   if (to) {
     return (
@@ -185,7 +185,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
           <motion.div
             ref={panelRef}
             tabIndex={-1}
-            className="dp-glass-modal relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-[18px] text-[#0B1F33] outline-none md:max-h-[88vh] md:max-w-6xl md:rounded-[10px]"
+            className="dp-glass-modal dp-info-panel dp-surface relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden text-[#0B1F33] outline-none md:max-h-[88vh] md:max-w-6xl"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 28, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.985 }}
@@ -203,7 +203,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex h-9 items-center gap-1.5 border border-[rgba(11,31,51,0.08)] bg-white/58 px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="dp-button dp-button-secondary inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.12em]"
                 aria-label="Back from Downtown Perks overview"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
@@ -215,7 +215,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex h-9 w-9 items-center justify-center border border-[rgba(11,31,51,0.08)] bg-white/58 text-[#0B1F33] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="dp-button dp-button-secondary inline-flex h-[34px] w-[34px] items-center justify-center p-0"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />

@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import data from "../data/locations.json";
 import { luxuryPresenceBuildingPlaces } from "../data/luxuryPresenceInventory";
 import { supplementalMapEntities } from "../data/supplementalMapEntities";
+import { downtownPerksGoogleListImport } from "../data/downtownPerksGoogleListImport";
+import { getRepublicAustinMapPlaces } from "../data/imports/republicAustinPins";
+import { downtownParkingItems } from "../data/parkingBookings";
 import { waterlooParkInventory } from "../data/waterlooParkInventory";
 import { waterlooParkCampaignPins } from "../data/waterlooParkCampaignPins";
 import { daaTourStops } from "../data/daaArtParksTour";
+import { legendsListingPlaces } from "../data/legendsListings";
 import { getHappyHourPlaces } from "./happyHours";
 import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
 import { normalizeEntity } from "./map/normalizeEntity";
@@ -51,6 +55,52 @@ function eventPlace({
   };
 }
 
+function parkingBookingPlace(item) {
+  return {
+    id: item.id,
+    name: item.title,
+    type: "parking",
+    kind: "parking",
+    partnerType: "properties",
+    markerType: "parking",
+    detailDrawerType: "parking",
+    pinKey: "mobility",
+    category: "Parking / Resident Perk",
+    category_key: [
+      "parking",
+      "resident perk",
+      "reservable parking",
+      item.buildingName,
+      item.neighborhood,
+      ...(item.spotTypes || []),
+    ]
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_"),
+    latitude: item.lat,
+    longitude: item.lng,
+    district: item.neighborhood,
+    address: item.address,
+    summary: "Reserve nearby parking before you head out.",
+    description: "Park close. Walk less. Do more downtown.",
+    neighborhood_narrative: "Parking becomes part of the resident perk layer, helping people plan around downtown nights, events, and nearby restaurants without turning parking into a separate product.",
+    alignment_to_downtown_perks: "Turn unused parking inventory into a resident perk and make it visible when people nearby are deciding where to go.",
+    deals_offers: item.perkLabel || item.pricingLabel,
+    specials: item.pricingLabel,
+    image: item.imageUrl,
+    isParkingBooking: true,
+    hasPerk: true,
+    perk: {
+      title: item.perkLabel || "Resident parking rate",
+      value: item.pricingLabel || "Resident rate available",
+      description: "Reserve nearby parking before you head out.",
+      isActive: true,
+    },
+    parkingBooking: item,
+    source: "Downtown Perks parking booking layer",
+  };
+}
+
 const eventPlaces = [
   eventPlace({
     id: "hotel-van-zandt-first-thursday",
@@ -63,7 +113,7 @@ const eventPlaces = [
     address: "605 Davis St, Austin, TX 78701",
     time: "Thu 13 · 5:00 PM",
     date: "2026-06-13T17:00:00-05:00",
-    image: "/images/map-pins/property/hotel-van-zandt.webp",
+    image: "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     rsvpCount: 68,
     tags: ["Hotel Van Zandt", "Geraldine's", "First Thursday", "Rainey", "Happy Hour", "Live Music"],
     summary: "A featured Rainey hotel moment connecting guests, residents, Geraldine's, happy hour, and nearby live music.",
@@ -80,7 +130,7 @@ const eventPlaces = [
     address: "605 Davis St, Austin, TX 78701",
     time: "Mon 10 · 6:00 PM",
     date: "2026-06-10T18:00:00-05:00",
-    image: "/images/map-entities/rainey-bars/geraldines.jpg",
+    image: "/images/imported/perks/geraldine-s.jpg",
     rsvpCount: 74,
     tags: ["Hotel Van Zandt", "Geraldine's", "Live Music", "Rainey", "Happy Hour"],
     summary: "Dinner, drinks, and live music inside Hotel Van Zandt for residents and hotel guests already near Rainey.",
@@ -212,7 +262,7 @@ const eventPlaces = [
     address: "Waterline District, Austin, TX 78701",
     time: "Sat 15 · 4:30 PM",
     date: "2026-06-15T16:30:00-05:00",
-    image: "/images/properties/bowie-attached.jpg",
+    image: "/images/imported/perks/w-austin-lavaca-listing.jpg",
     rsvpCount: 31,
     tags: ["Waterline", "Preview", "Residential", "Rainey"],
     summary: "See what is opening nearby, what is walkable, and which places are worth keeping on your radar if you live downtown.",
@@ -276,7 +326,7 @@ const eventPlaces = [
     address: "The Stay Put, Austin, TX 78701",
     time: "Thu 20 · 6:00 PM",
     date: "2026-06-20T18:00:00-05:00",
-    image: "/images/map-entities/rainey-bars/stay-put.jpg",
+    image: "/images/imported/perks/stayput.png",
     rsvpCount: 64,
     tags: ["Stay Put", "Social", "Rainey", "Residents"],
     summary: "Start the week with something low-key, local, and easy to say yes to.",
@@ -471,6 +521,54 @@ function isExcludedMapLocation(item) {
   return String(item.name || "").trim().toLowerCase() === "lakeside apartmments";
 }
 
+function normalizedLocationKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function coordinatesAreClose(a, b) {
+  if (!a || !b) return false;
+  const latDelta = Math.abs(Number(a.latitude) - Number(b.latitude));
+  const lngDelta = Math.abs(Number(a.longitude) - Number(b.longitude));
+  return latDelta <= 0.0014 && lngDelta <= 0.0014;
+}
+
+function dedupeNormalizedLocations(entities) {
+  const accepted = [];
+  const exactKeys = new Set();
+
+  entities.forEach((entity) => {
+    const nameKey = normalizedLocationKey(entity.name);
+    const isDaaArtParksStop = String(entity.id || "").startsWith("daa-stop-") || Boolean(entity.isDaaArtParksTour || entity.daaTourStop);
+    const exactKey = [
+      nameKey,
+      Number(entity.latitude).toFixed(5),
+      Number(entity.longitude).toFixed(5),
+      isDaaArtParksStop ? entity.id : "",
+    ].join("|");
+    const isRepublicImport = entity.raw?.source === "Republic Austin" || entity.source === "Republic Austin";
+
+    if (exactKeys.has(exactKey)) return;
+
+    if (
+      isRepublicImport &&
+      accepted.some((existing) => normalizedLocationKey(existing.name) === nameKey && coordinatesAreClose(existing, entity))
+    ) {
+      return;
+    }
+
+    exactKeys.add(exactKey);
+    accepted.push(entity);
+  });
+
+  return accepted;
+}
+
 export function useLocations() {
   const [happyHoursVersion, setHappyHoursVersion] = useState(0);
 
@@ -493,11 +591,13 @@ export function useLocations() {
     ...waterlooParkCampaignPins.map(waterlooCampaignPlace),
   ];
   const daaPlaces = daaTourStops.map(daaTourStopPlace);
+  const republicAustinPlaces = getRepublicAustinMapPlaces();
+  const parkingPlaces = downtownParkingItems.filter((item) => item.active).map(parkingBookingPlace);
   void happyHoursVersion;
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  return [...coreOpenMapLocations, ...eventPlaces, ...brandPartnerPlaces, ...luxuryPresenceBuildingPlaces, ...supplementalMapEntities, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...brandPartnerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...supplementalMapEntities, ...downtownPerksGoogleListImport, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => isDowntownAustin78701Entity(item))
     .map((item, i) => {
       const isVia313 = String(item.name || "").toLowerCase().includes("via 313");
@@ -571,4 +671,6 @@ export function useLocations() {
       };
     })
     .filter(Boolean);
+
+  return dedupeNormalizedLocations(normalizedLocations);
 }

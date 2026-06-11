@@ -49,6 +49,14 @@ export default function Layout() {
   const location = useLocation();
   const { pathname, search } = location;
   const navigate = useNavigate();
+  const isProductRoute =
+    pathname === "/map" ||
+    pathname === "/partner-map" ||
+    pathname.startsWith("/partner-workspace") ||
+    pathname.startsWith("/partners") ||
+    pathname.startsWith("/dashboard") ||
+    pathname === "/reports" ||
+    pathname === "/analytics";
 
   // Pages that use the full Downtown Perks editorial footer
   const usesEditorialFooter =
@@ -69,6 +77,7 @@ export default function Layout() {
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
     pathname === "/" ||
+    isProductRoute ||
     pathname === "/map" ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
@@ -87,6 +96,7 @@ export default function Layout() {
     pathname.startsWith("/resident-app");
 
   const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
+  const showNavbar = pathname !== "/" && !isProductRoute;
 
   function getBackFallbackPath() {
     const params = new URLSearchParams(search);
@@ -125,7 +135,7 @@ export default function Layout() {
     <div className="min-h-screen bg-background font-body">
       <ScrollToTop />
       <InteractionFeedback />
-      {pathname !== "/" && <Navbar />}
+      {showNavbar && <Navbar />}
       {showBackButton && (
         <div className="dp-layout-back-row">
           <button

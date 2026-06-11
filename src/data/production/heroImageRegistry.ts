@@ -5497,10 +5497,12 @@ export const heroImageRegistry = [
   },
   {
     "slug": "comedy-mothership",
-    "heroImage": "/images/fallbacks/civic.jpg",
-    "thumbnail": "/images/fallbacks/civic-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/civic.jpg",
+    "heroImage": "/images/venues/comedy-mothership.png",
+    "thumbnail": "/images/venues/comedy-mothership.png",
+    "gallery": [
+      "/images/venues/comedy-mothership.png"
+    ],
+    "fallback": "/images/venues/comedy-mothership.png",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",

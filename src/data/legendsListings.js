@@ -20,15 +20,16 @@ const BUILDING_COORDS = {
 
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
 
+const LEGENDS_83DCEFB7_IMAGES = [
+  `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
+  ...Array.from(
+    { length: 53 },
+    (_, index) => `${LEGENDS_IMAGE_BASE}/83dcefb7 (${index + 1}).jpeg`,
+  ),
+];
+
 const LEGENDS_IMAGE_GROUPS = {
-  "222 west ave": [
-    `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
-    `${LEGENDS_IMAGE_BASE}/83dcefb7 (1).jpeg`,
-    `${LEGENDS_IMAGE_BASE}/83dcefb7 (2).jpeg`,
-    `${LEGENDS_IMAGE_BASE}/83dcefb7 (3).jpeg`,
-    `${LEGENDS_IMAGE_BASE}/83dcefb7 (4).jpeg`,
-    `${LEGENDS_IMAGE_BASE}/83dcefb7 (5).jpeg`,
-  ],
+  "222 west ave": LEGENDS_83DCEFB7_IMAGES,
   "301 west ave": [
     `${LEGENDS_IMAGE_BASE}/6dd28e9b.jpeg`,
     `${LEGENDS_IMAGE_BASE}/6dd28e9b (1).jpeg`,
@@ -78,7 +79,7 @@ const LEGENDS_IMAGE_GROUPS = {
 };
 
 const DEFAULT_LEGENDS_IMAGES = [
-  `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
+  ...LEGENDS_83DCEFB7_IMAGES.slice(0, 6),
   `${LEGENDS_IMAGE_BASE}/3854745b.jpeg`,
   `${LEGENDS_IMAGE_BASE}/sdcuyw4dhwd2we6ymxtd.png`,
 ];

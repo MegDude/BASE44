@@ -17,6 +17,7 @@ export type PinVariant =
   | "campaign"
   | "analytics"
   | "offer"
+  | "inkind"
   | "service"
   | "guide"
   | "journal"
@@ -25,10 +26,6 @@ export type PinVariant =
 
 function icon(paths: string) {
   return `<svg class="dp-pin-svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
-}
-
-function logo(src: string, alt: string) {
-  return `<img class="dp-pin-logo" src="${src}" alt="${alt}" />`;
 }
 
 export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string; asset?: string }> = {
@@ -50,10 +47,15 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   campaign: { label: "Campaign", glyph: icon('<path d="M4 13V7l11-3v12L4 13Z"/><path d="M4 13l2 7h4l-2-6"/><path d="M18 8v4"/>') },
   analytics: { label: "Insights", glyph: icon('<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/>') },
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
+  inkind: { label: "inKind", glyph: '<span class="dp-pin-wordmark" aria-hidden="true">in</span>' },
   service: { label: "Service", glyph: icon('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/>') },
   guide: { label: "Local Guide", glyph: icon('<path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/>') },
   journal: { label: "Journal", glyph: icon('<path d="M6 4h11a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 8h7M8 12h7M8 16h5"/>') },
-  legends: { label: "Legends", glyph: logo("/pins/downtown-perks/legends-logo.png", "Legends Real Estate") },
+  legends: {
+    label: "Legends",
+    glyph: '<img class="dp-pin-logo dp-live-pin__legends-logo" src="/pins/downtown-perks/legends-butterfly.png" alt="" aria-hidden="true" />',
+    asset: "/pins/downtown-perks/legends-butterfly.png",
+  },
   default: { label: "Downtown", glyph: icon('<path d="M12 21s7-5.2 7-11a7 7 0 0 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>') },
 };
 

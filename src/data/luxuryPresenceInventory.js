@@ -1,19 +1,81 @@
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
+const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
+
+const PREMIUM_PROPERTY_IMAGES = {
+  "301 west ave": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`,
+    gallery: [`${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`],
+  },
+  "222 west ave": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
+    gallery: [
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-pool.webp`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-deck.jpg`,
+    ],
+  },
+  "501 west ave": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
+    gallery: [
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west1.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west2.jpeg`,
+    ],
+  },
+  "202 nueces": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
+    gallery: [
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences1.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences2.jpeg`,
+    ],
+  },
+  "70 rainey": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey.jpeg`,
+    gallery: [
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey1.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey2.jpeg`,
+    ],
+  },
+  "44 east ave": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east.jpeg`,
+    gallery: [
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east1.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east2.jpeg`,
+    ],
+  },
+  "54 rainey": {
+    exterior: "/buildings/milago.webp",
+    gallery: ["/buildings/milago.webp"],
+  },
+  "1212 guadalupe": {
+    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe.jpeg`,
+    gallery: [
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe1.jpeg`,
+    ],
+  },
+};
 
 const BUILDING_LOOKUP = {
   "301 west ave": {
     name: "The Independent",
     district: "Seaholm",
     coordinates: [30.267451, -97.750793],
-    buildingExterior: "/buildings/independent.webp",
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/6dd28e9b.jpeg`,
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["301 west ave"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["301 west ave"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["301 west ave"].gallery,
   },
   "222 west ave": {
     name: "Seaholm Residences",
     district: "Seaholm",
     coordinates: [30.2672, -97.75148],
-    buildingExterior: "/buildings/seaholm.webp",
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["222 west ave"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["222 west ave"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["222 west ave"].gallery,
   },
   "360 nueces": {
     name: "360 Condominiums",
@@ -33,8 +95,9 @@ const BUILDING_LOOKUP = {
     name: "Fifth & West",
     district: "Seaholm",
     coordinates: [30.26914, -97.75111],
-    buildingExterior: `${LEGENDS_IMAGE_BASE}/3854745b.jpeg`,
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/1414e381.jpeg`,
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["501 west ave"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["501 west ave"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["501 west ave"].gallery,
   },
   "610 davis": {
     name: "The Shore",
@@ -47,22 +110,25 @@ const BUILDING_LOOKUP = {
     name: "Austin Proper Residences",
     district: "2nd Street",
     coordinates: [30.26595, -97.7496],
-    buildingExterior: "/hotels/austin-proper.webp",
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/63bd283b-6525-4a58-85bf-e13564f11b1c.avif`,
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["202 nueces"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["202 nueces"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["202 nueces"].gallery,
   },
   "70 rainey": {
     name: "70 Rainey",
     district: "Rainey",
     coordinates: [30.2583, -97.7383],
-    buildingExterior: "/buildings/70-rainey.webp",
-    lifestyleImage: "/images/map-entities/properties/70-rainey.jpeg",
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["70 rainey"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["70 rainey"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["70 rainey"].gallery,
   },
   "44 east ave": {
     name: "44 East",
     district: "Rainey",
     coordinates: [30.25894, -97.7391],
-    buildingExterior: "/buildings/44-east.webp",
-    lifestyleImage: "/buildings/44-east.webp",
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["44 east ave"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["44 east ave"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["44 east ave"].gallery,
   },
   "300 bowie": {
     name: "Spring Condominiums",
@@ -75,15 +141,17 @@ const BUILDING_LOOKUP = {
     name: "Milago",
     district: "Rainey",
     coordinates: [30.25878, -97.73988],
-    buildingExterior: "/buildings/milago.webp",
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["54 rainey"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["54 rainey"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["54 rainey"].gallery,
   },
   "1212 guadalupe": {
     name: "1212 Guadalupe",
     district: "Downtown Core",
     coordinates: [30.27542, -97.7431],
-    buildingExterior: `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/83dcefb7 (2).jpeg`,
+    buildingExterior: PREMIUM_PROPERTY_IMAGES["1212 guadalupe"].exterior,
+    lifestyleImage: PREMIUM_PROPERTY_IMAGES["1212 guadalupe"].exterior,
+    galleryImages: PREMIUM_PROPERTY_IMAGES["1212 guadalupe"].gallery,
   },
   "800 brazos": {
     name: "Brazos Place",
@@ -105,11 +173,24 @@ const RAW_LISTINGS = [
   ["The Shore", "610 Davis ST #4301", "$2,425,500", 3, 3, 1951, "5357248", "Rainey", "610 davis"],
   ["The Shore", "610 Davis ST #5003", "$5,582,000", 4, 5, 3818, "1682504", "Rainey", "610 davis"],
   ["Austin Proper Residences", "202 Nueces ST #1405", "$2,995,000", 2, 3, 1646, "4043365", "2nd Street", "202 nueces"],
+  ["70 Rainey", "70 Rainey ST #1409", "$7,000/MONTH", 2, 2, 1128, "9192982", "Rainey", "70 rainey"],
   ["1212 Guadalupe", "1212 Guadalupe ST #601", "$220,000", 1, 1, 454, "3119350", "Downtown Core", "1212 guadalupe", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
   ["44 East", "44 East Ave #3304", "$1,125,000", 2, 2, 1172, "8947667", "Rainey", "44 east ave", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
   ["Milago", "54 Rainey ST #404", "$550,000", 2, 2, 1189, "9558786", "Rainey", "54 rainey", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
   ["Brazos Place", "800 Brazos ST #1111", "$335,000", 1, 1, 623, "4696550", "Congress", "800 brazos", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
 ];
+
+const PROPERTY_BUILDING_SUMMARIES = {
+  "70 Rainey": "Luxury residences set between Rainey Street, Lady Bird Lake, and the downtown trail network.",
+  "44 East": "Modern downtown residences with quick access to the lake, Rainey, and East Austin dining.",
+  "The Independent": "A landmark downtown tower positioned between Seaholm, Shoal Creek, and the core business district.",
+  "Seaholm Residences": "A walkable downtown address anchored by Whole Foods, Trader Joe's, Shoal Creek, and lake access.",
+  "Fifth & West": "A polished residential tower close to Shoal Creek, Market District dining, and downtown offices.",
+  "The Shore": "Lake-adjacent residences with immediate access to trails, Rainey, and downtown hotels.",
+  "Milago": "Rainey-area residences with direct lake trail access and a quiet edge of downtown feel.",
+  "Austin Proper Residences": "Hotel-connected residences near the Seaholm District, restaurants, wellness, and downtown retail.",
+  "1212 Guadalupe": "Central downtown living near the Capitol corridor, Congress Avenue, and everyday city conveniences.",
+};
 
 function slug(value) {
   return String(value || "")
@@ -142,7 +223,7 @@ export const luxuryPresenceListings = RAW_LISTINGS.map((row) => {
   const [buildingName, address, price, beds, baths, sqft, mlsNumber, district, lookupKey, imageRef] = row;
   const building = BUILDING_LOOKUP[lookupKey] || {};
   const unit = unitFromAddress(address);
-  const primaryImage = imageRef || building.lifestyleImage || building.buildingExterior;
+  const primaryImage = building.buildingExterior || building.lifestyleImage || imageRef;
   const buildingExterior = building.buildingExterior || primaryImage;
   const listingId = `luxury-presence-${slug(address)}-${mlsNumber}`;
   const listingType = "For Sale";
@@ -168,7 +249,7 @@ export const luxuryPresenceListings = RAW_LISTINGS.map((row) => {
     panelImage: primaryImage,
     mobileCardImage: primaryImage,
     thumbnail: primaryImage,
-    galleryImages: [primaryImage, buildingExterior].filter(Boolean).filter((item, index, list) => list.indexOf(item) === index),
+    galleryImages: [primaryImage, buildingExterior, ...(building.galleryImages || [])].filter(Boolean).filter((item, index, list) => list.indexOf(item) === index),
     listing_url: "",
     property_type: "Condominium",
     listing_type: listingType,
@@ -218,6 +299,7 @@ export const luxuryPresenceBuildings = Object.values(
       panelImage: lookup.buildingExterior || listing.heroImage,
       mobileCardImage: lookup.buildingExterior || listing.heroImage,
       thumbnail: lookup.buildingExterior || listing.heroImage,
+      galleryImages: [lookup.buildingExterior || listing.heroImage, ...(lookup.galleryImages || []), listing.primaryImage].filter(Boolean).filter((item, index, list) => list.indexOf(item) === index),
       listings: [],
       source: "Luxury Presence MLS feed enriched for Downtown Perks",
       updated_at: "2026-06-04",
@@ -235,7 +317,8 @@ export const luxuryPresenceBuildings = Object.values(
   const bedroomText = beds.length === 1 ? `${beds[0]} bedroom` : `${beds[0]}-${beds[beds.length - 1]} bedroom`;
   const sqftText = sqftValues.length ? `${formatNumber(sqftValues[0])}-${formatNumber(sqftValues[sqftValues.length - 1])} sq ft` : "Square footage available";
   const listingCountText = `${sortedListings.length} active listing${sortedListings.length === 1 ? "" : "s"}`;
-  const summary = `Want to live here? ${building.name} has ${listingCountText} from ${priceText}, including ${bedroomText} residences and ${sqftText}. Contact Legends Real Estate for availability, showing options, and nearby context residents can actually use.`;
+  const baseSummary = PROPERTY_BUILDING_SUMMARIES[building.name] || `${building.name} is a downtown residential building with walkable access to nearby restaurants, hotels, parks, and resident routines.`;
+  const summary = `${baseSummary} ${listingCountText} from ${priceText}, including ${bedroomText} residences and ${sqftText}.`;
 
   return {
     ...building,

@@ -83,7 +83,10 @@ function inferType(entity: Record<string, unknown>): string {
 }
 
 export function normalizeEntity(entity: Record<string, unknown>, index = 0): NormalizedEntity | null {
-  const coordinate = validateCoordinate(entity.latitude, entity.longitude);
+  const coordinate = validateCoordinate(
+    entity.latitude ?? entity.lat ?? (entity.coordinates as Record<string, unknown> | undefined)?.lat,
+    entity.longitude ?? entity.lng ?? (entity.coordinates as Record<string, unknown> | undefined)?.lng,
+  );
   if (!coordinate) return null;
 
   const type = String(entity.type || inferType(entity));

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation, ArrowLeft } from "lucide-react";
-import { daaDashboardContent, daaTourDistricts, daaTourProgress } from "@/data/daaArtParksTour";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation, ArrowLeft, Users } from "lucide-react";
+import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -11,8 +11,14 @@ import { daaDashboardContent, daaTourDistricts, daaTourProgress } from "@/data/d
 
 const TABS = [
   { id: "overview", label: "Overview" },
+  { id: "campaigns", label: "Campaigns" },
   { id: "perks", label: "Perks" },
   { id: "events", label: "Events" },
+  { id: "residents", label: "Residents" },
+  { id: "buildings", label: "Buildings" },
+  { id: "reports", label: "Reports" },
+  { id: "messages", label: "Messages" },
+  { id: "surveys", label: "Surveys" },
   { id: "profile", label: "Profile" },
 ];
 
@@ -34,14 +40,183 @@ const PUBLIC_PARTNER_USER = {
   partner_type: "neighborhood",
 };
 
+const WORKSPACE_STORAGE_PREFIX = "dp_partner_workspace";
+
+function getWorkspaceTabFromPath(pathname) {
+  if (pathname.includes("/campaigns")) return "campaigns";
+  if (pathname.includes("/perks")) return "perks";
+  if (pathname.includes("/events")) return "events";
+  if (pathname.includes("/residents")) return "residents";
+  if (pathname.includes("/buildings")) return "buildings";
+  if (pathname.includes("/reports")) return "reports";
+  if (pathname.includes("/messages")) return "messages";
+  if (pathname.includes("/surveys")) return "surveys";
+  if (pathname.includes("/profile")) return "profile";
+  return "overview";
+}
+
+function workspaceKey(kind, email = PUBLIC_PARTNER_USER.email) {
+  return `${WORKSPACE_STORAGE_PREFIX}:${kind}:${email || PUBLIC_PARTNER_USER.email}`;
+}
+
+function getStoredJson(key, fallback) {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const value = window.localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function setStoredJson(key, value) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Local storage can be unavailable in restricted browser contexts.
+  }
+}
+
+function getStoredProfile() {
+  const profile = getStoredJson(workspaceKey("profile"), null);
+  if (!profile) return null;
+  const { email, id, created_by, created_date, updated_date, ...profileFields } = profile;
+  return profileFields;
+}
+
+function saveStoredProfile(profile) {
+  const { email, id, created_by, created_date, updated_date, ...profileFields } = profile || {};
+  setStoredJson(workspaceKey("profile"), profileFields);
+}
+
+function getStoredItems(kind, email) {
+  return getStoredJson(workspaceKey(kind, email), []);
+}
+
+function setStoredItems(kind, email, items) {
+  setStoredJson(workspaceKey(kind, email), items);
+}
+
+function normalizeWorkspaceItem(item, email) {
+  return {
+    ...item,
+    id: item.id || `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    created_by: item.created_by || email || PUBLIC_PARTNER_USER.email,
+    created_date: item.created_date || new Date().toISOString(),
+  };
+}
+
+function mergeWorkspaceItems(remoteItems = [], localItems = []) {
+  const seen = new Set();
+  return [...localItems, ...remoteItems]
+    .map((item) => normalizeWorkspaceItem(item, item.created_by))
+    .filter((item) => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+}
+
+async function listWorkspaceItems(entityName, kind, email) {
+  const localItems = getStoredItems(kind, email);
+  try {
+    const remoteItems = await base44.entities[entityName].filter({ created_by: email });
+    return mergeWorkspaceItems(remoteItems || [], localItems);
+  } catch {
+    return localItems;
+  }
+}
+
+async function createWorkspaceItem(entityName, kind, email, payload) {
+  const enriched = normalizeWorkspaceItem(payload, email);
+  try {
+    const remoteItem = await base44.entities[entityName].create({
+      ...payload,
+      created_by: email,
+    });
+    return normalizeWorkspaceItem(remoteItem || enriched, email);
+  } catch {
+    const nextItems = [enriched, ...getStoredItems(kind, email)];
+    setStoredItems(kind, email, nextItems);
+    return enriched;
+  }
+}
+
+async function updateWorkspaceItem(entityName, kind, email, id, payload) {
+  const localItems = getStoredItems(kind, email);
+  const localUpdate = normalizeWorkspaceItem(
+    {
+      ...payload,
+      id,
+      updated_date: new Date().toISOString(),
+    },
+    email,
+  );
+
+  if (!id || String(id).startsWith("local-")) {
+    setStoredItems(kind, email, localItems.map((item) => (item.id === id ? { ...item, ...localUpdate } : item)));
+    return localUpdate;
+  }
+
+  try {
+    const remoteItem = await base44.entities[entityName].update(id, payload);
+    return normalizeWorkspaceItem(remoteItem || localUpdate, email);
+  } catch {
+    const exists = localItems.some((item) => item.id === id);
+    const nextItems = exists
+      ? localItems.map((item) => (item.id === id ? { ...item, ...localUpdate } : item))
+      : [localUpdate, ...localItems];
+    setStoredItems(kind, email, nextItems);
+    return localUpdate;
+  }
+}
+
+async function deleteWorkspaceItem(entityName, kind, email, id) {
+  if (id && !String(id).startsWith("local-")) {
+    try {
+      await base44.entities[entityName].delete(id);
+    } catch {
+      // Keep the local UI responsive even when the hosted entity API is unavailable.
+    }
+  }
+
+  setStoredItems(
+    kind,
+    email,
+    getStoredItems(kind, email).filter((item) => item.id !== id),
+  );
+}
+
 export default function PartnerWorkspace() {
-  const [user, setUser] = useState(PUBLIC_PARTNER_USER);
-  const [tab, setTab] = useState("overview");
+  const location = useLocation();
+  const [user, setUser] = useState(() => ({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}) }));
+  const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
   const navigate = useNavigate();
+  const isPublicWorkspaceUser = user.email === PUBLIC_PARTNER_USER.email;
 
   useEffect(() => {
-    base44.auth.me().then((u) => setUser(u || PUBLIC_PARTNER_USER)).catch(() => {});
+    base44.auth.me()
+      .then((u) => setUser({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}), ...(u || {}) }))
+      .catch(() => setUser((currentUser) => ({ ...currentUser, ...(getStoredProfile() || {}) })));
   }, []);
+
+  useEffect(() => {
+    setTab(getWorkspaceTabFromPath(location.pathname));
+  }, [location.pathname]);
+
+  function handleSignIn() {
+    navigate("/partners/sign-in");
+  }
+
+  function handleSignOut() {
+    try {
+      base44.auth.logout();
+    } catch {
+      // The public workspace remains usable even if the SDK has no active session.
+    }
+    setUser({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}) });
+  }
 
   return (
     <div className="dp-partner-page min-h-screen bg-white text-[#0B1F33]">
@@ -75,10 +250,17 @@ export default function PartnerWorkspace() {
               <p className="text-muted-foreground text-[13px] mt-1">{user.email}</p>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut}
+                className="inline-flex h-9 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[12px] font-semibold text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+              >
+                {isPublicWorkspaceUser ? "Sign in" : "Sign out"}
+              </button>
               <Link to="/map?mode=partner&tab=map&filter=All" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
-                Partner types
+                Partner map
               </Link>
-              <Link to="/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
+              <Link to="/partners/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
                 <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
               </Link>
             </div>
@@ -102,8 +284,14 @@ export default function PartnerWorkspace() {
       <div className="max-w-6xl mx-auto px-5 py-10">
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
+          {tab === "campaigns" && <WorkspaceCapability key="campaigns" title="Campaigns" eyebrow="Partner workflow" description="Plan, publish, and review offers or events that should appear on the downtown map." actions={["Create a map offer", "Promote an event", "Review active placements"]} />}
           {tab === "perks" && <PerksManager key="perks" user={user} />}
           {tab === "events" && <EventsManager key="events" user={user} />}
+          {tab === "residents" && <WorkspaceCapability key="residents" title="Residents" eyebrow="Resident activity" description="Understand what residents are saving, using, and asking for near your place." actions={["Track saves", "Review perk interest", "Identify popular offers"]} />}
+          {tab === "buildings" && <WorkspaceCapability key="buildings" title="Buildings" eyebrow="Nearby buildings" description="See which buildings and residential communities are closest to your downtown activity." actions={["Review nearby buildings", "Plan building outreach", "Compare local demand"]} />}
+          {tab === "reports" && <WorkspaceReports key="reports" />}
+          {tab === "messages" && <WorkspaceCapability key="messages" title="Messages" eyebrow="Partner communication" description="Prepare simple updates for residents, guests, or nearby teams without creating another dashboard task." actions={["Draft update", "Review replies", "Plan next message"]} />}
+          {tab === "surveys" && <WorkspaceCapability key="surveys" title="Surveys" eyebrow="Resident feedback" description="Collect direct feedback about perks, events, places, and next moves that would make downtown easier to use." actions={["Create survey", "Review responses", "Plan follow-up"]} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
         </AnimatePresence>
       </div>
@@ -113,13 +301,133 @@ export default function PartnerWorkspace() {
 
 // ─── OVERVIEW ─────────────────────────────────────────────────────────────────
 
+function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="border border-[#0B1F33]/8 bg-white p-5 md:p-7"
+    >
+      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#C8A96A]">{eyebrow}</p>
+      <h2 className="mt-2 font-body text-xl font-semibold leading-snug tracking-normal text-foreground">{title}</h2>
+      <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/66">{description}</p>
+      <div className="mt-6 grid gap-3 md:grid-cols-3">
+        {actions.map((action) => (
+          <div key={action} className="border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
+            <Check className="h-4 w-4 text-[#C8A96A]" />
+            <p className="mt-3 text-[13px] font-medium text-[#0B1F33]">{action}</p>
+          </div>
+        ))}
+      </div>
+    </motion.section>
+  );
+}
+
+function WorkspaceReports() {
+  const monthlyReports = [
+    {
+      section: "Executive Summary",
+      value: "42%",
+      headline: "After-work activity is leading the month.",
+      copy: "Dinner, events, and nearby offers are driving the strongest resident intent.",
+      action: "View report",
+    },
+    {
+      section: "Trend Visuals",
+      value: "+18%",
+      headline: "Walkable moments are outperforming broad reach.",
+      copy: "Rainey, Seaholm, Congress, and Waterloo show the cleanest activity patterns.",
+      action: "Review trend",
+    },
+    {
+      section: "Campaign Performance",
+      value: "6.8%",
+      headline: "Simple timed offers are easiest to act on.",
+      copy: "Campaigns with one clear save, RSVP, scan, or direction action perform best.",
+      action: "Plan offer",
+    },
+    {
+      section: "Resident Behavior",
+      value: "312",
+      headline: "People save first, then decide.",
+      copy: "Saved places are becoming the bridge between discovery and visits.",
+      action: "Review behavior",
+    },
+    {
+      section: "Recommendations",
+      value: "3",
+      headline: "Run the next test near the busiest walk path.",
+      copy: "Anchor the next placement to movement that is already happening nearby.",
+      action: "Open campaigns",
+    },
+    {
+      section: "Next Actions",
+      value: "4",
+      headline: "Move from insight to one live campaign.",
+      copy: "Pick a place, timing, audience, and action from the monthly readout.",
+      action: "Start next step",
+    },
+  ];
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="dp-workspace-reports"
+    >
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Monthly report</p>
+          <h2 className="mt-2 font-body text-xl font-semibold leading-tight tracking-normal text-[#0B1F33]">What changed and what to do next</h2>
+          <p className="mt-2 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/66">
+            A readable partner report organized around observations, trends, recommendations, and expected outcomes.
+          </p>
+        </div>
+        <Link
+          to="/map?mode=partner&tab=reports"
+          className="inline-flex h-10 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white px-4 text-[12px] font-semibold text-[#0B1F33] transition hover:border-[#C8A96A]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+        >
+          Open map reports
+        </Link>
+      </div>
+      <div className="grid gap-3">
+        {monthlyReports.map((item) => (
+          <article key={item.section} className="grid gap-3 border border-[#0B1F33]/8 bg-white p-4 md:grid-cols-[0.24fr_1fr_auto] md:items-start md:gap-5">
+            <div>
+              <p className="text-[10px] font-semibold tracking-[0.08em] text-[#C8A96A]">{item.section}</p>
+              <div className="mt-2 text-[22px] font-semibold leading-none text-[#0B1F33]">{item.value}</div>
+            </div>
+            <div>
+              <h3 className="font-body text-[15px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{item.headline}</h3>
+              <p className="mt-1 text-[13px] leading-6 text-[#0B1F33]/66">{item.copy}</p>
+              <dl className="mt-3 grid gap-2 text-[12px] leading-5 md:grid-cols-2">
+                <div><dt className="font-semibold text-[#0B1F33]/52">Observation</dt><dd className="text-[#0B1F33]/72">Activity is clustered around reachable downtown moments.</dd></div>
+                <div><dt className="font-semibold text-[#0B1F33]/52">Trend</dt><dd className="text-[#0B1F33]/72">Saved places and directions rise together after work.</dd></div>
+                <div><dt className="font-semibold text-[#0B1F33]/52">Recommendation</dt><dd className="text-[#0B1F33]/72">Keep the next offer close, timely, and easy to act on.</dd></div>
+                <div><dt className="font-semibold text-[#0B1F33]/52">Expected Outcome</dt><dd className="text-[#0B1F33]/72">Cleaner attribution and a more repeatable next campaign.</dd></div>
+              </dl>
+            </div>
+            <Link to="/map?mode=partner&tab=reports" className="text-[12px] font-semibold text-[#0B1F33] underline decoration-[#C8A96A]/60 underline-offset-4">
+              {item.action}
+            </Link>
+          </article>
+        ))}
+      </div>
+    </motion.section>
+  );
+}
+
 function WorkspaceOverview({ user, setTab }) {
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    base44.entities.Perk.filter({ created_by: user.email }).then(setPerks).catch(() => {});
-    base44.entities.Event.filter({ created_by: user.email }).then(setEvents).catch(() => {});
+    listWorkspaceItems("Perk", "perks", user.email).then(setPerks);
+    listWorkspaceItems("Event", "events", user.email).then(setEvents);
   }, [user.email]);
 
   const activePerks = perks.filter(p => p.status === "active").length;
@@ -143,7 +451,7 @@ function WorkspaceOverview({ user, setTab }) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         {QUICK_STATS.map((s, i) => (
           <div key={i} className="p-5 rounded-xl border border-border/50 bg-card/40 text-center">
-            <div className="font-heading text-2xl font-medium text-foreground">{s.value}</div>
+            <div className="font-body text-2xl font-semibold leading-tight tracking-normal text-foreground">{s.value}</div>
             <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
           </div>
         ))}
@@ -174,7 +482,7 @@ function WorkspaceOverview({ user, setTab }) {
       {perks.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading font-medium text-[13px] text-foreground">Recent perks</h3>
+            <h3 className="font-body text-[13px] font-semibold leading-snug tracking-normal text-foreground">Recent perks</h3>
             <button onClick={() => setTab("perks")} className="text-[12px] text-primary hover:underline underline-offset-4">See all</button>
           </div>
           <div className="space-y-2">
@@ -196,7 +504,7 @@ function WorkspaceOverview({ user, setTab }) {
       {events.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading font-medium text-[13px] text-foreground">Recent events</h3>
+            <h3 className="font-body text-[13px] font-semibold leading-snug tracking-normal text-foreground">Recent events</h3>
             <button onClick={() => setTab("events")} className="text-[12px] text-primary hover:underline underline-offset-4">See all</button>
           </div>
           <div className="space-y-2">
@@ -223,7 +531,7 @@ function WorkspaceOverview({ user, setTab }) {
           <div className="w-12 h-10 rounded-[2px] border border-border/40 flex items-center justify-center mx-auto mb-4">
             <Zap className="w-5 h-5 text-muted-foreground/50" />
           </div>
-          <h3 className="font-heading font-medium text-foreground mb-2">Start building your presence</h3>
+          <h3 className="font-body mb-2 text-[15px] font-semibold leading-snug tracking-normal text-foreground">Start building your presence</h3>
           <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">Add your first perk or event and it will appear on the downtown map for people nearby.</p>
           <div className="flex flex-wrap justify-center gap-3">
             <button onClick={() => setTab("perks")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
@@ -240,18 +548,177 @@ function WorkspaceOverview({ user, setTab }) {
 }
 
 function DaaCivicWorkspacePanel() {
+  const mostVisitedStops = ["Waterloo Park", "Republic Square", "Moody Amphitheater", "The Paramount Theatre", "Congress Avenue Bridge"];
+  const mostSavedStops = ["Treehouse at Pease Park", "Central Library Plaza", "Waller Creek Trail", "Mexic-Arte Museum", "Austin City Hall Plaza"];
+  const returnStops = ["Republic Square", "Waterloo Park", "Rainey Street Trailhead", "Red River Cultural District", "Seaholm Power Plant"];
+  const directionStops = ["Waterloo Park", "Pease Park", "The Driskill", "Bullock Museum Grounds", "Saltillo Plaza"];
+  const learningStops = ["Writing on the Walls", "Malin's Fountain", "Ellsworth Kelly's Austin", "Seaholm Intake Facility", "Old Bakery and Emporium"];
+
+  const stopHref = (label) => {
+    const stop = daaTourStops.find((item) => item.name === label);
+    if (!stop) return `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`;
+    return `/map?mode=partner&tab=map&filter=Civic&entityId=${stop.id}`;
+  };
+
+  const railSections = [
+    {
+      title: "What People Are Telling Us",
+      icon: MessageSquareText,
+      support: "Survey themes from people opening, saving, checking in, and answering prompts on the tour.",
+      items: daaDashboardContent.whatPeopleAreTellingUs.map((label) => ({
+        label,
+        meta: "Survey view",
+        detail: `${label} opens the relevant survey summary so civic partners can understand why people stop, what they want, and how often they return downtown.`,
+        href: "/map?mode=partner&tab=map&filter=Civic",
+      })),
+    },
+    {
+      title: "Why People Stop",
+      icon: MessageSquareText,
+      support: "Common reasons people pause at tour stops.",
+      items: daaExplorerQuestions[0].options.map((label) => ({
+        label,
+        meta: "Survey answer",
+        detail: `${label} helps explain what draws people into a civic stop before they save, check in, or ask for directions.`,
+        href: `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`,
+      })),
+    },
+    {
+      title: "What People Want More Of",
+      icon: MessageSquareText,
+      support: "Requested additions from downtown visitors, workers, and residents.",
+      items: daaExplorerQuestions[1].options.map((label) => ({
+        label,
+        meta: "Requested more",
+        detail: `${label} is useful for future programming, wayfinding, partner prompts, and public-space planning.`,
+        href: `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`,
+      })),
+    },
+    {
+      title: "How Often People Visit Downtown",
+      icon: Users,
+      support: "Visit frequency helps separate residents, regulars, and occasional visitors.",
+      items: daaExplorerQuestions[2].options.map((label) => ({
+        label,
+        meta: "Visit frequency",
+        detail: `${label} gives civic partners a clearer sense of whether the tour is serving regular downtown routines or bringing people back in.`,
+        href: "/map?mode=partner&tab=map&filter=Civic",
+      })),
+    },
+    {
+      title: "Places People Use Most",
+      icon: MapPin,
+      support: "The main ways people interact with civic stops after opening the map.",
+      items: daaDashboardContent.placesPeopleUseMost.map((label) => ({
+        label,
+        meta: "Place behavior",
+        detail: `${label} connects tour behavior to a practical next action: visit, save, return, get directions, or learn more.`,
+        href: "/map?mode=partner&tab=map&filter=Civic",
+      })),
+    },
+    {
+      title: "Most Visited Stops",
+      icon: MapPin,
+      support: "Stops that convert tour opens into real-world visits.",
+      items: mostVisitedStops.map((label) => ({
+        label,
+        meta: "Visited stop",
+        detail: `${label} is one of the civic places people are most likely to open and visit from the tour.`,
+        href: stopHref(label),
+      })),
+    },
+    {
+      title: "Most Saved Stops",
+      icon: Star,
+      support: "Stops people keep for later.",
+      items: mostSavedStops.map((label) => ({
+        label,
+        meta: "Saved stop",
+        detail: `${label} is being saved as a place people want to remember, revisit, or fold into a downtown plan.`,
+        href: stopHref(label),
+      })),
+    },
+    {
+      title: "Places People Return To",
+      icon: Check,
+      support: "Stops that become part of repeated downtown movement.",
+      items: returnStops.map((label) => ({
+        label,
+        meta: "Return use",
+        detail: `${label} shows repeat interest, which is useful for programming, signage, and nearby partner prompts.`,
+        href: stopHref(label),
+      })),
+    },
+    {
+      title: "Places People Ask Directions To",
+      icon: Navigation,
+      support: "Stops where wayfinding matters most.",
+      items: directionStops.map((label) => ({
+        label,
+        meta: "Directions",
+        detail: `${label} creates directions intent, meaning people are ready to move from interest to a real visit.`,
+        href: stopHref(label),
+      })),
+    },
+    {
+      title: "Places People Want To Understand",
+      icon: MessageSquareText,
+      support: "Stops where context, history, art, or public-space storytelling matters.",
+      items: learningStops.map((label) => ({
+        label,
+        meta: "Learn more",
+        detail: `${label} is a strong candidate for richer interpretive copy, QR prompts, and nearby tour context.`,
+        href: stopHref(label),
+      })),
+    },
+    {
+      title: "When People Explore Downtown",
+      icon: Calendar,
+      support: "Time windows for tour opens, stop opens, saves, and directions.",
+      items: daaDashboardContent.timeAnalysis.buckets.map((label) => ({
+        label,
+        meta: "Time window",
+        detail: `${label} activity helps civic partners understand when people are most likely to explore, save, or continue to another stop.`,
+        href: `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`,
+      })),
+    },
+    {
+      title: "Tour Progress",
+      icon: Check,
+      support: "A quick read on how far the tour has moved from open to save to visit.",
+      items: [
+        { label: `Visited ${daaTourProgress.visited} / ${daaTourProgress.total}`, meta: "Check-ins", detail: "Visited stops show where tour discovery is turning into real-world movement.", href: "/map?mode=partner&tab=map&filter=Civic" },
+        { label: `Saved ${daaTourProgress.saved}`, meta: "Saved", detail: "Saved stops show which places people want to remember or return to later.", href: "/map?mode=partner&tab=map&filter=Civic" },
+        { label: `Nearby ${daaTourProgress.nearby}`, meta: "Nearby", detail: "Nearby stops show where people can continue the tour without starting over.", href: "/map?mode=partner&tab=map&filter=Civic" },
+        { label: `Last Visited: ${daaTourProgress.lastVisited}`, meta: "Latest", detail: `${daaTourProgress.lastVisited} is the latest visited stop in this civic workspace view.`, href: stopHref(daaTourProgress.lastVisited) },
+      ],
+    },
+    {
+      title: "Areas of Downtown",
+      icon: Navigation,
+      support: "District context for where civic tour activity is happening.",
+      items: daaTourDistricts.map((label) => ({
+        label,
+        meta: "District",
+        detail: `${label} groups stops, saves, directions, and learning moments into a downtown area people can understand.`,
+        href: `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`,
+      })),
+    },
+  ];
+  const [activeRailItem, setActiveRailItem] = useState(railSections[0].items[0]);
+
   return (
     <section className="mb-8 rounded-[10px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] p-5 shadow-[0_8px_24px_rgba(11,31,51,.04)]">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Downtown Austin Art & Parks Tour</div>
-          <h3 className="mt-2 text-[24px] font-semibold leading-tight tracking-[-0.02em] text-[#0B1F33]">{daaDashboardContent.title}</h3>
+          <h3 className="font-body mt-2 text-[23px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{daaDashboardContent.title}</h3>
           <p className="mt-2 max-w-[48ch] text-[13px] leading-6 text-[#0B1F33]/66">
             A civic view for tour opens, stop opens, saved stops, check-ins, survey completions, directions, areas of downtown, and when people explore.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link to="/card/explorer/daa" className="inline-flex h-9 items-center justify-center rounded-[8px] bg-[#0B1F33] px-3 text-[12px] font-semibold text-white">
+          <Link to="/map?mode=partner&tab=map&filter=Civic" className="inline-flex h-9 items-center justify-center rounded-[8px] bg-[#0B1F33] px-3 text-[12px] font-semibold text-white">
             Open DAA Explorer
           </Link>
           <Link to="/map?mode=resident&tab=map&filter=Civic&entityId=daa-stop-01-malin-s-fountain" className="inline-flex h-9 items-center justify-center rounded-[8px] border border-[rgba(11,31,51,.08)] bg-white px-3 text-[12px] font-semibold text-[#0B1F33]">
@@ -264,61 +731,75 @@ function DaaCivicWorkspacePanel() {
         {daaDashboardContent.overview.slice(0, 8).map(([label, value]) => (
           <div key={label} className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/86 p-3">
             <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{label}</div>
-            <p className="mt-1 text-[20px] font-semibold leading-none text-[#0B1F33]">{value}</p>
+            <p className="mt-1 text-[20px] font-semibold leading-tight tracking-normal text-[#0B1F33]">{value}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-3">
-        {[
-          ["What People Are Telling Us", daaDashboardContent.whatPeopleAreTellingUs, MessageSquareText],
-          ["Places People Use Most", daaDashboardContent.placesPeopleUseMost, MapPin],
-          [daaDashboardContent.timeAnalysis.title, daaDashboardContent.timeAnalysis.buckets, Calendar],
-        ].map(([title, items, Icon]) => (
-          <div key={title} className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
-            <div className="flex items-center gap-2">
-              <Icon className="h-4 w-4 text-[#C8A96A]" />
-              <h4 className="text-[14px] font-semibold text-[#0B1F33]">{title}</h4>
-            </div>
-            <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
-              {items.map((item) => (
-                <span key={item} className="min-w-max snap-start rounded-[6px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] px-2.5 py-1.5 text-[12px] font-medium text-[#0B1F33]/70">
-                  {item}
-                </span>
-              ))}
-            </div>
+      <div className="mt-5 rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/80 p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">{activeRailItem.meta}</div>
+            <h4 className="font-body mt-1 text-[16px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{activeRailItem.label}</h4>
+            <p className="mt-2 max-w-[64ch] text-[13px] leading-6 text-[#0B1F33]/66">{activeRailItem.detail}</p>
           </div>
-        ))}
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <Link to={activeRailItem.href} className="inline-flex h-8 items-center justify-center rounded-[6px] bg-[#0B1F33] px-3 text-[11px] font-semibold text-white">
+              View on map
+            </Link>
+            <Link to="/map?mode=partner&tab=map&filter=Civic" className="inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,.08)] bg-white px-3 text-[11px] font-semibold text-[#0B1F33]">
+              Open explorer
+            </Link>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
-        <div className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
-          <div className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-[#C8A96A]" />
-            <h4 className="text-[14px] font-semibold text-[#0B1F33]">Tour Progress</h4>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2 text-[12px] text-[#0B1F33]/66">
-            <span>Visited {daaTourProgress.visited} / {daaTourProgress.total}</span>
-            <span>Saved {daaTourProgress.saved}</span>
-            <span>Nearby {daaTourProgress.nearby}</span>
-            <span>Last Visited: {daaTourProgress.lastVisited}</span>
-          </div>
-        </div>
-        <div className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
-          <div className="flex items-center gap-2">
-            <Navigation className="h-4 w-4 text-[#C8A96A]" />
-            <h4 className="text-[14px] font-semibold text-[#0B1F33]">Areas of Downtown</h4>
-          </div>
-          <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
-            {daaTourDistricts.map((district) => (
-              <span key={district} className="min-w-max snap-start rounded-[6px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] px-2.5 py-1.5 text-[12px] font-medium text-[#0B1F33]/70">
-                {district}
-              </span>
-            ))}
-          </div>
-        </div>
+      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        {railSections.map((section) => (
+          <DaaInsightRail
+            key={section.title}
+            section={section}
+            activeLabel={activeRailItem.label}
+            onSelect={setActiveRailItem}
+          />
+        ))}
       </div>
     </section>
+  );
+}
+
+function DaaInsightRail({ section, activeLabel, onSelect }) {
+  const Icon = section.icon;
+
+  return (
+    <div className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
+      <div className="flex items-center gap-2">
+        <Icon className="h-4 w-4 text-[#C8A96A]" />
+        <h4 className="font-body text-[14px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{section.title}</h4>
+      </div>
+      <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/58">{section.support}</p>
+      <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
+        {section.items.map((item) => {
+          const isActive = activeLabel === item.label;
+          return (
+            <button
+              key={item.label}
+              type="button"
+              aria-pressed={isActive}
+              onClick={() => onSelect(item)}
+              className={`min-w-[150px] snap-start rounded-[6px] border px-2.5 py-2 text-left text-[12px] font-medium leading-snug transition ${
+                isActive
+                  ? "border-[#C8A96A]/70 bg-white text-[#0B1F33] shadow-[0_8px_24px_rgba(11,31,51,.055)]"
+                  : "border-[rgba(11,31,51,.06)] bg-[#F7F8FB] text-[#0B1F33]/70 hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
+              }`}
+            >
+              <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{item.meta}</span>
+              <span className="mt-1 block">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -332,17 +813,17 @@ function PerksManager({ user }) {
 
   const load = () => {
     setLoading(true);
-    base44.entities.Perk.filter({ created_by: user.email })
+    listWorkspaceItems("Perk", "perks", user.email)
       .then(data => { setPerks(data || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch(() => { setPerks(getStoredItems("perks", user.email)); setLoading(false); });
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [user.email]);
 
   function handleEdit(perk) { setEditing(perk); setShowForm(true); }
   function handleAdd() { setEditing(null); setShowForm(true); }
   async function handleDelete(id) {
-    await base44.entities.Perk.delete(id);
+    await deleteWorkspaceItem("Perk", "perks", user.email, id);
     load();
   }
 
@@ -350,7 +831,7 @@ function PerksManager({ user }) {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-heading font-medium text-xl text-foreground">Perks</h2>
+          <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
         <button onClick={handleAdd} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
@@ -359,7 +840,7 @@ function PerksManager({ user }) {
       </div>
 
       {showForm && (
-        <PerkForm perk={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
+        <PerkForm user={user} perk={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
       )}
 
       {loading ? (
@@ -399,7 +880,7 @@ function PerksManager({ user }) {
   );
 }
 
-function PerkForm({ perk, onClose, onSave }) {
+function PerkForm({ user, perk, onClose, onSave }) {
   const [form, setForm] = useState({
     title: perk?.title || "",
     venue_name: perk?.venue_name || "",
@@ -414,19 +895,23 @@ function PerkForm({ perk, onClose, onSave }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    if (perk?.id) {
-      await base44.entities.Perk.update(perk.id, form);
-    } else {
-      await base44.entities.Perk.create(form);
+    try {
+      if (perk?.id) {
+        await updateWorkspaceItem("Perk", "perks", user.email, perk.id, form);
+      } else {
+        await createWorkspaceItem("Perk", "perks", user.email, form);
+      }
+      onSave();
+    } finally {
+      setSaving(false);
     }
-    onSave();
   }
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
       className="mb-6 p-6 rounded-xl border border-primary/20 bg-primary/5">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-heading font-medium text-foreground">{perk ? "Edit perk" : "New perk"}</h3>
+        <h3 className="font-body text-[15px] font-semibold leading-snug tracking-normal text-foreground">{perk ? "Edit perk" : "New perk"}</h3>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -474,15 +959,15 @@ function EventsManager({ user }) {
 
   const load = () => {
     setLoading(true);
-    base44.entities.Event.filter({ created_by: user.email })
+    listWorkspaceItems("Event", "events", user.email)
       .then(data => { setEvents(data || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch(() => { setEvents(getStoredItems("events", user.email)); setLoading(false); });
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [user.email]);
 
   async function handleDelete(id) {
-    await base44.entities.Event.delete(id);
+    await deleteWorkspaceItem("Event", "events", user.email, id);
     load();
   }
 
@@ -490,7 +975,7 @@ function EventsManager({ user }) {
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-heading font-medium text-xl text-foreground">Events</h2>
+          <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP and discovery.</p>
         </div>
         <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
@@ -499,7 +984,7 @@ function EventsManager({ user }) {
       </div>
 
       {showForm && (
-        <EventForm event={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
+        <EventForm user={user} event={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
       )}
 
       {loading ? (
@@ -539,7 +1024,7 @@ function EventsManager({ user }) {
   );
 }
 
-function EventForm({ event, onClose, onSave }) {
+function EventForm({ user, event, onClose, onSave }) {
   const [form, setForm] = useState({
     title: event?.title || "",
     venue_name: event?.venue_name || "",
@@ -557,19 +1042,23 @@ function EventForm({ event, onClose, onSave }) {
     e.preventDefault();
     setSaving(true);
     const data = { ...form, capacity: form.capacity ? Number(form.capacity) : undefined };
-    if (event?.id) {
-      await base44.entities.Event.update(event.id, data);
-    } else {
-      await base44.entities.Event.create(data);
+    try {
+      if (event?.id) {
+        await updateWorkspaceItem("Event", "events", user.email, event.id, data);
+      } else {
+        await createWorkspaceItem("Event", "events", user.email, data);
+      }
+      onSave();
+    } finally {
+      setSaving(false);
     }
-    onSave();
   }
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
       className="mb-6 p-6 rounded-xl border border-primary/20 bg-primary/5">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-heading font-medium text-foreground">{event ? "Edit event" : "New event"}</h3>
+        <h3 className="font-body text-[15px] font-semibold leading-snug tracking-normal text-foreground">{event ? "Edit event" : "New event"}</h3>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -619,24 +1108,51 @@ function EventForm({ event, onClose, onSave }) {
 // ─── PROFILE ──────────────────────────────────────────────────────────────────
 
 function ProfileSection({ user, setUser }) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState(() => ({
     organization_name: user?.organization_name || "",
     partner_type: user?.partner_type || "venue",
     website: user?.website || "",
     phone: user?.phone || "",
     bio: user?.bio || "",
-  });
+    ...(getStoredProfile() || {}),
+  }));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setForm({
+      organization_name: user?.organization_name || "",
+      partner_type: user?.partner_type || "venue",
+      website: user?.website || "",
+      phone: user?.phone || "",
+      bio: user?.bio || "",
+      ...(getStoredProfile() || {}),
+    });
+  }, [user.email]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);
-    const updated = await base44.auth.updateMe(form);
-    setUser(updated);
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    const nextUser = {
+      ...PUBLIC_PARTNER_USER,
+      ...user,
+      ...form,
+      full_name: form.organization_name || user.full_name || PUBLIC_PARTNER_USER.full_name,
+    };
+
+    try {
+      const updated = await base44.auth.updateMe(form);
+      const normalizedUser = { ...nextUser, ...(updated || {}) };
+      saveStoredProfile(normalizedUser);
+      setUser(normalizedUser);
+    } catch {
+      saveStoredProfile(nextUser);
+      setUser(nextUser);
+    } finally {
+      setSaving(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    }
   }
 
   const PARTNER_TYPES = [
@@ -650,7 +1166,7 @@ function ProfileSection({ user, setUser }) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <div className="mb-6">
-        <h2 className="font-heading font-medium text-xl text-foreground">Profile</h2>
+        <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Profile</h2>
         <p className="text-muted-foreground text-[13px] mt-0.5">Your organization info shown on the downtown map.</p>
       </div>
 
@@ -706,7 +1222,7 @@ function EmptyState({ icon: Icon, headline, body, action, onAction }) {
       <div className="w-12 h-10 rounded-[2px] border border-border/40 flex items-center justify-center mx-auto mb-4">
         <Icon className="w-5 h-5 text-muted-foreground/50" />
       </div>
-      <h3 className="font-heading font-medium text-foreground mb-2">{headline}</h3>
+      <h3 className="font-body mb-2 text-[15px] font-semibold leading-snug tracking-normal text-foreground">{headline}</h3>
       <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">{body}</p>
       <button onClick={onAction} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
         <Plus className="w-4 h-4" /> {action}

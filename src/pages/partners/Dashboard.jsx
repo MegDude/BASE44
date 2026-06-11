@@ -52,8 +52,8 @@ const anchors = [
 
 const dashboardViews = {
   partner: {
-    label: "Partner Ops",
-    eyebrow: "Partner Workspace",
+    label: "Nearby Activity",
+    eyebrow: "Downtown activity",
     headline: "See what is working nearby.",
     body: "Track what people are looking at, saving, scanning, and using around each building.",
     searchPlaceholder: "Search buildings, campaigns, or areas...",
@@ -62,7 +62,7 @@ const dashboardViews = {
   },
   inKind: {
     label: "inKind Offers",
-    eyebrow: "inKind Dashboard",
+    eyebrow: "Dining activity",
     headline: "Manage dining demand around downtown.",
     body: "See where restaurant offers, scans, saves, and redemptions are creating useful resident movement.",
     searchPlaceholder: "Search restaurants, offers, districts, or redemptions...",
@@ -100,7 +100,7 @@ const dashboardViews = {
   },
   civic: {
     label: "Civic",
-    eyebrow: "Civic Dashboard",
+    eyebrow: "Public moments",
     headline: "Track public moments people can actually find.",
     body: "Follow civic programs, district prompts, RSVP activity, wayfinding scans, and public participation across downtown.",
     searchPlaceholder: "Search districts, events, public prompts, or civic partners...",
@@ -141,52 +141,52 @@ const dashboardViews = {
 const metrics = [
   {
     id: "reach",
-    label: "People nearby",
+    label: "Nearby Audience",
     value: "18.4k",
-    detail: "People active in nearby downtown areas.",
-    shows: "This estimates how many people are close enough to do something right now.",
+    detail: "People are active within the surrounding downtown area.",
+    shows: "Most nearby activity comes from residents, hotel guests, office workers, and event attendees moving through nearby districts.",
     example: "Example: a Four Seasons guest guide reaches guests already deciding where to eat after check-in.",
   },
   {
     id: "yield",
-    label: "Took action",
+    label: "Response Rate",
     value: "24%",
-    detail: "People who saved, scanned, RSVP'd, or asked for directions.",
-    shows: "This shows whether people did something useful after seeing the campaign.",
+    detail: "People who interacted with this placement took a measurable action.",
+    shows: "Useful actions include saving, scanning, RSVPing, requesting directions, or opening a partner offer.",
     example: "Example: a Legends Real Estate listing campaign counts saves, scans, and showing intent.",
   },
   {
     id: "impact",
-    label: "Map lift",
+    label: "Visibility Advantage",
     value: "3.8x",
-    detail: "How much better this performs when it appears on the map at the right time.",
-    shows: "This compares map-timed placement against passive visibility.",
+    detail: "This performs better during an active planning moment than through passive visibility alone.",
+    shows: "Use this to decide where a campaign should show up when people are already choosing what to do next.",
     example: "Example: a YETI district placement performs better when tied to a rooftop or event moment.",
   },
   {
     id: "flux",
-    label: "Resident activity",
+    label: "Resident Momentum",
     value: "+31%",
-    detail: "Change in resident activity around the selected area.",
-    shows: "This reads whether residents are moving, opening cards, and making plans in that area.",
+    detail: "Activity around this area has increased.",
+    shows: "This creates stronger opportunities for offers, events, dining, and local visibility.",
     example: "Example: a Lululemon run club should bring more morning activity near participating buildings.",
   },
 ];
 
-const campaignSteps = ["Setup", "People", "Area", "Timing", "Access", "Placement", "Preview", "Launch"];
+const campaignSteps = ["Goal", "Audience", "Location", "Timing", "Access", "Placement", "Preview", "Launch"];
 
 const campaignStepDetails = {
-  Setup: {
+  Goal: {
     title: "Define the campaign goal",
     body: "Pick the thing you want people to do: save a place, scan a QR, RSVP, redeem a perk, request a showing, join an event, or visit a partner.",
     example: "Legends Real Estate might start with: get downtown residents to request showings for new listings this month.",
   },
-  People: {
+  Audience: {
     title: "Choose who should see it",
     body: "Choose residents, hotel guests, people near an event, building prospects, or people already searching for something related.",
     example: "Rivian can focus on people near hotels, events, and mobility stops instead of showing up everywhere.",
   },
-  Area: {
+  Location: {
     title: "Set the walkable area",
     body: "The campaign should only appear where it still feels easy to act. A five-minute walk usually beats a large loose radius.",
     example: "Banger's works best around Rainey because the action is immediate: lunch, drinks, event arrival, or weekend plans.",
@@ -231,28 +231,28 @@ const brandCampaignExamples = [
     route: "/brands/yeti",
     format: "Austin brand moment",
     result: "Tracks district placement, event tie-ins, QR scans, and product interest near outdoor/social moments.",
-    metric: "Map lift",
+    metric: "Visibility Advantage",
   },
   {
     brand: "Rivian",
     route: "/brands/rivian",
     format: "Downtown test-drive moment",
     result: "Connects test-drive or product interest to hotels, residences, events, and walkable downtown plans.",
-    metric: "People nearby",
+    metric: "Nearby Audience",
   },
   {
     brand: "Four Seasons",
     route: "/brands/four-seasons",
     format: "Hospitality guide",
     result: "Shows how guests use dining, wellness, events, and saved places after scanning from the stay experience.",
-    metric: "Resident activity",
+    metric: "Resident Momentum",
   },
   {
     brand: "Lululemon",
     route: "/brands/lululemon",
     format: "Run club and wellness",
     result: "Reads RSVPs, morning movement, repeat attendance, and building-linked wellness interest.",
-    metric: "Took action",
+    metric: "Response Rate",
   },
 ];
 
@@ -403,14 +403,15 @@ const matrixInstructions = [
 
 function ButtonLink({ to, children, variant = "primary" }) {
   const base =
-    "inline-flex h-10 items-center justify-center gap-2 rounded-md px-5 text-xs font-semibold uppercase tracking-[0.16em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]";
+    "dp-action-link inline-flex items-center justify-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.08em] transition-all focus-visible:outline-none";
   const styles =
     variant === "primary"
-      ? "bg-[#0B1F33] text-white hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(11,31,51,0.18)]"
-      : "border border-[#0B1F33]/12 bg-white text-[#0B1F33] hover:-translate-y-0.5 hover:border-[#C8A96A]/60";
+      ? "bg-white/58 text-[#0B1F33] shadow-[var(--dp-white-glow)] hover:-translate-y-0.5"
+      : "bg-white/58 text-[#0B1F33] shadow-[var(--dp-white-glow)] hover:-translate-y-0.5";
   return (
     <Link to={to} className={`${base} ${styles}`}>
       {children}
+      <ArrowRight className="h-3 w-3" />
     </Link>
   );
 }
@@ -451,7 +452,7 @@ export default function PartnersDashboard() {
   const [selectedAnchor, setSelectedAnchor] = useState(dashboardViews.partner.anchors[0]);
   const [selectedMetric, setSelectedMetric] = useState(metrics[0]);
   const [selectedDistrict, setSelectedDistrict] = useState("All");
-  const [activeStep, setActiveStep] = useState("Setup");
+  const [activeStep, setActiveStep] = useState("Goal");
   const [visibility, setVisibility] = useState(true);
   const [query, setQuery] = useState("");
   const [selectedMatrixCell, setSelectedMatrixCell] = useState({ rowId: "lunch", columnId: "activation" });
@@ -558,7 +559,7 @@ export default function PartnersDashboard() {
   }
 
   return (
-    <main className="dp-partner-page bg-white text-[#0B1F33]">
+    <main className="dp-partner-page dp-campaign-builder-page bg-white text-[#0B1F33]">
       <section className="mx-auto max-w-7xl px-4 pb-12 pt-28 sm:px-5 lg:px-5">
         <div className="mb-8 flex items-center justify-between gap-3">
           <button
@@ -593,9 +594,9 @@ export default function PartnersDashboard() {
               <ButtonLink to="/partner-workspace/reports" variant="secondary">View reports</ButtonLink>
             </div>
           </div>
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-white/82 p-4 shadow-[0_18px_44px_rgba(11,31,51,0.10)] backdrop-blur-xl">
-            <label className="mb-3 flex items-center justify-between gap-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
-              Workspace
+          <div className="dp-dashboard-console">
+            <label className="mb-3 flex items-center justify-between gap-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#C8A96A]">
+              View
               <select
                 value={dashboardViewId}
                 onChange={(event) => updateDashboardView(event.target.value)}
@@ -606,7 +607,7 @@ export default function PartnersDashboard() {
                 ))}
               </select>
             </label>
-            <label className="flex h-10 items-center gap-3 rounded-md border border-[#0B1F33]/8 bg-white px-4">
+            <label className="dp-dashboard-search-field flex items-center gap-3">
               <Search className="h-4 w-4 text-[#0B1F33]/45" />
               <input
                 value={query}
@@ -621,11 +622,7 @@ export default function PartnersDashboard() {
                   key={district}
                   type="button"
                   onClick={() => setSelectedDistrict(district)}
-                  className={`rounded-md border px-3 py-2 text-xs font-semibold transition ${
-                    selectedDistrict === district
-                      ? "border-[#0B1F33] bg-[#0B1F33] text-white"
-                      : "border-[#0B1F33]/10 bg-white text-[#0B1F33]"
-                  }`}
+                  className={`dp-dashboard-location-action ${selectedDistrict === district ? "is-active" : ""}`}
                 >
                   {district}
                 </button>
@@ -636,28 +633,18 @@ export default function PartnersDashboard() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-5 lg:px-5">
-        <div className="grid gap-3 md:grid-cols-4">
+        <div className="dp-operational-story-grid">
           {metrics.map((metric) => (
             <button
               key={metric.id}
               type="button"
               onClick={() => setSelectedMetric(metric)}
-              className={`rounded-lg border p-5 text-left transition-all hover:-translate-y-0.5 ${
-                selectedMetric.id === metric.id
-                  ? "border-[#C8A96A]/70 bg-[#0B1F33] text-white shadow-[0_18px_44px_rgba(11,31,51,0.16)]"
-                  : "border-[#0B1F33]/8 bg-white/82 text-[#0B1F33] backdrop-blur-xl"
-              }`}
+              className={`dp-operational-story ${selectedMetric.id === metric.id ? "is-active" : ""}`}
             >
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] opacity-70">{metric.label}</div>
-              <div className="mt-3 text-3xl font-semibold">{metric.value}</div>
-              <div className="mt-2 text-[13px] leading-6 opacity-70">{metric.detail}</div>
-              <div className={`mt-4 rounded-md border p-3 text-[12px] leading-5 ${
-                selectedMetric.id === metric.id ? "border-white/14 bg-white/8 text-white/78" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/64"
-              }`}>
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] opacity-70">What this shows</span>
-                <span className="mt-1 block">{metric.shows}</span>
-              </div>
-              <div className="mt-2 text-[11px] leading-5 opacity-62">{metric.example}</div>
+              <span className="dp-operational-context">{metric.label}</span>
+              <strong>{metric.detail}</strong>
+              <span>{metric.shows}</span>
+              <em>{metric.value} today.</em>
             </button>
           ))}
         </div>
@@ -831,7 +818,7 @@ export default function PartnersDashboard() {
         <div className="overflow-hidden rounded-lg border border-[#0B1F33]/8 bg-white/82 shadow-[0_18px_44px_rgba(11,31,51,0.10)] backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#0B1F33]/8 p-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Partner map</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Map context</p>
               <h2 className="mt-1 text-xl font-semibold">{selectedAnchor.name} · {selectedAnchor.district}</h2>
             </div>
             <button
@@ -847,8 +834,8 @@ export default function PartnersDashboard() {
               {visibility ? "Map visibility on" : "Map visibility off"}
             </button>
           </div>
-          <div className="relative min-h-[420px] bg-[#0B1F33]">
-            <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:72px_72px]" />
+          <div className="dp-live-map-snapshot relative min-h-[420px] bg-white">
+            <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(11,31,51,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(11,31,51,.06)_1px,transparent_1px)] [background-size:72px_72px]" />
             {visibility ? (
               <>
                 {["Resident activity", "Offer area", "Event traffic", "Hotel traffic"].map((label, index) => (
@@ -862,13 +849,13 @@ export default function PartnersDashboard() {
                     {label}
                   </button>
                 ))}
-                <div className="absolute bottom-5 left-5 right-5 rounded-md border border-white/28 bg-white/12 p-4 text-white backdrop-blur-xl">
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/62">
+                <div className="absolute bottom-5 left-5 right-5 rounded-md border border-white/28 bg-white/62 p-4 text-[#0B1F33] backdrop-blur-xl">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/62">
                     <Radio className="h-4 w-4 text-[#C8A96A]" />
                     Live on map
                   </div>
-                  <p className="mt-2 text-[13px] leading-6 text-white/78">{selectedMetric.detail}</p>
-                  <p className="mt-2 text-[12px] leading-5 text-white/58">
+                  <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/78">{selectedMetric.detail}</p>
+                  <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/58">
                     This campaign is visible around {selectedAnchor.name} in {selectedAnchor.district}. Click a map signal to see what it is measuring.
                   </p>
                 </div>
@@ -1094,35 +1081,31 @@ export default function PartnersDashboard() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-20 sm:px-5 lg:grid-cols-[1fr_0.9fr] lg:px-5">
-        <div className="rounded-lg border border-[#0B1F33]/8 bg-white/82 p-5 backdrop-blur-xl">
+        <div className="dp-campaign-story-surface">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Campaign builder</p>
           <h2 className="mt-2 font-heading text-3xl font-medium">Build a campaign around a place and time.</h2>
           <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/62">
             Each step is a real campaign decision. The goal is to keep the setup simple enough for a QR code, a map card, and one clear action.
           </p>
-          <div className="mt-5 grid gap-2 sm:grid-cols-4">
+          <div className="dp-campaign-step-nav mt-5">
             {campaignSteps.map((step) => (
               <button
                 key={step}
                 type="button"
                 onClick={() => setActiveStep(step)}
-                className={`rounded-md border px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-[0.14em] ${
-                  activeStep === step
-                    ? "border-[#C8A96A]/70 bg-[#0B1F33] text-white"
-                    : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
-                }`}
+                className={`dp-campaign-step-tab ${activeStep === step ? "is-active" : ""}`}
               >
                 {step}
               </button>
             ))}
           </div>
-          <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-white p-4">
-            <div className="text-[13px] font-semibold">{activeStep} · {selectedAnchor.name}</div>
-            <div className="mt-1 text-xl font-semibold text-[#0B1F33]">{campaignStepDetails[activeStep].title}</div>
+          <div className="dp-campaign-step-detail mt-5">
+            <div className="text-[12px] font-semibold">{activeStep} · {selectedAnchor.name}</div>
+            <div className="mt-1 text-[20px] font-semibold text-[#0B1F33]">{campaignStepDetails[activeStep].title}</div>
             <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/62">
               {campaignStepDetails[activeStep].body}
             </p>
-            <div className="mt-3 rounded-md border border-[#C8A96A]/24 bg-white p-3 text-[12px] leading-5 text-[#0B1F33]/66">
+            <div className="dp-campaign-example mt-3 text-[12px] leading-5 text-[#0B1F33]/66">
               <span className="font-semibold text-[#0B1F33]">Example: </span>
               {campaignStepDetails[activeStep].example}
             </div>
@@ -1130,10 +1113,10 @@ export default function PartnersDashboard() {
           <button
             type="button"
             onClick={launchCampaign}
-            className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="dp-action-link mt-5 inline-flex items-center justify-center gap-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition focus-visible:outline-none"
           >
             Launch campaign
-            <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
+            <ArrowRight className="h-3 w-3 text-[#C8A96A]" />
           </button>
         </div>
 

@@ -4,7 +4,7 @@
  * Fires from: clicks, searches, conversions
  */
 
-import { base44 } from '@/api/base44Client';
+import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId } from '@/lib/backendWorkflows';
 
 export type EventType =
   | 'marker_click'
@@ -24,28 +24,18 @@ export type EventType =
 export interface TrackingEvent {
   type: EventType;
   entityId?: string;
-  entityType?: 'venue' | 'event' | 'building' | 'perk';
+  entityType?: 'venue' | 'event' | 'building' | 'perk' | string;
   campaign?: string;
   value?: any;
 }
 
-const isProduction = import.meta.env.PROD;
-
 export function track(event: TrackingEvent) {
-  if (!isProduction) {
-    console.log('[TRACK]', event);
-    return;
-  }
-
-  try {
-    base44.integrations.Core.InvokeLLM({
-      prompt: `Record event: ${JSON.stringify(event)}`,
-    }).catch(() => {
-      // Silent fail in production
-    });
-  } catch (err) {
-    // Silent fail
-  }
+  fireWorkflow('/api/track', {
+    ...event,
+    sessionId: getWorkflowSessionId(),
+    profileId: getWorkflowProfileId(),
+    sourceType: 'map_discovery',
+  });
 }
 
 export const trackingEvents = {

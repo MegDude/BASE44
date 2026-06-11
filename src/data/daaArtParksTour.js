@@ -103,6 +103,18 @@ function slugify(value) {
 
 const stopIds = tourSeedStops.map(([name], index) => `daa-stop-${String(index + 1).padStart(2, "0")}-${slugify(name)}`);
 
+function resolveTourStopImage(name, category, district, locationLabel) {
+  const text = [name, category, district, locationLabel].join(" ").toLowerCase();
+  if (text.includes("waterloo") || text.includes("waller creek")) return "/images/imported/perks/waterlook-trail.png";
+  if (text.includes("republic square")) return "/images/imported/perks/republic-square.jpg";
+  if (text.includes("lady bird") || text.includes("hike-and-bike") || text.includes("trail")) return "/images/imported/perks/downtonw-trail.jpg";
+  if (text.includes("blanton") || text.includes("museum")) return "/images/imported/perks/visitors-at-second-saturdays-at-the-blanton-3-3-1024x683.jpg";
+  if (text.includes("gallery") || text.includes("art") || text.includes("mural")) return "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg";
+  if (text.includes("park") || text.includes("square") || text.includes("grounds")) return "/images/imported/perks/republic-square-yoga.jpg";
+  if (text.includes("theatre") || text.includes("amphitheater") || text.includes("music")) return "/images/imported/perks/hotel-van-zandt-first-thiursdays.png";
+  return "/images/imported/perks/blanton-grounds-photo-by-casey-dunn.jpg";
+}
+
 export const daaTourStops = tourSeedStops.map(([name, category, district, locationLabel, address, lat, lng, artist, year], index) => {
   const id = stopIds[index];
   const nearbyStops = [stopIds[(index + 1) % stopIds.length], stopIds[(index + 2) % stopIds.length], stopIds[(index + 3) % stopIds.length]];
@@ -123,7 +135,7 @@ export const daaTourStops = tourSeedStops.map(([name, category, district, locati
     year,
     curator: "Downtown Austin Alliance Foundation",
     sponsor: "Downtown Austin Alliance",
-    imageUrl: "/images/map-entities/perks/downtown_art_walk_1779052670656.png",
+    imageUrl: resolveTourStopImage(name, category, district, locationLabel),
     description: `${name} is part of the Downtown Austin Art & Parks Tour, connecting public art, parks, landmarks, and walkable downtown places into one self-guided civic experience.`,
     popupCopy: `${String(index + 1).padStart(2, "0")} of 48 · ${category} in ${district}`,
     daaIntro: "This stop is part of the Downtown Austin Alliance Art & Parks Tour, a self-guided collection of public art, parks, murals, and cultural landmarks that tell the story of downtown Austin.",

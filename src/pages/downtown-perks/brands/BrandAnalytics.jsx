@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { ArrowRight, MapPin, ArrowLeft, TrendingUp, Users, Zap } from 'lucide-react';
+import { ArrowRight, MapPin, ArrowLeft, TrendingUp, Users, Zap, Trophy, Rocket, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import AnalyticsKPICard from '@/components/analytics/AnalyticsKPICard';
 import AnalyticsFiltersPanel from '@/components/analytics/AnalyticsFiltersPanel';
 import AnalyticsFunnel from '@/components/analytics/AnalyticsFunnel';
 import AnalyticsAttributionTable from '@/components/analytics/AnalyticsAttributionTable';
 
 const CAMPAIGN_FORMATS = [
-  { id: 'founding', label: 'Founding Partner', icon: '🏆', color: 'from-[#0B1F33] to-[#0B1F33]' },
-  { id: 'launch', label: 'Launch Campaign', icon: '🚀', color: 'from-[#0B1F33] to-[#0B1F33]' },
-  { id: 'resident', label: 'Resident Activation', icon: '👥', color: 'from-[#0B1F33] to-[#0B1F33]' },
-  { id: 'event', label: 'Event-Led Campaign', icon: '📍', color: 'from-[#0B1F33] to-[#0B1F33]' },
-  { id: 'utility', label: 'Utility Campaign', icon: '✨', color: 'from-indigo-500 to-violet-500' }
+  { id: 'founding', label: 'Founding Partner', Icon: Trophy },
+  { id: 'launch', label: 'Launch Campaign', Icon: Rocket },
+  { id: 'resident', label: 'Resident Activation', Icon: Users },
+  { id: 'event', label: 'Event-Led Campaign', Icon: MapPin },
+  { id: 'utility', label: 'Utility Campaign', Icon: Sparkles }
 ];
 
 const VENUE_PERFORMANCE = [
@@ -59,6 +58,72 @@ function generateSampleAnalytics(seed = 1, format = 'all') {
   };
 }
 
+function CampaignAnalyticsSnapshot({ analytics }) {
+  const [activeMetric, setActiveMetric] = useState('reach');
+  const metrics = [
+    { id: 'reach', label: 'Reach', value: analytics.reach, delta: '+12%', max: 12400, detail: 'People who saw the campaign near core downtown places.' },
+    { id: 'scans', label: 'Scans', value: analytics.scans, delta: '+8%', max: 12400, detail: 'QR and map opens from placements, buildings, and nearby prompts.' },
+    { id: 'unlocks', label: 'Unlocks', value: analytics.unlocks, delta: '+5%', max: 12400, detail: 'Perks, event prompts, and campaign actions residents opened.' },
+    { id: 'visits', label: 'Visits', value: analytics.visits, delta: '-3%', max: 12400, trend: 'soft', detail: 'Attributed visit intent around the selected campaign.' },
+    { id: 'redemptions', label: 'Redemptions', value: analytics.redemptions, delta: '+14%', max: 12400, detail: 'Confirmed offer or resident-access use.' },
+    { id: 'repeat', label: 'Repeat Engagement', value: analytics.repeatEngagement, delta: '+22%', max: 12400, detail: 'People returning to the same campaign or nearby place.' },
+    { id: 'conversion', label: 'Conversion Rate', value: analytics.conversionRate, display: `${analytics.conversionRate}%`, delta: '+1.2%', max: 12, detail: 'Share of activity that turned into visit or redemption intent.' },
+  ];
+  const active = metrics.find((metric) => metric.id === activeMetric) || metrics[0];
+  const formatValue = (metric) => metric.display || Number(metric.value).toLocaleString();
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.16 }}
+      className="dp-analytics-visual rounded-[8px] border border-border/50 bg-card/40 p-4 md:p-5"
+    >
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Campaign performance</p>
+          <h2 className="mt-1 text-[18px] font-semibold leading-tight text-[#0B1F33]">Live activity snapshot</h2>
+        </div>
+        <div className="text-[12px] leading-5 text-[#0B1F33]/62 sm:max-w-[250px]">
+          Compare reach, scans, unlocks, visits, and redemptions in one compact view.
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_230px]">
+        <div className="grid gap-2">
+          {metrics.map((metric) => {
+            const width = Math.max(6, Math.min((Number(metric.value) / metric.max) * 100, 100));
+            const isActive = metric.id === active.id;
+            return (
+              <button
+                key={metric.id}
+                type="button"
+                onClick={() => setActiveMetric(metric.id)}
+                className={`dp-analytics-row ${isActive ? 'is-active' : ''}`}
+                aria-pressed={isActive}
+              >
+                <span className="dp-analytics-row-label">{metric.label}</span>
+                <span className="dp-analytics-track" aria-hidden="true">
+                  <span style={{ width: `${width}%` }} />
+                </span>
+                <strong>{formatValue(metric)}</strong>
+                <em className={metric.trend === 'soft' ? 'is-soft' : ''}>{metric.delta}</em>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="dp-analytics-focus">
+          <span>Selected metric</span>
+          <strong>{formatValue(active)}</strong>
+          <p>{active.label}</p>
+          <small>{active.detail}</small>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
+
 export default function BrandAnalytics() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [brand, setBrand] = useState(null);
@@ -94,18 +159,29 @@ export default function BrandAnalytics() {
   }, [searchParams]);
 
   const handleFilterChange = (filterType, values) => {
+    const filterParamMap = {
+      placementType: "placement",
+    };
+    const paramName = filterParamMap[filterType] ?? filterType;
     setFilters(prev => ({ ...prev, [filterType]: values }));
-    // Update URL params
-    const params = new URLSearchParams();
-    if (brand?.slug && brand.slug !== 'all-brands') {
-      params.set('brand', brand.slug);
-    }
-    values.forEach(v => params.append(filterType, v));
+    const params = new URLSearchParams(searchParams);
+    params.delete(paramName);
+    values.forEach(v => params.append(paramName, v));
     setSearchParams(params);
   };
 
   const handleClearFilters = () => {
-    setFilters({ timeRange: ['month'], district: [], source: [] });
+    setFilters({
+      timeRange: ['month'],
+      campaignFormat: ['all'],
+      campaign: [],
+      district: [],
+      venue: [],
+      building: [],
+      event: [],
+      placementType: [],
+      source: []
+    });
     const params = new URLSearchParams();
     if (brand?.slug && brand.slug !== 'all-brands') {
       params.set('brand', brand.slug);
@@ -118,7 +194,7 @@ export default function BrandAnalytics() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dp-brand-analytics-page min-h-screen bg-background">
       {/* ── HERO SECTION (Campaign Intelligence Layer) ──────────────────────── */}
       <section className="border-b border-border/40 bg-gradient-to-br from-background to-muted/20 py-12 px-5">
         <div className="max-w-6xl mx-auto">
@@ -181,13 +257,13 @@ export default function BrandAnalytics() {
                   setSearchParams(new URLSearchParams({ ...Object.fromEntries(searchParams), format: fmt.id }));
                 }}
                 whileHover={{ scale: 1.02 }}
-                className={`px-4 py-2.5 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all flex items-center gap-2 shrink-0 ${
+                className={`px-3 py-1.5 rounded-[6px] text-[11px] font-semibold whitespace-nowrap border transition-all flex items-center gap-1.5 shrink-0 ${
                   selectedFormat === fmt.id
                     ? 'border-primary/50 bg-primary/10 text-primary'
                     : 'border-border/40 text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <span>{fmt.icon}</span>
+                <fmt.Icon className="h-3.5 w-3.5 text-[#C8A96A]" />
                 {fmt.label}
               </motion.button>
             ))}
@@ -197,7 +273,7 @@ export default function BrandAnalytics() {
                 setFilters(prev => ({ ...prev, campaignFormat: ['all'] }));
                 setSearchParams(new URLSearchParams());
               }}
-              className={`px-4 py-2.5 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all shrink-0 ml-2 ${
+              className={`px-3 py-1.5 rounded-[6px] text-[11px] font-semibold whitespace-nowrap border transition-all shrink-0 ml-2 ${
                 selectedFormat === 'all'
                   ? 'border-primary/50 bg-primary/10 text-primary'
                   : 'border-border/40 text-muted-foreground hover:text-foreground'
@@ -224,20 +300,7 @@ export default function BrandAnalytics() {
 
             {/* ── MAIN CONTENT ────────────────────────────────────────── */}
             <div className="lg:col-span-3 space-y-8">
-              {/* KPI Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <AnalyticsKPICard label="Reach" value={analytics.reach} delta="+12%" deltaType="positive" />
-                <AnalyticsKPICard label="Scans" value={analytics.scans} delta="+8%" deltaType="positive" />
-                <AnalyticsKPICard label="Unlocks" value={analytics.unlocks} delta="+5%" deltaType="positive" />
-                <AnalyticsKPICard label="Visits" value={analytics.visits} delta="-3%" deltaType="negative" />
-              </div>
-
-              {/* Secondary KPIs */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <AnalyticsKPICard label="Redemptions" value={analytics.redemptions} delta="+14%" deltaType="positive" />
-                <AnalyticsKPICard label="Repeat Engagement" value={analytics.repeatEngagement} delta="+22%" deltaType="positive" />
-                <AnalyticsKPICard label="Conversion Rate" value={`${analytics.conversionRate}%`} delta="+1.2%" deltaType="positive" />
-              </div>
+              <CampaignAnalyticsSnapshot analytics={analytics} />
 
               {/* Funnel */}
               <motion.div
@@ -287,12 +350,12 @@ export default function BrandAnalytics() {
                           {p.trend === 'up' ? '+12%' : 'Stable'}
                         </span>
                       </div>
-                      <div className="h-2 rounded-full bg-border/30 overflow-hidden">
+                      <div className="h-1.5 rounded-[4px] bg-border/30 overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${p.intensity}%` }}
                           transition={{ duration: 0.8, delay: 0.35 + idx * 0.05 }}
-                          className="h-full rounded-full bg-gradient-to-r from-[#0B1F33] to-[#0B1F33]"
+                          className="h-full rounded-[4px] bg-[#C8A96A]"
                         />
                       </div>
                     </motion.div>

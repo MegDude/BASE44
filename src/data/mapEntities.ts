@@ -145,6 +145,7 @@ export interface MapEntity {
     isTrending?: boolean;
     tags?: string[];
     askMapIntentTags?: string[];
+    searchKeywords?: string[];
   };
 
   // Quick actions available on this entity

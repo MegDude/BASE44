@@ -292,7 +292,7 @@ export default function PropertiesPartner() {
       {/* CLOSING CTA */}
       <ClosingCTA eyebrow="Property partner layer"
         headline="Give your residents a reason to open the map."
-        body="Buildings can start at $49/month and scale up to the $199/month Property Pro plan."
+        body="Buildings can start with Starter and scale up to Pro when resident access, reporting, and planning needs grow."
         proof="Ready to walk through the setup? Reach out to our team."
         ctaLabel="Add your building" ctaHref="#partner-form"
         secondLabel="See the map" secondHref="#property-map" />

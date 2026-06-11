@@ -30,6 +30,9 @@ export function isDowntownAustin78701Entity(entity: Record<string, unknown>): bo
   const longitude = toFiniteNumber(entity.longitude);
 
   if (latitude === null || longitude === null) return false;
+  const sourceText = [entity.source, entity.brand, entity.category_key].filter(Boolean).join(" ").toLowerCase();
+
+  if (sourceText.includes("downtown austin alliance art") && sourceText.includes("parks tour")) return true;
 
   const inDowntownBox =
     latitude >= DOWNTOWN_78701_BOUNDS.south &&
@@ -41,7 +44,6 @@ export function isDowntownAustin78701Entity(entity: Record<string, unknown>): bo
   if (longitude > EAST_SIDE_CUTOFF) return false;
 
   const text = searchableText(entity);
-  const sourceText = [entity.source, entity.brand, entity.category_key].filter(Boolean).join(" ").toLowerCase();
 
   if (sourceText.includes("legends") && sourceText.includes("verified listing")) return true;
   return text.includes("78701");

@@ -3,21 +3,18 @@ import { Link } from "react-router-dom";
 const footerGroups = {
   Residents: [
     { to: "/map?mode=resident&tab=map", label: "Map" },
-    { to: "/events", label: "Events" },
     { to: "/card", label: "Perks Card" },
-    { to: "/residents", label: "Get Started" },
   ],
   Partners: [
-    { to: "/partners/properties", label: "Properties" },
-    { to: "/partners/hotels", label: "Hotels" },
-    { to: "/partners/venues", label: "Venues" },
-    { to: "/partners/brands", label: "Brands" },
-    { to: "/partners/civic", label: "Civic" },
-  ],
-  Directory: [
-    { to: "/contact", label: "Contact" },
     { to: "/partners", label: "Partner Mode" },
+    { to: "/partners/dashboard", label: "Workspace" },
+  ],
+  Platform: [
     { to: "/brands", label: "Brand Directory" },
+    { to: "/pricing", label: "Pricing" },
+  ],
+  Contact: [
+    { to: "/contact", label: "Contact" },
   ],
 };
 
@@ -40,7 +37,7 @@ export default function HomeFooter() {
             </p>
           </div>
 
-          <div className="grid min-w-0 grid-cols-[0.82fr_0.9fr_1.28fr] gap-2 sm:gap-4 lg:gap-6">
+          <div className="grid min-w-0 grid-cols-2 gap-5 sm:grid-cols-4 lg:gap-6">
             {Object.entries(footerGroups).map(([group, links]) => (
               <nav key={group} aria-label={group}>
                 <h4 className="mb-2.5 font-sans text-[10px] font-semibold uppercase tracking-normal text-[#BFA46A] sm:mb-3 sm:text-[11px]">
@@ -57,7 +54,7 @@ export default function HomeFooter() {
                       </Link>
                     </li>
                   ))}
-                  {group === "Directory" && (
+                  {group === "Contact" && (
                     <li className="min-w-0 pt-1">
                       <a
                         href="mailto:partners@downtownperks.com"
