@@ -7,7 +7,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { X, MapPin, Clock, Star, ChevronRight, Share2, ExternalLink, Zap, ArrowLeft } from 'lucide-react';
+import { X, MapPin, Clock, Star, Share2, ExternalLink, ArrowLeft } from 'lucide-react';
 import WhyThisChip from './WhyThisChip';
 import { trackingEvents } from '@/lib/analytics/track';
 import { useResidentStore } from '@/store/resident-store';
@@ -77,31 +77,34 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="flex aspect-[2/1] w-full items-center justify-center bg-white">
-          <div className="flex h-20 w-20 items-center justify-center rounded-[6px] bg-[#0B1F33] text-xl font-semibold text-[#C8A96A] shadow-[0_18px_44px_rgba(11,31,51,0.12),0_0_26px_rgba(200,169,106,0.08)]">
+        {/* Hero placeholder — subtle gradient with centered monogram */}
+        <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#F0F3F7] via-[#F7F8FB] to-[#EEF1F6]">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(200,169,106,0.08),transparent_60%),radial-gradient(ellipse_at_80%_70%,rgba(11,31,51,0.05),transparent_50%)]" />
+          <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-[10px] bg-[#0B1F33] text-base font-semibold text-[#C8A96A] shadow-[0_12px_32px_rgba(11,31,51,0.18),0_4px_12px_rgba(11,31,51,0.12),0_0_0_1px_rgba(255,255,255,0.15)]">
             <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
           </div>
         </div>
 
-        <div className="p-5 space-y-4">
-          {/* Context block */}
+        <div className="p-5 space-y-3.5">
+          {/* Context chip */}
           {reason && (
-            <div className="rounded-[6px] bg-white/72 p-3 shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04),0_10px_24px_rgba(11,31,51,0.04)]">
-              <div className="text-[12px] text-primary font-medium">
-                {reason === 'nearby' && `${distance || '0'} min walk from you`}
-                {reason === 'campaign' && 'Featured in active campaign'}
-                {reason === 'event_now' && 'Happening right now'}
-                {reason === 'perk_match' && 'Exclusive perk available'}
-                {reason === 'saved' && 'One of your saved items'}
-              </div>
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(200,169,106,0.24)] bg-[rgba(200,169,106,0.08)] px-3 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#C8A96A]" />
+              <span className="text-[11.5px] font-semibold text-[#8B6B2F]">
+                {reason === 'nearby' && `${distance || '0'} min walk`}
+                {reason === 'campaign' && 'Featured campaign'}
+                {reason === 'event_now' && 'Happening now'}
+                {reason === 'perk_match' && 'Exclusive perk'}
+                {reason === 'saved' && 'Saved by you'}
+              </span>
             </div>
           )}
 
           {/* Description */}
           {entity.description && (
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-1.5">About</div>
-              <p className="text-[13px] text-foreground/70 leading-relaxed line-clamp-3">{entity.description}</p>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/44 mb-1.5">About</p>
+              <p className="text-[13.5px] text-[#0B1F33]/72 leading-relaxed line-clamp-3">{entity.description}</p>
             </div>
           )}
 
@@ -109,15 +112,15 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {(entity.isActive || entity.rsvp_count) && (
             <div className="space-y-2">
               {entity.isActive && (
-                <div className="flex items-center gap-2 rounded-[6px] bg-white/72 p-2 shadow-[inset_0_0_0_1px_rgba(200,169,106,0.10)]">
-                  <Zap className="w-4 h-4 text-[#C8A96A]" />
-                  <span className="text-[12px] font-medium text-[#0B1F33]">Open now</span>
+                <div className="flex items-center gap-2.5 rounded-[8px] border border-[rgba(200,169,106,0.2)] bg-[rgba(200,169,106,0.07)] px-3 py-2">
+                  <span className="flex h-1.5 w-1.5 rounded-full bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.6)]" />
+                  <span className="text-[12.5px] font-semibold text-[#8B6B2F]">Open now</span>
                 </div>
               )}
               {entity.rsvp_count && (
-                <div className="flex items-center gap-2 rounded-[6px] bg-white/72 p-2 shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)]">
-                  <ChevronRight className="w-4 h-4 text-[#C8A96A]" />
-                  <span className="text-[12px] font-medium text-[#0B1F33]">{entity.rsvp_count} people going</span>
+                <div className="flex items-center gap-2.5 rounded-[8px] border border-[rgba(11,31,51,0.07)] bg-[rgba(11,31,51,0.03)] px-3 py-2">
+                  <Star className="w-3.5 h-3.5 text-[#C8A96A]" />
+                  <span className="text-[12.5px] font-medium text-[#0B1F33]/70">{entity.rsvp_count} people going</span>
                 </div>
               )}
             </div>
@@ -125,26 +128,26 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
 
           {/* Perk highlight */}
           {entity.perk_description && (
-            <div className="rounded-[6px] bg-white/72 p-3 shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04),0_10px_24px_rgba(11,31,51,0.04)]">
-              <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-1.5">Member perk</div>
-              <div className="text-[13px] font-medium text-foreground">{entity.perk_description}</div>
-              {entity.perk_value && <div className="text-[16px] font-bold text-foreground mt-1">{entity.perk_value}</div>}
+            <div className="rounded-[8px] border border-[rgba(200,169,106,0.2)] bg-[rgba(200,169,106,0.06)] p-3.5">
+              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A] mb-1.5">Member perk</p>
+              <p className="text-[13px] font-medium text-[#0B1F33]">{entity.perk_description}</p>
+              {entity.perk_value && <p className="text-[17px] font-bold text-[#0B1F33] mt-1 tracking-tight">{entity.perk_value}</p>}
             </div>
           )}
 
           {/* Hours */}
           {entity.hours && (
             <div className="flex items-center gap-2 text-[13px]">
-              <Clock className="w-4 h-4 text-muted-foreground" />
-              <span className="text-foreground/70">{entity.hours}</span>
+              <Clock className="w-3.5 h-3.5 text-[#0B1F33]/40 shrink-0" />
+              <span className="text-[#0B1F33]/62">{entity.hours}</span>
             </div>
           )}
 
           {/* Tags */}
           {entity.tags?.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {entity.tags.slice(0, 3).map((tag, i) => (
-                <span key={i} className="px-0 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/52">
+            <div className="flex flex-wrap gap-1.5">
+              {entity.tags.slice(0, 4).map((tag, i) => (
+                <span key={i} className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.04)] px-2.5 py-0.5 text-[10.5px] font-medium tracking-wide text-[#0B1F33]/54">
                   {tag}
                 </span>
               ))}
@@ -154,39 +157,39 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
       </div>
 
       {/* Primary actions (sticky) */}
-      <div className="flex-shrink-0 space-y-2.5 p-5 pt-4">
+      <div className="flex-shrink-0 border-t border-[rgba(11,31,51,0.06)] bg-white/92 p-4 pt-3.5 backdrop-blur-[12px] space-y-2">
         {/* Main CTA */}
         {entity.website ? (
           <a
             href={entity.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-9 w-full items-center justify-center gap-2 rounded-[5px] bg-[#0B1F33] text-[12px] font-medium text-white shadow-[0_10px_24px_rgba(11,31,51,0.10)] transition-all hover:-translate-y-px hover:bg-[#0B1F33]"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-[#0B1F33] text-[13px] font-semibold text-white shadow-[0_2px_8px_rgba(11,31,51,0.18),0_8px_20px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
           >
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="w-3.5 h-3.5" />
             {entity._type === 'event' ? 'View event' : 'Visit website'}
           </a>
         ) : (
           <button
             onClick={handleDirections}
-            className="flex h-9 w-full items-center justify-center gap-2 rounded-[5px] bg-[#0B1F33] text-[12px] font-medium text-white shadow-[0_10px_24px_rgba(11,31,51,0.10)] transition-all hover:-translate-y-px hover:bg-[#0B1F33]"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-[#0B1F33] text-[13px] font-semibold text-white shadow-[0_2px_8px_rgba(11,31,51,0.18),0_8px_20px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
           >
-            <MapPin className="w-4 h-4" />
+            <MapPin className="w-3.5 h-3.5" />
             Get directions
           </button>
         )}
 
         {/* Secondary actions */}
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2">
           <button
             onClick={handleSave}
-            className={`flex h-8 items-center justify-center gap-1.5 bg-transparent text-[11px] font-semibold uppercase tracking-[0.12em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
+            className={`flex h-9 items-center justify-center gap-1.5 rounded-[7px] border text-[11.5px] font-semibold tracking-[0.04em] transition-all duration-150 hover:-translate-y-px active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50 ${
               isSaved
-                ? 'text-[#C8A96A]'
-                : 'text-[#0B1F33]/58 hover:text-[#0B1F33]'
+                ? 'border-[rgba(200,169,106,0.35)] bg-[rgba(200,169,106,0.09)] text-[#8B6B2F] shadow-none'
+                : 'border-[rgba(11,31,51,0.09)] bg-white text-[#0B1F33]/62 shadow-[0_1px_3px_rgba(11,31,51,0.05)] hover:border-[rgba(200,169,106,0.4)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)]'
             }`}
           >
-            <Star className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
+            <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-current text-[#C8A96A]' : ''}`} />
             {isSaved ? 'Saved' : 'Save'}
           </button>
 
@@ -195,9 +198,9 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
               navigator.clipboard.writeText(window.location.href);
               trackingEvents.save(entity.id);
             }}
-            className="flex h-8 items-center justify-center gap-1.5 bg-transparent text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="flex h-9 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white text-[11.5px] font-semibold tracking-[0.04em] text-[#0B1F33]/62 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.14)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
           >
-            <Share2 className="w-4 h-4" />
+            <Share2 className="w-3.5 h-3.5" />
             Share
           </button>
         </div>

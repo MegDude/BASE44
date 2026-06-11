@@ -219,61 +219,73 @@ export default function PartnerWorkspace() {
   }
 
   return (
-    <div className="dp-partner-page min-h-screen bg-white text-[#0B1F33]">
+    <div className="dp-partner-page min-h-screen bg-[#F7F8FB] text-[#0B1F33]">
       {/* Header */}
-      <div className="pt-24 pb-0 px-5 border-b border-border/40">
+      <div className="pt-20 pb-0 px-5 bg-white border-b border-[rgba(11,31,51,0.07)] shadow-[0_1px_0_rgba(11,31,51,0.04),0_4px_16px_rgba(11,31,51,0.03)]">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-6 flex items-center justify-between gap-3">
+          <div className="mb-5 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
-              className="inline-flex h-9 items-center gap-2 rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[12px] font-semibold text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-2.5 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
+              <ArrowLeft className="h-3 w-3 text-[#C8A96A]" />
               Back to map
             </button>
             <button
               type="button"
               onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white text-[#0B1F33]/54 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
               aria-label="Close partner workspace"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
             </button>
           </div>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-end justify-between mb-5 gap-4">
             <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-1">Partner Workspace</span>
-              <h1 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">
+              <span className="text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
+              <h1 className="font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
                 {user.full_name || user.email?.split("@")[0] || "Your workspace"}
               </h1>
-              <p className="text-muted-foreground text-[13px] mt-1">{user.email}</p>
+              <p className="text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">{user.email}</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut}
-                className="inline-flex h-9 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[12px] font-semibold text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
               >
                 {isPublicWorkspaceUser ? "Sign in" : "Sign out"}
               </button>
-              <Link to="/map?mode=partner&tab=map&filter=All" className="text-[12px] text-muted-foreground hover:text-foreground transition-colors">
-                Partner map
-              </Link>
-              <Link to="/partners/dashboard" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/60 text-[12px] font-medium text-foreground/70 hover:text-foreground transition-all">
-                <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
+              <Link
+                to="/partners/dashboard"
+                className="inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5 text-[#C8A96A]" /> Dashboard
               </Link>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-0 -mb-px">
+          {/* Tabs — animated sliding indicator */}
+          <div className="relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
             {TABS.map(t => (
-              <button key={t.id} onClick={() => setTab(t.id)}
-                className={`px-5 py-2.5 text-[12px] font-medium border-b-2 transition-all ${
-                  tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}>
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`relative flex-shrink-0 px-4 py-2.5 text-[12px] font-medium transition-colors duration-150 focus-visible:outline-none ${
+                  tab === t.id
+                    ? "text-[#0B1F33]"
+                    : "text-[#0B1F33]/46 hover:text-[#0B1F33]/72"
+                }`}
+              >
                 {t.label}
+                {tab === t.id && (
+                  <motion.span
+                    layoutId="workspace-tab-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8A96A] rounded-full"
+                    transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -281,7 +293,7 @@ export default function PartnerWorkspace() {
       </div>
 
       {/* Tab content */}
-      <div className="max-w-6xl mx-auto px-5 py-10">
+      <div className="max-w-6xl mx-auto px-5 py-8">
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
           {tab === "campaigns" && <WorkspaceCapability key="campaigns" title="Campaigns" eyebrow="Partner workflow" description="Plan, publish, and review offers or events that should appear on the downtown map." actions={["Create a map offer", "Promote an event", "Review active placements"]} />}
@@ -304,20 +316,26 @@ export default function PartnerWorkspace() {
 function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="border border-[#0B1F33]/8 bg-white p-5 md:p-7"
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]"
     >
-      <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#C8A96A]">{eyebrow}</p>
-      <h2 className="mt-2 font-body text-xl font-semibold leading-snug tracking-normal text-foreground">{title}</h2>
-      <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/66">{description}</p>
-      <div className="mt-6 grid gap-3 md:grid-cols-3">
-        {actions.map((action) => (
-          <div key={action} className="border border-[#0B1F33]/8 bg-[#F7F8FB] p-4">
-            <Check className="h-4 w-4 text-[#C8A96A]" />
-            <p className="mt-3 text-[13px] font-medium text-[#0B1F33]">{action}</p>
+      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">{eyebrow}</span>
+      <h2 className="mt-2 font-body text-[20px] font-semibold leading-snug tracking-[-0.005em] text-[#0B1F33]">{title}</h2>
+      <p className="mt-2.5 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/60">{description}</p>
+      <div className="mt-6 grid gap-2.5 md:grid-cols-3">
+        {actions.map((action, i) => (
+          <div
+            key={action}
+            className="group flex items-start gap-3 rounded-[8px] border border-[rgba(11,31,51,0.07)] bg-[#F7F8FB] p-4 transition-all duration-150 hover:border-[rgba(200,169,106,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(11,31,51,0.06)]"
+            style={{ transitionDelay: `${i * 30}ms` }}
+          >
+            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-[5px] bg-[rgba(200,169,106,0.12)]">
+              <Check className="h-3.5 w-3.5 text-[#C8A96A]" />
+            </div>
+            <p className="text-[13px] font-medium leading-snug text-[#0B1F33] group-hover:text-[#0B1F33]">{action}</p>
           </div>
         ))}
       </div>
@@ -373,45 +391,50 @@ function WorkspaceReports() {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="dp-workspace-reports"
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Monthly report</p>
-          <h2 className="mt-2 font-body text-xl font-semibold leading-tight tracking-normal text-[#0B1F33]">What changed and what to do next</h2>
-          <p className="mt-2 max-w-2xl text-[13px] leading-6 text-[#0B1F33]/66">
+          <span className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Monthly report</span>
+          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">What changed and what to do next</h2>
+          <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
             A readable partner report organized around observations, trends, recommendations, and expected outcomes.
           </p>
         </div>
         <Link
           to="/map?mode=partner&tab=reports"
-          className="inline-flex h-10 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white px-4 text-[12px] font-semibold text-[#0B1F33] transition hover:border-[#C8A96A]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+          className="inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
         >
           Open map reports
         </Link>
       </div>
-      <div className="grid gap-3">
+      <div className="grid gap-2.5">
         {monthlyReports.map((item) => (
-          <article key={item.section} className="grid gap-3 border border-[#0B1F33]/8 bg-white p-4 md:grid-cols-[0.24fr_1fr_auto] md:items-start md:gap-5">
+          <article
+            key={item.section}
+            className="group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(200,169,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
+          >
             <div>
-              <p className="text-[10px] font-semibold tracking-[0.08em] text-[#C8A96A]">{item.section}</p>
-              <div className="mt-2 text-[22px] font-semibold leading-none text-[#0B1F33]">{item.value}</div>
+              <p className="text-[10px] font-semibold tracking-[0.12em] uppercase text-[#C8A96A]">{item.section}</p>
+              <div className="mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
             </div>
             <div>
-              <h3 className="font-body text-[15px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{item.headline}</h3>
-              <p className="mt-1 text-[13px] leading-6 text-[#0B1F33]/66">{item.copy}</p>
-              <dl className="mt-3 grid gap-2 text-[12px] leading-5 md:grid-cols-2">
-                <div><dt className="font-semibold text-[#0B1F33]/52">Observation</dt><dd className="text-[#0B1F33]/72">Activity is clustered around reachable downtown moments.</dd></div>
-                <div><dt className="font-semibold text-[#0B1F33]/52">Trend</dt><dd className="text-[#0B1F33]/72">Saved places and directions rise together after work.</dd></div>
-                <div><dt className="font-semibold text-[#0B1F33]/52">Recommendation</dt><dd className="text-[#0B1F33]/72">Keep the next offer close, timely, and easy to act on.</dd></div>
-                <div><dt className="font-semibold text-[#0B1F33]/52">Expected Outcome</dt><dd className="text-[#0B1F33]/72">Cleaner attribution and a more repeatable next campaign.</dd></div>
+              <h3 className="font-body text-[14.5px] font-semibold leading-snug tracking-tight text-[#0B1F33]">{item.headline}</h3>
+              <p className="mt-1.5 text-[13px] leading-[1.6] text-[#0B1F33]/60">{item.copy}</p>
+              <dl className="mt-3.5 grid gap-2 text-[12px] leading-[1.55] md:grid-cols-2">
+                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Observation</dt><dd className="text-[#0B1F33]/70 mt-0.5">Activity is clustered around reachable downtown moments.</dd></div>
+                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Trend</dt><dd className="text-[#0B1F33]/70 mt-0.5">Saved places and directions rise together after work.</dd></div>
+                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Recommendation</dt><dd className="text-[#0B1F33]/70 mt-0.5">Keep the next offer close, timely, and easy to act on.</dd></div>
+                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Expected Outcome</dt><dd className="text-[#0B1F33]/70 mt-0.5">Cleaner attribution and a more repeatable next campaign.</dd></div>
               </dl>
             </div>
-            <Link to="/map?mode=partner&tab=reports" className="text-[12px] font-semibold text-[#0B1F33] underline decoration-[#C8A96A]/60 underline-offset-4">
+            <Link
+              to="/map?mode=partner&tab=reports"
+              className="shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#C8A96A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#C8A96A]"
+            >
               {item.action}
             </Link>
           </article>
@@ -447,30 +470,36 @@ function WorkspaceOverview({ user, setTab }) {
   ];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {QUICK_STATS.map((s, i) => (
-          <div key={i} className="p-5 rounded-xl border border-border/50 bg-card/40 text-center">
-            <div className="font-body text-2xl font-semibold leading-tight tracking-normal text-foreground">{s.value}</div>
-            <div className="text-[11px] text-muted-foreground mt-1">{s.label}</div>
+          <div
+            key={i}
+            className="flex flex-col items-center justify-center p-5 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] text-center"
+          >
+            <div className="font-body text-[26px] font-semibold leading-none tracking-tight text-[#0B1F33] tabular-nums">{s.value}</div>
+            <div className="text-[11px] font-medium text-[#0B1F33]/50 mt-1.5 uppercase tracking-[0.08em]">{s.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
         {QUICK_ACTIONS.map((a, i) => {
           const Icon = a.icon;
           return (
-            <button key={i} onClick={() => setTab(a.tab)}
-              className="p-5 rounded-xl border border-border/50 bg-card/40 hover:border-primary/30 transition-all text-left group flex items-start gap-4">
-              <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                <Icon className="w-4 h-4 text-primary" />
+            <button
+              key={i}
+              onClick={() => setTab(a.tab)}
+              className="group flex items-start gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 text-left shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[rgba(200,169,106,0.4)] hover:shadow-[0_4px_16px_rgba(11,31,51,0.07),0_10px_30px_rgba(11,31,51,0.06)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+            >
+              <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[rgba(11,31,51,0.05)] border border-[rgba(11,31,51,0.06)] group-hover:bg-[rgba(200,169,106,0.12)] group-hover:border-[rgba(200,169,106,0.25)] transition-all duration-150">
+                <Icon className="w-4 h-4 text-[#0B1F33]/60 group-hover:text-[#C8A96A] transition-colors duration-150" />
               </div>
-              <div>
-                <div className="font-medium text-[13px] text-foreground mb-1 group-hover:text-primary transition-colors">{a.label}</div>
-                <div className="text-[12px] text-muted-foreground">{a.sub}</div>
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold text-[13.5px] text-[#0B1F33] mb-0.5 leading-snug">{a.label}</div>
+                <div className="text-[12px] text-[#0B1F33]/52 leading-snug">{a.sub}</div>
               </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto mt-0.5 group-hover:translate-x-0.5 group-hover:text-primary transition-all" />
+              <ChevronRight className="w-4 h-4 text-[#0B1F33]/28 mt-0.5 shrink-0 group-hover:translate-x-0.5 group-hover:text-[#C8A96A] transition-all duration-150" />
             </button>
           );
         })}
@@ -527,18 +556,24 @@ function WorkspaceOverview({ user, setTab }) {
       )}
 
       {perks.length === 0 && events.length === 0 && (
-        <div className="text-center py-16 px-4">
-          <div className="w-12 h-10 rounded-[2px] border border-border/40 flex items-center justify-center mx-auto mb-4">
-            <Zap className="w-5 h-5 text-muted-foreground/50" />
+        <div className="flex flex-col items-center text-center py-14 px-6 rounded-[12px] border border-dashed border-[rgba(11,31,51,0.12)] bg-white/60">
+          <div className="flex h-14 w-14 items-center justify-center rounded-[12px] border border-[rgba(200,169,106,0.25)] bg-[rgba(200,169,106,0.08)] mb-4">
+            <Zap className="w-6 h-6 text-[#C8A96A]" />
           </div>
-          <h3 className="font-body mb-2 text-[15px] font-semibold leading-snug tracking-normal text-foreground">Start building your presence</h3>
-          <p className="text-muted-foreground text-[13px] mb-6 max-w-sm mx-auto">Add your first perk or event and it will appear on the downtown map for people nearby.</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <button onClick={() => setTab("perks")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
-              <Plus className="w-4 h-4" /> Add a perk
+          <h3 className="font-body mb-2 text-[16px] font-semibold leading-snug tracking-tight text-[#0B1F33]">Start building your presence</h3>
+          <p className="text-[#0B1F33]/54 text-[13.5px] leading-relaxed mb-6 max-w-sm">Add your first perk or event and it will appear on the downtown map for people nearby.</p>
+          <div className="flex flex-wrap justify-center gap-2.5">
+            <button
+              onClick={() => setTab("perks")}
+              className="inline-flex h-9 items-center gap-1.5 rounded-[7px] bg-[#0B1F33] px-4 text-[12.5px] font-semibold text-white shadow-[0_2px_8px_rgba(11,31,51,0.18)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add a perk
             </button>
-            <button onClick={() => setTab("events")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
-              <Plus className="w-4 h-4" /> Create an event
+            <button
+              onClick={() => setTab("events")}
+              className="inline-flex h-9 items-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white px-4 text-[12.5px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/45 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0"
+            >
+              <Plus className="w-3.5 h-3.5" /> Create an event
             </button>
           </div>
         </div>

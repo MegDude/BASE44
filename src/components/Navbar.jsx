@@ -207,16 +207,16 @@ export default function Navbar() {
   return (
     <nav
       data-dp-nav-root
-      className={`fixed left-0 right-0 top-0 z-[1200] pointer-events-auto isolate transition-all duration-300 backdrop-blur-[16px] ${
+      className={`fixed left-0 right-0 top-0 z-[1200] pointer-events-auto isolate transition-all duration-300 backdrop-blur-[18px] ${
         scrolled
-          ? "bg-white/96 text-[#0B1F33] shadow-[0_12px_40px_rgba(11,31,51,0.08)]"
-          : "bg-white/92 text-[#0B1F33] shadow-[0_10px_34px_rgba(11,31,51,0.06)]"
+          ? "bg-white/97 text-[#0B1F33] shadow-[0_1px_0_rgba(11,31,51,0.06),0_4px_20px_rgba(11,31,51,0.07)]"
+          : "bg-white/94 text-[#0B1F33] shadow-[0_1px_0_rgba(11,31,51,0.04),0_2px_12px_rgba(11,31,51,0.04)]"
       }`}
     >
-      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-5">
-        <Link to="/" className="group flex shrink-0 items-center gap-2.5" aria-label="Downtown Perks home">
-          <MapPin className="h-4 w-4 shrink-0 text-[#C8A96A] drop-shadow-[0_8px_18px_rgba(11,31,51,0.10)] transition group-hover:text-[#0B1F33]" />
-          <span className="text-[15px] font-semibold tracking-normal text-[#0B1F33]">
+      <div className="mx-auto flex h-[64px] max-w-7xl items-center justify-between px-5 md:px-6">
+        <Link to="/" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks home">
+          <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A] transition-colors duration-150 group-hover:text-[#B38F4F]" />
+          <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
             Downtown Perks
           </span>
         </Link>
@@ -268,9 +268,9 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-white/68 text-[#0B1F33] shadow-[0_10px_30px_rgba(11,31,51,0.05)] transition-all hover:-translate-y-px hover:bg-white hover:text-[#C8A96A] hover:shadow-[0_12px_40px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/40 hover:bg-white hover:text-[#C8A96A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
           >
-            {open ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
       </div>
@@ -279,18 +279,18 @@ export default function Navbar() {
         {open && (
           <motion.div
             data-dp-nav-menu
-            initial={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed left-0 right-0 top-[68px] z-[1400] pointer-events-auto shadow-[0_24px_80px_rgba(11,31,51,0.10),inset_0_1px_0_rgba(255,255,255,0.86)]"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed left-0 right-0 top-[64px] z-[1400] pointer-events-auto border-b border-[rgba(11,31,51,0.06)] shadow-[0_16px_60px_rgba(11,31,51,0.09)]"
             style={{
-              backgroundColor: "rgba(250, 250, 252, 0.92)",
-              backdropFilter: "blur(20px) saturate(1.12)",
-              WebkitBackdropFilter: "blur(20px) saturate(1.12)",
+              backgroundColor: "rgba(250, 250, 252, 0.96)",
+              backdropFilter: "blur(24px) saturate(1.12)",
+              WebkitBackdropFilter: "blur(24px) saturate(1.12)",
             }}
           >
-            <div className="mx-auto max-h-[calc(100vh-68px)] max-w-4xl overflow-y-auto px-5 py-5 text-[#0B1F33]">
+            <div className="mx-auto max-h-[calc(100vh-64px)] max-w-4xl overflow-y-auto px-5 py-5 text-[#0B1F33]">
               <div className="flex items-center justify-between gap-4">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#425466]">
                   Navigation
