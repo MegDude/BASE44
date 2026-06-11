@@ -5,10 +5,8 @@ tmp/
 # Source originals and unused imported inventory are kept in git, but are not
 # runtime assets for the production Vercel build.
 public/assets-originals/
-public/images/imported/*
-!public/images/imported/
 !public/images/imported/perks/
-public/images/imported/perks/*
+public/images/imported/perks/**
 !public/images/imported/perks/02-rivian.png
 !public/images/imported/perks/03-waterloo-park.jpg
 !public/images/imported/perks/04-waterlook-trail.jpg
