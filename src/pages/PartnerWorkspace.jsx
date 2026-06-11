@@ -869,8 +869,8 @@ function PerksManager({ user }) {
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
-        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
-          <Plus className="w-4 h-4" /> Add perk
+        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          <Plus className="w-3.5 h-3.5" /> Add perk
         </button>
       </div>
 
@@ -880,24 +880,24 @@ function PerksManager({ user }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-[2px] animate-spin" />
+          <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
         </div>
       ) : perks.length === 0 ? (
         <EmptyState icon={Star} headline="No perks yet" body="Add your first perk and it will appear on the downtown map." action="Add a perk" onAction={handleAdd} />
       ) : (
         <div className="space-y-3">
           {perks.map(p => (
-            <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl border border-border/50 bg-card/40 hover:border-border/70 transition-all">
-              <div className={`w-2 h-2 rounded-[2px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A]" : p.status === "paused" ? "bg-[#C8A96A]" : "bg-muted-foreground/40"}`} />
+            <div key={p.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
+              <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${p.status === "active" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : p.status === "paused" ? "bg-[#C8A96A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-[13px] text-foreground">{p.title}</div>
-                <div className="text-[12px] text-muted-foreground mt-0.5">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
+                <div className="font-semibold text-[13px] text-[#0B1F33]">{p.title}</div>
+                <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
               </div>
-              <span className="text-[12px] font-medium text-primary border border-primary/30 px-2.5 py-1 rounded-[2px] shrink-0 hidden sm:block">{p.value}</span>
-              <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
-                p.status === "active" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
-                p.status === "paused" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
-                "bg-muted text-muted-foreground border-border/50"
+              <span className="text-[11.5px] font-semibold text-[#8B6B2F] border border-[rgba(200,169,106,0.35)] bg-[rgba(200,169,106,0.08)] px-2.5 py-0.5 rounded-full shrink-0 hidden sm:block">{p.value}</span>
+              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border capitalize shrink-0 ${
+                p.status === "active" ? "bg-[rgba(200,169,106,0.1)] text-[#8B6B2F] border-[rgba(200,169,106,0.3)]" :
+                p.status === "paused" ? "bg-[rgba(11,31,51,0.05)] text-[#0B1F33]/50 border-[rgba(11,31,51,0.1)]" :
+                "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{p.status}</span>
               <div className="flex items-center gap-1 shrink-0">
                 <button onClick={() => handleEdit(p)} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
@@ -944,18 +944,18 @@ function PerkForm({ user, perk, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-      className="mb-6 p-6 rounded-xl border border-primary/20 bg-primary/5">
+      className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-body text-[15px] font-semibold leading-snug tracking-normal text-foreground">{perk ? "Edit perk" : "New perk"}</h3>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
+        <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{perk ? "Edit perk" : "New perk"}</h3>
+        <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded-full bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/50 hover:bg-[rgba(11,31,51,0.08)] hover:text-[#0B1F33] transition-colors"><X className="w-3.5 h-3.5" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Perk title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
         <FormField label="Venue name" value={form.venue_name} onChange={v => setForm(f => ({ ...f, venue_name: v }))} required />
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">Category</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Category</label>
           <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
             {PERK_CATEGORIES.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
           </select>
         </div>
@@ -963,19 +963,19 @@ function PerkForm({ user, perk, onClose, onSave }) {
         <FormField label="Description" value={form.description} onChange={v => setForm(f => ({ ...f, description: v }))} />
         <FormField label="Terms & conditions" value={form.terms} onChange={v => setForm(f => ({ ...f, terms: v }))} />
         <div>
-          <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">Status</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Status</label>
           <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-            className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
             <option value="active">Active</option>
             <option value="paused">Paused</option>
             <option value="expired">Expired</option>
           </select>
         </div>
         <div className="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all disabled:opacity-60">
+          <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
             {saving ? "Saving…" : perk ? "Save changes" : "Create perk"}
           </button>
-          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-[2px] border border-border/60 text-foreground/70 text-[13px] font-medium hover:text-foreground transition-all">
+          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
             Cancel
           </button>
         </div>
@@ -1013,8 +1013,8 @@ function EventsManager({ user }) {
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP and discovery.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-all">
-          <Plus className="w-4 h-4" /> Add event
+        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          <Plus className="w-3.5 h-3.5" /> Add event
         </button>
       </div>
 
@@ -1024,7 +1024,7 @@ function EventsManager({ user }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-[2px] animate-spin" />
+          <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
         </div>
       ) : events.length === 0 ? (
         <EmptyState icon={Calendar} headline="No events yet" body="Add your first event and it will appear on the downtown map with RSVP support." action="Add an event" onAction={() => { setEditing(null); setShowForm(true); }} />
