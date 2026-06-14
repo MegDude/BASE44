@@ -13177,6 +13177,196 @@ html body #root .dp-map-page.dp-map-page .dp-destination-drawer .dp-ask-prompt-c
   }
 }
 
+/* DOWNTOWN PERKS REPORT DRAWER PLAIN-LANGUAGE POLISH */
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-visual {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(92px, 0.24fr) !important;
+  align-items: end !important;
+  gap: 14px !important;
+  padding: 13px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(11, 31, 51, 0.075) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-visual span {
+  color: rgba(11, 31, 51, 0.52) !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-visual strong {
+  display: block !important;
+  margin-top: 4px !important;
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.24 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-visual p {
+  max-width: 52ch !important;
+  margin-top: 4px !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 12.25px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-bars {
+  display: grid !important;
+  align-items: end !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+  height: 54px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-bars i {
+  align-self: end !important;
+  height: var(--value) !important;
+  min-height: 18px !important;
+  border-radius: 999px 999px 2px 2px !important;
+  background: linear-gradient(180deg, rgba(200, 169, 106, 0.78), rgba(200, 169, 106, 0.38)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-analytics {
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-summary-card {
+  display: grid !important;
+  gap: 3px !important;
+  padding: 11px 0 !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-summary-card strong {
+  font-size: clamp(16px, 4vw, 20px) !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-card-grid {
+  gap: 0 18px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.075) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  column-gap: 12px !important;
+  row-gap: 8px !important;
+  padding: 14px 0 !important;
+  text-align: left !important;
+  cursor: pointer !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-card .dp-report-label {
+  grid-column: 1 / -1 !important;
+  color: rgba(11, 31, 51, 0.48) !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-card > strong {
+  grid-column: 1 / 2 !important;
+  color: #0B1F33 !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-card-footer {
+  grid-column: 2 / 3 !important;
+  grid-row: 2 / 4 !important;
+  display: grid !important;
+  justify-items: end !important;
+  align-content: start !important;
+  gap: 4px !important;
+  min-width: 54px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-card-footer span {
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-card-footer em {
+  max-width: 74px !important;
+  text-align: right !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-progress {
+  grid-column: 1 / 2 !important;
+  width: 100% !important;
+  height: 3px !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-mini-table {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(86px, 0.3fr) minmax(0, 1fr) !important;
+  gap: 7px 12px !important;
+  width: 100% !important;
+  margin-top: 2px !important;
+  padding-top: 9px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.065) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-mini-table dt {
+  color: rgba(11, 31, 51, 0.5) !important;
+  font-size: 10.25px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.25 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-mini-table dd {
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 12px !important;
+  line-height: 1.42 !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-visual {
+    grid-template-columns: 1fr !important;
+    gap: 11px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-bars {
+    height: 34px !important;
+    max-width: 112px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-analytics {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-partner-report-card {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    padding: 13px 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-partner-readable-panel .dp-report-mini-table {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* =====================================================
    DOWNTOWN PERKS FINAL PRODUCTION MAP RECOVERY
    Must remain last in cascade

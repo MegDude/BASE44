@@ -5330,7 +5330,7 @@ export default function MapPage() {
 
   const reportSections = [
     {
-      section: "Executive Summary",
+      section: "Quick read",
       value: "42%",
       headline: "After-work activity is leading the week.",
       copy: "Dinner, events, and nearby offers are leading.",
@@ -5342,7 +5342,7 @@ export default function MapPage() {
       outcome: "More people can decide what to do next without leaving the map.",
     },
     {
-      section: "Trend Visuals",
+      section: "Short walks",
       value: "+18%",
       headline: "Short routes outperform broad visibility.",
       copy: "Walkable places are getting the strongest activity.",
@@ -5354,7 +5354,7 @@ export default function MapPage() {
       outcome: "Partners see cleaner attribution from the places people can actually reach.",
     },
     {
-      section: "Campaign Performance",
+      section: "Offers",
       value: "6.8%",
       headline: "Timed offers are easier to act on.",
       copy: "One focused reason to visit beats a long campaign message.",
@@ -5366,7 +5366,7 @@ export default function MapPage() {
       outcome: "The next campaign should be easier to measure and easier to repeat.",
     },
     {
-      section: "Resident Behavior",
+      section: "Saved places",
       value: "312",
       headline: "People save first, then decide.",
       copy: "Saves are turning into directions and visits.",
@@ -5378,7 +5378,7 @@ export default function MapPage() {
       outcome: "More saved places turn into visits, RSVPs, and card use.",
     },
     {
-      section: "Recommendations",
+      section: "Best next step",
       value: "3",
       headline: "Run the next test near the busiest walk path.",
       copy: "Pair one place with one clear resident action.",
@@ -5390,7 +5390,7 @@ export default function MapPage() {
       outcome: "Partners get a cleaner test and residents get a more useful prompt.",
     },
     {
-      section: "Next Actions",
+      section: "Ready to do",
       value: "4",
       headline: "Move from insight to one live campaign.",
       copy: "Pick the place, timing, audience, and action.",
@@ -5410,14 +5410,14 @@ export default function MapPage() {
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Reports</p>
             <h2>What changed nearby.</h2>
-            <p>Open, save, scan, and campaign signals for this week.</p>
+            <p>What people opened, saved, scanned, and used this week.</p>
           </section>
 
-          <section className="dp-partner-report-visual" aria-label="Weekly report visual">
+          <section className="dp-partner-report-visual" aria-label="This week at a glance">
             <div>
-              <span>Weekly signal</span>
+              <span>This week</span>
               <strong>After-work activity is leading the week.</strong>
-              <p>Dinner, events, and walkable offers are driving intent.</p>
+              <p>Dinner, events, and walkable offers are getting the most attention.</p>
             </div>
             <div className="dp-partner-report-bars" aria-hidden="true">
               <i style={{ "--value": "76%" }} />
@@ -5451,8 +5451,8 @@ export default function MapPage() {
                   <em>{item.action}</em>
                 </div>
                 <dl className="dp-report-mini-table">
-                  <dt>Signal</dt><dd>{item.copy}</dd>
-                  <dt>Next</dt><dd>{item.recommendation}</dd>
+                  <dt>What happened</dt><dd>{item.copy}</dd>
+                  <dt>What to do</dt><dd>{item.recommendation}</dd>
                 </dl>
               </button>
             ))}
