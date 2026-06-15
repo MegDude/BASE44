@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowLeft,
   ArrowRight,
   Activity,
   Bookmark,
@@ -6935,9 +6936,10 @@ export default function MapPage() {
     const normalized = String(action || "").toLowerCase();
     if (normalized.includes("open") || normalized.includes("map")) return "Open Nearby";
     if (normalized.includes("save")) return "Save";
+    if (normalized.includes("compare") || normalized.includes("activity")) return "Compare Activity";
     if (normalized.includes("walk") || normalized.includes("near") || normalized.includes("next")) return "View Results";
     if (normalized.includes("direction")) return "Directions";
-    return String(action || "Open").replace(/^check\s+/i, "").slice(0, 14);
+    return String(action || "Open").replace(/^check\s+/i, "");
   }
 
   function handleMapAnswerAction(action) {
@@ -7292,6 +7294,20 @@ export default function MapPage() {
     navigate(`/map?mode=${mode}&tab=${tab}${tab === "map" ? `&filter=${encodeURIComponent(nextFilter)}` : ""}`);
   }
 
+  const goBackToMap = useCallback(() => {
+    setSelectedId("");
+    setClusterDrawer(null);
+    setMapAnswer(null);
+    setActiveBottomTab("map");
+    setIntelOpen(false);
+    setFiltersOpen(false);
+    if (typeof window !== "undefined" && window.history.length > 2) {
+      navigate(-1);
+      return;
+    }
+    navigate(`/map?mode=${urlState.mode}&tab=map&filter=${encodeURIComponent(activeFilter || "All")}`);
+  }, [activeFilter, navigate, urlState.mode]);
+
   function openPartnerPanel(panel) {
     setSelectedId("");
     setClusterDrawer(null);
@@ -7460,18 +7476,11 @@ export default function MapPage() {
                 setFiltersOpen(false);
               }}
             >
-              <span className="dp-map-audience-tabs" role="tablist" aria-label="Map audience">
-                <span className={`dp-map-audience-tab ${urlState.mode === "resident" ? "is-active" : ""}`}>Residents</span>
-                <span className={`dp-map-audience-tab ${urlState.mode === "partner" ? "is-active" : ""}`}>Partners</span>
+              <Search className="dp-search-rollup-icon h-4 w-4" aria-hidden="true" />
+              <span className="dp-search-rollup-label">
+                Ask the map · {urlState.mode === "partner" ? "Partners" : "Residents"}
               </span>
-              <span className="dp-console-rollup" aria-hidden="true">
-                <ChevronDown className="h-4 w-4" />
-              </span>
-              <span className="dp-collapsed-console-copy">
-                <span className="dp-console-inline-ask">Ask the Map</span>
-                <strong>{consoleEntitySummary?.title || search || "Find nearby"}</strong>
-                <span>{consoleEntitySummary?.meta || "Places, perks, events, and services."}</span>
-              </span>
+              <ChevronDown className="dp-search-rollup-chevron h-4 w-4" aria-hidden="true" />
             </button>
           ) : (
             <motion.div
@@ -7887,7 +7896,11 @@ export default function MapPage() {
             aria-label={urlState.mode === "partner" ? "Partner scanner" : "Resident pass"}
           >
             <div className="dp-panel-header flex shrink-0 items-center justify-between gap-2 px-3 py-2 sm:px-4 md:py-2.5">
-              <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A] md:text-[10px] md:tracking-[0.16em]">
+              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </button>
+              <span className="dp-panel-header-title text-[9px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A] md:text-[10px] md:tracking-[0.16em]">
                 {urlState.mode === "partner" ? "Partner scanner" : "Resident pass"}
               </span>
               <button type="button" onClick={() => switchMode(urlState.mode, "map")} className="dp-panel-close inline-flex h-8 w-8 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] md:h-9 md:w-9" aria-label="Close">
@@ -8117,7 +8130,11 @@ export default function MapPage() {
             aria-label={urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
           >
             <div className="dp-panel-handle mx-auto mb-2 h-0.5 w-10 shrink-0 rounded-[2px] bg-[#0B1F33]/14 md:mb-3 md:h-1 md:w-12" aria-hidden="true" />
-            <div className="dp-panel-toolbar mb-2 flex shrink-0 items-center justify-end gap-2 md:mb-3 md:gap-3">
+            <div className="dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3">
+              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </button>
               <button
                 type="button"
                 onClick={() => setActiveBottomTab("map")}
@@ -8245,6 +8262,10 @@ export default function MapPage() {
             aria-label="Grouped map places"
           >
             <div className="dp-panel-header shrink-0">
+              <button type="button" onClick={goBackToMap} className="dp-panel-back dp-panel-back-floating" aria-label="Back to map">
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </button>
               <p className="dp-panel-eyebrow">{urlState.mode === "partner" ? "What's happening nearby" : "Nearby places"}</p>
               <h2 className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
               <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
@@ -8311,6 +8332,15 @@ export default function MapPage() {
             aria-modal="true"
             aria-label={`${selected.name} details`}
           >
+            <button
+              type="button"
+              onClick={goBackToMap}
+              className="dp-destination-back dp-drawer-back-floating"
+              aria-label="Back to map"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Back</span>
+            </button>
             <button
               type="button"
               onClick={() => {
