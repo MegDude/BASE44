@@ -10,15 +10,29 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Coffee,
   CreditCard,
+  CalendarDays,
+  Clock,
+  Dumbbell,
+  Filter,
   Gift,
+  Heart,
   Info,
   Landmark,
   MapPin,
+  Moon,
+  Music2,
+  Navigation,
   ScanLine,
   Search,
   Send,
   Sparkles,
+  Star,
+  TrendingUp,
+  Utensils,
+  Wine,
+  BriefcaseBusiness,
   X,
 } from "lucide-react";
 import AboutDowntownPerksModal from "@/components/modals/AboutDowntownPerksModal";
@@ -541,6 +555,67 @@ const RESIDENT_PLACEHOLDERS = [
   "Walkable events",
   "Apartments near Rainey",
   "Perks I can use now",
+];
+
+const RESIDENT_INTENT_CONSOLE_PLACEHOLDERS = [
+  "Coffee within walking distance",
+  "Happy hour nearby",
+  "What’s happening tonight?",
+  "Rooftops nearby",
+  "Taco spot open now",
+  "Where should we go?",
+  "Live music tonight",
+  "Something low-key nearby",
+];
+
+const RESIDENT_INTENT_CONSOLE_BUTTONS = [
+  { id: "coffee", label: "Coffee", prompt: "Coffee within walking distance", icon: Coffee },
+  { id: "dinner", label: "Dinner", prompt: "Dinner nearby", icon: Utensils },
+  { id: "drinks", label: "Drinks", prompt: "Happy hour nearby", icon: Wine },
+  { id: "fitness", label: "Fitness", prompt: "Fitness nearby", icon: Dumbbell },
+  { id: "wellness", label: "Wellness", prompt: "Wellness nearby", icon: Heart },
+  { id: "music", label: "Live Music", prompt: "Live music tonight", icon: Music2 },
+  { id: "perks", label: "Perks", prompt: "Resident perks nearby", icon: Gift },
+  { id: "events", label: "Events", prompt: "What’s happening tonight?", icon: CalendarDays },
+  { id: "quiet-work", label: "Quiet Work", prompt: "Quiet work nearby", icon: BriefcaseBusiness },
+  { id: "late-night", label: "Late Night", prompt: "Late night nearby", icon: Moon },
+];
+
+const RESIDENT_INTENT_TIME_BUTTONS = [
+  { id: "now", label: "Now", prompt: "Open now nearby" },
+  { id: "tonight", label: "Tonight", prompt: "What’s worth walking to tonight?" },
+  { id: "this-week", label: "This Week", prompt: "Events this week" },
+  { id: "weekend", label: "Weekend", prompt: "Weekend plans nearby" },
+];
+
+const RESIDENT_INTENT_RADIUS_BUTTONS = [
+  { id: "5-min", label: "5 min walk" },
+  { id: "10-min", label: "10 min walk" },
+  { id: "nearby", label: "Nearby" },
+];
+
+const RESIDENT_CONSOLE_PROMPTS = [
+  "Find somewhere for dinner tonight",
+  "Show me events within 10 minutes",
+  "What perks can I use right now?",
+  "Show me rooftop spots nearby",
+];
+
+const RESIDENT_CONSOLE_FILTER_RAIL = [
+  { id: "nearby", label: "Nearby", icon: Navigation, kind: "prompt", prompt: "What’s worth walking to tonight?" },
+  { id: "saving", label: "Worth saving", icon: Star, kind: "filter", filter: "Saved", prompt: "Worth saving nearby" },
+  { id: "open", label: "Open now", icon: Clock, kind: "filter", filter: "Open Now", prompt: "Open now nearby" },
+  { id: "walk", label: "Easy walk", icon: MapPin, kind: "radius", radius: "5 min walk", prompt: "Easy walk nearby" },
+  { id: "tonight", label: "Tonight", icon: CalendarDays, kind: "time", time: "tonight", prompt: "What’s worth walking to tonight?" },
+  { id: "more", label: "More", icon: Filter, kind: "prompt", prompt: "Where should we go?" },
+];
+
+const RESIDENT_DEFAULT_DISCOVERY_CARDS = [
+  { label: "Dinner Nearby", prompt: "Dinner nearby", helper: "Places worth walking to tonight." },
+  { label: "Live Music Tonight", prompt: "Live music tonight", helper: "A few things happening close by." },
+  { label: "Coffee Tomorrow Morning", prompt: "Coffee tomorrow morning", helper: "Easy stops near where you are." },
+  { label: "Walkable Happy Hours", prompt: "Walkable happy hours", helper: "Drinks and bites without a long ride." },
+  { label: "Events This Week", prompt: "Events this week", helper: "Good reasons to make a plan." },
 ];
 
 const PARTNER_PLACEHOLDERS = [
@@ -4967,6 +5042,147 @@ function workflowEntityType(place) {
   return String(place?.type || place?.category || place?.raw?.type || "place").toLowerCase().replace(/[^a-z0-9_-]+/g, "_");
 }
 
+function SearchIntentConsole({
+  query,
+  placeholder,
+  activeIntent,
+  activeTime,
+  activeRadius,
+  activeFilter,
+  resultCount,
+  inputRef,
+  onQueryChange,
+  onSubmit,
+  onClear,
+  onIntentSelect,
+  onFilterSelect,
+  onTimeSelect,
+  onRadiusSelect,
+  onPromptSelect,
+}) {
+  const selectedIntent = RESIDENT_INTENT_CONSOLE_BUTTONS.find((item) => item.id === activeIntent);
+  const selectedTime = RESIDENT_INTENT_TIME_BUTTONS.find((item) => item.id === activeTime);
+  const summaryTitle = selectedIntent ? `${selectedIntent.label}${selectedTime ? ` ${selectedTime.label.toLowerCase()}` : " nearby"}` : "Nearby";
+
+  return (
+    <div className="dp-search-intent-console-wrap">
+      <section
+        className="dp-search-intent-console pointer-events-auto"
+        aria-label="Resident search intent console"
+        onPointerDown={(event) => event.stopPropagation()}
+      >
+        <form className="dp-search-intent-form" onSubmit={onSubmit}>
+          <div className="dp-search-intent-label">
+            <Sparkles className="h-3 w-3" aria-hidden="true" />
+            <span>Ask the map</span>
+          </div>
+          <div className="dp-search-intent-input-row">
+            <Search className="dp-search-intent-search-icon" aria-hidden="true" />
+            <input
+              ref={inputRef}
+              type="text"
+              aria-label="Ask the Map"
+              placeholder={placeholder}
+              value={query}
+              onChange={(event) => onQueryChange(event.target.value)}
+            />
+            {query && (
+              <button type="button" className="dp-search-intent-clear" onClick={onClear} aria-label="Clear search">
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+            <button type="submit" className="dp-search-intent-submit" aria-label="Ask the Map">
+              <Send className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </form>
+
+        <div className="dp-search-intent-prompt-rail" aria-label="Suggested searches">
+          {RESIDENT_CONSOLE_PROMPTS.map((prompt) => (
+            <button key={prompt} type="button" onClick={() => onPromptSelect(prompt)}>
+              {prompt}
+            </button>
+          ))}
+        </div>
+
+        <div className="dp-search-intent-filter-rail" aria-label="Quick map filters">
+          {RESIDENT_CONSOLE_FILTER_RAIL.map((item) => {
+            const Icon = item.icon;
+            const active = item.filter ? activeFilter === item.filter : item.time ? activeTime === item.time : item.radius ? activeRadius === item.radius : false;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={active ? "is-active" : ""}
+                aria-pressed={active}
+                onClick={() => onFilterSelect(item)}
+              >
+                <Icon className="dp-search-intent-filter-icon" aria-hidden="true" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="dp-search-intent-category-rail" aria-label="Categories">
+          {RESIDENT_INTENT_CONSOLE_BUTTONS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={activeIntent === item.id ? "is-active" : ""}
+                aria-pressed={activeIntent === item.id}
+                onClick={() => onIntentSelect(item)}
+              >
+                <Icon className="dp-search-intent-category-icon" aria-hidden="true" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="dp-search-intent-mini-row" aria-live="polite">
+          <span>{summaryTitle}</span>
+          <strong>{resultCount || 0} places</strong>
+          <div className="dp-search-intent-mini-controls" aria-label="Distance and time">
+            {RESIDENT_INTENT_RADIUS_BUTTONS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={activeRadius === item.label ? "is-active" : ""}
+                aria-pressed={activeRadius === item.label}
+                onClick={() => onRadiusSelect(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+            {RESIDENT_INTENT_TIME_BUTTONS.slice(0, 2).map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={activeTime === item.id ? "is-active" : ""}
+                aria-pressed={activeTime === item.id}
+                onClick={() => onTimeSelect(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="dp-search-intent-default-rail" aria-label="Quick ideas">
+          {RESIDENT_DEFAULT_DISCOVERY_CARDS.map((item) => (
+            <button key={item.label} type="button" onClick={() => onPromptSelect(item.prompt)}>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function useUrlMapState() {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -5019,6 +5235,10 @@ export default function MapPage() {
   const removeEventRsvp = useEventRsvpStore((state) => state.removeRsvp);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [radius, setRadius] = useState(urlState.radius);
+  const [residentSearchIntent, setResidentSearchIntent] = useState({
+    intent: RESIDENT_INTENT_CONSOLE_BUTTONS.some((item) => item.id === urlState.intent) ? urlState.intent : null,
+    time: RESIDENT_INTENT_TIME_BUTTONS.some((item) => item.id === urlState.time) ? urlState.time : null,
+  });
   const [district, setDistrict] = useState(urlState.district);
   const [passPresented, setPassPresented] = useState(false);
   const [walletAdded, setWalletAdded] = useState(false);
@@ -5034,7 +5254,11 @@ export default function MapPage() {
   }, []);
   const [resultsExpanded, setResultsExpanded] = useState(false);
   const [activeBottomTab, setActiveBottomTab] = useState(() => (
-    urlState.mode === "partner" && urlState.panelTab ? urlState.panelTab : urlState.mode === "resident" && urlState.tab === "map" && urlState.filter === "Saved" ? "saved" : "map"
+    urlState.mode === "partner" && urlState.panelTab
+      ? urlState.panelTab
+      : urlState.mode === "resident" && urlState.tab === "map" && ["Perks", "Events", "Saved"].includes(urlState.filter)
+        ? urlState.filter.toLowerCase()
+        : "map"
   ));
   const [activeCampaignStep, setActiveCampaignStep] = useState("Goal");
   const [clusterDrawer, setClusterDrawer] = useState(null);
@@ -5213,10 +5437,11 @@ export default function MapPage() {
     () => sortDiscoverPlaces(displayPlaces),
     [displayPlaces],
   );
-  const mapPlaces = useMemo(
-    () => dedupeMapPinPlaces(discoverDisplayPlaces.filter((place) => !isUnitLevelListingPlace(place))),
-    [discoverDisplayPlaces],
-  );
+  const mapPlaces = useMemo(() => {
+    const pinPlaces = dedupeMapPinPlaces(discoverDisplayPlaces.filter((place) => !isUnitLevelListingPlace(place)));
+    if (urlState.mode === "resident" && isDefaultDiscoverScope) return pinPlaces.slice(0, 48);
+    return pinPlaces;
+  }, [discoverDisplayPlaces, isDefaultDiscoverScope, urlState.mode]);
   const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${district}:${effectiveSearch || "none"}:${mapPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
@@ -5240,6 +5465,23 @@ export default function MapPage() {
   const areaRailLabel = getAreaRailLabel(urlState.mode, activeFilter);
   const allAreaLabel = getAllAreaLabel(urlState.mode, activeFilter);
   const activePartnerPanel = urlState.mode === "partner" && MAP_NATIVE_PARTNER_PANELS.includes(activeBottomTab) ? activeBottomTab : "";
+  const residentPanelCopy = {
+    perks: {
+      eyebrow: "Perks",
+      title: "Useful offers nearby.",
+      body: "Places with resident value, card moments, or offers worth saving.",
+    },
+    events: {
+      eyebrow: "Events",
+      title: "What is happening nearby.",
+      body: "Events, music, park moments, and plans close enough to use.",
+    },
+    saved: {
+      eyebrow: "Saved",
+      title: "Places to remember.",
+      body: "A quick list of saved places and nearby picks to come back to.",
+    },
+  }[activeBottomTab] || null;
   const panelPlaces = previewPlaces.length ? previewPlaces : discoverDisplayPlaces.slice(0, 8);
   const searchTimeOptions = urlState.mode === "partner" ? PARTNER_TIME_FILTERS : RESIDENT_TIME_FILTERS;
   const searchIntentOptions = urlState.mode === "partner" ? PARTNER_INTENT_FILTERS : RESIDENT_INTENT_FILTERS;
@@ -5747,15 +5989,17 @@ export default function MapPage() {
   useEffect(() => {
     if (!selectedId) return;
     setActiveBottomTab("map");
-    setConsoleCollapsed(!consoleHasActiveWork);
-  }, [consoleHasActiveWork, selectedId]);
+    if (urlState.mode !== "resident") setConsoleCollapsed(!consoleHasActiveWork);
+  }, [consoleHasActiveWork, selectedId, urlState.mode]);
 
   useEffect(() => {
     function onKeyDown(event) {
       if (event.key === "Escape") {
         if (!consoleCollapsed && !selectedId && !clusterDrawer && !aboutOpen) {
-          setConsoleCollapsed(true);
-          window.setTimeout(() => searchRollupRef.current?.focus?.({ preventScroll: true }), 0);
+          if (urlState.mode !== "resident") {
+            setConsoleCollapsed(true);
+            window.setTimeout(() => searchRollupRef.current?.focus?.({ preventScroll: true }), 0);
+          }
           return;
         }
         setSelectedId("");
@@ -5774,14 +6018,15 @@ export default function MapPage() {
 
     function handlePointerDown(event) {
       const target = event.target;
-      if (target?.closest?.(".dp-map-search-surface, .dp-search-rollup-button")) return;
+      if (target?.closest?.(".dp-map-search-surface, .dp-search-rollup-button, .dp-search-intent-console")) return;
+      if (urlState.mode === "resident") return;
       if (consoleHasActiveWork) return;
       setConsoleCollapsed(true);
     }
 
     document.addEventListener("pointerdown", handlePointerDown, true);
     return () => document.removeEventListener("pointerdown", handlePointerDown, true);
-  }, [consoleCollapsed, consoleHasActiveWork, urlState.tab]);
+  }, [consoleCollapsed, consoleHasActiveWork, urlState.mode, urlState.tab]);
 
   function selectPlace(place) {
     triggerHaptic();
@@ -5793,7 +6038,7 @@ export default function MapPage() {
     const nextEntityId = canonicalSelectedId;
     setActiveBottomTab("map");
     setClusterDrawer(null);
-    setConsoleCollapsed(!consoleHasActiveWork);
+    if (urlState.mode !== "resident") setConsoleCollapsed(!consoleHasActiveWork);
     setPulsingPinId(nextEntityId);
     setSelectedId(nextEntityId);
     urlState.update({ entityId: isPropertySelection ? publicPropertyId : place.id, listingId: publicListingId || "" });
@@ -6097,7 +6342,7 @@ export default function MapPage() {
 
   async function runSearch(event) {
     event?.preventDefault();
-    const query = search.trim() || activePrompt;
+    const query = search.trim() || (urlState.mode === "resident" ? "What’s worth walking to tonight?" : activePrompt);
     const parsedIntent = parseMapIntent(query, urlState.mode);
     const nextFilter = resolveFilterForIntent(query, urlState.mode);
     const nextDistrict = parsedIntent.district || district;
@@ -6165,6 +6410,89 @@ export default function MapPage() {
     }
   }
 
+  function applyResidentIntent(item) {
+    setResidentSearchIntent((current) => ({ ...current, intent: item.id }));
+    setConsoleCollapsed(false);
+    setFiltersOpen(false);
+    void applyPrompt(item.prompt);
+  }
+
+  function applyResidentTime(item) {
+    const currentQuery = search.trim();
+    const activeIntentLabel = RESIDENT_INTENT_CONSOLE_BUTTONS.find((intentItem) => intentItem.id === residentSearchIntent.intent)?.label;
+    const nextQuery = currentQuery
+      ? `${currentQuery} ${item.label.toLowerCase()}`
+      : activeIntentLabel
+        ? `${activeIntentLabel} ${item.label.toLowerCase()}`
+        : item.prompt;
+    const nextFilter = resolveFilterForIntent(nextQuery, urlState.mode) || activeFilter;
+    const localResults = getSmartResults(nextQuery, nextFilter);
+    setResidentSearchIntent((current) => ({ ...current, time: item.id }));
+    setConsoleCollapsed(false);
+    setFiltersOpen(false);
+    setSearch(nextQuery);
+    setActiveFilter(nextFilter);
+    setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, nextFilter));
+    setActiveBottomTab("discover");
+    urlState.update({
+      query: nextQuery,
+      time: item.id,
+      filter: nextFilter,
+      radius,
+      entityId: "",
+    });
+  }
+
+  function applyResidentRadius(item) {
+    const nextQuery = search.trim() || "What’s worth walking to tonight?";
+    const nextFilter = resolveFilterForIntent(nextQuery, urlState.mode) || activeFilter;
+    const localResults = getSmartResults(nextQuery, nextFilter);
+    setRadius(item.label);
+    setConsoleCollapsed(false);
+    setFiltersOpen(false);
+    setActiveFilter(nextFilter);
+    setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, nextFilter));
+    setActiveBottomTab("discover");
+    urlState.update({
+      query: nextQuery,
+      radius: item.label,
+      filter: nextFilter,
+      entityId: "",
+    });
+  }
+
+  function applyResidentConsoleFilter(item) {
+    setConsoleCollapsed(false);
+    setFiltersOpen(false);
+    if (item.kind === "filter" && item.filter) {
+      setResidentSearchIntent((current) => ({ ...current, intent: null }));
+      setSearch(item.prompt || item.filter);
+      setActiveFilter(item.filter);
+      const localResults = getSmartResults(item.prompt || item.filter, item.filter);
+      setMapAnswer(buildAgenticMapAnswer(item.prompt || item.filter, localResults, urlState.mode, district, item.filter));
+      setActiveBottomTab("discover");
+      urlState.update({ query: item.prompt || item.filter, filter: item.filter, entityId: "" });
+      return;
+    }
+    if (item.kind === "time") {
+      applyResidentTime({ id: item.time, label: "Tonight", prompt: item.prompt });
+      return;
+    }
+    if (item.kind === "radius") {
+      applyResidentRadius({ id: "5-min", label: item.radius });
+      return;
+    }
+    void applyPrompt(item.prompt);
+  }
+
+  function clearResidentSearchIntent() {
+    setSearch("");
+    setMapAnswer(null);
+    setResidentSearchIntent({ intent: null, time: null });
+    setConsoleCollapsed(false);
+    urlState.update({ query: "", q: "", prompt: "", intent: "", time: "", entityId: "" });
+  }
+
   async function askEntityAssistant(prompt) {
     if (!selected) return;
     const entityPrompt = `${prompt} for ${selected.name}`;
@@ -6230,8 +6558,8 @@ export default function MapPage() {
   const heroPromptLabels = dedupeConsoleItems(
     urlState.mode === "partner" ? PARTNER_PROMPTS : RESIDENT_PROMPTS,
   );
-  const primarySearchFilters = urlState.mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS;
-  const advancedSearchFilters = urlState.mode === "partner" ? PARTNER_ADVANCED_SEARCH_FILTERS : RESIDENT_ADVANCED_SEARCH_FILTERS;
+  const primarySearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS);
+  const advancedSearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_ADVANCED_SEARCH_FILTERS : RESIDENT_ADVANCED_SEARCH_FILTERS);
   const searchRollupLabel = `Ask the map · ${activeFilter === "All" ? (urlState.mode === "partner" ? "Partners" : "Residents") : activeFilter}`;
   const hasOpenMapPanel = urlState.tab === "pass" || Boolean(selected) || Boolean(clusterDrawer) || (urlState.tab === "map" && MAP_NATIVE_PARTNER_PANELS.includes(activeBottomTab));
   const showBottomNavigation = urlState.tab === "map" || urlState.tab === "pass";
@@ -6275,7 +6603,7 @@ export default function MapPage() {
           <MapResultBoundsFitter places={mapPlaces} activeKey={mapResultBoundsKey} selectedId={selectedId} enabled={hasActiveCategoryScope} />
           <MapZoomTracker onZoomChange={(zoom) => setMapZoom((current) => (Math.abs(current - zoom) > 0.01 ? zoom : current))} />
           <MapInteractionCollapse onCollapse={() => {
-            if (!consoleHasActiveWork) setConsoleCollapsed(true);
+            if (urlState.mode !== "resident" && !consoleHasActiveWork) setConsoleCollapsed(true);
           }} />
           {clusteredMapItems.map((item) =>
             item.type === "cluster" ? (
@@ -6304,7 +6632,35 @@ export default function MapPage() {
         <div
           className="pointer-events-none absolute inset-x-0 top-[106px] z-[510] px-2.5 md:top-[84px] md:px-5"
         >
-          {consoleCollapsed ? (
+          {urlState.mode === "resident" ? (
+            <SearchIntentConsole
+              query={search}
+              placeholder={RESIDENT_INTENT_CONSOLE_PLACEHOLDERS[promptIndex % RESIDENT_INTENT_CONSOLE_PLACEHOLDERS.length]}
+              activeIntent={residentSearchIntent.intent}
+              activeTime={residentSearchIntent.time}
+              activeRadius={radius}
+              activeFilter={activeFilter}
+              resultCount={mapPlaces.length}
+              inputRef={searchInputRef}
+              onQueryChange={(value) => {
+                setConsoleCollapsed(false);
+                setSearch(value);
+                if (mapAnswer) setMapAnswer(null);
+              }}
+              onSubmit={(event) => {
+                void runSearch(event);
+              }}
+              onClear={clearResidentSearchIntent}
+              onIntentSelect={applyResidentIntent}
+              onFilterSelect={applyResidentConsoleFilter}
+              onTimeSelect={applyResidentTime}
+              onRadiusSelect={applyResidentRadius}
+              onPromptSelect={(prompt) => {
+                setResidentSearchIntent({ intent: null, time: null });
+                void applyPrompt(prompt);
+              }}
+            />
+          ) : consoleCollapsed ? (
             <button
               type="button"
               ref={searchRollupRef}
@@ -6724,9 +7080,8 @@ export default function MapPage() {
                           >
                             Reports
                           </button>
-                          <button type="button" onClick={() => setIntelOpen(false)} className="dp-map-control">
+                          <button type="button" onClick={() => setIntelOpen(false)} className="dp-map-control dp-map-control-icon" aria-label="Close intelligence panel">
                             <ChevronUp className="h-3.5 w-3.5" />
-                            Close
                           </button>
                         </div>
                       </div>
@@ -6757,11 +7112,10 @@ export default function MapPage() {
                   <button
                     type="button"
                     onClick={() => setMapAnswer(null)}
-                    className="dp-map-control inline-flex shrink-0 items-center gap-1.5"
-                    aria-label="Close"
+                    className="dp-map-control dp-map-control-icon inline-flex shrink-0 items-center gap-1.5"
+                    aria-label="Close answer"
                   >
                     <X className="h-3.5 w-3.5" />
-                    Close
                   </button>
                 </div>
                 {mapAnswer.picks.length > 1 && (
@@ -6923,7 +7277,7 @@ export default function MapPage() {
 	      {showBottomNavigation && (
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[700] pb-[env(safe-area-inset-bottom)]">
           <nav
-            className={`dp-map-bottom-nav pointer-events-auto grid ${urlState.mode === "resident" ? "grid-cols-6" : "grid-cols-5"}`}
+            className="dp-map-bottom-nav pointer-events-auto grid grid-cols-5"
             aria-label="Map bottom navigation"
           >
             {urlState.mode === "resident" && (
@@ -6943,11 +7297,11 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setActiveBottomTab("map");
+                    setActiveBottomTab("perks");
                     setActiveFilter("Perks");
                     navigate("/map?mode=resident&tab=map&filter=Perks");
                   }}
-                  aria-pressed={urlState.tab === "map" && activeFilter === "Perks"}
+                  aria-pressed={urlState.tab === "map" && activeBottomTab === "perks"}
                 >
                   <Gift className="h-4 w-4" />
                   <span>Perks</span>
@@ -6955,11 +7309,11 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setActiveBottomTab("map");
+                    setActiveBottomTab("events");
                     setActiveFilter("Events");
                     navigate("/map?mode=resident&tab=map&filter=Events");
                   }}
-                  aria-pressed={urlState.tab === "map" && activeFilter === "Events"}
+                  aria-pressed={urlState.tab === "map" && activeBottomTab === "events"}
                 >
                   <Sparkles className="h-4 w-4" />
                   <span>Events</span>
@@ -6967,11 +7321,11 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setActiveBottomTab("map");
+                    setActiveBottomTab("saved");
                     setActiveFilter("Saved");
                     navigate("/map?mode=resident&tab=map&filter=Saved");
                   }}
-                  aria-pressed={urlState.tab === "map" && activeFilter === "Saved"}
+                  aria-pressed={urlState.tab === "map" && activeBottomTab === "saved"}
                 >
                   <Check className="h-4 w-4" />
                   <span>Saved</span>
@@ -6983,14 +7337,6 @@ export default function MapPage() {
                 >
                   <CreditCard className="h-4 w-4" />
                   <span>Card</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => openPartnerPanel("info")}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "info"}
-                >
-                  <Info className="h-4 w-4" />
-                  <span>Info</span>
                 </button>
               </>
             )}
@@ -7045,7 +7391,11 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
-        {urlState.tab === "map" && ["activity", "campaigns", "reports", "info", "civic"].includes(activeBottomTab) && !selected && (
+        {urlState.tab === "map" && (
+          urlState.mode === "partner"
+            ? ["activity", "campaigns", "reports", "info", "civic"].includes(activeBottomTab)
+            : ["perks", "events", "saved"].includes(activeBottomTab)
+        ) && !selected && (
           <motion.aside
             initial={{ opacity: 0, y: 44 }}
             animate={{ opacity: 1, y: 0 }}
@@ -7068,7 +7418,7 @@ export default function MapPage() {
               </button>
             </div>
 
-            <div className="dp-panel-body dp-panel-scroll min-h-0 flex-1 overflow-y-auto" data-panel-body>
+            <div className={`dp-panel-body dp-panel-scroll min-h-0 ${urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`} data-panel-body>
               {urlState.mode === "partner" && activePartnerPanel === "activity" && renderActivityPanel()}
               {urlState.mode === "partner" && activePartnerPanel === "reports" && renderReportsPanel()}
               {urlState.mode === "partner" && activePartnerPanel === "campaigns" && renderCampaignPanel()}
@@ -7103,8 +7453,17 @@ export default function MapPage() {
             </div>
 
             {urlState.mode !== "partner" && (
-            <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] md:space-y-2">
-              {previewPlaces.map((place) => (
+            <div className="dp-resident-tab-panel min-h-0 flex-1 overflow-hidden">
+              {residentPanelCopy && (
+                <section className="dp-resident-tab-panel-header">
+                  <p>{residentPanelCopy.eyebrow}</p>
+                  <h2>{residentPanelCopy.title}</h2>
+                  <span>{residentPanelCopy.body}</span>
+                  <strong>{(isResidentSavedDrawer ? residentSavedPlaces : discoverDisplayPlaces).length} places</strong>
+                </section>
+              )}
+              <div className="dp-resident-tab-panel-list min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] md:space-y-2">
+              {drawerPreviewPlaces.map((place) => (
                 <button
                   key={place.id}
                   type="button"
@@ -7127,9 +7486,9 @@ export default function MapPage() {
                   </span>
                 </button>
               ))}
-              {!previewPlaces.length && (
+              {!drawerPreviewPlaces.length && (
                 <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
-                  Keeping useful downtown picks ready while this view narrows. Open {areaRailLabel}, adjust the filter rail, or ask the map for a better match nearby.
+                  Nothing here yet. Try a nearby search, save a place, or switch filters.
                 </div>
               )}
               {isUsingFallbackPlaces && (
@@ -7137,17 +7496,18 @@ export default function MapPage() {
                   Keeping nearby downtown places visible while your question sorts the best next options.
                 </div>
               )}
-              {displayPlaces.length > 4 && (
+              {(isResidentSavedDrawer ? residentSavedPlaces : discoverDisplayPlaces).length > 4 && (
                 <button
                   type="button"
                   onClick={() => setResultsExpanded((value) => !value)}
                   className="dp-action-link w-full justify-center bg-transparent text-[11px] text-[#0B1F33]/66"
                   aria-expanded={resultsExpanded}
                 >
-                  {resultsExpanded ? "Show Fewer" : `Show More (${hiddenPreviewCount})`}
+                  {resultsExpanded ? "Show less" : `Show more (${isResidentSavedDrawer ? hiddenSavedPreviewCount : hiddenPreviewCount})`}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               )}
+              </div>
             </div>
             )}
           </motion.aside>
