@@ -17694,6 +17694,40 @@ html body #root .dp-map-page.dp-map-page-resident .dp-search-intent-form {
   background: transparent !important;
 }
 
+html body #root .dp-map-page.dp-map-page-resident .dp-search-intent-switch {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+  margin: 0 0 8px !important;
+  padding: 4px !important;
+  border: 1px solid rgba(255, 255, 255, 0.50) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.56) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 8px 22px rgba(11, 31, 51, 0.05) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page-resident .dp-search-intent-switch button {
+  min-height: 32px !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  box-shadow: none !important;
+  font-size: 11.5px !important;
+  font-weight: 740 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-resident .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page-resident .dp-search-intent-switch button[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 6px 18px rgba(11, 31, 51, 0.08), inset 0 -2px 0 rgba(200, 169, 106, 0.62) !important;
+}
+
 html body #root .dp-map-page.dp-map-page-resident .dp-search-intent-label {
   display: inline-flex !important;
   width: fit-content !important;

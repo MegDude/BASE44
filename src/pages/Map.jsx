@@ -5043,6 +5043,7 @@ function workflowEntityType(place) {
 }
 
 function SearchIntentConsole({
+  mode,
   query,
   placeholder,
   activeIntent,
@@ -5059,6 +5060,7 @@ function SearchIntentConsole({
   onTimeSelect,
   onRadiusSelect,
   onPromptSelect,
+  onModeChange,
 }) {
   const selectedIntent = RESIDENT_INTENT_CONSOLE_BUTTONS.find((item) => item.id === activeIntent);
   const selectedTime = RESIDENT_INTENT_TIME_BUTTONS.find((item) => item.id === activeTime);
@@ -5071,6 +5073,27 @@ function SearchIntentConsole({
         aria-label="Resident search intent console"
         onPointerDown={(event) => event.stopPropagation()}
       >
+        <div className="dp-search-intent-switch" role="tablist" aria-label="Map audience">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mode === "resident"}
+            className={mode === "resident" ? "is-active" : ""}
+            onClick={() => onModeChange("resident")}
+          >
+            Residents
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mode === "partner"}
+            className={mode === "partner" ? "is-active" : ""}
+            onClick={() => onModeChange("partner")}
+          >
+            Partners
+          </button>
+        </div>
+
         <form className="dp-search-intent-form" onSubmit={onSubmit}>
           <div className="dp-search-intent-label">
             <Sparkles className="h-3 w-3" aria-hidden="true" />
@@ -6634,6 +6657,7 @@ export default function MapPage() {
         >
           {urlState.mode === "resident" ? (
             <SearchIntentConsole
+              mode={urlState.mode}
               query={search}
               placeholder={RESIDENT_INTENT_CONSOLE_PLACEHOLDERS[promptIndex % RESIDENT_INTENT_CONSOLE_PLACEHOLDERS.length]}
               activeIntent={residentSearchIntent.intent}
@@ -6658,6 +6682,9 @@ export default function MapPage() {
               onPromptSelect={(prompt) => {
                 setResidentSearchIntent({ intent: null, time: null });
                 void applyPrompt(prompt);
+              }}
+              onModeChange={(mode) => {
+                if (mode !== urlState.mode) switchMode(mode, "map");
               }}
             />
           ) : consoleCollapsed ? (
