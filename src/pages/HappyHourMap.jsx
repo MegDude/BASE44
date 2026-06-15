@@ -102,10 +102,10 @@ export default function HappyHourMap() {
               <div className="absolute bottom-4 left-4 right-4 border border-white/60 bg-white/78 p-4 backdrop-blur-[20px]">
                 <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8A96A]">
                   <Sparkles className="h-3.5 w-3.5" />
-                  Live decision layer
+                  Live map guide
                 </div>
                 <p className="mt-2 text-[13px] leading-relaxed text-[#0B1F33]/68">
-                  Showing walkable options by district, category, signal, and resident utility.
+                  Showing walkable options by district, category, and what is useful nearby.
                 </p>
               </div>
             </div>

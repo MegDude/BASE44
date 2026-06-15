@@ -166,7 +166,12 @@ export function resolvePropertyListingUrlId(rawEntityId) {
 }
 
 export const mapEntityAliases = {
+  bathe: "bathe-austin",
+  "bathe-austin": "bathe-austin",
+  "bathe-wellness": "bathe-austin",
+  "bathe-bathhouse": "bathe-austin",
   "the-independent": "priority-the-independent",
+  "property-the-independent": "priority-the-independent",
   independent: "priority-the-independent",
   "the-austonian": "priority-the-austonian",
   austonian: "priority-the-austonian",

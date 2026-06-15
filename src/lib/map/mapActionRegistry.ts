@@ -125,7 +125,7 @@ export const workspaceActionRoutes = {
 } as const;
 
 export const FILTER_TO_ENTITY_TYPES = {
-  all: ["venue", "property", "event", "offer", "hotel", "brand", "civic", "service", "journal", "guide"],
+  all: ["venue", "property", "event", "offer", "hotel", "brand", "civic", "service", "wellness", "journal", "guide"],
   perks: ["offer", "perk"],
   inkind: ["inkind", "offer", "venue", "restaurant", "bar", "hospitality"],
   aroundTheCorner: ["nearby"],
@@ -136,6 +136,7 @@ export const FILTER_TO_ENTITY_TYPES = {
   events: ["event"],
   civic: ["civic"],
   services: ["service"],
+  wellness: ["wellness", "venue", "service"],
   journal: ["journal"],
   localGuide: ["guide"],
 } as const;

@@ -1,0 +1,7 @@
+export {
+  PARTNER_PAGE_DECK,
+  PARTNER_PUBLIC_SYSTEM_COPY,
+  PARTNER_ROUTES,
+  PARTNER_TYPE_ALIASES,
+  PARTNER_COPY_VERSION,
+} from "./downtownPerksPartnerWorkspaceRegistry";

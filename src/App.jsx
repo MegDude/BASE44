@@ -83,8 +83,99 @@ function ProductRoutes() {
           <Route path="/map" element={<MapPage />} />
 
           {/* Partner platform */}
-          <Route path="/partners" element={<Navigate to="/map?mode=partner&tab=map&filter=All" replace />} />
+          <Route
+            path="/partners"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnersIndex />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/apply"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerAccess />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/pricing"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PricingPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/properties"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerProperties />
+              </Suspense>
+            }
+          />
+          <Route path="/partners/residential" element={<Navigate to="/partners/properties" replace />} />
+          <Route
+            path="/partners/hotels"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerHotels />
+              </Suspense>
+            }
+          />
+          <Route path="/partners/hospitality" element={<Navigate to="/partners/hotels" replace />} />
+          <Route
+            path="/partners/venues"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerVenues />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/brands"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerBrands />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/civic"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerCivic />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/real-estate"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerProperties />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/legends"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerProperties />
+              </Suspense>
+            }
+          />
           <Route path="/partners/dashboard" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/map" element={<MapPage />} />
+          <Route path="/partners/dashboard/properties" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/residential" element={<Navigate to="/partners/dashboard/properties" replace />} />
+          <Route path="/partners/dashboard/hotels" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/hospitality" element={<Navigate to="/partners/dashboard/hotels" replace />} />
+          <Route path="/partners/dashboard/venues" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/brands" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/civic" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/real-estate" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/redemptions" element={<PartnersDashboardPage />} />
           <Route path="/partners/campaigns" element={<PartnersDashboardPage />} />
           <Route path="/partners/reports" element={<Dashboard />} />
           <Route path="/partners/analytics" element={<Dashboard />} />
@@ -94,14 +185,19 @@ function ProductRoutes() {
           {/* Partner workspace */}
           <Route path="/partner-workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
           <Route path="/partner-workspace/overview" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/map" element={<MapPage />} />
+          <Route path="/partner-workspace/offers" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/perks" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/events" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/sources" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/profile" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/campaigns" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/residents" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/buildings" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/messages" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/surveys" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/team" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/billing" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/dashboard" element={<Navigate to="/partners/dashboard" replace />} />
           <Route path="/partner-workspace/reports" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/analytics" element={<Dashboard />} />

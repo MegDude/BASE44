@@ -2,6 +2,26 @@
 
 This document overrides previous UI guidance when conflicts appear.
 
+## Governing Philosophy
+
+Start with the philosophy before applying any component, layout, copy, map, drawer, report, campaign, or partner rule:
+
+[Downtown Perks Experience Philosophy V2](./downtown-perks-experience-philosophy-v2.md)
+
+Downtown Perks is not software about downtown. It is a simpler way to experience downtown itself.
+
+The product succeeds when someone forgets they are using software and simply feels like downtown became easier to use.
+
+Every surface must answer:
+
+```txt
+What is happening?
+Why does it matter?
+What should I do next?
+```
+
+If a screen feels like a platform, simplify it. If a screen feels like software, simplify it. If a screen feels like a neighborhood guide, keep going.
+
 ## Rule Zero
 
 Every component must answer one question:

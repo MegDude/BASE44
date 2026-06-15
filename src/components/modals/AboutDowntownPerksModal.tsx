@@ -41,6 +41,13 @@ const features = [
   { icon: Sparkles, title: "Local Notes", body: "Keep track of the places, buildings, and plans people actually come back to." },
 ];
 
+const primaryFeatureTitles = new Set(["Resident Map", "Perks Card", "Homes Nearby", "Local Offers", "Ask The Map", "Events"]);
+const displayTitle = (title: string) => {
+  if (title === "Simple Updates") return "Partner Updates";
+  if (title === "Local Notes") return "Saved Notes";
+  return title;
+};
+
 const audiences = [
   {
     icon: Users,
@@ -185,191 +192,127 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
           <motion.div
             ref={panelRef}
             tabIndex={-1}
-            className="dp-glass-modal dp-info-panel dp-surface relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden text-[#0B1F33] outline-none md:max-h-[88vh] md:max-w-6xl"
+            className="dp-info-panel relative z-10 mx-auto flex h-[88dvh] max-h-[88dvh] w-[calc(100vw-24px)] max-w-[720px] flex-col overflow-hidden rounded-[22px] bg-white text-[#0B1F33] shadow-[0_24px_80px_rgba(11,31,51,0.22)] outline-none md:h-[calc(100dvh-4rem)] md:max-h-[calc(100dvh-4rem)] md:w-[min(920px,calc(100vw-48px))] md:max-w-5xl md:rounded-[26px]"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 28, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.985 }}
             transition={{ duration, ease }}
-            drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0, bottom: 0.28 }}
-            onDragEnd={(_, info) => {
-              if (info.offset.y > 110 || info.velocity.y > 720) onClose();
-            }}
           >
-            <div className="mx-auto mt-3 h-1 w-11 rounded-[999px] bg-[#0B1F33]/18 md:hidden" />
-
-            <div className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-white/40 bg-white/30 px-5 py-2.5 backdrop-blur-[24px] md:px-5">
+            <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-[#0B1F33]/8 bg-white/92 px-4 backdrop-blur-xl">
               <button
                 type="button"
                 onClick={onClose}
-                className="dp-button dp-button-secondary inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.12em]"
+                className="dp-modal-back inline-flex items-center gap-1.5"
                 aria-label="Back from Downtown Perks overview"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
                 Back
               </button>
-              <div className="min-w-0 flex-1 truncate text-[11px] font-medium uppercase tracking-[0.18em] text-[#0B1F33]/58">
-                How Downtown Perks Works
-              </div>
+              <p className="dp-modal-kicker">How Downtown Perks works</p>
               <button
                 type="button"
                 onClick={onClose}
-                className="dp-button dp-button-secondary inline-flex h-[34px] w-[34px] items-center justify-center p-0"
+                className="dp-modal-close inline-flex items-center justify-center"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
               </button>
-            </div>
+            </header>
 
-            <div className="overflow-y-auto px-5 pb-28 pt-6 md:px-5 md:pb-7 md:pt-8">
-              <section className="grid gap-7 border-b border-white/44 pb-8 md:grid-cols-[1.1fr_0.9fr] md:items-end">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-5 md:px-8 md:pb-8 md:pt-8">
+              <section className="dp-overview-hero">
                 <div>
-                  <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.18em] text-[#C8A96A]">
-                    Downtown Perks
-                  </span>
-                  <h1 id="about-dp-title" className="font-heading text-4xl font-medium leading-[1.02] text-[#0B1F33] md:text-4xl">
-                    The neighborhood, finally connected.
-                  </h1>
-                  <p className="mt-5 max-w-2xl text-[16px] leading-[1.7] text-[#0B1F33]/72">
-                    Downtown Perks helps residents find nearby places, perks, events, listings, and local help without bouncing between five different apps.
-                  </p>
-                  <p className="mt-4 max-w-2xl text-[14px] leading-[1.75] text-[#0B1F33]/58">
-                    Open the map, see what is close, save what looks good, and make the next move while the plan still feels easy.
-                  </p>
-                  <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                    <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Explore the Map</GlassButton>
-                    <GlassButton to="/map?mode=partner&tab=map&filter=All" variant="secondary" onClick={onClose}>Partner Map</GlassButton>
+                  <span>Downtown Perks</span>
+                  <h1 id="about-dp-title">The neighborhood, finally connected.</h1>
+                  <p>Find nearby places, perks, events, listings, and local help without bouncing between different apps.</p>
+                  <div className="dp-overview-actions">
+                    <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Open the Map</GlassButton>
+                    <GlassButton to="/map?mode=partner&tab=map&filter=All" variant="secondary" onClick={onClose}>Partner View</GlassButton>
                   </div>
-                </div>
-
-                <div className="dp-glass-card p-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      ["Nearby", "Places, events, and services close enough to use now."],
-                      ["Perks", "Resident offers from spots people already visit."],
-                      ["Homes", "Buildings and listings shown with what is walkable nearby."],
-                      ["Ready", "Saved places, RSVPs, card scans, and useful next steps in one place."],
-                    ].map(([label, body]) => (
-                      <div key={label} className="border border-white/42 bg-white/34 p-2.5 shadow-[0_8px_18px_rgba(11,31,51,0.04)]">
-                        <div className="text-[13px] font-semibold text-[#0B1F33]">{label}</div>
-                        <div className="mt-1 text-[10.5px] leading-4 text-[#0B1F33]/58">{body}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-[12px] leading-relaxed text-[#0B1F33]/58">
-                    Built for real downtown decisions: where to go, what to use, what to join, and what is worth checking out nearby.
-                  </p>
                 </div>
               </section>
 
-              <section className="py-9">
-                <div className="mb-5 flex items-end justify-between gap-4">
-                  <div>
-                    <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#0B1F33]/50">What it does</span>
-                    <h2 className="mt-2 font-heading text-3xl font-medium text-[#0B1F33]">One map for the day-to-day stuff.</h2>
-                  </div>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                  {features.map((feature) => {
+              <section className="dp-overview-value-grid">
+                {[
+                  ["Nearby", "Places, events, and services close enough to use now."],
+                  ["Perks", "Resident offers from spots people already visit."],
+                  ["Homes", "Listings shown with what is walkable nearby."],
+                  ["Ready", "Saves, RSVPs, scans, and next steps in one place."],
+                ].map(([label, body]) => (
+                  <article key={label}>
+                    <strong>{label}</strong>
+                    <p>{body}</p>
+                  </article>
+                ))}
+              </section>
+
+              <section className="dp-overview-section">
+                <span className="dp-section-eyebrow">What it does</span>
+                <h2>One map for everyday downtown decisions.</h2>
+                <div className="dp-overview-feature-grid">
+                  {features.filter((feature) => primaryFeatureTitles.has(feature.title)).map((feature) => {
                     const Icon = feature.icon;
                     return (
-                      <motion.article
-                        key={feature.title}
-                        whileHover={{ y: -3 }}
-                        transition={{ duration: 0.22, ease }}
-                        className="group relative overflow-hidden border border-white/44 bg-white/46 p-4 shadow-[0_10px_28px_rgba(11,31,51,0.07)] backdrop-blur-[22px]"
-                      >
-                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0B1F33]/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                        <div className="mb-4 flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#C8A96A]">
+                      <article key={feature.title} className="dp-overview-feature-card">
+                        <div className="icon">
                           <Icon className="h-4 w-4" />
                         </div>
-                        <h3 className="font-body text-[13px] font-semibold text-[#0B1F33]">{feature.title}</h3>
-                        <p className="mt-2 text-[12px] leading-relaxed text-[#0B1F33]/58">{feature.body}</p>
-                      </motion.article>
-                    );
-                  })}
-                </div>
-              </section>
-
-              <section className="grid gap-5 border-y border-white/44 py-9 md:grid-cols-[0.85fr_1.15fr]">
-                <h2 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">
-                  Useful when the plan is still forming.
-                </h2>
-                <div className="space-y-4 text-[14px] leading-[1.75] text-[#0B1F33]/64">
-                  <p>
-                    Downtown Perks works because it meets people while they are already downtown and deciding where to go, what to do, or where they might want to live.
-                  </p>
-                  <p>
-                    The map keeps the nearby options close to the decision, so residents get a cleaner plan and partners can see what actually helped someone show up.
-                  </p>
-                </div>
-              </section>
-
-              <section className="py-9">
-                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#0B1F33]/50">Who it serves</span>
-                <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                  {audiences.map((audience) => {
-                    const Icon = audience.icon;
-                    return (
-                      <motion.article
-                        key={audience.title}
-                        whileHover={{ y: -2 }}
-                        transition={{ duration: 0.22, ease }}
-                        className="dp-glass-card p-5"
-                      >
-                        <div className="mb-4 flex items-center gap-3">
-                          <span className="flex h-9 w-9 items-center justify-center bg-[#0B1F33] text-[#C8A96A]">
-                            <Icon className="h-4 w-4" />
-                          </span>
-                          <h3 className="font-body text-[14px] font-semibold text-[#0B1F33]">{audience.title}</h3>
+                        <div>
+                          <h3>{displayTitle(feature.title)}</h3>
+                          <p>{feature.body}</p>
                         </div>
-                        <p className="text-[13px] leading-relaxed text-[#0B1F33]/72">{audience.gain}</p>
-                        <p className="mt-3 text-[12px] leading-relaxed text-[#0B1F33]/58">{audience.use}</p>
-                        <p className="mt-3 border-t border-white/50 pt-3 text-[12px] leading-relaxed text-[#0B1F33]/58">{audience.why}</p>
-                      </motion.article>
+                      </article>
                     );
                   })}
                 </div>
-              </section>
-
-              <section className="border-y border-white/44 py-9">
-                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#0B1F33]/50">How it works</span>
-                <div className="mt-6 grid gap-3 md:grid-cols-4">
-                  {steps.map((step, index) => (
-                    <div key={step} className="relative border border-white/44 bg-white/42 p-5 backdrop-blur-[20px]">
-                      <div className="mb-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">
-                        0{index + 1}
-                      </div>
-                      <p className="text-[13px] font-medium leading-relaxed text-[#0B1F33]">{step}</p>
-                      {index < steps.length - 1 && (
-                        <div className="absolute right-0 top-1/2 hidden h-px w-8 translate-x-1/2 bg-[#0B1F33]/16 md:block" />
-                      )}
-                    </div>
+                <div className="dp-overview-chip-row">
+                  {features.filter((feature) => !primaryFeatureTitles.has(feature.title)).map((feature) => (
+                    <span key={feature.title}>{displayTitle(feature.title)}</span>
                   ))}
                 </div>
               </section>
 
-              <section className="grid gap-6 pt-9 md:grid-cols-[1fr_auto] md:items-end">
-                <div>
-                  <h2 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">
-                    One map for using downtown.
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-[14px] leading-[1.75] text-[#0B1F33]/64">
-                    Downtown Perks connects residents, real estate, local businesses, and the places people actually spend time.
-                  </p>
+              <section className="dp-overview-section">
+                <span className="dp-section-eyebrow">Built for the people using downtown.</span>
+                <div className="dp-audience-list">
+                  {audiences.map((audience) => {
+                    const Icon = audience.icon;
+                    return (
+                      <details key={audience.title} open={["Residents", "Properties", "Local Businesses", "Hotels"].includes(audience.title)}>
+                        <summary>
+                          <span className="icon">
+                            <Icon className="h-4 w-4" />
+                          </span>
+                          <h3>{audience.title}</h3>
+                        </summary>
+                        <p>{audience.gain} {audience.use}</p>
+                      </details>
+                    );
+                  })}
                 </div>
-                <div className="hidden gap-3 md:flex">
-                  <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Open the Map</GlassButton>
-                  <GlassButton to="/partners/campaigns" variant="secondary" onClick={onClose}>Campaigns</GlassButton>
+              </section>
+
+              <section className="dp-overview-section">
+                <span className="dp-section-eyebrow">How it works</span>
+                <ol className="dp-overview-steps">
+                  {steps.map((step, index) => (
+                    <li key={step}><span>0{index + 1}</span><p>{step}</p></li>
+                  ))}
+                </ol>
+              </section>
+
+              <section className="dp-overview-section dp-overview-final">
+                <div>
+                  <h2>Useful before the plan is decided.</h2>
+                  <p>Downtown Perks keeps nearby options close to the decision, so residents get a cleaner plan and partners can see what helped people show up.</p>
                 </div>
               </section>
             </div>
 
-            <div className="sticky bottom-0 z-20 grid grid-cols-2 gap-2 border-t border-white/44 bg-white/42 p-3 backdrop-blur-[24px] md:hidden">
+            <footer className="dp-overview-sticky-cta">
               <GlassButton to="/map?mode=resident&tab=map" onClick={onClose}>Open the Map</GlassButton>
               <GlassButton to="/partners/campaigns" variant="secondary" onClick={onClose}>Campaigns</GlassButton>
-            </div>
+            </footer>
           </motion.div>
         </motion.div>
       )}

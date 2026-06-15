@@ -33,6 +33,8 @@ export function isDowntownAustin78701Entity(entity: Record<string, unknown>): bo
   const sourceText = [entity.source, entity.brand, entity.category_key].filter(Boolean).join(" ").toLowerCase();
 
   if (sourceText.includes("downtown austin alliance art") && sourceText.includes("parks tour")) return true;
+  if (String(entity.id || "").toLowerCase() === "bathe-austin") return true;
+  if (sourceText.includes("bathe") && sourceText.includes("wellness")) return true;
 
   const inDowntownBox =
     latitude >= DOWNTOWN_78701_BOUNDS.south &&
