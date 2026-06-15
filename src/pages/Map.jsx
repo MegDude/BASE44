@@ -756,6 +756,36 @@ const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
 const DEMO_CARD_CODE = "DP-DEMO-78701";
 const PERKS_CARD_QR_SRC = "/images/card/perks-card-qr.png";
 
+const RESIDENT_OFFER_RECORDS = [
+  ["DANA", ["dana", "downtown austin neighborhood association"], "Resident advocacy & premium meetings", "Resident civic access", "DANA helps residents stay connected to advocacy, neighborhood meetings, and decisions that shape downtown living.", "Save it to follow upcoming resident meetings and local advocacy updates.", "Civic"],
+  ["Downtown Austin Alliance", ["downtown austin alliance", "daa"], "Infrastructure & Public Realm Updates", "Downtown civic updates", "Downtown Austin Alliance updates help residents understand public realm work, art walks, parks, and everyday downtown improvements.", "Save it to keep civic updates and downtown route context close by.", "Civic"],
+  ["Waterloo Greenway", ["waterloo greenway", "waterloo park"], "Park Activation & Green Space Access", "Park and event access", "Waterloo Greenway connects residents with park events, green space, trails, and cultural moments nearby.", "Save it for nearby park events, wellness moments, and community programming.", "Civic"],
+  ["The Paseo", ["the paseo", "paseo"], "Priority move-in incentive", "Residential access", "The Paseo gives residents a clearer way to compare building life with nearby dining, retail, events, and services.", "Save it and open the listing or building drawer when you want details.", "Property"],
+  ["The Waterline", ["the waterline", "waterline"], "Reserved co-working access", "Residential amenity access", "The Waterline connects residents to a mixed-use district with work, dining, hotel, retail, and lake access nearby.", "Save it to compare building amenities and nearby routines.", "Property"],
+  ["The Independent", ["the independent", "independent"], "Skydeck guest passes", "Resident building benefit", "The Independent gives residents a Seaholm anchor with dining, events, lake access, and daily routines close by.", "Save it to explore nearby perks and building context.", "Property"],
+  ["70 Rainey", ["70 rainey", "seventy rainey"], "Herb garden harvest share", "Resident building benefit", "70 Rainey connects residents to Rainey restaurants, music, trail access, and everyday local stops.", "Save it to compare nearby routines and resident benefits.", "Property"],
+  ["The Shore", ["the shore", "shore"], "Verified Resident: Lakeside Infinity Pool Access", "Resident access", "The Shore connects resident access with lakefront routines, Rainey dining, and nearby perks.", "Available to verified residents through the Resident Pass.", "Property"],
+  ["Comedor", ["comedor"], "Resident-Only Late Night Tequila Tasting", "Dining experience", "Comedor gives residents a focused late-night dining reason to choose downtown.", "Save the offer and ask for the resident tasting when active.", "Dining"],
+  ["Banger's", ["banger", "banger’s", "banger's"], "10% off for verified residents", "Resident dining offer", "Banger's is a simple resident stop for beer garden plans, casual food, and Rainey nights.", "Show the Resident Pass when the offer is active.", "Dining"],
+  ["The Stay Put", ["stay put", "the stay put"], "Free house brew with Resident Card", "Resident drink offer", "The Stay Put gives residents an easy nearby drink stop around Rainey.", "Show the Resident Card when the offer is active.", "Drinks"],
+  ["Lustre Pearl", ["lustre pearl"], "Happy Hour pricing for residents anytime", "Resident drink offer", "Lustre Pearl gives residents a familiar Rainey stop with simple resident value.", "Show the Resident Pass when the offer is active.", "Drinks"],
+  ["Half Step", ["half step"], "Skip the line access for residents", "Resident nightlife access", "Half Step gives residents a useful Rainey cocktail stop when the evening plan is coming together.", "Save it and show Resident Pass when active.", "Drinks"],
+  ["BATHE", ["bathe"], "10% Off First Soak", "Wellness perk", "BATHE gives residents a bathhouse reset with sauna, cold plunge, soaking pools, massage, sound immersion, and coworking.", "Claim the wellness perk and confirm availability before visiting.", "Wellness"],
+  ["YETI", ["yeti"], "Free Custom Engraving For Verified Residents", "Retail resident offer", "YETI gives residents and visitors an outdoor retail moment tied to downtown routes, the lake, and weekend plans.", "Show the Resident Pass in-store when the offer is active.", "Retail"],
+  ["Rivian", ["rivian"], "Priority Test Drives & Resident Charging Perks", "Mobility resident offer", "Rivian connects downtown residents to weekend routes, local exploration, and useful mobility moments.", "Save it and open the partner drawer for current test-drive details.", "Mobility"],
+  ["Standard Proof Whiskey Co.", ["standard proof"], "Complimentary Whiskey Flight Upgrade", "Resident drink offer", "Standard Proof gives residents a focused drinks stop near Rainey activity.", "Show the Resident Pass when the offer is active.", "Drinks"],
+].map(([name, aliases, title, value, description, terms, category]) => ({
+  name,
+  aliases,
+  title,
+  value,
+  description,
+  terms,
+  category,
+  isActive: true,
+  source: "Downtown Perks resident offer registry",
+}));
+
 if (typeof window !== "undefined" && !window.__dpMapPinDelegatedListener) {
   window.__dpMapPinDelegatedListener = true;
   const openMapPinFromDom = (event) => {
@@ -2080,7 +2110,7 @@ function ResidentPassIdentity({
   const renderPlaceRail = (places, emptyLabel, action = onOpenPerks) => (
     <div className="dp-pass-image-rail">
       {(places.length ? places : [{ id: "empty-pass-place", name: emptyLabel, category: "Downtown guide", district: "Nearby", image: resolveMapImage({ category: "Downtown guide" }, "card") }]).map((place) => {
-        const perk = getResidentPerkDetails(place);
+        const perk = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
         const image = resolveEntityImage(place, "card");
         return (
           <button key={place.id} type="button" className="dp-pass-image-card" onClick={action}>
@@ -2088,7 +2118,7 @@ function ResidentPassIdentity({
             <span>
               <strong>{place.name || emptyLabel}</strong>
               <em>{place.category || "Nearby place"}</em>
-              <small>{perk.offer || place.district || "Useful nearby"}</small>
+              <small>{perk.title || perk.offer || place.district || "Useful nearby"}</small>
             </span>
           </button>
         );
@@ -2153,10 +2183,22 @@ function cleanDisplayCopy(value) {
   return text;
 }
 
+function getCanonicalResidentOffer(place) {
+  if (!place) return null;
+  const text = placeText(place);
+  const name = String(place.name || place.title || place.raw?.name || place.raw?.title || "").toLowerCase();
+  const id = String(place.id || place.raw?.id || "").toLowerCase();
+  return RESIDENT_OFFER_RECORDS.find((record) => record.aliases.some((alias) => {
+    const normalized = String(alias || "").toLowerCase();
+    return Boolean(normalized && (name.includes(normalized) || id.includes(normalized.replace(/\s+/g, "-")) || text.includes(normalized)));
+  })) || null;
+}
+
 function hasActivePerkData(place) {
   const raw = place?.raw || {};
   const embeddedPerk = raw.perk && typeof raw.perk === "object" ? raw.perk : null;
   if (!place) return false;
+  if (getCanonicalResidentOffer(place)) return true;
   if (cleanPerkValue(embeddedPerk?.title || raw.deals_offers || place?.deals_offers || raw.offer || place?.offer || raw.specials || place?.specials)) {
     return true;
   }
@@ -2200,6 +2242,7 @@ function getResidentPerkDetails(place) {
   const raw = place?.raw || {};
   const legendsListing = getResolvedLegendsListing(place);
   const luxuryBuilding = getLuxuryPresenceBuilding(place);
+  const canonicalOffer = getCanonicalResidentOffer(place);
   if (luxuryBuilding) {
     const listings = luxuryBuilding.listings || place?.listings || [];
     const panelContent = luxuryBuilding.panelContent || place?.panelContent || {};
@@ -2243,8 +2286,8 @@ function getResidentPerkDetails(place) {
   const fallbackOffer = getResidentFallbackOffer(place);
   const listedOffer = cleanPerkValue(embeddedPerk?.title || raw.deals_offers || place?.deals_offers);
   const inKindPartner = isInKindPartner(place);
-  const offer = listedOffer || fallbackOffer.title;
-  const value = cleanPerkValue(embeddedPerk?.value || listedOffer) || fallbackOffer.value || "Resident card access";
+  const offer = listedOffer || canonicalOffer?.title || fallbackOffer.title;
+  const value = cleanPerkValue(embeddedPerk?.value || listedOffer) || canonicalOffer?.value || fallbackOffer.value || "Resident card access";
   const description = inKindPartner
     ? cleanDisplayCopy(embeddedPerk?.description) ||
       cleanDisplayCopy(raw.alignment_to_downtown_perks) ||
@@ -2254,14 +2297,14 @@ function getResidentPerkDetails(place) {
       cleanDisplayCopy(raw.alignment_to_downtown_perks) ||
       cleanDisplayCopy(raw.summary) ||
       fallbackOffer.description
-    : fallbackOffer.description;
+    : canonicalOffer?.description || fallbackOffer.description;
   const terms = inKindPartner
     ? cleanDisplayCopy(raw.terms || raw.perk_terms) || "Save it to your card, open it when you are nearby, and redeem when the inKind offer is active."
-    : cleanDisplayCopy(raw.terms || raw.perk_terms) || fallbackOffer.terms;
+    : cleanDisplayCopy(raw.terms || raw.perk_terms) || canonicalOffer?.terms || fallbackOffer.terms;
   const validUntil = embeddedPerk?.expiresAt || raw.valid_until || raw.expires || "";
-  const source = "";
+  const source = canonicalOffer?.source || "";
   const isActive = embeddedPerk?.isActive !== false;
-  const category = String(raw.category || place?.category || "Downtown place");
+  const category = canonicalOffer?.category || String(raw.category || place?.category || "Downtown place");
 
   return {
     offer,
@@ -2287,7 +2330,7 @@ function getExplicitGroupedOffer(place) {
     place?.recommended_perk ||
     raw.offer ||
     place?.offer
-  );
+  ) || getCanonicalResidentOffer(place)?.title || "";
 }
 
 function formatResidentPerkHeading(value) {
@@ -2308,6 +2351,8 @@ function formatResidentPerkHeading(value) {
 }
 
 function getResidentFallbackOffer(place) {
+  const canonicalOffer = getCanonicalResidentOffer(place);
+  if (canonicalOffer) return canonicalOffer;
   const text = placeText(place);
   const district = place?.district || "Downtown Austin";
   const name = place?.name || "this place";
@@ -2501,9 +2546,19 @@ function ResidentPerkDetails({ place }) {
         <h3 className="dp-perk-module-title">
           {isProperty ? "Want to live here?" : formatResidentPerkHeading(perk.offer)}
         </h3>
+        {perk.value && (
+          <p className="dp-perk-module-value">
+            {perk.value}
+          </p>
+        )}
         <p className="dp-perk-module-description">
           {useText}
         </p>
+        {perk.terms && (
+          <p className="dp-perk-module-terms">
+            {perk.terms}
+          </p>
+        )}
       </div>
     </section>
   );
@@ -4571,8 +4626,17 @@ function ResidentDrawerActions({
         <button type="button" onClick={onRsvp} className="dp-panel-action dp-primary-action">
           {eventRsvps.some((item) => item.id === selected.id) ? "Saved RSVP" : "RSVP"}
         </button>
+      ) : hasPerk ? (
+        <button type="button" onClick={viewPerk} className="dp-panel-action dp-primary-action">
+          Use Perk
+        </button>
       ) : (
         <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
+          {savedIds.has(selected.id) ? "Saved" : "Save"}
+        </button>
+      )}
+      {!isEvent && hasPerk && (
+        <button type="button" onClick={onSave} className="dp-panel-action">
           {savedIds.has(selected.id) ? "Saved" : "Save"}
         </button>
       )}
@@ -6162,9 +6226,12 @@ export default function MapPage() {
   }
 
   function entityCardCopy(place) {
+    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
     return truncatePanelCopy(
-      place.perk?.offer ||
+      offer?.title ||
+      offer?.offer ||
       place.recommended_perk ||
+      place.perk?.offer ||
       place.partner_opportunity ||
       place.summary ||
       place.description ||
@@ -6177,6 +6244,7 @@ export default function MapPage() {
   function renderEntityCard(place, actionLabel = "Open") {
     const image = resolveEntityImage(place, "card");
     const saved = savedIds.has(place.id);
+    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
     return (
       <article key={place.id} className="dp-tab-discovery-card dp-tab-perk-card">
         <button
@@ -6189,7 +6257,7 @@ export default function MapPage() {
         </button>
         <div className="dp-tab-discovery-body">
           <div className="dp-tab-row-meta">
-            <span>{[place.category || place.type || "place", place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" • ")}</span>
+            <span>{[offer?.category || place.category || place.type || "place", place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" • ")}</span>
           </div>
           <h3>{place.name}</h3>
           <p>{entityCardCopy(place)}</p>
@@ -6207,12 +6275,14 @@ export default function MapPage() {
   }
 
   function renderCompactEntityRow(place, actionLabel = "Open") {
+    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+    const offerLine = offer?.title || offer?.offer || "";
     return (
       <button key={place.id} type="button" className="dp-tab-row dp-compact-place-row" onClick={() => selectPlace(place)}>
         <span className="dp-partner-feed-main">
           <span>
             <strong>{place.name}</strong>
-            <small>{[place.category || place.type || "Place", place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" • ")}</small>
+            <small>{[offerLine || place.category || place.type || "Place", place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" • ")}</small>
           </span>
         </span>
         <span className="dp-compact-place-actions">
@@ -8198,27 +8268,34 @@ export default function MapPage() {
                 style={{ paddingBottom: "240px" }}
               >
               {drawerPreviewPlaces.map((place) => (
-                <button
-                  key={place.id}
-                  type="button"
-                  onClick={() => selectPlace(place)}
-                  className={`dp-directory-result-row grid w-full grid-cols-[34px_1fr_auto] items-start gap-2 p-1.5 text-left transition-all md:grid-cols-[42px_1fr_auto] md:gap-3 md:p-2 ${
-                    place.id === selectedId ? "dp-panel-row is-selected text-[#0B1F33]" : "dp-panel-row text-[#0B1F33]"
-                  }`}
-                >
-                  <PinBadge place={place} selected={place.id === selectedId} />
-                  <span className="min-w-0">
-                    <span className="dp-directory-context block truncate">{place.category || "Downtown place"}</span>
-                    <span className="dp-directory-story block truncate">{place.name}</span>
-                    <span className="dp-directory-meaning mt-0.5 block truncate">
-                      {place.district ? `${place.district} · ` : ""}{place.perk?.offer || place.recommended_perk || place.partner_opportunity || "Explore what is useful nearby."}
-                    </span>
-                  </span>
-                  <span className="dp-directory-action">
-                    Explore
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </button>
+                (() => {
+                  const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+                  const offerTitle = offer?.title || offer?.offer || place.perk?.offer || place.recommended_perk || place.partner_opportunity || "";
+                  const actionText = activeBottomTab === "perks" && hasActivePerkData(place) ? "Use Perk" : "Open";
+                  return (
+                    <button
+                      key={place.id}
+                      type="button"
+                      onClick={() => selectPlace(place)}
+                      className={`dp-directory-result-row grid w-full grid-cols-[34px_1fr_auto] items-start gap-2 p-1.5 text-left transition-all md:grid-cols-[42px_1fr_auto] md:gap-3 md:p-2 ${
+                        place.id === selectedId ? "dp-panel-row is-selected text-[#0B1F33]" : "dp-panel-row text-[#0B1F33]"
+                      }`}
+                    >
+                      <PinBadge place={place} selected={place.id === selectedId} />
+                      <span className="min-w-0">
+                        <span className="dp-directory-context block truncate">{offer?.category || place.category || "Downtown place"}</span>
+                        <span className="dp-directory-story block truncate">{place.name}</span>
+                        <span className="dp-directory-meaning mt-0.5 block truncate">
+                          {place.district ? `${place.district} · ` : ""}{offerTitle || "Explore what is useful nearby."}
+                        </span>
+                      </span>
+                      <span className="dp-directory-action">
+                        {actionText}
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </button>
+                  );
+                })()
               ))}
               {!drawerPreviewPlaces.length && (
                 <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">

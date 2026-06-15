@@ -24529,3 +24529,31 @@ html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-destination-drawer
   left: auto !important;
   z-index: 38 !important;
 }
+
+html body #root .dp-map-page.dp-map-page .dp-perk-module-value {
+  margin: 8px 0 0 !important;
+  color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1.35 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-perk-module-terms {
+  margin: 8px 0 0 !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-primary-action-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-primary-action-row .dp-panel-action {
+  flex: 1 1 min(132px, 100%) !important;
+}
