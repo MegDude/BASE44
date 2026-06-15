@@ -55,7 +55,7 @@ export default function HeroSection() {
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=2400&q=80"
+          src="/images/imported/perks/disocver-on-map.png"
           alt="Downtown Austin"
           className="absolute inset-0 h-full w-full object-cover"
         />

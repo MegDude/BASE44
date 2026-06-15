@@ -173,6 +173,40 @@ const metrics = [
   },
 ];
 
+const legendsAnalyticsSignals = [
+  {
+    title: "Listing Interest",
+    value: "Active",
+    detail: "Listing views, saves, showing intent, and property-detail opens roll into one readable Legends demand signal.",
+    icon: Users,
+  },
+  {
+    title: "Building Demand",
+    value: "Mapped",
+    detail: "Interest is grouped by building and district so partners can understand which residential pockets are gaining momentum.",
+    icon: Building2,
+  },
+  {
+    title: "Follow-Up Priority",
+    value: "Queued",
+    detail: "Showing requests, saved listings, contact actions, and repeat opens become a simple next-action queue for Legends.",
+    icon: CheckCircle2,
+  },
+  {
+    title: "Neighborhood Fit",
+    value: "Connected",
+    detail: "Listings stay connected to nearby dining, events, perks, fitness, and errands so the block reads as part of the decision.",
+    icon: Layers3,
+  },
+];
+
+const legendsAnalyticsRows = [
+  ["Listing views", "Which homes, units, and buildings people opened from the map."],
+  ["Saves", "Which addresses people kept for later when comparing downtown options."],
+  ["Showing intent", "Which actions suggest someone is ready for availability, fit, or a private tour conversation."],
+  ["Nearby context", "Which dining, events, services, and perks help a building feel easier to understand."],
+];
+
 const campaignSteps = ["Goal", "Audience", "Location", "Timing", "Access", "Placement", "Preview", "Launch"];
 
 const campaignStepDetails = {
@@ -559,7 +593,7 @@ export default function PartnersDashboard() {
   }
 
   return (
-    <main className="dp-partner-page dp-campaign-builder-page bg-white text-[#0B1F33]">
+    <main className="dp-partner-page dp-campaign-builder-page bg-[#F7F8FB] text-[#0B1F33]">
       <section className="dp-campaign-page-shell mx-auto w-full max-w-7xl px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-5 md:pt-24 lg:px-6 lg:pb-16">
         <div className="dp-campaign-topbar mb-8 flex items-center justify-between gap-3">
           <button
@@ -682,6 +716,62 @@ export default function PartnersDashboard() {
                   No event RSVPs yet. Once residents RSVP from the Events page, they will show up here for partner reporting.
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-5 lg:px-5">
+        <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_36px_rgba(11,31,51,0.06)]">
+          <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">Legends analytics</p>
+              <h2 className="mt-2 font-heading text-3xl font-medium">Residential demand, tied back to the map.</h2>
+              <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/62">
+                Legends activity should read as useful downtown intelligence: which buildings people open, which listings they save, which neighborhoods are gaining momentum, and what the next follow-up should be.
+              </p>
+              <div className="mt-4 rounded-md border border-[#0B1F33]/8 bg-white p-4">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/52">
+                  <Building2 className="h-4 w-4 text-[#C8A96A]" />
+                  Dashboard rule
+                </div>
+                <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/64">
+                  The dashboard shows aggregate Legends signals only: building demand, listing interest, saves, showing intent, and neighborhood fit. Private lead details stay out of partner-facing reporting.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-3">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {legendsAnalyticsSignals.map((signal) => {
+                  const SignalIcon = signal.icon;
+                  return (
+                    <div key={signal.title} className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/48">{signal.title}</p>
+                          <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em] text-[#0B1F33]">{signal.value}</h3>
+                        </div>
+                        <SignalIcon className="h-5 w-5 text-[#C8A96A]" />
+                      </div>
+                      <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/62">{signal.detail}</p>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/52">
+                  <BarChart3 className="h-4 w-4 text-[#C8A96A]" />
+                  What Legends can read
+                </div>
+                <div className="mt-3 divide-y divide-[#0B1F33]/8">
+                  {legendsAnalyticsRows.map(([label, value]) => (
+                    <div key={label} className="grid gap-1 py-3 sm:grid-cols-[150px_1fr] sm:gap-4">
+                      <div className="text-[12px] font-semibold text-[#0B1F33]">{label}</div>
+                      <div className="text-[12px] leading-5 text-[#0B1F33]/62">{value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

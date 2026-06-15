@@ -1,3 +1,5 @@
+import { getLegendsPropertyContent } from "./legendsPropertyContent";
+
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
 const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
 
@@ -134,8 +136,8 @@ const BUILDING_LOOKUP = {
     name: "Spring Condominiums",
     district: "Seaholm",
     coordinates: [30.2692, -97.7508],
-    buildingExterior: "/buildings/spring.webp",
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/3854745b.jpeg`,
+    buildingExterior: "/buildings/spring-condominiums.png",
+    lifestyleImage: "/buildings/spring-condominiums.png",
   },
   "54 rainey": {
     name: "Milago",
@@ -184,6 +186,7 @@ const PROPERTY_BUILDING_SUMMARIES = {
   "70 Rainey": "Luxury residences set between Rainey Street, Lady Bird Lake, and the downtown trail network.",
   "44 East": "Modern downtown residences with quick access to the lake, Rainey, and East Austin dining.",
   "The Independent": "A landmark downtown tower positioned between Seaholm, Shoal Creek, and the core business district.",
+  "Spring Condominiums": "Modern downtown living in the heart of Seaholm. Walk to restaurants, coffee shops, fitness studios, Lady Bird Lake, Whole Foods, and some of Austin's most active downtown destinations.",
   "Seaholm Residences": "A walkable downtown address anchored by Whole Foods, Trader Joe's, Shoal Creek, and lake access.",
   "Fifth & West": "A polished residential tower close to Shoal Creek, Market District dining, and downtown offices.",
   "The Shore": "Lake-adjacent residences with immediate access to trails, Rainey, and downtown hotels.",
@@ -223,6 +226,7 @@ export const luxuryPresenceListings = RAW_LISTINGS.map((row) => {
   const [buildingName, address, price, beds, baths, sqft, mlsNumber, district, lookupKey, imageRef] = row;
   const building = BUILDING_LOOKUP[lookupKey] || {};
   const unit = unitFromAddress(address);
+  const residentialContent = getLegendsPropertyContent([address, `${building.name || buildingName}-${unit}`, building.name || buildingName, lookupKey]);
   const primaryImage = building.buildingExterior || building.lifestyleImage || imageRef;
   const buildingExterior = building.buildingExterior || primaryImage;
   const listingId = `luxury-presence-${slug(address)}-${mlsNumber}`;
@@ -254,11 +258,12 @@ export const luxuryPresenceListings = RAW_LISTINGS.map((row) => {
     property_type: "Condominium",
     listing_type: listingType,
     zip_code: "78701",
-    source: "Luxury Presence MLS feed",
+    source: "Legends listing feed",
     updated_at: "2026-06-04",
-    panelTitle: building.name || buildingName,
-    panelSubhead: `${beds} Bedroom Residence`,
-    panelBody: `${beds} bed, ${baths} bath residence at ${building.name || buildingName} with ${formatNumber(sqft)} square feet, MLS ${mlsNumber}, and direct access to nearby downtown routines, resident perks, and walkable plans.`,
+    legendsResidentialContent: residentialContent,
+    panelTitle: residentialContent?.panel_title || building.name || buildingName,
+    panelSubhead: residentialContent?.panel_subtitle || `${beds} Bedroom Residence`,
+    panelBody: residentialContent?.summary || `${beds} bed, ${baths} bath residence at ${building.name || buildingName} with ${formatNumber(sqft)} square feet, MLS ${mlsNumber}, and direct access to nearby downtown routines, resident perks, and walkable plans.`,
     facts: {
       price,
       beds,
@@ -284,7 +289,7 @@ export const luxuryPresenceBuildings = Object.values(
       brand: "Legends Real Estate",
       pinKey: "legends",
       category: "Residential Property",
-      category_key: "residential_property luxury_presence building active_listings",
+      category_key: "residential_property legends building active_listings",
       latitude: listing.lat,
       longitude: listing.lng,
       district: listing.district,
@@ -301,7 +306,7 @@ export const luxuryPresenceBuildings = Object.values(
       thumbnail: lookup.buildingExterior || listing.heroImage,
       galleryImages: [lookup.buildingExterior || listing.heroImage, ...(lookup.galleryImages || []), listing.primaryImage].filter(Boolean).filter((item, index, list) => list.indexOf(item) === index),
       listings: [],
-      source: "Luxury Presence MLS feed enriched for Downtown Perks",
+      source: "Legends listing feed enriched for Downtown Perks",
       updated_at: "2026-06-04",
     };
 
@@ -311,29 +316,79 @@ export const luxuryPresenceBuildings = Object.values(
   }, {})
 ).map((building) => {
   const sortedListings = [...building.listings].sort((a, b) => moneyNumber(a.price) - moneyNumber(b.price));
+  const residentialContent = getLegendsPropertyContent([building.name, building.address, sortedListings[0]?.address]);
   const priceText = priceRange(sortedListings);
   const beds = [...new Set(sortedListings.map((listing) => listing.beds).filter(Boolean))].sort((a, b) => a - b);
   const sqftValues = sortedListings.map((listing) => Number(listing.sqft)).filter(Boolean).sort((a, b) => a - b);
   const bedroomText = beds.length === 1 ? `${beds[0]} bedroom` : `${beds[0]}-${beds[beds.length - 1]} bedroom`;
   const sqftText = sqftValues.length ? `${formatNumber(sqftValues[0])}-${formatNumber(sqftValues[sqftValues.length - 1])} sq ft` : "Square footage available";
   const listingCountText = `${sortedListings.length} active listing${sortedListings.length === 1 ? "" : "s"}`;
-  const baseSummary = PROPERTY_BUILDING_SUMMARIES[building.name] || `${building.name} is a downtown residential building with walkable access to nearby restaurants, hotels, parks, and resident routines.`;
-  const summary = `${baseSummary} ${listingCountText} from ${priceText}, including ${bedroomText} residences and ${sqftText}.`;
+  const baseSummary = residentialContent?.summary || PROPERTY_BUILDING_SUMMARIES[building.name] || `${building.name} is a downtown residential building with walkable access to nearby restaurants, hotels, parks, and resident routines.`;
+  const isSpring = building.name === "Spring Condominiums";
+  const summary = isSpring ? baseSummary : `${baseSummary} ${listingCountText} from ${priceText}, including ${bedroomText} residences and ${sqftText}.`;
+  const springProfile = isSpring
+    ? {
+        buildingId: "spring-condominiums",
+        intent: "live",
+        status: "active",
+        category: "Residential Property",
+        category_key: "residential property spring condominiums seaholm live downtown perks legends real estate",
+        eyebrow: "SEAHOLM DISTRICT",
+        headline: "Spring Condominiums",
+        summary: baseSummary,
+        downtownPerksCopy: "Living at Spring means downtown starts at your front door. Downtown Perks helps residents discover what is happening nearby without searching across multiple apps.",
+        residentCta: {
+          title: "Everything Nearby, One Map.",
+          body: "Explore local perks, events, dining, fitness, and neighborhood experiences around Spring Condominiums.",
+          primary: "Open Map",
+          secondary: "Get Downtown Perks",
+        },
+        snapshot: [
+          ["Address", "300 Bowie Street"],
+          ["Neighborhood", "Seaholm District"],
+          ["Property Type", "Luxury Residential Condominium"],
+          ["Style", "High-Rise"],
+          ["Walkability", "Excellent"],
+          ["Resident Experience", "Urban Lifestyle"],
+        ],
+        nearbyDistricts: ["Seaholm", "Downtown Core", "Market District", "West Sixth", "Lady Bird Lake"],
+        perksIncluded: ["Nearby dining", "Happy hours", "Events", "Fitness classes", "Coffee shops", "Local services", "Resident-exclusive offers"],
+        nearbyLifestyle: {
+          Coffee: ["Jo's Coffee", "Merit Coffee", "Starbucks Reserve", "Codependent"],
+          Dining: ["True Food Kitchen", "Hestia", "Qi", "La Condesa", "Comedor"],
+          Drinks: ["Garage", "The Roosevelt Room", "Ranch 616", "Coconut Club"],
+          Wellness: ["CorePower Yoga", "Pure Barre", "Lifetime", "Love Cycling"],
+          Groceries: ["Whole Foods Market", "Trader Joe's"],
+        },
+        walkTimes: [
+          ["Whole Foods", "3 min walk"],
+          ["Lady Bird Lake Trail", "5 min walk"],
+          ["Seaholm District", "2 min walk"],
+          ["Downtown Core", "8 min walk"],
+          ["West Sixth", "6 min walk"],
+        ],
+      }
+    : null;
 
   return {
     ...building,
+    ...(springProfile || {}),
+    legendsResidentialContent: residentialContent,
+    buildingId: residentialContent?.id || springProfile?.buildingId || building.buildingId,
+    intent: residentialContent ? "live" : springProfile?.intent || building.intent,
+    status: residentialContent ? "active" : springProfile?.status || building.status,
     listings: sortedListings,
     activeListings: sortedListings.length,
     averagePrice: Math.round(sortedListings.reduce((sum, listing) => sum + moneyNumber(listing.price), 0) / sortedListings.length),
     priceRange: priceText,
     sqftRange: sqftText,
-    listingSummary: `${listingCountText} · ${priceText}`,
+    listingSummary: residentialContent?.panel_subtitle || (isSpring ? "Seaholm District · 300 Bowie Street" : `${listingCountText} · ${priceText}`),
     summary,
-    deals_offers: `Want To Live Here? ${listingCountText} through Legends Real Estate.`,
-    specials: `${priceText} · ${bedroomText} residences · MLS-backed availability`,
+    deals_offers: residentialContent?.cta_primary || (isSpring ? "View nearby perks around Spring Condominiums." : `Want To Live Here? ${listingCountText} through Legends Real Estate.`),
+    specials: isSpring ? "Whole Foods · Lady Bird Lake · Seaholm dining · fitness nearby" : `${priceText} · ${bedroomText} residences · MLS-backed availability`,
     panelContent: {
       title: building.name,
-      subhead: `${listingCountText} available`,
+      subhead: isSpring ? "Seaholm District · 300 Bowie Street" : `${listingCountText} available`,
       body: summary,
       facts: [
         priceText,
@@ -341,15 +396,17 @@ export const luxuryPresenceBuildings = Object.values(
         sqftText,
         sortedListings.map((listing) => `MLS ${listing.mls_number}`).join(", "),
       ],
-      cta: "Want To Live Here?",
-      secondaryActions: ["Contact Legends Real Estate", "Directions", "Save"],
+      cta: isSpring ? "View Nearby Perks" : "Want To Live Here?",
+      secondaryActions: isSpring ? ["Explore the Neighborhood", "Directions", "Save"] : ["Contact Legends Real Estate", "Directions", "Save"],
     },
     raw: {
       luxuryPresenceBuilding: true,
+      ...(springProfile || {}),
+      legendsResidentialContent: residentialContent,
       listings: sortedListings,
       panelContent: {
         title: building.name,
-        subhead: `${listingCountText} available`,
+        subhead: isSpring ? "Seaholm District · 300 Bowie Street" : `${listingCountText} available`,
         body: summary,
       },
     },
@@ -359,7 +416,7 @@ export const luxuryPresenceBuildings = Object.values(
 export const luxuryPresenceBuildingPlaces = luxuryPresenceBuildings;
 
 export const luxuryPresenceInventorySummary = {
-  source: "Luxury Presence MLS feed",
+  source: "Legends listing feed",
   generatedAt: "2026-06-04",
   buildingCount: luxuryPresenceBuildings.length,
   listingCount: luxuryPresenceListings.length,

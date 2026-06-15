@@ -46,6 +46,48 @@ const RESTORED_MASTER_PIN_KEYS: Record<string, PinVariant> = {
   "four-seasons": "hotel",
 };
 
+function entityText(entity: Record<string, unknown>): string {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return [
+    entity.id,
+    entity.name,
+    entity.type,
+    entity.entityType,
+    entity.markerType,
+    entity.detailDrawerType,
+    entity.category,
+    entity.category_key,
+    entity.partnerType,
+    entity.brand,
+    entity.source,
+    entity.osm_type,
+    raw.type,
+    raw.entityType,
+    raw.category,
+    raw.category_key,
+    raw.partnerType,
+    raw.source,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function hasVenueSignal(entity: Record<string, unknown>): boolean {
+  const text = entityText(entity);
+  return /\b(venue|restaurant|bar|nightlife|coffee|retail|store|shop|antone'?s|nightclub|live music|music venue|cocktail|dining|pizza|brewery|beer|cafe)\b/.test(text);
+}
+
+function hasResidentialSignal(entity: Record<string, unknown>): boolean {
+  const text = entityText(entity);
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  if (hasVenueSignal(entity) && !/\b(residential property|property|listing|mls|luxury[_\s-]*presence|legends)\b/.test(text)) return false;
+  return (
+    /\b(property|residential|listing|legends|luxury[_\s-]*presence|mls|condominium|condo|apartment|for sale|for rent)\b/.test(text) ||
+    Boolean(raw.luxuryPresenceBuilding || raw.luxuryPresenceListing || raw.legendsListing || entity.legendsListing)
+  );
+}
+
 export function resolveEntityPin(entity: Record<string, unknown>) {
   if (typeof entity.pinKey === "string" && entity.pinKey) {
     const explicitPinKey = entity.pinKey.toLowerCase().trim();
@@ -53,17 +95,21 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
     return getPinAsset(RESTORED_MASTER_PIN_KEYS[explicitPinKey] || explicitPinKey);
   }
 
-  const entityTypeText = [entity.type, entity.markerType, entity.detailDrawerType, entity.isEvent ? "event" : ""]
+  const entityTypeText = [entity.type, entity.entityType, entity.markerType, entity.detailDrawerType, entity.isEvent ? "event" : ""]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
   if (entityTypeText.includes("happy_hour") || entityTypeText.includes("happy hour")) return getPinAsset("happy-hour");
   if (entityTypeText.includes("event")) return getPinAsset("event");
+  if (hasResidentialSignal(entity)) return getPinAsset("residential");
+  if (hasVenueSignal(entity) && /\b(antone'?s|nightclub|live music|music venue|art|culture|gallery|museum)\b/.test(entityText(entity))) return getPinAsset("culture");
+  if (hasVenueSignal(entity) && /\b(bar|nightlife|cocktail|pub|club|lounge|beer)\b/.test(entityText(entity))) return getPinAsset("nightlife");
 
   const text = [
     entity.id,
     entity.name,
     entity.type,
+    entity.entityType,
     entity.category,
     entity.category_key,
     entity.partnerType,

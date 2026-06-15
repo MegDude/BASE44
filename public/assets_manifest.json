@@ -248,16 +248,16 @@
     {
       "kind": "building",
       "name": "Spring Condominiums",
-      "path": "public/buildings/spring.webp",
-      "originalPath": "public/assets-originals/buildings/spring.jpg",
-      "commonsFile": "File:Spring Construction-Dec2008-a.JPG",
-      "commonsPage": "https://commons.wikimedia.org/wiki/File%3ASpring_Construction-Dec2008-a.JPG",
-      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/80/Spring_Construction-Dec2008-a.JPG",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-      "artist": "LoneStarMike",
+      "path": "public/buildings/spring-condominiums.png",
+      "originalPath": "/var/folders/r6/l8p94mf17dg0k9cb1mw560gr0000gn/T/codex-clipboard-028c21c7-db7a-45e8-b2af-4cd5b44bce14.png",
+      "commonsFile": "",
+      "commonsPage": "",
+      "sourceUrl": "",
+      "license": "User provided",
+      "licenseUrl": "",
+      "artist": "User provided",
       "status": "ok",
-      "note": ""
+      "note": "Replaced with the provided Spring Condominiums entrance image."
     },
     {
       "kind": "building",

@@ -5298,7 +5298,7 @@
       "category": "Restoration / Emergency Services",
       "lat": 30.269325,
       "lng": -97.745165,
-      "image": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
+      "image": "/images/imported/perks/commercial_lobby_arrival_1779052774111.png",
       "source": "OpenStreetMap / Overpass"
     },
     {
@@ -26492,7 +26492,7 @@
       "category": "Services",
       "lat": 30.269325,
       "lng": -97.745165,
-      "image": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
+      "image": "/images/imported/perks/commercial_lobby_arrival_1779052774111.png",
       "source": "production-map-inventory"
     },
     {

@@ -7,8 +7,8 @@
 import L from 'leaflet';
 import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 
-// Design system: pins are navy (#0B1F33) with white SVG icons.
-// Gold (#C8A96A) is reserved for selected/active state only — ring only, never fill.
+// Design system: pins are the icon/logo itself. No filled circles, boxes,
+// cards, or solid backplates behind map pins.
 const SIZES = {
   default: 28,
   building: 30,
@@ -17,14 +17,14 @@ const SIZES = {
 
 /**
  * Inline styles for the SVG inside a pin.
- * The SVG needs white stroke since the background is navy.
+ * SVG pins sit directly on the map, so the icon uses navy by default.
  */
 const PIN_SVG_STYLE = `
   width: 14px;
   height: 14px;
   display: block;
   flex-shrink: 0;
-  stroke: #ffffff;
+  stroke: #0B1F33;
   fill: none;
 `;
 
@@ -33,13 +33,13 @@ const PIN_SVG_STYLE_LG = `
   height: 17px;
   display: block;
   flex-shrink: 0;
-  stroke: #ffffff;
+  stroke: #C8A96A;
   fill: none;
 `;
 
 /**
  * Inject inline style onto the SVG string returned by pinAssetRegistry.
- * The registry SVGs use currentColor; we set stroke to white via direct attribute override.
+ * The registry SVGs use currentColor; we set stroke directly for consistency.
  */
 function styledGlyph(glyph, large = false) {
   if (!glyph) return '';
@@ -53,7 +53,7 @@ function styledGlyph(glyph, large = false) {
 
 /**
  * Create a compact marker icon (unselected state)
- * Navy circle with white SVG icon — minimal, readable on the light Carto tile
+ * Transparent hit area with only the SVG/icon visible on the map.
  */
 export function createCompactMarker(entity) {
   const pin = resolveEntityPin(entity);
@@ -65,10 +65,10 @@ export function createCompactMarker(entity) {
     <div style="
       width: ${size}px;
       height: ${size}px;
-      border-radius: 50%;
-      background: #0B1F33;
-      border: 1.5px solid rgba(255,255,255,0.9);
-      box-shadow: 0 2px 6px rgba(11,31,51,0.18), 0 4px 10px rgba(11,31,51,0.12);
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -91,7 +91,7 @@ export function createCompactMarker(entity) {
 
 /**
  * Create a selected marker icon (slightly larger, gold ring accent)
- * Navy body + gold outline ring — gold accent used ONLY on selection
+ * Selected pins use the gold icon color only. No halo, ring, or filled backplate.
  */
 export function createSelectedMarker(entity) {
   const pin = resolveEntityPin(entity);
@@ -103,13 +103,10 @@ export function createSelectedMarker(entity) {
     <div style="
       width: ${size}px;
       height: ${size}px;
-      border-radius: 50%;
-      background: #0B1F33;
-      border: 2px solid rgba(255,255,255,0.95);
-      box-shadow:
-        0 0 0 2.5px rgba(200,169,106,0.7),
-        0 4px 14px rgba(11,31,51,0.22),
-        0 8px 20px rgba(11,31,51,0.14);
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
       display: flex;
       align-items: center;
       justify-content: center;

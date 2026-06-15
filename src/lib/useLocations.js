@@ -9,6 +9,7 @@ import { waterlooParkInventory } from "../data/waterlooParkInventory";
 import { waterlooParkCampaignPins } from "../data/waterlooParkCampaignPins";
 import { daaTourStops } from "../data/daaArtParksTour";
 import { legendsListingPlaces } from "../data/legendsListings";
+import { rentalListings } from "../data/rentalListings";
 import { getHappyHourPlaces } from "./happyHours";
 import { enrichWithArchiveLocationContext } from "./archiveLocationContext";
 import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
@@ -84,8 +85,8 @@ function parkingBookingPlace(item) {
     address: item.address,
     summary: "Reserve nearby parking before you head out.",
     description: "Park close. Walk less. Do more downtown.",
-    neighborhood_narrative: "Parking becomes part of the resident perk layer, helping people plan around downtown nights, events, and nearby restaurants without turning parking into a separate product.",
-    alignment_to_downtown_perks: "Turn unused parking inventory into a resident perk and make it visible when people nearby are deciding where to go.",
+    neighborhood_narrative: "Parking helps people plan dinner, events, errands, and nights out without making the trip harder than it needs to be.",
+    alignment_to_downtown_perks: "Show available parking on the map when people nearby are choosing where to go.",
     deals_offers: item.perkLabel || item.pricingLabel,
     specials: item.pricingLabel,
     image: item.imageUrl,
@@ -99,6 +100,68 @@ function parkingBookingPlace(item) {
     },
     parkingBooking: item,
     source: "Downtown Perks parking booking layer",
+  };
+}
+
+function rentalListingPlace(listing) {
+  const sqftDisplay = listing.sqft ? `${Number(listing.sqft).toLocaleString()} sqft` : "";
+  const facts = [
+    listing.priceLabel,
+    `${listing.beds} bd`,
+    `${listing.baths} ba`,
+    sqftDisplay,
+  ].filter(Boolean).join(" · ");
+
+  return {
+    id: listing.id,
+    name: `${listing.building} #${listing.unit}`,
+    type: "rental",
+    kind: "rental",
+    entityType: "rental",
+    sourceType: "rental",
+    markerType: "rental",
+    detailDrawerType: "rental",
+    pinKey: "residential",
+    category: "Rental / Residential",
+    category_key: [
+      "rental",
+      "residential",
+      "leasing",
+      "apartment",
+      "condo",
+      listing.building,
+      listing.neighborhood,
+      listing.mls,
+      ...listing.highlights,
+      ...listing.amenities,
+      ...listing.nearbyPerks,
+    ]
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_"),
+    latitude: listing.lat,
+    longitude: listing.lng,
+    district: listing.neighborhood,
+    neighborhood: listing.neighborhood,
+    address: listing.address,
+    summary: listing.description,
+    description: listing.description,
+    image: "/images/buildings/lobby-to-street-arrival.png",
+    price: listing.price,
+    priceLabel: listing.priceLabel,
+    beds: listing.beds,
+    baths: listing.baths,
+    sqft: listing.sqft,
+    unit: listing.unit,
+    mls: listing.mls,
+    building: listing.building,
+    listingFacts: facts,
+    highlights: listing.highlights,
+    amenities: listing.amenities,
+    nearbyPerks: listing.nearbyPerks,
+    rentalListing: listing,
+    source: "Downtown Perks rental listing layer",
+    tags: ["Rentals", "Residential", listing.building, listing.neighborhood, listing.mls, ...listing.highlights, ...listing.amenities, ...listing.nearbyPerks],
   };
 }
 
@@ -574,7 +637,7 @@ const brandPartnerPlaces = [
     brand: "Legends Real Estate",
     pinKey: "legends",
     category: "Brand / Real Estate",
-    category_key: "brand_real_estate legends listings luxury_presence mls",
+    category_key: "brand_real_estate legends listings mls",
     latitude: 30.2655,
     longitude: -97.74618,
     district: "2nd Street",
@@ -591,7 +654,7 @@ const brandPartnerPlaces = [
     related: ["priority-the-waterline", "priority-the-independent", "priority-the-austonian", "priority-the-shore"],
     mapLayer: "Legends",
     datasetLayer: "Legends",
-    tags: ["Legends", "Listings", "MLS", "Luxury Presence", "Real Estate"],
+    tags: ["Legends", "Listings", "MLS", "Real Estate"],
     source: "Downtown Perks brand partner layer",
   },
 ];
@@ -835,7 +898,9 @@ function isCoreMapLocation(item) {
 function isExcludedMapLocation(item) {
   const osmId = Number(item.osm_id);
   if (Number.isFinite(osmId) && EXCLUDED_MAP_LOCATION_OSM_IDS.has(osmId)) return true;
-  return String(item.name || "").trim().toLowerCase() === "lakeside apartmments";
+  const name = String(item.name || item.title || "").trim().toLowerCase();
+  if (name === "lakeside apartmments") return true;
+  return false;
 }
 
 function normalizedLocationKey(value) {
@@ -910,19 +975,57 @@ export function useLocations() {
   const daaPlaces = daaTourStops.map(daaTourStopPlace);
   const republicAustinPlaces = getRepublicAustinMapPlaces();
   const parkingPlaces = downtownParkingItems.filter((item) => item.active).map(parkingBookingPlace);
+  const rentalPlaces = rentalListings.filter((item) => item.status === "active").map(rentalListingPlace);
   void happyHoursVersion;
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...brandPartnerPlaces, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...supplementalMapEntities, ...downtownPerksGoogleListImport, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...brandPartnerPlaces, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...downtownPerksGoogleListImport, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
+    .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.pinKey === "civic")
     .map((item, i) => {
       const isVia313 = String(item.name || "").toLowerCase().includes("via 313");
       const isRoyalBlue = String(item.name || "").toLowerCase().includes("royal blue grocery");
       const isStandardProof = String(item.name || "").toLowerCase().includes("standard proof whiskey");
+      const isAntones = /\bantone'?s\b/i.test(`${item.name || ""} ${item.slug || item.id || ""}`);
+      const isStAugustine = String(item.name || "").trim().toLowerCase() === "augustine";
       const normalizedItem = {
         ...item,
         id: stableRawLocationId(item, i),
+        ...(isAntones
+          ? {
+              name: "Antone's Nightclub",
+              title: "Antone's Nightclub",
+              type: "venue",
+              kind: "venue",
+              partnerType: "venues",
+              pinKey: "culture",
+              category: "Live Music / Nightlife",
+              category_key: "venue live_music nightlife bar_nightlife music_venue",
+              district: "East Downtown",
+              summary: "One of Austin's most recognized live music venues. Known for touring acts, local performances, and downtown nightlife.",
+              alignment_to_downtown_perks: "Live music, late-night plans, and downtown show traffic for residents and visitors.",
+              primaryAction: "Directions",
+              secondaryAction: "Upcoming Events",
+            }
+          : {}),
+        ...(isStAugustine
+          ? {
+              name: "St. Augustine",
+              title: "St. Augustine",
+              type: "venue",
+              kind: "venue",
+              partnerType: "venues",
+              pinKey: "venue",
+              category: "Venue / Nightlife",
+              category_key: "venue nightlife bar_nightlife rainey",
+              district: "Rainey",
+              summary: "Rainey Street venue for drinks, patio time, and downtown night-out plans.",
+              alignment_to_downtown_perks: "Rainey nightlife and walkable downtown discovery for residents, visitors, and event traffic.",
+              primaryAction: "Directions",
+              secondaryAction: "View Details",
+            }
+          : {}),
         ...(isVia313
           ? {
               category: "Pizza / Dining",

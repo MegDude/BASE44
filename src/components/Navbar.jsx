@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ChevronDown, ChevronUp, MapPin, Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
 const RESIDENT_LINKS = [
   { to: "/map?mode=resident&tab=map", label: "Resident Map", description: "Open the live resident map" },
@@ -13,7 +14,7 @@ const RESIDENT_LINKS = [
 const PARTNER_LINKS = [
   { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
   { to: "/partners/dashboard", label: "Dashboard", description: "Operational district intelligence" },
-  { to: "/partners/campaigns", label: "Campaigns", description: "Manage campaign builder" },
+  { to: "/partners/campaigns", label: "Campaigns", description: "Open Downtown Campaign Builder" },
   { to: "/partner-workspace/overview", label: "Workspace", description: "Partner reports, campaigns, and activity" },
   { to: "/partner-workspace/reports", label: "Reports", description: "Open connected reporting" },
   { to: "/marketing/pricing", label: "Pricing", description: "Partner plans by category" },
@@ -127,9 +128,11 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
+  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [mobileAudience, setMobileAudience] = useState("residents");
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -148,6 +151,7 @@ export default function Navbar() {
       if (event.key === "Escape") {
         setOpen(false);
         setOpenMenu(null);
+        setQuickSearchOpen(false);
       }
     };
 
@@ -200,6 +204,16 @@ export default function Navbar() {
 
   const residentMapActive = location.pathname === "/map" && !location.search.includes("mode=partner");
   const partnerMapActive = location.pathname === "/map" && location.search.includes("mode=partner");
+
+  function openQuickSearch() {
+    setOpen(false);
+    setOpenMenu(null);
+    setQuickSearchOpen(true);
+  }
+
+  function handleQuickSearchSelect(result) {
+    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+  }
 
   return (
     <nav
@@ -256,10 +270,27 @@ export default function Navbar() {
               setOpenMenu={setOpenMenu}
               isActiveGroup={partnerActive}
             />
+            <button
+              type="button"
+              onClick={openQuickSearch}
+              className="dp-global-search-trigger"
+              aria-label="Search Downtown Perks"
+            >
+              <Search className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Search</span>
+            </button>
           </div>
         )}
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={openQuickSearch}
+            className="dp-global-search-icon-button"
+            aria-label="Search Downtown Perks"
+          >
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </button>
           <button
             type="button"
             onClick={() => setOpen(!open)}
@@ -329,6 +360,11 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
+      <QuickSearchModal
+        isOpen={quickSearchOpen}
+        onClose={() => setQuickSearchOpen(false)}
+        onSelectResult={handleQuickSearchSelect}
+      />
     </nav>
   );
 }

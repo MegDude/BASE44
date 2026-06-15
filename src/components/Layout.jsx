@@ -1,9 +1,10 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Search } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeFooter from "./HomeFooter";
+import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -49,6 +50,7 @@ export default function Layout() {
   const location = useLocation();
   const { pathname, search } = location;
   const navigate = useNavigate();
+  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const isProductRoute =
     pathname === "/map" ||
     pathname === "/partner-map" ||
@@ -97,6 +99,11 @@ export default function Layout() {
 
   const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
   const showNavbar = pathname !== "/" && !isProductRoute;
+  const showProductSearchButton = !showNavbar && pathname !== "/map";
+
+  function handleQuickSearchSelect(result) {
+    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+  }
 
   function getBackFallbackPath() {
     const params = new URLSearchParams(search);
@@ -136,6 +143,17 @@ export default function Layout() {
       <ScrollToTop />
       <InteractionFeedback />
       {showNavbar && <Navbar />}
+      {showProductSearchButton && (
+        <button
+          type="button"
+          className="dp-product-shell-search-button"
+          onClick={() => setQuickSearchOpen(true)}
+          aria-label="Search Downtown Perks"
+        >
+          <Search className="h-4 w-4" aria-hidden="true" />
+          <span>Search</span>
+        </button>
+      )}
       {showBackButton && (
         <div className="dp-layout-back-row">
           <button
@@ -153,6 +171,11 @@ export default function Layout() {
         <Outlet />
       </main>
       {!noFooter && (usesEditorialFooter ? <Footer /> : <HomeFooter />)}
+      <QuickSearchModal
+        isOpen={quickSearchOpen}
+        onClose={() => setQuickSearchOpen(false)}
+        onSelectResult={handleQuickSearchSelect}
+      />
     </div>
   );
 }

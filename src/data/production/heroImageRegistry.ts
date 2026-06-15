@@ -633,7 +633,7 @@ export const heroImageRegistry = [
     "thumbnail": "/images/legends-listings/3854745b.jpeg",
     "gallery": [
       "/images/legends-listings/3854745b.jpeg",
-      "/buildings/spring.webp"
+      "/buildings/spring-condominiums.png"
     ],
     "fallback": "/images/fallbacks/property.jpg",
     "inheritance": {
@@ -15483,10 +15483,10 @@ export const heroImageRegistry = [
   },
   {
     "slug": "spring-condominiums",
-    "heroImage": "/buildings/spring.webp",
-    "thumbnail": "/buildings/spring.webp",
+    "heroImage": "/buildings/spring-condominiums.png",
+    "thumbnail": "/buildings/spring-condominiums.png",
     "gallery": [
-      "/buildings/spring.webp"
+      "/buildings/spring-condominiums.png"
     ],
     "fallback": "/images/fallbacks/residential.jpg",
     "inheritance": {
@@ -18069,11 +18069,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "total-restoration-of-texas",
-    "heroImage": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
-    "thumbnail": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
+    "heroImage": "/images/imported/perks/commercial_lobby_arrival_1779052774111.png",
+    "thumbnail": "/images/imported/perks/commercial_lobby_arrival_1779052774111.png",
     "gallery": [
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80"
+      "/images/imported/perks/commercial_street_level_1779052788888.png",
+      "/images/imported/perks/places-nearby.png"
     ],
     "fallback": "/images/fallbacks/services.jpg",
     "inheritance": {

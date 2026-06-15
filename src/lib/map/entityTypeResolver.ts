@@ -1,0 +1,110 @@
+import type { EntityType } from "@/types/mapEntity";
+
+function collectEntityText(entity: Record<string, unknown>): string {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return [
+    entity.entityType,
+    entity.type,
+    entity.kind,
+    entity.category,
+    entity.category_key,
+    entity.subcategory,
+    entity.markerType,
+    entity.detailDrawerType,
+    entity.partnerType,
+    entity.sourceType,
+    entity.source,
+    entity.name,
+    entity.title,
+    raw.entityType,
+    raw.type,
+    raw.kind,
+    raw.category,
+    raw.category_key,
+    raw.subcategory,
+    raw.markerType,
+    raw.detailDrawerType,
+    raw.partnerType,
+    raw.sourceType,
+    raw.source,
+    raw.name,
+    raw.title,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+export function resolveEntityType(entity: Record<string, unknown>): EntityType {
+  const text = collectEntityText(entity);
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  const name = String(entity.name || entity.title || raw.name || raw.title || "").toLowerCase();
+
+  if (entity.isLegendsListing || raw.isLegendsListing || raw.legendsListing || text.includes("legends listing")) return "listing";
+  if (raw.rentalListing || text.includes("rental") || text.includes("leasing") || text.includes("for rent")) return "rental";
+  if (text.includes("hotel")) return "hotel";
+  if (text.includes("event")) return "event";
+  if (text.includes("perk") || text.includes("offer") || text.includes("inkind")) return "perk";
+  if (text.includes("brand")) return "brand";
+  if (text.includes("civic") || text.includes("public")) return "civic";
+  if (name.includes("antone") || name.includes("st. augustine") || name.includes("st augustine") || name.includes("saint augustine")) return "venue";
+  if (text.includes("farmers market") || text.includes("farmer's market") || text.includes("farmers' market")) return "event";
+  if (text.includes("coffee") || text.includes("cafe")) return "coffee";
+  if (text.includes("restaurant") || text.includes("dining")) return "restaurant";
+  if (text.includes("beer garden") || text.includes("sausage house")) return "restaurant";
+  if (text.includes("retail") || text.includes("store") || text.includes("shop")) return "retail";
+  if (text.includes("wellness") || text.includes("fitness") || text.includes("spa") || text.includes("bathhouse")) return "wellness";
+  if (text.includes("service")) return "service";
+  if (text.includes("commercial") || text.includes("office")) return "commercial";
+
+  if (
+    name.includes("antone") ||
+    name.includes("banger") ||
+    text.includes("venue") ||
+    text.includes("nightlife") ||
+    text.includes("music") ||
+    text.includes("bar")
+  ) {
+    return "venue";
+  }
+
+  if (
+    name.includes("sixth and guadalupe") ||
+    name.includes("6th and guadalupe") ||
+    text.includes("property") ||
+    text.includes("residential") ||
+    text.includes("condo") ||
+    text.includes("condominium") ||
+    text.includes("apartment") ||
+    text.includes("building") ||
+    raw.luxuryPresenceBuilding ||
+    raw.luxuryPresenceListing
+  ) {
+    return "property";
+  }
+
+  if (name.includes("pleblab")) return "commercial";
+
+  throw new Error(`Entity normalization failed: missing valid entity type for ${entity.name || entity.title || entity.id}`);
+}
+
+export function resolveDrawer(entityType: EntityType): string {
+  const drawerByType: Record<EntityType, string> = {
+    property: "PropertyDrawer",
+    listing: "LegendsListingDrawer",
+    rental: "RentalListingDrawer",
+    hotel: "HotelDrawer",
+    venue: "VenueDrawer",
+    restaurant: "DiningDrawer",
+    coffee: "CoffeeDrawer",
+    retail: "RetailDrawer",
+    wellness: "WellnessDrawer",
+    perk: "PerkDrawer",
+    event: "EventDrawer",
+    brand: "BrandDrawer",
+    civic: "CivicDrawer",
+    service: "ServiceDrawer",
+    commercial: "CommercialDrawer",
+  };
+  return drawerByType[entityType];
+}

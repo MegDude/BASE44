@@ -1,0 +1,104 @@
+export type LegendsProperty = {
+  id: string;
+  buildingName: string;
+  address: string;
+  neighborhood: string;
+  propertyType: string;
+  style: string;
+  walkability: string;
+  residentExperience: string;
+  summary: string;
+  whyItMatters: string;
+  coffee: string[];
+  dining: string[];
+  drinks: string[];
+  wellness: string[];
+  groceries: string[];
+  nearbyLocations: string[];
+  listings: string[];
+  goodToKnow: string[];
+  ctaPrimary: string;
+  ctaSecondary: string;
+  imageAsset: string;
+  pinAsset: string;
+  entityAliases: string[];
+};
+
+const property = (
+  id: string,
+  buildingName: string,
+  address: string,
+  neighborhood: string,
+  listings: string[] = [],
+  imageAsset = "/images/property-listings-premium/the-austonian.jpeg",
+): LegendsProperty => ({
+  id,
+  buildingName,
+  address,
+  neighborhood,
+  propertyType: "Residential Tower",
+  style: "Downtown residential building",
+  walkability: `Strong access to ${neighborhood}, downtown dining, coffee, errands, and daily routines.`,
+  residentExperience: "Walkable downtown living with useful places close enough to become part of the week.",
+  summary: `${buildingName} gives residents a practical downtown home base with nearby dining, coffee, services, events, and lake or district access.`,
+  whyItMatters: "The neighborhood becomes part of the amenity when everyday plans are close, useful, and easy to act on.",
+  coffee: ["Jo's Coffee", "Merit Coffee", "Codependent"],
+  dining: ["True Food Kitchen", "Qi Austin", "La Condesa"],
+  drinks: ["Garage", "The Roosevelt Room", "Codependent"],
+  wellness: ["CorePower Yoga", "Life Time", "Love Cycling"],
+  groceries: ["Whole Foods Market", "Trader Joe's"],
+  nearbyLocations: ["Lady Bird Lake", "Austin Central Library", "Seaholm District", "Downtown Core"],
+  listings,
+  goodToKnow: ["Walkable errands", "Nearby dining", "Resident perks", "Downtown access"],
+  ctaPrimary: "View Nearby Perks",
+  ctaSecondary: "Explore Neighborhood",
+  imageAsset,
+  pinAsset: "/images/pins/residential-pin.svg",
+  entityAliases: [buildingName, address, id],
+});
+
+export const legendsPropertyContent: LegendsProperty[] = [
+  {
+    ...property("spring-condominiums", "Spring Condominiums", "300 Bowie St", "Seaholm", ["222 West Ave #1404", "301 West Ave #4808"], "/buildings/spring-condominiums.png"),
+    style: "Modern downtown condominium",
+    walkability: "Excellent walkability to Seaholm, Whole Foods, Central Library, and Lady Bird Lake.",
+    residentExperience: "Everyday downtown living with coffee, groceries, lake access, fitness, and dinner plans close by.",
+    summary: "Spring places residents in one of Austin's most useful downtown pockets with strong access to everyday essentials and neighborhood experiences.",
+    whyItMatters: "The neighborhood becomes part of the amenity. Spring is ideal for resident discovery because daily routines and social plans are already within a short walk.",
+    coffee: ["Manana", "Merit Coffee", "Jo's Coffee"],
+    dining: ["True Food Kitchen", "Sweetgreen", "Flower Child", "Qi Austin"],
+    drinks: ["Wax Myrtle's", "Codependent", "Garage Bar"],
+    wellness: ["CorePower Yoga", "Life Time", "Barry's"],
+    groceries: ["Whole Foods Market", "Trader Joe's"],
+    nearbyLocations: ["Lady Bird Lake", "Austin Central Library", "Seaholm District", "West 6th"],
+    goodToKnow: ["Rooftop pool", "Concierge", "Lake access", "Whole Foods nearby"],
+    entityAliases: ["Spring Condominiums", "Spring", "300 Bowie", "300 Bowie St", "300 Bowie ST", "luxury-building-spring-condominiums"],
+  },
+  property("the-independent", "The Independent", "301 West Ave", "Seaholm", ["301 West Ave #4808", "301 West Ave #3402"], "/images/property-listings-premium/the-independent.jpeg"),
+  property("seaholm-residences", "Seaholm Residences", "222 West Ave", "Seaholm", ["222 West Ave #1404"], "/images/property-listings-premium/seaholm-residences.jpeg"),
+  property("5-fifty-five", "5 Fifty Five", "555 E 5th St", "Downtown Core"),
+  property("the-catherine", "The Catherine", "214 Barton Springs Rd", "South Shore", [], "/buildings/catherine.webp"),
+  property("70-rainey", "70 Rainey", "70 Rainey St", "Rainey", [], "/images/property-listings-premium/70-rainey.jpeg"),
+  property("44-east-avenue", "44 East Avenue", "44 East Ave", "Rainey", [], "/images/property-listings-premium/44-east.jpeg"),
+  property("milago", "Milago", "54 Rainey St", "Rainey", [], "/images/map-pins/property/milago.webp"),
+  property("villas-on-rainey", "Villas on Rainey", "80 Red River St", "Rainey"),
+  property("the-shore", "The Shore", "603 Davis St", "Rainey", [], "/images/imported/perks/the-shore.jpg"),
+  property("natiivo-austin", "Natiivo Austin", "48 East Ave", "Rainey", [], "/images/property-listings-premium/natiivo.jpeg"),
+  property("waterline", "Waterline", "98 Red River St", "Rainey", [], "/images/property-listings-premium/waterline.jpeg"),
+  property("the-austonian", "The Austonian", "200 Congress Ave", "Congress", ["200 Congress Ave #15E"], "/images/property-listings-premium/the-austonian.jpeg"),
+  property("360-condominiums", "360 Condominiums", "360 Nueces St", "Market District", [], "/buildings/360.webp"),
+  property("fifth-and-west", "Fifth & West", "501 West Ave", "Market District", [], "/images/property-listings-premium/fifth-and-west.jpeg"),
+  property("residences-at-w-austin", "Residences at W Austin", "210 Lavaca St", "2nd Street", [], "/images/property-listings-premium/w-residences.jpeg"),
+  property("four-seasons-residences", "Four Seasons Residences", "98 San Jacinto Blvd", "Waterfront", [], "/images/property-listings-premium/four-seasons-residences.jpeg"),
+  property("the-travis", "The Travis", "80 Red River St", "Rainey", [], "/images/property-listings-premium/the-travis.jpeg"),
+  property("residences-at-hotel-zaza", "Residences at Hotel ZaZa", "400 Lavaca St", "Warehouse District"),
+  property("the-modern-austin-residences", "The Modern Austin Residences", "90 Rainey St", "Rainey", [], "/images/property-listings-premium/paseo.jpeg"),
+  property("riversouth", "RiverSouth", "401 S 1st St", "South Shore"),
+  property("bridges-on-the-park", "Bridges on the Park", "210 Lee Barton Dr", "South Shore"),
+  property("bartonplace", "BartonPlace", "1600 Barton Springs Rd", "Zilker"),
+];
+
+export function getLegendsPropertyContent(idOrName: string): LegendsProperty | undefined {
+  const key = idOrName.toLowerCase();
+  return legendsPropertyContent.find((item) => item.id === key || item.buildingName.toLowerCase() === key || item.entityAliases.some((alias) => alias.toLowerCase() === key));
+}

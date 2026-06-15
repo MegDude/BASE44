@@ -16,6 +16,7 @@ function sourceTypeForEntity(entity) {
     .toLowerCase();
 
   if (text.includes("happy_hour") || text.includes("happy hour")) return "happy_hour";
+  if (text.includes("rental") || text.includes("leasing")) return "rental";
   if (text.includes("event")) return "event";
   if (text.includes("civic") || text.includes("public")) return "civic";
   if (text.includes("brand") || text.includes("sponsor")) return "brand";

@@ -1,0 +1,68 @@
+export const loyaltyPointScores = {
+  checkIn: 10,
+  redemption: 20,
+  rsvp: 10,
+  save: 5,
+} as const;
+
+export const productionTables = [
+  "users",
+  "resident_profiles",
+  "partner_profiles",
+  "building_registry",
+  "resident_directory",
+  "verification_tokens",
+  "properties",
+  "hotels",
+  "venues",
+  "brands",
+  "civic_entities",
+  "events",
+  "event_feeds",
+  "event_occurrences",
+  "event_signals",
+  "perks",
+  "campaigns",
+  "entity_relationships",
+  "saved_entities",
+  "resident_activity",
+  "event_rsvps",
+  "perk_redemptions",
+  "campaign_impressions",
+  "campaign_clicks",
+  "campaign_directions",
+  "campaign_rsvps",
+  "campaign_redemptions",
+  "campaign_conversions",
+  "pulse_signals",
+  "agent_sessions",
+  "agent_conversations",
+  "agent_memory",
+  "agent_feedback",
+  "agent_outcomes",
+  "notifications",
+  "audit_log",
+] as const;
+
+export type ProductionTable = (typeof productionTables)[number];
+
+export const ownershipColumnsByTable: Partial<Record<ProductionTable, string[]>> = {
+  resident_profiles: ["user_id"],
+  partner_profiles: ["user_id", "organization_id"],
+  saved_entities: ["user_id", "resident_id"],
+  resident_activity: ["user_id", "resident_id"],
+  event_rsvps: ["user_id", "resident_id"],
+  perk_redemptions: ["user_id", "resident_id"],
+  campaigns: ["partner_id", "organization_id"],
+  agent_conversations: ["user_id", "partner_id", "organization_id"],
+  notifications: ["user_id", "partner_id", "organization_id"],
+};
+
+export const mapEntitySourceTables = [
+  "properties",
+  "hotels",
+  "venues",
+  "brands",
+  "civic_entities",
+  "events",
+] as const;

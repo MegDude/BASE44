@@ -1,17 +1,26 @@
 import { validateCoordinate } from "./coordinateValidation";
-import { resolveEntityImage } from "./entityImageResolver";
+import { assertImageMatchesEntityType, resolveEntityImage } from "./entityImageResolver";
 import { resolveEntityPin } from "./entityPinResolver";
+import { resolveEntityType } from "./entityTypeResolver";
 
 export type EntityCategory =
   | "venue"
+  | "restaurant"
+  | "coffee"
+  | "retail"
+  | "wellness"
   | "property"
+  | "listing"
+  | "rental"
   | "residential"
   | "hotel"
   | "event"
+  | "perk"
   | "offer"
   | "brand"
   | "civic"
   | "service"
+  | "commercial"
   | "guide"
   | "journal"
   | "campaign"
@@ -65,18 +74,43 @@ function inferDistrict(entity: Record<string, unknown>): string {
 }
 
 function inferType(entity: Record<string, unknown>): string {
-  const text = [entity.type, entity.category, entity.category_key, entity.partnerType, entity.name]
+  const text = [entity.type, entity.entityType, entity.category, entity.category_key, entity.partnerType, entity.name, entity.subcategory]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
+  const hasResidentialSource =
+    text.includes("luxury_presence") ||
+    text.includes("legends") ||
+    text.includes("mls") ||
+    text.includes("residential property") ||
+    text.includes("condominium") ||
+    text.includes("apartment") ||
+    text.includes(" for sale") ||
+    text.includes(" for rent");
+  const hasVenueSignal =
+    text.includes("venue") ||
+    text.includes("restaurant") ||
+    text.includes("bar") ||
+    text.includes("nightlife") ||
+    text.includes("live music") ||
+    text.includes("music venue") ||
+    text.includes("cocktail") ||
+    text.includes("coffee") ||
+    text.includes("retail") ||
+    text.includes("store");
   if (text.includes("hotel") || text.includes("hospitality")) return "hotel";
-  if (text.includes("property") || text.includes("building")) return "property";
-  if (text.includes("resident") || text.includes("apartment")) return "residential";
+  if (text.includes("rental") || text.includes("leasing")) return "rental";
+  if (text.includes("wellness") || text.includes("bathhouse") || text.includes("sauna") || text.includes("cold plunge") || text.includes("massage")) return "wellness";
+  if (hasResidentialSource && !hasVenueSignal) return text.includes("listing") || text.includes("mls") || text.includes(" for sale") || text.includes(" for rent") ? "listing" : "property";
   if (text.includes("event") || text.includes("activation")) return "event";
-  if (text.includes("offer") || text.includes("perk") || text.includes("inkind")) return "offer";
+  if (text.includes("offer") || text.includes("perk") || text.includes("inkind")) return "perk";
   if (text.includes("brand")) return "brand";
   if (text.includes("civic") || text.includes("public")) return "civic";
   if (text.includes("service")) return "service";
+  if (text.includes("coffee") || text.includes("cafe")) return "coffee";
+  if (text.includes("restaurant") || text.includes("dining")) return "restaurant";
+  if (text.includes("retail") || text.includes("store") || text.includes("shop")) return "retail";
+  if (hasVenueSignal) return "venue";
   if (text.includes("journal")) return "journal";
   if (text.includes("guide")) return "guide";
   return "venue";
@@ -89,13 +123,26 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
   );
   if (!coordinate) return null;
 
-  const type = String(entity.type || inferType(entity));
+  let type: string;
+  try {
+    type = resolveEntityType(entity);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.error(error);
+    }
+    return null;
+  }
+  if (!type) type = String(entity.type || inferType(entity));
   const normalizedBase = {
     ...entity,
     type,
     district: entity.district || inferDistrict(entity),
   };
   const pin = resolveEntityPin(normalizedBase);
+  const image = resolveEntityImage(normalizedBase);
+  if (import.meta.env.DEV) {
+    assertImageMatchesEntityType(type, image);
+  }
 
   return {
     id: slug(entity.id, `entity-${index}`),
@@ -105,7 +152,7 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
     latitude: coordinate.latitude,
     longitude: coordinate.longitude,
     coords: [coordinate.latitude, coordinate.longitude],
-    image: resolveEntityImage(normalizedBase),
+    image,
     pinKey: pin.label,
     district: String(entity.district || inferDistrict(entity)),
     partnerType: String(entity.partnerType || type),

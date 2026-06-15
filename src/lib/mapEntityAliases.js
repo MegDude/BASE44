@@ -201,12 +201,30 @@ export function resolveMapEntityAlias(entityId) {
 }
 
 export function resolveMapEntityFromCollection(entityId, entities = []) {
+  const raw = String(entityId || "").trim();
+  const rawNormalized = raw.toLowerCase();
+  const rawSlug = normalizePropertyId(raw);
+  const exactMatch = entities.find((entity) => {
+    return [
+      entity?.id,
+      entity?.entityId,
+      entity?.raw?.id,
+      entity?.raw?.entityId,
+      entity?.slug,
+      entity?.raw?.slug,
+    ].some((value) => String(value || "").toLowerCase() === rawNormalized || normalizePropertyId(value) === rawSlug);
+  });
+  if (exactMatch) return exactMatch;
+
   const id = resolveMapEntityAlias(entityId);
   if (!id) return null;
   const normalized = id.toLowerCase();
+  const normalizedSlug = normalizePropertyId(id);
   return (
-    entities.find((entity) => String(entity?.id || "").toLowerCase() === normalized) ||
-    entities.find((entity) => String(entity?.slug || entity?.raw?.slug || "").toLowerCase() === normalized) ||
+    entities.find((entity) => String(entity?.id || "").toLowerCase() === normalized || normalizePropertyId(entity?.id) === normalizedSlug) ||
+    entities.find((entity) => String(entity?.entityId || "").toLowerCase() === normalized || normalizePropertyId(entity?.entityId) === normalizedSlug) ||
+    entities.find((entity) => String(entity?.raw?.id || entity?.raw?.entityId || "").toLowerCase() === normalized || normalizePropertyId(entity?.raw?.id || entity?.raw?.entityId) === normalizedSlug) ||
+    entities.find((entity) => String(entity?.slug || entity?.raw?.slug || "").toLowerCase() === normalized || normalizePropertyId(entity?.slug || entity?.raw?.slug) === normalizedSlug) ||
     entities.find((entity) => String(entity?.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") === normalized) ||
     null
   );

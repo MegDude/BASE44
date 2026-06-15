@@ -26,6 +26,8 @@ const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const PartnerResidential = lazy(() => import("./pages/partners/Residential"));
 const PartnerCivic = lazy(() => import("./pages/partners/Civic"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
+const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
+const PartnerRolePage = lazy(() => import("./pages/partners/RolePage"));
 
 function MarketingFallback() {
   return (
@@ -176,7 +178,22 @@ function ProductRoutes() {
           <Route path="/partners/dashboard/civic" element={<PartnersDashboardPage />} />
           <Route path="/partners/dashboard/real-estate" element={<PartnersDashboardPage />} />
           <Route path="/partners/dashboard/redemptions" element={<PartnersDashboardPage />} />
-          <Route path="/partners/campaigns" element={<PartnersDashboardPage />} />
+          <Route
+            path="/partners/campaigns"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerCampaigns />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/:role"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerRolePage />
+              </Suspense>
+            }
+          />
           <Route path="/partners/reports" element={<Dashboard />} />
           <Route path="/partners/analytics" element={<Dashboard />} />
           <Route path="/partners/map" element={<MapPage />} />

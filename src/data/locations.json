@@ -15046,10 +15046,10 @@
     "specials": "No resident perk listed",
     "deals_offers": "No public deal listed",
     "events_available": "No public event listing in source data",
-    "image": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
+    "image": "/images/imported/perks/commercial_lobby_arrival_1779052774111.png",
     "gallery": [
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80"
+      "/images/imported/perks/commercial_street_level_1779052788888.png",
+      "/images/imported/perks/places-nearby.png"
     ],
     "resident_panel": {
       "eyebrow": "Local service",

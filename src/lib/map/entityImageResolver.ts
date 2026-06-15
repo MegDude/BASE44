@@ -2,9 +2,56 @@ import { categoryImageFallbacks, districtImageFallbacks, perkImageRegistry } fro
 
 export type ImageResolveContext = "pin" | "drawerHeader" | "nearbyRail" | "relatedRail" | "card" | "fallback";
 
+export function assertImageMatchesEntityType(entityType: string, imageAsset: string) {
+  const asset = String(imageAsset || "").toLowerCase();
+  if (!asset) return;
+  const normalizedType = String(entityType || "").toLowerCase();
+  const rules: Array<[string, string[]]> = [
+    ["property", ["/properties/", "/property-listings", "/buildings/", "/map-pins/property"]],
+    ["listing", ["/property-listings", "/legends-listings", "/buildings/", "/map-pins/property"]],
+    ["rental", ["/property-listings", "/buildings/", "/map-pins/property", "/map-entities/perks/independent_residential"]],
+    ["venue", ["/venues/", "/perks/", "/map-entities/perks/partner_dining", "/map-pins/venue"]],
+    ["restaurant", ["/venues/", "/perks/", "/map-entities/perks/partner_dining"]],
+    ["coffee", ["/venues/", "/perks/", "/map-entities/perks/partner_coffee"]],
+    ["hotel", ["/hotels/", "/map-entities/perks/partner_hotel", "/property-listings-premium/four-seasons"]],
+    ["brand", ["/brands/", "/perks/", "/imported/perks/"]],
+    ["event", ["/events/", "/map-entities/perks/moody", "/map-entities/perks/rooftop", "/map-entities/perks/downtown_art"]],
+    ["wellness", ["/wellness/", "/map-entities/perks/partner_wellness", "/perks/"]],
+  ];
+  const rule = rules.find(([type]) => type === normalizedType);
+  if (rule && !rule[1].some((prefix) => asset.includes(prefix))) {
+    console.warn(`${rule[0][0].toUpperCase()}${rule[0].slice(1)} image mismatch`, imageAsset);
+  }
+}
+
 const FINAL_NEUTRAL_FALLBACK = "/images/imported/perks/places-nearby.png";
 const PROPERTY_PLACEHOLDER_REPLACEMENT = "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png";
 const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
+const LOCAL_IMAGE_PRIORITY = {
+  residential: [
+    "/images/map-entities/perks/independent_residential_1779052707992.png",
+    "/images/map-entities/perks/austonian_lobby_1779052725341.png",
+    "/images/map-entities/perks/waustin_pool_1779052756806.png",
+    "/images/map-entities/perks/seaholm_coworking_1779052742037.png",
+  ],
+  commercial: [
+    "/images/map-entities/perks/commercial_lobby_arrival_1779052774111.png",
+    "/images/map-entities/perks/commercial_street_level_1779052788888.png",
+  ],
+  dining: ["/images/map-entities/perks/partner_dining_patio_1779052819620.png"],
+  coffee: ["/images/map-entities/perks/partner_coffee_shop_1779052868356.png"],
+  hotel: ["/images/map-entities/perks/partner_hotel_rooftop_1779052803267.png"],
+  wellness: ["/images/map-entities/perks/partner_wellness_1779052883675.png"],
+  event: [
+    "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+    "/images/map-entities/perks/rooftop_yoga_1779052654323.png",
+    "/images/map-entities/perks/downtown_art_walk_1779052670656.png",
+  ],
+  civic: [
+    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
+    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
+  ],
+};
 const BLOCKED_PLACEHOLDER_IMAGES = new Set([
   "/images/properties/bowie-attached.jpg",
   "/images/imported/perks/bowie-attached.jpg",
@@ -142,7 +189,7 @@ export const BUILDING_IMAGE_FALLBACK: Record<string, string> = {
   river700: "/images/map-pins/property/700-river.jpg",
   fivefiftyfive: "/buildings/five-fifty-five.webp",
   monarch: "/buildings/monarch.webp",
-  spring: "/buildings/spring.webp",
+  spring: "/buildings/spring-condominiums.png",
   milago: "/images/map-pins/property/milago.webp",
   bowie: "/buildings/bowie.webp",
   "hanover-republic-square": "/buildings/hanover-republic-square.jpg",
@@ -321,6 +368,10 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/rooftop-cocktails.png",
     "/images/imported/perks/the-elephant-room.jpg",
   ],
+  "live-music-photo": [
+    "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+    "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
+  ],
   "event-photo": [
     "/images/imported/perks/hotel-van-zandt-first-thiursdays.png",
     "/images/imported/perks/people-at-event.png",
@@ -395,6 +446,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/stay-put-sign.jpg",
   ],
   property: [
+    ...LOCAL_IMAGE_PRIORITY.residential,
     "/images/imported/perks/waterline-hero.webp",
     "/images/imported/perks/the-shore.jpg",
     "/images/imported/perks/paseo.webp",
@@ -406,6 +458,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png",
   ],
   hotel: [
+    ...LOCAL_IMAGE_PRIORITY.hotel,
     "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     "/images/imported/perks/four-seasons-resi.jpg",
     "/images/imported/perks/four-seasons-residents-lounge.jpeg",
@@ -413,17 +466,20 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/the-austin-lobby.jpg",
   ],
   coffee: [
+    ...LOCAL_IMAGE_PRIORITY.coffee,
     "/images/imported/perks/desnudo-coffee-nicolaimccrary-3-zsd7wp.avif",
     "/images/imported/perks/daydreamer-coffee-at-paseo-tower.jpg",
     "/images/imported/perks/joe-s-coffee.png",
   ],
   event: [
+    ...LOCAL_IMAGE_PRIORITY.event,
     "/images/imported/perks/hotel-van-zandt-first-thiursdays.png",
     "/images/imported/perks/people-at-event.png",
     "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
     "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
   ],
   dining: [
+    ...LOCAL_IMAGE_PRIORITY.dining,
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
     "/images/imported/perks/geraldine-s.jpg",
     "/images/imported/perks/bangers-outside.webp",
@@ -434,11 +490,13 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/atx-street.png",
   ],
   wellness: [
+    ...LOCAL_IMAGE_PRIORITY.wellness,
     "/images/imported/perks/republic-square-yoga.jpg",
     "/images/imported/perks/yoga-event.png",
     "/images/imported/perks/running-on-trail.png",
   ],
   civic: [
+    ...LOCAL_IMAGE_PRIORITY.civic,
     "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg",
     "/images/imported/perks/visitors-at-second-saturdays-at-the-blanton-3-3-1024x683.jpg",
     "/images/imported/perks/waterlook-trail.png",
@@ -447,6 +505,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
   ],
   commercial: [
+    ...LOCAL_IMAGE_PRIORITY.commercial,
     "/images/imported/perks/republic-lpc-republic-lobby-031121-1200x500-v241.jpg",
     "/images/imported/perks/republic-square-facade.jpg",
     "/images/imported/perks/scanning-downtown-perks-in-a-cafe.png",
@@ -466,6 +525,7 @@ const contentImageRules = [
   { key: "hotel-van-zandt", terms: ["hotel van zandt", "van zandt first thursday"] },
   { key: "waterloo", terms: ["waterloo", "waller creek", "moody amphitheater"] },
   { key: "republic-square", terms: ["republic square"] },
+  { key: "live-music-photo", terms: ["antone", "nightclub", "live music", "music venue"] },
   { key: "happy-hour-photo", terms: ["happy hour", "cocktail special", "resident cocktail pricing"] },
   { key: "perk-redemption-photo", terms: ["redeem", "redemption", "scan perk", "resident card", "qr"] },
   { key: "nightlife-photo", terms: ["bar", "nightlife", "cocktail", "drinks", "pub", "beer garden"] },
@@ -507,6 +567,7 @@ function entityText(entity: Record<string, unknown>): string {
     entity.category,
     entity.category_key,
     entity.type,
+    entity.entityType,
     entity.partnerType,
     entity.address,
     entity.source,
@@ -515,6 +576,10 @@ function entityText(entity: Record<string, unknown>): string {
     raw.id,
     raw.name,
     raw.address,
+    raw.entityType,
+    raw.type,
+    raw.category,
+    raw.category_key,
     raw.summary,
     raw.description,
     legendsListing.address,
@@ -524,6 +589,50 @@ function entityText(entity: Record<string, unknown>): string {
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
+}
+
+function explicitTypeText(entity: Record<string, unknown>): string {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return [
+    entity.type,
+    entity.entityType,
+    entity.category,
+    entity.category_key,
+    entity.partnerType,
+    raw.type,
+    raw.entityType,
+    raw.category,
+    raw.category_key,
+    raw.partnerType,
+    raw.source,
+    entity.source,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function hasVenueIntent(entity: Record<string, unknown>): boolean {
+  const explicit = explicitTypeText(entity);
+  const text = entityText(entity);
+  return (
+    /\b(venue|restaurant|bar|nightlife|coffee|retail|store|shop)\b/.test(explicit) ||
+    /\b(antone'?s|nightclub|live music|music venue|bar|cocktail|restaurant|dining|pizza|brewery|beer|coffee|cafe|retail|store)\b/.test(text)
+  );
+}
+
+function hasResidentialIntent(entity: Record<string, unknown>): boolean {
+  const explicit = explicitTypeText(entity);
+  const text = entityText(entity);
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  if (hasVenueIntent(entity) && !/\b(residential property|property|listing|mls|luxury[_\s-]*presence|legends)\b/.test(explicit)) return false;
+  return (
+    /\b(property|residential|listing)\b/.test(String(entity.type || entity.entityType || raw.type || raw.entityType || "").toLowerCase()) ||
+    /\b(properties|property|realestate|real[_\s-]*estate)\b/.test(String(entity.partnerType || raw.partnerType || "").toLowerCase()) ||
+    /\b(residential property|luxury residential|luxury[_\s-]*presence|legends|mls)\b/.test(explicit) ||
+    /\b(for sale|for rent|condominium|condo|apartment)\b/.test(text) ||
+    Boolean(raw.luxuryPresenceBuilding || raw.luxuryPresenceListing || raw.legendsListing || entity.legendsListing)
+  );
 }
 
 function pickFrom(images: string[], seed: unknown): string {
@@ -607,8 +716,7 @@ function directImage(entity: Record<string, unknown>, context: ImageResolveConte
 }
 
 function looksResidential(entity: Record<string, unknown>): boolean {
-  const text = entityText(entity);
-  return /\b(property|residential|condo|condominium|apartment|listing|tower|building|real estate|mls)\b/.test(text);
+  return hasResidentialIntent(entity);
 }
 
 function looksHotel(entity: Record<string, unknown>): boolean {
@@ -639,17 +747,19 @@ function hotelImageKey(entity: Record<string, unknown>): string | null {
 }
 
 export function resolveHotelImage(entity: Record<string, unknown>): string | null {
-  const premium = resolvePremiumPropertyImageSet(entity);
-  if (premium.length) return premium[0];
   const key = hotelImageKey(entity);
   if (!key) return null;
   return curatedHotelImageOverrides[key] || null;
 }
 
 export function resolveMapImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string {
-  if (looksResidential(entity) || looksHotel(entity)) {
-    const premiumPropertyImage = resolveBuildingImage(entity) || resolveHotelImage(entity);
-    if (premiumPropertyImage) return premiumPropertyImage;
+  if (looksResidential(entity)) {
+    const buildingImage = resolveBuildingImage(entity);
+    if (buildingImage) return buildingImage;
+  }
+  if (looksHotel(entity)) {
+    const hotelImage = resolveHotelImage(entity);
+    if (hotelImage) return hotelImage;
   }
 
   const direct = directImage(entity, context);
