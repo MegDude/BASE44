@@ -6,7 +6,6 @@ import L from "leaflet";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
-  ArrowRight,
   Activity,
   Bookmark,
   Building2,
@@ -4232,7 +4231,6 @@ function LegendsMLSFactsSection({ place, mode, onSelect }) {
                 <LegendsHomeFactsGrid rows={rows} />
                 <span className="dp-legends-home-arrow">
                   View Listing
-                  <ArrowRight className="h-4 w-4 text-[#C8A96A] transition group-hover:translate-x-0.5" />
                 </span>
               </button>
             );
@@ -4987,7 +4985,6 @@ function DrawerContactStrip({ place }) {
                 className="inline-flex h-8 w-fit items-center justify-center bg-white/72 px-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33] shadow-[0_8px_18px_rgba(11,31,51,0.045)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
               >
                 {activeAction}
-                <ArrowRight className="ml-1.5 h-3.5 w-3.5 text-[#C8A96A]" />
               </a>
             </div>
           </motion.div>
@@ -8291,7 +8288,6 @@ export default function MapPage() {
                       </span>
                       <span className="dp-directory-action">
                         {actionText}
-                        <ArrowRight className="h-3.5 w-3.5" />
                       </span>
                     </button>
                   );
@@ -8315,7 +8311,6 @@ export default function MapPage() {
                   aria-expanded={resultsExpanded}
                 >
                   {resultsExpanded ? "Show less" : `Show more (${isResidentSavedDrawer ? hiddenSavedPreviewCount : hiddenPreviewCount})`}
-                  <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               )}
               <div className="dp-panel-bottom-spacer" aria-hidden="true" />
@@ -8385,9 +8380,6 @@ export default function MapPage() {
                     </span>
                     <span className="dp-grouped-status">
                       {listing ? "Contact" : "Open"}
-                    </span>
-                    <span className="dp-grouped-arrow" aria-hidden="true">
-                      <ArrowRight className="h-4 w-4" />
                     </span>
                   </button>
                 );

@@ -133,6 +133,7 @@ body,
   min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
+  max-height: none !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 5px !important;
@@ -3073,6 +3074,29 @@ html body #root .dp-tab-discovery-body p {
   font-size: 12px !important;
   line-height: 1.35 !important;
   white-space: normal !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-directory-result-row,
+  .dp-grouped-row,
+  .dp-tab-row,
+  .dp-panel-row,
+  .dp-partner-feed-row,
+  .dp-campaign-row,
+  .dp-compact-place-row,
+  .dp-campaign-layer-row,
+  .dp-brand-campaign-row,
+  .dp-map-answer-pick,
+  .dp-map-answer-action,
+  .dp-panel-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-pass-action,
+  .dp-action-link
+) {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 html body #root .dp-tab-primary-action,
@@ -24556,4 +24580,304 @@ html body #root .dp-map-page.dp-map-page .dp-primary-action-row {
 
 html body #root .dp-map-page.dp-map-page .dp-primary-action-row .dp-panel-action {
   flex: 1 1 min(132px, 100%) !important;
+}
+
+/* Downtown Perks panel readability sweep: no decorative arrows, no cramped row text */
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-directory-result-row,
+  .dp-grouped-row,
+  .dp-tab-row,
+  .dp-panel-row,
+  .dp-partner-feed-row,
+  .dp-campaign-row,
+  .dp-compact-place-row
+) {
+  min-width: 0 !important;
+  width: 100% !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-resident-tab-panel-list .dp-directory-result-row,
+html body #root .dp-map-page.dp-map-page .dp-directory-result-row {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) minmax(72px, auto) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  padding: 14px 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-grouped-row {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) minmax(58px, auto) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  padding: 14px 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-partner-feed-row, .dp-campaign-row, .dp-tab-row.dp-partner-feed-row, .dp-compact-place-row) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(64px, auto) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  padding: 14px 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-directory-context,
+  .dp-directory-story,
+  .dp-directory-meaning,
+  .dp-grouped-title,
+  .dp-grouped-meta,
+  .dp-grouped-offer,
+  .dp-tab-row strong,
+  .dp-tab-row small,
+  .dp-tab-row em,
+  .dp-partner-feed-row strong,
+  .dp-partner-feed-row small,
+  .dp-campaign-row strong,
+  .dp-campaign-row small,
+  .dp-campaign-row em,
+  .dp-compact-place-row strong,
+  .dp-compact-place-row small
+) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-directory-context, .dp-grouped-meta, .dp-tab-row small, .dp-campaign-row small, .dp-campaign-row em, .dp-compact-place-row small) {
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  font-weight: 500 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-directory-story, .dp-grouped-title, .dp-tab-row strong, .dp-campaign-row strong, .dp-compact-place-row strong) {
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  line-height: 1.25 !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-directory-meaning, .dp-grouped-offer) {
+  color: rgba(11, 31, 51, 0.65) !important;
+  font-size: 12.5px !important;
+  line-height: 1.4 !important;
+  font-weight: 500 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-directory-action,
+  .dp-grouped-status,
+  .dp-compact-place-actions,
+  .dp-tab-signal,
+  .dp-campaign-row b,
+  .dp-report-card-footer em,
+  .dp-legends-home-arrow
+) {
+  min-width: 0 !important;
+  align-self: start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0 !important;
+  padding: 2px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: normal !important;
+  text-align: right !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-directory-action svg,
+  .dp-grouped-arrow,
+  .dp-compact-place-actions svg,
+  .dp-tab-signal svg,
+  .dp-campaign-row b svg,
+  .dp-report-card-footer em svg,
+  .dp-legends-home-arrow svg,
+  .dp-action-link svg
+) {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-tab-row-icon {
+  width: 28px !important;
+  height: 28px !important;
+  flex: 0 0 28px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-feed-main {
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-partner-feed-main > span:last-child {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 4px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-action-link {
+  min-height: 40px !important;
+  border-radius: 8px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-map-page.dp-map-page .dp-resident-tab-panel-list .dp-directory-result-row,
+  html body #root .dp-map-page.dp-map-page .dp-directory-result-row {
+    grid-template-columns: 32px minmax(0, 1fr) minmax(58px, auto) !important;
+    gap: 10px !important;
+  }
+
+html body #root .dp-map-page.dp-map-page :is(.dp-directory-action, .dp-grouped-status, .dp-compact-place-actions, .dp-tab-signal, .dp-campaign-row b) {
+    font-size: 10.5px !important;
+  }
+}
+
+/* Campaign layer rows were the last compressed panel pattern: let them size to content. */
+html body #root .dp-map-page.dp-map-page :is(.dp-campaign-layer-row, .dp-brand-campaign-row) {
+  min-width: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(58px, auto) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  padding: 16px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-campaign-layer-row, .dp-brand-campaign-row):last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-campaign-layer-row, .dp-brand-campaign-row) > span:first-child {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 4px !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-campaign-layer-row strong,
+  .dp-brand-campaign-row strong,
+  .dp-campaign-layer-row small,
+  .dp-brand-campaign-row small,
+  .dp-campaign-layer-row em,
+  .dp-brand-campaign-row em,
+  .dp-campaign-value-line
+) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-campaign-layer-row strong, .dp-brand-campaign-row strong) {
+  display: block !important;
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  line-height: 1.28 !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-campaign-layer-row small, .dp-brand-campaign-row small, .dp-campaign-layer-row em, .dp-brand-campaign-row em) {
+  display: block !important;
+  margin-top: 2px !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  line-height: 1.42 !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-value-line {
+  display: block !important;
+  margin-top: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-value-line b {
+  display: inline !important;
+  margin-right: 6px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: #0B1F33 !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-status {
+  align-self: start !important;
+  justify-self: end !important;
+  min-width: 0 !important;
+  padding: 2px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 10.5px !important;
+  line-height: 1.2 !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  text-align: right !important;
+  text-transform: none !important;
+  white-space: normal !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-status[data-status="Live"] {
+  color: #B8963E !important;
 }
