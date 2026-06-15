@@ -3,7 +3,7 @@
  * 
  * Foundation:
  * - Token-based color system (index.css, tailwind.config.js)
- * - Typography: Playfair Display (heading), Inter (body)
+ * - Typography: Inter for headings, body, navigation, drawers, and map UI
  * - Spacing: compact 4px base unit grid (6px default radius)
  * - Motion: Framer Motion (precise, fast, purposeful)
  * - Surface system: architectural, light-touch, map-aware
@@ -14,7 +14,7 @@
  * - Map-native interfaces over decorative marketing surfaces
  * - Gold only for selected states, progress, and quiet emphasis
  * - Dark mode deliberate (map contexts, night use)
- * - Bento grids for mixed content structure
+ * - Rails and compact rows over card-wall layouts
  * - One coherent interaction language across all surfaces
  */
 
@@ -180,10 +180,10 @@ export const STATES = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const GRIDS = {
-  // Bento grids (mixed content)
-  bentoTwo: "grid grid-cols-1 md:grid-cols-2 gap-4",
-  bentoThree: "grid grid-cols-1 md:grid-cols-3 gap-4",
-  bentoCompact: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4",
+  // Editorial grids for simple repeated content
+  editorialTwo: "grid grid-cols-1 md:grid-cols-2 gap-4",
+  editorialThree: "grid grid-cols-1 md:grid-cols-3 gap-4",
+  editorialCompact: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4",
 
   // Fluid card grids
   cardFluid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",

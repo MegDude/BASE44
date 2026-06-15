@@ -1670,7 +1670,6 @@ function pinIcon(place, selected, pulsing = false) {
   const eventPinClass = isEventPin ? "dp-live-pin--event" : "";
   const happyHourPinClass = isHappyHourPin ? "dp-live-pin--happy-hour" : "";
   const legendsPinClass = isLegendsPin ? "dp-live-pin--legends dp-live-pin--legends-logo" : "";
-  const inKindPinClass = isInKindEntity(place) ? "dp-live-pin--inkind" : "";
   const shouldPulse = false;
   const iconSize = [34, 34];
   const iconAnchor = [17, 17];
@@ -1683,7 +1682,7 @@ function pinIcon(place, selected, pulsing = false) {
       ariaLabel,
       selected,
       pulsing: shouldPulse,
-      classes: `${eventPinClass} ${happyHourPinClass} ${legendsPinClass} ${inKindPinClass}`,
+      classes: `${eventPinClass} ${happyHourPinClass} ${legendsPinClass}`,
     }),
     iconSize,
     iconAnchor,
@@ -3609,9 +3608,6 @@ function EntityAssistant({ place, mode, answer, loading, onAsk, onClose, onSelec
             role="status"
             aria-live="polite"
           >
-            <button type="button" onClick={onClose} aria-label="Close">
-              <X className="h-3.5 w-3.5" />
-            </button>
             <h4>{answer.title}</h4>
             <p>{answer.body}</p>
             {answer.picks?.length > 0 && (
@@ -3704,9 +3700,6 @@ function PartnerAskSection({ place, answer, loading, onAsk, onClose, onSelect })
             role="status"
             aria-live="polite"
           >
-            <button type="button" onClick={onClose} aria-label="Close">
-              <X className="h-3.5 w-3.5" />
-            </button>
             <h4>{answer.title}</h4>
             <p>{answer.body}</p>
             {answer.picks?.length > 0 && (
@@ -4658,7 +4651,7 @@ function CleanIndependentEntityDrawer({
         <X className="h-4 w-4" />
       </button>
 
-      <figure className="dp-entity-hero-image">
+      <figure className="dp-entity-hero dp-entity-hero-image">
         <img
           src="/images/independent_residential_1779052707992.png"
           alt="The Independent"
@@ -5758,9 +5751,6 @@ function SearchIntentConsole({
               <div className="dp-map-answer-context">Why</div>
               <p>{answerBody}</p>
             </div>
-            <button type="button" onClick={onAnswerClose} aria-label="Close answer">
-              Close
-            </button>
           </div>
 
           {answerPicks.length > 1 && (
@@ -6458,16 +6448,25 @@ export default function MapPage() {
     const primaryActionLabel = selectedStatus === "Live" ? "Review Results" : selectedStatus === "Draft" ? "Finish Campaign" : "Create Campaign";
 
     function findCampaignEntity(campaign) {
+      const brandId = String(campaign?.brandId || campaign?.placeId || "");
+      const directMatch = brandId
+        ? places.find((place) => place.id === brandId || place.raw?.id === brandId)
+        : null;
+      if (directMatch) return directMatch;
       const brandName = String(campaign?.brandName || campaign?.placeName || "").toLowerCase();
       if (!brandName) return null;
+      const normalizedBrandName = brandName.replace(/^brand-/, "").replace(/^partner-/, "").replace(/-/g, " ");
       return places.find((place) => {
         const placeBrand = String(place.brand || place.raw?.brand || "").toLowerCase();
         const placeName = String(place.name || "").toLowerCase();
         return (
+          place.id === brandId ||
           placeBrand === brandName ||
           placeName === brandName ||
-          placeName.includes(brandName) ||
-          brandName.includes(placeName)
+          placeBrand === normalizedBrandName ||
+          placeName === normalizedBrandName ||
+          placeName.includes(normalizedBrandName) ||
+          normalizedBrandName.includes(placeName)
         );
       }) || null;
     }
@@ -6525,6 +6524,9 @@ export default function MapPage() {
     }
 
     function renderCampaignRow(campaign, className, openEntity = false) {
+      const contextLine = campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent;
+      const residentValue = campaign.residentFacingOffer || "A useful reason for residents to act from the map.";
+      const partnerValue = campaign.partnerInsight || "Shows where nearby activity can become visits, saves, scans, or requests.";
       return (
         <button
           key={campaign.id}
@@ -6536,7 +6538,9 @@ export default function MapPage() {
           <span>
             <strong>{campaign.brandName || campaign.placeName || campaign.campaignName}</strong>
             <small>{campaign.brandName ? campaign.campaignName : campaign.area}</small>
-            <em>{campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent}</em>
+            <em>{contextLine}</em>
+            <span className="dp-campaign-value-line"><b>Residents</b>{residentValue}</span>
+            <span className="dp-campaign-value-line"><b>Partner</b>{partnerValue}</span>
           </span>
           <span className="dp-campaign-status" data-status={campaign.status}>{campaign.status}</span>
         </button>
@@ -7474,7 +7478,7 @@ export default function MapPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="dp-map-search-surface dp-map-search-shell pointer-events-auto relative mx-auto max-h-[calc(100dvh-124px)] max-w-2xl overflow-y-auto"
+              className="dp-map-search-surface dp-map-search-shell pointer-events-auto relative mx-auto max-h-[calc(100dvh-140px)] max-w-2xl overflow-y-auto"
               role="region"
               aria-label="Map command console"
               aria-expanded="true"
@@ -7829,14 +7833,6 @@ export default function MapPage() {
                     <div className="dp-map-answer-context">{urlState.mode === "partner" ? "What we see" : "Why"}</div>
                     <p>{mapAnswer.body}</p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setMapAnswer(null)}
-                    className="dp-map-control dp-map-control-icon inline-flex shrink-0 items-center gap-1.5"
-                    aria-label="Close answer"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
                 </div>
                 {mapAnswer.picks.length > 1 && (
                   <div className="dp-map-answer-alternatives">
@@ -7885,7 +7881,7 @@ export default function MapPage() {
           <motion.section
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="dp-panel-shell dp-pass-panel pointer-events-auto flex max-h-[calc(100dvh-0.75rem)] w-full max-w-xl flex-col overflow-hidden rounded-t-[2px] p-0 md:max-h-[calc(100dvh-2rem)] md:rounded-[2px]"
+            className="dp-panel-shell dp-pass-panel pointer-events-auto flex max-h-[calc(100dvh-12px)] w-full max-w-xl flex-col overflow-hidden rounded-t-[12px] p-0 md:max-h-[calc(100dvh-2rem)] md:rounded-[12px]"
             role="dialog"
             aria-modal="true"
             aria-label={urlState.mode === "partner" ? "Partner scanner" : "Resident pass"}
@@ -8115,7 +8111,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className={`dp-panel-shell dp-map-drawer-shell ${activeBottomTab === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[58vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[2px] p-2.5 pb-[calc(0.6rem+env(safe-area-inset-bottom))] md:max-h-[64vh] md:rounded-t-2xl md:p-3 md:pb-[calc(0.75rem+env(safe-area-inset-bottom))]`}
+            className={`dp-panel-shell dp-map-drawer-shell ${activeBottomTab === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
             role="dialog"
             aria-modal="true"
             aria-label={urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
@@ -8125,7 +8121,7 @@ export default function MapPage() {
               <button
                 type="button"
                 onClick={() => setActiveBottomTab("map")}
-                className="dp-panel-close flex h-8 w-8 rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] md:h-9 md:w-9"
+                className="dp-panel-close flex h-8 w-8 rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] md:h-9 md:w-9"
                 aria-label={urlState.mode === "partner" && activePartnerPanel === "reports" ? "Close reports" : "Close"}
               >
                 <X className="h-4 w-4" />
@@ -8243,7 +8239,7 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[62vh] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[2px] md:max-h-[68vh] md:rounded-t-2xl"
+            className="dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
             role="dialog"
             aria-modal="true"
             aria-label="Grouped map places"

@@ -8,7 +8,7 @@
 - **Motion Defaults**: sectionReveal, cardReveal, drawerEnter, overlayEnter, hoverLift, tapPress
 - **Surface Treatments**: glassLight, glassDark, cardPrimary, cardMuted, brutalistDark
 - **Interaction States**: buttonHover, cardHover, active, disabled, focusRing
-- **Grid Patterns**: bentoTwo, bentoThree, cardFluid, listingCompact
+- **Grid Patterns**: editorialTwo, editorialThree, cardFluid, listingCompact
 - **Defaults & Patterns**: tapTarget, radius, shadows, transitions
 
 ### **2. Shared Component Library** (`components/shared/`)
@@ -38,7 +38,7 @@
 4. **Brutalism Restrained** — Only emphasis sections (proof, ROI, statements).
 5. **Immersive Scroll** — Narrative surfaces only (homepage, onboarding).
 6. **Dark Mode Deliberate** — Map contexts, night use, selective overlays.
-7. **Bento for Structure** — Mixed content that needs clear organization.
+7. **Rails and Rows for Structure** — Mixed content should stay scannable without card walls.
 8. **One Interaction Language** — Consistent motion, states, feedback across app.
 
 ---

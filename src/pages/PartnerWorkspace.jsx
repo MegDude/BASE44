@@ -4,23 +4,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, Zap, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation, ArrowLeft, Users } from "lucide-react";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
+import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
 // Partner profile is stored on the user object.
 
-const TABS = [
-  { id: "overview", label: "Overview" },
-  { id: "campaigns", label: "Campaigns" },
-  { id: "perks", label: "Perks" },
-  { id: "events", label: "Events" },
-  { id: "residents", label: "Residents" },
-  { id: "buildings", label: "Buildings" },
-  { id: "reports", label: "Reports" },
-  { id: "messages", label: "Messages" },
-  { id: "surveys", label: "Surveys" },
-  { id: "profile", label: "Profile" },
-];
+const TABS = PARTNER_WORKSPACE_NAV;
 
 const PERK_CATEGORIES = ["discount", "free_item", "priority_access", "members_rate", "experience", "class_pass"];
 const EVENT_CATEGORIES = ["fitness", "wellness", "social", "dining", "nightlife", "arts", "networking", "class", "run_club", "yoga"];
@@ -43,15 +33,16 @@ const PUBLIC_PARTNER_USER = {
 const WORKSPACE_STORAGE_PREFIX = "dp_partner_workspace";
 
 function getWorkspaceTabFromPath(pathname) {
+  if (pathname.includes("/map")) return "map";
+  if (pathname.includes("/offers") || pathname.includes("/perks")) return "offers";
   if (pathname.includes("/campaigns")) return "campaigns";
-  if (pathname.includes("/perks")) return "perks";
   if (pathname.includes("/events")) return "events";
-  if (pathname.includes("/residents")) return "residents";
-  if (pathname.includes("/buildings")) return "buildings";
+  if (pathname.includes("/sources") || pathname.includes("/residents") || pathname.includes("/buildings")) return "sources";
   if (pathname.includes("/reports")) return "reports";
-  if (pathname.includes("/messages")) return "messages";
-  if (pathname.includes("/surveys")) return "surveys";
+  if (pathname.includes("/analytics")) return "analytics";
   if (pathname.includes("/profile")) return "profile";
+  if (pathname.includes("/team") || pathname.includes("/messages")) return "team";
+  if (pathname.includes("/billing")) return "billing";
   return "overview";
 }
 
@@ -205,6 +196,13 @@ export default function PartnerWorkspace() {
     setTab(getWorkspaceTabFromPath(location.pathname));
   }, [location.pathname]);
 
+  useEffect(() => {
+    const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === tab);
+    if (!activeItem || location.pathname === activeItem.href) return;
+    if (!location.pathname.startsWith("/partner-workspace")) return;
+    navigate(activeItem.href, { replace: true });
+  }, [tab, location.pathname, navigate]);
+
   function handleSignIn() {
     navigate("/partners/sign-in");
   }
@@ -271,7 +269,11 @@ export default function PartnerWorkspace() {
             {TABS.map(t => (
               <button
                 key={t.id}
-                onClick={() => setTab(t.id)}
+                title={t.helper}
+                onClick={() => {
+                  setTab(t.id);
+                  navigate(t.href);
+                }}
                 className={`relative flex-shrink-0 px-4 py-2.5 text-[12px] font-medium transition-colors duration-150 focus-visible:outline-none ${
                   tab === t.id
                     ? "text-[#0B1F33]"
@@ -282,7 +284,7 @@ export default function PartnerWorkspace() {
                 {tab === t.id && (
                   <motion.span
                     layoutId="workspace-tab-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8A96A] rounded-full"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8A96A] rounded-[2px]"
                     transition={{ type: "spring", stiffness: 500, damping: 40 }}
                   />
                 )}
@@ -296,15 +298,16 @@ export default function PartnerWorkspace() {
       <div className="max-w-6xl mx-auto px-5 py-8">
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} />}
-          {tab === "campaigns" && <WorkspaceCapability key="campaigns" title="Campaigns" eyebrow="Partner workflow" description="Plan, publish, and review offers or events that should appear on the downtown map." actions={["Create a map offer", "Promote an event", "Review active placements"]} />}
-          {tab === "perks" && <PerksManager key="perks" user={user} />}
+          {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
+          {tab === "campaigns" && <WorkspaceRegistryPanel key="campaigns" tabId="campaigns" />}
+          {tab === "offers" && <PerksManager key="offers" user={user} />}
           {tab === "events" && <EventsManager key="events" user={user} />}
-          {tab === "residents" && <WorkspaceCapability key="residents" title="Residents" eyebrow="Resident activity" description="Understand what residents are saving, using, and asking for near your place." actions={["Track saves", "Review perk interest", "Identify popular offers"]} />}
-          {tab === "buildings" && <WorkspaceCapability key="buildings" title="Buildings" eyebrow="Nearby buildings" description="See which buildings and residential communities are closest to your downtown activity." actions={["Review nearby buildings", "Plan building outreach", "Compare local demand"]} />}
+          {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}
-          {tab === "messages" && <WorkspaceCapability key="messages" title="Messages" eyebrow="Partner communication" description="Prepare simple updates for residents, guests, or nearby teams without creating another dashboard task." actions={["Draft update", "Review replies", "Plan next message"]} />}
-          {tab === "surveys" && <WorkspaceCapability key="surveys" title="Surveys" eyebrow="Resident feedback" description="Collect direct feedback about perks, events, places, and next moves that would make downtown easier to use." actions={["Create survey", "Review responses", "Plan follow-up"]} />}
+          {tab === "analytics" && <WorkspaceRegistryPanel key="analytics" tabId="analytics" />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
+          {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
+          {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
         </AnimatePresence>
       </div>
     </div>
@@ -312,6 +315,62 @@ export default function PartnerWorkspace() {
 }
 
 // ─── OVERVIEW ─────────────────────────────────────────────────────────────────
+
+function getWorkspacePanelItems(copy = {}) {
+  return [
+    ...(copy.prompts || []),
+    ...(copy.actions || []),
+    ...(copy.columns || []),
+    ...(copy.types || []),
+    ...(copy.steps || []),
+    ...(copy.sections || []),
+    ...(copy.filters || []),
+    ...(copy.ctas || []),
+    ...(copy.roles || []),
+  ].filter(Boolean).slice(0, 8);
+}
+
+function WorkspaceRegistryPanel({ tabId }) {
+  const copy = PARTNER_WORKSPACE_COPY[tabId] || PARTNER_WORKSPACE_COPY.overview;
+  const items = getWorkspacePanelItems(copy);
+  const primaryLabel = copy.createCta || copy.primaryCta?.label || copy.actions?.[0] || copy.ctas?.[0] || "Open map view";
+  const primaryHref = copy.primaryCta?.href || (tabId === "map" ? "/map?mode=partner&tab=map&filter=All" : "/map?mode=partner&tab=map&filter=All");
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="dp-workspace-registry-panel"
+    >
+      <header className="dp-workspace-panel-header">
+        <span>Partner Workspace</span>
+        <h2>{copy.headline}</h2>
+        <p>{copy.body || copy.emptyState}</p>
+        <div className="dp-workspace-panel-actions">
+          <Link to={primaryHref}>{primaryLabel}</Link>
+          <Link to="/map?mode=partner&tab=map&filter=All">Open map</Link>
+        </div>
+      </header>
+
+      {items.length > 0 && (
+        <div className="dp-workspace-row-list">
+          {items.map((item) => (
+            <article key={item} className="dp-workspace-row">
+              <strong>{item}</strong>
+              <small>{copy.emptyState || "Use this when people nearby are deciding what to do next."}</small>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {copy.missingStripe && (
+        <p className="dp-workspace-note">{copy.missingStripe}</p>
+      )}
+    </motion.section>
+  );
+}
 
 function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
   return (
@@ -464,7 +523,7 @@ function WorkspaceOverview({ user, setTab }) {
   ];
 
   const QUICK_ACTIONS = [
-    { label: "Add a perk", sub: "Publish an offer for downtown visitors", icon: Star, tab: "perks" },
+    { label: "Create an offer", sub: "Publish something useful for people nearby", icon: Star, tab: "offers" },
     { label: "Create an event", sub: "Add an upcoming event to the map", icon: Calendar, tab: "events" },
     { label: "Update profile", sub: "Keep your venue or organization info current", icon: Building2, tab: "profile" },
   ];
@@ -512,7 +571,7 @@ function WorkspaceOverview({ user, setTab }) {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-body text-[13px] font-semibold leading-snug tracking-normal text-foreground">Recent perks</h3>
-            <button onClick={() => setTab("perks")} className="text-[12px] text-primary hover:underline underline-offset-4">See all</button>
+            <button onClick={() => setTab("offers")} className="text-[12px] text-primary hover:underline underline-offset-4">See all</button>
           </div>
           <div className="space-y-2">
             {perks.slice(0, 3).map(p => (
@@ -564,10 +623,10 @@ function WorkspaceOverview({ user, setTab }) {
           <p className="text-[#0B1F33]/54 text-[13.5px] leading-relaxed mb-6 max-w-sm">Add your first perk or event and it will appear on the downtown map for people nearby.</p>
           <div className="flex flex-wrap justify-center gap-2.5">
             <button
-              onClick={() => setTab("perks")}
+              onClick={() => setTab("offers")}
               className="inline-flex h-9 items-center gap-1.5 rounded-[7px] bg-[#0B1F33] px-4 text-[12.5px] font-semibold text-white shadow-[0_2px_8px_rgba(11,31,51,0.18)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
             >
-              <Plus className="w-3.5 h-3.5" /> Add a perk
+              <Plus className="w-3.5 h-3.5" /> Create offer
             </button>
             <button
               onClick={() => setTab("events")}
@@ -880,7 +939,7 @@ function PerksManager({ user }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-[8px] animate-spin" />
         </div>
       ) : perks.length === 0 ? (
         <EmptyState icon={Star} headline="No perks yet" body="Add your first perk and it will appear on the downtown map." action="Add a perk" onAction={handleAdd} />
@@ -888,13 +947,13 @@ function PerksManager({ user }) {
         <div className="space-y-3">
           {perks.map(p => (
             <div key={p.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
-              <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${p.status === "active" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : p.status === "paused" ? "bg-[#C8A96A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
+              <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : p.status === "paused" ? "bg-[#C8A96A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{p.title}</div>
                 <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
               </div>
-              <span className="text-[11.5px] font-semibold text-[#8B6B2F] border border-[rgba(200,169,106,0.35)] bg-[rgba(200,169,106,0.08)] px-2.5 py-0.5 rounded-full shrink-0 hidden sm:block">{p.value}</span>
-              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border capitalize shrink-0 ${
+              <span className="text-[11.5px] font-semibold text-[#8B6B2F] border border-[rgba(200,169,106,0.35)] bg-[rgba(200,169,106,0.08)] px-2.5 py-0.5 rounded-[6px] shrink-0 hidden sm:block">{p.value}</span>
+              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-[6px] border capitalize shrink-0 ${
                 p.status === "active" ? "bg-[rgba(200,169,106,0.1)] text-[#8B6B2F] border-[rgba(200,169,106,0.3)]" :
                 p.status === "paused" ? "bg-[rgba(11,31,51,0.05)] text-[#0B1F33]/50 border-[rgba(11,31,51,0.1)]" :
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
@@ -947,7 +1006,7 @@ function PerkForm({ user, perk, onClose, onSave }) {
       className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{perk ? "Edit perk" : "New perk"}</h3>
-        <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded-full bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/50 hover:bg-[rgba(11,31,51,0.08)] hover:text-[#0B1F33] transition-colors"><X className="w-3.5 h-3.5" /></button>
+        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#C8A96A]"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Perk title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
@@ -1024,7 +1083,7 @@ function EventsManager({ user }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-[8px] animate-spin" />
         </div>
       ) : events.length === 0 ? (
         <EmptyState icon={Calendar} headline="No events yet" body="Add your first event and it will appear on the downtown map with RSVP support." action="Add an event" onAction={() => { setEditing(null); setShowForm(true); }} />
@@ -1032,13 +1091,13 @@ function EventsManager({ user }) {
         <div className="space-y-3">
           {events.map(e => (
             <div key={e.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
-              <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${e.status === "live" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
+              <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{e.title}</div>
                 <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
               </div>
               <span className="text-[11px] font-medium text-[#0B1F33]/40 hidden md:block shrink-0">{e.rsvp_count || 0} RSVPs</span>
-              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border capitalize shrink-0 ${
+              <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-[6px] border capitalize shrink-0 ${
                 e.status === "live" ? "bg-[rgba(200,169,106,0.1)] text-[#8B6B2F] border-[rgba(200,169,106,0.3)]" :
                 e.status === "upcoming" ? "bg-[rgba(11,31,51,0.05)] text-[#0B1F33]/60 border-[rgba(11,31,51,0.12)]" :
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
@@ -1094,7 +1153,7 @@ function EventForm({ user, event, onClose, onSave }) {
       className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{event ? "Edit event" : "New event"}</h3>
-        <button onClick={onClose} className="flex h-6 w-6 items-center justify-center rounded-full bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/50 hover:bg-[rgba(11,31,51,0.08)] hover:text-[#0B1F33] transition-colors"><X className="w-3.5 h-3.5" /></button>
+        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#C8A96A]"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Event title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />

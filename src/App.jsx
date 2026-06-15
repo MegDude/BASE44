@@ -185,7 +185,7 @@ function ProductRoutes() {
           {/* Partner workspace */}
           <Route path="/partner-workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
           <Route path="/partner-workspace/overview" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/map" element={<MapPage />} />
+          <Route path="/partner-workspace/map" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/offers" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/perks" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/events" element={<PartnerWorkspace />} />
@@ -200,7 +200,7 @@ function ProductRoutes() {
           <Route path="/partner-workspace/billing" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/dashboard" element={<Navigate to="/partners/dashboard" replace />} />
           <Route path="/partner-workspace/reports" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/analytics" element={<Dashboard />} />
+          <Route path="/partner-workspace/analytics" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
           {/* ── MARKETING ROUTES (/marketing/*) ─────────────────────────── */}

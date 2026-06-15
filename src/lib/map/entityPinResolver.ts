@@ -38,8 +38,20 @@ const PIN_MATCHERS: Array<[PinVariant, string[]]> = [
   ["journal", ["journal", "story"]],
 ];
 
+const RESTORED_MASTER_PIN_KEYS: Record<string, PinVariant> = {
+  inkind: "offer",
+  yeti: "brand",
+  rivian: "mobility",
+  lululemon: "wellness",
+  "four-seasons": "hotel",
+};
+
 export function resolveEntityPin(entity: Record<string, unknown>) {
-  if (typeof entity.pinKey === "string" && entity.pinKey) return getPinAsset(entity.pinKey);
+  if (typeof entity.pinKey === "string" && entity.pinKey) {
+    const explicitPinKey = entity.pinKey.toLowerCase().trim();
+    if (explicitPinKey === "legends") return getPinAsset("legends");
+    return getPinAsset(RESTORED_MASTER_PIN_KEYS[explicitPinKey] || explicitPinKey);
+  }
 
   const entityTypeText = [entity.type, entity.markerType, entity.detailDrawerType, entity.isEvent ? "event" : ""]
     .filter(Boolean)

@@ -53,28 +53,23 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
   inkind: {
     label: "inKind",
-    glyph: '<img class="dp-pin-logo" src="/pins/campaigns/inkind-restaurant.png" alt="" aria-hidden="true" />',
-    asset: "/pins/campaigns/inkind-restaurant.png",
+    glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>'),
   },
   yeti: {
     label: "YETI",
-    glyph: '<img class="dp-pin-logo" src="/pins/campaigns/yeti-water-bottle.png" alt="" aria-hidden="true" />',
-    asset: "/pins/campaigns/yeti-water-bottle.png",
+    glyph: icon('<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9L12 3Z"/>'),
   },
   rivian: {
     label: "Rivian",
-    glyph: '<img class="dp-pin-logo" src="/pins/campaigns/rivian-ev.png" alt="" aria-hidden="true" />',
-    asset: "/pins/campaigns/rivian-ev.png",
+    glyph: icon('<path d="M5 16h14"/><path d="M7 16l2-8h6l2 8"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M10 11h4"/>'),
   },
   lululemon: {
     label: "Lululemon",
-    glyph: '<img class="dp-pin-logo" src="/pins/campaigns/lululemon-run.png" alt="" aria-hidden="true" />',
-    asset: "/pins/campaigns/lululemon-run.png",
+    glyph: icon('<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/><path d="M8 12h2l1.5-3 2 6 1.5-3h2"/>'),
   },
   "four-seasons": {
     label: "Four Seasons",
-    glyph: '<img class="dp-pin-logo" src="/pins/campaigns/four-seasons-tower.png" alt="" aria-hidden="true" />',
-    asset: "/pins/campaigns/four-seasons-tower.png",
+    glyph: icon('<path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M7 10h10"/><path d="M7 15h10"/><path d="M9 7h.01M15 7h.01"/>'),
   },
   service: { label: "Service", glyph: icon('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/>') },
   guide: { label: "Local Guide", glyph: icon('<path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/>') },

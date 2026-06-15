@@ -105,7 +105,7 @@ export const brandCampaignExamples = [
   },
   {
     id: "campaign-legends-real-estate-listing-tour",
-    brandId: "brand-legends-real-estate",
+    brandId: "legends-real-estate-downtown-austin",
     brandName: "Legends Real Estate",
     campaignName: "Downtown listing tour",
     moment: "Weekend showings",

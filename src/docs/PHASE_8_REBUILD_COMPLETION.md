@@ -100,14 +100,14 @@
 ## Visual Consistency Checklist
 
 ### Typography & Tokens
-- ✅ **Fonts:** Playfair Display (headings) + Inter (body) via CSS vars
-- ✅ **Colors:** Navy, Gold, Cream palette locked in `index.css` + `tailwind.config.js`
+- ✅ **Fonts:** Inter-only product typography via CSS vars
+- ✅ **Colors:** Navy, white, soft surface, and gold accent locked in `index.css` + `tailwind.config.js`
 - ✅ **Spacing Scale:** 4px base grid (via Tailwind)
 - ✅ **Breakpoints:** Mobile (0), Tablet (640px), Desktop (1024px), Large (1440px)
 
 ### Component Scale
 - ✅ **Icons:** Lucide React, consistent sizing (w-4 h-4 for small, w-8 h-8 for large)
-- ✅ **Buttons:** Pill-shaped (rounded-full), px-7 py-3.5 primary, consistent hover states
+- ✅ **Buttons:** Compact 6px-8px radius actions, primary navy and secondary white/border states
 - ✅ **Cards:** Rounded 2xl, border-[#e8e5df], hover lift with shadow
 - ✅ **Borders:** All 1px, #e8e5df color locked
 
