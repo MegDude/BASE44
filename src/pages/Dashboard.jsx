@@ -1,163 +1,287 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  FileText,
-  Mail,
-  Table,
-  TrendingUp,
-} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, ArrowRight, FileText, Mail, Table } from "lucide-react";
+import { downtownPerksEntityImages } from "@/data/downtownPerksEntityImages";
 
 const periodOptions = ["Last 7 Days", "Last 30 Days", "Last Quarter", "Custom"];
 
 const summaryMetrics = [
-  ["48.2k", "Views"],
-  ["1,284", "Saves"],
-  ["418", "RSVPs"],
-  ["296", "Redemptions"],
-  ["22%", "Returns"],
+  ["35", "Active Partners", "↑18%"],
+  ["1", "Campaigns", "↑22%"],
+  ["1,284", "Residents", "↑5%"],
+  ["1", "Events", "↑12%"],
+  ["2", "Perks", "↑9%"],
+  ["333,054", "Impressions", ""],
+  ["81,904", "Views", ""],
+  ["414,958", "Reach", ""],
+  ["31,511", "Discovery", ""],
 ];
 
-const responseRows = [
-  ["Dining", "Dinner and date-night searches led the period.", "+18%"],
-  ["Events", "Waterfront and live-music RSVPs increased.", "+14%"],
-  ["Wellness", "Trail and reset-focused plans gained traction.", "+9%"],
-  ["Happy Hour", "After-work saves grew Thursday through Saturday.", "+21%"],
-  ["Live Music", "Pre-show dining and drink planning moved earlier.", "+12%"],
-  ["Rooftops", "Hotel and visitor interest stayed strong.", "+16%"],
-];
-
-const placesPerforming = [
-  ["Comedor", "Activity +24%", "Strong event interest."],
-  ["Waterloo Greenway", "Activity +19%", "Weekend programming brought earlier saves."],
-  ["Hotel Van Zandt", "Activity +17%", "Rooftop and music content opened before dinner."],
-  ["Uchiba", "Activity +15%", "Date-night and Second Street searches overlapped."],
-];
-
-const campaignResults = [
+const keyReadouts = [
   {
-    campaign: "Downtown Sushi Week",
-    reach: "8.4k",
-    views: "2,180",
-    saves: "312",
-    actions: "94 reservations started",
-    outcome: "Residents compared sushi options by occasion instead of browsing one restaurant at a time.",
+    eyebrow: "Key readout",
+    headline: "What to do next",
+    rows: [
+      ["What we're seeing", "Map visibility is strongest when nearby context is clear."],
+      ["Why it matters", "Views only matter when someone knows what to do next."],
+      ["Recommended action", "Pair high-visibility places with the right timing, nearby audience, and one clear offer."],
+    ],
   },
   {
-    campaign: "Four Seasons Downtown Experience",
-    reach: "5.1k",
-    views: "1,420",
-    saves: "188",
-    actions: "46 event and dining opens",
-    outcome: "Hotel and resident activity connected to waterfront, dining, and wellness choices nearby.",
-  },
-  {
-    campaign: "Waterfront Wellness Morning",
-    reach: "3.7k",
-    views: "920",
-    saves: "141",
-    actions: "38 RSVPs started",
-    outcome: "Trail-adjacent programming gave residents a simple reason to plan a morning downtown.",
+    eyebrow: "Intent readout",
+    headline: "People save before they visit.",
+    metrics: [
+      ["13,742", "Saved Intent"],
+      ["6,780", "Visit Intent"],
+      ["22%", "Response Rate"],
+    ],
+    rows: [
+      ["What we're seeing", "Saves are outpacing clicks in the strongest locations."],
+      ["Why it matters", "People are deciding before they leave home, work, or the hotel."],
+      ["Recommended action", "Add nearby context, directions, and one clear action so saved interest can turn into visits."],
+    ],
   },
 ];
 
-const trendNotes = [
-  "Dining interest increased around Congress and Second Street.",
-  "Event attendance rose when reminders appeared before the weekend.",
-  "Resident activity shifted east around Rainey and waterfront programming.",
-  "Weekend engagement expanded into Thursday planning windows.",
+const propertyPerformance = {
+  image: downtownPerksEntityImages["the-independent"],
+  headline: "The Independent is getting the most attention this week.",
+  rows: [
+    ["What changed", "Activity is strongest around a specific place, timing window, and nearby context."],
+    ["Why it matters", "People respond better to useful local prompts than broad promotion."],
+    ["Recommended action", "Use the same placement, timing, and card action pattern on the next campaign."],
+  ],
+};
+
+const campaignReadout = {
+  campaign: "First Thursday Visibility",
+  partner: "Hotel Van Zandt",
+  description: "A focused Rainey Street campaign built around after-work discovery and nearby planning.",
+  whyNow: "Nearby intent is strong enough to support a short campaign window.",
+  bestTiming: "After work, early evening, and before nearby events.",
+  results: [
+    ["1,880", "Views"],
+    ["248", "Saves"],
+    ["396", "Clicks"],
+  ],
+  image: downtownPerksEntityImages["first-thursday-visibility"],
+};
+
+const attentionSignals = [
+  ["Rainey Street", "After-work saves increased around hotel, venue, and dining content."],
+  ["Seaholm", "Residential and listing activity clustered around walkable daily routines."],
+  ["Lady Bird Lake", "Waterfront context helped hotel and residential content perform together."],
 ];
 
-const recommendations = [
+const peopleNearby = [
+  ["Residents", "Opening places before evening plans."],
+  ["Hotel guests", "Using dining and event context to decide where to go next."],
+  ["Visitors", "Comparing recognizable venues with nearby walkable options."],
+];
+
+const topHotels = [
   {
-    title: "Repeat rooftop campaign.",
-    reason: "Rooftop saves and directions starts stayed strong after work.",
-    outcome: "More Thursday-Saturday visits.",
-    confidence: "High",
+    name: "Hotel Van Zandt",
+    description: "Rainey Street hotel with music, dining, and easy access to downtown events.",
+    image: downtownPerksEntityImages["hotel-van-zandt"],
   },
   {
-    title: "Expand dining offer.",
-    reason: "Dinner comparisons created the most saved places.",
-    outcome: "More resident card checks and repeat opens.",
-    confidence: "High",
+    name: "Four Seasons Austin",
+    description: "Lady Bird Lake hotel connecting guests with dining, events, and downtown experiences.",
+    video: "/images/map/videos/four-seasons-lakefront-arrival.mp4",
+    image: downtownPerksEntityImages["four-seasons"],
   },
   {
-    title: "Promote weekend events.",
-    reason: "People began saving weekend plans earlier in the week.",
-    outcome: "More RSVPs before day-of traffic.",
-    confidence: "Medium",
-  },
-  {
-    title: "Increase resident visibility.",
-    reason: "Saved places were strongest near residential and hotel corridors.",
-    outcome: "More repeat discovery from nearby residents.",
-    confidence: "Medium",
+    name: "Austin Proper",
+    description: "Seaholm hotel known for rooftop dining, design, and neighborhood access.",
+    image: downtownPerksEntityImages["austin-proper"],
   },
 ];
 
-function ReportsShell({ children }) {
-  return (
-    <main className="min-h-screen bg-[#F7F8FB] text-[#0B1F33]">
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-16 px-5 py-10 sm:px-8 lg:px-10 lg:py-14">
-        {children}
-      </div>
-    </main>
-  );
+const topVenues = [
+  {
+    name: "Stay Put",
+    description: "Rainey Street gathering spot with strong evening activity.",
+    image: downtownPerksEntityImages["stay-put"],
+  },
+  {
+    name: "Home Slice",
+    description: "South Congress pizza spot people know by name.",
+    image: downtownPerksEntityImages["home-slice"],
+  },
+  {
+    name: "Geraldine's",
+    description: "Hotel Van Zandt restaurant with live music and strong evening traffic.",
+    image: downtownPerksEntityImages.geraldines,
+  },
+];
+
+const topProperties = [
+  {
+    name: "The Independent",
+    description: "Seaholm residential tower generating strong discovery activity.",
+    image: downtownPerksEntityImages["the-independent"],
+  },
+  {
+    name: "The Shore",
+    description: "Lady Bird Lake residential building with strong weekend activity.",
+    image: downtownPerksEntityImages["the-shore"],
+  },
+  {
+    name: "44 East",
+    description: "Rainey Street tower with growing resident engagement.",
+    image: downtownPerksEntityImages["44-east"],
+  },
+];
+
+const listingActivity = [
+  ["301 West Ave — The Independent", "Strongest listing activity", "Send traffic back to the map so people can understand Seaholm, not just the unit."],
+  ["222 West Ave — Seaholm Residences", "Seaholm comparison activity", "Attach nearby grocery, dining, lake, and workday context."],
+  ["360 Nueces ST", "High downtown routine interest", "Connect the listing to 2nd Street, restaurants, and Lady Bird Lake."],
+  ["44 East Ave", "Rainey and lake interest", "Frame the listing around walkable dining, hotels, drinks, and trail access."],
+  ["200 Congress Ave", "Core downtown attention", "Tie views to Congress Avenue, civic spaces, offices, and everyday movement."],
+];
+
+const recommendedActions = [
+  ["Repeat the strongest placement pattern", "The highest response came from specific places with clear nearby context.", "Launch next campaign"],
+  ["Move listing interest back to the map", "People need to understand the neighborhood before they decide if a listing fits.", "Open map"],
+  ["Use timing windows, not broad promotion", "After-work, early evening, and event-adjacent moments are easier to act on.", "Plan campaign"],
+];
+
+function cx(...values) {
+  return values.filter(Boolean).join(" ");
 }
 
-function Eyebrow({ children }) {
+function slugPeriod(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function ReportLabel({ children, muted = false }) {
   return (
-    <p className="m-0 font-body text-[11px] font-bold uppercase tracking-[0.14em] text-[#B8963E]">
+    <p className={cx(
+      "m-0 font-body text-[10.5px] font-semibold uppercase tracking-[0.14em]",
+      muted ? "text-[#0B1F33]/50" : "text-[#C8A96A]",
+    )}>
       {children}
     </p>
   );
 }
 
-function SectionHeader({ title, copy }) {
+function SectionTitle({ label, title, copy }) {
   return (
-    <div className="max-w-[760px]">
-      <h2 className="m-0 font-heading text-[34px] font-medium leading-[1.02] tracking-[-0.03em] text-[#0B1F33] sm:text-[44px]">
+    <header className="max-w-[760px]">
+      {label ? <ReportLabel>{label}</ReportLabel> : null}
+      <h2 className="mt-3 font-heading text-3xl font-medium leading-[1.08] tracking-normal text-[#0B1F33] md:text-[42px]">
         {title}
       </h2>
-      {copy ? <p className="mt-3 max-w-[680px] font-body text-[16px] leading-[1.55] text-[rgba(11,31,51,.68)] sm:text-[17px]">{copy}</p> : null}
-    </div>
+      {copy ? (
+        <p className="mt-3 max-w-[680px] font-body text-[14px] leading-relaxed text-[#0B1F33]/64 md:text-[16px]">
+          {copy}
+        </p>
+      ) : null}
+    </header>
   );
 }
 
-function Surface({ children, className = "" }) {
+function TextRows({ rows }) {
   return (
-    <div className={`border border-[rgba(11,31,51,.08)] bg-white ${className}`}>
-      {children}
+    <div className="divide-y divide-[rgba(11,31,51,.08)]">
+      {rows.map(([label, copy]) => (
+        <div key={label} className="grid gap-2 py-4 md:grid-cols-[170px_minmax(0,1fr)] md:gap-6">
+          <ReportLabel muted>{label}</ReportLabel>
+          <p className="m-0 font-body text-[14px] leading-relaxed text-[#0B1F33]/68 md:text-[15px]">{copy}</p>
+        </div>
+      ))}
     </div>
   );
 }
 
-function ActionLink({ to, children, variant = "primary" }) {
-  const base = "inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] px-5 font-body text-[12px] font-bold uppercase tracking-[0.11em] transition-colors";
-  const styles =
+function ReportMedia({ item, className = "" }) {
+  if (item.video) {
+    return (
+      <video
+        className={cx("aspect-[16/10] w-full object-cover", className)}
+        src={item.video}
+        poster={item.image?.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+    );
+  }
+
+  if (!item.image) return null;
+  return (
+    <img
+      src={item.image.src}
+      alt={item.image.alt}
+      className={cx("aspect-[16/10] w-full object-cover", className)}
+      loading="lazy"
+      decoding="async"
+    />
+  );
+}
+
+function ReportButton({ to, children, variant = "secondary", onClick, icon: Icon }) {
+  const classes = cx(
+    "inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-[2px] px-3.5 font-body text-[11px] font-medium uppercase tracking-normal transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]",
     variant === "primary"
-      ? "bg-[#0B1F33] text-white hover:bg-[#132238]"
-      : "border border-[rgba(11,31,51,.12)] bg-transparent text-[#0B1F33] hover:border-[#C8A96A] hover:text-[#B8963E]";
+      ? "bg-[#0B1F33] text-white"
+      : "bg-white/72 text-[#0B1F33] shadow-[0_8px_24px_rgba(11,31,51,0.045)] hover:bg-white",
+  );
+
+  const content = (
+    <>
+      {Icon ? <Icon className="h-4 w-4" aria-hidden="true" /> : null}
+      {children}
+      {to ? <ArrowRight className="h-3.5 w-3.5 text-[#C8A96A]" aria-hidden="true" /> : null}
+    </>
+  );
+
+  if (to) {
+    return (
+      <Link to={to} className={classes}>
+        {content}
+      </Link>
+    );
+  }
 
   return (
-    <Link to={to} className={`${base} ${styles}`}>
-      {children}
-      <ArrowRight className="h-4 w-4" aria-hidden="true" />
-    </Link>
+    <button type="button" onClick={onClick} className={classes}>
+      {content}
+    </button>
   );
 }
 
 export default function Dashboard() {
   const [period, setPeriod] = useState("Last 30 Days");
+  const navigate = useNavigate();
+
+  function goBack() {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate("/partners/dashboard");
+  }
 
   async function downloadReport(format) {
     const rows = [
       ["Period", period],
-      ...summaryMetrics.map(([value, label]) => [label, value]),
+      ...summaryMetrics.map(([value, label, trend]) => [label, value, trend]),
       [],
-      ["Recommendation", "Reason", "Expected outcome", "Confidence"],
-      ...recommendations.map((item) => [item.title, item.reason, item.outcome, item.confidence]),
+      ["Readout", "Signal", "Next step"],
+      ...keyReadouts.flatMap((item) => item.rows.map(([label, copy]) => [item.headline, label, copy])),
+      ...propertyPerformance.rows.map(([label, copy]) => [propertyPerformance.headline, label, copy]),
+      [],
+      ["Campaign", "Partner", "Why now", "Best timing"],
+      [campaignReadout.campaign, campaignReadout.partner, campaignReadout.whyNow, campaignReadout.bestTiming],
+      [],
+      ["Listing activity", "Signal", "Recommended action"],
+      ...listingActivity,
     ];
+
     if (format === "pdf") {
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF();
@@ -176,15 +300,16 @@ export default function Dashboard() {
         doc.text(row.join("  |  ").slice(0, 100), 18, y);
         y += 8;
       });
-      doc.save(`downtown-perks-report-${period.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.pdf`);
+      doc.save(`downtown-perks-report-${slugPeriod(period)}.pdf`);
       return;
     }
+
     const body = rows.map((row) => row.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([body], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `downtown-perks-report-${period.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.csv`;
+    link.download = `downtown-perks-report-${slugPeriod(period)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -196,178 +321,255 @@ export default function Dashboard() {
         `Downtown Perks report: ${period}`,
         "",
         "At a glance:",
-        ...summaryMetrics.map(([value, label]) => `${label}: ${value}`),
+        ...summaryMetrics.map(([value, label, trend]) => `${label}: ${value}${trend ? ` ${trend}` : ""}`),
         "",
         "Recommended next steps:",
-        ...recommendations.map((item) => `${item.title}: ${item.reason} Expected outcome: ${item.outcome}`),
+        ...recommendedActions.map(([title, reason]) => `${title}: ${reason}`),
       ].join("\n"),
     );
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   }
 
   return (
-    <ReportsShell>
-      <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-        <div className="max-w-[760px]">
-          <Eyebrow>Reports</Eyebrow>
-          <h1 className="mt-4 max-w-[760px] font-heading text-[42px] font-medium leading-[1] tracking-[-0.04em] text-[#0B1F33] sm:text-[58px] lg:text-[64px]">
-            Understand what happened.
-          </h1>
-          <p className="mt-5 max-w-[640px] font-body text-[16px] leading-[1.55] text-[rgba(11,31,51,.70)] sm:text-[17px]">
-            A simple review of activity, engagement, and response across downtown.
-          </p>
-        </div>
+    <main className="min-h-screen bg-white text-[#0B1F33]">
+      <div className="mx-auto w-full max-w-[1180px] px-5 pb-28 pt-10 sm:px-8 lg:px-10 lg:pb-32 lg:pt-16">
+        <button
+          type="button"
+          onClick={goBack}
+          className="mb-8 inline-flex h-8 items-center gap-1.5 rounded-[2px] bg-white/72 px-3.5 font-body text-[11px] font-medium uppercase tracking-normal text-[#0B1F33]/58 shadow-[0_8px_24px_rgba(11,31,51,0.045)] transition hover:-translate-y-px hover:bg-white hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+          aria-label="Return to previous partner page"
+        >
+          <ArrowLeft className="h-3.5 w-3.5 text-[#C8A96A]" aria-hidden="true" />
+          Back
+        </button>
 
-        <div className="inline-flex w-full gap-1 rounded-full border border-[rgba(11,31,51,.08)] bg-white p-1 sm:w-auto">
-          {periodOptions.map((option) => {
-            const active = period === option;
-            return (
-              <button
-                key={option}
-                type="button"
-                onClick={() => setPeriod(option)}
-                aria-pressed={active}
-                className={`min-h-10 flex-1 rounded-full px-4 font-body text-[11px] font-bold uppercase tracking-[0.11em] transition-colors sm:flex-none ${
-                  active ? "bg-[#0B1F33] text-white" : "text-[rgba(11,31,51,.62)] hover:text-[#0B1F33]"
-                }`}
-              >
-                {option}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+        <section className="grid gap-8 border-b border-[rgba(11,31,51,.08)] pb-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div id="partner-readout" className="max-w-[780px] scroll-mt-8">
+            <ReportLabel>Reports</ReportLabel>
+            <h1 className="mt-4 max-w-[820px] font-heading text-[40px] font-medium leading-[1.02] tracking-normal text-[#0B1F33] md:text-[64px]">
+              What changed nearby.
+            </h1>
+            <p className="mt-5 max-w-[660px] font-body text-[15px] leading-[1.75] text-[#0B1F33]/68">
+              A simple look at what people opened, saved, visited, redeemed, and came back to this week.
+            </p>
+          </div>
 
-      <section className="space-y-6">
-        <SectionHeader title="At a glance." />
-        <Surface className="rounded-[28px] p-5">
-          <div className="grid gap-5 sm:grid-cols-5">
-            {summaryMetrics.map(([value, label]) => (
-              <div key={label} className="border-b border-[rgba(11,31,51,.08)] pb-4 last:border-b-0 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-5 sm:last:border-r-0">
-                <p className="font-body text-[34px] font-semibold leading-none tracking-[-0.03em] text-[#0B1F33]">{value}</p>
-                <p className="mt-2 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-[rgba(11,31,51,.54)]">{label}</p>
+          <div className="flex w-full gap-3 overflow-x-auto border-y border-[#0B1F33]/[0.06] py-2 [scrollbar-width:none] sm:w-auto [&::-webkit-scrollbar]:hidden">
+            {periodOptions.map((option) => {
+              const active = period === option;
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setPeriod(option)}
+                  aria-pressed={active}
+                  className={cx(
+                    "h-8 flex-none px-0 font-body text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
+                    active ? "text-[#C8A96A]" : "text-[#0B1F33]/50 hover:text-[#0B1F33]",
+                  )}
+                >
+                  {option}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="border-b border-[#0B1F33]/[0.06] py-8">
+          <div className="flex snap-x gap-8 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {summaryMetrics.map(([value, label, trend]) => (
+              <div key={label} className="min-w-[154px] snap-start border-r border-[rgba(11,31,51,.08)] pr-8 last:border-r-0">
+                <p className="m-0 whitespace-nowrap font-body text-[26px] font-semibold leading-none text-[#0B1F33] md:text-[30px]">{value}</p>
+                <p className="mt-2 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{label}</p>
+                {trend ? <p className="mt-2 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{trend}</p> : null}
               </div>
             ))}
           </div>
-        </Surface>
-      </section>
+        </section>
 
-      <section className="space-y-6">
-        <SectionHeader title="What people responded to." />
-        <Surface className="overflow-hidden rounded-[28px]">
-          {responseRows.map(([category, activity, trend], index) => (
-            <div key={category} className={`grid gap-3 p-5 sm:grid-cols-[180px_1fr_90px] ${index === responseRows.length - 1 ? "" : "border-b border-[rgba(11,31,51,.08)]"}`}>
-              <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{category}</p>
-              <p className="font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">{activity}</p>
-              <p className="font-body text-[12px] font-bold uppercase tracking-[0.11em] text-[#B8963E]">{trend}</p>
-            </div>
-          ))}
-        </Surface>
-      </section>
+        <section className="grid gap-10 border-b border-[#0B1F33]/[0.06] py-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionTitle
+            label="Readout"
+            title="What happened, why it matters, and what should happen next."
+            copy="Reports stays focused on interpretation. Inventory and listing browsing stay in the map."
+          />
+          <div className="grid gap-10">
+            {keyReadouts.map((item) => (
+              <article key={item.headline} className="border-t border-[#0B1F33]/[0.06] pt-5 first:border-t-0 first:pt-0">
+                <ReportLabel>{item.eyebrow}</ReportLabel>
+                <h3 className="mt-2 font-heading text-2xl font-medium leading-tight tracking-normal text-[#0B1F33] md:text-3xl">
+                  {item.headline}
+                </h3>
+                {item.metrics ? (
+                  <div className="mt-5 grid grid-cols-3 gap-4 border-y border-[#0B1F33]/[0.06] py-4">
+                    {item.metrics.map(([value, label]) => (
+                      <div key={label}>
+                        <p className="m-0 font-body text-[20px] font-semibold text-[#0B1F33]">{value}</p>
+                        <p className="mt-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{label}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+                <TextRows rows={item.rows} />
+              </article>
+            ))}
+          </div>
+        </section>
 
-      <section className="space-y-6">
-        <SectionHeader title="Places gaining attention." />
-        <div className="grid gap-4 md:grid-cols-2">
-          {placesPerforming.map(([place, increase, reason]) => (
-            <Surface key={place} className="rounded-[22px] p-5">
-              <p className="font-body text-[17px] font-semibold tracking-[-0.02em] text-[#0B1F33]">{place}</p>
-              <p className="mt-3 font-body text-[12px] font-bold uppercase tracking-[0.11em] text-[#B8963E]">{increase}</p>
-              <p className="mt-3 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">{reason}</p>
-            </Surface>
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <SectionHeader title="Campaign performance." />
-        <div className="space-y-4">
-          {campaignResults.map((item) => (
-            <Surface key={item.campaign} className="rounded-[24px] p-5">
-              <div className="grid gap-5 lg:grid-cols-[1.1fr_1fr]">
-                <div>
-                  <p className="font-body text-[18px] font-semibold tracking-[-0.02em] text-[#0B1F33]">{item.campaign}</p>
-                  <p className="mt-3 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">{item.outcome}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {[
-                    ["Reach", item.reach],
-                    ["Views", item.views],
-                    ["Saves", item.saves],
-                    ["Actions", item.actions],
-                  ].map(([label, value]) => (
-                    <div key={label}>
-                      <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{value}</p>
-                      <p className="mt-2 font-body text-[10px] font-bold uppercase tracking-[0.13em] text-[rgba(11,31,51,.54)]">{label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Surface>
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <SectionHeader title="What changed." />
-        <Surface className="rounded-[28px] p-2">
-          {trendNotes.map((note, index) => (
-            <div key={note} className={`flex items-start gap-4 p-4 ${index === trendNotes.length - 1 ? "" : "border-b border-[rgba(11,31,51,.08)]"}`}>
-              <TrendingUp className="mt-0.5 h-5 w-5 shrink-0 text-[#C8A96A]" aria-hidden="true" />
-              <p className="font-body text-[15px] leading-[1.5] text-[#0B1F33]">{note}</p>
-            </div>
-          ))}
-        </Surface>
-      </section>
-
-      <section className="space-y-6">
-        <SectionHeader title="What to do next." />
-        <div className="grid gap-4 md:grid-cols-2">
-          {recommendations.map((item) => (
-            <Surface key={item.title} className="rounded-[22px] p-5">
-              <p className="font-body text-[17px] font-semibold tracking-[-0.02em] text-[#0B1F33]">{item.title}</p>
-              <p className="mt-3 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">Reason: {item.reason}</p>
-              <p className="mt-2 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">Expected outcome: {item.outcome}</p>
-              <p className="mt-4 border-t border-[rgba(11,31,51,.08)] pt-4 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-[rgba(11,31,51,.54)]">
-                Confidence: <span className="text-[#B8963E]">{item.confidence}</span>
-              </p>
-            </Surface>
-          ))}
-        </div>
-      </section>
-
-      <Surface className="rounded-[30px] p-6 sm:p-8">
-        <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <section className="grid gap-10 border-b border-[#0B1F33]/[0.06] py-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <img
+            src={propertyPerformance.image.src}
+            alt={propertyPerformance.image.alt}
+            className="aspect-[16/10] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
           <div>
-            <Eyebrow>Export</Eyebrow>
-            <h2 className="mt-3 font-heading text-[34px] font-medium leading-[1.03] tracking-[-0.03em] text-[#0B1F33] sm:text-[44px]">
-              Share the report.
+            <ReportLabel>Property performance</ReportLabel>
+            <h2 className="mt-3 font-heading text-3xl font-medium leading-[1.08] tracking-normal text-[#0B1F33] md:text-[42px]">
+              {propertyPerformance.headline}
             </h2>
-            <p className="mt-3 max-w-[680px] font-body text-[16px] leading-[1.55] text-[rgba(11,31,51,.68)]">
-              Send a simple Downtown Perks summary with the activity, changes, and recommended next steps that matter.
-            </p>
+            <TextRows rows={propertyPerformance.rows} />
+            <div className="mt-6">
+              <ReportButton to="/map?mode=partner&tab=map&filter=Properties" variant="secondary">View property activity</ReportButton>
+            </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <button type="button" onClick={() => downloadReport("pdf")} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] bg-[#0B1F33] px-5 font-body text-[12px] font-bold uppercase tracking-[0.11em] text-white hover:bg-[#132238]">
-              <FileText className="h-4 w-4" aria-hidden="true" />
-              PDF
-            </button>
-            <button type="button" onClick={() => downloadReport("csv")} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] border border-[rgba(11,31,51,.12)] bg-transparent px-5 font-body text-[12px] font-bold uppercase tracking-[0.11em] text-[#0B1F33] hover:border-[#C8A96A] hover:text-[#B8963E]">
-              <Table className="h-4 w-4" aria-hidden="true" />
-              CSV
-            </button>
-            <button type="button" onClick={emailReport} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] border border-[rgba(11,31,51,.12)] bg-transparent px-5 font-body text-[12px] font-bold uppercase tracking-[0.11em] text-[#0B1F33] hover:border-[#C8A96A] hover:text-[#B8963E]">
-              <Mail className="h-4 w-4" aria-hidden="true" />
-              Email Summary
-            </button>
-          </div>
-        </div>
-      </Surface>
+        </section>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <ActionLink to="/partners/dashboard">Open Dashboard</ActionLink>
-        <ActionLink to="/partners/campaigns" variant="secondary">Open Campaigns</ActionLink>
-        <ActionLink to="/map?mode=partner&tab=map&filter=All" variant="secondary">Open Map</ActionLink>
+        <section className="grid gap-10 border-b border-[#0B1F33]/[0.06] py-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center">
+          <div>
+            <ReportLabel>Campaign performance</ReportLabel>
+            <h2 className="mt-3 font-heading text-3xl font-medium leading-[1.08] tracking-normal text-[#0B1F33] md:text-[42px]">
+              {campaignReadout.campaign}
+            </h2>
+            <p className="mt-2 font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{campaignReadout.partner}</p>
+            <p className="mt-4 max-w-[640px] font-body text-[14px] leading-relaxed text-[#0B1F33]/68">{campaignReadout.description}</p>
+            <TextRows rows={[["Why now", campaignReadout.whyNow], ["Best timing", campaignReadout.bestTiming]]} />
+            <div className="mt-5 grid grid-cols-3 gap-4 border-y border-[#0B1F33]/[0.06] py-4">
+              {campaignReadout.results.map(([value, label]) => (
+                <div key={label}>
+                  <p className="m-0 font-body text-[22px] font-semibold text-[#0B1F33]">{value}</p>
+                  <p className="mt-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6">
+              <ReportButton to="/partners/campaigns" variant="secondary">View campaign</ReportButton>
+            </div>
+          </div>
+          <img
+            src={campaignReadout.image.src}
+            alt={campaignReadout.image.alt}
+            className="aspect-[16/10] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </section>
+
+        <section className="grid gap-10 border-b border-[#0B1F33]/[0.06] py-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionTitle
+            label="What's getting attention"
+            title="Places gaining useful attention."
+            copy="These are signals from the week, not a directory of every place on the map."
+          />
+          <div className="divide-y divide-[#0B1F33]/[0.06]">
+            {attentionSignals.map(([name, signal]) => (
+              <article key={name} className="py-5 first:pt-0">
+                <h3 className="font-body text-[17px] font-semibold tracking-[-0.01em] text-[#0B1F33]">{name}</h3>
+                <p className="mt-2 font-body text-[14px] leading-relaxed text-[#0B1F33]/68">{signal}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="grid gap-10 border-b border-[#0B1F33]/[0.06] py-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionTitle
+            label="People nearby"
+            title="Who responded this week."
+            copy="Reports should explain nearby behavior without becoming a dashboard wall."
+          />
+          <div className="divide-y divide-[#0B1F33]/[0.06]">
+            {peopleNearby.map(([audience, behavior]) => (
+              <article key={audience} className="grid gap-2 py-5 first:pt-0 md:grid-cols-[170px_minmax(0,1fr)] md:gap-6">
+                <h3 className="font-body text-[15px] font-semibold leading-snug text-[#0B1F33]">{audience}</h3>
+                <p className="font-body text-[14px] leading-relaxed text-[#0B1F33]/68">{behavior}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="grid gap-8 border-b border-[#0B1F33]/[0.06] py-12 md:grid-cols-3">
+          {[
+            ["Top hotels", topHotels],
+            ["Top venues", topVenues],
+            ["Top properties", topProperties],
+          ].map(([title, items]) => (
+            <div key={title}>
+              <ReportLabel>{title}</ReportLabel>
+              <div className="mt-4 divide-y divide-[#0B1F33]/[0.06]">
+                {items.map((item) => (
+                  <article key={item.name} className="grid grid-cols-[88px_minmax(0,1fr)] gap-3 py-4 first:pt-0">
+                    <ReportMedia item={item} />
+                    <div>
+                      <h3 className="font-body text-[15px] font-semibold leading-snug text-[#0B1F33]">{item.name}</h3>
+                      <p className="mt-2 font-body text-[13px] leading-relaxed text-[#0B1F33]/64">{item.description}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section className="grid gap-10 border-b border-[#0B1F33]/[0.06] py-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionTitle
+            label="Listing activity summary"
+            title="Listing interest is active, but it needs context."
+            copy="People opened available listings near Seaholm, Rainey, Congress, and the Downtown Core. That belongs here as insight, not as an inventory wall."
+          />
+          <div className="divide-y divide-[#0B1F33]/[0.06]">
+            {listingActivity.map(([listing, signal, action]) => (
+              <article key={listing} className="grid gap-2 py-5 first:pt-0 md:grid-cols-[190px_minmax(0,1fr)] md:gap-6">
+                <h3 className="font-body text-[15px] font-semibold leading-snug text-[#0B1F33]">{listing}</h3>
+                <div>
+                  <p className="font-body text-[12px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{signal}</p>
+                  <p className="mt-2 font-body text-[14px] leading-relaxed text-[#0B1F33]/68">{action}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="grid gap-10 py-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionTitle
+            label="Next actions"
+            title="Keep the next move clear."
+            copy="The report should end with a practical decision: where to focus, when to act, and which surface should carry the work."
+          />
+          <div className="divide-y divide-[#0B1F33]/[0.06]">
+            {recommendedActions.map(([title, reason, cta]) => (
+              <article key={title} className="grid gap-4 py-5 first:pt-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                <div>
+                  <h3 className="font-body text-[17px] font-semibold tracking-[-0.01em] text-[#0B1F33]">{title}</h3>
+                  <p className="mt-2 font-body text-[14px] leading-relaxed text-[#0B1F33]/64">{reason}</p>
+                </div>
+                <span className="font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{cta}</span>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
-    </ReportsShell>
+
+      <footer className="sticky bottom-0 z-30 border-t border-[#0B1F33]/[0.06] bg-white">
+        <div className="mx-auto grid w-full max-w-[1180px] gap-3 px-5 py-3 sm:grid-cols-[1fr_auto_auto_auto] sm:items-center sm:px-8 lg:px-10">
+          <p className="m-0 hidden font-body text-[12px] font-semibold text-[#0B1F33]/58 sm:block">
+            Share this briefing or keep working from the partner map.
+          </p>
+          <ReportButton onClick={() => downloadReport("pdf")} icon={FileText} variant="primary">Export Snapshot</ReportButton>
+          <ReportButton onClick={() => downloadReport("csv")} icon={Table}>CSV</ReportButton>
+          <ReportButton onClick={emailReport} icon={Mail}>Share Readout</ReportButton>
+        </div>
+      </footer>
+    </main>
   );
 }

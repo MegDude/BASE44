@@ -82,7 +82,7 @@ export const legendsPropertyContent: LegendsProperty[] = [
   property("44-east-avenue", "44 East Avenue", "44 East Ave", "Rainey", [], "/images/property-listings-premium/44-east.jpeg"),
   property("milago", "Milago", "54 Rainey St", "Rainey", [], "/images/map-pins/property/milago.webp"),
   property("villas-on-rainey", "Villas on Rainey", "80 Red River St", "Rainey"),
-  property("the-shore", "The Shore", "603 Davis St", "Rainey", [], "/images/imported/perks/the-shore.jpg"),
+  property("the-shore", "The Shore", "603 Davis St", "Rainey", ["603 Davis Street #2011", "603 Davis Street #1704", "603 Davis Street #1409", "603 Davis Street #907", "603 Davis Street #2007"], "/images/properties/the-shore/hero.jpg"),
   property("natiivo-austin", "Natiivo Austin", "48 East Ave", "Rainey", [], "/images/property-listings-premium/natiivo.jpeg"),
   property("waterline", "Waterline", "98 Red River St", "Rainey", [], "/images/property-listings-premium/waterline.jpeg"),
   property("the-austonian", "The Austonian", "200 Congress Ave", "Congress", ["200 Congress Ave #15E"], "/images/property-listings-premium/the-austonian.jpeg"),

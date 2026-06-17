@@ -62,6 +62,7 @@ import {
   legendsResidentialAnalytics,
   legendsResidentialPartnerSections,
 } from "@/data/legendsResidentialExperience";
+import { theShoreResidentialBuilding } from "@/data/theShoreResidentialBuilding";
 import { brandCampaignExamples, liveCampaignLayerExamples } from "@/data/campaignLayerExamples";
 import { DAA_TOUR_STOP_COUNT, daaExplorerQuestions, getDaaTourStopById } from "@/data/daaArtParksTour";
 import {
@@ -148,7 +149,7 @@ const DISCOVER_FEATURED_ORDER = [
   "priority-the-paseo",
   "priority-the-independent",
   "priority-70-rainey",
-  "priority-the-shore",
+  "property-the-shore",
   "luxury-building-seaholm-residences",
   "partner-hotel-van-zandt",
   "partner-four-seasons",
@@ -5580,11 +5581,11 @@ function PartnerDrawerActions({ place, onContact }) {
     };
     return (
       <>
-        <div className="dp-primary-action-row mt-3">
+        <div className="dp-primary-action-row dp-partner-action-row mt-3">
           <button type="button" onClick={viewListings} className="dp-panel-action dp-primary-action">View Listings</button>
           <Link to={campaignRoute(place)} className="dp-panel-action">Create Opportunity</Link>
         </div>
-        <div className="dp-secondary-action-row">
+        <div className="dp-secondary-action-row dp-partner-secondary-action-row">
           <button type="button" onClick={onContact} className="dp-panel-action-text">Contact</button>
           <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action-text">View Activity</Link>
         </div>
@@ -5593,9 +5594,9 @@ function PartnerDrawerActions({ place, onContact }) {
   }
   return (
     <>
-      <div className="dp-primary-action-row mt-3">
+      <div className="dp-primary-action-row dp-partner-action-row mt-3">
         <Link to={campaignRoute(place)} className="dp-panel-action dp-primary-action">Create Opportunity</Link>
-        <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action dp-panel-action-compact">View Activity</Link>
+        <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action">View Activity</Link>
         <button type="button" onClick={sharePlace} className="dp-panel-action">Share</button>
       </div>
     </>
@@ -5839,6 +5840,23 @@ function isIndependentPropertyEntity(place) {
   );
 }
 
+function isTheShorePropertyEntity(place) {
+  const id = String(place?.id || place?.entityId || "").toLowerCase();
+  const name = String(place?.name || place?.title || "").toLowerCase();
+  const address = String(place?.address || place?.raw?.address || "").toLowerCase();
+  return (
+    id === "property-the-shore" ||
+    id === "priority-the-shore" ||
+    id === "luxury-building-the-shore" ||
+    name === "the shore" ||
+    address.includes("603 davis")
+  );
+}
+
+function usesCleanResidentialEntityDrawer(place) {
+  return isIndependentPropertyEntity(place) || isTheShorePropertyEntity(place);
+}
+
 function CleanIndependentEntityDrawer({
   place,
   mode,
@@ -5846,7 +5864,6 @@ function CleanIndependentEntityDrawer({
   savedIds,
   onSelect,
   onSave,
-  onClose,
   onFilter,
   onRoute,
 }) {
@@ -5883,13 +5900,10 @@ function CleanIndependentEntityDrawer({
   return (
     <div className="dp-entity-drawer" role="document">
       <div className="dp-entity-handle" aria-hidden="true" />
-      <button type="button" className="dp-entity-close" onClick={onClose} aria-label="Close">
-        <X className="h-4 w-4" />
-      </button>
 
       <figure className="dp-entity-hero dp-entity-hero-image">
         <img
-          src="/images/independent_residential_1779052707992.png"
+          src={resolveMapImage({ id: "the-independent", name: "The Independent", type: "property" }, "drawerHeader")}
           alt="The Independent"
           loading="lazy"
           decoding="async"
@@ -5973,6 +5987,248 @@ function CleanIndependentEntityDrawer({
   );
 }
 
+function TheShoreResidentialEntityDrawer({
+  place,
+  mode,
+  places,
+  savedIds,
+  agentFormPlaceId,
+  agentFormSubmitted,
+  onSelect,
+  onSave,
+  onContact,
+  onSubmitContact,
+}) {
+  const building = theShoreResidentialBuilding;
+  const isPartnerMode = mode === "partner";
+  const isSaved = savedIds?.has?.(place.id);
+  const contactFormId = `shore-contact-form-${place.id}`;
+  const availableHomesId = "shore-available-homes";
+  const showContactForm = agentFormPlaceId === place.id;
+  const findByName = (name) => {
+    const target = String(name || "").toLowerCase();
+    return resolveMapEntityFromCollection(name, places)
+      || places.find((candidate) => String(candidate?.name || "").toLowerCase() === target)
+      || places.find((candidate) => String(candidate?.name || "").toLowerCase().includes(target));
+  };
+  const openRelatedEntity = (title) => {
+    const match = findByName(title);
+    if (match) onSelect(match);
+  };
+  const viewAvailableHomes = () => {
+    document.getElementById(availableHomesId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const openContact = () => {
+    onContact();
+    window.setTimeout(() => {
+      document.getElementById(contactFormId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 120);
+  };
+
+  return (
+    <div className="dp-entity-drawer dp-shore-residential-drawer" role="document">
+      <div className="dp-entity-handle" aria-hidden="true" />
+
+      <figure className="dp-entity-hero dp-entity-hero-image">
+        <img
+          src={building.heroImage}
+          alt="The Shore residential building near Lady Bird Lake"
+          loading="lazy"
+          decoding="async"
+          onError={handlePanelImageError}
+        />
+      </figure>
+
+      <header className="dp-entity-summary">
+        <p className="dp-entity-meta">Residential Building · Rainey Street</p>
+        <h2>{building.name}</h2>
+        <p>{isPartnerMode ? building.partner.subheadline : building.subheadline}</p>
+      </header>
+
+      {isPartnerMode ? (
+        <>
+          <div className="dp-entity-action-row" aria-label="The Shore partner actions">
+            <button type="button" className="dp-entity-action is-primary" onClick={() => openRelatedEntity("Hotel Van Zandt")}>Nearby Demand</button>
+            <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved" : "Save"}</button>
+            <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-entity-action">Directions</a>
+          </div>
+
+          <section className="dp-entity-section">
+            <h3>{building.partner.headline}</h3>
+            <p>{building.partner.summary}</p>
+          </section>
+
+          <section className="dp-entity-section">
+            <h3>Partner context</h3>
+            <div className="dp-entity-row-list">
+              {building.partner.insights.map(([title, copy]) => (
+                <div key={title} className="dp-entity-row">
+                  <span>
+                    <strong>{title}</strong>
+                    <small>{copy}</small>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="dp-entity-section">
+            <h3>Nearby</h3>
+            <div className="dp-entity-row-list">
+              {building.nearby.map(([title, copy]) => (
+                <button key={title} type="button" className="dp-entity-row" onClick={() => openRelatedEntity(title)}>
+                  <span>
+                    <strong>{title}</strong>
+                    <small>{copy}</small>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          <div className="dp-entity-action-row" aria-label="The Shore residential actions">
+            <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
+            <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved" : "Save Building"}</button>
+            <button type="button" className="dp-entity-action" onClick={openContact} aria-expanded={showContactForm}>{building.cta.secondary}</button>
+          </div>
+
+          <section className="dp-entity-section">
+            <h3>Overview</h3>
+            <p>{building.overview}</p>
+          </section>
+
+          <section className="dp-entity-section">
+            <h3>Building snapshot</h3>
+            <div className="dp-entity-row-list">
+              {building.snapshot.map(([label, value]) => (
+                <div key={label} className="dp-entity-row">
+                  <span>
+                    <strong>{label}</strong>
+                    <small>{value}</small>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id={availableHomesId} className="dp-entity-section">
+            <h3>Available Homes</h3>
+            <div className="dp-shore-home-rail" aria-label="The Shore available homes">
+              {building.availableHomes.map((home) => (
+                <article key={home.id} className="dp-shore-home-card">
+                  <img src={home.image} alt={`${home.address} listing`} loading="lazy" decoding="async" />
+                  <div className="dp-shore-home-copy">
+                    <div className="dp-shore-home-heading">
+                      <strong>{home.address}</strong>
+                      {home.badge && <span>{home.badge}</span>}
+                    </div>
+                    <p>{home.price}</p>
+                    <small>{home.beds} bd · {home.baths} ba · {home.sqft} sqft · {home.status}</small>
+                    <em>{home.description}</em>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="dp-entity-section">
+            <h3>Why residents choose The Shore</h3>
+            <div className="dp-entity-row-list">
+              {building.residentReasons.map(([title, copy]) => (
+                <div key={title} className="dp-entity-row">
+                  <span>
+                    <strong>{title}</strong>
+                    <small>{copy}</small>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="dp-entity-section">
+            <h3>Nearby</h3>
+            <div className="dp-entity-row-list">
+              {building.nearby.map(([title, copy]) => (
+                <button key={title} type="button" className="dp-entity-row" onClick={() => openRelatedEntity(title)}>
+                  <span>
+                    <strong>{title}</strong>
+                    <small>{copy}</small>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="dp-entity-section">
+            <h3>{building.cta.headline}</h3>
+            <p>{building.cta.body}</p>
+            <div className="dp-entity-action-row">
+              <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
+              <button type="button" className="dp-entity-action" onClick={openContact} aria-expanded={showContactForm}>{building.cta.secondary}</button>
+            </div>
+            <p className="dp-shore-disclaimer">{building.cta.footer}</p>
+          </section>
+
+          {showContactForm && (
+            <form
+              id={contactFormId}
+              className="dp-contact-continuation dp-shore-contact-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                onSubmitContact();
+              }}
+            >
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
+                <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Contact Listing Agent</h3>
+              </div>
+              {agentFormSubmitted ? (
+                <p className="mt-4 text-[13px] leading-5 text-[#0B1F33]/70">Sent. The request is ready with The Shore attached.</p>
+              ) : (
+                <>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                      Name
+                      <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Your name" />
+                    </label>
+                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                      Email
+                      <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="you@example.com" />
+                    </label>
+                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                      Phone
+                      <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Phone number" />
+                    </label>
+                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                      Timeline
+                      <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70">
+                        <option>ASAP</option>
+                        <option>30-60 days</option>
+                        <option>60-90 days</option>
+                        <option>Just exploring</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                    Notes
+                    <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue="I would like more information about available homes at The Shore." />
+                  </label>
+                  <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
+                    Submit Interest
+                    <Send className="h-3.5 w-3.5 text-[#C8A96A]" />
+                  </button>
+                </>
+              )}
+            </form>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 function getLegendsActiveListingRows(place, profile) {
   const rental = place?.rentalListing || place?.raw?.rentalListing || null;
   const legendsListing = getResolvedLegendsListing(place);
@@ -6010,6 +6266,37 @@ function getLegendsActiveListingRows(place, profile) {
   return (profile.activeListings || []).slice(0, 3).map((item) => [item, "Availability changes quickly"]);
 }
 
+function getLegendsInquiryListing(place, profile) {
+  const rental = place?.rentalListing || place?.raw?.rentalListing || null;
+  const legendsListing = getResolvedLegendsListing(place);
+  const luxuryBuilding = getLuxuryPresenceBuilding(place);
+  const firstBuildingListing = Array.isArray(luxuryBuilding?.listings) ? luxuryBuilding.listings[0] : null;
+  const source = legendsListing || rental || firstBuildingListing || {};
+  const address = source.address || rental?.address || profile?.buildingName || place?.address || place?.name || "Downtown Austin";
+  const city = source.city || "Austin";
+  const state = source.state || "TX";
+  const zip = source.zip || source.postalCode || "78701";
+
+  return {
+    listingType: source.listingType || source.listing_type || rental?.listingType || "sale",
+    listingTypeLabel: source.listingTypeLabel || source.listing_type_label || (rental ? "Rental" : "Residential"),
+    address,
+    city,
+    state,
+    zip,
+    price: source.price || source.priceLabel || source.priceDisplay || rental?.priceLabel || "",
+    priceDisplay: source.priceDisplay || source.priceLabel || rental?.priceLabel || "",
+    beds: source.beds || rental?.beds || "",
+    baths: source.baths || rental?.baths || "",
+    sqft: source.sqft || rental?.sqft || "",
+    sqftDisplay: source.sqftDisplay || (source.sqft ? `${Number(source.sqft).toLocaleString()} sqft` : ""),
+    daysOnMarket: source.daysOnMarket || "",
+    neighborhood: source.neighborhood || profile?.neighborhood || place?.district || "Downtown Austin",
+    source: source.source || "Downtown Perks map",
+    prefilledMessage: `I would like more information about ${address}.`,
+  };
+}
+
 function LegendsResidentialIntelligenceDrawer({
   place,
   profile,
@@ -6018,14 +6305,14 @@ function LegendsResidentialIntelligenceDrawer({
   savedIds,
   onSelect,
   onSave,
-  onClose,
   onFilter,
   onRoute,
-  onContact,
 }) {
   const isPartnerMode = mode === "partner";
   const isSaved = savedIds?.has?.(place.id);
   const listingRows = getLegendsActiveListingRows(place, profile);
+  const legendsInquiryFormId = `legends-inquiry-form-${place.id}`;
+  const inquiryListing = getLegendsInquiryListing(place, profile);
   const findByName = (name) => {
     const target = String(name || "").toLowerCase();
     return resolveMapEntityFromCollection(name, places)
@@ -6036,13 +6323,13 @@ function LegendsResidentialIntelligenceDrawer({
     const match = findByName(title);
     if (match) onSelect(match);
   };
+  const openInquiry = () => {
+    document.getElementById(legendsInquiryFormId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <div className="dp-entity-drawer dp-legends-residential-drawer" role="document">
       <div className="dp-entity-handle" aria-hidden="true" />
-      <button type="button" className="dp-entity-close" onClick={onClose} aria-label="Close">
-        <X className="h-4 w-4" />
-      </button>
 
       <figure className="dp-entity-hero dp-entity-hero-image">
         <img
@@ -6060,18 +6347,18 @@ function LegendsResidentialIntelligenceDrawer({
         <p>{profile.headline}</p>
       </header>
 
-      <div className="dp-entity-action-row" aria-label={isPartnerMode ? "Partner residential actions" : "Residential actions"}>
+      <div className="dp-entity-action-row dp-legends-action-carousel" aria-label={isPartnerMode ? "Partner residential actions" : "Residential actions"}>
         {isPartnerMode ? (
           <>
             <button type="button" className="dp-entity-action is-primary" onClick={() => onFilter?.("Legends")}>Review Interest</button>
-            <button type="button" className="dp-entity-action" onClick={onContact}>Open Lead Module</button>
+            <button type="button" className="dp-entity-action" onClick={openInquiry}>Open Lead Module</button>
             <Link to={getPartnerDashboardRoute(place)} className="dp-entity-action">Open Analytics</Link>
           </>
         ) : (
           <>
             <button type="button" className="dp-entity-action is-primary" onClick={() => onFilter?.("Explore Downtown")}>Explore Neighborhood</button>
             <button type="button" className="dp-entity-action" onClick={() => onFilter?.("Rentals")}>View Availability</button>
-            <button type="button" className="dp-entity-action" onClick={onContact}>Request Information</button>
+            <button type="button" className="dp-entity-action" onClick={openInquiry}>Request Information</button>
             <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved Building" : "Save Building"}</button>
           </>
         )}
@@ -6195,7 +6482,7 @@ function LegendsResidentialIntelligenceDrawer({
 
           <section className="dp-entity-section">
             <h3>Explore nearby</h3>
-            <div className="dp-entity-action-row">
+            <div className="dp-entity-action-row dp-legends-action-carousel">
               <button type="button" className="dp-entity-action is-primary" onClick={() => onFilter?.("Dining")}>Dining</button>
               <button type="button" className="dp-entity-action" onClick={() => onFilter?.("Wellness")}>Wellness</button>
               <button type="button" className="dp-entity-action" onClick={() => onFilter?.("Explore Downtown")}>Explore Downtown</button>
@@ -6230,10 +6517,15 @@ function LegendsResidentialIntelligenceDrawer({
           <section className="dp-entity-section">
             <h3>Legends interest</h3>
             <p>Request information, schedule a tour, compare buildings, or save this building while you explore what daily life around it feels like.</p>
-            <div className="dp-entity-action-row">
-              <button type="button" className="dp-entity-action is-primary" onClick={onContact}>Schedule Tour</button>
+            <div className="dp-entity-action-row dp-legends-action-carousel">
+              <button type="button" className="dp-entity-action is-primary" onClick={openInquiry}>Schedule Tour</button>
               <button type="button" className="dp-entity-action" onClick={() => onFilter?.("Legends")}>Compare Buildings</button>
             </div>
+          </section>
+
+          <section className="dp-entity-section dp-legends-inquiry-section">
+            <h3>Request information</h3>
+            <LegendsContactForm formId={legendsInquiryFormId} listing={inquiryListing} />
           </section>
         </>
       )}
@@ -6256,16 +6548,27 @@ function baseAddressText(value) {
 }
 
 function getRelevantListingImage(place) {
+  const resolveListingPanelImage = (image, source = {}) => {
+    if (!image) return null;
+    return resolveMapImage({
+      ...place,
+      ...source,
+      image,
+      primaryImage: image,
+      panelImage: image,
+    }, "drawerHeader");
+  };
+
   const luxuryBuilding = getLuxuryPresenceBuilding(place);
   const luxuryListings = luxuryBuilding?.listings || [];
   const luxuryImage = luxuryBuilding?.panelImage || luxuryBuilding?.heroImage || luxuryBuilding?.buildingExterior || luxuryListings.find((listing) => listing?.heroImage)?.heroImage;
-  if (luxuryImage) return luxuryImage;
+  if (luxuryImage) return resolveListingPanelImage(luxuryImage, luxuryBuilding);
 
   const directListing = getLegendsListing(place);
-  if (directListing?.image) return directListing.image;
-  if (place?.image && String(place.image).includes("/images/legends-listings/")) return place.image;
-  if (place?.primaryImage && String(place.primaryImage).includes("/images/legends-listings/")) return place.primaryImage;
-  if (place?.panelImage && String(place.panelImage).includes("/images/legends-listings/")) return place.panelImage;
+  if (directListing?.image) return resolveListingPanelImage(directListing.image, directListing);
+  if (place?.image && String(place.image).includes("/images/legends-listings/")) return resolveListingPanelImage(place.image);
+  if (place?.primaryImage && String(place.primaryImage).includes("/images/legends-listings/")) return resolveListingPanelImage(place.primaryImage);
+  if (place?.panelImage && String(place.panelImage).includes("/images/legends-listings/")) return resolveListingPanelImage(place.panelImage);
 
   const placeTextForImage = normalizePanelImageText([
     place?.id,
@@ -6290,7 +6593,7 @@ function getRelevantListingImage(place) {
     return (listingAddress && placeTextForImage.includes(listingAddress)) || (listingBaseAddress && placeTextForImage.includes(listingBaseAddress));
   });
 
-  return matchedListingPlace?.raw?.legendsListing?.image || matchedListingPlace?.image || null;
+  return resolveListingPanelImage(matchedListingPlace?.raw?.legendsListing?.image || matchedListingPlace?.image, matchedListingPlace);
 }
 
 function getLifestyleImage(place, mode) {
@@ -9763,14 +10066,14 @@ export default function MapPage() {
             animate={{ opacity: 1, y: selectedDrawerMinimized ? "calc(100% - 148px)" : 0 }}
             exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            className={`dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[760] mx-auto flex h-[90dvh] max-h-[90dvh] min-h-0 w-full max-w-[720px] flex-col overflow-hidden rounded-t-[12px] md:bottom-0 md:h-[92dvh] md:max-h-[92dvh] md:max-w-[760px] md:rounded-t-[12px] ${isIndependentPropertyEntity(selected) ? "dp-entity-drawer-shell" : ""}`}
+            className={`dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[760] mx-auto flex h-[90dvh] max-h-[90dvh] min-h-0 w-full max-w-[720px] flex-col overflow-hidden rounded-t-[12px] md:bottom-0 md:h-[92dvh] md:max-h-[92dvh] md:max-w-[760px] md:rounded-t-[12px] ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
             data-drawer-state={selectedDrawerMinimized ? "minimized" : "expanded"}
             style={selectedDrawerMinimized ? { height: 148, maxHeight: 148, minHeight: 148 } : undefined}
             role="dialog"
             aria-modal="true"
             aria-label={`${selected.name} details`}
           >
-            {!isIndependentPropertyEntity(selected) && (
+            {!usesCleanResidentialEntityDrawer(selected) && (
               <>
                 <button
                   type="button"
@@ -9803,7 +10106,7 @@ export default function MapPage() {
               <X className="h-4 w-4" />
             </button>
 
-            {!isIndependentPropertyEntity(selected) && (
+            {!usesCleanResidentialEntityDrawer(selected) && (
               <button
                 type="button"
                 className="dp-drawer-minimized-preview"
@@ -9850,6 +10153,23 @@ export default function MapPage() {
                   urlState.update({ tab: "map", filter, entityId: "" });
                 };
 
+                if (isTheShorePropertyEntity(selected)) {
+                  return (
+                    <TheShoreResidentialEntityDrawer
+                      place={selected}
+                      mode={urlState.mode}
+                      places={places}
+                      savedIds={savedIds}
+                      agentFormPlaceId={agentFormPlaceId}
+                      agentFormSubmitted={agentFormSubmitted}
+                      onSelect={selectPlace}
+                      onSave={() => toggleSaved(selected)}
+                      onContact={openContactForm}
+                      onSubmitContact={() => setAgentFormSubmitted(true)}
+                    />
+                  );
+                }
+
                 if ((isRental || isProperty || legendsListing || isLegendsMapPlace(selected)) && legendsResidentialProfile && !isDaaStop) {
                   return (
                     <LegendsResidentialIntelligenceDrawer
@@ -9860,8 +10180,6 @@ export default function MapPage() {
                       savedIds={savedIds}
                       onSelect={selectPlace}
                       onSave={() => toggleSaved(selected)}
-                      onClose={closeSelectedDrawer}
-                      onContact={openContactForm}
                       onFilter={openEntityFilter}
                       onRoute={(nextState) => {
                         setSelectedId(nextState?.entityId || "");
@@ -9887,7 +10205,6 @@ export default function MapPage() {
                       savedIds={savedIds}
                       onSelect={selectPlace}
                       onSave={() => toggleSaved(selected)}
-                      onClose={closeSelectedDrawer}
                       onFilter={openEntityFilter}
                       onRoute={(nextState) => {
                         setSelectedId("");

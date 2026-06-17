@@ -1,4 +1,5 @@
 import { categoryImageFallbacks, districtImageFallbacks, perkImageRegistry } from "./perkImageRegistry";
+import { resolveDowntownPerksEntityImage } from "../../data/downtownPerksEntityImages";
 
 export type ImageResolveContext = "pin" | "drawerHeader" | "nearbyRail" | "relatedRail" | "card" | "fallback";
 
@@ -7,13 +8,13 @@ export function assertImageMatchesEntityType(entityType: string, imageAsset: str
   if (!asset) return;
   const normalizedType = String(entityType || "").toLowerCase();
   const rules: Array<[string, string[]]> = [
-    ["property", ["/properties/", "/property-listings", "/buildings/", "/map-pins/property"]],
-    ["listing", ["/property-listings", "/legends-listings", "/buildings/", "/map-pins/property"]],
-    ["rental", ["/property-listings", "/buildings/", "/map-pins/property", "/map-entities/perks/independent_residential"]],
-    ["venue", ["/venues/", "/perks/", "/map-entities/perks/partner_dining", "/map-pins/venue"]],
-    ["restaurant", ["/venues/", "/perks/", "/map-entities/perks/partner_dining"]],
-    ["coffee", ["/venues/", "/perks/", "/map-entities/perks/partner_coffee"]],
-    ["hotel", ["/hotels/", "/map-entities/perks/partner_hotel", "/property-listings-premium/four-seasons"]],
+    ["property", ["/reports/", "/map/entities/", "/map/listings/", "/map/panels/", "/properties/", "/property-listings", "/buildings/", "/map-pins/property"]],
+    ["listing", ["/reports/", "/map/entities/", "/map/listings/", "/map/panels/", "/property-listings", "/legends-listings", "/buildings/", "/map-pins/property"]],
+    ["rental", ["/reports/", "/map/entities/", "/map/listings/", "/map/panels/", "/property-listings", "/buildings/", "/map-pins/property"]],
+    ["venue", ["/reports/", "/map/entities/", "/map/panels/", "/venues/", "/perks/", "/map-entities/perks/partner_dining", "/map-pins/venue"]],
+    ["restaurant", ["/reports/", "/map/entities/", "/map/panels/", "/venues/", "/perks/", "/map-entities/perks/partner_dining"]],
+    ["coffee", ["/reports/", "/map/entities/", "/map/panels/", "/venues/", "/perks/", "/map-entities/perks/partner_coffee"]],
+    ["hotel", ["/reports/", "/map/entities/", "/map/panels/", "/hotels/", "/map-entities/perks/partner_hotel", "/property-listings-premium/four-seasons"]],
     ["brand", ["/brands/", "/perks/", "/imported/perks/"]],
     ["event", ["/events/", "/map-entities/perks/moody", "/map-entities/perks/rooftop", "/map-entities/perks/downtown_art"]],
     ["wellness", ["/wellness/", "/map-entities/perks/partner_wellness", "/perks/"]],
@@ -29,7 +30,7 @@ const PROPERTY_PLACEHOLDER_REPLACEMENT = "/images/imported/perks/prospective-res
 const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
 const LOCAL_IMAGE_PRIORITY = {
   residential: [
-    "/images/map-entities/perks/independent_residential_1779052707992.png",
+    "/images/reports/the-independent-austin-tower.jpg",
     "/images/map-entities/perks/austonian_lobby_1779052725341.png",
     "/images/map-entities/perks/waustin_pool_1779052756806.png",
     "/images/map-entities/perks/seaholm_coworking_1779052742037.png",
@@ -56,6 +57,20 @@ const BLOCKED_PLACEHOLDER_IMAGES = new Set([
   "/images/properties/bowie-attached.jpg",
   "/images/imported/perks/bowie-attached.jpg",
   "/images/splash/walkable-map.png",
+  "/images/independent_residential_1779052707992.png",
+  "/images/map-entities/perks/independent_residential_1779052707992.png",
+  "/images/imported/perks/83dcefb7.jpg",
+  "/images/imported/perks/83dcefb7-1.jpg",
+  "/images/imported/perks/83dcefb7-2.jpg",
+  "/images/imported/perks/83dcefb7-3.jpg",
+  "/images/imported/perks/83dcefb7-4.jpg",
+  "/images/imported/perks/83dcefb7-5.jpg",
+  "/images/legends-listings/83dcefb7.jpeg",
+  "/images/legends-listings/83dcefb7 (1).jpeg",
+  "/images/legends-listings/83dcefb7 (2).jpeg",
+  "/images/legends-listings/83dcefb7 (3).jpeg",
+  "/images/legends-listings/83dcefb7 (4).jpeg",
+  "/images/legends-listings/83dcefb7 (5).jpeg",
 ]);
 
 const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
@@ -176,7 +191,7 @@ export const BUILDING_IMAGE_FALLBACK: Record<string, string> = {
   independent: "/images/imported/perks/301-west-ave.jpg",
   seaholm: "/buildings/seaholm.webp",
   "360": "/buildings/360.webp",
-  shore: "/images/imported/perks/the-shore.jpg",
+  shore: "/images/properties/the-shore/hero.jpg",
   quincy: "/images/map-pins/property/the-quincy.jpg",
   rainey70: "/images/imported/perks/70-rainey.webp",
   east44: "/images/map-pins/property/44-east.jpg",
@@ -448,7 +463,7 @@ const entityImageSets: Record<string, string[]> = {
   property: [
     ...LOCAL_IMAGE_PRIORITY.residential,
     "/images/imported/perks/waterline-hero.webp",
-    "/images/imported/perks/the-shore.jpg",
+    "/images/properties/the-shore/hero.jpg",
     "/images/imported/perks/paseo.webp",
     "/images/imported/perks/70-rainey.webp",
     "/images/imported/perks/301-west-ave.jpg",
@@ -753,6 +768,9 @@ export function resolveHotelImage(entity: Record<string, unknown>): string | nul
 }
 
 export function resolveMapImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string {
+  const canonical = resolveDowntownPerksEntityImage(entity);
+  if (canonical?.src) return canonical.src;
+
   if (looksResidential(entity)) {
     const buildingImage = resolveBuildingImage(entity);
     if (buildingImage) return buildingImage;

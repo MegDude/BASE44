@@ -2,6 +2,7 @@ import { getLegendsPropertyContent } from "./legendsPropertyContent";
 
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
 const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
+const REPORT_IMAGE_BASE = "/images/reports";
 
 const PREMIUM_PROPERTY_IMAGES = {
   "301 west ave": {
@@ -101,13 +102,6 @@ const BUILDING_LOOKUP = {
     lifestyleImage: PREMIUM_PROPERTY_IMAGES["501 west ave"].exterior,
     galleryImages: PREMIUM_PROPERTY_IMAGES["501 west ave"].gallery,
   },
-  "610 davis": {
-    name: "The Shore",
-    district: "Rainey",
-    coordinates: [30.25952, -97.73857],
-    buildingExterior: `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`,
-    lifestyleImage: `${LEGENDS_IMAGE_BASE}/83dcefb7 (1).jpeg`,
-  },
   "202 nueces": {
     name: "Austin Proper Residences",
     district: "2nd Street",
@@ -167,19 +161,17 @@ const BUILDING_LOOKUP = {
 const RAW_LISTINGS = [
   ["360 Condominiums", "360 Nueces ST #4201", "$430,000", 1, 1, 801, "6230337", "2nd Street", "360 nueces st"],
   ["360 Condominiums", "360 Nueces ST #3506", "$445,000", 1, 1, 748, "8744546", "2nd Street", "360 nueces st"],
-  ["360 Condominiums", "360 Nueces ST #3106", "$465,000", 1, 1, 748, "1883893", "2nd Street", "360 nueces st", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
+  ["360 Condominiums", "360 Nueces ST #3106", "$465,000", 1, 1, 748, "1883893", "2nd Street", "360 nueces st", `${REPORT_IMAGE_BASE}/360-nueces-austin.jpg`],
   ["Seaholm Residences", "222 West Ave #1412", "$575,000", 1, 1, 821, "4683683", "Seaholm", "222 west ave"],
   ["Fifth & West", "501 West Ave #1207", "$1,699,999", 2, 3, 1759, "3480432", "Seaholm", "501 west ave"],
   ["The Independent", "301 West Ave #4504", "$970,000", 1, 1, 999, "1317826", "Seaholm", "301 west ave"],
   ["Spring Condominiums", "300 Bowie ST #1403", "$1,195,000", 2, 3, 1687, "4131783", "Seaholm", "300 bowie"],
-  ["The Shore", "610 Davis ST #4301", "$2,425,500", 3, 3, 1951, "5357248", "Rainey", "610 davis"],
-  ["The Shore", "610 Davis ST #5003", "$5,582,000", 4, 5, 3818, "1682504", "Rainey", "610 davis"],
   ["Austin Proper Residences", "202 Nueces ST #1405", "$2,995,000", 2, 3, 1646, "4043365", "2nd Street", "202 nueces"],
   ["70 Rainey", "70 Rainey ST #1409", "$7,000/MONTH", 2, 2, 1128, "9192982", "Rainey", "70 rainey"],
-  ["1212 Guadalupe", "1212 Guadalupe ST #601", "$220,000", 1, 1, 454, "3119350", "Downtown Core", "1212 guadalupe", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
-  ["44 East", "44 East Ave #3304", "$1,125,000", 2, 2, 1172, "8947667", "Rainey", "44 east ave", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
-  ["Milago", "54 Rainey ST #404", "$550,000", 2, 2, 1189, "9558786", "Rainey", "54 rainey", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
-  ["Brazos Place", "800 Brazos ST #1111", "$335,000", 1, 1, 623, "4696550", "Congress", "800 brazos", `${LEGENDS_IMAGE_BASE}/83dcefb7.jpeg`],
+  ["1212 Guadalupe", "1212 Guadalupe ST #601", "$220,000", 1, 1, 454, "3119350", "Downtown Core", "1212 guadalupe", `${REPORT_IMAGE_BASE}/sixth-guadalupe-austin.jpg`],
+  ["44 East", "44 East Ave #3304", "$1,125,000", 2, 2, 1172, "8947667", "Rainey", "44 east ave", `${REPORT_IMAGE_BASE}/44-east-austin.jpg`],
+  ["Milago", "54 Rainey ST #404", "$550,000", 2, 2, 1189, "9558786", "Rainey", "54 rainey", `${REPORT_IMAGE_BASE}/milago-austin.jpg`],
+  ["Brazos Place", "800 Brazos ST #1111", "$335,000", 1, 1, 623, "4696550", "Congress", "800 brazos", `${REPORT_IMAGE_BASE}/200-congress-austin.jpg`],
 ];
 
 const PROPERTY_BUILDING_SUMMARIES = {

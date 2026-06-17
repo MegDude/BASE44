@@ -86,8 +86,15 @@ function ProductRoutes() {
         <Route element={<Layout />}>
 
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
-          {/* Root always goes to resident map */}
-          <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
+          {/* Root opens with the Downtown Perks story before the product map. */}
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <SplashPage />
+              </Suspense>
+            }
+          />
 
           <Route path="/map" element={<MapPage />} />
           <Route

@@ -8,7 +8,7 @@ const fallbackImages = {
   retail: "/images/map-entities/brand-fine-eyewear/Oversized-Eyewear-1920w.webp",
   rivian: "/images/map-entities/brand-rivian/8J5L62CIianOYc2pGK7bnSfPHVKIfXD5f2L1WtaTz8q1zatxBiIjQFc9ZTuyRKp9PlKp8gfvhxjcO310jjX8CUNmqQpi6FHS9GciwhJxC953o58_YOMskbnF-WVNCiaTxcL3LQ8uCvfpnWUnJqs57UOf5lyhZgP6kS7WAvH3yrk0qzA-dlHBBWDn2WEpKA_c.jpeg",
   civic: "/images/imported/perks/republic-square.jpg",
-  realEstate: "/images/legends-listings/83dcefb7.jpeg",
+  realEstate: "/images/reports/the-independent-austin-tower.jpg",
 };
 
 export const campaignImages = {

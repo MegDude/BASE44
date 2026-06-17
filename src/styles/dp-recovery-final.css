@@ -23614,6 +23614,95 @@ html body #root .dp-map-page.dp-map-page .dp-entity-row small {
   font-weight: 500 !important;
 }
 
+html body #root .dp-map-page.dp-map-page .dp-shore-home-rail {
+  display: flex !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  overflow-x: auto !important;
+  overscroll-behavior-x: contain !important;
+  padding: 0 0 4px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-card {
+  flex: 0 0 min(282px, 82vw) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-card img {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-copy {
+  display: grid !important;
+  gap: 5px !important;
+  padding: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-heading {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-heading strong {
+  min-width: 0 !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  line-height: 1.22 !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-heading span {
+  flex: 0 0 auto !important;
+  color: #C8A96A !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-copy p {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  line-height: 1.1 !important;
+  font-weight: 700 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-home-copy small,
+html body #root .dp-map-page.dp-map-page .dp-shore-home-copy em {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.6) !important;
+  font-size: 11px !important;
+  line-height: 1.38 !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-disclaimer {
+  color: rgba(11, 31, 51, 0.48) !important;
+  font-size: 11px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-shore-contact-form {
+  margin-top: 14px !important;
+}
+
 @media (max-width: 390px) {
   html body #root .dp-map-page.dp-map-page .dp-entity-action-row {
     grid-template-columns: 1fr !important;
@@ -23938,8 +24027,8 @@ html body #root .dp-map-page.dp-map-page * {
 }
 
 html body #root .dp-map-page.dp-map-page :is(
-  h1,
-  h2,
+    h1,
+    h2,
   h3,
   h4,
   h5,
@@ -31427,4 +31516,1020 @@ html body #root .dp-map-page.dp-map-page .dp-search-rollup-chevron {
 html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
   font: 750 9px/1 Inter, sans-serif !important;
   letter-spacing: .1em !important;
+}
+
+/* Partner detail panels: compact operational polish, mobile first. */
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 0 14px calc(92px + env(safe-area-inset-bottom)) !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-panel-detail-hero {
+  gap: 10px !important;
+  padding: 14px 0 6px !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-destination-media {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 176px !important;
+  aspect-ratio: 16 / 10 !important;
+  border-radius: 10px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-panel-detail-identity {
+  gap: 4px !important;
+  padding: 0 2px !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-panel-title, .dp-destination-title, .dp-panel-detail-identity h1, .dp-panel-detail-identity h2) {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: clamp(20px, 6.2vw, 25px) !important;
+  line-height: 1.06 !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-panel-kicker, .dp-polished-panel-kicker) {
+  margin: 0 !important;
+  color: #C8A96A !important;
+  font: 750 9px/1 Inter, sans-serif !important;
+  letter-spacing: .13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-panel-subtitle, .dp-polished-panel-meta, .dp-drawer-meta-line) {
+  color: rgba(11, 31, 51, .62) !important;
+  font: 500 12px/1.35 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-destination-section, .dp-info-section, .dp-partner-strategy-summary, .dp-partner-nearby-guide, .dp-partner-ask-section, .dp-partner-nearby-section, .dp-partner-related-section) {
+  margin: 0 !important;
+  padding: 13px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-destination-section h3, .dp-info-section h3, .dp-partner-nearby-guide h3, .dp-partner-ask-section h3, .dp-partner-nearby-section h3, .dp-partner-related-section h3) {
+  margin: 0 0 7px !important;
+  color: #0B1F33 !important;
+  font: 650 13px/1.18 Inter, sans-serif !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-partner-strategy-summary > span, .dp-partner-nearby-guide header span) {
+  margin: 0 0 6px !important;
+  color: rgba(11, 31, 51, .52) !important;
+  font: 750 9px/1 Inter, sans-serif !important;
+  letter-spacing: .13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-strategy-summary strong {
+  display: block !important;
+  margin: 0 0 6px !important;
+  color: #0B1F33 !important;
+  font: 650 14px/1.25 Inter, sans-serif !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(p, dd, li, .dp-destination-section-copy, .dp-destination-section-note, .dp-why-people-go) {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .64) !important;
+  font: 400 12px/1.42 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-action-row,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-secondary-action-row {
+  position: static !important;
+  bottom: auto !important;
+  z-index: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-secondary-action-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-action-row > :is(a, button),
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-secondary-action-row > :is(a, button, .dp-panel-action-text) {
+  min-width: 0 !important;
+  min-height: 34px !important;
+  height: auto !important;
+  padding: 7px 6px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  font: 750 9px/1.12 Inter, sans-serif !important;
+  letter-spacing: .08em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-action-row > :is(a, button):not(.dp-primary-action),
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-secondary-action-row > :is(a, button, .dp-panel-action-text) {
+  background: rgba(11, 31, 51, .035) !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-partner-action-row > .dp-primary-action {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-partner-guide-list, .dp-partner-nearby-list, .dp-related-rail, .dp-partner-ask-rail) {
+  gap: 7px !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-partner-guide-list article, .dp-partner-nearby-card, .dp-related-place, .dp-partner-ask-rail button) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content {
+    padding-inline: 18px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-destination-media {
+    max-height: 210px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content :is(.dp-panel-title, .dp-destination-title, .dp-panel-detail-identity h1, .dp-panel-detail-identity h2) {
+    font-size: 25px !important;
+  }
+}
+
+/* Map drawer panel polish: one close control, compact type, borderless actions. */
+html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell > .dp-destination-close,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer > .dp-destination-close.dp-drawer-close {
+  display: inline-flex !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+  z-index: 40 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  outline: 0 !important;
+  background: rgba(255, 255, 255, .94) !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, .12) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell > .dp-destination-close:hover,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer > .dp-destination-close.dp-drawer-close:hover,
+html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell > .dp-destination-close:focus-visible,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer > .dp-destination-close.dp-drawer-close:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  background: #FFFFFF !important;
+  color: #C8A96A !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, .14), 0 12px 30px rgba(11, 31, 51, .12) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-entity-close, .dp-destination-close + .dp-entity-close) {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-detail-drawer, .dp-destination-drawer, .dp-map-popup, .dp-pin-popover) :is(button, a, input, select, textarea, .dp-panel-action, .dp-entity-action, .dp-panel-action-text, .dp-map-panel-button, .dp-tab-primary-action, .dp-tab-secondary-action, .dp-soft-field) {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-detail-drawer, .dp-destination-drawer, .dp-map-popup, .dp-pin-popover) :is(button, a, input, select, textarea, .dp-panel-action, .dp-entity-action, .dp-panel-action-text, .dp-map-panel-button, .dp-tab-primary-action, .dp-tab-secondary-action, .dp-soft-field):focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, .16), 0 8px 22px rgba(11, 31, 51, .08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-entity-drawer, .dp-partner-detail-content, .dp-panel-detail-content, .dp-destination-panel-body) :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  gap: 7px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  padding: 1px 2px 7px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  scrollbar-width: none !important;
+  scroll-snap-type: x proximity !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-entity-drawer, .dp-partner-detail-content, .dp-panel-detail-content, .dp-destination-panel-body) :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-entity-drawer, .dp-partner-detail-content, .dp-panel-detail-content, .dp-destination-panel-body) :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) > :is(a, button, .dp-panel-action, .dp-panel-action-text, .dp-entity-action) {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: min(72vw, 220px) !important;
+  min-height: 34px !important;
+  height: auto !important;
+  padding: 8px 12px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  outline: 0 !important;
+  color: #0B1F33 !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, .075) !important;
+  font: 750 9.5px/1 Inter, sans-serif !important;
+  letter-spacing: .085em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-entity-drawer, .dp-partner-detail-content, .dp-panel-detail-content, .dp-destination-panel-body) :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) > :is(.is-primary, .dp-primary-action) {
+  color: #FFFFFF !important;
+  background: #0B1F33 !important;
+  box-shadow: 0 10px 24px rgba(11, 31, 51, .14) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-entity-drawer, .dp-partner-detail-content) :is(.dp-entity-section, .dp-destination-section, .dp-info-section, .dp-partner-strategy-summary, .dp-partner-nearby-guide, .dp-partner-ask-section, .dp-partner-nearby-section, .dp-partner-related-section) {
+  border: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-summary {
+  gap: 5px !important;
+  padding: 12px 0 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-summary h2,
+html body #root .dp-map-page.dp-map-page .dp-legends-residential-drawer .dp-entity-summary h2,
+html body #root .dp-map-page.dp-map-page .dp-shore-residential-drawer .dp-entity-summary h2 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: clamp(20px, 5.8vw, 24px) !important;
+  line-height: 1.08 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-summary p {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .66) !important;
+  font: 500 12.5px/1.42 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-summary .dp-entity-meta,
+html body #root .dp-map-page.dp-map-page .dp-entity-meta {
+  color: #C8A96A !important;
+  font: 750 9px/1 Inter, sans-serif !important;
+  letter-spacing: .13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-section {
+  padding: 12px 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-section h3,
+html body #root .dp-map-page.dp-map-page .dp-legends-inquiry-section h3 {
+  margin: 0 0 7px !important;
+  color: #0B1F33 !important;
+  font: 650 13px/1.2 Inter, sans-serif !important;
+  letter-spacing: -.01em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-section p,
+html body #root .dp-map-page.dp-map-page .dp-entity-row small,
+html body #root .dp-map-page.dp-map-page .dp-legends-inquiry-section :is(p, label) {
+  color: rgba(11, 31, 51, .64) !important;
+  font-size: 12px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-row strong {
+  color: #0B1F33 !important;
+  font-size: 12.5px !important;
+  line-height: 1.2 !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-legends-inquiry-section .dp-contact-continuation,
+html body #root .dp-map-page.dp-map-page .dp-legends-inquiry-section form {
+  margin: 0 !important;
+  padding: 12px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 12px 30px rgba(11, 31, 51, .08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-legends-inquiry-section :is(input, select, textarea, .dp-soft-field) {
+  border: 0 !important;
+  background: rgba(247, 248, 251, .92) !important;
+  box-shadow: inset 0 0 0 1px rgba(11, 31, 51, .04) !important;
+}
+
+@media (max-width: 390px) {
+  html body #root .dp-map-page.dp-map-page :is(.dp-entity-drawer, .dp-partner-detail-content, .dp-panel-detail-content, .dp-destination-panel-body) :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) > :is(a, button, .dp-panel-action, .dp-panel-action-text, .dp-entity-action) {
+    min-height: 32px !important;
+    padding: 7px 10px !important;
+    font-size: 9px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-entity-summary h2,
+  html body #root .dp-map-page.dp-map-page .dp-legends-residential-drawer .dp-entity-summary h2,
+  html body #root .dp-map-page.dp-map-page .dp-shore-residential-drawer .dp-entity-summary h2 {
+    font-size: 20px !important;
+  }
+}
+
+/* Final partner drawer specificity guard. */
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-entity-identity .dp-entity-title,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content h2.dp-entity-title {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: clamp(20px, 5.8vw, 24px) !important;
+  line-height: 1.08 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-secondary-action-row.dp-partner-secondary-action-row {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  gap: 7px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 1px 2px 7px !important;
+  background: transparent !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-secondary-action-row.dp-partner-secondary-action-row::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > :is(a, button),
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-secondary-action-row.dp-partner-secondary-action-row > :is(a, button, .dp-panel-action-text) {
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  width: auto !important;
+  max-width: min(72vw, 220px) !important;
+  min-height: 34px !important;
+  padding: 8px 12px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, .075) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Partner and campaign actions: no dark blocks, no card-like buttons. */
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-campaign-drawer,
+  .dp-campaign-panel,
+  .dp-map-native-campaign-detail,
+  .dp-map-campaign-detail,
+  .dp-map-campaign-launch-panel,
+  .dp-partner-readable-panel
+) :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-partner-action-row,
+  .dp-partner-secondary-action-row,
+  .dp-campaign-action-bar,
+  .dp-campaign-action-rail,
+  .dp-map-campaign-actions
+) {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  gap: 6px !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 2px 0 6px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-campaign-drawer,
+  .dp-campaign-panel,
+  .dp-map-native-campaign-detail,
+  .dp-map-campaign-detail,
+  .dp-map-campaign-launch-panel,
+  .dp-partner-readable-panel
+) :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-partner-action-row,
+  .dp-partner-secondary-action-row,
+  .dp-campaign-action-bar,
+  .dp-campaign-action-rail,
+  .dp-map-campaign-actions
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-campaign-drawer,
+  .dp-campaign-panel,
+  .dp-map-native-campaign-detail,
+  .dp-map-campaign-detail,
+  .dp-map-campaign-launch-panel,
+  .dp-partner-readable-panel
+) :is(
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-campaign-action-rail a,
+  .dp-campaign-action-rail button,
+  .dp-campaign-action-bar button,
+  .dp-map-campaign-actions button,
+  .dp-map-campaign-actions a
+) {
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  width: auto !important;
+  max-width: min(70vw, 190px) !important;
+  min-height: 30px !important;
+  height: auto !important;
+  padding: 7px 10px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 6px 18px rgba(11, 31, 51, .055) !important;
+  font: 750 9px/1 Inter, sans-serif !important;
+  letter-spacing: .085em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-campaign-drawer,
+  .dp-campaign-panel,
+  .dp-map-native-campaign-detail,
+  .dp-map-campaign-detail,
+  .dp-map-campaign-launch-panel,
+  .dp-partner-readable-panel
+) :is(
+  .dp-panel-action.dp-primary-action,
+  .dp-primary-action,
+  .dp-tab-primary-action
+) {
+  background: transparent !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 8px 20px rgba(11, 31, 51, .065) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-campaign-drawer,
+  .dp-campaign-panel,
+  .dp-map-native-campaign-detail,
+  .dp-map-campaign-detail,
+  .dp-map-campaign-launch-panel,
+  .dp-partner-readable-panel
+) :is(
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-campaign-action-rail a,
+  .dp-campaign-action-rail button,
+  .dp-campaign-action-bar button,
+  .dp-map-campaign-actions button,
+  .dp-map-campaign-actions a
+):is(:hover, :active, :focus-visible, .is-active, [aria-pressed="true"], [aria-selected="true"]) {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: #C8A96A !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, .12), 0 8px 22px rgba(11, 31, 51, .055) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-campaign-drawer,
+  .dp-campaign-panel,
+  .dp-map-native-campaign-detail,
+  .dp-map-campaign-detail,
+  .dp-map-campaign-launch-panel,
+  .dp-partner-readable-panel
+) :is(
+  .dp-campaign-plan-card,
+  .dp-campaign-layer-row,
+  .dp-brand-campaign-row,
+  .dp-map-native-campaign-detail,
+  .dp-campaign-native-stat-grid,
+  .dp-campaign-native-report,
+  .dp-campaign-activation-row
+) {
+  border: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+/* Absolute last word for partner/campaign drawer CTA styling. */
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > a.dp-panel-action.dp-primary-action,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > button.dp-panel-action.dp-primary-action,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > a.dp-panel-action,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > button.dp-panel-action,
+html body #root .dp-map-page.dp-map-page .dp-campaign-drawer :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-primary-action),
+html body #root .dp-map-page.dp-map-page .dp-campaign-panel :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-primary-action),
+html body #root .dp-map-page.dp-map-page .dp-map-native-campaign-detail :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-primary-action) {
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  width: auto !important;
+  max-width: min(70vw, 190px) !important;
+  min-height: 30px !important;
+  height: auto !important;
+  padding: 7px 10px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 6px 18px rgba(11, 31, 51, .055) !important;
+  font: 750 9px/1 Inter, sans-serif !important;
+  letter-spacing: .085em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > a.dp-panel-action.dp-primary-action:is(:hover, :active, :focus-visible),
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > button.dp-panel-action.dp-primary-action:is(:hover, :active, :focus-visible),
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > a.dp-panel-action:is(:hover, :active, :focus-visible),
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-partner-detail-content .dp-primary-action-row.dp-partner-action-row > button.dp-panel-action:is(:hover, :active, :focus-visible),
+html body #root .dp-map-page.dp-map-page .dp-campaign-drawer :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-primary-action):is(:hover, :active, :focus-visible, .is-active, [aria-pressed="true"], [aria-selected="true"]),
+html body #root .dp-map-page.dp-map-page .dp-campaign-panel :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-primary-action):is(:hover, :active, :focus-visible, .is-active, [aria-pressed="true"], [aria-selected="true"]),
+html body #root .dp-map-page.dp-map-page .dp-map-native-campaign-detail :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-primary-action):is(:hover, :active, :focus-visible, .is-active, [aria-pressed="true"], [aria-selected="true"]) {
+  background: transparent !important;
+  color: #C8A96A !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, .12), 0 8px 22px rgba(11, 31, 51, .055) !important;
+}
+
+/* Premium map panel density sweep: compact, editorial, no heavy blocks. */
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-popup,
+  .dp-pin-popover
+) {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-partner-detail-content,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-entity-drawer,
+  .dp-panel-detail-content
+) {
+  gap: 9px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  h1,
+  h2,
+  .dp-entity-title,
+  .dp-destination-title,
+  .dp-panel-title,
+  .dp-map-panel-title,
+  .dp-panel-detail-identity h1,
+  .dp-panel-detail-identity h2,
+  .dp-entity-summary h2
+) {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: clamp(19px, 5.4vw, 23px) !important;
+  line-height: 1.08 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-popup,
+  .dp-pin-popover
+) :is(
+  h3,
+  h4,
+  .dp-map-panel-section-title,
+  .dp-destination-section h3,
+  .dp-info-section h3,
+  .dp-entity-section h3,
+  .dp-campaign-plan-detail h3
+) {
+  margin: 0 0 6px !important;
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 12.5px !important;
+  line-height: 1.18 !important;
+  font-weight: 650 !important;
+  letter-spacing: -.01em !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-popup,
+  .dp-pin-popover
+) :is(
+  p,
+  li,
+  dd,
+  small,
+  em,
+  .dp-panel-subtitle,
+  .dp-map-panel-subtitle,
+  .dp-destination-section-copy,
+  .dp-destination-section-note,
+  .dp-entity-summary p,
+  .dp-entity-section p,
+  .dp-campaign-row small,
+  .dp-campaign-row em,
+  .dp-campaign-plan-card p
+) {
+  color: rgba(11, 31, 51, .64) !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11.5px !important;
+  line-height: 1.42 !important;
+  font-weight: 500 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-panel-kicker,
+  .dp-polished-panel-kicker,
+  .dp-tab-eyebrow,
+  .dp-report-label,
+  .dp-entity-meta,
+  .dp-map-panel-eyebrow,
+  .dp-map-panel-section-label
+) {
+  margin: 0 0 5px !important;
+  color: #C8A96A !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 8.5px !important;
+  line-height: 1 !important;
+  font-weight: 750 !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-destination-section,
+  .dp-info-section,
+  .dp-entity-section,
+  .dp-map-native-campaign-detail,
+  .dp-campaign-plan-detail,
+  .dp-campaign-panel,
+  .dp-partner-strategy-summary,
+  .dp-partner-nearby-guide,
+  .dp-partner-ask-section,
+  .dp-partner-nearby-section,
+  .dp-partner-related-section
+) {
+  margin: 0 !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-destination-media,
+  .dp-panel-detail-media,
+  .dp-entity-hero,
+  .dp-entity-hero-image,
+  .dp-campaign-hero,
+  .dp-campaign-builder-hero
+) {
+  max-height: 168px !important;
+  min-height: 0 !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-campaign-plan-card,
+  .dp-campaign-layer-row,
+  .dp-brand-campaign-row,
+  .dp-partner-feed-row,
+  .dp-partner-summary-card,
+  .dp-campaign-native-stat-grid,
+  .dp-campaign-native-report,
+  .dp-campaign-activation-row,
+  .dp-partner-nearby-card,
+  .dp-related-place
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-campaign-plan-card.is-active,
+  .dp-campaign-layer-row.is-active,
+  .dp-brand-campaign-row.is-active,
+  button[aria-pressed="true"],
+  button[aria-selected="true"]
+) {
+  color: #C8A96A !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, .1) !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer.dp-destination-drawer,
+    .dp-detail-drawer,
+    .dp-destination-drawer
+  ) :is(
+    h1,
+    h2,
+    .dp-entity-title,
+    .dp-destination-title,
+    .dp-panel-title,
+    .dp-map-panel-title,
+    .dp-panel-detail-identity h1,
+    .dp-panel-detail-identity h2,
+    .dp-entity-summary h2
+  ) {
+    font-size: 23px !important;
+  }
+}
+
+/* Splash story restore: fixed scene geometry and top-right skip on both intro and narrative. */
+html body #root .dp-splash-page.dp-fixed-story-page {
+  width: 100vw !important;
+  min-height: 100dvh !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage {
+  display: grid !important;
+  place-items: center !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  padding: clamp(84px, 12vh, 116px) 20px clamp(48px, 8vh, 78px) !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-state {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas:
+    "copy"
+    "actions" !important;
+  align-content: center !important;
+  justify-items: center !important;
+  width: min(100%, 860px) !important;
+  height: min(640px, calc(100dvh - 168px)) !important;
+  min-height: min(640px, calc(100dvh - 168px)) !important;
+  max-height: min(640px, calc(100dvh - 168px)) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-copy {
+  grid-area: copy !important;
+  display: grid !important;
+  grid-template-rows: 18px minmax(112px, auto) minmax(46px, auto) minmax(84px, auto) !important;
+  align-content: center !important;
+  justify-items: center !important;
+  gap: clamp(10px, 2vh, 16px) !important;
+  width: min(100%, 760px) !important;
+  min-height: 380px !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page :is(
+  .dp-fixed-story-kicker-slot,
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  display: grid !important;
+  align-items: center !important;
+  justify-items: center !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-kicker {
+  margin: 0 !important;
+  color: #C8A96A !important;
+  font: 750 10px/1 Inter, sans-serif !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: var(--font-heading) !important;
+  font-size: clamp(42px, 7.2vw, 68px) !important;
+  font-weight: 600 !important;
+  letter-spacing: -.02em !important;
+  line-height: .96 !important;
+  text-align: center !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline span {
+  display: block !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline span:last-child {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-meaning {
+  max-width: 50ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .72) !important;
+  font: 500 clamp(14px, 2vw, 18px)/1.42 Inter, sans-serif !important;
+  text-align: center !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-supporting {
+  display: grid !important;
+  gap: 8px !important;
+  max-width: 56ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .64) !important;
+  font: 400 clamp(13px, 1.65vw, 15px)/1.58 Inter, sans-serif !important;
+  text-align: center !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-supporting p {
+  margin: 0 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-actions,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions {
+  flex-shrink: 0 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-story-narrative-skip {
+  position: fixed !important;
+  top: max(18px, calc(env(safe-area-inset-top) + 18px)) !important;
+  right: max(18px, calc(env(safe-area-inset-right) + 18px)) !important;
+  z-index: 1300 !important;
+  color: #0B1F33 !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  font: 800 10px/1 Inter, sans-serif !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  opacity: .72 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-story-narrative-skip:hover,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-story-narrative-skip:focus-visible {
+  color: #C8A96A !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage {
+    padding: 76px 18px 40px !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-state {
+    height: calc(100dvh - 116px) !important;
+    min-height: calc(100dvh - 116px) !important;
+    max-height: calc(100dvh - 116px) !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-copy {
+    grid-template-rows: 16px minmax(92px, auto) minmax(44px, auto) minmax(106px, auto) !important;
+    min-height: 330px !important;
+    gap: 10px !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline {
+    font-size: clamp(34px, 11.2vw, 48px) !important;
+    line-height: .98 !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-meaning {
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-supporting {
+    font-size: 12.5px !important;
+    line-height: 1.48 !important;
+  }
 }

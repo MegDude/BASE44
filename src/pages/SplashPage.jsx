@@ -345,6 +345,16 @@ export default function SplashPage() {
       <SplashNavigation isOpen={mobileNavOpen} setIsOpen={setMobileNavOpen} />
 
       {!showIntro && (
+        <Link
+          to="/map?mode=resident&tab=map&filter=All"
+          className="dp-story-narrative-skip"
+          aria-label="Skip story and open resident map"
+        >
+          Skip story
+        </Link>
+      )}
+
+      {!showIntro && (
         <>
           <aside className="dp-fixed-story-steps" aria-label="Intro story states">
             <ol>

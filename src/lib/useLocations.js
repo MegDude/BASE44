@@ -512,7 +512,7 @@ const brandPartnerPlaces = [
     partnerInsight: "Strongest around move-in packets, lobby QR placements, seasonal home resets, and premium tower audiences.",
     audience: "Downtown residents, relocation prospects, property teams, and homeowners planning a home upgrade.",
     image: "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png",
-    related: ["priority-the-austonian", "priority-the-shore", "priority-the-bowie", "priority-the-waterline"],
+    related: ["priority-the-austonian", "property-the-shore", "priority-the-bowie", "priority-the-waterline"],
     mapLayer: "Inspired Closets Austin",
     datasetLayer: "Inspired Closets Austin",
     tags: ["Inspired Closets Austin", "Residential Services", "Move-In", "Home Organization", "Congress", "Property"],
@@ -614,7 +614,7 @@ const brandPartnerPlaces = [
     partnerInsight: "Strongest around arrival, resident onboarding, guest orientation, nearby dining, and Rainey district activity.",
     audience: "Residents, guests, prospects, property teams, office users, and hospitality partners.",
     image: "/images/imported/perks/waterline-hero.webp",
-    related: ["event-waterline-preview", "partner-emmer-rye", "partner-hotel-van-zandt", "priority-the-shore"],
+    related: ["event-waterline-preview", "partner-emmer-rye", "partner-hotel-van-zandt", "property-the-shore"],
     mapLayer: "The Waterline",
     datasetLayer: "The Waterline",
     tags: ["The Waterline", "Rainey", "Property", "Arrival", "Resident Value", "Hospitality"],
@@ -665,7 +665,7 @@ const brandPartnerPlaces = [
     partnerInsight: "Best when prospects compare the building and the block together: nearby dining, events, perks, and daily utility.",
     audience: "Relocation prospects, downtown renters, buyers, residents, and hotel guests considering a move.",
     image: "/pins/downtown-perks/legends-logo.png",
-    related: ["priority-the-waterline", "priority-the-independent", "priority-the-austonian", "priority-the-shore"],
+    related: ["priority-the-waterline", "priority-the-independent", "priority-the-austonian", "property-the-shore"],
     mapLayer: "Legends",
     datasetLayer: "Legends",
     tags: ["Legends", "Listings", "MLS", "Real Estate"],
@@ -914,6 +914,7 @@ function isExcludedMapLocation(item) {
   if (Number.isFinite(osmId) && EXCLUDED_MAP_LOCATION_OSM_IDS.has(osmId)) return true;
   const name = String(item.name || item.title || "").trim().toLowerCase();
   if (name === "lakeside apartmments") return true;
+  if (name === "the shore" && String(item.id || "").toLowerCase() !== "property-the-shore") return true;
   return false;
 }
 

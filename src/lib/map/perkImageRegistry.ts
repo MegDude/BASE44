@@ -59,8 +59,8 @@ export const perkImageRegistry: Record<string, string> = {
 };
 
 export const categoryImageFallbacks: Record<string, string> = {
-  property: "/images/map-entities/perks/independent_residential_1779052707992.png",
-  residential: "/images/map-entities/perks/independent_residential_1779052707992.png",
+  property: "/images/reports/the-independent-austin-tower.jpg",
+  residential: "/images/reports/the-independent-austin-tower.jpg",
   hotel: "/images/map-entities/perks/partner_hotel_rooftop_1779052803267.png",
   hospitality: "/images/map-entities/perks/partner_hotel_rooftop_1779052803267.png",
   event: "/images/map-entities/perks/neon_night_market_1779052637850.png",

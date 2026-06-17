@@ -2,7 +2,10 @@ import { FOUR_SEASONS_WEEK_CAMPAIGN } from "./fourSeasonsExperience";
 
 const CAMPAIGN_IMAGE = "/images/imported/perks/downtown-dining-patio.png";
 const SUGAR_WOLF_IMAGE = "/images/campaigns/sugar-wolf.png";
-const WELLNESS_IMAGE = "/images/imported/perks/running-on-trail.png";
+const WELLNESS_IMAGE = "/images/campaigns/wellness-week/yoga-outside.avif";
+const WELLNESS_PIN_IMAGE = "/images/campaigns/wellness-week/trail-walking.webp";
+const WELLNESS_ROUTE_IMAGE = "/images/campaigns/wellness-week/running-on-trail.avif";
+const WELLNESS_RECOVERY_IMAGE = "/images/campaigns/wellness-week/spa.avif";
 const ROOFTOP_IMAGE = "/images/residents/downtown-rooftop-evening.png";
 
 export const mapNativeCampaigns = [
@@ -194,6 +197,12 @@ export const mapNativeCampaigns = [
     campaignColor: "#C8A96A",
     image: WELLNESS_IMAGE,
     imageUrl: WELLNESS_IMAGE,
+    primaryImage: WELLNESS_IMAGE,
+    panelImage: WELLNESS_IMAGE,
+    heroImage: WELLNESS_IMAGE,
+    pinImage: WELLNESS_PIN_IMAGE,
+    thumbnail: WELLNESS_PIN_IMAGE,
+    galleryImages: [WELLNESS_IMAGE, WELLNESS_PIN_IMAGE, WELLNESS_ROUTE_IMAGE, WELLNESS_RECOVERY_IMAGE],
     primaryAction: "Join Wellness Week",
     secondaryAction: "Show Activities",
     rewardLabel: "Complete 3 wellness stops",
