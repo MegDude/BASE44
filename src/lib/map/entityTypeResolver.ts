@@ -85,7 +85,7 @@ export function resolveEntityType(entity: Record<string, unknown>): EntityType {
 
   if (name.includes("pleblab")) return "commercial";
 
-  throw new Error(`Entity normalization failed: missing valid entity type for ${entity.name || entity.title || entity.id}`);
+  return "property";
 }
 
 export function resolveDrawer(entityType: EntityType): string {

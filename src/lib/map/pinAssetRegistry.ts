@@ -10,6 +10,7 @@ export type PinVariant =
   | "happy-hour"
   | "civic"
   | "retail"
+  | "parking"
   | "mobility"
   | "park"
   | "culture"
@@ -44,6 +45,7 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   "happy-hour": { label: "Happy Hour", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/><path d="M4 5l1 2 2 .3-1.5 1.4.4 2.1L4 9.8l-1.9 1 .4-2.1L1 7.3 3 7l1-2Z"/>') },
   civic: { label: "Civic", glyph: icon('<path d="M3 10h18"/><path d="M5 10l7-6 7 6"/><path d="M6 10v9M10 10v9M14 10v9M18 10v9"/><path d="M4 21h16"/>') },
   retail: { label: "Retail", glyph: icon('<path d="M6 8h12l-1 13H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/><path d="M8 13h8"/>') },
+  parking: { label: "Parking", glyph: icon('<path d="M6 21V4h8a5 5 0 0 1 0 10H6"/><path d="M6 14h8"/><path d="M10 8h4"/>') },
   mobility: { label: "Mobility", glyph: icon('<path d="M5 16h14"/><path d="M7 16l2-8h6l2 8"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M10 11h4"/>') },
   park: { label: "Park", glyph: icon('<path d="M12 21v-8"/><path d="M8 13h8"/><path d="M7 13a5 5 0 1 1 10 0"/><path d="M5 21h14"/>') },
   culture: { label: "Art & Culture", glyph: icon('<path d="M4 20h16"/><path d="M6 20V9l6-5 6 5v11"/><path d="M9 20v-6h6v6"/><path d="M9 10h6"/>') },

@@ -1,3 +1,6 @@
+import { DOWNTOWN_CORE_RESTAURANT_RECORDS } from "./downtownCoreRestaurantPerks";
+import { FOUR_SEASONS_EXPERIENCE_ENTITIES } from "./fourSeasonsExperience";
+
 const DEFAULT_IMAGE = "/images/imported/perks/places-nearby.png";
 const PROPERTY_IMAGE = "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png";
 const VENUE_IMAGE = "/images/imported/perks/downtown-dining-patio.png";
@@ -42,6 +45,10 @@ function entity({
   summary,
   offer,
   image,
+  imageUrl,
+  imageStrategy,
+  imageSourceUrl,
+  secondaryImageSourceUrl,
   brand,
   pinKey,
   website,
@@ -67,6 +74,21 @@ function entity({
   hours,
   perk,
   knownFor,
+  priceLabel,
+  shortTitle,
+  perkTitle,
+  perkLabel,
+  perkDescription,
+  perkFinePrint,
+  cardEyebrow,
+  cardTitle,
+  cardDescription,
+  drawerHeadline,
+  drawerBody,
+  bestFor,
+  primaryCTA,
+  secondaryCTA,
+  terms,
   pricing,
   membership,
   opportunityScore,
@@ -75,8 +97,10 @@ function entity({
   residentQuickFacts,
   residentDrawer,
   campaigns,
+  ...rest
 }) {
   return {
+    ...rest,
     id,
     name: name || title,
     title: title || name,
@@ -90,12 +114,31 @@ function entity({
     category_key,
     latitude,
     longitude,
-    image: image || DEFAULT_IMAGE,
+    image: image || imageUrl || DEFAULT_IMAGE,
+    imageUrl: imageUrl || image,
+    imageStrategy,
+    imageSourceUrl,
+    secondaryImageSourceUrl,
     district,
     neighborhood,
     address: address || `${district || "Downtown Austin"}, Austin TX, 78701`,
     summary,
     description,
+    shortTitle,
+    priceLabel,
+    perkTitle,
+    perkLabel,
+    perkDescription,
+    perkFinePrint,
+    cardEyebrow,
+    cardTitle,
+    cardDescription,
+    drawerHeadline,
+    drawerBody,
+    bestFor,
+    primaryCTA,
+    secondaryCTA,
+    terms,
     campaignObjective,
     partnerInsight,
     audience,
@@ -156,6 +199,8 @@ function entity({
 }
 
 export const supplementalMapEntities = [
+  ...DOWNTOWN_CORE_RESTAURANT_RECORDS.map((record) => entity(record)),
+  ...FOUR_SEASONS_EXPERIENCE_ENTITIES.map((record) => entity(record)),
   entity({
     id: "legends-real-estate-202-nueces-st-1501",
     name: "202 Nueces ST # 1501",

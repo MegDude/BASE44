@@ -191,7 +191,7 @@ export default function VenuesPartner() {
                   </div>
                   <div className="flex-1 p-5 space-y-4 overflow-y-auto">
                     <div className="grid grid-cols-4 gap-2">
-                      {[{ l: "Views", v: venue.views }, { l: "Saves", v: venue.saves }, { l: "Visits", v: venue.visits }, { l: "Redeem", v: venue.redemptions }].map((s, i) => (
+                      {[{ l: "Views", v: venue.views }, { l: "Saves", v: venue.saves }, { l: "Visits", v: venue.visits }, { l: "Redemptions", v: venue.redemptions }].map((s, i) => (
                         <div key={i} className="p-2.5 rounded-lg bg-muted/30 border border-border/40 text-center">
                           <div className="font-heading text-lg font-medium text-foreground">{s.v}</div>
                           <div className="text-[10px] text-muted-foreground mt-0.5">{s.l}</div>

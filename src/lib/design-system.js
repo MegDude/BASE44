@@ -30,12 +30,12 @@ export const SPACING = {
   denseVertical: "py-8 md:py-12",
 
   // Horizontal padding
-  pagePaddingX: "px-6 md:px-8",
-  sectionPaddingX: "px-6",
+  pagePaddingX: "px-4 sm:px-6 lg:px-8",
+  sectionPaddingX: "px-4 sm:px-6 lg:px-8",
 
   // Container widths
-  containerMax: "max-w-6xl",
-  containerWide: "max-w-6xl",
+  containerMax: "max-w-7xl",
+  containerWide: "max-w-7xl",
   containerMedium: "max-w-4xl",
   containerNarrow: "max-w-2xl",
 

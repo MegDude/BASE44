@@ -28,6 +28,13 @@ const PartnerCivic = lazy(() => import("./pages/partners/Civic"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
 const PartnerRolePage = lazy(() => import("./pages/partners/RolePage"));
+const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
+const ResidentApp = lazy(() => import("./pages/resident-app"));
+const ExplorePage = lazy(() => import("./pages/downtown-perks/Explore"));
+const EventsPage = lazy(() => import("./pages/downtown-perks/Events"));
+const PerksPage = lazy(() => import("./pages/downtown-perks/PerksPage"));
+const CardPage = lazy(() => import("./pages/downtown-perks/PerksCard"));
+const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 
 function MarketingFallback() {
   return (
@@ -83,6 +90,54 @@ function ProductRoutes() {
           <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
 
           <Route path="/map" element={<MapPage />} />
+          <Route
+            path="/ask-map"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <AskMapAgent />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/residents"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <ResidentApp />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <ExplorePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <EventsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/perks"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PerksPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/card"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <CardPage />
+              </Suspense>
+            }
+          />
 
           {/* Partner platform */}
           <Route
@@ -144,6 +199,14 @@ function ProductRoutes() {
             }
           />
           <Route
+            path="/partners/directory"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerBrands />
+              </Suspense>
+            }
+          />
+          <Route
             path="/partners/civic"
             element={
               <Suspense fallback={<MarketingFallback />}>
@@ -187,6 +250,14 @@ function ProductRoutes() {
             }
           />
           <Route
+            path="/partners/happy-hours"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerHappyHours />
+              </Suspense>
+            }
+          />
+          <Route
             path="/partners/:role"
             element={
               <Suspense fallback={<MarketingFallback />}>
@@ -195,6 +266,7 @@ function ProductRoutes() {
             }
           />
           <Route path="/partners/reports" element={<Dashboard />} />
+          <Route path="/partners/reporting" element={<Dashboard />} />
           <Route path="/partners/analytics" element={<Dashboard />} />
           <Route path="/partners/map" element={<MapPage />} />
           <Route path="/partners/workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
@@ -205,6 +277,7 @@ function ProductRoutes() {
           <Route path="/partner-workspace/map" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/offers" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/perks" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/parking" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/events" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/sources" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/profile" element={<PartnerWorkspace />} />

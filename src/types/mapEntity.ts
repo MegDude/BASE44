@@ -15,3 +15,4 @@ export type EntityType =
   | "service"
   | "commercial";
 
+export type SurfaceContext = "resident" | "partner" | "admin" | "public";

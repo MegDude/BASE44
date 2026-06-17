@@ -170,10 +170,10 @@ export default function Home() {
 
   return (
     <main className="bg-white text-[#0B1F33]">
-      <section className="relative overflow-hidden px-5 pb-14 pt-28 md:pb-20">
+      <section className="relative overflow-hidden pb-14 pt-28 md:pb-20">
         <div className="pointer-events-none absolute left-[6%] top-28 h-56 w-56 rounded-full bg-white/76 blur-3xl" aria-hidden="true" />
         <div className="pointer-events-none absolute right-[10%] top-20 h-72 w-72 rounded-full bg-white/74 blur-[80px]" aria-hidden="true" />
-        <div className="relative mx-auto max-w-6xl">
+        <div className="relative dp-layout-shell">
           <div className="max-w-3xl">
             <div>
               <span className="dp-label mb-4 block">{hero.eyebrow}</span>
@@ -194,8 +194,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-12 md:py-16">
-        <div className="mx-auto max-w-6xl">
+      <section className="py-12 md:py-16">
+        <div className="dp-layout-shell">
           {!isPartner ? (
             <>
               <div className="mb-7 max-w-2xl">
@@ -212,7 +212,7 @@ export default function Home() {
               <DowntownPerksHowItWorks
                 id="resident-how-it-works"
                 initialStep={2}
-                className="-mx-5 mt-4 px-5 pb-0 pt-8 md:-mx-8 md:px-8 md:pt-10"
+                className="mt-4 pb-0 pt-8 md:pt-10"
               />
             </>
           ) : (
@@ -263,11 +263,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="pricing" className="relative overflow-hidden bg-white px-5 py-12 text-[#0B1F33] shadow-[0_-18px_60px_rgba(11,31,51,0.045),0_0_44px_rgba(200,169,106,0.045)] md:py-16">
+      <section id="pricing" className="relative overflow-hidden bg-white py-12 text-[#0B1F33] shadow-[0_-18px_60px_rgba(11,31,51,0.045),0_0_44px_rgba(200,169,106,0.045)] md:py-16">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent)]" aria-hidden="true" />
         <div className="pointer-events-none absolute -left-16 top-1/2 h-56 w-56 -translate-y-1/2 bg-white/8 blur-3xl" aria-hidden="true" />
         <div className="pointer-events-none absolute right-[8%] top-0 h-40 w-40 bg-white/6 blur-3xl" aria-hidden="true" />
-        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="dp-layout-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="relative">
             <span className="dp-label mb-3 block">Pricing</span>
             <h2 className="font-heading text-3xl font-medium">
@@ -301,8 +301,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-12 md:py-16">
-        <div className="mx-auto max-w-6xl">
+      <section className="py-12 md:py-16">
+        <div className="dp-layout-shell">
           <div className="mb-7 max-w-2xl">
             <span className="dp-label mb-3 block">{isPartner ? "Partner questions" : "Resident questions"}</span>
             <h2 className="font-heading text-3xl font-medium">FAQs</h2>
@@ -326,9 +326,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="relative px-5 py-12 md:py-16">
+      <section id="contact" className="relative py-12 md:py-16">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(11,31,51,0.08),transparent)]" aria-hidden="true" />
-        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="dp-layout-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <span className="dp-label mb-3 block">{isPartner ? "Get started" : "Ready When You Are"}</span>
             <h2 className="font-heading text-3xl font-medium">

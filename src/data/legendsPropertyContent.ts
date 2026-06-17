@@ -98,7 +98,52 @@ export const legendsPropertyContent: LegendsProperty[] = [
   property("bartonplace", "BartonPlace", "1600 Barton Springs Rd", "Zilker"),
 ];
 
-export function getLegendsPropertyContent(idOrName: string): LegendsProperty | undefined {
-  const key = idOrName.toLowerCase();
-  return legendsPropertyContent.find((item) => item.id === key || item.buildingName.toLowerCase() === key || item.entityAliases.some((alias) => alias.toLowerCase() === key));
+function normalizeLegendsPropertyKey(value: unknown): string {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function legendsPropertyCandidates(input: unknown): string[] {
+  if (!input || typeof input !== "object") return [normalizeLegendsPropertyKey(input)].filter(Boolean);
+  const record = input as Record<string, any>;
+  const raw = (record.raw || {}) as Record<string, any>;
+  const rental = (record.rentalListing || raw.rentalListing || {}) as Record<string, any>;
+  const legendsListing = (record.legendsListing || raw.legendsListing || {}) as Record<string, any>;
+  return [
+    record.id,
+    record.name,
+    record.title,
+    record.building,
+    record.buildingName,
+    record.address,
+    raw.id,
+    raw.name,
+    raw.title,
+    raw.building,
+    raw.buildingName,
+    raw.address,
+    rental.id,
+    rental.building,
+    rental.address,
+    legendsListing.id,
+    legendsListing.building,
+    legendsListing.buildingName,
+    legendsListing.address,
+  ].map(normalizeLegendsPropertyKey).filter(Boolean);
+}
+
+export function getLegendsPropertyContent(idOrName: unknown): LegendsProperty | undefined {
+  const keys = legendsPropertyCandidates(idOrName);
+  return legendsPropertyContent.find((item) => {
+    const itemKeys = [
+      item.id,
+      item.buildingName,
+      item.address,
+      ...item.entityAliases,
+    ].map(normalizeLegendsPropertyKey);
+    return itemKeys.some((itemKey) => keys.some((key) => key === itemKey || key.includes(itemKey) || itemKey.includes(key)));
+  });
 }

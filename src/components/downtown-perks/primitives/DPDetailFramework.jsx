@@ -375,7 +375,7 @@ export function DPScheduleSessions({
   );
 }
 
-export function DPParkingReservation({ item, mode = "resident", onReserve, onEditInventory }) {
+export function DPParkingReservation({ item, mode = "resident", onReserve, onEditInventory, onDirections }) {
   const [selectedSlotId, setSelectedSlotId] = useState(item?.timeSlots?.[0]?.id || "");
   const [selectedType, setSelectedType] = useState(item?.spotTypes?.[0] || "");
   const [selectedFloor, setSelectedFloor] = useState(item?.floors?.[0] || "");
@@ -511,7 +511,7 @@ export function DPParkingReservation({ item, mode = "resident", onReserve, onEdi
           </button>
         )}
 
-        <button className="dp-button dp-button-secondary" type="button">
+        <button className="dp-button dp-button-secondary" type="button" onClick={() => onDirections?.(item)}>
           Directions
         </button>
       </div>

@@ -10,6 +10,11 @@ import { waterlooParkCampaignPins } from "../data/waterlooParkCampaignPins";
 import { daaTourStops } from "../data/daaArtParksTour";
 import { legendsListingPlaces } from "../data/legendsListings";
 import { rentalListings } from "../data/rentalListings";
+import { mapNativeCampaigns } from "../data/mapNativeCampaigns";
+import { civicDiscoveryEntities } from "../data/civicDiscoveryNetwork";
+import { getDowntownCoreRestaurantUpdate } from "../data/downtownCoreRestaurantPerks";
+import { getFourSeasonsExperienceUpdate } from "../data/fourSeasonsExperience";
+import { getLegendsResidentialExperience } from "../data/legendsResidentialExperience";
 import { getHappyHourPlaces } from "./happyHours";
 import { enrichWithArchiveLocationContext } from "./archiveLocationContext";
 import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
@@ -66,7 +71,7 @@ function parkingBookingPlace(item) {
     partnerType: "properties",
     markerType: "parking",
     detailDrawerType: "parking",
-    pinKey: "mobility",
+    pinKey: "parking",
     category: "Parking / Resident Perk",
     category_key: [
       "parking",
@@ -104,6 +109,7 @@ function parkingBookingPlace(item) {
 }
 
 function rentalListingPlace(listing) {
+  const legendsResidentialExperience = getLegendsResidentialExperience(listing);
   const sqftDisplay = listing.sqft ? `${Number(listing.sqft).toLocaleString()} sqft` : "";
   const facts = [
     listing.priceLabel,
@@ -121,11 +127,18 @@ function rentalListingPlace(listing) {
     sourceType: "rental",
     markerType: "rental",
     detailDrawerType: "rental",
-    pinKey: "residential",
-    category: "Rental / Residential",
+    pinKey: "legends",
+    brand: "Legends Real Estate",
+    category: "Legends Residential / Rental",
     category_key: [
+      "legends",
+      "legends real estate",
       "rental",
       "residential",
+      "residential intelligence",
+      "building",
+      "lifestyle",
+      "neighborhood",
       "leasing",
       "apartment",
       "condo",
@@ -146,7 +159,7 @@ function rentalListingPlace(listing) {
     address: listing.address,
     summary: listing.description,
     description: listing.description,
-    image: "/images/buildings/lobby-to-street-arrival.png",
+    image: legendsResidentialExperience?.heroImage || "/images/buildings/lobby-to-street-arrival.png",
     price: listing.price,
     priceLabel: listing.priceLabel,
     beds: listing.beds,
@@ -160,8 +173,9 @@ function rentalListingPlace(listing) {
     amenities: listing.amenities,
     nearbyPerks: listing.nearbyPerks,
     rentalListing: listing,
-    source: "Downtown Perks rental listing layer",
-    tags: ["Rentals", "Residential", listing.building, listing.neighborhood, listing.mls, ...listing.highlights, ...listing.amenities, ...listing.nearbyPerks],
+    legendsResidentialExperience,
+    source: "Legends Real Estate residential intelligence layer",
+    tags: ["Legends", "Rentals", "Residential", "Residential Intelligence", listing.building, listing.neighborhood, listing.mls, ...listing.highlights, ...listing.amenities, ...listing.nearbyPerks],
   };
 }
 
@@ -980,7 +994,7 @@ export function useLocations() {
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...brandPartnerPlaces, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...downtownPerksGoogleListImport, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...downtownPerksGoogleListImport, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.pinKey === "civic")
     .map((item, i) => {
@@ -989,6 +1003,8 @@ export function useLocations() {
       const isStandardProof = String(item.name || "").toLowerCase().includes("standard proof whiskey");
       const isAntones = /\bantone'?s\b/i.test(`${item.name || ""} ${item.slug || item.id || ""}`);
       const isStAugustine = String(item.name || "").trim().toLowerCase() === "augustine";
+      const downtownCoreRestaurantUpdate = getDowntownCoreRestaurantUpdate(item);
+      const fourSeasonsExperienceUpdate = getFourSeasonsExperienceUpdate(item);
       const normalizedItem = {
         ...item,
         id: stableRawLocationId(item, i),
@@ -1080,6 +1096,8 @@ export function useLocations() {
               website: "https://www.standardproofwhiskey.com/rainey-street",
             }
           : {}),
+        ...(downtownCoreRestaurantUpdate || {}),
+        ...(fourSeasonsExperienceUpdate || {}),
       };
       const entity = normalizeEntity(enrichWithArchiveLocationContext(normalizedItem), i);
 
@@ -1087,6 +1105,79 @@ export function useLocations() {
 
       return {
         ...entity,
+        ...(downtownCoreRestaurantUpdate
+          ? {
+              shortTitle: downtownCoreRestaurantUpdate.shortTitle,
+              summary: downtownCoreRestaurantUpdate.summary,
+              description: downtownCoreRestaurantUpdate.description,
+              subcategory: downtownCoreRestaurantUpdate.subcategory,
+              neighborhood: downtownCoreRestaurantUpdate.neighborhood,
+              priceLabel: downtownCoreRestaurantUpdate.priceLabel,
+              imageUrl: downtownCoreRestaurantUpdate.imageUrl,
+              imageStrategy: downtownCoreRestaurantUpdate.imageStrategy,
+              imageSourceUrl: downtownCoreRestaurantUpdate.imageSourceUrl,
+              secondaryImageSourceUrl: downtownCoreRestaurantUpdate.secondaryImageSourceUrl,
+              perk: downtownCoreRestaurantUpdate.perk,
+              hasPerk: downtownCoreRestaurantUpdate.hasPerk,
+              deals_offers: downtownCoreRestaurantUpdate.deals_offers,
+              specials: downtownCoreRestaurantUpdate.specials,
+              terms: downtownCoreRestaurantUpdate.terms,
+              offer: downtownCoreRestaurantUpdate.offer,
+              cardEyebrow: downtownCoreRestaurantUpdate.cardEyebrow,
+              cardTitle: downtownCoreRestaurantUpdate.cardTitle,
+              cardDescription: downtownCoreRestaurantUpdate.cardDescription,
+              drawerHeadline: downtownCoreRestaurantUpdate.drawerHeadline,
+              drawerBody: downtownCoreRestaurantUpdate.drawerBody,
+              bestFor: downtownCoreRestaurantUpdate.bestFor,
+              primaryAction: downtownCoreRestaurantUpdate.primaryAction,
+              secondaryAction: downtownCoreRestaurantUpdate.secondaryAction,
+              tags: downtownCoreRestaurantUpdate.tags,
+              searchKeywords: downtownCoreRestaurantUpdate.searchKeywords,
+              residentSearchIntents: downtownCoreRestaurantUpdate.residentSearchIntents,
+              residentDrawer: downtownCoreRestaurantUpdate.residentDrawer,
+              raw: {
+                ...entity.raw,
+                ...downtownCoreRestaurantUpdate,
+              },
+            }
+          : {}),
+        ...(fourSeasonsExperienceUpdate
+          ? {
+              shortTitle: fourSeasonsExperienceUpdate.shortTitle,
+              summary: fourSeasonsExperienceUpdate.summary,
+              description: fourSeasonsExperienceUpdate.description,
+              subcategory: fourSeasonsExperienceUpdate.subcategory,
+              neighborhood: fourSeasonsExperienceUpdate.neighborhood,
+              imageUrl: fourSeasonsExperienceUpdate.imageUrl,
+              cardEyebrow: fourSeasonsExperienceUpdate.cardEyebrow,
+              cardTitle: fourSeasonsExperienceUpdate.cardTitle,
+              cardDescription: fourSeasonsExperienceUpdate.cardDescription,
+              drawerHeadline: fourSeasonsExperienceUpdate.drawerHeadline,
+              whyResidentsSaveThis: fourSeasonsExperienceUpdate.whyResidentsSaveThis,
+              whyItMatters: fourSeasonsExperienceUpdate.whyItMatters,
+              includedExperiences: fourSeasonsExperienceUpdate.includedExperiences,
+              whatYouMightUnlock: fourSeasonsExperienceUpdate.whatYouMightUnlock,
+              includedCategories: fourSeasonsExperienceUpdate.includedCategories,
+              goodToKnow: fourSeasonsExperienceUpdate.goodToKnow,
+              bestFor: fourSeasonsExperienceUpdate.bestFor,
+              localInsight: fourSeasonsExperienceUpdate.localInsight,
+              nearbyHighlights: fourSeasonsExperienceUpdate.nearbyHighlights,
+              residentQuestions: fourSeasonsExperienceUpdate.residentQuestions,
+              relatedExperiences: fourSeasonsExperienceUpdate.relatedExperiences,
+              included: fourSeasonsExperienceUpdate.included,
+              primaryAction: fourSeasonsExperienceUpdate.primaryAction,
+              secondaryAction: fourSeasonsExperienceUpdate.secondaryAction,
+              tertiaryAction: fourSeasonsExperienceUpdate.tertiaryAction,
+              tags: fourSeasonsExperienceUpdate.tags,
+              searchKeywords: fourSeasonsExperienceUpdate.searchKeywords,
+              residentSearchIntents: fourSeasonsExperienceUpdate.residentSearchIntents,
+              analytics: fourSeasonsExperienceUpdate.analytics,
+              raw: {
+                ...entity.raw,
+                ...fourSeasonsExperienceUpdate,
+              },
+            }
+          : {}),
         category_key: normalizedItem.category_key,
       };
     })

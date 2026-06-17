@@ -248,7 +248,7 @@ export default function BrandsPartner() {
                 {[
                   ["Scans", activePoint.scans],
                   ["Saves", activePoint.saves],
-                  ["Redeem", activePoint.redemptions],
+                  ["Redemptions", activePoint.redemptions],
                 ].map(([label, value]) => (
                   <div key={label} className="rounded-md border border-[#0B1F33]/8 bg-white p-3 text-center">
                     <div className="text-[16px] font-semibold text-[#0B1F33]">{value}</div>

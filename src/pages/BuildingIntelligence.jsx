@@ -162,7 +162,7 @@ export default function BuildingIntelligence() {
                   to="/map?mode=resident&tab=pass"
                   className="inline-flex h-10 items-center gap-2 rounded-[3px] bg-[#0B1F33] px-4 text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#0B1F33]"
                 >
-                  Resident card
+                  Resident Pass
                   <CreditCard className="h-4 w-4" />
                 </Link>
                 <button

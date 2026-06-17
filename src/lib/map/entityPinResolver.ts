@@ -10,6 +10,7 @@ const CATEGORY_PIN_MAP: Array<[PinVariant, string[]]> = [
   ["residential", ["residential property", "residential", "apartment", "condo"]],
   ["dining", ["restaurant / food", "restaurant", "food", "dining"]],
   ["retail", ["retail / business", "retail", "shop", "store"]],
+  ["parking", ["parking", "garage", "reservable parking", "resident parking"]],
   ["wellness", ["wellness / recreation", "wellness", "recreation", "fitness"]],
   ["guide", ["other relevant listing", "local guide", "guide"]],
 ];
@@ -26,7 +27,8 @@ const PIN_MATCHERS: Array<[PinVariant, string[]]> = [
   ["event", ["event", "activation", "rsvp", "festival"]],
   ["civic", ["civic", "public", "government", "district"]],
   ["retail", ["retail", "shop", "store", "eyewear", "apparel", "boutique", "market"]],
-  ["mobility", ["mobility", "transit", "parking"]],
+  ["parking", ["parking", "garage", "reservable parking", "resident parking"]],
+  ["mobility", ["mobility", "transit"]],
   ["park", ["park", "outdoors", "trail", "lake"]],
   ["culture", ["art", "culture", "gallery", "museum"]],
   ["brand", ["brand", "sponsor", "partner"]],
@@ -100,7 +102,11 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
     .join(" ")
     .toLowerCase();
   if (entityTypeText.includes("happy_hour") || entityTypeText.includes("happy hour")) return getPinAsset("happy-hour");
+  if (entityTypeText.includes("parking")) return getPinAsset("parking");
   if (entityTypeText.includes("event")) return getPinAsset("event");
+  if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => entityText(entity).includes(token)))?.[0] === "legends") {
+    return getPinAsset("legends");
+  }
   if (hasResidentialSignal(entity)) return getPinAsset("residential");
   if (hasVenueSignal(entity) && /\b(antone'?s|nightclub|live music|music venue|art|culture|gallery|museum)\b/.test(entityText(entity))) return getPinAsset("culture");
   if (hasVenueSignal(entity) && /\b(bar|nightlife|cocktail|pub|club|lounge|beer)\b/.test(entityText(entity))) return getPinAsset("nightlife");
@@ -120,10 +126,6 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
-
-  if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => text.includes(token)))?.[0] === "legends") {
-    return getPinAsset("legends");
-  }
 
   if (/\b(in[\s-]?kind|dining credit|restaurant credit|dining perk)\b/.test(text)) {
     return getPinAsset("inkind");

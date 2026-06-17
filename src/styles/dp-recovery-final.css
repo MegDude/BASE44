@@ -13,6 +13,103 @@
     0 20px 60px rgba(255, 255, 255, 0.94);
 }
 
+/* Resident Pass V10.1: credential surface, not a dashboard feed. */
+html body #root .dp-map-page.dp-map-page .dp-pass-panel .dp-panel-header {
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding-block: 6px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-panel-body {
+  display: grid !important;
+  align-content: start !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-panel :is(.dp-pass-image-rail, .dp-pass-image-card, .dp-pass-metric-strip, .dp-pass-resident-card) {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-resident-pass-identity,
+html body #root .dp-map-page.dp-map-page .dp-pass-qr-hero,
+html body #root .dp-map-page.dp-map-page .dp-pass-editorial-section,
+html body #root .dp-map-page.dp-map-page .dp-pass-refund-note {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-resident-pass-identity,
+html body #root .dp-map-page.dp-map-page .dp-pass-editorial-section,
+html body #root .dp-map-page.dp-map-page .dp-pass-refund-note {
+  padding: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-qr-hero {
+  min-height: 0 !important;
+  padding: 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-story {
+  margin: 4px 0 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 23px !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-meaning {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-status-list {
+  display: grid !important;
+  gap: 7px !important;
+  margin-top: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-status-list span,
+html body #root .dp-map-page.dp-map-page .dp-pass-featured-benefit .dp-pass-meaning {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-status-list strong,
+html body #root .dp-map-page.dp-map-page .dp-pass-featured-benefit strong {
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-status-list em,
+html body #root .dp-map-page.dp-map-page .dp-pass-featured-benefit span {
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  text-align: right !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-refund-note {
+  background: rgba(247, 248, 251, 0.74) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-action-stack {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-pass-action-stack .dp-pass-action {
+  min-height: 48px !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+}
+
 /* Final map console governance: lightweight operating control, not a dashboard. */
 html body #root .dp-map-page.dp-map-page .dp-map-search-surface.dp-map-search-shell[aria-label="Map command console"] {
   width: 340px !important;
@@ -19008,7 +19105,7 @@ html body #root .dp-map-page.dp-map-page .dp-console-entity-title {
 
 html body #root .dp-map-page.dp-map-page .dp-console-entity-meta {
   margin: 0 !important;
-  color: rgba(11, 31, 51, 0.62) !important;
+  color: #132238 !important;
   font-size: 12px !important;
   font-weight: 600 !important;
   line-height: 1.35 !important;
@@ -27128,4 +27225,4206 @@ html body #root .dp-map-page.dp-map-page .dp-map-audience-tab[aria-selected="tru
   html body #root .dp-map-page.dp-map-page .dp-map-search-surface.dp-map-search-shell[aria-label="Map command console"] .dp-map-search-inner {
     max-height: min(40dvh, 300px) !important;
   }
+}
+
+/* Product map search console V10.1: compact map control, not a marketing hero. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+  position: fixed !important;
+  top: 12px !important;
+  left: 12px !important;
+  right: 12px !important;
+  z-index: 50 !important;
+  width: auto !important;
+  max-width: none !important;
+  pointer-events: auto !important;
+  margin: 0 !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+    left: 16px !important;
+    right: auto !important;
+    width: 340px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+    width: 360px !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] .dp-map-search-panel {
+  display: flex !important;
+  max-height: 42vh !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  padding: 12px !important;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.08) !important;
+  font-family: Inter, sans-serif !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] .dp-map-search-panel {
+    max-height: 320px !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-mode-row,
+html body #root .dp-map-page.dp-map-page .dp-console-compact-header,
+html body #root .dp-map-page.dp-map-page .dp-map-search-expanded,
+html body #root .dp-map-page.dp-map-page .dp-console-controls {
+  display: flex !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-mode-row,
+html body #root .dp-map-page.dp-map-page .dp-map-search-expanded,
+html body #root .dp-map-page.dp-map-page .dp-console-controls {
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-compact-header {
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-title {
+  margin: 3px 0 0 !important;
+  color: #0B1F33 !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-signal {
+  margin: 3px 0 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11.5px !important;
+  font-weight: 550 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-search-form {
+  display: flex !important;
+  min-height: 42px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  padding: 0 8px !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-icon-button,
+html body #root .dp-map-page.dp-map-page .dp-console-submit {
+  display: inline-flex !important;
+  min-height: 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-icon-button {
+  width: 34px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-submit {
+  border: 1px solid #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  padding: 0 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-rail {
+  display: flex !important;
+  gap: 6px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip,
+html body #root .dp-map-page.dp-map-page .dp-console-scope-chip {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  min-height: 32px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip.is-active,
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip[aria-selected="true"] {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+/* Search console rebuild: map-native control, not an entity/content panel. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+  position: fixed !important;
+  top: 10px !important;
+  left: 10px !important;
+  right: 10px !important;
+  z-index: 680 !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+    left: 14px !important;
+    right: auto !important;
+    width: min(340px, calc(100vw - 28px)) !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] .dp-map-search-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  max-height: 40vh !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-compact-header,
+html body #root .dp-map-page.dp-map-page .dp-console-entity-preview,
+html body #root .dp-map-page.dp-map-page .dp-console-recommendation-row {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-rollup {
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  z-index: 3 !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-rollup:hover,
+html body #root .dp-map-page.dp-map-page .dp-console-rollup:focus-visible {
+  color: #0B1F33 !important;
+  outline: 1px solid rgba(11, 31, 51, 0.08) !important;
+  outline-offset: 1px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-mode-row {
+  width: fit-content !important;
+  max-width: calc(100% - 34px) !important;
+  display: flex !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-audience-tabs {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  min-height: 30px !important;
+  padding: 2px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-audience-tab {
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: #132238 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-audience-tab.is-active {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-expanded,
+html body #root .dp-map-page.dp-map-page .dp-console-controls {
+  display: flex !important;
+  min-width: 0 !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-search-form {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 8px 0 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-search-form input {
+  height: 42px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-search-form input::placeholder {
+  color: #132238 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-submit {
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-pulse-row {
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #132238 !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-pulse-row svg {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-rail {
+  display: flex !important;
+  gap: 6px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip,
+html body #root .dp-map-page.dp-map-page .dp-console-scope-chip {
+  height: 30px !important;
+  min-height: 30px !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  padding: 0 9px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: #132238 !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip svg {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip.is-active,
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip[aria-selected="true"] {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip.is-active svg,
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip[aria-selected="true"] svg {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface {
+  left: 10px !important;
+  right: auto !important;
+  bottom: calc(78px + env(safe-area-inset-bottom)) !important;
+  width: auto !important;
+  max-width: calc(100vw - 20px) !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 6px 18px rgba(11, 31, 51, 0.07) !important;
+}
+
+/* Final Map Console V10: operating layer hierarchy. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+  top: 10px !important;
+  left: 10px !important;
+  right: 10px !important;
+  width: auto !important;
+  max-width: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-family: Inter, sans-serif !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] {
+    left: 14px !important;
+    right: auto !important;
+    width: min(360px, calc(100vw - 28px)) !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-shell[aria-label="Map command console"] .dp-map-search-panel {
+  gap: 8px !important;
+  max-height: calc(100dvh - 132px) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-operating-header {
+  display: grid !important;
+  gap: 2px !important;
+  padding: 0 34px 0 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-operating-header span,
+html body #root .dp-map-page.dp-map-page .dp-console-selected-context > span,
+html body #root .dp-map-page.dp-map-page .dp-console-recommendation-card > span,
+html body #root .dp-map-page.dp-map-page .dp-console-rail-block > span {
+  color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-operating-header strong {
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1.24 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-selected-context,
+html body #root .dp-map-page.dp-map-page .dp-console-recommendation-card {
+  display: grid !important;
+  gap: 5px !important;
+  padding: 12px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-selected-context strong,
+html body #root .dp-map-page.dp-map-page .dp-console-recommendation-card strong {
+  color: #0B1F33 !important;
+  font-size: 16px !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.08 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-selected-context em,
+html body #root .dp-map-page.dp-map-page .dp-console-recommendation-card small {
+  color: #132238 !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: 1.22 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-selected-context p {
+  margin: 0 !important;
+  color: #132238 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-action-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 8px !important;
+  margin-top: 3px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-primary-action,
+html body #root .dp-map-page.dp-map-page .dp-console-secondary-action {
+  height: 40px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-primary-action {
+  border: 1px solid #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-secondary-action {
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-context-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-console-context-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-context-cell {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 3px !important;
+  padding: 9px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-context-cell svg {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-context-cell span {
+  color: #132238 !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-context-cell strong {
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.12 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-rail-block {
+  display: grid !important;
+  gap: 6px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-console-filter-chip,
+html body #root .dp-map-page.dp-map-page .dp-console-scope-chip {
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface.is-collapsed {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  min-height: 68px !important;
+  height: auto !important;
+  padding: 9px 10px !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 2px !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1.05 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-mode,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main small,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  color: #132238 !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  line-height: 1.1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-mode {
+  color: #C8A96A !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse svg {
+  color: #C8A96A !important;
+}
+
+/* Restore deployed compact console with updated Downtown Perks polish. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap {
+  width: min(100%, 460px) !important;
+  margin: 0 auto !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  position: relative !important;
+  display: grid !important;
+  gap: 12px !important;
+  max-height: min(42dvh, 238px) !important;
+  overflow: hidden !important;
+  padding: 14px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 14px 36px rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  position: static !important;
+  justify-self: end !important;
+  width: fit-content !important;
+  display: inline-flex !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  height: 34px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  color: #132238 !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button[aria-selected="true"] {
+  background: #F7F8FB !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  position: absolute !important;
+  top: 13px !important;
+  right: 12px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: #132238 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  display: grid !important;
+  gap: 8px !important;
+  padding-right: 34px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label svg {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  display: flex !important;
+  min-height: 36px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  min-width: 0 !important;
+  width: 100% !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  outline: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input::placeholder {
+  color: rgba(11, 31, 51, 0.52) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  width: 30px !important;
+  height: 30px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 6px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-controls {
+  display: flex !important;
+  gap: 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-controls::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-controls button {
+  flex: 0 0 auto !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 6px !important;
+  background: #FFFFFF !important;
+  color: #132238 !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-controls button.is-active {
+  background: #0B1F33 !important;
+  border-color: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-icon {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rail-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-top: 1px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-rail-kicker {
+  color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-rail-toggle {
+  border: 0 !important;
+  background: transparent !important;
+  color: #132238 !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-row {
+  display: none !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  color: #132238 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-row > span,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-row > strong {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-search-active-summary,
+  .dp-search-context-line,
+  .dp-search-result-chip-row,
+  .dp-map-answer-decision
+) {
+  display: none !important;
+}
+
+@media (max-width: 520px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap {
+    width: calc(100vw - 20px) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+    max-height: min(34dvh, 210px) !important;
+    padding: 12px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+    padding-right: 34px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+    padding: 0 8px !important;
+    font-size: 10.5px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+    font-size: 15px !important;
+  }
+}
+
+/* Apple-grade map surface polish: final visible-state corrections. */
+html body #root .dp-map-page.dp-map-page .dp-map-global-search-button {
+  position: absolute !important;
+  top: 0 !important;
+  right: 10px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-global-search-button span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  gap: 10px !important;
+  max-height: min(52dvh, 284px) !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.08) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  margin-right: 38px !important;
+  max-width: calc(100% - 44px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  min-width: 76px !important;
+  overflow: visible !important;
+  text-align: center !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  padding-right: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  min-height: 38px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 38px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input:focus,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input:focus-visible {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  gap: 8px !important;
+  padding-bottom: 1px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-controls button {
+  min-height: 36px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rail-header {
+  margin-top: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav {
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 26px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: 0 8px 26px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
+  border-radius: 8px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"] {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"] svg {
+  color: #C8A96A !important;
+}
+
+/* Final no-clipping console height lock. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  max-height: min(calc(100dvh - 188px), 320px) !important;
+  overflow-y: auto !important;
+}
+
+/* Final map command surface: compact, mobile-first, no venue/content-card chrome. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap {
+  position: fixed !important;
+  top: calc(12px + env(safe-area-inset-top)) !important;
+  left: 12px !important;
+  right: 12px !important;
+  bottom: auto !important;
+  z-index: 44 !important;
+  width: auto !important;
+  max-width: none !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  pointer-events: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-height: min(36dvh, 224px) !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #0B1F33 !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label,
+html body #root .dp-map-page.dp-map-page .dp-search-rail-header,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-mini-row,
+html body #root .dp-map-page.dp-map-page .dp-search-active-summary,
+html body #root .dp-map-page.dp-map-page .dp-search-context-line,
+html body #root .dp-map-page.dp-map-page .dp-search-result-chip-row,
+html body #root .dp-map-page.dp-map-page .dp-map-answer-decision {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  order: 0 !important;
+  align-self: flex-start !important;
+  width: auto !important;
+  max-width: calc(100% - 36px) !important;
+  height: 30px !important;
+  margin: 0 !important;
+  padding: 2px !important;
+  gap: 2px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  height: 24px !important;
+  min-width: 82px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button[aria-selected="true"] {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 30px !important;
+  height: 30px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  order: 1 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 40px !important;
+  padding: 0 0 0 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  width: 15px !important;
+  height: 15px !important;
+  color: rgba(11, 31, 51, 0.52) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 38px !important;
+  min-width: 0 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input::placeholder {
+  color: rgba(11, 31, 51, 0.52) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  min-width: 38px !important;
+  height: 38px !important;
+  border: 0 !important;
+  border-left: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 8px 8px 0 !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  order: 2 !important;
+  display: flex !important;
+  gap: 5px !important;
+  width: 100% !important;
+  min-height: 32px !important;
+  padding: 0 18px 0 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 22px), transparent 100%) !important;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 22px), transparent 100%) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  order: 3 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 9px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  box-shadow: none !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active svg {
+  color: #C8A96A !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap {
+    right: auto !important;
+    width: 360px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+    max-height: 224px !important;
+  }
+}
+
+/* Product map final polish: centered rollup, compact icon rail, smaller walkable pins, unified mobile panels. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed {
+  position: fixed !important;
+  top: calc(12px + env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(320px, calc(100vw - 32px)) !important;
+  transform: translateX(-50%) !important;
+  z-index: 46 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup {
+  width: 100% !important;
+  min-height: 42px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 7px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup span {
+  grid-column: 1 / -1 !important;
+  color: #C8A96A !important;
+  font-size: 8.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+  font-size: 11.5px !important;
+  font-weight: 650 !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup em {
+  color: rgba(11, 31, 51, 0.56) !important;
+  font-size: 10px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-height: 30px !important;
+  padding-right: 18px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: -14px !important;
+  margin-top: -14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-width: 1px !important;
+  border-radius: 999px !important;
+  box-shadow: 0 3px 8px rgba(11, 31, 51, 0.16) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin:not(.dp-live-pin--image-asset) .dp-live-pin__core.dp-live-pin__core,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin--image-asset .dp-live-pin__core.dp-live-pin__core,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core.dp-live-pin__core {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  font-size: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin__core svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin--rental .dp-live-pin__price {
+  top: 16px !important;
+  left: 18px !important;
+  min-height: 20px !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-cluster,
+html body #root .dp-map-page.dp-map-page .dp-leaflet-cluster.leaflet-marker-icon {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: -14px !important;
+  margin-top: -14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-cluster.dp-map-cluster {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-width: 1px !important;
+  box-shadow: 0 3px 8px rgba(11, 31, 51, 0.16) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-cluster.dp-map-cluster span {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-shell, .dp-bottom-sheet, .dp-detail-drawer, .dp-pass-panel, .dp-map-drawer-shell) {
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #0B1F33 !important;
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  box-shadow: 0 8px 26px rgba(11, 31, 51, 0.08) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  font-family: Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-title, .dp-destination-title, .dp-entity-title, .dp-panel-detail-identity h1, .dp-panel-detail-identity h2) {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: clamp(16px, 4.1vw, 22px) !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.08 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-subtitle, .dp-destination-section p, .dp-entity-subtitle, .dp-entity-context, .dp-panel-detail-identity p, .dp-drawer-meta-line) {
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-kicker, .dp-polished-panel-kicker, .dp-entity-meta, .dp-destination-section > h3) {
+  color: #C8A96A !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-action, .dp-primary-action, .dp-action, .dp-tab-primary-action, .dp-tab-secondary-action) {
+  min-height: 34px !important;
+  height: auto !important;
+  padding: 0 10px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+  left: 8px !important;
+  right: 8px !important;
+  bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+  min-height: 56px !important;
+  padding: 5px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 18px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
+  min-height: 44px !important;
+  gap: 2px !important;
+  padding: 4px 5px !important;
+  border-radius: 8px !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Absolute final rollup guard: selected-entity state must stay centered at the top. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed {
+  position: fixed !important;
+  top: calc(12px + env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(320px, calc(100vw - 32px)) !important;
+  transform: translateX(-50%) !important;
+  z-index: 46 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup {
+  width: 100% !important;
+}
+
+/* Delta-aligned compact console: centered, lower height, icon-only secondary rail. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) {
+  position: fixed !important;
+  top: calc(14px + env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(424px, calc(100vw - 32px)) !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+  z-index: 44 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  gap: 6px !important;
+  max-height: min(32dvh, 148px) !important;
+  padding: 7px !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  height: 28px !important;
+  margin: 0 !important;
+  max-width: calc(100% - 34px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  height: 22px !important;
+  min-width: 74px !important;
+  padding: 0 8px !important;
+  font-size: 9.5px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  top: 7px !important;
+  right: 7px !important;
+  width: 28px !important;
+  height: 28px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  min-height: 34px !important;
+  padding-left: 9px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 32px !important;
+  font-size: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 32px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  min-height: 28px !important;
+  gap: 5px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 9px !important;
+  font-size: 11px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 12.5px !important;
+  height: 12.5px !important;
+}
+
+@media (min-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) {
+    left: 50% !important;
+    right: auto !important;
+    width: 424px !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* Absolute final marker sizing guard: keep street-level pins from crowding walkable map views. */
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin.leaflet-interactive,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: -14px !important;
+  margin-top: -14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin.leaflet-interactive > .dp-live-pin.dp-live-pin,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-cluster.leaflet-interactive,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-leaflet-cluster.leaflet-marker-icon {
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: -14px !important;
+  margin-top: -14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-cluster .dp-map-cluster.dp-map-cluster {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+}
+
+/* Last word: collapsed search intent rollup is centered toward the top of the map. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed {
+  position: fixed !important;
+  top: calc(12px + env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(320px, calc(100vw - 32px)) !important;
+  transform: translateX(-50%) !important;
+  z-index: 46 !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup {
+  width: 100% !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-search-rollup-button {
+  position: fixed !important;
+  top: calc(12px + env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(320px, calc(100vw - 32px)) !important;
+  transform: translateX(-50%) !important;
+  z-index: 46 !important;
+}
+
+/* Final mobile chrome polish: centered nav and de-boxed map operating console. */
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+  width: min(440px, calc(100vw - 16px)) !important;
+  max-width: calc(100vw - 16px) !important;
+  min-height: 54px !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  transform: translateX(-50%) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
+  min-height: 42px !important;
+  padding: 3px 4px !important;
+  gap: 2px !important;
+  border-radius: 8px !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.02em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button span:not(.dp-nav-activity-badge) {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) {
+  top: calc(12px + env(safe-area-inset-top)) !important;
+  width: min(392px, calc(100vw - 24px)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  gap: 5px !important;
+  max-height: min(30dvh, 132px) !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface {
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  width: fit-content !important;
+  max-width: calc(100% - 34px) !important;
+  padding: 2px !important;
+  border-radius: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  height: 22px !important;
+  min-width: 70px !important;
+  border-radius: 8px !important;
+  font-size: 9px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  min-height: 34px !important;
+  padding: 0 4px 0 9px !important;
+  border-radius: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 32px !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 550 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 30px !important;
+  border-radius: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  min-height: 28px !important;
+  gap: 5px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 9px !important;
+  border-radius: 10px !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  width: 28px !important;
+  min-width: 28px !important;
+  max-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  top: 0 !important;
+  right: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-cluster.dp-map-cluster {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  font-size: 11px !important;
+  border-width: 1px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-marker-hit-target {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-cluster .dp-map-cluster.dp-map-cluster.dp-map-cluster,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon .dp-map-cluster.dp-map-cluster.dp-map-cluster {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-live-pin[data-kind="campaign"],
+html body #root .dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--campaign {
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  border: 1px solid #C8A96A !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.22) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-live-pin[data-kind="campaign"] .dp-live-pin__core,
+html body #root .dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--campaign .dp-live-pin__core {
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-live-pin[data-kind="civic"],
+html body #root .dp-map-page.dp-map-page .dp-live-pin[data-kind="civic"] .dp-live-pin__core {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-native-campaign-detail {
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  margin-top: 14px !important;
+  padding-top: 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-stat-grid,
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  margin-top: 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #FFFFFF !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-stat-grid span,
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report span {
+  min-width: 0 !important;
+  padding: 10px !important;
+  border-right: 1px solid rgba(11, 31, 51, 0.08) !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-stat-grid span:last-child,
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report span:last-child {
+  border-right: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report strong,
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report small {
+  display: block !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report strong {
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-native-report small {
+  margin-top: 3px !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-list {
+  display: grid !important;
+  gap: 0 !important;
+  margin-top: 12px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr) !important;
+  gap: 10px !important;
+  padding: 11px 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-row strong,
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-row small {
+  display: block !important;
+  font-family: Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-row strong {
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-row small {
+  margin-top: 3px !important;
+  font-size: 9px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-activation-row p {
+  margin: 0 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.42 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+}
+
+/* Final compact map command surface: single top-centered control system. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor {
+  position: absolute !important;
+  top: max(12px, env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  width: min(520px, calc(100vw - 20px)) !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 680 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor > * {
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-map-global-search-button {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface,
+html body #root .dp-map-page.dp-map-page button.dp-search-rollup-button.dp-map-search-surface.is-collapsed,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+  width: min(420px, calc(100vw - 32px)) !important;
+  min-height: 52px !important;
+  max-height: 56px !important;
+  height: auto !important;
+  padding: 10px 12px 10px 14px !important;
+  border-radius: 16px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  gap: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: 0 12px 30px rgba(11, 31, 51, 0.10) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1px !important;
+  min-width: 0 !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-mode {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.11em !important;
+  text-transform: uppercase !important;
+  font-weight: 650 !important;
+  color: rgba(11, 31, 51, 0.54) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  font-weight: 650 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main small {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1.1 !important;
+  font-weight: 500 !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #C8A96A !important;
+  background: rgba(200, 169, 106, 0.12) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse :is(span, small, text) {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse svg,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-chevron {
+  width: 14px !important;
+  height: 14px !important;
+  color: currentColor !important;
+  flex: 0 0 auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-chevron {
+  color: rgba(11, 31, 51, 0.48) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) {
+  width: min(520px, calc(100vw - 24px)) !important;
+  max-width: min(520px, calc(100vw - 24px)) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  width: min(520px, calc(100vw - 24px)) !important;
+  max-width: min(520px, calc(100vw - 24px)) !important;
+  max-height: none !important;
+  padding: 10px !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: 0 16px 40px rgba(11, 31, 51, 0.12) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console > * {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  display: inline-flex !important;
+  width: fit-content !important;
+  max-width: 220px !important;
+  padding: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.05) !important;
+  border: 1px solid rgba(11, 31, 51, 0.06) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  min-height: 28px !important;
+  height: 28px !important;
+  min-width: 0 !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  border: 0 !important;
+  background: transparent !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  font-weight: 650 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  position: static !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  background: rgba(11, 31, 51, 0.04) !important;
+  border: 1px solid rgba(11, 31, 51, 0.06) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse:hover {
+  background: rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0 6px 0 12px !important;
+  border-radius: 14px !important;
+  background: rgba(247, 248, 251, 0.96) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: none !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  width: 15px !important;
+  height: 15px !important;
+  color: rgba(11, 31, 51, 0.48) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 100% !important;
+  min-width: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 520 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input::placeholder {
+  color: rgba(11, 31, 51, 0.46) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  border-radius: 11px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  border: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  border: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button {
+  min-height: 30px !important;
+  height: 30px !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  background: rgba(11, 31, 51, 0.04) !important;
+  border: 1px solid rgba(11, 31, 51, 0.06) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active {
+  color: #0B1F33 !important;
+  background: rgba(200, 169, 106, 0.16) !important;
+  border-color: rgba(200, 169, 106, 0.34) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  background: rgba(11, 31, 51, 0.035) !important;
+  border: 1px solid rgba(11, 31, 51, 0.06) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active {
+  color: #0B1F33 !important;
+  background: rgba(200, 169, 106, 0.16) !important;
+  border-color: rgba(200, 169, 106, 0.34) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-icon,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console button:focus-visible,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button:focus-visible,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup:focus-visible,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.65) !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-anchor {
+    top: max(10px, env(safe-area-inset-top)) !important;
+    width: 100% !important;
+    padding-inline: 10px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+    gap: 7px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface,
+  html body #root .dp-map-page.dp-map-page button.dp-search-rollup-button.dp-map-search-surface.is-collapsed,
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+    width: calc(100vw - 32px) !important;
+  }
+}
+
+/* V10.2 map chrome lock: no pill/button/bento styling on the map operating layer. */
+html body #root .dp-map-page.dp-map-page {
+  --dp-map-chrome-line: rgba(11, 31, 51, 0.08);
+  --dp-map-chrome-text: #0B1F33;
+  --dp-map-chrome-muted: rgba(11, 31, 51, 0.58);
+  --dp-map-chrome-gold: #C8A96A;
+  --dp-map-bottom-nav-height: 58px;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) {
+  top: calc(10px + env(safe-area-inset-top)) !important;
+  width: min(344px, calc(100vw - 28px)) !important;
+  max-width: calc(100vw - 28px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  width: 100% !important;
+  max-height: 116px !important;
+  padding: 0 !important;
+  gap: 4px !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header {
+  min-height: 22px !important;
+  gap: 4px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  gap: 12px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button[aria-selected="true"] {
+  min-width: 0 !important;
+  min-height: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--dp-map-chrome-muted) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button[aria-selected="true"] {
+  color: var(--dp-map-chrome-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse:hover {
+  width: 22px !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-map-chrome-muted) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid var(--dp-map-chrome-line) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 6px 0 9px !important;
+  gap: 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 32px !important;
+  font-size: 12px !important;
+  font-weight: 520 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  width: 12px !important;
+  height: 12px !important;
+  color: var(--dp-map-chrome-muted) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit:hover,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear:hover {
+  width: 24px !important;
+  min-width: 24px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-map-chrome-text) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit:is(:hover, :focus-visible),
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear:is(:hover, :focus-visible) {
+  color: var(--dp-map-chrome-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  min-height: 22px !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active {
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--dp-map-chrome-muted) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button {
+  font-size: 10.5px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button[aria-pressed="true"],
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button[aria-pressed="true"] {
+  color: var(--dp-map-chrome-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-search-rollup-button {
+  width: min(286px, calc(100vw - 44px)) !important;
+  top: calc(10px + env(safe-area-inset-top)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface {
+  min-height: 42px !important;
+  max-height: 44px !important;
+  padding: 6px 8px !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid var(--dp-map-chrome-line) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-mode {
+  font-size: 9px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
+  font-size: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-map-chrome-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  position: fixed !important;
+  inset-inline: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  min-height: calc(var(--dp-map-bottom-nav-height) + env(safe-area-inset-bottom)) !important;
+  margin: 0 !important;
+  padding: 4px max(8px, env(safe-area-inset-left)) calc(4px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right)) !important;
+  transform: none !important;
+  border: 0 !important;
+  border-top: 1px solid var(--dp-map-chrome-line) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a),
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-pressed="true"],
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-current="page"] {
+  min-height: 40px !important;
+  padding: 2px 2px !important;
+  gap: 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--dp-map-chrome-muted) !important;
+  font-size: 8.5px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-pressed="true"],
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-current="page"],
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-pressed="true"] span:not(.dp-nav-activity-badge),
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-current="page"] span:not(.dp-nav-activity-badge),
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-pressed="true"] svg,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-current="page"] svg {
+  color: var(--dp-map-chrome-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-nav-activity-badge {
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-map-chrome-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-console-chip,
+  .dp-search-segment,
+  .dp-map-audience-tab,
+  .dp-panel-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-map-control,
+  .dp-pass-action,
+  .dp-map-bottom-nav button,
+  .dp-map-bottom-nav a
+) {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-hero img, .dp-panel-image, .dp-campaign-hero-image, img[class*="hero"], img[class*="image"]) {
+  border-radius: 8px !important;
+}
+
+/* Final 5173 product map typography and compact console lock */
+html body #root .dp-map-page.dp-map-page,
+html body #root .dp-map-page.dp-map-page * {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page {
+  --dp-map-white: #FFFFFF;
+  --dp-map-navy: #0B1F33;
+  --dp-map-navy-elevated: #132238;
+  --dp-map-gold: #C8A96A;
+  --dp-map-gold-deep: #B8963E;
+  --dp-map-border: rgba(11,31,51,.08);
+  color: var(--dp-map-navy) !important;
+  background: var(--dp-map-white) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.font-heading, h1, h2, h3, h4, h5, h6) {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-map-panel-eyebrow, .dp-map-panel-section-label, .dp-map-directory-eyebrow, .dp-legends-result-meta) {
+  font-size: 10px !important;
+  line-height: 1 !important;
+  font-weight: 700 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+  color: var(--dp-map-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-map-panel-title, .dp-map-directory-title, .dp-detail-intro h2, .dp-panel-shell h1, .dp-panel-shell h2) {
+  margin: 0 !important;
+  font-size: 22px !important;
+  line-height: 1.05 !important;
+  font-weight: 600 !important;
+  letter-spacing: -.03em !important;
+  color: var(--dp-map-navy) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-map-panel-subtitle, .dp-map-directory-subtitle) {
+  margin-top: 7px !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  font-weight: 500 !important;
+  color: rgba(11,31,51,.68) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-map-panel-body-copy, .dp-info-row, .dp-info-section, .dp-panel-row p, .dp-detail-drawer p) {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+  color: rgba(11,31,51,.72) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-map-sheet, .dp-map-directory-sheet, .dp-panel-shell, .dp-detail-drawer, .dp-bottom-sheet) {
+  background: #FFFFFF !important;
+  color: var(--dp-map-navy) !important;
+  border: 1px solid var(--dp-map-border) !important;
+  box-shadow: 0 18px 48px rgba(11,31,51,.14) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor {
+  position: absolute !important;
+  top: max(10px, env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  inset-inline: auto !important;
+  width: 100% !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding-inline: 10px !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor > * {
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-map-global-search-button {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap {
+  position: static !important;
+  inset: auto !important;
+  width: calc(100vw - 20px) !important;
+  max-width: none !important;
+  height: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+  width: calc(100vw - 20px) !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 8px !important;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,.96) !important;
+  color: var(--dp-map-navy) !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  box-shadow: 0 14px 34px rgba(11,31,51,.12) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console > * {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  display: inline-flex !important;
+  width: fit-content !important;
+  max-width: calc(100% - 40px) !important;
+  padding: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(11,31,51,.05) !important;
+  border: 1px solid rgba(11,31,51,.06) !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
+  min-height: 28px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: rgba(11,31,51,.62) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active {
+  background: var(--dp-map-navy) !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: rgba(11,31,51,.62) !important;
+  background: rgba(11,31,51,.04) !important;
+  border: 1px solid rgba(11,31,51,.06) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 6px 0 11px !important;
+  border-radius: 14px !important;
+  background: rgba(247,248,251,.96) !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0,1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  width: 15px !important;
+  height: 15px !important;
+  color: rgba(11,31,51,.48) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: var(--dp-map-navy) !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+  font-weight: 400 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input::placeholder {
+  color: rgba(11,31,51,.42) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 11px !important;
+  background: var(--dp-map-navy) !important;
+  color: #FFFFFF !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button {
+  height: 30px !important;
+  min-height: 30px !important;
+  flex: 0 0 auto !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: rgba(11,31,51,.64) !important;
+  background: rgba(11,31,51,.04) !important;
+  border: 1px solid rgba(11,31,51,.06) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active {
+  color: var(--dp-map-navy) !important;
+  background: rgba(200,169,106,.16) !important;
+  border-color: rgba(200,169,106,.34) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  flex: 0 0 auto !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: rgba(11,31,51,.58) !important;
+  background: rgba(11,31,51,.035) !important;
+  border: 1px solid rgba(11,31,51,.06) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active {
+  color: var(--dp-map-navy) !important;
+  background: rgba(200,169,106,.16) !important;
+  border-color: rgba(200,169,106,.34) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-icon {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-rollup {
+  width: calc(100vw - 20px) !important;
+  min-height: 50px !important;
+  max-height: 54px !important;
+  padding: 9px 10px 9px 12px !important;
+  border-radius: 15px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: rgba(255,255,255,.95) !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  box-shadow: 0 10px 26px rgba(11,31,51,.10) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  border-radius: 999px !important;
+  color: var(--dp-map-gold) !important;
+  background: rgba(200,169,106,.12) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav {
+  min-height: 64px !important;
+  max-height: 72px !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.96) !important;
+  border: 1px solid rgba(11,31,51,.10) !important;
+  box-shadow: 0 16px 42px rgba(11,31,51,.16) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
+  min-height: 44px !important;
+  border-radius: 18px !important;
+  color: rgba(11,31,51,.48) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .10em !important;
+  text-transform: uppercase !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"],
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav button[data-active="true"] {
+  color: var(--dp-map-navy) !important;
+  background: transparent !important;
+  box-shadow: inset 0 -2px 0 var(--dp-map-gold) !important;
+}
+
+@media (min-width: 641px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap,
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+    width: min(480px, calc(100vw - 32px)) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+    font-size: 14px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap,
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console {
+    width: min(520px, calc(100vw - 40px)) !important;
+  }
+}
+
+/* Entity panel archetype guardrails: existing drawers, six shared panel patterns. */
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer {
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  border-color: rgba(11,31,51,.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-destination-scroll {
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(.dp-panel-detail-hero, .dp-destination-media) {
+  aspect-ratio: 16 / 9 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-destination-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-entity-meta {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: .08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-entity-title {
+  font-family: var(--font-heading, "Instrument Serif", Georgia, serif) !important;
+  font-size: 34px !important;
+  font-weight: 500 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(.dp-entity-context, .dp-why-people-go, .dp-destination-section p) {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: rgba(11,31,51,.72) !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-destination-section {
+  border-color: rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-destination-section h3 {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-primary-action-row {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 6 !important;
+  background: #FFFFFF !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  padding-block: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer .dp-primary-action-row > :is(a, button, .dp-panel-action-text) {
+  min-height: 44px !important;
+  border-radius: 14px !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer {
+    border-radius: 24px 24px 0 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(.dp-panel-detail-hero, .dp-destination-media) {
+    max-height: 220px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer {
+    inset: 0 0 0 auto !important;
+    width: 420px !important;
+    max-width: 420px !important;
+    height: auto !important;
+    max-height: none !important;
+    border-left: 1px solid rgba(11,31,51,.08) !important;
+    border-radius: 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(.dp-panel-detail-hero, .dp-destination-media) {
+    max-height: 240px !important;
+  }
+}
+
+/* Final archetype shell lock: keep destination drawers on the shared map panel contract. */
+html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell,
+html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell {
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  border-color: rgba(11,31,51,.08) !important;
+  box-shadow: 0 18px 48px rgba(11,31,51,.14) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-detail-hero.dp-panel-detail-hero,
+html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-detail-hero.dp-panel-detail-hero,
+html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-media.dp-destination-media,
+html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-media.dp-destination-media {
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 220px !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-media.dp-destination-media img,
+html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-media.dp-destination-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+@media (min-width: 1024px) {
+  html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell,
+  html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell {
+    inset: 0 0 0 auto !important;
+    left: auto !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 420px !important;
+    max-width: 420px !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    border-left: 1px solid rgba(11,31,51,.08) !important;
+    border-radius: 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-detail-hero.dp-panel-detail-hero,
+  html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-detail-hero.dp-panel-detail-hero,
+  html body #root .dp-map-page.dp-map-page .dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-media.dp-destination-media,
+  html body #root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-media.dp-destination-media {
+    max-height: 240px !important;
+  }
+}
+
+/* Resident Card: white credential surface with fully wired map-sheet controls. */
+html body #root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet--resident-card.dp-resident-card-sheet {
+  position: fixed !important;
+  left: 8px !important;
+  right: 8px !important;
+  bottom: calc(78px + env(safe-area-inset-bottom)) !important;
+  z-index: 630 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: auto !important;
+  max-width: 560px !important;
+  max-height: var(--dp-mobile-panel-max-height, calc(100dvh - 96px)) !important;
+  margin-inline: auto !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 26px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 18px 44px rgba(11,31,51,.13) !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-handle {
+  width: 42px !important;
+  height: 4px !important;
+  flex: 0 0 auto !important;
+  margin: 10px auto 8px !important;
+  border-radius: 999px !important;
+  background: rgba(11,31,51,.14) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-toolbar {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+  padding: 0 14px 10px !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-toolbar-title {
+  overflow: hidden !important;
+  color: #C8A96A !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  letter-spacing: .14em !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-scroll {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  padding: 12px 14px 14px !important;
+  background: #FFFFFF !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-resident-card-identity,
+html body #root .dp-map-page.dp-map-page .dp-card-intro {
+  padding: 0 0 14px !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-eyebrow,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-section-label {
+  margin: 0 0 6px !important;
+  color: #C8A96A !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-title {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font: 600 22px/1.08 Inter, sans-serif !important;
+  letter-spacing: -.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-subtitle,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-body-copy {
+  margin: 7px 0 0 !important;
+  color: rgba(11,31,51,.68) !important;
+  font: 500 13px/1.45 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential {
+  margin: 14px 0 !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 22px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 12px 32px rgba(11,31,51,.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential::before,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin-bottom: 7px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential-kicker {
+  color: #C8A96A !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 24px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(200,169,106,.32) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: #C8A96A !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  letter-spacing: .09em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential-title {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font: 600 20px/1.1 Inter, sans-serif !important;
+  letter-spacing: -.03em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential-copy {
+  margin: 6px 0 12px !important;
+  color: rgba(11,31,51,.66) !important;
+  font: 500 13px/1.45 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-qr-wrap {
+  width: min(56vw, 196px) !important;
+  max-width: 196px !important;
+  margin: 0 auto 12px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-qr-image {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 1 !important;
+  object-fit: contain !important;
+  background: #FFFFFF !important;
+  image-rendering: crisp-edges !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-verification-row {
+  display: grid !important;
+  gap: 6px !important;
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  text-align: center !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-verification-row span {
+  color: rgba(11,31,51,.62) !important;
+  font: 600 12px/1.35 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-verification-row code {
+  justify-self: center !important;
+  padding: 5px 8px !important;
+  border: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  font: 700 11px/1 Inter, sans-serif !important;
+  letter-spacing: .08em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-section,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-note {
+  padding: 13px 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-note {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-section-title {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font: 600 16px/1.18 Inter, sans-serif !important;
+  letter-spacing: -.02em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-small-note {
+  display: block !important;
+  margin-top: 7px !important;
+  color: rgba(11,31,51,.56) !important;
+  font: 600 12px/1.35 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix {
+  display: block !important;
+  margin: 12px 0 0 !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix-row,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix > span {
+  display: grid !important;
+  grid-template-columns: minmax(100px, 34%) minmax(0, 1fr) !important;
+  gap: 12px !important;
+  padding: 11px 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix-row:last-child,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix > span:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix strong {
+  color: rgba(11,31,51,.54) !important;
+  font: 700 10px/1.25 Inter, sans-serif !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-matrix em {
+  color: #0B1F33 !important;
+  font: 600 13px/1.25 Inter, sans-serif !important;
+  font-style: normal !important;
+  text-align: right !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-footer {
+  flex: 0 0 auto !important;
+  display: grid !important;
+  gap: 8px !important;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom)) !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+  font: 700 11px/1 Inter, sans-serif !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--primary {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--secondary,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--icon {
+  border: 1px solid rgba(11,31,51,.12) !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button:focus-visible {
+  outline: 2px solid rgba(200,169,106,.55) !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 374px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-qr-wrap {
+    width: min(48vw, 168px) !important;
+    padding: 8px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential {
+    padding: 12px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet--resident-card.dp-resident-card-sheet {
+    position: absolute !important;
+    top: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    left: auto !important;
+    width: min(460px, calc(100vw - 32px)) !important;
+    max-width: none !important;
+    max-height: calc(100dvh - 32px) !important;
+    border-radius: 28px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-title {
+    font-size: 24px !important;
+  }
+}
+
+/* Final search console position lock: fixed and centered over the map. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor {
+  position: fixed !important;
+  top: max(12px, env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  inset-inline: auto !important;
+  width: min(520px, calc(100vw - 20px)) !important;
+  max-width: calc(100vw - 20px) !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 680 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor > * {
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap,
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-rollup-button {
+  margin-inline: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap:not(.is-collapsed),
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console {
+  width: min(520px, calc(100vw - 20px)) !important;
+  max-width: calc(100vw - 20px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-rollup-button,
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+  width: min(420px, calc(100vw - 20px)) !important;
+  max-width: calc(100vw - 20px) !important;
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-anchor {
+    top: max(10px, env(safe-area-inset-top)) !important;
+    width: calc(100vw - 20px) !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+  position: fixed !important;
+  inset: auto auto auto 50vw !important;
+  top: max(12px, env(safe-area-inset-top)) !important;
+  left: 50vw !important;
+  right: auto !important;
+  width: min(520px, calc(100vw - 20px)) !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+    top: max(10px, env(safe-area-inset-top)) !important;
+    left: 50vw !important;
+    width: calc(100vw - 20px) !important;
+  }
+}
+
+/* Final mobile polish: compact search, text-only audience switch, minimal card footer. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap:not(.is-collapsed) {
+  width: min(360px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console {
+  width: min(360px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  min-height: 0 !important;
+  max-height: 116px !important;
+  padding: 6px 7px !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: 0 8px 22px rgba(11,31,51,.09) !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header {
+  min-height: 18px !important;
+  gap: 6px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: none !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button[aria-selected="true"] {
+  min-height: 18px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  font: 700 9.5px/1 Inter, sans-serif !important;
+  letter-spacing: .11em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button[aria-selected="true"] {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: rgba(11,31,51,.62) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 4px 0 9px !important;
+  gap: 6px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: rgba(247,248,251,.9) !important;
+  box-shadow: none !important;
+  grid-template-columns: 14px minmax(0,1fr) auto auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon {
+  width: 13px !important;
+  height: 13px !important;
+  color: rgba(11,31,51,.48) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  height: 34px !important;
+  color: #0B1F33 !important;
+  font: 400 14px/1.2 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  border-radius: 9px !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  background: transparent !important;
+  color: rgba(11,31,51,.56) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  gap: 4px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active {
+  height: 22px !important;
+  min-height: 22px !important;
+  width: auto !important;
+  min-width: 22px !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11,31,51,.72) !important;
+  font: 700 9.5px/1 Inter, sans-serif !important;
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button[aria-pressed="true"],
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button[aria-pressed="true"] {
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console :is(button, input):focus,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console :is(button, input):focus-visible,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button:focus,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button:focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup,
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-rollup-button {
+  min-height: 38px !important;
+  max-height: 42px !important;
+  width: min(320px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  padding: 7px 9px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: 0 8px 20px rgba(11,31,51,.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-mode {
+  color: rgba(11,31,51,.56) !important;
+  font: 700 8.5px/1 Inter, sans-serif !important;
+  letter-spacing: .1em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
+  color: #0B1F33 !important;
+  font: 700 11px/1.05 Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  background: transparent !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-footer {
+  gap: 6px !important;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) !important;
+  border-top: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-grid {
+  gap: 6px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--secondary,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--icon {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  font: 700 9.5px/1 Inter, sans-serif !important;
+  letter-spacing: .09em !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--primary {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--secondary:hover,
+html body #root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button--secondary:focus-visible {
+  color: #C8A96A !important;
+}
+
+/* Final search minimalism: no duplicate floating search button, no extra chrome. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-map-global-search-button {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup,
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-rollup-button {
+  box-shadow: none !important;
+}
+
+/* Search console final shape: scrollable, white, compact, no duplicate chrome. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console {
+  width: min(348px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  max-height: min(34dvh, 172px) !important;
+  padding: 7px !important;
+  gap: 6px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console > * {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row {
+  height: 34px !important;
+  min-height: 34px !important;
+  border: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input {
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail {
+  flex-shrink: 0 !important;
+  min-height: 22px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-rail button {
+  width: 22px !important;
+  min-width: 22px !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-icon {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup,
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-rollup-button {
+  display: inline-grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-height: 34px !important;
+  max-height: 38px !important;
+  width: min(152px, calc(100vw - 24px)) !important;
+  padding: 6px 8px 6px 10px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-mode,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main {
+  display: block !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-agent-icon {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
+  display: block !important;
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  letter-spacing: .12em !important;
+  text-overflow: ellipsis !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-chevron {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+}
+
+/* Map panel compact typography + control de-chrome. Keep this scoped to /map. */
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-destination-drawer,
+  .dp-map-sheet,
+  .dp-panel-shell,
+  .dp-map-drawer-panel,
+  .dp-map-directory-sheet,
+  .dp-legends-directory-sheet
+) {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-panel-title,
+  .dp-map-directory-title,
+  .dp-panel-title,
+  .dp-destination-title,
+  .dp-entity-title,
+  .dp-panel-detail-identity h1,
+  .dp-panel-detail-identity h2,
+  .dp-polished-panel-header h2,
+  .dp-destination-drawer h1,
+  .dp-destination-drawer h2
+) {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: clamp(17px, 5.2vw, 20px) !important;
+  font-weight: 650 !important;
+  letter-spacing: -.02em !important;
+  line-height: 1.08 !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-map-panel-title,
+    .dp-map-directory-title,
+    .dp-panel-title,
+    .dp-destination-title,
+    .dp-entity-title,
+    .dp-panel-detail-identity h1,
+    .dp-panel-detail-identity h2,
+    .dp-polished-panel-header h2,
+    .dp-destination-drawer h1,
+    .dp-destination-drawer h2
+  ) {
+    font-size: 20px !important;
+  }
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-panel-section-title,
+  .dp-destination-section h3,
+  .dp-section-header-stack h3,
+  .dp-perk-module-title,
+  .dp-card-credential-title,
+  .dp-legends-result-title,
+  .dp-panel-linked-card strong,
+  .dp-related-place strong,
+  .dp-property-nearby-card strong,
+  .dp-quiet-facts strong,
+  .dp-parking-summary strong,
+  .dp-parking-availability strong
+) {
+  color: #0B1F33 !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  letter-spacing: -.01em !important;
+  line-height: 1.18 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-panel-subtitle,
+  .dp-map-panel-body-copy,
+  .dp-destination-section-copy,
+  .dp-destination-section-note,
+  .dp-destination-section p,
+  .dp-entity-context,
+  .dp-entity-subtitle,
+  .dp-panel-subtitle,
+  .dp-polished-panel-meta,
+  .dp-panel-detail-identity p,
+  .dp-card-credential-copy,
+  .dp-map-directory-subtitle,
+  .dp-legends-result-address,
+  .dp-legends-result-details,
+  .dp-neighborhood-narrative p,
+  .dp-why-people-go,
+  .dp-known-for-list li
+) {
+  color: rgba(11,31,51,.66) !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 450 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-panel-eyebrow,
+  .dp-map-panel-section-label,
+  .dp-polished-panel-kicker,
+  .dp-panel-kicker,
+  .dp-entity-meta,
+  .dp-drawer-meta-line,
+  .dp-eyebrow,
+  .dp-legends-result-meta,
+  .dp-map-directory-eyebrow,
+  .dp-card-credential-kicker,
+  .dp-card-credential-status,
+  .dp-quiet-facts span,
+  .dp-parking-availability span,
+  .dp-parking-summary span
+) {
+  color: #C8A96A !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 750 !important;
+  letter-spacing: .12em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  button,
+  .dp-button,
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-map-panel-button,
+  .dp-map-directory-back,
+  .dp-map-directory-close,
+  .dp-destination-back,
+  .dp-destination-close,
+  .dp-destination-minimize,
+  .dp-search-intent-collapse,
+  .dp-search-intent-submit,
+  .dp-search-intent-clear
+) {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  button,
+  .dp-button,
+  .dp-panel-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-map-panel-button,
+  .dp-map-directory-back,
+  .dp-map-directory-close,
+  .dp-destination-back,
+  .dp-destination-close,
+  .dp-destination-minimize
+):focus,
+html body #root .dp-map-page.dp-map-page :is(
+  button,
+  .dp-button,
+  .dp-panel-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-map-panel-button,
+  .dp-map-directory-back,
+  .dp-map-directory-close,
+  .dp-destination-back,
+  .dp-destination-close,
+  .dp-destination-minimize
+):focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-destination-drawer .dp-primary-action-row > a,
+  .dp-destination-drawer .dp-primary-action-row > button,
+  .dp-panel-action,
+  .dp-pass-action,
+  .dp-map-panel-button,
+  .dp-button
+) {
+  min-height: 34px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  font: 750 9.5px/1 Inter, sans-serif !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-panel-action:not(.dp-primary-action),
+  .dp-pass-action:not(.dp-primary-action),
+  .dp-map-panel-button--secondary,
+  .dp-button-secondary
+) {
+  background: transparent !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-primary-action,
+  .dp-map-panel-button--primary,
+  .dp-button-primary
+) {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-rollup-button,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-button.dp-map-search-surface,
+html body #root .dp-map-page.dp-map-page button.dp-search-rollup-button.dp-map-search-surface.is-collapsed {
+  min-height: 30px !important;
+  max-height: 32px !important;
+  width: min(124px, calc(100vw - 24px)) !important;
+  padding: 5px 7px 5px 9px !important;
+  gap: 5px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-agent-icon,
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-chevron {
+  width: 11px !important;
+  height: 11px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-rollup-main strong {
+  font: 750 9px/1 Inter, sans-serif !important;
+  letter-spacing: .1em !important;
 }

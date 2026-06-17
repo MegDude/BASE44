@@ -23,10 +23,10 @@ export const mapRoutes = {
   dashboard: "/partners/dashboard",
   partnerWorkspace: "/partner-workspace/overview",
   campaigns: "/partners/campaigns",
-  reports: "/partner-workspace/reports",
-  card: "/map?mode=resident&tab=pass",
-  events: "/map?mode=resident&tab=map&filter=Events",
-  perks: "/map?mode=resident&tab=map&filter=Perks",
+  reports: "/partners/reports",
+  card: "/card",
+  events: "/events",
+  perks: "/perks",
   properties: "/map?mode=partner&tab=map&filter=Properties",
   partners: "/partners",
 };
@@ -38,11 +38,11 @@ export const mapActionRoutes: Record<
   SWITCH_TO_RESIDENT: mapRoutes.residentMap,
   SWITCH_TO_PARTNER: mapRoutes.partnerMap,
   SHOW_RESIDENT_PASS: mapRoutes.residentPass,
-  OPEN_EVENTS: "/map?mode=resident&tab=events",
-  LAUNCH_CAMPAIGN: "/map?mode=partner&tab=campaigns",
-  OPEN_REPORTS: "/map?mode=partner&tab=reports",
-  OPEN_DASHBOARD: "/map?mode=partner&tab=activity",
-  OPEN_PARTNER_PAGE: "/map?mode=partner&tab=info",
+  OPEN_EVENTS: mapRoutes.events,
+  LAUNCH_CAMPAIGN: mapRoutes.campaigns,
+  OPEN_REPORTS: mapRoutes.reports,
+  OPEN_DASHBOARD: mapRoutes.dashboard,
+  OPEN_PARTNER_PAGE: mapRoutes.partners,
   OPEN_PRICING: mapRoutes.partnerWorkspace,
   OPEN_CONTACT: mapRoutes.partnerWorkspace,
 };
@@ -83,7 +83,7 @@ export function directionsUrl(entity: Partial<NormalizedEntity>) {
   const query = encodeURIComponent(
     entity.address || `${entity.latitude || ""},${entity.longitude || ""}` || String(entity.name || "Austin, TX"),
   );
-  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+  return `https://www.google.com/maps/dir/?api=1&destination=${query}`;
 }
 
 export const panelActionRoutes = {
@@ -125,7 +125,7 @@ export const workspaceActionRoutes = {
 } as const;
 
 export const FILTER_TO_ENTITY_TYPES = {
-  all: ["venue", "property", "event", "offer", "hotel", "brand", "civic", "service", "wellness", "journal", "guide"],
+  all: ["venue", "property", "event", "offer", "hotel", "brand", "civic", "service", "wellness", "journal", "guide", "parking"],
   perks: ["offer", "perk"],
   inkind: ["inkind", "offer", "venue", "restaurant", "bar", "hospitality"],
   aroundTheCorner: ["nearby"],
@@ -136,6 +136,7 @@ export const FILTER_TO_ENTITY_TYPES = {
   events: ["event"],
   civic: ["civic"],
   services: ["service"],
+  parking: ["parking", "garage"],
   wellness: ["wellness", "venue", "service"],
   journal: ["journal"],
   localGuide: ["guide"],

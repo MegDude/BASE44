@@ -142,7 +142,7 @@ export default function MapSection() {
         </div>
 
         {/* Three sub-section cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
           {[
             {
               icon: Calendar,
@@ -150,6 +150,13 @@ export default function MapSection() {
               detail: "See what's on. RSVP in one tap. From happy hours to local programming — without leaving the map.",
               cta: "See events",
               to: "/downtown-perks/events",
+            },
+            {
+              icon: MapPin,
+              label: "Explore Downtown Differently",
+              detail: "Public art, community stories, parks, landmarks, and cultural experiences — all connected through one map.",
+              cta: "Start exploring",
+              to: "/map?mode=resident&tab=map&filter=Explore%20Downtown",
             },
             {
               icon: Home,

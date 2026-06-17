@@ -70,7 +70,7 @@ export default function PartnerDashboard() {
 
   return (
     <div className="min-h-screen bg-background pt-20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 md:px-5 lg:px-5">
+      <div className="dp-layout-shell">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -81,7 +81,7 @@ export default function PartnerDashboard() {
             Partner Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Real-time engagement metrics for your venues
+            Real-time partner intelligence for your venues
           </p>
         </motion.div>
 

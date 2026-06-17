@@ -31,9 +31,14 @@ export type PartnerType = "properties" | "hotels" | "venues" | "brands" | "civic
 
 export type NormalizedEntity = {
   id: string;
+  title: string;
   name: string;
+  kind: string;
   type: EntityCategory | string;
   category: string;
+  address: string;
+  lat: number;
+  lng: number;
   latitude: number;
   longitude: number;
   coords: [number, number];
@@ -41,7 +46,6 @@ export type NormalizedEntity = {
   pinKey: string;
   district: string;
   partnerType: PartnerType | string;
-  address?: string;
   phone?: string;
   email?: string;
   website?: string;
@@ -113,15 +117,57 @@ function inferType(entity: Record<string, unknown>): string {
   if (hasVenueSignal) return "venue";
   if (text.includes("journal")) return "journal";
   if (text.includes("guide")) return "guide";
-  return "venue";
+  return "property";
 }
 
-export function normalizeEntity(entity: Record<string, unknown>, index = 0): NormalizedEntity | null {
+export function createFallbackEntity(entity: Record<string, unknown> = {}, index = 0): NormalizedEntity {
+  const title = String(entity.title || entity.name || entity.address || entity.id || `Downtown property ${index + 1}`);
+  const latitude = Number(entity.latitude ?? entity.lat) || 30.2672;
+  const longitude = Number(entity.longitude ?? entity.lng) || -97.7431;
+  const fallback = {
+    ...entity,
+    id: entity.id || title,
+    name: title,
+    title,
+    type: "property",
+    kind: "property",
+    category: entity.category || "Property",
+    latitude,
+    longitude,
+    address: String(entity.address || "Downtown Austin"),
+    district: entity.district || inferDistrict(entity),
+  };
+  const pin = resolveEntityPin(fallback);
+  const image = resolveEntityImage(fallback);
+
+  return {
+    id: slug(fallback.id, `entity-${index}`),
+    title,
+    name: title,
+    kind: "property",
+    type: "property",
+    category: String(fallback.category || "Property"),
+    address: String(fallback.address),
+    lat: latitude,
+    lng: longitude,
+    latitude,
+    longitude,
+    coords: [latitude, longitude],
+    image,
+    pinKey: pin.label,
+    district: String(fallback.district || "Downtown Austin"),
+    partnerType: String(entity.partnerType || "properties"),
+    source: typeof entity.source === "string" ? entity.source : "fallback",
+    raw: entity,
+  };
+}
+
+export function normalizeEntity(entity: Record<string, unknown>, index = 0): NormalizedEntity {
   const coordinate = validateCoordinate(
     entity.latitude ?? entity.lat ?? (entity.coordinates as Record<string, unknown> | undefined)?.lat,
     entity.longitude ?? entity.lng ?? (entity.coordinates as Record<string, unknown> | undefined)?.lng,
   );
-  if (!coordinate) return null;
+  if (!coordinate) return createFallbackEntity(entity, index);
 
   let type: string;
   try {
@@ -130,7 +176,7 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
     if (import.meta.env.DEV) {
       console.error(error);
     }
-    return null;
+    type = "property";
   }
   if (!type) type = String(entity.type || inferType(entity));
   const normalizedBase = {
@@ -146,9 +192,14 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
 
   return {
     id: slug(entity.id, `entity-${index}`),
-    name: String(entity.name || "Downtown place"),
+    title: String(entity.title || entity.name || entity.address || `Downtown property ${index + 1}`),
+    name: String(entity.name || entity.title || entity.address || `Downtown property ${index + 1}`),
+    kind: type,
     type,
     category: String(entity.category || type),
+    address: typeof entity.address === "string" ? entity.address : "Downtown Austin",
+    lat: coordinate.latitude,
+    lng: coordinate.longitude,
     latitude: coordinate.latitude,
     longitude: coordinate.longitude,
     coords: [coordinate.latitude, coordinate.longitude],
@@ -156,7 +207,6 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
     pinKey: pin.label,
     district: String(entity.district || inferDistrict(entity)),
     partnerType: String(entity.partnerType || type),
-    address: typeof entity.address === "string" ? entity.address : undefined,
     phone: typeof entity.contact_phone === "string" ? entity.contact_phone : typeof entity.phone === "string" ? entity.phone : undefined,
     email: typeof entity.contact_email === "string" ? entity.contact_email : typeof entity.email === "string" ? entity.email : undefined,
     website: typeof entity.website === "string" ? entity.website : undefined,
@@ -167,5 +217,5 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
 }
 
 export function normalizeEntities(entities: Array<Record<string, unknown>>): NormalizedEntity[] {
-  return entities.map((entity, index) => normalizeEntity(entity, index)).filter(Boolean) as NormalizedEntity[];
+  return entities.map((entity, index) => normalizeEntity(entity, index));
 }
