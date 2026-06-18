@@ -38,7 +38,7 @@ const VISUAL_SETS = {
     "/images/splash/walkable-map.png",
   ],
   venue: [
-    "/images/venues/downtown-dining-patio.png",
+    "/images/map-entities/dining/outdoor-dining-arrival.avif",
     "/images/imported/perks/bangers-outside.webp",
     "/images/imported/perks/daydreamer-coffee-at-paseo-tower.jpg",
   ],

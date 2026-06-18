@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 184" role="img" aria-label="The Stay Put pin">
+  <defs>
+    <filter id="pinShadow" x="-25%" y="-18%" width="150%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#0B1F33" flood-opacity=".18"/>
+    </filter>
+    <linearGradient id="sand" x1="28" x2="126" y1="18" y2="154" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3E6C8"/>
+      <stop offset="1" stop-color="#D0B986"/>
+    </linearGradient>
+  </defs>
+  <path filter="url(#pinShadow)" d="M80 176 54 145C31 137 14 115 14 88 14 51 43 21 80 21s66 30 66 67c0 27-17 49-40 57L80 176Z" fill="url(#sand)"/>
+  <path d="M80 168 58 141C36 133 21 112 21 88c0-33 26-60 59-60s59 27 59 60c0 24-15 45-37 53L80 168Z" fill="none" stroke="#B89C62" stroke-width="5"/>
+  <circle cx="80" cy="87" r="51" fill="#E8D7B3" stroke="rgba(255,255,255,.72)" stroke-width="2"/>
+  <path d="M80 45c-8 0-14 6-14 14 0 12 14 24 14 24s14-12 14-24c0-8-6-14-14-14Z" fill="#C9272D"/>
+  <circle cx="80" cy="59" r="5" fill="#F3E6C8"/>
+  <text x="80" y="110" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" font-style="italic" fill="#20242B">The Stay Put</text>
+</svg>

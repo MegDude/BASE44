@@ -12,10 +12,12 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Compass,
   Coffee,
   CreditCard,
   CalendarDays,
   CalendarRange,
+  Car,
   Clock,
   Dumbbell,
   Gift,
@@ -43,7 +45,8 @@ import {
 } from "lucide-react";
 import AboutDowntownPerksModal from "@/components/modals/AboutDowntownPerksModal";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
-import QuickSearchModal from "@/components/navigation/QuickSearchModal";
+import { AppButton } from "@/components/ui/AppButton";
+import { AppButtonGroup } from "@/components/ui/AppButtonGroup";
 import { useMapEntityData } from "@/hooks/useMapEntityData";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
@@ -78,6 +81,17 @@ const INITIAL_MAP_ZOOM = 18;
 const MAP_VIEW_STORAGE_KEY = "downtown-perks-map-view-v1";
 const MAP_PANEL_IMAGE_FALLBACK = "/images/imported/perks/republic-square.jpg";
 const LEGENDS_BRAND_LINE = "Legends Real Estate";
+const MAP_DRAWER_SURFACE_STYLE = {
+  backgroundColor: "rgba(255, 255, 255, 0.82)",
+  backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.76))",
+  border: "1px solid rgba(255, 255, 255, 0.72)",
+  borderRadius: "20px 20px 0 0",
+  boxShadow: "0 18px 48px rgba(11, 31, 51, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.92)",
+  color: "#0B1F33",
+  WebkitTextFillColor: "#0B1F33",
+  WebkitBackdropFilter: "blur(16px) saturate(170%)",
+  backdropFilter: "blur(16px) saturate(170%)",
+};
 const FILTERS = [
   "All",
   "Saved",
@@ -86,8 +100,14 @@ const FILTERS = [
   "Campaigns",
   "Explore Downtown",
   "Places",
+  "Dining",
+  "Coffee",
+  "Drinks",
   "Breakfast",
   "Brunch",
+  "Lunch",
+  "Dinner",
+  "Dessert",
   "Happy Hour",
   "Happy Hours",
   "Happy Hour Now",
@@ -428,6 +448,69 @@ const DISTRICT_NEARBY_FALLBACKS = {
 
 const PANEL_COPY_LIMIT = 120;
 
+const LEGENDS_ANALYTICS_INSIGHT_COPY = {
+  "Building Views": {
+    signal: "Shows how often this building becomes the first point of interest in the partner map.",
+    why: "High building views mean the address is working as a top-of-funnel residential signal before someone opens a specific listing.",
+    action: "Use this to decide which buildings deserve stronger listing placement, nearby context, or follow-up campaigns.",
+  },
+  "Listing Views": {
+    signal: "Tracks opens on active unit/listing details after someone has shown building-level interest.",
+    why: "This separates casual neighborhood browsing from specific inventory intent.",
+    action: "Prioritize listings with repeat views for lead routing, agent follow-up, and stronger media.",
+  },
+  "Save Rate": {
+    signal: "Measures how often residents or prospects save a building, listing, or nearby residential context.",
+    why: "Saves are quieter than inquiries, but they mark a qualified comparison moment.",
+    action: "Use high save-rate inventory for retargeting, tour prompts, and comparison messaging.",
+  },
+  "Tour Requests": {
+    signal: "Counts moments where discovery moves into active showing or tour interest.",
+    why: "This is the clearest conversion bridge between map visibility and Legends follow-up.",
+    action: "Route these signals into the lead module and compare them against listing views.",
+  },
+  "Neighborhood Opens": {
+    signal: "Shows when people open the surrounding district, walkability, and lifestyle context.",
+    why: "Residential decisions are often driven by the block around the building, not only the unit.",
+    action: "Strengthen neighborhood copy and nearby collections where opens are high.",
+  },
+  "Nearby Entity Clicks": {
+    signal: "Tracks clicks from the building into nearby restaurants, hotels, wellness, civic places, and services.",
+    why: "This reveals which surrounding places make the address feel more useful.",
+    action: "Use the strongest nearby entities in listing panels, agent scripts, and partner campaigns.",
+  },
+  "Collection Opens": {
+    signal: "Shows when users move from one property into curated downtown living collections.",
+    why: "Collection opens indicate comparison behavior and broader residential research.",
+    action: "Create or promote collections around the strongest building themes.",
+  },
+  "Comparison Opens": {
+    signal: "Tracks when users compare this building against other downtown residential options.",
+    why: "Comparison behavior is a high-intent signal because the user is actively narrowing choices.",
+    action: "Surface the building's strongest differentiators against nearby competitors.",
+  },
+  "Walkability Interest": {
+    signal: "Measures engagement with nearby errands, trails, grocery, transit, and daily-use places.",
+    why: "Walkability can make a listing feel practical before a prospect asks about square footage.",
+    action: "Lead with the daily routine benefits that already attract clicks.",
+  },
+  "Dining Interest": {
+    signal: "Tracks engagement with nearby restaurants, happy hours, coffee, and date-night options.",
+    why: "Dining interest shows how the building fits into the resident's real week.",
+    action: "Pair listings with the strongest nearby dining and inKind signals.",
+  },
+  "Wellness Interest": {
+    signal: "Captures clicks into fitness, recovery, spa, trail, and routine-friendly wellness places.",
+    why: "Wellness interest points to lifestyle fit and recurring neighborhood value.",
+    action: "Use these signals to frame the building around daily routines, not only amenities.",
+  },
+  "Lifestyle Benefit Engagement": {
+    signal: "Combines engagement with benefits like walkability, dining, wellness, waterfront access, and local services.",
+    why: "This shows which lifestyle claims are actually earning attention.",
+    action: "Promote the benefits with the strongest engagement in panel copy, listing media, and campaigns.",
+  },
+};
+
 function truncatePanelCopy(value, limit = PANEL_COPY_LIMIT) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   if (text.length <= limit) return text;
@@ -503,8 +586,6 @@ const RESIDENT_SEARCH_FILTERS = [
   { label: "All", filter: "All" },
   { label: "Perks", filter: "Perks" },
   { label: "Events", filter: "Events" },
-  { label: "Campaigns", filter: "Campaigns" },
-  { label: "Explore Downtown", filter: "Explore Downtown" },
   { label: "Living Here", filter: "Living Here" },
   { label: "Properties", filter: "Properties" },
   { label: "Venues", filter: "Venues" },
@@ -594,25 +675,30 @@ const PARTNER_ADVANCED_SEARCH_FILTERS = [
 ];
 
 const RESIDENT_PROMPTS = [
-  "Coffee nearby",
-  "Dinner tonight",
-  "Happy hour close by",
-  "Something happening later",
-  "Rooftop nearby",
-  "Where should we go?",
-  "Live music tonight",
-  "Quick workout nearby",
+  "Coffee within walking distance",
+  "What should we do tonight?",
+  "Best happy hour nearby",
+  "Dinner for a date night",
+  "What's happening this weekend?",
+  "Show me rooftop views",
+  "Where should we take visitors?",
+  "Find resident perks nearby",
+  "Best sushi downtown",
+  "Luxury apartments nearby",
+  "Civic updates nearby",
+  "Brunch this weekend",
 ];
 
 const PARTNER_PROMPTS = [
-  "Activity",
-  "Offers",
-  "Events",
-  "Perks",
-  "Parking",
-  "inKind",
-  "Properties",
-  "Trends",
+  "What campaign should I launch?",
+  "Show nearby resident demand",
+  "What is trending nearby?",
+  "Find sponsorship opportunities",
+  "Show activation ideas",
+  "Where are residents spending time?",
+  "Compare campaign performance",
+  "What should we promote next?",
+  "Find partner opportunities",
 ];
 
 const RESIDENT_PLACEHOLDERS = [
@@ -726,48 +812,120 @@ const PARTNER_PLACEHOLDERS = [
 const SEARCH_CONSOLE_MODE_CONFIG = {
   resident: {
     eyebrow: "Ask the Map",
-    placeholder: "What's nearby?",
+    placeholder: "",
     fallbackTitle: "Ask the map",
     fallbackSignal: "Nearby",
     pulseFallback: "Live nearby",
     intentChips: [
-      { label: "Dinner", filter: "Food", icon: Navigation, prompt: "Dinner nearby" },
-      { label: "Drinks", filter: "Drinks", icon: Moon, prompt: "Drinks nearby" },
-      { label: "Events", filter: "Events", icon: CalendarDays, prompt: "Events nearby" },
-      { label: "Perks", filter: "Perks", icon: TicketPercent, prompt: "Perks now" },
-      { label: "Campaigns", filter: "Campaigns", icon: Megaphone, prompt: "Show active campaigns" },
-      { label: "Explore", filter: "Explore Downtown", icon: Landmark, prompt: "What should I explore today?" },
-      { label: "Walkable", filter: "Nearby", icon: Route, prompt: "Walkable nearby" },
+      { label: "Dining", filter: "Dining", icon: Utensils, prompt: "Dinner for a date night" },
+      { label: "Drinks", filter: "Drinks", icon: Wine, prompt: "Best happy hour nearby" },
+      { label: "Events", filter: "Events", icon: CalendarDays, prompt: "What should we do tonight?" },
+      { label: "Perks", filter: "Perks", icon: Gift, prompt: "Find resident perks nearby" },
+      { label: "Explore", filter: "Explore Downtown", icon: Compass, prompt: "Show me public art nearby" },
+      { label: "Coffee", filter: "Coffee", icon: Coffee, prompt: "Coffee within walking distance" },
+      { label: "Art Walk", filter: "Civic", icon: Landmark, prompt: "Art walk nearby" },
+      { label: "Parking", filter: "Parking", icon: Car, prompt: "Parking nearby" },
+      { label: "Rentals", filter: "Rentals", icon: Building2, prompt: "Luxury apartments nearby" },
     ],
-    filterRail: [
-      { label: "Now", kind: "time", prompt: "Open now nearby" },
-      { label: "Tonight", kind: "time", prompt: "Events tonight" },
-      { label: "This Week", kind: "time", prompt: "Events this week" },
-      { label: "400m", kind: "radius", radius: "400m", prompt: "Within 400m" },
-      { label: "Open", kind: "filter", filter: "Open Now", prompt: "Open now nearby" },
+    featuredPins: [
+      { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo-gold.svg", prompt: "inKind dining nearby" },
+      { label: "DANA", kind: "filter", filter: "Civic", logo: "/pins/brands/dana-logo-gold.svg", prompt: "DANA civic updates" },
+      { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo-gold.svg", prompt: "Legends listings nearby" },
+      { label: "Fine Eyewear", kind: "filter", filter: "Campaigns", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "See Austin Differently" },
+      { label: "Waterloo Greenway", kind: "filter", filter: "Civic", logo: "/pins/brands/waterloo-greenway-logo-gold.svg", prompt: "Waterloo Greenway discovery trail" },
     ],
   },
   partner: {
     eyebrow: "Map Intelligence",
-    placeholder: "Where should we activate next?",
+    placeholder: "",
     fallbackTitle: "Partner map",
     fallbackSignal: "Opportunity nearby",
     pulseFallback: "Demand signal nearby",
     intentChips: [
-      { label: "Opportunity", filter: "Activity", icon: Activity, prompt: "Campaign opportunity" },
-      { label: "Demand", filter: "Reports", icon: Activity, prompt: "Demand nearby" },
-      { label: "Campaigns", filter: "Campaigns", icon: Megaphone, prompt: "Campaigns nearby" },
-      { label: "Audience", filter: "Places", icon: Users, prompt: "Audience nearby" },
-      { label: "Partners", filter: "Places", icon: Users, prompt: "Partner opportunities" },
+      { label: "Performance", filter: "Performance", icon: Activity, prompt: "Compare campaign performance" },
+      { label: "Campaigns", filter: "Campaigns", icon: Megaphone, prompt: "What campaign should I launch?" },
+      { label: "Demand", filter: "Audience", icon: Users, prompt: "Show nearby resident demand" },
+      { label: "Activation", filter: "Opportunity", icon: Sparkles, prompt: "Show activation ideas" },
+      { label: "Insights", filter: "Reports", icon: TrendingUp, prompt: "What is trending nearby?" },
+      { label: "Parking", filter: "Parking", icon: Car, prompt: "Parking demand nearby" },
     ],
     filterRail: [
-      { label: "Today", kind: "time", prompt: "Today" },
-      { label: "After Work", kind: "time", prompt: "After-work activity" },
-      { label: "This Week", kind: "time", prompt: "This week" },
-      { label: "400m", kind: "radius", radius: "400m", prompt: "Within 400m" },
-      { label: "Active", kind: "filter", filter: "Activity", prompt: "Active nearby" },
+      { label: "Perks", kind: "filter", filter: "Perks", prompt: "Perk performance nearby" },
+      { label: "Events", kind: "filter", filter: "Events", prompt: "Event sponsorship opportunities" },
+      { label: "Residential", kind: "filter", filter: "Properties", prompt: "Nearby resident demand" },
+      { label: "Hotels", kind: "filter", filter: "Hotels", prompt: "Hotel guest opportunity" },
+      { label: "Civic", kind: "filter", filter: "Civic", prompt: "DAA sponsorship opportunity" },
+      { label: "Brands", kind: "filter", filter: "Brands", prompt: "Brand activation opportunities" },
+    ],
+    featuredPins: [
+      { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo-gold.svg", prompt: "inKind dining performance" },
+      { label: "DANA", kind: "filter", filter: "Civic", logo: "/pins/brands/dana-logo-gold.svg", prompt: "DANA sponsorship opportunity" },
+      { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo-gold.svg", prompt: "Legends listing demand" },
+      { label: "Fine Eyewear", kind: "filter", filter: "Campaigns", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "Fine Eyewear campaign performance" },
+      { label: "Waterloo Greenway", kind: "filter", filter: "Civic", logo: "/pins/brands/waterloo-greenway-logo-gold.svg", prompt: "Waterloo Greenway activation opportunity" },
     ],
   },
+};
+
+const RESIDENT_CONTEXT_RAILS = {
+  Dining: [
+    { label: "Breakfast", kind: "filter", filter: "Breakfast", prompt: "Breakfast nearby" },
+    { label: "Brunch", kind: "filter", filter: "Brunch", prompt: "Brunch this weekend" },
+    { label: "Lunch", kind: "filter", filter: "Lunch", prompt: "Lunch nearby" },
+    { label: "Dinner", kind: "filter", filter: "Dinner", prompt: "Dinner tonight" },
+    { label: "Coffee", kind: "filter", filter: "Coffee", prompt: "Coffee within walking distance" },
+    { label: "Dessert", kind: "filter", filter: "Dessert", prompt: "Dessert nearby" },
+    { label: "Happy Hour", kind: "filter", filter: "Happy Hour", prompt: "Best happy hour nearby" },
+    { label: "Sushi", kind: "filter", filter: "Dining", prompt: "Best sushi downtown" },
+  ],
+  Drinks: [
+    { label: "Happy Hour", kind: "filter", filter: "Happy Hour", prompt: "Best happy hour nearby" },
+    { label: "Cocktails", kind: "filter", filter: "Cocktails", prompt: "Cocktails nearby" },
+    { label: "Rooftops", kind: "filter", filter: "Drinks", prompt: "Show me rooftop views" },
+    { label: "Wine", kind: "filter", filter: "Wine", prompt: "Wine bars nearby" },
+  ],
+  Events: [
+    { label: "Tonight", kind: "filter", filter: "Events", prompt: "What should we do tonight?" },
+    { label: "Tomorrow", kind: "filter", filter: "Events", prompt: "Events tomorrow" },
+    { label: "Weekend", kind: "filter", filter: "Events", prompt: "What's happening this weekend?" },
+    { label: "Music", kind: "filter", filter: "Live Music", prompt: "Live music tonight" },
+    { label: "Community", kind: "filter", filter: "Events", prompt: "Community events nearby" },
+    { label: "Sports", kind: "filter", filter: "Events", prompt: "Sports events nearby" },
+    { label: "Festivals", kind: "filter", filter: "Events", prompt: "Festivals nearby" },
+  ],
+  Perks: [
+    { label: "Dining", kind: "filter", filter: "Dining", prompt: "Dining perks nearby", icon: Utensils },
+    { label: "Happy Hour", kind: "filter", filter: "Happy Hour", prompt: "Happy hour perks nearby", icon: Wine },
+    { label: "Parking", kind: "filter", filter: "Parking", prompt: "Parking near this perk", icon: Car },
+  ],
+  Explore: [
+    { label: "Art Walk", kind: "filter", filter: "Civic", prompt: "Art walk nearby" },
+    { label: "Parks", kind: "filter", filter: "Civic", prompt: "Parks nearby" },
+    { label: "Museums", kind: "filter", filter: "Civic", prompt: "Museums nearby" },
+    { label: "Waterfront", kind: "filter", filter: "Civic", prompt: "Waterfront public spaces" },
+    { label: "Architecture", kind: "filter", filter: "Civic", prompt: "Architecture tour downtown" },
+    { label: "Neighborhoods", kind: "filter", filter: "Explore Downtown", prompt: "Downtown neighborhoods" },
+  ],
+  default: SEARCH_CONSOLE_MODE_CONFIG.resident.featuredPins,
+};
+
+const PARTNER_CONTEXT_RAILS = {
+  Performance: [
+    { label: "Views", kind: "filter", filter: "Performance", prompt: "Compare campaign performance" },
+    { label: "Saves", kind: "filter", filter: "Performance", prompt: "Saved activity nearby" },
+    { label: "Visits", kind: "filter", filter: "Performance", prompt: "Visit signals nearby" },
+    { label: "Redemptions", kind: "filter", filter: "Performance", prompt: "Redemption activity nearby" },
+  ],
+  Campaigns: [
+    { label: "Launch Campaign", kind: "filter", filter: "Campaigns", prompt: "What campaign should I launch?" },
+    { label: "Resident Demand", kind: "filter", filter: "Audience", prompt: "Show nearby resident demand" },
+    { label: "Event Sponsorship", kind: "filter", filter: "Events", prompt: "Event sponsorship opportunities" },
+    { label: "Parking", kind: "filter", filter: "Parking", prompt: "Parking demand nearby", icon: Car },
+  ],
+  Demand: SEARCH_CONSOLE_MODE_CONFIG.partner.filterRail,
+  Activation: SEARCH_CONSOLE_MODE_CONFIG.partner.filterRail,
+  Insights: SEARCH_CONSOLE_MODE_CONFIG.partner.filterRail,
+  default: SEARCH_CONSOLE_MODE_CONFIG.partner.filterRail,
 };
 
 const SEARCH_RADIUS_OPTIONS = ["400m", "800m", "1 mile", "5 min walk", "10 min walk"];
@@ -783,9 +941,11 @@ const MAP_INTENT_RULES = [
   { intent: "Legends", filter: "Legends", entityType: "Listing", tokens: ["legends", "legends listings", "available homes", "condos", "apartments", "live here", "properties near me"] },
   { intent: "rentals", filter: "Rentals", entityType: "Rental", tokens: ["rental", "rentals", "for rent", "1 bedroom rentals", "bedroom rentals", "under $4,000", "under 4000", "available under", "near whole foods", "near lady bird lake"] },
   { intent: "coffee", filter: "Coffee", entityType: "Venue", tokens: ["coffee", "cafe", "espresso", "morning coffee"] },
-  { intent: "dining", filter: "Dining", entityType: "Venue", tokens: ["dinner", "lunch", "brunch", "food", "restaurant", "tacos", "date night", "eat"] },
+  { intent: "dinner", filter: "Dinner", entityType: "Venue", tokens: ["dinner", "date night"] },
+  { intent: "dining", filter: "Dining", entityType: "Venue", tokens: ["lunch", "brunch", "food", "restaurant", "tacos", "sushi", "eat"] },
   { intent: "drinks", filter: "Drinks", entityType: "Venue", tokens: ["drinks", "cocktails", "wine bar", "bar", "rooftop before sunset"] },
   { intent: "happy_hour", filter: "Happy Hour", entityType: "Perk", timeContext: "Tonight", tokens: ["happy hour", "after work", "drink specials"] },
+  { intent: "parking", filter: "Parking", entityType: "Parking", tokens: ["parking", "garage", "reservable parking", "event parking", "parking nearby", "resident parking"] },
   { intent: "nightlife", filter: "Nightlife", entityType: "Venue", tokens: ["nightlife", "honky tonk", "late night", "dance"] },
   { intent: "events", filter: "Events", entityType: "Event", tokens: ["events", "things to do", "what is happening", "happening nearby"] },
   { intent: "campaigns", filter: "Campaigns", entityType: "Campaign", tokens: ["campaign", "campaigns", "active campaigns", "show active campaigns", "show sugar wolf", "sugar wolf", "pastry passport", "show coffee passport", "show wellness week", "show rooftop guide", "show hidden perks", "what challenges are active", "campaigns nearby"] },
@@ -839,8 +999,8 @@ function resolveFilterForIntent(query, mode = "resident") {
   const parsed = parseMapIntent(query, mode);
   if (!parsed.filters.length) return "";
   const preferred = mode === "partner"
-    ? ["Opportunity", "Performance", "Coverage", "Campaigns", "Explore Downtown", "Hospitality", "Staycations", "Waterfront", "Rentals", "Properties", "Hotels", "Venues", "Brands", "Civic", "Events", "Perks", "inKind", "Legends", "Listings"]
-    : ["Campaigns", "Explore Downtown", "Hospitality", "Staycations", "Waterfront", "Rentals", "Perks", "Events", "Happy Hour", "Live Music", "Coffee", "Dining", "Drinks", "Fitness", "Wellness", "inKind", "Legends", "Listings", "Properties", "Hotels", "Civic", "Nearby"];
+    ? ["Opportunity", "Performance", "Coverage", "Campaigns", "Explore Downtown", "Hospitality", "Staycations", "Waterfront", "Parking", "Rentals", "Properties", "Hotels", "Venues", "Brands", "Civic", "Events", "Perks", "inKind", "Legends", "Listings"]
+    : ["Dinner", "Coffee", "Dining", "Drinks", "Happy Hour", "Events", "Perks", "Parking", "inKind", "Civic", "Explore Downtown", "Rentals", "Legends", "Listings", "Properties", "Hotels", "Campaigns", "Live Music", "Fitness", "Wellness", "Nearby"];
   return preferred.find((item) => parsed.filters.includes(item)) || parsed.filters[0] || "";
 }
 
@@ -926,6 +1086,40 @@ function getPartnerBusinessInsights(place) {
   const district = place?.district || "Downtown Austin";
   const category = String(place?.category || place?.type || "place");
   const name = place?.name || "this partner";
+  const listing = getResolvedLegendsListing(place);
+  const rental = place?.raw?.rentalListing || place?.rentalListing || null;
+  const luxuryBuilding = getLuxuryPresenceBuilding(place);
+
+  if (isParkingEntity(place)) {
+    const booking = getParkingBooking(place);
+    return {
+      intent: `People near ${district} are trying to solve parking before they commit to dinner, events, listings, hotels, or a night out.`,
+      audience: `Best fit: event-goers, hotel guests, residents, restaurant guests, and visitors already close enough to act around ${district}.`,
+      opportunity: `Use ${name} as a conversion layer beside nearby plans so parking supports the visit instead of becoming the reason people drop off.`,
+      timing: "Strongest window: pre-arrival, event nights, dinner, and weekend planning",
+      placement: `Parking demand near ${district}`,
+      action: "Promote parking availability",
+      fit: booking?.rateLabel || booking?.availabilityLabel || "Reservable parking signal",
+    };
+  }
+
+  if (listing || rental || luxuryBuilding || isLegendsMapPlace(place)) {
+    const listingCount = Array.isArray(luxuryBuilding?.listings) ? luxuryBuilding.listings.length : 0;
+    const listingSignal = listing
+      ? getListingFactLine(listing)
+      : rental
+        ? [rental.priceLabel, rental.beds ? `${rental.beds} bd` : "", rental.baths ? `${rental.baths} ba` : "", rental.sqft ? `${Number(rental.sqft).toLocaleString()} sqft` : ""].filter(Boolean).join(" · ")
+        : listingCount ? `${listingCount} active listing${listingCount === 1 ? "" : "s"}` : "Residential demand signal";
+    return {
+      intent: `Prospects, brokers, residents, and nearby businesses use ${name} to understand building demand, listing interest, and what makes the surrounding blocks useful.`,
+      audience: `Best fit: qualified residential prospects, Legends agents, property teams, nearby brands, and partners trying to reach people around ${district}.`,
+      opportunity: `Use the pin to connect listing interest with walkable dining, hotel, wellness, event, and retail context around ${district}.`,
+      timing: "Strongest window: showing research, lunch breaks, and after-work neighborhood comparison",
+      placement: `Legends demand near ${district}`,
+      action: "Review listing interest",
+      fit: listingSignal,
+    };
+  }
 
   if (isInKindPartner(place)) {
     return {
@@ -1034,6 +1228,30 @@ function getPartnerBusinessInsights(place) {
     timing: "Lunch, after work, and before nearby events.",
     placement: `Near ${district}`,
     action: "Show up while people are nearby",
+  };
+}
+
+function getPartnerPanelCopy(place) {
+  const insights = getPartnerBusinessInsights(place);
+  const kind = getResidentEntityKind(place);
+  const category = kind === "property" || kind === "rental"
+    ? "Residential intelligence"
+    : isInKindPartner(place)
+      ? "Dining intelligence"
+      : isCampaignEntity(place)
+        ? "Campaign intelligence"
+        : `${String(place?.category || place?.type || "Partner").replace(/[_-]/g, " ")} insight`;
+
+  return {
+    category,
+    title: insights.action || "Review opportunity",
+    value: insights.fit || insights.placement,
+    description: insights.intent,
+    terms: insights.opportunity,
+    audience: insights.audience,
+    timing: insights.timing,
+    placement: insights.placement,
+    action: insights.action,
   };
 }
 
@@ -1424,6 +1642,127 @@ function isParkingEntity(place) {
   );
 }
 
+function isDiningEntity(place) {
+  const type = getExplicitEntityType(place);
+  const category = getExplicitEntityCategory(place);
+  const categoryKey = getExplicitEntityCategoryKey(place);
+  const partnerType = getExplicitPartnerType(place);
+  const coreText = placeCoreText(place);
+  const isBlockedNonDining =
+    isCampaignEntity(place) ||
+    isPropertyEntity(place) ||
+    isHotelEntity(place) ||
+    isCivicEntity(place) ||
+    isRentalEntity(place) ||
+    isParkingEntity(place) ||
+    /\b(wellness|fitness|recreation|bathhouse|spa|sauna|cold plunge|massage|library|museum|park|public art|residential|hotel|parking|service)\b/i.test(coreText);
+
+  if (isBlockedNonDining) return false;
+
+  const compactText = [place.name, place.brand, type, category, categoryKey, partnerType].filter(Boolean).join(" ").toLowerCase();
+  return (
+    ["restaurant", "dining", "food", "bar", "coffee", "cafe", "happy_hour"].includes(type) ||
+    partnerType === "restaurant" ||
+    partnerType === "dining" ||
+    category.includes("dining") ||
+    category.includes("restaurant") ||
+    category.includes("coffee") ||
+    category.includes("bar") ||
+    categoryKey.includes("dining") ||
+    categoryKey.includes("restaurant") ||
+    categoryKey.includes("coffee") ||
+    categoryKey.includes("bar") ||
+    categoryKey.includes("happy_hour") ||
+    /\b(restaurant|dining|dinner|lunch|brunch|breakfast|sushi|taco|pizza|kitchen|cafe|coffee|bakery|dessert|happy hour|cocktail|bar)\b/i.test(compactText)
+  );
+}
+
+function isCoffeeEntity(place) {
+  const type = getExplicitEntityType(place);
+  const category = getExplicitEntityCategory(place);
+  const categoryKey = getExplicitEntityCategoryKey(place);
+  const compactText = [place.name, place.brand, type, category, categoryKey].filter(Boolean).join(" ").toLowerCase();
+  if (!isDiningEntity(place)) return false;
+  return /\b(coffee|cafe|espresso|latte|bakery|pastry|breakfast|morning)\b/i.test(compactText);
+}
+
+function isDrinksEntity(place) {
+  if (isCivicEntity(place) || isPropertyEntity(place) || isHotelEntity(place) || isRentalEntity(place) || isParkingEntity(place)) return false;
+  const type = getExplicitEntityType(place);
+  const category = getExplicitEntityCategory(place);
+  const categoryKey = getExplicitEntityCategoryKey(place);
+  const compactText = [place.name, place.brand, type, category, categoryKey].filter(Boolean).join(" ").toLowerCase();
+  return /\b(bar|cocktail|drinks|wine|beer|brewery|nightlife|happy hour|rooftop|patio)\b/i.test(compactText) || (isHappyHourEntity(place) && isDiningEntity(place));
+}
+
+function isLivingEntity(place) {
+  const type = getExplicitEntityType(place);
+  const category = getExplicitEntityCategory(place);
+  const categoryKey = getExplicitEntityCategoryKey(place);
+  const partnerType = getExplicitPartnerType(place);
+  const coreText = placeCoreText(place);
+  return (
+    isLegendsMapPlace(place) ||
+    isPropertyEntity(place) ||
+    isRentalEntity(place) ||
+    isListingEntity(place) ||
+    Boolean(getLegendsListing(place) || getLegendsResidentialProfileForPlace(place) || getLuxuryPresenceBuilding(place)) ||
+    ["property", "residential", "building", "listing", "rental"].includes(type) ||
+    ["property", "properties", "realestate", "real_estate"].includes(partnerType) ||
+    category.includes("residential") ||
+    category.includes("property") ||
+    category.includes("listing") ||
+    categoryKey.includes("residential") ||
+    categoryKey.includes("property") ||
+    categoryKey.includes("listing") ||
+    /\b(legends real estate|residential tower|residential building|available listing|mls|condo|condominium|apartment|luxury living)\b/i.test(coreText)
+  );
+}
+
+function isStrictIntentMatch(place, activeFilter) {
+  if (activeFilter === "Dinner" || activeFilter === "Lunch") {
+    return (isDiningEntity(place) && !isCoffeeEntity(place)) || (isCampaignEntity(place) && /\b(dining|dinner|restaurant|sushi|passport|happy hour)\b/i.test(placeText(place)));
+  }
+  if (activeFilter === "Dining" || activeFilter === "Breakfast" || activeFilter === "Brunch" || activeFilter === "Dessert") {
+    return isDiningEntity(place) || (isCampaignEntity(place) && /\b(dining|dinner|restaurant|sushi|brunch|passport|happy hour)\b/i.test(placeText(place))) || (hasActivePerkData(place) && isDiningEntity(place));
+  }
+  if (activeFilter === "Coffee") return isCoffeeEntity(place);
+  if (activeFilter === "Drinks" || activeFilter === "Cocktails" || activeFilter === "Happy Hour" || activeFilter === "Happy Hours") return isDrinksEntity(place);
+  if (activeFilter === "Civic" || activeFilter === "Public Art" || activeFilter === "Arts & Culture" || activeFilter === "Explore Downtown") {
+    return isCivicEntity(place) || isExploreDowntownEntity(place) || Boolean(getDaaStopFromPlace(place));
+  }
+  if (activeFilter === "Rentals") return isLivingEntity(place);
+  if (activeFilter === "Legends" || activeFilter === "Living Here" || activeFilter === "Listings" || activeFilter === "All Listings") return isLivingEntity(place);
+  if (activeFilter === "inKind") return isInKindEntity(place) || (isCampaignEntity(place) && /\b(inkind|dining|restaurant|passport|date night|brunch|happy hour)\b/i.test(placeText(place)));
+  return true;
+}
+
+function isIntentOnlyFilter(activeFilter) {
+  return [
+    "Dining",
+    "Breakfast",
+    "Brunch",
+    "Lunch",
+    "Dinner",
+    "Dessert",
+    "Coffee",
+    "Drinks",
+    "Cocktails",
+    "Happy Hour",
+    "Happy Hours",
+    "Civic",
+    "Public Art",
+    "Arts & Culture",
+    "Explore Downtown",
+    "Rentals",
+    "Legends",
+    "Living Here",
+    "Listings",
+    "All Listings",
+    "inKind",
+  ].includes(activeFilter);
+}
+
 function matchesFilter(place, activeFilter, savedIds) {
   if (activeFilter === "All") return true;
   if (["Open Now", "Tonight", "This Week", "Scans", "Saves", "Redemptions", "Opportunities", "Performance", "Opportunity", "Coverage", "Audience", "Surveys", "Broadcasts", "Activations"].includes(activeFilter)) return true;
@@ -1439,7 +1778,11 @@ function matchesFilter(place, activeFilter, savedIds) {
       ["Dining", "Drinks", "Coffee", "Fitness", "Retail", "Grocery", "Culture", "Live Music"].includes(place.category)
     );
   }
-  if (activeFilter === "Happy Hours" || activeFilter === "Happy Hour") return isHappyHourEntity(place);
+  if (activeFilter === "Dining") return isStrictIntentMatch(place, "Dining");
+  if (activeFilter === "Coffee") return isStrictIntentMatch(place, "Coffee");
+  if (activeFilter === "Drinks" || activeFilter === "Cocktails") return isStrictIntentMatch(place, "Drinks");
+  if (["Breakfast", "Brunch", "Lunch", "Dinner", "Dessert"].includes(activeFilter)) return isStrictIntentMatch(place, activeFilter);
+  if (activeFilter === "Happy Hours" || activeFilter === "Happy Hour") return isStrictIntentMatch(place, "Happy Hour");
   if (activeFilter === "Happy Hour Now") return isHappyHourEntity(place) && Boolean(place.isLiveNow);
   if (activeFilter === "Happy Hour Today") return isHappyHourEntity(place) && Boolean(place.happyHour?.days);
   if (activeFilter === "Properties") return isPropertyEntity(place);
@@ -1459,7 +1802,7 @@ function matchesFilter(place, activeFilter, savedIds) {
       .toLowerCase()
       .includes(activeFilter.toLowerCase());
   }
-  if (activeFilter === "Rentals") return isRentalEntity(place);
+  if (activeFilter === "Rentals") return isLivingEntity(place);
   if (activeFilter === "inKind") return isInKindEntity(place);
   if (activeFilter === "Hotels") return isHotelEntity(place);
   if (activeFilter === "Brands") return isBrandEntity(place);
@@ -1527,13 +1870,24 @@ function buildAgenticMapAnswer(query, results, mode, district, activeFilter) {
 
   if (!topResults.length) return base;
 
+  const answerStack = {
+    bestMatch: best,
+    alternatives,
+    collections: activeFilter === "Civic" ? ["Downtown Austin Art & Parks Tour"] : activeFilter === "Dinner" || activeFilter === "Dining" ? ["Best Sushi Downtown", "Dinner Tonight"] : activeFilter === "inKind" ? ["Date Night Downtown", "Brunch Collection"] : [],
+    campaigns: activeFilter === "Civic" ? ["DAA Art Walk Sponsor"] : activeFilter === "Dinner" || activeFilter === "Dining" ? ["Downtown Sushi Week", "Resident Dining Week"] : activeFilter === "inKind" ? ["Downtown Sushi Passport", "Restaurant Week"] : [],
+    events: topResults.filter(isEventEntity).map((place) => place.name).slice(0, 2),
+    nextAction: mode === "partner" ? "Launch Campaign" : activeFilter === "Civic" ? "Open Tour Stop" : activeFilter === "Dinner" || activeFilter === "Dining" ? "Reserve Table" : "Open Recommendation",
+  };
+
   if (audience === "partner") {
     const focus = activeFilter === "All" ? "activity" : activeFilter.toLowerCase();
     return {
       title: `Start with ${best.name}.`,
       body: `${best.name} is the clearest ${focus} read in ${scope}. It shows what people are doing nearby and gives you one place to act.${alternatives.length ? ` Compare it with ${alternatives.slice(0, 2).join(" and ")}.` : ""}`,
       picks: topResults,
-      actions: ["open-nearby", "save"],
+      actions: ["Launch Campaign", "View Report"],
+      why: `${best.name} connects nearby activity with one clear next step in ${scope}.`,
+      ...answerStack,
     };
   }
 
@@ -1542,7 +1896,9 @@ function buildAgenticMapAnswer(query, results, mode, district, activeFilter) {
       title: `Start with ${best.name}.`,
       body: `${best.name} is the easiest place to start if you want a plan that works nearby. It keeps the decision close to ${scope}.${alternatives.length ? ` ${alternatives[0]} is the better backup if the first stop does not fit.` : ""}`,
       picks: topResults,
-      actions: ["open-nearby", "save"],
+      actions: [answerStack.nextAction, "Save"],
+      why: `${best.name} fits the nearby context and gives you the cleanest first move.`,
+      ...answerStack,
     };
   }
 
@@ -1551,7 +1907,9 @@ function buildAgenticMapAnswer(query, results, mode, district, activeFilter) {
       title: `Start with ${best.name}.`,
       body: `${best.name} is the clearest thing to look at first in ${scope}. It gives you context without turning the map into a result dump.${alternatives.length ? ` ${alternatives.join(" and ")} are useful alternatives.` : ""}`,
       picks: topResults,
-      actions: ["open-nearby", "save"],
+      actions: [answerStack.nextAction, "Save"],
+      why: `${best.name} is the clearest match for what you asked to see.`,
+      ...answerStack,
     };
   }
 
@@ -1560,11 +1918,18 @@ function buildAgenticMapAnswer(query, results, mode, district, activeFilter) {
       title: `Start with ${best.name}.`,
       body: `${best.name} gives you the simplest next move in ${scope}. Open it, save it, or compare the nearby options before you leave the map.`,
       picks: topResults,
-      actions: ["open-nearby", "save"],
+      actions: [answerStack.nextAction, "Save"],
+      why: `${best.name} gives you a practical next step without making the map noisy.`,
+      ...answerStack,
     };
   }
 
-  return base;
+  return {
+    ...base,
+    actions: [answerStack.nextAction, "Save"],
+    why: base.body,
+    ...answerStack,
+  };
 }
 
 function mergeAgentAnswerWithLocalResults(agentAnswer, localResults, fallbackTitle) {
@@ -1578,12 +1943,38 @@ function mergeAgentAnswerWithLocalResults(agentAnswer, localResults, fallbackTit
     .filter(Boolean);
 
   const picks = matchedPicks.length ? matchedPicks : localResults.slice(0, 3);
+  const resultText = localResults.map((place) => placeText(place)).join(" ");
+  const isCivicResponse = /\b(civic|daa|public art|art walk|museum|park)\b/i.test(resultText);
+  const isDiningResponse = /\b(dining|restaurant|dinner|sushi|happy hour|coffee|bar)\b/i.test(resultText);
+  const isResidentialResponse = /\b(residential|listing|legends|rental|condo|apartment)\b/i.test(resultText);
+  const fallbackCollections = isCivicResponse
+    ? ["Downtown Austin Art & Parks Tour"]
+    : isDiningResponse
+      ? ["Dinner Tonight", "Best Sushi Downtown"]
+      : isResidentialResponse
+        ? ["Luxury Living"]
+        : ["Downtown Picks"];
+  const fallbackCampaigns = isCivicResponse
+    ? ["DAA Art Walk Sponsor"]
+    : isDiningResponse
+      ? ["Resident Dining Week", "Downtown Sushi Week"]
+      : isResidentialResponse
+        ? ["Resident Welcome Guide"]
+        : ["Resident Summer Guide"];
+  const fallbackEvents = localResults.filter(isEventEntity).map((place) => place.name).slice(0, 3);
 
   return {
     title: agentAnswer.title || fallbackTitle,
     body: agentAnswer.answer,
     picks,
     actions: Array.isArray(agentAnswer.actions) ? agentAnswer.actions.slice(0, 4) : [],
+    bestMatch: picks[0],
+    alternatives: picks.slice(1).map((place) => place.name),
+    why: agentAnswer.explanation || agentAnswer.answer,
+    collections: Array.isArray(agentAnswer.collections) && agentAnswer.collections.length ? agentAnswer.collections.slice(0, 3) : fallbackCollections,
+    campaigns: Array.isArray(agentAnswer.campaigns) && agentAnswer.campaigns.length ? agentAnswer.campaigns.slice(0, 3) : fallbackCampaigns,
+    events: Array.isArray(agentAnswer.events) && agentAnswer.events.length ? agentAnswer.events.slice(0, 3) : fallbackEvents,
+    nextAction: Array.isArray(agentAnswer.actions) && agentAnswer.actions[0] ? agentAnswer.actions[0] : "Open Recommendation",
     source: agentAnswer.source,
     model: agentAnswer.model,
   };
@@ -1844,6 +2235,40 @@ function getEntityIdentity(place, mode = "resident") {
   const context = getPanelContextSentence(place, mode);
   const panelArchetype = resolveEntityPanelArchetype(place);
 
+  if (isBurgerBarCongress(place)) {
+    return {
+      id: place?.id,
+      entityType: mode === "partner" ? "opportunity" : "perk",
+      displayTypeLabel: `${mode === "partner" ? "Dining opportunity" : "Resident dining"} · Congress Avenue`,
+      displayTitle: BURGER_BAR_CONGRESS_CONTENT.title,
+      displaySubtitle: mode === "partner" ? BURGER_BAR_CONGRESS_CONTENT.partnerSubtitle : BURGER_BAR_CONGRESS_CONTENT.residentSubtitle,
+      displayContext: truncatePanelCopy(
+        mode === "partner" ? BURGER_BAR_CONGRESS_CONTENT.partnerOverview : BURGER_BAR_CONGRESS_CONTENT.residentOverview,
+        130,
+      ),
+      address: address || "110 E 2nd St",
+      neighborhood: "Congress Avenue",
+      categoryLabel: mode === "partner" ? "Dining opportunity" : "Resident dining",
+      panelArchetype,
+    };
+  }
+
+  if (mode === "partner" && isParkingEntity(place)) {
+    const copy = getPartnerPanelCopy(place);
+    return {
+      id: place?.id,
+      entityType: "parking",
+      displayTypeLabel: `Parking intelligence · ${district}`,
+      displayTitle: place?.name || "Parking opportunity",
+      displaySubtitle: copy.value || "Parking demand signal",
+      displayContext: truncatePanelCopy(copy.description || context, 130),
+      address,
+      neighborhood: district,
+      categoryLabel: "Parking intelligence",
+      panelArchetype,
+    };
+  }
+
   if (isRentalEntity(place)) {
     const rental = place?.raw?.rentalListing || place?.rentalListing || {};
     const facts = [
@@ -1929,7 +2354,45 @@ function getEntityIdentity(place, mode = "resident") {
     };
   }
 
+  if (isInKindEntity(place)) {
+    const perk = getResidentPerkDetails(place);
+    const perkTitle = formatResidentPerkHeading(perk?.offer || getExplicitGroupedOffer(place) || "Resident perk");
+    return {
+      id: place?.id,
+      entityType: "perk",
+      displayTypeLabel: `${mode === "partner" ? "Dining opportunity" : "Resident Perk"} · ${district}`,
+      displayTitle: place?.name || perkTitle,
+      displaySubtitle: perkTitle,
+      displayContext: truncatePanelCopy(perk?.description || context, 130),
+      parentEntityName: place?.name,
+      perkTitle,
+      offerTitle: perkTitle,
+      address,
+      neighborhood: district,
+      categoryLabel: mode === "partner" ? "Dining opportunity" : "Resident perk",
+      panelArchetype,
+    };
+  }
+
   if (panelArchetype.id === "perk") {
+    if (mode === "partner") {
+      const copy = getPartnerPanelCopy(place);
+      return {
+        id: place?.id,
+        entityType: "opportunity",
+        displayTypeLabel: `${copy.category} · ${district}`,
+        displayTitle: place?.name || copy.title || "Partner opportunity",
+        displaySubtitle: copy.value || copy.placement || "Business insight",
+        displayContext: truncatePanelCopy(copy.description || context, 130),
+        parentEntityName: place?.name,
+        perkTitle: copy.title,
+        offerTitle: copy.title,
+        address,
+        neighborhood: district,
+        categoryLabel: copy.category,
+        panelArchetype,
+      };
+    }
     const perk = getResidentPerkDetails(place);
     const perkTitle = formatResidentPerkHeading(perk?.offer || getExplicitGroupedOffer(place) || place?.name || "Resident perk");
     return {
@@ -3143,87 +3606,385 @@ function getInKindActionUrl(place, type) {
   return directionsUrl(place);
 }
 
-function InKindDiningDetails({ place, places = [], mode = "resident", savedIds, onSave, onSelect }) {
+const BURGER_BAR_CONGRESS_CONTENT = {
+  title: "Burger Bar Congress",
+  residentSubtitle: "Burgers, drinks, and downtown energy right on Congress.",
+  residentOverview:
+    "Located at the corner of 2nd Street and Congress Avenue, Burger Bar Congress is a casual downtown favorite for burgers, fries, local beer, cocktails, and late-night bites. Whether you're heading to a concert, leaving the office, or looking for an easy place to meet friends, it's a reliable stop in the center of downtown activity.",
+  whyPeopleGo: [
+    "Quick lunch between meetings",
+    "Casual happy hour drinks",
+    "Pre-event dining",
+    "Late-night food downtown",
+    "Weekend people watching on Congress",
+  ],
+  whatYouWillFind: [
+    "Signature burgers",
+    "Hand-cut fries",
+    "Beer and cocktails",
+    "Outdoor patio seating",
+    "Walk-up ordering",
+    "Late-night hours",
+  ],
+  nearby: [
+    "2-minute walk to Congress Avenue",
+    "5-minute walk to Lady Bird Lake",
+    "Close to JW Marriott, ACL Live, and the Warehouse District",
+  ],
+  residentNote:
+    "One of downtown's easiest casual gathering spots when you want something simple, fast, and close to where the action is happening.",
+  partnerSubtitle:
+    "A high-traffic downtown dining destination serving residents, workers, visitors, and event attendees throughout the day.",
+  partnerOverview:
+    "Burger Bar Congress occupies a highly visible location at 2nd Street and Congress Avenue, benefiting from consistent pedestrian activity generated by nearby hotels, office towers, residential buildings, entertainment venues, and convention visitors.",
+  businessOverview: [
+    ["Category", "Restaurant · Burgers · Drinks"],
+    ["District", "Congress Avenue"],
+    ["Audience", "Residents, office workers, hotel guests, convention attendees, event-goers, tourists"],
+    ["Visit Patterns", "Lunch · Happy Hour · Dinner · Late Night"],
+  ],
+  visibilityOpportunities: [
+    "Limited-time menu items",
+    "Happy hour specials",
+    "Event-night offers",
+    "Resident-exclusive perks",
+    "Seasonal campaigns",
+    "Partnership promotions",
+  ],
+  recommendedCampaigns: [
+    ["Happy Hour Spotlight", "Increase awareness during afternoon and early evening traffic periods."],
+    ["Resident Perk Campaign", "Reward nearby residents with exclusive offers and encourage repeat visits."],
+    ["Event Night Promotion", "Capture traffic before concerts, sporting events, and downtown activations."],
+    ["Sponsored Campaign", "District-wide visibility across the Downtown Perks map and discovery surfaces."],
+  ],
+  audienceAlignment: [
+    "Downtown residents",
+    "Young professionals",
+    "Hotel guests",
+    "Convention visitors",
+    "Concert attendees",
+    "Weekend visitors",
+  ],
+  partnerInsights: [
+    "Profile views",
+    "Saves",
+    "Direction requests",
+    "Offer opens",
+    "Perk redemptions",
+    "Campaign engagement",
+    "Repeat visitor behavior",
+  ],
+  assessment:
+    "Burger Bar Congress is a strong everyday-use venue that benefits from frequency rather than destination travel. Visibility campaigns should focus on convenience, proximity, timing, and repeat visitation rather than special occasions.",
+};
+
+function isBurgerBarCongress(place) {
+  const id = String(place?.id || place?.raw?.id || "").toLowerCase();
+  const name = String(place?.name || place?.raw?.name || "").toLowerCase();
+  const address = String(place?.address || place?.raw?.address || "").toLowerCase();
+  const osmId = String(place?.osm_id || place?.raw?.osm_id || "");
+  return (
+    id === "inkind-hopdoddy-congress" ||
+    id === "burger-bar-node-4304618025" ||
+    id === "map-987-burger-bar" ||
+    osmId === "4304618025" ||
+    ((name.includes("burger bar") || name.includes("hopdoddy burger bar")) &&
+      (address.includes("110") || address.includes("2nd") || address.includes("congress")))
+  );
+}
+
+function DetailBulletList({ items }) {
+  return (
+    <ul className="space-y-2">
+      {items.map((item) => (
+        <li key={item} className="grid grid-cols-[6px_1fr] gap-2 text-[13px] leading-5 text-[#0B1F33]/72">
+          <span className="mt-2 h-1.5 w-1.5 rounded-[2px] bg-[#C8A96A]" aria-hidden="true" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function BurgerBarCongressDetails({ place, mode = "resident", savedIds, onSave }) {
+  if (!isBurgerBarCongress(place)) return null;
+  const isPartnerMode = mode === "partner";
+  const isSaved = savedIds?.has?.(place?.id);
+  const shareBurgerBar = () => {
+    const shareData = {
+      title: BURGER_BAR_CONGRESS_CONTENT.title,
+      text: BURGER_BAR_CONGRESS_CONTENT.residentSubtitle,
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {});
+      return;
+    }
+    window.location.href = `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodeURIComponent(`${shareData.text}\n${shareData.url}`)}`;
+  };
+
+  if (isPartnerMode) {
+    return (
+      <div className="space-y-5">
+        <DestinationSection title={BURGER_BAR_CONGRESS_CONTENT.title} support={BURGER_BAR_CONGRESS_CONTENT.partnerSubtitle}>
+          <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.partnerOverview}</p>
+        </DestinationSection>
+
+        <DestinationSection title="Business Overview">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {BURGER_BAR_CONGRESS_CONTENT.businessOverview.map(([label, value]) => (
+              <div key={label} className="border-t border-[rgba(11,31,51,.06)] pt-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{label}</div>
+                <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/72">{value}</p>
+              </div>
+            ))}
+          </div>
+        </DestinationSection>
+
+        <DestinationSection title="Visibility Opportunities" support="Promote">
+          <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.visibilityOpportunities} />
+        </DestinationSection>
+
+        <DestinationSection title="Recommended Campaigns">
+          <div className="space-y-3">
+            {BURGER_BAR_CONGRESS_CONTENT.recommendedCampaigns.map(([title, description]) => (
+              <div key={title} className="border-t border-[rgba(11,31,51,.06)] pt-3">
+                <h4 className="text-[13px] font-semibold text-[#0B1F33]">{title}</h4>
+                <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/68">{description}</p>
+              </div>
+            ))}
+          </div>
+        </DestinationSection>
+
+        <DestinationSection title="Audience Alignment" support="Burger Bar Congress performs well with">
+          <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.audienceAlignment} />
+        </DestinationSection>
+
+        <DestinationSection title="Suggested Partner Insights" support="Track">
+          <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.partnerInsights} />
+        </DestinationSection>
+
+        <DestinationSection title="Downtown Perks Assessment">
+          <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.assessment}</p>
+        </DestinationSection>
+
+        <DestinationSection title="Partner Actions">
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Link to="/map?mode=partner&tab=campaigns" className="dp-panel-action dp-primary-action">Launch Campaign</Link>
+            <Link to="/partner-workspace/perks" className="dp-panel-action">Create Resident Perk</Link>
+            <Link to="/dashboard" className="dp-panel-action">View Performance</Link>
+            <Link to="/partner-workspace/events" className="dp-panel-action">Promote Event Night Offer</Link>
+          </div>
+        </DestinationSection>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      <DestinationSection title={BURGER_BAR_CONGRESS_CONTENT.title} support={BURGER_BAR_CONGRESS_CONTENT.residentSubtitle}>
+        <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.residentOverview}</p>
+      </DestinationSection>
+
+      <DestinationSection title="Why People Go">
+        <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.whyPeopleGo} />
+      </DestinationSection>
+
+      <DestinationSection title="What You'll Find">
+        <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.whatYouWillFind} />
+      </DestinationSection>
+
+      <DestinationSection title="Nearby">
+        <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.nearby} />
+      </DestinationSection>
+
+      <DestinationSection title="Downtown Perks Note">
+        <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.residentNote}</p>
+      </DestinationSection>
+
+      <DestinationSection title="Primary Actions">
+        <div className="grid gap-2 sm:grid-cols-3">
+          <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">Get Directions</a>
+          <button type="button" className="dp-panel-action" onClick={onSave}>{isSaved ? "Saved Place" : "Save Place"}</button>
+          <button type="button" className="dp-panel-action" onClick={shareBurgerBar}>Share</button>
+        </div>
+      </DestinationSection>
+    </div>
+  );
+}
+
+function InKindDiningDetails({
+  place,
+  places = [],
+  mode = "resident",
+  savedIds,
+  onSave,
+  onSelect,
+  answer,
+  loading = false,
+  onAsk,
+  onCloseAnswer,
+}) {
   if (!isInKindEntity(place)) return null;
   const isPartnerMode = mode === "partner";
   const perk = getResidentPerkDetails(place);
-  const nearbyDining = getInKindNearbyDining(place, places);
+  const nearbyDining = getInKindNearbyDining(place, places).slice(0, 4);
   const cuisine = String(place?.category || place?.raw?.category || "Dining").split("/")[0].trim() || "Dining";
   const neighborhood = place?.district || place?.neighborhood || "Downtown Austin";
   const walkability = place?.raw?.walkability || place?.walkability || `Walkable from nearby downtown buildings and hotels.`;
   const overview = cleanDisplayCopy(place?.raw?.summary || place?.summary || place?.description) ||
     `${place?.name || "This restaurant"} gives residents and visitors a practical dining option when they are already nearby.`;
-  const partnerSupport = mode === "partner"
-    ? "Dining Visibility · Dining Engagement · Dining Participation"
-    : "Participating dining partner";
-  const benefitsTitle = isPartnerMode ? "Dining Intelligence" : "InKind Benefits";
-  const benefitChips = isPartnerMode
-    ? ["Dining demand", "Save intent", "Redemption path", "Campaign fit"]
-    : ["Use InKind Credit", "Pay with InKind", "Earn Rewards", "Participating Dining Partner"];
+  const placeName = place?.name || "this restaurant";
+  const isParkside = String(placeName).toLowerCase().includes("parkside");
+  const decisionCopy = overview;
+  const experienceCopy = cleanDisplayCopy(perk?.description || place?.raw?.alignment_to_downtown_perks || place?.raw?.experience || place?.experience) || overview;
+  const benefitCopy = isPartnerMode
+    ? "Track dining interest, offer opens, save intent, and nearby discovery signals tied to this restaurant."
+    : "Use your inKind balance for food and beverage purchases at this participating dining partner.";
+  const decisionTags = isPartnerMode
+    ? ["Dining demand", "Offer fit", "Save intent", "Campaign ready", "Walkable", "inKind"]
+    : ["Happy Hour", "Date Night", "Oysters", "Cocktails", "Walkable", "inKind"];
+  const nearbyAnchors = isParkside
+    ? [
+        ["Four Seasons", "2 min"],
+        ["Frost Tower", "3 min"],
+        ["The Paramount", "4 min"],
+        ["Congress Avenue", "1 min"],
+      ]
+    : [
+        [neighborhood, "Nearby"],
+        ["Downtown hotels", "Walkable"],
+        ["Office towers", "Close"],
+        ["Evening plans", "Easy"],
+      ];
+  const prompts = [
+    isParkside ? "Best oyster spots nearby" : `Best places near ${placeName}`,
+    "Where should we go after this?",
+    `Happy hours near ${neighborhood}`,
+    "What's happening tonight?",
+  ];
 
   return (
-    <div className="space-y-5">
-      <DestinationSection title="Dining Overview" support={`${cuisine} · ${neighborhood}`}>
-        <div className="space-y-3">
-          <p className="text-[13px] leading-6 text-[#0B1F33]/72">{overview}</p>
-          <p className="text-[12px] font-medium leading-5 text-[#0B1F33]/58">{walkability}</p>
-        </div>
-      </DestinationSection>
-
-      <DestinationSection title="Why Go Here" support="InKind dining context">
-        <p className="text-[13px] leading-6 text-[#0B1F33]/72">
-          Good for dinner nearby, a date-night plan, business lunch, happy hour, or a group meal that can move from discovery to payment without leaving the downtown routine.
-        </p>
-      </DestinationSection>
-
-      <DestinationSection title={benefitsTitle} support={partnerSupport}>
-        <div className="dp-destination-chip-row">
-          {benefitChips.map((item) => (
-            <span key={item} className="dp-why-go-tag">{item}</span>
+    <div className="dp-inkind-editorial-panel" data-editorial-panel="inkind">
+      <section className="dp-inkind-zone dp-inkind-decision-zone" aria-label={`Why locals choose ${placeName}`}>
+        <p className="dp-inkind-zone-meta">{cuisine} · {neighborhood}</p>
+        <h3>Why locals choose {placeName}</h3>
+        <p>{decisionCopy}</p>
+        <p className="dp-inkind-walkability">{walkability}</p>
+        <div className="dp-inkind-tag-row" aria-label="Good for">
+          {decisionTags.map((item) => (
+            <span key={item}>{item}</span>
           ))}
         </div>
+      </section>
+
+      <section className="dp-inkind-zone dp-inkind-experience-zone" aria-label="What to expect">
+        <h3>What to expect</h3>
+        <p>{experienceCopy}</p>
+        <div className="dp-inkind-time-grid" aria-label="Best times">
+          <div>
+            <span>Best Time</span>
+            <strong>Weekday Happy Hour</strong>
+            <small>4-6 PM</small>
+          </div>
+          <div>
+            <span>Weekend Dinner</span>
+            <strong>After 6 PM</strong>
+            <small>Good for groups</small>
+          </div>
+        </div>
+      </section>
+
+      <section className="dp-inkind-zone dp-inkind-perk-zone" aria-label={isPartnerMode ? "Partner benefit" : "Resident benefit"}>
+        <div className="dp-inkind-accent-copy">
+          <span>{isPartnerMode ? "Partner Signal" : "Resident Benefit"}</span>
+          <h3>{isPartnerMode ? "Dining interest with offer context." : "Use your inKind balance here."}</h3>
+          <p>{benefitCopy}</p>
+          <div className="dp-inkind-perk-actions">
+            <a href={getInKindActionUrl(place, "pay")} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
+              {isPartnerMode ? "Open Campaign Path" : "Open InKind"}
+            </a>
+            <a href={getInKindActionUrl(place, "menu")} target="_blank" rel="noreferrer" className="dp-panel-action-text">
+              {isPartnerMode ? "Review Menu Fit" : "View Menu"}
+            </a>
+          </div>
+        </div>
         {perk?.offer && (
-          <div className="mt-3 border-t border-[rgba(11,31,51,.06)] pt-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">
-              {isPartnerMode ? "Offer Performance Signal" : "Resident Perk Available"}
-            </div>
-            <p className="mt-1 text-[13px] leading-6 text-[#0B1F33]/72">{formatResidentPerkHeading(perk.offer)}</p>
+          <div className="dp-inkind-available-now">
+            <span>Available Now</span>
+            <strong>{formatResidentPerkHeading(perk.offer)}</strong>
+            <p>{perk.description || "Food and drink specials during select afternoon hours."}</p>
           </div>
         )}
-      </DestinationSection>
+      </section>
 
-      <DestinationSection title={isPartnerMode ? "Partner Actions" : "Dining Actions"}>
-        <div className="dp-primary-action-row">
-          <button type="button" className="dp-panel-action dp-primary-action" onClick={onSave}>
-            {isPartnerMode ? "Review Signal" : savedIds?.has?.(place.id) ? "Saved Restaurant" : "Save Restaurant"}
-          </button>
-          <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
-            {isPartnerMode ? "Compare Nearby" : "Directions"}
-          </a>
+      <section className="dp-inkind-zone dp-inkind-nearby-zone" aria-label="Nearby">
+        <h3>Nearby</h3>
+        <div className="dp-inkind-nearby-list" aria-label="Walkable from">
+          {nearbyAnchors.map(([label, value]) => (
+            <div key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
         </div>
-        <div className="dp-secondary-action-row">
-          <a href={getInKindActionUrl(place, "menu")} target="_blank" rel="noreferrer" className="dp-panel-action-text">{isPartnerMode ? "Review offer fit" : "View Menu"}</a>
-          <a href={getInKindActionUrl(place, "pay")} target="_blank" rel="noreferrer" className="dp-panel-action-text">{isPartnerMode ? "Launch campaign" : "Pay with InKind"}</a>
-        </div>
-      </DestinationSection>
+        {nearbyDining.length > 0 && (
+          <>
+            <h4>You may also like</h4>
+            <div className="dp-inkind-related-rail" aria-label="You may also like">
+              {nearbyDining.map((candidate) => (
+                <button
+                  type="button"
+                  key={candidate.id}
+                  className="dp-inkind-related-card"
+                  onClick={() => onSelect(candidate)}
+                >
+                  <img src={getLifestyleImage(candidate, mode)} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />
+                  <span>{shortenEntityTitle(candidate.name)}</span>
+                  <small>{candidate.district || "Downtown Austin"}</small>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+      </section>
 
-      {nearbyDining.length > 0 && (
-        <DestinationSection title="Other InKind Locations Nearby" support="Nearby Dining · You May Also Like">
-          <div className="dp-card-rail dp-horizontal-entity-rail" aria-label="Nearby InKind dining">
-            {nearbyDining.map((candidate) => (
-              <button
-                type="button"
-                key={candidate.id}
-                className="dp-related-place min-w-[180px] text-left"
-                onClick={() => onSelect(candidate)}
-              >
-                <img src={getLifestyleImage(candidate, mode)} alt="" loading="lazy" />
-                <span>{candidate.name}</span>
-                <small>{candidate.district || "Downtown Austin"}</small>
+      {onAsk && (
+        <section className="dp-inkind-zone dp-inkind-discovery-zone" aria-label="Ask Downtown Perks">
+          <h3>Ask Downtown Perks</h3>
+          <div className="dp-inkind-prompt-list">
+            {prompts.map((prompt) => (
+              <button key={prompt} type="button" onClick={() => onAsk(prompt)} disabled={loading}>
+                {prompt}
               </button>
             ))}
           </div>
-        </DestinationSection>
+          <AnimatePresence initial={false}>
+            {answer && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                className="dp-entity-answer"
+                role="status"
+                aria-live="polite"
+              >
+                <button type="button" onClick={onCloseAnswer} aria-label="Close Downtown Perks answer">Close</button>
+                <h4>{answer.title}</h4>
+                <p>{answer.body}</p>
+                {answer.picks?.length > 0 && (
+                  <div className="dp-inkind-prompt-list">
+                    {answer.picks.slice(0, 4).map((item) => (
+                      <button key={item.id} type="button" onClick={() => onSelect(item)}>
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
       )}
     </div>
   );
@@ -3794,10 +4555,28 @@ function getRelatedPlaces(place, places = []) {
   return dedupeRelatedPlaces(related, place, 6);
 }
 
+function getV4DestinationSectionTitle(title = "") {
+  const normalized = String(title || "").trim().toLowerCase();
+  if (["why it matters", "why go", "why go here", "overview", "description", "information", "about"].includes(normalized)) {
+    return "Why people come here.";
+  }
+  if (["nearby recommendations", "other inkind locations nearby", "next stops", "next nearby"].includes(normalized)) {
+    return "Nearby";
+  }
+  if (["ask about this", "ask downtown perks", "discovery"].includes(normalized)) {
+    return "Related Experiences";
+  }
+  if (["good to know", "details", "listing details", "event details", "property details"].includes(normalized)) {
+    return "Details";
+  }
+  return title;
+}
+
 function DestinationSection({ title, children, className = "", support = "" }) {
+  const displayTitle = getV4DestinationSectionTitle(title);
   return (
     <section className={`dp-destination-section ${className}`}>
-      <h3>{title}</h3>
+      <h3>{displayTitle}</h3>
       {support && <p className="dp-destination-section-support">{support}</p>}
       {children}
     </section>
@@ -4044,6 +4823,34 @@ function stripListingUnitFromAddress(address = "", unit = "") {
     .trim();
 }
 
+function getLegendsDirectoryRowCopy(place) {
+  if (isRentalEntity(place)) {
+    const listing = getRentalListingData(place);
+    const facts = [
+      listing.beds !== undefined ? `${listing.beds} bd` : "",
+      listing.baths !== undefined ? `${listing.baths} ba` : "",
+      listing.sqft ? `${Number(listing.sqft).toLocaleString()} sqft` : "",
+      listing.mls ? `MLS ${listing.mls}` : "",
+    ].filter(Boolean).join(" · ");
+    return {
+      meta: `${String(listing.status || "Active").replace(/^./, (letter) => letter.toUpperCase())} · ${formatLegendsRentPrice(listing.priceLabel)}`,
+      title: `${listing.building}${listing.unit ? ` #${listing.unit}` : ""}`,
+      address: `${stripListingUnitFromAddress(listing.address, listing.unit)} · ${listing.neighborhood || "Downtown Austin"}`,
+      details: facts || "Rental demand and showing context",
+    };
+  }
+
+  const listing = getResolvedLegendsListing(place);
+  const profile = getLegendsResidentialProfileForPlace(place);
+  const facts = listing ? getListingFactLine(listing) : "";
+  return {
+    meta: "Legends Real Estate",
+    title: place?.name || profile?.buildingName || listing?.address || "Downtown residence",
+    address: place?.address || profile?.neighborhood || place?.district || "Downtown Austin",
+    details: facts || "Listing interest and walkable demand signal",
+  };
+}
+
 function MapPanelButton({
   action,
   label,
@@ -4055,9 +4862,13 @@ function MapPanelButton({
   children,
   className = "",
 }) {
+  const appVariant = variant === "primary" ? "primary" : "secondary";
+  const appSize = variant === "icon" ? "icon" : size === "sm" ? "sm" : "md";
+
   return (
-    <button
-      type="button"
+    <AppButton
+      variant={appVariant}
+      size={appSize}
       className={`dp-map-panel-button dp-map-panel-button--${variant} dp-map-panel-button--${size} ${className}`.trim()}
       data-action={action}
       aria-label={ariaLabel || label}
@@ -4069,7 +4880,7 @@ function MapPanelButton({
       }}
     >
       {children || label}
-    </button>
+    </AppButton>
   );
 }
 
@@ -4171,15 +4982,7 @@ function MapBottomNav({ mode, activeTab, activeFilter, urlTab, contextCount = 0,
 }
 
 function LegendsRentalResultRow({ place, selected = false, onSelect }) {
-  const listing = getRentalListingData(place);
-  const facts = [
-    listing.beds !== undefined ? `${listing.beds} bd` : "",
-    listing.baths !== undefined ? `${listing.baths} ba` : "",
-    listing.sqft ? `${Number(listing.sqft).toLocaleString()} sqft` : "",
-    listing.mls ? `MLS ${listing.mls}` : "",
-  ].filter(Boolean).join(" · ");
-  const title = `${listing.building}${listing.unit ? ` #${listing.unit}` : ""}`;
-  const baseAddress = stripListingUnitFromAddress(listing.address, listing.unit);
+  const row = getLegendsDirectoryRowCopy(place);
 
   return (
     <button
@@ -4188,21 +4991,18 @@ function LegendsRentalResultRow({ place, selected = false, onSelect }) {
       data-action="select"
       data-selected={selected ? "true" : "false"}
       onClick={onSelect}
-      aria-label={`View ${title}`}
+      aria-label={`View ${row.title}`}
     >
-      <img
-        className="dp-legends-result-logo"
-        src="/pins/downtown-perks/legends-logo.png"
-        alt=""
-        aria-hidden="true"
-      />
+      <span className="dp-legends-result-pin" aria-hidden="true">
+        <PinBadge place={place} selected={selected} size="sm" />
+      </span>
       <span className="min-w-0">
         <span className="dp-legends-result-meta">
-          {String(listing.status || "Active").replace(/^./, (letter) => letter.toUpperCase())} · {formatLegendsRentPrice(listing.priceLabel)}
+          {row.meta}
         </span>
-        <span className="dp-legends-result-title">{title}</span>
-        <span className="dp-legends-result-address">{baseAddress} · {listing.neighborhood || "Downtown Austin"}</span>
-        <span className="dp-legends-result-details">{facts}</span>
+        <span className="dp-legends-result-title">{row.title}</span>
+        <span className="dp-legends-result-address">{row.address}</span>
+        <span className="dp-legends-result-details">{row.details}</span>
       </span>
       <span className="dp-legends-result-action">View</span>
     </button>
@@ -4585,7 +5385,7 @@ function getContextNearbyImage(item, selectedPlace) {
   if (text.includes("trail") || text.includes("lake") || text.includes("butler")) return "/images/map-entities/perks/civic_lake_trail_1779052853070.png";
   if (text.includes("bridge") || text.includes("congress")) return "/images/legends-listings/Bat-show-on-Congress-Avenue-Bridge-in-Austin.avif";
   if (text.includes("rainey")) return "/images/map-entities/rainey-bars/rainey-street.jpeg";
-  if (text.includes("restaurant") || text.includes("dining") || text.includes("waterfront")) return "/images/imported/perks/downtown-dining-patio.png";
+  if (text.includes("restaurant") || text.includes("dining") || text.includes("waterfront")) return "/images/map-entities/dining/outdoor-dining-arrival.avif";
   if (text.includes("wellness") || text.includes("recovery") || text.includes("bath")) return "/images/map-entities/perks/partner_wellness_1779052883675.png";
   if (text.includes("retail") || text.includes("shopping") || text.includes("store")) return "/images/imported/perks/fine-eyewear.png";
   return MAP_PANEL_IMAGE_FALLBACK;
@@ -4681,6 +5481,7 @@ function ParkingBookingDetails({ place, mode }) {
 
   const firstRate = item.timeSlots?.[0]?.perkPrice || item.timeSlots?.[0]?.price || item.pricingLabel || "Resident rate";
   const isPartner = mode === "partner";
+  const imageCaption = item.imageCaption || place.imageCaption || place.raw?.imageCaption || "";
   const openParkingDirections = () => {
     window.open(directionsUrl(place), "_blank", "noopener,noreferrer");
   };
@@ -4751,6 +5552,7 @@ function ParkingBookingDetails({ place, mode }) {
           ? "Show available parking when people nearby are choosing dinner, events, or a night out."
           : "Reserve nearby parking before you head out. Resident rate available."}
       </p>
+      {imageCaption && <p className="dp-parking-context-caption">{imageCaption}</p>}
 
       {isPartner && (
         <>
@@ -4836,76 +5638,90 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
 
   const stopNumber = String(stop.stopNumber).padStart(2, "0");
   const isSaved = savedIds?.has?.(place.id);
+  const locationLabel = stop.locationLabel || place?.district || "Downtown Austin";
   const nearbyPlaces = (stop.nearbyStops || [])
     .map((stopId) => places.find((candidate) => candidate.id === stopId) || getDaaTourStopById(stopId))
     .filter(Boolean)
-    .slice(0, 5);
+    .slice(0, 4);
 
   return (
-    <div className="space-y-5">
-      <DestinationSection title="DAA Civic Partner" support={`Stop ${stopNumber} of ${DAA_TOUR_STOP_COUNT}`}>
-        <div className="space-y-4">
-          <p className="max-w-[42ch] text-[13px] leading-6 text-[#0B1F33]/70">{stop.daaIntro}</p>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {[
-              ["Location", stop.locationLabel],
-              ["Artist", stop.artist],
-              ["Year", stop.year],
-            ].map(([label, value]) => (
-              <div key={label} className="border-t border-[rgba(11,31,51,.06)] pt-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{label}</div>
-                <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/72">{value || "Downtown Austin"}</p>
-              </div>
-            ))}
-          </div>
-          <div className="border-t border-[rgba(11,31,51,.06)] pt-4">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Description</div>
-            <p className="mt-2 max-w-[42ch] text-[13px] leading-6 text-[#0B1F33]/72">{stop.description}</p>
-          </div>
-          <div className="border-t border-[rgba(11,31,51,.06)] pt-4">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Why Stop Here</div>
-            <p className="mt-2 max-w-[42ch] text-[13px] leading-6 text-[#0B1F33]/72">{stop.whyStopHere}</p>
-          </div>
-        </div>
-      </DestinationSection>
+    <div className="dp-daa-destination-panel">
+      <section className="dp-daa-story-block" aria-label="Why people stop here">
+        <p className="dp-daa-kicker">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
+        <h3>Why people stop here.</h3>
+        <p>{stop.daaIntro}</p>
+      </section>
 
-      <DestinationSection title="DAA Explorer" support="Tell DAA What You Think">
-        <div className="space-y-4">
-          <div>
-            <h4 className="text-[16px] font-semibold leading-tight text-[#0B1F33]">Visited this stop?</h4>
-            <p className="mt-2 max-w-[42ch] text-[13px] leading-6 text-[#0B1F33]/70">
-              Check in and share a quick thought about your downtown experience. Your feedback helps the Downtown Austin Alliance understand what people enjoy,
-              what they want more of, and how downtown can continue to improve.
-            </p>
-            <p className="mt-2 text-[12px] font-medium text-[#0B1F33]/54">Takes less than 15 seconds.</p>
-          </div>
-          <div className="flex snap-x gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
-            {daaExplorerQuestions.map((item) => (
-              <div key={item.id} className="min-w-[210px] snap-start border-t border-[rgba(11,31,51,.06)] pt-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{item.optional ? "Optional" : "Question"}</div>
-                <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/76">{item.question}</p>
-              </div>
-            ))}
-          </div>
-          <div className="grid gap-2 sm:grid-cols-2">
-            <Link to={`/map?mode=partner&tab=map&filter=Civic&entityId=${encodeURIComponent(stop.id)}`} className="dp-panel-action dp-primary-action">
-              Check In & Share
-            </Link>
-            <button type="button" onClick={onSave} className="dp-panel-action">
-              {isSaved ? "Saved For Later" : "Save For Later"}
-            </button>
-            <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
-              Get Directions
-            </a>
-            <Link to="/map?mode=partner&tab=map&filter=Civic" className="dp-panel-action">
-              Explore All 48 Stops
-            </Link>
-          </div>
-        </div>
-      </DestinationSection>
+      <section className="dp-daa-action-panel" aria-label="DAA stop actions">
+        <AppButton
+          to={`/map?mode=partner&tab=map&filter=Civic&entityId=${encodeURIComponent(stop.id)}`}
+          variant="primary"
+          className="dp-daa-action-primary"
+        >
+          <span className="dp-daa-action-primary-text" style={{ color: "#FFFFFF", WebkitTextFillColor: "#FFFFFF" }}>CHECK IN &amp; SHARE</span>
+        </AppButton>
+        <AppButtonGroup className="dp-daa-secondary-actions">
+          <AppButton onClick={onSave} variant="secondary">{isSaved ? "SAVED FOR LATER" : "SAVE FOR LATER"}</AppButton>
+          <AppButton href={directionsUrl(place)} target="_blank" rel="noreferrer" variant="secondary">GET DIRECTIONS</AppButton>
+        </AppButtonGroup>
+      </section>
 
-      <DestinationSection title="Next Nearby Stops">
-        <div className="flex snap-x gap-3 overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]">
+      <section className="dp-daa-story-block" aria-label="About this stop">
+        <p className="dp-daa-kicker">About This Stop</p>
+        <h3>{stop.name}</h3>
+        <p>{stop.description}</p>
+        <p>{stop.whyStopHere}</p>
+      </section>
+
+      <section className="dp-daa-highlights" aria-label="Highlights">
+        {[
+          ["Location", locationLabel],
+          ["Created", stop.year],
+          ["Managed By", stop.artist || "City of Austin"],
+          ["Experience", "Art & Parks Tour"],
+        ].map(([label, value]) => (
+          <div key={label} className="dp-daa-highlight">
+            <span>{label}</span>
+            <strong>{value || "Downtown Austin"}</strong>
+          </div>
+        ))}
+      </section>
+
+      <section className="dp-daa-participation" aria-label="Tell DAA what you think">
+        <div className="dp-daa-participation-copy">
+          <p className="dp-daa-kicker">DAA Explorer</p>
+          <h3>Tell DAA what you think.</h3>
+          <p>
+            Your feedback helps shape future downtown experiences and helps the Downtown Austin Alliance understand how people use public spaces.
+          </p>
+        </div>
+        <div className="dp-daa-question-rail" aria-label="DAA feedback prompts">
+          {daaExplorerQuestions.map((item) => (
+            <div key={item.id} className="dp-daa-question-card">
+              <span>{item.optional ? "Optional" : "Question"}</span>
+              <strong>{item.question}</strong>
+            </div>
+          ))}
+        </div>
+        <AppButton to="/map?mode=partner&tab=map&filter=Civic" variant="ghost" className="dp-daa-explore-all">
+          EXPLORE ALL 48 STOPS
+        </AppButton>
+      </section>
+
+      <section className="dp-daa-related" aria-label="Nearby experiences">
+        <p className="dp-daa-kicker">Nearby Experiences</p>
+        <h3>Keep exploring around {locationLabel}.</h3>
+        <div className="dp-daa-related-grid">
+          {["Events", "Parks", "Art", "Food", "Perks"].map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </section>
+
+      <section className="dp-daa-next-stops" aria-label="Next nearby stops">
+        <p className="dp-daa-kicker">Next Nearby</p>
+        <h3>Next stops on the trail.</h3>
+        <div className="dp-daa-next-rail">
           {nearbyPlaces.map((nearby) => {
             const nearbyStop = nearby.raw?.daaTourStop || nearby.daaTourStop || nearby;
             const nearbyPlace = nearby.raw ? nearby : places.find((candidate) => candidate.id === nearbyStop.id);
@@ -4914,18 +5730,16 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
                 key={nearbyStop.id}
                 type="button"
                 onClick={() => nearbyPlace && onSelect(nearbyPlace)}
-                className="min-w-[190px] snap-start rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/78 p-3 text-left transition hover:-translate-y-px"
+                className="dp-daa-next-card"
               >
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">
-                  Stop {String(nearbyStop.stopNumber).padStart(2, "0")}
-                </div>
-                <p className="mt-2 text-[13px] font-semibold leading-5 text-[#0B1F33]">{nearbyStop.name}</p>
-                <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/56">{nearbyStop.district}</p>
+                <span>NEXT STOP</span>
+                <strong>{nearbyStop.name}</strong>
+                <em>{nearbyStop.district || "Downtown Austin"} · 4 min walk</em>
               </button>
             );
           })}
         </div>
-      </DestinationSection>
+      </section>
     </div>
   );
 }
@@ -5431,7 +6245,7 @@ function LegendsListingDetails({ listing }) {
       <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-start">
         <div className="flex min-w-0 items-start gap-3 text-left">
           <img
-            src="/pins/downtown-perks/legends-butterfly.png"
+            src="/pins/downtown-perks/legends-logo-gold.svg"
             alt="Legends Real Estate"
             className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
           />
@@ -5511,7 +6325,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex min-w-0 items-start gap-3">
             <img
-              src="/pins/downtown-perks/legends-butterfly.png"
+              src="/pins/downtown-perks/legends-logo-gold.svg"
               alt="Legends Real Estate"
               className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
             />
@@ -5582,12 +6396,24 @@ function PartnerDrawerActions({ place, onContact }) {
     return (
       <>
         <div className="dp-primary-action-row dp-partner-action-row mt-3">
-          <button type="button" onClick={viewListings} className="dp-panel-action dp-primary-action">View Listings</button>
-          <Link to={campaignRoute(place)} className="dp-panel-action">Create Opportunity</Link>
+          <button type="button" onClick={viewListings} className="dp-panel-action dp-primary-action">
+            <Building2 aria-hidden="true" />
+            <span>View Listings</span>
+          </button>
+          <Link to={campaignRoute(place)} className="dp-panel-action">
+            <Megaphone aria-hidden="true" />
+            <span>Create Opportunity</span>
+          </Link>
         </div>
         <div className="dp-secondary-action-row dp-partner-secondary-action-row">
-          <button type="button" onClick={onContact} className="dp-panel-action-text">Contact</button>
-          <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action-text">View Activity</Link>
+          <button type="button" onClick={onContact} className="dp-panel-action-text">
+            <Send aria-hidden="true" />
+            <span>Contact</span>
+          </button>
+          <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action-text">
+            <Activity aria-hidden="true" />
+            <span>View Activity</span>
+          </Link>
         </div>
       </>
     );
@@ -5595,9 +6421,18 @@ function PartnerDrawerActions({ place, onContact }) {
   return (
     <>
       <div className="dp-primary-action-row dp-partner-action-row mt-3">
-        <Link to={campaignRoute(place)} className="dp-panel-action dp-primary-action">Create Opportunity</Link>
-        <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action">View Activity</Link>
-        <button type="button" onClick={sharePlace} className="dp-panel-action">Share</button>
+        <Link to={campaignRoute(place)} className="dp-panel-action dp-primary-action">
+          <Megaphone aria-hidden="true" />
+          <span>Create Opportunity</span>
+        </Link>
+        <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action">
+          <Activity aria-hidden="true" />
+          <span>View Activity</span>
+        </Link>
+        <button type="button" onClick={sharePlace} className="dp-panel-action">
+          <Send aria-hidden="true" />
+          <span>Share</span>
+        </button>
       </div>
     </>
   );
@@ -5694,7 +6529,7 @@ function ResidentDrawerActions({
   const hasPerk = hasActivePerkData(selected);
   const contacts = getContactDetails(selected);
   const websiteContact = contacts.find((item) => item.kind === "website");
-  const viewPerk = () => document.querySelector(".dp-destination-drawer .dp-perk-module, .dp-destination-drawer .dp-happy-hour-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const viewPerk = () => document.querySelector(".dp-destination-drawer .dp-inkind-perk-zone, .dp-destination-drawer .dp-perk-module, .dp-destination-drawer .dp-happy-hour-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
   const exploreNearby = () => document.querySelector(".dp-destination-drawer .dp-nearby-section, .dp-destination-drawer .dp-property-nearby-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
   const sharePlace = async () => {
     const shareUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -5786,6 +6621,22 @@ function ResidentDrawerActions({
         <Link to={selectedResidentAction?.href || "/map?mode=resident&tab=map&filter=Events"} className="dp-panel-action">
           Upcoming Events
         </Link>
+      </div>
+    );
+  }
+
+  if (isInKindEntity(selected)) {
+    return (
+      <div className="dp-primary-action-row dp-editorial-hero-actions">
+        <button type="button" onClick={viewPerk} className="dp-panel-action dp-primary-action">
+          Claim Resident Perk
+        </button>
+        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action">
+          Directions
+        </a>
+        <button type="button" onClick={onSave} className="dp-panel-action">
+          {savedIds.has(selected.id) ? "Saved" : "Save"}
+        </button>
       </div>
     );
   }
@@ -6313,6 +7164,8 @@ function LegendsResidentialIntelligenceDrawer({
   const listingRows = getLegendsActiveListingRows(place, profile);
   const legendsInquiryFormId = `legends-inquiry-form-${place.id}`;
   const inquiryListing = getLegendsInquiryListing(place, profile);
+  const [activeAnalyticsInsight, setActiveAnalyticsInsight] = useState(legendsResidentialAnalytics[0]);
+  const analyticsInsight = LEGENDS_ANALYTICS_INSIGHT_COPY[activeAnalyticsInsight] || LEGENDS_ANALYTICS_INSIGHT_COPY["Building Views"];
   const findByName = (name) => {
     const target = String(name || "").toLowerCase();
     return resolveMapEntityFromCollection(name, places)
@@ -6383,8 +7236,36 @@ function LegendsResidentialIntelligenceDrawer({
           <section className="dp-entity-section">
             <h3>Analytics tracked</h3>
             <div className="dp-entity-text-rail" aria-label="Legends analytics tracked">
-              {legendsResidentialAnalytics.map((item) => <span key={item}>{item}</span>)}
+              {legendsResidentialAnalytics.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className="dp-entity-text-chip"
+                  aria-pressed={activeAnalyticsInsight === item}
+                  onClick={() => setActiveAnalyticsInsight(item)}
+                >
+                  {item}
+                </button>
+              ))}
             </div>
+            <article className="dp-legends-analytics-insight" aria-live="polite">
+              <p>Selected insight</p>
+              <h4>{activeAnalyticsInsight}</h4>
+              <dl>
+                <div>
+                  <dt>Signal</dt>
+                  <dd>{analyticsInsight.signal}</dd>
+                </div>
+                <div>
+                  <dt>Why it matters</dt>
+                  <dd>{analyticsInsight.why}</dd>
+                </div>
+                <div>
+                  <dt>Next move</dt>
+                  <dd>{analyticsInsight.action}</dd>
+                </div>
+              </dl>
+            </article>
           </section>
         </>
       ) : (
@@ -7375,43 +8256,95 @@ function SearchIntentConsole({
   isCollapsed = false,
   onCollapse,
   onExpand,
-  resultPlaces = [],
-  answer = null,
-  onResultSelect,
-  onAnswerClose,
-  onAnswerAction,
-  onClearAll,
 }) {
-  const selectedIntent = RESIDENT_INTENT_CONSOLE_BUTTONS.find((item) => item.id === activeIntent);
-  const selectedTime = RESIDENT_INTENT_TIME_BUTTONS.find((item) => item.id === activeTime);
-  const summaryTitle = selectedIntent ? `${selectedIntent.label}${selectedTime ? ` ${selectedTime.label.toLowerCase()}` : " nearby"}` : "Nearby";
   const activeSearchLabel = query || activeFilter || "All";
-  const promptRail = mode === "partner"
-    ? ["Demand", "Promote", "Audience", "Campaigns", "Reports", "Explore"]
-    : ["Dinner", "Drinks", "Events", "Perks", "Campaigns", "Explore"];
-  const filterRail = mode === "partner"
-    ? [
-        { id: "all", label: "All", icon: MapPin, kind: "filter", filter: "All", prompt: "All downtown" },
-        { id: "opportunity", label: "Opportunity", icon: Megaphone, kind: "filter", filter: "Activity", prompt: "Campaign opportunity" },
-        { id: "coverage", label: "Coverage", icon: Route, kind: "filter", filter: "Reports", prompt: "Coverage gap" },
-        { id: "audience", label: "Audience", icon: Users, kind: "filter", filter: "Places", prompt: "Audience nearby" },
-        { id: "campaigns", label: "Campaigns", icon: Megaphone, kind: "filter", filter: "Campaigns", prompt: "Campaigns nearby" },
-        { id: "inkind", label: "inKind", icon: Utensils, kind: "filter", filter: "inKind", prompt: "inKind opportunity" },
-        { id: "civic", label: "Civic", icon: Landmark, kind: "filter", filter: "Civic", prompt: "Civic activity" },
-        { id: "explore", label: "Explore", icon: Landmark, kind: "filter", filter: "Explore Downtown", prompt: "Explore Downtown activity" },
-      ]
-    : [
-        { id: "all", label: "All", icon: Navigation, kind: "filter", filter: "All", prompt: "All downtown" },
-        { id: "perks", label: "Perks", icon: TicketPercent, kind: "filter", filter: "Perks", prompt: "Perks I can use now" },
-        { id: "events", label: "Events", icon: CalendarDays, kind: "filter", filter: "Events", prompt: "Events nearby" },
-        { id: "campaigns", label: "Campaigns", icon: Megaphone, kind: "filter", filter: "Campaigns", prompt: "Show active campaigns" },
-        { id: "inkind", label: "inKind", icon: Utensils, kind: "filter", filter: "inKind", prompt: "inKind offers" },
-        { id: "civic", label: "Civic", icon: Landmark, kind: "filter", filter: "Civic", prompt: "Civic nearby" },
-        { id: "explore", label: "Explore", icon: Landmark, kind: "filter", filter: "Explore Downtown", prompt: "What should I explore today?" },
-      ];
-  const uniqueFilterRail = filterRail.filter((item, index, items) => (
-    index === items.findIndex((candidate) => candidate.id === item.id || candidate.filter === item.filter)
-  ));
+  const residentIntentRail = [
+    { id: "coffee", label: "Coffee", filter: "Coffee", prompt: "Coffee nearby", icon: Coffee },
+    { id: "dining", label: "Dining", filter: "Dining", prompt: "Dinner nearby", icon: Utensils },
+    { id: "drinks", label: "Drinks", filter: "Drinks", prompt: "Drinks nearby", icon: Wine },
+    { id: "events", label: "Events", filter: "Events", prompt: "Events nearby", icon: CalendarDays },
+    { id: "perks", label: "Perks", filter: "Perks", prompt: "Perks I can use", icon: Gift },
+  ];
+  const partnerIntentRail = [
+    { id: "demand", label: "Demand", filter: "Audience", prompt: "Demand nearby", icon: Users },
+    { id: "promote", label: "Promote", filter: "Campaigns", prompt: "What should I promote next?", icon: Megaphone },
+    { id: "audience", label: "Audience", filter: "Audience", prompt: "Who is nearby?", icon: Users },
+    { id: "events", label: "Events", filter: "Events", prompt: "Event opportunities", icon: CalendarDays },
+    { id: "opportunity", label: "Opportunity", filter: "Opportunity", prompt: "Opportunity nearby", icon: Sparkles },
+  ];
+  const contextRail = [
+    { id: "nearby", label: "Nearby", filter: "Nearby", prompt: "Nearby", icon: Navigation },
+    { id: "open-now", label: "Open Now", filter: "Open Now", prompt: "Open now nearby", icon: Clock },
+    { id: "tonight", label: "Tonight", kind: "time", time: "tonight", prompt: "Tonight nearby", icon: Moon },
+    { id: "walkable", label: "Walkable", kind: "radius", radius: "5 min walk", prompt: "Walkable nearby", icon: Route },
+  ];
+  const intentRail = mode === "partner" ? partnerIntentRail : residentIntentRail;
+
+  const railKeyFor = (item) => String(item?.id || item?.label || item?.filter || item?.prompt || "").toLowerCase();
+  const isRailItemActive = (item) => {
+    if (item.kind === "time") return activeTime === item.time;
+    if (item.kind === "radius") return activeRadius === item.radius;
+    if (item.filter) return activeFilter === item.filter || activeSearchLabel.toLowerCase() === String(item.label).toLowerCase();
+    return activeSearchLabel.toLowerCase() === String(item.label).toLowerCase();
+  };
+  const handleRailItem = (item) => {
+    if (item.kind === "time") {
+      onTimeSelect?.({ id: item.time, label: item.label, prompt: item.prompt });
+      return;
+    }
+    if (item.kind === "radius") {
+      onRadiusSelect?.({ id: item.id, label: item.radius, prompt: item.prompt });
+      return;
+    }
+    onFilterSelect?.(item);
+  };
+  const renderRail = (items, className, label) => (
+    <div className={className} aria-label={label}>
+      {items.map((item) => {
+        const Icon = item.icon;
+        const active = isRailItemActive(item);
+        return (
+          <button
+            key={railKeyFor(item)}
+            type="button"
+            className={active ? "is-active" : ""}
+            aria-pressed={active}
+            onClick={() => handleRailItem(item)}
+            title={item.label}
+            aria-label={item.label}
+          >
+            {Icon ? (
+              <Icon className="dp-search-intent-filter-icon" aria-hidden="true" />
+            ) : null}
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  const renderModeSwitch = () => (
+    <div className="dp-search-intent-switch" role="tablist" aria-label="Map audience">
+      <button
+        type="button"
+        role="tab"
+        aria-selected={mode === "resident"}
+        className={mode === "resident" ? "is-active" : ""}
+        onClick={() => onModeChange("resident")}
+      >
+        Residents
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={mode === "partner"}
+        className={mode === "partner" ? "is-active" : ""}
+        onClick={() => onModeChange("partner")}
+      >
+        Partners
+      </button>
+    </div>
+  );
 
   if (isCollapsed) {
     return (
@@ -7424,10 +8357,8 @@ function SearchIntentConsole({
           onPointerDown={(event) => event.stopPropagation()}
           onClick={onExpand}
         >
-          <Sparkles className="dp-search-rollup-agent-icon h-3.5 w-3.5" aria-hidden="true" />
-          <span className="dp-search-rollup-main">
-            <strong>Ask the map</strong>
-          </span>
+          <Sparkles className="dp-search-rollup-icon h-4 w-4" aria-hidden="true" />
+          <span>Ask the Map</span>
           <ChevronDown className="dp-search-rollup-chevron h-4 w-4" aria-hidden="true" />
         </button>
       </div>
@@ -7445,26 +8376,7 @@ function SearchIntentConsole({
         onPointerDown={(event) => event.stopPropagation()}
       >
         <div className="dp-search-intent-console-header">
-          <div className="dp-search-intent-switch" role="tablist" aria-label="Map audience">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === "resident"}
-              className={mode === "resident" ? "is-active" : ""}
-              onClick={() => onModeChange("resident")}
-            >
-              Residents
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === "partner"}
-              className={mode === "partner" ? "is-active" : ""}
-              onClick={() => onModeChange("partner")}
-            >
-              Partners
-            </button>
-          </div>
+          {renderModeSwitch()}
           <button
             type="button"
             className="dp-search-intent-collapse"
@@ -7479,7 +8391,7 @@ function SearchIntentConsole({
         <form className="dp-search-intent-form" onSubmit={onSubmit}>
           <div className="dp-search-intent-label">
             <Sparkles className="h-3 w-3" aria-hidden="true" />
-            <span>Ask the map</span>
+            <span>ASK THE MAP</span>
           </div>
           <div className="dp-search-intent-input-row">
             <Search className="dp-search-intent-search-icon" aria-hidden="true" />
@@ -7502,39 +8414,8 @@ function SearchIntentConsole({
           </div>
         </form>
 
-        <div className="dp-search-intent-prompt-rail" aria-label="Suggested searches">
-          {promptRail.map((prompt) => (
-            <button
-              key={prompt}
-              type="button"
-              className={activeSearchLabel.toLowerCase() === prompt.toLowerCase() ? "is-active" : ""}
-              aria-pressed={activeSearchLabel.toLowerCase() === prompt.toLowerCase()}
-              onClick={() => onPromptSelect(prompt)}
-            >
-              {prompt}
-            </button>
-          ))}
-        </div>
-
-        <div className="dp-search-intent-filter-rail" aria-label="Quick map filters">
-          {uniqueFilterRail.map((item) => {
-            const Icon = item.icon;
-            const active = item.filter ? activeFilter === item.filter : item.time ? activeTime === item.time : item.radius ? activeRadius === item.radius : false;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                className={active ? "is-active" : ""}
-                aria-pressed={active}
-                onClick={() => onFilterSelect(item)}
-                title={item.label}
-                aria-label={item.label}
-              >
-                <Icon className="dp-search-intent-filter-icon" aria-hidden="true" />
-              </button>
-            );
-          })}
-        </div>
+        {renderRail(intentRail, "dp-search-intent-prompt-rail", "Intent shortcuts")}
+        {renderRail(contextRail, "dp-search-intent-filter-rail", "Context filters")}
       </section>
     </div>
   );
@@ -7632,12 +8513,10 @@ export default function MapPage() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [neighborhoodsOpen, setNeighborhoodsOpen] = useState(false);
   const [secondaryRailOpen, setSecondaryRailOpen] = useState(false);
-  const [promptIndex, setPromptIndex] = useState(0);
   const [mapAnswer, setMapAnswer] = useState(null);
   const [userHasNavigatedMap, setUserHasNavigatedMap] = useState(false);
   const [entityAnswer, setEntityAnswer] = useState(null);
   const [entityAssistantLoading, setEntityAssistantLoading] = useState(false);
-  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [selectedDrawerClosed, setSelectedDrawerClosed] = useState(false);
   const [selectedDrawerMinimized, setSelectedDrawerMinimized] = useState(false);
   const searchInputRef = useRef(null);
@@ -7678,13 +8557,6 @@ export default function MapPage() {
     }, 80);
     return () => window.clearTimeout(focusId);
   }, [consoleCollapsed, urlState.tab]);
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      setPromptIndex((index) => index + 1);
-    }, 3200);
-    return () => window.clearInterval(id);
-  }, []);
 
   useEffect(() => {
     setActiveFilter(FILTERS.includes(urlState.filter) ? urlState.filter : "All");
@@ -7770,6 +8642,7 @@ export default function MapPage() {
     return places.filter((place) => {
       if (!matchesFilter(place, activeFilter, savedIds)) return false;
       if (isCivicLayerIntent && (isCivicEntity(place) || getDaaStopFromPlace(place))) return true;
+      if (isIntentOnlyFilter(activeFilter)) return true;
       if (!query) return true;
       const text = placeText(place);
       return (
@@ -7827,23 +8700,6 @@ export default function MapPage() {
     () => (selected ? getResidentDetailAction(selected) : null),
     [selected],
   );
-  const consoleContextItems = useMemo(() => {
-    if (!selected) return [];
-    if (urlState.mode === "partner") {
-      return [
-        { label: "Window", value: getDestinationKind(selected) === "event" ? "Day before" : "6-11 PM", icon: Clock },
-        { label: "Activity", value: "Saves up", icon: Activity },
-        { label: "Audience", value: "Hotel + residents", icon: Users },
-        { label: "Action", value: "Share offer", icon: Megaphone },
-      ];
-    }
-    return [
-      { label: "Walk", value: "3 min walk", icon: Route },
-      { label: "Status", value: "Open now", icon: Clock },
-      { label: "Perk", value: hasActivePerkData(selected) ? "Offer active" : "Worth saving", icon: TicketPercent },
-      { label: "Timing", value: "Best tonight", icon: Moon },
-    ];
-  }, [selected, urlState.mode]);
   const clusterPlacesForDrawer = clusterDrawer?.places || [];
 
   const hasActiveCategoryScope = activeFilter !== "All" || !isAllNeighborhoodScope(district) || Boolean(effectiveSearch);
@@ -7870,7 +8726,11 @@ export default function MapPage() {
   );
   const visiblePlaces = discoverDisplayPlaces;
   const mapPlaces = useMemo(() => {
-    const pinPlaces = dedupeMapPinPlaces(discoverDisplayPlaces.filter((place) => !isUnitLevelListingPlace(place)));
+    const shouldPreserveListingPins = activeFilter === "Rentals" || activeFilter === "Legends" || activeFilter === "Listings" || activeFilter === "All Listings";
+    const pinSourcePlaces = shouldPreserveListingPins
+      ? discoverDisplayPlaces
+      : discoverDisplayPlaces.filter((place) => !isUnitLevelListingPlace(place));
+    const pinPlaces = dedupeMapPinPlaces(pinSourcePlaces);
     if (urlState.mode === "resident" && isDefaultDiscoverScope) return pinPlaces.slice(0, 48);
     return pinPlaces;
   }, [activeFilter, discoverDisplayPlaces, effectiveSearch, isDefaultDiscoverScope, urlState.mode]);
@@ -7880,11 +8740,12 @@ export default function MapPage() {
     [discoverDisplayPlaces],
   );
   const shouldShowListingPins = activeFilter === "Legends" || activeFilter === "Listings" || /\b(legends|listing|mls|condo|for sale|for rent)\b/i.test(effectiveSearch || "");
+  const shouldShowIndividualPins = shouldShowListingPins || activeFilter === "Civic" || activeFilter === "Explore Downtown" || /\b(daa|art walk|public art|civic)\b/i.test(effectiveSearch || "");
   const clusteredMapItems = useMemo(
-    () => shouldShowListingPins
+    () => shouldShowIndividualPins
       ? mapPlaces.map((place) => ({ id: place.id, type: "place", place }))
       : clusterPlaces(mapPlaces, mapZoom, selectedId),
-    [mapPlaces, mapZoom, selectedId, shouldShowListingPins],
+    [mapPlaces, mapZoom, selectedId, shouldShowIndividualPins],
   );
   useEffect(() => {
     if (!selectedId) return;
@@ -7894,23 +8755,16 @@ export default function MapPage() {
   }, [mapPlaces, selected, selectedId]);
   const previewLimit = resultsExpanded ? 12 : 4;
   const previewPlaces = discoverDisplayPlaces.slice(0, previewLimit);
-  const searchConsoleModeConfig = SEARCH_CONSOLE_MODE_CONFIG[urlState.mode] || SEARCH_CONSOLE_MODE_CONFIG.resident;
-  const consolePulse = useMemo(() => {
-    if (activeFilter && activeFilter !== "All") {
-      return `${activeFilter} nearby`;
-    }
-    return searchConsoleModeConfig.pulseFallback;
-  }, [activeFilter, searchConsoleModeConfig.pulseFallback]);
   const isRentalLayer = urlState.mode === "resident" && activeFilter === "Rentals";
-  const isLegendsDirectoryLayer = urlState.mode === "resident" && ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
+  const isLegendsDirectoryLayer = ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
   const isResidentSavedDrawer = urlState.mode === "resident" && activeBottomTab === "saved";
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
   const drawerPreviewPlaces = isResidentSavedDrawer ? savedDrawerPlaces : previewPlaces;
   const hiddenPreviewCount = Math.max(0, Math.min(discoverDisplayPlaces.length, 12) - previewPlaces.length);
   const hiddenSavedPreviewCount = Math.max(0, Math.min(residentSavedPlaces.length, 12) - savedDrawerPlaces.length);
-  const activePromptList = urlState.mode === "partner" ? PARTNER_PLACEHOLDERS : RESIDENT_PLACEHOLDERS;
-  const activePrompt = searchConsoleModeConfig.placeholder || activePromptList[promptIndex % activePromptList.length] || activePromptList[0];
-  const searchPlaceholder = searchConsoleModeConfig.placeholder;
+  const searchPlaceholder = urlState.mode === "partner"
+    ? "Ask about demand, campaigns, or activity"
+    : "Ask about places, perks, events, or civic updates";
   const searchConsoleLabel = "Ask the map";
   const areaRailLabel = getAreaRailLabel(urlState.mode, activeFilter);
   const allAreaLabel = getAllAreaLabel(urlState.mode, activeFilter);
@@ -7959,95 +8813,8 @@ export default function MapPage() {
     return `${Math.max(0.1, miles).toFixed(1)} mi`;
   }
 
-  function getConsoleScopeTitle() {
-    if (activeFilter && activeFilter !== "All") return `${activeFilter} nearby`;
-    if (!isAllNeighborhoodScope(district)) return district;
-    return urlState.mode === "partner" ? "Partner map" : "Downtown nearby";
-  }
-
-  function getConsoleSignal() {
-    if (urlState.mode === "partner") {
-      if (activeFilter && activeFilter !== "All") return "Opportunity signal";
-      return "Demand nearby";
-    }
-    if (activeFilter === "Perks") return "Offers available";
-    if (activeFilter === "Events") return "Plans nearby";
-    if (activeFilter === "Happy Hour" || activeFilter === "Drinks") return "Evening options";
-    if (activeFilter && activeFilter !== "All") return "Worth doing";
-    return "Live nearby";
-  }
-
-  function getConsoleActionLine() {
-    if (urlState.mode === "partner") {
-      if (activeFilter === "Campaigns") return "Review campaign fit.";
-      if (activeFilter && activeFilter !== "All") return "Review the strongest signal.";
-      return "Find the next activation.";
-    }
-    if (activeFilter === "Perks") return "Open the useful offer first.";
-    if (activeFilter === "Events") return "Pick a nearby plan.";
-    if (activeFilter === "Food" || activeFilter === "Drinks") return "Choose a walkable stop.";
-    return "Start with what is closest.";
-  }
-
-  const hasExplicitConsoleEntity = Boolean(urlState.rawEntityId || urlState.listingId || urlState.rentalListingId);
-  const consoleSelectedEntity = hasExplicitConsoleEntity ? selected : null;
-  const consoleSelectedContext = consoleSelectedEntity ? (() => {
-    const identity = getEntityIdentity(consoleSelectedEntity, urlState.mode);
-    const offer = getCanonicalResidentOffer(consoleSelectedEntity) || getResidentPerkDetails(consoleSelectedEntity);
-    const description = cleanDisplayCopy(
-      consoleSelectedEntity.residentDescription ||
-      consoleSelectedEntity.summary ||
-      consoleSelectedEntity.description ||
-      consoleSelectedEntity.raw?.summary ||
-      offer?.description,
-    );
-    return {
-      meta: identity.displayTypeLabel,
-      title: consoleSelectedEntity.name,
-      signal: offer?.title || offer?.offer || identity.displaySubtitle || getConsoleSignal(),
-      copy: truncatePanelCopy(description || getConsoleActionLine(), 118),
-      distance: placeDistanceLabel(consoleSelectedEntity),
-    };
-  })() : null;
-
-  const consoleOperatingContext = consoleSelectedContext || {
-    meta: urlState.mode === "partner" ? "Partner context" : "Resident context",
-    title: getConsoleScopeTitle(),
-    signal: getConsoleSignal(),
-    copy: getConsoleActionLine(),
-    distance: radius || "5 min walk",
-  };
-
-  const consoleContextGrid = [
-    { label: "Best Time", value: urlState.time || (activeFilter === "Events" ? "Tonight" : "Now"), icon: Clock },
-    { label: "Interest", value: activeFilter === "All" ? "Live" : "High", icon: Activity },
-    { label: "Audience", value: urlState.mode === "partner" ? "Residents + Guests" : "Nearby", icon: Users },
-    { label: "Action", value: urlState.mode === "partner" ? "Promote" : activeFilter === "Perks" ? "Redeem" : "Go", icon: Megaphone },
-  ];
-
-  const consoleAskRail = urlState.mode === "partner"
-    ? [
-        { label: "Demand", prompt: "Demand nearby" },
-        { label: "Promote", prompt: "What should I promote next?" },
-        { label: "Audience", prompt: "Who is nearby?" },
-      ]
-    : [
-        { label: "Dinner", prompt: "Dinner nearby", filter: "Food" },
-        { label: "Drinks", prompt: "Drinks nearby", filter: "Drinks" },
-        { label: "Events", prompt: "Events nearby", filter: "Events" },
-        { label: "Perks", prompt: "Perks I can use", filter: "Perks" },
-        { label: "Walkable", prompt: "Walkable nearby", filter: "Nearby" },
-      ];
-
-  const consoleDiscoverRail = [
-    { label: "Events", prompt: "Events nearby", filter: "Events" },
-    { label: "Live", prompt: "Live music nearby", filter: "Live Music" },
-    { label: "Tonight", prompt: "Tonight nearby", kind: "time" },
-    { label: "Open Now", prompt: "Open now nearby", filter: "Open Now" },
-  ];
-
   function entityCardCopy(place) {
-    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+    const offer = urlState.mode === "partner" ? getPartnerPanelCopy(place) : getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
     return truncatePanelCopy(
       offer?.title ||
       offer?.offer ||
@@ -8065,7 +8832,7 @@ export default function MapPage() {
   function renderEntityCard(place, actionLabel = "Open") {
     const image = resolveEntityImage(place, "card");
     const saved = savedIds.has(place.id);
-    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+    const offer = urlState.mode === "partner" ? getPartnerPanelCopy(place) : getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
     return (
       <article key={place.id} className="dp-tab-discovery-card dp-tab-perk-card">
         <button
@@ -8096,7 +8863,7 @@ export default function MapPage() {
   }
 
   function renderCompactEntityRow(place, actionLabel = "Open") {
-    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+    const offer = urlState.mode === "partner" ? getPartnerPanelCopy(place) : getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
     const offerLine = offer?.title || offer?.offer || "";
     return (
       <button key={place.id} type="button" className="dp-tab-row dp-compact-place-row" onClick={() => selectPlace(place)}>
@@ -8415,6 +9182,30 @@ export default function MapPage() {
       navigate(`/map?mode=partner&tab=map&filter=${encodeURIComponent(filter)}&campaignId=${encodeURIComponent(selectedCampaign.id)}`);
     }
 
+    const visibilityPlacements = [
+      {
+        title: "Skyline discovery",
+        image: "/images/imported/perks/republic-square-01-slider-skyline-view-1.jpg",
+        alt: "Downtown Austin skyline",
+        label: "Skyline",
+        copy: "Put property campaigns where people first start comparing downtown lifestyle, views, and walkable daily routines.",
+      },
+      {
+        title: "Waterloo movement",
+        image: "/images/imported/perks/waterlook-greenway.png",
+        alt: "Waterloo Greenway activity",
+        label: "Waterloo",
+        copy: "Show up around park, trail, and civic activity when residents are already exploring what is nearby.",
+      },
+      {
+        title: "Rainey intent",
+        image: "/images/partners/pricing/rail/rainey-street-placement.jpg",
+        alt: "Rainey Street venue sign",
+        label: "Rainey",
+        copy: "Connect listings to evening plans, hotel guests, dining, and venue traffic around one of downtown's strongest activity zones.",
+      },
+    ];
+
     function renderCampaignRow(campaign, className, openEntity = false) {
       const contextLine = campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent;
       const residentValue = campaign.residentFacingOffer || "A useful reason for residents to act from the map.";
@@ -8472,6 +9263,24 @@ export default function MapPage() {
               <span><strong>Best audience</strong> Nearby residents + hotel guests</span>
               <span><strong>Best format</strong> Happy hour, appetizer, or priority seating</span>
               <span><strong>Best timing</strong> Today, 4-8 PM</span>
+            </div>
+          </section>
+
+          <section className="dp-campaign-visibility-panel" aria-label="Campaign visibility placements">
+            <p className="dp-tab-eyebrow">Visibility</p>
+            <h3>Own the moments where downtown discovery starts.</h3>
+            <p>
+              These placements connect a campaign to the places people already use to compare homes, make plans, and decide where to go next.
+            </p>
+            <div className="dp-campaign-visibility-rail" aria-label="Visibility placement examples">
+              {visibilityPlacements.map((placement) => (
+                <article key={placement.title} className="dp-campaign-visibility-card">
+                  <img src={placement.image} alt={placement.alt} loading="lazy" decoding="async" onError={handlePanelImageError} />
+                  <span>{placement.label}</span>
+                  <strong>{placement.title}</strong>
+                  <p>{placement.copy}</p>
+                </article>
+              ))}
             </div>
           </section>
 
@@ -8648,11 +9457,11 @@ export default function MapPage() {
   }, [consoleHasActiveWork, selectedId, urlState.mode]);
 
   useEffect(() => {
-    if (selectedId || clusterDrawer || activePartnerPanel || urlState.tab === "pass" || urlState.tab === "campaigns" || quickSearchOpen) {
+    if (selectedId || clusterDrawer || activePartnerPanel || urlState.tab === "pass" || urlState.tab === "campaigns") {
       setConsoleCollapsed(true);
       setFiltersOpen(false);
     }
-  }, [activePartnerPanel, clusterDrawer, quickSearchOpen, selectedId, urlState.tab]);
+  }, [activePartnerPanel, clusterDrawer, selectedId, urlState.tab]);
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -8725,16 +9534,6 @@ export default function MapPage() {
       lat: place.latitude || place.coords?.[0] || AUSTIN_CENTER[0],
       lng: place.longitude || place.coords?.[1] || AUSTIN_CENTER[1],
     });
-  }
-
-  function handleQuickSearchSelect(result) {
-    const place = resolveMapEntityFromCollection(result.id, places) || resolveMapEntityFromCollection(result.id, luxuryPresenceListingPlaces);
-    if (place) {
-      selectPlace(place);
-      return;
-    }
-
-    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
   useEffect(() => {
@@ -8963,6 +9762,7 @@ export default function MapPage() {
     const scoped = places.filter((place) => {
       if (!matchesFilter(place, filterOverride, savedIds)) return false;
       if (!isAllNeighborhoodScope(district) && place.district !== district) return false;
+      if (isIntentOnlyFilter(filterOverride)) return true;
       if (!q) return true;
       const text = placeText(place);
       return (
@@ -9173,17 +9973,22 @@ export default function MapPage() {
     });
   }
 
-  function applyResidentConsoleFilter(item) {
+  async function applyResidentConsoleFilter(item) {
     setConsoleCollapsed(false);
     setFiltersOpen(false);
-    if (item.kind === "filter" && item.filter) {
+    if (item.filter) {
       setResidentSearchIntent((current) => ({ ...current, intent: null }));
-      setSearch(item.prompt || item.filter);
+      const nextQuery = item.prompt || item.filter;
+      setSearch(nextQuery);
       setActiveFilter(item.filter);
-      const localResults = getSmartResults(item.prompt || item.filter, item.filter);
-      setMapAnswer(buildAgenticMapAnswer(item.prompt || item.filter, localResults, urlState.mode, district, item.filter));
+      const localResults = getSmartResults(nextQuery, item.filter);
+      setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, item.filter));
       setActiveBottomTab("discover");
-      urlState.update({ query: item.prompt || item.filter, filter: item.filter, entityId: "" });
+      urlState.update({ query: nextQuery, filter: item.filter, entityId: "" });
+      const agentAnswer = await askMapAgent(nextQuery, localResults);
+      if (agentAnswer?.answer) {
+        setMapAnswer((current) => mergeAgentAnswerWithLocalResults(agentAnswer, localResults, current?.title || `Start with ${localResults[0]?.name || "Downtown"}.`));
+      }
       return;
     }
     if (item.kind === "time") {
@@ -9221,7 +10026,7 @@ export default function MapPage() {
     setEntityAssistantLoading(false);
   }
 
-  function switchMode(mode, tab = "map", requestedFilter = "") {
+  function switchMode(mode, tab = "map", requestedFilter = "", options = {}) {
     const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
     setSelectedId("");
     setClusterDrawer(null);
@@ -9235,7 +10040,7 @@ export default function MapPage() {
     setNeighborhoodsOpen(false);
     setSecondaryRailOpen(false);
     setActiveBottomTab("map");
-    setConsoleCollapsed(false);
+    setConsoleCollapsed(Boolean(options.collapseConsole));
     navigate(`/map?mode=${mode}&tab=${tab}${tab === "map" ? `&filter=${encodeURIComponent(nextFilter)}` : ""}`);
   }
 
@@ -9267,6 +10072,20 @@ export default function MapPage() {
     }
     navigate(`/map?mode=${urlState.mode}&tab=map&filter=${encodeURIComponent(activeFilter || "All")}`);
   }, [activeFilter, navigate, urlState.mode]);
+
+  const closeDirectoryToMap = useCallback(() => {
+    setSelectedId("");
+    setSelectedPlaceOverride(null);
+    setSelectedDrawerClosed(true);
+    setSelectedDrawerMinimized(false);
+    setClusterDrawer(null);
+    setMapAnswer(null);
+    setActiveBottomTab("map");
+    setActiveFilter("All");
+    setIntelOpen(false);
+    setFiltersOpen(false);
+    navigate(`/map?mode=${urlState.mode}&tab=map&filter=All`);
+  }, [navigate, urlState.mode]);
 
   const closeSelectedMapDrawer = useCallback(() => {
     setSelectedId("");
@@ -9324,7 +10143,7 @@ export default function MapPage() {
     setSelectedId("");
     setClusterDrawer(null);
     setMapAnswer(null);
-    setConsoleCollapsed(false);
+    setConsoleCollapsed(true);
     setActiveBottomTab("map");
     setActiveFilter(filter);
     navigate(`/map?mode=partner&tab=map&filter=${encodeURIComponent(filter)}`);
@@ -9420,85 +10239,40 @@ export default function MapPage() {
         <div
           className="dp-map-search-anchor pointer-events-none absolute inset-x-0 top-[106px] z-[680] px-2.5 md:top-[84px] md:px-5"
         >
-          <button
-            type="button"
-            className="dp-map-global-search-button pointer-events-auto"
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              setQuickSearchOpen(true);
+          <SearchIntentConsole
+            mode={urlState.mode}
+            query={search}
+            placeholder={searchPlaceholder}
+            activeIntent={residentSearchIntent.intent}
+            activeTime={residentSearchIntent.time}
+            activeRadius={radius}
+            activeFilter={activeFilter}
+            resultCount={mapPlaces.length}
+            inputRef={searchInputRef}
+            onQueryChange={(value) => {
+              setConsoleCollapsed(false);
+              setSearch(value);
+              if (mapAnswer) setMapAnswer(null);
             }}
-            aria-label="Search Downtown Perks"
-          >
-            <Search className="h-4 w-4" aria-hidden="true" />
-            <span>Search</span>
-          </button>
-          {!consoleCollapsed ? (
-            <SearchIntentConsole
-              mode={urlState.mode}
-              query={search}
-              placeholder={searchPlaceholder}
-              activeIntent={residentSearchIntent.intent}
-              activeTime={residentSearchIntent.time}
-              activeRadius={radius}
-              activeFilter={activeFilter}
-              resultCount={mapPlaces.length}
-              inputRef={searchInputRef}
-              onQueryChange={(value) => {
-                setConsoleCollapsed(false);
-                setSearch(value);
-                if (mapAnswer) setMapAnswer(null);
-              }}
-              onSubmit={(event) => {
-                void runSearch(event);
-              }}
-              onClear={clearResidentSearchIntent}
-              onIntentSelect={applyResidentIntent}
-              onFilterSelect={applyResidentConsoleFilter}
-              onTimeSelect={applyResidentTime}
-              onRadiusSelect={applyResidentRadius}
-              onPromptSelect={(prompt) => {
-                setResidentSearchIntent({ intent: null, time: null });
-                void applyPrompt(prompt);
-              }}
-              onModeChange={(mode) => {
-                if (mode !== urlState.mode) switchMode(mode, "map");
-              }}
-              isCollapsed={consoleCollapsed}
-              onCollapse={() => setConsoleCollapsed(true)}
-              onExpand={() => setConsoleCollapsed(false)}
-              resultPlaces={previewPlaces}
-              answer={mapAnswer}
-              onResultSelect={selectPlace}
-              onAnswerClose={() => setMapAnswer({ hidden: true })}
-              onAnswerAction={handleMapAnswerAction}
-              onClearAll={clearSearchFilters}
-            />
-          ) : (
-            <button
-              type="button"
-              ref={searchRollupRef}
-              className="dp-search-rollup-button dp-map-search-surface is-collapsed pointer-events-auto"
-              aria-label="Open map search"
-              aria-expanded="false"
-              data-state="collapsed"
-              onPointerDown={(event) => {
-                event.stopPropagation();
-              }}
-              onClick={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                setConsoleCollapsed(false);
-                setFiltersOpen(false);
-              }}
-            >
-              <Sparkles className="dp-search-rollup-agent-icon h-3.5 w-3.5" aria-hidden="true" />
-              <span className="dp-search-rollup-main">
-                <strong>Ask the map</strong>
-              </span>
-              <ChevronDown className="dp-search-rollup-chevron h-4 w-4" aria-hidden="true" />
-            </button>
-          )}
+            onSubmit={(event) => {
+              void runSearch(event);
+            }}
+            onClear={clearResidentSearchIntent}
+            onIntentSelect={applyResidentIntent}
+            onFilterSelect={applyResidentConsoleFilter}
+            onTimeSelect={applyResidentTime}
+            onRadiusSelect={applyResidentRadius}
+            onPromptSelect={(prompt) => {
+              setResidentSearchIntent({ intent: null, time: null });
+              void applyPrompt(prompt);
+            }}
+            onModeChange={(mode) => {
+              if (mode !== urlState.mode) switchMode(mode, "map");
+            }}
+            isCollapsed={consoleCollapsed}
+            onCollapse={() => setConsoleCollapsed(true)}
+            onExpand={() => setConsoleCollapsed(false)}
+          />
         </div>
       )}
 
@@ -9573,21 +10347,25 @@ export default function MapPage() {
                 <section className={`dp-card-credential ${passPresented ? "is-ready" : ""}`} aria-label="Resident QR code">
                   <div className="dp-card-credential-header">
                     <span className="dp-card-credential-kicker">VERIFIED RESIDENT</span>
-                    <span className="dp-card-credential-status">Active</span>
+                    <span className="dp-card-credential-status">{passPresented ? "Scanned" : "Ready"}</span>
                   </div>
                   <h3 className="dp-card-credential-title">Downtown Austin</h3>
-                  <p className="dp-card-credential-copy">Show this QR code when a partner asks for resident access.</p>
+                  <p className="dp-card-credential-copy">
+                    {passPresented
+                      ? "Demo scan complete. This resident pass is ready for partner access, event check-in, or perk verification."
+                      : "Show this QR code when a partner asks for resident access."}
+                  </p>
                   <div className="dp-card-qr-wrap">
-                    <img
-                      src={PERKS_CARD_QR_SRC}
-                      alt={`Downtown Perks resident QR code for ${DEMO_CARD_CODE}`}
-                      className="dp-card-qr-image"
-                      loading="eager"
-                      decoding="async"
-                    />
+                    <DemoQrCode code={DEMO_CARD_CODE} className="dp-card-qr-image" />
+                  </div>
+                  <div className="dp-card-scan-demo" aria-live="polite">
+                    <span>{passPresented ? "Resident access verified" : "Demo scanner waiting"}</span>
+                    <button type="button" onClick={presentResidentPass}>
+                      {passPresented ? "Scan Again" : "Run Demo Scan"}
+                    </button>
                   </div>
                   <div className="dp-card-verification-row">
-                    <span>Verified Resident · Downtown Austin</span>
+                    <span>{passPresented ? "Verified scan · Downtown Austin" : "Verified Resident · Downtown Austin"}</span>
                     <code>{DEMO_CARD_CODE}</code>
                   </div>
                 </section>
@@ -9617,7 +10395,7 @@ export default function MapPage() {
                 </section>
             </div>
             <footer className="dp-map-sheet-action-footer">
-              <MapPanelButton action="open-detail" label="Show Card" ariaLabel={passPresented ? "Show verified resident card again" : "Show resident card"} variant="primary" onPress={presentResidentPass} />
+              <MapPanelButton action="open-detail" label={passPresented ? "Verified" : "Show QR"} ariaLabel={passPresented ? "Show verified resident QR again" : "Show resident QR code"} variant="primary" onPress={presentResidentPass} />
               <div className="dp-map-sheet-action-grid">
                 <MapPanelButton action="open-detail" label="Add Wallet" ariaLabel={walletAdded ? "Add wallet already completed" : "Add card to wallet"} variant="secondary" onPress={saveResidentPassForLater} />
                 <MapPanelButton action="open-filter" label="Perks" ariaLabel="Open Perks panel" variant="secondary" onPress={() => switchMode("resident", "map", "Perks")} />
@@ -9639,6 +10417,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
+                    setConsoleCollapsed(true);
                     setActiveBottomTab("map");
                     setActiveFilter("All");
                     navigate("/map?mode=resident&tab=map&filter=All");
@@ -9651,6 +10430,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
+                    setConsoleCollapsed(true);
                     setActiveBottomTab("perks");
                     setActiveFilter("Perks");
                     navigate("/map?mode=resident&tab=map&filter=Perks");
@@ -9663,6 +10443,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
+                    setConsoleCollapsed(true);
                     setActiveBottomTab("events");
                     setActiveFilter("Events");
                     navigate("/map?mode=resident&tab=map&filter=Events");
@@ -9675,6 +10456,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => {
+                    setConsoleCollapsed(true);
                     setActiveBottomTab("saved");
                     setActiveFilter("Saved");
                     navigate("/map?mode=resident&tab=map&filter=Saved");
@@ -9686,7 +10468,7 @@ export default function MapPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => switchMode("resident", "pass")}
+                  onClick={() => switchMode("resident", "pass", "", { collapseConsole: true })}
                   aria-pressed={urlState.tab === "pass"}
                 >
                   <CreditCard className="h-4 w-4" />
@@ -9744,16 +10526,10 @@ export default function MapPage() {
         </div>
       )}
 
-      <QuickSearchModal
-        isOpen={quickSearchOpen}
-        onClose={() => setQuickSearchOpen(false)}
-        onSelectResult={handleQuickSearchSelect}
-      />
-
       <AnimatePresence>
         {urlState.tab === "map" && (
           urlState.mode === "partner"
-            ? ["activity", "campaigns", "reports", "info", "civic"].includes(activeBottomTab)
+            ? ["activity", "campaigns", "reports", "info", "civic"].includes(activeBottomTab) || isLegendsDirectoryLayer
             : ["perks", "events", "saved"].includes(activeBottomTab) || isLegendsDirectoryLayer
         ) && (!selected || selectedDrawerClosed) && (
           <motion.aside
@@ -9764,6 +10540,7 @@ export default function MapPage() {
             className={isLegendsDirectoryLayer
               ? "dp-map-directory-sheet dp-legends-directory-sheet"
               : `dp-panel-shell dp-map-drawer-shell ${activeBottomTab === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
+            style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
             aria-label={isLegendsDirectoryLayer ? "Downtown rentals" : urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
@@ -9772,11 +10549,11 @@ export default function MapPage() {
             <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
               {isLegendsDirectoryLayer ? (
                 <>
-                  <MapPanelButton action="back" label="Map" ariaLabel="Return to map" variant="secondary" size="sm" className="dp-map-directory-back" onPress={goBackToMap}>
+                  <MapPanelButton action="back" label="Map" ariaLabel="Return to map" variant="secondary" size="sm" className="dp-map-directory-back" onPress={closeDirectoryToMap}>
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                     <span>Map</span>
                   </MapPanelButton>
-                  <MapPanelButton action="close" label="Close" ariaLabel="Close rentals panel" variant="icon" size="sm" className="dp-map-directory-close" onPress={() => setActiveBottomTab("map")}>
+                  <MapPanelButton action="close" label="Close" ariaLabel="Close rentals panel" variant="icon" size="sm" className="dp-map-directory-close" onPress={closeDirectoryToMap}>
                     <X className="h-4 w-4" aria-hidden="true" />
                   </MapPanelButton>
                 </>
@@ -9799,9 +10576,9 @@ export default function MapPage() {
             </div>
 
             <div
-              className={`dp-panel-body dp-panel-scroll min-h-0 ${urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
+              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "hidden" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
               data-panel-body
-              style={{ paddingBottom: "240px" }}
+              style={{ paddingBottom: "96px" }}
             >
               {urlState.mode === "partner" && activePartnerPanel === "activity" && renderActivityPanel()}
               {urlState.mode === "partner" && activePartnerPanel === "reports" && renderReportsPanel()}
@@ -9836,14 +10613,13 @@ export default function MapPage() {
               )}
             </div>
 
-            {urlState.mode !== "partner" && (
-            isLegendsDirectoryLayer ? (
+            {isLegendsDirectoryLayer ? (
               <>
                 <section className="dp-map-directory-header">
                   <p className="dp-map-directory-eyebrow">LEGENDS REAL ESTATE</p>
-                  <h2 className="dp-map-directory-title">Downtown rentals on the map.</h2>
+                  <h2 className="dp-map-directory-title">Downtown residential intelligence.</h2>
                   <span className="dp-map-directory-subtitle">
-                    Building-first listings with walkability, nearby places, and lifestyle context before you schedule a tour.
+                    Listing inventory, building demand, and walkable context around the addresses Legends is tracking now.
                   </span>
                   <strong className="dp-map-directory-count">{discoverDisplayPlaces.filter(isRentalEntity).length || discoverDisplayPlaces.length} active listings</strong>
                 </section>
@@ -9857,35 +10633,42 @@ export default function MapPage() {
                         onSelect={() => selectPlace(place)}
                       />
                     ) : (
-                      <button
-                        key={place.id}
-                        type="button"
-                        className="dp-legends-result-row"
-                        data-action="select"
-                        data-selected={place.id === selectedId ? "true" : "false"}
-                        onClick={() => selectPlace(place)}
-                        aria-label={`View ${place.name}`}
-                      >
-                        <img className="dp-legends-result-logo" src="/pins/downtown-perks/legends-logo.png" alt="" aria-hidden="true" />
-                        <span className="min-w-0">
-                          <span className="dp-legends-result-meta">Legends Real Estate</span>
-                          <span className="dp-legends-result-title">{place.name}</span>
-                          <span className="dp-legends-result-address">{place.address || place.district || "Downtown Austin"}</span>
-                          <span className="dp-legends-result-details">Building-first lifestyle context</span>
-                        </span>
-                        <span className="dp-legends-result-action">View</span>
-                      </button>
+                      (() => {
+                        const row = getLegendsDirectoryRowCopy(place);
+                        return (
+                          <button
+                            key={place.id}
+                            type="button"
+                            className="dp-legends-result-row"
+                            data-action="select"
+                            data-selected={place.id === selectedId ? "true" : "false"}
+                            onClick={() => selectPlace(place)}
+                            aria-label={`View ${row.title}`}
+                          >
+                            <span className="dp-legends-result-pin" aria-hidden="true">
+                              <PinBadge place={place} selected={place.id === selectedId} size="sm" />
+                            </span>
+                            <span className="min-w-0">
+                              <span className="dp-legends-result-meta">{row.meta}</span>
+                              <span className="dp-legends-result-title">{row.title}</span>
+                              <span className="dp-legends-result-address">{row.address}</span>
+                              <span className="dp-legends-result-details">{row.details}</span>
+                            </span>
+                            <span className="dp-legends-result-action">View</span>
+                          </button>
+                        );
+                      })()
                     )
                   ))}
                   {!drawerPreviewPlaces.length && (
                     <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
-                      No active Legends listings are visible yet. Try Living Here, Rentals, or a nearby residential search.
+                      No active Legends inventory is visible yet. Try Living Here, Rentals, or a nearby residential search.
                     </div>
                   )}
                   <div className="dp-panel-bottom-spacer" aria-hidden="true" />
                 </div>
               </>
-            ) : (
+            ) : urlState.mode !== "partner" ? (
             <div className="dp-resident-tab-panel min-h-0 flex-1 overflow-hidden">
               {residentPanelCopy && (
                 <section className="dp-resident-tab-panel-header">
@@ -9897,7 +10680,7 @@ export default function MapPage() {
               )}
               <div
                 className="dp-resident-tab-panel-list min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] md:space-y-2"
-                style={{ paddingBottom: "240px" }}
+                style={{ paddingBottom: "96px" }}
               >
               {drawerPreviewPlaces.map((place) => (
                 (() => {
@@ -9985,8 +10768,7 @@ export default function MapPage() {
               <div className="dp-panel-bottom-spacer" aria-hidden="true" />
               </div>
             </div>
-            )
-            )}
+            ) : null}
           </motion.aside>
         )}
       </AnimatePresence>
@@ -9999,6 +10781,7 @@ export default function MapPage() {
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className="dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
+            style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
             aria-label="Grouped map places"
@@ -10068,7 +10851,7 @@ export default function MapPage() {
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
             className={`dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[760] mx-auto flex h-[90dvh] max-h-[90dvh] min-h-0 w-full max-w-[720px] flex-col overflow-hidden rounded-t-[12px] md:bottom-0 md:h-[92dvh] md:max-h-[92dvh] md:max-w-[760px] md:rounded-t-[12px] ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
             data-drawer-state={selectedDrawerMinimized ? "minimized" : "expanded"}
-            style={selectedDrawerMinimized ? { height: 148, maxHeight: 148, minHeight: 148 } : undefined}
+            style={selectedDrawerMinimized ? { ...MAP_DRAWER_SURFACE_STYLE, height: 148, maxHeight: 148, minHeight: 148 } : MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
             aria-label={`${selected.name} details`}
@@ -10122,7 +10905,7 @@ export default function MapPage() {
 
             <div
               className="dp-destination-scroll dp-drawer-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(1.25rem+env(safe-area-inset-bottom))] [-webkit-overflow-scrolling:touch] md:pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
-              style={{ paddingBottom: "240px" }}
+              style={{ paddingBottom: "96px" }}
             >
               {(() => {
                 const entityKind = getResidentEntityKind(selected);
@@ -10133,6 +10916,7 @@ export default function MapPage() {
                 const isParking = isParkingEntity(selected);
                 const isDaaStop = isDaaTourPlace(selected);
                 const isInKindDining = isInKindEntity(selected);
+                const isBurgerBarPanel = isBurgerBarCongress(selected);
                 const legendsResidentialContent = getLegendsResidentialContentForPlace(selected);
                 const legendsResidentialProfile = getLegendsResidentialProfileForPlace(selected);
                 const contactFormId = `map-contact-form-${selected.id}`;
@@ -10267,9 +11051,11 @@ export default function MapPage() {
                         />
                       )}
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.18 }}>
-                      <PanelContext place={selected} mode={urlState.mode} />
-                    </motion.div>
+                    {!isInKindDining && !isBurgerBarPanel && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.18 }}>
+                        <PanelContext place={selected} mode={urlState.mode} />
+                      </motion.div>
+                    )}
                     {isCampaign && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.18 }}>
                         <MapNativeCampaignDetails place={selected} mode={urlState.mode} />
@@ -10302,7 +11088,17 @@ export default function MapPage() {
                         <ParkingBookingDetails place={selected} mode={urlState.mode} />
                       </motion.div>
                     )}
-                    {isInKindDining && !isDaaStop && (
+                    {isBurgerBarPanel && !isDaaStop && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.39, duration: 0.18 }}>
+                        <BurgerBarCongressDetails
+                          place={selected}
+                          mode={urlState.mode}
+                          savedIds={savedIds}
+                          onSave={() => toggleSaved(selected)}
+                        />
+                      </motion.div>
+                    )}
+                    {isInKindDining && !isBurgerBarPanel && !isDaaStop && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.39, duration: 0.18 }}>
                         <InKindDiningDetails
                           place={selected}
@@ -10311,6 +11107,10 @@ export default function MapPage() {
                           savedIds={savedIds}
                           onSave={() => toggleSaved(selected)}
                           onSelect={selectPlace}
+                          answer={entityAnswer}
+                          loading={entityAssistantLoading}
+                          onAsk={askEntityAssistant}
+                          onCloseAnswer={() => setEntityAnswer(null)}
                         />
                       </motion.div>
                     )}
@@ -10337,7 +11137,7 @@ export default function MapPage() {
                       </motion.div>
                     )}
 
-                    {!isRental && !legendsResidentialContent && !isDaaStop && (
+                    {!isRental && !legendsResidentialContent && !isDaaStop && !isInKindDining && !isBurgerBarPanel && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.64, duration: 0.18 }}>
                         <EntityAssistant
                           place={selected}
@@ -10428,7 +11228,7 @@ export default function MapPage() {
                       )}
                     </AnimatePresence>
 
-                    {!isDaaStop && (
+                    {!isDaaStop && !isInKindDining && !isBurgerBarPanel && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.92, duration: 0.18 }}>
                         <PeopleAlsoVisit place={selected} places={places} onSelect={selectPlace} mode={urlState.mode} />
                       </motion.div>

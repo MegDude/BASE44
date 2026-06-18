@@ -123,6 +123,10 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-deck.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-pool.webp`,
   ],
+  "spring-condominiums": [
+    "/images/map-listing-actual/spring-condominiums/spring-condos-tower.jpeg",
+    "/images/map-listing-actual/spring-condominiums/spring-condos-entry.jpeg",
+  ],
   "sixth-and-guadalupe": [
     `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe1.jpeg`,
@@ -160,6 +164,61 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
   ],
 };
 
+const actualVenueImageSets: Record<string, { hero: string; card: string; thumb: string; gallery: string[] }> = {
+  "burger-bar": {
+    hero: "/images/map-listing-actual/burger-bar/burger-bar-congress-arrival.jpeg",
+    card: "/images/map-listing-actual/burger-bar/burger-bar-congress-arrival.jpeg",
+    thumb: "/images/map-listing-actual/burger-bar/burger-bar-congress-arrival.jpeg",
+    gallery: [],
+  },
+  "24-diner": {
+    hero: "/images/map-listing-actual/24-diner/24-diner_hero_clean_1600x900.png",
+    card: "/images/map-listing-actual/24-diner/24-diner_listing_card_1600x900.png",
+    thumb: "/images/map-listing-actual/24-diner/24-diner_map_thumb_512x512.png",
+    gallery: [],
+  },
+  aris: {
+    hero: "/images/map-listing-actual/aris/aris_hero_clean_1600x900.png",
+    card: "/images/map-listing-actual/aris/aris_listing_card_1600x900.png",
+    thumb: "/images/map-listing-actual/aris/aris_map_thumb_512x512.png",
+    gallery: [],
+  },
+  "atx-cocina": {
+    hero: "/images/map-listing-actual/atx-cocina/atx-cocina_hero_clean_1600x900.png",
+    card: "/images/map-listing-actual/atx-cocina/atx-cocina_listing_card_1600x900.png",
+    thumb: "/images/map-listing-actual/atx-cocina/atx-cocina_map_thumb_512x512.png",
+    gallery: [],
+  },
+  "las-perlas": {
+    hero: "/images/map-listing-actual/las-perlas/las-perlas_hero_clean_1600x900.png",
+    card: "/images/map-listing-actual/las-perlas/las-perlas_listing_card_1600x900.png",
+    thumb: "/images/map-listing-actual/las-perlas/las-perlas_map_thumb_512x512.png",
+    gallery: [],
+  },
+  pelons: {
+    hero: "/images/map-listing-actual/pelons/pelons_hero_clean_1600x900.png",
+    card: "/images/map-listing-actual/pelons/pelons_listing_card_1600x900.png",
+    thumb: "/images/map-listing-actual/pelons/pelons_map_thumb_512x512.png",
+    gallery: [],
+  },
+  "scholz-garten": {
+    hero: "/images/map-listing-actual/scholz-garten/scholz-garten_hero_clean_1600x900.png",
+    card: "/images/map-listing-actual/scholz-garten/scholz-garten_listing_card_1600x900.png",
+    thumb: "/images/map-listing-actual/scholz-garten/scholz-garten_map_thumb_512x512.png",
+    gallery: [],
+  },
+};
+
+const actualVenueImageRules = [
+  { key: "burger-bar", terms: ["burger bar", "burger-bar"] },
+  { key: "24-diner", terms: ["24 diner", "24diner"] },
+  { key: "aris", terms: ["aris"] },
+  { key: "atx-cocina", terms: ["atx cocina"] },
+  { key: "las-perlas", terms: ["las perlas"] },
+  { key: "pelons", terms: ["pelons", "pelon", "pelon’s", "pelon's"] },
+  { key: "scholz-garten", terms: ["scholz garten", "scholz"] },
+];
+
 const premiumPropertyImageRules = [
   { key: "44-east", terms: ["44 east", "44 east ave"] },
   { key: "70-rainey", terms: ["70 rainey", "70 rainey st", "rainey 70"] },
@@ -170,6 +229,7 @@ const premiumPropertyImageRules = [
   { key: "natiivo", terms: ["natiivo"] },
   { key: "paseo", terms: ["paseo", "the paseo", "modern austin residences", "80 rainey", "90 rainey"] },
   { key: "seaholm-residences", terms: ["seaholm residences", "seaholm", "222 west ave"] },
+  { key: "spring-condominiums", terms: ["spring condominiums", "spring condos", "spring austin", "300 bowie"] },
   { key: "sixth-and-guadalupe", terms: ["sixth and guadalupe", "sixth & guadalupe", "6th and guadalupe", "6th & guadalupe", "400 w 6th"] },
   { key: "the-austonian", terms: ["the austonian", "austonian", "200 congress"] },
   { key: "the-independent", terms: ["the independent", "independent", "jenga tower", "301 west ave"] },
@@ -204,7 +264,7 @@ export const BUILDING_IMAGE_FALLBACK: Record<string, string> = {
   river700: "/images/map-pins/property/700-river.jpg",
   fivefiftyfive: "/buildings/five-fifty-five.webp",
   monarch: "/buildings/monarch.webp",
-  spring: "/buildings/spring-condominiums.png",
+  spring: "/images/map-listing-actual/spring-condominiums/spring-condos-tower.jpeg",
   milago: "/images/map-pins/property/milago.webp",
   bowie: "/buildings/bowie.webp",
   "hanover-republic-square": "/buildings/hanover-republic-square.jpg",
@@ -319,6 +379,37 @@ const hotelImageRules = [
 ];
 
 const entityImageSets: Record<string, string[]> = {
+  "parkside": [
+    "/images/map-entities/dining/outdoor-dining-arrival.avif",
+    "/images/map-entities/dining/dinner-table.avif",
+  ],
+  "peche": [
+    "/images/map-entities/dining/inside-foxtail-bar.jpeg",
+    "/images/map-entities/dining/cocktails-3.avif",
+  ],
+  "j-carvers": [
+    "/images/map-entities/dining/private-dinner.avif",
+    "/images/map-entities/dining/gourmet-food.avif",
+  ],
+  comedor: [
+    "/images/map-entities/dining/gourmet-food.avif",
+    "/images/map-entities/dining/private-dinner.avif",
+  ],
+  foxtail: [
+    "/images/map-entities/dining/inside-foxtail-bar.jpeg",
+  ],
+  "republic-square-bar": [
+    "/images/map-entities/dining/republic-square-bar.jpg",
+  ],
+  "salvation-pizza": [
+    "/images/map-entities/dining/salvation-pizza-rainey.jpg",
+  ],
+  "driskill-bar": [
+    "/images/map-entities/dining/driskill-hotel-bar.jpg",
+  ],
+  "violet-crown": [
+    "/images/map-entities/dining/violet-crown-wine-coffee.jpg",
+  ],
   "bangers": [
     "/images/imported/perks/bangers-outside.webp",
   ],
@@ -495,13 +586,18 @@ const entityImageSets: Record<string, string[]> = {
   ],
   dining: [
     ...LOCAL_IMAGE_PRIORITY.dining,
+    "/images/map-entities/dining/outdoor-dining-arrival.avif",
+    "/images/map-entities/dining/dinner-table.avif",
+    "/images/map-entities/dining/gourmet-food.avif",
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
     "/images/imported/perks/geraldine-s.jpg",
     "/images/imported/perks/bangers-outside.webp",
     "/images/imported/perks/via313.jpg",
   ],
   parking: [
-    "/images/imported/perks/parking-second-street.webp",
+    "/images/imported/perks/waterline-hero.webp",
+    "/images/map/panels/the-shore-austin.jpg",
+    "/images/districts/rainey-hero.jpg",
     "/images/imported/perks/atx-street.png",
   ],
   wellness: [
@@ -528,6 +624,15 @@ const entityImageSets: Record<string, string[]> = {
 };
 
 const contentImageRules = [
+  { key: "parkside", terms: ["parkside"] },
+  { key: "peche", terms: ["péché", "peche"] },
+  { key: "j-carvers", terms: ["j carver", "j carver's", "j carvers"] },
+  { key: "comedor", terms: ["comedor"] },
+  { key: "foxtail", terms: ["foxtail"] },
+  { key: "republic-square-bar", terms: ["republic square bar"] },
+  { key: "salvation-pizza", terms: ["salvation pizza", "salvation"] },
+  { key: "driskill-bar", terms: ["driskill bar", "driskill hotel bar"] },
+  { key: "violet-crown", terms: ["violet crown"] },
   { key: "bangers", terms: ["banger", "bangers"] },
   { key: "via-313", terms: ["via 313", "via313", "detroit-style pizza"] },
   { key: "emmer-rye", terms: ["emmer", "emmer & rye"] },
@@ -665,6 +770,20 @@ function matchingImageSet(entity: Record<string, unknown>): string[] | null {
   return null;
 }
 
+function actualVenueImageSet(entity: Record<string, unknown>) {
+  const text = entityText(entity);
+  const match = actualVenueImageRules.find((rule) => rule.terms.some((term) => text.includes(term)));
+  return match ? actualVenueImageSets[match.key] || null : null;
+}
+
+function actualVenueImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string | null {
+  const set = actualVenueImageSet(entity);
+  if (!set) return null;
+  if (context === "pin" || context === "nearbyRail" || context === "relatedRail") return set.thumb;
+  if (context === "card") return set.card;
+  return set.hero;
+}
+
 function firstGalleryImage(entity: Record<string, unknown>): string | null {
   const galleryImages = Array.isArray(entity.galleryImages)
     ? entity.galleryImages
@@ -768,6 +887,9 @@ export function resolveHotelImage(entity: Record<string, unknown>): string | nul
 }
 
 export function resolveMapImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string {
+  const actualVenue = actualVenueImage(entity, context);
+  if (actualVenue) return actualVenue;
+
   const canonical = resolveDowntownPerksEntityImage(entity);
   if (canonical?.src) return canonical.src;
 
@@ -828,10 +950,12 @@ export function resolveEntityGallery(entity: Record<string, unknown>): string[] 
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
   const rawGallery = Array.isArray(raw.gallery) ? raw.gallery : [];
   const explicitGallery = Array.isArray(entity.gallery) ? entity.gallery : [];
+  const actualVenueSet = actualVenueImageSet(entity);
+  const actualVenueGallery = actualVenueSet ? [actualVenueSet.hero, actualVenueSet.card, actualVenueSet.thumb, ...actualVenueSet.gallery] : [];
   const premiumPropertyImages = (looksResidential(entity) || looksHotel(entity)) ? resolvePremiumPropertyImageSet(entity) : [];
   const matchedSet = matchingImageSet(entity) || [];
   const primary = resolveEntityImage(entity);
-  return [primary, ...premiumPropertyImages, ...explicitGallery, ...rawGallery, ...matchedSet]
+  return [primary, ...actualVenueGallery, ...premiumPropertyImages, ...explicitGallery, ...rawGallery, ...matchedSet]
     .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
     .filter((item, index, list) => list.indexOf(item) === index);
 }

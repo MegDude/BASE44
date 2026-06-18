@@ -1,5 +1,5 @@
 const SUSHI_BAR_IMAGE = "/images/imported/perks/partner-dining-patio-1779052819620.png";
-const SUSHI_SCRATCH_IMAGE = "/images/imported/perks/downtown-dining-patio.png";
+const SUSHI_SCRATCH_IMAGE = "/images/map-entities/dining/outdoor-dining-arrival.avif";
 const SUSHI_ROKU_IMAGE = "/images/imported/perks/restaurant-manager-speaking-with-staff-before-opening.png";
 const BARCHI_IMAGE = "/images/restaurants/barchi-sushi.jpeg";
 const UCHIBA_IMAGE = "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-26-fnm2bj.avif";

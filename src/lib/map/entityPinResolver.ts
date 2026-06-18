@@ -16,6 +16,9 @@ const CATEGORY_PIN_MAP: Array<[PinVariant, string[]]> = [
 ];
 
 const PIN_MATCHERS: Array<[PinVariant, string[]]> = [
+  ["fine-eyewear", ["fine eyewear", "fine eyewear boutique", "see austin differently", "vision partner"]],
+  ["waterloo-greenway", ["waterloo greenway", "waterloo park", "waller creek", "moody amphitheater"]],
+  ["dana", ["dana", "downtown austin neighborhood association"]],
   ["legends", ["legends", "legends real estate", "legends property", "legends property export"]],
   ["coffee", ["coffee", "cafe", "espresso"]],
   ["dining", ["dining", "restaurant", "food", "lunch", "dinner", "kitchen", "grill", "taqueria", "pizza", "sushi", "bbq", "bistro", "bakery", "brewery"]],
@@ -41,7 +44,12 @@ const PIN_MATCHERS: Array<[PinVariant, string[]]> = [
 ];
 
 const RESTORED_MASTER_PIN_KEYS: Record<string, PinVariant> = {
-  inkind: "offer",
+  inkind: "inkind",
+  dana: "dana",
+  "fine-eyewear": "fine-eyewear",
+  "waterloo-greenway": "waterloo-greenway",
+  "stay-put": "stay-put",
+  "topo-chico": "topo-chico",
   yeti: "brand",
   rivian: "mobility",
   lululemon: "wellness",

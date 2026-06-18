@@ -28,7 +28,7 @@ const events = [
     venue: "Seaholm District",
     category: "Happy Hour",
     going: 41,
-    image: "/images/venues/downtown-dining-patio.png",
+    image: "/images/map-entities/dining/outdoor-dining-arrival.avif",
     imageAlt: "Downtown Austin patio dining and drinks",
     imageLabel: "After-work drinks",
     description: "A simple after-work stop near Seaholm. Good for a quick drink, an easy dinner plan, or meeting someone before the night gets crowded.",
@@ -106,7 +106,7 @@ const events = [
     venue: "Downtown Dining Partners",
     category: "Perk",
     going: 38,
-    image: "/images/venues/downtown-dining-patio.png",
+    image: "/images/map-entities/dining/outdoor-dining-arrival.avif",
     imageAlt: "Downtown Austin patio brunch scene",
     imageLabel: "Brunch perk",
     description: "Use your card at participating brunch spots and keep the plan simple: pick what is close, show the card, and sit down.",
@@ -536,7 +536,7 @@ export default function Events() {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-[68px] text-[#0B1F33]">
+    <div className="dp-events-page min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="px-5 py-16 md:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-end">

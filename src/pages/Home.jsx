@@ -169,7 +169,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-white text-[#0B1F33]">
+    <main className="dp-home-page bg-white text-[#0B1F33]">
       <section className="relative overflow-hidden pb-14 pt-28 md:pb-20">
         <div className="pointer-events-none absolute left-[6%] top-28 h-56 w-56 rounded-full bg-white/76 blur-3xl" aria-hidden="true" />
         <div className="pointer-events-none absolute right-[10%] top-20 h-72 w-72 rounded-full bg-white/74 blur-[80px]" aria-hidden="true" />

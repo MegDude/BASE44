@@ -19,6 +19,11 @@ export type PinVariant =
   | "analytics"
   | "offer"
   | "inkind"
+  | "dana"
+  | "fine-eyewear"
+  | "waterloo-greenway"
+  | "stay-put"
+  | "topo-chico"
   | "yeti"
   | "rivian"
   | "lululemon"
@@ -55,7 +60,33 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
   inkind: {
     label: "inKind",
-    glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>'),
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__inkind-logo" src="/pins/brands/inkind-logo-gold.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/inkind-logo-gold.svg",
+  },
+  dana: {
+    label: "DANA",
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__dana-logo" src="/pins/brands/dana-logo-gold.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/dana-logo-gold.svg",
+  },
+  "fine-eyewear": {
+    label: "Fine Eyewear",
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__fine-eyewear-logo" src="/pins/brands/fine-eyewear-logo-gold.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/fine-eyewear-logo-gold.svg",
+  },
+  "waterloo-greenway": {
+    label: "Waterloo Greenway",
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__waterloo-logo" src="/pins/brands/waterloo-greenway-logo-gold.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/waterloo-greenway-logo-gold.svg",
+  },
+  "stay-put": {
+    label: "The Stay Put",
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__stay-put-logo" src="/pins/brands/stay-put-pin.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/stay-put-pin.svg",
+  },
+  "topo-chico": {
+    label: "Topo Chico",
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__topo-chico-logo" src="/pins/brands/topo-chico-pin.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/topo-chico-pin.svg",
   },
   yeti: {
     label: "YETI",
@@ -78,8 +109,8 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   journal: { label: "Journal", glyph: icon('<path d="M6 4h11a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 8h7M8 12h7M8 16h5"/>') },
   legends: {
     label: "Legends",
-    glyph: '<img class="dp-pin-logo dp-live-pin__legends-logo" src="/pins/downtown-perks/legends-logo.png" alt="" aria-hidden="true" />',
-    asset: "/pins/downtown-perks/legends-logo.png",
+    glyph: '<img class="dp-pin-logo dp-live-pin__legends-logo" src="/pins/downtown-perks/legends-logo-gold.svg" alt="" aria-hidden="true" />',
+    asset: "/pins/downtown-perks/legends-logo-gold.svg",
   },
   default: { label: "Downtown", glyph: icon('<path d="M12 21s7-5.2 7-11a7 7 0 0 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>') },
 };

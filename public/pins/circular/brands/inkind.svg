@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="inKind">
+  <rect width="96" height="96" rx="26" fill="#071b2f"/>
+  <path d="M23 27h50v42H23z" fill="none" stroke="#c8a96a" stroke-width="7" stroke-linejoin="round"/>
+  <text x="48" y="55" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800" fill="#fff">in</text>
+  <text x="48" y="73" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" fill="#fff">kind</text>
+</svg>

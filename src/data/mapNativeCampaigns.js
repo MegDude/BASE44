@@ -1,15 +1,109 @@
 import { FOUR_SEASONS_WEEK_CAMPAIGN } from "./fourSeasonsExperience";
 
-const CAMPAIGN_IMAGE = "/images/imported/perks/downtown-dining-patio.png";
+const CAMPAIGN_IMAGE = "/images/map-entities/dining/outdoor-dining-arrival.avif";
 const SUGAR_WOLF_IMAGE = "/images/campaigns/sugar-wolf.png";
 const WELLNESS_IMAGE = "/images/campaigns/wellness-week/yoga-outside.avif";
 const WELLNESS_PIN_IMAGE = "/images/campaigns/wellness-week/trail-walking.webp";
 const WELLNESS_ROUTE_IMAGE = "/images/campaigns/wellness-week/running-on-trail.avif";
 const WELLNESS_RECOVERY_IMAGE = "/images/campaigns/wellness-week/spa.avif";
 const ROOFTOP_IMAGE = "/images/residents/downtown-rooftop-evening.png";
+const FINE_EYEWEAR_PIN = "/pins/brands/fine-eyewear-logo-gold.svg";
+const WATERLOO_GREENWAY_PIN = "/pins/brands/waterloo-greenway-logo-gold.svg";
+const DANA_PIN = "/pins/brands/dana-pin.svg";
 
 export const mapNativeCampaigns = [
   FOUR_SEASONS_WEEK_CAMPAIGN,
+  {
+    id: "campaign-see-austin-differently-fine-eyewear",
+    title: "See Austin Differently",
+    name: "See Austin Differently",
+    slug: "see-austin-differently-fine-eyewear",
+    type: "campaign",
+    kind: "campaign",
+    entityType: "campaign",
+    sourceType: "campaign",
+    markerType: "campaign",
+    detailDrawerType: "campaign",
+    pinKey: "fine-eyewear",
+    campaignType: "discovery-trail",
+    sponsorId: "brand-fine-eyewear",
+    sponsorName: "Fine Eyewear Boutique",
+    sponsorLogo: FINE_EYEWEAR_PIN,
+    partnerLogos: [FINE_EYEWEAR_PIN, WATERLOO_GREENWAY_PIN, DANA_PIN],
+    description: "Fine Eyewear and Waterloo Greenway invite residents to see Austin differently through a map-native discovery trail across design, architecture, nature, art, and outdoor culture.",
+    summary: "A Waterloo Greenway discovery trail by Fine Eyewear.",
+    neighborhood: ["Waterloo", "Red River", "Downtown Core"],
+    district: "Waterloo",
+    address: "Waterloo Park, 500 E 12th St, Austin, TX 78701",
+    latitude: 30.27391,
+    longitude: -97.73543,
+    startDate: "2026-06-18",
+    endDate: "2026-09-30",
+    status: "active",
+    reward: "Resident lens cleaning, frame styling, and VIP launch moments",
+    participatingEntities: [
+      "campaign-see-austin-differently-fine-eyewear",
+      "waterloo-greenway-discovery-start",
+      "waterloo-park-golden-hour",
+      "red-river-culture-walk",
+      "downtown-design-detail-stop",
+    ],
+    campaignPins: [
+      "campaign-see-austin-differently-fine-eyewear",
+      "waterloo-greenway-discovery-start",
+      "waterloo-park-golden-hour",
+      "red-river-culture-walk",
+      "downtown-design-detail-stop",
+    ],
+    campaignColor: "#C8A96A",
+    image: FINE_EYEWEAR_PIN,
+    imageUrl: FINE_EYEWEAR_PIN,
+    primaryAction: "Start Discovery Trail",
+    secondaryAction: "View Waterloo Stops",
+    rewardLabel: "Scan trail markers to unlock stories, resident perks, and launch moments",
+    stats: ["5 Discovery Stops", "2,000 QR Scan Goal", "500 Launch Attendance Goal"],
+    activationStops: [
+      {
+        entityId: "waterloo-greenway-discovery-start",
+        title: "Waterloo Greenway",
+        role: "Start here",
+        detail: "Begin with the park, creek, and design details that frame the See Austin Differently trail.",
+      },
+      {
+        entityId: "waterloo-park-golden-hour",
+        title: "Golden Hour Session",
+        role: "Photo moment",
+        detail: "Residents are guided toward the best late-day light, skyline angles, and social-ready trail stops.",
+      },
+      {
+        entityId: "red-river-culture-walk",
+        title: "Red River Culture Walk",
+        role: "Culture stop",
+        detail: "Connect Waterloo to nearby music, art, and nightlife context without making the route feel like an ad.",
+      },
+      {
+        entityId: "downtown-design-detail-stop",
+        title: "Design Detail Stop",
+        role: "Brand story",
+        detail: "Fine Eyewear becomes the lens for noticing architecture, texture, reflections, and downtown style.",
+      },
+    ],
+    analytics: {
+      views: 50000,
+      opens: 2000,
+      participants: 500,
+      completions: 250,
+      completionRate: "50.0%",
+      saves: 1000,
+      directions: 640,
+      checkIns: 500,
+      redemptions: 250,
+    },
+    tags: ["Campaigns", "Fine Eyewear", "Waterloo Greenway", "DANA", "DAA", "Art", "Architecture", "Nature", "Outdoor Culture"],
+    searchKeywords: ["fine eyewear", "see austin differently", "waterloo greenway", "discovery trail", "vision partner", "golden hour sessions", "photo trail"],
+    residentSearchIntents: ["see austin differently", "fine eyewear", "waterloo discovery trail", "golden hour sessions"],
+    source: "Downtown Perks map-native campaign layer",
+  },
   {
     id: "campaign-downtown-coffee-passport",
     title: "Sugar Wolf Restaurant Group Passport",

@@ -137,7 +137,7 @@ export default function PerksCard() {
 
             <div className="relative mt-5 h-44 w-full overflow-hidden rounded-[14px] border border-[#0B1F33]/8 shadow-[0_8px_24px_rgba(11,31,51,.06)]">
               <img
-                src="/images/venues/downtown-dining-patio.png"
+                src="/images/map-entities/dining/outdoor-dining-arrival.avif"
                 alt="Residents using Downtown Perks at a partner venue"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />

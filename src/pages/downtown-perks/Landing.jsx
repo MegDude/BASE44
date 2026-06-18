@@ -539,7 +539,7 @@ function ResidentSignupForm() {
 
 export default function Landing() {
   return (
-    <div className="bg-white pt-[68px] text-[#0B1F33]">
+    <div className="dp-resident-landing-page bg-white pt-[68px] text-[#0B1F33]">
       <section className="px-5 py-16 md:py-24">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <div>

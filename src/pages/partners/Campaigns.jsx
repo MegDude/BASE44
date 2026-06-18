@@ -53,7 +53,7 @@ const moments = [
   ["Coffee before work", "/images/imported/perks/coffee-before-work.png"],
   ["Lunch between meetings", "/images/map-entities/perks/partner_dining_patio_1779052819620.png"],
   ["Happy hour nearby", "/images/imported/perks/cocktails.avif"],
-  ["Dinner plans", "/images/imported/perks/downtown-dining-patio.png"],
+  ["Dinner plans", "/images/map-entities/dining/outdoor-dining-arrival.avif"],
   ["Weekend plans", "/images/imported/perks/yeti-event.jpeg"],
 ];
 
@@ -211,7 +211,7 @@ export default function CampaignsPage() {
         <div className="dp-proof-grid">
           {[
             ["People saved this.", "They wanted to keep the offer, event, or place close enough to come back to.", "/images/imported/perks/map-and-qr.png"],
-            ["People visited here.", "They were nearby, understood the reason to go, and decided to make the stop.", "/images/imported/perks/downtown-dining-patio.png"],
+            ["People visited here.", "They were nearby, understood the reason to go, and decided to make the stop.", "/images/map-entities/dining/outdoor-dining-arrival.avif"],
             ["People redeemed this.", "The offer was clear enough to use in the real world, not just notice on a screen.", "/images/imported/perks/perks-offers-jpg-coffee-counter-qr-offer-redemption.png"],
           ].map(([title, body, image]) => <article key={title}><img src={image} alt={title} loading="lazy" decoding="async" /><Sparkles size={18} /><h3>{title}</h3><p>{body}</p></article>)}
         </div>

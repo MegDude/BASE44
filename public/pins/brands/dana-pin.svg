@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 184" role="img" aria-label="DANA pin">
+  <defs>
+    <filter id="pinShadow" x="-25%" y="-18%" width="150%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#0B1F33" flood-opacity=".18"/>
+    </filter>
+    <linearGradient id="green" x1="28" x2="126" y1="18" y2="154" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5B6C35"/>
+      <stop offset="1" stop-color="#33431E"/>
+    </linearGradient>
+  </defs>
+  <path filter="url(#pinShadow)" d="M80 176 54 145C31 137 14 115 14 88 14 51 43 21 80 21s66 30 66 67c0 27-17 49-40 57L80 176Z" fill="url(#green)"/>
+  <path d="M80 168 58 141C36 133 21 112 21 88c0-33 26-60 59-60s59 27 59 60c0 24-15 45-37 53L80 168Z" fill="none" stroke="#263418" stroke-width="5"/>
+  <circle cx="80" cy="87" r="51" fill="#4A5D2D" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+  <text x="80" y="72" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="33" font-weight="900" fill="#FFFFFF" letter-spacing="2">DANA</text>
+  <path d="M41 120h78c-8-12-23-20-39-20s-31 8-39 20Z" fill="#FFFFFF"/>
+  <path d="M46 119V96h12v23M64 119V88h15v31M85 119V76h15v43M106 119V93h12v26" fill="#FFFFFF"/>
+</svg>

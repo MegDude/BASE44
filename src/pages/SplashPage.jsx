@@ -1,13 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, MapPin, Menu, Sparkles, X } from "lucide-react";
-
-const splashNavLinks = [
-  { label: "Resident Map", to: "/map?mode=resident&tab=map" },
-  { label: "Partner Map", to: "/map?mode=partner&tab=map&filter=All" },
-  { label: "Campaign Builder", to: "/partners/campaigns" },
-  { label: "Workspace", to: "/partner-workspace/overview" },
-];
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 
 const storyStates = [
   {
@@ -103,61 +96,6 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
-function SplashNavigation({ isOpen, setIsOpen }) {
-  const close = () => setIsOpen(false);
-
-  return (
-    <header className="dp-scene-topbar dp-fixed-story-topbar">
-      <div className="dp-splash-nav-left">
-        <Link to="/" className="dp-scene-brand" onClick={close} aria-label="Downtown Perks home">
-          <span aria-hidden="true" className="dp-scene-brand-icon">
-            <MapPin className="h-4 w-4" />
-          </span>
-          <span className="dp-scene-brand-wordmark">
-            <span>Downtown</span> <span>Perks</span>
-          </span>
-        </Link>
-
-        <nav className="dp-splash-nav-links" aria-label="Splash navigation">
-          {splashNavLinks.map((link) => (
-            <Link key={link.label} to={link.to}>
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
-
-      <div className="dp-splash-nav-actions">
-        <button
-          type="button"
-          className="dp-splash-menu-button"
-          onClick={() => setIsOpen((current) => !current)}
-          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-          aria-expanded={isOpen}
-        >
-          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-        <Link to="/map?mode=resident&tab=pass" className="dp-splash-card-cta">
-          Get Your Perks Card
-        </Link>
-      </div>
-
-      {isOpen && (
-        <nav className="dp-splash-mobile-menu" aria-label="Mobile splash navigation">
-          {splashNavLinks.map((link) => (
-            <Link key={link.label} to={link.to} onClick={close}>
-              {link.label}
-            </Link>
-          ))}
-          <Link to="/map?mode=resident&tab=pass" onClick={close} className="is-card">
-            Get Your Perks Card
-          </Link>
-        </nav>
-      )}
-    </header>
-  );
-}
-
 function FixedStoryStage({ state, active, go }) {
   const isFirst = active === 0;
   const isLast = active === storyStates.length - 1;
@@ -171,9 +109,15 @@ function FixedStoryStage({ state, active, go }) {
           </div>
           <div className="dp-fixed-story-headline-slot">
             <h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
-              {state.headline.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
+              {state.headline.map((line) => {
+                const lineClassName = line.length <= 22
+                  ? "dp-fixed-story-headline-line is-balanced-single-line"
+                  : "dp-fixed-story-headline-line";
+
+                return (
+                  <span key={line} className={lineClassName}>{line}</span>
+                );
+              })}
             </h1>
           </div>
           <div className="dp-fixed-story-meaning-slot">
@@ -220,7 +164,6 @@ export default function SplashPage() {
     if (typeof window === "undefined") return true;
     return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
   });
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const lockRef = useRef(false);
   const touchStartRef = useRef(null);
   const state = storyStates[active];
@@ -341,8 +284,6 @@ export default function SplashPage() {
       <a className="dp-skip-link" href="/map?mode=resident&tab=map">
         Skip to map
       </a>
-
-      <SplashNavigation isOpen={mobileNavOpen} setIsOpen={setMobileNavOpen} />
 
       {!showIntro && (
         <Link
