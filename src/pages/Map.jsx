@@ -5610,11 +5610,11 @@ function PartnerNearbyContextSection({ opportunities = [] }) {
   if (!items.length) return null;
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="Nearby Context" title="Useful openings around this place" />
+      <PartnerSectionHeader label="What To Launch Next" title="Practical moves from nearby context" />
       <div className="dp-partner-opportunity-list">
         {items.map((item) => (
           <article key={item.title} className="dp-partner-opportunity-item">
-            <h3>{item.title}</h3>
+            <h4>{item.title}</h4>
             <p>{item.reason}</p>
             {item.supportingEntities?.length > 0 && <small>{item.supportingEntities.join(" · ")}</small>}
             <strong>{item.recommendedAction}</strong>
@@ -5632,11 +5632,11 @@ function PartnerCampaignRecommendationsSection({ recommendations = [] }) {
       <PartnerSectionHeader label="What To Launch Next" title="One practical move from nearby context" />
       <div className="dp-partner-opportunity-list">
         {recommendations.slice(0, 2).map((item) => (
-          <article key={item.actionTitle} className="dp-partner-opportunity-item">
-            <h3>{item.actionTitle}</h3>
-            <p>{item.whyNow}</p>
-            <small>{item.bestAudience} · {item.suggestedTiming}</small>
-            <strong>{item.expectedOutcome}</strong>
+          <article key={item.actionTitle || item.title} className="dp-partner-opportunity-item">
+            <h4>{item.actionTitle || item.title}</h4>
+            <p>{item.whyNow || item.reason}</p>
+            <small>{[item.bestAudience, item.suggestedTiming, ...(item.supportingEntities || [])].filter(Boolean).join(" · ")}</small>
+            <strong>{item.expectedOutcome || item.recommendedAction}</strong>
           </article>
         ))}
       </div>
@@ -5652,7 +5652,7 @@ function PartnerAudienceRecommendationsSection({ audiences = [] }) {
       <div className="dp-partner-opportunity-list">
         {audiences.slice(0, 2).map((item) => (
           <article key={item.segment} className="dp-partner-opportunity-item">
-            <h3>{item.segment}</h3>
+            <h4>{item.segment}</h4>
             <p>{item.reason}</p>
             {item.nearbyEvidence?.length > 0 && <small>{item.nearbyEvidence.join(" · ")}</small>}
             <strong>{item.recommendedAction}</strong>
@@ -5693,11 +5693,9 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
       <DestinationHero place={place} mode="partner" />
       <EntityIdentityPanel identity={getEntityIdentity(place, "partner")} />
       <PartnerActivityIntelligence intelligence={intelligence} />
-      <PartnerNearbyContextSection opportunities={opportunities} />
-      <PartnerCampaignRecommendationsSection recommendations={campaigns} />
+      <PartnerCampaignRecommendationsSection recommendations={campaigns.length ? campaigns : opportunities} />
       <PartnerAudienceRecommendationsSection audiences={audiences} />
       <PartnerRelatedAssetsSection sections={relatedAssets} onSelect={onSelect} />
-      <PartnerDrawerActions place={place} onContact={onContact} />
       <PartnerAskSection
         place={place}
         answer={answer}
@@ -6759,6 +6757,16 @@ function PartnerDrawerActions({ place, onContact }) {
       </div>
     </>
   );
+}
+
+function shouldUsePartnerIntelligenceDrawer(place, mode) {
+  if (mode !== "partner" || !place) return false;
+  const entityKind = getResidentEntityKind(place);
+  const legendsListing = getResolvedLegendsListing(place);
+  const isRental = entityKind === "rental" || isRentalEntity(place);
+  const isProperty = !isRental && (entityKind === "property" || Boolean(legendsListing || getLuxuryPresenceBuilding(place) || isLegendsListingLike(place)));
+  const isDaaStop = isDaaTourPlace(place);
+  return !isProperty && !isDaaStop;
 }
 
 function MapNativeCampaignDetails({ place, mode }) {
@@ -11397,7 +11405,9 @@ export default function MapPage() {
             style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
-            aria-label={`${selected.name} details`}
+            aria-labelledby={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "destination-drawer-title" : undefined}
+            aria-describedby={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "destination-drawer-context" : undefined}
+            aria-label={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? undefined : `${selected.name} details`}
           >
             {!usesCleanResidentialEntityDrawer(selected) && (
               <div className="dp-drawer-control-row" aria-label="Drawer controls">
@@ -11761,6 +11771,18 @@ export default function MapPage() {
                 );
               })()}
             </div>
+            {shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) && (
+              <PartnerDrawerActions
+                place={selected}
+                onContact={() => {
+                  setAgentFormPlaceId(selected.id);
+                  setAgentFormSubmitted(false);
+                  window.setTimeout(() => {
+                    document.getElementById(`map-contact-form-${selected.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                  }, 80);
+                }}
+              />
+            )}
           </motion.aside>
         )}
       </AnimatePresence>

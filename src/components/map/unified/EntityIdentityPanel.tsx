@@ -16,12 +16,9 @@ export default function EntityIdentityPanel({ identity }: EntityIdentityPanelPro
   return (
     <section className="dp-entity-identity" aria-label={`${identity.displayTitle} identity`}>
       {identity.displayTypeLabel && <p className="dp-entity-meta">{identity.displayTypeLabel}</p>}
-      <h2 className="dp-entity-title">{identity.displayTitle}</h2>
+      <h2 id="destination-drawer-title" className="dp-entity-title">{identity.displayTitle}</h2>
       {identity.displaySubtitle && <p className="dp-entity-subtitle">{identity.displaySubtitle}</p>}
-      {identity.parentEntityName && identity.parentEntityName !== identity.displaySubtitle && (
-        <p className="dp-entity-subtitle">{identity.parentEntityName}</p>
-      )}
-      {identity.displayContext && <p className="dp-entity-context">{identity.displayContext}</p>}
+      {identity.displayContext && <p id="destination-drawer-context" className="dp-entity-context">{identity.displayContext}</p>}
     </section>
   );
 }

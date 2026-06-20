@@ -308,7 +308,6 @@ export default function ContactPage() {
 
       <section ref={formRef} id="lead-form" className="marketing-contact-section marketing-contact-container marketing-contact-form-grid">
         <aside className="marketing-contact-context" aria-label={`${form.partnerType} partner type context`}>
-          <p className="marketing-contact-eyebrow">Partner type</p>
           <h2>{form.partnerType === "Resident" ? "Resident support." : `${form.partnerType} options.`}</h2>
           <p>{pricingContext.lead}</p>
 
