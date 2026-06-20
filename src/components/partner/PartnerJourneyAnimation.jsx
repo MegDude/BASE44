@@ -25,7 +25,7 @@ const partnerSteps = [
     title: "Give people a reason to act.",
     label: "Offer or event",
     copy: "Connect the moment to something useful: a perk, RSVP, visit prompt, welcome flow, or local activation.",
-    image: "/images/imported/perks/bangers-outside.webp",
+    image: "/images/restaurants/bangers-bar.webp",
     icon: CalendarDays,
   },
   {

@@ -411,7 +411,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/map-entities/dining/violet-crown-wine-coffee.jpg",
   ],
   "bangers": [
-    "/images/imported/perks/bangers-outside.webp",
+    "/images/restaurants/bangers-bar.webp",
   ],
   "via-313": [
     "/images/imported/perks/via313.jpg",
@@ -419,7 +419,8 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/friends-at-pizza-night-at-via-313.png",
   ],
   "emmer-rye": [
-    "/images/imported/perks/emmer-rye-s-the-cacio-cocktail-photo-by-mars-tello.jpg",
+    "/images/restaurants/emmer-rye-interior.jpg",
+    "/images/restaurants/emmer-rye-dish.webp",
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
   ],
   geraldines: [
@@ -591,7 +592,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/map-entities/dining/gourmet-food.avif",
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
     "/images/imported/perks/geraldine-s.jpg",
-    "/images/imported/perks/bangers-outside.webp",
+    "/images/restaurants/bangers-bar.webp",
     "/images/imported/perks/via313.jpg",
   ],
   parking: [
@@ -827,7 +828,7 @@ function directImage(entity: Record<string, unknown>, context: ImageResolveConte
   const gallery = firstGalleryImage(entity);
   const mediaHero = mediaHeroImage(entity);
   if (context === "drawerHeader") {
-    return normalizeResolvedImage(firstString(entity.imageUrl, entity.image, mediaHero, entity.heroImage, gallery, entity.primaryImage, entity.panelImage, entity.pinImage));
+    return normalizeResolvedImage(firstString(entity.heroImage, entity.imageUrl, mediaHero, entity.image, gallery, entity.primaryImage, entity.panelImage, entity.pinImage));
   }
   if (context === "nearbyRail" || context === "relatedRail" || context === "card") {
     return normalizeResolvedImage(firstString(entity.imageUrl, entity.image, mediaHero, entity.heroImage, gallery, entity.primaryImage, entity.thumbnail, entity.pinImage));
@@ -890,6 +891,9 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
   const actualVenue = actualVenueImage(entity, context);
   if (actualVenue) return actualVenue;
 
+  const direct = directImage(entity, context);
+  if (context === "drawerHeader" && direct && !direct.includes("/images/fallbacks/")) return direct;
+
   const canonical = resolveDowntownPerksEntityImage(entity);
   if (canonical?.src) return canonical.src;
 
@@ -902,7 +906,6 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
     if (hotelImage) return hotelImage;
   }
 
-  const direct = directImage(entity, context);
   if (direct && !direct.includes("/images/fallbacks/")) return direct;
   if (direct && direct.includes("/images/map-pins/")) return direct;
   if (direct && direct.includes("/images/legends-listings/")) return direct;

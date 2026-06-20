@@ -1,0 +1,703 @@
+/* Ask the Map premium expanded console: focused command layer over the map. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed),
+html body .dp-search-intent-console-wrap:not(.is-collapsed) {
+  width: min(100%, 560px) !important;
+  max-width: min(560px, calc(100vw - 32px)) !important;
+  margin-inline: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor,
+html body .dp-map-search-anchor.dp-map-search-anchor {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console,
+html body .dp-search-intent-console.dp-search-intent-console {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: 560px !important;
+  max-height: 240px !important;
+  gap: 10px !important;
+  margin: 0 auto !important;
+  padding: 14px 14px 12px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  box-shadow: 0 12px 40px rgba(11, 31, 51, 0.05) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse-icon.dp-search-intent-collapse-icon,
+html body .dp-search-intent-collapse-icon.dp-search-intent-collapse-icon {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.48) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.48) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse-icon svg,
+html body .dp-search-intent-collapse-icon svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header.dp-search-intent-console-header,
+html body .dp-search-intent-console-header.dp-search-intent-console-header {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 30px 0 !important;
+  min-height: 28px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch.dp-search-intent-switch,
+html body .dp-search-intent-switch.dp-search-intent-switch {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  width: auto !important;
+  min-height: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body .dp-search-intent-switch button {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.52) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.52) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button:is(.is-active, [aria-selected="true"]),
+html body .dp-search-intent-switch button:is(.is-active, [aria-selected="true"]) {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-form.dp-search-intent-form,
+html body .dp-search-intent-form.dp-search-intent-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label.dp-search-intent-label,
+html body .dp-search-intent-label.dp-search-intent-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label svg,
+html body .dp-search-intent-label svg {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+  stroke: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row.dp-search-intent-input-row,
+html body .dp-search-intent-input-row.dp-search-intent-input-row {
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(11, 31, 51, 0.05) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon,
+html body .dp-search-intent-search-icon {
+  width: 15px !important;
+  height: 15px !important;
+  color: rgba(11, 31, 51, 0.42) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input,
+html body .dp-search-intent-input-row input {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 42px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input::placeholder,
+html body .dp-search-intent-input-row input::placeholder {
+  color: rgba(11, 31, 51, 0.48) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.48) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-clear, .dp-search-intent-submit),
+html body :is(.dp-search-intent-clear, .dp-search-intent-submit) {
+  width: 26px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-clear, .dp-search-intent-submit) svg,
+html body :is(.dp-search-intent-clear, .dp-search-intent-submit) svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  width: 100% !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body .dp-search-intent-prompt-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button,
+html body .dp-search-intent-prompt-rail > button {
+  flex: 0 0 auto !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button :is(svg, .lucide),
+html body .dp-search-intent-prompt-rail > button :is(svg, .lucide) {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"]),
+html body .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"]) {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"]) *,
+html body .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"]) * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-more-row,
+html body .dp-search-more-row {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 18px !important;
+  margin: -2px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-more-toggle.dp-search-more-toggle,
+html body .dp-search-more-toggle.dp-search-more-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-height: 18px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body #root .dp-map-page.dp-map-page #dp-search-more-filter-panel,
+html body #dp-search-more-filter-panel {
+  width: 100% !important;
+  margin-top: -2px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-more-filter-panel.dp-search-more-filter-panel,
+html body .dp-search-more-filter-panel.dp-search-more-filter-panel {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 28px !important;
+  padding: 0 0 2px !important;
+  margin: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-more-filter-panel::-webkit-scrollbar,
+html body .dp-search-more-filter-panel::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-more-filter-panel .dp-console-chip,
+html body .dp-search-more-filter-panel .dp-console-chip {
+  flex: 0 0 auto !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-more-filter-panel .dp-console-chip:is(.is-active, [aria-selected="true"]),
+html body .dp-search-more-filter-panel .dp-console-chip:is(.is-active, [aria-selected="true"]) {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-footer,
+html body .dp-search-intent-console-footer {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed),
+  html body .dp-search-intent-console-wrap:not(.is-collapsed) {
+    width: 100% !important;
+    max-width: calc(100vw - 32px) !important;
+    padding-inline: 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console,
+  html body .dp-search-intent-console.dp-search-intent-console {
+    max-height: 240px !important;
+    padding: 13px 12px 11px !important;
+    gap: 9px !important;
+  }
+}
+
+/* Super-specific terminal locks against older recovery rules. */
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console {
+  gap: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row,
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row {
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  box-shadow: 0 6px 20px rgba(11, 31, 51, 0.05) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail {
+  gap: 7px !important;
+}
+
+/* Ask the Map iPhone-first rail/input refinement. More lives in the primary rail. */
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console,
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console,
+html body .dp-search-intent-console.dp-search-intent-console {
+  width: 100% !important;
+  max-width: min(520px, calc(100vw - 24px)) !important;
+  max-height: 214px !important;
+  gap: 7px !important;
+  padding: 10px 10px 9px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.045) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed),
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed),
+html body .dp-search-intent-console-wrap:not(.is-collapsed) {
+  width: 100% !important;
+  max-width: min(520px, calc(100vw - 24px)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-console-header.dp-search-intent-console-header,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header.dp-search-intent-console-header,
+html body .dp-search-intent-console-header.dp-search-intent-console-header {
+  min-height: 24px !important;
+  padding: 0 26px 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-switch.dp-search-intent-switch,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch.dp-search-intent-switch,
+html body .dp-search-intent-switch.dp-search-intent-switch,
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body .dp-search-intent-switch button {
+  height: 24px !important;
+  min-height: 24px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button,
+html body .dp-search-intent-switch button {
+  padding: 0 7px !important;
+  font-size: 11px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-label.dp-search-intent-label,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label.dp-search-intent-label,
+html body .dp-search-intent-label.dp-search-intent-label {
+  justify-content: flex-start !important;
+  min-height: 14px !important;
+  font-size: 10.5px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row,
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row,
+html body .dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row {
+  grid-template-columns: 16px minmax(0, 1fr) auto auto !important;
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  gap: 6px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-search-icon,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-search-icon,
+html body .dp-search-intent-search-icon {
+  display: block !important;
+  visibility: visible !important;
+  grid-column: 1 !important;
+  justify-self: start !important;
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  min-height: 14px !important;
+  opacity: 1 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-input-row input,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input,
+html body .dp-search-intent-input-row input {
+  grid-column: 2 !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row input,
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row input,
+html body .dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row input {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-search-intent-clear, .dp-search-intent-submit),
+html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-clear, .dp-search-intent-submit),
+html body :is(.dp-search-intent-clear, .dp-search-intent-submit) {
+  width: 22px !important;
+  height: 22px !important;
+  min-height: 22px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-search-intent-clear, .dp-search-intent-submit) svg,
+html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-clear, .dp-search-intent-submit) svg,
+html body :is(.dp-search-intent-clear, .dp-search-intent-submit) svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail {
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  min-height: 26px !important;
+  padding: 0 1px 1px !important;
+  scroll-padding-inline: 1px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button,
+html body .dp-search-intent-prompt-rail > button {
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0 9px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-toggle,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-toggle,
+html body .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-toggle {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0 9px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-more-row,
+html body #root .dp-map-page.dp-map-page .dp-search-more-row,
+html body .dp-search-more-row,
+html body #root#root .dp-map-page.dp-map-page .dp-search-more-filter-panel,
+html body #root .dp-map-page.dp-map-page .dp-search-more-filter-panel,
+html body .dp-search-more-filter-panel {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page #dp-search-more-filter-panel,
+html body #root .dp-map-page.dp-map-page #dp-search-more-filter-panel,
+html body #dp-search-more-filter-panel {
+  display: none !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 430px) {
+  html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console,
+  html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console,
+  html body .dp-search-intent-console.dp-search-intent-console {
+    max-width: calc(100vw - 20px) !important;
+    max-height: 204px !important;
+    padding: 9px 9px 8px !important;
+    gap: 6px !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail {
+  pointer-events: auto !important;
+  touch-action: pan-x !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button,
+html body .dp-search-intent-prompt-rail > button {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-toggle,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-toggle,
+html body .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-toggle {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row,
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row,
+html body .dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row {
+  position: relative !important;
+  grid-template-columns: 16px minmax(0, 1fr) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row input,
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row input,
+html body .dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row input {
+  grid-column: 2 / -1 !important;
+  width: 100% !important;
+  padding-right: 28px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-submit.dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit.dp-search-intent-submit,
+html body .dp-search-intent-submit.dp-search-intent-submit {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-search-intent-clear.dp-search-intent-clear,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear.dp-search-intent-clear,
+html body .dp-search-intent-clear.dp-search-intent-clear {
+  position: absolute !important;
+  right: 2px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* Map drawer back control: icon-only, no block/chip treatment. */
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back),
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back),
+html body .dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) svg,
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) svg,
+html body .dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) svg {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) span,
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) span,
+html body .dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back) span {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back):is(:hover, :focus-visible),
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back):is(:hover, :focus-visible),
+html body .dp-map-page :is(.dp-panel-back.dp-panel-back, .dp-destination-back.dp-destination-back):is(:hover, :focus-visible) {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}

@@ -232,16 +232,23 @@ export function getLegendsResidentialExperience(record) {
 
 export function createGenericLegendsResidentialExperience(content) {
   if (!content) return null;
+  const buildingDisplayName =
+    content.buildingName ||
+    content.name ||
+    content.title ||
+    content.address ||
+    "70 Rainey";
+
   return {
     id: content.id,
-    buildingName: content.buildingName,
+    buildingName: buildingDisplayName,
     neighborhood: content.neighborhood,
     district: content.neighborhood,
     address: content.address,
     heroImage: content.imageAsset,
     headline: "See what daily life feels like here.",
     propertyOverview: [
-      `${content.buildingName} gives residents a downtown home base shaped by what is close, useful, and walkable.`,
+      `${buildingDisplayName} gives residents a walkable downtown home base close to Rainey, the lake, hotel dining, and everyday routines.`,
       content.summary,
     ].filter(Boolean),
     whyLivingHereMatters: [
@@ -266,7 +273,7 @@ export function createGenericLegendsResidentialExperience(content) {
       "Which nearby places become part of the week?",
       "How does this compare with nearby buildings?",
     ],
-    relatedCollections: ["Downtown Living", "Walkable Austin", `${content.neighborhood} Guide`],
+    relatedCollections: ["Downtown Living", "Walkable Austin", content.neighborhood ? `${content.neighborhood} Guide` : "Rainey Guide"],
   };
 }
 

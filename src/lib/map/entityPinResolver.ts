@@ -61,6 +61,7 @@ function entityText(entity: Record<string, unknown>): string {
   return [
     entity.id,
     entity.name,
+    entity.title,
     entity.type,
     entity.entityType,
     entity.markerType,
@@ -71,16 +72,35 @@ function entityText(entity: Record<string, unknown>): string {
     entity.brand,
     entity.source,
     entity.osm_type,
+    entity.pinKey,
+    entity.pinAsset,
+    entity.pin_asset,
+    entity.legendsListing ? "legends listing" : "",
+    entity.luxuryPresenceListing ? "luxury presence listing" : "",
     raw.type,
+    raw.name,
+    raw.title,
     raw.entityType,
     raw.category,
     raw.category_key,
     raw.partnerType,
     raw.source,
+    raw.pinKey,
+    raw.pinAsset,
+    raw.pin_asset,
+    raw.legendsListing ? "legends listing" : "",
+    raw.luxuryPresenceListing ? "luxury presence listing" : "",
   ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
+}
+
+function explicitPinKey(entity: Record<string, unknown>): string {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return String(entity.pinKey || entity.pinAsset || entity.pin_asset || raw.pinKey || raw.pinAsset || raw.pin_asset || "")
+    .toLowerCase()
+    .trim();
 }
 
 function hasVenueSignal(entity: Record<string, unknown>): boolean {
@@ -99,10 +119,15 @@ function hasResidentialSignal(entity: Record<string, unknown>): boolean {
 }
 
 export function resolveEntityPin(entity: Record<string, unknown>) {
-  if (typeof entity.pinKey === "string" && entity.pinKey) {
-    const explicitPinKey = entity.pinKey.toLowerCase().trim();
-    if (explicitPinKey === "legends") return getPinAsset("legends");
-    return getPinAsset(RESTORED_MASTER_PIN_KEYS[explicitPinKey] || explicitPinKey);
+  const textForPin = entityText(entity);
+  if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => textForPin.includes(token)))?.[0] === "legends") {
+    return getPinAsset("legends");
+  }
+
+  const explicit = explicitPinKey(entity);
+  if (explicit) {
+    if (explicit === "legends" || explicit.includes("legends-logo") || explicit.includes("legends")) return getPinAsset("legends");
+    return getPinAsset(RESTORED_MASTER_PIN_KEYS[explicit] || explicit);
   }
 
   const entityTypeText = [entity.type, entity.entityType, entity.markerType, entity.detailDrawerType, entity.isEvent ? "event" : ""]
@@ -112,9 +137,6 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   if (entityTypeText.includes("happy_hour") || entityTypeText.includes("happy hour")) return getPinAsset("happy-hour");
   if (entityTypeText.includes("parking")) return getPinAsset("parking");
   if (entityTypeText.includes("event")) return getPinAsset("event");
-  if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => entityText(entity).includes(token)))?.[0] === "legends") {
-    return getPinAsset("legends");
-  }
   if (hasResidentialSignal(entity)) return getPinAsset("residential");
   if (hasVenueSignal(entity) && /\b(antone'?s|nightclub|live music|music venue|art|culture|gallery|museum)\b/.test(entityText(entity))) return getPinAsset("culture");
   if (hasVenueSignal(entity) && /\b(bar|nightlife|cocktail|pub|club|lounge|beer)\b/.test(entityText(entity))) return getPinAsset("nightlife");

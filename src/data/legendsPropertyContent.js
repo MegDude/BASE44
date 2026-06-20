@@ -83,6 +83,13 @@ function imagePath(asset) {
   return `${IMAGE_BASE}/${value}`;
 }
 
+function pinPath(asset) {
+  const value = String(asset || "").trim();
+  if (!value || /legends/i.test(value)) return "/pins/downtown-perks/legends-logo.png";
+  if (value.startsWith("/")) return value;
+  return `/pins/${value}`;
+}
+
 const parsedRows = parseCsv(legendsPropertyContentCsv);
 const headers = parsedRows[0] || [];
 
@@ -102,7 +109,7 @@ export const legendsPropertyContent = parsedRows.slice(1).map((row) => {
     buildingSlug,
     addressSlug,
     image: imagePath(record.image_asset),
-    pin: record.pin_asset ? `/pins/${record.pin_asset}` : "",
+    pin: pinPath(record.pin_asset),
     benefits: splitPipe(record.benefit_matrix),
     walkableNearby: splitPairs(record.walkable_nearby),
     coffee: splitPipe(record.coffee),

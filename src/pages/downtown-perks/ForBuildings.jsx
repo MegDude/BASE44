@@ -5,9 +5,9 @@ import { Building2, Users, BarChart3, MessageSquare, ArrowRight, CheckCircle } f
 
 const tiers = [
   {
-    name: "Starter",
-    price: "$49",
-    period: "/month",
+    name: "Property Partner",
+    price: "$199",
+    period: "/year",
     features: [
       "Resident access for the whole building",
       "QR card activation",
@@ -17,22 +17,22 @@ const tiers = [
     highlight: false,
   },
   {
-    name: "Growth",
-    price: "$99",
-    period: "/month",
+    name: "Resident Plus",
+    price: "$1,188",
+    period: "/year",
     features: [
       "Everything in Starter",
       "Resident activity dashboard",
       "Building communication channel",
-      "Monthly engagement reports",
+      "Annual engagement reporting",
       "Priority partner access",
     ],
     highlight: true,
   },
   {
-    name: "Pro",
-    price: "$199",
-    period: "/month",
+    name: "Property Pro",
+    price: "$2,388",
+    period: "/year",
     features: [
       "Everything in Connected",
       "Advanced usage analytics",
@@ -140,10 +140,10 @@ export default function ForBuildings() {
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
               <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal">
-                Simple monthly pricing for building teams.
+                Simple annual pricing for building teams.
               </h2>
               <p className="text-muted-foreground text-[13px] leading-relaxed">
-                Choose the level that fits your team's communication, reporting, and resident engagement needs. Recurring property plans stay capped at $199/month.
+                Choose the level that fits your team's communication, reporting, and resident engagement needs. Property partner plans are annual, starting at $199/year.
               </p>
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function ForBuildings() {
               </div>
               <div>
                 <p className="text-muted-foreground text-[13px] leading-relaxed mb-6">
-                  Local businesses can start with a Starter plan that includes one active resident perk. Paid venue plans start at $30/month when they want more.
+                  Local businesses can start with a free listing path. Paid venue plans are annual and start at $360/year when they want more.
                 </p>
                 <Link
                   to="/map?mode=resident&tab=map"

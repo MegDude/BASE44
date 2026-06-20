@@ -10,7 +10,7 @@ const tiers = [
   {
     label: "Properties",
     sub: "Multifamily, condos, apartments",
-    price: "$49-$199/month",
+    price: "$199-$2,388/year",
     note: "Management pays. Residents stay.",
     detail: "Your address is your key to downtown.",
     href: "/partners/properties",
@@ -18,7 +18,7 @@ const tiers = [
   {
     label: "Hotels",
     sub: "Hotels, boutiques, extended stays",
-    price: "$99-$199/month",
+    price: "$1,188-$2,388/year",
     note: "Extend the stay beyond your lobby.",
     detail: "One scan. Every option nearby.",
     href: "/partners/hotels",
@@ -26,7 +26,7 @@ const tiers = [
   {
     label: "Venues",
     sub: "Restaurants, bars, fitness, wellness",
-    price: "Starter-Pro",
+    price: "Free-$2,388/year",
     note: "Show up in the moment that counts.",
     detail: "Starter includes one active resident perk.",
     href: "/partners/venues",
@@ -34,7 +34,7 @@ const tiers = [
   {
     label: "Brands",
     sub: "Activations, campaigns, sponsorships",
-    price: "$99-$199/month",
+    price: "$1,188-$2,388/year",
     note: "Buy the moment, not the impression.",
     detail: "Campaigns and sponsorships can be added when useful.",
     href: "/partners/brands",
@@ -42,7 +42,7 @@ const tiers = [
   {
     label: "Civic",
     sub: "Cities, districts, chambers",
-    price: "Free-$99/month",
+    price: "$49-$1,188/year",
     note: "Turn attendance into participation.",
     detail: "Discovery drives turnout.",
     href: "/partners/civic",
@@ -78,7 +78,7 @@ export default function PricingSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-foreground/60 text-[13px] leading-relaxed"
           >
-            Start free where it fits. Paid plans start at $30/month, and recurring partner plans stay capped at $199/month.
+            Start free where it fits. Partner subscriptions are annual, with venue plans starting at $360/year.
             <span className="block mt-2 text-[12px] text-muted-foreground/60 italic">
               Final pricing reflects footprint, visibility, and activation.
             </span>
@@ -136,7 +136,7 @@ export default function PricingSection() {
           >
             View partner pricing <ArrowRight className="w-3.5 h-3.5" />
           </Link>
-          <span className="text-[12px] text-foreground/45">Free listings exist. Paid monthly plans start at $30.</span>
+          <span className="text-[12px] text-foreground/45">Free listings exist. Paid annual venue plans start at $360/year.</span>
         </motion.div>
       </div>
     </section>

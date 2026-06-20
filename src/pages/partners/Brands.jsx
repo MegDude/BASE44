@@ -24,7 +24,7 @@ const CAMPAIGN_POINTS = [
     district: "2nd Street",
     lat: 30.2659,
     lng: -97.7475,
-    logo: "/pins/downtown-perks/legends-logo-gold.svg",
+    logo: "/pins/downtown-perks/legends-logo.png",
     scans: 340,
     saves: 118,
     redemptions: 58,
@@ -374,9 +374,9 @@ export default function BrandsPartner() {
         <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Brand range</p>
-            <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">$99-$199/month</div>
+            <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">$1,188-$2,388/year</div>
             <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
-              Monthly brand plans cover local presence. Campaigns, surveys, broadcasts, sponsorships and placements can be added when there is a reason.
+              Annual brand plans cover local presence. Campaigns, surveys, broadcasts, sponsorships and placements can be added when there is a reason.
             </p>
             <Link to="/pricing#surveys" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
               View pricing matrix
@@ -407,7 +407,7 @@ export default function BrandsPartner() {
               </div>
               <div>
                 <h3 className="font-body text-[14px] font-semibold">Buy the moment, not the impression.</h3>
-                <p className="mt-1 text-[12px] text-[#0B1F33]/58">$99-$199/month, with campaign add-ons when timing matters.</p>
+                <p className="mt-1 text-[12px] text-[#0B1F33]/58">$1,188-$2,388/year, with campaign add-ons when timing matters.</p>
               </div>
             </div>
             <div className="mt-5 grid gap-2">

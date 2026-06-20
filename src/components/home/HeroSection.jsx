@@ -51,7 +51,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-white">
+    <section className="dp-resident-hero relative w-full min-h-screen overflow-hidden bg-white">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -59,7 +59,7 @@ export default function HeroSection() {
           alt="Downtown Austin"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/26 via-white/10 to-[rgba(11,31,51,0.14)]" />
+        <div className="dp-resident-hero-media-wash pointer-events-none absolute inset-0" />
       </div>
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-24 md:py-28">
@@ -70,8 +70,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6 }}
           className="mb-5 flex items-center gap-2"
         >
-          <span className="border border-white/50 bg-white/72 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[#0B1F33] backdrop-blur-md">
-            Downtown Perks
+          <span className="dp-resident-hero-kicker text-[11px] font-medium uppercase tracking-[0.22em] text-[#0B1F33]">
+            Built for residents
           </span>
         </motion.div>
 
@@ -80,15 +80,11 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="w-full max-w-3xl border border-white/44 bg-white/[0.72] p-5 shadow-[0_18px_48px_rgba(11,31,51,0.12)] backdrop-blur-[20px] md:p-8"
+          className="dp-resident-hero-overlay-inner w-full max-w-3xl p-5 md:p-8"
         >
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-[30px] font-semibold leading-[1.03] text-[#0B1F33] md:text-[42px]">
-              Your downtown, connected in one map.
-            </h1>
-
-            <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/60 md:mt-4 md:text-[15px]">
-              Explore places, perks, events, and experiences happening around you right now.
+            <p className="dp-resident-hero-supporting mt-0 text-[15px] leading-[1.55] text-[#0B1F33]">
+              Find the nearby places that fit your day before the day gets away from you.
             </p>
           </div>
 

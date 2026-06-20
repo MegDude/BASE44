@@ -1,0 +1,141 @@
+/* Final owner for the collapsed Ask the Map trigger. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor,
+html body .dp-map-search-anchor.dp-map-search-anchor {
+  top: 72px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: max-content !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 15px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow:
+    0 8px 24px rgba(11, 31, 51, 0.06),
+    0 2px 8px rgba(11, 31, 51, 0.04) !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  transform: translateY(0) !important;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup:hover,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup:active,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup:active {
+  transform: translateY(2px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup:focus-visible,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup:focus-visible {
+  outline: 0 !important;
+  box-shadow:
+    0 8px 24px rgba(11, 31, 51, 0.06),
+    0 2px 8px rgba(11, 31, 51, 0.04),
+    0 0 0 2px rgba(200, 169, 106, 0.28) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-rollup-icon.dp-search-rollup-icon,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-rollup-icon.dp-search-rollup-icon {
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 14px !important;
+  color: #C8A96A !important;
+  stroke: #C8A96A !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-rollup-main.dp-search-rollup-main,
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-rollup-main.dp-search-rollup-main {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup :is(small, strong, em, .dp-search-rollup-chevron),
+html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup :is(small, strong, em, .dp-search-rollup-chevron) {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor,
+  html body .dp-map-search-anchor.dp-map-search-anchor {
+    top: 80px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup,
+  html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-intent-rollup.dp-search-intent-rollup {
+    height: 44px !important;
+    min-height: 44px !important;
+    padding-inline: 16px !important;
+  }
+}

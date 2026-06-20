@@ -61,6 +61,12 @@ function normalize(value) {
     .trim();
 }
 
+function normalizeLegendsPinAsset(value) {
+  const asset = String(value || "").trim();
+  if (!asset || /legends/i.test(asset)) return "/pins/downtown-perks/legends-logo.png";
+  return asset.startsWith("/") ? asset : `/pins/${asset}`;
+}
+
 export const legendsGeneratedListings = parseCsv(csvText).map((row) => ({
   id: row.listing_id,
   buildingName: row.building_name,
@@ -93,7 +99,7 @@ export const legendsGeneratedListings = parseCsv(csvText).map((row) => ({
   ctaTour: row.cta_tour,
   ctaContact: row.cta_contact,
   imageAsset: row.image_asset,
-  pinAsset: row.pin_asset,
+  pinAsset: normalizeLegendsPinAsset(row.pin_asset),
 }));
 
 export function getGeneratedLegendsListingsForRecord(record) {

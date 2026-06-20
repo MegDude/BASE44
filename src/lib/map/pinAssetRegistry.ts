@@ -38,6 +38,8 @@ function icon(paths: string) {
   return `<svg class="dp-pin-svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 }
 
+export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo.png";
+
 export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string; asset?: string }> = {
   coffee: { label: "Coffee", glyph: icon('<path d="M5 8h10v5a5 5 0 0 1-10 0V8Z"/><path d="M15 9h2a3 3 0 0 1 0 6h-2"/><path d="M4 20h13"/><path d="M8 4v1M12 4v1"/>') },
   dining: { label: "Dining", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
@@ -109,8 +111,8 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   journal: { label: "Journal", glyph: icon('<path d="M6 4h11a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 8h7M8 12h7M8 16h5"/>') },
   legends: {
     label: "Legends",
-    glyph: '<img class="dp-pin-logo dp-live-pin__legends-logo" src="/pins/downtown-perks/legends-logo-gold.svg" alt="" aria-hidden="true" />',
-    asset: "/pins/downtown-perks/legends-logo-gold.svg",
+    glyph: `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${LEGENDS_PIN_ASSET}" alt="" aria-hidden="true" />`,
+    asset: LEGENDS_PIN_ASSET,
   },
   default: { label: "Downtown", glyph: icon('<path d="M12 21s7-5.2 7-11a7 7 0 0 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>') },
 };

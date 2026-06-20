@@ -2,22 +2,18 @@ import { Link } from "react-router-dom";
 
 const FOOTER_LINKS = {
   Residents: [
-    { to: "/map?mode=resident&tab=map", label: "Map" },
+    { to: "/app?mode=resident&tab=map", label: "Resident Map" },
     { to: "/events", label: "Events" },
     { to: "/card", label: "Perks Card" },
-    { to: "/residents", label: "Resident Access" },
   ],
   Partners: [
-    { to: "/partners/properties", label: "Properties" },
-    { to: "/partners/hotels", label: "Hotels" },
-    { to: "/partners/venues", label: "Venues" },
-    { to: "/partners/brands", label: "Brands" },
-    { to: "/partners/civic", label: "Civic" },
+    { to: "/marketing/contact", label: "Partner Signup" },
+    { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
+    { to: "/pricing", label: "Pricing" },
   ],
-  Directory: [
-    { to: "/contact", label: "Contact" },
-    { to: "/partners", label: "Partner Mode" },
-    { to: "/brands", label: "Brand Directory" },
+  Platform: [
+    { to: "/app", label: "Open App" },
+    { to: "/marketing/contact", label: "Contact" },
   ],
 };
 
@@ -36,7 +32,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="mb-4 max-w-sm text-[14px] font-light leading-6 text-[#FFFFFF]/72 sm:text-[15px] md:text-sm md:leading-6">
-              Built for the people who actually live downtown — helping residents find what’s nearby and helping local businesses get noticed.
+              Downtown Perks helps residents make better local plans and helps the places around them show up at the right moment.
             </p>
           </div>
 
@@ -57,7 +53,7 @@ export default function Footer() {
                       </Link>
                     </li>
                   ))}
-                  {group === "Directory" && (
+                  {group === "Platform" && (
                     <li className="min-w-0 pt-1">
                       <a
                         href="mailto:partners@downtownperks.com"
@@ -75,7 +71,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-center gap-2 pt-4 text-center font-sans text-[11px] font-medium normal-case tracking-normal text-[#FFFFFF]/46 sm:flex-row sm:gap-4 sm:text-[12px]">
           <div>© {new Date().getFullYear()} Downtown Perks</div>
-          <div className="text-[#BFA46A]">Where downtown meets you.</div>
+          <div className="text-[#C8A96A]">Use downtown better.</div>
         </div>
       </div>
     </footer>

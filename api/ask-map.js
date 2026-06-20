@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-const MAP_AGENT_MODEL = process.env.OPENAI_MODEL || "gpt-4.1-mini";
+const MAP_AGENT_MODEL = process.env.OPENAI_MODEL || "gpt-5";
 
 const mapAgentSchema = {
   type: "object",
@@ -53,21 +53,31 @@ function localAgentAnswer({ query, location, mode, filter, context = [] }) {
   const topNames = names.length ? names.join(", ") : "the nearest useful downtown places";
   const isPartner = mode === "partner";
   const propertyContext = usableContext.find((place) => place?.listing || Array.isArray(place?.buildingListings));
+  const places = usableContext.map((place) => ({
+    id: String(place.id || place.name || ""),
+    name: place.name,
+    reason: `${place.category || "Downtown place"} in ${place.district || location}.`,
+    mapQuery: `${place.name} ${place.district || location} Austin`,
+    action: isPartner ? "Review opportunity" : "Open on map",
+  }));
+  const followUps = isPartner
+    ? ["What campaign should I launch?", "Who is nearby?", "Where is the opportunity?"]
+    : ["What is nearby after this?", "What can I use today?", "Is this walkable?"];
 
   if (isPartner) {
     return {
-      title: `Understanding: “${query}”`,
-      answer: `Start with ${topNames}. Around ${location}, the useful read is resident activity, saves, scans, visits, nearby timing, and which categories are gaining attention${filter && filter !== "All" ? ` inside ${filter}` : ""}. Use this to decide what to promote next, where to place the offer, and which nearby audience is most likely to act.`,
-      places: usableContext.map((place) => ({
-        id: String(place.id || place.name || ""),
-        name: place.name,
-        reason: `${place.category || "Downtown place"} in ${place.district || location}; useful for comparing activity, audience fit, and next action.`,
-        mapQuery: `${place.name} ${place.district || location} Austin`,
-        action: "Review next move",
-      })),
-      actions: ["Compare activity", "Review saves and visits", "Choose what to promote next"],
+      title: "Partner intelligence",
+      answer: `Start with ${topNames}. Around ${location}, the useful read is nearby audience fit, saves, scans, visits, timing, and which categories are gaining attention${filter && filter !== "All" ? ` inside ${filter}` : ""}. Use this to decide what to promote next, where to place the offer, and which nearby audience is most likely to act.`,
+      places,
+      actions: ["Review opportunity", "Create Campaign", "Compare nearby"],
+      explanation: "Partner mode uses supplied Downtown Perks map context only; no decorative analytics or external discovery redirects.",
+      collections: names.slice(0, 3),
+      campaigns: ["Create resident perk", "Launch nearby campaign", "Feature placement"],
+      events: usableContext.filter((place) => /event/i.test(String(place.category || place.type || ""))).map((place) => place.name).slice(0, 3),
+      followUps,
       confidence: usableContext.length ? 0.74 : 0.6,
-      source: "local",
+      source: "local-agent",
+      model: "downtown-perks-local-agent",
     };
   }
 
@@ -98,8 +108,14 @@ function localAgentAnswer({ query, location, mode, filter, context = [] }) {
         action: place.id === propertyContext.id ? "Contact Legends" : "Compare nearby",
       })),
       actions: ["Contact Legends", "Compare nearby places", "Save this listing"],
+      explanation: "Listing answer generated from supplied listing and nearby map context.",
+      collections: ["Luxury Living"],
+      campaigns: [],
+      events: [],
+      followUps,
       confidence: 0.78,
-      source: "local",
+      source: "local-agent",
+      model: "downtown-perks-local-agent",
     };
   }
 
@@ -120,24 +136,30 @@ function localAgentAnswer({ query, location, mode, filter, context = [] }) {
         action: place.id === propertyContext.id ? "Review listings" : "Compare nearby",
       })),
       actions: ["Review listings", "Contact Legends", "Compare nearby places"],
+      explanation: "Building inventory answer generated from supplied listing context.",
+      collections: ["Luxury Living"],
+      campaigns: [],
+      events: [],
+      followUps,
       confidence: 0.78,
-      source: "local",
+      source: "local-agent",
+      model: "downtown-perks-local-agent",
     };
   }
 
   return {
-    title: `Answering: “${query}”`,
+    title: usableContext[0]?.name ? `Start with ${usableContext[0].name}.` : `Answering: "${query}"`,
     answer: `Start with ${topNames}. Around ${location}, the map is reading walkability, current intent, perks, and nearby plans${filter && filter !== "All" ? ` inside ${filter}` : ""}. Pick the closest fit, save it if you are planning ahead, or open the detail drawer for directions, perks, and local context.`,
-    places: usableContext.map((place) => ({
-      id: String(place.id || place.name || ""),
-      name: place.name,
-      reason: `${place.category || "Downtown place"} in ${place.district || location}.`,
-      mapQuery: `${place.name} ${place.district || location} Austin`,
-      action: "Open on map",
-    })),
-    actions: ["Open the map", "Save the best fit", "Check walkable next steps"],
+    places,
+    actions: ["Open Nearby", "Save", "Directions"],
+    explanation: usableContext[0] ? `${usableContext[0].name} is the cleanest first move from the supplied map context.` : "Not enough activity data yet. Use nearby map context to start with one simple move.",
+    collections: usableContext.slice(0, 3).map((place) => place.category || "Downtown Picks"),
+    campaigns: [],
+    events: usableContext.filter((place) => /event/i.test(String(place.category || place.type || ""))).map((place) => place.name).slice(0, 3),
+    followUps,
     confidence: usableContext.length ? 0.72 : 0.58,
-    source: "local",
+    source: "local-agent",
+    model: "downtown-perks-local-agent",
   };
 }
 

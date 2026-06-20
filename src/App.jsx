@@ -96,6 +96,8 @@ function ProductRoutes() {
             }
           />
 
+          <Route path="/app" element={<MapPage />} />
+          <Route path="/app/map" element={<MapPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route
             path="/ask-map"
@@ -420,8 +422,8 @@ function ProductRoutes() {
           <Route path="/contact" element={<Navigate to="/marketing/contact" replace />} />
           <Route path="/splash" element={<Navigate to="/marketing" replace />} />
 
-          {/* Catch-all → resident map */}
-          <Route path="*" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
+          {/* Catch-all → production app route */}
+          <Route path="*" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
         </Route>
       </Routes>
     </>

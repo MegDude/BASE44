@@ -7,7 +7,7 @@ const forms = [
   {
     id: "buildings",
     label: "Buildings",
-    headline: "$49-$199/month.",
+    headline: "$199-$2,388/year.",
     sub: "Resident perks, reporting, and building placement.",
     fields: [
       { name: "property", label: "Building Name & Address", type: "text" },

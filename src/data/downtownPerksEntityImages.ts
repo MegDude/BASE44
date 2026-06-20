@@ -195,13 +195,18 @@ function normalizeText(value: unknown) {
 }
 
 export function resolveDowntownPerksEntityImage(input: string | Record<string, unknown> | null | undefined) {
-  const text = typeof input === "string"
+  const primaryText = typeof input === "string"
     ? normalizeText(input)
     : normalizeText([
         input?.id,
         input?.name,
         input?.title,
         input?.brand,
+      ].filter(Boolean).join(" "));
+  const text = typeof input === "string"
+    ? primaryText
+    : normalizeText([
+        primaryText,
         input?.address,
         input?.category,
         input?.type,
@@ -211,6 +216,12 @@ export function resolveDowntownPerksEntityImage(input: string | Record<string, u
         input?.description,
         typeof input?.raw === "object" && input.raw ? Object.values(input.raw as Record<string, unknown>).join(" ") : "",
       ].filter(Boolean).join(" "));
+
+  const primaryKey = primaryText.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") as keyof typeof downtownPerksEntityImages;
+  if (downtownPerksEntityImages[primaryKey]) return downtownPerksEntityImages[primaryKey];
+
+  const primaryMatch = downtownPerksEntityImageAliases.find((entry) => entry.terms.some((term) => primaryText.includes(term)));
+  if (primaryMatch) return downtownPerksEntityImages[primaryMatch.key];
 
   const exactKey = text.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") as keyof typeof downtownPerksEntityImages;
   if (downtownPerksEntityImages[exactKey]) return downtownPerksEntityImages[exactKey];

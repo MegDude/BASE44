@@ -1,0 +1,220 @@
+/* Downtown Perks hero + glass restoration.
+   Imported last so the approved hero glass system wins over recovery layers. */
+
+:root {
+  --dp-approved-glass: rgba(255, 255, 255, 0.12);
+  --dp-approved-glass-inner: rgba(255, 255, 255, 0.10);
+  --dp-approved-glass-border: rgba(255, 255, 255, 0.14);
+  --dp-approved-glass-blur: blur(18px) saturate(180%);
+  --dp-approved-glass-blur-strong: blur(22px) saturate(180%);
+}
+
+html body #root :is(
+  .dp-resident-hero,
+  .dp-partner-hero,
+  .dp-splash-page.dp-fixed-story-page
+) {
+  background: #FFFFFF !important;
+  background-image: none !important;
+}
+
+html body #root .dp-resident-hero-media-wash {
+  background: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body #root :is(
+  .dp-resident-hero-kicker,
+  .dp-fixed-story-kicker,
+  .dp-opening-label,
+  .dp-partner-label
+) {
+  display: inline !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: #C8A96A !important;
+}
+
+html body #root :is(
+  .dp-resident-hero-overlay-inner,
+  .dp-resident-hero :is([class*="bg-white/"], [class*="bg-white\\["]),
+  .dp-opening-skip,
+  .dp-story-skip,
+  .dp-fixed-map-actions a
+) {
+  background: var(--dp-approved-glass-inner) !important;
+  background-image: none !important;
+  border: 1px solid var(--dp-approved-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--dp-approved-glass-blur-strong) !important;
+  backdrop-filter: var(--dp-approved-glass-blur-strong) !important;
+}
+
+html body #root .dp-resident-hero-overlay-inner {
+  width: min(100%, 280px) !important;
+  max-width: 280px !important;
+  margin-inline: auto !important;
+  color: #0B1F33 !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-resident-hero-overlay-inner {
+    width: min(100%, 320px) !important;
+    max-width: 320px !important;
+  }
+}
+
+html body #root .dp-resident-hero-supporting {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.55 !important;
+  text-align: left !important;
+}
+
+html body #root :is(.dp-opening-video-overlay, .dp-opening-gradient) {
+  background: rgba(255, 255, 255, 0.10) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--dp-approved-glass-blur) !important;
+  backdrop-filter: var(--dp-approved-glass-blur) !important;
+}
+
+html body #root .dp-opening-gradient {
+  display: none !important;
+}
+
+html body #root .dp-story-visual-shell,
+html body #root .dp-fixed-story-visual:is(.is-map, .is-connection, .is-perks) .dp-story-visual-shell {
+  background: var(--dp-approved-glass) !important;
+  background-image: none !important;
+  border: 1px solid var(--dp-approved-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--dp-approved-glass-blur-strong) !important;
+  backdrop-filter: var(--dp-approved-glass-blur-strong) !important;
+}
+
+html body #root .dp-fixed-story-visual.is-perks :is(
+  .dp-story-visual-header span,
+  .dp-story-visual-header strong,
+  .dp-story-visual-detail,
+  .dp-story-visual-items button
+) {
+  color: #0B1F33 !important;
+}
+
+html body #root :is(.dp-story-scene-switcher, .dp-hero-media-switcher, .dp-media-switcher) {
+  top: 18px !important;
+  right: 18px !important;
+  bottom: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body #root :is(
+  .dp-story-scene-switcher button,
+  .dp-story-scene-switcher span,
+  .dp-hero-media-switcher button,
+  .dp-hero-media-switcher span,
+  .dp-media-switcher button,
+  .dp-media-switcher span
+) {
+  display: block !important;
+  width: 10px !important;
+  height: 2px !important;
+  min-width: 10px !important;
+  min-height: 2px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: rgba(200, 169, 106, 0.40) !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+html body #root :is(
+  .dp-story-scene-switcher button.is-active,
+  .dp-story-scene-switcher button[aria-selected="true"],
+  .dp-story-scene-switcher span.is-active,
+  .dp-hero-media-switcher button.is-active,
+  .dp-hero-media-switcher button[aria-selected="true"],
+  .dp-hero-media-switcher span.is-active,
+  .dp-media-switcher button.is-active,
+  .dp-media-switcher button[aria-selected="true"],
+  .dp-media-switcher span.is-active
+) {
+  width: 20px !important;
+  min-width: 20px !important;
+  background: #C8A96A !important;
+}
+
+html body #root :is(
+  .dp-partner-hero,
+  .dp-partner-page .dp-partner-hero,
+  .dp-partner-page [class*="bg-[#F7F8FB]"]
+) {
+  background: #FFFFFF !important;
+  background-image: none !important;
+}
+
+html body #root .dp-partner-hero-visual {
+  color: #0B1F33 !important;
+  background: var(--dp-approved-glass) !important;
+  background-image: none !important;
+  border: 1px solid var(--dp-approved-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--dp-approved-glass-blur-strong) !important;
+  backdrop-filter: var(--dp-approved-glass-blur-strong) !important;
+}
+
+html body #root .dp-partner-hero-visual :is(h2, p, span, strong, div) {
+  color: inherit !important;
+}
+
+html body #root .dp-partner-hero-visual :is(.text-white, [class*="text-white"]) {
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-partner-hero-visual :is([class*="bg-white/"], [class*="bg-white\\["]) {
+  background: var(--dp-approved-glass-inner) !important;
+  background-image: none !important;
+  border-color: var(--dp-approved-glass-border) !important;
+  -webkit-backdrop-filter: var(--dp-approved-glass-blur) !important;
+  backdrop-filter: var(--dp-approved-glass-blur) !important;
+}
+
+html body #root :is(
+  .dp-resident-hero,
+  .dp-partner-hero,
+  .dp-splash-page.dp-fixed-story-page
+) :is(
+  [class*="bg-gray"],
+  [class*="bg-slate"],
+  [class*="bg-zinc"],
+  [class*="bg-neutral"]
+) {
+  background: transparent !important;
+  background-image: none !important;
+}

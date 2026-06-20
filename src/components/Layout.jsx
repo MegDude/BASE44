@@ -52,6 +52,8 @@ export default function Layout() {
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const isProductRoute =
+    pathname === "/app" ||
+    pathname === "/app/map" ||
     pathname === "/map" ||
     pathname === "/partner-map" ||
     pathname.startsWith("/partner-workspace") ||
@@ -80,6 +82,8 @@ export default function Layout() {
   const noFooter =
     pathname === "/" ||
     isProductRoute ||
+    pathname === "/app" ||
+    pathname === "/app/map" ||
     pathname === "/map" ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
@@ -91,6 +95,10 @@ export default function Layout() {
 
   const suppressGlobalBackButton =
     noFooter ||
+    pathname === "/marketing/contact" ||
+    pathname === "/contact" ||
+    pathname === "/pricing" ||
+    pathname === "/marketing/pricing" ||
     pathname.startsWith("/partner-workspace") ||
     pathname.startsWith("/dashboard") ||
     pathname === "/partner-dashboard" ||
@@ -98,11 +106,11 @@ export default function Layout() {
     pathname.startsWith("/resident-app");
 
   const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
-  const showNavbar = pathname !== "/" && !isProductRoute;
-  const showProductSearchButton = !showNavbar && pathname !== "/map";
+  const showNavbar = pathname !== "/" && (pathname === "/app" || pathname === "/app/map" || pathname === "/map" || !isProductRoute);
+  const showProductSearchButton = !showNavbar && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
-    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+    navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
   function getBackFallbackPath() {
@@ -110,7 +118,7 @@ export default function Layout() {
     const mode = params.get("mode");
     const filter = params.get("filter");
 
-    if (pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover" || pathname === "/partners/map") {
+    if (pathname === "/app" || pathname === "/app/map" || pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover" || pathname === "/partners/map") {
       if (mode === "partner" && filter === "Events") return "/partners/campaigns";
       return "/";
     }

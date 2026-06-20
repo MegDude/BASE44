@@ -39,7 +39,7 @@ const VISUAL_SETS = {
   ],
   venue: [
     "/images/map-entities/dining/outdoor-dining-arrival.avif",
-    "/images/imported/perks/bangers-outside.webp",
+    "/images/restaurants/bangers-bar.webp",
     "/images/imported/perks/daydreamer-coffee-at-paseo-tower.jpg",
   ],
 };

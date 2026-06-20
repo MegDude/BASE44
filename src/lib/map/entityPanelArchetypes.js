@@ -22,9 +22,9 @@ const PANEL_ARCHETYPES = {
   venue: {
     id: "venue",
     label: "Venue",
-    eyebrow: "Dining Nearby",
+    eyebrow: "Dining nearby",
     nearbyTitle: "Nearby Now",
-    primaryAction: "Claim Perk",
+    primaryAction: "Plan a Visit",
     secondaryAction: "Directions",
     tertiaryAction: "Save",
     partnerHeadline: "Appear while nearby residents are deciding.",
@@ -33,7 +33,7 @@ const PANEL_ARCHETYPES = {
     id: "guide",
     label: "Guide",
     eyebrow: "Local Guide",
-    nearbyTitle: "Included Stops",
+    nearbyTitle: "Nearby",
     primaryAction: "Open Guide",
     secondaryAction: "Save Guide",
     tertiaryAction: "Explore Nearby",
@@ -159,12 +159,12 @@ function productionTypeToArchetype(productionType) {
 }
 
 function venueEyebrowForProductionType(productionType) {
-  if (productionType === "coffee") return "Coffee Nearby";
-  if (productionType === "bars-nightlife") return "Drinks Nearby";
-  if (productionType === "rooftop") return "Rooftop Nearby";
-  if (productionType === "hotel") return "Hotel Nearby";
-  if (productionType === "retail") return "Retail Nearby";
-  if (productionType === "restaurant") return "Dining Nearby";
+  if (productionType === "coffee") return "Coffee nearby";
+  if (productionType === "bars-nightlife") return "Drinks nearby";
+  if (productionType === "rooftop") return "Rooftops nearby";
+  if (productionType === "hotel") return "Hotel experiences nearby";
+  if (productionType === "retail") return "Retail nearby";
+  if (productionType === "restaurant") return "Dining nearby";
   return PANEL_ARCHETYPES.venue.eyebrow;
 }
 
@@ -182,4 +182,220 @@ export function resolveEntityPanelArchetype(entity = {}) {
 
 export function getPanelArchetypeById(id) {
   return PANEL_ARCHETYPES[id] || PANEL_ARCHETYPES.venue;
+}
+
+function safePanelText(value, fallback = "") {
+  const text = String(value ?? "").trim();
+  if (!text || /^(undefined|null|nan|\[object object\])$/i.test(text)) return fallback;
+  return text;
+}
+
+function panelTitleFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return safePanelText(
+    entity.title ||
+      entity.name ||
+      entity.buildingName ||
+      raw.title ||
+      raw.name ||
+      raw.buildingName ||
+      raw.address,
+    "Downtown destination",
+  );
+}
+
+function panelDistrictFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return safePanelText(entity.district || entity.neighborhood || raw.district || raw.neighborhood, "Downtown Austin");
+}
+
+function panelSubtitleFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return safePanelText(entity.address || raw.address || entity.neighborhood || entity.district || raw.neighborhood || raw.district, "");
+}
+
+function panelEntityType(entity = {}) {
+  const productionType = inferProductionType(entity);
+  const text = archetypeText(entity);
+  const explicit = [
+    entity.type,
+    entity.kind,
+    entity.entityType,
+    entity.sourceType,
+    entity.markerType,
+    entity.detailDrawerType,
+    entity.partnerType,
+    entity.raw?.type,
+    entity.raw?.kind,
+    entity.raw?.entityType,
+    entity.raw?.partnerType,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (productionType === "active-listing") return "listing";
+  if (productionType === "residential-tower") return "propertyOverview";
+  if (productionType === "event") return "event";
+  if (productionType === "perk") return "perk";
+  if (productionType === "hotel") return "hotel";
+  if (productionType === "landmark-civic") return "civic";
+  if (productionType === "guide") return "localGuide";
+  if (/\b(brand|activation|campaign|sponsor|yeti|dana|inkind|waterloo greenway|fine eyewear)\b/.test(text)) return "brand";
+  if (/\b(service|salon|spa|doctor|dental|care|repair|charging|parking|mobility|errand)\b/.test(text) || /\b(service|parking|mobility)\b/.test(explicit)) return "service";
+  if (["restaurant", "coffee", "bars-nightlife", "rooftop", "retail"].includes(productionType)) return "venue";
+  return "venue";
+}
+
+function formatPanelTemplate(template, title) {
+  return template.replace(/\{title\}/g, title);
+}
+
+const PANEL_CONTENT_BY_TYPE = {
+  venue: {
+    eyebrow: "Downtown place",
+    primaryActionLabel: "Plan a Visit",
+    whyHeading: "Why people go",
+    whyBody: "{title} works when you want somewhere nearby that already fits the moment — dinner, drinks, coffee, a quick reset, or a reason to stay out a little longer.",
+    bestFor: ["After-work plans", "Low-friction meetups", "Visitors staying nearby", "Residents choosing by mood, not search results"],
+    insight: "This pin matters because it turns nearby intent into an actual plan.",
+    nearbyHeading: "Nearby",
+    askPrompts: ["Is this good for tonight?", "What is nearby after this?", "Is this better for a date or a group?", "What perk can I use here?"],
+  },
+  event: {
+    eyebrow: "Event",
+    primaryActionLabel: "View Event",
+    whyHeading: "Why it matters tonight",
+    whyBody: "{title} gives residents a clear reason to leave the building and plug into what is happening nearby.",
+    bestFor: ["Tonight plans", "Friends visiting downtown", "Low-commitment cultural plans", "Residents looking for something already happening"],
+    insight: "Events should feel easy to act on, not buried in calendars, flyers, and social feeds.",
+    nearbyHeading: "Nearby",
+    askPrompts: ["What should I do before this?", "Where should we go after?", "Is this walkable?", "What else is happening tonight?"],
+  },
+  perk: {
+    eyebrow: "Resident perk",
+    primaryActionLabel: "Use Perk",
+    whyHeading: "Why this perk is useful",
+    whyBody: "This offer gives residents a simple reason to choose {title} when they are already nearby.",
+    bestFor: ["Quick local decisions", "Trying somewhere new", "Turning a nearby place into a routine", "Saving without hunting for codes"],
+    insight: "The best perks do not interrupt behavior. They make the next local choice easier.",
+    perkInstructions: "Show your Resident Pass when the offer is active.",
+    nearbyHeading: "Perks nearby",
+    askPrompts: ["How do I use this?", "What else is nearby?", "Is this good today?", "What other perks are close?"],
+  },
+  hotel: {
+    eyebrow: "Hotel",
+    primaryActionLabel: "Explore Nearby",
+    whyHeading: "Why guests use this area",
+    whyBody: "{title} works as a downtown base because food, music, coffee, trails, venues, and local routines are close enough to become part of the stay.",
+    bestFor: ["Guest arrivals", "Walkable dining", "Coffee nearby", "Events nearby"],
+    insight: "The hotel is not just a stay. It is a starting point.",
+    nearbyHeading: "Hotels Nearby",
+    askPrompts: ["Where should guests go first?", "What is walkable from here?", "Where should we send visitors?", "What is good tonight?"],
+  },
+  brand: {
+    eyebrow: "Brand guide",
+    primaryActionLabel: "Open Brand Guide",
+    whyHeading: "Why this brand belongs here",
+    whyBody: "{title} connects to downtown through the places people already move through — trails, events, hotels, water, retail moments, and local routines.",
+    bestFor: ["Resident perks", "Event activations", "Trail and outdoor moments", "Hotel and visitor discovery"],
+    insight: "A strong brand pin should feel useful in place, not like an ad dropped onto a map.",
+    nearbyHeading: "Activation nearby",
+    askPrompts: ["Where does this brand show up nearby?", "What perk is available?", "What events connect to this?", "What should I do before or after?"],
+  },
+  civic: {
+    eyebrow: "Civic stop",
+    primaryActionLabel: "Explore Civic Stop",
+    whyHeading: "Why this place matters",
+    whyBody: "{title} helps make downtown feel more usable, memorable, and connected — especially when residents understand what is nearby and how to participate.",
+    bestFor: ["Public space discovery", "Cultural participation", "Walking routes", "Visitors learning the district"],
+    insight: "Civic places work best when they are not just landmarks, but useful parts of daily life.",
+    nearbyHeading: "Nearby public spaces",
+    askPrompts: ["What can I do here?", "What is nearby?", "Is anything happening today?", "Where should I walk next?"],
+  },
+  service: {
+    eyebrow: "Local service",
+    primaryActionLabel: "View Details",
+    whyHeading: "Why residents use this",
+    whyBody: "{title} supports the practical side of downtown life — the errands, appointments, care, and everyday needs that make the neighborhood easier to use.",
+    bestFor: ["Errands nearby", "Everyday convenience", "Resident support", "Practical planning"],
+    insight: "Useful services turn downtown from a place to visit into a place that works.",
+    nearbyHeading: "Useful nearby",
+    askPrompts: ["Is this close to me?", "When should I go?", "What else can I do nearby?", "Is there a resident offer?"],
+  },
+  localGuide: {
+    eyebrow: "Local guide",
+    primaryActionLabel: "Open Guide",
+    whyHeading: "Why this guide helps",
+    whyBody: "This guide turns nearby options into a clearer plan, organized around how people actually move through downtown.",
+    bestFor: ["Choosing faster", "Planning with visitors", "Finding nearby clusters", "Turning scattered options into a route"],
+    insight: "The map should reduce decision fatigue, not create another list to scroll.",
+    nearbyHeading: "Stops in the guide",
+    askPrompts: ["What is the best first stop?", "What is nearby after this?", "Can I walk this route?", "What fits tonight?"],
+  },
+  propertyOverview: {
+    eyebrow: "Residential building",
+    primaryActionLabel: "Explore Neighborhood",
+    whyHeading: "Why living here works",
+    whyBody: "{title} is useful because the surrounding routine is strong — coffee, dining, trails, hotels, services, and events are close enough to shape daily life.",
+    bestFor: ["Residents comparing neighborhoods", "Walkability research", "Lifestyle-first decisions", "Understanding the area before touring"],
+    insight: "Square footage matters. The surrounding routine is what makes the address feel livable.",
+    nearbyHeading: "Walkable nearby",
+    askPrompts: ["What is walkable from here?", "Where would I go every week?", "How does this area feel at night?", "What buildings are nearby?"],
+  },
+};
+
+export function resolveEntityPanelContent(entity = {}, mode = "resident") {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const title = panelTitleFor(entity);
+  const type = panelEntityType(entity);
+  const base = PANEL_CONTENT_BY_TYPE[type] || PANEL_CONTENT_BY_TYPE.venue;
+  const isYeti = /\byeti\b/i.test(`${entity.id || ""} ${entity.name || ""} ${entity.brand || ""} ${raw.id || ""} ${raw.name || ""} ${raw.brand || ""}`);
+  const context = safePanelText(
+    raw.panelContext ||
+      raw.downtown_perks_summary ||
+      raw.context ||
+      entity.context ||
+      raw.summary ||
+      entity.summary ||
+      raw.description ||
+      entity.description,
+    formatPanelTemplate(base.whyBody, title),
+  );
+  const content = {
+    panelType: type,
+    eyebrow: safePanelText(base.eyebrow, "Downtown Austin"),
+    title,
+    subtitle: panelSubtitleFor(entity),
+    context,
+    primaryActionLabel: base.primaryActionLabel,
+    whyHeading: base.whyHeading,
+    whyBody: formatPanelTemplate(base.whyBody, title),
+    bestFor: [...(base.bestFor || [])],
+    insight: base.insight,
+    perkTitle: safePanelText(raw.perk?.title || raw.offer || entity.offer || entity.deals_offers || raw.deals_offers, ""),
+    perkValue: safePanelText(raw.perk?.value || entity.perkValue || raw.perkValue || "", ""),
+    perkInstructions: base.perkInstructions || "",
+    nearbyHeading: base.nearbyHeading || "Nearby",
+    askPrompts: [...(base.askPrompts || [])],
+  };
+
+  if (mode === "partner" && type !== "propertyOverview") {
+    content.context = content.context || "Use this pin to understand nearby demand, timing, and the next useful action.";
+  }
+
+  if (isYeti) {
+    content.primaryActionLabel = "Open Brand Guide";
+    content.whyHeading = "Why this brand belongs here";
+    content.whyBody = "Outdoor gear, local movement, and everyday downtown routines.";
+    content.context = content.whyBody;
+    content.bestFor = ["Trail days", "Waterfront walks", "Hotel guest moments", "Resident perks", "Event activations"];
+    content.perkTitle = "Resident perk";
+    content.perkValue = "Free custom engraving for verified residents.";
+    content.perkInstructions = "Show your Resident Pass in-store when the offer is active.";
+    content.nearbyHeading = "Nearby";
+    content.askPrompts = ["Where does YETI show up nearby?", "What perk can I use?", "What should I pair with this?", "What is walkable from here?"];
+  }
+
+  return content;
 }

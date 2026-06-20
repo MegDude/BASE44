@@ -4,6 +4,8 @@ const TRULUCKS_IMAGE = "/images/restaurants/trulucks-downtown-austin.jpeg";
 const BARCHI_IMAGE = "/images/restaurants/barchi-sushi.jpeg";
 const COMEDOR_IMAGE = "/images/restaurants/comedor-architecture.png";
 const DEANS_IMAGE = "/images/restaurants/deans-italian-steakhouse.png";
+const DEANS_SECONDARY_IMAGE = "/images/restaurants/deans-italian-steakhouse-secondary.jpg";
+const DEANS_GIFT_CARD_URL = "https://swipeit.com/co-branded/merchant/dean-s-steakhouse-austin-10871";
 
 export const venueImages = {
   "venue-fixe-southern-house": {
@@ -39,7 +41,8 @@ export const venueImages = {
   },
   "venue-deans-italian-steakhouse": {
     src: DEANS_IMAGE,
-    preferredSource: "https://www.deanssteakhouseaustin.com",
+    preferredSource: DEANS_GIFT_CARD_URL,
+    secondarySource: "https://www.deanssteakhouseaustin.com",
     imageType: "interior",
     alt: "Dining room and bar inside Dean's Italian Steakhouse in downtown Austin",
   },
@@ -78,8 +81,11 @@ function buildRestaurantRecord(record) {
       .replace(/[^a-z0-9]+/g, "_"),
     image,
     imageUrl: image,
+    heroImage: image,
+    galleryImages: [image, record.secondaryImage].filter(Boolean),
     summary: record.cardDescription,
     description: record.drawerBody,
+    website: record.website,
     offer: record.perkTitle,
     deals_offers: record.perkTitle,
     specials: record.perkDescription,
@@ -291,21 +297,24 @@ export const DOWNTOWN_CORE_RESTAURANT_RECORDS = [
     longitude: -97.7430,
     priceLabel: "$$$",
     imageStrategy: "Official dining room, bar, veranda, or city-view interior",
-    imageSourceUrl: "https://www.deanssteakhouseaustin.com",
-    perkTitle: "Veranda cocktail upgrade",
-    perkLabel: "Resident drinks perk",
-    perkDescription: "Show your Downtown Perks card and receive a complimentary cocktail upgrade or zero-proof pairing at the bar or veranda with dinner.",
-    perkFinePrint: "Valid dine-in only. One per guest with dinner purchase. Alcohol option only for guests 21+. Subject to restaurant approval and availability.",
-    cardEyebrow: "Drinks nearby · Downtown Core",
+    imageSourceUrl: DEANS_GIFT_CARD_URL,
+    secondaryImageSourceUrl: "https://www.deanssteakhouseaustin.com",
+    secondaryImage: DEANS_SECONDARY_IMAGE,
+    website: DEANS_GIFT_CARD_URL,
+    perkTitle: "This summer, give the gift of Dean's",
+    perkLabel: "$100 gift card + $25 bonus card",
+    perkDescription: "Purchase a $100 Dean's Italian Steakhouse gift card between May 25 and August 1 and receive a $25 bonus card for a future visit - yours to enjoy before Labor Day, September 7. Whether you're celebrating someone special or treating yourself, there's no better time to give the gift of a great meal.",
+    perkFinePrint: "Purchase gift cards through Dean's Italian Steakhouse. $25 bonus card is for a future visit and must be enjoyed before Labor Day, September 7.",
+    cardEyebrow: "Dining perk · Downtown Core",
     cardTitle: "Dean's Italian Steakhouse",
-    cardDescription: "Italian steakhouse energy inside the JW Marriott - polished enough for dinner, relaxed enough for a drink nearby.",
-    drawerHeadline: "A downtown steakhouse with hotel-bar polish.",
-    drawerBody: "Dean's works for the night that starts with a drink and turns into dinner. Expect steakhouse comfort, Italian detail, and an easy downtown location near the convention center and hotel corridor.",
-    bestFor: ["Cocktails", "Hotel dining", "Steakhouse dinner", "Client dinner"],
-    primaryCTA: "View perk",
+    cardDescription: "A summer gift-card offer for Dean's Italian Steakhouse: buy $100, receive a $25 bonus card for a future visit.",
+    drawerHeadline: "Give the gift of Dean's this summer.",
+    drawerBody: "Dean's is a polished downtown steakhouse inside the JW Marriott, built for celebrations, client dinners, and a proper night out near the convention center and hotel corridor.",
+    bestFor: ["Gift cards", "Celebration dinner", "Steakhouse dinner", "Client dinner"],
+    primaryCTA: "Purchase gift cards",
     secondaryCTA: "Get directions",
     aliases: ["dean's", "deans", "dean's italian steakhouse", "deans italian steakhouse"],
-    searchKeywords: ["cocktails", "hotel dining", "steakhouse", "client dinner", "drinks nearby"],
+    searchKeywords: ["gift card", "bonus card", "steakhouse", "client dinner", "dinner nearby"],
   }),
 ];
 

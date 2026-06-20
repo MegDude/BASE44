@@ -12,35 +12,35 @@ import { MAP_ENTITIES } from "@/data/mapEntities";
 
 const partnerCategories = {
   Properties: {
-    pricing: "$49-$199/month",
+    pricing: "$199-$2,388/year",
     cta: "Bring this to your property",
     href: "/partners/properties",
     body: "Management pays. Residents stay. Your address is your key to unlock downtown.",
-    faq: "Property plans run $49, $99, or $199/month depending on building needs.",
+    faq: "Property partner plans are annual and range from $199/year to $2,388/year depending on building needs.",
   },
   Hotels: {
-    pricing: "$99-$199/month",
+    pricing: "$1,188-$2,388/year",
     cta: "Use this for guests",
     href: "/partners/hospitality",
     body: "Extend the stay beyond your lobby. One scan. Every option. Guests navigate. You benefit.",
     faq: "90-day pilot. See what guests actually do.",
   },
   Venues: {
-    pricing: "Starter-Pro",
+    pricing: "Free-$2,388/year",
     cta: "Discuss activation",
     href: "/partners/venues",
     body: "Show up in the moment that counts. Not reach. Relevance. Not impressions. Intent.",
-    faq: "Starter venue plans include one active resident perk. Paid venue plans start at $30/month.",
+    faq: "Venues can start with a free listing path. Paid venue plans start at $360/year.",
   },
   Brands: {
-    pricing: "$99-$199/month",
+    pricing: "$1,188-$2,388/year",
     cta: "Start a conversation",
     href: "/partners/brands",
     body: "Buy the moment, not the impression. Context beats scale. Timing beats frequency.",
     faq: "Test it. Measure it. Scale it.",
   },
   Civic: {
-    pricing: "Free-$99/month",
+    pricing: "$49-$1,188/year",
     cta: "Talk to us",
     href: "/partners/civic",
     body: "Turn attendance into participation. Discovery drives turnout. Access drives engagement.",
@@ -57,8 +57,8 @@ const residentFaqs = [
 ];
 
 const partnerFaqs = [
-  ["Do venues pay to join?", "Venues can start with a Starter plan that includes one active resident perk. Paid venue plans start at $30/month."],
-  ["What do buildings pay?", "Properties use monthly plans at $49, $99, or $199/month depending on resident access, reporting, and building needs."],
+  ["Do venues pay to join?", "Venues can start with a free listing path. Paid venue plans start at $360/year."],
+  ["What do buildings pay?", "Properties use annual plans from $199/year to $2,388/year depending on resident access, reporting, and building needs."],
   ["How fast can a partner launch?", "7-10 days. We handle setup, map placement, QR generation, and entry point coordination."],
   ["What gets tracked?", "Scans, saves, RSVPs, and redemptions. You get reporting snapshots at 30, 60, and 90 days to see what's working."],
   ["What kind of perks?", "Discounts on food and drinks, priority access to events, welcome offers, and members-only specials. Each business sets its own perks."],
@@ -282,9 +282,9 @@ export default function Home() {
           <div className="relative grid gap-2 md:grid-cols-3">
             {(isPartner
                 ? [
-                  ["Properties", "$49-$199/month"],
+                  ["Properties", "$199-$2,388/year"],
                   [partnerType, partner.pricing],
-                  ["Plan cap", "$199/month"],
+                  ["Annual model", "Partner subscriptions only"],
                 ]
               : [
                   ["Resident Map", "Included"],

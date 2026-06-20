@@ -97,7 +97,7 @@ function PartnerHeroVisual() {
   ];
 
   return (
-    <div className="relative min-h-[460px] overflow-hidden border border-[#0B1F33]/[0.06] bg-[#0B1F33] p-5 text-white shadow-[0_8px_24px_rgba(11,31,51,0.06)] md:min-h-[560px] md:p-6">
+    <div className="dp-partner-hero-visual relative min-h-[460px] overflow-hidden p-5 text-white md:min-h-[560px] md:p-6">
       <div className="absolute inset-0 opacity-45" aria-hidden="true">
         <div className="absolute inset-x-8 top-10 h-px bg-white/12" />
         <div className="absolute inset-x-8 top-32 h-px bg-white/10" />
@@ -148,7 +148,7 @@ export function PartnerHero() {
   return (
     <>
       <PartnerPageNav />
-      <section className="bg-[#F7F8FB] px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
+      <section className="dp-partner-hero bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.58, ease }} className="max-w-3xl">
             <p className="dp-partner-label">LIVE DOWNTOWN INFRASTRUCTURE</p>
