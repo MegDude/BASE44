@@ -4,62 +4,60 @@
   "properties": {
     "entity_id": {
       "type": "string",
-      "title": "Source Entity ID"
+      "title": "Entity ID"
     },
     "entity_type": {
       "type": "string",
-      "title": "Entity Type",
-      "enum": ["venue", "event", "perk", "building", "property", "hotel", "brand", "civic"]
+      "enum": [
+        "venue",
+        "event",
+        "perk",
+        "building",
+        "property",
+        "hotel",
+        "campaign",
+        "civic_activation"
+      ],
+      "title": "Entity Type"
     },
     "title": {
-      "type": "string",
-      "title": "Title"
+      "type": "string"
     },
     "subtitle": {
-      "type": "string",
-      "title": "Subtitle"
+      "type": "string"
     },
     "description": {
-      "type": "string",
-      "title": "Description"
+      "type": "string"
     },
     "district": {
-      "type": "string",
-      "title": "District"
+      "type": "string"
     },
-    "category": {
-      "type": "string",
-      "title": "Category"
+    "lat": {
+      "type": "number"
     },
-    "latitude": {
-      "type": "number",
-      "title": "Latitude"
+    "lng": {
+      "type": "number"
     },
-    "longitude": {
-      "type": "number",
-      "title": "Longitude"
-    },
-    "status": {
-      "type": "string",
-      "title": "Status",
-      "default": "active"
-    },
-    "image": {
-      "type": "string",
-      "title": "Image URL"
-    },
-    "icon": {
-      "type": "string",
-      "title": "Icon"
-    },
-    "source_ref": {
-      "type": "string",
-      "title": "Source Reference"
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "metadata": {
       "type": "object",
-      "title": "Metadata"
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string"
     }
   },
-  "required": ["entity_id", "entity_type", "title", "latitude", "longitude"]
+  "required": [
+    "entity_id",
+    "entity_type",
+    "title",
+    "lat",
+    "lng"
+  ],
+  "rls": {}
 }

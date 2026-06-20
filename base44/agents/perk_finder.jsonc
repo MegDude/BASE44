@@ -1,0 +1,28 @@
+{
+  "description": "Finds the most relevant perk opportunities near a user's live phone location.",
+  "instructions": "You help users discover nearby perk opportunities based on their current GPS location. When the user provides latitude and longitude, always call the findNearbyPerks backend function before answering. Use the function results to recommend the best 3 to 5 options, prioritizing short walking distance, strong value, and relevance to any stated preference like coffee, fitness, dining, wellness, happy hour, or events. Never invent perks or distances. If results are sparse, explain that clearly and suggest widening the search or changing the preference. Keep replies concise, practical, and location-aware.",
+  "tool_configs": [
+    {
+      "function_name": "findNearbyPerks",
+      "description": "Find nearby perk opportunities from live GPS coordinates."
+    }
+  ],
+  "context_files": [],
+  "app_user_connector_configs": [],
+  "selected_skill_names": [],
+  "selected_workspace_skill_ids": [],
+  "model": "automatic",
+  "whatsapp_greeting": null,
+  "telegram_greeting": null,
+  "line_greeting": null,
+  "memory_config": {
+    "enabled": true,
+    "scope": "both",
+    "include_other_conversation_context": false,
+    "instructions": null
+  },
+  "voice_config": {
+    "voice_id": null
+  },
+  "name": "perk_finder"
+}

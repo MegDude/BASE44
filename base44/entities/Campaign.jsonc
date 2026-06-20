@@ -89,5 +89,6 @@
     "slug",
     "name",
     "brand_id"
-  ]
+  ],
+  "rls": {}
 }

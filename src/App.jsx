@@ -26,7 +26,7 @@ import PerksPage from "./pages/downtown-perks/PerksPage";
 import PerksCard from "./pages/downtown-perks/PerksCard";
 import ForBuildings from "./pages/downtown-perks/ForBuildings";
 import About from "./pages/downtown-perks/About";
-import ResidentShell from "./components/resident-shell/Landing";
+import ResidentShell from "./components/resident-shell/ResidentShell";
 import ThePaseo from "./pages/downtown-perks/brands/ThePaseo";
 import TheWaterline from "./pages/downtown-perks/brands/TheWaterline";
 import Bangers from "./pages/downtown-perks/brands/Bangers";
@@ -56,6 +56,7 @@ import VenuesPartner from "./pages/partners/Venues";
 import BrandsPartner from "./pages/partners/Brands";
 import CivicPartner from "./pages/partners/Civic";
 import PartnerApply from "./pages/partners/Apply";
+import PerkAgent from "./pages/PerkAgent";
 import { CTAFlowProvider } from "./components/cta/CTAFlowProvider";
 import { ROUTES } from "@/lib/routes";
 
@@ -71,6 +72,7 @@ function AppRoutes() {
         <Route path={ROUTES.explore} element={<ExploreRebuilt />} />
         <Route path="/search" element={<Map />} />
         <Route path="/ask-the-map" element={<Map />} />
+        <Route path="/perks-near-me" element={<PerkAgent />} />
         <Route path={ROUTES.events} element={<Events />} />
         <Route path={ROUTES.happyHourWalkingMap} element={<HappyHourWalkingMap />} />
         <Route path={ROUTES.perks} element={<PerksPage />} />

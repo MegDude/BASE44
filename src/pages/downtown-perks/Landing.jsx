@@ -85,6 +85,9 @@ export default function Landing() {
               <Link to="/partners" className="rounded-full px-6 py-3 bg-white/82 text-[#111f3d] text-[12px] md:text-[13px] uppercase tracking-[0.12em] font-inter border border-white/40 hover:bg-white">
                 For Partners
               </Link>
+              <Link to="/perks-near-me" className="rounded-full px-6 py-3 bg-[#c5a15a] text-[#111f3d] text-[12px] md:text-[13px] uppercase tracking-[0.12em] font-inter border border-[#c5a15a] hover:bg-[#d0ad69]">
+                Perks Near Me
+              </Link>
             </div>
           </div>
         </div>
