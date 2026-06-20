@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import Footer from "@/components/Footer";
+import { ArrowRight } from "lucide-react";
 import {
   calculatePricingTotal,
   formatCurrency,
@@ -12,32 +12,32 @@ const partnerCopy = {
   Venue: {
     body: "For restaurants, bars, coffee shops, wellness, retail and local services.",
     price: "Starting at $30/year",
-    cta: "Choose Venue ->",
+    cta: "Choose Venue",
   },
   Property: {
     body: "For apartments, condos, mixed-use and residential communities.",
     price: "Starting at $49/year",
-    cta: "Choose Property ->",
+    cta: "Choose Property",
   },
   Hotel: {
     body: "For hotels, hospitality groups, and guest experience teams.",
     price: "Starting at $99/year",
-    cta: "Choose Hotel ->",
+    cta: "Choose Hotel",
   },
   Brand: {
     body: "For local, regional and national brands.",
     price: "Starting at $99/year",
-    cta: "Choose Brand ->",
+    cta: "Choose Brand",
   },
   Civic: {
     body: "For districts, associations, nonprofits and public programs.",
     price: "Starting at $30/year",
-    cta: "Choose Civic ->",
+    cta: "Choose Civic",
   },
   "Real Estate": {
     body: "For developers, brokerages and leasing teams.",
     price: "$199/year",
-    cta: "Choose Real Estate ->",
+    cta: "Choose Real Estate",
   },
 };
 
@@ -114,7 +114,8 @@ export default function PricingPage() {
                 <p>{copy.body}</p>
                 <strong>{copy.price}</strong>
                 <button type="button" onClick={() => choosePartner(type)} className="pricing-v4-cta">
-                  {copy.cta}
+                  <span>{copy.cta}</span>
+                  <ArrowRight aria-hidden="true" />
                 </button>
               </article>
             );
@@ -182,7 +183,10 @@ export default function PricingPage() {
               <p><span>One-time modules</span><strong>{formatCurrency(oneTimeTotal)}</strong></p>
             </div>
             <p>{selectedPlan?.label || "Choose a plan"} plus {selectedModules.length} module{selectedModules.length === 1 ? "" : "s"}.</p>
-            <a href={setupHref} className="pricing-v4-cta" data-sku={selectedPlan?.id || ""}>Checkout Setup -&gt;</a>
+            <a href={setupHref} className="pricing-v4-cta pricing-v4-cta-primary" data-sku={selectedPlan?.id || ""}>
+              <span>Checkout Setup</span>
+              <ArrowRight aria-hidden="true" />
+            </a>
           </div>
         </div>
       </section>
@@ -197,9 +201,13 @@ export default function PricingPage() {
                 <strong>{getPriceText(module)}</strong>
                 <p>{module.summary}</p>
                 <button type="button" onClick={() => toggleModule(module.id)} className="pricing-v4-cta" data-sku={module.id}>
-                  {selectedModuleIds.includes(module.id) ? "Remove" : "Add To Setup"} -&gt;
+                  <span>{selectedModuleIds.includes(module.id) ? "Remove" : "Add To Setup"}</span>
+                  <ArrowRight aria-hidden="true" />
                 </button>
-                <a href={`/marketing/contact?sku=${encodeURIComponent(module.id)}`} className="pricing-v4-cta" data-sku={module.id}>Full Pricing -&gt;</a>
+                <a href={`/marketing/contact?sku=${encodeURIComponent(module.id)}`} className="pricing-v4-cta pricing-v4-cta-secondary" data-sku={module.id}>
+                  <span>Full Pricing</span>
+                  <ArrowRight aria-hidden="true" />
+                </a>
               </article>
             ))}
           </div>
@@ -232,10 +240,11 @@ export default function PricingPage() {
 
       <section className="pricing-v4-section pricing-v4-container pricing-v4-final">
         <h2>Ready to price the setup?</h2>
-        <a href={setupHref} className="pricing-v4-cta">Checkout Setup -&gt;</a>
+        <a href={setupHref} className="pricing-v4-cta pricing-v4-cta-primary">
+          <span>Checkout Setup</span>
+          <ArrowRight aria-hidden="true" />
+        </a>
       </section>
-
-      <Footer />
     </main>
   );
 }

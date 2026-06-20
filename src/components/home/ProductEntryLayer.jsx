@@ -4,10 +4,10 @@ import { Search, MapPin, X, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const PROMPT_CHIPS = [
-  "coffee right now",
-  "dinner tonight on Rainey",
-  "happy hour nearby",
-  "quiet place to work",
+  "What's happening tonight?",
+  "Good coffee nearby",
+  "Where should we go for dinner?",
+  "Something low-key nearby",
 ];
 
 const NEARBY_CARDS = [
@@ -66,15 +66,15 @@ export default function ProductEntryLayer() {
         >
           <div className="mx-auto max-w-3xl">
             <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[#425466]">
-              Live downtown context
+              Ask the map
             </p>
 
             <h2 className="font-heading text-4xl font-medium leading-[1.02] tracking-normal text-[#0B1F33] md:text-[56px]">
-              The operating system for downtown life.
+              What are you looking for?
             </h2>
 
             <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-[#425466]">
-              Open one map. See what is nearby. Decide faster and go.
+              Find places to eat, events worth showing up for, perks you can actually use, and local recommendations from around downtown.
             </p>
           </div>
 
@@ -104,7 +104,7 @@ export default function ProductEntryLayer() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
-                  placeholder="Ask the map..."
+                  placeholder="What are you looking for?"
                   className="flex-1 bg-transparent text-[15px] text-[#0B1F33] outline-none placeholder:text-[#425466]/58"
                 />
                 {searchQuery && (

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { MapPin } from "lucide-react";
 
 const footerGroups = {
   Residents: [
@@ -18,18 +19,16 @@ const footerGroups = {
 
 export default function HomeFooter() {
   return (
-    <footer className="bg-[#0B1F33] px-5 py-9 font-sans text-[#FFFFFF] sm:px-6 sm:py-10 lg:px-20">
+    <footer className="bg-[#0B1F33] px-5 py-9 font-sans text-white sm:px-6 sm:py-10 lg:px-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-7 grid grid-cols-1 gap-6 md:grid-cols-[0.88fr_2.12fr] md:gap-8 lg:mb-8 lg:gap-10">
           <div>
-            <div className="mb-5 flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-[#C8A96A] text-lg font-bold leading-none text-[#0B1F33]">
-                D
-              </div>
-              <span className="font-sans text-[18px] font-semibold tracking-tight md:text-lg">
+            <Link to="/app?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 text-white transition-colors hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]" aria-label="Downtown Perks app">
+              <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A]" aria-hidden="true" />
+              <span className="font-sans text-[14.5px] font-semibold tracking-[-0.015em]">
                 Downtown Perks
               </span>
-            </div>
+            </Link>
             <p className="mb-4 max-w-sm text-[14px] font-light leading-6 text-[#FFFFFF]/72 sm:text-[15px] md:text-sm md:leading-6">
               Downtown Perks helps residents make better local plans and helps the places around them show up at the right moment.
             </p>
@@ -46,7 +45,7 @@ export default function HomeFooter() {
                     <li key={link.to + link.label}>
                       <Link
                         to={link.to}
-                        className="transition-colors hover:text-[#FFFFFF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                        className="transition-colors hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                       >
                         {link.label}
                       </Link>
@@ -56,7 +55,7 @@ export default function HomeFooter() {
                     <li className="min-w-0 pt-1">
                       <a
                         href="mailto:partners@downtownperks.com"
-                        className="inline-block max-w-full whitespace-nowrap text-[11px] leading-relaxed text-[#C8A96A] transition-colors hover:text-[#FFFFFF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] sm:text-[12px] md:text-[11px] lg:text-[12px]"
+                        className="inline-block max-w-full whitespace-nowrap text-[11px] leading-relaxed text-[#C8A96A] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] sm:text-[12px] md:text-[11px] lg:text-[12px]"
                       >
                         partners@downtownperks.com
                       </a>

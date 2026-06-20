@@ -185,6 +185,7 @@ export default function PartnerWorkspace() {
   const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
   const navigate = useNavigate();
   const isPublicWorkspaceUser = user.email === PUBLIC_PARTNER_USER.email;
+  const isReportsTab = tab === "reports";
 
   useEffect(() => {
     base44.auth.me()
@@ -217,15 +218,15 @@ export default function PartnerWorkspace() {
   }
 
   return (
-    <div className="dp-partner-page min-h-screen bg-[#F7F8FB] text-[#0B1F33]">
+    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen bg-[#F7F8FB] text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
       {/* Header */}
-      <div className="pt-20 pb-0 px-5 bg-white border-b border-[rgba(11,31,51,0.07)] shadow-[0_1px_0_rgba(11,31,51,0.04),0_4px_16px_rgba(11,31,51,0.03)]">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-5 flex items-center justify-between gap-3">
+      <div className="dp-partner-workspace-header pt-20 pb-0 px-5 bg-white border-b border-[rgba(11,31,51,0.07)] shadow-[0_1px_0_rgba(11,31,51,0.04),0_4px_16px_rgba(11,31,51,0.03)]">
+        <div className="dp-partner-workspace-header-inner max-w-6xl mx-auto">
+          <div className="dp-partner-workspace-action-row mb-5 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
-              className="inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-2.5 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+              className="dp-partner-workspace-button inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-2.5 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
             >
               <ArrowLeft className="h-3 w-3 text-[#C8A96A]" />
               Back to map
@@ -233,31 +234,35 @@ export default function PartnerWorkspace() {
             <button
               type="button"
               onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white text-[#0B1F33]/54 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+              className="dp-partner-workspace-button dp-partner-workspace-button-icon inline-flex h-8 w-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white text-[#0B1F33]/54 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
               aria-label="Close partner workspace"
             >
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
-          <div className="flex items-end justify-between mb-5 gap-4">
-            <div>
-              <span className="text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
-              <h1 className="font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
-                {user.full_name || user.email?.split("@")[0] || "Your workspace"}
+          <div className="dp-partner-workspace-title-row flex items-end justify-between mb-5 gap-4">
+            <div className="dp-partner-workspace-title-copy">
+              <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
+              <h1 className="dp-partner-workspace-title font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
+                {isReportsTab ? "Monthly Reports" : user.full_name || user.email?.split("@")[0] || "Your workspace"}
               </h1>
-              <p className="text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">{user.email}</p>
+              <p className="dp-partner-workspace-support text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">
+                {isReportsTab
+                  ? "Readable partner reports organized around what changed, what worked, and what to do next."
+                  : user.email}
+              </p>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="dp-partner-workspace-header-actions flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut}
-                className="inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+                className="dp-partner-workspace-button inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
               >
                 {isPublicWorkspaceUser ? "Sign in" : "Sign out"}
               </button>
               <Link
                 to="/partners/dashboard"
-                className="inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0"
+                className="dp-partner-workspace-button inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0"
               >
                 <LayoutDashboard className="w-3.5 h-3.5 text-[#C8A96A]" /> Dashboard
               </Link>
@@ -265,7 +270,7 @@ export default function PartnerWorkspace() {
           </div>
 
           {/* Tabs — animated sliding indicator */}
-          <div className="relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
+          <div className="dp-partner-workspace-tabs relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
             {TABS.map(t => (
               <button
                 key={t.id}
@@ -274,7 +279,7 @@ export default function PartnerWorkspace() {
                   setTab(t.id);
                   navigate(t.href);
                 }}
-                className={`relative flex-shrink-0 px-4 py-2.5 text-[12px] font-medium transition-colors duration-150 focus-visible:outline-none ${
+                className={`dp-partner-workspace-tab relative flex-shrink-0 px-4 py-2.5 text-[12px] font-medium transition-colors duration-150 focus-visible:outline-none ${
                   tab === t.id
                     ? "text-[#0B1F33]"
                     : "text-[#0B1F33]/46 hover:text-[#0B1F33]/72"
@@ -409,6 +414,11 @@ function WorkspaceReports() {
       value: "42%",
       headline: "After-work activity is leading the month.",
       copy: "Dinner, events, and nearby offers are driving the strongest resident intent.",
+      readout: [
+        ["Observation", "Weekday evening decisions are clustering around dining and live plans."],
+        ["Recommendation", "Lead with one after-work offer tied to a walkable route."],
+        ["Expected outcome", "More saves, directions, and clearer campaign attribution."],
+      ],
       action: "View report",
     },
     {
@@ -416,6 +426,10 @@ function WorkspaceReports() {
       value: "+18%",
       headline: "Walkable moments are outperforming broad reach.",
       copy: "Rainey, Seaholm, Congress, and Waterloo show the cleanest activity patterns.",
+      readout: [
+        ["Trend", "Short-distance discovery is converting better than broad awareness."],
+        ["Recommendation", "Keep placements near active pedestrian corridors."],
+      ],
       action: "Review trend",
     },
     {
@@ -423,6 +437,11 @@ function WorkspaceReports() {
       value: "6.8%",
       headline: "Simple timed offers are easiest to act on.",
       copy: "Campaigns with one clear save, RSVP, scan, or direction action perform best.",
+      readout: [
+        ["Observation", "One-action campaigns are easier for residents to understand."],
+        ["Recommendation", "Use a single CTA and a narrow time window."],
+        ["Expected outcome", "Higher completion and fewer drop-offs."],
+      ],
       action: "Plan offer",
     },
     {
@@ -430,6 +449,10 @@ function WorkspaceReports() {
       value: "312",
       headline: "People save first, then decide.",
       copy: "Saved places are becoming the bridge between discovery and visits.",
+      readout: [
+        ["Trend", "Saves are acting as intent signals before directions or scans."],
+        ["Recommendation", "Retarget saved audiences with a timely reason to return."],
+      ],
       action: "Review behavior",
     },
     {
@@ -437,6 +460,10 @@ function WorkspaceReports() {
       value: "3",
       headline: "Run the next test near the busiest walk path.",
       copy: "Anchor the next placement to movement that is already happening nearby.",
+      readout: [
+        ["Recommendation", "Start with Rainey, Seaholm, or Congress based on current movement."],
+        ["Expected outcome", "Faster learning with less wasted reach."],
+      ],
       action: "Open campaigns",
     },
     {
@@ -444,6 +471,10 @@ function WorkspaceReports() {
       value: "4",
       headline: "Move from insight to one live campaign.",
       copy: "Pick a place, timing, audience, and action from the monthly readout.",
+      readout: [
+        ["Observation", "The next step is operational, not another report."],
+        ["Recommendation", "Launch one campaign and review it next week."],
+      ],
       action: "Start next step",
     },
   ];
@@ -454,10 +485,11 @@ function WorkspaceReports() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="dp-workspace-reports"
     >
-      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
+      <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
         <div>
-          <span className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Monthly report</span>
+          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Monthly report</span>
           <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">What changed and what to do next</h2>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
             A readable partner report organized around observations, trends, recommendations, and expected outcomes.
@@ -465,34 +497,36 @@ function WorkspaceReports() {
         </div>
         <Link
           to="/map?mode=partner&tab=reports"
-          className="inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+          className="dp-partner-workspace-button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
         >
           Open map reports
         </Link>
       </div>
-      <div className="grid gap-2.5">
+      <div className="dp-workspace-report-grid grid gap-2.5">
         {monthlyReports.map((item) => (
           <article
             key={item.section}
-            className="group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(200,169,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
+            className="dp-workspace-report-card group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(200,169,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
           >
             <div>
-              <p className="text-[10px] font-semibold tracking-[0.12em] uppercase text-[#C8A96A]">{item.section}</p>
-              <div className="mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
+              <p className="dp-workspace-report-label text-[10px] font-semibold tracking-[0.12em] uppercase text-[#C8A96A]">{item.section}</p>
+              <div className="dp-workspace-report-metric mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
             </div>
             <div>
               <h3 className="font-body text-[14.5px] font-semibold leading-snug tracking-tight text-[#0B1F33]">{item.headline}</h3>
               <p className="mt-1.5 text-[13px] leading-[1.6] text-[#0B1F33]/60">{item.copy}</p>
-              <dl className="mt-3.5 grid gap-2 text-[12px] leading-[1.55] md:grid-cols-2">
-                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Observation</dt><dd className="text-[#0B1F33]/70 mt-0.5">Activity is clustered around reachable downtown moments.</dd></div>
-                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Trend</dt><dd className="text-[#0B1F33]/70 mt-0.5">Saved places and directions rise together after work.</dd></div>
-                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Recommendation</dt><dd className="text-[#0B1F33]/70 mt-0.5">Keep the next offer close, timely, and easy to act on.</dd></div>
-                <div className="p-2.5 rounded-[6px] bg-[#F7F8FB]"><dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">Expected Outcome</dt><dd className="text-[#0B1F33]/70 mt-0.5">Cleaner attribution and a more repeatable next campaign.</dd></div>
+              <dl className="dp-workspace-report-readout mt-3.5 grid gap-2 text-[12px] leading-[1.55] md:grid-cols-2">
+                {item.readout.map(([label, detail]) => (
+                  <div key={`${item.section}-${label}`} className="p-2.5 rounded-[6px] bg-[#F7F8FB]">
+                    <dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">{label}</dt>
+                    <dd className="text-[#0B1F33]/70 mt-0.5">{detail}</dd>
+                  </div>
+                ))}
               </dl>
             </div>
             <Link
               to="/map?mode=partner&tab=reports"
-              className="shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#C8A96A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#C8A96A]"
+              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#C8A96A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#C8A96A]"
             >
               {item.action}
             </Link>

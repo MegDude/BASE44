@@ -7,6 +7,13 @@ import '@/styles/dp-recovery-final.css'
 import '@/styles/search-rollup-final.css'
 import '@/styles/search-console-premium-final.css'
 import '@/styles/hero-glass-restoration-final.css'
+import '@/styles/downtown-command-center.css'
+import '@/styles/pricing-page-polish.css'
+import '@/styles/partner-workspace-reports-polish.css'
+import '@/styles/contact-faq-accordion-polish.css'
+import '@/styles/ask-map-component-polish.css'
+import '@/styles/downtown-platform-page-polish.css'
+import '@/styles/homepage-standardization-patch.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

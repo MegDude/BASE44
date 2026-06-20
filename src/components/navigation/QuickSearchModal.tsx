@@ -1,20 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import {
-  Badge,
+  Activity,
   Building2,
   CalendarDays,
   ChevronRight,
   Coffee,
-  Home,
-  Hotel,
-  Landmark,
+  Music,
   Search,
-  Sparkles,
-  Store,
-  Tag,
   TicketPercent,
   Utensils,
+  Wine,
   X,
 } from "lucide-react";
 import { useMapEntityData } from "@/hooks/useMapEntityData";
@@ -30,40 +26,83 @@ type SearchSection = {
   key: string;
   label: string;
   kinds: SearchResultKind[];
+  filter?: (result: SearchResult) => boolean;
 };
 
-const SECTIONS: SearchSection[] = [
-  { key: "properties", label: "Properties", kinds: ["property"] },
-  { key: "venues", label: "Partners & Venues", kinds: ["partner", "venue"] },
-  { key: "events", label: "Local Events", kinds: ["event"] },
-  { key: "perks", label: "Perks", kinds: ["perk"] },
-  { key: "hotels", label: "Hotels", kinds: ["hotel"] },
-  { key: "civic", label: "Civic", kinds: ["civic"] },
-  { key: "brands", label: "Brands", kinds: ["brand"] },
-  { key: "listings", label: "Listings", kinds: ["listing"] },
+const DISCOVERY_SECTIONS: SearchSection[] = [
+  {
+    key: "trending",
+    label: "Trending Nearby",
+    kinds: ["event", "venue", "partner", "perk"],
+    filter: (result) => /\b(live|music|coffee|dining|restaurant|happy|cocktail|drink|perk|event|tonight)\b/i.test(getSearchBlob(result)),
+  },
+  {
+    key: "tonight",
+    label: "Tonight",
+    kinds: ["event", "venue", "partner", "perk"],
+    filter: (result) => /\b(tonight|music|event|happy|hour|cocktail|drinks|dinner|live)\b/i.test(getSearchBlob(result)),
+  },
+  {
+    key: "live-nearby",
+    label: "Live Nearby",
+    kinds: ["property", "hotel", "listing"],
+    filter: (result) => /\b(residential|building|property|condo|apartment|hotel|rainey|seaholm|downtown)\b/i.test(getSearchBlob(result)),
+  },
+  {
+    key: "benefits",
+    label: "Member Benefits",
+    kinds: ["perk", "venue", "partner"],
+    filter: (result) => /\b(perk|benefit|offer|member|included|discount|complimentary|free|inkind|happy hour)\b/i.test(getSearchBlob(result)),
+  },
 ];
 
-const STARTER_LABELS: Record<string, string> = {
-  properties: "Top properties",
-  perks: "Active perks",
-  events: "Upcoming events",
-  venues: "Featured partners",
-};
+const SEARCH_PLACEHOLDERS = [
+  "Where do you want to go?",
+  "What do you want to do?",
+  "Who do you want to meet?",
+];
 
-const KIND_ICON = {
-  property: Building2,
-  partner: Store,
-  venue: Store,
-  event: CalendarDays,
-  perk: TicketPercent,
-  hotel: Hotel,
-  brand: Tag,
-  civic: Landmark,
-  listing: Home,
-} satisfies Record<SearchResultKind, typeof Building2>;
+const INTENT_SHORTCUTS = [
+  { label: "Coffee", query: "Coffee before work", icon: Coffee },
+  { label: "Happy Hour", query: "Happy hour nearby", icon: Wine },
+  { label: "Live Music", query: "Live music tonight", icon: Music },
+  { label: "Dinner", query: "Dinner with friends", icon: Utensils },
+  { label: "Wellness", query: "Wellness nearby", icon: Activity },
+  { label: "Events", query: "Events this weekend", icon: CalendarDays },
+  { label: "Buildings", query: "Buildings near Rainey", icon: Building2 },
+  { label: "Perks", query: "Member benefits nearby", icon: TicketPercent },
+];
+
+const FALLBACK_IMAGES: Record<SearchResultKind, string> = {
+  property: "/images/map-pins/property/downtown-view.jpg",
+  partner: "/images/imported/perks/edgerooftop-homepage-sipinthescene-638515e802064.jpg",
+  venue: "/images/imported/perks/edgerooftop-homepage-sipinthescene-638515e802064.jpg",
+  event: "/images/imported/perks/rainey-is-back.png",
+  perk: "/images/imported/perks/happy-hour-2.png",
+  hotel: "/images/map-pins/property/hotel-van-zandt.webp",
+  brand: "/images/imported/perks/designation-campaign.png",
+  civic: "/images/imported/perks/contempary-austin.jpg",
+  listing: "/images/map-pins/property/downtown-view.jpg",
+};
 
 function readText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function getImage(entity: any) {
+  return readText(
+    entity?.image ||
+      entity?.imageUrl ||
+      entity?.heroImage ||
+      entity?.hero_image ||
+      entity?.media?.hero ||
+      entity?.primaryImage ||
+      entity?.raw?.image ||
+      entity?.raw?.imageUrl ||
+      entity?.raw?.heroImage ||
+      entity?.raw?.hero_image ||
+      entity?.raw?.media?.hero,
+  );
 }
 
 function getCoords(entity: any) {
@@ -124,6 +163,7 @@ function normalizeResult(entity: any): SearchResult | null {
   const address = readText(entity?.address);
   const listingFacts = readText(entity?.listingFacts);
   const offerTitle = readText(entity?.perk?.title || entity?.perk?.offer || entity?.deals_offers || entity?.specials);
+  const summary = readText(entity?.residentLabel || entity?.subtitle || entity?.summary || entity?.description || entity?.offer || entity?.raw?.summary);
   const subtitle =
     kind === "listing"
       ? listingFacts || [entity?.beds ? `${entity.beds} bed` : "", entity?.baths ? `${entity.baths} bath` : "", neighborhood].filter(Boolean).join(" · ")
@@ -141,6 +181,8 @@ function normalizeResult(entity: any): SearchResult | null {
     timeLabel,
     category,
     badge: kind === "perk" ? offerTitle || "Perk active" : kind === "listing" ? readText(entity?.priceLabel) : "",
+    image: getImage(entity),
+    context: summary,
     ...coords,
   };
   result.route = getRoute(result, entity);
@@ -163,21 +205,41 @@ function getSearchBlob(result: SearchResult) {
     .toLowerCase();
 }
 
+function getIntentNeedle(query: string) {
+  return String(query || "")
+    .toLowerCase()
+    .replace(/\bwhere do you want to go\??/g, "coffee dining drinks rooftops events perks")
+    .replace(/\bwhat do you want to do\??/g, "event live music happy hour dinner wellness perk")
+    .replace(/\bwho do you want to meet\??/g, "events live music community resident hotel coffee")
+    .replace(/\bbefore work\b/g, "coffee")
+    .replace(/\bwith friends\b/g, "dining restaurant drinks")
+    .replace(/\bthis weekend\b/g, "event")
+    .replace(/\bnearby\b/g, "")
+    .replace(/\btonight\b/g, "tonight live music event")
+    .replace(/\bmember benefits\b/g, "perk offer benefit")
+    .trim();
+}
+
 function sectionResults(results: SearchResult[], query: string) {
-  return SECTIONS.map((section) => {
+  const needle = getIntentNeedle(query);
+  const used = new Set<string>();
+  return DISCOVERY_SECTIONS.map((section) => {
     const matches = results
       .filter((result) => section.kinds.includes(result.kind))
-      .filter((result) => !query || getSearchBlob(result).includes(query))
+      .filter((result) => !section.filter || section.filter(result))
+      .filter((result) => !needle || getSearchBlob(result).includes(needle) || needle.split(/\s+/).some((part) => part.length > 2 && getSearchBlob(result).includes(part)))
+      .filter((result) => {
+        if (used.has(result.id)) return false;
+        used.add(result.id);
+        return true;
+      })
       .slice(0, query ? 5 : 4);
     return { ...section, matches };
   }).filter((section) => section.matches.length > 0);
 }
 
 function starterResults(results: SearchResult[]) {
-  const starterSections = new Set(["properties", "perks", "events", "venues"]);
-  return sectionResults(results, "")
-    .filter((section) => starterSections.has(section.key))
-    .map((section) => ({ ...section, label: STARTER_LABELS[section.key] || section.label }));
+  return sectionResults(results, "");
 }
 
 export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: QuickSearchModalProps) {
@@ -187,6 +249,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   const places = useMapEntityData();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   const results = useMemo(() => {
     const seen = new Set<string>();
@@ -223,6 +286,14 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     if (!isOpen) return;
     setActiveIndex(0);
   }, [isOpen, normalizedQuery]);
+
+  useEffect(() => {
+    if (!isOpen || query) return undefined;
+    const timer = window.setInterval(() => {
+      setPlaceholderIndex((index) => (index + 1) % SEARCH_PLACEHOLDERS.length);
+    }, 3000);
+    return () => window.clearInterval(timer);
+  }, [isOpen, query]);
 
   if (!isOpen) return null;
 
@@ -275,6 +346,13 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
 
   let resultCounter = -1;
 
+  function handleResultImageError(event: React.SyntheticEvent<HTMLImageElement>, kind: SearchResultKind) {
+    const fallback = FALLBACK_IMAGES[kind] || FALLBACK_IMAGES.venue;
+    if (event.currentTarget.dataset.fallbackApplied === "true") return;
+    event.currentTarget.dataset.fallbackApplied = "true";
+    event.currentTarget.src = fallback;
+  }
+
   return (
     <div className="dp-quick-search-overlay" role="presentation" onMouseDown={onClose}>
       <div
@@ -288,8 +366,9 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
       >
         <div className="dp-quick-search-head">
           <div>
-            <p className="dp-quick-search-eyebrow">Downtown search</p>
-            <h2 id="dp-quick-search-title">Find what is nearby.</h2>
+            <p className="dp-quick-search-eyebrow">Downtown Austin</p>
+            <h2 id="dp-quick-search-title">What are you looking for?</h2>
+            <p className="dp-quick-search-support">Places, events, perks, buildings, restaurants, rooftops, coffee, live music and more.</p>
           </div>
           <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
             <X size={18} />
@@ -302,7 +381,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search places, perks, events, buildings..."
+            placeholder={SEARCH_PLACEHOLDERS[placeholderIndex]}
             aria-label="Search Downtown Perks"
           />
           {query ? (
@@ -310,19 +389,40 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
               <X size={15} />
             </button>
           ) : (
-            <Sparkles size={15} aria-hidden="true" />
+            <span aria-hidden="true" />
           )}
         </div>
 
-        <div className="dp-quick-search-results" role="listbox" aria-label="Search results">
-          {!normalizedQuery && (
-            <p className="dp-quick-search-empty">Start typing to search downtown.</p>
-          )}
+        <div className="dp-quick-search-intents" aria-label="Explore by intent">
+          <h3>Explore by intent</h3>
+          <div className="dp-quick-search-intent-rail">
+            {INTENT_SHORTCUTS.map((intent) => {
+              const Icon = intent.icon;
+              const isSelected = query === intent.query;
+              return (
+                <button
+                  key={intent.label}
+                  type="button"
+                  className={isSelected ? "is-active" : ""}
+                  onClick={() => {
+                    setQuery(intent.query);
+                    inputRef.current?.focus({ preventScroll: true });
+                  }}
+                  aria-pressed={isSelected}
+                >
+                  <Icon size={15} aria-hidden="true" />
+                  <span>{intent.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
+        <div className="dp-quick-search-results" role="listbox" aria-label="Search results">
           {noResults ? (
             <div className="dp-quick-search-no-results">
               <strong>No matching places yet.</strong>
-              <span>Try a property, venue, event, perk, or neighborhood.</span>
+              <span>Try coffee, live music, happy hour, dinner, rooftops, events, or a downtown building.</span>
             </div>
           ) : (
             grouped.map((section) => (
@@ -332,8 +432,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
                   {section.matches.map((result) => {
                     resultCounter += 1;
                     const rowIndex = resultCounter;
-                    const Icon = KIND_ICON[result.kind] || Badge;
                     const isActive = rowIndex === activeIndex;
+                    const image = result.image || FALLBACK_IMAGES[result.kind] || FALLBACK_IMAGES.venue;
                     return (
                       <button
                         key={`${section.key}-${result.id}`}
@@ -344,18 +444,12 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
                         onMouseEnter={() => setActiveIndex(rowIndex)}
                         onClick={() => chooseResult(result)}
                       >
-                        <span className="dp-quick-search-icon" aria-hidden="true">
-                          {result.kind === "venue" && /coffee/i.test(result.category || result.subtitle || "") ? (
-                            <Coffee size={17} />
-                          ) : result.kind === "venue" && /dining|restaurant/i.test(result.category || result.subtitle || "") ? (
-                            <Utensils size={17} />
-                          ) : (
-                            <Icon size={17} />
-                          )}
+                        <span className="dp-quick-search-image" aria-hidden="true">
+                          <img src={image} alt="" loading="lazy" decoding="async" onError={(event) => handleResultImageError(event, result.kind)} />
                         </span>
                         <span className="dp-quick-search-copy">
                           <strong>{result.title}</strong>
-                          <small>{result.subtitle || result.address || result.neighborhood || result.kind}</small>
+                          <small>{[result.neighborhood, result.context || result.subtitle || result.address || result.kind].filter(Boolean).join(" · ")}</small>
                         </span>
                         {result.badge ? <span className="dp-quick-search-badge">{result.badge}</span> : null}
                         <ChevronRight className="dp-quick-search-chevron" size={16} aria-hidden="true" />
@@ -369,9 +463,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
         </div>
 
         <div className="dp-quick-search-footer">
-          <span>Start typing to search</span>
+          <span>Discover what is happening downtown right now.</span>
           <span>Use ↑ ↓ to navigate</span>
-          <span>ESC to close</span>
         </div>
       </div>
     </div>

@@ -159,9 +159,9 @@ export default function Home() {
   const faqs = isPartner ? partnerFaqs : residentFaqs;
   const hero = {
     eyebrow: "Resident View",
-    title: "Where downtown meets you",
-    subhead: "Everything nearby — in one map.",
-    body: "Built for people who actually live here — and the places that make it feel like home. From coffee to dinner, live events, and everything in between, plus the perks you didn’t know you had. All in one place. No extra apps. No logins. No platforms or directories guessing what matters.",
+    title: "Everything nearby. One place to start.",
+    subhead: "Find places to eat, events worth showing up for, perks you can actually use, and local recommendations from around downtown.",
+    body: "",
     primary: "Open the Map",
     primaryHref: "/map?mode=resident&tab=map",
     secondary: "Get Your Perks Card",
@@ -178,8 +178,8 @@ export default function Home() {
             <div>
               <span className="dp-label mb-4 block">{hero.eyebrow}</span>
               <h1 className="font-heading text-[40px] font-medium leading-[1.02] md:text-[64px]">{hero.title}</h1>
-              <p className="mt-4 font-heading text-2xl italic leading-tight text-[#0B1F33]">{hero.subhead}</p>
-              <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">{hero.body}</p>
+              <p className="mt-5 max-w-2xl text-[16px] leading-[1.65] text-[#0B1F33]/68">{hero.subhead}</p>
+              {hero.body && <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">{hero.body}</p>}
               <div className="mt-7 flex flex-wrap items-center gap-2">
                 <Link to={hero.primaryHref} className="inline-flex h-8 shrink-0 items-center justify-center rounded-[2px] bg-[#0B1F33] px-3.5 text-[11px] font-medium uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
                   {hero.primary}

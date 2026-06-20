@@ -3,8 +3,10 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { pathToFileURL } from 'node:url'
 
+const DEFAULT_BASE44_APP_ID = "cbef744a8545c389ef439ea6";
 const DEFAULT_BASE44_APP_BASE_URL = "https://downtown-perks-live.base44.app";
 
+process.env.VITE_BASE44_APP_ID ||= DEFAULT_BASE44_APP_ID;
 process.env.VITE_BASE44_APP_BASE_URL ||= DEFAULT_BASE44_APP_BASE_URL;
 
 function localApiRoutes() {

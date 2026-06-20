@@ -1,0 +1,339 @@
+html body #root main.marketing-contact-page .marketing-contact-container {
+  width: min(calc(100vw - 64px), 980px) !important;
+  margin-inline: auto !important;
+  padding-inline: 0 !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-hero-grid,
+  .marketing-contact-section-head,
+  .marketing-contact-form-grid,
+  .marketing-contact-context,
+  .marketing-contact-form,
+  .marketing-contact-faq-list
+) {
+  justify-items: start !important;
+  align-items: start !important;
+  text-align: left !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-section-head {
+  width: 100% !important;
+  max-width: 760px !important;
+  margin-inline: 0 !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-section-head h2,
+html body #root main.marketing-contact-page .marketing-contact-section-head > p,
+html body #root main.marketing-contact-page .marketing-contact-hero-copy,
+html body #root main.marketing-contact-page .marketing-contact-hero-copy > p,
+html body #root main.marketing-contact-page .marketing-contact-context > p,
+html body #root main.marketing-contact-page .marketing-contact-context-note,
+html body #root main.marketing-contact-page .marketing-contact-help {
+  width: 100% !important;
+  max-width: 760px !important;
+  text-align: left !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-context h2 {
+  width: max-content !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  font-size: clamp(22px, 4vw, 32px) !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-eyebrow {
+  color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-intent-rail,
+  .marketing-contact-plan-rail
+) {
+  width: 100% !important;
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  scroll-padding-inline: 0 !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  button.marketing-contact-button,
+  a.marketing-contact-button,
+  button.marketing-contact-intent-card
+) {
+  appearance: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 28px !important;
+  height: 28px !important;
+  max-height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transform: none !important;
+  translate: none !important;
+  transition: color 160ms ease, -webkit-text-fill-color 160ms ease !important;
+  will-change: auto !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  button.marketing-contact-button,
+  a.marketing-contact-button,
+  button.marketing-contact-intent-card
+) :is(span, strong) {
+  color: currentColor !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-button-primary,
+  .marketing-contact-button-secondary,
+  .marketing-contact-intent-card.is-selected,
+  .marketing-contact-intent-card[aria-pressed="true"]
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  border-color: transparent !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-button svg,
+  .marketing-contact-intent-card svg
+) {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+  stroke-width: 2 !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-button:hover,
+  .marketing-contact-button:focus-visible,
+  .marketing-contact-button:active,
+  .marketing-contact-intent-card:hover,
+  .marketing-contact-intent-card:focus-visible,
+  .marketing-contact-intent-card:active,
+  .marketing-contact-intent-card.is-selected,
+  .marketing-contact-intent-card[aria-pressed="true"]
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  box-shadow: none !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-button:hover,
+  .marketing-contact-button:focus-visible,
+  .marketing-contact-button:active,
+  .marketing-contact-intent-card:hover,
+  .marketing-contact-intent-card:focus-visible,
+  .marketing-contact-intent-card:active,
+  .marketing-contact-intent-card.is-selected,
+  .marketing-contact-intent-card[aria-pressed="true"]
+) :is(span, strong) {
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-button:disabled,
+  .marketing-contact-button[aria-disabled="true"],
+  .marketing-contact-intent-card:disabled
+) {
+  color: rgba(11, 31, 51, .34) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .34) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+html body #root main.marketing-contact-page :is(
+  .marketing-contact-button.dp-action-activated,
+  .marketing-contact-intent-card.dp-action-activated,
+  .marketing-contact-button-primary.dp-action-activated,
+  .marketing-contact-button-secondary.dp-action-activated
+) {
+  opacity: 1 !important;
+  transform: none !important;
+  translate: none !important;
+  transition: color 160ms ease, -webkit-text-fill-color 160ms ease !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq-list {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: 0;
+  border-top: 0;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq {
+  overflow: hidden;
+  border: 1px solid rgba(11, 31, 51, .08);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, .045);
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq summary {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  cursor: pointer;
+  list-style: none;
+  color: #0B1F33;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq summary::marker {
+  content: "";
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq summary span {
+  min-width: 0;
+  color: #0B1F33;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq summary:hover span {
+  color: #B8963E;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq summary:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, .55);
+  outline-offset: -3px;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq-icon {
+  width: 15px;
+  height: 15px;
+  color: #C8A96A;
+  stroke-width: 1.9;
+  transition: transform .18s ease;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq[open] .marketing-contact-faq-icon {
+  transform: rotate(180deg);
+}
+
+html body #root main.marketing-contact-page .marketing-contact-faq p {
+  margin: 0;
+  padding: 0 16px 16px;
+  color: rgba(11, 31, 51, .62);
+  font-size: 13.5px;
+  line-height: 1.58;
+}
+
+@media (max-width: 640px) {
+  html body #root main.marketing-contact-page .marketing-contact-container {
+    width: calc(100vw - 56px) !important;
+  }
+
+  html body #root main.marketing-contact-page .marketing-contact-section {
+    margin-top: 36px !important;
+  }
+
+  html body #root main.marketing-contact-page .marketing-contact-section-head {
+    margin-bottom: 14px !important;
+  }
+
+  html body #root main.marketing-contact-page .marketing-contact-faq-list {
+    gap: 8px;
+  }
+
+  html body #root main.marketing-contact-page .marketing-contact-faq summary {
+    min-height: 50px;
+    padding: 0 14px;
+    font-size: 13.5px;
+  }
+
+  html body #root main.marketing-contact-page .marketing-contact-faq p {
+    padding: 0 14px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 960px) {
+  html body #root main.marketing-contact-page .marketing-contact-container {
+    width: min(calc(100vw - 128px), 980px) !important;
+  }
+}
+
+html body #root main.marketing-contact-page :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  span,
+  small,
+  strong,
+  label,
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  summary,
+  .marketing-contact-eyebrow,
+  .marketing-contact-field > span,
+  .marketing-contact-intent-title,
+  .marketing-contact-button,
+  .marketing-contact-plan-line,
+  .marketing-contact-status
+) {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-eyebrow,
+html body #root main.marketing-contact-page .marketing-contact-field > span {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+html body #root main.marketing-contact-page .marketing-contact-button,
+html body #root main.marketing-contact-page .marketing-contact-intent-card,
+html body #root main.marketing-contact-page .marketing-contact-intent-title {
+  font-weight: 600 !important;
+}

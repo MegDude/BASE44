@@ -62,8 +62,8 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
   inkind: {
     label: "inKind",
-    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__inkind-logo" src="/pins/brands/inkind-logo-gold.svg" alt="" aria-hidden="true" />',
-    asset: "/pins/brands/inkind-logo-gold.svg",
+    glyph: '<img class="dp-pin-logo dp-live-pin__brand-logo dp-live-pin__inkind-logo" src="/pins/brands/inkind-logo.png" alt="" aria-hidden="true" />',
+    asset: "/pins/brands/inkind-logo.png",
   },
   dana: {
     label: "DANA",

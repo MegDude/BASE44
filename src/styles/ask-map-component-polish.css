@@ -1,0 +1,260 @@
+/* Ask Map component polish: command surface, not panel chrome. */
+.dp-ask-map-panel,
+html body #root .dp-map-page.dp-map-page .dp-entity-assistant,
+html body #root .dp-agent-console {
+  --dp-ask-ink: #0B1F33;
+  --dp-ask-muted: rgba(11, 31, 51, .62);
+  --dp-ask-soft: rgba(11, 31, 51, .46);
+  --dp-ask-faint: rgba(11, 31, 51, .34);
+  --dp-ask-disabled: rgba(11, 31, 51, .28);
+  color: var(--dp-ask-ink);
+}
+
+.dp-ask-map-panel {
+  width: min(100%, 680px);
+  margin: 0;
+  padding: clamp(14px, 2vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.6vw, 24px);
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.dp-ask-map-panel,
+.dp-ask-map-panel *,
+.dp-ask-map-panel *::before,
+.dp-ask-map-panel *::after {
+  box-sizing: border-box;
+}
+
+.dp-ask-map-panel :where(*) {
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.dp-ask-map-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.dp-ask-map-header-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dp-ask-map-title {
+  margin: 0;
+  color: var(--dp-ask-ink);
+  font-size: clamp(1.28rem, 2.4vw, 1.72rem);
+  font-weight: 540;
+  line-height: 1.02;
+  letter-spacing: -0.052em;
+}
+
+.dp-ask-map-subtitle {
+  max-width: 46rem;
+  margin: 0;
+  color: var(--dp-ask-muted);
+  font-size: clamp(.88rem, 1.5vw, .94rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.012em;
+}
+
+.dp-ask-map-panel-control {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dp-ask-faint);
+  cursor: pointer;
+  transition: color 160ms ease, opacity 160ms ease, transform 160ms ease;
+}
+
+.dp-ask-map-panel-control svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.8;
+}
+
+.dp-ask-map-panel-control:hover,
+.dp-ask-map-panel-control:focus-visible {
+  color: var(--dp-ask-ink);
+}
+
+.dp-ask-map-footer {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.2vw, 22px);
+  margin: 0;
+  padding: 0;
+}
+
+.dp-ask-map-prompt-list,
+html body #root .dp-map-page.dp-map-page .dp-entity-assistant .dp-ask-prompts {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  gap: 8px 18px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.dp-ask-map-prompt-link,
+html body #root .dp-map-page.dp-map-page .dp-entity-assistant .dp-ask-prompt-chip {
+  appearance: none !important;
+  display: inline !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--dp-ask-soft) !important;
+  -webkit-text-fill-color: var(--dp-ask-soft) !important;
+  font-size: .78rem !important;
+  font-weight: 420 !important;
+  line-height: 1.38 !important;
+  letter-spacing: -0.01em !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: color 160ms ease, opacity 160ms ease !important;
+}
+
+.dp-ask-map-prompt-link:hover,
+.dp-ask-map-prompt-link:focus-visible,
+html body #root .dp-map-page.dp-map-page .dp-entity-assistant .dp-ask-prompt-chip:hover,
+html body #root .dp-map-page.dp-map-page .dp-entity-assistant .dp-ask-prompt-chip:focus-visible {
+  color: var(--dp-ask-ink) !important;
+  -webkit-text-fill-color: var(--dp-ask-ink) !important;
+  text-decoration-line: underline !important;
+  text-decoration-thickness: from-font !important;
+  text-underline-offset: .24em !important;
+}
+
+.dp-ask-map-form,
+html body #root .dp-agent-console .dp-agent-input {
+  width: 100%;
+  min-width: 0;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: clamp(12px, 2vw, 18px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.dp-ask-map-input,
+html body #root .dp-agent-console .dp-agent-input input {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: var(--dp-ask-ink) !important;
+  caret-color: var(--dp-ask-ink);
+  font-size: clamp(1rem, 2vw, 1.18rem) !important;
+  font-weight: 420 !important;
+  line-height: 1.32 !important;
+  letter-spacing: -0.028em !important;
+}
+
+.dp-ask-map-input::placeholder,
+html body #root .dp-agent-console .dp-agent-input input::placeholder {
+  color: rgba(11, 31, 51, .42) !important;
+  opacity: 1;
+}
+
+.dp-ask-map-submit,
+.dp-button.dp-button-primary.dp-ask-map-submit,
+html body #root .dp-agent-console .dp-agent-send {
+  min-width: 0 !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--dp-ask-ink) !important;
+  font-size: .84rem !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.012em !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transition: color 160ms ease, opacity 160ms ease, transform 160ms ease !important;
+}
+
+.dp-ask-map-submit:hover:not(:disabled),
+html body #root .dp-agent-console .dp-agent-send:hover:not(:disabled) {
+  text-decoration-line: underline !important;
+  text-decoration-thickness: from-font !important;
+  text-underline-offset: .24em !important;
+}
+
+.dp-ask-map-submit:disabled,
+html body #root .dp-agent-console .dp-agent-send:disabled {
+  color: var(--dp-ask-disabled) !important;
+  cursor: not-allowed !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 520px) {
+  .dp-ask-map-panel {
+    padding-inline: 14px;
+    gap: 18px;
+  }
+
+  .dp-ask-map-prompt-list,
+  html body #root .dp-map-page.dp-map-page .dp-entity-assistant .dp-ask-prompts {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 7px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-ask-map-panel *,
+  .dp-ask-map-panel *::before,
+  .dp-ask-map-panel *::after {
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

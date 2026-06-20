@@ -296,9 +296,9 @@ const PANEL_CONTENT_BY_TYPE = {
   brand: {
     eyebrow: "Brand guide",
     primaryActionLabel: "Open Brand Guide",
-    whyHeading: "Why this brand belongs here",
+    whyHeading: "Why it matters",
     whyBody: "{title} connects to downtown through the places people already move through — trails, events, hotels, water, retail moments, and local routines.",
-    bestFor: ["Resident perks", "Event activations", "Trail and outdoor moments", "Hotel and visitor discovery"],
+    bestFor: ["Resident moments", "Event nights", "Trail routines", "Visitor discovery"],
     insight: "A strong brand pin should feel useful in place, not like an ad dropped onto a map.",
     nearbyHeading: "Activation nearby",
     askPrompts: ["Where does this brand show up nearby?", "What perk is available?", "What events connect to this?", "What should I do before or after?"],
@@ -329,7 +329,7 @@ const PANEL_CONTENT_BY_TYPE = {
     whyHeading: "Why this guide helps",
     whyBody: "This guide turns nearby options into a clearer plan, organized around how people actually move through downtown.",
     bestFor: ["Choosing faster", "Planning with visitors", "Finding nearby clusters", "Turning scattered options into a route"],
-    insight: "The map should reduce decision fatigue, not create another list to scroll.",
+    insight: "Use the nearby context to choose a first stop, then build the rest of the plan around what is close.",
     nearbyHeading: "Stops in the guide",
     askPrompts: ["What is the best first stop?", "What is nearby after this?", "Can I walk this route?", "What fits tonight?"],
   },
@@ -386,10 +386,11 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
 
   if (isYeti) {
     content.primaryActionLabel = "Open Brand Guide";
-    content.whyHeading = "Why this brand belongs here";
-    content.whyBody = "Outdoor gear, local movement, and everyday downtown routines.";
+    content.whyHeading = "Why it matters";
+    content.whyBody = "YETI fits the lake, trail, hotel, and event routines that already bring people through this part of downtown.";
     content.context = content.whyBody;
-    content.bestFor = ["Trail days", "Waterfront walks", "Hotel guest moments", "Resident perks", "Event activations"];
+    content.bestFor = [];
+    content.insight = "";
     content.perkTitle = "Resident perk";
     content.perkValue = "Free custom engraving for verified residents.";
     content.perkInstructions = "Show your Resident Pass in-store when the offer is active.";

@@ -320,6 +320,541 @@ html body :is(.dp-search-intent-switch button, .dp-search-intent-prompt-rail > b
   -webkit-text-fill-color: #C8A96A !important;
 }
 
+/* End-of-file branded map pin logo lock. Keep the circle; swap only the inner mark. */
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin :is(.dp-live-pin__inkind-logo, .dp-live-pin__legends-logo),
+html body #root .dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-live-pin__inkind-logo, .dp-live-pin__legends-logo) {
+  display: block !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-width: 30px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin .dp-live-pin__inkind-logo,
+html body #root .dp-map-page.dp-map-page .dp-map-pin-badge .dp-live-pin__inkind-logo {
+  width: 32px !important;
+  max-width: 32px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
+}
+
+/* Final branded map pin logo lock: keep unique logos inside the existing circular pin system. */
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin :is(.dp-live-pin__inkind-logo, .dp-live-pin__legends-logo),
+html body #root .dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-live-pin__inkind-logo, .dp-live-pin__legends-logo) {
+  display: block !important;
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-width: 30px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin .dp-live-pin__inkind-logo,
+html body #root .dp-map-page.dp-map-page .dp-map-pin-badge .dp-live-pin__inkind-logo {
+  width: 32px !important;
+  max-width: 32px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
+}
+
+/* ==========================================================
+   Search + popup interaction system polish
+   Layout and style only. Preserves search behavior, roles,
+   result data, and keyboard handling.
+   ========================================================== */
+html body #root .dp-product-shell-search-button.dp-product-shell-search-button {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1300;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0B1F33;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-transform: none;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background 200ms ease,
+    color 200ms ease;
+}
+
+html body #root .dp-product-shell-search-button.dp-product-shell-search-button svg {
+  width: 14px;
+  height: 14px;
+  color: rgba(11, 31, 51, 0.68);
+  stroke-width: 1.8;
+}
+
+html body #root .dp-product-shell-search-button.dp-product-shell-search-button span {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+}
+
+html body #root .dp-product-shell-search-button.dp-product-shell-search-button:hover {
+  background: #FFFFFF;
+  border-color: rgba(200, 169, 106, 0.42);
+  color: #0B1F33;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.09);
+  transform: translateY(-1px);
+}
+
+html body #root .dp-product-shell-search-button.dp-product-shell-search-button:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(11, 31, 51, 0.07);
+}
+
+html body #root .dp-product-shell-search-button.dp-product-shell-search-button:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.72);
+  outline-offset: 3px;
+}
+
+html body #root .dp-quick-search-overlay.dp-quick-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2400;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(200, 169, 106, 0.10), transparent 34%),
+    rgba(11, 31, 51, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+html body #root .dp-quick-search-modal.dp-quick-search-modal {
+  width: min(620px, 100%);
+  max-height: min(82dvh, 760px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  border-radius: 20px;
+  background: #FFFFFF;
+  color: #0B1F33;
+  font-family: Inter, system-ui, sans-serif;
+  box-shadow: 0 30px 80px rgba(11, 31, 51, 0.18);
+}
+
+html body #root .dp-quick-search-head.dp-quick-search-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+html body #root .dp-quick-search-eyebrow.dp-quick-search-eyebrow {
+  margin: 0 0 5px;
+  color: #B8963E;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+html body #root .dp-quick-search-head.dp-quick-search-head h2 {
+  margin: 0;
+  color: #0B1F33;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(19px, 3.8vw, 24px);
+  font-weight: 560;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+html body #root .dp-quick-search-close.dp-quick-search-close {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  border-radius: 11px;
+  background: #FFFFFF;
+  color: rgba(11, 31, 51, 0.66);
+  box-shadow: 0 8px 18px rgba(11, 31, 51, 0.06);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+html body #root .dp-quick-search-close.dp-quick-search-close:hover,
+html body #root .dp-quick-search-close.dp-quick-search-close:focus-visible {
+  color: #0B1F33;
+  border-color: rgba(200, 169, 106, 0.38);
+  transform: translateY(-1px);
+}
+
+html body #root .dp-quick-search-close.dp-quick-search-close:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.72);
+  outline-offset: 2px;
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap {
+  position: relative;
+  z-index: 1;
+  margin: 14px 18px 12px;
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid rgba(11, 31, 51, 0.10);
+  border-radius: 14px;
+  background: #FFFFFF;
+  color: rgba(11, 31, 51, 0.52);
+  box-shadow: 0 10px 26px rgba(11, 31, 51, 0.06);
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap svg {
+  color: rgba(11, 31, 51, 0.52);
+  stroke-width: 1.8;
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap:focus-within {
+  border-color: rgba(200, 169, 106, 0.58);
+  box-shadow:
+    0 0 0 4px rgba(200, 169, 106, 0.13),
+    0 12px 28px rgba(11, 31, 51, 0.07);
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #0B1F33;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 1.35;
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap input::placeholder {
+  color: rgba(11, 31, 51, 0.42);
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap button {
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(11, 31, 51, 0.54);
+  box-shadow: none;
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap button:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.72);
+  outline-offset: 2px;
+}
+
+html body #root .dp-quick-search-results.dp-quick-search-results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 14px 14px;
+  scrollbar-width: thin;
+}
+
+html body #root .dp-quick-search-empty.dp-quick-search-empty {
+  margin: 2px 4px 14px;
+  color: rgba(11, 31, 51, 0.52);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+html body #root .dp-quick-search-no-results.dp-quick-search-no-results {
+  display: grid;
+  gap: 5px;
+  margin: 2px 0 14px;
+  padding: 12px 4px;
+  border: 0;
+  border-radius: 0;
+  background: #FFFFFF;
+  color: rgba(11, 31, 51, 0.58);
+  box-shadow: none;
+}
+
+html body #root .dp-quick-search-no-results.dp-quick-search-no-results strong {
+  color: #0B1F33;
+  font-size: 13.5px;
+  font-weight: 560;
+}
+
+html body #root .dp-quick-search-no-results.dp-quick-search-no-results span {
+  color: rgba(11, 31, 51, 0.58);
+  font-size: 12.5px;
+}
+
+html body #root .dp-quick-search-section.dp-quick-search-section {
+  padding: 10px 0 4px;
+}
+
+html body #root .dp-quick-search-section.dp-quick-search-section + .dp-quick-search-section.dp-quick-search-section {
+  border-top: 1px solid rgba(11, 31, 51, 0.06);
+  margin-top: 8px;
+}
+
+html body #root .dp-quick-search-section.dp-quick-search-section h3 {
+  margin: 0 4px 8px;
+  color: rgba(11, 31, 51, 0.48);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html body #root .dp-quick-search-row-list.dp-quick-search-row-list {
+  display: grid;
+  gap: 6px;
+}
+
+html body #root .dp-quick-search-row.dp-quick-search-row {
+  width: 100%;
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto 16px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: #FFFFFF;
+  color: #0B1F33;
+  text-align: left;
+  box-shadow: none;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+html body #root .dp-quick-search-row.dp-quick-search-row:hover,
+html body #root .dp-quick-search-row.dp-quick-search-row.is-active,
+html body #root .dp-quick-search-row.dp-quick-search-row[aria-selected="true"] {
+  border-color: rgba(200, 169, 106, 0.36);
+  background: #FFFFFF;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.055);
+  transform: translateY(-1px);
+}
+
+html body #root .dp-quick-search-row.dp-quick-search-row:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.72);
+  outline-offset: 2px;
+}
+
+html body #root .dp-quick-search-icon.dp-quick-search-icon {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(11, 31, 51, 0.07);
+  border-radius: 11px;
+  background: #FFFFFF;
+  color: rgba(11, 31, 51, 0.68);
+}
+
+html body #root .dp-quick-search-icon.dp-quick-search-icon svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.8;
+}
+
+html body #root .dp-quick-search-copy.dp-quick-search-copy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+html body #root .dp-quick-search-copy.dp-quick-search-copy strong {
+  overflow: hidden;
+  color: #0B1F33;
+  font-size: 13.5px;
+  font-weight: 560;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html body #root .dp-quick-search-copy.dp-quick-search-copy small {
+  overflow: hidden;
+  margin: 0;
+  color: rgba(11, 31, 51, 0.58);
+  font-size: 11.5px;
+  font-weight: 430;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html body #root .dp-quick-search-badge.dp-quick-search-badge {
+  max-width: 160px;
+  overflow: hidden;
+  padding: 5px 8px;
+  border: 1px solid rgba(200, 169, 106, 0.28);
+  border-radius: 9px;
+  background: rgba(200, 169, 106, 0.08);
+  color: #7A622C;
+  font-size: 10.5px;
+  font-weight: 560;
+  letter-spacing: 0;
+  line-height: 1;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+html body #root .dp-quick-search-chevron.dp-quick-search-chevron {
+  width: 14px;
+  height: 14px;
+  color: rgba(11, 31, 51, 0.34);
+}
+
+html body #root .dp-quick-search-footer.dp-quick-search-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  justify-content: flex-start;
+  padding: 11px 18px 14px;
+  border-top: 1px solid rgba(11, 31, 51, 0.07);
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(11, 31, 51, 0.48);
+  font-size: 11px;
+  font-weight: 480;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-product-shell-search-button.dp-product-shell-search-button {
+    top: 12px;
+    right: 12px;
+    min-height: 36px;
+    padding: 0 11px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  html body #root .dp-quick-search-overlay.dp-quick-search-overlay {
+    align-items: end;
+    justify-items: center;
+    place-items: end center;
+    padding: 8px;
+  }
+
+  html body #root .dp-quick-search-modal.dp-quick-search-modal {
+    width: 100%;
+    max-height: 84dvh;
+    border-radius: 18px 18px 14px 14px;
+  }
+
+  html body #root .dp-quick-search-head.dp-quick-search-head {
+    padding: 16px 15px 12px;
+  }
+
+  html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap {
+    margin: 12px 14px 10px;
+    min-height: 44px;
+    border-radius: 13px;
+  }
+
+  html body #root .dp-quick-search-results.dp-quick-search-results {
+    padding: 0 10px 12px;
+  }
+
+  html body #root .dp-quick-search-row.dp-quick-search-row {
+    grid-template-columns: 32px minmax(0, 1fr) 14px;
+    min-height: 56px;
+    padding: 8px;
+  }
+
+  html body #root .dp-quick-search-icon.dp-quick-search-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  html body #root .dp-quick-search-badge.dp-quick-search-badge {
+    grid-column: 2 / 3;
+    justify-self: start;
+    max-width: 100%;
+    margin-top: 2px;
+  }
+
+  html body #root .dp-quick-search-footer.dp-quick-search-footer {
+    padding: 10px 14px 13px;
+    font-size: 10.5px;
+  }
+}
+
 /* ==========================================================
    DP typed panel system upgrade
    Layout and styling only. Entity content is intentionally preserved.

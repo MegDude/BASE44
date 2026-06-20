@@ -147,7 +147,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-body">
+    <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks">
       <ScrollToTop />
       <InteractionFeedback />
       {showNavbar && <Navbar />}

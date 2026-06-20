@@ -825,7 +825,7 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
       { label: "Rentals", filter: "Rentals", icon: Building2, prompt: "Luxury apartments nearby" },
     ],
     featuredPins: [
-      { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo-gold.svg", prompt: "inKind dining nearby" },
+      { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo.png", prompt: "inKind dining nearby" },
       { label: "DANA", kind: "filter", filter: "Civic", logo: "/pins/brands/dana-logo-gold.svg", prompt: "DANA civic updates" },
       { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo.png", prompt: "Legends listings nearby" },
       { label: "Fine Eyewear", kind: "filter", filter: "Campaigns", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "See Austin Differently" },
@@ -855,7 +855,7 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
       { label: "Brands", kind: "filter", filter: "Brands", prompt: "Brand activation opportunities" },
     ],
     featuredPins: [
-      { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo-gold.svg", prompt: "inKind dining performance" },
+      { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo.png", prompt: "inKind dining performance" },
       { label: "DANA", kind: "filter", filter: "Civic", logo: "/pins/brands/dana-logo-gold.svg", prompt: "DANA sponsorship opportunity" },
       { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo.png", prompt: "Legends listing demand" },
       { label: "Fine Eyewear", kind: "filter", filter: "Campaigns", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "Fine Eyewear campaign performance" },
@@ -3633,6 +3633,137 @@ function getInKindActionUrl(place, type) {
   return directionsUrl(place);
 }
 
+const INKIND_DISCOVERY_PROFILES = [
+  {
+    match: /\bcomedor\b/i,
+    subtitle: "Modern Mexican dining a few blocks from the lake.",
+    story:
+      "One of downtown's most celebrated dining rooms, Comedor blends contemporary Mexican cooking with dramatic architecture, warm hospitality, and a menu designed for sharing.",
+    benefit:
+      "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+    why:
+      "Residents keep it on the short list for date nights, client dinners, mezcal rounds, and the kind of meal that feels worth walking to.",
+    loves: "Contemporary Mexican plates, mezcal, cocktails, and a room that feels distinctly Austin.",
+    localTip: "Book ahead for prime dinner hours, or use it when you want a polished plan near the lake and Seaholm.",
+    goodFor: ["Date night", "Out-of-town guests", "Celebrations", "Cocktails"],
+    nearbyContext: "Close to The Austonian, The Independent, The Shore, and the Seaholm District.",
+  },
+  {
+    match: /\bred ash\b/i,
+    subtitle: "Handmade pasta, wood-fired cooking, and a downtown room people plan around.",
+    story:
+      "Red Ash is a downtown favorite known for handmade pastas, wood-fired cooking, and one of the hardest reservations in Austin.",
+    benefit:
+      "Eligible Downtown Perks members can unlock additional dining value through participating restaurant benefits.",
+    why:
+      "It works for celebrations, business dinners, wine nights, and visiting friends who want downtown energy with a refined meal.",
+    loves: "Fresh pasta, wood-fired entrees, strong service, and a dining room that always feels in demand.",
+    localTip: "Try earlier dinner windows or bar seating when the main room is booked.",
+    goodFor: ["Anniversaries", "Business dinners", "Wine nights", "Visiting friends"],
+    nearbyContext: "Easy from Congress, the Warehouse District, and nearby downtown hotels.",
+  },
+  {
+    match: /\bbulevar\b/i,
+    subtitle: "Coastal Mediterranean dining for long dinners and easy conversation.",
+    story:
+      "Bulevar brings coastal Mediterranean influences to downtown Austin with seafood-forward dishes, elegant interiors, and an atmosphere designed for lingering.",
+    benefit:
+      "Enjoy additional dining value through Downtown Perks participating restaurant benefits.",
+    why:
+      "Residents use it when they want a dinner that feels elevated without leaving the neighborhood.",
+    loves: "Seafood-forward plates, polished service, cocktails, and a dining room that softens as the night settles in.",
+    localTip: "Reserve around sunset and stay for drinks as the room shifts from bright to intimate.",
+    goodFor: ["Seafood", "Date night", "Cocktails", "Long dinners"],
+    nearbyContext: "A strong fit for downtown residents, hotel guests, and west side dinner plans.",
+  },
+  {
+    match: /\bemmer\s*&?\s*rye\b/i,
+    subtitle: "Seasonal Texas dining nearby.",
+    story:
+      "Emmer & Rye is a Rainey-area dining room built around seasonal Texas ingredients, thoughtful hospitality, and a menu that changes with what is fresh.",
+    benefit:
+      "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+    why:
+      "Residents choose it when dinner should feel local, creative, and close enough to walk to before or after Rainey plans.",
+    loves: "Seasonal plates, handmade pastas, local ingredients, and a dining room that rewards ordering a few things to share.",
+    localTip: "Go when you want dinner to be the plan, then walk into Rainey for a drink after.",
+    goodFor: ["Seasonal dining", "Sharing plates", "Date night", "Walkable dinner"],
+    nearbyContext: "Near Rainey, Hotel Van Zandt, The Shore, Waterline, and nearby downtown buildings.",
+  },
+  {
+    match: /\bgeraldine'?s?\b/i,
+    subtitle: "Dining and live music inside Hotel Van Zandt.",
+    story:
+      "Geraldine's is a polished Rainey dining and live music spot inside Hotel Van Zandt, good for cocktails, dinner, and plans before or after a show.",
+    benefit:
+      "Use your Downtown Perks membership here to enjoy additional dining value or claim the current resident perk when available.",
+    why:
+      "It gives residents a dependable reason to stay around Rainey when dinner, drinks, and live music can all happen in one place.",
+    loves: "Cocktails, dinner, live music, hotel energy, and a room that works for both dates and groups.",
+    localTip: "Use it for weekday happy hour, then stay into the evening when the music starts.",
+    goodFor: ["Happy hour", "Date night", "Cocktails", "Live music"],
+    nearbyContext: "Walkable from nearby downtown buildings, hotels, and Rainey Street plans.",
+  },
+  {
+    match: /\bparkside\b/i,
+    subtitle: "Oysters, cocktails, and downtown dining on Congress.",
+    story:
+      "Parkside is a downtown staple for oysters, cocktails, and a room that works before shows, after work, or when dinner needs to stay central.",
+    benefit:
+      "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+    why:
+      "Residents use it for reliable seafood, easy downtown meetups, and nights when Congress Avenue is already part of the plan.",
+    loves: "Oysters, cocktails, seafood plates, and a central downtown location.",
+    localTip: "Start with oysters and drinks, then decide whether dinner becomes the full plan.",
+    goodFor: ["Oysters", "Cocktails", "Pre-show dinner", "Downtown meetups"],
+    nearbyContext: "Close to Congress Avenue, the Warehouse District, hotels, and downtown venues.",
+  },
+];
+
+function cleanInKindResidentCopy(value) {
+  return cleanDisplayCopy(value)
+    .replace(/\bearn rewards?\b/gi, "unlock member benefits")
+    .replace(/\breceive dining credit\b/gi, "enjoy additional dining value")
+    .replace(/\bdining credit\b/gi, "dining value")
+    .replace(/\bparticipating merchant network\b/gi, "participating restaurant benefits")
+    .replace(/\bpowered by inKind\b/gi, "included with Downtown Perks")
+    .replace(/\bthrough inKind dining access\b/gi, "through Downtown Perks dining benefits")
+    .replace(/\binKind-compatible resident value\b/gi, "Downtown Perks resident value")
+    .replace(/\bthrough inKind\b/gi, "through Downtown Perks")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getInKindDiscoveryProfile(place) {
+  const name = place?.name || place?.title || "this restaurant";
+  const searchText = [
+    place?.id,
+    place?.name,
+    place?.title,
+    place?.raw?.name,
+    place?.raw?.title,
+    place?.category,
+    place?.summary,
+  ].filter(Boolean).join(" ");
+  const matched = INKIND_DISCOVERY_PROFILES.find((profile) => profile.match.test(searchText));
+  if (matched) return matched;
+  const cuisine = String(place?.category || place?.raw?.category || "Dining").split("/")[0].trim() || "Dining";
+  const neighborhood = place?.district || place?.neighborhood || "Downtown Austin";
+  const story = cleanInKindResidentCopy(place?.raw?.story || place?.raw?.summary || place?.summary || place?.description) ||
+    `${name} gives downtown residents a nearby dining option that is easy to choose when the night is still taking shape.`;
+
+  return {
+    subtitle: `${cuisine} near ${neighborhood}.`,
+    story,
+    benefit: "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+    why: `${name} is useful when you want a real local option nearby instead of scrolling for another place to go.`,
+    loves: cleanInKindResidentCopy(place?.raw?.knownFor || place?.raw?.cuisine || place?.category) || "Good food, easy access, and a reason to make nearby plans feel more intentional.",
+    localTip: "Check the current benefit before you go, then save it for dinner plans, visiting friends, or an easy night out.",
+    goodFor: ["Dinner nearby", "Date night", "Visiting friends", "Cocktails"],
+    nearbyContext: `Useful for residents, hotel guests, and downtown plans around ${neighborhood}.`,
+  };
+}
+
 const BURGER_BAR_CONGRESS_CONTENT = {
   title: "Burger Bar Congress",
   residentSubtitle: "Burgers, drinks, and downtown energy right on Congress.",
@@ -3853,8 +3984,8 @@ function InKindDiningDetails({
   onCloseAnswer,
 }) {
   if (!isInKindEntity(place)) return null;
-  const isPartnerMode = mode === "partner";
   const isGeraldines = isGeraldinesEntity(place);
+  const discoveryProfile = getInKindDiscoveryProfile(place);
   const nearbyRecommendations = getNearbyRecommendations({
     selectedEntity: place,
     entities: places,
@@ -3893,74 +4024,54 @@ function InKindDiningDetails({
     .slice(0, 4);
   const cuisine = String(place?.category || place?.raw?.category || "Dining").split("/")[0].trim() || "Dining";
   const neighborhood = place?.district || place?.neighborhood || "Downtown Austin";
-  const overview = cleanDisplayCopy(place?.raw?.summary || place?.summary || place?.description) ||
-    `${place?.name || "This restaurant"} gives residents and visitors a practical dining option when they are already nearby.`;
   const placeName = place?.name || "this restaurant";
-  const isParkside = String(placeName).toLowerCase().includes("parkside");
-  const experienceCopy = isGeraldines
-    ? "A polished Rainey dining and live music destination inside Hotel Van Zandt. Ideal for cocktails, dinner, date nights, and plans before or after a show."
-    : cleanDisplayCopy(place?.raw?.experience || place?.experience || place?.raw?.alignment_to_downtown_perks) || overview;
-  const contextCopy = isGeraldines
-    ? "Walkable from nearby hotels, residential buildings, and Rainey Street destinations."
-    : place?.raw?.walkability || place?.walkability || "Walkable from nearby downtown buildings and hotels.";
-  const benefitCopy = isPartnerMode
-    ? "Track dining interest, offer opens, save intent, and nearby discovery signals tied to this restaurant."
-    : isGeraldines
-      ? "Use your inKind balance here or claim the current resident perk when available."
-      : "Use your inKind balance for food and beverage purchases at this participating dining partner.";
-  const decisionTags = isPartnerMode
-    ? ["Dining demand", "Offer fit", "Save intent", "Campaign ready", "Walkable", "inKind"]
-    : isGeraldines
-      ? ["Happy Hour", "Date Night", "Cocktails", "Live Music", "Walkable", "inKind"]
-      : ["Happy Hour", "Date Night", isParkside ? "Oysters" : "Cocktails", "Walkable", "inKind"].filter(Boolean);
+  const decisionTags = [...(discoveryProfile.goodFor || []), "Downtown Perks"].filter(Boolean).slice(0, 6);
   const menuUrl = getInKindMenuUrl(place);
-  const prompts = [
-    isParkside ? "Best oyster spots nearby" : `Best places near ${placeName}`,
-    "Where should we go after this?",
-    `Happy hours near ${neighborhood}`,
-    "What's happening tonight?",
-  ];
+  const prompts = ["How does it work?", "What's nearby?", "Worth going tonight?", "Similar spots?"];
 
   return (
     <div className="dp-inkind-editorial-panel" data-editorial-panel="inkind">
-      <section className="dp-inkind-zone dp-inkind-perk-zone" aria-label={isPartnerMode ? "Partner benefit" : "Resident benefit"}>
+      <section className="dp-inkind-zone dp-inkind-story-zone" aria-label="Short venue story">
+        <p className="dp-inkind-zone-meta">{cuisine} · {neighborhood}</p>
+        <h3>{discoveryProfile.subtitle}</h3>
+        <p>{discoveryProfile.story}</p>
+      </section>
+
+      <section className="dp-inkind-zone dp-inkind-perk-zone" aria-label="Downtown Perks benefit">
         <div className="dp-inkind-accent-copy">
-          {isPartnerMode && <span>Partner signal</span>}
-          <h3>{isPartnerMode ? "Dining interest with offer context." : "Resident Benefit"}</h3>
-          <p>{benefitCopy}</p>
+          <span>Included with Downtown Perks</span>
+          <h3>Your Downtown Perks Benefit</h3>
+          <p>{discoveryProfile.benefit}</p>
           <div className="dp-inkind-perk-actions">
             <a href={getInKindActionUrl(place, "pay")} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
-              {isPartnerMode ? "Open Campaign Path" : "Open inKind"}
+              View Benefit
             </a>
             {menuUrl && (
               <a href={menuUrl} target="_blank" rel="noreferrer" className="dp-panel-action-text">
-                {isPartnerMode ? "Review Menu Fit" : "View Menu"}
+                View Menu
               </a>
             )}
           </div>
         </div>
       </section>
 
-      <section className="dp-inkind-zone dp-inkind-experience-zone" aria-label="What to expect">
-        {!isGeraldines && <p className="dp-inkind-zone-meta">{cuisine} · {neighborhood}</p>}
-        <h3>What To Expect</h3>
-        <p>{experienceCopy}</p>
-        <p className="dp-inkind-walkability">{contextCopy}</p>
+      <section className="dp-inkind-zone dp-inkind-experience-zone" aria-label="Why locals use it">
+        <h3>Why residents go</h3>
+        <p>{discoveryProfile.why}</p>
+        <p className="dp-inkind-walkability">{discoveryProfile.localTip}</p>
         <div className="dp-inkind-tag-row" aria-label="Good for">
           {decisionTags.map((item) => (
             <span key={item}>{item}</span>
           ))}
         </div>
-        <div className="dp-inkind-time-grid" aria-label="Best times">
+        <div className="dp-inkind-time-grid" aria-label="What people love">
           <div>
-            <span>Timing</span>
-            <strong>Weekday Happy Hour</strong>
-            <small>4-6 PM</small>
+            <span>What people love</span>
+            <strong>{discoveryProfile.loves}</strong>
           </div>
           <div>
-            <span>Weekend Dinner</span>
-            <strong>After 6 PM</strong>
-            <small>Good for groups</small>
+            <span>Nearby now</span>
+            <strong>{discoveryProfile.nearbyContext}</strong>
           </div>
         </div>
       </section>
@@ -3991,8 +4102,8 @@ function InKindDiningDetails({
       )}
 
       {onAsk && (
-        <section className="dp-inkind-zone dp-inkind-discovery-zone" aria-label="Ask Downtown Perks">
-          <h3>Ask Downtown Perks</h3>
+        <section className="dp-inkind-zone dp-inkind-discovery-zone" aria-label="Ask about this place">
+          <h3>Ask about this place</h3>
           <div className="dp-inkind-prompt-list">
             {prompts.map((prompt) => (
               <button key={prompt} type="button" onClick={() => onAsk(prompt)} disabled={loading}>
@@ -4057,6 +4168,28 @@ function getDestinationKind(place) {
   if (text.includes("civic") || text.includes("park") || text.includes("public")) return "civic";
   if (text.includes("brand") || text.includes("experience")) return "brand";
   return "place";
+}
+
+function isBrandLikePanelPlace(place) {
+  const raw = place?.raw || {};
+  const text = [
+    place?.id,
+    place?.name,
+    place?.title,
+    place?.type,
+    place?.partnerType,
+    place?.brand,
+    place?.category,
+    place?.category_key,
+    raw.id,
+    raw.name,
+    raw.type,
+    raw.partnerType,
+    raw.brand,
+    raw.category,
+    raw.category_key,
+  ].filter(Boolean).join(" ").toLowerCase();
+  return /\b(brand|brands|brand_activation|sponsor|sponsorship|yeti|equinox|rivian|lululemon|tecovas)\b/.test(text);
 }
 
 function getCuratedArray(value) {
@@ -4449,10 +4582,10 @@ function getNearbyContextItems(place, places = []) {
   const raw = place?.raw || {};
   if (/\byeti\b/i.test(`${place?.id || ""} ${place?.name || ""} ${place?.brand || ""} ${raw.id || ""} ${raw.name || ""} ${raw.brand || ""}`)) {
     return [
-      { label: "Ann & Roy Butler Trail Access", value: "Trail access · Seaholm" },
-      { label: "Rainey Street", value: "Dining and nightlife · Rainey" },
-      { label: "Congress Avenue Bridge", value: "Civic landmark · Downtown Core" },
-      { label: "Waterfront restaurants", value: "Dining nearby · Lady Bird Lake" },
+      { label: "Ann & Roy Butler Trail Access", value: "Trail access near the lake" },
+      { label: "Rainey Street", value: "Drinks, dining, and live energy nearby" },
+      { label: "Congress Avenue Bridge", value: "Downtown landmark and evening walk" },
+      { label: "Waterfront restaurants", value: "Dinner and drinks by Lady Bird Lake" },
     ];
   }
   if (isRoyalBlueGroceryPlace(place)) {
@@ -4695,6 +4828,8 @@ function getDestinationLocationLine(place) {
 function PanelContext({ place, mode }) {
   const isProperty = getResidentEntityKind(place) === "property" || Boolean(getResolvedLegendsListing(place) || getLuxuryPresenceBuilding(place) || isLegendsListingLike(place));
   const panelContent = resolveEntityPanelContent(place, mode);
+  const insightText = String(panelContent.insight || "").trim();
+  const showPanelInsight = Boolean(insightText) && !/\b(decision fatigue|ad dropped onto a map)\b/i.test(insightText);
   if (isBatheEntity(place)) {
     return (
       <DestinationSection title="Why it matters" className="dp-property-opening-section dp-property-narrative-section">
@@ -4737,8 +4872,8 @@ function PanelContext({ place, mode }) {
   return (
     <DestinationSection title={panelContent.whyHeading || "Why this matters"} className="dp-property-opening-section dp-property-narrative-section">
       <p className="dp-why-people-go">{panelContent.whyBody || getPanelContextSentence(place, mode)}</p>
-      {panelContent.insight && (
-        <p className="dp-destination-section-note">{panelContent.insight}</p>
+      {showPanelInsight && (
+        <p className="dp-destination-section-note">{insightText}</p>
       )}
     </DestinationSection>
   );
@@ -4792,6 +4927,7 @@ function KnownForSection({ place, mode = "resident" }) {
   const curatedItems = getCuratedArray(raw.residentValues || raw.resident_values || place?.residentValues);
   const panelContent = resolveEntityPanelContent(place, mode);
   const kind = getDestinationKind(place);
+  if ((kind === "brand" || isBrandLikePanelPlace(place)) && !panelContent.bestFor?.length) return null;
   const batheItems = [
     "Recovery, wellness, and weekend routines.",
     "Walkable from several residential towers and hotels.",
@@ -5290,7 +5426,7 @@ function EntityAssistant({ place, mode, answer, loading, onAsk, onClose, onSelec
   const prompts = getEntityAssistantPrompts(place, mode);
 
   return (
-    <DestinationSection title="Ask about this" className="dp-entity-assistant">
+    <DestinationSection title="Ask about this place" className="dp-entity-assistant">
       <div className="dp-ask-prompts">
         {prompts.map((prompt) => (
           <button key={prompt} type="button" className="dp-ask-prompt-chip" onClick={() => onAsk(prompt)} disabled={loading}>
@@ -5382,7 +5518,7 @@ function PartnerAskSection({ place, answer, loading, onAsk, onClose, onSelect })
 
   return (
     <section className="dp-partner-ask-section">
-      <h3>Ask about this</h3>
+      <h3>Ask about this place</h3>
       <div className="dp-partner-ask-rail">
         {prompts.map((prompt) => (
           <button key={prompt} type="button" onClick={() => onAsk(prompt)} disabled={loading}>
@@ -8769,25 +8905,26 @@ function SearchIntentConsole({
         data-state="focused"
         onPointerDown={(event) => event.stopPropagation()}
       >
-        <button
-          type="button"
-          className="dp-search-intent-collapse dp-search-intent-collapse-icon"
-          aria-label="Collapse map search console"
-          aria-expanded="true"
-          onClick={onCollapse}
-        >
-          <ChevronDown aria-hidden="true" />
-        </button>
-
-        <div className="dp-search-intent-console-header">
-          {renderModeSwitch()}
-        </div>
-
-        <form className="dp-search-intent-form" onSubmit={onSubmit}>
+        <div className="dp-search-intent-console-header dp-search-intent-top-rail">
           <div className="dp-search-intent-label">
             <Sparkles className="h-3 w-3" aria-hidden="true" />
             <span>Ask the map</span>
           </div>
+          <div className="dp-search-intent-top-actions">
+            {renderModeSwitch()}
+            <button
+              type="button"
+              className="dp-search-intent-collapse dp-search-intent-collapse-icon"
+              aria-label="Collapse map search console"
+              aria-expanded="true"
+              onClick={onCollapse}
+            >
+              <ChevronDown aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <form className="dp-search-intent-form" onSubmit={onSubmit}>
           <div className="dp-search-intent-input-row">
             <Search className="dp-search-intent-search-icon" aria-hidden="true" />
             <input

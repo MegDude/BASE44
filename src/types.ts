@@ -19,6 +19,8 @@ export type SearchResult = {
   timeLabel?: string;
   category?: string;
   badge?: string;
+  image?: string;
+  context?: string;
   lat?: number;
   lng?: number;
   route?: string;

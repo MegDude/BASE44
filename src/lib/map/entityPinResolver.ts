@@ -118,7 +118,29 @@ function hasResidentialSignal(entity: Record<string, unknown>): boolean {
   );
 }
 
+function hasLegendsPinSignal(entity: Record<string, unknown>): boolean {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  const text = entityText(entity);
+  return (
+    /\blegends\b/.test(text) ||
+    Boolean(
+      entity.legendsListing ||
+        entity.rentalListing ||
+        entity.legendsResidentialContent ||
+        entity.legendsResidentialExperience ||
+        raw.legendsListing ||
+        raw.rentalListing ||
+        raw.legendsResidentialContent ||
+        raw.legendsResidentialExperience,
+    )
+  );
+}
+
 export function resolveEntityPin(entity: Record<string, unknown>) {
+  if (hasLegendsPinSignal(entity)) {
+    return getPinAsset("legends");
+  }
+
   const textForPin = entityText(entity);
   if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => textForPin.includes(token)))?.[0] === "legends") {
     return getPinAsset("legends");

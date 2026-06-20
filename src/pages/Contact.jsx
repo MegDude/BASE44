@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Send } from "lucide-react";
+import { ArrowRight, ChevronDown, Send } from "lucide-react";
 import {
   ANNUAL_PLANS,
   PARTNER_TYPES,
@@ -146,6 +146,7 @@ export default function ContactPage() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [errors, setErrors] = useState({});
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   const selectedPartnerType = PARTNER_TYPES.includes(form.partnerType) ? form.partnerType : undefined;
   const selectedPlans = useMemo(() => (selectedPartnerType ? getPlansForPartnerType(selectedPartnerType) : []), [selectedPartnerType]);
@@ -200,7 +201,6 @@ export default function ContactPage() {
       interest: intent.interest,
     }));
     setStatus({ type: "idle", message: "" });
-    window.setTimeout(scrollToForm, 20);
   }
 
   function validate() {
@@ -287,7 +287,7 @@ export default function ContactPage() {
         <SectionHeader
           eyebrow="Partner type"
           title="Choose the closest fit."
-          copy="Pick a lane and the form will adjust to the right annual context."
+          copy="Select the partner type that best matches your property, venue, brand, or program so we can point you toward the right annual setup."
         />
         <div className="marketing-contact-intent-rail">
           {contactIntents.map((intent) => {
@@ -296,7 +296,8 @@ export default function ContactPage() {
                 key={intent.title}
                 type="button"
                 onClick={() => applyIntent(intent)}
-                className="marketing-contact-intent-card"
+                aria-pressed={form.partnerType === intent.title}
+                className={`marketing-contact-intent-card ${form.partnerType === intent.title ? "is-selected" : ""}`}
               >
                 <span className="marketing-contact-intent-title">{intent.title}</span>
               </button>
@@ -306,8 +307,8 @@ export default function ContactPage() {
       </section>
 
       <section ref={formRef} id="lead-form" className="marketing-contact-section marketing-contact-container marketing-contact-form-grid">
-        <aside className="marketing-contact-context" aria-label={`${form.partnerType} pricing context`}>
-          <p className="marketing-contact-eyebrow">Pricing context</p>
+        <aside className="marketing-contact-context" aria-label={`${form.partnerType} partner type context`}>
+          <p className="marketing-contact-eyebrow">Partner type</p>
           <h2>{form.partnerType === "Resident" ? "Resident support." : `${form.partnerType} options.`}</h2>
           <p>{pricingContext.lead}</p>
 
@@ -377,13 +378,21 @@ export default function ContactPage() {
       </section>
 
       <section className="marketing-contact-section marketing-contact-container">
-        <SectionHeader eyebrow="FAQ" title="A few practical answers." />
+        <SectionHeader title="FAQ's" />
         <div className="marketing-contact-faq-list">
-          {faqs.map(([question, answer]) => (
-            <div key={question} className="marketing-contact-faq">
-              <h3>{question}</h3>
+          {faqs.map(([question, answer], index) => (
+            <details key={question} className="marketing-contact-faq" open={openFaqIndex === index}>
+              <summary
+                onClick={(event) => {
+                  event.preventDefault();
+                  setOpenFaqIndex((current) => (current === index ? -1 : index));
+                }}
+              >
+                <span>{question}</span>
+                <ChevronDown className="marketing-contact-faq-icon" aria-hidden="true" />
+              </summary>
               <p>{answer}</p>
-            </div>
+            </details>
           ))}
         </div>
       </section>
