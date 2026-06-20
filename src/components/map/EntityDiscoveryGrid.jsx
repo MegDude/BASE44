@@ -1,6 +1,6 @@
 import { resolveMapImage } from "@/lib/map/entityImageResolver";
 
-const FALLBACK_IMAGE = "/images/imported/perks/republic-square.jpg";
+const FALLBACK_IMAGE = "/images/imported/perks/places-nearby.png";
 
 function fallbackImage(event) {
   event.currentTarget.src = FALLBACK_IMAGE;
@@ -25,8 +25,9 @@ export default function EntityDiscoveryGrid({ sections = [], mode = "resident", 
             {section.items.map((item) => {
               const entity = item.entity || {};
               const title = item.title || entity.name || entity.title || "Downtown place";
-              const image = item.image || resolveMapImage(entity, mode === "partner" ? "drawerHeader" : "card") || FALLBACK_IMAGE;
-              const meta = item.distance || item.type || item.status || "";
+              const image = item.image || resolveMapImage(entity, mode === "partner" ? "relatedRail" : "card") || FALLBACK_IMAGE;
+              const meta = item.meta || item.distance || item.type || item.status || "";
+              const context = item.context && item.context !== meta ? item.context : "";
 
               return (
                 <button
@@ -39,7 +40,12 @@ export default function EntityDiscoveryGrid({ sections = [], mode = "resident", 
                     <img src={image} alt="" loading="lazy" decoding="async" onError={fallbackImage} />
                   </span>
                   <strong>{title}</strong>
-                  {meta && <small>{meta}</small>}
+                  {(meta || context) && (
+                    <small>
+                      {meta && <span>{meta}</span>}
+                      {context && <em>{context}</em>}
+                    </small>
+                  )}
                 </button>
               );
             })}

@@ -11,7 +11,6 @@ import {
   Building2,
   Check,
   ChevronDown,
-  ChevronUp,
   Compass,
   Coffee,
   CreditCard,
@@ -61,6 +60,7 @@ import { getNearbyPartnerOpportunities } from "@/utils/nearbyPartnerOpportunitie
 import { recommendCampaigns } from "@/utils/recommendCampaigns";
 import { recommendAudience } from "@/utils/recommendAudience";
 import { getRelatedPartnerAssets } from "@/utils/relatedPartnerAssets";
+import { getEntityAgentQuestions } from "@/platform";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
 import { trackingEvents } from "@/lib/analytics/track";
@@ -1252,23 +1252,63 @@ function getPartnerPanelCopy(place) {
   };
 }
 
+function collectSearchTerms(value, depth = 0) {
+  if (!value || depth > 3) return [];
+  if (Array.isArray(value)) return value.flatMap((item) => collectSearchTerms(item, depth + 1));
+  if (typeof value === "object") return Object.values(value).flatMap((item) => collectSearchTerms(item, depth + 1));
+  if (typeof value === "string" || typeof value === "number") return [String(value)];
+  return [];
+}
+
 function placeText(place) {
+  const raw = place?.raw || {};
   return [
     place.name,
+    place.title,
+    place.displayTitle,
+    place.summary,
+    place.description,
+    place.offer,
     place.category,
     place.category_key,
     place.type,
+    place.kind,
     place.entityType,
+    place.destinationKind,
+    place.detailDrawerType,
+    place.markerType,
     place.partnerType,
     place.brand,
     place.source,
+    place.datasetLayer,
     place.district,
+    place.neighborhood,
     place.address,
-    place.raw?.summary,
-    place.raw?.deals_offers,
-    place.raw?.alignment_to_downtown_perks,
-    place.raw?.category_key,
-    place.raw?.entityType,
+    ...collectSearchTerms(place.tags),
+    ...collectSearchTerms(place.searchKeywords),
+    raw.summary,
+    raw.description,
+    raw.offer,
+    raw.deals_offers,
+    raw.alignment_to_downtown_perks,
+    raw.category_key,
+    raw.entityType,
+    raw.datasetLayer,
+    raw.partnerType,
+    raw.campaign,
+    raw.campaignName,
+    raw.campaignType,
+    raw.campaigns,
+    raw.parking,
+    raw.parkingBooking,
+    raw.perk,
+    raw.perks,
+    ...collectSearchTerms(raw.tags),
+    ...collectSearchTerms(raw.searchKeywords),
+    ...collectSearchTerms(raw.daaTourStop),
+    ...collectSearchTerms(raw.legendsListing),
+    ...collectSearchTerms(raw.happyHour),
+    ...collectSearchTerms(raw.campaignContext),
   ]
     .filter(Boolean)
     .join(" ")
@@ -1476,6 +1516,7 @@ function isCampaignEntity(place) {
 function getMapDrawerPanelKind(place, mode = "resident") {
   if (!place) return "destination";
   const entityKind = getResidentEntityKind(place);
+  if (isDaaTourPlace(place) || entityKind === "civic" || entityKind === "landmark") return "civic";
   if (isCampaignEntity(place) || entityKind === "campaign") return "campaign";
   if (entityKind === "event" || getDestinationKind(place) === "event") return "event";
   if (entityKind === "property" || entityKind === "rental" || isRentalEntity(place) || isLegendsMapPlace(place) || isLegendsListingLike(place)) return "residential";
@@ -5514,11 +5555,11 @@ function PartnerNearbyGuide({ place }) {
 }
 
 function PartnerAskSection({ place, answer, loading, onAsk, onClose, onSelect }) {
-  const prompts = ["Who comes here?", "What else is nearby?", "Best time to visit?", "What's happening tonight?"];
+  const prompts = getEntityAgentQuestions(place).slice(0, 4);
 
   return (
     <section className="dp-partner-ask-section">
-      <h3>Ask about this place</h3>
+      <h3>Ask Downtown Perks AI</h3>
       <div className="dp-partner-ask-rail">
         {prompts.map((prompt) => (
           <button key={prompt} type="button" onClick={() => onAsk(prompt)} disabled={loading}>
@@ -5668,7 +5709,7 @@ function PartnerRelatedAssetsSection({ sections = [], onSelect }) {
   return (
     <section className="dp-partner-intelligence-section">
       <PartnerSectionHeader label="Explore Nearby" title="Places and moments around this pin" />
-      <EntityDiscoveryGrid sections={sections.slice(0, 4)} mode="partner" onSelect={onSelect} />
+      <EntityDiscoveryGrid sections={sections.slice(0, 6)} mode="partner" onSelect={onSelect} />
     </section>
   );
 }
@@ -5962,27 +6003,115 @@ function getDaaStopFromPlace(place) {
 
 function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   const stop = getDaaStopFromPlace(place);
+  const [isCivicReadMoreOpen, setIsCivicReadMoreOpen] = useState(false);
   if (!stop) return null;
 
   const stopNumber = String(stop.stopNumber).padStart(2, "0");
   const isSaved = savedIds?.has?.(place.id);
   const locationLabel = stop.locationLabel || place?.district || "Downtown Austin";
+  const stopImage = stop.imageUrl || place.image || resolveEntityImage(place, "card") || MAP_PANEL_IMAGE_FALLBACK;
   const nearbyPlaces = (stop.nearbyStops || [])
     .map((stopId) => places.find((candidate) => candidate.id === stopId) || getDaaTourStopById(stopId))
     .filter(Boolean)
     .slice(0, 4);
+  const civicGoodFor = [
+    ["A quick downtown stop", "Easy to fold into a walk around the district.", stopImage],
+    ["Visitors", "A simple way to understand the story of this part of Austin.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
+    ["Route building", "Use this as a starting point for nearby art, parks, food, and perks.", "/images/imported/perks/downtown-dining-patio.png"],
+  ];
+  const nearbyExperienceCards = [
+    ["Art", "Public art and cultural stops close to this route.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
+    ["Parks", "Green space and civic places that make the walk easier.", "/images/imported/perks/republic-square-yoga.jpg"],
+    ["Food", "Places to stop before or after the route.", "/images/imported/perks/downtown-dining-patio.png"],
+    ["Perks", "Resident benefits near the stop when they are active.", "/images/imported/perks/perks-offers-jpg-coffee-counter-qr-offer-redemption.png"],
+  ];
+  const handleCheckInShare = async () => {
+    const shareUrl = `${window.location.origin}/map?mode=resident&tab=map&filter=Civic&entityId=${encodeURIComponent(place.id)}`;
+    window.dispatchEvent(new CustomEvent("downtown-perks:daa-stop-check-in", { detail: { stopId: stop.id, stopName: stop.name, shareUrl } }));
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${stop.name} · Downtown Austin Art & Parks Tour`,
+          text: `I stopped at ${stop.name} on the Downtown Austin Art & Parks Tour.`,
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        // Fall through to clipboard when the native share sheet is dismissed.
+      }
+    }
+    try {
+      await navigator.clipboard?.writeText(shareUrl);
+      window.alert("This DAA stop link has been copied.");
+    } catch {
+      window.location.href = shareUrl;
+    }
+  };
+  const handleFeedbackPrompt = (item) => {
+    window.dispatchEvent(new CustomEvent("downtown-perks:daa-feedback-question", {
+      detail: {
+        stopId: stop.id,
+        stopName: stop.name,
+        questionId: item.id,
+        question: item.question,
+      },
+    }));
+  };
 
   return (
-    <div className="dp-daa-destination-panel">
-      <section className="dp-daa-story-block" aria-label="Why people stop here">
+    <div className="dp-daa-destination-panel dp-civic-guide-panel">
+      <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
         <p className="dp-daa-kicker">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
-        <h3>Why people stop here.</h3>
+        <h3>Why People Stop Here</h3>
         <p>{stop.daaIntro}</p>
+        <p>{stop.whyStopHere}</p>
+      </section>
+
+      <section className="dp-civic-image-card-section" aria-label="What this stop is good for">
+        <p className="dp-daa-kicker">What It's Good For</p>
+        <div className="dp-civic-image-card-grid">
+          {civicGoodFor.map(([title, body, image]) => (
+            <article key={title} className="dp-civic-image-card">
+              <img src={image} alt="" loading="lazy" />
+              <div>
+                <h4>{title}</h4>
+                <p>{body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="dp-daa-read-more" aria-label="DAA and DANA civic integration">
+        <button
+          type="button"
+          className="dp-daa-read-more-toggle"
+          aria-expanded={isCivicReadMoreOpen}
+          aria-controls={`daa-civic-more-${stop.id}`}
+          onClick={() => setIsCivicReadMoreOpen((value) => !value)}
+        >
+          <span>Read more about the civic layer</span>
+          <ChevronDown aria-hidden="true" className={isCivicReadMoreOpen ? "is-open" : ""} />
+        </button>
+        {isCivicReadMoreOpen && (
+          <div id={`daa-civic-more-${stop.id}`} className="dp-daa-read-more-panel">
+            <p>
+              Downtown Perks connects DAA art and parks stops, DANA resident advocacy, civic campaigns, nearby events,
+              and local benefits into one map layer so residents can understand what is happening around them without
+              digging through separate lists.
+            </p>
+            <ul className="dp-daa-read-more-list">
+              <li>DAA context highlights public art, parks, downtown routes, cultural stops, and public-realm updates.</li>
+              <li>DANA context adds resident voice, neighborhood advocacy, community meetings, and local participation.</li>
+              <li>Partner mode turns civic signals into campaign moments for event promotion, route sponsorship, feedback, and nearby activity.</li>
+            </ul>
+          </div>
+        )}
       </section>
 
       <section className="dp-daa-action-panel" aria-label="DAA stop actions">
         <AppButton
-          to={`/map?mode=partner&tab=map&filter=Civic&entityId=${encodeURIComponent(stop.id)}`}
+          onClick={handleCheckInShare}
           variant="primary"
           className="dp-daa-action-primary"
         >
@@ -5994,11 +6123,45 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
         </AppButtonGroup>
       </section>
 
-      <section className="dp-daa-story-block" aria-label="About this stop">
-        <p className="dp-daa-kicker">About This Stop</p>
-        <h3>{stop.name}</h3>
-        <p>{stop.description}</p>
-        <p>{stop.whyStopHere}</p>
+      <section className="dp-daa-related dp-civic-nearby-section" aria-label="Nearby experiences">
+        <p className="dp-daa-kicker">Nearby Experiences</p>
+        <h3>Use this stop as a starting point around {locationLabel}.</h3>
+        <div className="dp-civic-image-card-grid">
+          {nearbyExperienceCards.map(([title, body, image]) => (
+            <article key={title} className="dp-civic-image-card">
+              <img src={image} alt="" loading="lazy" />
+              <div>
+                <h4>{title}</h4>
+                <p>{body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="dp-daa-next-stops" aria-label="Next nearby stops">
+        <p className="dp-daa-kicker">Keep Exploring</p>
+        <h3>Continue the civic route nearby.</h3>
+        <div className="dp-daa-next-rail">
+          {nearbyPlaces.map((nearby) => {
+            const nearbyStop = nearby.raw?.daaTourStop || nearby.daaTourStop || nearby;
+            const nearbyPlace = nearby.raw ? nearby : places.find((candidate) => candidate.id === nearbyStop.id);
+            const nearbyImage = nearbyStop.imageUrl || nearbyPlace?.image || MAP_PANEL_IMAGE_FALLBACK;
+            return (
+              <button
+                key={nearbyStop.id}
+                type="button"
+                onClick={() => nearbyPlace && onSelect(nearbyPlace)}
+                className="dp-daa-next-card"
+              >
+                <img src={nearbyImage} alt="" loading="lazy" />
+                <span>NEXT STOP</span>
+                <strong>{nearbyStop.name}</strong>
+                <em>{nearbyStop.district || "Downtown Austin"} · 4 min walk</em>
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       <section className="dp-daa-highlights" aria-label="Highlights">
@@ -6017,56 +6180,23 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
 
       <section className="dp-daa-participation" aria-label="Tell DAA what you think">
         <div className="dp-daa-participation-copy">
-          <p className="dp-daa-kicker">DAA Explorer</p>
-          <h3>Tell DAA what you think.</h3>
+          <p className="dp-daa-kicker">Ask The Civic Layer</p>
+          <h3>Share what would make downtown better.</h3>
           <p>
-            Your feedback helps shape future downtown experiences and helps the Downtown Austin Alliance understand how people use public spaces.
+            These prompts help DAA and DANA understand what residents notice, what visitors use, and what would make public spaces easier to enjoy.
           </p>
         </div>
         <div className="dp-daa-question-rail" aria-label="DAA feedback prompts">
           {daaExplorerQuestions.map((item) => (
-            <div key={item.id} className="dp-daa-question-card">
+            <button key={item.id} type="button" className="dp-daa-question-card" onClick={() => handleFeedbackPrompt(item)}>
               <span>{item.optional ? "Optional" : "Question"}</span>
               <strong>{item.question}</strong>
-            </div>
+            </button>
           ))}
         </div>
         <AppButton to="/map?mode=partner&tab=map&filter=Civic" variant="ghost" className="dp-daa-explore-all">
           EXPLORE ALL 48 STOPS
         </AppButton>
-      </section>
-
-      <section className="dp-daa-related" aria-label="Nearby experiences">
-        <p className="dp-daa-kicker">Nearby Experiences</p>
-        <h3>Keep exploring around {locationLabel}.</h3>
-        <div className="dp-daa-related-grid">
-          {["Events", "Parks", "Art", "Food", "Perks"].map((item) => (
-            <span key={item}>{item}</span>
-          ))}
-        </div>
-      </section>
-
-      <section className="dp-daa-next-stops" aria-label="Next nearby stops">
-        <p className="dp-daa-kicker">Next Nearby</p>
-        <h3>Next stops on the trail.</h3>
-        <div className="dp-daa-next-rail">
-          {nearbyPlaces.map((nearby) => {
-            const nearbyStop = nearby.raw?.daaTourStop || nearby.daaTourStop || nearby;
-            const nearbyPlace = nearby.raw ? nearby : places.find((candidate) => candidate.id === nearbyStop.id);
-            return (
-              <button
-                key={nearbyStop.id}
-                type="button"
-                onClick={() => nearbyPlace && onSelect(nearbyPlace)}
-                className="dp-daa-next-card"
-              >
-                <span>NEXT STOP</span>
-                <strong>{nearbyStop.name}</strong>
-                <em>{nearbyStop.district || "Downtown Austin"} · 4 min walk</em>
-              </button>
-            );
-          })}
-        </div>
       </section>
     </div>
   );
@@ -8022,6 +8152,7 @@ function getResidentDetailAction(place) {
   const coreText = placeCoreText(place);
   const category = String(place?.category || "").toLowerCase();
   const type = String(place?.type || "").toLowerCase();
+  const isCivicLandmark = isDaaTourPlace(place) || /\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|auditorium shores|shoal creek|waller creek)\b/i.test(coreText);
 
   if (isRentalEntity(place)) {
     return { label: "Ask the map", href: "/map?mode=resident&tab=map&filter=Rentals" };
@@ -8038,6 +8169,9 @@ function getResidentDetailAction(place) {
   }
   if (isCampaignEntity(place)) {
     return { label: place?.primaryAction || "Start Campaign", href: "/map?mode=resident&tab=map&filter=Campaigns" };
+  }
+  if (isCivicLandmark) {
+    return { label: "Explore Nearby", href: "/map?mode=resident&tab=map&filter=Civic" };
   }
   if (isEventEntity(place) || coreText.includes("rsvp")) {
     return { label: "View Event", href: mapRoutes.events, canRsvp: true };
@@ -8058,6 +8192,7 @@ function getResidentEntityKind(place) {
   const text = placeCoreText(place);
   const category = String(place?.category || "").toLowerCase();
   const type = String(place?.type || "").toLowerCase();
+  const isCivicLandmark = isDaaTourPlace(place) || /\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|auditorium shores|shoal creek|waller creek)\b/i.test(text);
 
   if (isRentalEntity(place)) {
     return "rental";
@@ -8081,6 +8216,10 @@ function getResidentEntityKind(place) {
 
   if (isCampaignEntity(place)) {
     return "campaign";
+  }
+
+  if (isCivicLandmark) {
+    return "civic";
   }
 
   if (
@@ -8686,6 +8825,27 @@ function SearchIntentConsole({
     { id: "tonight", label: "Tonight", kind: "time", time: "tonight", prompt: "Tonight nearby", icon: Moon },
     { id: "walkable", label: "Walkable", kind: "radius", radius: "5 min walk", prompt: "Walkable nearby", icon: Route },
   ];
+  const railIconFor = (item = {}) => {
+    const text = `${item.id || ""} ${item.label || ""} ${item.filter || ""} ${item.kind || ""}`.toLowerCase();
+    if (item.kind === "time" || /\b(tonight|week|event|rsvp)\b/.test(text)) return CalendarDays;
+    if (item.kind === "radius" || /\b(walk|nearby|route|open now)\b/.test(text)) return Navigation;
+    if (/\b(perk|offer|redemption)\b/.test(text)) return Gift;
+    if (/\b(campaign|activation|promote|broadcast)\b/.test(text)) return Megaphone;
+    if (/\b(audience|resident|guest|demand)\b/.test(text)) return Users;
+    if (/\b(performance|activity|report|result|save|scan|visit)\b/.test(text)) return Activity;
+    if (/\b(opportunit|next|trend|insight)\b/.test(text)) return TrendingUp;
+    if (/\b(property|residential|listing|legends|rental)\b/.test(text)) return Building2;
+    if (/\b(hotel|civic|explore|art|park|waterloo)\b/.test(text)) return Landmark;
+    if (/\b(brand|retail|shop)\b/.test(text)) return Gift;
+    if (/\b(parking)\b/.test(text)) return Car;
+    if (/\b(wellness|fitness)\b/.test(text)) return Heart;
+    if (/\b(dining|food|inkind)\b/.test(text)) return Utensils;
+    if (/\b(coffee)\b/.test(text)) return Coffee;
+    if (/\b(drink|happy hour|nightlife)\b/.test(text)) return Wine;
+    if (/\b(gap|coverage)\b/.test(text)) return Search;
+    return Compass;
+  };
+  const withRailIcon = (item) => ({ ...item, icon: item.icon || railIconFor(item) });
   const intentRail = mode === "partner" ? partnerIntentRail : residentIntentRail;
   const categoryRail = mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS;
   const residentMoreFilterOrder = [
@@ -8714,7 +8874,7 @@ function SearchIntentConsole({
     : residentMoreFilterOrder.map((label) => residentMoreFilterMap.get(label)).filter(Boolean);
   const moreFilterRail = rawMoreFilterRail.filter((item) => (
     !intentRail.some((intentItem) => String(intentItem.label).toLowerCase() === String(item.label).toLowerCase())
-  ));
+  )).map(withRailIcon);
 
   const railKeyFor = (item) => String(item?.id || item?.label || item?.filter || item?.prompt || "").toLowerCase();
   const isRailItemActive = (item) => {
@@ -8810,7 +8970,7 @@ function SearchIntentConsole({
               tabIndex={-1}
             >
               <span>More</span>
-              <span aria-hidden="true">→</span>
+              <ChevronDown aria-hidden="true" />
             </button>,
           ];
         }
@@ -8826,7 +8986,7 @@ function SearchIntentConsole({
           tabIndex={-1}
         >
           <span>More</span>
-          <span aria-hidden="true">→</span>
+          <ChevronDown aria-hidden="true" />
         </button>
       ) : null}
     </div>
@@ -9218,9 +9378,7 @@ export default function MapPage() {
   }, [neighborhoodBasePlaces, district]);
 
   const residentSavedPlaces = useMemo(() => {
-    const saved = places.filter((place) => savedIds.has(place.id));
-    if (saved.length) return saved;
-    return places.filter((place) => hasActivePerkData(place)).slice(0, 8);
+    return places.filter((place) => savedIds.has(place.id));
   }, [places, savedIds]);
 
   const actualSavedPlaces = useMemo(
@@ -9326,9 +9484,9 @@ export default function MapPage() {
       body: "Events, music, park moments, and plans close enough to use.",
     },
     saved: {
-      eyebrow: "Saved",
-      title: "Places to remember.",
-      body: "A quick list of saved places and nearby picks to come back to.",
+      eyebrow: "MY DOWNTOWN",
+      title: "Saved For Later",
+      body: "Places, events and experiences you've chosen to come back to.",
     },
   }[isRentalLayer ? "rentals" : activeBottomTab] || (isRentalLayer ? {
     eyebrow: "Rentals",
@@ -9422,6 +9580,203 @@ export default function MapPage() {
           <em>{actionLabel}</em>
         </span>
       </button>
+    );
+  }
+
+  function getSavedItemGroup(place) {
+    const kind = getResidentEntityKind(place);
+    const text = placeText(place);
+    if (kind === "event" || isEventEntity(place) || /\b(rsvp|tonight|this thursday|showcase|first thursday|class|concert)\b/i.test(text)) return "events";
+    if (hasActivePerkData(place) || kind === "perk" || isBrandEntity(place) || /\b(benefit|offer|resident access|discount|engraving|perk)\b/i.test(text)) return "benefits";
+    return "places";
+  }
+
+  function getSavedItemCopy(place) {
+    const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+    const rawCopy = offer?.title || offer?.offer || place.summary || place.description || place.raw?.summary || place.raw?.description || "";
+    if (rawCopy) return truncatePanelCopy(rawCopy, 96);
+    if (getSavedItemGroup(place) === "events") return "An experience worth planning around while you are downtown.";
+    if (getSavedItemGroup(place) === "benefits") return "A resident benefit worth using when you are nearby.";
+    return "A downtown place worth revisiting when the plan comes together.";
+  }
+
+  function getSavedLocationLabel(place) {
+    return place.district || place.neighborhood || place.address || "Downtown Austin";
+  }
+
+  function findSavedRecommendation(place) {
+    const name = String(place?.name || "").toLowerCase();
+    const text = placeText(place);
+    const targets = [
+      [/\byeti\b/, ["Tecovas", "Ariat", "Whole Foods"]],
+      [/\b(waterloo|greenway|park)\b/, ["Moody Amphitheater", "Waller Creek Trail", "Central Library"]],
+      [/\bhotel van zandt\b/, ["Geraldine's", "Rainey Street Food + Drink Loop", "Half Step"]],
+      [/\blady bird|lake|trail|shoal creek\b/, ["Merit Coffee", "Central Library", "Congress Avenue Bridge"]],
+    ];
+    const match = targets.find(([pattern]) => pattern.test(name) || pattern.test(text));
+    const labels = match?.[1] || ["Merit Coffee", "Waterloo Park", "Geraldine's"];
+    return labels
+      .map((label) => places.find((candidate) => String(candidate.name || "").toLowerCase().includes(label.toLowerCase())))
+      .find(Boolean);
+  }
+
+  function getMyDowntownSuggestions() {
+    const recommendedFromSaves = residentSavedPlaces
+      .map(findSavedRecommendation)
+      .filter(Boolean)
+      .filter((place, index, list) => list.findIndex((item) => item.id === place.id) === index)
+      .filter((place) => !savedIds.has(place.id));
+    const fallback = ["Tecovas", "Moody Amphitheater", "Geraldine's", "Waterloo Park", "Merit Coffee"]
+      .map((label) => places.find((place) => String(place.name || "").toLowerCase().includes(label.toLowerCase())))
+      .filter(Boolean);
+    return (recommendedFromSaves.length ? recommendedFromSaves : fallback).slice(0, 3);
+  }
+
+  function openResidentDiscovery(filter = "All") {
+    setConsoleCollapsed(true);
+    setSelectedId("");
+    setClusterDrawer(null);
+    setMapAnswer(null);
+    setActiveBottomTab(filter === "Events" ? "events" : filter === "Perks" ? "perks" : "map");
+    setActiveFilter(filter);
+    navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(filter)}`);
+  }
+
+  function shareSavedCollection() {
+    const titles = residentSavedPlaces.map((place) => place.name).slice(0, 8).join(", ");
+    const text = titles ? `My Downtown collection: ${titles}` : "My Downtown collection on Downtown Perks.";
+    if (typeof navigator !== "undefined" && navigator.share) {
+      void navigator.share({ title: "My Downtown", text });
+      return;
+    }
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      void navigator.clipboard.writeText(text);
+    }
+  }
+
+  function renderSavedCollectionCard(place, statusLabel = "Recently Added") {
+    const image = resolveEntityImage(place, "card") || MAP_PANEL_IMAGE_FALLBACK;
+    return (
+      <button key={place.id} type="button" className="dp-saved-collection-card" onClick={() => selectPlace(place)}>
+        <span className="dp-saved-card-media">
+          <img src={image} alt={place.name} loading="lazy" />
+        </span>
+        <span className="dp-saved-card-body">
+          <span className="dp-saved-card-status">{statusLabel}</span>
+          <strong>{place.name}</strong>
+          <span>{getSavedItemCopy(place)}</span>
+          <em>{getSavedLocationLabel(place)}</em>
+        </span>
+      </button>
+    );
+  }
+
+  function renderSavedCollectionSection(title, items) {
+    if (!items.length) return null;
+    return (
+      <section className="dp-saved-collection-section" aria-label={title}>
+        <div className="dp-saved-section-heading">
+          <h3>{title}</h3>
+        </div>
+        <div className="dp-saved-collection-grid">
+          {items.map((place, index) => renderSavedCollectionCard(place, index === 0 ? "Saved Today" : "Recently Added"))}
+        </div>
+      </section>
+    );
+  }
+
+  function renderSavedCollectionPanel() {
+    const savedGroups = residentSavedPlaces.reduce(
+      (groups, place) => {
+        groups[getSavedItemGroup(place)].push(place);
+        return groups;
+      },
+      { places: [], events: [], benefits: [] },
+    );
+    const recommended = getMyDowntownSuggestions();
+    const continueItems = residentSavedPlaces.slice(0, 3);
+    const askPrompts = [
+      "What should I visit first?",
+      "What's closest right now?",
+      "Any events near my saved places?",
+      "What should I do tonight?",
+      residentSavedPlaces[0]?.name ? `What's happening near ${residentSavedPlaces[0].name}?` : "What's happening near YETI?",
+    ];
+
+    return (
+      <div className="dp-saved-downtown-panel min-h-0 flex-1 overflow-hidden">
+        <div className="dp-saved-downtown-scroll">
+          <section className="dp-saved-downtown-header">
+            <p>MY DOWNTOWN</p>
+            <h2>Saved For Later</h2>
+            <span>Places, events and experiences you've chosen to come back to.</span>
+          </section>
+
+          <section className="dp-saved-collection-hero" aria-label="Your Downtown Collection">
+            <img src="/images/imported/perks/01-town-lake.png" alt="Downtown Austin lifestyle near Lady Bird Lake" loading="lazy" />
+            <div>
+              <h3>Your Downtown Collection</h3>
+              <p>Save places worth revisiting, benefits worth using and experiences worth planning around.</p>
+            </div>
+          </section>
+
+          {!residentSavedPlaces.length && (
+            <section className="dp-saved-empty-state" aria-label="Nothing saved yet">
+              <h3>Nothing saved yet.</h3>
+              <p>Save places, events and benefits while you explore downtown.</p>
+              <div className="dp-saved-action-row">
+                <button type="button" onClick={() => openResidentDiscovery("All")}>Explore Nearby</button>
+                <button type="button" onClick={() => openResidentDiscovery("Events")}>View Events</button>
+                <button type="button" onClick={() => openResidentDiscovery("Perks")}>Find Benefits</button>
+              </div>
+            </section>
+          )}
+
+          {renderSavedCollectionSection("Saved Places", savedGroups.places)}
+          {renderSavedCollectionSection("Saved Events", savedGroups.events)}
+          {renderSavedCollectionSection("Saved Benefits", savedGroups.benefits)}
+
+          {!!continueItems.length && (
+            <section className="dp-saved-collection-section" aria-label="Pick Up Where You Left Off">
+              <div className="dp-saved-section-heading">
+                <h3>Pick Up Where You Left Off</h3>
+              </div>
+              <div className="dp-saved-collection-grid dp-saved-collection-grid--compact">
+                {continueItems.map((place, index) => renderSavedCollectionCard(place, index === 0 ? "Saved three days ago." : index === 1 ? "Event this Thursday." : "New events added."))}
+              </div>
+            </section>
+          )}
+
+          {!!recommended.length && (
+            <section className="dp-saved-collection-section" aria-label="You May Also Like">
+              <div className="dp-saved-section-heading">
+                <h3>You May Also Like</h3>
+              </div>
+              <div className="dp-saved-collection-grid dp-saved-collection-grid--compact">
+                {recommended.map((place) => renderSavedCollectionCard(place, "Popular Nearby"))}
+              </div>
+            </section>
+          )}
+
+          <section className="dp-saved-ask-section" aria-label="Ask About My Saved Places">
+            <h3>Ask About My Saved Places</h3>
+            <div>
+              {askPrompts.map((prompt) => (
+                <button key={prompt} type="button" onClick={() => void applyPrompt(prompt)}>
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <div className="dp-panel-bottom-spacer" aria-hidden="true" />
+        </div>
+        <footer className="dp-saved-sticky-footer">
+          <button type="button" onClick={() => openResidentDiscovery("All")}>Explore Nearby</button>
+          <button type="button" onClick={() => openResidentDiscovery("Events")}>View Events</button>
+          <button type="button" onClick={shareSavedCollection}>Share Collection</button>
+        </footer>
+      </div>
     );
   }
 
@@ -11219,6 +11574,8 @@ export default function MapPage() {
                   <div className="dp-panel-bottom-spacer" aria-hidden="true" />
                 </div>
               </>
+            ) : urlState.mode !== "partner" && isResidentSavedDrawer ? (
+              renderSavedCollectionPanel()
             ) : urlState.mode !== "partner" ? (
             <div className="dp-resident-tab-panel min-h-0 flex-1 overflow-hidden">
               {residentPanelCopy && (
@@ -11226,7 +11583,7 @@ export default function MapPage() {
                   <p>{residentPanelCopy.eyebrow}</p>
                   <h2>{residentPanelCopy.title}</h2>
                   <span>{residentPanelCopy.body}</span>
-                  <strong>{(isResidentSavedDrawer ? residentSavedPlaces : discoverDisplayPlaces).length} places</strong>
+                  <strong>{discoverDisplayPlaces.length} places</strong>
                 </section>
               )}
               <div
@@ -11399,32 +11756,31 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            className={`dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[760] mx-auto flex min-h-0 w-full flex-col overflow-hidden ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
+            className={`dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
             data-panel-kind={getMapDrawerPanelKind(selected, urlState.mode)}
             data-drawer-state="expanded"
-            style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
-            aria-labelledby={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "destination-drawer-title" : undefined}
+            aria-labelledby={!usesCleanResidentialEntityDrawer(selected) || shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "destination-drawer-title" : undefined}
             aria-describedby={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "destination-drawer-context" : undefined}
             aria-label={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? undefined : `${selected.name} details`}
           >
             {!usesCleanResidentialEntityDrawer(selected) && (
-              <div className="dp-drawer-control-row" aria-label="Drawer controls">
+              <div className="dp-map-panel-header dp-drawer-control-row" aria-label="Drawer controls">
                 <button
                   type="button"
                   onClick={goBackToMap}
-                  className="dp-drawer-control dp-destination-back dp-drawer-back"
+                  className="dp-map-panel-icon-button dp-drawer-control dp-destination-back dp-drawer-back"
                   aria-label="Back to map"
                 >
                   <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 </button>
-                <span className="dp-drawer-control-title">{getEntityIdentity(selected, urlState.mode).displayTitle || selected.name}</span>
+                <span id="destination-drawer-title" className="dp-map-panel-title dp-drawer-control-title">{getEntityIdentity(selected, urlState.mode).displayTitle || selected.name}</span>
                 <button
                   type="button"
                   onClick={closeSelectedMapDrawer}
                   data-map-drawer-close="true"
-                  className="dp-drawer-icon-control dp-destination-close dp-drawer-close"
+                  className="dp-map-panel-icon-button dp-drawer-icon-control dp-destination-close dp-drawer-close"
                   aria-label="Close panel"
                 >
                   <X className="h-4 w-4" />
@@ -11444,7 +11800,7 @@ export default function MapPage() {
             )}
 
             <div
-              className="dp-destination-scroll dp-drawer-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(1.25rem+env(safe-area-inset-bottom))] [-webkit-overflow-scrolling:touch] md:pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+              className="dp-map-panel-scroll dp-destination-scroll dp-drawer-scroll"
             >
               {(() => {
                 const entityKind = getResidentEntityKind(selected);
@@ -11562,7 +11918,7 @@ export default function MapPage() {
                 }
 
                 return (
-                  <motion.div className={urlState.mode === "partner" ? "dp-partner-detail-content" : "dp-destination-content dp-detail-content"}>
+                  <motion.div className={urlState.mode === "partner" ? "dp-map-panel-content dp-partner-detail-content" : "dp-map-panel-content dp-destination-content dp-detail-content"}>
                     <DestinationHero place={selected} mode={urlState.mode} />
                     <EntityIdentityPanel identity={getEntityIdentity(selected, urlState.mode)} />
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06, duration: 0.18 }}>

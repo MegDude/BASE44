@@ -135,10 +135,10 @@ function inferProductionType(entity = {}) {
     return "residential-tower";
   }
 
+  if (/\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|central library|auditorium shores|shoal creek|waller creek)\b/.test(text)) return "landmark-civic";
   if (/\b(event|rsvp|tonight|series|run club|neighbor night)\b/.test(text)) return "event";
   if (/(^|[\s_-])(perk|offer|happy[\s_-]*hour)([\s_-]|$)/.test(explicitTypeText)) return "perk";
-  if (/\b(guide|collection|campaign|passport|trail|best rooftops|date night|coffee guide|happy hour guide)\b/.test(text)) return "guide";
-  if (/\b(park|landmark|civic|public space|library|capitol|waterloo|republic square)\b/.test(text)) return "landmark-civic";
+  if (/\b(guide|collection|campaign|passport|best rooftops|date night|coffee guide|happy hour guide)\b/.test(text)) return "guide";
   if (/\b(hotel|hospitality|stay|guest)\b/.test(text)) return "hotel";
   if (/\b(rooftop|p6|zanzibar|edge|nido|rules and regs)\b/.test(text)) return "rooftop";
   if (/\b(bar|nightlife|cocktail|pub|saloon|lounge|brewery|beer|half step|banger)\b/.test(text)) return "bars-nightlife";
@@ -304,14 +304,14 @@ const PANEL_CONTENT_BY_TYPE = {
     askPrompts: ["Where does this brand show up nearby?", "What perk is available?", "What events connect to this?", "What should I do before or after?"],
   },
   civic: {
-    eyebrow: "Civic stop",
-    primaryActionLabel: "Explore Civic Stop",
-    whyHeading: "Why this place matters",
-    whyBody: "{title} helps make downtown feel more usable, memorable, and connected — especially when residents understand what is nearby and how to participate.",
-    bestFor: ["Public space discovery", "Cultural participation", "Walking routes", "Visitors learning the district"],
-    insight: "Civic places work best when they are not just landmarks, but useful parts of daily life.",
-    nearbyHeading: "Nearby public spaces",
-    askPrompts: ["What can I do here?", "What is nearby?", "Is anything happening today?", "Where should I walk next?"],
+    eyebrow: "Downtown landmark",
+    primaryActionLabel: "Explore Nearby",
+    whyHeading: "Why People Come Here",
+    whyBody: "{title} helps downtown feel more usable, memorable, and connected — a place residents and visitors can fold into real plans, walks, routines, and civic discovery.",
+    bestFor: ["Visitors", "Downtown residents", "Walking routes", "Civic discovery", "Weekend plans"],
+    insight: "A civic place should answer why someone would go there before it explains what category it belongs to.",
+    nearbyHeading: "Nearby Now",
+    askPrompts: ["What can I do here?", "What is nearby?", "Where should I walk next?", "What else should I see?"],
   },
   service: {
     eyebrow: "Local service",

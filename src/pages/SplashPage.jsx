@@ -11,7 +11,7 @@ const storyStates = [
     headline: ["More charm than", "a biscuit with honey."],
     meaning: "Downtown Perks brings the heat — and the hospitality.",
     supporting: [
-      "Built for the folks who still call it Town Lake, know the shortcut through the alley off South Congress, and somehow always know where happy hour starts before everyone else gets there.",
+      "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” - this is for you.",
     ],
     scene: {
       type: "welcome",
@@ -21,15 +21,15 @@ const storyStates = [
     },
   },
   {
-    id: "scattered",
+    id: "easier",
     number: "02",
-    nav: "Scattered",
-    kicker: "The old way",
-    headline: ["Most things already exist.", "They’re just scattered."],
-    meaning: "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
+    nav: "Easier",
+    kicker: "A better downtown day",
+    headline: ["Downtown should be", "easier to use."],
+    meaning: "Easier to navigate. Easier to connect. More useful day to day.",
     supporting: [
-      "The coffee shop you keep meaning to try, the workout class you always hear about too late, the rooftop before it gets crowded.",
-      "The local business you pass all the time until someone finally says, “Wait — you’ve never been there?”",
+      "Most things already exist. They’re just scattered.",
+      "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
     ],
     scene: {
       type: "scatter",
@@ -39,15 +39,13 @@ const storyStates = [
     },
   },
   {
-    id: "easier",
+    id: "map",
     number: "03",
-    nav: "Easier",
-    kicker: "A better downtown day",
-    headline: ["Downtown should be", "easier to use."],
-    meaning: "Easier to navigate. Easier to connect. More useful day to day.",
+    nav: "One map",
+    kicker: "Bringing it together",
+    headline: ["So we built one map", "to bring everything together."],
+    meaning: "Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s happening, and worth showing up for.",
     supporting: [
-      "So we built one map to bring everything together.",
-      "Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s happening, and worth showing up for.",
     ],
     scene: {
       type: "map",
@@ -57,14 +55,15 @@ const storyStates = [
     },
   },
   {
-    id: "plans",
+    id: "pass",
     number: "04",
-    nav: "Together",
+    nav: "Access",
     kicker: "Both sides of downtown",
-    headline: ["Whether you’re", "making plans or part of them."],
-    meaning: "Downtown Perks helps residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
+    headline: ["Your all-access", "pass to downtown."],
+    meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
-      "And when people choose local, they unlock perks, offers, rewards, and little extras from the places that keep downtown interesting.",
+      "Coffee around the corner. A last-minute happy hour.",
+      "The resident event you would have missed. Connecting the people, places and perks that make downtown feel alive.",
     ],
     scene: {
       type: "connection",
@@ -74,14 +73,14 @@ const storyStates = [
     },
   },
   {
-    id: "map",
+    id: "perks",
     number: "05",
     nav: "Perks",
     kicker: "Choosing local",
-    headline: ["Choosing local", "comes with its perks."],
-    meaning: "Downtown Perks helps residents discover more of downtown with less effort — while helping local businesses show up naturally in the moments that actually matter.",
+    headline: ["Whether you’re making plans", "or part of them."],
+    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that  that keep downtown interesting.",
     supporting: [
-      "Discounts, rewards, and little extras from the places that make downtown worth exploring.",
+      "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
     ],
     scene: {
       type: "perks",
@@ -90,16 +89,28 @@ const storyStates = [
       detail: "Tap a perk to preview the payoff.",
     },
   },
+  {
+    id: "come-in",
+    number: "06",
+    nav: "Open",
+    kicker: "Come on in",
+    headline: ["So come on in.", "Open the map."],
+    meaning: "And maybe, grab something cold while you’re at it.",
+    supporting: [],
+    scene: {
+      type: "welcome",
+      label: "Open the map",
+      items: ["Resident Map", "Partner Map", "Perks nearby", "Something cold"],
+      detail: "Choose a map view and step into downtown.",
+    },
+  },
 ];
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
-function FixedStoryStage({ state, active, go }) {
-  const isFirst = active === 0;
-  const isLast = active === storyStates.length - 1;
-
+function FixedStoryStage({ state }) {
   return (
     <section className="dp-fixed-story-stage dp-scene-stage" aria-label="Downtown Perks story">
       <div className="dp-fixed-story-state">
@@ -132,27 +143,6 @@ function FixedStoryStage({ state, active, go }) {
           </div>
         </div>
 
-        <div className="dp-fixed-story-actions" aria-label="Story navigation">
-          <button type="button" onClick={() => go(-1)} disabled={isFirst}>
-            <ArrowLeft />
-            Back
-          </button>
-          <button type="button" onClick={() => go(1)} disabled={isLast}>
-            Next
-            <ArrowRight />
-          </button>
-        </div>
-
-        <div className="dp-fixed-map-actions" aria-label="Open map views">
-          <Link to="/map?mode=resident&tab=map">
-            Resident Map
-            <ArrowRight />
-          </Link>
-          <Link to="/map?mode=partner&tab=map&filter=All">
-            Partner Map
-            <ArrowRight />
-          </Link>
-        </div>
       </div>
     </section>
   );
@@ -242,6 +232,8 @@ export default function SplashPage() {
   }, [activate, go]);
 
   const progress = useMemo(() => `${active + 1} / ${storyStates.length}`, [active]);
+  const isFirst = active === 0;
+  const isLast = active === storyStates.length - 1;
 
   return (
     <main className={`dp-splash-page dp-fixed-story-page ${showIntro ? "is-intro-active" : ""}`} aria-label="Downtown Perks introduction">
@@ -322,7 +314,33 @@ export default function SplashPage() {
         </>
       )}
 
-      <FixedStoryStage state={state} active={active} go={go} />
+      <FixedStoryStage state={state} />
+
+      {!showIntro && (
+        <>
+          <div className="dp-fixed-story-actions" aria-label="Story navigation">
+            <button type="button" onClick={() => go(-1)} disabled={isFirst}>
+              <ArrowLeft />
+              Back
+            </button>
+            <button type="button" onClick={() => go(1)} disabled={isLast}>
+              Next
+              <ArrowRight />
+            </button>
+          </div>
+
+          <div className="dp-fixed-map-actions" aria-label="Open map views">
+            <Link to="/map?mode=resident&tab=map">
+              Resident Map
+              <ArrowRight />
+            </Link>
+            <Link to="/map?mode=partner&tab=map&filter=All">
+              Partner Map
+              <ArrowRight />
+            </Link>
+          </div>
+        </>
+      )}
     </main>
   );
 }

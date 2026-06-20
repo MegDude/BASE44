@@ -35,6 +35,70 @@ const AMAYA_IMAGE = "/images/map-entities/rainey-bars/amaya.jpeg";
 const VIA_313_IMAGE = "/images/imported/perks/via313.jpg";
 const BATHE_IMAGE = "/images/map-entities/perks/partner_wellness_1779052883675.png";
 
+const LEGENDS_IMAGES = {
+  austinProper: [
+    "/images/legends-listings/63bd283b-6525-4a58-85bf-e13564f11b1c.avif",
+    "/images/legends-listings/d6a4d9a1-d4c5-4ff8-8261-e51fcf930655.avif",
+    "/images/legends-listings/fd63k3siyxdany5inwki.jpg",
+  ],
+  wResidences: [
+    "/images/property-listings-premium/w-residences.jpeg",
+    "/images/property-listings-premium/w-residences1.jpeg",
+    "/images/property-listings-premium/w-residences2.jpeg",
+  ],
+  seaholm: [
+    "/images/property-listings-premium/seaholm-residences.jpeg",
+    "/images/reports/seaholm-residences-222-west.jpg",
+  ],
+  threeSixty: [
+    "/images/legends-listings/sdcuyw4dhwd2we6ymxtd.png",
+    "/images/legends-listings/y6irl6fpch4lh0hfs6fw.png",
+    "/images/legends-listings/aacdlhvpk3bq3ysj5gm9.avif",
+  ],
+  fiveFiftyFive: [
+    "/buildings/five-fifty-five.webp",
+    "/images/imported/perks/four-seasons-resi.jpg",
+  ],
+  austonian: [
+    "/images/property-listings-premium/the-austonian.jpeg",
+    "/images/property-listings-premium/the-austonian1.jpeg",
+    "/images/property-listings-premium/the-austonian2.jpeg",
+  ],
+  westAve3201: [
+    "/images/legends-listings/af86add3.jpeg",
+    "/images/legends-listings/3854745b.jpeg",
+    "/images/legends-listings/1414e381.jpeg",
+    "/images/legends-listings/4f5344cd.jpeg",
+  ],
+};
+
+function legendsListingFields({ imageSet, price, beds, baths, sqft, mlsNumber, listingTypeLabel = "For Sale" }) {
+  const sqftDisplay = sqft ? `${Number(sqft).toLocaleString()} sq ft` : "";
+  return {
+    image: imageSet?.[0] || PROPERTY_IMAGE,
+    imageUrl: imageSet?.[0] || PROPERTY_IMAGE,
+    primaryImage: imageSet?.[0],
+    heroImage: imageSet?.[0],
+    thumbnail: imageSet?.[0],
+    galleryImages: imageSet || [],
+    legendsListing: {
+      brand: "Legends Real Estate",
+      listingTypeLabel,
+      price,
+      priceDisplay: price,
+      beds,
+      baths,
+      sqft,
+      sqftDisplay,
+      mlsNumber,
+      mls_number: mlsNumber,
+      status: "Active",
+      image: imageSet?.[0],
+      galleryImages: imageSet || [],
+    },
+  };
+}
+
 function entity({
   id,
   name,
@@ -221,9 +285,9 @@ export const supplementalMapEntities = [
     longitude: -97.75008573,
     district: "2nd Street",
     address: "202 Nueces ST # 1501, Austin TX, 78701",
-    summary: "Luxurious residence in downtown Austin with sweeping city views and premium finishes.",
-    offer: "Verified Resident: Signature Priority Portfolio",
-    image: PROPERTY_IMAGE,
+    summary: "Austin Proper residence with hotel-level amenities, downtown access, and Legends Real Estate showing support.",
+    offer: "$3,850,000 · 2 bd · 3 ba · 2,068 sq ft",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.austinProper, price: "$3,850,000", beds: 2, baths: 3, sqft: 2068 }),
   }),
   entity({
     id: "legends-real-estate-210-lavaca-st-2105",
@@ -237,9 +301,9 @@ export const supplementalMapEntities = [
     longitude: -97.74676146,
     district: "2nd Street",
     address: "210 Lavaca ST # 2105, Austin TX, 78701",
-    summary: "Ultra-exclusive residence at the W, featuring world-class amenities and skyline views.",
-    offer: "Dedicated Downtown Perks Concierge for Residents",
-    image: PROPERTY_IMAGE,
+    summary: "W Austin residence with downtown hospitality, skyline views, and walkable 2nd Street access.",
+    offer: "Legends Real Estate residence inquiry",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.wResidences, price: "Contact for pricing", beds: "", baths: "", sqft: "" }),
   }),
   entity({
     id: "legends-real-estate-222-west-ave-2301",
@@ -253,9 +317,9 @@ export const supplementalMapEntities = [
     longitude: -97.75205219,
     district: "Seaholm",
     address: "222 West Ave # 2301, Austin TX, 78701",
-    summary: "Downtown Austin residence connected to the Legends Real Estate verified listing layer.",
-    offer: "Exclusive District Integration Guide",
-    image: PROPERTY_IMAGE,
+    summary: "Seaholm residence near the lake, Whole Foods, coffee, dining, and everyday downtown routines.",
+    offer: "$2,495,000 · 3 bd · 3 ba · 2,227 sq ft",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.seaholm, price: "$2,495,000", beds: 3, baths: 3, sqft: 2227 }),
   }),
   entity({
     id: "legends-real-estate-360-nueces-st-4211",
@@ -269,9 +333,9 @@ export const supplementalMapEntities = [
     longitude: -97.74957545,
     district: "2nd Street",
     address: "360 Nueces ST # 4211, Austin TX, 78701",
-    summary: "Downtown Austin listing with skyline access and resident-connected neighborhood context.",
-    offer: "360 Sky Club Membership Included",
-    image: PROPERTY_IMAGE,
+    summary: "360 Condominiums residence with skyline access and a walkable 2nd Street daily routine.",
+    offer: "Legends Real Estate residence inquiry",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.threeSixty, price: "Contact for pricing", beds: "", baths: "", sqft: "" }),
   }),
   entity({
     id: "legends-real-estate-210-lavaca-st-1910",
@@ -285,9 +349,9 @@ export const supplementalMapEntities = [
     longitude: -97.74690583,
     district: "2nd Street",
     address: "210 Lavaca ST # 1910, Austin TX, 78701",
-    summary: "Downtown Austin residence connected to the Legends Real Estate downtown homes portfolio.",
-    offer: "Investment planning guide",
-    image: PROPERTY_IMAGE,
+    summary: "W Austin residence connected to hotel amenities, downtown dining, and Legends Real Estate showing support.",
+    offer: "Legends Real Estate residence inquiry",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.wResidences, price: "Contact for pricing", beds: "", baths: "", sqft: "" }),
   }),
   entity({
     id: "legends-real-estate-555-e-5th-st-2809",
@@ -302,8 +366,8 @@ export const supplementalMapEntities = [
     district: "Congress",
     address: "555 E 5th ST # 2809, Austin TX, 78701",
     summary: "Downtown residence near core hospitality, events, and daily-use neighborhood access.",
-    offer: "Hotel guest perk access",
-    image: PROPERTY_IMAGE,
+    offer: "Legends Real Estate residence inquiry",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.fiveFiftyFive, price: "Contact for pricing", beds: "", baths: "", sqft: "" }),
   }),
   entity({
     id: "legends-real-estate-200-congress-ave-15e",
@@ -317,13 +381,13 @@ export const supplementalMapEntities = [
     longitude: -97.74449406,
     district: "Congress",
     address: "200 Congress Ave # 15E, Austin TX, 78701",
-    summary: "Downtown residence at the center of Congress Avenue, hospitality, and walkable local access.",
-    offer: "Platinum Resident Membership",
-    image: PROPERTY_IMAGE,
+    summary: "Austonian residence at the center of Congress Avenue, hospitality, and walkable local access.",
+    offer: "Legends Real Estate residence inquiry",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.austonian, price: "Contact for pricing", beds: "", baths: "", sqft: "" }),
   }),
   entity({
     id: "legends-real-estate-independent-3201",
-    name: "The Independent #3201",
+    name: "501 West Ave #3201",
     type: "property",
     partnerType: "properties",
     brand: "Legends Real Estate",
@@ -333,9 +397,9 @@ export const supplementalMapEntities = [
     longitude: -97.7515,
     district: "Seaholm",
     address: "501 West Ave #3201, Austin TX, 78701",
-    summary: "Signature Independent residence connected to Legends Real Estate's downtown homes portfolio.",
-    offer: "Architectural Heritage Document",
-    image: PROPERTY_IMAGE,
+    summary: "Fifth & West residence with a large downtown floor plan, Seaholm access, and Legends Real Estate showing support.",
+    offer: "$2,750,000 · 3 bd · 3 ba · 2,517 sq ft",
+    ...legendsListingFields({ imageSet: LEGENDS_IMAGES.westAve3201, price: "$2,750,000", beds: 3, baths: 3, sqft: 2517 }),
   }),
 
   entity({ id: "priority-frost-tower", name: "Frost Tower", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2662, longitude: -97.7405, district: "Congress", address: "401 Congress Ave, Austin TX, 78701", summary: "Austin's recognizable downtown tower, mapped as a priority building anchor.", image: PROPERTY_IMAGE }),

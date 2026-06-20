@@ -105,6 +105,7 @@ const stopIds = tourSeedStops.map(([name], index) => `daa-stop-${String(index + 
 
 function resolveTourStopImage(name, category, district, locationLabel) {
   const text = [name, category, district, locationLabel].join(" ").toLowerCase();
+  if (text.includes("ballet austin")) return "/images/civic/ballet-austin-downtown.png";
   if (text.includes("waterloo") || text.includes("waller creek")) return "/images/imported/perks/waterlook-trail.png";
   if (text.includes("republic square")) return "/images/imported/perks/republic-square.jpg";
   if (text.includes("lady bird") || text.includes("hike-and-bike") || text.includes("trail")) return "/images/imported/perks/downtonw-trail.jpg";

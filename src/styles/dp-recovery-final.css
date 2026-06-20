@@ -46148,6 +46148,126 @@ html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions a {
 }
 
 /* Legends residential drawer regression cleanup: image-only hero, quiet controls, mobile-readable text. */
+/* Story opener typography and rail alignment lock: Canela-style display, navy/gold only, centered controls. */
+html body #root .dp-splash-page.dp-fixed-story-page {
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-label,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-kicker.dp-fixed-story-kicker {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 span,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline span {
+  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 span:first-child,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline span:first-child {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 span:last-child,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline span:last-child {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy p,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy p span,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-meaning,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-supporting,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-supporting p {
+  color: rgba(11, 31, 51, .72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .72) !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 {
+  font-size: clamp(50px, 10vw, 96px) !important;
+  line-height: .92 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline {
+  font-size: clamp(40px, 7.4vw, 68px) !important;
+  line-height: .94 !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-line.is-balanced-single-line {
+  white-space: nowrap !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-actions,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding-inline: max(18px, env(safe-area-inset-left, 0px)) max(18px, env(safe-area-inset-right, 0px)) !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  gap: clamp(14px, 4vw, 24px) !important;
+  text-align: center !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-actions {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 54px) !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-actions button,
+html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions a {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  transform: none !important;
+}
+
+html body #root .dp-splash-page.dp-fixed-story-page :is(.dp-fixed-story-actions button, .dp-fixed-map-actions a):is(:hover, :focus-visible, :active) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 {
+    font-size: clamp(46px, 14vw, 64px) !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline {
+    font-size: clamp(36px, 11vw, 47px) !important;
+    line-height: .96 !important;
+  }
+
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-actions,
+  html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions {
+    gap: 14px !important;
+  }
+}
+
 html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell {
   max-width: min(430px, 100vw) !important;
   max-height: calc(100dvh - 72px) !important;

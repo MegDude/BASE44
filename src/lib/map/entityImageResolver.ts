@@ -756,6 +756,18 @@ function hasResidentialIntent(entity: Record<string, unknown>): boolean {
   );
 }
 
+function hasListingIntent(entity: Record<string, unknown>): boolean {
+  const explicit = explicitTypeText(entity);
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return Boolean(
+    raw.luxuryPresenceListing ||
+      raw.legendsListing ||
+      entity.legendsListing ||
+      entity.luxuryPresenceListing ||
+      /\b(legends[_\s-]*(sale|rent|listing)|luxury[_\s-]*presence[_\s-]*listing|mls|for sale|for rent)\b/.test(explicit),
+  );
+}
+
 function pickFrom(images: string[], seed: unknown): string {
   if (images.length === 1) return images[0];
   const value = String(seed || "");
@@ -892,6 +904,7 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
   if (actualVenue) return actualVenue;
 
   const direct = directImage(entity, context);
+  if (direct && hasListingIntent(entity)) return direct;
   if (context === "drawerHeader" && direct && !direct.includes("/images/fallbacks/")) return direct;
 
   const canonical = resolveDowntownPerksEntityImage(entity);
