@@ -5,6 +5,10 @@
     {
       "function_name": "findNearbyPerks",
       "description": "Find nearby perk opportunities from live GPS coordinates."
+    },
+    {
+      "function_name": "getSharedMapFeed",
+      "description": ""
     }
   ],
   "context_files": [
