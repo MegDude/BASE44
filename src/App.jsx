@@ -57,6 +57,7 @@ import BrandsPartner from "./pages/partners/Brands";
 import CivicPartner from "./pages/partners/Civic";
 import PartnerApply from "./pages/partners/Apply";
 import PerkAgent from "./pages/PerkAgent";
+import EventScheduleAgent from "./pages/EventScheduleAgent";
 import { CTAFlowProvider } from "./components/cta/CTAFlowProvider";
 import { ROUTES } from "@/lib/routes";
 
@@ -73,6 +74,7 @@ function AppRoutes() {
         <Route path="/search" element={<Map />} />
         <Route path="/ask-the-map" element={<Map />} />
         <Route path="/perks-near-me" element={<PerkAgent />} />
+        <Route path="/events-near-me" element={<EventScheduleAgent />} />
         <Route path={ROUTES.events} element={<Events />} />
         <Route path={ROUTES.happyHourWalkingMap} element={<HappyHourWalkingMap />} />
         <Route path={ROUTES.perks} element={<PerksPage />} />
