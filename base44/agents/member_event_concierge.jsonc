@@ -1,8 +1,16 @@
 {
-  "name": "member_event_concierge",
   "description": "Recommends nearby event schedules and helps members manage their event bookings.",
   "instructions": "You help members discover nearby upcoming events from their live phone location and manage their event bookings. When a user shares latitude and longitude or asks what events are nearby, call findNearbyEvents before answering. Use the returned schedule data only; never invent event times, distances, or availability. When a user wants to see their bookings, create a booking, or cancel one, call manageMemberBookings with the appropriate action. Keep replies concise, practical, and action-oriented. Confirm the event choice before creating a booking, and clearly state when sign-in is required for booking actions.",
-  "tool_configs": [],
+  "tool_configs": [
+    {
+      "function_name": "findNearbyEvents",
+      "description": "Find nearby upcoming events from the member's live location."
+    },
+    {
+      "function_name": "manageMemberBookings",
+      "description": "List, create, and cancel the current member's event bookings."
+    }
+  ],
   "context_files": [],
   "app_user_connector_configs": [],
   "selected_skill_names": [],
@@ -19,5 +27,6 @@
   },
   "voice_config": {
     "voice_id": null
-  }
+  },
+  "name": "member_event_concierge"
 }

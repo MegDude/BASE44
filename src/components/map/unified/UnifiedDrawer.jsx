@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
+import { downloadCalendarEntry } from '@/lib/calendar';
 import { useMapStateStore } from '@/store/mapStateStore';
 import { useResidentMutations } from '@/hooks/useResidentMutations';
 import useMediaQuery from '@/hooks/useMediaQuery';
@@ -126,6 +127,13 @@ export default function UnifiedDrawer({ selected, desktopMode = 'floating', desk
         : selected.type === 'perk' || selected.perk?.value || selected.perk_value
           ? IconPerk
           : IconChevronUp;
+  const canAddToCalendar = Boolean(
+    selected.type === 'event' ||
+    selected.type === 'perk' ||
+    selected.perk?.value ||
+    selected.perk_value ||
+    selected.perk_description
+  );
 
   const inquiryFlow = getEntityInquiryFlow(selected, {
     source: 'unified_drawer',
@@ -251,6 +259,16 @@ export default function UnifiedDrawer({ selected, desktopMode = 'floating', desk
           className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
         >
           {inquiryFlow.label}
+        </button>
+      ) : null}
+
+      {canAddToCalendar ? (
+        <button
+          onClick={() => downloadCalendarEntry(selected)}
+          className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-navy"
+        >
+          <IconCalendarCheck className="h-4 w-4" />
+          Add to calendar
         </button>
       ) : null}
 

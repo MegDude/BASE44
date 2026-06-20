@@ -1,4 +1,5 @@
-import { X, MapPin, Clock, ExternalLink, Tag } from "lucide-react";
+import { X, MapPin, Clock, ExternalLink, Tag, CalendarDays } from "lucide-react";
+import { downloadCalendarEntry } from "@/lib/calendar";
 
 export default function VenueCard({ venue, onClose }) {
   return (
@@ -78,16 +79,29 @@ export default function VenueCard({ venue, onClose }) {
         </div>
       )}
 
-      {venue.website && (
-        <a
-          href={venue.website}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-primary text-sm font-medium hover:underline"
-        >
-          Visit Website <ExternalLink className="w-3.5 h-3.5" />
-        </a>
-      )}
+      <div className="flex flex-wrap gap-3">
+        {(venue.perk_description || venue.perk_value) && (
+          <button
+            type="button"
+            onClick={() => downloadCalendarEntry(venue)}
+            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+          >
+            <CalendarDays className="w-4 h-4" />
+            Add to calendar
+          </button>
+        )}
+
+        {venue.website && (
+          <a
+            href={venue.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-primary text-sm font-medium hover:underline"
+          >
+            Visit Website <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
-import { MapPin, Users, Clock } from "lucide-react";
+import { MapPin, Users, Clock, CalendarDays } from "lucide-react";
 import moment from "moment";
+import { downloadCalendarEntry } from "@/lib/calendar";
 
 export default function EventCard({ event }) {
   const date = event.date ? moment(event.date) : null;
@@ -66,6 +67,18 @@ export default function EventCard({ event }) {
             </div>
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={(eventClick) => {
+            eventClick.stopPropagation();
+            downloadCalendarEntry(event);
+          }}
+          className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary"
+        >
+          <CalendarDays className="h-3.5 w-3.5" />
+          Add to calendar
+        </button>
       </div>
     </div>
   );
