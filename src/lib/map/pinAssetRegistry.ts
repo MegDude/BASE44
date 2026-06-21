@@ -56,7 +56,7 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   mobility: { label: "Mobility", glyph: icon('<path d="M5 16h14"/><path d="M7 16l2-8h6l2 8"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M10 11h4"/>') },
   park: { label: "Park", glyph: icon('<path d="M12 21v-8"/><path d="M8 13h8"/><path d="M7 13a5 5 0 1 1 10 0"/><path d="M5 21h14"/>') },
   culture: { label: "Art & Culture", glyph: icon('<path d="M4 20h16"/><path d="M6 20V9l6-5 6 5v11"/><path d="M9 20v-6h6v6"/><path d="M9 10h6"/>') },
-  brand: { label: "Brand", glyph: icon('<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9L12 3Z"/>') },
+  brand: { label: "Brand", glyph: icon('<path d="M8 3h8l5 5v8l-5 5H8l-5-5V8l5-5Z"/><path d="M9 12h6"/><path d="M12 9v6"/>') },
   campaign: { label: "Campaign", glyph: icon('<path d="M4 13V7l11-3v12L4 13Z"/><path d="M4 13l2 7h4l-2-6"/><path d="M18 8v4"/>') },
   analytics: { label: "Insights", glyph: icon('<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/>') },
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
@@ -92,7 +92,7 @@ export const pinAssetRegistry: Record<PinVariant, { label: string; glyph: string
   },
   yeti: {
     label: "YETI",
-    glyph: icon('<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2 7.5 14 3 9.6l6.2-.9L12 3Z"/>'),
+    glyph: icon('<path d="M8 3h8l5 5v8l-5 5H8l-5-5V8l5-5Z"/><path d="M9 12h6"/><path d="M12 9v6"/>'),
   },
   rivian: {
     label: "Rivian",

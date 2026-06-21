@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  Quote,
   Sparkles,
 } from "lucide-react";
 import DowntownPerksHowItWorks from "@/components/shared/DowntownPerksHowItWorks";
@@ -54,6 +55,19 @@ const residentFaqs = [
   ["Is my info shared with partners?", "No. We track actions for reporting, not personal contact information. Your details aren't shared unless you explicitly opt in. Privacy is the default."],
   ["Who can join?", "Downtown residents in participating buildings. It's exclusive by design, built for people who actually live here."],
   ["How do resident connections work?", "See an event or activity you want to join. Use Connect Nearby to signal interest and reach out to others who are going. It's opt-in, lightweight, and designed to make it easier to show up together."],
+];
+
+const communityStories = [
+  {
+    residentName: "Maya R.",
+    buildingName: "The Shore",
+    quote: "The best part is finding something close by that actually fits my routine. I scanned the perk at the bar, answered one quick question, and got a free drink before meeting friends on Rainey.",
+    favoritePerk: "Free welcome beer",
+    partner: "Rainey Social House",
+    image: "/images/imported/perks/4-scan-perk.png",
+    cta: "Explore Resident Perks",
+    href: "/perks",
+  },
 ];
 
 const partnerFaqs = [
@@ -150,6 +164,52 @@ const residentBuildingOptions = [
 residentBuildingOptions.sort((a, b) => a.localeCompare(b));
 residentBuildingOptions.push("My building is not listed");
 
+function CommunityStoriesSection() {
+  return (
+    <section className="dp-community-stories-section py-12 md:py-16" aria-labelledby="community-stories-title">
+      <div className="dp-layout-shell">
+        <div className="mb-7 max-w-2xl">
+          <span className="dp-label mb-3 block">Resident Favorite</span>
+          <h2 id="community-stories-title" className="font-heading text-3xl font-medium">Community Stories</h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
+            See how downtown residents are using local perks in real life.
+          </p>
+        </div>
+
+        {communityStories.map((story) => (
+          <article key={`${story.residentName}-${story.partner}`} className="dp-community-story-card">
+            <figure className="dp-community-story-photo">
+              <img src={story.image} alt={`${story.residentName} using Downtown Perks near Rainey`} loading="lazy" decoding="async" />
+            </figure>
+            <div className="dp-community-story-copy">
+              <Quote className="dp-community-story-quote-icon" aria-hidden="true" />
+              <blockquote>{story.quote}</blockquote>
+              <div className="dp-community-story-person">
+                <strong>{story.residentName}</strong>
+                <span>{story.buildingName}</span>
+              </div>
+              <dl className="dp-community-story-meta">
+                <div>
+                  <dt>Favorite Perk</dt>
+                  <dd>{story.favoritePerk}</dd>
+                </div>
+                <div>
+                  <dt>Partner</dt>
+                  <dd>{story.partner}</dd>
+                </div>
+              </dl>
+              <Link to={story.href} className="dp-community-story-cta">
+                {story.cta}
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const [partnerType, setPartnerType] = useState("Properties");
   const [openFaq, setOpenFaq] = useState(0);
@@ -193,6 +253,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <CommunityStoriesSection />
 
       <section className="py-12 md:py-16">
         <div className="dp-layout-shell">

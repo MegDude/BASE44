@@ -64,6 +64,7 @@ import { getEntityAgentQuestions } from "@/platform";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
 import { trackingEvents } from "@/lib/analytics/track";
+import { completeSurveyFlow, getSurveyIntelligenceSummary } from "@/lib/surveys/surveyIntelligence";
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { luxuryPresenceListings } from "@/data/luxuryPresenceInventory";
 import { getLegendsPropertyContent } from "@/data/legendsPropertyContent";
@@ -605,6 +606,7 @@ const RESIDENT_SEARCH_FILTERS = [
   { label: "Live Music", filter: "Live Music" },
   { label: "Happy Hour", filter: "Happy Hour" },
   { label: "Trending", filter: "Trending" },
+  { label: "Stories", filter: "Stories" },
   { label: "Saved", filter: "Saved" },
   { label: "This Week", filter: "This Week" },
   { label: "inKind", filter: "inKind" },
@@ -630,6 +632,7 @@ const PARTNER_SEARCH_FILTERS = [
   { label: "Civic", filter: "Civic" },
   { label: "Events", filter: "Events" },
   { label: "Offers", filter: "Perks" },
+  { label: "Stories", filter: "Stories" },
   { label: "Surveys", filter: "Surveys" },
   { label: "Activity", filter: "Visibility" },
   { label: "Reports", filter: "Reports" },
@@ -1814,7 +1817,7 @@ function isIntentOnlyFilter(activeFilter) {
 
 function matchesFilter(place, activeFilter, savedIds) {
   if (activeFilter === "All") return true;
-  if (["Open Now", "Tonight", "This Week", "Scans", "Saves", "Redemptions", "Opportunities", "Performance", "Opportunity", "Coverage", "Audience", "Surveys", "Broadcasts", "Activations"].includes(activeFilter)) return true;
+  if (["Open Now", "Tonight", "This Week", "Scans", "Saves", "Redemptions", "Opportunities", "Performance", "Opportunity", "Coverage", "Audience", "Stories", "Surveys", "Broadcasts", "Activations"].includes(activeFilter)) return true;
   if (activeFilter === "Saved") return savedIds.has(place.id);
   if (activeFilter === "Perks") return hasActivePerkData(place) || isParkingEntity(place);
   if (activeFilter === "Campaigns") return isCampaignEntity(place);
@@ -5704,6 +5707,114 @@ function PartnerAudienceRecommendationsSection({ audiences = [] }) {
   );
 }
 
+function CommunityStoriesMapLayer() {
+  return (
+    <section className="dp-community-stories-map-layer" aria-label="Community Stories">
+      <div>
+        <p className="dp-tab-eyebrow">Resident Favorite</p>
+        <h3>Community Stories</h3>
+        <p>See how downtown residents are using local perks in real life.</p>
+      </div>
+      <article>
+        <img src="/images/imported/perks/4-scan-perk.png" alt="Resident using a Downtown Perks offer" loading="lazy" decoding="async" onError={handlePanelImageError} />
+        <span>
+          <strong>Maya R.</strong>
+          <small>The Shore</small>
+          <em>“The best part is finding something close by that actually fits my routine.”</em>
+          <b>Free welcome beer · Rainey Social House</b>
+        </span>
+      </article>
+      <Link to="/perks">Explore Resident Perks</Link>
+    </section>
+  );
+}
+
+function SurveyIntelligenceLayer({ place, compact = false }) {
+  const [syncState, setSyncState] = useState("");
+  const summary = getSurveyIntelligenceSummary(place);
+  const isPerk = hasActivePerkData(place);
+  const openReports = () => {
+    const params = new URLSearchParams({
+      mode: "partner",
+      tab: "reports",
+      filter: "Surveys",
+    });
+    if (place?.id) params.set("entityId", place.id);
+    window.location.href = `/map?${params.toString()}`;
+  };
+  const recordCompletion = () => {
+    const response = completeSurveyFlow({
+      surveyId: isPerk ? "redemption-follow-up" : "campaign-pulse",
+      surveyName: summary.surveyName,
+      residentId: "resident-demo-maya-r",
+      residentName: "Maya R.",
+      residentEmail: "",
+      buildingId: "the-shore",
+      buildingName: "The Shore",
+      partnerId: place?.partnerId || place?.raw?.partnerId || place?.id || "",
+      partnerName: summary.topPartner,
+      perkId: place?.perkId || place?.id || "",
+      perkName: place?.perk?.title || place?.perk?.offer || place?.perk_value || "Resident perk",
+      redemptionId: isPerk ? `redemption-${place?.id || "demo"}` : "",
+      mapEntityId: place?.id || "",
+      district: place?.district || "",
+      category: place?.category || place?.type || "",
+      score: summary.averageRating,
+      sentiment: "positive",
+      sourceFlow: isPerk ? "perk-redemption" : "resident-survey",
+      answers: {
+        routineFit: "Fits my routine",
+        likelihoodToReturn: "Very likely",
+        favoriteMoment: isPerk ? "Redeemed after scanning the perk" : "Found the campaign from the map",
+      },
+    });
+    setSyncState(`Saved ${response.surveyName}. Google Sheet export is queued.`);
+  };
+
+  return (
+    <section className={`dp-survey-intelligence-layer ${compact ? "is-compact" : ""}`} aria-label="Survey Activity">
+      <PartnerSectionHeader label="Survey Activity" title="Participation and redemption feedback" />
+      <p>
+        Survey completions are treated as map participation events, tied to resident, building, perk, partner, district, category, and timestamp.
+      </p>
+      <div className="dp-survey-summary-grid" aria-label="Survey activity summary">
+        {[
+          ["Today", summary.completionsToday, "Survey completions"],
+          ["Redemption linked", summary.redemptionLinkedCompletions, "Attached to perks"],
+          ["Average rating", summary.averageRating.toFixed(1), "Resident score"],
+          ["Export health", summary.exportHealth, "Google Sheets"],
+        ].map(([label, value, copy]) => (
+          <article key={label}>
+            <span>{label}</span>
+            <strong>{value}</strong>
+            <small>{copy}</small>
+          </article>
+        ))}
+      </div>
+      {!compact && (
+        <div className="dp-survey-latest-list" aria-label="Latest survey completions">
+          {summary.latest.map((item) => (
+            <article key={`${item.resident}-${item.building}-${item.sourceFlow}`}>
+              <span>
+                <strong>{item.resident}</strong>
+                <small>{item.building} · {item.sourceFlow.replace(/-/g, " ")}</small>
+              </span>
+              <em>{item.score.toFixed(1)}</em>
+              <small>{item.partner} · {item.exportStatus.replace(/_/g, " ")}</small>
+            </article>
+          ))}
+        </div>
+      )}
+      <div className="dp-survey-action-row">
+        <button type="button" onClick={recordCompletion}>Log survey completion</button>
+        <button type="button" onClick={openReports}>Open survey reports</button>
+        <a href="https://docs.google.com/spreadsheets/" target="_blank" rel="noreferrer">Open Google Sheets</a>
+      </div>
+      {syncState && <p className="dp-survey-sync-state" role="status">{syncState}</p>}
+    </section>
+  );
+}
+
 function PartnerRelatedAssetsSection({ sections = [], onSelect }) {
   if (!sections.length) return null;
   return (
@@ -5735,6 +5846,7 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
       <EntityIdentityPanel identity={getEntityIdentity(place, "partner")} />
       <PartnerActivityIntelligence intelligence={intelligence} />
       <PartnerCampaignRecommendationsSection recommendations={campaigns.length ? campaigns : opportunities} />
+      <SurveyIntelligenceLayer place={place} />
       <PartnerAudienceRecommendationsSection audiences={audiences} />
       <PartnerRelatedAssetsSection sections={relatedAssets} onSelect={onSelect} />
       <PartnerAskSection
@@ -6963,6 +7075,7 @@ function MapNativeCampaignDetails({ place, mode }) {
           ))}
         </div>
       )}
+      {mode === "partner" && <SurveyIntelligenceLayer place={place} compact />}
     </section>
   );
 }
@@ -8933,6 +9046,13 @@ function SearchIntentConsole({
       selectCurrent?.();
     }
   };
+  const mobileRailButtonStyle = {
+    minHeight: "34px",
+    height: "34px",
+    maxHeight: "34px",
+    padding: "0 12px",
+    borderRadius: "12px",
+  };
   const renderRail = (items, className, label, options = {}) => (
     <div className={className} role="tablist" aria-label={label}>
       {items.flatMap((item, index) => {
@@ -8940,7 +9060,7 @@ function SearchIntentConsole({
         const active = isRailItemActive(item);
         const itemButton = (
           <button
-            key={railKeyFor(item)}
+            key={`${className}-${index}-${railKeyFor(item)}`}
             type="button"
             role="tab"
             className={active ? "is-active" : ""}
@@ -8950,6 +9070,7 @@ function SearchIntentConsole({
             onKeyDown={(event) => handleConsoleTabKeyDown(event, () => handleRailItem(item))}
             title={item.label}
             aria-label={item.label}
+            style={mobileRailButtonStyle}
           >
             {Icon ? (
               <Icon className="dp-search-intent-filter-icon" aria-hidden="true" />
@@ -8968,6 +9089,7 @@ function SearchIntentConsole({
               aria-controls="dp-search-more-filter-panel"
               onClick={(event) => event.stopPropagation()}
               tabIndex={-1}
+              style={mobileRailButtonStyle}
             >
               <span>More</span>
               <ChevronDown aria-hidden="true" />
@@ -8984,6 +9106,7 @@ function SearchIntentConsole({
           aria-controls="dp-search-more-filter-panel"
           onClick={(event) => event.stopPropagation()}
           tabIndex={-1}
+          style={mobileRailButtonStyle}
         >
           <span>More</span>
           <ChevronDown aria-hidden="true" />
@@ -9012,6 +9135,7 @@ function SearchIntentConsole({
             className={`dp-console-chip dp-search-segment ${active ? "is-active" : ""}`}
             onClick={() => onFilterSelect?.(item)}
             onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onFilterSelect?.(item))}
+            style={mobileRailButtonStyle}
           >
             {item.label}
           </button>
@@ -9892,6 +10016,8 @@ export default function MapPage() {
             ))}
           </section>
 
+          <SurveyIntelligenceLayer place={selected || visiblePlaces.find((place) => isCampaignEntity(place) || hasActivePerkData(place)) || visiblePlaces[0]} />
+
           <section className="dp-austin-growth-read" aria-label="Austin growth context">
             <span>City context</span>
             <strong>Austin passed 1 million residents.</strong>
@@ -10166,6 +10292,8 @@ export default function MapPage() {
             </div>
           </section>
 
+          <SurveyIntelligenceLayer place={selectedEntity || selected || visiblePlaces.find((place) => hasActivePerkData(place))} compact />
+
           <section className="dp-campaign-visibility-panel" aria-label="Campaign visibility placements">
             <p className="dp-tab-eyebrow">Visibility</p>
             <h3>Own the moments where downtown discovery starts.</h3>
@@ -10218,6 +10346,8 @@ export default function MapPage() {
           <section className="dp-partner-info-copy">
             <p>Open the map, see what is close, save what fits, and make the next move.</p>
           </section>
+
+          <CommunityStoriesMapLayer />
 
           <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Downtown Perks utility">
             {[

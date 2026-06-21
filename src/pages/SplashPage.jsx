@@ -78,7 +78,7 @@ const storyStates = [
     nav: "Perks",
     kicker: "Choosing local",
     headline: ["Whether you’re making plans", "or part of them."],
-    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that  that keep downtown interesting.",
+    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
     supporting: [
       "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
     ],
@@ -111,6 +111,13 @@ function clamp(value, min, max) {
 }
 
 function FixedStoryStage({ state }) {
+  const [activeCue, setActiveCue] = useState(0);
+  const cue = state.scene?.items?.[activeCue] || state.scene?.items?.[0] || "";
+
+  useEffect(() => {
+    setActiveCue(0);
+  }, [state.id]);
+
   return (
     <section className="dp-fixed-story-stage dp-scene-stage" aria-label="Downtown Perks story">
       <div className="dp-fixed-story-state">
@@ -141,6 +148,28 @@ function FixedStoryStage({ state }) {
               ))}
             </div>
           </div>
+          {state.scene?.items?.length > 0 && (
+            <div className="dp-fixed-story-interactive" aria-label={`${state.scene.label} interactive cues`}>
+              <div className="dp-fixed-story-cue-detail">
+                <span>{state.scene.label}</span>
+                <strong>{cue}</strong>
+                <em>{state.scene.detail}</em>
+              </div>
+              <div className="dp-fixed-story-cue-rail" role="list">
+                {state.scene.items.map((item, index) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={index === activeCue ? "is-active" : ""}
+                    onClick={() => setActiveCue(index)}
+                    aria-pressed={index === activeCue}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
       </div>

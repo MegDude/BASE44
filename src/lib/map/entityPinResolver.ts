@@ -46,15 +46,33 @@ const PIN_MATCHERS: Array<[PinVariant, string[]]> = [
 const RESTORED_MASTER_PIN_KEYS: Record<string, PinVariant> = {
   inkind: "inkind",
   dana: "dana",
-  "fine-eyewear": "fine-eyewear",
+  "fine-eyewear": "retail",
   "waterloo-greenway": "waterloo-greenway",
-  "stay-put": "stay-put",
-  "topo-chico": "topo-chico",
+  "stay-put": "nightlife",
+  "topo-chico": "brand",
   yeti: "brand",
   rivian: "mobility",
   lululemon: "wellness",
   "four-seasons": "hotel",
 };
+
+const UPLOADED_BRAND_PIN_KEYS = new Set([
+  "fine-eyewear",
+  "fine-eyewear-logo",
+  "fine-eyewear-pin",
+  "stay-put",
+  "stay-put-pin",
+  "topo-chico",
+  "topo-chico-pin",
+  "yeti",
+  "rivian",
+  "lululemon",
+]);
+
+function isBrandOrRetailEntity(entity: Record<string, unknown>): boolean {
+  const text = entityText(entity);
+  return /\b(brand|brands|brand[_\s-]*activation|sponsor|sponsorship|retail|shop|store|boutique|eyewear|apparel|yeti|rivian|lululemon|topo chico|fine eyewear)\b/.test(text);
+}
 
 function entityText(entity: Record<string, unknown>): string {
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
@@ -149,6 +167,13 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   const explicit = explicitPinKey(entity);
   if (explicit) {
     if (explicit === "legends" || explicit.includes("legends-logo") || explicit.includes("legends")) return getPinAsset("legends");
+    if (UPLOADED_BRAND_PIN_KEYS.has(explicit) || explicit.includes("/pins/brands/")) {
+      if (/\b(fine[_\s-]*eyewear|retail|shop|store|boutique|eyewear|apparel)\b/.test(textForPin)) return getPinAsset("retail");
+      if (/\b(stay[_\s-]*put|bar|nightlife|brewery|patio|venue)\b/.test(textForPin)) return getPinAsset("nightlife");
+      if (/\b(rivian|mobility|ev|vehicle|charging)\b/.test(textForPin)) return getPinAsset("mobility");
+      if (/\b(lululemon|wellness|fitness|run|yoga)\b/.test(textForPin)) return getPinAsset("wellness");
+      return getPinAsset("brand");
+    }
     return getPinAsset(RESTORED_MASTER_PIN_KEYS[explicit] || explicit);
   }
 
@@ -162,6 +187,8 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   if (hasResidentialSignal(entity)) return getPinAsset("residential");
   if (hasVenueSignal(entity) && /\b(antone'?s|nightclub|live music|music venue|art|culture|gallery|museum)\b/.test(entityText(entity))) return getPinAsset("culture");
   if (hasVenueSignal(entity) && /\b(bar|nightlife|cocktail|pub|club|lounge|beer)\b/.test(entityText(entity))) return getPinAsset("nightlife");
+  if (isBrandOrRetailEntity(entity) && /\b(retail|shop|store|boutique|eyewear|apparel|market)\b/.test(textForPin)) return getPinAsset("retail");
+  if (isBrandOrRetailEntity(entity)) return getPinAsset("brand");
 
   const text = [
     entity.id,
