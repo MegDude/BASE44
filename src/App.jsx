@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -78,6 +78,50 @@ function HashScroll() {
   return null;
 }
 
+const OPENING_STORY_SESSION_KEY = "dp-opening-story-seen";
+
+function normalizeMapLaunchPath(pathname, search) {
+  const params = new URLSearchParams(search || "");
+  if (!params.get("mode")) params.set("mode", "resident");
+  if (!params.get("tab")) params.set("tab", "map");
+  if (!params.get("filter")) params.set("filter", "All");
+  const targetPath = pathname === "/app/map" ? "/app/map" : pathname === "/app" ? "/app" : "/map";
+  return `${targetPath}?${params.toString()}`;
+}
+
+function MapLaunchGate() {
+  const location = useLocation();
+  const [storySeen, setStorySeen] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.sessionStorage?.getItem(OPENING_STORY_SESSION_KEY) === "true";
+  });
+
+  const targetHref = useMemo(
+    () => normalizeMapLaunchPath(location.pathname, location.search),
+    [location.pathname, location.search],
+  );
+
+  const completeLaunchStory = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.sessionStorage?.setItem(OPENING_STORY_SESSION_KEY, "true");
+    }
+    setStorySeen(true);
+  }, []);
+
+  if (storySeen) return <MapPage />;
+
+  return (
+    <Suspense fallback={<MarketingFallback />}>
+      <SplashPage
+        residentMapHref={targetHref}
+        partnerMapHref="/map?mode=partner&tab=map&filter=All"
+        skipHref={targetHref}
+        onOpenMap={completeLaunchStory}
+      />
+    </Suspense>
+  );
+}
+
 function ProductRoutes() {
   return (
     <>
@@ -96,9 +140,9 @@ function ProductRoutes() {
             }
           />
 
-          <Route path="/app" element={<MapPage />} />
-          <Route path="/app/map" element={<MapPage />} />
-          <Route path="/map" element={<MapPage />} />
+          <Route path="/app" element={<MapLaunchGate />} />
+          <Route path="/app/map" element={<MapLaunchGate />} />
+          <Route path="/map" element={<MapLaunchGate />} />
           <Route
             path="/ask-map"
             element={

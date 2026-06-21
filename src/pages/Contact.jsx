@@ -274,7 +274,7 @@ export default function ContactPage() {
                 Start Conversation
                 <ArrowRight aria-hidden="true" />
               </button>
-              <a href="/pricing" className="marketing-contact-button marketing-contact-button-secondary">
+              <a href="/marketing/pricing" className="marketing-contact-button marketing-contact-button-secondary">
                 View Pricing
                 <ArrowRight aria-hidden="true" />
               </a>

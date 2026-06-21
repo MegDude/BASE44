@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 96" role="img" aria-label="DANA">
-  <path d="M23 65h114" stroke="#C8A96A" stroke-width="5" stroke-linecap="round"/>
-  <path d="M35 63V46h15v17M61 63V35h18v28M91 63V26h18v37M121 63V42h14v21" fill="#C8A96A"/>
-  <path d="M17 73h126" stroke="#C8A96A" stroke-width="6" stroke-linecap="round"/>
-  <path d="M31 28h18c14 0 22 8 22 20s-8 20-22 20H31V28Zm14 11v18h4c5 0 8-3 8-9s-3-9-8-9h-4Zm39 29 16-40h13l16 40h-14l-2.2-6.3H100L97.8 68H84Zm19-16h6.7l-3.3-10-3.4 10Z" fill="#C8A96A"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 684 843" role="img" aria-label="DANA">
+  <path fill="#C8A96A" d="M55 252h90c83 0 134 42 134 112s-51 113-134 113H55V252Zm72 58v109h16c37 0 61-20 61-55s-24-54-61-54h-16Zm215 167 87-225h80l88 225h-76l-13-38h-78l-13 38h-75Zm105-91h44l-22-67-22 67Z"/>
+  <path fill="#C8A96A" d="M312 252h71l96 122V252h72v225h-68L384 350v127h-72V252Z"/>
+  <path fill="#C8A96A" d="M0 686h394c94 0 165 28 210 83l80 74H0V686Z"/>
+  <path fill="#C8A96A" d="M0 729h54v28H0v-28Zm78 0h26l49 61v-61h30v107h-26l-49-61v61H78V729Zm134 0h39c39 0 65 22 65 53s-26 54-65 54h-39V729Zm31 28v51h7c20 0 34-9 34-26s-14-25-34-25h-7Zm100-28h31v107h-31V729Zm63 0h30v42h43v-42h31v107h-31v-38h-43v38h-30V729Zm131 0h31v107h-31V729Z"/>
 </svg>

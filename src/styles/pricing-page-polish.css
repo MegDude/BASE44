@@ -450,3 +450,81 @@ html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }
+
+/* Final mobile pricing pass: iPhone-first type, calm spacing, compact commerce UI. */
+html body #root main.pricing-v4-page.pricing-v4-page {
+  background: #FFFFFF !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-container {
+  width: min(calc(100vw - 28px), 1120px) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page h1 {
+  max-width: 12ch !important;
+  font-size: clamp(40px, 10vw, 62px) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-section-head h2,
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final h2 {
+  font-size: clamp(24px, 6vw, 38px) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page :is(
+  .pricing-v4-hero p:not(.pricing-v4-eyebrow),
+  .pricing-v4-section-head > p,
+  .pricing-v4-editorial-item p,
+  .pricing-v4-module p,
+  .pricing-v4-faq p,
+  .pricing-v4-summary p,
+  .pricing-v4-partner-card p
+) {
+  font-size: 14.5px !important;
+  line-height: 1.58 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-section {
+  padding-block-start: 44px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page :is(.pricing-v4-partner-card, .pricing-v4-module, .pricing-v4-block, .pricing-v4-summary, .pricing-v4-mini-group, .pricing-v4-editorial-item, .pricing-v4-faq > div) {
+  border-radius: 12px !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, .035) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-cta,
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-text-rail button,
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action :is(span, strong) {
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 430px) {
+  html body #root main.pricing-v4-page.pricing-v4-page {
+    padding-top: calc(74px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: 52px !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-hero {
+    gap: 10px !important;
+    padding-block: 14px 22px !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-partner-card,
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-module {
+    flex-basis: min(252px, calc(100vw - 42px)) !important;
+    width: min(252px, calc(100vw - 42px)) !important;
+    min-height: 164px !important;
+    padding: 14px !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action {
+    min-height: 42px !important;
+    gap: 10px !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary h2 {
+    font-size: 38px !important;
+  }
+}

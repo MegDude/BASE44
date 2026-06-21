@@ -369,7 +369,7 @@ export default function Navbar() {
                         onClick={() => setMobileAudience(value)}
                         className={`relative h-7 border-0 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-[0.14em] shadow-none outline-none transition focus-visible:outline-none focus-visible:ring-0 ${
                           mobileAudience === value
-                            ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
+                            ? "text-[#C8A96A] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
                             : "text-[#425466] hover:text-[#0B1F33]"
                         }`}
                         style={{ border: 0, boxShadow: "none", background: "transparent" }}

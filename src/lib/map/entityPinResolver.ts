@@ -46,10 +46,10 @@ const PIN_MATCHERS: Array<[PinVariant, string[]]> = [
 const RESTORED_MASTER_PIN_KEYS: Record<string, PinVariant> = {
   inkind: "inkind",
   dana: "dana",
-  "fine-eyewear": "retail",
+  "fine-eyewear": "fine-eyewear",
   "waterloo-greenway": "waterloo-greenway",
-  "stay-put": "nightlife",
-  "topo-chico": "brand",
+  "stay-put": "stay-put",
+  "topo-chico": "topo-chico",
   yeti: "brand",
   rivian: "mobility",
   lululemon: "wellness",
@@ -168,8 +168,9 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   if (explicit) {
     if (explicit === "legends" || explicit.includes("legends-logo") || explicit.includes("legends")) return getPinAsset("legends");
     if (UPLOADED_BRAND_PIN_KEYS.has(explicit) || explicit.includes("/pins/brands/")) {
-      if (/\b(fine[_\s-]*eyewear|retail|shop|store|boutique|eyewear|apparel)\b/.test(textForPin)) return getPinAsset("retail");
-      if (/\b(stay[_\s-]*put|bar|nightlife|brewery|patio|venue)\b/.test(textForPin)) return getPinAsset("nightlife");
+      if (/\b(fine[_\s-]*eyewear|eyewear|vision partner)\b/.test(textForPin)) return getPinAsset("fine-eyewear");
+      if (/\b(stay[_\s-]*put|the stay put)\b/.test(textForPin)) return getPinAsset("stay-put");
+      if (/\b(topo[_\s-]*chico|topochico)\b/.test(textForPin)) return getPinAsset("topo-chico");
       if (/\b(rivian|mobility|ev|vehicle|charging)\b/.test(textForPin)) return getPinAsset("mobility");
       if (/\b(lululemon|wellness|fitness|run|yoga)\b/.test(textForPin)) return getPinAsset("wellness");
       return getPinAsset("brand");

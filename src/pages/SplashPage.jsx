@@ -1,109 +1,112 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Menu, Search, Sparkles, X } from "lucide-react";
 
 const storyStates = [
   {
     id: "start",
-    number: "01",
-    nav: "Start",
-    kicker: "Downtown flavor",
-    headline: ["More charm than", "a biscuit with honey."],
-    meaning: "Downtown Perks brings the heat — and the hospitality.",
+    index: "01",
+    navLabel: "Start",
+    kicker: "",
+    headline: ["More charm than a biscuit with honey."],
+    headlineParts: [
+      { text: "More charm", tone: "gold" },
+      { text: "than a biscuit", tone: "navy" },
+      { text: "with honey.", tone: "navy" },
+    ],
+    meaning: "Downtown Perks brings the heat\n— and the hospitality.",
     supporting: [
       "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” - this is for you.",
     ],
-    scene: {
-      type: "welcome",
-      label: "Local cues",
-      items: ["Town Lake", "South Congress", "Happy hour", "Hospitality"],
-      detail: "Tap a cue to set the mood.",
-    },
   },
   {
     id: "easier",
-    number: "02",
-    nav: "Easier",
-    kicker: "A better downtown day",
-    headline: ["Downtown should be", "easier to use."],
-    meaning: "Easier to navigate. Easier to connect. More useful day to day.",
+    index: "02",
+    navLabel: "Easier",
+    kicker: "",
+    headline: ["Downtown should be easier to use."],
+    headlineParts: [
+      { text: "Downtown should", tone: "navy", compact: true },
+      { text: "be easier to use.", tone: "gold", compact: true },
+    ],
+    meaning: "Easier to navigate. Easier to connect. \nMore useful day to day.",
     supporting: [
-      "Most things already exist. They’re just scattered.",
+      "Most things already exist.",
+      "They’re just scattered.",
       "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
     ],
-    scene: {
-      type: "scatter",
-      label: "Scattered signals",
-      items: ["Group chat", "Screenshot", "Newsletter", "Open tab", "Saved post"],
-      detail: "Each tap pulls one loose plan into view.",
-    },
   },
   {
-    id: "map",
-    number: "03",
-    nav: "One map",
-    kicker: "Bringing it together",
-    headline: ["So we built one map", "to bring everything together."],
-    meaning: "Not another app to manage. Not another feed to scroll. Just a better way to figure out what’s happening, and worth showing up for.",
-    supporting: [
+    id: "one-map",
+    index: "03",
+    navLabel: "One map",
+    kicker: "",
+    headline: ["So we built one map to bring everything together."],
+    headlineParts: [
+      { text: "So we built", tone: "navy" },
+      { text: "one map", tone: "gold" },
+      { text: "to bring", tone: "navy" },
+      { text: "everything", tone: "navy" },
+      { text: "together.", tone: "navy" },
     ],
-    scene: {
-      type: "map",
-      label: "One map",
-      items: ["Coffee", "Fitness", "Rooftop", "Dinner", "Live music"],
-      detail: "Tap a pin to watch the plan come together.",
-    },
+    meaning: "Not another app to manage. Not another feed to scroll.\nJust a better way to figure out what’s happening, and worth showing up for.",
+    supporting: [],
   },
   {
-    id: "pass",
-    number: "04",
-    nav: "Access",
-    kicker: "Both sides of downtown",
-    headline: ["Your all-access", "pass to downtown."],
-    meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
+    id: "access",
+    index: "04",
+    navLabel: "Access",
+    kicker: "",
+    headline: ["Your all-access pass to downtown."],
+    headlineParts: [
+      { text: "Your all-access", tone: "gold" },
+      { text: "pass to downtown.", tone: "navy", compact: true },
+    ],
+    meaning: "For residents, it means less searching and better plans.\nFor local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
       "Coffee around the corner. A last-minute happy hour.",
-      "The resident event you would have missed. Connecting the people, places and perks that make downtown feel alive.",
+      "The resident event you would have missed.",
+      "Connecting the people, places and perks",
+      "that make downtown feel alive.",
     ],
-    scene: {
-      type: "connection",
-      label: "Plan meets place",
-      items: ["Residents", "Hotels", "Events", "Local businesses"],
-      detail: "Tap a group to see the connection light up.",
-    },
   },
   {
     id: "perks",
-    number: "05",
-    nav: "Perks",
-    kicker: "Choosing local",
-    headline: ["Whether you’re making plans", "or part of them."],
-    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
+    index: "05",
+    navLabel: "Perks",
+    kicker: "",
+    headline: ["Whether you’re making plans or part of them."],
+    headlineParts: [
+      { text: "Whether you’re", tone: "navy" },
+      { text: "making plans", tone: "gold" },
+      { text: "or part of them.", tone: "navy" },
+    ],
+    meaning: " Choosing local comes with its perks: discounts, rewards, and little extras from the places that  that keep downtown interesting.",
     supporting: [
       "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
     ],
-    scene: {
-      type: "perks",
-      label: "Perks nearby",
-      items: ["Discounts", "Rewards", "Little extras", "Worth exploring"],
-      detail: "Tap a perk to preview the payoff.",
-    },
   },
   {
-    id: "come-in",
-    number: "06",
-    nav: "Open",
-    kicker: "Come on in",
-    headline: ["So come on in.", "Open the map."],
+    id: "open",
+    index: "06",
+    navLabel: "Open",
+    kicker: "",
+    headline: ["So come on in. Open the map."],
+    headlineParts: [
+      { text: "So come on in ya'll", tone: "navy", compact: true },
+      { text: "Open the map.", tone: "gold" },
+    ],
     meaning: "And maybe, grab something cold while you’re at it.",
     supporting: [],
-    scene: {
-      type: "welcome",
-      label: "Open the map",
-      items: ["Resident Map", "Partner Map", "Perks nearby", "Something cold"],
-      detail: "Choose a map view and step into downtown.",
-    },
   },
+];
+
+const storyNavLinks = [
+  { to: "/app?mode=resident&tab=map", label: "Resident Map" },
+  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks" },
+  { to: "/app?mode=resident&tab=map&filter=Events", label: "Events" },
+  { to: "/app?mode=resident&tab=pass", label: "Perks Card" },
+  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
 ];
 
 function clamp(value, min, max) {
@@ -111,15 +114,8 @@ function clamp(value, min, max) {
 }
 
 function FixedStoryStage({ state }) {
-  const [activeCue, setActiveCue] = useState(0);
-  const cue = state.scene?.items?.[activeCue] || state.scene?.items?.[0] || "";
-
-  useEffect(() => {
-    setActiveCue(0);
-  }, [state.id]);
-
   return (
-    <section className="dp-fixed-story-stage dp-scene-stage" aria-label="Downtown Perks story">
+    <section className="dp-fixed-story-stage dp-scene-stage" data-story-scene={state.id} aria-label="Downtown Perks story">
       <div className="dp-fixed-story-state">
         <div className="dp-fixed-story-copy">
           <div className="dp-fixed-story-kicker-slot">
@@ -127,14 +123,16 @@ function FixedStoryStage({ state }) {
           </div>
           <div className="dp-fixed-story-headline-slot">
             <h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
-              {state.headline.map((line) => {
-                const lineClassName = line.length <= 22
-                  ? "dp-fixed-story-headline-line is-balanced-single-line"
-                  : "dp-fixed-story-headline-line";
+              {(state.headlineParts || state.headline.map((text) => ({ text, tone: "navy" }))).map((part) => {
+                const lineClassName = [
+                  "dp-fixed-story-line",
+                  "dp-fixed-story-headline-line",
+                  part.tone === "gold" ? "dp-fixed-story-line--gold" : "dp-fixed-story-line--navy",
+                  part.compact ? "dp-fixed-story-line--compact" : "",
+                  part.bold ? "dp-fixed-story-line--bold" : "",
+                ].filter(Boolean).join(" ");
 
-                return (
-                  <span key={line} className={lineClassName}>{line}</span>
-                );
+                return <span key={part.text} className={lineClassName}>{part.text}</span>;
               })}
             </h1>
           </div>
@@ -148,28 +146,6 @@ function FixedStoryStage({ state }) {
               ))}
             </div>
           </div>
-          {state.scene?.items?.length > 0 && (
-            <div className="dp-fixed-story-interactive" aria-label={`${state.scene.label} interactive cues`}>
-              <div className="dp-fixed-story-cue-detail">
-                <span>{state.scene.label}</span>
-                <strong>{cue}</strong>
-                <em>{state.scene.detail}</em>
-              </div>
-              <div className="dp-fixed-story-cue-rail" role="list">
-                {state.scene.items.map((item, index) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={index === activeCue ? "is-active" : ""}
-                    onClick={() => setActiveCue(index)}
-                    aria-pressed={index === activeCue}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
       </div>
@@ -177,8 +153,14 @@ function FixedStoryStage({ state }) {
   );
 }
 
-export default function SplashPage() {
+export default function SplashPage({
+  residentMapHref = "/map?mode=resident&tab=map&filter=All",
+  partnerMapHref = "/map?mode=partner&tab=map&filter=All",
+  skipHref = "/map?mode=resident&tab=map&filter=All",
+  onOpenMap,
+} = {}) {
   const [active, setActive] = useState(0);
+  const [storyMenuOpen, setStoryMenuOpen] = useState(false);
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
     return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -189,6 +171,21 @@ export default function SplashPage() {
 
   const finishIntro = useCallback(() => {
     setShowIntro(false);
+    setStoryMenuOpen(false);
+  }, []);
+
+  const markMapLaunchReady = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.sessionStorage?.setItem("dp-opening-story-seen", "true");
+    }
+    setStoryMenuOpen(false);
+    onOpenMap?.();
+  }, [onOpenMap]);
+
+  const openSearch = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("dp-open-quick-search"));
+    }
   }, []);
 
   const activate = useCallback((next) => {
@@ -232,6 +229,7 @@ export default function SplashPage() {
       }
       if (event.key === "Home") activate(0);
       if (event.key === "End") activate(storyStates.length - 1);
+      if (event.key === "Escape") setStoryMenuOpen(false);
     };
 
     const onTouchStart = (event) => {
@@ -260,7 +258,6 @@ export default function SplashPage() {
     };
   }, [activate, go]);
 
-  const progress = useMemo(() => `${active + 1} / ${storyStates.length}`, [active]);
   const isFirst = active === 0;
   const isLast = active === storyStates.length - 1;
 
@@ -302,73 +299,86 @@ export default function SplashPage() {
         </section>
       )}
 
-      <a className="dp-skip-link" href="/map?mode=resident&tab=map">
-        Skip to map
-      </a>
-
       {!showIntro && (
-        <Link
-          to="/map?mode=resident&tab=map&filter=All"
-          className="dp-story-narrative-skip"
-          aria-label="Skip story and open resident map"
-        >
-          Skip story
-        </Link>
-      )}
-
-      {!showIntro && (
-        <>
-          <aside className="dp-fixed-story-steps" aria-label="Intro story states">
-            <ol>
-              {storyStates.map((item, index) => (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    className={index === active ? "is-active" : ""}
-                    onClick={() => activate(index)}
-                    aria-current={index === active ? "step" : undefined}
-                  >
-                    <span>{item.number}</span>
-                    {item.nav}
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </aside>
-
-          <div className="dp-fixed-story-progress" aria-label="Progress">
-            {progress}
-          </div>
-
-        </>
-      )}
-
-      <FixedStoryStage state={state} />
-
-      {!showIntro && (
-        <>
-          <div className="dp-fixed-story-actions" aria-label="Story navigation">
-            <button type="button" onClick={() => go(-1)} disabled={isFirst}>
-              <ArrowLeft />
-              Back
-            </button>
-            <button type="button" onClick={() => go(1)} disabled={isLast}>
-              Next
-              <ArrowRight />
-            </button>
-          </div>
-
-          <div className="dp-fixed-map-actions" aria-label="Open map views">
-            <Link to="/map?mode=resident&tab=map">
-              Resident Map
-              <ArrowRight />
+        <section className="dp-fixed-story-shell" aria-label="Downtown Perks story">
+          <div className="dp-product-shell-topbar">
+            <Link
+              to={residentMapHref}
+              className="dp-product-shell-brand"
+              aria-label="Open Downtown Perks resident map"
+              onClick={markMapLaunchReady}
+            >
+              <span className="dp-product-shell-wordmark whitespace-nowrap font-sans text-[18px] font-bold uppercase leading-none tracking-[-0.045em] text-dp-navy sm:text-2xl">
+                <span className="text-dp-navy">Downtown</span>{" "}
+                <span className="text-dp-gold">Perks</span>
+              </span>
             </Link>
-            <Link to="/map?mode=partner&tab=map&filter=All">
-              Partner Map
-              <ArrowRight />
-            </Link>
+            <div className="dp-product-shell-nav-rail" aria-label="Story shortcuts">
+              <button
+                type="button"
+                className="dp-product-shell-search-button"
+                aria-label="Search Downtown Perks"
+                onClick={openSearch}
+              >
+                <Search className="h-4 w-4" aria-hidden="true" />
+                <span>Search</span>
+              </button>
+              <Link
+                to={skipHref}
+                className="dp-product-shell-skip dp-story-narrative-skip"
+                aria-label="Skip story and open resident map"
+                onClick={markMapLaunchReady}
+              >
+                Skip story
+              </Link>
+            </div>
+            <button
+              type="button"
+              className="dp-product-shell-menu-button"
+              aria-label={storyMenuOpen ? "Close navigation" : "Open navigation"}
+              aria-expanded={storyMenuOpen}
+              aria-controls="dp-story-navigation-menu"
+              onClick={() => setStoryMenuOpen((open) => !open)}
+            >
+              {storyMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
+            </button>
+            {storyMenuOpen && (
+              <nav id="dp-story-navigation-menu" className="dp-product-shell-menu" aria-label="Downtown Perks navigation">
+                {storyNavLinks.map((link) => (
+                  <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
           </div>
-        </>
+
+          <FixedStoryStage state={state} />
+
+          <div className="dp-fixed-story-footer">
+            <div className="dp-fixed-story-controls dp-fixed-story-actions" aria-label="Story navigation">
+              <button type="button" className="dp-fixed-story-control" onClick={() => go(-1)} disabled={isFirst}>
+                <ArrowLeft />
+                Back
+              </button>
+              <button type="button" className="dp-fixed-story-control" onClick={() => go(1)} disabled={isLast}>
+                Next
+                <ArrowRight />
+              </button>
+            </div>
+
+            <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">
+              <Link className="dp-button dp-button-primary dp-button-wide" to={residentMapHref} onClick={markMapLaunchReady}>
+                Resident Map
+                <ArrowRight />
+              </Link>
+              <Link className="dp-button dp-button-secondary dp-button-wide" to={partnerMapHref} onClick={markMapLaunchReady}>
+                Partner Map
+                <ArrowRight />
+              </Link>
+            </div>
+          </div>
+        </section>
       )}
     </main>
   );

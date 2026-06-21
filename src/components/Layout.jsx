@@ -51,6 +51,16 @@ export default function Layout() {
   const { pathname, search } = location;
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+
+  useEffect(() => {
+    function handleOpenQuickSearch() {
+      setQuickSearchOpen(true);
+    }
+
+    window.addEventListener("dp-open-quick-search", handleOpenQuickSearch);
+    return () => window.removeEventListener("dp-open-quick-search", handleOpenQuickSearch);
+  }, []);
+
   const isProductRoute =
     pathname === "/app" ||
     pathname === "/app/map" ||
@@ -107,7 +117,7 @@ export default function Layout() {
 
   const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
   const showNavbar = pathname !== "/" && (pathname === "/app" || pathname === "/app/map" || pathname === "/map" || !isProductRoute);
-  const showProductSearchButton = !showNavbar && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
+  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
     navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);

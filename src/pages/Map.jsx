@@ -4964,64 +4964,8 @@ function WhyGoChips({ place, onAsk, onContact }) {
   );
 }
 
-function KnownForSection({ place, mode = "resident" }) {
-  const isPartnerMode = mode === "partner";
-  const isPartnerProperty = mode === "partner" && getDestinationKind(place) === "property";
-  const raw = place?.raw || {};
-  const curatedItems = getCuratedArray(raw.residentValues || raw.resident_values || place?.residentValues);
-  const panelContent = resolveEntityPanelContent(place, mode);
-  const kind = getDestinationKind(place);
-  if ((kind === "brand" || isBrandLikePanelPlace(place)) && !panelContent.bestFor?.length) return null;
-  const batheItems = [
-    "Recovery, wellness, and weekend routines.",
-    "Walkable from several residential towers and hotels.",
-    "Afternoons and weekends.",
-  ];
-  const byKind = {
-    grocery: ["Quick essentials", "Coffee", "Wine", "Groceries", "Downtown errands"],
-    coffee: ["Morning coffee", "Work nearby", "Quick stops", "Casual meetings", "Walkable errands"],
-    nightlife: ["Cocktails", "Live music", "Happy hour", "Late night", "Groups"],
-    dining: ["Lunch meetings", "Dinner plans", "Happy hour", "Groups", "Walkable plans"],
-    hotel: ["Guest stays", "Dining nearby", "Lobby access", "Events nearby", "Walkable plans"],
-    property: ["Walkability", "Downtown views", "Resident amenities", "Trail access", "Everyday convenience"],
-    event: ["Tonight", "RSVP", "Groups", "Nearby plans", "Before or after dinner"],
-    retail: ["Errands", "Shopping", "Services", "Quick stops", "Nearby residents"],
-    civic: ["Public space", "Events", "Walks", "Community", "Nearby dining"],
-    brand: ["Local launches", "Limited offers", "Resident access", "Events", "Downtown culture"],
-    place: ["Useful nearby", "Walkable plans", "Local context", "Save for later", "Downtown routine"],
-  };
-  const partnerByKind = {
-    grocery: ["Errand demand", "Lunch-adjacent trips", "Resident traffic", "Hotel guests", "Repeat visits"],
-    coffee: ["Morning demand", "Workday traffic", "Meeting stops", "Coverage fit", "Repeat visits"],
-    nightlife: ["After-work demand", "Event spillover", "Group visits", "Campaign fit", "Late-night activity"],
-    dining: ["Dining demand", "After-work traffic", "Group plans", "Offer fit", "Event adjacency"],
-    hotel: ["Guest demand", "Local recommendations", "Event traffic", "Dining adjacency", "Partner fit"],
-    property: ["Resident density", "Neighborhood demand", "Perk coverage", "Event adjacency", "Partner fit"],
-    event: ["Attendance signal", "Pre-event plans", "Post-event dining", "RSVP intent", "Campaign fit"],
-    retail: ["Errand demand", "Shopping intent", "Service fit", "Nearby residents", "Visit frequency"],
-    civic: ["Public traffic", "Community activity", "Event adjacency", "District signal", "Partner fit"],
-    brand: ["Local launch fit", "Awareness signal", "Event crowd", "Partner fit", "Save intent"],
-    place: ["Nearby demand", "Walkable traffic", "Local context", "Campaign fit", "Repeat visits"],
-  };
-  const partnerPropertyItems = ["Dining nearby", "Residents nearby", "Hotel guests", "Event nights", "Repeat visits"];
-  const modeItems = isPartnerMode ? partnerByKind[kind] || partnerByKind.place : byKind[kind] || byKind.place;
-  const items = (isBatheEntity(place) ? batheItems : isPartnerProperty ? partnerPropertyItems : panelContent.bestFor?.length ? panelContent.bestFor : curatedItems.length && !isPartnerMode ? curatedItems : modeItems).slice(0, 5);
-  if (!items.length) return null;
-  return (
-    <DestinationSection title="Good for">
-      {isPartnerProperty ? (
-        <div className="dp-destination-chip-row">
-          {items.map((item) => <span key={item} className="dp-why-go-tag">{item}</span>)}
-        </div>
-      ) : (
-        <ul className="dp-curated-context-list">
-          {items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      )}
-    </DestinationSection>
-  );
+function KnownForSection() {
+  return null;
 }
 
 function getRentalListingData(place) {
@@ -9180,8 +9124,10 @@ function SearchIntentConsole({
           onPointerDown={(event) => event.stopPropagation()}
           onClick={onExpand}
         >
-          <Sparkles className="dp-search-rollup-icon" aria-hidden="true" />
-          <span className="dp-search-rollup-main">Ask the map</span>
+          <span className="dp-search-brand-mark">
+            <Sparkles className="dp-search-rollup-icon" aria-hidden="true" />
+            <span className="dp-search-rollup-main">Downtown Perks</span>
+          </span>
         </button>
       </div>
     );
@@ -9199,8 +9145,10 @@ function SearchIntentConsole({
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail">
           <div className="dp-search-intent-label">
-            <Sparkles className="h-3 w-3" aria-hidden="true" />
-            <span>Ask the map</span>
+            <span className="dp-search-brand-mark">
+              <Sparkles className="h-3 w-3" aria-hidden="true" />
+              <span>Downtown Perks</span>
+            </span>
           </div>
           <div className="dp-search-intent-top-actions">
             {renderModeSwitch()}
