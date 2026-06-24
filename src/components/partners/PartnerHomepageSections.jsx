@@ -25,9 +25,54 @@ const partnerIconMap = {
   civic: Landmark,
 };
 
+const partnerDecisionMoments = [
+  {
+    id: "morning-start",
+    kicker: "Real Downtown Decisions",
+    title: "People are already nearby and deciding where to start their day.",
+    meta: "Morning",
+    value: "01",
+  },
+  {
+    id: "nearby-reason",
+    kicker: "Real Downtown Decisions",
+    title: "A small nearby reason can change where someone goes next.",
+    meta: "Nearby",
+    value: "02",
+  },
+  {
+    id: "easy-yes",
+    kicker: "Real Downtown Decisions",
+    title: "Nearby discovery turns into an easy yes.",
+    meta: "Discovery",
+    value: "03",
+  },
+  {
+    id: "visible-next",
+    kicker: "Real Downtown Decisions",
+    title: "Visible when nearby people are already deciding what to do next.",
+    meta: "Visibility",
+    value: "04",
+  },
+  {
+    id: "findable-moments",
+    kicker: "Real Downtown Decisions",
+    title: "Moments get more useful when people can actually find them.",
+    meta: "Moments",
+    value: "05",
+  },
+  {
+    id: "downtown-routine",
+    kicker: "Real Downtown Decisions",
+    title: "One good visit becomes part of a downtown routine.",
+    meta: "Routine",
+    value: "06",
+  },
+];
+
 function SectionShell({ id, eyebrow, title, intro, children, className = "" }) {
   return (
-    <section id={id} className={cn("bg-[#F7F8FB] px-5 py-16 text-[#0B1F33] md:px-8 md:py-24", className)}>
+    <section id={id} className={cn("bg-white px-5 py-16 text-[#0B1F33] md:px-8 md:py-24", className)}>
       <div className="mx-auto max-w-7xl">
         {(eyebrow || title || intro) && (
           <motion.div
@@ -90,14 +135,19 @@ function PartnerPageNav() {
 }
 
 function PartnerHeroVisual() {
-  const items = [
-    { label: "Rainey movement spike", value: "+28%", meta: "Movement signal" },
-    { label: "Seaholm resident saves", value: "412", meta: "Partner visibility" },
-    { label: "Congress coverage gap", value: "Open", meta: "Recommended action" },
-  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeItem = partnerDecisionMoments[activeIndex] || partnerDecisionMoments[0];
+
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return undefined;
+    const interval = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % partnerDecisionMoments.length);
+    }, 5200);
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
-    <div className="dp-partner-hero-visual relative min-h-[460px] overflow-hidden p-5 text-white md:min-h-[560px] md:p-6">
+    <div id="moments-that-matter" className="dp-partner-hero-visual relative min-h-[460px] overflow-hidden p-5 text-white md:min-h-[560px] md:p-6">
       <div className="absolute inset-0 opacity-45" aria-hidden="true">
         <div className="absolute inset-x-8 top-10 h-px bg-white/12" />
         <div className="absolute inset-x-8 top-32 h-px bg-white/10" />
@@ -109,34 +159,43 @@ function PartnerHeroVisual() {
         <div className="absolute bottom-[26%] left-[42%] h-2 w-2 bg-[#C8A96A]" />
       </div>
 
-      <div className="relative z-10 flex h-full min-h-[420px] flex-col justify-between">
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner operating layer</p>
-          <h2 className="mt-4 max-w-[12ch] font-heading text-[46px] leading-[0.92] tracking-[-0.04em] text-white md:text-[58px]">
-            Movement becomes visible.
-          </h2>
+      <div className="dp-resident-hero-overlay relative z-10 flex h-full min-h-[420px] flex-col justify-between">
+        <div className="dp-resident-hero-overlay-inner dp-media-glass--text">
+          <div className="dp-resident-hero-overlay-kicker">
+            {activeItem.kicker}
+          </div>
+          <p className="dp-resident-hero-overlay-title">
+            {activeItem.title}
+          </p>
+          <div className="dp-media-sequence" aria-label={`Slide ${activeIndex + 1} of ${partnerDecisionMoments.length}`}>
+            <span className="dp-sequence-current">{String(activeIndex + 1).padStart(2, "0")}</span>
+            <span className="dp-sequence-divider"> / </span>
+            <span className="dp-sequence-total">{String(partnerDecisionMoments.length).padStart(2, "0")}</span>
+          </div>
         </div>
 
         <div className="grid gap-3">
-          {items.map((item, index) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: index * 0.08, ease }}
-              className="border border-white/12 bg-white/[0.08] p-4 backdrop-blur-md"
+          {partnerDecisionMoments.slice(0, 3).map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              className={cn(
+                "dp-partner-card-overlay border border-white/12 bg-white/[0.08] p-4 text-left backdrop-blur-md transition-colors",
+                activeIndex === index && "border-[#C8A96A]/55"
+              )}
             >
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{item.meta}</p>
-                  <p className="mt-1 text-[14px] font-medium text-white">{item.label}</p>
+                  <p className="dp-partner-card-kicker text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{item.meta}</p>
+                  <p className="dp-partner-card-title mt-1 text-[14px] font-medium text-white">{item.title}</p>
                 </div>
                 <span className="text-[20px] font-semibold text-white">{item.value}</span>
               </div>
-            </motion.div>
+            </button>
           ))}
           <div className="border-t border-[#C8A96A]/40 pt-4">
-            <p className="text-[12px] leading-5 text-white/72">Launch nearby activation based on the strongest district movement this week.</p>
+            <p className="text-[12px] leading-5 text-white/72">Launch visibility around the places, moments, and audiences that are already active nearby.</p>
           </div>
         </div>
       </div>
@@ -151,22 +210,17 @@ export function PartnerHero() {
       <section className="dp-partner-hero bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.58, ease }} className="max-w-3xl">
-            <p className="dp-partner-label">LIVE DOWNTOWN INFRASTRUCTURE</p>
+            <p className="dp-partner-label">PARTNERS</p>
             <h1 className="mt-5 max-w-[11ch] font-heading text-[58px] leading-[0.9] tracking-[-0.05em] text-[#0B1F33] md:text-[84px] lg:text-[96px]">
-              Be the place people choose next.
+              Show up when downtown decisions happen.
             </h1>
             <div className="mt-8 max-w-2xl space-y-3 text-[17px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px]">
-              <p>People are already downtown.</p>
-              <p>Already walking.</p>
-              <p>Already deciding.</p>
-              <p>Already moving between buildings, events, hotels, offices, restaurants, and neighborhoods.</p>
-              <p>Downtown Perks places your property, venue, activation, hotel, or organization directly inside that movement.</p>
-              <p>Not through broad advertising.</p>
-              <p>Through contextual visibility at the exact moment someone nearby is deciding where to go.</p>
+              <p>People are already downtown and deciding where to eat, drink, shop, stay, and spend time.</p>
+              <p>Downtown Perks helps properties, hotels, venues, brands, and civic organizations appear naturally in those moments.</p>
             </div>
             <div className="mt-8 flex flex-wrap gap-6">
-              <TextLink to="#partner-system">Explore Partner Roles</TextLink>
-              <TextLink to="#get-started" variant="secondary">Book an Intro Call</TextLink>
+              <TextLink to="#shared-layer">See How It Works</TextLink>
+              <TextLink to="#partner-system" variant="secondary">Explore Partner Types</TextLink>
             </div>
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-3 border-t border-[#0B1F33]/[0.06] pt-5">
               {heroMetrics.map((metric) => (
@@ -448,7 +502,7 @@ export function DynamicIntakeWorkflow() {
             ))}
           </div>
 
-          <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Organization type</p>
+          <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Partner type</p>
           <div className="mt-4 grid gap-2">
             {organizationTypes.map((type) => (
               <button
@@ -485,7 +539,7 @@ export function DynamicIntakeWorkflow() {
                 {isLarge ? (
                   <textarea className="min-h-28 border border-[#0B1F33]/[0.06] bg-white px-3 py-2 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60" defaultValue={field === "Main goal" ? selectedGoal : ""} />
                 ) : (
-                  <input className="h-11 border border-[#0B1F33]/[0.06] bg-white px-3 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60" defaultValue={field === "Organization type" ? activePartner.label : ""} />
+                  <input className="h-11 border border-[#0B1F33]/[0.06] bg-white px-3 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60" defaultValue={field === "Partner type" ? activePartner.label : ""} />
                 )}
               </label>
             );

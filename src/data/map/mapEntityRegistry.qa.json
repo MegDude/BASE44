@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-06-24T08:15:43.848Z",
+  "generatedAt": "2026-06-24T08:41:36.115Z",
   "expectedFullListCount": 369,
   "actualEntityCount": 324,
-  "activeEntityCount": 324,
-  "issueCount": 1489,
+  "activeEntityCount": 126,
+  "issueCount": 1687,
   "issues": [
     {
       "entityId": "79-rainey-st-fc22df64",
@@ -103,6 +103,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -133,6 +134,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -144,6 +146,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -153,6 +156,7 @@
       "issues": [
         "missing_coordinates",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -163,6 +167,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -213,6 +218,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -303,6 +309,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -514,6 +521,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -544,6 +552,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -554,6 +563,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -623,6 +633,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -673,6 +684,7 @@
         "missing_coordinates",
         "missing_address",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -794,6 +806,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -805,6 +818,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -816,6 +830,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -827,6 +842,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -838,6 +854,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -849,6 +866,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -860,6 +878,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -871,6 +890,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -893,6 +913,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -904,6 +925,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -915,6 +937,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -937,6 +960,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -947,6 +971,7 @@
         "missing_coordinates",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -958,6 +983,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -969,6 +995,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -980,6 +1007,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -991,6 +1019,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1001,6 +1030,7 @@
         "missing_coordinates",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1012,6 +1042,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1023,6 +1054,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1034,6 +1066,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1045,6 +1078,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1056,6 +1090,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1067,6 +1102,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1078,6 +1114,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1089,6 +1126,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1100,6 +1138,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "duplicate_title",
         "needs_google_places_enrichment"
       ]
@@ -1112,6 +1151,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "duplicate_title",
         "needs_google_places_enrichment"
       ]
@@ -1124,6 +1164,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1135,6 +1176,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1146,6 +1188,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1157,6 +1200,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1168,6 +1212,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1179,6 +1224,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1190,6 +1236,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1201,6 +1248,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1212,6 +1260,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1223,6 +1272,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1234,6 +1284,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1245,6 +1296,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1256,6 +1308,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1267,6 +1320,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1278,6 +1332,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1289,6 +1344,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1300,6 +1356,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1311,6 +1368,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1322,6 +1380,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1333,6 +1392,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1344,6 +1404,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1355,6 +1416,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1366,6 +1428,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1377,6 +1440,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1388,6 +1452,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1399,6 +1464,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1410,6 +1476,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1421,6 +1488,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1432,6 +1500,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1442,6 +1511,7 @@
         "missing_coordinates",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1453,6 +1523,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1464,6 +1535,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1475,6 +1547,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1486,6 +1559,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "duplicate_title",
         "needs_google_places_enrichment"
       ]
@@ -1498,6 +1572,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1520,6 +1595,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1531,6 +1607,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1542,6 +1619,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1553,6 +1631,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1564,6 +1643,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1575,6 +1655,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1586,6 +1667,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1597,6 +1679,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1608,6 +1691,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1619,6 +1703,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1630,6 +1715,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1641,6 +1727,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1652,6 +1739,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1663,6 +1751,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1673,6 +1762,7 @@
         "missing_coordinates",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1684,6 +1774,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1695,6 +1786,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1706,6 +1798,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1717,6 +1810,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1728,6 +1822,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1739,6 +1834,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1750,6 +1846,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1761,6 +1858,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1772,6 +1870,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1783,6 +1882,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1794,6 +1894,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1805,6 +1906,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1816,6 +1918,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1827,6 +1930,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1838,6 +1942,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1849,6 +1954,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1860,6 +1966,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1871,6 +1978,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1882,6 +1990,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1893,6 +2002,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1904,6 +2014,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1915,6 +2026,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1926,6 +2038,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1937,6 +2050,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1948,6 +2062,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1959,6 +2074,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1970,6 +2086,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1981,6 +2098,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -1992,6 +2110,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2003,6 +2122,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2014,6 +2134,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2025,6 +2146,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2036,6 +2158,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2047,6 +2170,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2058,6 +2182,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2069,6 +2194,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2080,6 +2206,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2091,6 +2218,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2102,6 +2230,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2254,6 +2383,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2295,6 +2425,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2306,6 +2437,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2317,6 +2449,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2328,6 +2461,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2339,6 +2473,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2350,6 +2485,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2372,6 +2508,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2383,6 +2520,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "duplicate_title",
         "needs_google_places_enrichment"
       ]
@@ -2395,6 +2533,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2406,6 +2545,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2417,6 +2557,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2428,6 +2569,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2439,6 +2581,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2450,6 +2593,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2461,6 +2605,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2472,6 +2617,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2483,6 +2629,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2494,6 +2641,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2505,6 +2653,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2516,6 +2665,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2527,6 +2677,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2538,6 +2689,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2549,6 +2701,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2560,6 +2713,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2592,6 +2746,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2614,6 +2769,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2625,6 +2781,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2636,6 +2793,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2647,6 +2805,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2669,6 +2828,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2691,6 +2851,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2702,6 +2863,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2713,6 +2875,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2724,6 +2887,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2735,6 +2899,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2746,6 +2911,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2757,6 +2923,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2768,6 +2935,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2779,6 +2947,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2801,6 +2970,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2812,6 +2982,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2823,6 +2994,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2834,6 +3006,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2845,6 +3018,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2856,6 +3030,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2867,6 +3042,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2878,6 +3054,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2889,6 +3066,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2900,6 +3078,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2911,6 +3090,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2922,6 +3102,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2933,6 +3114,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2956,6 +3138,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2967,6 +3150,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2978,6 +3162,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -2989,6 +3174,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3000,6 +3186,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3033,6 +3220,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3044,6 +3232,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3055,6 +3244,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3066,6 +3256,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3077,6 +3268,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3088,6 +3280,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3099,6 +3292,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3120,6 +3314,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3221,6 +3416,7 @@
         "missing_coordinates",
         "missing_rating",
         "missing_image",
+        "inactive",
         "needs_google_places_enrichment"
       ]
     },
@@ -3315,6 +3511,7 @@
       "issues": [
         "missing_rating",
         "missing_image",
+        "inactive",
         "duplicate_title",
         "needs_google_places_enrichment"
       ]
@@ -3405,6 +3602,7 @@
         "missing_address",
         "missing_rating",
         "missing_image",
+        "inactive",
         "outside_downtown_or_austin_review",
         "needs_google_places_enrichment"
       ]

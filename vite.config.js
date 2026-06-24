@@ -59,6 +59,17 @@ function localApiRoutes() {
 
       runLocalHandler(req, res, "./api/contact.js", logger, "Local contact handler failed");
     });
+
+    middlewares.use("/api/campaign-requests", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/campaign-requests.js", logger, "Local campaign request handler failed");
+    });
   };
 
   return {

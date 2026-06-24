@@ -15,12 +15,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.516Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.131Z"
   },
   {
     "id": "cava-e8d88320",
@@ -41,12 +36,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "cozymeal-cooking-classes-c9fa2c30",
@@ -66,12 +56,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "p-terry-s-burger-stand-d393d889",
@@ -92,14 +77,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-business-journal-a48f745e",
@@ -115,18 +93,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 50,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "punch-bowl-social-51a5c483",
@@ -147,15 +118,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ciccio-bomba-scarborough-18436777",
@@ -176,15 +139,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 61,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ruth-s-chris-steak-house-89025ac3",
@@ -205,14 +160,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.215Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 71,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "velvet-taco-426e571a",
@@ -233,14 +181,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "cvs-pharmacy-07c92ef8",
@@ -258,15 +199,9 @@
       "needs-address",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "pharmacy",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 27,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "kelly-s-corner-218cb590",
@@ -286,14 +221,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "walking-tours-of-austin-bd36cd23",
@@ -313,12 +241,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "quik-print-e76c9f6e",
@@ -336,15 +259,9 @@
       "needs-address",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "printing",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 39,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "mediterranean-resources-llc-1e564713",
@@ -360,14 +277,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "mediterranean-4288957b",
@@ -385,15 +297,9 @@
     "tags": [
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 14,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atx-metrobike-station-13945335",
@@ -412,15 +318,9 @@
       "consider-hide-from-resident-default",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "bike_share",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 0,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austindeep-downtown-12b649af",
@@ -436,18 +336,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 72,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "patagonia-2dc583f6",
@@ -467,12 +360,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 82,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "pvolve-austin-downtown-8ee95326",
@@ -488,18 +376,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 64,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "smoke-paradise-vape-and-hemp-dispensary-89973a52",
@@ -519,12 +400,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "parking-940-e6c8e4ec",
@@ -543,15 +419,9 @@
       "consider-hide-from-resident-default",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 18,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "moreland-properties-ccadd62c",
@@ -571,12 +441,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 76,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "brandy-melville-austin-2-8ea52173",
@@ -596,12 +461,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 52,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ashton-austin-fca94a52",
@@ -621,12 +481,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 63,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sunglass-hut-d61a6549",
@@ -646,12 +501,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 59,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "live-ride-laugh-bb8941e9",
@@ -671,12 +521,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 64,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-austinite-market-2nd-street-d2be7390",
@@ -696,12 +541,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bill-s-oyster-ac1c8f95",
@@ -722,15 +562,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "walking-tours-austin-adea39f3",
@@ -750,12 +582,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 64,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "amli-downtown-parking-5ac7fc0a",
@@ -774,15 +601,9 @@
       "consider-hide-from-resident-default",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 16,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "kasa-downtown-austin-642dd0ba",
@@ -802,12 +623,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 71,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-city-hall-28cf694f",
@@ -827,12 +643,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 59,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "uchib-austin-6e169239",
@@ -853,14 +664,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 70,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "better-half-coffee-and-cocktails-52a59333",
@@ -881,16 +685,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast",
-      "cocktails"
-    ],
-    "experienceScore": 71,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "amli-300-a07d937d",
@@ -910,12 +705,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "gables-park-plaza-37178bf2",
@@ -935,12 +725,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "two-goose-ff00f7b6",
@@ -961,14 +746,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 72,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "swedish-hill-e550659d",
@@ -989,15 +767,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 66,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "nokonah-building-8c154835",
@@ -1017,12 +787,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 50,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "little-tipsy-edcccc20",
@@ -1042,14 +807,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "salt-spa-1ce92d4d",
@@ -1065,18 +823,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 69,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "hair-house-atx-111b276f",
@@ -1092,18 +843,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "j-carver-s-oyster-bar-and-chophouse-ed7ad8b2",
@@ -1124,16 +868,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner",
-      "cocktails"
-    ],
-    "experienceScore": 72,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-baked-bear-9948cf8b",
@@ -1154,12 +889,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 70,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-cat-s-pajamas-b94d058d",
@@ -1179,14 +909,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 65,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "buford-s-23774380",
@@ -1207,12 +930,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 59,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "hyatt-place-austin-downtown-6ecf6af4",
@@ -1232,12 +950,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-contemporary-austin-jones-center-4be74d30",
@@ -1257,12 +970,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 65,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "quattro-gatti-ristorante-e-pizzeria-9fb5c840",
@@ -1283,12 +991,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 69,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "vanhorn-s-9ed97bbd",
@@ -1309,14 +1012,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "upstairs-circus-atx-32f8605e",
@@ -1335,17 +1031,9 @@
       "needs-address",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "shipping",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 35,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "solidcore-downtown-austin-46aa52d9",
@@ -1361,18 +1049,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 56,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "drybar-downtown-austin-bdd71aa7",
@@ -1388,20 +1069,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-transit-partnership-7ca708de",
@@ -1420,14 +1092,9 @@
       "consider-hide-from-resident-default",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 41,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sparkly-maid-austin-cleaning-services-2ab24bd6",
@@ -1445,15 +1112,9 @@
       "needs-address",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "cleaning",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 43,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "urban-wine-liquor-be5957e6",
@@ -1473,14 +1134,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 61,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-austonian-club-84689a1b",
@@ -1500,12 +1154,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 66,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "mason-s-famous-lobster-rolls-cfd2da31",
@@ -1526,14 +1175,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch"
-    ],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "la-pe-a-529bde58",
@@ -1553,12 +1195,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 62,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fitness-center-3547b5fc",
@@ -1575,18 +1212,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "spa-by-jw-austin-0af45b4c",
@@ -1602,18 +1232,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 71,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "visit-austin-d9d3991b",
@@ -1631,15 +1254,9 @@
       "needs-address",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "visitor_info",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 26,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ellis-64e6b6af",
@@ -1660,14 +1277,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 65,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ciccio-bomba-fareground-e39414db",
@@ -1688,15 +1298,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 60,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "four-brothers-venezuelan-grill-4dfff4dc",
@@ -1717,12 +1319,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "veracruz-all-natural-05dcef70",
@@ -1745,12 +1342,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 72,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "one-eleven-congress-435ae05f",
@@ -1768,15 +1360,9 @@
       "needs-address",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "coworking",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 31,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "loaf-vine-da100ef6",
@@ -1796,15 +1382,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 50,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "alfred-coffee-09343170",
@@ -1825,15 +1403,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 62,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "chive-hq-cd14134a",
@@ -1853,12 +1423,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "four-seasons-private-residences-austin-66816f29",
@@ -1878,12 +1443,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-spa-at-four-seasons-hotel-austin-664bae79",
@@ -1899,18 +1459,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 76,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "live-oak-7bdc0447",
@@ -1930,14 +1483,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 61,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ciclo-bafbf14f",
@@ -1957,15 +1503,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-marriott-downtown-911e0463",
@@ -1985,12 +1523,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lumiere-bliss-49a5e4d0",
@@ -2010,12 +1543,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 69,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "caf-605-128ea571",
@@ -2036,15 +1564,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 60,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "brass-poppy-11cf2df9",
@@ -2064,14 +1584,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "tesla-destination-charger-1204bb57",
@@ -2090,15 +1603,9 @@
       "consider-hide-from-resident-default",
       "deduped-source"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "charging",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 0,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "kimpton-hotel-van-zandt-valet-4acbfff2",
@@ -2114,15 +1621,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 24,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "watr-a48c0800",
@@ -2139,15 +1640,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "bike_share",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 0,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "premium-parking-p3046-17070a52",
@@ -2164,17 +1659,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 10,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fleet-coffee-1a927995",
@@ -2190,18 +1677,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast",
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-smokehouse-at-banger-s-77f951a0",
@@ -2217,14 +1695,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-rainey-house-3bc9dbac",
@@ -2241,15 +1714,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "charging",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 6,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "roar-2d705dad",
@@ -2265,14 +1732,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "healthclicks-d10474d2",
@@ -2290,12 +1752,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "parkingmgt-com-05052408",
@@ -2312,15 +1769,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 10,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "natiivo-austin-a8b5d881",
@@ -2336,14 +1787,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "royal-blue-grocery-a1127af6",
@@ -2359,14 +1805,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "high-street-rainey-lp-3a13c221",
@@ -2384,12 +1825,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "randy-solis-tattoo-artist-e17fd0f2",
@@ -2406,15 +1842,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "charging",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 0,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "teatro-vivo-70ee0c49",
@@ -2430,16 +1860,9 @@
     "tags": [
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "limestone-rooftop-56a72805",
@@ -2455,17 +1878,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "woof-pet-care-ad8c28f6",
@@ -2481,14 +1896,28 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
+  },
+  {
+    "id": "veracruz-all-natural-def28780",
+    "title": "Veracruz All Natural",
+    "kind": "hotel",
+    "category": "Cambria Hotel Austin Downtown",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "tacowey-rainey-7e45ee4a",
@@ -2505,17 +1934,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "charging",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 6,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fairfield-by-marriott-inn-and-suites-austin-downtown-16e5e138",
@@ -2531,14 +1952,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bungalow-17febb90",
@@ -2554,14 +1970,9 @@
     "tags": [
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "crazy-conchaz-fdc0cbd4",
@@ -2577,14 +1988,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-quincy-45cb4b28",
@@ -2598,20 +2004,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "wellness"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "neighbors-cafe-aee1725f",
@@ -2627,17 +2024,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "taco-baby-72f97f6f",
@@ -2653,17 +2042,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner",
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fairmont-austin-parking-parkchirp-103efcfc",
@@ -2680,15 +2061,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 10,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "good-things-aba7114a",
@@ -2704,14 +2079,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "garrison-569302bf",
@@ -2727,14 +2097,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "rush-my-passport-045743eb",
@@ -2748,18 +2113,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fulton-729fb838",
@@ -2775,14 +2133,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "room-725-eda14c53",
@@ -2798,14 +2151,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "moonshine-grill-9f4af882",
@@ -2821,16 +2169,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "frontera-tours-river-tubing-f0a1aa98",
@@ -2846,14 +2187,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-cut-atx-5d6f9d60",
@@ -2869,14 +2205,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-escape-game-austin-336048e1",
@@ -2892,14 +2223,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "big-chiller-blues-c90f432a",
@@ -2915,14 +2241,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.216Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "starbucks-1b45ebf7",
@@ -2938,14 +2259,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "residence-inn-by-marriott-austin-downtown-convention-center-197cb7dc",
@@ -2961,14 +2277,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-bachelorette-party-studio-goddess-bd1724b1",
@@ -2984,14 +2295,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "brazos-hall-dd677b8c",
@@ -3007,14 +2313,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "twisted-texas-tour-04f3fc67",
@@ -3030,14 +2331,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "vibrancy-guitar-statue-20455fe4",
@@ -3053,14 +2349,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "houndstooth-coffee-748b3f38",
@@ -3076,17 +2367,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-onion-96154342",
@@ -3102,14 +2385,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "el-cockfight-77a73354",
@@ -3125,14 +2403,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atx-dj-fe52e754",
@@ -3148,14 +2421,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.518Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "hotspot-5b2b6bf2",
@@ -3171,14 +2439,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "brazos-lofts-5177fdfd",
@@ -3194,14 +2457,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "prime-boat-rentals-fd5a85ce",
@@ -3217,17 +2475,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "frost-bank-tower-executive-health-club-002acadd",
@@ -3243,14 +2493,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "nightly-spirits-75fcb8c6",
@@ -3266,14 +2511,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "metropolis-a8ecf6b6",
@@ -3289,14 +2529,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "littlefield-garage-02197587",
@@ -3313,15 +2548,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 0,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "littlefield-lofts-46398480",
@@ -3337,14 +2566,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-littlefield-quarters-89c26e6b",
@@ -3360,14 +2584,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "in-plain-sight-158ce64f",
@@ -3383,14 +2602,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-driskill-grill-9e3a60b8",
@@ -3406,16 +2620,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "here-nor-there-24228a2e",
@@ -3431,14 +2638,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sunset-strip-comedy-and-entertainment-d71d9d94",
@@ -3454,14 +2656,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "happy-chicks-6eaad361",
@@ -3477,14 +2674,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "firehouse-lounge-9bfd7f59",
@@ -3500,14 +2692,9 @@
     "tags": [
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-victorian-903305f6",
@@ -3523,14 +2710,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "tommie-austin-jdv-by-hyatt-0f83b79f",
@@ -3546,14 +2728,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "caroline-d88575be",
@@ -3569,14 +2746,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "garage-fb16ca65",
@@ -3593,15 +2765,9 @@
       "needs-address",
       "consider-hide-from-resident-default"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 0,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "black-fox-coffee-d7fa60a7",
@@ -3617,17 +2783,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "mohawk-austin-f060817a",
@@ -3645,12 +2803,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "kickin-momo-063bc3d8",
@@ -3666,14 +2819,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bathe-b9b276e5",
@@ -3689,14 +2837,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "milonga-room-6228d019",
@@ -3712,14 +2855,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lamberts-e70e64db",
@@ -3735,14 +2873,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sweetgreen-healthy-salads-wraps-and-bowls-aed2b9ec",
@@ -3758,16 +2891,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "wellness"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "jo-s-coffee-downtown-5d0ea7e8",
@@ -3783,17 +2909,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "violet-crown-austin-df88a4fa",
@@ -3809,14 +2927,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "voodoo-doughnut-92a076c9",
@@ -3832,14 +2945,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "roaring-fork-af0bd163",
@@ -3855,14 +2963,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "boa-steakhouse-fe0c22f1",
@@ -3878,16 +2981,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-kitchen-american-bistro-ea4e4716",
@@ -3903,14 +2999,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fixe-southern-house-7f7da259",
@@ -3926,14 +3017,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ranch-616-c9f0e1c3",
@@ -3949,14 +3035,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-wellness-collaborative-66ce44d3",
@@ -3970,20 +3051,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "wellness"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "la-volta-pizza-club-ee7e2e51",
@@ -3999,14 +3071,9 @@
     "tags": [
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-antique-swan-3c5f701a",
@@ -4022,14 +3089,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "frank-darling-1c62c86c",
@@ -4045,14 +3107,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "portland-leather-goods-austin-336da8c0",
@@ -4068,14 +3125,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "townlake-ymca-24db2465",
@@ -4089,18 +3141,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atx-sign-38c85f74",
@@ -4116,14 +3161,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "wellness-and-beauty-7cb49383",
@@ -4137,20 +3177,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "wellness"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ballet-austin-49de7473",
@@ -4164,18 +3195,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "local-walk-up-window-e691d916",
@@ -4191,14 +3215,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "north-italia-21435943",
@@ -4214,14 +3233,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "flower-child-61a77c2c",
@@ -4237,14 +3251,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "torchy-s-tacos-1248b350",
@@ -4258,20 +3267,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "indochino-cc5a4ded",
@@ -4287,14 +3287,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "yummi-joy-88be381a",
@@ -4310,17 +3305,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner",
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "golden-ace-austin-21a6e956",
@@ -4336,14 +3323,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "strive-company-d64dfeba",
@@ -4359,14 +3341,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atx-cocina-1ce57680",
@@ -4382,14 +3359,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "candid-studios-photography-and-videography-austin-74b3d0de",
@@ -4405,14 +3377,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "blu-dot-1d371325",
@@ -4428,14 +3395,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "urban-outfitters-3e052923",
@@ -4451,14 +3413,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "serenade-8a61b8e6",
@@ -4474,14 +3431,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "which-wich-55ba7d96",
@@ -4497,14 +3449,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "starbucks-coffee-company-643ab716",
@@ -4520,17 +3467,28 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
+  },
+  {
+    "id": "tesla-destination-charger-1f622dc5",
+    "title": "Tesla Destination Charger",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address"
     ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "cathy-s-cleaners-downtown-3ca2a10f",
@@ -4546,18 +3504,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "cleaning",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner",
-      "cocktails"
-    ],
-    "experienceScore": 10,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "taverna-austin-downtown-the-baci-room-8e69441d",
@@ -4573,14 +3522,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "iii-forks-b5605870",
@@ -4596,14 +3540,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bob-s-steak-and-chop-house-downtown-austin-a2e2c83a",
@@ -4619,17 +3558,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner",
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "soma-re-form-pilates-and-wellness-collective-449a30fd",
@@ -4643,20 +3574,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "wellness"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "shiner-s-saloon-28ae9645",
@@ -4672,14 +3594,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ra-sushi-austin-4a041082",
@@ -4695,16 +3612,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "flow-at-the-one-luxury-iv-hydration-and-wellness-1835016c",
@@ -4718,20 +3628,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "wellness"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "verbena-spa-79f6f100",
@@ -4745,18 +3646,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-tox-austin-downtown-49acd5e5",
@@ -4772,14 +3666,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-well-2nd-st-365d18ad",
@@ -4795,14 +3684,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "parlor-room-60ec8227",
@@ -4818,14 +3702,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "duke-s-adventure-golf-cef7ce20",
@@ -4841,14 +3720,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "tennis-table-83ac4db7",
@@ -4864,16 +3738,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lucille-patio-lounge-7442bc15",
@@ -4889,14 +3756,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sugarwolf-bakery-3e815f7a",
@@ -4912,17 +3774,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "swish-dental-downtown-861be1f0",
@@ -4936,18 +3790,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-google-places-enrichment",
-      "needs-address",
-      "wellness"
+      "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "hanover-republic-square-f9314ff9",
@@ -4965,12 +3812,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lvs-la-vie-med-spas-day-spa-4303a578",
@@ -4986,18 +3828,11 @@
     "actualSeedCount": 304,
     "tags": [
       "needs-address",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 63,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fat-rabbit-social-house-5d2b659e",
@@ -5018,14 +3853,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "brunch"
-    ],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "geraldine-s-91cb9123",
@@ -5046,15 +3874,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lustre-pearl-rainey-5c0e9c29",
@@ -5075,14 +3895,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 80,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "roost-rainey-06e3e736",
@@ -5102,12 +3915,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 80,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "little-lucy-s-47aeeb7b",
@@ -5128,12 +3936,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 65,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "clive-efd8c61d",
@@ -5154,14 +3957,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "amaya-08d75d54",
@@ -5182,12 +3978,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 61,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "anthem-2f4bad6b",
@@ -5208,12 +3999,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 72,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "victory-lap-rainey-ddfa8970",
@@ -5233,14 +4019,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 79,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "little-brother-06940ac9",
@@ -5261,14 +4040,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 67,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "windsor-on-the-lake-apartments-d26a0d5b",
@@ -5288,12 +4060,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "milago-condominium-12479897",
@@ -5313,12 +4080,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 59,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "always-something-7f6295cd",
@@ -5334,17 +4096,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "toy-joy-2c89aaa6",
@@ -5365,12 +4119,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 70,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lucky-lizard-curios-and-gifts-dfe8bb33",
@@ -5390,12 +4139,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 63,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "daydreamer-coffee-5ae9314d",
@@ -5416,15 +4160,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "coffee",
-      "breakfast"
-    ],
-    "experienceScore": 65,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "e-7th-st-b31e5d0a",
@@ -5440,14 +4176,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "cesar-chavez-st-06d21ae8",
@@ -5463,14 +4194,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "electric-shuffle-7012ca7c",
@@ -5486,14 +4212,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "dwell-coworking-b407366b",
@@ -5509,15 +4230,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "utilityType": "coworking",
-    "visibilityMode": "utility",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 10,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atelier-1205-119f2372",
@@ -5533,14 +4248,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.217Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "arriba-abajo-28d81184",
@@ -5556,14 +4266,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "half-step-99c461a2",
@@ -5581,12 +4286,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "heydey-social-club-acfea471",
@@ -5602,16 +4302,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bar-hacienda-3cd10d33",
@@ -5627,16 +4320,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "skyhouse-austin-21e323c8",
@@ -5652,17 +4338,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "marlow-5a5e00cb",
@@ -5678,14 +4356,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sixth-street-4136b456",
@@ -5701,14 +4374,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "perry-s-steakhouse-and-grille-0c02ad23",
@@ -5724,16 +4392,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "dinner"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-peacock-bf6316c1",
@@ -5749,16 +4410,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "united-apparel-liquidators-a3247385",
@@ -5774,14 +4428,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "hemline-e85857b3",
@@ -5797,14 +4446,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "cedar-street-9cc7950b",
@@ -5820,16 +4464,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atown-d3de7493",
@@ -5845,14 +4482,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "la-condesa-e4a871c7",
@@ -5868,14 +4500,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "seaholm-power-plant-336d8c98",
@@ -5891,14 +4518,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "strangelove-c2961cec",
@@ -5914,14 +4536,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "rain-on-4th-b68ccc2c",
@@ -5937,14 +4554,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "midnight-cowboy-463c41a8",
@@ -5960,14 +4572,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "ember-kitchen-7a91ef9a",
@@ -5983,14 +4590,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "canopy-by-hilton-d2330f19",
@@ -6006,14 +4608,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-belmont-0dd436b7",
@@ -6031,12 +4628,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "emmer-and-rye-f8c70134",
@@ -6054,12 +4646,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "cedar-street-courtyard-5c0b26e4",
@@ -6075,14 +4662,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-proper-eef9c90b",
@@ -6100,12 +4682,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "patika-6187fd86",
@@ -6121,14 +4698,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "paramount-theatre-54187719",
@@ -6144,14 +4716,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "dean-s-352b83ae",
@@ -6167,14 +4734,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "speakeasy-7aa5835b",
@@ -6190,14 +4752,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "comedor-d91afa95",
@@ -6215,12 +4772,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "2nd-street-district-a0e243e9",
@@ -6236,14 +4788,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "four-seasons-3640fe7e",
@@ -6261,12 +4808,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-rotisserie-1a1a75aa",
@@ -6282,14 +4824,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "edge-rooftop-e488bca0",
@@ -6305,14 +4842,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fareground-austin-f8a41bea",
@@ -6328,14 +4860,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "east-avenue-e88831b9",
@@ -6351,14 +4878,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "devil-may-care-d7a575f5",
@@ -6374,14 +4896,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "antone-s-d3965a9c",
@@ -6397,14 +4914,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "wu-chow-787fc299",
@@ -6420,14 +4932,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "jw-marriott-26791b39",
@@ -6443,14 +4950,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "green-light-social-de0a450c",
@@ -6466,14 +4968,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "waterloo-records-2840c4b2",
@@ -6491,12 +4988,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "jo-s-d173c1ed",
@@ -6512,14 +5004,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "thompson-austin-49567a6c",
@@ -6535,14 +5022,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "true-food-kitchen-9ddbcb94",
@@ -6558,16 +5040,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "whole-foods-flagship-dd6ccc06",
@@ -6583,16 +5058,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-dead-rabbit-6b592020",
@@ -6608,14 +5076,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "stephen-f-austin-33b67ed1",
@@ -6631,16 +5094,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "eliza-page-4b2977bd",
@@ -6656,14 +5112,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "republic-square-db447347",
@@ -6679,14 +5130,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fifth-west-03994013",
@@ -6702,14 +5148,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-austonian-507371e1",
@@ -6725,14 +5166,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "red-ash-a028e9df",
@@ -6748,14 +5184,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "elephant-room-53b565e6",
@@ -6771,14 +5202,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "congress-avenue-60f6faa7",
@@ -6794,14 +5220,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "rainey-street-7cf451b9",
@@ -6820,12 +5241,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-modern-austin-residences-5a82389b",
@@ -6841,14 +5257,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "warehouse-cbd-f42bee65",
@@ -6864,14 +5275,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "martin-luther-king-jr-blvd-5d33c6d9",
@@ -6887,14 +5293,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "paseo-751e7af3",
@@ -6910,14 +5311,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "north-downtown-bf72bb3f",
@@ -6933,14 +5329,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "rainey-street-4687eef7",
@@ -6959,12 +5350,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lady-bird-lake-99a6970f",
@@ -6982,12 +5368,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 58,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "northshore-3b140067",
@@ -7003,14 +5384,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "residences-at-6g-2c5afc6f",
@@ -7026,14 +5402,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "atx-tower-8f545a4e",
@@ -7049,14 +5420,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "mlk-highline-87f77ea7",
@@ -7072,14 +5438,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "seaholm-residences-6adf2a18",
@@ -7095,14 +5456,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lamar-blvd-1b262b52",
@@ -7118,14 +5474,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bookpeople-ff5c1c35",
@@ -7141,14 +5492,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "waterline-austin-8d64c397",
@@ -7168,12 +5514,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 62,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "condominium-complex-c44c57ec",
@@ -7189,14 +5530,9 @@
       "needs-google-places-enrichment",
       "needs-address"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "banger-s-sausage-house-and-beer-garden-aa6f1fc1",
@@ -7217,12 +5553,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 86,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-independent-8a0c7f28",
@@ -7242,12 +5573,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 66,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "hestia-21546be9",
@@ -7268,15 +5594,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "lunch",
-      "dinner"
-    ],
-    "experienceScore": 71,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fairmont-austin-819bd75a",
@@ -7296,12 +5614,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-driskill-the-unbound-collection-by-hyatt-7b3b0733",
@@ -7321,12 +5634,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-roosevelt-room-617e5fb9",
@@ -7347,14 +5655,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 73,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-central-library-austin-public-library-133ef887",
@@ -7374,12 +5675,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 88,
-    "entityTier": "anchor"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-line-austin-8fdf81e3",
@@ -7399,12 +5695,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 66,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "texas-capitol-a76e3c38",
@@ -7424,12 +5715,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.218Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 74,
-    "entityTier": "featured"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "downtown-austin-f536afd5",
@@ -7445,14 +5731,9 @@
     "tags": [
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-06-24T08:14:01.519Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "quattro-gatti-ristorante-e-pizzeria-bf9c67fe",
@@ -7475,12 +5756,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-15T08:53:55Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "punch-bowl-social-e0369f67",
@@ -7503,12 +5779,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-15T08:34:56Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "pershing-house-6296687c",
@@ -7531,12 +5802,7 @@
     ],
     "active": true,
     "importedAt": "2026-06-07T04:17:22Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "green-dragon-520db6a3",
@@ -7559,12 +5825,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-21T02:32:06Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "the-driskill-the-unbound-collection-by-hyatt-771ce4b1",
@@ -7587,12 +5848,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-17T15:34:43Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "daydreamer-aa480e11",
@@ -7615,12 +5871,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-17T15:34:26Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "sxsw-300e90a6",
@@ -7643,12 +5894,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-17T15:34:09Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "palm-door-on-sixth-33223a7e",
@@ -7671,12 +5917,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-17T15:34:07Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "austin-city-limits-live-acl-live-and-3ten-acl-live-ab7fed60",
@@ -7699,12 +5940,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-17T15:34:05Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "garage-5dd2ee3b",
@@ -7725,15 +5961,9 @@
       "google-takeout-partial-seed",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-03-17T15:33:59Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "utilityType": "parking",
-    "visibilityMode": "parking",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 2,
-    "entityTier": "hidden"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "rock-em-western-boots-and-apparel-7f61798a",
@@ -7756,12 +5986,7 @@
     ],
     "active": true,
     "importedAt": "2026-03-04T16:00:26Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "tzintzuntzan-0c4ffb72",
@@ -7784,12 +6009,7 @@
     ],
     "active": true,
     "importedAt": "2026-02-27T05:28:19Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "waterline-austin-e1fb3126",
@@ -7812,12 +6032,7 @@
     ],
     "active": true,
     "importedAt": "2026-02-15T21:23:58Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "fulton-8aee9dc1",
@@ -7840,12 +6055,7 @@
     ],
     "active": true,
     "importedAt": "2026-02-15T21:23:51Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "room-725-0fbc714c",
@@ -7868,12 +6078,7 @@
     ],
     "active": true,
     "importedAt": "2026-02-15T21:23:47Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "lvs-la-vie-med-spas-day-spa-118516a1",
@@ -7892,18 +6097,11 @@
     "actualSeedCount": 22,
     "tags": [
       "google-takeout-partial-seed",
-      "needs-google-places-enrichment",
-      "wellness"
+      "needs-google-places-enrichment"
     ],
     "active": true,
     "importedAt": "2026-02-04T07:22:09Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "utilityType": "wellness",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "tootsies-orchid-lounge-5be9062c",
@@ -7926,12 +6124,7 @@
     ],
     "active": true,
     "importedAt": "2026-02-04T06:48:05Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "layla-s-honky-tonk-ec8b6aa9",
@@ -7954,12 +6147,7 @@
     ],
     "active": true,
     "importedAt": "2026-02-04T06:47:56Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "saved-place-6349beca",
@@ -7978,14 +6166,9 @@
       "google-takeout-partial-seed",
       "needs-google-places-enrichment"
     ],
-    "active": false,
+    "active": true,
     "importedAt": "2026-02-04T06:46:43Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 44,
-    "entityTier": "extended"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "nurse-karen-skincare-and-aesthetics-fd718ebb",
@@ -8008,12 +6191,7 @@
     ],
     "active": true,
     "importedAt": "2026-01-21T15:08:31Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "goat-soup-and-whiskey-tavern-7ce82910",
@@ -8036,12 +6214,7 @@
     ],
     "active": true,
     "importedAt": "2026-01-02T16:31:06Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [],
-    "experienceScore": 54,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   },
   {
     "id": "bar-hacienda-8f0f902b",
@@ -8064,13 +6237,6 @@
     ],
     "active": true,
     "importedAt": "2025-05-30T02:57:25Z",
-    "updatedAt": "2026-06-24T08:41:29.219Z",
-    "visibilityMode": "default",
-    "perkEligible": false,
-    "restaurantType": [
-      "cocktails"
-    ],
-    "experienceScore": 68,
-    "entityTier": "core"
+    "updatedAt": "2026-06-24T08:41:29.132Z"
   }
 ]

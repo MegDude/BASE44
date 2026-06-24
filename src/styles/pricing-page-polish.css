@@ -34,7 +34,7 @@ html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-label {
   font-weight: 620 !important;
   line-height: 1.1 !important;
   letter-spacing: 0.13em !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
 }
 
 html body #root main.pricing-v4-page.pricing-v4-page h1,
@@ -500,6 +500,22 @@ html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action :is
   letter-spacing: 0 !important;
 }
 
+html body #root main.pricing-v4-page.pricing-v4-page :is(
+  .pricing-v4-partner-card,
+  .pricing-v4-module,
+  .pricing-v4-line-action,
+  .pricing-v4-text-rail,
+  .pricing-v4-cta,
+  .pricing-v4-label,
+  .pricing-v4-eyebrow,
+  .pricing-v4-card-status,
+  .pricing-v4-module-billing,
+  button,
+  a
+) {
+  text-transform: none !important;
+}
+
 @media (max-width: 430px) {
   html body #root main.pricing-v4-page.pricing-v4-page {
     padding-top: calc(74px + env(safe-area-inset-top, 0px)) !important;
@@ -526,5 +542,292 @@ html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action :is
 
   html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary h2 {
     font-size: 38px !important;
+  }
+}
+
+/* Final pricing builder polish: sharper commerce flow, readable modules, no button washout. */
+html body #root main.pricing-v4-page.pricing-v4-page {
+  background:
+    linear-gradient(180deg, #F7F8FB 0%, #FFFFFF 44%, #F7F8FB 100%) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-hero {
+  max-width: 840px !important;
+  padding-block: 30px 38px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-hero h1 {
+  max-width: 13ch !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 6px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-proof-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  width: min(100%, 760px) !important;
+  margin-top: 10px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-proof-grid div {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, .78) !important;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, .035) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-proof-grid svg {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 auto !important;
+  color: #C8A96A !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-proof-grid span {
+  min-width: 0 !important;
+  color: rgba(11, 31, 51, .72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .72) !important;
+  font-size: 12px !important;
+  font-weight: 580 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-partner-card,
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-module,
+html body #root main.pricing-v4-page.pricing-v4-page :is(.pricing-v4-block, .pricing-v4-summary, .pricing-v4-mini-group, .pricing-v4-editorial-item, .pricing-v4-faq > div) {
+  border-radius: 6px !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, .035) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-partner-card {
+  position: relative !important;
+  min-height: 206px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-partner-card[data-active="true"] {
+  border-color: rgba(200, 169, 106, .64) !important;
+  background: linear-gradient(180deg, rgba(200, 169, 106, .10), #FFFFFF 48%) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-card-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  width: fit-content !important;
+  margin-bottom: 2px !important;
+  color: #8B6B2F !important;
+  -webkit-text-fill-color: #8B6B2F !important;
+  font-size: 10.5px !important;
+  font-weight: 680 !important;
+  line-height: 1 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-card-status svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-calculator {
+  gap: 14px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  padding: 10px 0 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action span {
+  display: grid !important;
+  gap: 3px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action small {
+  display: block !important;
+  color: rgba(11, 31, 51, .48) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .48) !important;
+  font-size: 11px !important;
+  font-weight: 480 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action em {
+  grid-column: 1 / -1 !important;
+  display: block !important;
+  margin-top: -2px !important;
+  color: rgba(11, 31, 51, .46) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .46) !important;
+  font-size: 11.5px !important;
+  font-style: normal !important;
+  font-weight: 440 !important;
+  line-height: 1.35 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action[data-active="true"] {
+  border-color: rgba(200, 169, 106, .42) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action[data-active="true"] small,
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-line-action[data-active="true"] em {
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary {
+  border-color: rgba(200, 169, 106, .32) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary-plan {
+  display: grid !important;
+  gap: 4px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 4px !important;
+  background: #F7F8FB !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary-plan strong {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 660 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary-plan span {
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-selected-modules {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-selected-modules button,
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-selected-modules span {
+  display: inline-flex !important;
+  min-height: 28px !important;
+  align-items: center !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 4px !important;
+  background: #F7F8FB !important;
+  padding: 0 9px !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-size: 11.5px !important;
+  font-weight: 560 !important;
+  line-height: 1 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-selected-modules button:is(:hover, :focus-visible) {
+  border-color: rgba(200, 169, 106, .54) !important;
+  background: rgba(200, 169, 106, .12) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-module-billing {
+  width: fit-content !important;
+  margin-top: -2px !important;
+  color: rgba(11, 31, 51, .46) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .46) !important;
+  font-size: 11px !important;
+  font-weight: 560 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-cta {
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(11, 31, 51, .10) !important;
+  border-radius: 4px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-cta-primary {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-cta-primary:is(:hover, :focus-visible) {
+  border-color: #C8A96A !important;
+  background: #C8A96A !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-cta-secondary:is(:hover, :focus-visible),
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-cta:not(.pricing-v4-cta-primary):is(:hover, :focus-visible) {
+  border-color: rgba(200, 169, 106, .58) !important;
+  background: rgba(200, 169, 106, .12) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final {
+  grid-template-columns: 1fr !important;
+  margin-top: 20px !important;
+  padding: 24px !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 6px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final p:not(.pricing-v4-eyebrow) {
+  max-width: 56ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+@media (min-width: 760px) {
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final {
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    align-items: center !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final .pricing-v4-eyebrow,
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final h2,
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final p {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-proof-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-hero-actions,
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final {
+    align-items: stretch !important;
+  }
+
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-hero-actions .pricing-v4-cta,
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-final .pricing-v4-cta,
+  html body #root main.pricing-v4-page.pricing-v4-page .pricing-v4-summary .pricing-v4-cta {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }

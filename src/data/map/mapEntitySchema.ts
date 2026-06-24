@@ -12,6 +12,43 @@ export type MapEntityKind =
   | "service"
   | "venue";
 
+export type MapVisibilityMode =
+  | "default"
+  | "utility"
+  | "parking"
+  | "perks"
+  | "partners"
+  | "admin";
+
+export type MapEntityTier =
+  | "anchor"
+  | "featured"
+  | "core"
+  | "extended"
+  | "hidden";
+
+export type MapUtilityType =
+  | "parking"
+  | "printing"
+  | "cleaning"
+  | "pharmacy"
+  | "charging"
+  | "bike_share"
+  | "visitor_info"
+  | "shipping"
+  | "coworking"
+  | "repair"
+  | "wellness";
+
+export type MapOfferType =
+  | "happy_hour"
+  | "resident_perk"
+  | "event_offer"
+  | "validation"
+  | "service_discount";
+
+export type MapPerkStatus = "active" | "candidate" | "inactive";
+
 export type DowntownDistrict =
   | "Rainey"
   | "Seaholm"
@@ -57,6 +94,19 @@ export interface MapEntity {
     | "enriched"
     | "canonical"
     | "manual_review";
+  visibilityMode?: MapVisibilityMode;
+  utilityType?: MapUtilityType;
+  perkEligible?: boolean;
+  perkStatus?: MapPerkStatus;
+  offerType?: MapOfferType;
+  offerWindow?: {
+    days?: string[];
+    startTime?: string;
+    endTime?: string;
+  };
+  experienceScore?: number;
+  entityTier?: MapEntityTier;
+  restaurantType?: Array<"breakfast" | "lunch" | "dinner" | "cocktails" | "coffee" | "late-night" | "wellness" | "brunch">;
   expectedFullListCount?: number;
   actualSeedCount?: number;
   tags: string[];

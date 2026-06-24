@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -48,6 +48,53 @@ const partnerCategories = {
     faq: "Start with 90 days. Keep what works.",
   },
 };
+
+const heroMedia = [
+  {
+    src: "/images/districts/rainey-hero.jpg",
+    label: "Rainey",
+    title: "Nearby nights, visible as people choose.",
+  },
+  {
+    src: "/images/restaurants/comedor-architecture.png",
+    label: "Dining",
+    title: "Restaurants, bars, and offers in the same local view.",
+  },
+  {
+    src: "/buildings/shore.webp",
+    label: "Residents",
+    title: "Building access connected to what is worth doing nearby.",
+  },
+  {
+    src: "/images/splash/walkable-map.png",
+    label: "Map",
+    title: "A clean discovery layer for places, perks, and events.",
+  },
+];
+
+const marketingValueSections = [
+  {
+    eyebrow: "For Residents",
+    title: "A faster way to decide where to go.",
+    body: "Residents do not need another app to manage. They need a clean way to see what is nearby, what is worth doing, and what they can use today.",
+    points: ["Find nearby places, events, and perks", "Save what matters", "Use the perks card when it is time to go"],
+  },
+  {
+    eyebrow: "For Partners",
+    title: "Show up while people are choosing.",
+    body: "Downtown Perks gives local partners visibility inside the decision moment — not after attention has already moved somewhere else.",
+    points: ["Appear on the live map", "Promote offers and events", "Track saves, scans, directions, and redemptions"],
+  },
+];
+
+const marketingPartnerTypes = [
+  ["Properties", "A building amenity people actually use."],
+  ["Hotels", "The stay continues outside your doors."],
+  ["Venues", "Show up when nearby people are deciding."],
+  ["Brands", "Buy the moment, not the impression."],
+  ["Civic", "Turn local activity into participation."],
+  ["Real Estate", "Connect listings to neighborhood context."],
+];
 
 const residentFaqs = [
   ["Do I need to download an app?", "No. It's a mobile web experience. Scan a QR code, and you're in. No download. No login. No extra platform."],
@@ -213,43 +260,117 @@ function CommunityStoriesSection() {
 export default function Home() {
   const [partnerType, setPartnerType] = useState("Properties");
   const [openFaq, setOpenFaq] = useState(0);
+  const [heroMediaIndex, setHeroMediaIndex] = useState(0);
 
   const isPartner = false;
   const partner = partnerCategories[partnerType];
   const faqs = isPartner ? partnerFaqs : residentFaqs;
   const hero = {
-    eyebrow: "Resident View",
-    title: "Everything nearby. One place to start.",
-    subhead: "Find places to eat, events worth showing up for, perks you can actually use, and local recommendations from around downtown.",
-    body: "",
-    primary: "Open the Map",
-    primaryHref: "/map?mode=resident&tab=map",
-    secondary: "Get Your Perks Card",
-    secondaryHref: "/card",
+    eyebrow: "Live Local Discovery",
+    title: "Where downtown decisions happen.",
+    subhead: "Downtown Perks connects residents, guests, buildings, venues, brands, and civic partners through one map-native discovery layer for Downtown Austin.",
+    body: "No app download. No feed to manage. Just the places, perks, events, and signals that matter nearby.",
+    primary: "Open the map",
+    primaryHref: "/map?mode=resident&tab=map&filter=All",
+    secondary: "Explore partner plans",
+    secondaryHref: "/marketing/pricing",
   };
+  const activeHeroMedia = heroMedia[heroMediaIndex] || heroMedia[0];
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setHeroMediaIndex((current) => (current + 1) % heroMedia.length);
+    }, 5200);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   return (
     <main className="dp-home-page bg-white text-[#0B1F33]">
-      <section className="relative overflow-hidden pb-14 pt-28 md:pb-20">
-        <div className="pointer-events-none absolute left-[6%] top-28 h-56 w-56 rounded-full bg-white/76 blur-3xl" aria-hidden="true" />
-        <div className="pointer-events-none absolute right-[10%] top-20 h-72 w-72 rounded-full bg-white/74 blur-[80px]" aria-hidden="true" />
+      <section className="dp-marketing-hero relative overflow-hidden pb-14 pt-28 md:pb-20">
         <div className="relative dp-layout-shell">
-          <div className="max-w-3xl">
-            <div>
+          <div className="dp-marketing-hero-grid">
+            <div className="dp-marketing-hero-copy">
               <span className="dp-label mb-4 block">{hero.eyebrow}</span>
-              <h1 className="font-heading text-[40px] font-medium leading-[1.02] md:text-[64px]">{hero.title}</h1>
+              <h1>{hero.title}</h1>
               <p className="mt-5 max-w-2xl text-[16px] leading-[1.65] text-[#0B1F33]/68">{hero.subhead}</p>
               {hero.body && <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">{hero.body}</p>}
-              <div className="mt-7 flex flex-wrap items-center gap-2">
-                <Link to={hero.primaryHref} className="inline-flex h-8 shrink-0 items-center justify-center rounded-[2px] bg-[#0B1F33] px-3.5 text-[11px] font-medium uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
+              <div className="dp-marketing-hero-actions mt-7 flex flex-wrap items-center gap-2">
+                <Link to={hero.primaryHref} className="dp-marketing-primary-link">
                   {hero.primary}
                   <ArrowRight className="ml-1.5 h-3.5 w-3.5 text-[#BFA46A]" />
                 </Link>
-                <Link to={hero.secondaryHref} className="inline-flex h-8 shrink-0 items-center justify-center rounded-[2px] bg-white/72 px-3.5 text-[11px] font-medium uppercase tracking-normal text-[#0B1F33] shadow-[0_8px_24px_rgba(11,31,51,0.045)] transition hover:-translate-y-px hover:bg-white hover:shadow-[0_10px_28px_rgba(11,31,51,0.055)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
+                <Link to={hero.secondaryHref} className="dp-marketing-secondary-link">
                   {hero.secondary}
                 </Link>
               </div>
             </div>
+            <div className="dp-marketing-hero-media" aria-label="Downtown Perks local discovery preview">
+              <div className="dp-marketing-hero-frame">
+                {heroMedia.map((item, index) => (
+                  <img
+                    key={item.src}
+                    src={item.src}
+                    alt=""
+                    aria-hidden={index === heroMediaIndex ? "false" : "true"}
+                    className={index === heroMediaIndex ? "is-active" : ""}
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                ))}
+                <div className="dp-marketing-hero-caption">
+                  <span>{activeHeroMedia.label}</span>
+                  <p>{activeHeroMedia.title}</p>
+                </div>
+              </div>
+              <div className="dp-marketing-hero-dots" aria-label="Hero media slides">
+                {heroMedia.map((item, index) => (
+                  <button
+                    key={item.src}
+                    type="button"
+                    aria-label={`Show ${item.label}`}
+                    aria-pressed={index === heroMediaIndex}
+                    onClick={() => setHeroMediaIndex(index)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="dp-marketing-value-section">
+        <div className="dp-layout-shell">
+          <div className="dp-marketing-value-grid">
+            {marketingValueSections.map((section) => (
+              <article key={section.eyebrow} className="dp-marketing-value-panel">
+                <span className="dp-label">{section.eyebrow}</span>
+                <h2>{section.title}</h2>
+                <p>{section.body}</p>
+                <ul>
+                  {section.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="dp-marketing-partner-types">
+        <div className="dp-layout-shell">
+          <div className="dp-marketing-section-head">
+            <span className="dp-label">Partner Types</span>
+            <h2>Built around how downtown actually works.</h2>
+            <p>Properties, hotels, venues, brands, civic teams, and real estate partners can each show up in the way that matches their role.</p>
+          </div>
+          <div className="dp-marketing-type-grid">
+            {marketingPartnerTypes.map(([title, copy]) => (
+              <article key={title}>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

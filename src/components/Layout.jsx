@@ -185,9 +185,9 @@ export default function Layout() {
           </button>
         </div>
       )}
-      <main>
+      <div className="dp-route-outlet">
         <Outlet />
-      </main>
+      </div>
       {!noFooter && (usesEditorialFooter ? <Footer /> : <HomeFooter />)}
       <QuickSearchModal
         isOpen={quickSearchOpen}

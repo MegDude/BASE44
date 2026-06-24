@@ -94,7 +94,7 @@ export function normalizeBrowserEntity(raw: Partial<MapEntity>): MapEntity {
     ...(typeof raw.lat === "number" && typeof raw.lng === "number" ? [] : ["needs-google-places-enrichment"]),
   ]));
 
-  return {
+  return classifyDowntownPerksEntity({
     id: raw.id || stableId(title, address, "browser"),
     title,
     kind: (raw.kind || inferMapEntityKind(`${title} ${category}`)) as MapEntityKind,
@@ -120,7 +120,7 @@ export function normalizeBrowserEntity(raw: Partial<MapEntity>): MapEntity {
     active: raw.active !== false,
     importedAt: raw.importedAt || new Date().toISOString(),
     updatedAt: raw.updatedAt || new Date().toISOString(),
-  };
+  });
 }
 
 export function normalizeTakeoutFeature(feature: any): MapEntity {
@@ -128,7 +128,7 @@ export function normalizeTakeoutFeature(feature: any): MapEntity {
   const coordinates = feature?.geometry?.coordinates || [];
   const title = String(location.name || "Saved Place").trim();
   const address = location.address || undefined;
-  return {
+  return classifyDowntownPerksEntity({
     id: stableId(title, address, "takeout"),
     title,
     kind: inferMapEntityKind(`${title} ${address || ""}`),
@@ -147,6 +147,97 @@ export function normalizeTakeoutFeature(feature: any): MapEntity {
     active: true,
     importedAt: feature?.properties?.date || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+  });
+}
+
+function hasAny(text: string, terms: string[]): boolean {
+  return terms.some((term) => text.includes(term));
+}
+
+export function inferUtilityType(entity: MapEntity): MapEntity["utilityType"] | undefined {
+  const text = [entity.title, entity.category, entity.address, ...(entity.tags || [])].join(" ").toLowerCase();
+  if (hasAny(text, ["parking", "garage", "valet"])) return "parking";
+  if (hasAny(text, ["ev charging", "chargepoint", "charging station", "tesla"])) return "charging";
+  if (hasAny(text, ["print", "printing", "fedex", "copies"])) return "printing";
+  if (hasAny(text, ["cleaner", "cleaning", "laundry", "dry clean"])) return "cleaning";
+  if (hasAny(text, ["pharmacy", "cvs", "walgreens"])) return "pharmacy";
+  if (hasAny(text, ["bike share", "metrobike"])) return "bike_share";
+  if (hasAny(text, ["visitor info", "visitor information", "tourist"])) return "visitor_info";
+  if (hasAny(text, ["shipping", "mail", "package", "ups"])) return "shipping";
+  if (hasAny(text, ["coworking", "business center"])) return "coworking";
+  if (entity.kind === "wellness" || hasAny(text, ["wellness", "spa", "salon", "massage", "pilates", "yoga", "iv hydration", "self care"])) return "wellness";
+  return undefined;
+}
+
+export function inferRestaurantType(entity: MapEntity): MapEntity["restaurantType"] {
+  const text = [entity.title, entity.category, ...(entity.tags || [])].join(" ").toLowerCase();
+  const types: NonNullable<MapEntity["restaurantType"]> = [];
+  if (hasAny(text, ["coffee", "cafe", "espresso", "bagel", "bakery"])) types.push("coffee", "breakfast");
+  if (hasAny(text, ["breakfast", "brunch", "bakery", "bagel"])) types.push(text.includes("brunch") ? "brunch" : "breakfast");
+  if (hasAny(text, ["lunch", "restaurant", "dining", "food"])) types.push("lunch");
+  if (hasAny(text, ["dinner", "restaurant", "sushi", "steak", "taco", "dining"])) types.push("dinner");
+  if (hasAny(text, ["bar", "cocktail", "wine", "happy hour", "nightlife"])) types.push("cocktails");
+  if (hasAny(text, ["late night", "nightlife"])) types.push("late-night");
+  if (hasAny(text, ["wellness", "healthy", "juice"])) types.push("wellness");
+  return Array.from(new Set(types));
+}
+
+export function inferExperienceScore(entity: MapEntity): number {
+  const text = [entity.title, entity.category, entity.neighborhood, ...(entity.tags || [])].join(" ").toLowerCase();
+  let score = 36;
+  if (typeof entity.rating === "number") score += Math.min(18, Math.max(0, (entity.rating - 3.5) * 12));
+  if (typeof entity.reviewCount === "number") score += Math.min(16, Math.log10(Math.max(1, entity.reviewCount)) * 5);
+  if (["restaurant", "cafe", "bar", "hotel", "property", "retail", "wellness", "civic", "venue", "experience"].includes(entity.kind)) score += 18;
+  if (hasAny(text, ["hotel van zandt", "waterloo", "lady bird", "central library", "proper", "four seasons", "emmer", "comedor", "rainey", "yeti", "patagonia"])) score += 14;
+  if (entity.perkEligible || entity.perkStatus === "active" || entity.offerType === "happy_hour") score += 12;
+  if (entity.utilityType && entity.utilityType !== "wellness") score -= 34;
+  if (!entity.lat || !entity.lng) score -= 10;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+export function inferEntityTier(entity: MapEntity): MapEntity["entityTier"] {
+  const score = entity.experienceScore ?? inferExperienceScore(entity);
+  if (entity.utilityType && entity.utilityType !== "wellness" && entity.perkStatus !== "active") return "hidden";
+  if (score >= 88) return "anchor";
+  if (score >= 74) return "featured";
+  if (score >= 50) return "core";
+  if (score >= 32) return "extended";
+  return "hidden";
+}
+
+export function classifyDowntownPerksEntity(entity: MapEntity): MapEntity {
+  const utilityType = entity.utilityType || inferUtilityType(entity);
+  const text = [entity.title, entity.category, ...(entity.tags || [])].join(" ").toLowerCase();
+  const offerType = entity.offerType || (hasAny(text, ["happy hour", "happy-hour", "happy_hour"]) ? "happy_hour" : undefined);
+  const perkEligible = entity.perkEligible || offerType === "happy_hour";
+  const perkStatus = entity.perkStatus || (offerType === "happy_hour" ? "candidate" : undefined);
+  const visibilityMode =
+    entity.visibilityMode ||
+    (utilityType && utilityType !== "wellness"
+      ? utilityType === "parking" || utilityType === "charging" ? "parking" : "utility"
+      : "default");
+  const tags = Array.from(new Set([
+    ...(entity.tags || []),
+    utilityType === "wellness" ? "wellness" : "",
+    entity.kind === "wellness" ? "wellness" : "",
+    offerType === "happy_hour" ? "happy-hour" : "",
+  ].filter(Boolean)));
+  const classified: MapEntity = {
+    ...entity,
+    utilityType,
+    visibilityMode,
+    offerType,
+    perkEligible,
+    perkStatus,
+    tags,
+    restaurantType: entity.restaurantType || inferRestaurantType(entity),
+  };
+  const experienceScore = entity.experienceScore ?? inferExperienceScore(classified);
+  const entityTier = entity.entityTier || inferEntityTier({ ...classified, experienceScore });
+  return {
+    ...classified,
+    experienceScore,
+    entityTier,
   };
 }
 

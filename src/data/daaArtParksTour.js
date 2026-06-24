@@ -167,20 +167,20 @@ export const daaTourProgress = {
 export const daaDashboardContent = {
   title: "How People Experience Downtown",
   overview: [
-    ["Tour Opens", "4,820"],
-    ["Stop Opens", "18,640"],
+    ["Experience Opens", "4,820"],
+    ["Location Views", "18,640"],
     ["Saved Stops", "2,190"],
-    ["Checked In", "1,148"],
+    ["Verified Visits", "1,148"],
     ["Survey Starts", "892"],
     ["Survey Completions", "641"],
-    ["Directions Requested", "1,376"],
+    ["Directions Clicked", "1,376"],
     ["Tour Views", "6,304"],
   ],
-  whatPeopleAreTellingUs: ["Why People Stop", "What People Want More Of", "How Often People Visit Downtown"],
-  placesPeopleUseMost: ["Most Visited Stops", "Most Saved Stops", "Places People Return To", "Places People Ask Directions To", "Places People Want To Learn More About"],
+  whatPeopleAreTellingUs: ["What Motivates Visits", "Requested Improvements", "Audience Frequency"],
+  placesPeopleUseMost: ["Most Visited Locations", "Most Saved Locations", "Highest Repeat Engagement", "Top Direction Requests", "High-Interest Content"],
   areasOfDowntown: ["Most Visited Areas", "Most Saved Areas", "Areas People Want More Of"],
   timeAnalysis: {
-    title: "When People Explore Downtown",
+    title: "Activity by Time of Day",
     buckets: ["Morning", "Lunch", "Afternoon", "Evening", "Weekend"],
   },
 };

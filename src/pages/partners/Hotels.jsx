@@ -44,6 +44,45 @@ const MAP_FILTERS = [
   { id: "saved", label: "Saved by guests", count: 5 },
 ];
 
+const HOTEL_FILTER_COPY = {
+  all: {
+    label: "Hotel portfolio",
+    title: "See what each property gives guests access to nearby.",
+    body: "The guest layer connects hotel locations to dining, events, perks, QR entry points, and nearby recommendations.",
+    result: "Logged-in view: hotel profile, QR status, guest engagement, reporting access, and billing context.",
+  },
+  events: {
+    label: "Events nearby",
+    title: "Give guests something useful to do tonight.",
+    body: "Events become a concierge layer when they are paired with distance, timing, category, and the guest’s current location.",
+    result: "Logged-in view: event opens, saves, RSVPs, directions, and hotel-attributed activity.",
+  },
+  favorites: {
+    label: "Guest favorites",
+    title: "Understand what guests keep choosing.",
+    body: "Favorites help hotel teams identify the restaurants, bars, coffee stops, and experiences guests return to most often.",
+    result: "Logged-in view: saved places, repeat opens, partner ranking, and guest preference trends.",
+  },
+  walkable: {
+    label: "Walkable now",
+    title: "Show the best nearby options without another app.",
+    body: "Walkable context helps guests move from lobby, elevator, or room QR into a local plan they can actually use.",
+    result: "Logged-in view: distance-based recommendations, directions clicks, and route intent.",
+  },
+  perks: {
+    label: "Perks live",
+    title: "Make local access feel like part of the stay.",
+    body: "Perks connect a hotel’s guest experience to nearby partners without adding work for the front desk.",
+    result: "Logged-in view: active perks, unlocks, redemptions, partner attribution, and QR performance.",
+  },
+  saved: {
+    label: "Saved by guests",
+    title: "Measure intent before the guest leaves the property.",
+    body: "Saved items show what guests are considering, what they return to, and which local categories matter most.",
+    result: "Logged-in view: saved entities, source QR, stay-stage context, and follow-up opportunities.",
+  },
+};
+
 const LIVE_FEED = [
   { text: "Guest opened dinner near Rainey", hotel: "Hotel Van Zandt", time: "Just now" },
   { text: "Guest saved sunset event nearby", hotel: "Fairmont Austin", time: "3 min ago" },
@@ -73,6 +112,7 @@ export default function HotelsPartner() {
   const [formText, setFormText] = useState("");
 
   const hotel = activeHotel ? HOTELS.find(h => h.id === activeHotel) : null;
+  const activeFilterCopy = HOTEL_FILTER_COPY[mapFilter] || HOTEL_FILTER_COPY.all;
 
   function selectHotel(h) { setActiveHotel(h.id); }
 
@@ -149,6 +189,7 @@ export default function HotelsPartner() {
               </button>
             ))}
           </div>
+          <FilterInsight copy={activeFilterCopy} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 overflow-hidden" style={{ height: 480 }}>
               <PartnerMapIntelligenceLayer
@@ -286,6 +327,19 @@ export default function HotelsPartner() {
         proof="Questions? Reach the team at partners@downtownperks.com"
         ctaLabel="Connect your hotel" ctaHref="#partner-form"
         secondLabel="See the map" secondHref="#hotel-map" />
+    </div>
+  );
+}
+
+function FilterInsight({ copy }) {
+  return (
+    <div className="dp-partner-filter-insight" aria-live="polite">
+      <div>
+        <span>{copy.label}</span>
+        <h3>{copy.title}</h3>
+        <p>{copy.body}</p>
+      </div>
+      <p>{copy.result}</p>
     </div>
   );
 }

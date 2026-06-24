@@ -346,12 +346,27 @@ function ProductRoutes() {
           <Route path="/partner-workspace/analytics" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
+          {/* Partner portal aliases: always enter the workspace shell, even when no partner is linked. */}
+          <Route path="/partner-portal" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/dashboard" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/properties" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/hotels" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/venues" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/brands" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/civic" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/real-estate" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/campaigns" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/reports" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/events" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/perks" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal/*" element={<PartnerWorkspace />} />
+
           {/* ── MARKETING ROUTES (/marketing/*) ─────────────────────────── */}
           <Route
             path="/marketing"
             element={
               <Suspense fallback={<MarketingFallback />}>
-                <SplashPage />
+                <HomePage />
               </Suspense>
             }
           />

@@ -3,16 +3,15 @@ import { MapPin } from "lucide-react";
 
 const footerGroups = {
   Residents: [
-    { to: "/app?mode=resident&tab=map", label: "Resident Map" },
+    { to: "/app?mode=resident&tab=map", label: "Open App" },
     { to: "/card", label: "Perks Card" },
   ],
   Partners: [
     { to: "/marketing/contact", label: "Partner Signup" },
     { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
-    { to: "/marketing/pricing", label: "Pricing" },
   ],
   Platform: [
-    { to: "/app", label: "Open App" },
+    { to: "/marketing/pricing", label: "Pricing" },
     { to: "/marketing/contact", label: "Contact" },
   ],
 };
@@ -23,9 +22,9 @@ export default function HomeFooter() {
       <div className="mx-auto max-w-7xl">
         <div className="dp-site-footer-layout mb-7 grid grid-cols-1 gap-6 md:grid-cols-[0.88fr_2.12fr] md:gap-8 lg:mb-8 lg:gap-10">
           <div>
-            <Link to="/app?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 text-white transition-colors hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]" aria-label="Downtown Perks app">
+            <Link to="/app?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 whitespace-nowrap leading-none text-white transition-colors hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]" aria-label="Downtown Perks app">
               <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A]" aria-hidden="true" />
-              <span className="font-sans text-[14.5px] font-semibold tracking-[-0.015em]">
+              <span className="inline-flex items-center whitespace-nowrap font-sans text-[14.5px] font-semibold leading-none tracking-normal">
                 Downtown Perks
               </span>
             </Link>
@@ -51,16 +50,6 @@ export default function HomeFooter() {
                       </Link>
                     </li>
                   ))}
-                  {group === "Platform" && (
-                    <li className="min-w-0 pt-1">
-                      <a
-                        href="mailto:partners@downtownperks.com"
-                        className="inline-block max-w-full whitespace-nowrap text-[11px] leading-relaxed text-[#C8A96A] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] sm:text-[12px] md:text-[11px] lg:text-[12px]"
-                      >
-                        partners@downtownperks.com
-                      </a>
-                    </li>
-                  )}
                 </ul>
               </nav>
             ))}
@@ -69,7 +58,12 @@ export default function HomeFooter() {
 
         <div className="flex flex-col items-center justify-center gap-2 pt-4 text-center font-sans text-[11px] font-medium normal-case tracking-normal text-[#FFFFFF]/46 sm:flex-row sm:gap-4 sm:text-[12px]">
           <div>© {new Date().getFullYear()} Downtown Perks</div>
-          <div className="text-[#C8A96A]">Use downtown better.</div>
+          <a
+            href="mailto:partners@downtownperks.com"
+            className="text-[#C8A96A] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+          >
+            partners@downtownperks.com
+          </a>
         </div>
       </div>
     </footer>

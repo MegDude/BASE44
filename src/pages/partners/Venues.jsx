@@ -41,6 +41,45 @@ const MAP_FILTERS = [
   { id: "saved", label: "Saved nearby", count: 6 },
 ];
 
+const VENUE_FILTER_COPY = {
+  all: {
+    label: "Venue portfolio",
+    title: "See how each venue appears in downtown discovery.",
+    body: "The workspace connects category, distance, offer logic, map placement, and reporting so partners can manage visibility from one place.",
+    result: "Logged-in view: venue profile, active placements, campaign status, team roles, and billing context.",
+  },
+  live: {
+    label: "Live now",
+    title: "Understand what is active while people are deciding.",
+    body: "Live status helps partners show the right service, offer, event, or experience when nearby users are already planning.",
+    result: "Logged-in view: live offers, current events, active campaign windows, and operational status.",
+  },
+  offers: {
+    label: "Offers",
+    title: "Turn nearby attention into a measurable action.",
+    body: "Offers give residents, hotel guests, and downtown users a reason to save, visit, scan, or redeem.",
+    result: "Logged-in view: offer setup, redemption logs, duplicate protection, and partner attribution.",
+  },
+  walkable: {
+    label: "Walkable now",
+    title: "Show where the venue fits into nearby movement.",
+    body: "Walkability connects a venue to buildings, hotels, events, and other places that shape the decision path.",
+    result: "Logged-in view: directions, distance context, nearby source routes, and district movement.",
+  },
+  trending: {
+    label: "Trending",
+    title: "See what is gaining attention before the moment passes.",
+    body: "Trending helps partners decide when to update a campaign, refresh an offer, or add an event placement.",
+    result: "Logged-in view: search demand, saves, views, campaign lift, and recommended next actions.",
+  },
+  saved: {
+    label: "Saved nearby",
+    title: "Measure early intent before a visit happens.",
+    body: "Saves show which venues people plan to return to and which categories are building repeat interest.",
+    result: "Logged-in view: saved users, category intent, nearby source entities, and follow-up opportunities.",
+  },
+};
+
 const DECISION_MOMENTS = [
   { query: '"coffee near Seaholm"', result: "Merit Coffee", sub: "0.2 mi · Free drip with a pastry" },
   { query: '"dinner near Rainey"', result: "Aba and Banger's", sub: "0.3–0.4 mi · Offers active" },
@@ -62,6 +101,7 @@ export default function VenuesPartner() {
   const [formText, setFormText] = useState("");
 
   const venue = activeVenue ? VENUES.find(v => v.id === activeVenue) : null;
+  const activeFilterCopy = VENUE_FILTER_COPY[mapFilter] || VENUE_FILTER_COPY.all;
 
   function selectVenue(v) { setActiveVenue(v.id); }
 
@@ -138,6 +178,7 @@ export default function VenuesPartner() {
               </button>
             ))}
           </div>
+          <FilterInsight copy={activeFilterCopy} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 overflow-hidden" style={{ height: 480 }}>
               <PartnerMapIntelligenceLayer
@@ -272,6 +313,19 @@ export default function VenuesPartner() {
         proof="No setup cost. You only give what the offer is worth."
         ctaLabel="Add your venue" ctaHref="#partner-form"
         secondLabel="See the map" secondHref="#venue-map" />
+    </div>
+  );
+}
+
+function FilterInsight({ copy }) {
+  return (
+    <div className="dp-partner-filter-insight" aria-live="polite">
+      <div>
+        <span>{copy.label}</span>
+        <h3>{copy.title}</h3>
+        <p>{copy.body}</p>
+      </div>
+      <p>{copy.result}</p>
     </div>
   );
 }

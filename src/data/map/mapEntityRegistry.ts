@@ -1,7 +1,9 @@
-import fullRegistry from "./mapEntityRegistry.full.json";
+import productionRegistry from "./mapRegistry.production.json";
 import type { DowntownDistrict, MapEntity, MapEntityKind } from "./mapEntitySchema";
+import { filterEntitiesByIntent } from "../../map/searchIntent/searchIntentFilters";
+import type { SearchIntent } from "../../map/searchIntent/searchIntentTypes";
 
-const registry = fullRegistry as MapEntity[];
+const registry = productionRegistry as MapEntity[];
 
 export function getMapEntityRegistry(): MapEntity[] {
   return registry;
@@ -9,6 +11,10 @@ export function getMapEntityRegistry(): MapEntity[] {
 
 export function getActiveMapEntities(): MapEntity[] {
   return registry.filter((entity) => entity.active && typeof entity.lat === "number" && typeof entity.lng === "number");
+}
+
+export function getMapEntitiesBySearchIntent(intent: SearchIntent): MapEntity[] {
+  return filterEntitiesByIntent(registry, intent).filter((entity) => typeof entity.lat === "number" && typeof entity.lng === "number");
 }
 
 export function getAllActiveMapEntitiesIncludingQa(): MapEntity[] {
@@ -55,6 +61,15 @@ export function mapEntityToRuntimeLocation(entity: MapEntity) {
     googleMapsUrl: entity.googleMapsUrl,
     googlePlaceId: entity.googlePlaceId,
     googleCid: entity.googleCid,
+    visibilityMode: entity.visibilityMode,
+    utilityType: entity.utilityType,
+    entityTier: entity.entityTier,
+    experienceScore: entity.experienceScore,
+    perkEligible: entity.perkEligible,
+    perkStatus: entity.perkStatus,
+    offerType: entity.offerType,
+    offerWindow: entity.offerWindow,
+    restaurantType: entity.restaurantType,
     source: "Downtown Perks canonical Google registry",
     registrySource: entity.source,
     registryDatasetStatus: entity.datasetStatus,

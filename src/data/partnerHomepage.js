@@ -44,7 +44,7 @@ export const partnerStates = [
       "Instead of static amenity lists, residents receive a connected map-native system for discovering what exists around them in real time.",
       "The result is stronger onboarding, stronger participation, and stronger neighborhood attachment.",
     ],
-    pricing: ["Free · $39 · $99 / year", "90-day pilot. Then choose your level.", "Management pays. Residents stay."],
+    pricing: ["Starter $99/year", "Core $149/year", "Portfolio Custom"],
     cta: "Bring This to Your Property",
     ctaHref: "/map?mode=partner&tab=map&filter=Properties",
     metrics: [
@@ -76,7 +76,7 @@ export const partnerStates = [
       "Guests see nearby restaurants, events, experiences, nightlife, coffee shops, wellness, and local activity directly through one connected downtown map.",
       "The experience feels less like searching the internet and more like understanding the neighborhood in real time.",
     ],
-    pricing: ["$99-$149 / year", "90-day pilot. Then choose your level."],
+    pricing: ["Starter $99/year", "Guest Experience $149/year", "Portfolio Custom"],
     cta: "Activate Guest Discovery",
     ctaHref: "/partners/hospitality",
     metrics: [
@@ -110,7 +110,7 @@ export const partnerStates = [
       "Not impressions.",
       "Intent.",
     ],
-    pricing: ["Free for 12 months, then $49-$99 / year", "Free 90-day pilot. Then keep the venue layer live."],
+    pricing: ["Free Listing $0/year", "Basic $30/year", "Growth $79/year", "Pro $199/year"],
     cta: "Launch Venue Visibility",
     ctaHref: "/partners/venues",
     metrics: [
@@ -141,7 +141,7 @@ export const partnerStates = [
       "This creates measurable local interaction tied directly to place and timing.",
       "The result is more intelligent local activation with clearer attribution and stronger contextual relevance.",
     ],
-    pricing: ["$99-$149 / year", "Final pricing reflects footprint, visibility, and activation."],
+    pricing: ["Starter $99/year", "Campaign $149/year", "Sponsorship Custom"],
     cta: "Run a Local Campaign",
     ctaHref: "/map?mode=partner&tab=map&filter=Brands",
     metrics: [
@@ -172,7 +172,7 @@ export const partnerStates = [
       "The goal is not promotion.",
       "The goal is participation.",
     ],
-    pricing: ["$49-$79 / year"],
+    pricing: ["Community $30/year", "Program $99/year", "District Custom"],
     cta: "Coordinate Community Activity",
     ctaHref: "/partners/civic",
     metrics: [
@@ -257,12 +257,12 @@ export const organizationTypes = [
   { key: "brands", label: "Brand" },
   { key: "civic", label: "Civic organization" },
   { key: "real-estate", label: "Real estate / leasing" },
-  { key: "other", label: "Other" },
+  { key: "custom", label: "Custom" },
 ];
 
 export const intakeFields = [
   "Organization name",
-  "Organization type",
+  "Partner type",
   "Primary contact",
   "Email",
   "Phone",

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Menu, Search, Sparkles, X } from "lucide-react";
 
 const storyStates = [
@@ -80,7 +81,9 @@ const storyStates = [
     ],
     meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
-      "Coffee around the corner. A last-minute happy hour. The resident event you would have missed. Connecting the people, places and perks that make downtown feel alive.",
+      "Coffee around the corner. A last-minute happy hour.",
+      "The resident event you would have missed.",
+      "Connecting the people, places and perks that make downtown feel alive.",
     ],
   },
   {
@@ -126,18 +129,74 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+const storyEase = [0.22, 1, 0.36, 1];
+
+const storyMotion = {
+  section: {
+    initial: { opacity: 0, y: 18, filter: "blur(10px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    exit: { opacity: 0, y: -12, filter: "blur(8px)" },
+  },
+  line: {
+    initial: { opacity: 0, y: 22, filter: "blur(8px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  },
+  prose: {
+    initial: { opacity: 0, y: 14, filter: "blur(6px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  },
+};
+
 function FixedStoryStage({ state }) {
+  const reduceMotion = useReducedMotion();
+  const sceneMotion = reduceMotion ? {
+    initial: { opacity: 1 },
+    animate: { opacity: 1 },
+    exit: { opacity: 1 },
+  } : storyMotion.section;
+  const lineMotion = reduceMotion ? {
+    initial: { opacity: 1 },
+    animate: { opacity: 1 },
+  } : storyMotion.line;
+  const proseMotion = reduceMotion ? {
+    initial: { opacity: 1 },
+    animate: { opacity: 1 },
+  } : storyMotion.prose;
+  const sceneTransition = reduceMotion ? { duration: 0 } : { duration: 0.52, ease: storyEase };
+  const lineTransition = reduceMotion ? { duration: 0 } : { duration: 0.46, ease: storyEase };
+  const proseTransition = reduceMotion ? { duration: 0 } : { duration: 0.42, ease: storyEase };
+
   return (
-    <section className="dp-fixed-story-stage dp-scene-stage" data-story-scene={state.id} aria-label="Downtown Perks story">
+    <motion.section
+      key={state.id}
+      className="dp-fixed-story-stage dp-scene-stage"
+      data-story-scene={state.id}
+      aria-label="Downtown Perks story"
+      initial={sceneMotion.initial}
+      animate={sceneMotion.animate}
+      exit={sceneMotion.exit}
+      transition={sceneTransition}
+    >
       <div className="dp-fixed-story-state">
         <div className="dp-fixed-story-copy">
           <div className="dp-fixed-story-kicker-slot">
             <p key={`kicker-${state.id}`} className="dp-fixed-story-kicker">{state.kicker}</p>
           </div>
-          <div className="dp-fixed-story-headline-slot">
-            <h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
+          <motion.div
+            className="dp-fixed-story-headline-slot"
+            initial={proseMotion.initial}
+            animate={proseMotion.animate}
+            transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.04 }}
+          >
+            <motion.h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
               {state.headlineGroups ? state.headlineGroups.map((group, groupIndex) => (
-                <span key={`${state.id}-headline-group-${groupIndex}`} className="dp-fixed-story-headline-row">
+                <motion.span
+                  key={`${state.id}-headline-group-${groupIndex}`}
+                  className="dp-fixed-story-headline-row"
+                  initial={lineMotion.initial}
+                  animate={lineMotion.animate}
+                  transition={{ ...lineTransition, delay: reduceMotion ? 0 : 0.1 + groupIndex * 0.12 }}
+                >
                   {group.map((part, partIndex) => {
                     const segmentClassName = [
                       "dp-fixed-story-headline-segment",
@@ -148,7 +207,7 @@ function FixedStoryStage({ state }) {
 
                     return <span key={`${part.text}-${partIndex}`} className={segmentClassName}>{part.text}</span>;
                   })}
-                </span>
+                </motion.span>
               )) : (state.headlineParts || state.headline.map((text) => ({ text, tone: "navy" }))).map((part) => {
                 const lineClassName = [
                   "dp-fixed-story-line",
@@ -158,24 +217,55 @@ function FixedStoryStage({ state }) {
                   part.bold ? "dp-fixed-story-line--bold" : "",
                 ].filter(Boolean).join(" ");
 
-                return <span key={part.text} className={lineClassName}>{part.text}</span>;
+                return (
+                  <motion.span
+                    key={part.text}
+                    className={lineClassName}
+                    initial={lineMotion.initial}
+                    animate={lineMotion.animate}
+                    transition={{ ...lineTransition, delay: reduceMotion ? 0 : 0.1 + (state.headlineParts || []).findIndex((item) => item.text === part.text) * 0.1 }}
+                  >
+                    {part.text}
+                  </motion.span>
+                );
               })}
-            </h1>
-          </div>
-          <div className="dp-fixed-story-meaning-slot">
-            <p key={`meaning-${state.id}`} className="dp-fixed-story-meaning">{state.meaning}</p>
-          </div>
-          <div className="dp-fixed-story-supporting-slot">
-            <div key={`supporting-${state.id}`} className="dp-fixed-story-supporting">
-              {state.supporting.map((line) => (
-                <p key={line}>{line}</p>
+            </motion.h1>
+          </motion.div>
+          <motion.div
+            className="dp-fixed-story-meaning-slot"
+            initial={proseMotion.initial}
+            animate={proseMotion.animate}
+            transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.42 }}
+          >
+            <motion.p key={`meaning-${state.id}`} className="dp-fixed-story-meaning">
+              {state.meaning.split("\n").map((line) => (
+                <span key={line} className="dp-fixed-story-meaning-line">{line}</span>
               ))}
-            </div>
-          </div>
+            </motion.p>
+          </motion.div>
+          <motion.div
+            className="dp-fixed-story-supporting-slot"
+            initial={proseMotion.initial}
+            animate={proseMotion.animate}
+            transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.66 }}
+          >
+            <motion.div key={`supporting-${state.id}`} className="dp-fixed-story-supporting">
+              {state.supporting.map((line, lineIndex) => (
+                <motion.p
+                  key={line}
+                  initial={proseMotion.initial}
+                  animate={proseMotion.animate}
+                  transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.76 + lineIndex * 0.08 }}
+                >
+                  {line}
+                </motion.p>
+              ))}
+            </motion.div>
+          </motion.div>
         </div>
 
       </div>
-    </section>
+    </motion.section>
   );
 }
 
@@ -379,7 +469,9 @@ export default function SplashPage({
             )}
           </div>
 
-          <FixedStoryStage state={state} />
+          <AnimatePresence mode="wait">
+            <FixedStoryStage state={state} />
+          </AnimatePresence>
 
           <div className="dp-fixed-story-footer">
             <div className="dp-fixed-story-controls dp-fixed-story-actions" aria-label="Story navigation">

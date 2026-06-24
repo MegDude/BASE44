@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Check, ChevronRight, MapPin, Save, Send, Sparkles } from "lucide-react";
 import BrandNetworkShowcase from "@/components/marketing/BrandNetworkShowcase";
@@ -73,25 +73,86 @@ function scrollToLaunch(type) {
   document.getElementById("launch-campaign")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+async function submitCampaignRequest(payload) {
+  const response = await fetch("/api/campaign-requests", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(result.error || "Campaign request failed");
+  return result;
+}
+
 export default function CampaignsPage() {
   const navigate = useNavigate();
   const [activeType, setActiveType] = useState("Perks");
   const [openFaq, setOpenFaq] = useState(0);
   const [previewSaved, setPreviewSaved] = useState(false);
-  const [success, setSuccess] = useState("");
-  const [form, setForm] = useState({ goal: "", campaignType: "Perks", place: "", message: "" });
+  const [status, setStatus] = useState({ type: "idle", message: "" });
+  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState({
+    goal: "",
+    campaignType: "Perks",
+    place: "",
+    message: "",
+    name: "",
+    email: "",
+    organization: "",
+  });
   const active = campaignTypes[activeType];
   const draftSummary = useMemo(() => [form.goal, form.campaignType, form.place].filter(Boolean).join(" · "), [form]);
 
-  const updateForm = (field, value) => setForm((current) => ({ ...current, [field]: value }));
-  const submit = (event) => {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedType = params.get("campaignType");
+    if (requestedType && campaignTypes[requestedType]) {
+      setActiveType(requestedType);
+      setForm((current) => ({ ...current, campaignType: requestedType }));
+    }
+  }, []);
+
+  const updateForm = (field, value) => {
+    setForm((current) => ({ ...current, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: "" }));
+  };
+
+  const submit = async (event) => {
     event.preventDefault();
-    if (!form.goal.trim() || !form.place.trim() || !form.message.trim()) {
-      setSuccess("Add a goal, place, and what people should see before launching.");
+    const nextErrors = {};
+    if (!form.goal.trim()) nextErrors.goal = "Goal is required.";
+    if (!form.campaignType) nextErrors.campaignType = "Campaign type is required.";
+    if (!form.place.trim()) nextErrors.place = "Place or event is required.";
+    if (!form.message.trim()) nextErrors.message = "Campaign message is required.";
+    if (!form.name.trim()) nextErrors.name = "Name is required.";
+    if (!form.email.trim()) nextErrors.email = "Email is required.";
+    else if (!isValidEmail(form.email.trim())) nextErrors.email = "Use a valid email address.";
+    if (!form.organization.trim()) nextErrors.organization = "Organization is required.";
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) {
+      setStatus({ type: "error", message: "We couldn’t submit this yet. Please check the form and try again." });
       return;
     }
-    setSuccess("Campaign draft created. You can review it on the partner map.");
-    window.localStorage.setItem("dp-campaign-draft", JSON.stringify({ ...form, createdAt: new Date().toISOString() }));
+
+    setStatus({ type: "submitting", message: "Submitting campaign request..." });
+    try {
+      const sourceUrl = typeof window !== "undefined" ? window.location.href : "";
+      await submitCampaignRequest({
+        ...form,
+        source_page: "partners_campaigns",
+        source_url: sourceUrl,
+        submitted_at: new Date().toISOString(),
+        status: "new",
+      });
+      setStatus({ type: "success", message: "Thanks — we received your request. We’ll follow up with the right partner setup path." });
+      setForm({ goal: "", campaignType: activeType, place: "", message: "", name: "", email: "", organization: "" });
+    } catch {
+      setStatus({ type: "error", message: "We couldn’t submit this yet. Please check the form and try again." });
+    }
   };
 
   return (
@@ -164,7 +225,18 @@ export default function CampaignsPage() {
         <p>Choose the way your business can participate, then keep the offer simple enough for someone nearby to act on.</p>
         <div className="dp-campaign-type-tabs" role="tablist" aria-label="Campaign types">
           {Object.keys(campaignTypes).map((type) => (
-            <button key={type} type="button" role="tab" aria-selected={activeType === type} onClick={() => setActiveType(type)}>{type}</button>
+            <button
+              key={type}
+              type="button"
+              role="tab"
+              aria-selected={activeType === type}
+              onClick={() => {
+                setActiveType(type);
+                updateForm("campaignType", type);
+              }}
+            >
+              {type}
+            </button>
           ))}
         </div>
         <article className="dp-campaign-type-panel">
@@ -174,7 +246,16 @@ export default function CampaignsPage() {
             <strong>{active.price}</strong>
           </div>
           <ul>{active.examples.map((example) => <li key={example}><Check size={16} /> {example}</li>)}</ul>
-          <button type="button" onClick={() => scrollToLaunch(activeType)} className="dp-campaigns-primary">{active.cta}</button>
+          <button
+            type="button"
+            onClick={() => {
+              updateForm("campaignType", activeType);
+              scrollToLaunch(activeType);
+            }}
+            className="dp-campaigns-primary"
+          >
+            {active.cta}
+          </button>
         </article>
       </section>
 
@@ -189,7 +270,7 @@ export default function CampaignsPage() {
           <h3>Welcome Coffee</h3>
           <span>Two blocks away · available until 2 PM</span>
           <div>
-            <button type="button" onClick={() => { setPreviewSaved(true); setSuccess("Saved to campaign preview."); }}><Save size={16} /> Save</button>
+            <button type="button" onClick={() => { setPreviewSaved(true); setStatus({ type: "idle", message: "Saved to campaign preview." }); }}><Save size={16} /> Save</button>
             <button type="button" onClick={() => navigate("/map?mode=resident&intent=directions")}><MapPin size={16} /> Directions</button>
           </div>
           {previewSaved && <small>Saved to campaign preview.</small>}
@@ -231,15 +312,18 @@ export default function CampaignsPage() {
           {draftSummary && <small>{draftSummary}</small>}
         </div>
         <form onSubmit={submit}>
-          <label>Goal<input value={form.goal} onChange={(event) => updateForm("goal", event.target.value)} placeholder="Example: Bring people in after work" /></label>
-          <label>Campaign type<select value={form.campaignType} onChange={(event) => updateForm("campaignType", event.target.value)}>{Object.keys(campaignTypes).map((type) => <option key={type}>{type}</option>)}</select></label>
-          <label>Place or event<input value={form.place} onChange={(event) => updateForm("place", event.target.value)} placeholder="Business, property, or event name" /></label>
-          <label>What should people see?<textarea value={form.message} onChange={(event) => updateForm("message", event.target.value)} placeholder="Example: Happy hour available today from 4 PM to 7 PM." /></label>
+          <label>Goal<input value={form.goal} onChange={(event) => updateForm("goal", event.target.value)} aria-invalid={Boolean(errors.goal)} placeholder="Example: Bring people in after work" />{errors.goal && <small className="dp-campaign-form-error">{errors.goal}</small>}</label>
+          <label>Campaign type<select value={form.campaignType} onChange={(event) => updateForm("campaignType", event.target.value)} aria-invalid={Boolean(errors.campaignType)}>{Object.keys(campaignTypes).map((type) => <option key={type}>{type}</option>)}</select>{errors.campaignType && <small className="dp-campaign-form-error">{errors.campaignType}</small>}</label>
+          <label>Place or event<input value={form.place} onChange={(event) => updateForm("place", event.target.value)} aria-invalid={Boolean(errors.place)} placeholder="Business, property, or event name" />{errors.place && <small className="dp-campaign-form-error">{errors.place}</small>}</label>
+          <label>Campaign message<textarea value={form.message} onChange={(event) => updateForm("message", event.target.value)} aria-invalid={Boolean(errors.message)} placeholder="Example: Happy hour available today from 4 PM to 7 PM." />{errors.message && <small className="dp-campaign-form-error">{errors.message}</small>}</label>
+          <label>Name<input value={form.name} onChange={(event) => updateForm("name", event.target.value)} aria-invalid={Boolean(errors.name)} placeholder="Your name" />{errors.name && <small className="dp-campaign-form-error">{errors.name}</small>}</label>
+          <label>Email<input type="email" value={form.email} onChange={(event) => updateForm("email", event.target.value)} aria-invalid={Boolean(errors.email)} placeholder="you@example.com" />{errors.email && <small className="dp-campaign-form-error">{errors.email}</small>}</label>
+          <label>Organization<input value={form.organization} onChange={(event) => updateForm("organization", event.target.value)} aria-invalid={Boolean(errors.organization)} placeholder="Business, property, brand, or organization" />{errors.organization && <small className="dp-campaign-form-error">{errors.organization}</small>}</label>
           <div className="dp-campaigns-cta-row">
-            <button type="submit" className="dp-campaigns-primary"><Send size={16} /> Launch a Campaign</button>
-            <Link to="/partners?intent=walkthrough" className="dp-campaigns-secondary">Schedule a Walkthrough</Link>
+            <button type="submit" disabled={status.type === "submitting"} className="dp-campaigns-primary"><Send size={16} /> {status.type === "submitting" ? "Submitting..." : "Launch a Campaign"}</button>
+            <Link to="/marketing/contact?intent=partner-registration" className="dp-campaigns-secondary">Schedule a Walkthrough</Link>
           </div>
-          {success && <p role="status" className="dp-campaign-success">{success}</p>}
+          {status.message && <p role={status.type === "error" ? "alert" : "status"} className={`dp-campaign-success is-${status.type}`}>{status.message}</p>}
         </form>
       </section>
 

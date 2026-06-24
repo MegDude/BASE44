@@ -1,0 +1,106 @@
+import {
+  BadgePercent,
+  BatteryCharging,
+  Bike,
+  Bookmark,
+  Building2,
+  CalendarDays,
+  CalendarRange,
+  Car,
+  Clock,
+  Coffee,
+  Dumbbell,
+  Gift,
+  HeartPulse,
+  Hotel,
+  Info,
+  Landmark,
+  MapPin,
+  Moon,
+  Music,
+  Navigation,
+  Package,
+  Palette,
+  Pill,
+  Printer,
+  Route,
+  Shirt,
+  ShoppingBag,
+  Sparkles,
+  Utensils,
+  Wine,
+  Flame,
+} from "lucide-react";
+
+export const SEARCH_INTENT_RAIL = [
+  { id: "happy_hour", label: "Happy Hour", filter: "Happy Hour", prompt: "Happy hour nearby", icon: BadgePercent, defaultVisible: true },
+  { id: "coffee", label: "Coffee", filter: "Coffee", prompt: "Coffee nearby", icon: Coffee, defaultVisible: true },
+  { id: "breakfast", label: "Breakfast", filter: "Breakfast", prompt: "Breakfast nearby", icon: Coffee, defaultVisible: true },
+  { id: "lunch", label: "Lunch", filter: "Lunch", prompt: "Lunch nearby", icon: Utensils, defaultVisible: true },
+  { id: "dining", label: "Dining", filter: "Dining", prompt: "Dining nearby", icon: Utensils, defaultVisible: true },
+  { id: "drinks", label: "Drinks", filter: "Drinks", prompt: "Drinks nearby", icon: Wine, defaultVisible: true },
+  { id: "events", label: "Events", filter: "Events", prompt: "Events nearby", icon: CalendarDays, defaultVisible: true },
+  { id: "hotels", label: "Hotels", filter: "Hotels", prompt: "Hotels nearby", icon: Hotel, defaultVisible: true },
+  { id: "properties", label: "Properties", filter: "Properties", prompt: "Properties nearby", icon: Building2, defaultVisible: true },
+  { id: "legends", label: "Legends", filter: "Legends", prompt: "Legends listings", icon: Building2, defaultVisible: true },
+  { id: "inkind", label: "inKind", filter: "inKind", prompt: "inKind offers", icon: Utensils, defaultVisible: true },
+  { id: "arts", label: "Arts", filter: "Arts & Culture", prompt: "Arts nearby", icon: Palette, defaultVisible: false },
+  { id: "live_music", label: "Live Music", filter: "Live Music", prompt: "Live music tonight", icon: Music, defaultVisible: false },
+  { id: "civic", label: "Civic", filter: "Civic", prompt: "Civic nearby", icon: Landmark, defaultVisible: false },
+  { id: "fitness", label: "Fitness", filter: "Fitness", prompt: "Fitness nearby", icon: Dumbbell, defaultVisible: true },
+  { id: "wellness", label: "Wellness", filter: "Wellness", prompt: "Wellness nearby", icon: HeartPulse, defaultVisible: true },
+  { id: "retail", label: "Retail", filter: "Retail", prompt: "Retail nearby", icon: ShoppingBag, defaultVisible: true },
+  { id: "parking", label: "Parking", filter: "Parking", prompt: "Parking nearby", icon: Car, defaultVisible: false },
+  { id: "utilities", label: "Utilities", filter: "Services", prompt: "Utilities nearby", icon: Sparkles, defaultVisible: false },
+  { id: "perks", label: "Perks", filter: "Perks", prompt: "Perks I can use", icon: Gift, defaultVisible: false },
+  { id: "near_me", label: "Nearby", filter: "Nearby", prompt: "Nearby", icon: Navigation, defaultVisible: false },
+  { id: "open_now", label: "Open Now", filter: "Open Now", prompt: "Open now nearby", icon: Clock, defaultVisible: false },
+  { id: "tonight", label: "Tonight", kind: "time", time: "tonight", prompt: "Tonight nearby", icon: Moon, defaultVisible: false },
+  { id: "walkable", label: "Walkable", kind: "radius", radius: "5 min walk", prompt: "Walkable nearby", icon: Route, defaultVisible: false },
+  { id: "trending", label: "Trending", filter: "Trending", prompt: "Trending nearby", icon: Flame, defaultVisible: true },
+  { id: "saved", label: "Saved", filter: "Saved", prompt: "Saved places", icon: Bookmark, defaultVisible: true },
+  { id: "this_week", label: "This Week", filter: "This Week", prompt: "Events this week", icon: CalendarRange, defaultVisible: true },
+  { id: "printing", label: "Printing", filter: "Printing", prompt: "Printing nearby", icon: Printer, defaultVisible: false },
+  { id: "pharmacy", label: "Pharmacy", filter: "Pharmacy", prompt: "Closest pharmacy", icon: Pill, defaultVisible: false },
+  { id: "ev_charging", label: "EV Charging", filter: "EV Charging", prompt: "EV charger nearby", icon: BatteryCharging, defaultVisible: false },
+  { id: "bike_share", label: "Bike Share", filter: "Bike Share", prompt: "Bike share nearby", icon: Bike, defaultVisible: false },
+  { id: "visitor_info", label: "Visitor Info", filter: "Visitor Info", prompt: "Visitor info nearby", icon: Info, defaultVisible: false },
+  { id: "cleaning", label: "Cleaners", filter: "Cleaners", prompt: "Cleaners nearby", icon: Shirt, defaultVisible: false },
+  { id: "shipping", label: "Shipping", filter: "Shipping", prompt: "Shipping nearby", icon: Package, defaultVisible: false },
+  { id: "services", label: "Services", filter: "Services", prompt: "Services nearby", icon: Sparkles, defaultVisible: false },
+] as const;
+
+const PRIMARY_SEARCH_INTENT_IDS = [
+  "happy_hour",
+  "coffee",
+  "breakfast",
+  "lunch",
+  "dining",
+  "drinks",
+  "events",
+  "hotels",
+  "properties",
+  "legends",
+  "inkind",
+] as const;
+
+const SECONDARY_SEARCH_INTENT_IDS = [
+  "arts",
+  "live_music",
+  "civic",
+  "fitness",
+  "wellness",
+  "retail",
+  "parking",
+  "utilities",
+] as const;
+
+export const PRIMARY_SEARCH_INTENT_RAIL = PRIMARY_SEARCH_INTENT_IDS
+  .map((id) => SEARCH_INTENT_RAIL.find((item) => item.id === id))
+  .filter(Boolean);
+
+export const SECONDARY_SEARCH_INTENT_RAIL = SECONDARY_SEARCH_INTENT_IDS
+  .map((id) => SEARCH_INTENT_RAIL.find((item) => item.id === id))
+  .filter(Boolean);
+
+export const FALLBACK_MAP_PIN_ICON = MapPin;

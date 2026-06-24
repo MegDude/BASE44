@@ -1,14 +1,18 @@
 export type SurveySourceFlow = "resident-survey" | "perk-redemption" | "event-feedback" | "building-feedback";
 export type SurveyExportStatus = "pending" | "success" | "failed" | "pending_configuration";
 export type ManagementNotificationStatus = "pending" | "sent" | "failed" | "pending_configuration";
+export type SurveyProvider = "native" | "tally" | "jotform" | "surveyjs";
 
 export type SurveyResponse = {
   id: string;
   surveyId: string;
   surveyName: string;
+  surveyProvider?: SurveyProvider;
+  providerSubmissionId?: string;
   residentId: string;
   residentName?: string;
   residentEmail?: string;
+  residentPhone?: string;
   buildingId?: string;
   buildingName?: string;
   unitId?: string;
@@ -192,9 +196,12 @@ export function completeSurveyFlow(input: Partial<SurveyResponse> & Pick<SurveyR
     id: input.id || id("survey-response", `${input.surveyId}-${input.residentId || "anonymous"}-${input.redemptionId || input.mapEntityId || completedAt.slice(0, 10)}`),
     surveyId: input.surveyId,
     surveyName: input.surveyName,
+    surveyProvider: input.surveyProvider || "native",
+    providerSubmissionId: input.providerSubmissionId || "",
     residentId: input.residentId || "anonymous-resident",
     residentName: input.residentName || "Resident",
     residentEmail: input.residentEmail || "",
+    residentPhone: input.residentPhone || "",
     buildingId: input.buildingId || "",
     buildingName: input.buildingName || "",
     unitId: input.unitId || "",

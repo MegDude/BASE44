@@ -7,7 +7,7 @@ export type PricingPlan = {
   partnerType: PartnerType;
   tier: string;
   label: string;
-  annualPrice: number;
+  annualPrice: number | null;
   summary: string;
   checkoutKey: StripeProductKey;
   includes: string[];
@@ -84,49 +84,37 @@ export const PRICING_REGISTRY = {
     {
       id: "propertyPartnerAnnual",
       partnerType: "Property",
-      tier: "Partner",
-      label: "Property Partner Annual",
-      annualPrice: 199,
-      summary: "A light annual property presence tied to resident discovery.",
+      tier: "Portfolio",
+      label: "Property Portfolio",
+      annualPrice: null,
+      summary: "Multi-property workspace, centralized reporting, shared campaigns, team permissions, enterprise support, and custom integrations.",
       checkoutKey: "propertyPartnerAnnual",
-      includes: ["Building Profile", "Partner Intake", "Resident Context"],
-      bestFor: "Starting a property layer",
+      includes: ["Everything in Core", "Multi-property workspace", "Centralized reporting", "Portfolio dashboards", "Shared campaigns", "Team permissions", "Enterprise support", "Custom integrations"],
+      bestFor: "Ownership groups and operators managing multiple properties",
       billing: "Annual subscription",
     },
     {
       id: "propertyBasicBuildingAnnual",
       partnerType: "Property",
-      tier: "Basic Building",
-      label: "Basic Building Annual",
-      annualPrice: 49,
-      summary: "A building profile and local amenity context for residents.",
+      tier: "Starter",
+      label: "Property Starter Annual",
+      annualPrice: 99,
+      summary: "Property profile, building detail page, amenities integration, resident map access, local perks, nearby events, QR onboarding, and basic reporting.",
       checkoutKey: "propertyBasicBuildingAnnual",
-      includes: ["Building Profile", "Amenity Map", "Basic Reporting"],
-      bestFor: "Single buildings",
+      includes: ["Property profile", "Building detail page", "Amenities integration", "Resident map access", "Local perks", "Nearby events", "QR onboarding", "Basic reporting"],
+      bestFor: "Single buildings getting started",
       billing: "Annual subscription",
     },
     {
       id: "propertyResidentPlusAnnual",
       partnerType: "Property",
-      tier: "Resident Plus",
-      label: "Resident Plus Annual",
-      annualPrice: 99,
-      summary: "Resident access, offers, and stronger engagement support.",
+      tier: "Core",
+      label: "Property Core Annual",
+      annualPrice: 149,
+      summary: "Everything in Starter plus enhanced reporting, resident campaigns, property-specific perks, survey access, QR performance tracking, resident communications, and building analytics.",
       checkoutKey: "propertyResidentPlusAnnual",
-      includes: ["Everything in Basic", "Resident Offers", "Survey Access"],
-      bestFor: "Active resident communities",
-      billing: "Annual subscription",
-    },
-    {
-      id: "propertyProAnnual",
-      partnerType: "Property",
-      tier: "Property Pro",
-      label: "Property Pro Annual",
-      annualPrice: 199,
-      summary: "Expanded reporting and planning for premium buildings or portfolios.",
-      checkoutKey: "propertyProAnnual",
-      includes: ["Everything in Resident Plus", "Portfolio Reporting", "Planning Dashboard"],
-      bestFor: "Premium properties",
+      includes: ["Everything in Starter", "Enhanced reporting", "Resident campaigns", "Property-specific perks", "Survey access", "QR performance tracking", "Resident communications", "Building analytics"],
+      bestFor: "Properties actively using Downtown Perks as a resident engagement channel",
       billing: "Annual subscription",
     },
     {
@@ -135,22 +123,22 @@ export const PRICING_REGISTRY = {
       tier: "Starter",
       label: "Hotel Starter Annual",
       annualPrice: 99,
-      summary: "Guest discovery and local recommendations for hotel teams.",
+      summary: "Give guests a better way to discover what is nearby during their stay.",
       checkoutKey: "hotelStarterAnnual",
       includes: ["Hotel Profile", "Guest Guide", "Nearby Recommendations"],
-      bestFor: "Guest orientation",
+      bestFor: "Independent hotels and boutique properties",
       billing: "Annual subscription",
     },
     {
       id: "hotelProAnnual",
       partnerType: "Hotel",
-      tier: "Pro",
-      label: "Hotel Pro Annual",
-      annualPrice: 199,
-      summary: "Expanded guest campaigns and reporting for hospitality teams.",
+      tier: "Guest Experience",
+      label: "Hotel Guest Experience Annual",
+      annualPrice: 149,
+      summary: "Promote local experiences, guest engagement, and track activity across the stay.",
       checkoutKey: "hotelProAnnual",
       includes: ["Everything in Starter", "Guest Campaigns", "Enhanced Reporting"],
-      bestFor: "Concierge-style discovery",
+      bestFor: "Hotels actively promoting local experiences and guest engagement",
       billing: "Annual subscription",
     },
     {
@@ -357,7 +345,16 @@ export function formatCurrency(value: number) {
 }
 
 export function getPlansForPartnerType(partnerType: PartnerType) {
-  return ANNUAL_PLANS.filter((plan) => plan.partnerType === partnerType && plan.id !== "propertyPartnerAnnual");
+  const planOrder = ["propertyBasicBuildingAnnual", "propertyResidentPlusAnnual", "propertyPartnerAnnual"];
+  const plans = ANNUAL_PLANS.filter((plan) => plan.partnerType === partnerType);
+
+  if (partnerType !== "Property") return plans;
+
+  return [...plans].sort((a, b) => {
+    const aIndex = planOrder.indexOf(a.id);
+    const bIndex = planOrder.indexOf(b.id);
+    return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);
+  });
 }
 
 export function calculatePricingTotal(plan?: PricingPlan, modules: PricingModule[] = []) {
@@ -366,6 +363,7 @@ export function calculatePricingTotal(plan?: PricingPlan, modules: PricingModule
 
 export function getPriceText(item: PricingPlan | PricingModule) {
   const price = "annualPrice" in item ? item.annualPrice : item.price;
+  if (price == null) return "Custom";
   const suffix = "annualPrice" in item || item.billing === "Annual add-on" ? "/year" : "";
   return `${formatCurrency(price)}${suffix}`;
 }

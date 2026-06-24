@@ -78,6 +78,45 @@ const MAP_FILTERS = [
   { id: "trending", label: "Trending nearby", count: 4 },
 ];
 
+const PROPERTY_FILTER_COPY = {
+  all: {
+    label: "Building portfolio",
+    title: "Compare each building against the neighborhood around it.",
+    body: "The workspace groups building profiles, resident access, map placement, nearby partners, and reporting in one operating view.",
+    result: "Logged-in view: building-level profile, owned entities, resident activity, team access, and billing context.",
+  },
+  perks: {
+    label: "Resident perks",
+    title: "See which offers are close enough to become a resident habit.",
+    body: "Perk visibility connects each property to restaurants, wellness, retail, events, and partners that residents can actually use nearby.",
+    result: "Logged-in view: active perks, redemption status, partner attribution, and building-by-building usage.",
+  },
+  events: {
+    label: "Event context",
+    title: "Show residents what is worth leaving the building for.",
+    body: "Events become useful when they sit beside distance, timing, category, and resident intent instead of living in a separate calendar.",
+    result: "Logged-in view: RSVPs, saves, event opens, attendance signals, and weekly performance.",
+  },
+  walkable: {
+    label: "Walkable now",
+    title: "Explain what is reachable from the front door.",
+    body: "The resident map demonstrates the practical neighborhood layer: coffee, dinner, wellness, parks, errands, and offers by proximity.",
+    result: "Logged-in view: map opens, directions, nearby saves, route intent, and district movement.",
+  },
+  saved: {
+    label: "Saved by residents",
+    title: "Track what people keep for later.",
+    body: "Saved places are early intent signals. They show which partners and local moments residents expect to revisit.",
+    result: "Logged-in view: saved entities, category demand, partner ranking, and resident engagement history.",
+  },
+  trending: {
+    label: "Trending nearby",
+    title: "Spot the activity forming around a building.",
+    body: "Trending signals help teams understand what is gaining attention before it becomes a leasing, retention, or programming opportunity.",
+    result: "Logged-in view: trend changes, campaign lift, top partners, and recommended actions.",
+  },
+};
+
 const LIVE_FEED = [
   { text: "The Quincy resident saved Happy Hour at Half Step", time: "Just now" },
   { text: "Seaholm resident opened Waterloo Sunset Series", time: "5 min ago" },
@@ -102,6 +141,7 @@ export default function PropertiesPartner() {
   const [formText, setFormText] = useState("");
 
   const building = activeBuilding ? BUILDINGS.find(b => b.id === activeBuilding) : null;
+  const activeFilterCopy = PROPERTY_FILTER_COPY[mapFilter] || PROPERTY_FILTER_COPY.all;
 
   function selectBuilding(b) {
     setActiveBuilding(b.id);
@@ -171,6 +211,7 @@ export default function PropertiesPartner() {
               </button>
             ))}
           </div>
+          <FilterInsight copy={activeFilterCopy} />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 overflow-hidden" style={{ height: 480 }}>
               <PartnerMapIntelligenceLayer
@@ -296,6 +337,19 @@ export default function PropertiesPartner() {
         proof="Ready to walk through the setup? Reach out to our team."
         ctaLabel="Add your building" ctaHref="#partner-form"
         secondLabel="See the map" secondHref="#property-map" />
+    </div>
+  );
+}
+
+function FilterInsight({ copy }) {
+  return (
+    <div className="dp-partner-filter-insight" aria-live="polite">
+      <div>
+        <span>{copy.label}</span>
+        <h3>{copy.title}</h3>
+        <p>{copy.body}</p>
+      </div>
+      <p>{copy.result}</p>
     </div>
   );
 }

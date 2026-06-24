@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 const PUBLIC_PARTNER_USER = {
-  email: "partner@downtownperks.local",
+  email: "partners@downtownperks.com",
   full_name: "Partner Dashboard",
 };
 

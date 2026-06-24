@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus, X } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 
-const PARTNER_PROFILE_KEY = "dp_partner_workspace:profile:partner@downtownperks.local";
+const PARTNER_PROFILE_KEY = "dp_partner_workspace:profile:current";
 
 const PARTNER_TYPES = [
   { value: "venue", label: "Venue" },
@@ -11,7 +10,20 @@ const PARTNER_TYPES = [
   { value: "hotel", label: "Hotel" },
   { value: "brand", label: "Brand" },
   { value: "civic", label: "Civic / Community" },
+  { value: "real-estate", label: "Real Estate" },
+  { value: "custom", label: "Custom" },
 ];
+
+const TIMELINES = [
+  "This month",
+  "Next 30 days",
+  "Next quarter",
+  "Still planning",
+];
+
+function getPartnerTypeLabel(value) {
+  return PARTNER_TYPES.find((type) => type.value === value)?.label || value;
+}
 
 function savePartnerProfile(profile) {
   if (typeof window === "undefined") return;
@@ -22,18 +34,9 @@ function savePartnerProfile(profile) {
   }
 }
 
-function startBase44SignIn() {
+function startPartnerSignIn(navigate) {
   if (typeof window === "undefined") return;
-  const returnTo = `${window.location.origin}/partner-workspace/overview`;
-
-  if (typeof base44.auth.loginWithRedirect === "function") {
-    base44.auth.loginWithRedirect(returnTo);
-    return;
-  }
-
-  if (typeof base44.auth.login === "function") {
-    base44.auth.login(returnTo);
-  }
+  navigate("/partner-workspace/overview");
 }
 
 export default function PartnerAccess({ mode = "sign-in" }) {
@@ -43,31 +46,86 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     organization_name: "",
     contact_name: "",
     email: "",
+    phone: "",
     partner_type: "venue",
+    timeline: "Still planning",
     website: "",
     bio: "",
   });
   const [saved, setSaved] = useState(false);
+  const [submissionState, setSubmissionState] = useState("idle");
+  const [submissionMessage, setSubmissionMessage] = useState("");
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    savePartnerProfile({
-      organization_name: form.organization_name || form.contact_name || "Downtown Perks Partner",
-      full_name: form.organization_name || form.contact_name || "Downtown Perks Partner",
+    setSubmissionState("submitting");
+    setSubmissionMessage("");
+
+    const partnerTypeLabel = getPartnerTypeLabel(form.partner_type);
+    const organizationName = form.organization_name || form.contact_name || "Downtown Perks Partner";
+    const message = form.bio?.trim()
+      || `Partner registration request for ${organizationName}. Website: ${form.website || "Not provided"}.`;
+
+    const profile = {
+      organization_name: organizationName,
+      full_name: form.contact_name || organizationName,
       contact_name: form.contact_name,
       partner_type: form.partner_type,
+      partner_type_label: partnerTypeLabel,
+      phone: form.phone,
+      timeline: form.timeline,
       website: form.website,
       bio: form.bio,
       signup_email: form.email,
-      access_status: "local",
+      access_status: "registration_submitted",
       updated_date: new Date().toISOString(),
-    });
-    setSaved(true);
-    window.setTimeout(() => navigate("/partner-workspace/overview"), 450);
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sourcePage: "Partner account registration",
+          entryPath: "partner_access_signup",
+          name: form.contact_name || organizationName,
+          email: form.email,
+          phone: form.phone,
+          company: organizationName,
+          partnerType: partnerTypeLabel,
+          planInterest: "Partner workspace registration",
+          selectedPlan: "Partner workspace registration",
+          timing: form.timeline,
+          message,
+          pageUrl: typeof window !== "undefined" ? window.location.href : "",
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || "Registration could not be sent.");
+      }
+
+      savePartnerProfile(profile);
+      setSaved(true);
+      setSubmissionState("success");
+      setSubmissionMessage("Registration sent. We saved your workspace details and will connect the right package next.");
+      window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+    } catch (error) {
+      savePartnerProfile(profile);
+      setSaved(true);
+      setSubmissionState("error");
+      setSubmissionMessage(
+        error?.message
+          ? `${error.message} Your workspace details were saved locally so you can continue.`
+          : "Registration could not be sent. Your workspace details were saved locally so you can continue.",
+      );
+    }
   }
 
   return (
@@ -102,14 +160,14 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </h1>
             <p className="mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Start with a simple local workspace. Add perks, events, profile details, reports, and campaign planning without blocking public access."
-                : "Use an account when you want Base44-backed saves. You can still view the platform and use local workspace tools without signing in."}
+                ? "Register the organization, location, and launch details we need to connect your partner workspace, package, modules, and reporting."
+                : "Open the partner workspace to manage saved work, partner details, campaigns, reports, and access. You can still preview the public workspace before approval."}
             </p>
 
             <div className="mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
               {[
                 "Workspace: perks, events, profile, and civic intelligence.",
-                "Dashboard: activity, inKind, civic, and partner reporting.",
+                "Dashboard: activity, trade, civic, and partner reporting.",
                 "Campaigns: campaign builder and placement planning.",
                 "Map: partner inventory, panels, reports, and opportunities.",
               ].map((item) => (
@@ -127,13 +185,14 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Sign up</p>
                   <h2 className="font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                    Set up your workspace
+                    Register your partner account
                   </h2>
                 </div>
 
                 <PartnerAccessField label="Organization name" value={form.organization_name} onChange={(value) => updateField("organization_name", value)} required />
                 <PartnerAccessField label="Contact name" value={form.contact_name} onChange={(value) => updateField("contact_name", value)} />
                 <PartnerAccessField label="Email" type="email" value={form.email} onChange={(value) => updateField("email", value)} required />
+                <PartnerAccessField label="Phone" type="tel" value={form.phone} onChange={(value) => updateField("phone", value)} />
 
                 <div>
                   <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Partner type</label>
@@ -148,50 +207,75 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   </select>
                 </div>
 
+                <div>
+                  <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Launch timing</label>
+                  <select
+                    value={form.timeline}
+                    onChange={(event) => updateField("timeline", event.target.value)}
+                    className="w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
+                  >
+                    {TIMELINES.map((timeline) => (
+                      <option key={timeline} value={timeline}>{timeline}</option>
+                    ))}
+                  </select>
+                </div>
+
                 <PartnerAccessField label="Website" type="url" value={form.website} onChange={(value) => updateField("website", value)} />
 
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">What do you want to manage?</label>
+                  <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">What should we help you make happen?</label>
                   <textarea
                     rows={4}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
-                    className="w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
-                    placeholder="Perks, events, resident offers, campaigns, reports, civic programs..."
+                    className="w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
+                    placeholder="Tell us the organization, location, package, modules, launch timing, or custom request you want connected to this account."
                   />
                 </div>
 
+                {submissionMessage ? (
+                  <p
+                    className={`text-[12px] leading-5 ${
+                      submissionState === "error" ? "text-[#8A4B12]" : "text-[#0B1F33]/68"
+                    }`}
+                    role="status"
+                  >
+                    {submissionMessage}
+                  </p>
+                ) : null}
+
                 <button
                   type="submit"
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-[#0B1F33] px-5 text-[13px] font-semibold text-white transition hover:bg-[#132238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                  disabled={submissionState === "submitting"}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] disabled:cursor-wait disabled:opacity-70"
                 >
                   {saved ? <Check className="h-4 w-4 text-[#C8A96A]" /> : <UserPlus className="h-4 w-4 text-[#C8A96A]" />}
-                  {saved ? "Workspace created" : "Create workspace"}
+                  {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Register account"}
                 </button>
               </form>
             ) : (
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Sign in</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner account</p>
                 <h2 className="font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Open your partner account
                 </h2>
                 <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Sign in when you want authenticated Base44-backed saves. The public partner workspace remains available for preview and local setup.
+                  Continue into your partner workspace to review saved details, workspace modules, campaigns, reports, and account setup.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
-                    onClick={startBase44SignIn}
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-[#0B1F33] px-5 text-[13px] font-semibold text-white transition hover:bg-[#132238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    onClick={() => startPartnerSignIn(navigate)}
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     <LogIn className="h-4 w-4 text-[#C8A96A]" />
                     Sign in
                   </button>
                   <Link
                     to="/partners/sign-up"
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] border border-[#0B1F33]/10 bg-white px-5 text-[13px] font-semibold text-[#0B1F33]/72 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
-                    Create workspace
+                    Register account
                     <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
                   </Link>
                 </div>
@@ -213,7 +297,7 @@ function PartnerAccessField({ label, value, onChange, type = "text", required = 
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="w-full rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
+        className="w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
       />
     </div>
   );
