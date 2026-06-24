@@ -120,6 +120,9 @@ export default function Layout() {
   const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
+    if (typeof window !== "undefined") {
+      window.sessionStorage?.setItem("dp-opening-story-seen", "true");
+    }
     navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 

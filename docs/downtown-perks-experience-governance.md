@@ -8,6 +8,11 @@ Start with the philosophy before applying any component, layout, copy, map, draw
 
 [Downtown Perks Experience Philosophy V2](./downtown-perks-experience-philosophy-v2.md)
 
+The master constitution also includes the long-term data and evolution guardrails:
+
+- [Volume 12: Data, Content And Entity Governance](./downtown-perks-master-product-constitution-volume-12-data-content-entity-governance.md)
+- [Volume 13: Future Product Evolution](./downtown-perks-master-product-constitution-volume-13-future-product-evolution.md)
+
 Downtown Perks is not software about downtown. It is a simpler way to experience downtown itself.
 
 The product succeeds when someone forgets they are using software and simply feels like downtown became easier to use.

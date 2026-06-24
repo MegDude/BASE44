@@ -39,14 +39,35 @@ const partnerCopy = {
     price: "$199/year",
     cta: "Choose Real Estate",
   },
+  Resident: {
+    body: "For resident access questions, building perks, saved places, event discovery, and account support.",
+    price: "Access support",
+    cta: "Choose Resident",
+  },
+  Custom: {
+    body: "For mixed partner types, multi-location programs, integrations, sponsorships, research, or enterprise reporting.",
+    price: "Custom setup",
+    cta: "Choose Custom",
+  },
+};
+
+const partnerTypeLabels = {
+  Venue: "Venues",
+  Property: "Properties",
+  Hotel: "Hotels",
+  Brand: "Brands",
+  Civic: "Civic",
+  "Real Estate": "Real Estate",
+  Resident: "Residents",
+  Custom: "Custom",
 };
 
 const faqs = [
-  ["Are plans annual?", "Yes. Partner plans are annual. Modules may be one-time or annual depending on the setup."],
+  ["Are plans annual?", "Yes. Partner plans are annual. Add-ons may be one-time or annual depending on the setup."],
   ["Can I start small?", "Yes. Venues can begin with a free listing, and paid plans start at $30/year."],
-  ["Can campaigns be added later?", "Yes. Campaigns, events, broadcasts, reports, and activation modules can be added when they are useful."],
+  ["Can campaigns be added later?", "Yes. Campaigns, events, broadcasts, reports, and activation support can be added when they are useful."],
   ["What if I manage multiple locations?", "Use a custom or enterprise setup so reporting, permissions, and billing can be organized under one workspace."],
-  ["Does this include the partner workspace?", "Yes. Paid partner setups unlock the workspace features connected to the selected plan and modules."],
+  ["Does this include the partner workspace?", "Yes. Paid partner setups unlock the workspace capabilities connected to the selected plan."],
 ];
 
 const moduleOrder = [
@@ -62,13 +83,13 @@ const moduleOrder = [
   "annualAddOns",
 ];
 
-const PRICING_PARTNER_TYPES = ["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate"];
+const PRICING_PARTNER_TYPES = ["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate", "Resident", "Custom"];
 
 const pricingPrinciples = [
   ["1. Choose Partner Type", "Start with the operating model that matches how your organization shows up downtown."],
   ["2. Select Plan", "Compare maturity levels by what changes operationally, not just by price."],
-  ["3. Add Modules", "Layer in campaigns, events, research, reporting, broadcasts, or activation only when useful."],
-  ["4. Review Total", "See the annual setup and any one-time modules before moving forward."],
+  ["3. Add Capabilities", "Layer in campaigns, events, research, reporting, broadcasts, or activation only when useful."],
+  ["4. Review Total", "See the annual setup and any one-time support before moving forward."],
   ["5. Continue to Registration", "Confirm the setup and send the details needed to prepare the workspace."],
 ];
 
@@ -112,6 +133,9 @@ export default function PricingPage() {
   const plans = useMemo(() => getPlansForPartnerType(partnerType), [partnerType]);
   const [selectedPlanId, setSelectedPlanId] = useState("venueBasicAnnual");
   const [selectedModuleIds, setSelectedModuleIds] = useState([]);
+  const [locationCount, setLocationCount] = useState(1);
+  const [campaignInterest, setCampaignInterest] = useState("Offers and perks");
+  const [reportingNeeds, setReportingNeeds] = useState("Standard reporting");
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) || plans[0];
@@ -128,6 +152,8 @@ export default function PricingPage() {
     .filter((module) => module.billing === "One-time module")
     .reduce((sum, item) => sum + item.price, 0);
   const totalText = selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(total);
+  const estimatedMonthlyText = selectedPlan?.annualPrice == null ? "Custom" : `${formatCurrency(Math.ceil(total / 12))}/mo`;
+  const estimatedAnnualText = selectedPlan?.annualPrice == null ? "Custom" : `${formatCurrency(total)}/year`;
   const setupParams = new URLSearchParams({
     intent: "partner-registration",
     partnerType,
@@ -135,13 +161,24 @@ export default function PricingPage() {
     modules: selectedModuleIds.join(","),
     annualTotal: selectedPlan?.annualPrice == null ? "custom" : String(total),
     oneTimeTotal: String(oneTimeTotal),
+    locationCount: String(locationCount),
+    campaignInterest,
+    reportingNeeds,
   });
+  if (locationCount > 1 || selectedPlan?.annualPrice == null) {
+    setupParams.set("interest", "enterprise");
+    setupParams.set("enterprise", "multi-property");
+  }
   const setupHref = `/marketing/contact?${setupParams.toString()}`;
 
   function choosePartner(nextPartnerType) {
     const nextPlans = getPlansForPartnerType(nextPartnerType);
     setPartnerType(nextPartnerType);
     setSelectedPlanId(nextPlans[0]?.id || "");
+  }
+
+  function getPartnerTypeLabel(type) {
+    return partnerTypeLabels[type] || type;
   }
 
   function toggleModule(moduleId) {
@@ -156,7 +193,7 @@ export default function PricingPage() {
         <p className="pricing-v4-eyebrow">Partner Pricing</p>
         <h1>Choose the setup that fits how you show up downtown.</h1>
         <p>
-          Start with your partner type. Add the visibility, campaign, reporting, or activation modules you need. Keep the setup simple, annual, and easy to explain.
+          Start with your partner type. Add the visibility, campaign, reporting, or activation capabilities you need. Keep the setup simple, annual, and easy to explain.
         </p>
         <div className="pricing-v4-hero-actions">
           <a href="#pricing-builder" className="pricing-v4-cta pricing-v4-cta-primary">
@@ -164,7 +201,7 @@ export default function PricingPage() {
             <ArrowRight aria-hidden="true" />
           </a>
           <a href="/marketing/contact?intent=partner-registration" className="pricing-v4-cta pricing-v4-cta-secondary">
-            <span>Request package review</span>
+            <span>Request setup review</span>
             <ArrowRight aria-hidden="true" />
           </a>
         </div>
@@ -188,7 +225,7 @@ export default function PricingPage() {
             const copy = partnerCopy[type];
             return (
               <article key={type} className="pricing-v4-partner-card" data-active={partnerType === type}>
-                <h3>{type}</h3>
+                <h3>{getPartnerTypeLabel(type)}</h3>
                 <p>{copy.body}</p>
                 <strong>{copy.price}</strong>
                 <button type="button" onClick={() => choosePartner(type)} className="pricing-v4-cta">
@@ -202,14 +239,14 @@ export default function PricingPage() {
       </section>
 
       <section className="pricing-v4-section pricing-v4-container pricing-v4-module-rollups">
-        <SectionHeader eyebrow="Pricing modules" title="Add only what you need." copy="Modules let partners expand from basic visibility into campaigns, events, research, reporting, broadcasts, and activation support." />
+        <SectionHeader eyebrow="Pricing Capabilities" title="Add only what you need." copy="Capabilities let partners expand from basic visibility into campaigns, events, research, reporting, broadcasts, and activation support." />
         <div className="pricing-v4-module-menu">
           {moduleGroups.map((group) => {
             const selectedCount = group.modules.filter((module) => selectedModuleIds.includes(module.id)).length;
             return (
               <article key={group.id} className="pricing-v4-module-group">
                 <header className="pricing-v4-module-group-head">
-                  <span>{moduleEyebrows[group.id] || "Pricing modules"}</span>
+                  <span>{moduleEyebrows[group.id] || "Pricing capabilities"}</span>
                   <h3>{group.heading}</h3>
                   <p>{moduleGroupCopy[group.id] || group.sentence}</p>
                   <small>
@@ -270,11 +307,45 @@ export default function PricingPage() {
       </section>
 
       <section id="pricing-builder" className="pricing-v4-section pricing-v4-container pricing-v4-builder-bottom" aria-label="Pricing calculator">
-        <SectionHeader eyebrow="Package builder" title="Build the setup." copy="Use the calculator after reviewing the options. Selected modules map to the partner portal features and package entitlements." />
+        <SectionHeader eyebrow="Pricing Builder" title="Build the setup." copy="Use the calculator after reviewing the options. Selected capabilities map to the partner workspace and reporting path." />
         <div className="pricing-v4-calculator">
           <div className="pricing-v4-block">
             <p className="pricing-v4-label">Partner type</p>
-            <TextRail items={PRICING_PARTNER_TYPES} active={partnerType} onSelect={choosePartner} />
+            <TextRail items={PRICING_PARTNER_TYPES} active={partnerType} onSelect={choosePartner} getLabel={getPartnerTypeLabel} />
+          </div>
+
+          <div className="pricing-v4-block">
+            <p className="pricing-v4-label">Number of locations/properties</p>
+            <input
+              className="pricing-v4-control"
+              type="number"
+              min="1"
+              value={locationCount}
+              onChange={(event) => setLocationCount(Math.max(1, Number(event.target.value) || 1))}
+              aria-label="Number of locations or properties"
+            />
+          </div>
+
+          <div className="pricing-v4-block">
+            <p className="pricing-v4-label">Campaign interest</p>
+            <select className="pricing-v4-control" value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}>
+              <option>Offers and perks</option>
+              <option>Events</option>
+              <option>Featured visibility</option>
+              <option>District or portfolio campaign</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div className="pricing-v4-block">
+            <p className="pricing-v4-label">Reporting needs</p>
+            <select className="pricing-v4-control" value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}>
+              <option>Standard reporting</option>
+              <option>Campaign performance</option>
+              <option>Portfolio reporting</option>
+              <option>Exports and integrations</option>
+              <option>Custom executive reporting</option>
+            </select>
           </div>
 
           <div className="pricing-v4-block">
@@ -297,11 +368,26 @@ export default function PricingPage() {
                   <em>{plan.includes.join(" / ")}</em>
                 </button>
               ))}
+              {plans.length === 0 && (
+                <button
+                  type="button"
+                  className="pricing-v4-line-action"
+                  data-active="true"
+                  onClick={() => setSelectedPlanId("")}
+                >
+                  <span>
+                    Custom Review
+                    <small>We will route this to the right setup path.</small>
+                  </span>
+                  <strong>Custom</strong>
+                  <em>Workspace review / partner fit / setup guidance</em>
+                </button>
+              )}
             </div>
           </div>
 
           <div className="pricing-v4-block">
-            <p className="pricing-v4-label">Optional modules</p>
+            <p className="pricing-v4-label">Optional capabilities</p>
             <div className="pricing-v4-module-flow">
               {moduleGroups.map((group) => (
                 <div key={group.id} className="pricing-v4-mini-group">
@@ -337,7 +423,11 @@ export default function PricingPage() {
             <div className="pricing-v4-summary-lines" aria-label="Pricing total breakdown">
               <p><span>Annual subscription</span><strong>{selectedPlan ? getPriceText(selectedPlan) : "$0/year"}</strong></p>
               <p><span>Annual add-ons</span><strong>{formatCurrency(annualAddOnTotal)}</strong></p>
-              <p><span>One-time modules</span><strong>{formatCurrency(oneTimeTotal)}</strong></p>
+              <p><span>One-time support</span><strong>{formatCurrency(oneTimeTotal)}</strong></p>
+              <p><span>Estimated monthly / annual range</span><strong>{estimatedMonthlyText} / {estimatedAnnualText}</strong></p>
+              <p><span>Locations / properties</span><strong>{locationCount}</strong></p>
+              <p><span>Campaign interest</span><strong>{campaignInterest}</strong></p>
+              <p><span>Reporting needs</span><strong>{reportingNeeds}</strong></p>
             </div>
             <div className="pricing-v4-selected-modules">
               {selectedModules.length > 0 ? selectedModules.map((module) => (
@@ -363,7 +453,7 @@ export default function PricingPage() {
           <ArrowRight aria-hidden="true" />
         </a>
         <a href="/marketing/contact?intent=partner-registration" className="pricing-v4-cta pricing-v4-cta-secondary">
-          <span>Request package review</span>
+          <span>Request setup review</span>
           <ArrowRight aria-hidden="true" />
         </a>
       </section>
@@ -381,12 +471,12 @@ function SectionHeader({ eyebrow, title, copy }) {
   );
 }
 
-function TextRail({ items, active, onSelect }) {
+function TextRail({ items, active, onSelect, getLabel = (item) => item }) {
   return (
     <div className="pricing-v4-text-rail">
       {items.map((item) => (
         <button key={item} type="button" data-active={active === item} onClick={() => onSelect(item)}>
-          {item}
+          {getLabel(item)}
         </button>
       ))}
     </div>

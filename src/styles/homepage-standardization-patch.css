@@ -12,6 +12,705 @@ body,
   scroll-behavior: smooth;
 }
 
+/* Final CTA treatment: no bulky dark filled marketing/workspace buttons. */
+html body #root#root :is(
+  main.pricing-v4-page.pricing-v4-page,
+  main.marketing-contact-page.marketing-contact-page,
+  main.dp-campaigns-page.dp-campaigns-page,
+  main.dp-partner-dashboard-page.dp-partner-dashboard-page,
+  .dp-partner-workspace-page
+) :is(
+  .pricing-v4-cta-primary,
+  .marketing-contact-button-primary,
+  .dp-campaigns-primary,
+  .dp-campaigns-gold,
+  a[class*="bg-[#0B1F33]"],
+  button[class*="bg-[#0B1F33]"],
+  a[class*="bg-[#071B2F]"],
+  button[class*="bg-[#071B2F]"]
+) {
+  min-height: 44px !important;
+  border: 1px solid rgba(11, 31, 51, .14) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, .055) !important;
+}
+
+html body #root#root :is(
+  main.pricing-v4-page.pricing-v4-page,
+  main.marketing-contact-page.marketing-contact-page,
+  main.dp-campaigns-page.dp-campaigns-page,
+  main.dp-partner-dashboard-page.dp-partner-dashboard-page,
+  .dp-partner-workspace-page
+) :is(
+  .pricing-v4-cta-primary,
+  .marketing-contact-button-primary,
+  .dp-campaigns-primary,
+  .dp-campaigns-gold,
+  a[class*="bg-[#0B1F33]"],
+  button[class*="bg-[#0B1F33]"],
+  a[class*="bg-[#071B2F]"],
+  button[class*="bg-[#071B2F]"]
+) :is(span, svg, .lucide) {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root :is(
+  main.pricing-v4-page.pricing-v4-page,
+  main.marketing-contact-page.marketing-contact-page,
+  main.dp-campaigns-page.dp-campaigns-page,
+  main.dp-partner-dashboard-page.dp-partner-dashboard-page,
+  .dp-partner-workspace-page
+) :is(
+  .pricing-v4-cta-primary,
+  .marketing-contact-button-primary,
+  .dp-campaigns-primary,
+  .dp-campaigns-gold,
+  a[class*="bg-[#0B1F33]"],
+  button[class*="bg-[#0B1F33]"],
+  a[class*="bg-[#071B2F]"],
+  button[class*="bg-[#071B2F]"]
+):is(:hover, :focus-visible, :active) {
+  border-color: rgba(200, 169, 106, .72) !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #8B6B2F !important;
+  -webkit-text-fill-color: #8B6B2F !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, .075) !important;
+}
+
+/* Regression audit lock: current map drawers attach to the mobile nav and use one vertical content flow. */
+html body #root#root .dp-map-page.dp-map-page {
+  --dp-mobile-bottom-nav-height: calc(62px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 767px) {
+  html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+  html body #root#root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+    position: fixed !important;
+    inset: auto 0 0 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 920 !important;
+    pointer-events: auto !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav {
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    height: var(--dp-mobile-bottom-nav-height) !important;
+    min-height: var(--dp-mobile-bottom-nav-height) !important;
+    margin: 0 !important;
+    padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(11, 31, 51, .08) !important;
+    border-radius: 0 !important;
+    background: rgba(255, 255, 255, .97) !important;
+    box-shadow: 0 -10px 28px rgba(11, 31, 51, .07) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell,
+  html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell {
+    position: fixed !important;
+    top: auto !important;
+    right: 0 !important;
+    bottom: var(--dp-mobile-bottom-nav-height) !important;
+    left: 0 !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: none !important;
+    height: min(72dvh, calc(100dvh - var(--dp-mobile-bottom-nav-height) - env(safe-area-inset-top, 0px) - 10px)) !important;
+    max-height: calc(100dvh - var(--dp-mobile-bottom-nav-height) - env(safe-area-inset-top, 0px) - 10px) !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border-radius: 18px 18px 0 0 !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 -18px 46px rgba(11, 31, 51, .14) !important;
+    transform: none !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-scroll.dp-map-panel-scroll,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-drawer-scroll.dp-drawer-scroll {
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0 0 calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-content.dp-detail-content,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 14px 14px 24px !important;
+  overflow: visible !important;
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-content.dp-detail-content > .dp-destination-hero.dp-destination-hero,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-content.dp-detail-content > .dp-panel-detail-hero.dp-panel-detail-hero,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-content.dp-detail-content > .dp-polished-panel.dp-polished-panel {
+  order: 0 !important;
+  position: relative !important;
+  inset: auto !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell :is(.dp-destination-hero-media, .dp-destination-media, .dp-polished-panel-hero) {
+  position: relative !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #F7F8FB !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell :is(.dp-destination-hero-media, .dp-destination-media, .dp-polished-panel-hero) :is(img, picture, video) {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-content.dp-detail-content > .dp-entity-identity.dp-entity-identity,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity {
+  order: 1 !important;
+  position: relative !important;
+  inset: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 2px !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-primary-action-row.dp-primary-action-row,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-entity-action-row.dp-entity-action-row {
+  order: 2 !important;
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Regression audit lock: story text can wrap and grow without clipping at every supported phone width. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-headline-slot, .dp-fixed-story-meaning-slot, .dp-fixed-story-supporting-slot),
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Regression audit terminal override: outrank legacy duplicated-class drawer selectors still present in this file. */
+@media (max-width: 767px) {
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell {
+    position: fixed !important;
+    top: auto !important;
+    right: 0 !important;
+    bottom: var(--dp-mobile-bottom-nav-height) !important;
+    left: 0 !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: none !important;
+    height: min(72dvh, calc(100dvh - var(--dp-mobile-bottom-nav-height) - env(safe-area-inset-top, 0px) - 10px)) !important;
+    max-height: calc(100dvh - var(--dp-mobile-bottom-nav-height) - env(safe-area-inset-top, 0px) - 10px) !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border-radius: 18px 18px 0 0 !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 -18px 46px rgba(11, 31, 51, .14) !important;
+    transform: none !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-map-panel-content.dp-map-panel-content.dp-destination-content.dp-destination-content.dp-detail-content.dp-detail-content {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
+  grid-auto-flow: row !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 14px 14px 24px !important;
+  overflow: visible !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-map-panel-content.dp-map-panel-content.dp-destination-content.dp-destination-content.dp-detail-content.dp-detail-content > .dp-destination-hero.dp-destination-hero.dp-destination-hero {
+  order: 0 !important;
+  position: relative !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-hero.dp-destination-hero.dp-destination-hero > .dp-destination-media.dp-destination-media.dp-destination-hero-media.dp-destination-hero-media,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-hero.dp-destination-hero.dp-destination-hero > .dp-polished-panel-hero.dp-polished-panel-hero.dp-destination-hero-media.dp-destination-hero-media {
+  position: relative !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #F7F8FB !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-destination-hero.dp-destination-hero.dp-destination-hero :is(.dp-destination-media.dp-destination-hero-media, .dp-polished-panel-hero.dp-destination-hero-media) :is(img, picture, video) {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-primary-action-row.dp-primary-action-row.dp-primary-action-row,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-action-row.dp-entity-action-row.dp-entity-action-row {
+  order: 2 !important;
+  position: relative !important;
+  inset: auto !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Final specificity lock: marketing CTAs stay light, compact, and non-bulky. */
+html body #root#root main.pricing-v4-page.pricing-v4-page.pricing-v4-page a.pricing-v4-cta.pricing-v4-cta-primary.pricing-v4-cta-primary,
+html body #root#root main.marketing-contact-page.marketing-contact-page.marketing-contact-page button.marketing-contact-button.marketing-contact-button-primary.marketing-contact-button-primary,
+html body #root#root main.marketing-contact-page.marketing-contact-page.marketing-contact-page a.marketing-contact-button.marketing-contact-button-primary.marketing-contact-button-primary,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page.dp-campaigns-page .dp-campaigns-primary.dp-campaigns-primary,
+html body #root#root main.dp-partner-dashboard-page.dp-partner-dashboard-page.dp-partner-dashboard-page .dp-campaigns-primary.dp-campaigns-primary,
+html body #root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(a, button)[class*="bg-[#0B1F33]"],
+html body #root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(a, button)[class*="bg-[#071B2F]"] {
+  min-height: 44px !important;
+  border: 1px solid rgba(11, 31, 51, .14) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, .055) !important;
+}
+
+html body #root#root main.pricing-v4-page.pricing-v4-page.pricing-v4-page a.pricing-v4-cta.pricing-v4-cta-primary.pricing-v4-cta-primary :is(span, svg),
+html body #root#root main.marketing-contact-page.marketing-contact-page.marketing-contact-page :is(button, a).marketing-contact-button.marketing-contact-button-primary.marketing-contact-button-primary :is(span, svg),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page.dp-campaigns-page .dp-campaigns-primary.dp-campaigns-primary :is(span, svg),
+html body #root#root main.dp-partner-dashboard-page.dp-partner-dashboard-page.dp-partner-dashboard-page .dp-campaigns-primary.dp-campaigns-primary :is(span, svg),
+html body #root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(a, button)[class*="bg-[#0B1F33]"] :is(span, svg),
+html body #root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(a, button)[class*="bg-[#071B2F]"] :is(span, svg) {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root main.pricing-v4-page.pricing-v4-page.pricing-v4-page a.pricing-v4-cta.pricing-v4-cta-primary.pricing-v4-cta-primary:is(:hover, :focus-visible, :active),
+html body #root#root main.marketing-contact-page.marketing-contact-page.marketing-contact-page :is(button, a).marketing-contact-button.marketing-contact-button-primary.marketing-contact-button-primary:is(:hover, :focus-visible, :active),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page.dp-campaigns-page .dp-campaigns-primary.dp-campaigns-primary:is(:hover, :focus-visible, :active),
+html body #root#root main.dp-partner-dashboard-page.dp-partner-dashboard-page.dp-partner-dashboard-page .dp-campaigns-primary.dp-campaigns-primary:is(:hover, :focus-visible, :active),
+html body #root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(a, button)[class*="bg-[#0B1F33]"]:is(:hover, :focus-visible, :active),
+html body #root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(a, button)[class*="bg-[#071B2F]"]:is(:hover, :focus-visible, :active) {
+  border-color: rgba(200, 169, 106, .72) !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #8B6B2F !important;
+  -webkit-text-fill-color: #8B6B2F !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, .075) !important;
+}
+
+/* Final nearby and Ask the Map drawer locks: horizontal entity image rails, readable prompt chips. */
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(
+  .dp-nearby-image-rail,
+  .dp-property-image-rail,
+  .dp-partner-nearby-rail,
+  .dp-inkind-related-rail,
+  .dp-related-rail,
+  .dp-daa-next-rail
+) {
+  display: flex !important;
+  grid-template-columns: none !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 2px 5px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(
+  .dp-nearby-image-rail,
+  .dp-property-image-rail,
+  .dp-partner-nearby-rail,
+  .dp-inkind-related-rail,
+  .dp-related-rail,
+  .dp-daa-next-rail
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(
+  .dp-nearby-image-card,
+  .dp-property-nearby-card,
+  .dp-partner-nearby-card,
+  .dp-inkind-related-card,
+  .dp-related-place,
+  .dp-daa-next-card
+) {
+  flex: 0 0 clamp(132px, 40vw, 168px) !important;
+  width: clamp(132px, 40vw, 168px) !important;
+  min-width: clamp(132px, 40vw, 168px) !important;
+  max-width: clamp(132px, 40vw, 168px) !important;
+  min-height: 166px !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 7px !important;
+  padding: 7px !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, .92) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, .06) !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(
+  .dp-nearby-image-card,
+  .dp-property-nearby-card,
+  .dp-partner-nearby-card,
+  .dp-inkind-related-card,
+  .dp-related-place,
+  .dp-daa-next-card
+):is(:hover, :focus-visible) {
+  border-color: rgba(200, 169, 106, .42) !important;
+  background: #FFFFFF !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, .09) !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(
+  .dp-nearby-image-card img,
+  .dp-nearby-image-media img,
+  .dp-property-nearby-card img,
+  .dp-partner-nearby-card img,
+  .dp-inkind-related-card img,
+  .dp-related-place img,
+  .dp-daa-next-card img
+) {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 4 / 3 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  border-radius: 9px !important;
+  background: #F7F8FB !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(.dp-nearby-image-copy, .dp-property-nearby-card span, .dp-partner-nearby-card span, .dp-related-place span) {
+  display: grid !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(.dp-nearby-image-copy strong, .dp-property-nearby-card strong, .dp-partner-nearby-card strong, .dp-inkind-related-card span, .dp-related-place strong, .dp-daa-next-card strong) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 720 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(.dp-nearby-image-copy em, .dp-property-nearby-card em, .dp-partner-nearby-card em, .dp-inkind-related-card small, .dp-related-place em, .dp-daa-next-card em) {
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-style: normal !important;
+  font-weight: 480 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  text-wrap: pretty !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(.dp-ask-prompts, .dp-inkind-prompt-list) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+html body #root#root :is(aside.dp-map-panel, aside.dp-panel-shell.dp-detail-drawer, aside.dp-panel-shell.dp-destination-drawer, .dp-destination-drawer, .dp-detail-drawer) :is(.dp-ask-prompt-chip, .dp-inkind-prompt-list button) {
+  flex: 1 1 min(100%, 148px) !important;
+  width: auto !important;
+  min-width: min(100%, 136px) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 36px !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .07) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: none !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 480 !important;
+  line-height: 1.32 !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  text-wrap: pretty !important;
+}
+
+/* Final story launch action alignment: search + Open the Map centered as one cluster. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(18px, 4vw, 30px) !important;
+  width: max-content !important;
+  max-width: calc(100vw - 40px) !important;
+  margin-inline: auto !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-footer-search.dp-story-footer-search {
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions a {
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+}
+
+/* Absolute final splash launch CTA lock. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer {
+  justify-content: center !important;
+  max-width: 240px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a {
+  justify-content: center !important;
+}
+
+/* Absolute final splash mobile menu + launch/search action placement. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-menu.dp-product-shell-menu {
+  gap: 18px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-menu-group {
+  display: grid !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-menu-group + .dp-story-mobile-menu-group {
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-menu-group p {
+  margin: 0 !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 820 !important;
+  letter-spacing: 0.14em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer {
+  gap: 18px !important;
+  max-width: 270px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-footer-search.dp-story-footer-search {
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-footer-search.dp-story-footer-search svg {
+  width: 17px !important;
+  height: 17px !important;
+  color: #C8A96A !important;
+  stroke: #C8A96A !important;
+}
+
 html body #root#root #pricing-builder {
   scroll-margin-top: 96px !important;
 }
@@ -42,6 +741,25 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-succe
 html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-success.is-success {
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root main.pricing-v4-page.pricing-v4-page .pricing-v4-control {
+  width: 100% !important;
+  min-height: 50px !important;
+  border: 1px solid rgba(11, 31, 51, .12) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  padding: 0 14px !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font: 600 14px/1.2 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.pricing-v4-page.pricing-v4-page .pricing-v4-control:focus {
+  outline: none !important;
+  border-color: rgba(200, 169, 106, .72) !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, .14) !important;
 }
 
 /* Partner workspace overview: compact, routed, mobile-first command center */
@@ -16771,6 +17489,307 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-work
   height: 1px !important;
   border-radius: 0 !important;
 }
+
+/* ABSOLUTE EOF partner lifecycle polish: white operating-system surface, connected onboarding. */
+html body #root#root .dp-partner-page.dp-partner-workspace-page {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-title-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: end !important;
+  gap: 18px !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 14px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools :is(button, a),
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-signin {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, .64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .64) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  letter-spacing: .08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools svg {
+  width: 15px !important;
+  height: 15px !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  stroke-width: 2 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools :is(button, a):is(:hover, :focus-visible),
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-signin:is(:hover, :focus-visible) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  margin: 18px 0 16px !important;
+  border-top: 1px solid rgba(11, 31, 51, .08) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 44px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, .68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .68) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 780 !important;
+  letter-spacing: .08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail a:last-child {
+  border-right: 0 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail a svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail a:is(:hover, :focus-visible) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  background: #FFFFFF !important;
+  box-shadow: inset 0 -1px 0 #C8A96A !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page :is(.dp-workspace-overview-section, .dp-workspace-intake-panel, .dp-workspace-switcher-section, .dp-workspace-module-section, .dp-workspace-selected-card, .dp-workspace-registry-panel, .dp-workspace-reports-hero, .dp-workspace-report-card) {
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-overview-section {
+  padding: clamp(18px, 4vw, 28px) !important;
+  margin-bottom: 18px !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-section-copy h2,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-section-title,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-panel-header h2 {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(22px, 4.8vw, 34px) !important;
+  font-weight: 620 !important;
+  letter-spacing: -.025em !important;
+  line-height: 1.08 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-list {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  margin-top: 20px !important;
+  border-top: 1px solid rgba(11, 31, 51, .08) !important;
+  border-left: 1px solid rgba(11, 31, 51, .08) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: start !important;
+  gap: 8px 10px !important;
+  min-height: 132px !important;
+  padding: 16px !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(11, 31, 51, .08) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card > svg:first-of-type {
+  width: 16px !important;
+  height: 16px !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card > svg:last-child {
+  width: 14px !important;
+  height: 14px !important;
+  color: rgba(11, 31, 51, .34) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .34) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-count {
+  grid-column: 1 / -1 !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-size: 11px !important;
+  font-weight: 780 !important;
+  letter-spacing: .12em !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card strong {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 720 !important;
+  line-height: 1.16 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card small {
+  grid-column: 1 / -1 !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-size: 12px !important;
+  font-weight: 430 !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card:is(:hover, :focus-visible) {
+  border-color: rgba(200, 169, 106, .42) !important;
+  box-shadow: inset 0 -1px 0 #C8A96A !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-link-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 18px !important;
+  margin-top: 18px !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-link-row a,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-inline-actions button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 11px !important;
+  font-weight: 780 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-link-row a svg,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-inline-actions button svg {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-module-grid,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-category-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)) !important;
+  gap: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .08) !important;
+  border-left: 1px solid rgba(11, 31, 51, .08) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-module-card,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-category-link {
+  border: 0 !important;
+  border-right: 1px solid rgba(11, 31, 51, .08) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-title-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools {
+    justify-content: flex-start !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail {
+    grid-template-columns: repeat(4, max-content) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail a {
+    min-width: 118px !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-lifecycle-card {
+    min-height: 112px !important;
+  }
+}
 /* ABSOLUTE EOF story visibility and typography lock: screenshots 2026-06-23. */
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) {
   overflow: hidden !important;
@@ -23710,4 +24729,964 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-foote
     align-items: stretch !important;
     flex-direction: column !important;
   }
+}
+
+/* Absolute EOF story animation composition lock: header, scenes, and footer get dedicated space. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) {
+  background: #FFFFFF !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  width: 100% !important;
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto 36px !important;
+  grid-template-areas: "brand actions menu" !important;
+  align-items: center !important;
+  column-gap: clamp(12px, 2.4vw, 24px) !important;
+  row-gap: 8px !important;
+  width: min(100%, 1160px) !important;
+  min-height: 66px !important;
+  margin: 0 auto !important;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) clamp(18px, 4vw, 32px) 10px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: 0 14px 38px rgba(11, 31, 51, .045) !important;
+  backdrop-filter: blur(16px) saturate(1.08) !important;
+  z-index: 20 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-brand {
+  grid-area: brand !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-menu-button {
+  grid-area: menu !important;
+  justify-self: end !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-nav-rail.dp-product-shell-nav-rail {
+  grid-area: actions !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(16px, 2.5vw, 28px) !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-product-shell-search-button, .dp-story-narrative-skip) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(11px, 1.05vw, 12px) !important;
+  font-weight: 800 !important;
+  letter-spacing: .12em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-product-shell-search-button, .dp-story-narrative-skip):is(:hover, :focus-visible, :active) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  outline: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: none !important;
+  padding: clamp(18px, 3.6dvh, 44px) clamp(18px, 5vw, 64px) clamp(14px, 2.5dvh, 30px) !important;
+  overflow: visible !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(100%, 940px) !important;
+  max-width: 940px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  gap: clamp(13px, 1.9dvh, 24px) !important;
+  overflow: visible !important;
+  text-align: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-headline-slot, .dp-fixed-story-meaning-slot, .dp-fixed-story-supporting-slot) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+  font-family: "Instrument Serif", "Canela", Georgia, "Times New Roman", serif !important;
+  font-size: clamp(42px, 6.2vw, 86px) !important;
+  font-weight: 500 !important;
+  line-height: .96 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  display: grid !important;
+  justify-items: center !important;
+  gap: clamp(0px, .35dvh, 5px) !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  display: grid !important;
+  justify-items: center !important;
+  gap: 0 !important;
+  width: min(100%, 760px) !important;
+  max-width: min(100%, 760px) !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(15px, 1.55vw, 20px) !important;
+  font-weight: 520 !important;
+  line-height: 1.36 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-line {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  display: grid !important;
+  justify-items: center !important;
+  gap: clamp(4px, .65dvh, 8px) !important;
+  width: min(100%, 720px) !important;
+  max-width: min(100%, 720px) !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(13.5px, 1.28vw, 17px) !important;
+  font-weight: 430 !important;
+  line-height: 1.44 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-wrap: pretty !important;
+  color: rgba(11, 31, 51, .76) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .76) !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  width: min(100%, 680px) !important;
+  max-width: min(100%, 680px) !important;
+  white-space: normal !important;
+  word-spacing: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  width: min(100%, 720px) !important;
+  max-width: min(100%, 720px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-copy.dp-fixed-story-copy,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-copy.dp-fixed-story-copy,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-copy.dp-fixed-story-copy {
+  gap: clamp(10px, 1.35dvh, 18px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-headline.dp-fixed-story-headline {
+  width: min(100%, 860px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-line.dp-fixed-story-line {
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  width: min(100%, 760px) !important;
+  max-width: min(100%, 760px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  width: min(100%, 820px) !important;
+  max-width: min(100%, 820px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  display: grid !important;
+  justify-items: center !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 92px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 4px clamp(18px, 5vw, 56px) calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .06) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 -14px 34px rgba(11, 31, 51, .035) !important;
+  z-index: 18 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer :is(.dp-fixed-story-actions, .dp-fixed-story-controls, .dp-fixed-story-final-ctas, .dp-fixed-map-actions, .dp-fixed-story-cta-footer) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: clamp(16px, 3vw, 34px) !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer :is(button.dp-fixed-story-control, a.dp-button.dp-button-wide, .dp-fixed-story-actions button, .dp-fixed-map-actions a) {
+  min-width: 0 !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(11px, 1.05vw, 12px) !important;
+  font-weight: 800 !important;
+  letter-spacing: .12em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer :is(button.dp-fixed-story-control, a.dp-button.dp-button-wide, .dp-fixed-story-actions button, .dp-fixed-map-actions a):is(:hover, :focus-visible, :active) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  outline: none !important;
+}
+
+@media (min-width: 1280px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-top: clamp(20px, 3.2dvh, 46px) !important;
+    padding-bottom: clamp(16px, 2.2dvh, 30px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    max-width: 1080px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+    grid-template-columns: minmax(0, 1fr) 36px !important;
+    grid-template-areas:
+      "brand menu"
+      "actions actions" !important;
+    min-height: 94px !important;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 22px 10px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-nav-rail.dp-product-shell-nav-rail {
+    justify-self: center !important;
+    gap: 22px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding: clamp(10px, 1.5dvh, 16px) 18px clamp(8px, 1.1dvh, 12px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    width: min(100%, 348px) !important;
+    max-width: 348px !important;
+    gap: clamp(8px, 1.18dvh, 13px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+    font-size: clamp(34px, 8.7vw, 43px) !important;
+    line-height: .98 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
+    font-size: clamp(35px, 8.9vw, 44px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-headline-row, .dp-fixed-story-headline-segment),
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
+    font-size: clamp(31px, 8vw, 39px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
+    font-size: clamp(33px, 8.15vw, 40px) !important;
+    line-height: .98 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-line.dp-fixed-story-line {
+    white-space: nowrap !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+    width: min(100%, 334px) !important;
+    max-width: min(100%, 334px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    width: min(100%, 330px) !important;
+    max-width: min(100%, 330px) !important;
+    font-size: clamp(12.8px, 3.2vw, 14.4px) !important;
+    line-height: 1.32 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+    width: min(100%, 324px) !important;
+    max-width: min(100%, 324px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: clamp(11.6px, 2.9vw, 13px) !important;
+    line-height: 1.32 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: clamp(12.1px, 3.05vw, 13.4px) !important;
+    line-height: 1.36 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    min-height: 88px !important;
+    gap: 4px !important;
+    padding: 2px 18px calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer :is(.dp-fixed-story-actions, .dp-fixed-story-controls, .dp-fixed-story-final-ctas, .dp-fixed-map-actions, .dp-fixed-story-cta-footer) {
+    gap: 18px !important;
+  }
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+    min-height: 58px !important;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: 8px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-top: 10px !important;
+    padding-bottom: 8px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    gap: 8px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+    font-size: clamp(30px, 7.2vw, 62px) !important;
+    line-height: .97 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: clamp(12px, 1.22vw, 15px) !important;
+    line-height: 1.28 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: clamp(11px, 1.05vw, 13px) !important;
+    line-height: 1.24 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    min-height: 76px !important;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+/* Final drawer and panel polish lock: compact, readable, mobile-first panels. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-legends-directory-sheet,
+  .dp-map-panel,
+  .dp-destination-drawer
+) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-body, .dp-panel-scroll, .dp-map-panel-content, .dp-destination-content, .dp-saved-downtown-scroll) {
+  padding-top: max(12px, env(safe-area-inset-top, 0px)) !important;
+  scroll-padding-top: 14px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-resident-tab-panel, .dp-partner-readable-panel, .dp-campaign-drawer, .dp-saved-downtown-panel) {
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-resident-tab-panel, .dp-partner-readable-panel, .dp-campaign-drawer, .dp-saved-downtown-panel) :is(h2, h3, h4, p, span, small, strong, em, button, a) {
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 6px 10px calc(6px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 -8px 22px rgba(11, 31, 51, 0.045) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-action-row.dp-saved-action-row button,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section.dp-saved-ask-section button {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button {
+  flex: 1 1 0 !important;
+  padding-inline: 4px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button:is(:hover, :focus-visible, :active),
+html body #root#root .dp-map-page.dp-map-page .dp-saved-action-row.dp-saved-action-row button:is(:hover, :focus-visible, :active),
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section.dp-saved-ask-section button:is(:hover, :focus-visible, :active) {
+  color: #C8A96A !important;
+  outline: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button :is(svg, .lucide),
+html body #root#root .dp-map-page.dp-map-page .dp-saved-action-row.dp-saved-action-row button :is(svg, .lucide),
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section.dp-saved-ask-section button :is(svg, .lucide) {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 14px !important;
+  color: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-campaign-action-bar) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding-bottom: 2px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-campaign-action-bar)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-entity-action, .dp-panel-action, .dp-primary-action, .dp-secondary-action, .dp-map-panel-button, .dp-tab-primary-action, .dp-tab-secondary-action) {
+  min-height: 34px !important;
+  height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 10px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+/* Final story navigation lock. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: calc(64px + env(safe-area-inset-top, 0px)) !important;
+  padding: env(safe-area-inset-top, 0px) 0 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(14px) saturate(1.04) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-header-inner {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  width: min(100%, 1280px) !important;
+  height: 64px !important;
+  margin: 0 auto !important;
+  padding: 0 clamp(20px, 4vw, 28px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  margin-right: auto !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-header-search.dp-story-header-search {
+  order: 0 !important;
+  flex: 0 0 36px !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand {
+  order: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-desktop-nav.dp-story-desktop-nav {
+  order: 2 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions {
+  order: 3 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-brand-icon.dp-story-brand-icon {
+  width: 15px !important;
+  height: 15px !important;
+  flex: 0 0 15px !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-desktop-nav.dp-story-desktop-nav {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 16px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-story-nav-link, .dp-story-nav-menu-trigger, .dp-product-shell-search-button.dp-global-search-trigger) {
+  appearance: none !important;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 1px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.56) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-story-nav-link.is-active, .dp-story-nav-menu-trigger.is-active, .dp-story-nav-link:hover, .dp-story-nav-menu-trigger:hover, .dp-product-shell-search-button.dp-global-search-trigger:hover) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-story-nav-link.is-active, .dp-story-nav-menu-trigger.is-active)::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  height: 1px !important;
+  background: #C8A96A !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-nav-menu-trigger svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: currentColor !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-nav-menu-wrap {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-nav-menu-panel {
+  position: absolute !important;
+  top: calc(100% + 10px) !important;
+  right: 0 !important;
+  z-index: 40 !important;
+  display: grid !important;
+  gap: 9px !important;
+  min-width: 184px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 18px 48px rgba(11, 31, 51, 0.10) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-nav-menu-panel a,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-menu a {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-global-search-icon-button, .dp-product-shell-menu-button) {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-menu {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  right: 20px !important;
+  z-index: 42 !important;
+  display: grid !important;
+  gap: 10px !important;
+  min-width: min(260px, calc(100vw - 40px)) !important;
+  padding: 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 18px 48px rgba(11, 31, 51, 0.10) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  min-height: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 8px clamp(20px, 5vw, 56px) calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.06) !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-controls,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-actions {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(22px, 5vw, 48px) !important;
+  width: 100% !important;
+  max-width: 240px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a:is(:hover, :focus-visible, :active) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a svg {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 14px !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions .dp-product-shell-menu-button {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-desktop-nav.dp-story-desktop-nav {
+    display: none !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-header-inner {
+    gap: 10px !important;
+    padding-inline: 20px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand {
+    font-size: 14px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer {
+    justify-content: space-between !important;
+    gap: 14px !important;
+    max-width: 330px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a {
+    font-size: 11px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+}
+
+/* Absolute final CTA treatment: no bulky dark filled marketing/workspace buttons. */
+html body #root#root :is(
+  main.pricing-v4-page.pricing-v4-page,
+  main.marketing-contact-page.marketing-contact-page,
+  main.dp-campaigns-page.dp-campaigns-page,
+  main.dp-partner-dashboard-page.dp-partner-dashboard-page,
+  .dp-partner-workspace-page
+) :is(
+  .pricing-v4-cta-primary,
+  .marketing-contact-button-primary,
+  .dp-campaigns-primary,
+  .dp-campaigns-gold,
+  a[class*="bg-[#0B1F33]"],
+  button[class*="bg-[#0B1F33]"],
+  a[class*="bg-[#071B2F]"],
+  button[class*="bg-[#071B2F]"]
+) {
+  min-height: 44px !important;
+  border: 1px solid rgba(11, 31, 51, .14) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, .055) !important;
+}
+
+html body #root#root :is(
+  main.pricing-v4-page.pricing-v4-page,
+  main.marketing-contact-page.marketing-contact-page,
+  main.dp-campaigns-page.dp-campaigns-page,
+  main.dp-partner-dashboard-page.dp-partner-dashboard-page,
+  .dp-partner-workspace-page
+) :is(
+  .pricing-v4-cta-primary,
+  .marketing-contact-button-primary,
+  .dp-campaigns-primary,
+  .dp-campaigns-gold,
+  a[class*="bg-[#0B1F33]"],
+  button[class*="bg-[#0B1F33]"],
+  a[class*="bg-[#071B2F]"],
+  button[class*="bg-[#071B2F]"]
+) :is(span, svg, .lucide) {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root :is(
+  main.pricing-v4-page.pricing-v4-page,
+  main.marketing-contact-page.marketing-contact-page,
+  main.dp-campaigns-page.dp-campaigns-page,
+  main.dp-partner-dashboard-page.dp-partner-dashboard-page,
+  .dp-partner-workspace-page
+) :is(
+  .pricing-v4-cta-primary,
+  .marketing-contact-button-primary,
+  .dp-campaigns-primary,
+  .dp-campaigns-gold,
+  a[class*="bg-[#0B1F33]"],
+  button[class*="bg-[#0B1F33]"],
+  a[class*="bg-[#071B2F]"],
+  button[class*="bg-[#071B2F]"]
+):is(:hover, :focus-visible, :active) {
+  border-color: rgba(200, 169, 106, .72) !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #8B6B2F !important;
+  -webkit-text-fill-color: #8B6B2F !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, .075) !important;
 }

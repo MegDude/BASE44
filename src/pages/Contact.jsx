@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, ChevronDown, Send } from "lucide-react";
 import {
   ANNUAL_PLANS,
-  PARTNER_TYPES,
   PRICING_MODULES,
   formatCurrency,
   getBillingKind,
@@ -30,21 +29,50 @@ const enterpriseInterestLabels = {
   "custom-integrations": "Custom integrations",
 };
 
+const partnerTypeAliases = {
+  venue: "Venue",
+  venues: "Venue",
+  restaurant: "Venue",
+  restaurants: "Venue",
+  property: "Property",
+  properties: "Property",
+  building: "Property",
+  buildings: "Property",
+  hotel: "Hotel",
+  hotels: "Hotel",
+  brand: "Brand",
+  brands: "Brand",
+  civic: "Civic",
+  "civic organization": "Civic",
+  "civic organizations": "Civic",
+  "real estate": "Real Estate",
+  listing: "Real Estate",
+  listings: "Real Estate",
+  resident: "Resident",
+  residents: "Resident",
+  custom: "Custom",
+  other: "Custom",
+};
+
 const contactIntents = [
   {
-    title: "Venue",
+    title: "Venues",
+    partnerType: "Venue",
     interest: "annual_partner_plan",
   },
   {
-    title: "Property",
+    title: "Properties",
+    partnerType: "Property",
     interest: "property_building_setup",
   },
   {
-    title: "Hotel",
+    title: "Hotels",
+    partnerType: "Hotel",
     interest: "hotel_guest_experience",
   },
   {
-    title: "Brand",
+    title: "Brands",
+    partnerType: "Brand",
     interest: "brand_sponsorship",
   },
   {
@@ -56,7 +84,7 @@ const contactIntents = [
     interest: "real_estate_listing",
   },
   {
-    title: "Resident",
+    title: "Residents",
     partnerType: "Resident",
     interest: "resident_access_question",
   },
@@ -236,39 +264,39 @@ const planAliases = {
 const partnerPricingContext = {
   Venue: {
     lead: "For restaurants, bars, coffee shops, wellness, retail, and local services that want nearby people to find them more easily.",
-    modules: "Free Listing helps you get discovered. Basic keeps you visible. Growth supports offers and events. Pro turns local discovery into an always-on channel.",
+    capabilities: "Free Listing helps you get discovered. Basic keeps you visible. Growth supports offers and events. Pro turns local discovery into an always-on channel.",
   },
   Property: {
     lead: "For apartments, condos, mixed-use developments, residential towers, and managed communities that want to turn local discovery into a resident amenity.",
-    modules: "Starter connects one building to resident discovery. Core turns Downtown Perks into an engagement channel. Portfolio supports multi-property operators.",
+    capabilities: "Starter connects one building to resident discovery. Core turns Downtown Perks into an engagement channel. Portfolio supports multi-property operators.",
   },
   Hotel: {
     lead: "For hotels and guest experience teams that want to connect guests to nearby places, events, perks, and local recommendations.",
-    modules: "Give guests a better way to discover what is nearby while tracking engagement across the stay.",
+    capabilities: "Give guests a better way to discover what is nearby while tracking engagement across the stay.",
   },
   Brand: {
     lead: "For local, regional, and national brands activating around downtown behavior, events, districts, and real-world moments.",
-    modules: "Reach residents, visitors, and downtown audiences through places, events, and real-world moments.",
+    capabilities: "Reach residents, visitors, and downtown audiences through places, events, and real-world moments.",
   },
   Civic: {
     lead: "For districts, associations, nonprofits, and public programs that want to increase awareness, attendance, and participation.",
-    modules: "Increase participation, attendance, and awareness across civic programs, public events, districts, and community initiatives.",
+    capabilities: "Increase participation, attendance, and awareness across civic programs, public events, districts, and community initiatives.",
   },
   "Real Estate": {
     lead: "For developers, brokerages, and leasing teams connecting listings, buildings, and neighborhood context.",
-    modules: "Use this for property pages, neighborhood guides, lead routing, launch campaigns, and leasing support.",
+    capabilities: "Use this for property pages, neighborhood guides, lead routing, launch campaigns, and leasing support.",
   },
   Resident: {
     lead: "Residents do not need partner registration to use Downtown Perks. Use this option only for access, perks card, or building-specific questions.",
-    modules: "Use the message box for perks card help, account access, building questions, saved places, events, or anything you need us to check.",
+    capabilities: "Use the message box for perks card help, account access, building questions, saved places, events, or anything you need us to check.",
   },
   Other: {
     lead: "For mixed partner types, multi-location programs, integrations, sponsorships, research, or anything that needs a tailored workspace configuration.",
-    modules: "Use the message box for enterprise plans, mixed partner types, integrations, research, sponsorships, or district-wide ideas.",
+    capabilities: "Use the message box for enterprise plans, mixed partner types, integrations, research, sponsorships, or district-wide ideas.",
   },
   Custom: {
     lead: "For mixed partner types, multi-location programs, integrations, sponsorships, research, or anything that needs a tailored workspace configuration.",
-    modules: "Use the message box for enterprise plans, mixed partner types, integrations, research, sponsorships, or district-wide ideas.",
+    capabilities: "Use the message box for enterprise plans, mixed partner types, integrations, research, sponsorships, or district-wide ideas.",
   },
 };
 
@@ -280,6 +308,12 @@ function getSetupHeading(partnerType) {
 
 function getDisplayPartnerType(partnerType) {
   return partnerType === "Other" ? "Custom" : partnerType;
+}
+
+function normalizePartnerType(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (!normalized) return "";
+  return partnerTypeAliases[normalized] || partnerTypeOptions.find((type) => type.toLowerCase() === normalized) || "";
 }
 
 function formatParamMoney(value, suffix = "") {
@@ -312,6 +346,7 @@ export default function ContactPage() {
   const [form, setForm] = useState(initialForm);
   const [selectedModuleIds, setSelectedModuleIds] = useState([]);
   const [queryTotals, setQueryTotals] = useState({ annual: "", oneTime: "" });
+  const [journeyContext, setJourneyContext] = useState({ locationCount: "", campaignInterest: "", reportingNeeds: "", enterprise: "" });
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [errors, setErrors] = useState({});
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
@@ -359,9 +394,10 @@ export default function ContactPage() {
     const oneTimeTotalParam = params.get("oneTimeTotal");
     const interestParam = params.get("interest");
     const enterpriseParam = params.get("enterprise");
-    const normalizedPartnerParam = (partnerParam || "").toLowerCase();
-    const matchedPartner = PARTNER_TYPES.find((type) => type.toLowerCase() === normalizedPartnerParam)
-      || (["custom", "other"].includes(normalizedPartnerParam) ? "Custom" : undefined);
+    const locationCountParam = params.get("locationCount");
+    const campaignInterestParam = params.get("campaignInterest");
+    const reportingNeedsParam = params.get("reportingNeeds");
+    const matchedPartner = normalizePartnerType(partnerParam) || undefined;
     const planAlias = planParam ? planAliases[planParam] || planParam : "";
     const matchedProduct = ANNUAL_PLANS.find((item) => item.id === (skuParam || planAlias));
     const matchedModuleSku = PRICING_MODULES.find((item) => item.id === skuParam);
@@ -389,6 +425,12 @@ export default function ContactPage() {
     setQueryTotals({
       annual: formatParamMoney(annualTotalParam, "/year"),
       oneTime: formatParamMoney(oneTimeTotalParam),
+    });
+    setJourneyContext({
+      locationCount: locationCountParam || "",
+      campaignInterest: campaignInterestParam || "",
+      reportingNeeds: reportingNeedsParam || "",
+      enterprise: enterpriseParam || "",
     });
   }, []);
 
@@ -459,6 +501,10 @@ export default function ContactPage() {
             form.website?.trim() ? `Website: ${form.website.trim()}` : "",
             form.serviceArea?.trim() ? `Location or service area: ${form.serviceArea.trim()}` : "",
             `Selected setup: ${form.partnerType} / ${selectedPlanName} / Annual total ${estimatedAnnualTotal} / One-time total ${estimatedOneTimeTotal}`,
+            journeyContext.locationCount ? `Locations/properties: ${journeyContext.locationCount}` : "",
+            journeyContext.campaignInterest ? `Campaign interest: ${journeyContext.campaignInterest}` : "",
+            journeyContext.reportingNeeds ? `Reporting needs: ${journeyContext.reportingNeeds}` : "",
+            journeyContext.enterprise ? `Enterprise context: ${enterpriseInterestLabels[journeyContext.enterprise] || journeyContext.enterprise}` : "",
           ].filter(Boolean).join("\n\n"),
           sku: selectedProduct?.id || form.productSku,
           priceId: selectedProduct ? STRIPE_PRODUCTS[selectedProduct.id]?.priceId || "" : "",
@@ -467,6 +513,10 @@ export default function ContactPage() {
           billingKind: selectedProduct ? getBillingKind(selectedProduct) : "",
           planInterest: interestOptions.find((item) => item.value === form.interest)?.label || form.interest,
           entryPath: form.interest === "annual_partner_plan" ? "guided_signup" : "guided_review",
+          locationCount: journeyContext.locationCount,
+          campaignInterest: journeyContext.campaignInterest,
+          reportingNeeds: journeyContext.reportingNeeds,
+          enterpriseType: journeyContext.enterprise,
           ...getUtm(),
         }),
       });
@@ -480,6 +530,7 @@ export default function ContactPage() {
       setForm(initialForm);
       setSelectedModuleIds([]);
       setQueryTotals({ annual: "", oneTime: "" });
+      setJourneyContext({ locationCount: "", campaignInterest: "", reportingNeeds: "", enterprise: "" });
       setErrors({});
     } catch (error) {
       setStatus({

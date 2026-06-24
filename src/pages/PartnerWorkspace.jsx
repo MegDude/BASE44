@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Building2, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bot, Bell, Search, ShieldCheck, WalletCards } from "lucide-react";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 import {
@@ -45,6 +45,13 @@ const WORKSPACE_CATEGORIES = [
 ];
 
 const FRIENDLY_ENTITLEMENTS = ["Analytics", "Campaigns", "Offers", "Events", "Reports", "QR Experiences", "Exports", "API Access"];
+
+const PARTNER_LIFECYCLE_LINKS = [
+  { label: "Register", href: "/marketing/contact?intent=partner-registration", detail: "Confirm organization, contact, location, and setup details.", icon: UserPlus },
+  { label: "Pricing", href: "/marketing/pricing", detail: "Compare annual plans, modules, and activation paths.", icon: CreditCard },
+  { label: "Checkout", href: "/partner-workspace/billing?checkout=1", detail: "Open billing, subscription, invoice, and Stripe checkout status.", icon: WalletCards },
+  { label: "Workspace", href: "/partner-workspace/overview", detail: "Provision profile, modules, team, reporting, and AI context.", icon: LayoutDashboard },
+];
 
 const WORKSPACE_CAPABILITY_LINKS = [
   { label: "Map", href: "/partner-workspace/map", description: "Review placement, pins, discovery context, and nearby audience movement." },
@@ -264,7 +271,7 @@ export default function PartnerWorkspace() {
   }
 
   return (
-    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen bg-[#F7F8FB] text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
+    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen bg-white text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
       {/* Header */}
       <div className="dp-partner-workspace-header pt-20 pb-0 px-5 bg-white border-b border-[rgba(11,31,51,0.07)] shadow-[0_1px_0_rgba(11,31,51,0.04),0_4px_16px_rgba(11,31,51,0.03)]">
         <div className="dp-partner-workspace-header-inner max-w-6xl mx-auto">
@@ -272,42 +279,39 @@ export default function PartnerWorkspace() {
             <div className="dp-partner-workspace-title-copy">
               <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
               <h1 className="dp-partner-workspace-title font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
-                {isReportsTab ? "Monthly Reports" : user.full_name || user.email?.split("@")[0] || "Your workspace"}
+                {isReportsTab ? "Monthly Reports" : tab === "overview" ? "Workspace Home" : user.full_name || user.email?.split("@")[0] || "Your workspace"}
               </h1>
               <p className="dp-partner-workspace-support text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">
                 {isReportsTab
                   ? "Readable partner reports organized around what changed, what worked, and what to do next."
-                  : "Understand what is happening around your business, publish experiences people can discover, and measure the actions that follow. Track visibility. Drive participation. Measure results."}
+                  : "Registration, pricing, checkout, provisioning, and daily operations now move through one connected workspace path."}
               </p>
             </div>
-            <div className="dp-partner-workspace-header-actions flex items-center gap-2 shrink-0">
-              <Link
-                to="/marketing/contact?intent=partner-registration"
-                className="dp-partner-workspace-button inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
-              >
-                Register
-              </Link>
-              <Link
-                to="/marketing/pricing"
-                className="dp-partner-workspace-button inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
-              >
-                Pricing
-              </Link>
+            <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
+              <button type="button" aria-label="Search workspace"><Search aria-hidden="true" /></button>
+              <button type="button" aria-label="Workspace assistant"><Bot aria-hidden="true" /></button>
+              <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button>
               <button
                 type="button"
                 onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut}
-                className="dp-partner-workspace-button inline-flex h-8 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+                className="dp-partner-workspace-signin"
               >
                 {isPublicWorkspaceUser ? "Sign in" : "Sign out"}
               </button>
-              <Link
-                to="/partners/dashboard"
-                className="dp-partner-workspace-button inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-[rgba(11,31,51,0.09)] bg-white px-3 text-[11.5px] font-semibold text-[#0B1F33]/60 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0"
-              >
-                <LayoutDashboard className="w-3.5 h-3.5 text-[#C8A96A]" /> Dashboard
-              </Link>
             </div>
           </div>
+
+          <nav className="dp-partner-lifecycle-rail" aria-label="Partner lifecycle">
+            {PARTNER_LIFECYCLE_LINKS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link key={item.label} to={item.href}>
+                  <Icon aria-hidden="true" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
 
           {/* Tabs — animated sliding indicator */}
           <div className="dp-partner-workspace-tabs relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
@@ -529,10 +533,10 @@ function WorkspaceReports() {
     >
       <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
         <div>
-          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Monthly report</span>
-          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">What changed and what to do next</h2>
+          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Reporting & Analytics</span>
+          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and outcomes.</h2>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
-            A readable partner report organized around observations, trends, recommendations, and expected outcomes.
+            See what people viewed, saved, scanned, opened, requested directions to, redeemed, and returned to. Use each signal to decide what to launch, improve, or repeat next.
           </p>
         </div>
         <Link
@@ -541,6 +545,19 @@ function WorkspaceReports() {
         >
           Open map reports
         </Link>
+      </div>
+      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          ["Visibility", "Views, map opens, listing activity, and featured placement reach."],
+          ["Engagement", "Saves, scans, RSVPs, event opens, and offer interest."],
+          ["Visits", "Directions, verified visits, redemptions, and repeat activity."],
+          ["Next Action", "Recommendations tied to campaign, offer, event, and reporting signals."],
+        ].map(([label, copy]) => (
+          <article key={label} className="rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-4 shadow-[0_1px_4px_rgba(11,31,51,0.04)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{label}</p>
+            <p className="mt-2 text-[13px] leading-[1.55] text-[#0B1F33]/64">{copy}</p>
+          </article>
+        ))}
       </div>
       <div className="dp-workspace-report-grid grid gap-2.5">
         {monthlyReports.map((item) => (
@@ -603,10 +620,10 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
   ];
 
   const QUICK_ACTIONS = [
-    { label: "Create an Offer", sub: "Launch a perk, promotion, resident benefit, or limited-time experience.", icon: Star, tab: "offers" },
-    { label: "Create an Event", sub: "Promote an upcoming event and make it discoverable across Downtown Austin.", icon: Calendar, tab: "events" },
-    { label: "Update Organization Profile", sub: "Ensure guests, residents, and visitors see accurate information about your organization.", icon: Building2, tab: "profile" },
-    { label: "Review Pricing", sub: "Compare plans, capabilities, registration details, and checkout readiness.", icon: CreditCard, href: "/marketing/pricing" },
+    { label: "Create offer", sub: "Launch a resident benefit, validation, or limited-time reason to visit.", icon: Star, tab: "offers" },
+    { label: "Create event", sub: "Publish programming that should appear in nearby discovery.", icon: Calendar, tab: "events" },
+    { label: "Launch campaign", sub: "Connect a message, audience, placement, and measurable action.", icon: LayoutDashboard, tab: "campaigns" },
+    { label: "Generate report", sub: "Review performance, attribution, and the next best action.", icon: ShieldCheck, tab: "reports" },
   ];
 
   return (
@@ -614,25 +631,34 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
       {isPreviewMode && (
         <section className="dp-workspace-overview-section dp-workspace-intake-panel">
           <div className="dp-workspace-section-copy">
-            <p className="dp-workspace-eyebrow">Workspace setup</p>
-            <h2>Connect your organization.</h2>
+            <p className="dp-workspace-eyebrow">Partner lifecycle</p>
+            <h2>Start once. Operate from one workspace.</h2>
             <p>
-              Register a partner setup, review pricing, or sign in to an existing account. The workspace is where offers, campaigns,
-              reporting, billing, and team access come together.
+              Move from registration into pricing, checkout, provisioning, and daily operations without jumping between disconnected pages.
             </p>
           </div>
-          <div className="dp-workspace-link-row" aria-label="Partner setup actions">
-            <Link to="/marketing/contact?intent=partner-registration">
-              <UserPlus className="h-4 w-4" aria-hidden="true" />
-              Register
-            </Link>
-            <Link to="/marketing/pricing">
-              <CreditCard className="h-4 w-4" aria-hidden="true" />
-              Pricing
-            </Link>
+          <div className="dp-workspace-lifecycle-list" aria-label="Partner setup lifecycle">
+            {PARTNER_LIFECYCLE_LINKS.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <Link key={step.label} to={step.href} className="dp-workspace-lifecycle-card">
+                  <span className="dp-workspace-lifecycle-count">{index + 1}</span>
+                  <Icon aria-hidden="true" />
+                  <strong>{step.label}</strong>
+                  <small>{step.detail}</small>
+                  <ArrowRight aria-hidden="true" />
+                </Link>
+              );
+            })}
+          </div>
+          <div className="dp-workspace-link-row" aria-label="Partner account actions">
             <Link to="/partners/sign-in">
               <LogIn className="h-4 w-4" aria-hidden="true" />
-              Sign in
+              Sign in to an existing workspace
+            </Link>
+            <Link to="/partners/dashboard">
+              <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
+              Open partner dashboard
             </Link>
           </div>
 
@@ -650,10 +676,10 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
       <section className="dp-workspace-overview-section dp-workspace-switcher-section">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="dp-workspace-eyebrow">Workspace switcher</p>
-            <h2 className="dp-workspace-section-title">Choose an organization.</h2>
+            <p className="dp-workspace-eyebrow">Organizations & Workspaces</p>
+            <h2 className="dp-workspace-section-title">Manage multiple organizations from a single account.</h2>
             <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-[#0B1F33]/60">
-              Switch between the organizations connected to this account and keep each workspace tied to its offers, reports, team, and billing.
+              Switch between properties, venues, hotels, brands, civic programs, and listings without creating separate logins.
             </p>
           </div>
           <div className="dp-workspace-status-chip">
@@ -727,7 +753,7 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
         <div className="dp-workspace-section-head">
           <div>
             <p className="dp-workspace-eyebrow">Workspace Capabilities</p>
-            <h2 className="dp-workspace-section-title">Everything has a place.</h2>
+            <h2 className="dp-workspace-section-title">One operating system for partner work.</h2>
           </div>
           <p>
             Each capability routes to a real workspace surface. Pricing and registration stay connected to the public onboarding flow,
@@ -749,6 +775,8 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
           ))}
         </div>
       </section>
+
+      <DaaCivicWorkspacePanel />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {QUICK_STATS.map((s, i) => (

@@ -322,9 +322,26 @@ function ProductRoutes() {
           <Route path="/partners/reporting" element={<Dashboard />} />
           <Route path="/partners/analytics" element={<Dashboard />} />
           <Route path="/partners/map" element={<MapPage />} />
+          <Route path="/partners/start" element={<Navigate to="/marketing/contact?intent=partner-registration" replace />} />
+          <Route path="/partners/register" element={<Navigate to="/marketing/contact?intent=partner-registration" replace />} />
+          <Route path="/partners/pricing" element={<Navigate to="/marketing/pricing" replace />} />
+          <Route path="/partners/checkout" element={<Navigate to="/partner-workspace/billing?checkout=1" replace />} />
+          <Route path="/partners/provision" element={<Navigate to="/partner-workspace/overview?provisioning=1" replace />} />
           <Route path="/partners/workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
           {/* Partner workspace */}
+          <Route path="/workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
+          <Route path="/workspace/home" element={<Navigate to="/partner-workspace/overview" replace />} />
+          <Route path="/workspace/map" element={<Navigate to="/partner-workspace/map" replace />} />
+          <Route path="/workspace/offers" element={<Navigate to="/partner-workspace/offers" replace />} />
+          <Route path="/workspace/events" element={<Navigate to="/partner-workspace/events" replace />} />
+          <Route path="/workspace/campaigns" element={<Navigate to="/partner-workspace/campaigns" replace />} />
+          <Route path="/workspace/reports" element={<Navigate to="/partner-workspace/reports" replace />} />
+          <Route path="/workspace/analytics" element={<Navigate to="/partner-workspace/analytics" replace />} />
+          <Route path="/workspace/profile" element={<Navigate to="/partner-workspace/profile" replace />} />
+          <Route path="/workspace/team" element={<Navigate to="/partner-workspace/team" replace />} />
+          <Route path="/workspace/billing" element={<Navigate to="/partner-workspace/billing" replace />} />
+          <Route path="/workspace/settings" element={<Navigate to="/partner-workspace/profile" replace />} />
           <Route path="/partner-workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
           <Route path="/partner-workspace/overview" element={<PartnerWorkspace />} />
           <Route path="/partner-workspace/map" element={<PartnerWorkspace />} />

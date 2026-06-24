@@ -182,7 +182,10 @@ export default function PartnersDashboard() {
             Partner Workspace
           </h1>
           <p className="mt-4 max-w-[700px] font-body text-[15px] leading-[1.58] text-[rgba(11,31,51,.70)] sm:text-[17px]">
-            Manage your presence, campaigns, offers, events, and reporting from one place. See what people are engaging with, launch something new, and understand what is driving participation across Downtown Austin.
+            Understand what is happening around your business, publish experiences people can discover, and measure the actions that follow.
+          </p>
+          <p className="mt-3 max-w-[700px] font-body text-[14px] font-semibold leading-[1.45] text-[#0B1F33] sm:text-[16px]">
+            Track visibility. Drive participation. Measure results.
           </p>
           <div className="mt-5 grid gap-2 sm:flex sm:flex-wrap sm:gap-3">
             <ActionLink to="/partner-workspace/overview">Open Workspace</ActionLink>

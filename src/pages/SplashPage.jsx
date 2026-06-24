@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Menu, Search, Sparkles, X } from "lucide-react";
+import { ChevronDown, MapPin, Menu, Search, Sparkles, X } from "lucide-react";
 
 const storyStates = [
   {
@@ -15,7 +15,7 @@ const storyStates = [
       { text: "than a biscuit", tone: "navy" },
       { text: "with honey.", tone: "navy" },
     ],
-    meaning: "Downtown Perks brings the heat\n— and the hospitality.",
+    meaning: "Downtown Perks brings the heat — and the hospitality.",
     supporting: [
       "For the people who plan around live music, rooftop weather,",
       "taco runs, and “just one drink” - this is for you.",
@@ -33,9 +33,7 @@ const storyStates = [
     ],
     meaning: "Easier to navigate. Easier to connect. \nMore useful day to day.",
     supporting: [
-      "Most things already exist.",
-      "They’re just scattered.",
-      "Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
+      "Most things already exist. They’re just scattered. Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
     ],
   },
   {
@@ -53,13 +51,6 @@ const storyStates = [
         { text: "to bring everything together.", tone: "navy" },
       ],
     ],
-    headlineParts: [
-      { text: "So we built", tone: "navy" },
-      { text: "one map", tone: "gold" },
-      { text: "to bring", tone: "navy" },
-      { text: "everything", tone: "navy" },
-      { text: "together.", tone: "navy" },
-    ],
     meaning: "Not another app to manage. Not another feed to scroll.\nJust a better way to figure out what’s happening, and worth showing up for.",
     supporting: [],
   },
@@ -74,10 +65,6 @@ const storyStates = [
         { text: "Your all-access ", tone: "gold" },
         { text: "pass to downtown.", tone: "navy" },
       ],
-    ],
-    headlineParts: [
-      { text: "Your all-access", tone: "gold" },
-      { text: "pass to downtown.", tone: "navy", compact: true },
     ],
     meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
@@ -97,7 +84,7 @@ const storyStates = [
       { text: "making plans", tone: "gold" },
       { text: "or part of them.", tone: "navy" },
     ],
-    meaning: " Choosing local comes with its perks: discounts, rewards, and little extras from the places that  that keep downtown interesting.",
+    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
     supporting: [
       "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
     ],
@@ -117,12 +104,18 @@ const storyStates = [
   },
 ];
 
-const storyNavLinks = [
-  { to: "/app?mode=resident&tab=map", label: "Resident Map" },
-  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks" },
-  { to: "/app?mode=resident&tab=map&filter=Events", label: "Events" },
-  { to: "/app?mode=resident&tab=pass", label: "Perks Card" },
-  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
+const residentNavLinks = [
+  { to: "/map?mode=resident&tab=map&filter=All", label: "Resident Map" },
+  { to: "/map?mode=resident&tab=map&filter=Perks", label: "Perks" },
+  { to: "/map?mode=resident&tab=map&filter=Events", label: "Events" },
+  { to: "/map?mode=resident&tab=pass&filter=All", label: "Perks Card" },
+];
+
+const partnerNavLinks = [
+  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map" },
+  { to: "/map?mode=partner&tab=campaigns&filter=All", label: "Campaigns" },
+  { to: "/map?mode=partner&tab=activity&filter=All", label: "Activity" },
+  { to: "/partner-workspace/overview", label: "Workspace" },
 ];
 
 function clamp(value, min, max) {
@@ -272,11 +265,11 @@ function FixedStoryStage({ state }) {
 export default function SplashPage({
   residentMapHref = "/map?mode=resident&tab=map&filter=All",
   partnerMapHref = "/map?mode=partner&tab=map&filter=All",
-  skipHref = "/map?mode=resident&tab=map&filter=All",
   onOpenMap,
 } = {}) {
   const [active, setActive] = useState(0);
   const [storyMenuOpen, setStoryMenuOpen] = useState(false);
+  const [openNavMenu, setOpenNavMenu] = useState(null);
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
     return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -288,6 +281,7 @@ export default function SplashPage({
   const finishIntro = useCallback(() => {
     setShowIntro(false);
     setStoryMenuOpen(false);
+    setOpenNavMenu(null);
   }, []);
 
   const markMapLaunchReady = useCallback(() => {
@@ -295,13 +289,21 @@ export default function SplashPage({
       window.sessionStorage?.setItem("dp-opening-story-seen", "true");
     }
     setStoryMenuOpen(false);
+    setOpenNavMenu(null);
     onOpenMap?.();
   }, [onOpenMap]);
 
   const openSearch = useCallback(() => {
+    setStoryMenuOpen(false);
+    setOpenNavMenu(null);
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("dp-open-quick-search"));
     }
+  }, []);
+
+  const toggleNavMenu = useCallback((menuName) => {
+    setOpenNavMenu((current) => (current === menuName ? null : menuName));
+    setStoryMenuOpen(false);
   }, []);
 
   const activate = useCallback((next) => {
@@ -345,7 +347,10 @@ export default function SplashPage({
       }
       if (event.key === "Home") activate(0);
       if (event.key === "End") activate(storyStates.length - 1);
-      if (event.key === "Escape") setStoryMenuOpen(false);
+      if (event.key === "Escape") {
+        setStoryMenuOpen(false);
+        setOpenNavMenu(null);
+      }
     };
 
     const onTouchStart = (event) => {
@@ -374,7 +379,6 @@ export default function SplashPage({
     };
   }, [activate, go]);
 
-  const isFirst = active === 0;
   const isLast = active === storyStates.length - 1;
 
   return (
@@ -418,55 +422,107 @@ export default function SplashPage({
       {!showIntro && (
         <section className="dp-fixed-story-shell" aria-label="Downtown Perks story">
           <div className="dp-product-shell-topbar">
-            <Link
-              to={residentMapHref}
-              className="dp-product-shell-brand"
-              aria-label="Open Downtown Perks resident map"
-              onClick={markMapLaunchReady}
-            >
-              <span className="dp-product-shell-wordmark whitespace-nowrap font-sans text-[18px] font-bold uppercase leading-none tracking-[-0.045em] text-dp-navy sm:text-2xl">
-                <span className="text-dp-navy">Downtown</span>{" "}
-                <span className="text-dp-gold">Perks</span>
-              </span>
-            </Link>
-            <div className="dp-product-shell-nav-rail" aria-label="Story shortcuts">
-              <button
-                type="button"
-                className="dp-product-shell-search-button"
-                aria-label="Search Downtown Perks"
-                onClick={openSearch}
-              >
-                <Search className="h-4 w-4" aria-hidden="true" />
-                <span>Search</span>
-              </button>
+            <div className="dp-story-header-inner">
               <Link
-                to={skipHref}
-                className="dp-product-shell-skip dp-story-narrative-skip"
-                aria-label="Skip story and open resident map"
+                to={residentMapHref}
+                className="dp-product-shell-brand dp-story-app-brand"
+                aria-label="Downtown Perks app"
                 onClick={markMapLaunchReady}
               >
-                Skip story
+                <MapPin className="dp-story-brand-icon" aria-hidden="true" />
+                <span>Downtown Perks</span>
               </Link>
-            </div>
-            <button
-              type="button"
-              className="dp-product-shell-menu-button"
-              aria-label={storyMenuOpen ? "Close navigation" : "Open navigation"}
-              aria-expanded={storyMenuOpen}
-              aria-controls="dp-story-navigation-menu"
-              onClick={() => setStoryMenuOpen((open) => !open)}
-            >
-              {storyMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
-            </button>
-            {storyMenuOpen && (
-              <nav id="dp-story-navigation-menu" className="dp-product-shell-menu" aria-label="Downtown Perks navigation">
-                {storyNavLinks.map((link) => (
-                  <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
-                    {link.label}
-                  </Link>
-                ))}
+
+              <nav className="dp-product-shell-nav-rail dp-story-desktop-nav" aria-label="Downtown Perks navigation">
+                <Link className="dp-story-nav-link is-active" to={residentMapHref} onClick={markMapLaunchReady}>
+                  Resident Map
+                </Link>
+                <Link className="dp-story-nav-link" to={partnerMapHref} onClick={markMapLaunchReady}>
+                  Partner Map
+                </Link>
+
+                <div className="dp-story-nav-menu-wrap">
+                  <button
+                    type="button"
+                    className={`dp-story-nav-menu-trigger ${openNavMenu === "residents" ? "is-active" : ""}`}
+                    aria-expanded={openNavMenu === "residents"}
+                    aria-controls="residents-navigation"
+                    onClick={() => toggleNavMenu("residents")}
+                  >
+                    Residents
+                    <ChevronDown aria-hidden="true" />
+                  </button>
+                  {openNavMenu === "residents" && (
+                    <div id="residents-navigation" className="dp-story-nav-menu-panel">
+                      {residentNavLinks.map((link) => (
+                        <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="dp-story-nav-menu-wrap">
+                  <button
+                    type="button"
+                    className={`dp-story-nav-menu-trigger ${openNavMenu === "partners" ? "is-active" : ""}`}
+                    aria-expanded={openNavMenu === "partners"}
+                    aria-controls="partners-navigation"
+                    onClick={() => toggleNavMenu("partners")}
+                  >
+                    Partners
+                    <ChevronDown aria-hidden="true" />
+                  </button>
+                  {openNavMenu === "partners" && (
+                    <div id="partners-navigation" className="dp-story-nav-menu-panel">
+                      {partnerNavLinks.map((link) => (
+                        <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </nav>
-            )}
+
+              <div className="dp-story-mobile-actions">
+                <button
+                  type="button"
+                  className="dp-product-shell-menu-button"
+                  aria-label={storyMenuOpen ? "Close navigation" : "Open navigation"}
+                  aria-expanded={storyMenuOpen}
+                  aria-controls="dp-story-navigation-menu"
+                  onClick={() => {
+                    setOpenNavMenu(null);
+                    setStoryMenuOpen((open) => !open);
+                  }}
+                >
+                  {storyMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
+                </button>
+              </div>
+
+              {storyMenuOpen && (
+                <nav id="dp-story-navigation-menu" className="dp-product-shell-menu" aria-label="Downtown Perks navigation">
+                  <div className="dp-story-mobile-menu-group">
+                    <p>Residents</p>
+                    {residentNavLinks.map((link) => (
+                      <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="dp-story-mobile-menu-group">
+                    <p>Partners</p>
+                    {partnerNavLinks.map((link) => (
+                      <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </nav>
+              )}
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
@@ -474,25 +530,17 @@ export default function SplashPage({
           </AnimatePresence>
 
           <div className="dp-fixed-story-footer">
-            <div className="dp-fixed-story-controls dp-fixed-story-actions" aria-label="Story navigation">
-              <button type="button" className="dp-fixed-story-control" onClick={() => go(-1)} disabled={isFirst}>
-                <ArrowLeft />
-                Back
-              </button>
-              <button type="button" className="dp-fixed-story-control" onClick={() => go(1)} disabled={isLast}>
-                Next
-                <ArrowRight />
-              </button>
-            </div>
-
             <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">
+              <button
+                type="button"
+                className="dp-global-search-icon-button dp-story-footer-search"
+                aria-label="Search Downtown Perks"
+                onClick={openSearch}
+              >
+                <Search className="h-4 w-4" aria-hidden="true" />
+              </button>
               <Link className="dp-button dp-button-primary dp-button-wide" to={residentMapHref} onClick={markMapLaunchReady}>
-                Resident Map
-                <ArrowRight />
-              </Link>
-              <Link className="dp-button dp-button-secondary dp-button-wide" to={partnerMapHref} onClick={markMapLaunchReady}>
-                Partner Map
-                <ArrowRight />
+                Open the Map
               </Link>
             </div>
           </div>

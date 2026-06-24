@@ -3957,7 +3957,7 @@ function DetailBulletList({ items }) {
   );
 }
 
-function BurgerBarCongressDetails({ place, mode = "resident", savedIds, onSave }) {
+function BurgerBarCongressDetails({ place, places = [], mode = "resident", savedIds, onSave, onSelect }) {
   if (!isBurgerBarCongress(place)) return null;
   const isPartnerMode = mode === "partner";
   const isSaved = savedIds?.has?.(place?.id);
@@ -4045,9 +4045,14 @@ function BurgerBarCongressDetails({ place, mode = "resident", savedIds, onSave }
         <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.whatYouWillFind} />
       </DestinationSection>
 
-      <DestinationSection title="Nearby">
-        <DetailBulletList items={BURGER_BAR_CONGRESS_CONTENT.nearby} />
-      </DestinationSection>
+      <NearbyImageRail
+        place={place}
+        places={places}
+        onSelect={onSelect}
+        mode={mode}
+        title="Nearby"
+        support="Real places from the Downtown Perks map registry around this spot."
+      />
 
       <DestinationSection title="Downtown Perks Note">
         <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.residentNote}</p>
@@ -4195,8 +4200,8 @@ function InKindDiningDetails({
       )}
 
       {onAsk && (
-        <section className="dp-inkind-zone dp-inkind-discovery-zone" aria-label="Ask about this place">
-          <h3>Ask about this place</h3>
+        <section className="dp-inkind-zone dp-inkind-discovery-zone" aria-label="Ask the Map">
+          <h3>Ask the Map</h3>
           <div className="dp-inkind-prompt-list">
             {prompts.map((prompt) => (
               <button key={prompt} type="button" onClick={() => onAsk(prompt)} disabled={loading}>
@@ -4554,7 +4559,7 @@ function normalizeRailDedupeText(value) {
 }
 
 function getRailDedupeKey(item) {
-  const source = item?.candidate || item?.place || item;
+  const source = item?.entity || item?.candidate || item?.place || item;
   const rawName = source?.name || source?.title || source?.label || item?.title || item?.label || item?.value || source;
   const name = normalizeRailDedupeText(rawName);
   if (!name) return "";
@@ -4566,7 +4571,7 @@ function getRailDedupeKey(item) {
 }
 
 function getRelatedPlaceDedupeKeys(item) {
-  const source = item?.candidate || item?.place || item;
+  const source = item?.entity || item?.candidate || item?.place || item;
   if (!source) return [];
   const name = normalizeRailDedupeText(source.name || source.title || source.label || item?.title || item?.label || "");
   if (!name) return [];
@@ -4873,9 +4878,9 @@ function DestinationHero({ place, mode }) {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        className="dp-panel-detail-hero"
+        className="dp-panel-detail-hero dp-destination-hero"
       >
-        <figure className="dp-destination-media">
+        <figure className="dp-destination-media dp-destination-hero-media">
           <img
             src={image}
             alt={place.name}
@@ -4894,9 +4899,9 @@ function DestinationHero({ place, mode }) {
       initial={{ scale: 1.04 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="dp-polished-panel"
+      className="dp-polished-panel dp-destination-hero"
     >
-      <figure className="dp-polished-panel-hero">
+      <figure className="dp-polished-panel-hero dp-destination-hero-media">
         <img
           src={image}
           alt={place.name}
@@ -5282,95 +5287,88 @@ function RentalListingDetails({ place }) {
   );
 }
 
-function NearbyContext({ place, places = [], onSelect, mode = "resident" }) {
-  if (getDestinationKind(place) === "property") {
-    return <PropertyNearbyRail place={place} places={places} onSelect={onSelect} mode={mode} />;
-  }
-  const items = getNearbyContextItems(place, places);
+function getNearbyCardEntityTitle(entity) {
+  return shortenEntityTitle(entity?.name || entity?.title || entity?.raw?.name || entity?.raw?.title || "Nearby place");
+}
+
+function getNearbyCardMeta(entity, recommendation = null, mode = "resident") {
+  const kind = getNearbyKindLabel(entity, getDestinationKind(entity)).replace(/\s+nearby$/i, "");
+  const district = entity?.district || entity?.neighborhood || entity?.raw?.district || "Downtown Austin";
+  const perk = mode === "resident" ? getExplicitPerkTitle(entity) : "";
+  return [kind, recommendation?.distanceLabel, district, perk].filter(Boolean).join(" · ");
+}
+
+function getNearbyCardImage(entity, mode = "resident") {
+  return resolveMapImage(entity, "nearbyRail") || resolveEntityImage(entity, "nearbyRail") || getLifestyleImage(entity, mode) || MAP_PANEL_IMAGE_FALLBACK;
+}
+
+function getNearbyRecommendationCards(place, places = [], mode = "resident", limit = 8) {
+  const nearby = getNearbyRecommendations({
+    selectedEntity: place,
+    entities: places,
+    radiusMeters: mode === "partner" ? 1000 : 850,
+    fallbackRadiusMeters: mode === "partner" ? 2200 : 1800,
+    limit: Math.max(limit * 2, 10),
+    mode,
+  }).filter((item) => item?.entity?.id);
+
+  const related = getRelatedRecommendations({
+    selectedEntity: place,
+    entities: places,
+    excludeIds: nearby.map((item) => item.entity.id),
+    limit,
+    mode,
+  }).filter((item) => item?.entity?.id);
+
+  return dedupeRailItems([...nearby, ...related], place, limit)
+    .map((item) => {
+      const entity = item.entity || item.candidate || item.place || item;
+      if (!entity?.id) return null;
+      return {
+        id: entity.id,
+        place: entity,
+        title: getNearbyCardEntityTitle(entity),
+        meta: getNearbyCardMeta(entity, item.entity ? item : null, mode),
+        image: getNearbyCardImage(entity, mode),
+      };
+    })
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
+function NearbyImageRail({ place, places = [], onSelect, mode = "resident", title = "Nearby", support = "" }) {
+  const items = getNearbyRecommendationCards(place, places, mode, 8);
   if (!items.length) return null;
-  const panelContent = resolveEntityPanelContent(place, mode);
 
   return (
-    <DestinationSection title={panelContent.nearbyHeading || resolveEntityPanelArchetype(place).nearbyTitle} className="dp-discovery-context-section">
-      <div className="dp-nearby-grid">
-        {items.map((item, index) => {
-          const normalized = normalizeContextItem(item);
-          return (
-            <div className="dp-nearby-item" key={`${normalized.label}-${normalized.value}-${index}`}>
-              <span className="dp-nearby-title">{normalized.label || normalized.value}</span>
-              {normalized.value && <span className="dp-nearby-meta">{normalized.value}</span>}
-            </div>
-          );
-        })}
+    <DestinationSection title={title} support={support} className="dp-discovery-context-section dp-nearby-image-section">
+      <div className="dp-nearby-image-rail" aria-label={`${title} places`}>
+        {items.map((item) => (
+          <button key={item.id} type="button" className="dp-nearby-image-card" onClick={() => onSelect?.(item.place)}>
+            <span className="dp-nearby-image-media">
+              <img src={item.image} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />
+            </span>
+            <span className="dp-nearby-image-copy">
+              <strong>{item.title}</strong>
+              <em>{item.meta}</em>
+            </span>
+          </button>
+        ))}
       </div>
     </DestinationSection>
   );
 }
 
-function getPropertyNearbyCards(place, places = [], mode = "resident") {
-  const isPartner = mode === "partner";
-  const district = String(place?.district || "").toLowerCase();
-  const isRainey = district.includes("rainey");
-  const isEastDowntown = district.includes("east");
-  const preferredCards = [
-    { title: "P6", image: "/images/imported/perks/rooftop-happy-hour.png", meta: isPartner ? "Strong evening activity · High dining overlap" : "Rooftop nearby · 5-minute walk", curated: true },
-    { title: "YETI", image: "/images/imported/perks/yeti-store.png", meta: isPartner ? "Brand moment nearby · Event crowd nearby" : "Resident engraving offer · 6-minute walk", curated: true },
-    { title: "Fine Eyewear", image: "/images/imported/perks/fine-eyewear.png", meta: isPartner ? "Retail crossover · Resident errand overlap" : "Shopping nearby · Styling offer", curated: true },
-    { title: "Four Seasons", image: "/images/imported/perks/four-seasons-resi.jpg", meta: isPartner ? "Hotel guests nearby · Dining and spa overlap" : "Hotel experiences nearby · Spa and dining access", curated: true },
-    ...(isRainey
-      ? [
-          { title: "Via 313 Pizza", image: "/images/imported/perks/via313.jpg", meta: isPartner ? "Dining demand · Rainey dinner overlap" : "Dining nearby · Rainey", curated: true },
-          { title: "The Stay Put", image: "/images/imported/perks/stayput.png", meta: isPartner ? "Drinks nearby · Strong after-work overlap" : "Drinks nearby · Rainey · 15% off Sunday-Thursday", curated: true },
-        ]
-      : []),
-    ...(isEastDowntown
-      ? [
-          { title: "IHOP", image: "/images/imported/perks/places-nearby.png", meta: isPartner ? "Breakfast demand · East Downtown traffic" : "Dining nearby · East Downtown", curated: true },
-          { title: "Bacalar", image: "/images/imported/perks/places-nearby.png", meta: isPartner ? "Dining demand · East Downtown crossover" : "Dining nearby · East Downtown", curated: true },
-        ]
-      : []),
-  ];
-  const preferred = preferredCards.map((card) => {
-    const candidate = places.find((placeCandidate) => String(placeCandidate?.name || "").toLowerCase().includes(card.title.toLowerCase()));
-    if (!candidate) return { ...card, place: null };
-    const kind = getNearbyKindLabel(candidate, getDestinationKind(candidate));
-    const perk = getExplicitPerkTitle(candidate);
-    return {
-      curated: true,
-      place: candidate,
-      title: card.title,
-      image: getLifestyleImage(candidate, "resident"),
-      meta: card.meta || [kind, candidate.district, perk].filter(Boolean).join(" · "),
-    };
-  });
-  const nearby = getNearbyAreaPlaces(place, places, 5).map((item) => item.candidate);
-  const cards = dedupeRailItems([...preferred, ...nearby], place)
-    .filter((item) => {
-      const candidate = item?.place ? item.place : item;
-      if (item?.curated) return true;
-      return !candidate || getDestinationKind(candidate) !== "property";
-    })
-    .map((item) => {
-      if (!item?.id && item?.title) return item;
-      const candidate = item;
-      const kind = getNearbyKindLabel(candidate, getDestinationKind(candidate));
-      const perk = getExplicitPerkTitle(candidate);
-      return {
-        place: candidate,
-        title: shortenEntityTitle(candidate.name),
-        image: getLifestyleImage(candidate, "resident"),
-        meta: [kind, candidate.district, perk].filter(Boolean).join(" · "),
-      };
-    });
+function NearbyContext({ place, places = [], onSelect, mode = "resident" }) {
+  if (getDestinationKind(place) === "property") {
+    return <PropertyNearbyRail place={place} places={places} onSelect={onSelect} mode={mode} />;
+  }
+  const panelContent = resolveEntityPanelContent(place, mode);
+  return <NearbyImageRail place={place} places={places} onSelect={onSelect} mode={mode} title={panelContent.nearbyHeading || resolveEntityPanelArchetype(place).nearbyTitle} />;
+}
 
-  const seenImages = new Set();
-  return cards.filter((card) => {
-    const imageKey = String(card?.image || "").toLowerCase().split("?")[0];
-    if (!imageKey) return true;
-    if (seenImages.has(imageKey)) return false;
-    seenImages.add(imageKey);
-    return true;
-  }).slice(0, 6);
+function getPropertyNearbyCards(place, places = [], mode = "resident") {
+  return getNearbyRecommendationCards(place, places, mode, 8).filter((item) => getDestinationKind(item.place) !== "property").slice(0, 6);
 }
 
 function PropertyNearbyRail({ place, places = [], onSelect, mode = "resident" }) {
@@ -5463,7 +5461,7 @@ function EntityAssistant({ place, mode, answer, loading, onAsk, onClose, onSelec
   const prompts = getEntityAssistantPrompts(place, mode);
 
   return (
-    <DestinationSection title="Ask about this place" className="dp-entity-assistant">
+    <DestinationSection title="Ask the Map" className="dp-entity-assistant">
       <div className="dp-ask-prompts">
         {prompts.map((prompt) => (
           <button key={prompt} type="button" className="dp-ask-prompt-chip" onClick={() => onAsk(prompt)} disabled={loading}>
@@ -9435,7 +9433,7 @@ export default function MapPage() {
 
   useEffect(() => {
     setUserHasNavigatedMap(false);
-  }, [urlState.mode, activeFilter, district, effectiveSearch]);
+  }, [urlState.mode, district]);
 
   useEffect(() => {
     const scopedResultSet = Boolean(effectiveSearch) || !isAllNeighborhoodScope(district);
@@ -9590,7 +9588,7 @@ export default function MapPage() {
     },
     saved: {
       eyebrow: "MY DOWNTOWN",
-      title: "Saved For Later",
+      title: "Saved Downtown",
       body: "Places, events and experiences you've chosen to come back to.",
     },
   }[isRentalLayer ? "rentals" : activeBottomTab] || (isRentalLayer ? {
@@ -9813,7 +9811,7 @@ export default function MapPage() {
         <div className="dp-saved-downtown-scroll">
           <section className="dp-saved-downtown-header">
             <p>MY DOWNTOWN</p>
-            <h2>Saved For Later</h2>
+            <h2>Saved Downtown</h2>
             <span>Places, events and experiences you've chosen to come back to.</span>
           </section>
 
@@ -9837,14 +9835,14 @@ export default function MapPage() {
             </section>
           )}
 
-          {renderSavedCollectionSection("Saved Places", savedGroups.places)}
-          {renderSavedCollectionSection("Saved Events", savedGroups.events)}
-          {renderSavedCollectionSection("Saved Benefits", savedGroups.benefits)}
+          {renderSavedCollectionSection("Recently Saved", savedGroups.places)}
+          {renderSavedCollectionSection("Ready for Tonight", savedGroups.events)}
+          {renderSavedCollectionSection("Benefits To Use", savedGroups.benefits)}
 
           {!!continueItems.length && (
-            <section className="dp-saved-collection-section" aria-label="Pick Up Where You Left Off">
+            <section className="dp-saved-collection-section" aria-label="Worth Revisiting">
               <div className="dp-saved-section-heading">
-                <h3>Pick Up Where You Left Off</h3>
+                <h3>Worth Revisiting</h3>
               </div>
               <div className="dp-saved-collection-grid dp-saved-collection-grid--compact">
                 {continueItems.map((place, index) => renderSavedCollectionCard(place, index === 0 ? "Saved three days ago." : index === 1 ? "Event this Thursday." : "New events added."))}
@@ -9853,9 +9851,9 @@ export default function MapPage() {
           )}
 
           {!!recommended.length && (
-            <section className="dp-saved-collection-section" aria-label="You May Also Like">
+            <section className="dp-saved-collection-section" aria-label="Worth Exploring Nearby">
               <div className="dp-saved-section-heading">
-                <h3>You May Also Like</h3>
+                <h3>Worth Exploring Nearby</h3>
               </div>
               <div className="dp-saved-collection-grid dp-saved-collection-grid--compact">
                 {recommended.map((place) => renderSavedCollectionCard(place, "Popular Nearby"))}
@@ -9863,8 +9861,8 @@ export default function MapPage() {
             </section>
           )}
 
-          <section className="dp-saved-ask-section" aria-label="Ask About My Saved Places">
-            <h3>Ask About My Saved Places</h3>
+          <section className="dp-saved-ask-section" aria-label="Ask the Map about saved places">
+            <h3>Ask the Map</h3>
             <div>
               {askPrompts.map((prompt) => (
                 <button key={prompt} type="button" onClick={() => void applyPrompt(prompt)}>
@@ -9879,15 +9877,15 @@ export default function MapPage() {
         <footer className="dp-saved-sticky-footer">
           <button type="button" onClick={() => openResidentDiscovery("All")}>
             <Navigation aria-hidden="true" />
-            <span>Explore Nearby</span>
+            <span>Nearby</span>
           </button>
           <button type="button" onClick={() => openResidentDiscovery("Events")}>
             <CalendarDays aria-hidden="true" />
-            <span>View Events</span>
+            <span>Events</span>
           </button>
           <button type="button" onClick={shareSavedCollection}>
             <Send aria-hidden="true" />
-            <span>Share Collection</span>
+            <span>Share</span>
           </button>
         </footer>
       </div>
@@ -10120,7 +10118,7 @@ export default function MapPage() {
     const selectedCampaign = campaignRows.find((campaign) => campaign.id === activeCampaignStep) || liveCampaignLayerExamples[0];
     const selectedStatus = selectedCampaign?.status || "Ready";
     const selectedEntity = findCampaignEntity(selectedCampaign);
-    const primaryActionLabel = selectedStatus === "Live" ? "Review Results" : selectedStatus === "Draft" ? "Finish Campaign" : "Create Campaign";
+    const primaryActionLabel = selectedStatus === "Live" ? "Review results" : selectedStatus === "Draft" ? "Finish draft" : "Create campaign";
 
     function findCampaignEntity(campaign) {
       const brandId = String(campaign?.brandId || campaign?.placeId || "");
@@ -10225,6 +10223,8 @@ export default function MapPage() {
       const contextLine = campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent;
       const residentValue = campaign.residentFacingOffer || "A useful reason for residents to act from the map.";
       const partnerValue = campaign.partnerInsight || "Shows where nearby activity can become visits, saves, scans, or requests.";
+      const title = campaign.brandName || campaign.placeName || campaign.campaignName;
+      const subtitle = campaign.brandName ? campaign.campaignName : campaign.area;
       return (
         <button
           key={campaign.id}
@@ -10233,12 +10233,12 @@ export default function MapPage() {
           onClick={() => selectCampaign(campaign, { openEntity })}
           aria-pressed={activeCampaignStep === campaign.id}
         >
-          <span>
-            <strong>{campaign.brandName || campaign.placeName || campaign.campaignName}</strong>
-            <small>{campaign.brandName ? campaign.campaignName : campaign.area}</small>
+          <span className="dp-campaign-row-copy">
+            <strong>{title}</strong>
+            <small>{subtitle}</small>
             <em>{contextLine}</em>
-            <span className="dp-campaign-value-line"><b>Residents</b>{residentValue}</span>
-            <span className="dp-campaign-value-line"><b>Partner</b>{partnerValue}</span>
+            <span className="dp-campaign-value-line"><b>Resident value</b>{residentValue}</span>
+            <span className="dp-campaign-value-line"><b>Partner signal</b>{partnerValue}</span>
           </span>
           <span className="dp-campaign-status" data-status={campaign.status}>{campaign.status}</span>
         </button>
@@ -10254,15 +10254,15 @@ export default function MapPage() {
           </div>
 
           <section className="dp-partner-readable-hero dp-campaign-hero">
-            <p className="dp-tab-eyebrow">Partner Layer</p>
-            <h2>Downtown Campaign Builder</h2>
-            <p>Launch local campaigns across the map, perks, events, properties, hotels, resident discovery, and partner reporting from one workflow.</p>
+            <p className="dp-tab-eyebrow">Campaign layer</p>
+            <h2>Turn nearby intent into action.</h2>
+            <p>Plan offers, events, placements, and partner moments from the same map your residents use to decide where to go.</p>
           </section>
 
           <section className="dp-campaign-moment">
-            <p className="dp-tab-eyebrow">Recommended Moment</p>
+            <p className="dp-tab-eyebrow">Recommended moment</p>
             <h3>After-work demand is building.</h3>
-            <p>Rainey and Congress are seeing stronger dinner saves between 4 PM and 8 PM. This is the right window for a simple offer.</p>
+            <p>Rainey and Congress are showing stronger dinner saves between 4 PM and 8 PM. Start with one clear reason to visit.</p>
             <div className="dp-campaign-meta-row" aria-label="Recommended campaign context">
               <span>Rainey + Congress</span>
               <span>Today, 4-8 PM</span>
@@ -10271,11 +10271,11 @@ export default function MapPage() {
           </section>
 
           <section className="dp-campaign-suggestion">
-            <p className="dp-tab-eyebrow">Suggested Campaign</p>
+            <p className="dp-tab-eyebrow">Suggested campaign</p>
             <h3>After-work dining offer</h3>
-            <p>Use a short evening offer to capture residents and visitors who are already looking for dinner or drinks nearby.</p>
+            <p>Use a compact evening offer for people already comparing dinner, drinks, and walkable plans nearby.</p>
             <div className="dp-campaign-detail-list">
-              <span><strong>Audience</strong> Nearby residents + hotel guests</span>
+              <span><strong>Audience</strong> Residents + hotel guests</span>
               <span><strong>Format</strong> Happy hour, appetizer, or priority seating</span>
               <span><strong>Timing</strong> Today, 4-8 PM</span>
             </div>
@@ -10285,9 +10285,9 @@ export default function MapPage() {
 
           <section className="dp-campaign-visibility-panel" aria-label="Campaign visibility placements">
             <p className="dp-tab-eyebrow">Visibility</p>
-            <h3>Own the moments where downtown discovery starts.</h3>
+            <h3>Show up where decisions start.</h3>
             <p>
-              These placements connect a campaign to the places people already use to compare homes, make plans, and decide where to go next.
+              Place campaigns inside real discovery moments: comparing buildings, planning a night out, finding an event, or choosing what is close enough to try.
             </p>
             <div className="dp-campaign-visibility-rail" aria-label="Visibility placement examples">
               {visibilityPlacements.map((placement) => (
@@ -10302,15 +10302,15 @@ export default function MapPage() {
           </section>
 
           <section className="dp-campaign-layer-list">
-            <p className="dp-tab-eyebrow">Live Campaign Layer</p>
+            <p className="dp-tab-eyebrow">Campaign pipeline</p>
             <div>
               {liveCampaignLayerExamples.map((campaign) => renderCampaignRow(campaign, "dp-campaign-layer-row"))}
             </div>
           </section>
 
           <section className="dp-brand-campaign-list">
-            <p className="dp-tab-eyebrow">Brand Campaign Examples</p>
-            <p>Each brand has one map-native campaign example tied to a real downtown moment.</p>
+            <p className="dp-tab-eyebrow">Brand examples</p>
+            <p>Each example is tied to a real downtown context, so partners can see what a map-native campaign can become.</p>
             <div>
               {brandCampaignExamples.map((campaign) => renderCampaignRow(campaign, "dp-brand-campaign-row", true))}
             </div>
@@ -12111,9 +12111,11 @@ export default function MapPage() {
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.39, duration: 0.18 }}>
                         <BurgerBarCongressDetails
                           place={selected}
+                          places={places}
                           mode={urlState.mode}
                           savedIds={savedIds}
                           onSave={() => toggleSaved(selected)}
+                          onSelect={selectPlace}
                         />
                       </motion.div>
                     )}
@@ -12147,12 +12149,6 @@ export default function MapPage() {
                     {!legendsResidentialContent && !isDaaStop && !isInKindDining && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.56, duration: 0.18 }}>
                         <NearbyContext place={selected} places={places} onSelect={selectPlace} mode={urlState.mode} />
-                      </motion.div>
-                    )}
-
-                    {!legendsResidentialContent && !isDaaStop && !isInKindDining && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.18 }}>
-                        <KnownForSection place={selected} mode={urlState.mode} />
                       </motion.div>
                     )}
 

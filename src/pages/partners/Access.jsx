@@ -5,12 +5,13 @@ import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus, X } from "lucide-react";
 const PARTNER_PROFILE_KEY = "dp_partner_workspace:profile:current";
 
 const PARTNER_TYPES = [
-  { value: "venue", label: "Venue" },
-  { value: "property", label: "Property / Building" },
-  { value: "hotel", label: "Hotel" },
-  { value: "brand", label: "Brand" },
+  { value: "venue", label: "Venues" },
+  { value: "property", label: "Properties / Buildings" },
+  { value: "hotel", label: "Hotels" },
+  { value: "brand", label: "Brands" },
   { value: "civic", label: "Civic / Community" },
   { value: "real-estate", label: "Real Estate" },
+  { value: "resident", label: "Residents" },
   { value: "custom", label: "Custom" },
 ];
 
