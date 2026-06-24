@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
   CheckCircle2,
+  MapPinned,
   Radio,
   Sparkles,
 } from "lucide-react";
@@ -117,8 +118,8 @@ const recommendedActions = [
 
 function PartnerPageShell({ children }) {
   return (
-    <main className="min-h-screen bg-[#F7F8FB] text-[#0B1F33]">
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-16 px-5 py-10 sm:px-8 lg:px-10 lg:py-14">
+    <main className="min-h-screen bg-[#F8F7F2] text-[#0B1F33]">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-10 px-4 pb-8 pt-5 sm:gap-12 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
         {children}
       </div>
     </main>
@@ -136,24 +137,24 @@ function Eyebrow({ children }) {
 function SectionHeader({ title, copy }) {
   return (
     <div className="max-w-[760px]">
-      <h2 className="m-0 font-heading text-[34px] font-medium leading-[1.02] tracking-[-0.03em] text-[#0B1F33] sm:text-[44px]">
+      <h2 className="m-0 font-heading text-[28px] font-medium leading-[1.04] tracking-[-0.03em] text-[#0B1F33] sm:text-[40px]">
         {title}
       </h2>
-      {copy ? <p className="mt-3 max-w-[680px] font-body text-[16px] leading-[1.55] text-[rgba(11,31,51,.68)] sm:text-[17px]">{copy}</p> : null}
+      {copy ? <p className="mt-3 max-w-[680px] font-body text-[15px] leading-[1.55] text-[rgba(11,31,51,.68)] sm:text-[17px]">{copy}</p> : null}
     </div>
   );
 }
 
 function Surface({ children, className = "" }) {
   return (
-    <div className={`border border-[rgba(11,31,51,.08)] bg-white ${className}`}>
+    <div className={`border border-[rgba(11,31,51,.08)] bg-white shadow-[0_18px_55px_rgba(11,31,51,.06)] ${className}`}>
       {children}
     </div>
   );
 }
 
 function ActionLink({ to, children, variant = "primary" }) {
-  const base = "inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] px-5 font-body text-[12px] font-bold uppercase tracking-[0.11em] transition-colors";
+  const base = "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-[12px] px-4 font-body text-[11px] font-bold uppercase tracking-[0.11em] transition-colors sm:w-auto sm:px-5";
   const styles =
     variant === "primary"
       ? "bg-[#0B1F33] text-white hover:bg-[#132238]"
@@ -173,9 +174,9 @@ function HorizontalRail({ title, items }) {
       <h3 className="mb-4 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-[rgba(11,31,51,.54)]">
         {title}
       </h3>
-      <div className="-mx-5 flex gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:px-0">
+      <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:gap-4 sm:px-0">
         {items.map(([name, copy]) => (
-          <Surface key={name} className="min-w-[260px] rounded-[22px] p-5 sm:min-w-[300px]">
+          <Surface key={name} className="min-w-[238px] snap-start rounded-[18px] p-4 sm:min-w-[300px] sm:p-5">
             <p className="m-0 font-body text-[15px] font-semibold text-[#0B1F33]">{name}</p>
             <p className="mt-3 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">{copy}</p>
           </Surface>
@@ -187,7 +188,7 @@ function HorizontalRail({ title, items }) {
 
 function SignalCard({ entity, reason, signal }) {
   return (
-    <Surface className="rounded-[22px] p-5">
+    <Surface className="rounded-[18px] p-4 sm:p-5">
       <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{entity}</p>
       <p className="mt-3 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">{reason}</p>
       <p className="mt-4 border-t border-[rgba(11,31,51,.08)] pt-4 font-body text-[12px] font-bold uppercase tracking-[0.11em] text-[#B8963E]">
@@ -198,20 +199,47 @@ function SignalCard({ entity, reason, signal }) {
 }
 
 export default function PartnersDashboard() {
+  const [searchParams] = useSearchParams();
+  const mapLinks = [
+    ["Partner Map", "partner"],
+    ["Resident Map", "resident"],
+  ].map(([label, mode]) => {
+    const params = new URLSearchParams({
+      mode,
+      tab: "map",
+      filter: "All",
+    });
+    const entityId = searchParams.get("entityId");
+    const district = searchParams.get("district");
+    if (entityId) params.set("entityId", entityId);
+    if (district) params.set("district", district);
+    return {
+      label,
+      href: `/partners/dashboard/map?${params.toString()}`,
+    };
+  });
+
   return (
     <PartnerPageShell>
-      <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-stretch">
         <div className="max-w-[760px]">
           <Eyebrow>Partner Workspace</Eyebrow>
-          <h1 className="mt-4 max-w-[760px] font-heading text-[42px] font-medium leading-[1] tracking-[-0.04em] text-[#0B1F33] sm:text-[58px] lg:text-[64px]">
+          <h1 className="mt-3 max-w-[760px] font-heading text-[38px] font-medium leading-[1] tracking-[-0.04em] text-[#0B1F33] sm:text-[56px] lg:text-[64px]">
             See what people are paying attention to.
           </h1>
-          <p className="mt-5 max-w-[680px] font-body text-[16px] leading-[1.55] text-[rgba(11,31,51,.70)] sm:text-[17px]">
+          <p className="mt-4 max-w-[680px] font-body text-[15px] leading-[1.55] text-[rgba(11,31,51,.70)] sm:text-[17px]">
             A simple view of what nearby residents, guests, and visitors are noticing, saving, attending, and returning to.
           </p>
+          <div className="mt-5 grid gap-2 sm:flex sm:flex-wrap sm:gap-3">
+            {mapLinks.map((item) => (
+              <ActionLink key={item.label} to={item.href} variant={item.label === "Partner Map" ? "primary" : "secondary"}>
+                {item.label}
+              </ActionLink>
+            ))}
+          </div>
         </div>
 
-        <Surface className="rounded-[28px] p-5">
+        <Surface className="rounded-[20px] p-4 sm:p-5">
           <div className="flex items-center justify-between gap-4 border-b border-[rgba(11,31,51,.08)] pb-4">
             <div>
               <p className="font-body text-[11px] font-bold uppercase tracking-[0.13em] text-[#B8963E]">Live Activity Summary</p>
@@ -222,7 +250,7 @@ export default function PartnersDashboard() {
           <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4">
             {liveSummary.map(([value, label]) => (
               <div key={label}>
-                <p className="font-body text-[30px] font-semibold leading-none tracking-[-0.03em] text-[#0B1F33]">{value}</p>
+                <p className="font-body text-[28px] font-semibold leading-none tracking-[-0.03em] text-[#0B1F33] sm:text-[30px]">{value}</p>
                 <p className="mt-2 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-[rgba(11,31,51,.54)]">{label}</p>
               </div>
             ))}
@@ -230,9 +258,30 @@ export default function PartnersDashboard() {
         </Surface>
       </section>
 
-      <section className="space-y-8">
+      <Surface className="rounded-[20px] p-4 sm:p-5">
+        <div className="grid gap-4 sm:grid-cols-[auto_1fr_auto] sm:items-center">
+          <div className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#0B1F33] text-white">
+            <MapPinned className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="font-body text-[15px] font-semibold text-[#0B1F33]">Open the live downtown map.</p>
+            <p className="mt-1 font-body text-[13px] leading-[1.45] text-[rgba(11,31,51,.64)]">
+              Partner and resident views keep the selected place and district, with pins visible on load.
+            </p>
+          </div>
+          <div className="grid gap-2 sm:flex sm:justify-end">
+            {mapLinks.map((item) => (
+              <ActionLink key={item.label} to={item.href} variant="secondary">
+                {item.label}
+              </ActionLink>
+            ))}
+          </div>
+        </div>
+      </Surface>
+
+      <section className="space-y-6 sm:space-y-8">
         <SectionHeader title="Downtown Right Now" copy="What people nearby are actively engaging with." />
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {trendingRails.map((rail) => (
             <HorizontalRail key={rail.title} title={rail.title} items={rail.items} />
           ))}
@@ -250,7 +299,7 @@ export default function PartnersDashboard() {
 
       <section className="space-y-6">
         <SectionHeader title="What people are doing." copy="The moments where interest becomes action." />
-        <Surface className="rounded-[28px] p-2">
+        <Surface className="rounded-[20px] p-2">
           {actionSignals.map(([label, copy], index) => (
             <div key={label} className={`grid gap-3 p-4 sm:grid-cols-[220px_1fr] ${index === actionSignals.length - 1 ? "" : "border-b border-[rgba(11,31,51,.08)]"}`}>
               <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{label}</p>
@@ -264,7 +313,7 @@ export default function PartnersDashboard() {
         <SectionHeader title="What deserves attention next." copy="Suggested actions based on recent activity." />
         <div className="grid gap-4 lg:grid-cols-3">
           {opportunities.map((item) => (
-            <Surface key={item.name} className="rounded-[22px] p-5">
+            <Surface key={item.name} className="rounded-[18px] p-4 sm:p-5">
               <Sparkles className="h-5 w-5 text-[#C8A96A]" aria-hidden="true" />
               <h3 className="mt-4 font-body text-[18px] font-semibold tracking-[-0.02em] text-[#0B1F33]">{item.name}</h3>
               <p className="mt-3 font-body text-[14px] leading-[1.5] text-[rgba(11,31,51,.68)]">{item.reason}</p>
@@ -279,7 +328,7 @@ export default function PartnersDashboard() {
 
       <section className="space-y-6">
         <SectionHeader title="Recent Campaign Activity" />
-        <Surface className="overflow-hidden rounded-[28px]">
+        <Surface className="overflow-hidden rounded-[20px]">
           {campaignRows.map(([campaign, status, reach, activity, next], index) => (
             <div key={campaign} className={`grid gap-3 p-5 lg:grid-cols-[1.2fr_.7fr_.8fr_1.2fr_1.3fr] ${index === campaignRows.length - 1 ? "" : "border-b border-[rgba(11,31,51,.08)]"}`}>
               <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{campaign}</p>
@@ -296,7 +345,7 @@ export default function PartnersDashboard() {
         <SectionHeader title="What should you do next?" />
         <div className="grid gap-4 md:grid-cols-2">
           {recommendedActions.map((item) => (
-            <Surface key={item.title} className="rounded-[22px] p-5">
+            <Surface key={item.title} className="rounded-[18px] p-4 sm:p-5">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-[#C8A96A]" aria-hidden="true" />
                 <div>
@@ -314,21 +363,25 @@ export default function PartnersDashboard() {
         </div>
       </section>
 
-      <Surface className="rounded-[30px] p-6 sm:p-8">
+      <Surface className="rounded-[22px] p-5 sm:p-8">
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <Eyebrow>Next Step</Eyebrow>
-            <h2 className="mt-3 font-heading text-[34px] font-medium leading-[1.03] tracking-[-0.03em] text-[#0B1F33] sm:text-[44px]">
+            <h2 className="mt-3 font-heading text-[30px] font-medium leading-[1.03] tracking-[-0.03em] text-[#0B1F33] sm:text-[44px]">
               Keep your next move clear.
             </h2>
             <p className="mt-3 max-w-[700px] font-body text-[16px] leading-[1.55] text-[rgba(11,31,51,.68)]">
               Use campaigns, reports, and activity signals to stay connected to what people are responding to downtown.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+          <div className="grid gap-3 sm:flex sm:flex-wrap lg:justify-end">
             <ActionLink to="/partners/campaigns">Open Campaigns</ActionLink>
             <ActionLink to="/partners/reports" variant="secondary">View Reports</ActionLink>
-            <ActionLink to="/map?mode=partner&tab=map&filter=All" variant="secondary">Open Map</ActionLink>
+            {mapLinks.map((item) => (
+              <ActionLink key={item.label} to={item.href} variant="secondary">
+                {item.label}
+              </ActionLink>
+            ))}
           </div>
         </div>
       </Surface>

@@ -5135,7 +5135,7 @@ function MapBottomNav({ mode, activeTab, activeFilter, urlTab, contextCount = 0,
   const tabs = mode === "partner" ? PARTNER_BOTTOM_TABS : RESIDENT_BOTTOM_TABS;
   return (
     <div className="dp-map-bottom-nav-shell pointer-events-auto">
-      <nav className="dp-map-bottom-nav" aria-label="Map bottom navigation">
+      <nav className="dp-map-bottom-nav" aria-label="Map bottom navigation" style={{ "--dp-bottom-nav-count": tabs.length }}>
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = mode === "resident"
@@ -10147,8 +10147,7 @@ export default function MapPage() {
 
     function handleCampaignViewMap() {
       const filter = getCampaignFilter(selectedCampaign);
-      setSelectedId("");
-      setClusterDrawer(null);
+      clearOpenMapSelection();
       setActiveBottomTab("map");
       setActiveFilter(filter);
       setMapAnswer(buildAgenticMapAnswer(selectedCampaign.campaignName, selectedEntity ? [selectedEntity, ...visiblePlaces] : visiblePlaces, "partner", selectedCampaign.area || district, filter));
@@ -11004,11 +11003,20 @@ export default function MapPage() {
     setEntityAssistantLoading(false);
   }
 
-  function switchMode(mode, tab = "map", requestedFilter = "", options = {}) {
-    const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
+  function clearOpenMapSelection() {
     setSelectedId("");
+    setSelectedPlaceOverride(null);
+    setSelectedDrawerClosed(true);
+    setSelectedDrawerMinimized(false);
     setClusterDrawer(null);
     setMapAnswer(null);
+    setEntityAnswer(null);
+    setEntityAssistantLoading(false);
+  }
+
+  function switchMode(mode, tab = "map", requestedFilter = "", options = {}) {
+    const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
+    clearOpenMapSelection();
     setSearch("");
     setActiveFilter(nextFilter);
     setDistrict(ALL_NEIGHBORHOODS);
@@ -11025,8 +11033,7 @@ export default function MapPage() {
   function openResidentLayer(filter) {
     setActiveBottomTab("map");
     setActiveFilter(filter);
-    setSelectedId("");
-    setClusterDrawer(null);
+    clearOpenMapSelection();
     setPanelMode("closed");
     setIntelOpen(false);
     setFiltersOpen(false);
@@ -11109,18 +11116,14 @@ export default function MapPage() {
   }, [closeSelectedMapDrawer]);
 
   function openPartnerPanel(panel) {
-    setSelectedId("");
-    setClusterDrawer(null);
-    setMapAnswer(null);
+    clearOpenMapSelection();
     setConsoleCollapsed(true);
     setActiveBottomTab(panel);
     navigate(`/map?mode=partner&tab=${panel}`);
   }
 
   function openPartnerMap(filter = "All") {
-    setSelectedId("");
-    setClusterDrawer(null);
-    setMapAnswer(null);
+    clearOpenMapSelection();
     setConsoleCollapsed(true);
     setActiveBottomTab("map");
     setActiveFilter(filter);
@@ -11776,9 +11779,11 @@ export default function MapPage() {
               <button type="button" onClick={goBackToMap} className="dp-panel-back dp-panel-back-floating" aria-label="Back to map">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
-              <p className="dp-panel-eyebrow">{urlState.mode === "partner" ? "What's happening nearby" : "Nearby places"}</p>
-              <h2 className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
-              <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
+              <div className="dp-panel-header-copy">
+                <p className="dp-panel-eyebrow">{urlState.mode === "partner" ? "What's happening nearby" : "Nearby places"}</p>
+                <h2 className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
+                <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
+              </div>
               <button
                 type="button"
                 onClick={() => {

@@ -1,0 +1,6240 @@
+[
+  {
+    "id": "79-rainey-st-fc22df64",
+    "title": "79 Rainey St",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "address": "Austin, TX 78701",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.516Z",
+    "updatedAt": "2026-06-24T08:14:16.658Z"
+  },
+  {
+    "id": "cava-e8d88320",
+    "title": "CAVA",
+    "kind": "restaurant",
+    "category": "Mediterranean",
+    "neighborhood": "Congress",
+    "rating": 4.6,
+    "reviewCount": 2374,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "cozymeal-cooking-classes-c9fa2c30",
+    "title": "Cozymeal Cooking Classes",
+    "kind": "venue",
+    "category": "Culinary school",
+    "neighborhood": "Downtown Core",
+    "rating": 4.9,
+    "reviewCount": 419,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "p-terry-s-burger-stand-d393d889",
+    "title": "P. Terry's Burger Stand",
+    "kind": "restaurant",
+    "category": "Fast Food",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 1336,
+    "priceLabel": "$",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-business-journal-a48f745e",
+    "title": "Austin Business Journal",
+    "kind": "wellness",
+    "category": "Newspaper publisher",
+    "neighborhood": "Downtown Core",
+    "rating": 3.6,
+    "reviewCount": 8,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "punch-bowl-social-51a5c483",
+    "title": "Punch Bowl Social",
+    "kind": "restaurant",
+    "category": "Restaurant",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 793,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ciccio-bomba-scarborough-18436777",
+    "title": "Ciccio Bomba - Scarborough",
+    "kind": "cafe",
+    "category": "Cafe",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 8,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ruth-s-chris-steak-house-89025ac3",
+    "title": "Ruth's Chris Steak House",
+    "kind": "restaurant",
+    "category": "Steak",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 1487,
+    "priceLabel": "$100+",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "velvet-taco-426e571a",
+    "title": "Velvet Taco",
+    "kind": "restaurant",
+    "category": "Tacos",
+    "neighborhood": "Downtown Core",
+    "rating": 4.7,
+    "reviewCount": 3060,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "cvs-pharmacy-07c92ef8",
+    "title": "CVS Pharmacy",
+    "kind": "venue",
+    "category": "Pharmacy",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 62,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "kelly-s-corner-218cb590",
+    "title": "Kelly's Corner",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 14,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "walking-tours-of-austin-bd36cd23",
+    "title": "Walking Tours of Austin",
+    "kind": "experience",
+    "category": "Sightseeing tour agency",
+    "neighborhood": "Downtown Core",
+    "rating": 4.9,
+    "reviewCount": 535,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "quik-print-e76c9f6e",
+    "title": "Quik Print",
+    "kind": "retail",
+    "category": "Print shop",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 153,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "mediterranean-resources-llc-1e564713",
+    "title": "Mediterranean Resources LLC",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "mediterranean-4288957b",
+    "title": "Mediterranean",
+    "kind": "civic",
+    "category": "Parking lot",
+    "address": "400 Congress Ave Parking",
+    "neighborhood": "Congress",
+    "rating": 3,
+    "reviewCount": 7,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atx-metrobike-station-13945335",
+    "title": "ATX MetroBike Station",
+    "kind": "mobility",
+    "category": "Bicycle rental service",
+    "neighborhood": "Downtown Core",
+    "rating": 1,
+    "reviewCount": 1,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "consider-hide-from-resident-default",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austindeep-downtown-12b649af",
+    "title": "AUSTINDEEP Downtown",
+    "kind": "wellness",
+    "category": "Massage therapist",
+    "neighborhood": "Downtown Core",
+    "rating": 4.8,
+    "reviewCount": 371,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "patagonia-2dc583f6",
+    "title": "Patagonia",
+    "kind": "retail",
+    "category": "Outdoor clothing and equipment shop",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 307,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "pvolve-austin-downtown-8ee95326",
+    "title": "Pvolve Austin - Downtown",
+    "kind": "wellness",
+    "category": "Physical fitness program",
+    "neighborhood": "Downtown Core",
+    "rating": 4.7,
+    "reviewCount": 16,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "smoke-paradise-vape-and-hemp-dispensary-89973a52",
+    "title": "Smoke Paradise - Vape and Hemp Dispensary",
+    "kind": "retail",
+    "category": "Smoke shop",
+    "neighborhood": "Downtown Core",
+    "rating": 4.9,
+    "reviewCount": 297,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "parking-940-e6c8e4ec",
+    "title": "Parking 940",
+    "kind": "civic",
+    "category": "Parking lot",
+    "neighborhood": "Downtown Core",
+    "rating": 1.3,
+    "reviewCount": 34,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "consider-hide-from-resident-default",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "moreland-properties-ccadd62c",
+    "title": "Moreland Properties",
+    "kind": "venue",
+    "category": "Real estate agency",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 1,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "brandy-melville-austin-2-8ea52173",
+    "title": "Brandy Melville - Austin 2",
+    "kind": "retail",
+    "category": "Women's clothing store",
+    "neighborhood": "Downtown Core",
+    "rating": 2.5,
+    "reviewCount": 35,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ashton-austin-fca94a52",
+    "title": "Ashton Austin",
+    "kind": "property",
+    "category": "Apartment rental agency",
+    "neighborhood": "Downtown Core",
+    "rating": 4.1,
+    "reviewCount": 191,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sunglass-hut-d61a6549",
+    "title": "Sunglass Hut",
+    "kind": "retail",
+    "category": "Sunglasses store",
+    "neighborhood": "Downtown Core",
+    "rating": 4.3,
+    "reviewCount": 11,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "live-ride-laugh-bb8941e9",
+    "title": "Live Ride Laugh",
+    "kind": "retail",
+    "category": "Toy store",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 2,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-austinite-market-2nd-street-d2be7390",
+    "title": "The Austinite Market - 2nd Street",
+    "kind": "retail",
+    "category": "Convenience store",
+    "neighborhood": "2nd Street",
+    "rating": 4.9,
+    "reviewCount": 33,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bill-s-oyster-ac1c8f95",
+    "title": "Bill's Oyster",
+    "kind": "restaurant",
+    "category": "Restaurant",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 309,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "walking-tours-austin-adea39f3",
+    "title": "Walking Tours Austin",
+    "kind": "experience",
+    "category": "Tour agency",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 3,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "amli-downtown-parking-5ac7fc0a",
+    "title": "AMLI Downtown Parking",
+    "kind": "civic",
+    "category": "Parking lot",
+    "neighborhood": "Downtown Core",
+    "rating": 2.4,
+    "reviewCount": 18,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "consider-hide-from-resident-default",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "kasa-downtown-austin-642dd0ba",
+    "title": "Kasa Downtown Austin",
+    "kind": "hotel",
+    "category": "4-star hotel",
+    "neighborhood": "Downtown Core",
+    "rating": 4.8,
+    "reviewCount": 230,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-city-hall-28cf694f",
+    "title": "Austin City Hall",
+    "kind": "civic",
+    "category": "City Hall",
+    "neighborhood": "Downtown Core",
+    "rating": 3.9,
+    "reviewCount": 110,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "uchib-austin-6e169239",
+    "title": "Uchibā Austin",
+    "kind": "restaurant",
+    "category": "Sushi",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 606,
+    "priceLabel": "$100+",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "better-half-coffee-and-cocktails-52a59333",
+    "title": "Better Half Coffee & Cocktails",
+    "kind": "bar",
+    "category": "Cafe",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 1802,
+    "priceLabel": "$10–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "amli-300-a07d937d",
+    "title": "AMLI 300",
+    "kind": "property",
+    "category": "Apartment complex",
+    "neighborhood": "Downtown Core",
+    "rating": 3.9,
+    "reviewCount": 72,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "gables-park-plaza-37178bf2",
+    "title": "Gables Park Plaza",
+    "kind": "property",
+    "category": "Apartment rental agency",
+    "neighborhood": "Downtown Core",
+    "rating": 3.4,
+    "reviewCount": 119,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "two-goose-ff00f7b6",
+    "title": "Two Goose",
+    "kind": "bar",
+    "category": "Barbecue",
+    "neighborhood": "Downtown Core",
+    "rating": 4.9,
+    "reviewCount": 159,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "swedish-hill-e550659d",
+    "title": "Swedish Hill",
+    "kind": "cafe",
+    "category": "Bakery",
+    "neighborhood": "Downtown Core",
+    "rating": 4.1,
+    "reviewCount": 1042,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "nokonah-building-8c154835",
+    "title": "Nokonah Building",
+    "kind": "property",
+    "category": "Apartment building",
+    "neighborhood": "Downtown Core",
+    "rating": 3.2,
+    "reviewCount": 13,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "little-tipsy-edcccc20",
+    "title": "Little Tipsy",
+    "kind": "retail",
+    "category": "Wine store",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 11,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "salt-spa-1ce92d4d",
+    "title": "Salt Spa",
+    "kind": "wellness",
+    "category": "Day spa",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 25,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "hair-house-atx-111b276f",
+    "title": "Hair House ATX",
+    "kind": "wellness",
+    "category": "Hair salon",
+    "neighborhood": "Downtown Core",
+    "rating": 4.9,
+    "reviewCount": 479,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "j-carver-s-oyster-bar-and-chophouse-ed7ad8b2",
+    "title": "J Carver’s Oyster Bar & Chophouse",
+    "kind": "bar",
+    "category": "Restaurant",
+    "neighborhood": "Downtown Core",
+    "rating": 4.7,
+    "reviewCount": 570,
+    "priceLabel": "$100+",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-baked-bear-9948cf8b",
+    "title": "The Baked Bear",
+    "kind": "venue",
+    "category": "Dessert",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 763,
+    "priceLabel": "$1–10",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-cat-s-pajamas-b94d058d",
+    "title": "The Cat's Pajamas",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.3,
+    "reviewCount": 190,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "buford-s-23774380",
+    "title": "Buford's",
+    "kind": "bar",
+    "category": "Beer Garden",
+    "neighborhood": "Downtown Core",
+    "rating": 3.6,
+    "reviewCount": 515,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "hyatt-place-austin-downtown-6ecf6af4",
+    "title": "Hyatt Place Austin Downtown",
+    "kind": "hotel",
+    "category": "3-star hotel",
+    "neighborhood": "Downtown Core",
+    "rating": 4.7,
+    "reviewCount": 5117,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-contemporary-austin-jones-center-4be74d30",
+    "title": "The Contemporary Austin - Jones Center",
+    "kind": "civic",
+    "category": "Art museum",
+    "neighborhood": "Downtown Core",
+    "rating": 4.1,
+    "reviewCount": 596,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "quattro-gatti-ristorante-e-pizzeria-9fb5c840",
+    "title": "Quattro Gatti Ristorante e Pizzeria",
+    "kind": "restaurant",
+    "category": "Italian",
+    "neighborhood": "Downtown Core",
+    "rating": 4.3,
+    "reviewCount": 1034,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "vanhorn-s-9ed97bbd",
+    "title": "VanHorn's",
+    "kind": "restaurant",
+    "category": "Steak",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 256,
+    "priceLabel": "$100+",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "upstairs-circus-atx-32f8605e",
+    "title": "Upstairs Circus ATX",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 246,
+    "priceLabel": "$30–50",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "solidcore-downtown-austin-46aa52d9",
+    "title": "[solidcore] Downtown Austin",
+    "kind": "wellness",
+    "category": "Pilates studio",
+    "neighborhood": "Downtown Core",
+    "rating": 3.8,
+    "reviewCount": 60,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "drybar-downtown-austin-bdd71aa7",
+    "title": "Drybar - Downtown Austin",
+    "kind": "wellness",
+    "category": "Hair salon",
+    "neighborhood": "Downtown Core",
+    "rating": 3.8,
+    "reviewCount": 145,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-transit-partnership-7ca708de",
+    "title": "Austin Transit Partnership",
+    "kind": "mobility",
+    "category": "Transportation service",
+    "neighborhood": "Downtown Core",
+    "rating": 4.3,
+    "reviewCount": 12,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "consider-hide-from-resident-default",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sparkly-maid-austin-cleaning-services-2ab24bd6",
+    "title": "Sparkly Maid Austin Cleaning Services",
+    "kind": "civic",
+    "category": "House cleaning service",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 1208,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "urban-wine-liquor-be5957e6",
+    "title": "Urban Wine + Liquor",
+    "kind": "retail",
+    "category": "Liquor store",
+    "neighborhood": "Downtown Core",
+    "rating": 4,
+    "reviewCount": 126,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-austonian-club-84689a1b",
+    "title": "The Austonian Club",
+    "kind": "property",
+    "category": "Event venue",
+    "neighborhood": "Congress",
+    "rating": 5,
+    "reviewCount": 6,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "mason-s-famous-lobster-rolls-cfd2da31",
+    "title": "Mason's Famous Lobster Rolls",
+    "kind": "restaurant",
+    "category": "Seafood",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 339,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "la-pe-a-529bde58",
+    "title": "La Peña",
+    "kind": "venue",
+    "category": "Art gallery",
+    "address": "Body Precision Fitness Austin, TX",
+    "neighborhood": "Downtown Core",
+    "rating": 5,
+    "reviewCount": 1,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fitness-center-3547b5fc",
+    "title": "Fitness center",
+    "kind": "wellness",
+    "category": "Hamburger",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 1854,
+    "priceLabel": "$",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "spa-by-jw-austin-0af45b4c",
+    "title": "Spa by JW Austin",
+    "kind": "wellness",
+    "category": "Spa",
+    "neighborhood": "Downtown Core",
+    "rating": 4.8,
+    "reviewCount": 176,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "visit-austin-d9d3991b",
+    "title": "Visit Austin",
+    "kind": "civic",
+    "category": "Tourist information center",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 31,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ellis-64e6b6af",
+    "title": "Ellis",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 130,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ciccio-bomba-fareground-e39414db",
+    "title": "Ciccio Bomba - Fareground",
+    "kind": "cafe",
+    "category": "Bakery",
+    "neighborhood": "Congress",
+    "rating": 4.2,
+    "reviewCount": 31,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "four-brothers-venezuelan-grill-4dfff4dc",
+    "title": "Four Brothers Venezuelan Grill",
+    "kind": "restaurant",
+    "category": "Venezuelan",
+    "neighborhood": "Downtown Core",
+    "rating": 4.8,
+    "reviewCount": 605,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "veracruz-all-natural-05dcef70",
+    "title": "Veracruz All Natural",
+    "kind": "restaurant",
+    "category": "Mexican",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 3363,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "one-eleven-congress-435ae05f",
+    "title": "One Eleven Congress",
+    "kind": "venue",
+    "category": "Business center",
+    "neighborhood": "Congress",
+    "rating": 4.5,
+    "reviewCount": 62,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "loaf-vine-da100ef6",
+    "title": "Loaf+Vine",
+    "kind": "cafe",
+    "category": "Cafe",
+    "neighborhood": "Downtown Core",
+    "rating": 3.3,
+    "reviewCount": 15,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "alfred-coffee-09343170",
+    "title": "Alfred Coffee",
+    "kind": "retail",
+    "category": "Coffee shop",
+    "neighborhood": "Downtown Core",
+    "rating": 4.1,
+    "reviewCount": 179,
+    "priceLabel": "$1–10",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "chive-hq-cd14134a",
+    "title": "Chive HQ",
+    "kind": "venue",
+    "category": "Media company",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 270,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "four-seasons-private-residences-austin-66816f29",
+    "title": "Four Seasons Private Residences Austin",
+    "kind": "property",
+    "category": "Apartment complex",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 9,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-spa-at-four-seasons-hotel-austin-664bae79",
+    "title": "The Spa at Four Seasons Hotel Austin",
+    "kind": "hotel",
+    "category": "Spa",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 22,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "live-oak-7bdc0447",
+    "title": "Live Oak",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 19,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ciclo-bafbf14f",
+    "title": "Ciclo",
+    "kind": "restaurant",
+    "category": "Fine Dining",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 227,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-marriott-downtown-911e0463",
+    "title": "Austin Marriott Downtown",
+    "kind": "hotel",
+    "category": "4-star hotel",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 2150,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lumiere-bliss-49a5e4d0",
+    "title": "Lumiere Bliss",
+    "kind": "hotel",
+    "category": "Hotel",
+    "neighborhood": "Downtown Core",
+    "rating": 4.9,
+    "reviewCount": 43,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "caf-605-128ea571",
+    "title": "Café 605",
+    "kind": "cafe",
+    "category": "Cafe",
+    "neighborhood": "Downtown Core",
+    "rating": 4.1,
+    "reviewCount": 62,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "brass-poppy-11cf2df9",
+    "title": "Brass Poppy",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.8,
+    "reviewCount": 40,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tesla-destination-charger-1204bb57",
+    "title": "Tesla Destination Charger",
+    "kind": "mobility",
+    "category": "Electric vehicle charging station",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "kimpton-hotel-van-zandt-valet-4acbfff2",
+    "title": "Kimpton Hotel Van Zandt Valet",
+    "kind": "hotel",
+    "category": "Blink Charging Station",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "watr-a48c0800",
+    "title": "Watr",
+    "kind": "mobility",
+    "category": "ATX MetroBike Station",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "premium-parking-p3046-17070a52",
+    "title": "Premium Parking - P3046",
+    "kind": "civic",
+    "category": "Modern Bar",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fleet-coffee-1a927995",
+    "title": "Fleet Coffee",
+    "kind": "bar",
+    "category": "Augustine Cocktail Bar",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-smokehouse-at-banger-s-77f951a0",
+    "title": "The Smokehouse at Banger's",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-rainey-house-3bc9dbac",
+    "title": "The Rainey House",
+    "kind": "mobility",
+    "category": "ChargePoint Charging Station",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "roar-2d705dad",
+    "title": "ROAR",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "healthclicks-d10474d2",
+    "title": "HealthClicks",
+    "kind": "civic",
+    "category": "Rainey Street Trailhead Park",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "parkingmgt-com-05052408",
+    "title": "parkingmgt.com",
+    "kind": "civic",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "natiivo-austin-a8b5d881",
+    "title": "Natiivo Austin",
+    "kind": "civic",
+    "category": "ATX Visitor Center",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "royal-blue-grocery-a1127af6",
+    "title": "Royal Blue Grocery",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "high-street-rainey-lp-3a13c221",
+    "title": "High Street Rainey LP",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "randy-solis-tattoo-artist-e17fd0f2",
+    "title": "Randy Solis Tattoo Artist",
+    "kind": "mobility",
+    "category": "ChargePoint Charging Station",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "teatro-vivo-70ee0c49",
+    "title": "Teatro Vivo",
+    "kind": "bar",
+    "category": "Emma S. Barrientos Mexican American Cultural Center",
+    "address": "700 River",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "limestone-rooftop-56a72805",
+    "title": "Limestone Rooftop",
+    "kind": "restaurant",
+    "category": "Graffiti Restaurant",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "woof-pet-care-ad8c28f6",
+    "title": "WOOF Pet Care",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "veracruz-all-natural-def28780",
+    "title": "Veracruz All Natural",
+    "kind": "hotel",
+    "category": "Cambria Hotel Austin Downtown",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tacowey-rainey-7e45ee4a",
+    "title": "Tacowey Rainey",
+    "kind": "mobility",
+    "category": "Flash Charging Station",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fairfield-by-marriott-inn-and-suites-austin-downtown-16e5e138",
+    "title": "Fairfield by Marriott Inn & Suites Austin Downtown",
+    "kind": "hotel",
+    "category": "The Sub Shop at Banger's",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bungalow-17febb90",
+    "title": "Bungalow",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "address": "84 E. Gallery + Goods",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "crazy-conchaz-fdc0cbd4",
+    "title": "Crazy Conchaz",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-quincy-45cb4b28",
+    "title": "The Quincy",
+    "kind": "wellness",
+    "category": "Bamford Wellness Spa",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "neighbors-cafe-aee1725f",
+    "title": "Neighbors Cafe",
+    "kind": "cafe",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "taco-baby-72f97f6f",
+    "title": "Taco Baby",
+    "kind": "bar",
+    "category": "Iron Works Barbecue",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fairmont-austin-parking-parkchirp-103efcfc",
+    "title": "Fairmont Austin Parking - ParkChirp",
+    "kind": "hotel",
+    "category": "FedEx Office Print & Ship Center",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "good-things-aba7114a",
+    "title": "Good Things",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "garrison-569302bf",
+    "title": "Garrison",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "rush-my-passport-045743eb",
+    "title": "Rush My Passport",
+    "kind": "wellness",
+    "category": "SPA",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fulton-729fb838",
+    "title": "Fulton",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "room-725-eda14c53",
+    "title": "Room 725",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "moonshine-grill-9f4af882",
+    "title": "Moonshine Grill",
+    "kind": "civic",
+    "category": "Kinfolk Cocktail Lounge & Spirits Library",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "frontera-tours-river-tubing-f0a1aa98",
+    "title": "Frontera Tours River Tubing",
+    "kind": "experience",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-cut-atx-5d6f9d60",
+    "title": "The Cut ATX",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-escape-game-austin-336048e1",
+    "title": "The Escape Game Austin",
+    "kind": "experience",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "big-chiller-blues-c90f432a",
+    "title": "Big Chiller Blues",
+    "kind": "civic",
+    "category": "Central District Brewing",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "starbucks-1b45ebf7",
+    "title": "Starbucks",
+    "kind": "civic",
+    "category": "O. Henry Museum",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "residence-inn-by-marriott-austin-downtown-convention-center-197cb7dc",
+    "title": "Residence Inn by Marriott Austin Downtown/Convention Center",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-bachelorette-party-studio-goddess-bd1724b1",
+    "title": "Austin Bachelorette Party - Studio Goddess",
+    "kind": "experience",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "brazos-hall-dd677b8c",
+    "title": "Brazos Hall",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "twisted-texas-tour-04f3fc67",
+    "title": "Twisted Texas Tour",
+    "kind": "retail",
+    "category": "Modern Market Eatery - Frost Tower",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "vibrancy-guitar-statue-20455fe4",
+    "title": "Vibrancy guitar statue",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "houndstooth-coffee-748b3f38",
+    "title": "Houndstooth Coffee",
+    "kind": "cafe",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-onion-96154342",
+    "title": "The Onion",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "el-cockfight-77a73354",
+    "title": "El Cockfight",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atx-dj-fe52e754",
+    "title": "ATX DJ",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "hotspot-5b2b6bf2",
+    "title": "Hotspot",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "brazos-lofts-5177fdfd",
+    "title": "Brazos Lofts",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "prime-boat-rentals-fd5a85ce",
+    "title": "Prime Boat Rentals",
+    "kind": "cafe",
+    "category": "Cielito Lindo Cafe",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "frost-bank-tower-executive-health-club-002acadd",
+    "title": "Frost Bank Tower Executive Health Club",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "nightly-spirits-75fcb8c6",
+    "title": "Nightly Spirits",
+    "kind": "civic",
+    "category": "Austin Visitor Center",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "metropolis-a8ecf6b6",
+    "title": "Metropolis",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "littlefield-garage-02197587",
+    "title": "Littlefield Garage",
+    "kind": "mobility",
+    "category": "Shop 24",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "littlefield-lofts-46398480",
+    "title": "Littlefield Lofts",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-littlefield-quarters-89c26e6b",
+    "title": "The Littlefield Quarters",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "in-plain-sight-158ce64f",
+    "title": "In Plain Sight",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-driskill-grill-9e3a60b8",
+    "title": "The Driskill Grill",
+    "kind": "hotel",
+    "category": "The Driskill Bar",
+    "neighborhood": "Congress",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "here-nor-there-24228a2e",
+    "title": "Here Nor There",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sunset-strip-comedy-and-entertainment-d71d9d94",
+    "title": "Sunset Strip Comedy & Entertainment",
+    "kind": "experience",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "happy-chicks-6eaad361",
+    "title": "Happy Chicks",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "firehouse-lounge-9bfd7f59",
+    "title": "Firehouse Lounge",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "address": "1886 Cafe & Bakery",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-victorian-903305f6",
+    "title": "The Victorian",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tommie-austin-jdv-by-hyatt-0f83b79f",
+    "title": "tommie Austin - JDV by Hyatt",
+    "kind": "hotel",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "caroline-d88575be",
+    "title": "Caroline",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "garage-fb16ca65",
+    "title": "Garage",
+    "kind": "mobility",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address",
+      "consider-hide-from-resident-default"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "black-fox-coffee-d7fa60a7",
+    "title": "Black Fox Coffee",
+    "kind": "cafe",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "mohawk-austin-f060817a",
+    "title": "Mohawk Austin",
+    "kind": "experience",
+    "category": "Downtown Place",
+    "neighborhood": "Red River / Waterloo",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "kickin-momo-063bc3d8",
+    "title": "Kickin Momo",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bathe-b9b276e5",
+    "title": "Bathe",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "milonga-room-6228d019",
+    "title": "Milonga Room",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lamberts-e70e64db",
+    "title": "Lamberts",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sweetgreen-healthy-salads-wraps-and-bowls-aed2b9ec",
+    "title": "sweetgreen - Healthy Salads, Wraps, and Bowls",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "jo-s-coffee-downtown-5d0ea7e8",
+    "title": "Jo's Coffee – Downtown",
+    "kind": "cafe",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "violet-crown-austin-df88a4fa",
+    "title": "Violet Crown Austin",
+    "kind": "hotel",
+    "category": "Omni Austin Hotel Downtown",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "voodoo-doughnut-92a076c9",
+    "title": "Voodoo Doughnut",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "roaring-fork-af0bd163",
+    "title": "Roaring Fork",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "boa-steakhouse-fe0c22f1",
+    "title": "BOA Steakhouse",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-kitchen-american-bistro-ea4e4716",
+    "title": "The Kitchen American Bistro",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fixe-southern-house-7f7da259",
+    "title": "Fixe Southern House",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ranch-616-c9f0e1c3",
+    "title": "Ranch 616",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-wellness-collaborative-66ce44d3",
+    "title": "Austin Wellness Collaborative",
+    "kind": "wellness",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "la-volta-pizza-club-ee7e2e51",
+    "title": "La Volta Pizza Club",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "address": "24 Diner",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-antique-swan-3c5f701a",
+    "title": "The Antique Swan",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "frank-darling-1c62c86c",
+    "title": "Frank Darling",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "portland-leather-goods-austin-336da8c0",
+    "title": "Portland Leather Goods, Austin",
+    "kind": "retail",
+    "category": "The Shade Store",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "townlake-ymca-24db2465",
+    "title": "Townlake YMCA",
+    "kind": "wellness",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atx-sign-38c85f74",
+    "title": "ATX Sign",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "wellness-and-beauty-7cb49383",
+    "title": "Wellness and Beauty",
+    "kind": "wellness",
+    "category": "Ballet Austin's Pilates Center",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ballet-austin-49de7473",
+    "title": "Ballet Austin",
+    "kind": "wellness",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "local-walk-up-window-e691d916",
+    "title": "Local Walk-Up Window",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "north-italia-21435943",
+    "title": "North Italia",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "flower-child-61a77c2c",
+    "title": "Flower Child",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "torchy-s-tacos-1248b350",
+    "title": "Torchy's Tacos",
+    "kind": "wellness",
+    "category": "World Space Austin",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "indochino-cc5a4ded",
+    "title": "INDOCHINO",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "yummi-joy-88be381a",
+    "title": "Yummi Joy",
+    "kind": "bar",
+    "category": "Sushi Bar Austin Downtown",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "golden-ace-austin-21a6e956",
+    "title": "Golden Ace Austin",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "strive-company-d64dfeba",
+    "title": "Strive Company",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atx-cocina-1ce57680",
+    "title": "ATX Cocina",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "candid-studios-photography-and-videography-austin-74b3d0de",
+    "title": "Candid Studios Photography & Videography - Austin",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "blu-dot-1d371325",
+    "title": "Blu Dot",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "urban-outfitters-3e052923",
+    "title": "Urban Outfitters",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "serenade-8a61b8e6",
+    "title": "Serenade",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "which-wich-55ba7d96",
+    "title": "Which Wich",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "starbucks-coffee-company-643ab716",
+    "title": "Starbucks Coffee Company",
+    "kind": "cafe",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tesla-destination-charger-1f622dc5",
+    "title": "Tesla Destination Charger",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "cathy-s-cleaners-downtown-3ca2a10f",
+    "title": "Cathy's Cleaners Downtown",
+    "kind": "bar",
+    "category": "BarChi Sushi",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "taverna-austin-downtown-the-baci-room-8e69441d",
+    "title": "Taverna Austin (Downtown) | The Baci Room",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "iii-forks-b5605870",
+    "title": "III Forks",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bob-s-steak-and-chop-house-downtown-austin-a2e2c83a",
+    "title": "Bob's Steak & Chop House - Downtown Austin",
+    "kind": "bar",
+    "category": "Cooper's Old Time Pit Bar-B-Que",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "soma-re-form-pilates-and-wellness-collective-449a30fd",
+    "title": "Soma Re·form Pilates & Wellness Collective",
+    "kind": "civic",
+    "category": "Mexic-Arte Museum",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "shiner-s-saloon-28ae9645",
+    "title": "Shiner's Saloon",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ra-sushi-austin-4a041082",
+    "title": "RA Sushi - Austin",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "flow-at-the-one-luxury-iv-hydration-and-wellness-1835016c",
+    "title": "Flow At The One Luxury IV Hydration & Wellness",
+    "kind": "wellness",
+    "category": "White Sage Integrative Wellness, Apothecary & Med Spa",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "verbena-spa-79f6f100",
+    "title": "Verbena Spa",
+    "kind": "civic",
+    "category": "milk + honey | 2nd Street District",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-tox-austin-downtown-49acd5e5",
+    "title": "The Tox Austin Downtown",
+    "kind": "property",
+    "category": "The Monarch by Windsor Apartments",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-well-2nd-st-365d18ad",
+    "title": "The Well - 2nd St",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "parlor-room-60ec8227",
+    "title": "Parlor Room",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "duke-s-adventure-golf-cef7ce20",
+    "title": "Duke's Adventure Golf",
+    "kind": "experience",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tennis-table-83ac4db7",
+    "title": "Tennis table",
+    "kind": "bar",
+    "category": "Bar Toti",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lucille-patio-lounge-7442bc15",
+    "title": "Lucille Patio Lounge",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sugarwolf-bakery-3e815f7a",
+    "title": "Sugarwolf Bakery",
+    "kind": "cafe",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "swish-dental-downtown-861be1f0",
+    "title": "Swish Dental Downtown",
+    "kind": "wellness",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "hanover-republic-square-f9314ff9",
+    "title": "Hanover Republic Square",
+    "kind": "property",
+    "category": "Rainey Street Historic District",
+    "address": "Austin, TX",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lvs-la-vie-med-spas-day-spa-4303a578",
+    "title": "LVS La Vie Med Spas + Day Spa",
+    "kind": "wellness",
+    "category": "Medical spa",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 112,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fat-rabbit-social-house-5d2b659e",
+    "title": "Fat Rabbit Social House",
+    "kind": "restaurant",
+    "category": "Brunch",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 141,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "geraldine-s-91cb9123",
+    "title": "Geraldine's",
+    "kind": "restaurant",
+    "category": "Restaurant",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 2088,
+    "priceLabel": "$20–80",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lustre-pearl-rainey-5c0e9c29",
+    "title": "Lustre Pearl Rainey",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Rainey",
+    "rating": 4.2,
+    "reviewCount": 485,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "roost-rainey-06e3e736",
+    "title": "ROOST Rainey",
+    "kind": "hotel",
+    "category": "Hotel",
+    "neighborhood": "Rainey",
+    "rating": 4.7,
+    "reviewCount": 41,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "little-lucy-s-47aeeb7b",
+    "title": "Little Lucy's",
+    "kind": "cafe",
+    "category": "Donuts",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 349,
+    "priceLabel": "$1–10",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "clive-efd8c61d",
+    "title": "Clive",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.3,
+    "reviewCount": 648,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "amaya-08d75d54",
+    "title": "Amaya",
+    "kind": "restaurant",
+    "category": "Mediterranean",
+    "neighborhood": "Downtown Core",
+    "rating": 4.2,
+    "reviewCount": 48,
+    "priceLabel": "$30–70",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "anthem-2f4bad6b",
+    "title": "Anthem",
+    "kind": "venue",
+    "category": "Asian Fusion",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 910,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "victory-lap-rainey-ddfa8970",
+    "title": "Victory Lap Rainey",
+    "kind": "bar",
+    "category": "Sports bar",
+    "neighborhood": "Rainey",
+    "rating": 4.5,
+    "reviewCount": 51,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "little-brother-06940ac9",
+    "title": "Little Brother",
+    "kind": "bar",
+    "category": "Bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 153,
+    "priceLabel": "$10–20",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "windsor-on-the-lake-apartments-d26a0d5b",
+    "title": "Windsor on the Lake Apartments",
+    "kind": "property",
+    "category": "Apartment complex",
+    "neighborhood": "Downtown Core",
+    "rating": 3.9,
+    "reviewCount": 77,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "milago-condominium-12479897",
+    "title": "Milago Condominium",
+    "kind": "property",
+    "category": "Condominium complex",
+    "neighborhood": "Downtown Core",
+    "rating": 4,
+    "reviewCount": 71,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "always-something-7f6295cd",
+    "title": "Always Something",
+    "kind": "restaurant",
+    "category": "Restaurant",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "toy-joy-2c89aaa6",
+    "title": "Toy Joy",
+    "kind": "retail",
+    "category": "Toy store",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 725,
+    "priceLabel": "$$",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lucky-lizard-curios-and-gifts-dfe8bb33",
+    "title": "Lucky Lizard Curios & Gifts",
+    "kind": "retail",
+    "category": "Gift shop",
+    "neighborhood": "Downtown Core",
+    "rating": 4.4,
+    "reviewCount": 54,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "daydreamer-coffee-5ae9314d",
+    "title": "Daydreamer Coffee",
+    "kind": "retail",
+    "category": "Coffee shop",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 59,
+    "priceLabel": "$1–10",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "e-7th-st-b31e5d0a",
+    "title": "E 7th St",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "cesar-chavez-st-06d21ae8",
+    "title": "Cesar Chavez St",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "electric-shuffle-7012ca7c",
+    "title": "Electric Shuffle",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "dwell-coworking-b407366b",
+    "title": "Dwell Coworking",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atelier-1205-119f2372",
+    "title": "Atelier 1205",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "arriba-abajo-28d81184",
+    "title": "Arriba Abajo",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "half-step-99c461a2",
+    "title": "Half Step",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "heydey-social-club-acfea471",
+    "title": "Heydey Social Club",
+    "kind": "bar",
+    "category": "Subterra Agave Bar",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bar-hacienda-3cd10d33",
+    "title": "Bar Hacienda",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "skyhouse-austin-21e323c8",
+    "title": "SkyHouse Austin",
+    "kind": "restaurant",
+    "category": "Corner Restaurant",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "marlow-5a5e00cb",
+    "title": "Marlow",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sixth-street-4136b456",
+    "title": "Sixth Street",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "perry-s-steakhouse-and-grille-0c02ad23",
+    "title": "Perry's Steakhouse & Grille",
+    "kind": "property",
+    "category": "The Shore Condominium",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-peacock-bf6316c1",
+    "title": "The Peacock",
+    "kind": "bar",
+    "category": "Zanzibar",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "united-apparel-liquidators-a3247385",
+    "title": "United Apparel Liquidators",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "hemline-e85857b3",
+    "title": "Hemline",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "cedar-street-9cc7950b",
+    "title": "Cedar Street",
+    "kind": "bar",
+    "category": "Container Bar",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atown-d3de7493",
+    "title": "Atown",
+    "kind": "civic",
+    "category": "Moody Amphitheater",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "la-condesa-e4a871c7",
+    "title": "La Condesa",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "seaholm-power-plant-336d8c98",
+    "title": "Seaholm Power Plant",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Seaholm",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "strangelove-c2961cec",
+    "title": "Strangelove",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "rain-on-4th-b68ccc2c",
+    "title": "Rain on 4th",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "midnight-cowboy-463c41a8",
+    "title": "Midnight Cowboy",
+    "kind": "civic",
+    "category": "Bullock Museum",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "ember-kitchen-7a91ef9a",
+    "title": "Ember Kitchen",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "canopy-by-hilton-d2330f19",
+    "title": "Canopy by Hilton",
+    "kind": "hotel",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-belmont-0dd436b7",
+    "title": "The Belmont",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "address": "70 Rainey",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "emmer-and-rye-f8c70134",
+    "title": "Emmer & Rye",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "cedar-street-courtyard-5c0b26e4",
+    "title": "Cedar Street Courtyard",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-proper-eef9c90b",
+    "title": "Austin Proper",
+    "kind": "civic",
+    "category": "Waterloo Park",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "patika-6187fd86",
+    "title": "Patika",
+    "kind": "civic",
+    "category": "Blanton Museum",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "paramount-theatre-54187719",
+    "title": "Paramount Theatre",
+    "kind": "civic",
+    "category": "Moody Center",
+    "neighborhood": "Congress",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "dean-s-352b83ae",
+    "title": "Dean's",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "speakeasy-7aa5835b",
+    "title": "Speakeasy",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "comedor-d91afa95",
+    "title": "Comedor",
+    "kind": "hotel",
+    "category": "Hotel Van Zandt",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "2nd-street-district-a0e243e9",
+    "title": "2nd Street District",
+    "kind": "civic",
+    "category": "Downtown Place",
+    "neighborhood": "2nd Street",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "four-seasons-3640fe7e",
+    "title": "Four Seasons",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-rotisserie-1a1a75aa",
+    "title": "Austin Rotisserie",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "edge-rooftop-e488bca0",
+    "title": "Edge Rooftop",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fareground-austin-f8a41bea",
+    "title": "Fareground Austin",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Congress",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "east-avenue-e88831b9",
+    "title": "East Avenue",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "East Austin",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "devil-may-care-d7a575f5",
+    "title": "Devil May Care",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "antone-s-d3965a9c",
+    "title": "Antone's",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "wu-chow-787fc299",
+    "title": "Wu Chow",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "jw-marriott-26791b39",
+    "title": "JW Marriott",
+    "kind": "hotel",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "green-light-social-de0a450c",
+    "title": "Green Light Social",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "waterloo-records-2840c4b2",
+    "title": "Waterloo Records",
+    "kind": "civic",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "jo-s-d173c1ed",
+    "title": "Jo's",
+    "kind": "bar",
+    "category": "Stay Put Brewpub",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "thompson-austin-49567a6c",
+    "title": "Thompson Austin",
+    "kind": "hotel",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "true-food-kitchen-9ddbcb94",
+    "title": "True Food Kitchen",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "whole-foods-flagship-dd6ccc06",
+    "title": "Whole Foods Flagship",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Seaholm",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-dead-rabbit-6b592020",
+    "title": "The Dead Rabbit",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "stephen-f-austin-33b67ed1",
+    "title": "Stephen F. Austin",
+    "kind": "bar",
+    "category": "Bar Fino",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "eliza-page-4b2977bd",
+    "title": "Eliza Page",
+    "kind": "retail",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "republic-square-db447347",
+    "title": "Republic Square",
+    "kind": "bar",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fifth-west-03994013",
+    "title": "Fifth + West",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-austonian-507371e1",
+    "title": "The Austonian",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Congress",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "red-ash-a028e9df",
+    "title": "Red Ash",
+    "kind": "restaurant",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "elephant-room-53b565e6",
+    "title": "Elephant Room",
+    "kind": "civic",
+    "category": "Gables Park Tower",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "congress-avenue-60f6faa7",
+    "title": "Congress Avenue",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Congress",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "rainey-street-7cf451b9",
+    "title": "Rainey Street",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-modern-austin-residences-5a82389b",
+    "title": "The Modern Austin Residences",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "warehouse-cbd-f42bee65",
+    "title": "Warehouse / CBD",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "martin-luther-king-jr-blvd-5d33c6d9",
+    "title": "Martin Luther King Jr. Blvd",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "paseo-751e7af3",
+    "title": "Paseo",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "north-downtown-bf72bb3f",
+    "title": "North Downtown",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "rainey-street-4687eef7",
+    "title": "Rainey Street",
+    "kind": "civic",
+    "category": "Seaholm District",
+    "address": "1 Hotel Austin",
+    "neighborhood": "Rainey",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lady-bird-lake-99a6970f",
+    "title": "Lady Bird Lake",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "northshore-3b140067",
+    "title": "Northshore",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Seaholm",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "residences-at-6g-2c5afc6f",
+    "title": "Residences at 6G",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "atx-tower-8f545a4e",
+    "title": "ATX Tower",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "mlk-highline-87f77ea7",
+    "title": "MLK Highline",
+    "kind": "property",
+    "category": "W Austin Hotel & Residences",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "seaholm-residences-6adf2a18",
+    "title": "Seaholm Residences",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Seaholm",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lamar-blvd-1b262b52",
+    "title": "Lamar Blvd",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bookpeople-ff5c1c35",
+    "title": "BookPeople",
+    "kind": "retail",
+    "category": "ACL Live at The Moody Theater",
+    "neighborhood": "Seaholm",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "waterline-austin-8d64c397",
+    "title": "Waterline Austin",
+    "kind": "property",
+    "category": "Corporate office",
+    "address": "44 East Ave",
+    "neighborhood": "East Austin",
+    "rating": 4.4,
+    "reviewCount": 31,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "condominium-complex-c44c57ec",
+    "title": "Condominium complex",
+    "kind": "property",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment",
+      "needs-address"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "banger-s-sausage-house-and-beer-garden-aa6f1fc1",
+    "title": "Banger's Sausage House & Beer Garden",
+    "kind": "bar",
+    "category": "Beer Garden",
+    "neighborhood": "Rainey",
+    "rating": 4.5,
+    "reviewCount": 7322,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-independent-8a0c7f28",
+    "title": "The Independent",
+    "kind": "property",
+    "category": "Condominium complex",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 96,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "hestia-21546be9",
+    "title": "Hestia",
+    "kind": "restaurant",
+    "category": "Fine Dining",
+    "neighborhood": "Downtown Core",
+    "rating": 4.5,
+    "reviewCount": 1003,
+    "priceLabel": "$100+",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fairmont-austin-819bd75a",
+    "title": "Fairmont Austin",
+    "kind": "hotel",
+    "category": "4-star hotel",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 7155,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-driskill-the-unbound-collection-by-hyatt-7b3b0733",
+    "title": "The Driskill - The Unbound Collection by Hyatt",
+    "kind": "hotel",
+    "category": "4-star hotel",
+    "neighborhood": "Congress",
+    "rating": 4.6,
+    "reviewCount": 5409,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-roosevelt-room-617e5fb9",
+    "title": "The Roosevelt Room",
+    "kind": "bar",
+    "category": "Cocktail bar",
+    "neighborhood": "Downtown Core",
+    "rating": 4.6,
+    "reviewCount": 2287,
+    "priceLabel": "$20–30",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-central-library-austin-public-library-133ef887",
+    "title": "Austin Central Library, Austin Public Library",
+    "kind": "civic",
+    "category": "Public library",
+    "neighborhood": "Downtown Core",
+    "rating": 4.7,
+    "reviewCount": 1574,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-line-austin-8fdf81e3",
+    "title": "The LINE Austin",
+    "kind": "hotel",
+    "category": "4-star hotel",
+    "neighborhood": "Downtown Core",
+    "rating": 4,
+    "reviewCount": 2175,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "texas-capitol-a76e3c38",
+    "title": "Texas Capitol",
+    "kind": "civic",
+    "category": "State government office",
+    "neighborhood": "Congress",
+    "rating": 4.7,
+    "reviewCount": 4883,
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-address",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "downtown-austin-f536afd5",
+    "title": "Downtown Austin",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "address": "Austin, TX",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "browser_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "quattro-gatti-ristorante-e-pizzeria-bf9c67fe",
+    "title": "Quattro Gatti Ristorante e Pizzeria",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "908 N Congress Ave, Austin, TX 78701, United States",
+    "lat": 30.2713014,
+    "lng": -97.7418612,
+    "neighborhood": "Congress",
+    "googleMapsUrl": "http://maps.google.com/?cid=13901213448694198703",
+    "googleCid": "13901213448694198703",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-15T08:53:55Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "punch-bowl-social-e0369f67",
+    "title": "Punch Bowl Social",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "522 N Congress Ave, Austin, TX 78701, United States",
+    "lat": 30.2679365,
+    "lng": -97.7431945,
+    "neighborhood": "Congress",
+    "googleMapsUrl": "http://maps.google.com/?cid=4244554043953019940",
+    "googleCid": "4244554043953019940",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-15T08:34:56Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "pershing-house-6296687c",
+    "title": "Pershing House",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "2415B E 5th St. Unit B, Austin, TX 78702, United States",
+    "lat": 30.2575481,
+    "lng": -97.7154462,
+    "neighborhood": "East Austin",
+    "googleMapsUrl": "http://maps.google.com/?cid=381523077981499971",
+    "googleCid": "381523077981499971",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-06-07T04:17:22Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "green-dragon-520db6a3",
+    "title": "Green Dragon",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "4103 Sheridan Blvd, Denver, CO 80212, United States",
+    "lat": 39.7731497,
+    "lng": -105.0536108,
+    "neighborhood": "Outside Austin / Review",
+    "googleMapsUrl": "http://maps.google.com/?cid=5260574557416218732",
+    "googleCid": "5260574557416218732",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-21T02:32:06Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "the-driskill-the-unbound-collection-by-hyatt-771ce4b1",
+    "title": "The Driskill - The Unbound Collection by Hyatt",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "604 Brazos St, Austin, TX 78701, United States",
+    "lat": 30.2681502,
+    "lng": -97.7417551,
+    "neighborhood": "Downtown Core",
+    "googleMapsUrl": "http://maps.google.com/?cid=11587148967411462074",
+    "googleCid": "11587148967411462074",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-17T15:34:43Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "daydreamer-aa480e11",
+    "title": "daydreamer",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "1708 E 6th St, Austin, TX 78702, United States",
+    "lat": 30.2623199,
+    "lng": -97.7235225,
+    "neighborhood": "East Austin",
+    "googleMapsUrl": "http://maps.google.com/?cid=11331924417358158118",
+    "googleCid": "11331924417358158118",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-17T15:34:26Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "sxsw-300e90a6",
+    "title": "SXSW",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "500 E 4th St #3720, Austin, TX 78701, United States",
+    "lat": 30.2653203,
+    "lng": -97.7386464,
+    "neighborhood": "Downtown Core",
+    "googleMapsUrl": "http://maps.google.com/?cid=1955936656949453307",
+    "googleCid": "1955936656949453307",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-17T15:34:09Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "palm-door-on-sixth-33223a7e",
+    "title": "Palm Door On Sixth",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "508 E 6th St, Austin, TX 78701, United States",
+    "lat": 30.2669107,
+    "lng": -97.7377236,
+    "neighborhood": "East Austin",
+    "googleMapsUrl": "http://maps.google.com/?cid=420038518622253115",
+    "googleCid": "420038518622253115",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-17T15:34:07Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "austin-city-limits-live-acl-live-and-3ten-acl-live-ab7fed60",
+    "title": "Austin City Limits Live (ACL Live & 3TEN ACL Live)",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "310 W Willie Nelson Blvd, Austin, TX 78701, United States",
+    "lat": 30.2652627,
+    "lng": -97.7469912,
+    "neighborhood": "Downtown Core",
+    "googleMapsUrl": "http://maps.google.com/?cid=5268262189183100567",
+    "googleCid": "5268262189183100567",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-17T15:34:05Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "garage-5dd2ee3b",
+    "title": "Garage",
+    "kind": "mobility",
+    "category": "Google Saved Place",
+    "address": "503 Colorado St, Austin, TX 78701, United States",
+    "lat": 30.2679672,
+    "lng": -97.7440893,
+    "neighborhood": "Downtown Core",
+    "googleMapsUrl": "http://maps.google.com/?cid=16466347261649349716",
+    "googleCid": "16466347261649349716",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-17T15:33:59Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "rock-em-western-boots-and-apparel-7f61798a",
+    "title": "Rock'em Western Boots & Apparel",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "8000 Harwin Dr. Ste 440, Houston, TX 77036, United States",
+    "lat": 29.7183399,
+    "lng": -95.5247404,
+    "neighborhood": "Outside Austin / Review",
+    "googleMapsUrl": "http://maps.google.com/?cid=13115491045959034709",
+    "googleCid": "13115491045959034709",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-03-04T16:00:26Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tzintzuntzan-0c4ffb72",
+    "title": "Tzintzuntzan",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "2302 W N Loop Blvd, Austin, TX 78756, United States",
+    "lat": 30.3257025,
+    "lng": -97.7427831,
+    "neighborhood": "Downtown Core",
+    "googleMapsUrl": "http://maps.google.com/?cid=16840213708060580179",
+    "googleCid": "16840213708060580179",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-27T05:28:19Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "waterline-austin-e1fb3126",
+    "title": "Waterline Austin",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "98 Red River St, Austin, TX 78701, United States",
+    "lat": 30.2615639,
+    "lng": -97.7391452,
+    "neighborhood": "Red River",
+    "googleMapsUrl": "http://maps.google.com/?cid=12629356293346635685",
+    "googleCid": "12629356293346635685",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-15T21:23:58Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "fulton-8aee9dc1",
+    "title": "Fulton",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "101 Red River St, Austin, TX 78701, United States",
+    "lat": 30.2623685,
+    "lng": -97.738317,
+    "neighborhood": "Red River",
+    "googleMapsUrl": "http://maps.google.com/?cid=7530296759164293743",
+    "googleCid": "7530296759164293743",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-15T21:23:51Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "room-725-0fbc714c",
+    "title": "Room 725",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "101 Red River St, Austin, TX 78701, United States",
+    "lat": 30.2623709,
+    "lng": -97.7380845,
+    "neighborhood": "Red River",
+    "googleMapsUrl": "http://maps.google.com/?cid=6022320716158831123",
+    "googleCid": "6022320716158831123",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-15T21:23:47Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "lvs-la-vie-med-spas-day-spa-118516a1",
+    "title": "LVS La Vie Med Spas + Day Spa",
+    "kind": "wellness",
+    "category": "Google Saved Place",
+    "address": "51 Rainey St #150, Austin, TX 78701, United States",
+    "lat": 30.2563672,
+    "lng": -97.739552,
+    "neighborhood": "Rainey",
+    "googleMapsUrl": "http://maps.google.com/?cid=628264891231768701",
+    "googleCid": "628264891231768701",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-04T07:22:09Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tootsies-orchid-lounge-5be9062c",
+    "title": "Tootsies Orchid Lounge",
+    "kind": "bar",
+    "category": "Google Saved Place",
+    "address": "422 Broadway, Nashville, TN 37203, United States",
+    "lat": 36.1609016,
+    "lng": -86.7782923,
+    "neighborhood": "Unknown",
+    "googleMapsUrl": "http://maps.google.com/?cid=2575564174631023828",
+    "googleCid": "2575564174631023828",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-04T06:48:05Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "layla-s-honky-tonk-ec8b6aa9",
+    "title": "Layla's Honky Tonk",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "418 Broadway, Nashville, TN 37203, United States",
+    "lat": 36.1608333,
+    "lng": -86.7780556,
+    "neighborhood": "Unknown",
+    "googleMapsUrl": "http://maps.google.com/?cid=10506469269434684799",
+    "googleCid": "10506469269434684799",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-04T06:47:56Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "saved-place-6349beca",
+    "title": "Saved Place",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "lat": 0,
+    "lng": 0,
+    "neighborhood": "Unknown",
+    "googleMapsUrl": "http://maps.google.com/?q=423+Broadway,+Nashville,+TN+37203&ftid=0x886466594baf6feb:0x145507a0e9456549",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-02-04T06:46:43Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "nurse-karen-skincare-and-aesthetics-fd718ebb",
+    "title": "Nurse Karen Skincare & Aesthetics",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "712 W 14th St C, Austin, TX 78701, United States",
+    "lat": 30.278382,
+    "lng": -97.74732,
+    "neighborhood": "Downtown Core",
+    "googleMapsUrl": "http://maps.google.com/?cid=736744386470557853",
+    "googleCid": "736744386470557853",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-01-21T15:08:31Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "goat-soup-and-whiskey-tavern-7ce82910",
+    "title": "Goat Soup & Whiskey Tavern",
+    "kind": "venue",
+    "category": "Google Saved Place",
+    "address": "22954 US-6, Keystone, CO 80435, United States",
+    "lat": 39.6077914,
+    "lng": -105.9542149,
+    "neighborhood": "Unknown",
+    "googleMapsUrl": "http://maps.google.com/?cid=8863273922173772159",
+    "googleCid": "8863273922173772159",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2026-01-02T16:31:06Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "bar-hacienda-8f0f902b",
+    "title": "Bar Hacienda",
+    "kind": "bar",
+    "category": "Google Saved Place",
+    "address": "70 Rainey St #200, Austin, TX 78701, United States",
+    "lat": 30.25854,
+    "lng": -97.73915,
+    "neighborhood": "Rainey",
+    "googleMapsUrl": "http://maps.google.com/?cid=4233787949005463815",
+    "googleCid": "4233787949005463815",
+    "source": "google_takeout_saved_places",
+    "datasetStatus": "partial_seed",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 22,
+    "tags": [
+      "google-takeout-partial-seed",
+      "needs-google-places-enrichment"
+    ],
+    "active": true,
+    "importedAt": "2025-05-30T02:57:25Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  }
+]

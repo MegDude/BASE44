@@ -1,0 +1,35 @@
+{
+  "source": "Google Maps browser visible/selected list text",
+  "declaredListCount": 369,
+  "extractedEntityCount": 304,
+  "entitiesByKind": {
+    "venue": 94,
+    "restaurant": 30,
+    "wellness": 19,
+    "cafe": 13,
+    "bar": 36,
+    "experience": 8,
+    "retail": 23,
+    "civic": 28,
+    "mobility": 9,
+    "property": 24,
+    "hotel": 20
+  },
+  "entitiesByNeighborhood": {
+    "Rainey": 13,
+    "Congress": 12,
+    "Downtown Core": 263,
+    "2nd Street": 8,
+    "Red River / Waterloo": 1,
+    "Seaholm": 5,
+    "East Austin": 2
+  },
+  "missingAddressCount": 292,
+  "missingRatingCount": 202,
+  "duplicateTitleCount": 3,
+  "note": "Google Maps is source material only. Runtime product uses the Downtown Perks canonical registry.",
+  "googleMapsListUrl": "https://maps.app.goo.gl/XW1pvU9PyCt8pbve9",
+  "expectedFullListCount": 369,
+  "syncStatus": "seed_only_missing_apify_credentials",
+  "syncedAt": "2026-06-24T08:14:09.431Z"
+}

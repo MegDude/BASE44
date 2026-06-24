@@ -1,0 +1,42 @@
+[
+  {
+    "id": "veracruz-all-natural-def28780",
+    "title": "Veracruz All Natural",
+    "kind": "hotel",
+    "category": "Cambria Hotel Austin Downtown",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "manual_review",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address",
+      "possible-duplicate"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.518Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  },
+  {
+    "id": "tesla-destination-charger-1f622dc5",
+    "title": "Tesla Destination Charger",
+    "kind": "venue",
+    "category": "Downtown Place",
+    "neighborhood": "Downtown Core",
+    "source": "google_maps_list_browser_extract",
+    "datasetStatus": "manual_review",
+    "expectedFullListCount": 369,
+    "actualSeedCount": 304,
+    "tags": [
+      "duplicate-title-review",
+      "needs-google-places-enrichment",
+      "needs-address",
+      "possible-duplicate"
+    ],
+    "active": true,
+    "importedAt": "2026-06-24T08:14:01.519Z",
+    "updatedAt": "2026-06-24T08:14:16.659Z"
+  }
+]

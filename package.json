@@ -10,6 +10,12 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
     "preview": "vite preview",
+    "import:google-takeout": "tsx scripts/import-google-takeout-seed.ts",
+    "import:google-browser-extract": "tsx scripts/import-google-browser-extract.ts",
+    "sync:google-maps-list": "tsx scripts/sync-google-maps-list.ts",
+    "enrich:google-places": "tsx scripts/enrich-google-places.ts",
+    "build:map-registry": "tsx scripts/build-map-registry.ts",
+    "qa:map-registry": "tsx scripts/qa-map-registry.ts",
     "assets:wikimedia": "python3 scripts/download_wikimedia_assets.py",
     "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs"
   },
@@ -53,6 +59,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "csv-parse": "^7.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.5.2",
     "framer-motion": "^11.16.4",
@@ -100,6 +107,7 @@
     "globals": "^15.14.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.22.4",
     "typescript": "^5.8.2",
     "vite": "^6.1.0"
   }

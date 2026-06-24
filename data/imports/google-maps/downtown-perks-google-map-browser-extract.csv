@@ -1,0 +1,305 @@
+id,title,kind,category,address,neighborhood,rating,reviewCount,priceLabel,lat,lng,googleMapsUrl,googlePlaceId,source,active,tags
+79-rainey-st-fc22df64,79 Rainey St,venue,,"Austin, TX 78701",Rainey,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+cava-e8d88320,CAVA,restaurant,Mediterranean,,Congress,4.6,2374,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+cozymeal-cooking-classes-c9fa2c30,Cozymeal Cooking Classes,venue,Culinary school,,Downtown Core,4.9,419,,,,,,google_maps_list_browser_extract,True,['needs-address']
+p-terry-s-burger-stand-d393d889,P. Terry's Burger Stand,restaurant,Fast Food,,Downtown Core,4.2,1336,$,,,,,google_maps_list_browser_extract,True,['needs-address']
+austin-business-journal-a48f745e,Austin Business Journal,wellness,Newspaper publisher,,Downtown Core,3.6,8,,,,,,google_maps_list_browser_extract,True,['needs-address']
+punch-bowl-social-51a5c483,Punch Bowl Social,restaurant,Restaurant,,Downtown Core,4.2,793,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+ciccio-bomba-scarborough-18436777,Ciccio Bomba - Scarborough,cafe,Cafe,,Downtown Core,4.5,8,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+ruth-s-chris-steak-house-89025ac3,Ruth's Chris Steak House,restaurant,Steak,,Downtown Core,4.4,1487,$100+,,,,,google_maps_list_browser_extract,True,['needs-address']
+velvet-taco-426e571a,Velvet Taco,restaurant,Tacos,,Downtown Core,4.7,3060,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+cvs-pharmacy-07c92ef8,CVS Pharmacy,venue,Pharmacy,,Downtown Core,4.2,62,,,,,,google_maps_list_browser_extract,True,['needs-address']
+kelly-s-corner-218cb590,Kelly's Corner,bar,Bar,,Downtown Core,5.0,14,,,,,,google_maps_list_browser_extract,True,['needs-address']
+walking-tours-of-austin-bd36cd23,Walking Tours of Austin,experience,Sightseeing tour agency,,Downtown Core,4.9,535,,,,,,google_maps_list_browser_extract,True,['needs-address']
+quik-print-e76c9f6e,Quik Print,retail,Print shop,,Downtown Core,5.0,153,,,,,,google_maps_list_browser_extract,True,['needs-address']
+mediterranean-resources-llc-1e564713,Mediterranean Resources LLC,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+mediterranean-4288957b,Mediterranean,civic,Parking lot,400 Congress Ave Parking,Congress,3.0,7,,,,,,google_maps_list_browser_extract,True,[]
+atx-metrobike-station-13945335,ATX MetroBike Station,mobility,Bicycle rental service,,Downtown Core,1.0,1,,,,,,google_maps_list_browser_extract,True,"['needs-address', 'consider-hide-from-resident-default']"
+austindeep-downtown-12b649af,AUSTINDEEP Downtown,wellness,Massage therapist,,Downtown Core,4.8,371,,,,,,google_maps_list_browser_extract,True,['needs-address']
+patagonia-2dc583f6,Patagonia,retail,Outdoor clothing and equipment shop,,Downtown Core,4.5,307,,,,,,google_maps_list_browser_extract,True,['needs-address']
+pvolve-austin-downtown-8ee95326,Pvolve Austin - Downtown,wellness,Physical fitness program,,Downtown Core,4.7,16,,,,,,google_maps_list_browser_extract,True,['needs-address']
+smoke-paradise-vape-and-hemp-dispensary-89973a52,Smoke Paradise - Vape and Hemp Dispensary,retail,Smoke shop,,Downtown Core,4.9,297,,,,,,google_maps_list_browser_extract,True,['needs-address']
+parking-940-e6c8e4ec,Parking 940,civic,Parking lot,,Downtown Core,1.3,34,,,,,,google_maps_list_browser_extract,True,"['needs-address', 'consider-hide-from-resident-default']"
+moreland-properties-ccadd62c,Moreland Properties,venue,Real estate agency,,Downtown Core,5.0,1,,,,,,google_maps_list_browser_extract,True,['needs-address']
+brandy-melville-austin-2-8ea52173,Brandy Melville - Austin 2,retail,Women's clothing store,,Downtown Core,2.5,35,,,,,,google_maps_list_browser_extract,True,['needs-address']
+ashton-austin-fca94a52,Ashton Austin,property,Apartment rental agency,,Downtown Core,4.1,191,,,,,,google_maps_list_browser_extract,True,['needs-address']
+sunglass-hut-d61a6549,Sunglass Hut,retail,Sunglasses store,,Downtown Core,4.3,11,,,,,,google_maps_list_browser_extract,True,['needs-address']
+live-ride-laugh-bb8941e9,Live Ride Laugh,retail,Toy store,,Downtown Core,5.0,2,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-austinite-market-2nd-street-d2be7390,The Austinite Market - 2nd Street,retail,Convenience store,,2nd Street,4.9,33,,,,,,google_maps_list_browser_extract,True,['needs-address']
+bill-s-oyster-ac1c8f95,Bill's Oyster,restaurant,Restaurant,,Downtown Core,4.4,309,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+walking-tours-austin-adea39f3,Walking Tours Austin,experience,Tour agency,,Downtown Core,5.0,3,,,,,,google_maps_list_browser_extract,True,['needs-address']
+amli-downtown-parking-5ac7fc0a,AMLI Downtown Parking,civic,Parking lot,,Downtown Core,2.4,18,,,,,,google_maps_list_browser_extract,True,"['needs-address', 'consider-hide-from-resident-default']"
+kasa-downtown-austin-642dd0ba,Kasa Downtown Austin,hotel,4-star hotel,,Downtown Core,4.8,230,,,,,,google_maps_list_browser_extract,True,['needs-address']
+austin-city-hall-28cf694f,Austin City Hall,civic,City Hall,,Downtown Core,3.9,110,,,,,,google_maps_list_browser_extract,True,['needs-address']
+uchib-austin-6e169239,Uchibā Austin,restaurant,Sushi,,Downtown Core,4.5,606,$100+,,,,,google_maps_list_browser_extract,True,['needs-address']
+better-half-coffee-and-cocktails-52a59333,Better Half Coffee & Cocktails,bar,Cafe,,Downtown Core,4.4,1802,$10–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+amli-300-a07d937d,AMLI 300,property,Apartment complex,,Downtown Core,3.9,72,,,,,,google_maps_list_browser_extract,True,['needs-address']
+gables-park-plaza-37178bf2,Gables Park Plaza,property,Apartment rental agency,,Downtown Core,3.4,119,,,,,,google_maps_list_browser_extract,True,['needs-address']
+two-goose-ff00f7b6,Two Goose,bar,Barbecue,,Downtown Core,4.9,159,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+swedish-hill-e550659d,Swedish Hill,cafe,Bakery,,Downtown Core,4.1,1042,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+nokonah-building-8c154835,Nokonah Building,property,Apartment building,,Downtown Core,3.2,13,,,,,,google_maps_list_browser_extract,True,['needs-address']
+little-tipsy-edcccc20,Little Tipsy,retail,Wine store,,Downtown Core,5.0,11,,,,,,google_maps_list_browser_extract,True,['needs-address']
+salt-spa-1ce92d4d,Salt Spa,wellness,Day spa,,Downtown Core,5.0,25,,,,,,google_maps_list_browser_extract,True,['needs-address']
+hair-house-atx-111b276f,Hair House ATX,wellness,Hair salon,,Downtown Core,4.9,479,,,,,,google_maps_list_browser_extract,True,['needs-address']
+j-carver-s-oyster-bar-and-chophouse-ed7ad8b2,J Carver’s Oyster Bar & Chophouse,bar,Restaurant,,Downtown Core,4.7,570,$100+,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-baked-bear-9948cf8b,The Baked Bear,venue,Dessert,,Downtown Core,4.5,763,$1–10,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-cat-s-pajamas-b94d058d,The Cat's Pajamas,bar,Bar,,Downtown Core,4.3,190,,,,,,google_maps_list_browser_extract,True,['needs-address']
+buford-s-23774380,Buford's,bar,Beer Garden,,Downtown Core,3.6,515,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+hyatt-place-austin-downtown-6ecf6af4,Hyatt Place Austin Downtown,hotel,3-star hotel,,Downtown Core,4.7,5117,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-contemporary-austin-jones-center-4be74d30,The Contemporary Austin - Jones Center,civic,Art museum,,Downtown Core,4.1,596,,,,,,google_maps_list_browser_extract,True,['needs-address']
+quattro-gatti-ristorante-e-pizzeria-9fb5c840,Quattro Gatti Ristorante e Pizzeria,restaurant,Italian,,Downtown Core,4.3,1034,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+vanhorn-s-9ed97bbd,VanHorn's,restaurant,Steak,,Downtown Core,4.5,256,$100+,,,,,google_maps_list_browser_extract,True,['needs-address']
+upstairs-circus-atx-32f8605e,Upstairs Circus ATX,bar,Bar,,Downtown Core,4.6,246,$30–50,,,,,google_maps_list_browser_extract,True,['needs-address']
+solidcore-downtown-austin-46aa52d9,[solidcore] Downtown Austin,wellness,Pilates studio,,Downtown Core,3.8,60,,,,,,google_maps_list_browser_extract,True,['needs-address']
+drybar-downtown-austin-bdd71aa7,Drybar - Downtown Austin,wellness,Hair salon,,Downtown Core,3.8,145,,,,,,google_maps_list_browser_extract,True,['needs-address']
+austin-transit-partnership-7ca708de,Austin Transit Partnership,mobility,Transportation service,,Downtown Core,4.3,12,,,,,,google_maps_list_browser_extract,True,"['needs-address', 'consider-hide-from-resident-default']"
+sparkly-maid-austin-cleaning-services-2ab24bd6,Sparkly Maid Austin Cleaning Services,civic,House cleaning service,,Downtown Core,5.0,1208,,,,,,google_maps_list_browser_extract,True,['needs-address']
+urban-wine-liquor-be5957e6,Urban Wine + Liquor,retail,Liquor store,,Downtown Core,4.0,126,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-austonian-club-84689a1b,The Austonian Club,property,Event venue,,Congress,5.0,6,,,,,,google_maps_list_browser_extract,True,['needs-address']
+mason-s-famous-lobster-rolls-cfd2da31,Mason's Famous Lobster Rolls,restaurant,Seafood,,Downtown Core,4.4,339,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+la-pe-a-529bde58,La Peña,venue,Art gallery,"Body Precision Fitness Austin, TX",Downtown Core,5.0,1,,,,,,google_maps_list_browser_extract,True,[]
+fitness-center-3547b5fc,Fitness center,wellness,Hamburger,,Downtown Core,4.6,1854,$,,,,,google_maps_list_browser_extract,True,['needs-address']
+spa-by-jw-austin-0af45b4c,Spa by JW Austin,wellness,Spa,,Downtown Core,4.8,176,,,,,,google_maps_list_browser_extract,True,['needs-address']
+visit-austin-d9d3991b,Visit Austin,civic,Tourist information center,,Downtown Core,4.2,31,,,,,,google_maps_list_browser_extract,True,['needs-address']
+ellis-64e6b6af,Ellis,bar,Bar,,Downtown Core,4.4,130,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+ciccio-bomba-fareground-e39414db,Ciccio Bomba - Fareground,cafe,Bakery,,Congress,4.2,31,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+four-brothers-venezuelan-grill-4dfff4dc,Four Brothers Venezuelan Grill,restaurant,Venezuelan,,Downtown Core,4.8,605,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+veracruz-all-natural-05dcef70,Veracruz All Natural,restaurant,Mexican,,Downtown Core,4.5,3363,$10–20,,,,,google_maps_list_browser_extract,True,"['duplicate-title-review', 'needs-address']"
+one-eleven-congress-435ae05f,One Eleven Congress,venue,Business center,,Congress,4.5,62,,,,,,google_maps_list_browser_extract,True,['needs-address']
+loaf-vine-da100ef6,Loaf+Vine,cafe,Cafe,,Downtown Core,3.3,15,,,,,,google_maps_list_browser_extract,True,['needs-address']
+alfred-coffee-09343170,Alfred Coffee,retail,Coffee shop,,Downtown Core,4.1,179,$1–10,,,,,google_maps_list_browser_extract,True,['needs-address']
+chive-hq-cd14134a,Chive HQ,venue,Media company,,Downtown Core,4.4,270,,,,,,google_maps_list_browser_extract,True,['needs-address']
+four-seasons-private-residences-austin-66816f29,Four Seasons Private Residences Austin,property,Apartment complex,,Downtown Core,4.4,9,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-spa-at-four-seasons-hotel-austin-664bae79,The Spa at Four Seasons Hotel Austin,hotel,Spa,,Downtown Core,4.4,22,,,,,,google_maps_list_browser_extract,True,['needs-address']
+live-oak-7bdc0447,Live Oak,bar,Bar,,Downtown Core,4.4,19,,,,,,google_maps_list_browser_extract,True,['needs-address']
+ciclo-bafbf14f,Ciclo,restaurant,Fine Dining,,Downtown Core,4.5,227,,,,,,google_maps_list_browser_extract,True,['needs-address']
+austin-marriott-downtown-911e0463,Austin Marriott Downtown,hotel,4-star hotel,,Downtown Core,4.6,2150,,,,,,google_maps_list_browser_extract,True,['needs-address']
+lumiere-bliss-49a5e4d0,Lumiere Bliss,hotel,Hotel,,Downtown Core,4.9,43,,,,,,google_maps_list_browser_extract,True,['needs-address']
+caf-605-128ea571,Café 605,cafe,Cafe,,Downtown Core,4.1,62,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+brass-poppy-11cf2df9,Brass Poppy,bar,Bar,,Downtown Core,4.8,40,,,,,,google_maps_list_browser_extract,True,['needs-address']
+tesla-destination-charger-1204bb57,Tesla Destination Charger,mobility,Electric vehicle charging station,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['duplicate-title-review', 'needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+kimpton-hotel-van-zandt-valet-4acbfff2,Kimpton Hotel Van Zandt Valet,hotel,Blink Charging Station,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+watr-a48c0800,Watr,mobility,ATX MetroBike Station,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+premium-parking-p3046-17070a52,Premium Parking - P3046,civic,Modern Bar,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+fleet-coffee-1a927995,Fleet Coffee,bar,Augustine Cocktail Bar,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-smokehouse-at-banger-s-77f951a0,The Smokehouse at Banger's,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-rainey-house-3bc9dbac,The Rainey House,mobility,ChargePoint Charging Station,,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+roar-2d705dad,ROAR,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+healthclicks-d10474d2,HealthClicks,civic,Rainey Street Trailhead Park,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+parkingmgt-com-05052408,parkingmgt.com,civic,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+natiivo-austin-a8b5d881,Natiivo Austin,civic,ATX Visitor Center,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+royal-blue-grocery-a1127af6,Royal Blue Grocery,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+high-street-rainey-lp-3a13c221,High Street Rainey LP,venue,,,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+randy-solis-tattoo-artist-e17fd0f2,Randy Solis Tattoo Artist,mobility,ChargePoint Charging Station,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+teatro-vivo-70ee0c49,Teatro Vivo,bar,Emma S. Barrientos Mexican American Cultural Center,700 River,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+limestone-rooftop-56a72805,Limestone Rooftop,restaurant,Graffiti Restaurant,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+woof-pet-care-ad8c28f6,WOOF Pet Care,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+veracruz-all-natural-def28780,Veracruz All Natural,hotel,Cambria Hotel Austin Downtown,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['duplicate-title-review', 'needs-google-places-enrichment', 'needs-address']"
+tacowey-rainey-7e45ee4a,Tacowey Rainey,mobility,Flash Charging Station,,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+fairfield-by-marriott-inn-and-suites-austin-downtown-16e5e138,Fairfield by Marriott Inn & Suites Austin Downtown,hotel,The Sub Shop at Banger's,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+bungalow-17febb90,Bungalow,venue,,84 E. Gallery + Goods,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+crazy-conchaz-fdc0cbd4,Crazy Conchaz,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-quincy-45cb4b28,The Quincy,wellness,Bamford Wellness Spa,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+neighbors-cafe-aee1725f,Neighbors Cafe,cafe,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+taco-baby-72f97f6f,Taco Baby,bar,Iron Works Barbecue,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+fairmont-austin-parking-parkchirp-103efcfc,Fairmont Austin Parking - ParkChirp,hotel,FedEx Office Print & Ship Center,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+good-things-aba7114a,Good Things,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+garrison-569302bf,Garrison,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+rush-my-passport-045743eb,Rush My Passport,wellness,SPA,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+fulton-729fb838,Fulton,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+room-725-eda14c53,Room 725,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+moonshine-grill-9f4af882,Moonshine Grill,civic,Kinfolk Cocktail Lounge & Spirits Library,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+frontera-tours-river-tubing-f0a1aa98,Frontera Tours River Tubing,experience,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-cut-atx-5d6f9d60,The Cut ATX,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-escape-game-austin-336048e1,The Escape Game Austin,experience,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+big-chiller-blues-c90f432a,Big Chiller Blues,civic,Central District Brewing,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+starbucks-1b45ebf7,Starbucks,civic,O. Henry Museum,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+residence-inn-by-marriott-austin-downtown-convention-center-197cb7dc,Residence Inn by Marriott Austin Downtown/Convention Center,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+austin-bachelorette-party-studio-goddess-bd1724b1,Austin Bachelorette Party - Studio Goddess,experience,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+brazos-hall-dd677b8c,Brazos Hall,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+twisted-texas-tour-04f3fc67,Twisted Texas Tour,retail,Modern Market Eatery - Frost Tower,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+vibrancy-guitar-statue-20455fe4,Vibrancy guitar statue,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+houndstooth-coffee-748b3f38,Houndstooth Coffee,cafe,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-onion-96154342,The Onion,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+el-cockfight-77a73354,El Cockfight,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+atx-dj-fe52e754,ATX DJ,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+hotspot-5b2b6bf2,Hotspot,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+brazos-lofts-5177fdfd,Brazos Lofts,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+prime-boat-rentals-fd5a85ce,Prime Boat Rentals,cafe,Cielito Lindo Cafe,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+frost-bank-tower-executive-health-club-002acadd,Frost Bank Tower Executive Health Club,bar,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+nightly-spirits-75fcb8c6,Nightly Spirits,civic,Austin Visitor Center,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+metropolis-a8ecf6b6,Metropolis,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+littlefield-garage-02197587,Littlefield Garage,mobility,Shop 24,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+littlefield-lofts-46398480,Littlefield Lofts,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-littlefield-quarters-89c26e6b,The Littlefield Quarters,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+in-plain-sight-158ce64f,In Plain Sight,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-driskill-grill-9e3a60b8,The Driskill Grill,hotel,The Driskill Bar,,Congress,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+here-nor-there-24228a2e,Here Nor There,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+sunset-strip-comedy-and-entertainment-d71d9d94,Sunset Strip Comedy & Entertainment,experience,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+happy-chicks-6eaad361,Happy Chicks,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+firehouse-lounge-9bfd7f59,Firehouse Lounge,bar,,1886 Cafe & Bakery,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+the-victorian-903305f6,The Victorian,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+tommie-austin-jdv-by-hyatt-0f83b79f,tommie Austin - JDV by Hyatt,hotel,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+caroline-d88575be,Caroline,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+garage-fb16ca65,Garage,mobility,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address', 'consider-hide-from-resident-default']"
+black-fox-coffee-d7fa60a7,Black Fox Coffee,cafe,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+mohawk-austin-f060817a,Mohawk Austin,experience,,,Red River / Waterloo,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+kickin-momo-063bc3d8,Kickin Momo,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+bathe-b9b276e5,Bathe,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+milonga-room-6228d019,Milonga Room,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+lamberts-e70e64db,Lamberts,venue,,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+sweetgreen-healthy-salads-wraps-and-bowls-aed2b9ec,"sweetgreen - Healthy Salads, Wraps, and Bowls",restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+jo-s-coffee-downtown-5d0ea7e8,Jo's Coffee – Downtown,cafe,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+violet-crown-austin-df88a4fa,Violet Crown Austin,hotel,Omni Austin Hotel Downtown,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+voodoo-doughnut-92a076c9,Voodoo Doughnut,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+roaring-fork-af0bd163,Roaring Fork,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+boa-steakhouse-fe0c22f1,BOA Steakhouse,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-kitchen-american-bistro-ea4e4716,The Kitchen American Bistro,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+fixe-southern-house-7f7da259,Fixe Southern House,venue,,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+ranch-616-c9f0e1c3,Ranch 616,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+austin-wellness-collaborative-66ce44d3,Austin Wellness Collaborative,wellness,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+la-volta-pizza-club-ee7e2e51,La Volta Pizza Club,bar,,24 Diner,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+the-antique-swan-3c5f701a,The Antique Swan,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+frank-darling-1c62c86c,Frank Darling,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+portland-leather-goods-austin-336da8c0,"Portland Leather Goods, Austin",retail,The Shade Store,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+townlake-ymca-24db2465,Townlake YMCA,wellness,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+atx-sign-38c85f74,ATX Sign,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+wellness-and-beauty-7cb49383,Wellness and Beauty,wellness,Ballet Austin's Pilates Center,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+ballet-austin-49de7473,Ballet Austin,wellness,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+local-walk-up-window-e691d916,Local Walk-Up Window,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+north-italia-21435943,North Italia,venue,,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+flower-child-61a77c2c,Flower Child,venue,,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+torchy-s-tacos-1248b350,Torchy's Tacos,wellness,World Space Austin,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+indochino-cc5a4ded,INDOCHINO,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+yummi-joy-88be381a,Yummi Joy,bar,Sushi Bar Austin Downtown,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+golden-ace-austin-21a6e956,Golden Ace Austin,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+strive-company-d64dfeba,Strive Company,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+atx-cocina-1ce57680,ATX Cocina,venue,,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+candid-studios-photography-and-videography-austin-74b3d0de,Candid Studios Photography & Videography - Austin,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+blu-dot-1d371325,Blu Dot,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+urban-outfitters-3e052923,Urban Outfitters,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+serenade-8a61b8e6,Serenade,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+which-wich-55ba7d96,Which Wich,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+starbucks-coffee-company-643ab716,Starbucks Coffee Company,cafe,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+tesla-destination-charger-1f622dc5,Tesla Destination Charger,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['duplicate-title-review', 'needs-google-places-enrichment', 'needs-address']"
+cathy-s-cleaners-downtown-3ca2a10f,Cathy's Cleaners Downtown,bar,BarChi Sushi,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+taverna-austin-downtown-the-baci-room-8e69441d,Taverna Austin (Downtown) | The Baci Room,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+iii-forks-b5605870,III Forks,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+bob-s-steak-and-chop-house-downtown-austin-a2e2c83a,Bob's Steak & Chop House - Downtown Austin,bar,Cooper's Old Time Pit Bar-B-Que,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+soma-re-form-pilates-and-wellness-collective-449a30fd,Soma Re·form Pilates & Wellness Collective,civic,Mexic-Arte Museum,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+shiner-s-saloon-28ae9645,Shiner's Saloon,bar,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+ra-sushi-austin-4a041082,RA Sushi - Austin,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+flow-at-the-one-luxury-iv-hydration-and-wellness-1835016c,Flow At The One Luxury IV Hydration & Wellness,wellness,"White Sage Integrative Wellness, Apothecary & Med Spa",,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+verbena-spa-79f6f100,Verbena Spa,civic,milk + honey | 2nd Street District,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-tox-austin-downtown-49acd5e5,The Tox Austin Downtown,property,The Monarch by Windsor Apartments,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-well-2nd-st-365d18ad,The Well - 2nd St,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+parlor-room-60ec8227,Parlor Room,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+duke-s-adventure-golf-cef7ce20,Duke's Adventure Golf,experience,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+tennis-table-83ac4db7,Tennis table,bar,Bar Toti,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+lucille-patio-lounge-7442bc15,Lucille Patio Lounge,bar,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+sugarwolf-bakery-3e815f7a,Sugarwolf Bakery,cafe,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+swish-dental-downtown-861be1f0,Swish Dental Downtown,wellness,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+hanover-republic-square-f9314ff9,Hanover Republic Square,property,Rainey Street Historic District,"Austin, TX",Downtown Core,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+lvs-la-vie-med-spas-day-spa-4303a578,LVS La Vie Med Spas + Day Spa,wellness,Medical spa,,Downtown Core,4.2,112,,,,,,google_maps_list_browser_extract,True,['needs-address']
+fat-rabbit-social-house-5d2b659e,Fat Rabbit Social House,restaurant,Brunch,,Downtown Core,4.5,141,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+geraldine-s-91cb9123,Geraldine's,restaurant,Restaurant,,Downtown Core,4.6,2088,$20–80,,,,,google_maps_list_browser_extract,True,['needs-address']
+lustre-pearl-rainey-5c0e9c29,Lustre Pearl Rainey,bar,Bar,,Rainey,4.2,485,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+roost-rainey-06e3e736,ROOST Rainey,hotel,Hotel,,Rainey,4.7,41,,,,,,google_maps_list_browser_extract,True,['needs-address']
+little-lucy-s-47aeeb7b,Little Lucy's,cafe,Donuts,,Downtown Core,4.2,349,$1–10,,,,,google_maps_list_browser_extract,True,['needs-address']
+clive-efd8c61d,Clive,bar,Bar,,Downtown Core,4.3,648,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+amaya-08d75d54,Amaya,restaurant,Mediterranean,,Downtown Core,4.2,48,$30–70,,,,,google_maps_list_browser_extract,True,['needs-address']
+anthem-2f4bad6b,Anthem,venue,Asian Fusion,,Downtown Core,4.6,910,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+victory-lap-rainey-ddfa8970,Victory Lap Rainey,bar,Sports bar,,Rainey,4.5,51,,,,,,google_maps_list_browser_extract,True,['needs-address']
+little-brother-06940ac9,Little Brother,bar,Bar,,Downtown Core,4.5,153,$10–20,,,,,google_maps_list_browser_extract,True,['needs-address']
+windsor-on-the-lake-apartments-d26a0d5b,Windsor on the Lake Apartments,property,Apartment complex,,Downtown Core,3.9,77,,,,,,google_maps_list_browser_extract,True,['needs-address']
+milago-condominium-12479897,Milago Condominium,property,Condominium complex,,Downtown Core,4.0,71,,,,,,google_maps_list_browser_extract,True,['needs-address']
+always-something-7f6295cd,Always Something,restaurant,Restaurant,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+toy-joy-2c89aaa6,Toy Joy,retail,Toy store,,Downtown Core,4.5,725,$$,,,,,google_maps_list_browser_extract,True,['needs-address']
+lucky-lizard-curios-and-gifts-dfe8bb33,Lucky Lizard Curios & Gifts,retail,Gift shop,,Downtown Core,4.4,54,,,,,,google_maps_list_browser_extract,True,['needs-address']
+daydreamer-coffee-5ae9314d,Daydreamer Coffee,retail,Coffee shop,,Downtown Core,4.5,59,$1–10,,,,,google_maps_list_browser_extract,True,['needs-address']
+e-7th-st-b31e5d0a,E 7th St,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+cesar-chavez-st-06d21ae8,Cesar Chavez St,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+electric-shuffle-7012ca7c,Electric Shuffle,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+dwell-coworking-b407366b,Dwell Coworking,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+atelier-1205-119f2372,Atelier 1205,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+arriba-abajo-28d81184,Arriba Abajo,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+half-step-99c461a2,Half Step,venue,,,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+heydey-social-club-acfea471,Heydey Social Club,bar,Subterra Agave Bar,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+bar-hacienda-3cd10d33,Bar Hacienda,bar,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+skyhouse-austin-21e323c8,SkyHouse Austin,restaurant,Corner Restaurant,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+marlow-5a5e00cb,Marlow,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+sixth-street-4136b456,Sixth Street,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+perry-s-steakhouse-and-grille-0c02ad23,Perry's Steakhouse & Grille,property,The Shore Condominium,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-peacock-bf6316c1,The Peacock,bar,Zanzibar,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+united-apparel-liquidators-a3247385,United Apparel Liquidators,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+hemline-e85857b3,Hemline,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+cedar-street-9cc7950b,Cedar Street,bar,Container Bar,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+atown-d3de7493,Atown,civic,Moody Amphitheater,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+la-condesa-e4a871c7,La Condesa,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+seaholm-power-plant-336d8c98,Seaholm Power Plant,venue,,,Seaholm,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+strangelove-c2961cec,Strangelove,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+rain-on-4th-b68ccc2c,Rain on 4th,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+midnight-cowboy-463c41a8,Midnight Cowboy,civic,Bullock Museum,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+ember-kitchen-7a91ef9a,Ember Kitchen,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+canopy-by-hilton-d2330f19,Canopy by Hilton,hotel,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-belmont-0dd436b7,The Belmont,venue,,70 Rainey,Rainey,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']
+emmer-and-rye-f8c70134,Emmer & Rye,restaurant,,,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+cedar-street-courtyard-5c0b26e4,Cedar Street Courtyard,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+austin-proper-eef9c90b,Austin Proper,civic,Waterloo Park,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+patika-6187fd86,Patika,civic,Blanton Museum,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+paramount-theatre-54187719,Paramount Theatre,civic,Moody Center,,Congress,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+dean-s-352b83ae,Dean's,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+speakeasy-7aa5835b,Speakeasy,bar,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+comedor-d91afa95,Comedor,hotel,Hotel Van Zandt,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+2nd-street-district-a0e243e9,2nd Street District,civic,,,2nd Street,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+four-seasons-3640fe7e,Four Seasons,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+austin-rotisserie-1a1a75aa,Austin Rotisserie,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+edge-rooftop-e488bca0,Edge Rooftop,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+fareground-austin-f8a41bea,Fareground Austin,venue,,,Congress,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+east-avenue-e88831b9,East Avenue,venue,,,East Austin,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+devil-may-care-d7a575f5,Devil May Care,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+antone-s-d3965a9c,Antone's,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+wu-chow-787fc299,Wu Chow,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+jw-marriott-26791b39,JW Marriott,hotel,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+green-light-social-de0a450c,Green Light Social,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+waterloo-records-2840c4b2,Waterloo Records,civic,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+jo-s-d173c1ed,Jo's,bar,Stay Put Brewpub,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+thompson-austin-49567a6c,Thompson Austin,hotel,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+true-food-kitchen-9ddbcb94,True Food Kitchen,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+whole-foods-flagship-dd6ccc06,Whole Foods Flagship,restaurant,,,Seaholm,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-dead-rabbit-6b592020,The Dead Rabbit,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+stephen-f-austin-33b67ed1,Stephen F. Austin,bar,Bar Fino,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+eliza-page-4b2977bd,Eliza Page,retail,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+republic-square-db447347,Republic Square,bar,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+fifth-west-03994013,Fifth + West,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+the-austonian-507371e1,The Austonian,property,,,Congress,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+red-ash-a028e9df,Red Ash,restaurant,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+elephant-room-53b565e6,Elephant Room,civic,Gables Park Tower,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+congress-avenue-60f6faa7,Congress Avenue,venue,,,Congress,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+rainey-street-7cf451b9,Rainey Street,venue,,,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['duplicate-title-review', 'needs-google-places-enrichment', 'needs-address']"
+the-modern-austin-residences-5a82389b,The Modern Austin Residences,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+warehouse-cbd-f42bee65,Warehouse / CBD,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+martin-luther-king-jr-blvd-5d33c6d9,Martin Luther King Jr. Blvd,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+paseo-751e7af3,Paseo,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+north-downtown-bf72bb3f,North Downtown,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+rainey-street-4687eef7,Rainey Street,civic,Seaholm District,1 Hotel Austin,Rainey,,,,,,,,google_maps_list_browser_extract,True,"['duplicate-title-review', 'needs-google-places-enrichment']"
+lady-bird-lake-99a6970f,Lady Bird Lake,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+northshore-3b140067,Northshore,property,,,Seaholm,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+residences-at-6g-2c5afc6f,Residences at 6G,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+atx-tower-8f545a4e,ATX Tower,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+mlk-highline-87f77ea7,MLK Highline,property,W Austin Hotel & Residences,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+seaholm-residences-6adf2a18,Seaholm Residences,property,,,Seaholm,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+lamar-blvd-1b262b52,Lamar Blvd,venue,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+bookpeople-ff5c1c35,BookPeople,retail,ACL Live at The Moody Theater,,Seaholm,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+waterline-austin-8d64c397,Waterline Austin,property,Corporate office,44 East Ave,East Austin,4.4,31,,,,,,google_maps_list_browser_extract,True,[]
+condominium-complex-c44c57ec,Condominium complex,property,,,Downtown Core,,,,,,,,google_maps_list_browser_extract,True,"['needs-google-places-enrichment', 'needs-address']"
+banger-s-sausage-house-and-beer-garden-aa6f1fc1,Banger's Sausage House & Beer Garden,bar,Beer Garden,,Rainey,4.5,7322,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-independent-8a0c7f28,The Independent,property,Condominium complex,,Downtown Core,4.5,96,,,,,,google_maps_list_browser_extract,True,['needs-address']
+hestia-21546be9,Hestia,restaurant,Fine Dining,,Downtown Core,4.5,1003,$100+,,,,,google_maps_list_browser_extract,True,['needs-address']
+fairmont-austin-819bd75a,Fairmont Austin,hotel,4-star hotel,,Downtown Core,4.6,7155,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-driskill-the-unbound-collection-by-hyatt-7b3b0733,The Driskill - The Unbound Collection by Hyatt,hotel,4-star hotel,,Congress,4.6,5409,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-roosevelt-room-617e5fb9,The Roosevelt Room,bar,Cocktail bar,,Downtown Core,4.6,2287,$20–30,,,,,google_maps_list_browser_extract,True,['needs-address']
+austin-central-library-austin-public-library-133ef887,"Austin Central Library, Austin Public Library",civic,Public library,,Downtown Core,4.7,1574,,,,,,google_maps_list_browser_extract,True,['needs-address']
+the-line-austin-8fdf81e3,The LINE Austin,hotel,4-star hotel,,Downtown Core,4.0,2175,,,,,,google_maps_list_browser_extract,True,['needs-address']
+texas-capitol-a76e3c38,Texas Capitol,civic,State government office,,Congress,4.7,4883,,,,,,google_maps_list_browser_extract,True,['needs-address']
+downtown-austin-f536afd5,Downtown Austin,venue,,"Austin, TX",Downtown Core,,,,,,,,google_maps_list_browser_extract,True,['needs-google-places-enrichment']

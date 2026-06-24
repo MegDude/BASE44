@@ -16,7 +16,8 @@ const storyStates = [
     ],
     meaning: "Downtown Perks brings the heat\n— and the hospitality.",
     supporting: [
-      "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” - this is for you.",
+      "For the people who plan around live music, rooftop weather,",
+      "taco runs, and “just one drink” - this is for you.",
     ],
   },
   {
@@ -42,6 +43,15 @@ const storyStates = [
     navLabel: "One map",
     kicker: "",
     headline: ["So we built one map to bring everything together."],
+    headlineGroups: [
+      [
+        { text: "So we built ", tone: "navy" },
+        { text: "one map", tone: "gold" },
+      ],
+      [
+        { text: "to bring everything together.", tone: "navy" },
+      ],
+    ],
     headlineParts: [
       { text: "So we built", tone: "navy" },
       { text: "one map", tone: "gold" },
@@ -58,16 +68,19 @@ const storyStates = [
     navLabel: "Access",
     kicker: "",
     headline: ["Your all-access pass to downtown."],
+    headlineGroups: [
+      [
+        { text: "Your all-access ", tone: "gold" },
+        { text: "pass to downtown.", tone: "navy" },
+      ],
+    ],
     headlineParts: [
       { text: "Your all-access", tone: "gold" },
       { text: "pass to downtown.", tone: "navy", compact: true },
     ],
-    meaning: "For residents, it means less searching and better plans.\nFor local businesses, it means showing up naturally while people nearby are already deciding where to go.",
+    meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
-      "Coffee around the corner. A last-minute happy hour.",
-      "The resident event you would have missed.",
-      "Connecting the people, places and perks",
-      "that make downtown feel alive.",
+      "Coffee around the corner. A last-minute happy hour. The resident event you would have missed. Connecting the people, places and perks that make downtown feel alive.",
     ],
   },
   {
@@ -123,7 +136,20 @@ function FixedStoryStage({ state }) {
           </div>
           <div className="dp-fixed-story-headline-slot">
             <h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
-              {(state.headlineParts || state.headline.map((text) => ({ text, tone: "navy" }))).map((part) => {
+              {state.headlineGroups ? state.headlineGroups.map((group, groupIndex) => (
+                <span key={`${state.id}-headline-group-${groupIndex}`} className="dp-fixed-story-headline-row">
+                  {group.map((part, partIndex) => {
+                    const segmentClassName = [
+                      "dp-fixed-story-headline-segment",
+                      part.tone === "gold" ? "dp-fixed-story-line--gold" : "dp-fixed-story-line--navy",
+                      part.compact ? "dp-fixed-story-line--compact" : "",
+                      part.bold ? "dp-fixed-story-line--bold" : "",
+                    ].filter(Boolean).join(" ");
+
+                    return <span key={`${part.text}-${partIndex}`} className={segmentClassName}>{part.text}</span>;
+                  })}
+                </span>
+              )) : (state.headlineParts || state.headline.map((text) => ({ text, tone: "navy" }))).map((part) => {
                 const lineClassName = [
                   "dp-fixed-story-line",
                   "dp-fixed-story-headline-line",
@@ -279,9 +305,6 @@ export default function SplashPage({
           />
           <div className="dp-opening-video-overlay" aria-hidden="true" />
           <div className="dp-opening-gradient" aria-hidden="true" />
-          <button type="button" className="dp-opening-skip dp-story-skip" aria-label="Skip story" onClick={finishIntro}>
-            Skip animation
-          </button>
           <div className="dp-opening-copy">
             <div className="dp-opening-label">
               <Sparkles className="h-3.5 w-3.5" />
@@ -295,6 +318,9 @@ export default function SplashPage({
               <span>Built for the people who actually live downtown</span>
               <span>&mdash; and the businesses that keep it interesting.</span>
             </p>
+            <button type="button" className="dp-opening-skip dp-story-skip" aria-label="Skip story" onClick={finishIntro}>
+              Skip animation
+            </button>
           </div>
         </section>
       )}

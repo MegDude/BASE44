@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import data from "../data/locations.json";
 import { luxuryPresenceBuildingPlaces } from "../data/luxuryPresenceInventory";
 import { supplementalMapEntities } from "../data/supplementalMapEntities";
-import { downtownPerksGoogleListImport } from "../data/downtownPerksGoogleListImport";
 import { getRepublicAustinMapPlaces } from "../data/imports/republicAustinPins";
 import { downtownParkingItems } from "../data/parkingBookings";
 import { waterlooParkInventory } from "../data/waterlooParkInventory";
@@ -12,6 +11,7 @@ import { legendsListingPlaces } from "../data/legendsListings";
 import { rentalListings } from "../data/rentalListings";
 import { mapNativeCampaigns } from "../data/mapNativeCampaigns";
 import { civicDiscoveryEntities } from "../data/civicDiscoveryNetwork";
+import { getActiveMapEntityLocations } from "../data/map/mapEntityRegistry";
 import { getDowntownCoreRestaurantUpdate } from "../data/downtownCoreRestaurantPerks";
 import { getFourSeasonsExperienceUpdate } from "../data/fourSeasonsExperience";
 import { getLegendsResidentialExperience } from "../data/legendsResidentialExperience";
@@ -703,7 +703,7 @@ const civicLayerPlaces = [
     category_key: "civic dana downtown_austin_neighborhood_association resident_voice neighborhood",
     markerType: "standard",
     detailDrawerType: "civic",
-    pinKey: "civic",
+    pinKey: "dana",
     latitude: 30.26672,
     longitude: -97.74418,
     district: "Downtown Core",
@@ -989,13 +989,14 @@ export function useLocations() {
   ];
   const daaPlaces = daaTourStops.map(daaTourStopPlace);
   const republicAustinPlaces = getRepublicAustinMapPlaces();
+  const canonicalGoogleRegistryPlaces = getActiveMapEntityLocations();
   const parkingPlaces = downtownParkingItems.filter((item) => item.active).map(parkingBookingPlace);
   const rentalPlaces = rentalListings.filter((item) => item.status === "active").map(rentalListingPlace);
   void happyHoursVersion;
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...downtownPerksGoogleListImport, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.pinKey === "civic")
     .map((item, i) => {

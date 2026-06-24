@@ -9,7 +9,7 @@ const WELLNESS_RECOVERY_IMAGE = "/images/campaigns/wellness-week/spa.avif";
 const ROOFTOP_IMAGE = "/images/residents/downtown-rooftop-evening.png";
 const FINE_EYEWEAR_PIN = "/pins/brands/fine-eyewear-logo-gold.svg";
 const WATERLOO_GREENWAY_PIN = "/pins/brands/waterloo-greenway-logo-gold.svg";
-const DANA_PIN = "/pins/brands/dana-pin.svg";
+const DANA_PIN = "/pins/brands/dana-logo-gold.svg";
 
 export const mapNativeCampaigns = [
   FOUR_SEASONS_WEEK_CAMPAIGN,

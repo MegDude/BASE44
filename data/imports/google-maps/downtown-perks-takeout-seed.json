@@ -1,0 +1,417 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7418612,
+          30.2713014
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-06-15T08:53:55Z",
+        "google_maps_url": "http://maps.google.com/?cid=13901213448694198703",
+        "location": {
+          "address": "908 N Congress Ave, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Quattro Gatti Ristorante e Pizzeria"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7431945,
+          30.2679365
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-06-15T08:34:56Z",
+        "google_maps_url": "http://maps.google.com/?cid=4244554043953019940",
+        "location": {
+          "address": "522 N Congress Ave, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Punch Bowl Social"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7154462,
+          30.2575481
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-06-07T04:17:22Z",
+        "google_maps_url": "http://maps.google.com/?cid=381523077981499971",
+        "location": {
+          "address": "2415B E 5th St. Unit B, Austin, TX 78702, United States",
+          "name": "Pershing House"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -105.0536108,
+          39.7731497
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-21T02:32:06Z",
+        "google_maps_url": "http://maps.google.com/?cid=5260574557416218732",
+        "location": {
+          "address": "4103 Sheridan Blvd, Denver, CO 80212, United States",
+          "country_code": "US",
+          "name": "Green Dragon"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7417551,
+          30.2681502
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-17T15:34:43Z",
+        "google_maps_url": "http://maps.google.com/?cid=11587148967411462074",
+        "location": {
+          "address": "604 Brazos St, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "The Driskill - The Unbound Collection by Hyatt"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7235225,
+          30.2623199
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-17T15:34:26Z",
+        "google_maps_url": "http://maps.google.com/?cid=11331924417358158118",
+        "location": {
+          "address": "1708 E 6th St, Austin, TX 78702, United States",
+          "country_code": "US",
+          "name": "daydreamer"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7386464,
+          30.2653203
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-17T15:34:09Z",
+        "google_maps_url": "http://maps.google.com/?cid=1955936656949453307",
+        "location": {
+          "address": "500 E 4th St #3720, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "SXSW"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7377236,
+          30.2669107
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-17T15:34:07Z",
+        "google_maps_url": "http://maps.google.com/?cid=420038518622253115",
+        "location": {
+          "address": "508 E 6th St, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Palm Door On Sixth"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7469912,
+          30.2652627
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-17T15:34:05Z",
+        "google_maps_url": "http://maps.google.com/?cid=5268262189183100567",
+        "location": {
+          "address": "310 W Willie Nelson Blvd, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Austin City Limits Live (ACL Live & 3TEN ACL Live)"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7440893,
+          30.2679672
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-17T15:33:59Z",
+        "google_maps_url": "http://maps.google.com/?cid=16466347261649349716",
+        "location": {
+          "address": "503 Colorado St, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Garage"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -95.5247404,
+          29.7183399
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-03-04T16:00:26Z",
+        "google_maps_url": "http://maps.google.com/?cid=13115491045959034709",
+        "location": {
+          "address": "8000 Harwin Dr. Ste 440, Houston, TX 77036, United States",
+          "country_code": "US",
+          "name": "Rock'em Western Boots & Apparel"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7427831,
+          30.3257025
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-27T05:28:19Z",
+        "google_maps_url": "http://maps.google.com/?cid=16840213708060580179",
+        "location": {
+          "address": "2302 W N Loop Blvd, Austin, TX 78756, United States",
+          "country_code": "US",
+          "name": "Tzintzuntzan"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7391452,
+          30.2615639
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-15T21:23:58Z",
+        "google_maps_url": "http://maps.google.com/?cid=12629356293346635685",
+        "location": {
+          "address": "98 Red River St, Austin, TX 78701, United States",
+          "name": "Waterline Austin"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7383170,
+          30.2623685
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-15T21:23:51Z",
+        "google_maps_url": "http://maps.google.com/?cid=7530296759164293743",
+        "location": {
+          "address": "101 Red River St, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Fulton"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7380845,
+          30.2623709
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-15T21:23:47Z",
+        "google_maps_url": "http://maps.google.com/?cid=6022320716158831123",
+        "location": {
+          "address": "101 Red River St, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Room 725"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7395520,
+          30.2563672
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-04T07:22:09Z",
+        "google_maps_url": "http://maps.google.com/?cid=628264891231768701",
+        "location": {
+          "address": "51 Rainey St #150, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "LVS La Vie Med Spas + Day Spa"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -86.7782923,
+          36.1609016
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-04T06:48:05Z",
+        "google_maps_url": "http://maps.google.com/?cid=2575564174631023828",
+        "location": {
+          "address": "422 Broadway, Nashville, TN 37203, United States",
+          "country_code": "US",
+          "name": "Tootsies Orchid Lounge"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -86.7780556,
+          36.1608333
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-04T06:47:56Z",
+        "google_maps_url": "http://maps.google.com/?cid=10506469269434684799",
+        "location": {
+          "address": "418 Broadway, Nashville, TN 37203, United States",
+          "country_code": "US",
+          "name": "Layla's Honky Tonk"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          0,
+          0
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-02-04T06:46:43Z",
+        "google_maps_url": "http://maps.google.com/?q=423+Broadway,+Nashville,+TN+37203&ftid=0x886466594baf6feb:0x145507a0e9456549",
+        "Comment": "No location information is available for this saved place"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7473200,
+          30.2783820
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-01-21T15:08:31Z",
+        "google_maps_url": "http://maps.google.com/?cid=736744386470557853",
+        "location": {
+          "address": "712 W 14th St C, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Nurse Karen Skincare & Aesthetics"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -105.9542149,
+          39.6077914
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2026-01-02T16:31:06Z",
+        "google_maps_url": "http://maps.google.com/?cid=8863273922173772159",
+        "location": {
+          "address": "22954 US-6, Keystone, CO 80435, United States",
+          "country_code": "US",
+          "name": "Goat Soup & Whiskey Tavern"
+        }
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -97.7391500,
+          30.2585400
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "date": "2025-05-30T02:57:25Z",
+        "google_maps_url": "http://maps.google.com/?cid=4233787949005463815",
+        "location": {
+          "address": "70 Rainey St #200, Austin, TX 78701, United States",
+          "country_code": "US",
+          "name": "Bar Hacienda"
+        }
+      },
+      "type": "Feature"
+    }
+  ]
+}

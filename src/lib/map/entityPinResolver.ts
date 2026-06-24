@@ -57,6 +57,10 @@ const RESTORED_MASTER_PIN_KEYS: Record<string, PinVariant> = {
 };
 
 const UPLOADED_BRAND_PIN_KEYS = new Set([
+  "dana",
+  "dana-logo",
+  "dana-logo-gold",
+  "dana-pin",
   "fine-eyewear",
   "fine-eyewear-logo",
   "fine-eyewear-pin",
@@ -168,6 +172,7 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   if (explicit) {
     if (explicit === "legends" || explicit.includes("legends-logo") || explicit.includes("legends")) return getPinAsset("legends");
     if (UPLOADED_BRAND_PIN_KEYS.has(explicit) || explicit.includes("/pins/brands/")) {
+      if (/\b(dana|downtown austin neighborhood association)\b/.test(textForPin) || explicit.includes("dana")) return getPinAsset("dana");
       if (/\b(fine[_\s-]*eyewear|eyewear|vision partner)\b/.test(textForPin)) return getPinAsset("fine-eyewear");
       if (/\b(stay[_\s-]*put|the stay put)\b/.test(textForPin)) return getPinAsset("stay-put");
       if (/\b(topo[_\s-]*chico|topochico)\b/.test(textForPin)) return getPinAsset("topo-chico");

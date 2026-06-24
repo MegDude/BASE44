@@ -12750,6 +12750,1463 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
   box-shadow: none !important;
 }
 
+/* True EOF story headline lock: all story headings share one bold serif rule. */
+html body #root#root .dp-splash-page.dp-fixed-story-page {
+  --dp-story-headline-size: clamp(36px, 9.4vw, 64px);
+  --dp-story-headline-leading: .98;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: var(--dp-story-headline-size) !important;
+  font-weight: 700 !important;
+  line-height: var(--dp-story-headline-leading) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+  display: inline !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 8px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  gap: 4px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 6px !important;
+  transform: translateY(-14px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-top: 16px !important;
+  transform: translateY(-6px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: clamp(12px, 3.25vw, 14px) !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 8px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  gap: 3px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 0 !important;
+  transform: translateY(-18px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: clamp(12px, 3.2vw, 14px) !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  margin-bottom: 10px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-top: 10px !important;
+  transform: translateY(-10px) !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy .dp-opening-skip.dp-story-skip {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  align-self: center !important;
+  margin: clamp(18px, 4vw, 28px) auto 0 !important;
+}
+
+@media (max-width: 430px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page {
+    --dp-story-headline-size: clamp(34px, 8.85vw, 38px);
+  }
+}
+
+/* Ultimate story no-cutoff lock: must remain after all story surface locks. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  padding-block: clamp(74px, 10vh, 110px) clamp(82px, 11vh, 116px) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  height: calc(100dvh - clamp(156px, 21vh, 226px)) !important;
+  max-height: calc(100dvh - clamp(156px, 21vh, 226px)) !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+  max-height: 100% !important;
+  justify-content: center !important;
+  gap: clamp(10px, 1.7vh, 18px) !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+  transform: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] :is(
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] :is(
+  .dp-fixed-story-meaning,
+  .dp-fixed-story-supporting,
+  .dp-fixed-story-supporting p
+) {
+  white-space: pre-line !important;
+  overflow: visible !important;
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 72px 78px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100dvh - 150px) !important;
+    max-height: calc(100dvh - 150px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+    justify-content: flex-start !important;
+    gap: 9px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact {
+    font-size: clamp(30px, 8.2vw, 54px) !important;
+    line-height: .98 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-inline: 20px !important;
+    padding-block: 84px 88px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100dvh - 172px) !important;
+    max-height: calc(100dvh - 172px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 13.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+  }
+}
+
+/* ABSOLUTE EOF map controls lock: this must stay last. */
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-action-bar, .dp-primary-action-row, .dp-secondary-action-row, .dp-entity-action-row, .dp-partner-action-row, .dp-partner-secondary-action-row) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(button.dp-tab-primary-action, button.dp-tab-secondary-action, a.dp-tab-primary-action, a.dp-tab-secondary-action, button.dp-panel-action, a.dp-panel-action, .dp-panel-action-text, button.dp-primary-action, a.dp-primary-action, button.dp-secondary-action, a.dp-secondary-action, .dp-entity-action, .dp-map-panel-button, .dp-map-answer-action, .dp-pass-action, .dp-action-link, .dp-scanner-action) {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  max-height: 32px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(button.dp-tab-primary-action, button.dp-tab-secondary-action, a.dp-tab-primary-action, a.dp-tab-secondary-action, button.dp-panel-action, a.dp-panel-action, .dp-panel-action-text, button.dp-primary-action, a.dp-primary-action, button.dp-secondary-action, a.dp-secondary-action, .dp-entity-action, .dp-map-panel-button, .dp-map-answer-action, .dp-pass-action, .dp-action-link, .dp-scanner-action):is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"], [data-active="true"]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(button.dp-tab-primary-action, button.dp-tab-secondary-action, a.dp-tab-primary-action, a.dp-tab-secondary-action, button.dp-panel-action, a.dp-panel-action, .dp-panel-action-text, button.dp-primary-action, a.dp-primary-action, button.dp-secondary-action, a.dp-secondary-action, .dp-entity-action, .dp-map-panel-button, .dp-map-answer-action, .dp-pass-action, .dp-action-link, .dp-scanner-action) :is(svg, .lucide, span, strong, small, em) {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+html body #root#root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+  position: fixed !important;
+  inset: auto 0 0 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  padding: 0 !important;
+  z-index: 920 !important;
+  pointer-events: auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav,
+html body #root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-width: 100vw !important;
+  height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: 0 -10px 28px rgba(11, 31, 51, .07) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  padding: 0 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, [data-active="true"], :hover, :focus-visible) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::before,
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* ABSOLUTE EOF campaign drawer action lock: outranks legacy .dp-campaign-drawer primary button rules. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > button.dp-tab-primary-action.dp-tab-primary-action,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > button.dp-tab-secondary-action.dp-tab-secondary-action,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > a.dp-tab-primary-action.dp-tab-primary-action,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > a.dp-tab-secondary-action.dp-tab-secondary-action {
+  appearance: none !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  max-height: 32px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > :is(button, a).dp-tab-primary-action.dp-tab-primary-action:is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"], [data-active="true"]),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > :is(button, a).dp-tab-secondary-action.dp-tab-secondary-action:is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"], [data-active="true"]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Terminal perk module text flow lock: use the full panel width, wrap only when required. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) .dp-perk-module .dp-perk-module-copy.dp-perk-module-copy {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  flex: 1 1 100% !important;
+  text-align: left !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) .dp-perk-module .dp-perk-module-copy :is(
+  .dp-perk-module-meta,
+  .dp-perk-module-title,
+  .dp-perk-module-value,
+  .dp-perk-module-description,
+  .dp-perk-module-terms
+) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+  text-wrap: pretty !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) .dp-perk-module .dp-perk-module-meta.dp-perk-module-meta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) .dp-perk-module .dp-perk-module-title.dp-perk-module-title {
+  margin-top: 8px !important;
+  font-size: clamp(20px, 5vw, 26px) !important;
+  line-height: 1.08 !important;
+}
+
+/* Terminal map UI governance: compact buttons, aligned rails, full-width bottom nav. */
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-campaign-action-bar,
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-entity-action-row,
+  .dp-partner-action-row,
+  .dp-partner-secondary-action-row,
+  .dp-editorial-hero-actions
+) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-map-answer-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-scanner-action,
+  .dp-tab-row .dp-tab-signal
+) {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 11px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.84) !important;
+  background-color: rgba(255, 255, 255, 0.84) !important;
+  background-image: none !important;
+  box-shadow: 0 6px 18px rgba(11, 31, 51, 0.045) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 750 !important;
+  letter-spacing: 0.045em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-map-answer-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-scanner-action,
+  .dp-tab-row .dp-tab-signal
+) :is(svg, .lucide) {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 14px !important;
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-map-answer-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-scanner-action
+):is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .dp-tab-row:is(:hover, :focus-visible) .dp-tab-signal {
+  border-color: rgba(200, 169, 106, 0.42) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.055) !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-map-answer-action,
+  .dp-pass-action,
+  .dp-action-link,
+  .dp-scanner-action
+) * {
+  color: currentColor !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-tab-eyebrow,
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-eyebrow, .dp-detail-eyebrow, .dp-campaign-eyebrow, .dp-card-eyebrow, .dp-section-eyebrow) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-visibility-rail {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-visibility-card {
+  display: grid !important;
+  grid-template-rows: 118px auto auto 1fr !important;
+  align-content: start !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-campaign-visibility-card img {
+  width: 100% !important;
+  height: 118px !important;
+  object-fit: cover !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+html body #root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+  position: fixed !important;
+  inset: auto 0 0 0 !important;
+  z-index: 920 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-width: 100vw !important;
+  height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(18px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.05) !important;
+  box-shadow: 0 -10px 28px rgba(11, 31, 51, 0.07) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) {
+  appearance: none !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  padding: 0 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.015em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::before,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) :is(svg, .lucide) {
+  width: 17px !important;
+  height: 17px !important;
+  flex: 0 0 17px !important;
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) span {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  color: currentColor !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is(:hover, :focus-visible) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page.dp-map-page .dp-campaign-visibility-rail {
+    display: flex !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x proximity !important;
+    padding-bottom: 2px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-campaign-visibility-card {
+    flex: 0 0 min(78vw, 280px) !important;
+    scroll-snap-align: start !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page :is(
+    .dp-tab-primary-action,
+    .dp-tab-secondary-action,
+    .dp-panel-action,
+    .dp-panel-action-text,
+    .dp-primary-action,
+    .dp-entity-action,
+    .dp-map-panel-button,
+    .dp-map-answer-action,
+    .dp-pass-action,
+    .dp-action-link,
+    .dp-scanner-action
+  ) {
+    min-height: 36px !important;
+    height: 36px !important;
+    padding: 0 10px !important;
+    font-size: 10.5px !important;
+  }
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  transform: translateY(-10px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  font-size: 17px !important;
+  line-height: 1.56 !important;
+}
+
+/* EOF override: story headline governance must win after every legacy mobile lock. */
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: clamp(36px, 9.4vw, 64px) !important;
+  font-weight: 700 !important;
+  line-height: .98 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 430px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+    font-size: clamp(34px, 8.85vw, 38px) !important;
+  }
+}
+
+/* Map panel header and button governance: keep copy clear of arrows, keep CTAs compact. */
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 60 !important;
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  grid-template-areas:
+    "back copy close" !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  min-height: 74px !important;
+  padding: 10px 12px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header .dp-panel-back {
+  grid-area: back !important;
+  position: relative !important;
+  inset: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header .dp-panel-close {
+  grid-area: close !important;
+  position: relative !important;
+  inset: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header .dp-panel-header-copy {
+  grid-area: copy !important;
+  display: grid !important;
+  gap: 3px !important;
+  align-content: center !important;
+  justify-items: center !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header :is(.dp-panel-eyebrow, .dp-panel-title, .dp-panel-subtitle) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header .dp-panel-eyebrow {
+  align-self: end !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+  font-weight: 800 !important;
+  letter-spacing: .13em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header .dp-panel-title {
+  align-self: center !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(15px, 4vw, 18px) !important;
+  line-height: 1.12 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header .dp-panel-subtitle {
+  align-self: start !important;
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-campaign-action-bar,
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-entity-action-row,
+  .dp-partner-action-row,
+  .dp-partner-secondary-action-row
+) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-panel-action-text,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-scanner-action
+) {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 11px !important;
+  gap: 7px !important;
+  border: 1px solid rgba(11, 31, 51, .10) !important;
+  border-radius: 7px !important;
+  background: rgba(255, 255, 255, .78) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  font-weight: 750 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-primary-action,
+  .dp-entity-action.is-primary,
+  .dp-map-panel-button--primary
+) {
+  border-color: rgba(200, 169, 106, .34) !important;
+  background: rgba(255, 255, 255, .84) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-panel-action-text,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-scanner-action
+):is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"]) {
+  border-color: rgba(200, 169, 106, .55) !important;
+  background: rgba(255, 255, 255, .9) !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-panel-action-text,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-scanner-action
+) :is(svg, .lucide) {
+  width: 14px !important;
+  height: 14px !important;
+  flex: 0 0 auto !important;
+  color: currentColor !important;
+}
+
+@media (max-width: 430px) {
+  html body #root#root .dp-map-page.dp-map-page .dp-panel-header.dp-panel-header {
+    grid-template-columns: 42px minmax(0, 1fr) 42px !important;
+    min-height: 68px !important;
+    padding: 9px 10px !important;
+    column-gap: 6px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(
+    .dp-tab-primary-action,
+    .dp-tab-secondary-action,
+    .dp-panel-action,
+    .dp-primary-action,
+    .dp-panel-action-text,
+    .dp-entity-action,
+    .dp-map-panel-button,
+    .dp-scanner-action
+  ) {
+    min-height: 32px !important;
+    height: 32px !important;
+    padding-inline: 10px !important;
+    font-size: 10.5px !important;
+  }
+}
+
+/* Final story headline and spacing lock: intentionally last in this file. */
+html body #root#root .dp-splash-page.dp-fixed-story-page {
+  --dp-story-headline-size: clamp(36px, 9.4vw, 64px);
+  --dp-story-headline-leading: .98;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: var(--dp-story-headline-size) !important;
+  font-weight: 700 !important;
+  line-height: var(--dp-story-headline-leading) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+  display: inline !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 12px !important;
+  transform: translateY(-8px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-top: 16px !important;
+  transform: translateY(-6px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: clamp(12px, 3.25vw, 14px) !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 12px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  gap: 4px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 0 !important;
+  transform: translateY(-18px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: clamp(12px, 3.2vw, 14px) !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  margin-bottom: 10px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-top: 10px !important;
+  transform: translateY(-10px) !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy .dp-opening-skip.dp-story-skip {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  align-self: center !important;
+  margin: clamp(18px, 4vw, 28px) auto 0 !important;
+}
+
+@media (max-width: 430px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page {
+    --dp-story-headline-size: clamp(34px, 8.85vw, 38px);
+  }
+}
+
+/* Final scene composition pass: preserve copy, tune placement only. */
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: clamp(38px, 10.15vw, 66px) !important;
+  font-weight: 400 !important;
+  line-height: .96 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment {
+  display: inline !important;
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: inherit !important;
+  font-weight: 400 !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="one-map"] .dp-fixed-story-headline-row {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: clamp(31px, 8vw, 64px) !important;
+  font-weight: 400 !important;
+  line-height: .98 !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="one-map"] .dp-fixed-story-headline-segment {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: inherit !important;
+  font-weight: 400 !important;
+  line-height: inherit !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 12px !important;
+  transform: translateY(-8px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-top: 16px !important;
+  transform: translateY(-6px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  font-size: clamp(12px, 3.25vw, 14px) !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 12px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  gap: 4px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 0 !important;
+  transform: translateY(-18px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: clamp(12px, 3.2vw, 14px) !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  margin-bottom: 10px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-top: 10px !important;
+  transform: translateY(-10px) !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy .dp-opening-skip.dp-story-skip {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  align-self: center !important;
+  margin: clamp(18px, 4vw, 28px) auto 0 !important;
+}
+
+/* Absolute final story headline governance: one serif size/weight system everywhere. */
+html body #root#root .dp-splash-page.dp-fixed-story-page {
+  --dp-story-headline-size: clamp(36px, 9.4vw, 64px);
+  --dp-story-headline-leading: .98;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: var(--dp-story-headline-size) !important;
+  font-weight: 700 !important;
+  line-height: var(--dp-story-headline-leading) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment {
+  display: inline !important;
+}
+
+@media (max-width: 430px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page {
+    --dp-story-headline-size: clamp(34px, 8.85vw, 38px);
+  }
+}
+
+/* Ultimate story no-cutoff lock: this must remain last for the scene flow. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  padding-block: clamp(74px, 10vh, 110px) clamp(82px, 11vh, 116px) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  height: calc(100dvh - clamp(156px, 21vh, 226px)) !important;
+  max-height: calc(100dvh - clamp(156px, 21vh, 226px)) !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+  max-height: 100% !important;
+  justify-content: center !important;
+  gap: clamp(10px, 1.7vh, 18px) !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+  transform: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] :is(
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] :is(
+  .dp-fixed-story-meaning,
+  .dp-fixed-story-supporting,
+  .dp-fixed-story-supporting p
+) {
+  white-space: pre-line !important;
+  overflow: visible !important;
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 72px 78px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100dvh - 150px) !important;
+    max-height: calc(100dvh - 150px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+    justify-content: flex-start !important;
+    gap: 9px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact {
+    font-size: clamp(30px, 8.2vw, 54px) !important;
+    line-height: .98 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-inline: 20px !important;
+    padding-block: 84px 88px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100dvh - 172px) !important;
+    max-height: calc(100dvh - 172px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 13.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+  }
+}
+
+/* Final story copy fit lock: every scene must preserve all text on short viewports. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  align-items: center !important;
+  justify-items: center !important;
+  padding-block: clamp(76px, 10vh, 112px) clamp(86px, 11vh, 118px) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  width: min(100%, 1120px) !important;
+  height: min(100%, calc(100vh - clamp(164px, 21vh, 230px))) !important;
+  max-height: calc(100vh - clamp(164px, 21vh, 230px)) !important;
+  min-height: 0 !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  width: min(100%, 720px) !important;
+  max-height: 100% !important;
+  justify-content: center !important;
+  gap: clamp(10px, 1.8vh, 18px) !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
+  .dp-fixed-story-kicker-slot,
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  overflow: visible !important;
+  flex: 0 0 auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  max-width: min(100%, 48ch) !important;
+  white-space: pre-line !important;
+  overflow: visible !important;
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 74px 82px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100vh - 156px) !important;
+    max-height: calc(100vh - 156px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    justify-content: flex-start !important;
+    gap: 9px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact {
+    font-size: clamp(32px, 8.4vw, 54px) !important;
+    line-height: .98 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 14px !important;
+    line-height: 1.48 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 12.5px !important;
+    line-height: 1.42 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-inline: 20px !important;
+    padding-block: 88px 94px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100vh - 182px) !important;
+    max-height: calc(100vh - 182px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    width: min(100%, 360px) !important;
+    gap: 9px !important;
+  }
+}
+
+@media (max-width: 380px), (max-height: 680px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 72px 80px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100vh - 152px) !important;
+    max-height: calc(100vh - 152px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact {
+    font-size: clamp(28px, 7.8vw, 42px) !important;
+  }
+}
+
 /* Absolute final story readability lock: every scene copy wraps without clipping. */
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
@@ -13511,6 +14968,11 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   transform: translateY(-16px) !important;
 }
 
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  font-size: 17px !important;
+  line-height: 1.56 !important;
+}
+
 /* Absolute final story surface lock: pure white, no beige/yellow cards or blocks. */
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active),
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
@@ -13569,4 +15031,964 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
+}
+
+/* Absolute final story no-cutoff lock: keep after surface lock. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  padding-block: clamp(74px, 10vh, 110px) clamp(82px, 11vh, 116px) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  height: calc(100dvh - clamp(156px, 21vh, 226px)) !important;
+  max-height: calc(100dvh - clamp(156px, 21vh, 226px)) !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+  max-height: 100% !important;
+  justify-content: center !important;
+  gap: clamp(10px, 1.7vh, 18px) !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+  transform: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] :is(
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 72px 78px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100dvh - 150px) !important;
+    max-height: calc(100dvh - 150px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy.dp-fixed-story-copy {
+    justify-content: flex-start !important;
+    gap: 9px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact {
+    font-size: clamp(30px, 8.2vw, 54px) !important;
+    line-height: .98 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-inline: 20px !important;
+    padding-block: 84px 88px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    height: calc(100dvh - 172px) !important;
+    max-height: calc(100dvh - 172px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 13.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+  }
+}
+/* ABSOLUTE EOF map controls lock: this must stay last. */
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-action-bar, .dp-primary-action-row, .dp-secondary-action-row, .dp-entity-action-row, .dp-partner-action-row, .dp-partner-secondary-action-row) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(button.dp-tab-primary-action, button.dp-tab-secondary-action, a.dp-tab-primary-action, a.dp-tab-secondary-action, button.dp-panel-action, a.dp-panel-action, .dp-panel-action-text, button.dp-primary-action, a.dp-primary-action, button.dp-secondary-action, a.dp-secondary-action, .dp-entity-action, .dp-map-panel-button, .dp-map-answer-action, .dp-pass-action, .dp-action-link, .dp-scanner-action) {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  max-height: 32px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(button.dp-tab-primary-action, button.dp-tab-secondary-action, a.dp-tab-primary-action, a.dp-tab-secondary-action, button.dp-panel-action, a.dp-panel-action, .dp-panel-action-text, button.dp-primary-action, a.dp-primary-action, button.dp-secondary-action, a.dp-secondary-action, .dp-entity-action, .dp-map-panel-button, .dp-map-answer-action, .dp-pass-action, .dp-action-link, .dp-scanner-action):is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"], [data-active="true"]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(button.dp-tab-primary-action, button.dp-tab-secondary-action, a.dp-tab-primary-action, a.dp-tab-secondary-action, button.dp-panel-action, a.dp-panel-action, .dp-panel-action-text, button.dp-primary-action, a.dp-primary-action, button.dp-secondary-action, a.dp-secondary-action, .dp-entity-action, .dp-map-panel-button, .dp-map-answer-action, .dp-pass-action, .dp-action-link, .dp-scanner-action) :is(svg, .lucide, span, strong, small, em) {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+html body #root#root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+  position: fixed !important;
+  inset: auto 0 0 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  padding: 0 !important;
+  z-index: 920 !important;
+  pointer-events: auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav,
+html body #root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-width: 100vw !important;
+  height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(62px + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: 0 -10px 28px rgba(11, 31, 51, .07) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  padding: 0 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, [data-active="true"], :hover, :focus-visible) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::before,
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::after {
+  display: none !important;
+  content: none !important;
+}
+/* ABSOLUTE EOF campaign drawer action lock: outranks legacy .dp-campaign-drawer primary button rules. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > button.dp-tab-primary-action.dp-tab-primary-action,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > button.dp-tab-secondary-action.dp-tab-secondary-action,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > a.dp-tab-primary-action.dp-tab-primary-action,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > a.dp-tab-secondary-action.dp-tab-secondary-action {
+  appearance: none !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  max-height: 32px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > :is(button, a).dp-tab-primary-action.dp-tab-primary-action:is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"], [data-active="true"]),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-drawer.dp-campaign-drawer .dp-campaign-action-bar.dp-campaign-action-bar > :is(button, a).dp-tab-secondary-action.dp-tab-secondary-action:is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"], [data-active="true"]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ABSOLUTE EOF partner backend mobile lock: iPhone-first, readable, scrollable, white/navy/gold. */
+html body #root#root :is(.dp-partner-page, .dp-partner-workspace-page, main:has(.dp-partner-workspace-header)) {
+  min-height: 100dvh !important;
+  overflow-x: clip !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+html body #root#root :is(.dp-partner-page, .dp-partner-workspace-page) :is(.bg-\[\#F8F7F2\], .bg-\[\#F7F8FB\], [class*="bg-[#F8F7F2]"], [class*="bg-[#F7F8FB]"]) {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-partner-workspace-header,
+html body #root#root .dp-partner-page :is(.dp-partner-workspace-header, header, .dp-partner-hero, .dp-workspace-reports-hero) {
+  background: rgba(255, 255, 255, .96) !important;
+  border-color: rgba(11, 31, 51, .08) !important;
+  box-shadow: 0 1px 0 rgba(11, 31, 51, .04) !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-partner-workspace-header {
+  padding: calc(66px + env(safe-area-inset-top, 0px)) 16px 0 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-partner-workspace-header-inner,
+html body #root#root .dp-partner-workspace-page > .max-w-6xl,
+html body #root#root .dp-partner-page > div,
+html body #root#root .dp-partner-page main > div {
+  width: 100% !important;
+  max-width: 1120px !important;
+  margin-inline: auto !important;
+}
+
+html body #root#root .dp-partner-workspace-page > .max-w-6xl,
+html body #root#root .dp-partner-page > div {
+  padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)) !important;
+  padding-bottom: max(28px, calc(env(safe-area-inset-bottom, 0px) + 24px)) !important;
+}
+
+html body #root#root .dp-partner-workspace-title-row,
+html body #root#root .dp-partner-workspace-action-row,
+html body #root#root .dp-partner-workspace-header-actions {
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-partner-page :is(.dp-partner-workspace-eyebrow, .dp-workspace-report-label, .dp-workspace-panel-header > span, .dp-tab-eyebrow, .dp-eyebrow, p[class*="uppercase"], span[class*="uppercase"]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 780 !important;
+  letter-spacing: .12em !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root .dp-partner-page :is(h1, h2, h3, .dp-partner-workspace-title, .dp-workspace-panel-header h2) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-partner-page :is(p, small, li, dd, .dp-partner-workspace-support, .dp-workspace-panel-header p) {
+  max-width: 68ch !important;
+  color: rgba(11, 31, 51, .66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .66) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  line-height: 1.55 !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-partner-workspace-tabs,
+html body #root#root .dp-partner-page :is(.dp-workspace-row-list, .dp-workspace-report-grid, .dp-workspace-report-readout, [class*="rail"], [class*="Rail"]) {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-partner-workspace-tabs::-webkit-scrollbar,
+html body #root#root .dp-partner-page :is(.dp-workspace-row-list, .dp-workspace-report-grid, .dp-workspace-report-readout, [class*="rail"], [class*="Rail"])::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-partner-workspace-tab {
+  flex: 0 0 auto !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  font-size: 11.5px !important;
+  font-weight: 680 !important;
+  color: rgba(11, 31, 51, .58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .58) !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-partner-page :is(.dp-workspace-registry-panel, .dp-workspace-reports, .dp-workspace-reports-hero, .dp-workspace-report-card, .dp-workspace-row, .dp-workspace-note, .dp-partner-summary-card, .dp-partner-feed-row, .dp-partner-readable-hero, .dp-campaign-visibility-card, .dp-brand-campaign-row, .dp-campaign-layer-row),
+html body #root#root .dp-partner-page :is([class*="rounded-"], [class*="shadow-"]):not(button):not(a) {
+  border-color: rgba(11, 31, 51, .08) !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 1px 0 rgba(11, 31, 51, .04), 0 8px 22px rgba(11, 31, 51, .045) !important;
+}
+
+html body #root#root .dp-partner-page :is(.dp-workspace-row-list, .dp-workspace-report-grid) {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+}
+
+html body #root#root .dp-partner-page :is(.dp-workspace-row, .dp-workspace-report-card, .dp-workspace-reports-hero) {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 16px !important;
+  border-radius: 12px !important;
+}
+
+html body #root#root .dp-partner-page :is(img, picture, video) {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+html body #root#root .dp-partner-page :is(article, section, div):has(> img) > img,
+html body #root#root .dp-partner-page :is(.dp-campaign-visibility-card, .dp-partner-card, .dp-workspace-card) img {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  object-fit: cover !important;
+  border-radius: 10px !important;
+}
+
+html body #root#root .dp-partner-page :is(.dp-partner-workspace-button, .dp-workspace-panel-actions a, .dp-workspace-panel-actions button, .dp-workspace-report-link, a[class*="button"], button[class*="button"], a[class*="Action"], button[class*="Action"]) {
+  min-height: 32px !important;
+  height: 32px !important;
+  max-height: 32px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-partner-page :is(.dp-partner-workspace-button, .dp-workspace-panel-actions a, .dp-workspace-panel-actions button, .dp-workspace-report-link, a[class*="button"], button[class*="button"], a[class*="Action"], button[class*="Action"]):is(:hover, :focus-visible, :active, .is-active, [aria-pressed="true"], [aria-current="page"], [aria-selected="true"]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root .dp-partner-page :is(h1, .dp-partner-workspace-title) {
+    font-size: clamp(25px, 8vw, 34px) !important;
+    line-height: 1.04 !important;
+  }
+
+  html body #root#root .dp-partner-page :is(h2, .dp-workspace-panel-header h2) {
+    font-size: clamp(21px, 6.2vw, 28px) !important;
+    line-height: 1.08 !important;
+  }
+
+  html body #root#root .dp-partner-page :is(h3) {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+  }
+
+  html body #root#root .dp-partner-workspace-title-row,
+  html body #root#root .dp-partner-workspace-action-row {
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-title-row {
+    flex-direction: column !important;
+  }
+
+  html body #root#root .dp-partner-workspace-header-actions {
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding-bottom: 2px !important;
+  }
+
+  html body #root#root .dp-partner-page :is(.grid, [class*="grid-cols"]) {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-partner-page :is(.dp-workspace-panel-actions, .dp-campaign-action-bar, .dp-primary-action-row, .dp-secondary-action-row) {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+}
+/* ABSOLUTE EOF partner workspace tab rail lock: compact text controls, never mobile card buttons. */
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 18px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 0 2px !important;
+  margin-bottom: -1px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs > .dp-partner-workspace-tab.dp-partner-workspace-tab {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  letter-spacing: .02em !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  touch-action: manipulation !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs > .dp-partner-workspace-tab.dp-partner-workspace-tab:is(:hover, :focus-visible),
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs > .dp-partner-workspace-tab.dp-partner-workspace-tab.text-\[\#0B1F33\],
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs > .dp-partner-workspace-tab.dp-partner-workspace-tab:has(.bg-\[\#C8A96A\]) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs > .dp-partner-workspace-tab.dp-partner-workspace-tab > span {
+  background: #C8A96A !important;
+  height: 1px !important;
+  border-radius: 0 !important;
+}
+/* ABSOLUTE EOF story visibility and typography lock: screenshots 2026-06-23. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) {
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  min-height: 100dvh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+  grid-row: 1 !important;
+  position: relative !important;
+  inset: auto !important;
+  z-index: 20 !important;
+  min-height: clamp(112px, 14dvh, 142px) !important;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) clamp(22px, 4vw, 42px) 18px !important;
+  background: rgba(255, 255, 255, .97) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+  box-shadow: 0 16px 40px rgba(11, 31, 51, .045) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  grid-row: 2 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: clamp(18px, 3.2dvh, 32px) clamp(22px, 5vw, 54px) clamp(14px, 2.4dvh, 28px) !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(100%, 900px) !important;
+  max-width: calc(100vw - clamp(44px, 10vw, 108px)) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  gap: clamp(12px, 2dvh, 20px) !important;
+  overflow: visible !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  grid-row: 3 !important;
+  position: relative !important;
+  inset: auto !important;
+  z-index: 21 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(14px, 2dvh, 20px) !important;
+  min-height: clamp(130px, 17dvh, 164px) !important;
+  padding: 12px clamp(20px, 5vw, 44px) calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #FFFFFF !important;
+  border: 0 !important;
+  box-shadow: 0 -18px 46px rgba(255, 255, 255, .92) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-size: clamp(54px, 7.2vw, 96px) !important;
+  font-weight: 400 !important;
+  line-height: .96 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: initial !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line.dp-fixed-story-line {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
+  display: inline !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line--navy {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line--gold {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  color: rgba(11, 31, 51, .70) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .70) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(17px, 2.15vw, 26px) !important;
+  font-weight: 620 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  max-width: min(100%, 860px) !important;
+  margin: 0 auto !important;
+  white-space: pre-line !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  display: grid !important;
+  justify-items: center !important;
+  gap: clamp(5px, .9dvh, 10px) !important;
+  max-width: min(100%, 900px) !important;
+  margin: 0 auto !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  max-width: min(100%, 860px) !important;
+  margin: 0 auto !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-copy.dp-fixed-story-copy,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-copy.dp-fixed-story-copy,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-copy.dp-fixed-story-copy {
+  gap: clamp(9px, 1.35dvh, 15px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p),
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p),
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+  font-size: clamp(15px, 1.85vw, 23px) !important;
+  line-height: 1.3 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
+  font-size: clamp(56px, 7vw, 94px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+  font-size: clamp(48px, 6.4vw, 88px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-controls.dp-fixed-story-actions,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-final-ctas.dp-fixed-map-actions {
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: clamp(16px, 3.2vw, 34px) !important;
+  width: 100% !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+    min-height: 118px !important;
+    padding-inline: 22px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-inline: 22px !important;
+    padding-block: 16px 10px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    min-height: 132px !important;
+    gap: 13px !important;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    max-width: calc(100vw - 40px) !important;
+    gap: 10px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+    font-size: clamp(42px, 11.3vw, 58px) !important;
+    line-height: .97 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: clamp(14px, 3.85vw, 16px) !important;
+    line-height: 1.32 !important;
+    font-weight: 610 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p),
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p),
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+    font-size: clamp(13px, 3.45vw, 15px) !important;
+    line-height: 1.28 !important;
+  }
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+    min-height: 104px !important;
+    padding-top: calc(14px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: 12px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    min-height: 116px !important;
+    gap: 10px !important;
+    padding-top: 8px !important;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 10px 8px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+    font-size: clamp(38px, 8.4vw, 68px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: clamp(13px, 2.45vw, 17px) !important;
+    line-height: 1.26 !important;
+  }
+}
+/* ABSOLUTE EOF story prose refinement: keep every scene readable and visually consistent. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  color: rgba(11, 31, 51, .68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .68) !important;
+  font-weight: 560 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting.dp-fixed-story-supporting p,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting p,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="easier"] .dp-fixed-story-supporting.dp-fixed-story-supporting p:nth-child(3) {
+  width: min(100%, 860px) !important;
+  max-width: min(100%, 860px) !important;
+}
+/* ABSOLUTE EOF access-scene no-cutoff lock: long story copy must clear footer controls. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  min-height: clamp(106px, 14dvh, 134px) !important;
+  gap: clamp(10px, 1.4dvh, 16px) !important;
+  padding-top: 8px !important;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  box-shadow: 0 -8px 24px rgba(255, 255, 255, .96) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-copy.dp-fixed-story-copy {
+  gap: clamp(8px, 1.05dvh, 13px) !important;
+  transform: translateY(-8px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+  font-size: clamp(44px, 5.8vw, 78px) !important;
+  line-height: .94 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+  font-size: clamp(13px, 1.55vw, 18px) !important;
+  line-height: 1.24 !important;
+  font-weight: 540 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  max-width: min(100%, 820px) !important;
+}
+
+@media (max-height: 840px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+    min-height: 98px !important;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: 10px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    min-height: 104px !important;
+    gap: 8px !important;
+    padding-top: 6px !important;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+    padding-block: 8px 4px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-copy.dp-fixed-story-copy {
+    transform: translateY(-12px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+    font-size: clamp(40px, 5.2vw, 68px) !important;
+  }
+}
+/* ABSOLUTE EOF perks/open story lock: no hidden support line, final headline is two centered lines. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-copy.dp-fixed-story-copy {
+  gap: clamp(7px, 1dvh, 12px) !important;
+  transform: translateY(-14px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
+  font-size: clamp(42px, 5.75vw, 76px) !important;
+  line-height: .94 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+  max-width: min(100%, 850px) !important;
+  color: rgba(11, 31, 51, .68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .68) !important;
+  font-size: clamp(13px, 1.5vw, 18px) !important;
+  font-weight: 540 !important;
+  line-height: 1.22 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-top: 0 !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-copy.dp-fixed-story-copy {
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(18px, 2.6dvh, 34px) !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  white-space: normal !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line:nth-child(1),
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line:nth-child(2) {
+  display: block !important;
+  margin-inline: auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="open"] .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  display: block !important;
+  width: 100% !important;
+  max-width: min(100%, 820px) !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+@media (max-height: 840px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-copy.dp-fixed-story-copy {
+    transform: translateY(-18px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-headline.dp-fixed-story-headline,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
+    font-size: clamp(38px, 5.1vw, 66px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="perks"] :is(.dp-fixed-story-meaning, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+    font-size: clamp(12.5px, 1.42vw, 16px) !important;
+    line-height: 1.2 !important;
+  }
 }

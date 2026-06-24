@@ -1,0 +1,3442 @@
+{
+  "generatedAt": "2026-06-24T08:15:43.848Z",
+  "expectedFullListCount": 369,
+  "actualEntityCount": 324,
+  "activeEntityCount": 324,
+  "issueCount": 1489,
+  "issues": [
+    {
+      "entityId": "79-rainey-st-fc22df64",
+      "title": "79 Rainey St",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cava-e8d88320",
+      "title": "CAVA",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cozymeal-cooking-classes-c9fa2c30",
+      "title": "Cozymeal Cooking Classes",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "p-terry-s-burger-stand-d393d889",
+      "title": "P. Terry's Burger Stand",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-business-journal-a48f745e",
+      "title": "Austin Business Journal",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "punch-bowl-social-51a5c483",
+      "title": "Punch Bowl Social",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ciccio-bomba-scarborough-18436777",
+      "title": "Ciccio Bomba - Scarborough",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ruth-s-chris-steak-house-89025ac3",
+      "title": "Ruth's Chris Steak House",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "velvet-taco-426e571a",
+      "title": "Velvet Taco",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cvs-pharmacy-07c92ef8",
+      "title": "CVS Pharmacy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "kelly-s-corner-218cb590",
+      "title": "Kelly's Corner",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "walking-tours-of-austin-bd36cd23",
+      "title": "Walking Tours of Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "quik-print-e76c9f6e",
+      "title": "Quik Print",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "mediterranean-resources-llc-1e564713",
+      "title": "Mediterranean Resources LLC",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "mediterranean-4288957b",
+      "title": "Mediterranean",
+      "issues": [
+        "missing_coordinates",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atx-metrobike-station-13945335",
+      "title": "ATX MetroBike Station",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austindeep-downtown-12b649af",
+      "title": "AUSTINDEEP Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "patagonia-2dc583f6",
+      "title": "Patagonia",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "pvolve-austin-downtown-8ee95326",
+      "title": "Pvolve Austin - Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "smoke-paradise-vape-and-hemp-dispensary-89973a52",
+      "title": "Smoke Paradise - Vape and Hemp Dispensary",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "parking-940-e6c8e4ec",
+      "title": "Parking 940",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "moreland-properties-ccadd62c",
+      "title": "Moreland Properties",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "brandy-melville-austin-2-8ea52173",
+      "title": "Brandy Melville - Austin 2",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ashton-austin-fca94a52",
+      "title": "Ashton Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sunglass-hut-d61a6549",
+      "title": "Sunglass Hut",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "live-ride-laugh-bb8941e9",
+      "title": "Live Ride Laugh",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-austinite-market-2nd-street-d2be7390",
+      "title": "The Austinite Market - 2nd Street",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bill-s-oyster-ac1c8f95",
+      "title": "Bill's Oyster",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "walking-tours-austin-adea39f3",
+      "title": "Walking Tours Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "amli-downtown-parking-5ac7fc0a",
+      "title": "AMLI Downtown Parking",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "kasa-downtown-austin-642dd0ba",
+      "title": "Kasa Downtown Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-city-hall-28cf694f",
+      "title": "Austin City Hall",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "uchib-austin-6e169239",
+      "title": "Uchibā Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "better-half-coffee-and-cocktails-52a59333",
+      "title": "Better Half Coffee & Cocktails",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "amli-300-a07d937d",
+      "title": "AMLI 300",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "gables-park-plaza-37178bf2",
+      "title": "Gables Park Plaza",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "two-goose-ff00f7b6",
+      "title": "Two Goose",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "swedish-hill-e550659d",
+      "title": "Swedish Hill",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "nokonah-building-8c154835",
+      "title": "Nokonah Building",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "little-tipsy-edcccc20",
+      "title": "Little Tipsy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "salt-spa-1ce92d4d",
+      "title": "Salt Spa",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "hair-house-atx-111b276f",
+      "title": "Hair House ATX",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "j-carver-s-oyster-bar-and-chophouse-ed7ad8b2",
+      "title": "J Carver’s Oyster Bar & Chophouse",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-baked-bear-9948cf8b",
+      "title": "The Baked Bear",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-cat-s-pajamas-b94d058d",
+      "title": "The Cat's Pajamas",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "buford-s-23774380",
+      "title": "Buford's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "hyatt-place-austin-downtown-6ecf6af4",
+      "title": "Hyatt Place Austin Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-contemporary-austin-jones-center-4be74d30",
+      "title": "The Contemporary Austin - Jones Center",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "quattro-gatti-ristorante-e-pizzeria-9fb5c840",
+      "title": "Quattro Gatti Ristorante e Pizzeria",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "vanhorn-s-9ed97bbd",
+      "title": "VanHorn's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "upstairs-circus-atx-32f8605e",
+      "title": "Upstairs Circus ATX",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "solidcore-downtown-austin-46aa52d9",
+      "title": "[solidcore] Downtown Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "drybar-downtown-austin-bdd71aa7",
+      "title": "Drybar - Downtown Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-transit-partnership-7ca708de",
+      "title": "Austin Transit Partnership",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sparkly-maid-austin-cleaning-services-2ab24bd6",
+      "title": "Sparkly Maid Austin Cleaning Services",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "urban-wine-liquor-be5957e6",
+      "title": "Urban Wine + Liquor",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-austonian-club-84689a1b",
+      "title": "The Austonian Club",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "mason-s-famous-lobster-rolls-cfd2da31",
+      "title": "Mason's Famous Lobster Rolls",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "la-pe-a-529bde58",
+      "title": "La Peña",
+      "issues": [
+        "missing_coordinates",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fitness-center-3547b5fc",
+      "title": "Fitness center",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "spa-by-jw-austin-0af45b4c",
+      "title": "Spa by JW Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "visit-austin-d9d3991b",
+      "title": "Visit Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ellis-64e6b6af",
+      "title": "Ellis",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ciccio-bomba-fareground-e39414db",
+      "title": "Ciccio Bomba - Fareground",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "four-brothers-venezuelan-grill-4dfff4dc",
+      "title": "Four Brothers Venezuelan Grill",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "veracruz-all-natural-05dcef70",
+      "title": "Veracruz All Natural",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "one-eleven-congress-435ae05f",
+      "title": "One Eleven Congress",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "loaf-vine-da100ef6",
+      "title": "Loaf+Vine",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "alfred-coffee-09343170",
+      "title": "Alfred Coffee",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "chive-hq-cd14134a",
+      "title": "Chive HQ",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "four-seasons-private-residences-austin-66816f29",
+      "title": "Four Seasons Private Residences Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-spa-at-four-seasons-hotel-austin-664bae79",
+      "title": "The Spa at Four Seasons Hotel Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "live-oak-7bdc0447",
+      "title": "Live Oak",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ciclo-bafbf14f",
+      "title": "Ciclo",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-marriott-downtown-911e0463",
+      "title": "Austin Marriott Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lumiere-bliss-49a5e4d0",
+      "title": "Lumiere Bliss",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "caf-605-128ea571",
+      "title": "Café 605",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "brass-poppy-11cf2df9",
+      "title": "Brass Poppy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "tesla-destination-charger-1204bb57",
+      "title": "Tesla Destination Charger",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "kimpton-hotel-van-zandt-valet-4acbfff2",
+      "title": "Kimpton Hotel Van Zandt Valet",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "watr-a48c0800",
+      "title": "Watr",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "premium-parking-p3046-17070a52",
+      "title": "Premium Parking - P3046",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fleet-coffee-1a927995",
+      "title": "Fleet Coffee",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-smokehouse-at-banger-s-77f951a0",
+      "title": "The Smokehouse at Banger's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-rainey-house-3bc9dbac",
+      "title": "The Rainey House",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "roar-2d705dad",
+      "title": "ROAR",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "healthclicks-d10474d2",
+      "title": "HealthClicks",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "parkingmgt-com-05052408",
+      "title": "parkingmgt.com",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "natiivo-austin-a8b5d881",
+      "title": "Natiivo Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "royal-blue-grocery-a1127af6",
+      "title": "Royal Blue Grocery",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "high-street-rainey-lp-3a13c221",
+      "title": "High Street Rainey LP",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "randy-solis-tattoo-artist-e17fd0f2",
+      "title": "Randy Solis Tattoo Artist",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "teatro-vivo-70ee0c49",
+      "title": "Teatro Vivo",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "limestone-rooftop-56a72805",
+      "title": "Limestone Rooftop",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "woof-pet-care-ad8c28f6",
+      "title": "WOOF Pet Care",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "tacowey-rainey-7e45ee4a",
+      "title": "Tacowey Rainey",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fairfield-by-marriott-inn-and-suites-austin-downtown-16e5e138",
+      "title": "Fairfield by Marriott Inn & Suites Austin Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bungalow-17febb90",
+      "title": "Bungalow",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "crazy-conchaz-fdc0cbd4",
+      "title": "Crazy Conchaz",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-quincy-45cb4b28",
+      "title": "The Quincy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "neighbors-cafe-aee1725f",
+      "title": "Neighbors Cafe",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "taco-baby-72f97f6f",
+      "title": "Taco Baby",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fairmont-austin-parking-parkchirp-103efcfc",
+      "title": "Fairmont Austin Parking - ParkChirp",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "good-things-aba7114a",
+      "title": "Good Things",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "garrison-569302bf",
+      "title": "Garrison",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "rush-my-passport-045743eb",
+      "title": "Rush My Passport",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fulton-729fb838",
+      "title": "Fulton",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "room-725-eda14c53",
+      "title": "Room 725",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "moonshine-grill-9f4af882",
+      "title": "Moonshine Grill",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "frontera-tours-river-tubing-f0a1aa98",
+      "title": "Frontera Tours River Tubing",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-cut-atx-5d6f9d60",
+      "title": "The Cut ATX",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-escape-game-austin-336048e1",
+      "title": "The Escape Game Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "big-chiller-blues-c90f432a",
+      "title": "Big Chiller Blues",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "starbucks-1b45ebf7",
+      "title": "Starbucks",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "residence-inn-by-marriott-austin-downtown-convention-center-197cb7dc",
+      "title": "Residence Inn by Marriott Austin Downtown/Convention Center",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-bachelorette-party-studio-goddess-bd1724b1",
+      "title": "Austin Bachelorette Party - Studio Goddess",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "brazos-hall-dd677b8c",
+      "title": "Brazos Hall",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "twisted-texas-tour-04f3fc67",
+      "title": "Twisted Texas Tour",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "vibrancy-guitar-statue-20455fe4",
+      "title": "Vibrancy guitar statue",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "houndstooth-coffee-748b3f38",
+      "title": "Houndstooth Coffee",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-onion-96154342",
+      "title": "The Onion",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "el-cockfight-77a73354",
+      "title": "El Cockfight",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atx-dj-fe52e754",
+      "title": "ATX DJ",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "hotspot-5b2b6bf2",
+      "title": "Hotspot",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "brazos-lofts-5177fdfd",
+      "title": "Brazos Lofts",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "prime-boat-rentals-fd5a85ce",
+      "title": "Prime Boat Rentals",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "frost-bank-tower-executive-health-club-002acadd",
+      "title": "Frost Bank Tower Executive Health Club",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "nightly-spirits-75fcb8c6",
+      "title": "Nightly Spirits",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "metropolis-a8ecf6b6",
+      "title": "Metropolis",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "littlefield-garage-02197587",
+      "title": "Littlefield Garage",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "littlefield-lofts-46398480",
+      "title": "Littlefield Lofts",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-littlefield-quarters-89c26e6b",
+      "title": "The Littlefield Quarters",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "in-plain-sight-158ce64f",
+      "title": "In Plain Sight",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-driskill-grill-9e3a60b8",
+      "title": "The Driskill Grill",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "here-nor-there-24228a2e",
+      "title": "Here Nor There",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sunset-strip-comedy-and-entertainment-d71d9d94",
+      "title": "Sunset Strip Comedy & Entertainment",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "happy-chicks-6eaad361",
+      "title": "Happy Chicks",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "firehouse-lounge-9bfd7f59",
+      "title": "Firehouse Lounge",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-victorian-903305f6",
+      "title": "The Victorian",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "tommie-austin-jdv-by-hyatt-0f83b79f",
+      "title": "tommie Austin - JDV by Hyatt",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "caroline-d88575be",
+      "title": "Caroline",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "garage-fb16ca65",
+      "title": "Garage",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "black-fox-coffee-d7fa60a7",
+      "title": "Black Fox Coffee",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "mohawk-austin-f060817a",
+      "title": "Mohawk Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "kickin-momo-063bc3d8",
+      "title": "Kickin Momo",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bathe-b9b276e5",
+      "title": "Bathe",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "milonga-room-6228d019",
+      "title": "Milonga Room",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lamberts-e70e64db",
+      "title": "Lamberts",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sweetgreen-healthy-salads-wraps-and-bowls-aed2b9ec",
+      "title": "sweetgreen - Healthy Salads, Wraps, and Bowls",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "jo-s-coffee-downtown-5d0ea7e8",
+      "title": "Jo's Coffee – Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "violet-crown-austin-df88a4fa",
+      "title": "Violet Crown Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "voodoo-doughnut-92a076c9",
+      "title": "Voodoo Doughnut",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "roaring-fork-af0bd163",
+      "title": "Roaring Fork",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "boa-steakhouse-fe0c22f1",
+      "title": "BOA Steakhouse",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-kitchen-american-bistro-ea4e4716",
+      "title": "The Kitchen American Bistro",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fixe-southern-house-7f7da259",
+      "title": "Fixe Southern House",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ranch-616-c9f0e1c3",
+      "title": "Ranch 616",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-wellness-collaborative-66ce44d3",
+      "title": "Austin Wellness Collaborative",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "la-volta-pizza-club-ee7e2e51",
+      "title": "La Volta Pizza Club",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-antique-swan-3c5f701a",
+      "title": "The Antique Swan",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "frank-darling-1c62c86c",
+      "title": "Frank Darling",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "portland-leather-goods-austin-336da8c0",
+      "title": "Portland Leather Goods, Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "townlake-ymca-24db2465",
+      "title": "Townlake YMCA",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atx-sign-38c85f74",
+      "title": "ATX Sign",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "wellness-and-beauty-7cb49383",
+      "title": "Wellness and Beauty",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ballet-austin-49de7473",
+      "title": "Ballet Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "local-walk-up-window-e691d916",
+      "title": "Local Walk-Up Window",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "north-italia-21435943",
+      "title": "North Italia",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "flower-child-61a77c2c",
+      "title": "Flower Child",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "torchy-s-tacos-1248b350",
+      "title": "Torchy's Tacos",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "indochino-cc5a4ded",
+      "title": "INDOCHINO",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "yummi-joy-88be381a",
+      "title": "Yummi Joy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "golden-ace-austin-21a6e956",
+      "title": "Golden Ace Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "strive-company-d64dfeba",
+      "title": "Strive Company",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atx-cocina-1ce57680",
+      "title": "ATX Cocina",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "candid-studios-photography-and-videography-austin-74b3d0de",
+      "title": "Candid Studios Photography & Videography - Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "blu-dot-1d371325",
+      "title": "Blu Dot",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "urban-outfitters-3e052923",
+      "title": "Urban Outfitters",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "serenade-8a61b8e6",
+      "title": "Serenade",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "which-wich-55ba7d96",
+      "title": "Which Wich",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "starbucks-coffee-company-643ab716",
+      "title": "Starbucks Coffee Company",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cathy-s-cleaners-downtown-3ca2a10f",
+      "title": "Cathy's Cleaners Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "taverna-austin-downtown-the-baci-room-8e69441d",
+      "title": "Taverna Austin (Downtown) | The Baci Room",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "iii-forks-b5605870",
+      "title": "III Forks",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bob-s-steak-and-chop-house-downtown-austin-a2e2c83a",
+      "title": "Bob's Steak & Chop House - Downtown Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "soma-re-form-pilates-and-wellness-collective-449a30fd",
+      "title": "Soma Re·form Pilates & Wellness Collective",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "shiner-s-saloon-28ae9645",
+      "title": "Shiner's Saloon",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ra-sushi-austin-4a041082",
+      "title": "RA Sushi - Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "flow-at-the-one-luxury-iv-hydration-and-wellness-1835016c",
+      "title": "Flow At The One Luxury IV Hydration & Wellness",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "verbena-spa-79f6f100",
+      "title": "Verbena Spa",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-tox-austin-downtown-49acd5e5",
+      "title": "The Tox Austin Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-well-2nd-st-365d18ad",
+      "title": "The Well - 2nd St",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "parlor-room-60ec8227",
+      "title": "Parlor Room",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "duke-s-adventure-golf-cef7ce20",
+      "title": "Duke's Adventure Golf",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "tennis-table-83ac4db7",
+      "title": "Tennis table",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lucille-patio-lounge-7442bc15",
+      "title": "Lucille Patio Lounge",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sugarwolf-bakery-3e815f7a",
+      "title": "Sugarwolf Bakery",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "swish-dental-downtown-861be1f0",
+      "title": "Swish Dental Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "hanover-republic-square-f9314ff9",
+      "title": "Hanover Republic Square",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lvs-la-vie-med-spas-day-spa-4303a578",
+      "title": "LVS La Vie Med Spas + Day Spa",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fat-rabbit-social-house-5d2b659e",
+      "title": "Fat Rabbit Social House",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "geraldine-s-91cb9123",
+      "title": "Geraldine's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lustre-pearl-rainey-5c0e9c29",
+      "title": "Lustre Pearl Rainey",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "roost-rainey-06e3e736",
+      "title": "ROOST Rainey",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "little-lucy-s-47aeeb7b",
+      "title": "Little Lucy's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "clive-efd8c61d",
+      "title": "Clive",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "amaya-08d75d54",
+      "title": "Amaya",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "anthem-2f4bad6b",
+      "title": "Anthem",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "victory-lap-rainey-ddfa8970",
+      "title": "Victory Lap Rainey",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "little-brother-06940ac9",
+      "title": "Little Brother",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "windsor-on-the-lake-apartments-d26a0d5b",
+      "title": "Windsor on the Lake Apartments",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "milago-condominium-12479897",
+      "title": "Milago Condominium",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "always-something-7f6295cd",
+      "title": "Always Something",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "toy-joy-2c89aaa6",
+      "title": "Toy Joy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lucky-lizard-curios-and-gifts-dfe8bb33",
+      "title": "Lucky Lizard Curios & Gifts",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "daydreamer-coffee-5ae9314d",
+      "title": "Daydreamer Coffee",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "e-7th-st-b31e5d0a",
+      "title": "E 7th St",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cesar-chavez-st-06d21ae8",
+      "title": "Cesar Chavez St",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "electric-shuffle-7012ca7c",
+      "title": "Electric Shuffle",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "dwell-coworking-b407366b",
+      "title": "Dwell Coworking",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atelier-1205-119f2372",
+      "title": "Atelier 1205",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "arriba-abajo-28d81184",
+      "title": "Arriba Abajo",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "half-step-99c461a2",
+      "title": "Half Step",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "heydey-social-club-acfea471",
+      "title": "Heydey Social Club",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bar-hacienda-3cd10d33",
+      "title": "Bar Hacienda",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "skyhouse-austin-21e323c8",
+      "title": "SkyHouse Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "marlow-5a5e00cb",
+      "title": "Marlow",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sixth-street-4136b456",
+      "title": "Sixth Street",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "perry-s-steakhouse-and-grille-0c02ad23",
+      "title": "Perry's Steakhouse & Grille",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-peacock-bf6316c1",
+      "title": "The Peacock",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "united-apparel-liquidators-a3247385",
+      "title": "United Apparel Liquidators",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "hemline-e85857b3",
+      "title": "Hemline",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cedar-street-9cc7950b",
+      "title": "Cedar Street",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atown-d3de7493",
+      "title": "Atown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "la-condesa-e4a871c7",
+      "title": "La Condesa",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "seaholm-power-plant-336d8c98",
+      "title": "Seaholm Power Plant",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "strangelove-c2961cec",
+      "title": "Strangelove",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "rain-on-4th-b68ccc2c",
+      "title": "Rain on 4th",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "midnight-cowboy-463c41a8",
+      "title": "Midnight Cowboy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "ember-kitchen-7a91ef9a",
+      "title": "Ember Kitchen",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "canopy-by-hilton-d2330f19",
+      "title": "Canopy by Hilton",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-belmont-0dd436b7",
+      "title": "The Belmont",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "emmer-and-rye-f8c70134",
+      "title": "Emmer & Rye",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "cedar-street-courtyard-5c0b26e4",
+      "title": "Cedar Street Courtyard",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-proper-eef9c90b",
+      "title": "Austin Proper",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "patika-6187fd86",
+      "title": "Patika",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "paramount-theatre-54187719",
+      "title": "Paramount Theatre",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "dean-s-352b83ae",
+      "title": "Dean's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "speakeasy-7aa5835b",
+      "title": "Speakeasy",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "comedor-d91afa95",
+      "title": "Comedor",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "2nd-street-district-a0e243e9",
+      "title": "2nd Street District",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "four-seasons-3640fe7e",
+      "title": "Four Seasons",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-rotisserie-1a1a75aa",
+      "title": "Austin Rotisserie",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "edge-rooftop-e488bca0",
+      "title": "Edge Rooftop",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fareground-austin-f8a41bea",
+      "title": "Fareground Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "east-avenue-e88831b9",
+      "title": "East Avenue",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "devil-may-care-d7a575f5",
+      "title": "Devil May Care",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "antone-s-d3965a9c",
+      "title": "Antone's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "wu-chow-787fc299",
+      "title": "Wu Chow",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "jw-marriott-26791b39",
+      "title": "JW Marriott",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "green-light-social-de0a450c",
+      "title": "Green Light Social",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "waterloo-records-2840c4b2",
+      "title": "Waterloo Records",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "jo-s-d173c1ed",
+      "title": "Jo's",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "thompson-austin-49567a6c",
+      "title": "Thompson Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "true-food-kitchen-9ddbcb94",
+      "title": "True Food Kitchen",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "whole-foods-flagship-dd6ccc06",
+      "title": "Whole Foods Flagship",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-dead-rabbit-6b592020",
+      "title": "The Dead Rabbit",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "stephen-f-austin-33b67ed1",
+      "title": "Stephen F. Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "eliza-page-4b2977bd",
+      "title": "Eliza Page",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "republic-square-db447347",
+      "title": "Republic Square",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fifth-west-03994013",
+      "title": "Fifth + West",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-austonian-507371e1",
+      "title": "The Austonian",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "red-ash-a028e9df",
+      "title": "Red Ash",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "elephant-room-53b565e6",
+      "title": "Elephant Room",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "congress-avenue-60f6faa7",
+      "title": "Congress Avenue",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "rainey-street-7cf451b9",
+      "title": "Rainey Street",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-modern-austin-residences-5a82389b",
+      "title": "The Modern Austin Residences",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "warehouse-cbd-f42bee65",
+      "title": "Warehouse / CBD",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "martin-luther-king-jr-blvd-5d33c6d9",
+      "title": "Martin Luther King Jr. Blvd",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "paseo-751e7af3",
+      "title": "Paseo",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "north-downtown-bf72bb3f",
+      "title": "North Downtown",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "rainey-street-4687eef7",
+      "title": "Rainey Street",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lady-bird-lake-99a6970f",
+      "title": "Lady Bird Lake",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "northshore-3b140067",
+      "title": "Northshore",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "residences-at-6g-2c5afc6f",
+      "title": "Residences at 6G",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "atx-tower-8f545a4e",
+      "title": "ATX Tower",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "mlk-highline-87f77ea7",
+      "title": "MLK Highline",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "seaholm-residences-6adf2a18",
+      "title": "Seaholm Residences",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lamar-blvd-1b262b52",
+      "title": "Lamar Blvd",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bookpeople-ff5c1c35",
+      "title": "BookPeople",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "waterline-austin-8d64c397",
+      "title": "Waterline Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "condominium-complex-c44c57ec",
+      "title": "Condominium complex",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "banger-s-sausage-house-and-beer-garden-aa6f1fc1",
+      "title": "Banger's Sausage House & Beer Garden",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-independent-8a0c7f28",
+      "title": "The Independent",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "hestia-21546be9",
+      "title": "Hestia",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fairmont-austin-819bd75a",
+      "title": "Fairmont Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-driskill-the-unbound-collection-by-hyatt-7b3b0733",
+      "title": "The Driskill - The Unbound Collection by Hyatt",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-roosevelt-room-617e5fb9",
+      "title": "The Roosevelt Room",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-central-library-austin-public-library-133ef887",
+      "title": "Austin Central Library, Austin Public Library",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-line-austin-8fdf81e3",
+      "title": "The LINE Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "texas-capitol-a76e3c38",
+      "title": "Texas Capitol",
+      "issues": [
+        "missing_coordinates",
+        "missing_address",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "downtown-austin-f536afd5",
+      "title": "Downtown Austin",
+      "issues": [
+        "missing_coordinates",
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "quattro-gatti-ristorante-e-pizzeria-bf9c67fe",
+      "title": "Quattro Gatti Ristorante e Pizzeria",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "punch-bowl-social-e0369f67",
+      "title": "Punch Bowl Social",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "pershing-house-6296687c",
+      "title": "Pershing House",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "green-dragon-520db6a3",
+      "title": "Green Dragon",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "outside_downtown_or_austin_review",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "the-driskill-the-unbound-collection-by-hyatt-771ce4b1",
+      "title": "The Driskill - The Unbound Collection by Hyatt",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "daydreamer-aa480e11",
+      "title": "daydreamer",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "sxsw-300e90a6",
+      "title": "SXSW",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "palm-door-on-sixth-33223a7e",
+      "title": "Palm Door On Sixth",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "austin-city-limits-live-acl-live-and-3ten-acl-live-ab7fed60",
+      "title": "Austin City Limits Live (ACL Live & 3TEN ACL Live)",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "garage-5dd2ee3b",
+      "title": "Garage",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "rock-em-western-boots-and-apparel-7f61798a",
+      "title": "Rock'em Western Boots & Apparel",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "outside_downtown_or_austin_review",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "tzintzuntzan-0c4ffb72",
+      "title": "Tzintzuntzan",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "waterline-austin-e1fb3126",
+      "title": "Waterline Austin",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "fulton-8aee9dc1",
+      "title": "Fulton",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "room-725-0fbc714c",
+      "title": "Room 725",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "lvs-la-vie-med-spas-day-spa-118516a1",
+      "title": "LVS La Vie Med Spas + Day Spa",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "tootsies-orchid-lounge-5be9062c",
+      "title": "Tootsies Orchid Lounge",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "outside_downtown_or_austin_review",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "layla-s-honky-tonk-ec8b6aa9",
+      "title": "Layla's Honky Tonk",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "outside_downtown_or_austin_review",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "saved-place-6349beca",
+      "title": "Saved Place",
+      "issues": [
+        "missing_address",
+        "missing_rating",
+        "missing_image",
+        "outside_downtown_or_austin_review",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "nurse-karen-skincare-and-aesthetics-fd718ebb",
+      "title": "Nurse Karen Skincare & Aesthetics",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "goat-soup-and-whiskey-tavern-7ce82910",
+      "title": "Goat Soup & Whiskey Tavern",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "outside_downtown_or_austin_review",
+        "needs_google_places_enrichment"
+      ]
+    },
+    {
+      "entityId": "bar-hacienda-8f0f902b",
+      "title": "Bar Hacienda",
+      "issues": [
+        "missing_rating",
+        "missing_image",
+        "duplicate_title",
+        "needs_google_places_enrichment"
+      ]
+    }
+  ]
+}
