@@ -25321,6 +25321,422 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-entity-action, .dp-panel-a
   white-space: nowrap !important;
 }
 
+/* Partner map platform audit lock: reports, activity, campaigns, and info use one product language. */
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 14px 14px calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel,
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel * {
+  box-sizing: border-box !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-tab-stack {
+  display: grid !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel :is(section, .dp-partner-report-card, .dp-partner-summary-card, .dp-partner-feed-row, .dp-campaign-layer-row, .dp-brand-campaign-row, .dp-campaign-visibility-card, .dp-report-next-action, .dp-partner-report-visual, .dp-austin-growth-read, .dp-partner-info-copy, .dp-partner-info-steps) {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.055) !important;
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel :is(.dp-partner-readable-hero, .dp-campaign-moment, .dp-campaign-suggestion, .dp-campaign-visibility-panel, .dp-campaign-layer-list, .dp-brand-campaign-list, .dp-partner-report-visual, .dp-austin-growth-read, .dp-report-next-action, .dp-partner-info-copy, .dp-partner-feed-list, .dp-partner-info-steps) {
+  padding: 16px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel :is(h2, h3, h4, p, span, small, strong, em, b, button, summary, dt, dd, a) {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  text-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-partner-readable-hero h2 {
+  max-width: 10ch !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: "Instrument Serif", Georgia, serif !important;
+  font-size: clamp(34px, 9vw, 52px) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.035em !important;
+  line-height: 0.98 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel :is(h3, .dp-partner-report-card summary strong, .dp-report-next-action strong, .dp-report-signal-copy strong) {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: clamp(18px, 4.8vw, 24px) !important;
+  font-weight: 720 !important;
+  letter-spacing: -0.018em !important;
+  line-height: 1.12 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel :is(p, small, dd, .dp-campaign-value-line) {
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 13px !important;
+  font-weight: 450 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.48 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-tab-eyebrow,
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel :is(.dp-report-label, .dp-report-signal-copy span, .dp-austin-growth-read > span, .dp-report-next-action span, .dp-campaign-visibility-card span, .dp-partner-summary-card span) {
+  color: #C8A96A !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.13em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-partner-readable-hero p:not(.dp-tab-eyebrow) {
+  max-width: 32rem !important;
+  margin: 10px 0 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-partner-summary-grid, .dp-partner-report-analytics) {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-summary-card.dp-partner-summary-card {
+  display: grid !important;
+  align-content: start !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  padding: 14px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-summary-card.dp-partner-summary-card strong {
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(22px, 7vw, 32px) !important;
+  font-weight: 780 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.95 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-visual.dp-partner-report-visual {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.1fr) minmax(96px, 0.45fr) !important;
+  gap: 16px !important;
+  align-items: end !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-bars.dp-partner-report-bars {
+  display: flex !important;
+  align-items: end !important;
+  gap: 8px !important;
+  min-height: 104px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-bars.dp-partner-report-bars i {
+  display: block !important;
+  width: 100% !important;
+  max-width: 28px !important;
+  height: var(--value, 60%) !important;
+  min-height: 24px !important;
+  border-radius: 4px 4px 0 0 !important;
+  background: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-bars.dp-partner-report-bars i:nth-child(2) {
+  background: #C8A96A !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-bars.dp-partner-report-bars i:nth-child(3) {
+  background: rgba(11, 31, 51, 0.34) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-next-action.dp-report-next-action {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-next-action.dp-report-next-action button,
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-action-bar.dp-campaign-action-bar button,
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel button:not([class]),
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-tab-signal {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 820 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-next-action.dp-report-next-action button:hover,
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-action-bar.dp-campaign-action-bar button:hover,
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel button:not([class]):hover,
+html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-tab-signal:hover {
+  color: #C8A96A !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-card-grid.dp-partner-report-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-card.dp-partner-report-card {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-card.dp-partner-report-card summary {
+  display: grid !important;
+  gap: 8px !important;
+  padding: 14px !important;
+  cursor: pointer !important;
+  list-style: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-report-card.dp-partner-report-card summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-card-footer.dp-report-card-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-mini-table.dp-report-mini-table {
+  display: grid !important;
+  margin: 0 !important;
+  padding: 0 14px 14px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-mini-table.dp-report-mini-table > div {
+  display: grid !important;
+  gap: 5px !important;
+  padding: 10px 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-mini-table.dp-report-mini-table > div:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-report-mini-table.dp-report-mini-table dt {
+  color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 820 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-feed-list.dp-partner-feed-list {
+  display: grid !important;
+  gap: 10px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-feed-row.dp-partner-feed-row,
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-layer-row.dp-campaign-layer-row,
+html body #root#root .dp-map-page.dp-map-page .dp-brand-campaign-row.dp-brand-campaign-row {
+  appearance: none !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  padding: 14px !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-feed-main.dp-partner-feed-main,
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-row-copy.dp-campaign-row-copy {
+  display: grid !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-tab-row-icon.dp-tab-row-icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border: 1px solid rgba(200, 169, 106, 0.28) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #C8A96A !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-action-bar.dp-campaign-action-bar {
+  padding: 0 0 2px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-detail-list, .dp-campaign-meta-row) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-detail-list, .dp-campaign-meta-row) span {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-visibility-rail.dp-campaign-visibility-rail {
+  display: flex !important;
+  gap: 12px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  margin-top: 14px !important;
+  padding: 0 0 4px !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-visibility-rail.dp-campaign-visibility-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-visibility-card.dp-campaign-visibility-card {
+  flex: 0 0 min(78vw, 248px) !important;
+  scroll-snap-align: start !important;
+  display: grid !important;
+  gap: 8px !important;
+  padding: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-visibility-card.dp-campaign-visibility-card img {
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  border-radius: 6px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-campaign-status.dp-campaign-status {
+  align-self: start !important;
+  justify-self: end !important;
+  padding: 5px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #C8A96A !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-info-steps.dp-partner-info-steps {
+  display: grid !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-info-steps.dp-partner-info-steps > div {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: start !important;
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-info-steps.dp-partner-info-steps > div span {
+  color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.12em !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel {
+    padding: 12px 12px calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-partner-readable-panel .dp-tab-stack {
+    max-width: none !important;
+    gap: 12px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-partner-summary-grid, .dp-partner-report-analytics, .dp-partner-report-card-grid) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-partner-report-visual.dp-partner-report-visual,
+  html body #root#root .dp-map-page.dp-map-page .dp-report-next-action.dp-report-next-action {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-partner-report-bars.dp-partner-report-bars {
+    min-height: 74px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-campaign-layer-row.dp-campaign-layer-row,
+  html body #root#root .dp-map-page.dp-map-page .dp-brand-campaign-row.dp-brand-campaign-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-campaign-status.dp-campaign-status {
+    justify-self: start !important;
+    padding-top: 0 !important;
+  }
+}
+
 /* Final story navigation lock. */
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
   display: block !important;

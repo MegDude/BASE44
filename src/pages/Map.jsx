@@ -9908,12 +9908,12 @@ export default function MapPage() {
     {
       section: "Short walks",
       value: "+18%",
-      headline: "Short routes outperform broad visibility.",
+      headline: "Short routes outperform broad reach.",
       copy: "Walkable places are getting the strongest activity.",
       action: "See nearby activity",
       target: "reports",
       observation: "Walkable paths around Rainey, Seaholm, Congress, and Waterloo are the clearest behavior clusters.",
-      trend: "Nearby saves are increasing faster than broad district visibility.",
+      trend: "Nearby saves are increasing faster than broad district reach.",
       recommendation: "Use compact map placements.",
       outcome: "Partners see cleaner attribution from the places people can actually reach.",
     },
@@ -10283,13 +10283,13 @@ export default function MapPage() {
 
           <SurveyIntelligenceLayer place={selectedEntity || selected || visiblePlaces.find((place) => hasActivePerkData(place))} compact />
 
-          <section className="dp-campaign-visibility-panel" aria-label="Campaign visibility placements">
-            <p className="dp-tab-eyebrow">Visibility</p>
+          <section className="dp-campaign-visibility-panel" aria-label="Campaign map placements">
+            <p className="dp-tab-eyebrow">Map placements</p>
             <h3>Show up where decisions start.</h3>
             <p>
               Place campaigns inside real discovery moments: comparing buildings, planning a night out, finding an event, or choosing what is close enough to try.
             </p>
-            <div className="dp-campaign-visibility-rail" aria-label="Visibility placement examples">
+            <div className="dp-campaign-visibility-rail" aria-label="Map placement examples">
               {visibilityPlacements.map((placement) => (
                 <article key={placement.title} className="dp-campaign-visibility-card">
                   <img src={placement.image} alt={placement.alt} loading="lazy" decoding="async" onError={handlePanelImageError} />
