@@ -8893,14 +8893,6 @@ function SearchIntentConsole({
   }, [promptPlaceholders.length]);
 
   const residentIntentRail = PRIMARY_SEARCH_INTENT_RAIL;
-  const partnerIntentRail = [
-    { id: "demand", label: "Demand", filter: "Audience", prompt: "Demand nearby", icon: Users },
-    { id: "promote", label: "Promote", filter: "Campaigns", prompt: "What should I promote next?", icon: Megaphone },
-    { id: "audience", label: "Audience", filter: "Audience", prompt: "Who is nearby?", icon: Users },
-    { id: "events", label: "Events", filter: "Events", prompt: "Event opportunities", icon: CalendarDays },
-    { id: "opportunity", label: "Opportunity", filter: "Opportunity", prompt: "Opportunity nearby", icon: Sparkles },
-  ];
-  const contextRail = PRIMARY_SEARCH_INTENT_RAIL.filter((item) => ["near_me", "open_now", "tonight", "walkable"].includes(item.id));
   const railIconFor = (item = {}) => {
     const text = `${item.id || ""} ${item.label || ""} ${item.filter || ""} ${item.kind || ""}`.toLowerCase();
     if (item.kind === "time" || /\b(tonight|week|event|rsvp)\b/.test(text)) return CalendarDays;
@@ -8922,11 +8914,8 @@ function SearchIntentConsole({
     return Compass;
   };
   const withRailIcon = (item) => ({ ...item, icon: item.icon || railIconFor(item) });
-  const intentRail = mode === "partner" ? partnerIntentRail : residentIntentRail;
-  const categoryRail = mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS;
-  const rawMoreFilterRail = mode === "partner"
-    ? [...contextRail, ...categoryRail.filter((item) => !["All", "All neighborhoods"].includes(item.label))]
-    : SECONDARY_SEARCH_INTENT_RAIL;
+  const intentRail = residentIntentRail;
+  const rawMoreFilterRail = SECONDARY_SEARCH_INTENT_RAIL;
   const moreFilterRail = rawMoreFilterRail.filter((item) => (
     !intentRail.some((intentItem) => String(intentItem.label).toLowerCase() === String(item.label).toLowerCase())
   )).map(withRailIcon);
@@ -9014,13 +9003,6 @@ function SearchIntentConsole({
       selectCurrent?.();
     }
   };
-  const mobileRailButtonStyle = {
-    minHeight: "34px",
-    height: "34px",
-    maxHeight: "34px",
-    padding: "0 12px",
-    borderRadius: "12px",
-  };
   const renderRail = (items, className, label, options = {}) => (
     <div id={options.id} className={className} role="tablist" aria-label={label}>
       {items.flatMap((item, index) => {
@@ -9038,15 +9020,16 @@ function SearchIntentConsole({
             onKeyDown={(event) => handleConsoleTabKeyDown(event, () => handleRailItem(item))}
             title={item.label}
             aria-label={item.label}
-            style={mobileRailButtonStyle}
+            data-label={item.label}
           >
             {Icon ? (
               <Icon className="dp-search-intent-filter-icon" aria-hidden="true" />
             ) : null}
-            <span>{item.label}</span>
+            <span className="dp-search-intent-filter-label">{item.label}</span>
           </button>
         );
         if (options.includeMoreToggle && index === options.insertMoreAfterIndex) {
+          const MoreIcon = activeSecondaryItem?.icon || Compass;
           return [
             itemButton,
             <button
@@ -9057,16 +9040,20 @@ function SearchIntentConsole({
               aria-controls="dp-search-more-filter-panel"
               aria-label={moreToggleLabel}
               onClick={handleMoreClick}
-              style={mobileRailButtonStyle}
+              title={moreToggleLabel}
+              data-label={moreToggleLabel}
             >
-              <span>{moreToggleLabel}</span>
-              <ChevronDown aria-hidden="true" />
+              <MoreIcon className="dp-search-intent-filter-icon" aria-hidden="true" />
+              <span className="dp-search-intent-filter-label">{moreToggleLabel}</span>
             </button>,
           ];
         }
         return [itemButton];
       })}
       {options.includeMoreToggle && options.insertMoreAfterIndex == null ? (
+        (() => {
+          const MoreIcon = activeSecondaryItem?.icon || Compass;
+          return (
         <button
           type="button"
           className={`dp-search-more-toggle ${moreOpen || activeSecondaryItem ? "is-active" : ""}`}
@@ -9074,11 +9061,14 @@ function SearchIntentConsole({
           aria-controls="dp-search-more-filter-panel"
           aria-label={moreToggleLabel}
           onClick={handleMoreClick}
-          style={mobileRailButtonStyle}
+          title={moreToggleLabel}
+          data-label={moreToggleLabel}
         >
-          <span>{moreToggleLabel}</span>
-          <ChevronDown aria-hidden="true" />
+          <MoreIcon className="dp-search-intent-filter-icon" aria-hidden="true" />
+          <span className="dp-search-intent-filter-label">{moreToggleLabel}</span>
         </button>
+          );
+        })()
       ) : null}
     </div>
   );
@@ -9103,7 +9093,6 @@ function SearchIntentConsole({
             className={`dp-console-chip dp-search-segment ${active ? "is-active" : ""}`}
             onClick={() => onFilterSelect?.(item)}
             onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onFilterSelect?.(item))}
-            style={mobileRailButtonStyle}
           >
             {item.label}
           </button>
@@ -9150,7 +9139,7 @@ function SearchIntentConsole({
         >
           <span className="dp-search-brand-mark">
             <Sparkles className="dp-search-rollup-icon" aria-hidden="true" />
-            <span className="dp-search-rollup-main">Downtown Perks</span>
+            <span className="dp-search-rollup-main">Ask the Map</span>
           </span>
         </button>
       </div>
@@ -9170,8 +9159,7 @@ function SearchIntentConsole({
         <div className="dp-search-intent-console-header dp-search-intent-top-rail">
           <div className="dp-search-intent-label">
             <span className="dp-search-brand-mark">
-              <Sparkles className="h-3 w-3" aria-hidden="true" />
-              <span>Downtown Perks</span>
+              <span>Ask the Map</span>
             </span>
           </div>
           <div className="dp-search-intent-top-actions">
@@ -9218,7 +9206,7 @@ function SearchIntentConsole({
         )}
         {moreOpen ? renderRail(
           moreFilterRail,
-          "dp-search-context-row dp-search-context-row-primary dp-search-more-filter-panel",
+          "dp-search-intent-filter-rail dp-search-context-row dp-search-context-row-primary dp-search-more-filter-panel",
           "More map filters",
           { id: "dp-search-more-filter-panel" },
         ) : (

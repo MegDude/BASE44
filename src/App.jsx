@@ -7,6 +7,7 @@ import { AuthProvider } from "@/lib/AuthContext";
 import Layout from "./components/Layout";
 import MapPage from "./pages/Map";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
+import PartnerLifecycle from "./pages/PartnerLifecycle";
 import Dashboard from "./pages/Dashboard";
 import PartnersDashboardPage from "./pages/partners/Dashboard";
 
@@ -322,11 +323,11 @@ function ProductRoutes() {
           <Route path="/partners/reporting" element={<Dashboard />} />
           <Route path="/partners/analytics" element={<Dashboard />} />
           <Route path="/partners/map" element={<MapPage />} />
-          <Route path="/partners/start" element={<Navigate to="/marketing/contact?intent=partner-registration" replace />} />
-          <Route path="/partners/register" element={<Navigate to="/marketing/contact?intent=partner-registration" replace />} />
+          <Route path="/partners/start" element={<PartnerLifecycle />} />
+          <Route path="/partners/register" element={<PartnerLifecycle />} />
           <Route path="/partners/pricing" element={<Navigate to="/marketing/pricing" replace />} />
-          <Route path="/partners/checkout" element={<Navigate to="/partner-workspace/billing?checkout=1" replace />} />
-          <Route path="/partners/provision" element={<Navigate to="/partner-workspace/overview?provisioning=1" replace />} />
+          <Route path="/partners/checkout" element={<PartnerLifecycle />} />
+          <Route path="/partners/provision" element={<PartnerLifecycle />} />
           <Route path="/partners/workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
           {/* Partner workspace */}

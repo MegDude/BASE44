@@ -28,8 +28,9 @@ const storyStates = [
     kicker: "",
     headline: ["Downtown should be easier to use."],
     headlineParts: [
-      { text: "Downtown should", tone: "navy", compact: true },
-      { text: "be easier to use.", tone: "gold", compact: true },
+      { text: "Downtown", tone: "navy" },
+      { text: "should be", tone: "navy" },
+      { text: "easier to use.", tone: "gold" },
     ],
     meaning: "Easier to navigate. Easier to connect. \nMore useful day to day.",
     supporting: [
@@ -42,62 +43,53 @@ const storyStates = [
     navLabel: "One map",
     kicker: "",
     headline: ["So we built one map to bring everything together."],
-    headlineGroups: [
-      [
-        { text: "So we built ", tone: "navy" },
-        { text: "one map", tone: "gold" },
-      ],
-      [
-        { text: "to bring everything together.", tone: "navy" },
-      ],
-    ],
-    meaning: "Not another app to manage. Not another feed to scroll.\nJust a better way to figure out what’s happening, and worth showing up for.",
-    supporting: [],
-  },
-  {
-    id: "access",
-    index: "04",
-    navLabel: "Access",
-    kicker: "",
-    headline: ["Your all-access pass to downtown."],
-    headlineGroups: [
-      [
-        { text: "Your all-access ", tone: "gold" },
-        { text: "pass to downtown.", tone: "navy" },
-      ],
+    headlineParts: [
+      { text: "So we built", tone: "navy" },
+      { text: "one map", tone: "gold" },
+      { text: "to bring", tone: "navy" },
+      { text: "everything", tone: "navy" },
+      { text: "together.", tone: "navy" },
     ],
     meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
-      "Coffee around the corner. A last-minute happy hour.",
-      "The resident event you would have missed.",
-      "Connecting the people, places and perks that make downtown feel alive.",
+      "Not another app to manage. Not another feed to scroll.",
+      "Just a better way to figure out what’s happening, and worth showing up for.",
     ],
   },
   {
     id: "perks",
-    index: "05",
+    index: "04",
     navLabel: "Perks",
     kicker: "",
     headline: ["Whether you’re making plans or part of them."],
     headlineParts: [
-      { text: "Whether you’re", tone: "navy" },
-      { text: "making plans", tone: "gold" },
-      { text: "or part of them.", tone: "navy" },
+      { text: "Whether", tone: "navy" },
+      { text: "you’re", tone: "navy" },
+      { text: "making", tone: "gold" },
+      { text: "plans", tone: "gold" },
+      { text: "or part", tone: "navy" },
+      { text: "of them.", tone: "navy" },
     ],
     meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
-    supporting: [
-      "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
-    ],
+    supporting: [],
   },
   {
     id: "open",
-    index: "06",
+    index: "05",
     navLabel: "Open",
     kicker: "",
+    prelude: [
+      "Helping residents make better",
+      "plans faster — while helping local",
+      "businesses stay relevant in the",
+      "moments that actually matter.",
+    ],
     headline: ["So come on in. Open the map."],
     headlineParts: [
-      { text: "So come on in ya'll", tone: "navy", compact: true },
-      { text: "Open the map.", tone: "gold" },
+      { text: "So come on", tone: "navy" },
+      { text: "in ya'll", tone: "navy" },
+      { text: "Open the", tone: "gold" },
+      { text: "map.", tone: "gold" },
     ],
     meaning: "And maybe, grab something cold while you’re at it.",
     supporting: [],
@@ -175,6 +167,20 @@ function FixedStoryStage({ state }) {
           <div className="dp-fixed-story-kicker-slot">
             <p key={`kicker-${state.id}`} className="dp-fixed-story-kicker">{state.kicker}</p>
           </div>
+          {state.prelude?.length ? (
+            <motion.div
+              className="dp-fixed-story-prelude-slot"
+              initial={proseMotion.initial}
+              animate={proseMotion.animate}
+              transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.02 }}
+            >
+              <p key={`prelude-${state.id}`} className="dp-fixed-story-prelude">
+                {state.prelude.map((line) => (
+                  <span key={line} className="dp-fixed-story-prelude-line">{line}</span>
+                ))}
+              </p>
+            </motion.div>
+          ) : null}
           <motion.div
             className="dp-fixed-story-headline-slot"
             initial={proseMotion.initial}

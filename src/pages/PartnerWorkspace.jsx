@@ -47,10 +47,11 @@ const WORKSPACE_CATEGORIES = [
 const FRIENDLY_ENTITLEMENTS = ["Analytics", "Campaigns", "Offers", "Events", "Reports", "QR Experiences", "Exports", "API Access"];
 
 const PARTNER_LIFECYCLE_LINKS = [
-  { label: "Register", href: "/marketing/contact?intent=partner-registration", detail: "Confirm organization, contact, location, and setup details.", icon: UserPlus },
-  { label: "Pricing", href: "/marketing/pricing", detail: "Compare annual plans, modules, and activation paths.", icon: CreditCard },
-  { label: "Checkout", href: "/partner-workspace/billing?checkout=1", detail: "Open billing, subscription, invoice, and Stripe checkout status.", icon: WalletCards },
-  { label: "Workspace", href: "/partner-workspace/overview", detail: "Provision profile, modules, team, reporting, and AI context.", icon: LayoutDashboard },
+  { label: "Partner Type", href: "/partners/start", detail: "Choose the lane, workspace template, recommended plan, and default modules.", icon: UserPlus },
+  { label: "Registration", href: "/partners/register", detail: "Confirm organization, contact, location, profile, and setup details.", icon: ShieldCheck },
+  { label: "Pricing", href: "/partners/pricing", detail: "Compare annual plans, modules, limits, and upgrade paths.", icon: CreditCard },
+  { label: "Checkout", href: "/partners/checkout", detail: "Confirm subscription, invoice, tax, coupon, and billing details.", icon: WalletCards },
+  { label: "Workspace", href: "/partners/provision", detail: "Provision profile, modules, team, reporting, billing, and AI context.", icon: LayoutDashboard },
 ];
 
 const WORKSPACE_CAPABILITY_LINKS = [
@@ -63,9 +64,55 @@ const WORKSPACE_CAPABILITY_LINKS = [
   { label: "Profile", href: "/partner-workspace/profile", description: "Keep organization details, contacts, listings, and workspace context current." },
   { label: "Team", href: "/partner-workspace/team", description: "Manage roles, permissions, and workspace access." },
   { label: "Billing", href: "/partner-workspace/billing", description: "Review plan access, invoices, subscriptions, and checkout status." },
-  { label: "Pricing", href: "/marketing/pricing", description: "Compare plans, capabilities, and checkout paths before activation." },
-  { label: "Register", href: "/marketing/contact?intent=partner-registration", description: "Confirm setup details and submit the partner registration request." },
-  { label: "Sign in", href: "/partners/sign-in", description: "Return to an existing partner account or workspace." },
+];
+
+const WORKSPACE_MODULE_GROUPS = [
+  {
+    label: "Operations",
+    items: [
+      { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage resident benefits." },
+      { label: "Events", href: "/partner-workspace/events", description: "Publish plans that should appear nearby." },
+      { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Build moments around places and timing." },
+      { label: "QR", href: "/partner-workspace/sources", description: "Generate entry points for lobbies, counters, and events." },
+      { label: "Listings", href: "/partner-workspace/sources", description: "Connect property or listing context to the map." },
+    ],
+  },
+  {
+    label: "Media",
+    items: [
+      { label: "Gallery", href: "/partner-workspace/profile", description: "Keep images and media current." },
+      { label: "Brand", href: "/partner-workspace/profile", description: "Manage public identity and map copy." },
+      { label: "Profile", href: "/partner-workspace/profile", description: "Update organization details." },
+    ],
+  },
+  {
+    label: "Customers",
+    items: [
+      { label: "Audience", href: "/partner-workspace/analytics", description: "Read saves, scans, visits, and source paths." },
+      { label: "Followers", href: "/partner-workspace/analytics", description: "Understand who keeps coming back." },
+      { label: "Saved", href: "/partner-workspace/reports", description: "Review saved places and offers." },
+      { label: "Reviews", href: "/partner-workspace/reports", description: "Summarize feedback and survey signal." },
+    ],
+  },
+  {
+    label: "Analytics",
+    items: [
+      { label: "Reports", href: "/partner-workspace/reports", description: "Summarize what changed and what to do next." },
+      { label: "Performance", href: "/partner-workspace/analytics", description: "Track views, directions, scans, and redemptions." },
+      { label: "Exports", href: "/partner-workspace/reports", description: "Prepare CSV, PDF, and email-ready reads." },
+      { label: "Growth", href: "/partner-workspace/analytics", description: "Find where to improve next." },
+    ],
+  },
+  {
+    label: "Admin",
+    items: [
+      { label: "Team", href: "/partner-workspace/team", description: "Invite teammates and assign roles." },
+      { label: "Permissions", href: "/partner-workspace/team", description: "Control workspace access." },
+      { label: "Billing", href: "/partner-workspace/billing", description: "Review plan, subscription, invoices, and seats." },
+      { label: "Integrations", href: "/partner-workspace/profile", description: "Connect API, domains, notifications, and tools." },
+      { label: "Settings", href: "/partner-workspace/profile", description: "Manage organization settings and audit context." },
+    ],
+  },
 ];
 
 const ROLE_LABELS = {
