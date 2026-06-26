@@ -59,6 +59,16 @@ const PANEL_ARCHETYPES = {
     tertiaryAction: "Save",
     partnerHeadline: "Resident offer visibility near a decision moment.",
   },
+  campaign: {
+    id: "campaign",
+    label: "Campaign",
+    eyebrow: "Active Campaign",
+    nearbyTitle: "Campaign Context",
+    primaryAction: "Open Campaign",
+    secondaryAction: "Save Campaign",
+    tertiaryAction: "View Nearby",
+    partnerHeadline: "A focused activation tied to nearby intent.",
+  },
 };
 
 function archetypeText(entity = {}) {
@@ -139,9 +149,10 @@ function inferProductionType(entity = {}) {
     return "residential-tower";
   }
 
+  if (/\b(campaign|activation layer|brand campaign)\b/.test(text)) return "campaign";
   if (/\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|central library|auditorium shores|shoal creek|waller creek)\b/.test(text)) return "landmark-civic";
   if (/\b(event|rsvp|tonight|series|run club|neighbor night)\b/.test(text)) return "event";
-  if (/\b(guide|collection|campaign|passport|best rooftops|date night|coffee guide|happy hour guide)\b/.test(text)) return "guide";
+  if (/\b(guide|collection|passport|best rooftops|date night|coffee guide|happy hour guide)\b/.test(text)) return "guide";
   if (/\b(hotel|hospitality|stay|guest)\b/.test(text)) return "hotel";
   if (/\b(rooftop|p6|zanzibar|edge|nido|rules and regs)\b/.test(text)) return "rooftop";
   if (/\b(bar|nightlife|cocktail|pub|saloon|lounge|brewery|beer|half step|banger)\b/.test(text)) return "bars-nightlife";
@@ -157,6 +168,7 @@ function productionTypeToArchetype(productionType) {
   if (productionType === "active-listing") return "listing";
   if (productionType === "event") return "event";
   if (productionType === "perk") return "perk";
+  if (productionType === "campaign") return "campaign";
   if (productionType === "guide" || productionType === "landmark-civic") return "guide";
   return "venue";
 }
@@ -241,6 +253,7 @@ function panelEntityType(entity = {}) {
   if (productionType === "residential-tower") return "propertyOverview";
   if (productionType === "event") return "event";
   if (productionType === "perk") return "perk";
+  if (productionType === "campaign") return "campaign";
   if (productionType === "hotel") return "hotel";
   if (productionType === "landmark-civic") return "civic";
   if (productionType === "guide") return "localGuide";
@@ -335,6 +348,16 @@ const PANEL_CONTENT_BY_TYPE = {
     insight: "Use the nearby context to choose a first stop, then build the rest of the plan around what is close.",
     nearbyHeading: "Stops in the guide",
     askPrompts: ["What is the best first stop?", "What is nearby after this?", "Can I walk this route?", "What fits tonight?"],
+  },
+  campaign: {
+    eyebrow: "Active campaign",
+    primaryActionLabel: "Open Campaign",
+    whyHeading: "Why this campaign fits",
+    whyBody: "{title} works when it is tied to a real nearby routine, not a generic impression.",
+    bestFor: ["Clear next steps", "Nearby intent", "Measurable saves", "Partner follow-up"],
+    insight: "Campaigns should make one useful action easier to take from the map.",
+    nearbyHeading: "Campaign context",
+    askPrompts: ["Who is close enough to act?", "What should the next step be?", "What nearby places matter?", "How should this be measured?"],
   },
   propertyOverview: {
     eyebrow: "Residential building",

@@ -240,6 +240,9 @@ export const mapEntityAliases = {
   "inspired-closets-austin-residential-services-activation": "inspired-closets-austin-residential-services-activation",
   "inspired-closets-move-in": "perk-inspired-closets-move-in",
   "inspired-closets-consult": "perk-inspired-closets-move-in",
+  "we-all-ride": "daa-stop-04-we-all-ride",
+  "we-all-ride-mosaics": "daa-stop-04-we-all-ride",
+  "daa-stop-04-we-all-ride-mosaics": "daa-stop-04-we-all-ride",
 };
 
 export function resolveMapEntityAlias(entityId) {

@@ -46,7 +46,7 @@ const tourSeedStops = [
   ["Malin's Fountain", "Public Art", "Downtown Core", "Downtown Austin", "Downtown Austin, TX 78701", 30.26816, -97.74288, "Jim Huntington", "1983"],
   ["Treehouse at Pease Park", "Park", "Pease Park", "Pease Park", "1100 Kingsbury St, Austin, TX 78703", 30.28119, -97.75263, "Pease Park Conservancy", "2021"],
   ["Pease Park", "Park", "Pease Park", "Shoal Creek", "1100 Kingsbury St, Austin, TX 78703", 30.28152, -97.75228, "City of Austin", "1875"],
-  ["We All Ride Mosaics", "Public Art", "Pease Park", "Pease Park", "1100 Kingsbury St, Austin, TX 78703", 30.28079, -97.75202, "Community artists", "2024"],
+  ["We All Ride", "Public Art", "Downtown / Civic District", "Civic District", "1700 Guadalupe St, Austin, TX 78701", 30.27962, -97.74238, "J Muzacz", "2024"],
   ["Waterloo Park", "Park", "Waterloo", "Waterloo Greenway", "500 E 12th St, Austin, TX 78701", 30.27391, -97.73543, "Waterloo Greenway", "2021"],
   ["Moody Amphitheater", "Cultural Landmark", "Waterloo", "Waterloo Park", "1401 Trinity St, Austin, TX 78701", 30.27378, -97.73555, "Waterloo Greenway", "2021"],
   ["Waller Creek Trail", "Park", "Waterloo", "Waller Creek", "Waller Creek, Austin, TX 78701", 30.27288, -97.73603, "Waterloo Greenway", "2021"],
@@ -132,26 +132,55 @@ const tourStopCopyOverrides = {
     ctaBody:
       "Just show up and enjoy one of Austin's best public spaces. Save it for the next time you need a change of scenery, a quiet place to think, or one of the best views downtown without spending a dollar.",
   },
-  "We All Ride Mosaics": {
+  "We All Ride": {
+    displayName: "We All Ride",
+    popupCopy: "04 of 48 · Public art in the Civic District",
     artist: "J Muzacz",
     year: "2024",
+    detailHeadline: "A community mosaic installation.",
     description:
-      "Created by Austin mosaic artist J Muzacz, We All Ride celebrates the simple idea that cities feel better when people move through them together. Inspired by Austin's cycling community, the artwork was assembled with the help of hundreds of local volunteers, each placing glass tiles that became part of the finished piece. The result is a permanent reminder that public spaces are built by the people who use them.",
+      "A monumental community-built mosaic celebrating Austin's cycling culture, created by hundreds of local volunteers.",
     daaIntro:
-      "Created by Austin mosaic artist J Muzacz, We All Ride celebrates the simple idea that cities feel better when people move through them together.",
+      "More than a mural, We All Ride was built by the community that inspired it.",
     whyStopHere:
-      "Inspired by Austin's cycling community, the artwork was assembled with help from hundreds of local volunteers. Each glass tile became part of a finished piece that reminds people public spaces are built by the people who use them.",
+      "Thousands of glass tiles were placed by local volunteers, creating a large-scale portrait of Austin's cycling culture using a contemporary pixel-like mosaic style. Every section represents collaboration, movement, and shared ownership of public space.",
     whyStopBullets: [
-      "Community-built public artwork",
-      "A quiet place to pause while exploring Pease Park",
-      "Great photo opportunity with distinctive mosaic detail",
-      "An easy stop while walking or cycling through the Shoal Creek corridor",
+      "Created by artist J Muzacz",
+      "Built with hundreds of community volunteers",
+      "Over 50 feet of glass mosaic",
+      "Located at Travis County Civil & Family Courts",
+      "Inspired by digital imagery and traditional mosaic techniques",
     ],
-    goodFor: ["Art lovers", "Families", "Walkers and cyclists", "Self-guided downtown art tours"],
-    nearbyLabels: ["Kingsbury Commons", "Tudor Cottage", "Shoal Creek Trail", "Treehouse overlook"],
-    ctaHeadline: "Look a little closer.",
-    ctaBody: "Thousands of individual tiles make one shared story, much like the city around them.",
+    goodFor: ["Walking downtown", "Public art lovers", "Photography", "Families", "Architecture tours", "Self-guided exploration", "Cycling enthusiasts"],
+    nearbyLabels: ["Waterloo Greenway", "Texas Capitol", "Republic Square", "Austin Central Library", "Lady Bird Lake Trail"],
+    localTip:
+      "Every rider shown in the artwork represents the diversity of Austin's cycling community. Hundreds of residents helped install the glass tiles by hand during public workshop sessions.",
+    ctaHeadline: "Explore Austin's outdoor gallery.",
+    ctaBody:
+      "Check in at We All Ride as part of the Downtown Public Art Trail. Visit featured installations across downtown to unlock rewards from nearby local businesses.",
     sourceUrl: "https://jmuzacz.com/portfolio/we-all-ride",
+    quickFacts: ["Free", "Always open", "Outdoor public art", "Family friendly", "10-15 minute stop", "Photography spot", "Accessible"],
+    partnerHeader: "Community Landmark",
+    partnerOverview:
+      "We All Ride demonstrates how public art can activate civic space, encourage exploration, and create meaningful community participation.",
+    strategicValue: ["Public realm", "Community identity", "Walkability", "Tourism", "Arts & culture", "Cycling", "Neighborhood pride"],
+    suggestedCampaigns: ["Walking Tour", "Public Art Passport", "Cycling Week", "Family Discovery Trail", "Arts Month", "Downtown Explorer Challenge"],
+    engagementOpportunities: [
+      "Sponsor a public art trail",
+      "Include in cultural events",
+      "Feature on cycling routes",
+      "Educational tours",
+      "Neighborhood walking guides",
+      "Photography challenges",
+    ],
+    successMetrics: ["Visits", "Directions", "Saves", "Nearby venue conversions", "Walking route engagement", "Average dwell time", "Repeat visits"],
+    perkModule: {
+      title: "Downtown Public Art Trail",
+      headline: "Explore Austin's outdoor gallery.",
+      description:
+        "Check in at We All Ride as part of the Downtown Public Art Trail. Visit featured installations across downtown to unlock rewards from nearby local businesses.",
+      reward: "Visit 5 participating artworks",
+    },
   },
 };
 
@@ -202,6 +231,14 @@ export const daaTourStops = tourSeedStops.map(([name, category, district, locati
     localTip: copyOverride.localTip || "",
     ctaHeadline: copyOverride.ctaHeadline || "",
     ctaBody: copyOverride.ctaBody || "",
+    quickFacts: copyOverride.quickFacts || [],
+    partnerHeader: copyOverride.partnerHeader || "",
+    partnerOverview: copyOverride.partnerOverview || "",
+    strategicValue: copyOverride.strategicValue || [],
+    suggestedCampaigns: copyOverride.suggestedCampaigns || [],
+    engagementOpportunities: copyOverride.engagementOpportunities || [],
+    successMetrics: copyOverride.successMetrics || [],
+    perkModule: copyOverride.perkModule || null,
     sourceUrl: copyOverride.sourceUrl || "",
     nearbyStops,
     relatedStops,

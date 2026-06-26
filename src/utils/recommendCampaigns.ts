@@ -12,6 +12,26 @@ function nearbyHas(nearby: NearbyRecommendation[], pattern: RegExp) {
   ].filter(Boolean).join(" ").toLowerCase()));
 }
 
+function selectedText(entity: MapEntity = {}) {
+  return [
+    entity?.id,
+    entity?.name,
+    entity?.title,
+    entity?.category,
+    entity?.category_key,
+    entity?.type,
+    entity?.kind,
+    entity?.summary,
+    entity?.description,
+    entity?.raw?.id,
+    entity?.raw?.name,
+    entity?.raw?.category,
+    entity?.raw?.category_key,
+    entity?.raw?.summary,
+    entity?.raw?.description,
+  ].filter(Boolean).join(" ").toLowerCase();
+}
+
 export function recommendCampaigns({
   selectedEntity,
   nearby = [],
@@ -20,12 +40,46 @@ export function recommendCampaigns({
   nearby: NearbyRecommendation[];
 }) {
   const kind = getEntityKind(selectedEntity);
-  const text = `${selectedEntity?.name || ""} ${selectedEntity?.category || ""} ${selectedEntity?.type || ""}`.toLowerCase();
+  const text = selectedText(selectedEntity);
   const isDining = /\b(dining|restaurant|bar|coffee|cocktail|pizza|burger|cafe)\b/.test(text) || ["dining", "coffee", "nightlife"].some((item) => kind.includes(item));
+  const isMobility = /\b(rivian|mobility|test drive|ride request|vehicle|ev|trail coffee)\b/.test(text);
+  const isPublicArt = /\b(public art|mosaic|walking route|art and culture|public art trail)\b/.test(text);
   const hasHotels = nearbyHas(nearby, /\bhotel|guest|hospitality\b/);
   const hasResidential = nearbyHas(nearby, /\bresidence|residential|building|apartment|condo|waterline|shore|independent\b/);
   const hasEvents = nearbyHas(nearby, /\bevent|concert|show|music|festival|tonight\b/);
   const recommendations: any[] = [];
+
+  if (isMobility) {
+    recommendations.push({
+      actionTitle: "Downtown test-drive window",
+      whyNow: "People are already planning errands, workouts, coffee, and dinner nearby. The vehicle works best when it fits into that existing route.",
+      bestAudience: "Residents, hotel guests, wellness groups, and weekend visitors.",
+      suggestedTiming: "Weekend mornings and late afternoon",
+      expectedOutcome: "More drive requests, route saves, and qualified follow-up.",
+      setupPath: "Request",
+    });
+    recommendations.push({
+      actionTitle: "Event ride request",
+      whyNow: hasEvents ? "Nearby events create a clear arrival and departure moment." : "Rides make the activation useful when people are choosing what to do next.",
+      bestAudience: "Eventgoers, rooftop guests, hotel visitors, and dinner groups.",
+      suggestedTiming: "Before and after active event windows",
+      expectedOutcome: "More ride requests and stronger event attribution.",
+      setupPath: "Route",
+    });
+    return recommendations;
+  }
+
+  if (isPublicArt) {
+    recommendations.push({
+      actionTitle: "Public Art Trail",
+      whyNow: "This stop is free, visual, and easy to add to a walking route.",
+      bestAudience: "Residents, visitors, families, and self-guided explorers.",
+      suggestedTiming: "Weekend afternoons and civic event windows",
+      expectedOutcome: "More saves, directions, and route completions.",
+      setupPath: "Feature",
+    });
+    return recommendations;
+  }
 
   if (isDining) {
     recommendations.push({

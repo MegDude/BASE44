@@ -66,7 +66,7 @@ import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
 import { trackingEvents } from "@/lib/analytics/track";
 import { queryAgent } from "@/services/agent/agentClient";
-import { completeSurveyFlow, getSurveyIntelligenceSummary } from "@/lib/surveys/surveyIntelligence";
+import { getSurveyIntelligenceSummary } from "@/lib/surveys/surveyIntelligence";
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { luxuryPresenceListings } from "@/data/luxuryPresenceInventory";
 import { getLegendsPropertyContent } from "@/data/legendsPropertyContent";
@@ -5753,17 +5753,30 @@ function CommunityStoriesMapLayer() {
   );
 }
 
-function formatSurveyExportStatus(status = "") {
-  if (status === "success") return "saved";
-  if (status === "pending") return "queued";
-  if (status === "failed") return "needs review";
-  return "queued";
-}
-
 function SurveyIntelligenceLayer({ place, compact = false }) {
-  const [syncState, setSyncState] = useState("");
   const summary = getSurveyIntelligenceSummary(place);
   const isPerk = hasActivePerkData(place);
+  const entityName = place?.name || place?.title || summary.topPartner || "this pin";
+  const isMobility = /\b(rivian|mobility|test drive|ride request|vehicle|ev)\b/i.test([
+    place?.name,
+    place?.title,
+    place?.category,
+    place?.category_key,
+    place?.summary,
+    place?.description,
+    place?.raw?.name,
+    place?.raw?.category,
+  ].filter(Boolean).join(" "));
+  const feedbackSummary = isMobility
+    ? "Use feedback to see whether people are saving the experience, requesting a drive, or building a route around nearby plans."
+    : isPerk
+      ? "Use feedback to see whether the perk is being saved, redeemed, and understood by residents."
+      : "Use feedback to see whether this pin is creating useful saves, directions, and follow-up activity.";
+  const metricRows = [
+    ["Feedback", `${summary.completionsToday}`, isPerk ? "Redemption follow-ups" : "Recent responses"],
+    ["Linked action", `${summary.redemptionLinkedCompletions}`, isMobility ? "Drive or route intent" : isPerk ? "Attached to perks" : "Saved or direction intent"],
+    ["Resident read", summary.averageRating.toFixed(1), "Average rating"],
+  ];
   const openReports = () => {
     const params = new URLSearchParams({
       mode: "partner",
@@ -5773,51 +5786,13 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
     if (place?.id) params.set("entityId", place.id);
     window.location.href = `/map?${params.toString()}`;
   };
-  const recordCompletion = () => {
-    const response = completeSurveyFlow({
-      surveyId: isPerk ? "redemption-follow-up" : "campaign-pulse",
-      surveyName: summary.surveyName,
-      surveyProvider: "tally",
-      residentId: "resident-demo-maya-r",
-      residentName: "Maya R.",
-      residentEmail: "",
-      residentPhone: "",
-      buildingId: "the-shore",
-      buildingName: "The Shore",
-      partnerId: place?.partnerId || place?.raw?.partnerId || place?.id || "",
-      partnerName: summary.topPartner,
-      perkId: place?.perkId || place?.id || "",
-      perkName: place?.perk?.title || place?.perk?.offer || place?.perk_value || "Resident perk",
-      redemptionId: isPerk ? `redemption-${place?.id || "demo"}` : "",
-      mapEntityId: place?.id || "",
-      district: place?.district || "",
-      category: place?.category || place?.type || "",
-      score: summary.averageRating,
-      sentiment: "positive",
-      sourceFlow: isPerk ? "perk-redemption" : "resident-survey",
-      answers: {
-        routineFit: "Fits my routine",
-        likelihoodToReturn: "Very likely",
-        favoriteMoment: isPerk ? "Redeemed after scanning the perk" : "Found the campaign from the map",
-      },
-    });
-    fireWorkflow("/api/survey-responses/webhook/complete", response);
-    setSyncState(`Saved ${response.surveyName}. Reporting workflows are queued.`);
-  };
 
   return (
-    <section className={`dp-survey-intelligence-layer ${compact ? "is-compact" : ""}`} aria-label="Survey Activity">
-      <PartnerSectionHeader label="Survey Activity" title="Participation and redemption feedback" />
-      <p>
-        Survey completions are treated as map participation events, tied to resident, building, perk, partner, district, category, timestamp, messaging, CRM, and reporting.
-      </p>
+    <section className={`dp-survey-intelligence-layer ${compact ? "is-compact" : ""}`} aria-label="Feedback signal">
+      <PartnerSectionHeader label="Feedback Signal" title={`What people do after opening ${entityName}`} />
+      <p>{feedbackSummary}</p>
       <div className="dp-survey-summary-grid" aria-label="Survey activity summary">
-        {[
-          ["Today", summary.completionsToday, "Survey completions"],
-          ["Redemption linked", summary.redemptionLinkedCompletions, "Attached to perks"],
-          ["Average rating", summary.averageRating.toFixed(1), "Resident score"],
-          ["Export health", summary.exportHealth, "Reporting"],
-        ].map(([label, value, copy]) => (
+        {metricRows.map(([label, value, copy]) => (
           <article key={label}>
             <span>{label}</span>
             <strong>{value}</strong>
@@ -5825,26 +5800,7 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
           </article>
         ))}
       </div>
-      {!compact && (
-        <div className="dp-survey-latest-list" aria-label="Latest survey completions">
-          {summary.latest.map((item) => (
-            <article key={`${item.resident}-${item.building}-${item.sourceFlow}`}>
-              <span>
-                <strong>{item.resident}</strong>
-                <small>{item.building} · {item.sourceFlow.replace(/-/g, " ")}</small>
-              </span>
-              <em>{item.score.toFixed(1)}</em>
-              <small>{item.partner} · {formatSurveyExportStatus(item.exportStatus)}</small>
-            </article>
-          ))}
-        </div>
-      )}
-      <div className="dp-survey-action-row">
-        <button type="button" onClick={recordCompletion}>Log survey completion</button>
-        <button type="button" onClick={openReports}>Open survey reports</button>
-        <a href="https://docs.google.com/spreadsheets/" target="_blank" rel="noreferrer">Open export</a>
-      </div>
-      {syncState && <p className="dp-survey-sync-state" role="status">{syncState}</p>}
+      {!compact && <button type="button" className="dp-panel-action" onClick={openReports}>Open reports</button>}
     </section>
   );
 }
