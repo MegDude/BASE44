@@ -74,7 +74,6 @@ import {
   createGenericLegendsResidentialExperience,
   getLegendsResidentialExperience,
   legendsResidentialAnalytics,
-  legendsResidentialPartnerSections,
 } from "@/data/legendsResidentialExperience";
 import { theShoreResidentialBuilding } from "@/data/theShoreResidentialBuilding";
 import { brandCampaignExamples, liveCampaignLayerExamples } from "@/data/campaignLayerExamples";
@@ -476,64 +475,64 @@ const PANEL_COPY_LIMIT = 120;
 
 const LEGENDS_ANALYTICS_INSIGHT_COPY = {
   "Building Views": {
-    signal: "Shows how often people open this building first.",
-    why: "When a building gets opened first, the address itself is helping people start the search.",
-    action: "Use this to decide which buildings deserve stronger listing photos, nearby context, or follow-up campaigns.",
+    signal: "How often people open this building before anything else.",
+    why: "A first open usually means the address is already part of someone's search.",
+    action: "Keep the strongest photos, location details, and nearby context easy to see.",
   },
   "Listing Views": {
-    signal: "Tracks opens on active units after someone has already looked at the building.",
-    why: "This separates casual browsing from people who are starting to compare real homes.",
-    action: "Prioritize listings with repeat views for lead routing, agent follow-up, and stronger media.",
+    signal: "How often people move from the building into a specific available home.",
+    why: "That shift usually means someone is comparing real options, not just browsing.",
+    action: "Make the listing details, photos, and next step clear while interest is fresh.",
   },
   "Save Rate": {
-    signal: "Shows how often people save a building, listing, or nearby place.",
+    signal: "How often people save a building, listing, or nearby place.",
     why: "Saves are quiet, but they usually mean someone wants to come back and compare.",
-    action: "Use high save-rate inventory for retargeting, tour prompts, and comparison messaging.",
+    action: "Use high save-rate places to guide follow-up, tour prompts, and comparison copy.",
   },
   "Tour Requests": {
-    signal: "Counts when browsing turns into a tour request.",
-    why: "This is the clearest handoff from map interest to a Legends follow-up.",
-    action: "Send these requests into the lead flow and compare them against listing views.",
+    signal: "How often interest turns into a request to see the space.",
+    why: "A tour request is a clear sign that the person is ready for a more direct next step.",
+    action: "Make availability, timing, and contact details simple to confirm.",
   },
   "Neighborhood Opens": {
-    signal: "Shows when people open the surrounding district, walkability, and lifestyle context.",
-    why: "Residential decisions are often driven by the block around the building, not only the unit.",
-    action: "Strengthen neighborhood copy and nearby collections where opens are high.",
+    signal: "How often people open the surrounding district, walkability, and lifestyle context.",
+    why: "The block around the building often matters as much as the home itself.",
+    action: "Show the nearby places and daily routines that make the location easier to understand.",
   },
   "Nearby Entity Clicks": {
-    signal: "Tracks clicks from the building into nearby restaurants, hotels, wellness, civic places, and services.",
-    why: "This reveals which surrounding places make the address feel more useful.",
-    action: "Use the strongest nearby entities in listing panels, agent scripts, and partner campaigns.",
+    signal: "Which nearby restaurants, hotels, wellness spots, civic places, and services people open next.",
+    why: "Those clicks show what makes the address feel useful in real life.",
+    action: "Bring the strongest nearby places into the panel, neighborhood notes, and follow-up copy.",
   },
   "Collection Opens": {
-    signal: "Shows when users move from one property into curated downtown living collections.",
-    why: "Collection opens mean people are comparing neighborhoods, not just scrolling listings.",
-    action: "Create or promote collections around the strongest building themes.",
+    signal: "How often people move from this place into a curated downtown collection.",
+    why: "Collection opens suggest someone is thinking about the wider neighborhood, not just one listing.",
+    action: "Connect the place to the guides that best match how people are exploring.",
   },
   "Comparison Opens": {
-    signal: "Tracks when users compare this building against other downtown residential options.",
-    why: "Comparison usually means someone is narrowing real options.",
-    action: "Surface the building's strongest differentiators against nearby competitors.",
+    signal: "How often people compare this building with other downtown options.",
+    why: "Comparison usually means the decision is getting more serious.",
+    action: "Make the building's clearest differences visible without making people hunt for them.",
   },
   "Walkability Interest": {
-    signal: "Shows clicks into errands, trails, groceries, transit, and daily-use places.",
-    why: "Walkability can make a listing feel practical before a prospect asks about square footage.",
-    action: "Lead with the daily routine benefits that already attract clicks.",
+    signal: "How often people open errands, trails, groceries, transit, and daily-use places.",
+    why: "Walkability helps someone picture the week before they think about square footage.",
+    action: "Lead with the everyday places people can actually use from here.",
   },
   "Dining Interest": {
-    signal: "Shows clicks into restaurants, happy hours, coffee, and date-night options.",
-    why: "Dining interest shows how the building fits into the resident's real week.",
-    action: "Pair listings with the nearby dining and inKind benefits people already open.",
+    signal: "How often people open restaurants, happy hours, coffee, and evening options nearby.",
+    why: "Dining interest shows how the location fits into someone's real week.",
+    action: "Make nearby food, coffee, and after-work plans easy to discover from the panel.",
   },
   "Wellness Interest": {
-    signal: "Shows clicks into fitness, recovery, spa, trail, and routine-friendly wellness places.",
-    why: "Wellness interest points to lifestyle fit and recurring neighborhood value.",
-    action: "Frame the building around daily routines, not only amenities.",
+    signal: "How often people open fitness, recovery, spa, trail, and wellness places nearby.",
+    why: "Wellness interest points to routines people may repeat, not just one-time visits.",
+    action: "Show the wellness options that make the location feel easier to live with.",
   },
   "Lifestyle Benefit Engagement": {
-    signal: "Shows which benefits get opened most: walkability, dining, wellness, waterfront access, or local services.",
-    why: "This shows which lifestyle claims people actually care about.",
-    action: "Lead with the benefits people already choose in panel copy, listing media, and campaigns.",
+    signal: "Which benefits people open most: walkability, dining, wellness, waterfront access, or local services.",
+    why: "The strongest signals show what people are already trying to imagine for themselves.",
+    action: "Lead with the benefits people choose first and keep the rest secondary.",
   },
 };
 
@@ -7904,14 +7903,8 @@ function LegendsResidentialIntelligenceDrawer({
         <p className="dp-entity-dek">{panelDek}</p>
       </header>
 
-      <div className="dp-entity-action-row dp-legends-action-carousel" aria-label={isPartnerMode ? "Partner residential actions" : "Residential actions"}>
-        {isPartnerMode ? (
-          <>
-            <button type="button" className="dp-entity-action is-primary" onClick={() => onFilter?.("Legends")}>Review Interest</button>
-            <button type="button" className="dp-entity-action" onClick={openInquiry}>Open Lead Module</button>
-            <Link to={getPartnerDashboardRoute(place)} className="dp-entity-action">Open Analytics</Link>
-          </>
-        ) : (
+      {!isPartnerMode && (
+        <div className="dp-entity-action-row dp-legends-action-carousel" aria-label="Residential actions">
           <>
             {hasActiveListings && (
               <button type="button" className="dp-entity-action is-primary" onClick={openAvailability}>View Availability</button>
@@ -7919,25 +7912,11 @@ function LegendsResidentialIntelligenceDrawer({
             <button type="button" className="dp-entity-action" onClick={openInquiry}>Request Information</button>
             <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved Building" : "Save Building"}</button>
           </>
-        )}
-      </div>
+        </div>
+      )}
 
       {isPartnerMode ? (
         <>
-          <section className="dp-entity-section">
-            <h3>Partner intelligence</h3>
-            <p>{profile.buildingName} is read as a building people compare, not just a single listing.</p>
-            <div className="dp-entity-row-list">
-              {legendsResidentialPartnerSections.map(([title, copy]) => (
-                <div key={title} className="dp-entity-row">
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{copy}</small>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
           <section className="dp-entity-section">
             <h3>Analytics tracked</h3>
             <div className="dp-legends-analytics-groups" aria-label="Legends analytics tracked">

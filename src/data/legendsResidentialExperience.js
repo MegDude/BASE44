@@ -15,19 +15,6 @@ const RESIDENTIAL_ANALYTICS = [
   "Lifestyle Benefit Engagement",
 ];
 
-const PARTNER_SECTIONS = [
-  ["Building Interest", "Views, saves, and return visits around this building."],
-  ["Neighborhood Interest", "Which nearby districts and places residents open after viewing."],
-  ["Lifestyle Interest", "Dining, wellness, waterfront, coffee, and walkability patterns."],
-  ["Tour Requests", "Residents who move from discovery into active inquiry."],
-  ["Showing Requests", "Signals that should route to the Legends follow-up flow."],
-  ["Inquiry Volume", "New requests generated from map, listing, and neighborhood surfaces."],
-  ["Most Viewed Lifestyle Benefits", "The daily advantages creating the strongest pull."],
-  ["Most Viewed Nearby Destinations", "Restaurants, parks, hotels, venues, and civic places driving interest."],
-  ["Resident Intent Signals", "Saved buildings, comparisons, directions, and listing opens."],
-  ["Building Comparison Trends", "Where this building is being compared against other downtown options."],
-];
-
 const INDEPENDENT_PROFILE = {
   id: "the-independent",
   buildingName: "The Independent",
@@ -280,4 +267,4 @@ export function createGenericLegendsResidentialExperience(content) {
   };
 }
 
-export { PARTNER_SECTIONS as legendsResidentialPartnerSections, RESIDENTIAL_ANALYTICS as legendsResidentialAnalytics };
+export { RESIDENTIAL_ANALYTICS as legendsResidentialAnalytics };

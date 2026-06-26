@@ -28006,38 +28006,47 @@ html body #root .dp-map-page.dp-map-page .dp-legends-analytics-insight h4 {
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-insight dl {
   display: grid !important;
-  gap: 8px !important;
+  gap: 7px !important;
   margin: 0 !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-insight div {
-  display: grid !important;
-  gap: 2px !important;
+  display: block !important;
+  min-width: 0 !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-insight dt {
-  color: rgba(11, 31, 51, .48) !important;
-  font: 750 8.5px/1 Inter, sans-serif !important;
-  letter-spacing: .11em !important;
-  text-transform: uppercase !important;
+  display: inline !important;
+  color: #0B1F33 !important;
+  font: 650 12px/1.45 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-legends-analytics-insight dt::after {
+  content: ": " !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-insight dd {
+  display: inline !important;
   margin: 0 !important;
   color: rgba(11, 31, 51, .76) !important;
-  font: 450 12px/1.4 Inter, sans-serif !important;
+  font: 450 12px/1.45 Inter, sans-serif !important;
+  overflow-wrap: anywhere !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-groups {
   display: grid !important;
-  gap: 12px !important;
-  margin-top: 4px !important;
+  gap: 10px !important;
+  margin-top: 2px !important;
+  min-width: 0 !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-group {
   display: grid !important;
-  gap: 7px !important;
-  padding-top: 10px !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  padding-top: 8px !important;
   border-top: 1px solid rgba(11, 31, 51, .08) !important;
 }
 
@@ -28049,30 +28058,47 @@ html body #root .dp-map-page.dp-map-page .dp-legends-analytics-group:first-child
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-group p {
   margin: 0 !important;
   color: rgba(11, 31, 51, .48) !important;
-  font: 700 8.5px/1 Inter, sans-serif !important;
-  letter-spacing: .12em !important;
+  font: 700 8px/1 Inter, sans-serif !important;
+  letter-spacing: .1em !important;
   text-transform: uppercase !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-metric-list {
   display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 7px !important;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 0 2px 2px 0 !important;
+  scroll-snap-type: x proximity !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-legends-analytics-metric-list::-webkit-scrollbar {
+  display: none !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-analytics-metric {
   display: inline-flex !important;
   align-items: center !important;
-  min-height: 29px !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  min-height: 27px !important;
   max-width: 100% !important;
-  padding: 0 9px !important;
+  padding: 0 8px !important;
   border: 1px solid rgba(11, 31, 51, .1) !important;
   border-radius: 7px !important;
   background: rgba(255, 255, 255, .62) !important;
   color: rgba(11, 31, 51, .78) !important;
-  font: 500 11px/1.15 Inter, sans-serif !important;
+  font: 500 10.5px/1.1 Inter, sans-serif !important;
   letter-spacing: 0 !important;
-  text-align: left !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  scroll-snap-align: start !important;
   box-shadow: none !important;
 }
 
@@ -28081,6 +28107,27 @@ html body #root .dp-map-page.dp-map-page .dp-legends-analytics-metric:is(:hover,
   background: rgba(200, 169, 106, .12) !important;
   color: #0B1F33 !important;
   outline: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-entity-hero {
+  order: 10 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-panel-header, .dp-entity-summary, .dp-entity-identity) {
+  order: 11 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) {
+  order: 12 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-section, .dp-detail-section, .dp-detail-body) {
+  order: 20 !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-entity-row-list {
