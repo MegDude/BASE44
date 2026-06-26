@@ -9,6 +9,7 @@ export type EntityType =
   | "retail"
   | "wellness"
   | "perk"
+  | "campaign"
   | "event"
   | "brand"
   | "civic"

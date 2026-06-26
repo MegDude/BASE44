@@ -43,6 +43,7 @@ export function resolveEntityType(entity: Record<string, unknown>): EntityType {
   if (entity.isLegendsListing || raw.isLegendsListing || raw.legendsListing || text.includes("legends listing")) return "listing";
   if (raw.rentalListing || text.includes("rental") || text.includes("leasing") || text.includes("for rent")) return "rental";
   if (text.includes("hotel")) return "hotel";
+  if (text.includes("campaign")) return "campaign";
   if (text.includes("event")) return "event";
   if (text.includes("perk") || text.includes("offer") || text.includes("inkind")) return "perk";
   if (text.includes("brand")) return "brand";
@@ -100,6 +101,7 @@ export function resolveDrawer(entityType: EntityType): string {
     retail: "RetailDrawer",
     wellness: "WellnessDrawer",
     perk: "PerkDrawer",
+    campaign: "EventDrawer",
     event: "EventDrawer",
     brand: "BrandDrawer",
     civic: "CivicDrawer",

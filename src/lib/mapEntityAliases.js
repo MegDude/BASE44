@@ -131,6 +131,15 @@ export const LEGENDS_LISTING_TO_BUILDING_ALIASES = listingAliasEntries.reduce((a
   "70-rainey-1409": "luxury-building-70-rainey",
 });
 
+const NON_PROPERTY_URL_ENTITY_IDS = new Set([
+  "rivian-downtown-austin-activation",
+  "rivian-downtown-activation",
+  "rivian-downtown-experience-layer",
+  "campaign-rivian-downtown-experience-layer",
+  "perk-rivian-waterfront-drive",
+  "partner-rivian",
+]);
+
 export function resolvePropertyEntityId(rawEntityId) {
   const normalized = normalizePropertyId(rawEntityId);
   if (!normalized) return "";
@@ -147,6 +156,7 @@ export function resolvePropertyUrlEntityId(rawEntityId) {
 export function resolvePropertyListingUrlId(rawEntityId) {
   const normalized = normalizePropertyId(rawEntityId);
   if (!normalized) return "";
+  if (NON_PROPERTY_URL_ENTITY_IDS.has(normalized)) return "";
 
   const matchingEntry = listingAliasEntries.find(({ listing }) => {
     return [
@@ -212,8 +222,14 @@ export const mapEntityAliases = {
   "topo-chico-hydration": "perk-topo-chico-downtown-hydration",
   "topo-chico-hydration-activation": "perk-topo-chico-downtown-hydration",
   "topo-chico-downtown-hydration-activation": "perk-topo-chico-downtown-hydration",
-  "rivian-downtown-austin-activation": "perk-rivian-waterfront-drive",
+  "rivian-downtown-austin-activation": "campaign-rivian-downtown-experience-layer",
+  "rivian-downtown-activation": "campaign-rivian-downtown-experience-layer",
+  "rivian-downtown-experience-layer": "campaign-rivian-downtown-experience-layer",
+  "rivian-downtown-experience": "campaign-rivian-downtown-experience-layer",
+  "rivian-experience-layer": "campaign-rivian-downtown-experience-layer",
   "rivian-waterfront-drive": "perk-rivian-waterfront-drive",
+  "rivian-test-drive": "perk-rivian-waterfront-drive",
+  "rivian-downtown-test-drive": "perk-rivian-waterfront-drive",
   "yeti-congress-district-activation": "perk-yeti-trail-day",
   "yeti-trail-day": "perk-yeti-trail-day",
   "lululemon-waterloo-run-club-activation": "perk-lululemon-run-club",
