@@ -23797,3 +23797,195 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   line-height: 1.28 !important;
   overflow-wrap: anywhere !important;
 }
+
+/* Absolute EOF desktop story fit lock: keep all story copy visible. */
+@media (min-width: 768px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active),
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto auto !important;
+    align-items: stretch !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+    align-self: stretch !important;
+    align-items: center !important;
+    width: min(100%, 1080px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: clamp(16px, 2.6vh, 34px) clamp(32px, 5vw, 72px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-gutter: stable both-edges !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    align-self: center !important;
+    width: min(100%, 920px) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    gap: clamp(9px, 1.55vh, 16px) !important;
+    width: min(100%, 860px) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-kicker-slot, .dp-fixed-story-prelude-slot, .dp-fixed-story-headline-slot, .dp-fixed-story-meaning-slot, .dp-fixed-story-supporting-slot) {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    width: min(100%, 860px) !important;
+    font-size: clamp(40px, 6.7vw, 68px) !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-meaning, .dp-fixed-story-meaning-line, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+    width: min(100%, 760px) !important;
+    font-size: clamp(14px, 1.42vw, 16.5px) !important;
+    line-height: 1.4 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+    gap: 5px !important;
+    padding-top: 0 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-progress.dp-fixed-story-progress {
+    flex: 0 0 auto !important;
+    min-height: 46px !important;
+    padding-block: 6px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    flex: 0 0 auto !important;
+    min-height: 54px !important;
+    padding-block: 6px 8px !important;
+  }
+}
+
+/* Absolute EOF partner drawer hierarchy lock: hero, then identity, then content. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  width: 100% !important;
+  padding: 0 14px 22px !important;
+  overflow: visible !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer > .dp-panel-detail-hero.dp-panel-detail-hero {
+  order: 0 !important;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer > .dp-panel-detail-hero.dp-panel-detail-hero .dp-destination-media.dp-destination-media {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #F7F8FB !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer > .dp-panel-detail-hero.dp-panel-detail-hero .dp-destination-media.dp-destination-media img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  object-fit: cover !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer > .dp-entity-identity.dp-entity-identity {
+  order: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px 2px 14px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .075) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer > :not(.dp-panel-detail-hero):not(.dp-entity-identity) {
+  order: 2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer .dp-entity-meta.dp-entity-meta {
+  margin: 0 !important;
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  font-size: 9.5px !important;
+  font-weight: 660 !important;
+  line-height: 1.15 !important;
+  letter-spacing: .11em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer .dp-entity-title.dp-entity-title {
+  margin: 2px 0 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(18px, 4.7vw, 22px) !important;
+  font-weight: 470 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer :is(.dp-entity-subtitle, .dp-entity-context) {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-size: 12.25px !important;
+  font-weight: 400 !important;
+  line-height: 1.36 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-drawer-control-title.dp-drawer-control-title {
+  font-size: 11.5px !important;
+  font-weight: 560 !important;
+  letter-spacing: 0 !important;
+}
