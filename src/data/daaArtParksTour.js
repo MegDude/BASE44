@@ -104,6 +104,33 @@ function slugify(value) {
 const stopIds = tourSeedStops.map(([name], index) => `daa-stop-${String(index + 1).padStart(2, "0")}-${slugify(name)}`);
 
 const tourStopCopyOverrides = {
+  "Central Library Plaza": {
+    displayName: "Austin Central Library",
+    popupCopy: "19 of 48 · Public space in the Seaholm District",
+    description:
+      "The Austin Central Library is one of Austin's most remarkable public spaces, with six floors of books, quiet reading rooms, an Innovation Lab, art exhibitions, a rooftop garden, and some of the best free views of Lady Bird Lake.",
+    detailHeadline: "World-class architecture. Completely free.",
+    daaIntro:
+      "Sometimes the best thing downtown is not something to buy. The Austin Central Library is one of the city's most celebrated public spaces, combining award-winning architecture, quiet reading rooms, creative studios, art exhibitions, and a rooftop garden overlooking Lady Bird Lake.",
+    whyStopHere:
+      "Whether you have fifteen minutes between meetings, need a place to work, or simply want somewhere calm to recharge, it is worth making the short walk.",
+    whyStopBullets: [
+      "Rooftop garden overlooking Lady Bird Lake",
+      "Six floors of comfortable spaces to read, work, and relax",
+      "Free Wi-Fi throughout the building",
+      "Innovation Lab with maker equipment, creative technology, and workshops",
+      "Rotating art exhibitions and community events",
+      "Cafe, bookstore, and outdoor terraces",
+      "Free entry every day",
+    ],
+    goodFor: ["Remote work", "Quiet afternoons", "Families", "Students", "Visitors", "Architecture lovers"],
+    nearbyLabels: ["Lady Bird Lake", "Seaholm District", "Shoal Creek Trail", "Outdoor terraces"],
+    localTip:
+      "Take the elevator to the rooftop before sunset. It is one of downtown Austin's best free viewpoints and usually much quieter than the nearby parks.",
+    ctaHeadline: "No coupon required.",
+    ctaBody:
+      "Just show up and enjoy one of Austin's best public spaces. Save it for the next time you need a change of scenery, a quiet place to think, or one of the best views downtown without spending a dollar.",
+  },
   "We All Ride Mosaics": {
     artist: "J Muzacz",
     year: "2024",
@@ -152,6 +179,7 @@ export const daaTourStops = tourSeedStops.map(([name, category, district, locati
     id,
     stopNumber: index + 1,
     name,
+    displayName: copyOverride.displayName || name,
     category,
     district,
     locationLabel,
@@ -163,12 +191,14 @@ export const daaTourStops = tourSeedStops.map(([name, category, district, locati
     sponsor: "Downtown Austin Alliance",
     imageUrl: resolveTourStopImage(name, category, district, locationLabel),
     description: copyOverride.description || `${name} is part of the Downtown Austin Art & Parks Tour, connecting public art, parks, landmarks, and walkable downtown places into one self-guided civic experience.`,
-    popupCopy: `${String(index + 1).padStart(2, "0")} of 48 · ${category} in ${district}`,
+    popupCopy: copyOverride.popupCopy || `${String(index + 1).padStart(2, "0")} of 48 · ${category} in ${district}`,
+    detailHeadline: copyOverride.detailHeadline || "",
     daaIntro: copyOverride.daaIntro || "This stop is part of the Downtown Austin Alliance Art & Parks Tour, a self-guided collection of public art, parks, murals, and cultural landmarks that tell the story of downtown Austin.",
     whyStopHere: copyOverride.whyStopHere || `Stop here to notice how ${locationLabel} connects downtown's public space, local history, and everyday movement.`,
     whyStopBullets: copyOverride.whyStopBullets || [],
     goodFor: copyOverride.goodFor || [],
     nearbyLabels: copyOverride.nearbyLabels || [],
+    localTip: copyOverride.localTip || "",
     ctaHeadline: copyOverride.ctaHeadline || "",
     ctaBody: copyOverride.ctaBody || "",
     sourceUrl: copyOverride.sourceUrl || "",

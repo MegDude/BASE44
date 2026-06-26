@@ -871,7 +871,7 @@ function waterlooCampaignPlace(pin, index) {
 function daaTourStopPlace(stop) {
   return {
     id: stop.id,
-    name: stop.name,
+    name: stop.displayName || stop.name,
     type: "civic",
     partnerType: "civic",
     category: `${stop.category} / DAA Art & Parks Tour`,

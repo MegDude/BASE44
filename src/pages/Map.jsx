@@ -6121,6 +6121,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   if (!stop) return null;
 
   const stopNumber = String(stop.stopNumber).padStart(2, "0");
+  const stopTitle = stop.displayName || stop.name;
   const isSaved = savedIds?.has?.(place.id);
   const locationLabel = stop.locationLabel || place?.district || "Downtown Austin";
   const stopImage = stop.imageUrl || place.image || resolveEntityImage(place, "card") || MAP_PANEL_IMAGE_FALLBACK;
@@ -6144,12 +6145,12 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   ];
   const handleCheckInShare = async () => {
     const shareUrl = `${window.location.origin}/map?mode=resident&tab=map&filter=Civic&entityId=${encodeURIComponent(place.id)}`;
-    window.dispatchEvent(new CustomEvent("downtown-perks:daa-stop-check-in", { detail: { stopId: stop.id, stopName: stop.name, shareUrl } }));
+    window.dispatchEvent(new CustomEvent("downtown-perks:daa-stop-check-in", { detail: { stopId: stop.id, stopName: stopTitle, shareUrl } }));
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${stop.name} · Downtown Austin Art & Parks Tour`,
-          text: `I stopped at ${stop.name} on the Downtown Austin Art & Parks Tour.`,
+          title: `${stopTitle} · Downtown Austin Art & Parks Tour`,
+          text: `I stopped at ${stopTitle} on the Downtown Austin Art & Parks Tour.`,
           url: shareUrl,
         });
         return;
@@ -6168,7 +6169,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
     window.dispatchEvent(new CustomEvent("downtown-perks:daa-feedback-question", {
       detail: {
         stopId: stop.id,
-        stopName: stop.name,
+        stopName: stopTitle,
         questionId: item.id,
         question: item.question,
       },
@@ -6179,7 +6180,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
     <div className="dp-daa-destination-panel dp-civic-guide-panel">
       <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
         <p className="dp-daa-kicker">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
-        <h3>Why People Stop Here</h3>
+        <h3>{stop.detailHeadline || "Why People Stop Here"}</h3>
         <p>{stop.daaIntro}</p>
         <p>{stop.whyStopHere}</p>
         {whyStopBullets.length > 0 && (
@@ -6209,6 +6210,14 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
           </div>
         )}
       </section>
+
+      {stop.localTip && (
+        <section className="dp-daa-story-block dp-daa-local-tip" aria-label="Local tip">
+          <p className="dp-daa-kicker">Local Tip</p>
+          <h3>Go before sunset.</h3>
+          <p>{stop.localTip}</p>
+        </section>
+      )}
 
       {stop.ctaHeadline && stop.ctaBody && (
         <section className="dp-daa-story-block dp-daa-stop-cta" aria-label="Downtown Perks note">
