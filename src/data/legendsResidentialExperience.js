@@ -195,6 +195,9 @@ function valuesFromRecord(record) {
 }
 
 export function getLegendsResidentialExperience(record) {
+  const recordId = normalize(record?.id || record?.raw?.id || record?.slug || record?.raw?.slug);
+  if (recordId === "partner-four-seasons" || recordId === "four-seasons-austin") return null;
+
   const haystack = valuesFromRecord(record).map(normalize).filter(Boolean);
   if (!haystack.length) return null;
 

@@ -4259,10 +4259,10 @@ function getDestinationKind(place) {
   if (kind === "event" || text.includes("event") || text.includes("rsvp")) return "event";
   if (text.includes("grocery") || text.includes("market") || text.includes("pantry")) return "grocery";
   if (text.includes("coffee") || text.includes("cafe") || text.includes("espresso")) return "coffee";
-  if (text.includes("hotel") || text.includes("hospitality")) return "hotel";
   if (hasVenueSignals(place) && (text.includes("live music") || text.includes("nightclub") || text.includes("music venue"))) return "venue";
   if (text.includes("bar") || text.includes("nightlife") || text.includes("cocktail") || text.includes("brewery") || text.includes("beer")) return "nightlife";
   if (text.includes("restaurant") || text.includes("dining") || text.includes("pizza") || text.includes("food")) return "dining";
+  if (text.includes("hotel") || text.includes("hospitality")) return "hotel";
   if (text.includes("retail") || text.includes("store") || text.includes("shop")) return "retail";
   if (text.includes("civic") || text.includes("park") || text.includes("public")) return "civic";
   if (text.includes("brand") || text.includes("experience")) return "brand";
@@ -7785,6 +7785,11 @@ function LegendsResidentialIntelligenceDrawer({
   const [askMapQuestion, setAskMapQuestion] = useState("");
   const [activeAnalyticsInsight, setActiveAnalyticsInsight] = useState(legendsResidentialAnalytics[0]);
   const analyticsInsight = LEGENDS_ANALYTICS_INSIGHT_COPY[activeAnalyticsInsight] || LEGENDS_ANALYTICS_INSIGHT_COPY["Building Views"];
+  const analyticsGroups = [
+    ["Demand", ["Building Views", "Listing Views", "Save Rate", "Tour Requests"]],
+    ["Neighborhood", ["Neighborhood Opens", "Nearby Entity Clicks", "Collection Opens", "Comparison Opens"]],
+    ["Lifestyle", ["Walkability Interest", "Dining Interest", "Wellness Interest", "Lifestyle Benefit Engagement"]],
+  ];
   const safeText = (...values) => {
     for (const value of values) {
       const text = String(value ?? "").trim();
@@ -7935,21 +7940,27 @@ function LegendsResidentialIntelligenceDrawer({
           </section>
           <section className="dp-entity-section">
             <h3>Analytics tracked</h3>
-            <div className="dp-entity-text-rail" aria-label="Legends analytics tracked">
-              {legendsResidentialAnalytics.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className="dp-entity-text-chip"
-                  aria-pressed={activeAnalyticsInsight === item}
-                  onClick={() => setActiveAnalyticsInsight(item)}
-                >
-                  {item}
-                </button>
+            <div className="dp-legends-analytics-groups" aria-label="Legends analytics tracked">
+              {analyticsGroups.map(([group, items]) => (
+                <div key={group} className="dp-legends-analytics-group">
+                  <p>{group}</p>
+                  <div className="dp-legends-analytics-metric-list">
+                    {items.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        className="dp-legends-analytics-metric"
+                        aria-pressed={activeAnalyticsInsight === item}
+                        onClick={() => setActiveAnalyticsInsight(item)}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
             <article className="dp-legends-analytics-insight" aria-live="polite">
-              <p>Selected insight</p>
               <h4>{activeAnalyticsInsight}</h4>
               <dl>
                 <div>

@@ -107,6 +107,7 @@ const tourStopCopyOverrides = {
   "Central Library Plaza": {
     displayName: "Austin Central Library",
     popupCopy: "19 of 48 · Public space in the Seaholm District",
+    imageUrl: "/images/map-entities/civic/austin-central-library-rooftop.avif",
     description:
       "The Austin Central Library is one of Austin's most remarkable public spaces, with six floors of books, quiet reading rooms, an Innovation Lab, art exhibitions, a rooftop garden, and some of the best free views of Lady Bird Lake.",
     detailHeadline: "World-class architecture. Completely free.",
@@ -189,7 +190,7 @@ export const daaTourStops = tourSeedStops.map(([name, category, district, locati
     year: copyOverride.year || year,
     curator: "Downtown Austin Alliance Foundation",
     sponsor: "Downtown Austin Alliance",
-    imageUrl: resolveTourStopImage(name, category, district, locationLabel),
+    imageUrl: copyOverride.imageUrl || resolveTourStopImage(name, category, district, locationLabel),
     description: copyOverride.description || `${name} is part of the Downtown Austin Art & Parks Tour, connecting public art, parks, landmarks, and walkable downtown places into one self-guided civic experience.`,
     popupCopy: copyOverride.popupCopy || `${String(index + 1).padStart(2, "0")} of 48 · ${category} in ${district}`,
     detailHeadline: copyOverride.detailHeadline || "",

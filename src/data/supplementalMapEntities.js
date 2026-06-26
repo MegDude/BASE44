@@ -1,4 +1,5 @@
 import { DOWNTOWN_CORE_RESTAURANT_RECORDS } from "./downtownCoreRestaurantPerks";
+import { dateNightCollectionEntities } from "./dateNightCollection";
 import { FOUR_SEASONS_EXPERIENCE_ENTITIES } from "./fourSeasonsExperience";
 import { theShoreResidentialBuilding } from "./theShoreResidentialBuilding";
 
@@ -17,7 +18,7 @@ const WATERLOO_CIVIC_IMAGE = "/images/imported/perks/03-waterloo-park.jpg";
 const WATERLINE_IMAGE = "/images/imported/perks/waterline-hero.webp";
 const SHORE_IMAGE = "/images/properties/the-shore/hero.jpg";
 const HOTEL_VAN_ZANDT_IMAGE = "/images/imported/perks/hotel-van-zandt-2560x1570.webp";
-const FOUR_SEASONS_IMAGE = "/images/imported/perks/four-seasons-resi.jpg";
+const FOUR_SEASONS_IMAGE = "/images/entities/four-seasons/four-seasons-austin-pool-garden.png";
 const YETI_IMAGE = "/images/imported/perks/yeti-store.png";
 const TOPO_CHICO_IMAGE = "/images/map-entities/brand-topo-chico/kJpijN1kCBPVJEjSL54jD5bnkceWKjCxJHoIygqo87DjBwdw_k4q8YBKhQc_QPoVcQ-u8gnbjM02_gnakipBqQEZJUVcdYP40tc92usk570PopBrfdxoUtHegMH4r_lbjnYtapuKCPt2o_iGYegyRk2uJuNZbGQq3vA_sGrMPX5UGwUO732vMhaPU_xPRndp.jpeg";
 const RIVIAN_IMAGE = "/images/imported/perks/rivian.png";
@@ -34,6 +35,10 @@ const HALF_STEP_IMAGE = "/images/restaurants/half-step.jpg";
 const AMAYA_IMAGE = "/images/map-entities/rainey-bars/amaya.jpeg";
 const VIA_313_IMAGE = "/images/imported/perks/via313.jpg";
 const BATHE_IMAGE = "/images/map-entities/perks/partner_wellness_1779052883675.png";
+const ONE_HOTEL_IMAGE = "/images/map-entities/1-hotel-austin/waterline-hotel.avif";
+const ONE_HOTEL_ALTENO_IMAGE = "/images/map-entities/1-hotel-austin/alteno.webp";
+const ONE_HOTEL_WATR_IMAGE = "/images/map-entities/1-hotel-austin/watr.webp";
+const ONE_HOTEL_NEIGHBORS_IMAGE = "/images/map-entities/1-hotel-austin/neighbors.webp";
 
 const LEGENDS_IMAGES = {
   austinProper: [
@@ -169,6 +174,7 @@ function entity({
   residentQuickFacts,
   residentDrawer,
   campaigns,
+  actions,
   ...rest
 }) {
   return {
@@ -240,7 +246,7 @@ function entity({
       ...(searchKeywords || []),
       ...(residentSearchIntents || []),
     ].filter(Boolean),
-    actions: type === "civic" ? ["Open", "Save", "Get directions", "Open civic dashboard"] : ["Open", "Save"],
+    actions: actions || (type === "civic" ? ["Open", "Save", "Get directions", "Open civic dashboard"] : ["Open", "Save"]),
     dashboardContext: type === "civic"
       ? { type: "civic", panel: "civic-dashboard" }
       : partnerType === "inkind"
@@ -272,6 +278,7 @@ function entity({
 
 export const supplementalMapEntities = [
   ...DOWNTOWN_CORE_RESTAURANT_RECORDS.map((record) => entity(record)),
+  ...dateNightCollectionEntities.map((record) => entity(record)),
   ...FOUR_SEASONS_EXPERIENCE_ENTITIES.map((record) => entity(record)),
   entity({
     id: "legends-real-estate-202-nueces-st-1501",
@@ -406,6 +413,155 @@ export const supplementalMapEntities = [
   entity({ id: "priority-6th-guadalupe", name: "6th & Guadalupe", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2691, longitude: -97.7448, district: "West 6th", address: "400 W 6th St, Austin TX, 78701", summary: "Mixed-use downtown tower at the 6th Street corridor.", image: PROPERTY_IMAGE }),
   entity({ id: "priority-the-paseo", name: "Paseo", type: "mixed_use", partnerType: "properties", category: "Mixed Use / Residential + Retail", category_key: "mixed_use residential_property retail_business priority_building", latitude: 30.2589, longitude: -97.7381, district: "Rainey", address: "Rainey Street District, Austin TX, 78701", summary: "Mixed-use residential and retail project reshaping the Rainey district alongside the newer residential towers.", offer: "Resident welcome package", image: "/images/map-pins/property/paseo.webp", tier: "premium", tags: ["residential", "retail", "mixed-use", "rainey"], pin: "building", datasetLayer: "Residential & Mixed-Use", suggestedModule: "Resident discovery and building report", annualFee: 499 }),
   entity({ id: "priority-the-waterline", name: "Waterline", type: "mixed_use", partnerType: "properties", brand: "The Waterline", category: "Mixed Use / Residential + Office + Hotel + Retail", category_key: "mixed_use residential_property office hotel_hospitality retail_business priority_building brand_activation waterline flagship_property hotel_arrival resident_routine", latitude: 30.2598, longitude: -97.7394, district: "Rainey", address: "98 Red River St, Austin TX, 78701", summary: "A flagship downtown tower where homes, hotel stays, offices, restaurants, and nearby plans meet in one map layer.", description: "Waterline is mapped as a prestige property activation: residents and guests can see what is walkable, what is useful nearby, and how the building connects to Rainey, the trail, hotels, dining, and evening plans.", offer: "Resident welcome and neighborhood orientation", campaignObjective: "Show the neighborhood as part of the property experience.", partnerInsight: "Strong around arrival moments, move-in orientation, hotel crossover, and premium resident routines.", audience: "Residents, hotel guests, office users, and visitors already moving through Rainey.", image: WATERLINE_IMAGE, tier: "signature", status: "Active Delivery", tags: ["residential", "office", "hotel", "retail", "mixed-use", "rainey", "brand activation"], pin: "tower", pinKey: "property", datasetLayer: "The Waterline", suggestedModule: "Resident discovery and building report", primaryAction: "View Building", secondaryAction: "See Nearby", related: ["partner-hotel-van-zandt", "partner-emmer-rye", "property-the-shore", "partner-stay-put"], annualFee: 1499 }),
+  entity({
+    id: "1-hotel-austin",
+    name: "1 Hotel Austin",
+    type: "hotel",
+    partnerType: "hotels",
+    brand: "1 Hotels",
+    category: "Hotel / Hospitality",
+    category_key: "hotel hospitality waterline rainey lady_bird_lake restaurants rooftop cafe wellness",
+    latitude: 30.2598,
+    longitude: -97.7394,
+    district: "Rainey",
+    address: "98 Red River Street, Austin TX, 78701",
+    summary: "Luxury hotel inside Waterline with public dining, rooftop, cafe, wellness, and lakefront access.",
+    description: "1 Hotel Austin anchors Waterline with public food and beverage destinations residents can use independently: Alteño, Watr, and Neighbors.",
+    offer: "Dining at 1 Hotel Austin: Alteño, Watr, Neighbors",
+    image: ONE_HOTEL_IMAGE,
+    tier: "signature",
+    status: "Opening August 2026",
+    tags: ["hotel", "hospitality", "waterline", "rainey", "lady bird lake", "restaurants", "rooftop", "cafe"],
+    searchKeywords: ["1 Hotel Austin", "one hotel austin", "waterline hotel", "hotel restaurants", "Alteno", "Alteño", "Watr", "Neighbors", "Neighbor's Cafe"],
+    knownFor: ["Dining at 1 Hotel Austin", "Alteño", "Watr", "Neighbors", "Bamford Wellness Spa", "Lady Bird Lake access"],
+    childVenueIds: ["1-hotel-austin-alteno", "1-hotel-austin-watr", "1-hotel-austin-neighbors"],
+    related: ["1-hotel-austin-alteno", "1-hotel-austin-watr", "1-hotel-austin-neighbors", "priority-the-waterline", "civic-waterloo-greenway"],
+    pin: "hotel",
+    pinKey: "hotel",
+    datasetLayer: "1 Hotel Austin",
+    primaryAction: "View Dining",
+    secondaryAction: "Directions",
+    actions: ["View Dining", "Directions", "Save"],
+    analyticsEnabled: true,
+    partnerWorkspaceId: "1-hotel-austin",
+  }),
+  entity({
+    id: "1-hotel-austin-alteno",
+    parentId: "1-hotel-austin",
+    name: "Alteño",
+    title: "Alteño",
+    type: "restaurant",
+    kind: "restaurant",
+    partnerType: "venues",
+    brand: "1 Hotel Austin",
+    category: "Restaurant",
+    subcategory: "Modern Mexican",
+    cuisine: "Modern Mexican",
+    category_key: "restaurant_food mexican modern_mexican fine_dining chef_driven hotel alteno jalisco date_night cocktails business_lunch",
+    latitude: 30.25982,
+    longitude: -97.73936,
+    district: "Rainey",
+    address: "98 Red River Street, Austin TX, 78701",
+    summary: "Modern Mexican dining inside 1 Hotel Austin from chef Johnny Curiel.",
+    description: "Chef Johnny Curiel's signature restaurant inspired by the Highlands of Jalisco, bringing Michelin-recognized Mexican cooking to downtown Austin inside 1 Hotel Austin.",
+    offer: "Complimentary welcome cocktail with dinner reservation.",
+    image: ONE_HOTEL_ALTENO_IMAGE,
+    heroImage: ONE_HOTEL_ALTENO_IMAGE,
+    website: "https://www.1hotels.com/austin/taste/alteno",
+    openingHours: ["Sun-Wed 7 AM-10 PM; bar until 11 PM", "Thu-Sat 7 AM-11 PM; bar until 12 AM"],
+    perks: ["Complimentary welcome cocktail with dinner reservation."],
+    actions: ["View Menu", "Reserve", "Directions", "Save"],
+    primaryAction: "Reserve",
+    secondaryAction: "Directions",
+    tags: ["restaurant", "mexican", "fine-dining", "chef-driven", "hotel", "date night", "cocktails", "business lunch"],
+    searchKeywords: ["mexican", "modern mexican", "restaurant", "fine dining", "date night", "business lunch", "cocktails", "chef Johnny Curiel", "Alteno", "Alteño"],
+    knownFor: ["Dinner", "Date night", "Business lunch", "Cocktails", "Visitors"],
+    nearby: ["Waterloo Greenway", "Lady Bird Lake Trail", "Waterline", "Rainey Street", "Waller Creek"],
+    related: ["1-hotel-austin", "1-hotel-austin-watr", "1-hotel-austin-neighbors", "priority-the-waterline", "civic-waterloo-greenway"],
+    pin: "dining",
+    pinKey: "dining",
+    datasetLayer: "1 Hotel Austin Dining",
+    partnerWorkspaceId: "1-hotel-austin",
+    analyticsEnabled: true,
+  }),
+  entity({
+    id: "1-hotel-austin-watr",
+    parentId: "1-hotel-austin",
+    name: "Watr",
+    title: "Watr",
+    type: "bar",
+    kind: "rooftop",
+    partnerType: "venues",
+    brand: "1 Hotel Austin",
+    category: "Rooftop Bar + Restaurant",
+    subcategory: "Japanese-inspired rooftop",
+    cuisine: "Japanese-inspired",
+    category_key: "rooftop bar restaurant cocktails japanese views hotel watr sunset happy_hour rooftop_terrace",
+    latitude: 30.25986,
+    longitude: -97.73944,
+    district: "Rainey",
+    address: "98 Red River Street, Austin TX, 78701",
+    summary: "A 16th-floor rooftop bar and restaurant with Japanese-inspired dining and skyline views.",
+    description: "Sixteen floors above downtown, Watr combines Japanese-inspired dining with panoramic views of Lady Bird Lake and the Austin skyline from one of the city's newest rooftop destinations.",
+    offer: "Resident happy hour pricing before sunset.",
+    image: ONE_HOTEL_WATR_IMAGE,
+    heroImage: ONE_HOTEL_WATR_IMAGE,
+    website: "https://www.1hotels.com/austin/taste/watr",
+    openingHours: ["Opening with 1 Hotel Austin"],
+    perks: ["Resident happy hour pricing before sunset."],
+    actions: ["View Menu", "Reserve", "Directions"],
+    primaryAction: "Reserve",
+    secondaryAction: "Directions",
+    tags: ["rooftop", "cocktails", "japanese", "views", "hotel", "happy hour", "sunset drinks"],
+    searchKeywords: ["best rooftop", "rooftop", "cocktails", "happy hour", "views", "Japanese", "Watr", "sunset drinks", "Lady Bird Lake views"],
+    knownFor: ["Sunset drinks", "Rooftop", "Weekend", "Visitors", "Cocktails"],
+    nearby: ["Waterloo Greenway", "Lady Bird Lake Trail", "Waterline", "Rainey Street", "Waller Creek"],
+    related: ["1-hotel-austin", "1-hotel-austin-alteno", "1-hotel-austin-neighbors", "priority-the-waterline", "civic-waterloo-greenway"],
+    pin: "cocktail",
+    pinKey: "cocktail",
+    datasetLayer: "1 Hotel Austin Dining",
+    partnerWorkspaceId: "1-hotel-austin",
+    analyticsEnabled: true,
+  }),
+  entity({
+    id: "1-hotel-austin-neighbors",
+    parentId: "1-hotel-austin",
+    name: "Neighbors",
+    title: "Neighbors",
+    type: "cafe",
+    kind: "cafe",
+    partnerType: "venues",
+    brand: "1 Hotel Austin",
+    category: "Cafe",
+    subcategory: "Cafe + Wine Bar",
+    cuisine: "Cafe",
+    category_key: "coffee cafe wine breakfast hotel neighbors remote_work casual_meetings juices cocktails",
+    latitude: 30.25976,
+    longitude: -97.73931,
+    district: "Rainey",
+    address: "98 Red River Street, Austin TX, 78701",
+    summary: "A neighborhood cafe and wine bar for coffee, fresh juices, light meals, wine, and casual meetings.",
+    description: "A neighborhood cafe and wine bar serving coffee, fresh juices, light meals, wine, and cocktails from morning through evening. Designed to be as much for locals as hotel guests.",
+    offer: "Free pastry with specialty coffee.",
+    image: ONE_HOTEL_NEIGHBORS_IMAGE,
+    heroImage: ONE_HOTEL_NEIGHBORS_IMAGE,
+    website: "https://www.1hotels.com/austin/taste/neighbors-cafe",
+    openingHours: ["Morning through evening"],
+    perks: ["Free pastry with specialty coffee."],
+    actions: ["Order Coffee", "Directions", "Save"],
+    primaryAction: "Order Coffee",
+    secondaryAction: "Directions",
+    tags: ["coffee", "cafe", "wine", "breakfast", "hotel", "remote work", "casual meetings"],
+    searchKeywords: ["coffee", "cafe", "wine", "breakfast", "remote work", "coffee near Waterline", "Neighbors", "Neighbor's Cafe", "casual meetings"],
+    knownFor: ["Coffee", "Remote work", "Breakfast", "Wine", "Casual meetings"],
+    nearby: ["Waterloo Greenway", "Lady Bird Lake Trail", "Waterline", "Rainey Street", "Waller Creek"],
+    related: ["1-hotel-austin", "1-hotel-austin-alteno", "1-hotel-austin-watr", "priority-the-waterline", "civic-waterloo-greenway"],
+    pin: "coffee",
+    pinKey: "coffee",
+    datasetLayer: "1 Hotel Austin Dining",
+    partnerWorkspaceId: "1-hotel-austin",
+    analyticsEnabled: true,
+  }),
   entity({ id: "priority-the-independent", name: "The Independent", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.2686, longitude: -97.7519, district: "Seaholm", address: "301 West Ave, Austin TX, 78701", summary: "Iconic downtown residential tower connected to resident perks and local discovery.", offer: "Skydeck guest passes", image: "/images/map-pins/property/301-west-ave.jpg" }),
   entity({ id: "priority-the-austonian", name: "The Austonian", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.264786, longitude: -97.744493, district: "Congress", address: "200 Congress Ave, Austin TX, 78701", summary: "Downtown residential tower on Congress Avenue connected to property access, resident perks, and nearby hospitality.", offer: "Property access and neighborhood context", image: "/buildings/austonian.webp" }),
   entity({ id: "priority-the-bowie", name: "The Bowie", type: "property", partnerType: "properties", category: "Priority Building / Property", category_key: "priority_building residential_property", latitude: 30.269166, longitude: -97.753036, district: "Seaholm", address: "311 Bowie St, Austin TX, 78703", summary: "Downtown Austin 78701-adjacent residential tower connected to Seaholm, the trail, resident routines, and property access.", offer: "Property access and neighborhood context", image: "/images/map-entities/properties/BOWIE.jpeg" }),
