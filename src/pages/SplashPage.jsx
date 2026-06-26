@@ -111,7 +111,7 @@ const storyStates = [
         { text: "or part of them.", tone: "navy" },
       ],
     ],
-    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that  that keep downtown interesting.",
+    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
     supporting: [
       "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
     ],
@@ -121,10 +121,10 @@ const storyStates = [
     id: "open",
     index: "06",
     navLabel: "Open",
-    kicker: "Come on in",
+    kicker: "HOWDY",
     headlineGroups: [
       [
-        { text: "So come on in.", tone: "navy" },
+        { text: "So come on in ya'll", tone: "navy" },
       ],
       [
         { text: "Open the map.", tone: "gold" },
@@ -574,30 +574,6 @@ export default function SplashPage({
           <AnimatePresence mode="wait">
             <FixedStoryStage state={state} />
           </AnimatePresence>
-
-          <div className="dp-fixed-story-progress" aria-label="Story progress">
-            <nav className="dp-fixed-story-steps" aria-label="Story scenes">
-              <ol>
-                {storyStates.map((storyState, index) => (
-                  <li key={storyState.id}>
-                    <button
-                      type="button"
-                      className={index === active ? "is-active" : ""}
-                      aria-current={index === active ? "step" : undefined}
-                      onClick={() => activate(index)}
-                    >
-                      <span>{storyState.index}</span>
-                      {storyState.navLabel}
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-            <span className="dp-fixed-story-progress-count">{state.index} / {storyStates.length}</span>
-            <span className="dp-fixed-story-progress-track" aria-hidden="true">
-              <span style={{ width: `${((active + 1) / storyStates.length) * 100}%` }} />
-            </span>
-          </div>
 
           <div className="dp-fixed-story-footer">
             <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">

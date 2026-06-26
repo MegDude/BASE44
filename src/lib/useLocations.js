@@ -1293,7 +1293,7 @@ export function useLocations() {
 
   const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
-    .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.pinKey === "civic")
+    .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
       const isVia313 = String(item.name || "").toLowerCase().includes("via 313");
       const isRoyalBlue = String(item.name || "").toLowerCase().includes("royal blue grocery");

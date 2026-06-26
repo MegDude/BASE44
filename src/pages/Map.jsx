@@ -345,7 +345,7 @@ const FILTER_MATCHERS = {
   Markets: ["market", "markets", "shopping"],
   "Public Art": ["public art", "art installation", "arts"],
   Civic: ["civic", "public", "district", "city"],
-  Services: ["service", "concierge", "mobility", "parking", "wellness"],
+  Services: ["service", "services", "local service", "home service", "roof", "roofer", "plumber", "plumbing", "restoration", "water damage", "insurance", "bank", "mortgage", "lawyer", "legal", "condo", "real estate", "property manager", "hoa", "orthodontist", "volunteer", "church", "business registration", "interior design", "windows", "closets"],
   Nightlife: ["nightlife", "bar", "cocktail", "music", "late night"],
   "Arts & Culture": ["art", "arts", "culture", "museum", "gallery", "historic", "daa", "tour"],
   Walkable: ["walk", "walking", "walkable", "nearby", "trail"],
@@ -1715,7 +1715,16 @@ function isInKindEntity(place) {
 }
 
 function isServiceEntity(place) {
-  return coreMatches(place, FILTER_MATCHERS.Services) || String(place.type || "").toLowerCase() === "service";
+  const partnerType = String(place?.partnerType || place?.raw?.partnerType || "").toLowerCase();
+  const type = String(place?.type || place?.raw?.type || "").toLowerCase();
+  const category = String(place?.category || place?.raw?.category || "").toLowerCase();
+  return partnerType === "services" || type === "service" || category.includes("local service") || coreMatches(place, FILTER_MATCHERS.Services);
+}
+
+function isLocalServiceEntity(place) {
+  const partnerType = String(place?.partnerType || place?.raw?.partnerType || "").toLowerCase();
+  const category = String(place?.category || place?.raw?.category || "").toLowerCase();
+  return partnerType === "services" || category.includes("local service") || Boolean(place?.localService || place?.raw?.localService);
 }
 
 function getParkingBooking(place) {
@@ -3889,6 +3898,257 @@ function getInKindDiscoveryProfile(place) {
   };
 }
 
+function getAppliedInKindPerk(place) {
+  const raw = place?.raw || {};
+  const embeddedPerk = raw.perk && typeof raw.perk === "object" ? raw.perk : place?.perk && typeof place.perk === "object" ? place.perk : null;
+  return {
+    title: cleanDisplayCopy(embeddedPerk?.title || raw.perkTitle || raw.offer || place?.offer) || "inKind dining benefit",
+    value: cleanDisplayCopy(embeddedPerk?.value || raw.deals_offers || place?.deals_offers || place?.offer) || "Resident dining value applied through inKind",
+    description:
+      cleanDisplayCopy(embeddedPerk?.description || raw.perkDescription) ||
+      "Save the restaurant in Downtown Perks, open the current inKind benefit when you are ready to dine, and redeem during the active restaurant window.",
+    terms:
+      cleanDisplayCopy(raw.terms || raw.perk_terms) ||
+      "Offer availability, eligible checks, and redemption windows are managed by the participating restaurant and inKind. Check the active benefit before ordering.",
+  };
+}
+
+function InKindAppliedLayer({ place, mode = "resident" }) {
+  if (!isInKindEntity(place)) return null;
+  const perk = getAppliedInKindPerk(place);
+  const placeName = place?.name || "this restaurant";
+  const partnerMode = mode === "partner";
+  const steps = partnerMode
+    ? [
+        ["Discovery", "Downtown Perks places the restaurant in map search, nearby rails, saved places, and local recommendations."],
+        ["Transaction", "inKind supports the payment-linked value or dining benefit after the resident decides to go."],
+        ["Reporting", "Partners can compare views, saves, directions, benefit opens, and redemption-ready intent around each location."],
+      ]
+    : [
+        ["Save it", `Add ${placeName} to your Downtown Perks saved places so it is easy to find later.`],
+        ["Check the benefit", "Open the inKind benefit before you order to confirm the current offer and eligible window."],
+        ["Redeem when active", "Use the participating restaurant benefit through inKind when it fits your plan."],
+      ];
+
+  return (
+    <section className="dp-inkind-zone dp-inkind-decision-zone" aria-label="How inKind works with Downtown Perks">
+      <p className="dp-inkind-zone-meta">inKind layer · Downtown Perks applied perk</p>
+      <h3>{partnerMode ? "How inKind works with Downtown Perks" : "How to use the inKind benefit"}</h3>
+      <p>
+        {partnerMode
+          ? "Downtown Perks helps create the local decision before the check is opened. inKind can support the dining value and transaction flow after someone chooses the restaurant."
+          : "Downtown Perks helps you find the right nearby restaurant. inKind carries the active dining benefit when the restaurant offer is available."}
+      </p>
+      <div className="dp-inkind-time-grid" aria-label="Applied inKind perk">
+        <div>
+          <span>Applied perk</span>
+          <strong>{perk.value}</strong>
+        </div>
+        <div>
+          <span>How it applies</span>
+          <strong>{perk.description}</strong>
+        </div>
+      </div>
+      <div className="dp-inkind-time-grid" aria-label="inKind steps">
+        {steps.map(([label, copy]) => (
+          <div key={label}>
+            <span>{label}</span>
+            <strong>{copy}</strong>
+          </div>
+        ))}
+      </div>
+      <p className="dp-inkind-walkability">{perk.terms}</p>
+      <div className="dp-inkind-perk-actions">
+        <a href={getInKindActionUrl(place, "pay")} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
+          Open inKind Benefit
+        </a>
+        <Link to="/brands/inkind" className="dp-panel-action-text">
+          How it works
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function asCleanArray(value) {
+  if (Array.isArray(value)) return value.map((item) => String(item || "").trim()).filter(Boolean);
+  if (typeof value === "string") {
+    return value
+      .split(/\n|•|,/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function getLocalServiceProfile(place) {
+  const raw = place?.raw || {};
+  const service = place?.localService || raw.localService || {};
+  const serviceCategory = service.serviceCategory || place?.serviceCategory || raw.serviceCategory || "Local Service";
+  const serviceType = service.serviceType || place?.serviceType || raw.serviceType || place?.subcategory || "Service";
+  const prompt = cleanDisplayCopy(service.prompt || place?.offer || raw.offer) || "Who can help?";
+  const whyUse =
+    cleanDisplayCopy(service.whyUse || place?.description || raw.description || place?.summary || raw.summary) ||
+    "A local business already connected to downtown routines, buildings, and resident needs.";
+  return {
+    serviceCategory,
+    serviceType,
+    prompt,
+    whyUse,
+    bestFor: asCleanArray(service.bestFor || place?.bestFor || raw.bestFor),
+    goodToKnow: asCleanArray(service.goodToKnow || place?.goodToKnow || raw.goodToKnow),
+    downtownConnection:
+      cleanDisplayCopy(service.downtownConnection || place?.downtownConnection || raw.downtownConnection) ||
+      "Already useful for downtown residents, buildings, property teams, and local businesses.",
+    nearbyBuildings: asCleanArray(service.nearbyBuildings || place?.nearbyBuildings || raw.nearbyBuildings),
+    nearbyServices: asCleanArray(service.nearbyServices || place?.related || raw.related),
+    website: place?.website || raw.website || place?.url || raw.url || "",
+    phone: place?.contact_phone || raw.contact_phone || place?.phone || raw.phone || "",
+  };
+}
+
+function getServiceRelatedPlaces(place, places = [], profile = getLocalServiceProfile(place)) {
+  const names = new Set(profile.nearbyServices.map((item) => item.toLowerCase()));
+  const direct = places.filter((candidate) => candidate?.id && candidate.id !== place?.id && names.has(String(candidate.name || "").toLowerCase()));
+  if (direct.length) return direct.slice(0, 8);
+  return places
+    .filter((candidate) => candidate?.id && candidate.id !== place?.id && isLocalServiceEntity(candidate))
+    .map((candidate) => ({ candidate, score: getMapDistanceScore(place, candidate) }))
+    .filter(({ score }) => Number.isFinite(score))
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 8)
+    .map(({ candidate }) => candidate);
+}
+
+function LocalServiceRail({ title, items = [], onSelect, kind = "text" }) {
+  if (!items.length) return null;
+  return (
+    <div className={`dp-local-service-rail dp-local-service-rail--${kind}`} aria-label={title}>
+      {items.map((item) => {
+        const key = typeof item === "string" ? item : item.id || item.name;
+        const label = typeof item === "string" ? item : item.name;
+        const meta = typeof item === "string" ? "" : getLocalServiceProfile(item).serviceType || item.category || "Local Service";
+        return (
+          <button
+            key={key}
+            type="button"
+            className="dp-local-service-chip"
+            onClick={typeof item === "string" ? undefined : () => onSelect?.(item)}
+            disabled={typeof item === "string"}
+          >
+            <strong>{label}</strong>
+            {meta && <span>{meta}</span>}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) {
+  const profile = getLocalServiceProfile(place);
+  const relatedServices = getServiceRelatedPlaces(place, places, profile);
+  const isSaved = savedIds?.has?.(place?.id);
+
+  return (
+    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-local-service-drawer">
+      <DestinationHero place={place} mode="resident" />
+      <header className="dp-entity-panel-header dp-entity-summary dp-local-service-summary">
+        <p className="dp-entity-eyebrow">{profile.serviceCategory} · Local Service</p>
+        <h2 className="dp-entity-title">{place.name}</h2>
+        <p className="dp-entity-meta">{profile.serviceType}{place.district ? ` · ${place.district}` : ""}</p>
+        <p className="dp-entity-dek">{profile.prompt}</p>
+      </header>
+
+      <div className="dp-primary-action-row dp-editorial-hero-actions">
+        {profile.website && (
+          <a href={profile.website} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
+            Website
+          </a>
+        )}
+        {profile.phone && (
+          <a href={`tel:${profile.phone}`} className="dp-panel-action">
+            Call
+          </a>
+        )}
+        <button type="button" onClick={onSave} className="dp-panel-action">
+          {isSaved ? "Saved" : "Save"}
+        </button>
+        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+          Directions
+        </a>
+      </div>
+
+      <DestinationSection title="Why you'd use them" className="dp-local-service-section">
+        <p>{profile.whyUse}</p>
+      </DestinationSection>
+
+      <DestinationSection title="Services" className="dp-local-service-section">
+        <LocalServiceRail title="Services" items={profile.bestFor} />
+      </DestinationSection>
+
+      <DestinationSection title="Good to know" className="dp-local-service-section">
+        <LocalServiceRail title="Good to know" items={profile.goodToKnow} />
+      </DestinationSection>
+
+      <DestinationSection title="Downtown connection" className="dp-local-service-section">
+        <p>{profile.downtownConnection}</p>
+      </DestinationSection>
+
+      <DestinationSection title="Nearby buildings" className="dp-local-service-section">
+        <LocalServiceRail title="Nearby buildings" items={profile.nearbyBuildings} />
+      </DestinationSection>
+
+      <DestinationSection title="Nearby services" className="dp-local-service-section">
+        <LocalServiceRail title="Nearby services" items={relatedServices} onSelect={onSelect} kind="places" />
+      </DestinationSection>
+
+      <NearbyImageRail
+        place={place}
+        places={places.filter((candidate) => !isServiceEntity(candidate))}
+        onSelect={onSelect}
+        title="Nearby perks"
+        support="Places nearby that help this service stay connected to the rest of downtown."
+      />
+
+      <DestinationSection title="Contact" className="dp-local-service-section">
+        <div className="dp-primary-action-row">
+          {profile.website && (
+            <a href={profile.website} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
+              Open Website
+            </a>
+          )}
+          <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+            Get Directions
+          </a>
+        </div>
+      </DestinationSection>
+    </motion.div>
+  );
+}
+
+function BuildingLocalServicesRail({ place, places = [], onSelect }) {
+  const categoryOrder = ["Home", "Property", "Money", "Legal", "Health", "Community", "Business", "Design"];
+  const services = places
+    .filter((candidate) => candidate?.id && isLocalServiceEntity(candidate))
+    .map((candidate) => {
+      const profile = getLocalServiceProfile(candidate);
+      const order = categoryOrder.indexOf(profile.serviceCategory);
+      return { candidate, order: order === -1 ? 99 : order, score: getMapDistanceScore(place, candidate) };
+    })
+    .filter(({ score }) => Number.isFinite(score))
+    .sort((a, b) => a.order - b.order || a.score - b.score)
+    .slice(0, 10)
+    .map(({ candidate }) => candidate);
+  if (!services.length) return null;
+
+  return (
+    <DestinationSection title="Local Services" className="dp-local-service-section dp-building-services-section" support="People living here commonly use businesses like these when they need help around the home, property, money, legal, or community needs.">
+      <LocalServiceRail title="Local services nearby" items={services} onSelect={onSelect} kind="places" />
+    </DestinationSection>
+  );
+}
+
 const BURGER_BAR_CONGRESS_CONTENT = {
   title: "Burger Bar Congress",
   residentSubtitle: "Burgers, drinks, and downtown energy right on Congress.",
@@ -4051,6 +4311,8 @@ function BurgerBarCongressDetails({ place, places = [], mode = "resident", saved
           <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.assessment}</p>
         </DestinationSection>
 
+        <InKindAppliedLayer place={place} mode={mode} />
+
         <DestinationSection title="Partner Actions">
           <div className="grid gap-2 sm:grid-cols-2">
             <Link to="/map?mode=partner&tab=campaigns" className="dp-panel-action dp-primary-action">Launch Campaign</Link>
@@ -4089,6 +4351,8 @@ function BurgerBarCongressDetails({ place, places = [], mode = "resident", saved
       <DestinationSection title="Downtown Perks Note">
         <p className="text-[13px] leading-6 text-[#0B1F33]/72">{BURGER_BAR_CONGRESS_CONTENT.residentNote}</p>
       </DestinationSection>
+
+      <InKindAppliedLayer place={place} mode={mode} />
 
       <DestinationSection title="Primary Actions">
         <div className="grid gap-2 sm:grid-cols-3">
@@ -4184,6 +4448,8 @@ function InKindDiningDetails({
           </div>
         </div>
       </section>
+
+      <InKindAppliedLayer place={place} mode={mode} />
 
       <section className="dp-inkind-zone dp-inkind-experience-zone" aria-label="Why locals use it">
         <h3>Why residents go</h3>
@@ -4283,6 +4549,7 @@ function getDestinationKind(place) {
   const kind = getResidentEntityKind(place);
   if (isRentalEntity(place)) return "rental";
   if (kind === "parking" || isParkingEntity(place)) return "parking";
+  if (kind === "service" || isServiceEntity(place)) return "service";
   if (kind === "perk" || kind === "brand-activation-perk" || text.includes("brand perk") || text.includes("resident perk")) return "perk";
   if (text.includes("ev charging") || text.includes("charging") || text.includes("transit") || text.includes("mobility")) return "mobility";
   if (kind === "property" || isPropertyEntity(place) || isListingEntity(place)) return "property";
@@ -12007,6 +12274,7 @@ export default function MapPage() {
                 const isDaaStop = isDaaTourPlace(selected);
                 const isInKindDining = isInKindEntity(selected);
                 const isBurgerBarPanel = isBurgerBarCongress(selected);
+                const isLocalService = isLocalServiceEntity(selected);
                 const legendsResidentialContent = getLegendsResidentialContentForPlace(selected);
                 const legendsResidentialProfile = getLegendsResidentialProfileForPlace(selected);
                 const contactFormId = `map-contact-form-${selected.id}`;
@@ -12097,6 +12365,18 @@ export default function MapPage() {
                   );
                 }
 
+                if (isLocalService) {
+                  return (
+                    <LocalServiceDrawer
+                      place={selected}
+                      places={places}
+                      savedIds={savedIds}
+                      onSave={() => toggleSaved(selected)}
+                      onSelect={selectPlace}
+                    />
+                  );
+                }
+
                 if (urlState.mode === "partner" && !isProperty && !isDaaStop) {
                   return (
                     <PartnerIntelligenceDrawer
@@ -12160,6 +12440,11 @@ export default function MapPage() {
                     ) : isProperty && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.18 }}>
                         <LegendsMLSFactsSection place={selected} mode={urlState.mode} onSelect={selectPlace} />
+                      </motion.div>
+                    )}
+                    {isProperty && !isDaaStop && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.18 }}>
+                        <BuildingLocalServicesRail place={selected} places={places} onSelect={selectPlace} />
                       </motion.div>
                     )}
                     {urlState.mode === "resident" && isHappyHourEntity(selected) && (

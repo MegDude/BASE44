@@ -35,6 +35,8 @@ const ExplorePage = lazy(() => import("./pages/downtown-perks/Explore"));
 const EventsPage = lazy(() => import("./pages/downtown-perks/Events"));
 const PerksPage = lazy(() => import("./pages/downtown-perks/PerksPage"));
 const CardPage = lazy(() => import("./pages/downtown-perks/PerksCard"));
+const BrandsDirectory = lazy(() => import("./pages/downtown-perks/brands/Index"));
+const InKindPartnerPage = lazy(() => import("./pages/downtown-perks/brands/InKind"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 
 function MarketingFallback() {
@@ -388,6 +390,30 @@ function ProductRoutes() {
             element={
               <Suspense fallback={<MarketingFallback />}>
                 <PartnerHappyHours />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/brands"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <BrandsDirectory />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/inkind"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <InKindPartnerPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/brands/inkind"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <InKindPartnerPage />
               </Suspense>
             }
           />

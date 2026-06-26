@@ -11,10 +11,12 @@ html body .dp-map-search-anchor.dp-map-search-anchor {
 
 html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed,
 html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed {
-  display: inline-flex !important;
-  width: auto !important;
+  display: grid !important;
+  place-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
   min-width: 0 !important;
-  max-width: none !important;
+  max-width: 100% !important;
   margin: 0 auto !important;
   padding: 0 !important;
   border: 0 !important;
@@ -36,6 +38,7 @@ html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-in
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  justify-self: center !important;
   gap: 7px !important;
   width: auto !important;
   min-width: 0 !important;
