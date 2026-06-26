@@ -1168,6 +1168,28 @@ function getPartnerBusinessInsights(place) {
     };
   }
 
+  if (text.includes("closet") || text.includes("home organization") || text.includes("residential service") || text.includes("service")) {
+    return {
+      intent: "Residents nearby are solving practical home, move-in, or everyday setup needs.",
+      audience: "Best fit: downtown residents, new movers, property teams, and people already planning a home upgrade.",
+      opportunity: `Use ${name} as a useful service stop that turns nearby resident intent into a consult, save, or follow-up.`,
+      timing: "Strongest window: move-ins, home resets, and weekend planning",
+      placement: `Useful service near ${district}`,
+      action: "Route to the right service step",
+    };
+  }
+
+  if (text.includes("brand perk") || text.includes("brand activation") || text.includes("hydration") || text.includes("run club") || text.includes("mobility") || text.includes("eyewear")) {
+    return {
+      intent: "People nearby are already making plans, comparing stops, or looking for a useful reason to engage.",
+      audience: "Best fit: residents, visitors, hotel guests, and nearby audiences close enough to act.",
+      opportunity: `Keep ${name} tied to a specific perk, scan, save, or visit instead of a generic brand impression.`,
+      timing: "Strongest window: active downtown plans and nearby intent",
+      placement: `Activation near ${district}`,
+      action: "Lead with the active perk",
+    };
+  }
+
   if (text.includes("property") || text.includes("condo") || text.includes("apartment") || text.includes("residential")) {
     return {
       intent: "Residents and prospects use this area to understand what daily life feels like around the building.",
@@ -2157,6 +2179,7 @@ function getLegendsListing(place) {
 function isLegendsListingLike(place) {
   const text = placeCoreText(place);
   if (hasVenueSignals(place) && !isExplicitPropertyRecord(place)) return false;
+  if (hasNonResidentialActivationSignals(place)) return false;
   return Boolean(
     getLegendsListing(place) ||
     getLuxuryPresenceBuilding(place) ||
@@ -2165,16 +2188,25 @@ function isLegendsListingLike(place) {
   );
 }
 
+function hasNonResidentialActivationSignals(place) {
+  const text = placeCoreText(place);
+  const hasActivationSignal = /\b(brand activation|activation|campaign|perk|service|sponsorship|hydration|run club|eyewear|closets?|mobility|retail|topo chico|rivian|yeti|lululemon|fine eyewear|inspired closets)\b/i.test(text);
+  const hasPropertySignal = /\b(legends real estate|residential property|condo|condominium|apartment|for sale|for rent|mls|building)\b/i.test(text);
+  return hasActivationSignal && !hasPropertySignal && !getLegendsListing(place) && !getLuxuryPresenceBuilding(place) && !isExplicitPropertyRecord(place);
+}
+
 function isSpringCondominiums(place) {
   const text = placeCoreText(place);
   return /\bspring\s+condominiums\b|300\s+bowie|spring-condominiums/i.test(text);
 }
 
 function getLegendsResidentialContentForPlace(place) {
+  if (hasNonResidentialActivationSignals(place)) return null;
   return place?.raw?.legendsResidentialContent || place?.legendsResidentialContent || getLegendsPropertyContent(place);
 }
 
 function getLegendsResidentialProfileForPlace(place) {
+  if (hasNonResidentialActivationSignals(place)) return null;
   const directProfile = place?.raw?.legendsResidentialExperience || place?.legendsResidentialExperience || getLegendsResidentialExperience(place);
   if (directProfile) return directProfile;
   return createGenericLegendsResidentialExperience(getLegendsResidentialContentForPlace(place));
@@ -2507,8 +2539,8 @@ function getEntityIdentity(place, mode = "resident") {
       id: place?.id,
       entityType: panelArchetype.id,
       displayTypeLabel: panelTypeLabel,
-      displayTitle: perkTitle,
-      displaySubtitle: place?.name || perk?.category || "Downtown business",
+      displayTitle: place?.name || place?.title || panelTitle || perkTitle,
+      displaySubtitle: perkTitle !== (place?.name || place?.title) ? perkTitle : perk?.category || "Resident perk",
       displayContext: truncatePanelCopy(perk?.description || panelContext, 110),
       parentEntityName: place?.name,
       perkTitle,
@@ -4251,6 +4283,7 @@ function getDestinationKind(place) {
   const kind = getResidentEntityKind(place);
   if (isRentalEntity(place)) return "rental";
   if (kind === "parking" || isParkingEntity(place)) return "parking";
+  if (kind === "perk" || kind === "brand-activation-perk" || text.includes("brand perk") || text.includes("resident perk")) return "perk";
   if (text.includes("ev charging") || text.includes("charging") || text.includes("transit") || text.includes("mobility")) return "mobility";
   if (kind === "property" || isPropertyEntity(place) || isListingEntity(place)) return "property";
   if (isAntonesEntity(place)) return "venue";
@@ -5826,8 +5859,18 @@ function PartnerRelatedAssetsSection({ sections = [], onSelect }) {
   );
 }
 
+function isResidentialNearbyContextEntity(entity) {
+  const text = placeCoreText(entity);
+  return Boolean(
+    getLegendsListing(entity) ||
+    getLuxuryPresenceBuilding(entity) ||
+    isExplicitPropertyRecord(entity) ||
+    /\b(legends real estate|mls|for sale|for rent|residential property|priority building|condo|condominium|apartment|building)\b/i.test(text),
+  );
+}
+
 function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, answer, loading, onAsk, onCloseAnswer }) {
-  const nearby = getNearbyRecommendations({
+  const nearbyResults = getNearbyRecommendations({
     selectedEntity: place,
     entities: places,
     radiusMeters: 800,
@@ -5835,6 +5878,9 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
     limit: 12,
     mode: "partner",
   });
+  const nearby = hasNonResidentialActivationSignals(place)
+    ? nearbyResults.filter((item) => !isResidentialNearbyContextEntity(item.entity))
+    : nearbyResults;
   const intelligence = buildMapIntelligence({ selectedEntity: place, nearby });
   const opportunities = getNearbyPartnerOpportunities({ selectedEntity: place, nearby });
   const campaigns = recommendCampaigns({ selectedEntity: place, nearby });
@@ -7318,6 +7364,7 @@ function isTheShorePropertyEntity(place) {
 }
 
 function usesCleanResidentialEntityDrawer(place) {
+  if (hasNonResidentialActivationSignals(place)) return false;
   return isIndependentPropertyEntity(place) || isTheShorePropertyEntity(place) || isLegendsMapPlace(place) || isLegendsListingLike(place);
 }
 
@@ -7785,9 +7832,24 @@ function LegendsResidentialIntelligenceDrawer({
   const [activeAnalyticsInsight, setActiveAnalyticsInsight] = useState(legendsResidentialAnalytics[0]);
   const analyticsInsight = LEGENDS_ANALYTICS_INSIGHT_COPY[activeAnalyticsInsight] || LEGENDS_ANALYTICS_INSIGHT_COPY["Building Views"];
   const analyticsGroups = [
-    ["Demand", ["Building Views", "Listing Views", "Save Rate", "Tour Requests"]],
-    ["Neighborhood", ["Neighborhood Opens", "Nearby Entity Clicks", "Collection Opens", "Comparison Opens"]],
-    ["Lifestyle", ["Walkability Interest", "Dining Interest", "Wellness Interest", "Lifestyle Benefit Engagement"]],
+    ["Building", [
+      ["Building Views", "Building opens"],
+      ["Listing Views", "Home opens"],
+      ["Save Rate", "Saves"],
+      ["Tour Requests", "Tour requests"],
+    ]],
+    ["Nearby", [
+      ["Neighborhood Opens", "Area opens"],
+      ["Nearby Entity Clicks", "Nearby places"],
+      ["Collection Opens", "Guide opens"],
+      ["Comparison Opens", "Comparisons"],
+    ]],
+    ["Daily Life", [
+      ["Walkability Interest", "Walkability"],
+      ["Dining Interest", "Food nearby"],
+      ["Wellness Interest", "Wellness nearby"],
+      ["Lifestyle Benefit Engagement", "Most useful benefits"],
+    ]],
   ];
   const safeText = (...values) => {
     for (const value of values) {
@@ -7918,13 +7980,13 @@ function LegendsResidentialIntelligenceDrawer({
       {isPartnerMode ? (
         <>
           <section className="dp-entity-section">
-            <h3>Analytics tracked</h3>
+            <h3>What people are opening</h3>
             <div className="dp-legends-analytics-groups" aria-label="Legends analytics tracked">
               {analyticsGroups.map(([group, items]) => (
                 <div key={group} className="dp-legends-analytics-group">
                   <p>{group}</p>
                   <div className="dp-legends-analytics-metric-list">
-                    {items.map((item) => (
+                    {items.map(([item, label]) => (
                       <button
                         key={item}
                         type="button"
@@ -7932,7 +7994,7 @@ function LegendsResidentialIntelligenceDrawer({
                         aria-pressed={activeAnalyticsInsight === item}
                         onClick={() => setActiveAnalyticsInsight(item)}
                       >
-                        {item}
+                        {label}
                       </button>
                     ))}
                   </div>
@@ -8290,6 +8352,9 @@ function getResidentDetailAction(place) {
   }
   if (isCampaignEntity(place)) {
     return { label: place?.primaryAction || "Start Campaign", href: "/map?mode=resident&tab=map&filter=Campaigns" };
+  }
+  if (type === "perk" || category.includes("brand perk") || category.includes("resident perk")) {
+    return { label: place?.primaryAction || "Use Perk", href: "/map?mode=resident&tab=map&filter=Perks" };
   }
   if (isCivicLandmark) {
     return { label: "Explore Nearby", href: "/map?mode=resident&tab=map&filter=Civic" };
@@ -12005,18 +12070,6 @@ export default function MapPage() {
                 </button>
               </div>
             )}
-            {usesCleanResidentialEntityDrawer(selected) && (
-              <button
-                type="button"
-                onClick={closeSelectedMapDrawer}
-                data-map-drawer-close="true"
-                className="dp-destination-close dp-drawer-close dp-drawer-close-floating"
-                aria-label="Close"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-
             <div
               className="dp-map-panel-scroll dp-destination-scroll dp-drawer-scroll"
             >

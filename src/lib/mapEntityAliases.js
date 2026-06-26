@@ -208,6 +208,22 @@ export const mapEntityAliases = {
   milago: "luxury-building-milago",
   "austin-proper-residences": "luxury-building-austin-proper-residences",
   "1212-guadalupe": "luxury-building-1212-guadalupe",
+  "topo-chico": "partner-topo-chico",
+  "topo-chico-hydration": "perk-topo-chico-downtown-hydration",
+  "topo-chico-hydration-activation": "perk-topo-chico-downtown-hydration",
+  "topo-chico-downtown-hydration-activation": "perk-topo-chico-downtown-hydration",
+  "rivian-downtown-austin-activation": "perk-rivian-waterfront-drive",
+  "rivian-waterfront-drive": "perk-rivian-waterfront-drive",
+  "yeti-congress-district-activation": "perk-yeti-trail-day",
+  "yeti-trail-day": "perk-yeti-trail-day",
+  "lululemon-waterloo-run-club-activation": "perk-lululemon-run-club",
+  "lululemon-run-club": "perk-lululemon-run-club",
+  "fine-eyewear-style-stop": "perk-fine-eyewear-style-stop",
+  "inspired-closets": "inspired-closets-austin",
+  "inspired-closets-residential-services-activation": "inspired-closets-austin-residential-services-activation",
+  "inspired-closets-austin-residential-services-activation": "inspired-closets-austin-residential-services-activation",
+  "inspired-closets-move-in": "perk-inspired-closets-move-in",
+  "inspired-closets-consult": "perk-inspired-closets-move-in",
 };
 
 export function resolveMapEntityAlias(entityId) {

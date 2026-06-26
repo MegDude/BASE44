@@ -320,6 +320,146 @@ html body :is(.dp-search-intent-switch button, .dp-search-intent-prompt-rail > b
   -webkit-text-fill-color: #C8A96A !important;
 }
 
+/* Final viewport guard: nav search and quick search must never leave the page. */
+html body #root :is(.dp-global-search-trigger, .dp-global-search-icon-button, .dp-product-shell-search-button) {
+  box-sizing: border-box !important;
+  flex: 0 0 auto !important;
+  max-width: calc(100dvw - 24px) !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-global-search-icon-button,
+html body #root .dp-story-footer-search {
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  display: inline-grid !important;
+  place-items: center !important;
+}
+
+html body #root .dp-global-search-trigger {
+  height: 38px !important;
+  padding: 0 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+}
+
+html body #root .dp-product-shell-search-button {
+  top: max(12px, env(safe-area-inset-top)) !important;
+  right: max(12px, env(safe-area-inset-right)) !important;
+  left: auto !important;
+  width: auto !important;
+  max-width: calc(100dvw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)) !important;
+  transform: none !important;
+}
+
+html body #root .dp-product-shell-search-button span {
+  min-width: 0 !important;
+  max-width: 18ch !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-quick-search-overlay.dp-quick-search-overlay {
+  box-sizing: border-box !important;
+  width: 100dvw !important;
+  max-width: 100dvw !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left)) !important;
+}
+
+html body #root .dp-quick-search-modal.dp-quick-search-modal {
+  box-sizing: border-box !important;
+  width: min(620px, calc(100dvw - 20px - env(safe-area-inset-left) - env(safe-area-inset-right))) !important;
+  max-width: calc(100dvw - 20px - env(safe-area-inset-left) - env(safe-area-inset-right)) !important;
+  max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-quick-search-head.dp-quick-search-head {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 38px !important;
+  align-items: start !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-quick-search-head.dp-quick-search-head > div {
+  min-width: 0 !important;
+}
+
+html body #root .dp-quick-search-head.dp-quick-search-head h2,
+html body #root .dp-quick-search-eyebrow,
+html body #root .dp-quick-search-support {
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-quick-search-close.dp-quick-search-close {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  align-self: start !important;
+}
+
+html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap {
+  box-sizing: border-box !important;
+  width: auto !important;
+  max-width: calc(100% - 20px) !important;
+  min-width: 0 !important;
+  grid-template-columns: 16px minmax(0, 1fr) 20px !important;
+  margin-inline: 10px !important;
+}
+
+html body #root .dp-quick-search-results.dp-quick-search-results,
+html body #root .dp-quick-search-row-list.dp-quick-search-row-list,
+html body #root .dp-quick-search-row.dp-quick-search-row {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html body #root .dp-quick-search-copy.dp-quick-search-copy {
+  min-width: 0 !important;
+}
+
+html body #root .dp-quick-search-copy.dp-quick-search-copy :is(strong, small) {
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-product-shell-search-button {
+    width: 38px !important;
+    max-width: 38px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+
+  html body #root .dp-product-shell-search-button span,
+  html body #root .dp-global-search-trigger span {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+  }
+
+  html body #root [data-dp-nav-root="true"] > div {
+    min-width: 0 !important;
+    max-width: 100dvw !important;
+    overflow: hidden !important;
+    padding-inline: 12px !important;
+  }
+}
+
 /* End-of-file branded map pin logo lock. Keep the circle; swap only the inner mark. */
 html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin :is(.dp-live-pin__inkind-logo, .dp-live-pin__legends-logo),
 html body #root .dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-live-pin__inkind-logo, .dp-live-pin__legends-logo) {
@@ -28128,6 +28268,63 @@ html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-acti
 
 html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-section, .dp-detail-section, .dp-detail-body) {
   order: 20 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-entity-text-rail,
+  .dp-destination-chip-row,
+  .dp-related-rail,
+  .dp-partner-related-rail,
+  .dp-partner-ask-rail,
+  .dp-ask-prompts,
+  .dp-primary-action-row,
+  .dp-entity-action-row,
+  .dp-card-rail,
+  .dp-panel-rail,
+  .dp-property-image-rail
+) {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-entity-text-rail,
+  .dp-destination-chip-row,
+  .dp-related-rail,
+  .dp-partner-related-rail,
+  .dp-partner-ask-rail,
+  .dp-ask-prompts,
+  .dp-primary-action-row,
+  .dp-entity-action-row,
+  .dp-card-rail,
+  .dp-panel-rail,
+  .dp-property-image-rail
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-entity-text-rail,
+  .dp-destination-chip-row,
+  .dp-related-rail,
+  .dp-partner-related-rail,
+  .dp-partner-ask-rail,
+  .dp-ask-prompts,
+  .dp-primary-action-row,
+  .dp-entity-action-row,
+  .dp-card-rail,
+  .dp-panel-rail,
+  .dp-property-image-rail
+) > * {
+  flex: 0 0 auto !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-entity-row-list {

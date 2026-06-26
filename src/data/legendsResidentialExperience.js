@@ -181,9 +181,39 @@ function valuesFromRecord(record) {
   ];
 }
 
+function isNonResidentialActivationRecord(record) {
+  if (!record || typeof record !== "object") return false;
+  const raw = record.raw || {};
+  const text = [
+    record.id,
+    record.type,
+    record.kind,
+    record.partnerType,
+    record.category,
+    record.category_key,
+    record.datasetLayer,
+    record.mapLayer,
+    raw.id,
+    raw.type,
+    raw.kind,
+    raw.partnerType,
+    raw.category,
+    raw.category_key,
+    raw.datasetLayer,
+    raw.mapLayer,
+    ...(record.tags || []),
+    ...(raw.tags || []),
+  ].map(normalize).filter(Boolean).join(" ");
+
+  const hasActivationSignal = /\b(brand|activation|perk|campaign|service|sponsorship|hydration|run club|eyewear|closets?|mobility|retail)\b/.test(text);
+  const hasResidentialPropertySignal = /\b(legends real estate|residential property|condo|condominium|apartment|for sale|for rent|mls|building)\b/.test(text);
+  return hasActivationSignal && !hasResidentialPropertySignal;
+}
+
 export function getLegendsResidentialExperience(record) {
   const recordId = normalize(record?.id || record?.raw?.id || record?.slug || record?.raw?.slug);
   if (recordId === "partner-four-seasons" || recordId === "four-seasons-austin") return null;
+  if (isNonResidentialActivationRecord(record)) return null;
 
   const haystack = valuesFromRecord(record).map(normalize).filter(Boolean);
   if (!haystack.length) return null;

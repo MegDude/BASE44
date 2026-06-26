@@ -121,6 +121,10 @@ function inferProductionType(entity = {}) {
     .join(" ")
     .toLowerCase();
 
+  if (/(^|[\s_-])(perk|offer|brand[\s_-]*activation[\s_-]*perk|happy[\s_-]*hour)([\s_-]|$)/.test(explicitTypeText) || /\bbrand perk\b/.test(text)) {
+    return "perk";
+  }
+
   if (
     /\b(active listing|available listing|listing|rental|mls|unit|for rent|for sale)\b/.test(text) ||
     hasObjectSignal(entity, ["rentalListing", "legendsListing", "luxuryPresenceListing"])
@@ -137,7 +141,6 @@ function inferProductionType(entity = {}) {
 
   if (/\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|central library|auditorium shores|shoal creek|waller creek)\b/.test(text)) return "landmark-civic";
   if (/\b(event|rsvp|tonight|series|run club|neighbor night)\b/.test(text)) return "event";
-  if (/(^|[\s_-])(perk|offer|happy[\s_-]*hour)([\s_-]|$)/.test(explicitTypeText)) return "perk";
   if (/\b(guide|collection|campaign|passport|best rooftops|date night|coffee guide|happy hour guide)\b/.test(text)) return "guide";
   if (/\b(hotel|hospitality|stay|guest)\b/.test(text)) return "hotel";
   if (/\b(rooftop|p6|zanzibar|edge|nido|rules and regs)\b/.test(text)) return "rooftop";
