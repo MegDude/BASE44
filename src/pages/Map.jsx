@@ -9892,74 +9892,74 @@ export default function MapPage() {
     {
       section: "Evening",
       value: "42%",
-      headline: "People are making plans after work.",
-      copy: "Dinner, events, and simple nearby offers are getting attention.",
+      headline: "After-work intent is strongest.",
+      copy: "Dinner, events, and short-walk offers are driving the clearest partner demand.",
       action: "Read more",
       target: "reports",
-      observation: "People nearby are planning around dinner, events, and short walks after work.",
+      observation: "Nearby residents, guests, and visitors are opening dinner, event, and short-walk options after work.",
       trend: "Saves, scans, and directions rise together between 5 PM and 8 PM.",
       recommendation: "Put one clear offer near the places people already pass.",
-      helps: "People can choose faster, and partners can see what actually helped.",
+      helps: "Partners can see which nearby moments are likely to become visits, scans, or requests.",
     },
     {
       section: "Short walks",
       value: "+18%",
-      headline: "Close by is doing the work.",
-      copy: "Walkable places are getting the strongest response.",
+      headline: "Walkable placements are outperforming broad reach.",
+      copy: "The best response is coming from places close enough to act on now.",
       action: "See nearby",
       target: "reports",
       observation: "Rainey, Seaholm, Congress, and Waterloo are working because they are easy to reach.",
       trend: "Nearby saves are rising faster than broad district browsing.",
       recommendation: "Keep the message close to the walk.",
-      helps: "Partners get a cleaner read on what people can actually visit.",
+      helps: "Partners get a cleaner read on which locations can realistically convert.",
     },
     {
       section: "Offers",
       value: "6.8%",
-      headline: "Timed offers are easier to act on.",
-      copy: "One good reason beats a long pitch.",
+      headline: "Timed offers are easier to measure.",
+      copy: "Simple offers tied to a clear moment are easier to act on and read later.",
       action: "Plan offer",
       target: "campaigns",
       observation: "People respond best when the next step is obvious: save, scan, RSVP, or get directions.",
       trend: "Clearer offers are turning into more use.",
       recommendation: "Try one after-work offer before adding more.",
-      helps: "The next campaign is easier to understand, measure, and repeat.",
+      helps: "The next campaign is easier to launch, measure, and repeat.",
     },
     {
       section: "Saved places",
       value: "312",
-      headline: "People save first, then decide.",
-      copy: "Saves are turning into directions and visits.",
+      headline: "Saves are becoming partner intent.",
+      copy: "Saved places are a useful early signal before directions, scans, and visits.",
       action: "View activity",
       target: "reports",
-      observation: "Residents are using saved places as a short list for later.",
+      observation: "Residents and guests are using saved places as a short list for later.",
       trend: "Saves are rising before visits and card opens.",
       recommendation: "Give saved places a useful next step nearby.",
-      helps: "More saved places turn into visits, RSVPs, and card use.",
+      helps: "More saved places can turn into visits, RSVPs, card use, or partner requests.",
     },
     {
       section: "Next best move",
       value: "3",
-      headline: "Try the next idea where people already walk.",
-      copy: "Pair one place with one clear reason to go.",
+      headline: "Test the next idea where demand already exists.",
+      copy: "Pair one location with one clear action and one measurable window.",
       action: "Open campaigns",
       target: "campaigns",
       observation: "The strongest ideas sit near places people are already opening and saving.",
       trend: "Rainey, Seaholm, and Congress are overlapping around evening plans.",
       recommendation: "Start with one place, then widen from there.",
-      helps: "Partners get a clearer test and residents get a more useful nudge.",
+      helps: "Partners get a clearer test without creating a heavy campaign plan.",
     },
     {
       section: "Ready",
       value: "4",
-      headline: "Turn this read into one live campaign.",
-      copy: "Pick the place, timing, audience, and action.",
+      headline: "Turn the read into one partner action.",
+      copy: "Pick the place, timing, audience, and measurable next step.",
       action: "Open campaigns",
       target: "campaigns",
       observation: "A report is only useful if it helps someone do the next right thing.",
       trend: "Teams are reviewing reports and then opening campaign planning.",
-      recommendation: "Start with saves or directions.",
-      helps: "The map stays focused on decisions, not dashboards.",
+      recommendation: "Start with saves, directions, scans, or requests.",
+      helps: "The map stays focused on partner decisions, not dashboard clutter.",
     },
   ];
 
@@ -9968,16 +9968,16 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow">Weekly read</p>
-            <h2>What changed nearby.</h2>
-            <p>A plain read on what people opened, saved, scanned, and used.</p>
+            <p className="dp-tab-eyebrow">Partner reports</p>
+            <h2>What nearby demand is doing.</h2>
+            <p>A practical read on opens, saves, scans, directions, and campaign-ready moments.</p>
           </section>
 
           <section className="dp-partner-report-visual" aria-label="What changed this week">
             <div className="dp-report-signal-copy">
               <span>This week</span>
-              <strong>After work is carrying the week.</strong>
-              <p>Dinner plans, local events, and short walks are getting the most attention right now.</p>
+              <strong>After work is carrying partner intent.</strong>
+              <p>Dinner, events, and short walks are where nearby demand is easiest to act on.</p>
             </div>
             <div className="dp-partner-report-bars" aria-hidden="true">
               <i style={{ "--value": "76%" }} />
@@ -9988,9 +9988,9 @@ export default function MapPage() {
 
           <section className="dp-partner-report-analytics" aria-label="Weekly read summary">
             {[
-              ["Opens", "612", "People opened the map"],
-              ["Saves", "284", "Places worth coming back to"],
-              ["Scans", "91", "Perks and experiences used"],
+              ["Map opens", "612", "Nearby discovery sessions"],
+              ["Saves", "284", "Places and offers shortlisted"],
+              ["Scans", "91", "Perks and partner actions used"],
             ].map(([label, value, copy]) => (
               <div key={label} className="dp-partner-summary-card">
                 <span>{label}</span>
@@ -10000,12 +10000,27 @@ export default function MapPage() {
             ))}
           </section>
 
-          <SurveyIntelligenceLayer place={selected || visiblePlaces.find((place) => isCampaignEntity(place) || hasActivePerkData(place)) || visiblePlaces[0]} />
+          <section className="dp-partner-report-readout" aria-label="Reporting readout">
+            <p className="dp-tab-eyebrow">Readout</p>
+            <div>
+              {[
+                ["Strongest window", "5-8 PM", "Evening demand is clustering around dinner, drinks, and events."],
+                ["Useful action", "One clear offer", "Partners get a cleaner test when the next step is save, scan, RSVP, or request."],
+                ["Reporting status", "Ready", "Activity is grouped for partner follow-up without exposing setup details."],
+              ].map(([label, value, copy]) => (
+                <article key={label}>
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                  <p>{copy}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section className="dp-austin-growth-read" aria-label="Austin growth context">
-            <span>City context</span>
-            <strong>Austin passed 1 million residents.</strong>
-            <p>Austin is bigger now, and downtown has to feel easier, not louder. The best moments are still the ones people can reach.</p>
+            <span>Market context</span>
+            <strong>Austin demand is getting denser.</strong>
+            <p>More people are making downtown decisions in shorter windows. The useful partner move is to show up close to the moment.</p>
             <div aria-label="Austin population context">
               <span><b>1,002,632</b> residents</span>
               <span><b>+4,025</b> year over year</span>
@@ -10016,8 +10031,8 @@ export default function MapPage() {
           <section className="dp-report-next-action">
             <div>
               <span>Next move</span>
-              <strong>Start with one useful reason to go.</strong>
-              <p>The strongest response is close to existing walk paths. A simple offer or event is often enough.</p>
+              <strong>Start with one measurable reason to act.</strong>
+              <p>The strongest response is close to existing walk paths. A simple offer, event, or request path is usually enough.</p>
             </div>
             <button type="button" onClick={() => openPartnerPanel("campaigns")}>Open campaigns</button>
           </section>
@@ -10062,25 +10077,25 @@ export default function MapPage() {
 
   function renderActivityPanel() {
     const activityRows = [
-      ["People are opening the map", "Views, saves, and offer taps are moving together.", "Open map", () => openPartnerMap("All")],
-      ["Dining is warming up", "Happy hour and patios are getting more attention.", "Create offer", () => openPartnerPanel("campaigns")],
-      ["Events are being saved", "Evening plans are picking up in Seaholm and Rainey.", "View events", () => openPartnerMap("Events")],
-      ["After work is busiest", "Most action lands after work and on weekends.", "Review offer", () => openPartnerPanel("reports")],
+      ["Discovery is active", "Map opens, saves, and offer taps are moving together.", "Open map", () => openPartnerMap("All")],
+      ["Dining demand is warming up", "Happy hour, patios, and dinner searches are getting more attention.", "Create offer", () => openPartnerPanel("campaigns")],
+      ["Events are creating nearby intent", "Evening saves are picking up around Seaholm, Rainey, and Congress.", "View events", () => openPartnerMap("Events")],
+      ["After work is the clearest window", "Most partner-action signals are landing after work and on weekends.", "Review report", () => openPartnerPanel("reports")],
     ];
     return (
       <div className="dp-tabs-content dp-partner-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow">Activity</p>
-            <h2>What people did nearby.</h2>
-            <p>A quick look at saves, scans, RSVPs, claims, and map opens.</p>
+            <p className="dp-tab-eyebrow">Partner activity</p>
+            <h2>What nearby audiences are doing.</h2>
+            <p>A quick read on opens, saves, scans, RSVPs, claims, and partner-ready actions.</p>
           </section>
 
           <section className="dp-partner-summary-grid" aria-label="Activity summary">
             {[
-              ["Map opens", "612", "Opened this week"],
-              ["Saves", "284", "Places and offers"],
-              ["Scans", "91", "Cards and QR"],
+              ["Map opens", "612", "Nearby sessions this week"],
+              ["Saves", "284", "Places and offers shortlisted"],
+              ["Scans", "91", "Cards, perks, and QR actions"],
             ].map(([label, value, copy]) => (
               <article key={label} className="dp-partner-summary-card">
                 <span>{label}</span>
@@ -10217,7 +10232,7 @@ export default function MapPage() {
 
     function renderCampaignRow(campaign, className, openEntity = false) {
       const contextLine = campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent;
-      const residentValue = campaign.residentFacingOffer || "A useful reason for residents to go.";
+      const audienceValue = campaign.residentFacingOffer || "A useful reason for nearby audiences to act.";
       const partnerValue = campaign.partnerInsight || "Shows where nearby interest can become visits, saves, scans, or requests.";
       const title = campaign.brandName || campaign.placeName || campaign.campaignName;
       const subtitle = campaign.brandName ? campaign.campaignName : campaign.area;
@@ -10233,8 +10248,8 @@ export default function MapPage() {
             <strong>{title}</strong>
             <small>{subtitle}</small>
             <em>{contextLine}</em>
-            <span className="dp-campaign-value-line"><b>Resident reason</b>{residentValue}</span>
-            <span className="dp-campaign-value-line"><b>Partner read</b>{partnerValue}</span>
+            <span className="dp-campaign-value-line"><b>Audience value</b>{audienceValue}</span>
+            <span className="dp-campaign-value-line"><b>Partner signal</b>{partnerValue}</span>
           </span>
           <span className="dp-campaign-status" data-status={campaign.status}>{campaign.status}</span>
         </button>
@@ -10251,14 +10266,14 @@ export default function MapPage() {
 
           <section className="dp-partner-readable-hero dp-campaign-hero">
             <p className="dp-tab-eyebrow">Campaigns</p>
-            <h2>Give people one good reason to go.</h2>
-            <p>Plan offers, events, and local moments from the same map people use to choose where to go.</p>
+            <h2>Turn nearby demand into one clear action.</h2>
+            <p>Build partner campaigns around the places, timing, and audiences already showing intent on the map.</p>
           </section>
 
           <section className="dp-campaign-moment">
             <p className="dp-tab-eyebrow">Recommended moment</p>
-            <h3>After work is heating up.</h3>
-            <p>Rainey and Congress are seeing more dinner saves between 4 PM and 8 PM. Start with one clear reason to visit.</p>
+            <h3>After work is the cleanest test window.</h3>
+            <p>Rainey and Congress are seeing dinner saves between 4 PM and 8 PM. Start with one measurable action nearby.</p>
             <div className="dp-campaign-meta-row" aria-label="Recommended campaign context">
               <span>Rainey + Congress</span>
               <span>Today, 4-8 PM</span>
@@ -10268,22 +10283,36 @@ export default function MapPage() {
 
           <section className="dp-campaign-suggestion">
             <p className="dp-tab-eyebrow">Suggested campaign</p>
-            <h3>After-work dining offer</h3>
-            <p>Use a simple evening offer for people already choosing dinner, drinks, and walkable plans nearby.</p>
+            <h3>After-work dining activation</h3>
+            <p>Use a simple evening offer for audiences already choosing dinner, drinks, and walkable plans nearby.</p>
             <div className="dp-campaign-detail-list">
-              <span><strong>Audience</strong> Residents + hotel guests</span>
+              <span><strong>Audience</strong> Residents, hotel guests, and visitors nearby</span>
               <span><strong>Format</strong> Happy hour, appetizer, or priority seating</span>
               <span><strong>Timing</strong> Today, 4-8 PM</span>
             </div>
           </section>
 
-          <SurveyIntelligenceLayer place={selectedEntity || selected || visiblePlaces.find((place) => hasActivePerkData(place))} compact />
+          <section className="dp-campaign-readout" aria-label="Campaign readiness">
+            <p className="dp-tab-eyebrow">Campaign readout</p>
+            <div>
+              {[
+                ["Audience", "Nearby residents, hotel guests, and event traffic"],
+                ["Action", "Save, scan, RSVP, request, or directions"],
+                ["Measure", "Map opens, saves, scans, and follow-up activity"],
+              ].map(([label, copy]) => (
+                <article key={label}>
+                  <span>{label}</span>
+                  <p>{copy}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section className="dp-campaign-visibility-panel" aria-label="Campaign map placements">
             <p className="dp-tab-eyebrow">Map placements</p>
             <h3>Show up where decisions start.</h3>
             <p>
-              Put the message where the decision is already happening: finding dinner, comparing buildings, planning a night out, or choosing what is close enough to try.
+              Put the message where the decision is already happening: dinner, hotels, listings, events, or a short walk nearby.
             </p>
             <div className="dp-campaign-visibility-rail" aria-label="Map placement examples">
               {visibilityPlacements.map((placement) => (
@@ -10306,7 +10335,7 @@ export default function MapPage() {
 
           <section className="dp-brand-campaign-list">
             <p className="dp-tab-eyebrow">Brand examples</p>
-            <p>Each example starts with a real downtown moment, so partners can see what would actually feel useful.</p>
+            <p>Each example starts with a downtown moment a partner can target, measure, and repeat.</p>
             <div>
               {brandCampaignExamples.map((campaign) => renderCampaignRow(campaign, "dp-brand-campaign-row", true))}
             </div>
@@ -10323,23 +10352,37 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel dp-partner-info-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow">Downtown Perks</p>
-            <h2>One map for nearby.</h2>
-            <p>Places, perks, events, listings, and local help, all in one place.</p>
+            <p className="dp-tab-eyebrow">Partner view</p>
+            <h2>See where nearby demand is forming.</h2>
+            <p>A partner-facing map for understanding where people are opening, saving, scanning, and deciding what to do next.</p>
           </section>
 
           <section className="dp-partner-info-copy">
-            <p>Open the map, see what is close, save what fits, and make the next move without digging through five apps.</p>
+            <p>Use it to spot walkable demand, plan one timely offer, and understand what helped people move from interest to action.</p>
           </section>
 
-          <CommunityStoriesMapLayer />
+          <section className="dp-partner-info-operator-read" aria-label="Partner operating read">
+            <p className="dp-tab-eyebrow">Operator read</p>
+            <div>
+              {[
+                ["Demand", "Where opens, saves, scans, and direction taps are clustering."],
+                ["Timing", "When a campaign or offer has the clearest window to matter."],
+                ["Action", "What to launch next without building a heavy dashboard first."],
+              ].map(([title, copy]) => (
+                <article key={title}>
+                  <strong>{title}</strong>
+                  <p>{copy}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Downtown Perks utility">
             {[
-              ["Nearby", "Places, events, and services close enough to matter."],
-              ["Perks", "Resident offers from spots people already like."],
-              ["Homes", "Listings with the neighborhood right beside them."],
-              ["Ready", "Saved places, RSVPs, scans, and easy next steps."],
+              ["Nearby demand", "See where attention is forming close enough to act on."],
+              ["Campaign fit", "Match offers and moments to the audience already nearby."],
+              ["Property context", "Connect listings, hotels, venues, and daily routines."],
+              ["Reporting", "Read saves, scans, RSVPs, and follow-up activity together."],
             ].map(([title, copy]) => (
               <article key={title} className="dp-partner-summary-card">
                 <span>{title}</span>
@@ -10351,12 +10394,12 @@ export default function MapPage() {
           <section className="dp-partner-feed-list" aria-label="What Downtown Perks does">
             <p className="dp-tab-eyebrow">What it does</p>
             {[
-              ["Resident Map", "See what is nearby, open, useful, and worth leaving for."],
-              ["Perks Card", "Save places and use resident access."],
-              ["Ask The Map", "Ask for coffee, dinner, a workout, or tonight."],
-              ["Partner View", "See what people saved, scanned, joined, and used without squinting at a dashboard."],
+              ["Partner Map", "Find the places, categories, and districts where demand is active."],
+              ["Campaigns", "Turn a moment into one offer, placement, or partner action."],
+              ["Activity", "See opens, saves, scans, RSVPs, and claims in plain language."],
+              ["Reports", "Understand what changed and what to try next."],
             ].map(([title, copy]) => (
-              <button key={title} type="button" className="dp-tab-row dp-partner-feed-row" onClick={() => title === "Partner View" ? openPartnerPanel("activity") : openPartnerMap("All")}>
+              <button key={title} type="button" className="dp-tab-row dp-partner-feed-row" onClick={() => title === "Campaigns" ? openPartnerPanel("campaigns") : title === "Activity" ? openPartnerPanel("activity") : title === "Reports" ? openPartnerPanel("reports") : openPartnerMap("All")}>
                 <span className="dp-partner-feed-main">
                   <span className="dp-tab-row-icon"><Info className="h-4 w-4" /></span>
                   <span><strong>{title}</strong><small>{copy}</small></span>
@@ -10369,10 +10412,10 @@ export default function MapPage() {
           <section className="dp-partner-info-steps" aria-label="How it works">
             <p className="dp-tab-eyebrow">How it works</p>
             {[
-              "Open the map",
-              "Discover nearby places, events, perks, and listings",
-              "Save a place, RSVP, or show your perks card",
-              "Partners see what helped people show up",
+              "Open the partner map",
+              "Read nearby demand by place, category, district, and time",
+              "Launch one campaign, offer, event, or follow-up path",
+              "Use activity and reports to decide what to repeat",
             ].map((step, index) => (
               <div key={step}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
