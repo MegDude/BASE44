@@ -39584,7 +39584,6 @@ html body #root .dp-map-page.dp-map-page .dp-daa-destination-panel {
 
 html body #root .dp-map-page.dp-map-page .dp-daa-story-block,
 html body #root .dp-map-page.dp-map-page .dp-daa-action-panel,
-html body #root .dp-map-page.dp-map-page .dp-daa-participation,
 html body #root .dp-map-page.dp-map-page .dp-daa-related,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-stops {
   display: grid !important;
@@ -39657,7 +39656,6 @@ html body #root .dp-map-page.dp-map-page .dp-daa-highlight {
 }
 
 html body #root .dp-map-page.dp-map-page .dp-daa-highlight span,
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card span,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-card span {
   color: #C8A96A !important;
   font-size: 10px !important;
@@ -39674,7 +39672,6 @@ html body #root .dp-map-page.dp-map-page .dp-daa-highlight strong {
   line-height: 1.35 !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-rail,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-rail {
   display: flex !important;
   gap: 12px !important;
@@ -39684,12 +39681,10 @@ html body #root .dp-map-page.dp-map-page .dp-daa-next-rail {
   scrollbar-width: none !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-rail::-webkit-scrollbar,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-rail::-webkit-scrollbar {
   display: none !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-card {
   display: grid !important;
   min-width: 210px !important;
@@ -39704,7 +39699,6 @@ html body #root .dp-map-page.dp-map-page .dp-daa-next-card {
   text-align: left !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card strong,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-card strong {
   color: #0B1F33 !important;
   font-size: 15px !important;
@@ -41068,7 +41062,6 @@ html body #root .dp-map-page.dp-map-page :is(.dp-panel-action, .dp-entity-action
 
 html body #root .dp-map-page.dp-map-page :is(
   .dp-daa-highlight,
-  .dp-daa-question-card,
   .dp-daa-next-card,
   .dp-related-place,
   .dp-entity-row,
@@ -41086,7 +41079,7 @@ html body #root .dp-map-page.dp-map-page :is(
   box-shadow: none !important;
 }
 
-html body #root .dp-map-page.dp-map-page :is(.dp-related-rail, .dp-daa-next-rail, .dp-daa-question-rail) {
+html body #root .dp-map-page.dp-map-page :is(.dp-related-rail, .dp-daa-next-rail) {
   display: flex !important;
   gap: 12px !important;
   overflow-x: auto !important;
@@ -41095,11 +41088,11 @@ html body #root .dp-map-page.dp-map-page :is(.dp-related-rail, .dp-daa-next-rail
   scrollbar-width: none !important;
 }
 
-html body #root .dp-map-page.dp-map-page :is(.dp-related-rail, .dp-daa-next-rail, .dp-daa-question-rail)::-webkit-scrollbar {
+html body #root .dp-map-page.dp-map-page :is(.dp-related-rail, .dp-daa-next-rail)::-webkit-scrollbar {
   display: none !important;
 }
 
-html body #root .dp-map-page.dp-map-page :is(.dp-related-place, .dp-daa-next-card, .dp-daa-question-card) {
+html body #root .dp-map-page.dp-map-page :is(.dp-related-place, .dp-daa-next-card) {
   flex: 0 0 180px !important;
   min-width: 180px !important;
   scroll-snap-align: start !important;
@@ -41433,7 +41426,6 @@ html body #root .dp-map-page.dp-map-page :is(
   .dp-legends-property-drawer
 ) :is(
   .dp-daa-highlight,
-  .dp-daa-question-card,
   .dp-daa-next-card,
   .dp-related-place,
   .dp-entity-row,

@@ -18,6 +18,7 @@ const WATERLOO_CIVIC_IMAGE = "/images/imported/perks/03-waterloo-park.jpg";
 const WATERLINE_IMAGE = "/images/imported/perks/waterline-hero.webp";
 const SHORE_IMAGE = "/images/properties/the-shore/hero.jpg";
 const HOTEL_VAN_ZANDT_IMAGE = "/images/imported/perks/hotel-van-zandt-2560x1570.webp";
+const FAIRMONT_AUSTIN_IMAGE = "/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg";
 const FOUR_SEASONS_IMAGE = "/images/entities/four-seasons/four-seasons-austin-pool-garden.png";
 const YETI_IMAGE = "/images/imported/perks/yeti-store.png";
 const TOPO_CHICO_IMAGE = "/images/map-entities/brand-topo-chico/kJpijN1kCBPVJEjSL54jD5bnkceWKjCxJHoIygqo87DjBwdw_k4q8YBKhQc_QPoVcQ-u8gnbjM02_gnakipBqQEZJUVcdYP40tc92usk570PopBrfdxoUtHegMH4r_lbjnYtapuKCPt2o_iGYegyRk2uJuNZbGQq3vA_sGrMPX5UGwUO732vMhaPU_xPRndp.jpeg";
@@ -943,6 +944,54 @@ export const supplementalMapEntities = [
   entity({ id: "partner-jos-coffee", name: "Jo's Coffee", type: "venue", partnerType: "venues", category: "Venue / Coffee", category_key: "coffee_cafe venue perk", latitude: 30.2642, longitude: -97.7471, district: "2nd Street", address: "242 W 2nd St, Austin TX, 78701", summary: "Downtown coffee stop for morning resident routines.", offer: "Upgrade to a Large Belgian Bomber", image: "/images/imported/perks/joes-cofffee-2.png" }),
   entity({ id: "partner-lustre-pearl-rainey", name: "Lustre Pearl Rainey", type: "venue", partnerType: "venues", category: "Venue / Bar", category_key: "bar_nightlife venue perk happy_hour", latitude: 30.2591, longitude: -97.7381, district: "Rainey", address: "Rainey Street, Austin TX, 78701", summary: "Rainey resident welcome stop for new move-ins and nearby plans.", offer: "First round on us for new move-ins", image: RAINEY_CONTEXT_IMAGE }),
   entity({ id: "partner-hotel-van-zandt", name: "Hotel Van Zandt", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2588, longitude: -97.7392, district: "Rainey", address: "605 Davis St, Austin TX, 78701", summary: "Hospitality partner connecting guests and residents to downtown recommendations.", offer: "Resident rate & rooftop access", image: HOTEL_VAN_ZANDT_IMAGE }),
+  entity({
+    id: "partner-fairmont-austin",
+    name: "Fairmont Austin",
+    type: "hotel",
+    partnerType: "hotels",
+    brand: "Fairmont Austin",
+    pinKey: "hotel",
+    category: "Hotel / Hospitality",
+    category_key: "hotel_hospitality fairmont_austin red_river rooftop_pool live_music wellness comedy room_725 fulton rules_regs events",
+    latitude: 30.26368,
+    longitude: -97.73876,
+    district: "Red River",
+    address: "101 Red River St, Austin, TX 78701",
+    summary: "Luxury hotel overlooking Lady Bird Lake with rooftop dining, live entertainment, wellness experiences, and one of downtown's largest rooftop pools.",
+    description: "Fairmont Austin is one of downtown's busiest hospitality destinations, combining restaurants, rooftop experiences, wellness programming, and seasonal events in one place.",
+    offer: "Seasonal Downtown Perks partner offers as available.",
+    campaignObjective: "Connect hotel programming to nearby residents, guests, convention traffic, Rainey plans, and Red River evening demand.",
+    partnerInsight: "Strongest around pool days, live music, rooftop cocktails, wellness classes, comedy, and seasonal hotel activations.",
+    audience: "Residents, visitors, hotel guests, convention attendees, business travellers, and weekend groups.",
+    image: FAIRMONT_AUSTIN_IMAGE,
+    imageUrl: FAIRMONT_AUSTIN_IMAGE,
+    primaryAction: "View Events",
+    secondaryAction: "Book Stay",
+    actions: ["Save", "Directions", "Share", "Book Stay", "View Events", "Unlock Resident Offer"],
+    related: [
+      "event-fairmont-rooftop-pool-dj-series",
+      "event-fairmont-live-music-fulton",
+      "event-fairmont-rules-and-regs-summer-music",
+      "event-fairmont-room-725-comedy-series",
+      "event-fairmont-summer-wellness",
+      "waterloo-greenway-campaign-hub",
+      "partner-hotel-van-zandt",
+      "partner-four-seasons",
+    ],
+    knownFor: [
+      "Rooftop pool experiences",
+      "Award-winning restaurants",
+      "Live entertainment",
+      "Wellness classes",
+      "Seasonal activations",
+      "Walkable from Rainey Street and the Convention Center",
+    ],
+    bestFor: ["Visitors", "Residents", "Date night", "Drinks with friends", "Business travellers", "Weekend plans", "Pool days", "Staycations"],
+    residentQuickFacts: ["Live music in Fulton", "Rooftop Pool DJ", "Summer Wellness", "Comedy in Room 725"],
+    tags: ["Fairmont Austin", "Hotel", "Rooftop Pool", "Live Music", "Wellness", "Comedy", "Room 725", "Fulton", "Rules & Regs", "Red River"],
+    searchKeywords: ["fairmont", "fairmont austin", "room 725", "fulton", "rules and regs", "rooftop pool", "pool dj", "dive in movies", "hotel events"],
+    residentSearchIntents: ["fairmont events", "rooftop pool", "live music hotel", "comedy downtown", "hotel pool day", "wellness class"],
+  }),
   entity({ id: "partner-four-seasons", name: "Four Seasons", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2607, longitude: -97.7414, district: "Congress", address: "98 San Jacinto Blvd, Austin TX, 78701", summary: "Downtown hotel partner connected to dining, spa, and resident perks.", offer: "Spa & dining resident perks", image: FOUR_SEASONS_IMAGE }),
   entity({ id: "partner-yeti", name: "YETI", type: "brand", partnerType: "brands", brand: "YETI", category: "Brand / Austin Activation", category_key: "brand retail_business brand_activation yeti congress trail event_sponsorship hotel_guest_campaign qr product_participation", latitude: 30.258, longitude: -97.746, district: "Lady Bird Lake", address: "South Congress District, Austin TX, 78701", summary: "Outdoor gear, local movement, and everyday downtown routines.", description: "Outdoor gear, local movement, and everyday downtown routines.", offer: "Free custom engraving for verified residents", campaignObjective: "Make YETI visible when downtown plans become outdoor, event-led, or hospitality-led.", partnerInsight: "Strongest around event arrivals, trail movement, hotel guests, and district activations.", audience: "Residents, visitors, hotel guests, and eventgoers with Austin lifestyle intent.", image: YETI_IMAGE, pinKey: "yeti", datasetLayer: "YETI", primaryAction: "Open Brand Guide", secondaryAction: "View Campaign", related: ["waterloo-greenway-campaign-hub", "downtown-austin-alliance-civic-layer", "partner-four-seasons"] }),
   entity({ id: "partner-rivian", name: "Rivian", type: "brand", partnerType: "brands", brand: "Rivian", category: "Brand / Mobility + Experiential", category_key: "brand rivian mobility experiential ev test_drive ride_request downtown_routes", latitude: 30.26972, longitude: -97.75382, district: "Seaholm", address: "Downtown Austin, TX 78701", summary: "Rivian’s downtown brand home for test drives, event ride requests, trail mornings, hotel and residential partnerships, and live vehicle activations.", description: "Downtown Perks helps Rivian show up in everyday downtown life: coffee before the trail, workouts before brunch, dinner after a test drive, and weekend errands that become a longer plan.", offer: "Active Rivian campaign and test-drive perk nearby", campaignObjective: "Bring Rivian into real downtown routines instead of placing another ad in front of people.", partnerInsight: "Best when the vehicle is tied to a nearby reason to move: trail mornings, brunch, hotels, rooftops, concerts, wellness events, errands, and residential access.", audience: "Residents, hotel guests, eventgoers, wellness communities, visitors, and downtown workers already making plans.", image: RIVIAN_IMAGE, pinKey: "rivian", datasetLayer: "Rivian", primaryAction: "Open Campaign Layer", secondaryAction: "Request Test Drive", related: ["campaign-rivian-downtown-experience-layer", "perk-rivian-waterfront-drive", "civic-waterloo-greenway", "priority-the-waterline"] }),

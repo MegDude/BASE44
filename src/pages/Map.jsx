@@ -77,7 +77,7 @@ import {
 } from "@/data/legendsResidentialExperience";
 import { theShoreResidentialBuilding } from "@/data/theShoreResidentialBuilding";
 import { brandCampaignExamples, liveCampaignLayerExamples } from "@/data/campaignLayerExamples";
-import { DAA_TOUR_STOP_COUNT, daaExplorerQuestions, getDaaTourStopById } from "@/data/daaArtParksTour";
+import { DAA_TOUR_STOP_COUNT, getDaaTourStopById } from "@/data/daaArtParksTour";
 import {
   DPParkingReservation,
   DPQuickActions,
@@ -6166,17 +6166,6 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       window.location.href = shareUrl;
     }
   };
-  const handleFeedbackPrompt = (item) => {
-    window.dispatchEvent(new CustomEvent("downtown-perks:daa-feedback-question", {
-      detail: {
-        stopId: stop.id,
-        stopName: stopTitle,
-        questionId: item.id,
-        question: item.question,
-      },
-    }));
-  };
-
   return (
     <div className="dp-daa-destination-panel dp-civic-guide-panel">
       <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
@@ -6328,27 +6317,6 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
             <strong>{value || "Downtown Austin"}</strong>
           </div>
         ))}
-      </section>
-
-      <section className="dp-daa-participation" aria-label="Tell DAA what you think">
-        <div className="dp-daa-participation-copy">
-          <p className="dp-daa-kicker">Ask The Civic Layer</p>
-          <h3>Share what would make downtown better.</h3>
-          <p>
-            These prompts help DAA and DANA understand what residents notice, what visitors use, and what would make public spaces easier to enjoy.
-          </p>
-        </div>
-        <div className="dp-daa-question-rail" aria-label="DAA feedback prompts">
-          {daaExplorerQuestions.map((item) => (
-            <button key={item.id} type="button" className="dp-daa-question-card" onClick={() => handleFeedbackPrompt(item)}>
-              <span>{item.optional ? "Optional" : "Question"}</span>
-              <strong>{item.question}</strong>
-            </button>
-          ))}
-        </div>
-        <AppButton to="/map?mode=partner&tab=map&filter=Civic" variant="ghost" className="dp-daa-explore-all">
-          EXPLORE ALL 48 STOPS
-        </AppButton>
       </section>
     </div>
   );

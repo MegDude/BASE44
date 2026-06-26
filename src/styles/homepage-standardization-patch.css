@@ -8259,7 +8259,6 @@ html body #root .dp-map-page.dp-map-page .dp-daa-destination-panel {
 
 html body #root .dp-map-page.dp-map-page .dp-daa-story-block,
 html body #root .dp-map-page.dp-map-page .dp-daa-action-panel,
-html body #root .dp-map-page.dp-map-page .dp-daa-participation,
 html body #root .dp-map-page.dp-map-page .dp-daa-related,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-stops {
   gap: 11px !important;
@@ -8283,13 +8282,11 @@ html body #root .dp-map-page.dp-map-page .dp-daa-destination-panel p {
   text-wrap: pretty !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-rail,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-rail {
   gap: 9px !important;
   padding-bottom: 4px !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-card {
   min-width: min(220px, 74vw) !important;
   gap: 7px !important;
@@ -8298,16 +8295,10 @@ html body #root .dp-map-page.dp-map-page .dp-daa-next-card {
   white-space: normal !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card {
-  cursor: pointer !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card:hover,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-card:hover {
   border-color: rgba(200, 169, 106, .32) !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-daa-question-card strong,
 html body #root .dp-map-page.dp-map-page .dp-daa-next-card strong {
   overflow-wrap: anywhere !important;
   color: #0b1f33 !important;
@@ -9689,7 +9680,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   -webkit-text-fill-color: currentColor !important;
 }
 
-html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-civic-panel-section, .dp-civic-guide-panel > section, .dp-daa-story-block, .dp-daa-read-more, .dp-daa-action-panel, .dp-daa-related, .dp-daa-next-stops, .dp-daa-highlights, .dp-daa-participation) {
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-civic-panel-section, .dp-civic-guide-panel > section, .dp-daa-story-block, .dp-daa-read-more, .dp-daa-action-panel, .dp-daa-related, .dp-daa-next-stops, .dp-daa-highlights) {
   padding: 18px !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
   border-radius: 18px !important;
@@ -9765,36 +9756,13 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   scroll-snap-align: start !important;
 }
 
-html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-question-rail {
-  display: flex !important;
-  gap: 12px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  align-items: stretch !important;
-  padding-bottom: 4px !important;
-  scrollbar-width: none !important;
-}
-
-html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-question-rail::-webkit-scrollbar {
-  display: none !important;
-}
-
-html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-question-card {
-  flex: 0 0 78% !important;
-  max-width: 280px !important;
-  min-height: 0 !important;
-  height: auto !important;
-  overflow: visible !important;
-  scroll-snap-align: start !important;
-}
-
 @media (min-width: 768px) {
   html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-next-card {
     flex-basis: 72% !important;
   }
 }
 
-html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-destination-section h3, .dp-daa-story-block h3, .dp-civic-nearby-section h3, .dp-daa-next-stops h3, .dp-daa-participation h3) {
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-destination-section h3, .dp-daa-story-block h3, .dp-civic-nearby-section h3, .dp-daa-next-stops h3) {
   margin: 0 !important;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 28px !important;
@@ -9805,7 +9773,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   -webkit-text-fill-color: var(--dp-navy) !important;
 }
 
-html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-destination-section p, .dp-daa-story-block p, .dp-civic-image-card p, .dp-daa-participation p) {
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-destination-section p, .dp-daa-story-block p, .dp-civic-image-card p) {
   margin: 0 !important;
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 14px !important;
@@ -22181,7 +22149,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-action-bar, .dp-p
   white-space: nowrap !important;
 }
 
-html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-ask-rail, .dp-entity-text-rail, .dp-daa-question-rail, .dp-saved-ask-section > div) > :is(button, .dp-ask-prompt-chip, .dp-entity-text-chip, .dp-daa-question-card) {
+html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-ask-rail, .dp-entity-text-rail, .dp-saved-ask-section > div) > :is(button, .dp-ask-prompt-chip, .dp-entity-text-chip) {
   align-items: center !important;
   justify-content: flex-start !important;
   min-height: 34px !important;
@@ -22197,7 +22165,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-a
   font-weight: 400 !important;
 }
 
-html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-ask-rail, .dp-entity-text-rail, .dp-daa-question-rail, .dp-saved-ask-section > div) > :is(button, .dp-ask-prompt-chip, .dp-entity-text-chip, .dp-daa-question-card) :is(span, strong, small) {
+html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-ask-rail, .dp-entity-text-rail, .dp-saved-ask-section > div) > :is(button, .dp-ask-prompt-chip, .dp-entity-text-chip) :is(span, strong, small) {
   white-space: normal !important;
   overflow: visible !important;
   text-overflow: clip !important;
@@ -24452,6 +24420,113 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-stop-cta.dp-daa-stop-cta h3 {
   max-width: 16ch !important;
+}
+
+/* Absolute EOF lock: civic panels should read as a clean mobile guide, not stacked cards. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card-section.dp-civic-image-card-section {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card-grid.dp-civic-image-card-grid {
+  display: flex !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 2px 2px 6px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card-grid.dp-civic-image-card-grid::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card.dp-civic-image-card {
+  flex: 0 0 min(82%, 286px) !important;
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  padding: 0 0 10px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .075) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card.dp-civic-image-card > img {
+  width: 58px !important;
+  height: 58px !important;
+  aspect-ratio: 1 !important;
+  border-radius: 8px !important;
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card.dp-civic-image-card div {
+  display: grid !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card.dp-civic-image-card h4 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 560 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-civic-image-card.dp-civic-image-card p {
+  max-width: none !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-daa-good-for-list, .dp-daa-nearby-list).dp-daa-clean-list {
+  display: flex !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 2px 2px 6px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border: 0 !important;
+  scroll-snap-type: x mandatory !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-daa-good-for-list, .dp-daa-nearby-list).dp-daa-clean-list::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-daa-good-for-list, .dp-daa-nearby-list).dp-daa-clean-list li {
+  flex: 0 0 auto !important;
+  max-width: 220px !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .08) !important;
+  color: rgba(11, 31, 51, .72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .72) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.25 !important;
+  scroll-snap-align: start !important;
+  white-space: nowrap !important;
 }
 
 @media (max-width: 820px) {

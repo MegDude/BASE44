@@ -135,29 +135,30 @@ const tourStopCopyOverrides = {
   "We All Ride": {
     displayName: "We All Ride",
     popupCopy: "04 of 48 · Public art in the Civic District",
+    imageUrl: "/images/map-entities/civic/we-all-ride-mosaic.webp",
     artist: "J Muzacz",
     year: "2024",
-    detailHeadline: "A community mosaic installation.",
+    detailHeadline: "A community-built mosaic.",
     description:
-      "A monumental community-built mosaic celebrating Austin's cycling culture, created by hundreds of local volunteers.",
+      "A large-scale mosaic by J Muzacz celebrating Austin's cycling community, assembled with help from hundreds of local volunteers.",
     daaIntro:
-      "More than a mural, We All Ride was built by the community that inspired it.",
+      "We All Ride turns a simple downtown wall into a bright portrait of people moving through the city together.",
     whyStopHere:
-      "Thousands of glass tiles were placed by local volunteers, creating a large-scale portrait of Austin's cycling culture using a contemporary pixel-like mosaic style. Every section represents collaboration, movement, and shared ownership of public space.",
+      "Thousands of glass tiles were placed by hand, creating a permanent public artwork that feels both digital and handmade. It is a quick stop, but the detail rewards slowing down.",
     whyStopBullets: [
       "Created by artist J Muzacz",
-      "Built with hundreds of community volunteers",
-      "Over 50 feet of glass mosaic",
-      "Located at Travis County Civil & Family Courts",
-      "Inspired by digital imagery and traditional mosaic techniques",
+      "Assembled with hundreds of local volunteers",
+      "Inspired by Austin's cycling community",
+      "Detailed glass mosaic with a pixel-like finish",
+      "Easy stop while walking or biking nearby",
     ],
-    goodFor: ["Walking downtown", "Public art lovers", "Photography", "Families", "Architecture tours", "Self-guided exploration", "Cycling enthusiasts"],
-    nearbyLabels: ["Waterloo Greenway", "Texas Capitol", "Republic Square", "Austin Central Library", "Lady Bird Lake Trail"],
+    goodFor: ["Public art", "Walks", "Cycling routes", "Families", "Photo stops", "Self-guided tours"],
+    nearbyLabels: ["Kingsbury Commons", "Shoal Creek Trail", "Pease Park", "Tudor Cottage", "Treehouse overlook"],
     localTip:
-      "Every rider shown in the artwork represents the diversity of Austin's cycling community. Hundreds of residents helped install the glass tiles by hand during public workshop sessions.",
-    ctaHeadline: "Explore Austin's outdoor gallery.",
+      "Look closely at the individual tiles before stepping back. The piece works twice: first as a detailed mosaic, then as one shared city scene.",
+    ctaHeadline: "Look a little closer.",
     ctaBody:
-      "Check in at We All Ride as part of the Downtown Public Art Trail. Visit featured installations across downtown to unlock rewards from nearby local businesses.",
+      "Thousands of individual tiles make one shared story, much like the city around them.",
     sourceUrl: "https://jmuzacz.com/portfolio/we-all-ride",
     quickFacts: ["Free", "Always open", "Outdoor public art", "Family friendly", "10-15 minute stop", "Photography spot", "Accessible"],
     partnerHeader: "Community Landmark",
