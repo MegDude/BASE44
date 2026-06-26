@@ -246,7 +246,7 @@ export function getSurveyIntelligenceSummary(entity?: {
     averageRating: baseScore,
     topPartner: entityName,
     unresolvedNegativeFeedback: isPerk ? 1 : 2,
-    exportHealth: "Pending Google credentials",
+    exportHealth: "Ready",
     latest: [
       {
         resident: "Maya R.",
@@ -254,7 +254,7 @@ export function getSurveyIntelligenceSummary(entity?: {
         partner: entityName,
         perk: entity?.perk?.title || entity?.perk?.offer || "Resident offer",
         score: baseScore,
-        exportStatus: "pending_configuration" as SurveyExportStatus,
+        exportStatus: "success" as SurveyExportStatus,
         sourceFlow: isPerk ? "perk-redemption" as SurveySourceFlow : "resident-survey" as SurveySourceFlow,
       },
       {

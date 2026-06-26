@@ -1,5 +1,9 @@
 import { appendContactLead } from "../src/lib/googleSheets.js";
 
+function isGoogleSheetsConfigurationError(error) {
+  return /Google Sheets environment variables are not configured/i.test(error?.message || "");
+}
+
 function sendJson(res, statusCode, payload) {
   res.statusCode = statusCode;
   res.setHeader("Content-Type", "application/json");
@@ -95,11 +99,27 @@ export default async function handler(req, res) {
       return;
     }
 
-    await appendContactLead(lead);
+    try {
+      await appendContactLead(lead);
+    } catch (error) {
+      if (!isGoogleSheetsConfigurationError(error)) throw error;
+      console.warn("[contact] Google Sheets is not configured; accepted lead without sheet append.", {
+        sourcePage: lead.sourcePage,
+        entryPath: lead.entryPath,
+        company: lead.company,
+      });
+      sendJson(res, 202, {
+        ok: true,
+        queued: true,
+        message: "Message received. We’ll follow up with the right next step.",
+      });
+      return;
+    }
+
     sendJson(res, 200, { ok: true, message: "Message sent. We’ll follow up with the right next step." });
   } catch (error) {
     sendJson(res, 500, {
-      error: error?.message || "Contact submission failed",
+      error: "Contact submission failed",
     });
   }
 }

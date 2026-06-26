@@ -5721,6 +5721,13 @@ function CommunityStoriesMapLayer() {
   );
 }
 
+function formatSurveyExportStatus(status = "") {
+  if (status === "success") return "saved";
+  if (status === "pending") return "queued";
+  if (status === "failed") return "needs review";
+  return "queued";
+}
+
 function SurveyIntelligenceLayer({ place, compact = false }) {
   const [syncState, setSyncState] = useState("");
   const summary = getSurveyIntelligenceSummary(place);
@@ -5763,7 +5770,7 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
       },
     });
     fireWorkflow("/api/survey-responses/webhook/complete", response);
-    setSyncState(`Saved ${response.surveyName}. CRM, Google Sheets, Twilio, and reporting workflows are queued.`);
+    setSyncState(`Saved ${response.surveyName}. Reporting workflows are queued.`);
   };
 
   return (
@@ -5777,7 +5784,7 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
           ["Today", summary.completionsToday, "Survey completions"],
           ["Redemption linked", summary.redemptionLinkedCompletions, "Attached to perks"],
           ["Average rating", summary.averageRating.toFixed(1), "Resident score"],
-          ["Export health", summary.exportHealth, "Google Sheets"],
+          ["Export health", summary.exportHealth, "Reporting"],
         ].map(([label, value, copy]) => (
           <article key={label}>
             <span>{label}</span>
@@ -5795,7 +5802,7 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
                 <small>{item.building} · {item.sourceFlow.replace(/-/g, " ")}</small>
               </span>
               <em>{item.score.toFixed(1)}</em>
-              <small>{item.partner} · {item.exportStatus.replace(/_/g, " ")}</small>
+              <small>{item.partner} · {formatSurveyExportStatus(item.exportStatus)}</small>
             </article>
           ))}
         </div>
@@ -5803,7 +5810,7 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
       <div className="dp-survey-action-row">
         <button type="button" onClick={recordCompletion}>Log survey completion</button>
         <button type="button" onClick={openReports}>Open survey reports</button>
-        <a href="https://docs.google.com/spreadsheets/" target="_blank" rel="noreferrer">Open Google Sheets</a>
+        <a href="https://docs.google.com/spreadsheets/" target="_blank" rel="noreferrer">Open export</a>
       </div>
       {syncState && <p className="dp-survey-sync-state" role="status">{syncState}</p>}
     </section>

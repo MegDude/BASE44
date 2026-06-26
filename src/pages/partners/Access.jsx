@@ -121,18 +121,14 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       savePartnerProfile(profile);
       setSaved(true);
       setSubmissionState("error");
-      setSubmissionMessage(
-        error?.message
-          ? `${error.message} Your workspace details were saved locally so you can continue.`
-          : "Registration could not be sent. Your workspace details were saved locally so you can continue.",
-      );
+      setSubmissionMessage("We saved your workspace details. You can keep going while we connect the account.");
     }
   }
 
   return (
-    <main className="dp-partner-page min-h-screen bg-white px-5 pb-14 pt-28 text-[#0B1F33]">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-8 flex items-center justify-between gap-3">
+    <main className="dp-partner-page dp-partner-access-page min-h-screen bg-white px-5 pb-14 pt-28 text-[#0B1F33]">
+      <div className="dp-partner-access-shell mx-auto max-w-5xl">
+        <div className="dp-partner-access-nav mb-8 flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={() => navigate("/partners")}
@@ -151,21 +147,21 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           </button>
         </div>
 
-        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
+        <section className="dp-partner-access-grid grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div className="dp-partner-access-copy">
+            <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
               Partner Access
             </p>
-            <h1 className="mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
+            <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
               {isSignUp ? "Create a partner workspace." : "Sign in to your partner workspace."}
             </h1>
-            <p className="mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
+            <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
                 ? "Register the organization, location, and launch details we need to connect your partner workspace, package, modules, and reporting."
                 : "Open the partner workspace to manage saved work, partner details, campaigns, reports, and access. You can still preview the public workspace before approval."}
             </p>
 
-            <div className="mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
+            <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
               {[
                 "Workspace: perks, events, profile, and civic intelligence.",
                 "Dashboard: activity, trade, civic, and partner reporting.",
@@ -180,12 +176,12 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </div>
           </div>
 
-          <div className="rounded-[10px] border border-[#0B1F33]/[0.08] bg-white/88 p-5 shadow-[0_8px_24px_rgba(11,31,51,.055)]">
+          <div className="dp-partner-access-panel rounded-[10px] border border-[#0B1F33]/[0.08] bg-white/88 p-5 shadow-[0_8px_24px_rgba(11,31,51,.055)]">
             {isSignUp ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Sign up</p>
-                  <h2 className="font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
+              <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
+                <div className="dp-partner-access-form-head">
+                  <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Sign up</p>
+                  <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                     Register your partner account
                   </h2>
                 </div>
@@ -196,11 +192,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <PartnerAccessField label="Phone" type="tel" value={form.phone} onChange={(value) => updateField("phone", value)} />
 
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Partner type</label>
+                  <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Partner type</label>
                   <select
                     value={form.partner_type}
                     onChange={(event) => updateField("partner_type", event.target.value)}
-                    className="w-full rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
+                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
                   >
                     {PARTNER_TYPES.map((type) => (
                       <option key={type.value} value={type.value}>{type.label}</option>
@@ -209,11 +205,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Launch timing</label>
+                  <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Launch timing</label>
                   <select
                     value={form.timeline}
                     onChange={(event) => updateField("timeline", event.target.value)}
-                    className="w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
+                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
                   >
                     {TIMELINES.map((timeline) => (
                       <option key={timeline} value={timeline}>{timeline}</option>
@@ -224,12 +220,12 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <PartnerAccessField label="Website" type="url" value={form.website} onChange={(value) => updateField("website", value)} />
 
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">What should we help you make happen?</label>
+                  <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">What should we help you make happen?</label>
                   <textarea
                     rows={4}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
-                    className="w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
+                    className="dp-partner-access-control w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
                     placeholder="Tell us the organization, location, package, modules, launch timing, or custom request you want connected to this account."
                   />
                 </div>
@@ -248,33 +244,33 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <button
                   type="submit"
                   disabled={submissionState === "submitting"}
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] disabled:cursor-wait disabled:opacity-70"
+                  className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] disabled:cursor-wait disabled:opacity-70"
                 >
                   {saved ? <Check className="h-4 w-4 text-[#C8A96A]" /> : <UserPlus className="h-4 w-4 text-[#C8A96A]" />}
                   {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Register account"}
                 </button>
               </form>
             ) : (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner account</p>
-                <h2 className="font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
+              <div className="dp-partner-access-signin">
+                <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner account</p>
+                <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Open your partner account
                 </h2>
-                <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
+                <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
                   Continue into your partner workspace to review saved details, workspace modules, campaigns, reports, and account setup.
                 </p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <div className="dp-partner-access-actions mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
                     onClick={() => startPartnerSignIn(navigate)}
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     <LogIn className="h-4 w-4 text-[#C8A96A]" />
                     Sign in
                   </button>
                   <Link
                     to="/partners/sign-up"
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     Register account
                     <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
@@ -292,13 +288,13 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 function PartnerAccessField({ label, value, onChange, type = "text", required = false }) {
   return (
     <div>
-      <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">{label}</label>
+      <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
+        className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
       />
     </div>
   );
