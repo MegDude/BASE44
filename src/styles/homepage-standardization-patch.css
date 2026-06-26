@@ -23532,6 +23532,177 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   letter-spacing: 0 !important;
 }
 
+/* Absolute EOF lock: partner dashboard, campaigns, and pricing polish. */
+html body #root#root .dp-partner-home.dp-partner-home,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page,
+html body #root#root main.dp-pricing-page.dp-pricing-page {
+  overflow-x: hidden !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(h1, h2, h3, h4, p, span, small, button, a, label, input, select, textarea),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(h1, h2, h3, h4, p, span, small, button, a, label, input, select, textarea),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, p, span, small, button, a, label, input, select, textarea) {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(section, .dp-partner-hero, [class*="bg-[#F7F8FB]"]),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(section, .dp-pricing-hero, .dp-pricing-section) {
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(.dp-partner-hero > div, section > div),
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container {
+  width: min(100%, 1180px) !important;
+  max-width: min(100%, 1180px) !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(article, form, details, [class*="shadow"], [class*="rounded"], [class*="border"]),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(article, aside, form, details, .dp-pricing-plan-card, .dp-pricing-hero-panel, .dp-pricing-calculator, .dp-pricing-summary, .dp-pricing-module-list article, .dp-pricing-enterprise-list button, .dp-pricing-faq-item),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(article, form, details, [class*="shadow"], [class*="rounded"]) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(article, form, details),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(article, aside, form, details, .dp-pricing-plan-card, .dp-pricing-hero-panel, .dp-pricing-calculator, .dp-pricing-summary, .dp-pricing-faq-item),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(article, form, details) {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(article, form, details, .dp-partner-hero-visual),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(article, aside, form, details, .dp-pricing-plan-card, .dp-pricing-hero-panel, .dp-pricing-calculator, .dp-pricing-summary, .dp-pricing-faq-item) {
+  border-width: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .075) !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home .dp-partner-hero-visual {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border-top: 0 !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(button, a),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(button, a),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(button, a) {
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(button[class*="border"], a[class*="border"], .dp-partner-card-overlay),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-button, button, a),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-primary, .dp-campaigns-secondary, .dp-campaigns-gold, button, a) {
+  border-radius: 0 !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(.dp-partner-section-title, h1, h2),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(h1, h2),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(h1, h2) {
+  font-weight: 430 !important;
+  line-height: 1.02 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home h1 {
+  max-width: 13ch !important;
+  font-size: clamp(44px, 10.8vw, 86px) !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home .dp-partner-section-title,
+html body #root#root main.dp-pricing-page.dp-pricing-page h2,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page h2 {
+  font-size: clamp(28px, 5.8vw, 48px) !important;
+}
+
+html body #root#root .dp-partner-home.dp-partner-home :is(.dp-partner-label, [class*="uppercase"]),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-eyebrow, .dp-pricing-kicker),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-eyebrow {
+  letter-spacing: .1em !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-page-nav {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px 18px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-page-nav a,
+html body #root#root .dp-partner-home.dp-partner-home nav a {
+  min-height: 30px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, .64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .64) !important;
+  font-size: 10.5px !important;
+  font-weight: 680 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-button,
+html body #root#root .dp-partner-home.dp-partner-home a[class*="bg-[#0B1F33]"] {
+  min-height: 34px !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  padding-inline: 0 !important;
+  font-size: 11px !important;
+  font-weight: 720 !important;
+  letter-spacing: .07em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(input, select, textarea),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(input, select, textarea) {
+  min-height: 42px !important;
+  border-width: 0 0 1px !important;
+  border-color: rgba(11, 31, 51, .16) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-choice-grid, .dp-pricing-field-grid, .dp-pricing-option-list, .dp-pricing-addon-stack, .dp-pricing-selected) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 820px) {
+  html body #root#root .dp-partner-home.dp-partner-home :is(section, .dp-partner-hero),
+  html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-hero, .dp-pricing-section),
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-hero, .dp-campaigns-section, .dp-final-campaign-cta) {
+    padding-inline: 18px !important;
+    padding-block: 34px !important;
+  }
+
+  html body #root#root .dp-partner-home.dp-partner-home .dp-partner-hero {
+    padding-top: 28px !important;
+  }
+
+  html body #root#root .dp-partner-home.dp-partner-home :is(.grid, [class*="grid-cols"]),
+  html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-hero-grid, .dp-pricing-capability-layout, .dp-pricing-calculator, .dp-pricing-faq-layout) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root .dp-partner-home.dp-partner-home h1 {
+    font-size: clamp(38px, 11.8vw, 52px) !important;
+  }
+
+  html body #root#root .dp-partner-home.dp-partner-home .dp-partner-hero-visual {
+    min-height: 360px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container {
+    padding-inline: 0 !important;
+  }
+}
 html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell :is(.dp-entity-subtitle, .dp-entity-context, .dp-partner-intelligence-section p, .dp-survey-intelligence-layer p, .dp-partner-signal-list li, .dp-partner-opportunity-item p, .dp-partner-opportunity-item small, .dp-survey-latest-list small, .dp-entity-discovery-card small) {
   font-size: 12.5px !important;
   font-weight: 400 !important;
@@ -24195,4 +24366,112 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.d
   height: 44px !important;
   border-radius: 8px !important;
   object-fit: cover !important;
+}
+
+/* Absolute EOF lock: campaign readout should read like a compact readout, not cards. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout {
+  padding: 14px 12px 16px !important;
+  border-top: 1px solid rgba(11, 31, 51, .075) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .055) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout > div {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(12px, 2vw, 20px) !important;
+  margin-top: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout article {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: start !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout article span {
+  display: block !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 11px !important;
+  font-weight: 680 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.18 !important;
+  text-transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout article p {
+  max-width: 24ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, .62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .62) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.42 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-clean-list.dp-daa-clean-list {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  border-top: 1px solid rgba(11, 31, 51, .07) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-clean-list.dp-daa-clean-list li {
+  margin: 0 !important;
+  padding: 9px 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .06) !important;
+  color: rgba(11, 31, 51, .68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .68) !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-stop-cta.dp-daa-stop-cta {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-daa-stop-cta.dp-daa-stop-cta h3 {
+  max-width: 16ch !important;
+}
+
+@media (max-width: 820px) {
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout > div {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout article {
+    grid-template-columns: 86px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    padding: 9px 0 !important;
+    border-top: 1px solid rgba(11, 31, 51, .06) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout article:first-child {
+    border-top: 0 !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-campaign-drawer.dp-map-campaign-drawer .dp-campaign-readout.dp-campaign-readout article p {
+    max-width: none !important;
+  }
 }

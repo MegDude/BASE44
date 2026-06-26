@@ -1,12 +1,12 @@
 export const partnerNavLinks = [
-  { label: "Partners", href: "/map?mode=partner&tab=map&filter=All" },
+  { label: "Partners", href: "/partners" },
   { label: "Dashboard", href: "/partners/dashboard" },
-  { label: "Properties", href: "/map?mode=partner&tab=map&filter=Properties" },
+  { label: "Properties", href: "/partners/properties" },
   { label: "Hotels", href: "/partners/hospitality" },
   { label: "Venues", href: "/partners/venues" },
-  { label: "Brands", href: "/map?mode=partner&tab=map&filter=Brands" },
+  { label: "Brands", href: "/partners/brands" },
   { label: "Civic", href: "/partners/civic" },
-  { label: "Pricing", href: "/pricing" },
+  { label: "Pricing", href: "/marketing/pricing" },
   { label: "Contact", href: "/partners/campaigns" },
 ];
 
@@ -46,7 +46,7 @@ export const partnerStates = [
     ],
     pricing: ["Starter $99/year", "Core $149/year", "Portfolio Custom"],
     cta: "Bring This to Your Property",
-    ctaHref: "/map?mode=partner&tab=map&filter=Properties",
+    ctaHref: "/partners/properties",
     metrics: [
       { value: "12k+", label: "Scans" },
       { value: "73%", label: "Repeat Engagement" },
@@ -143,7 +143,7 @@ export const partnerStates = [
     ],
     pricing: ["Starter $99/year", "Campaign $149/year", "Sponsorship Custom"],
     cta: "Run a Local Campaign",
-    ctaHref: "/map?mode=partner&tab=map&filter=Brands",
+    ctaHref: "/partners/brands",
     metrics: [
       { value: "15+", label: "Campaigns" },
       { value: "3.2x", label: "Avg ROI" },

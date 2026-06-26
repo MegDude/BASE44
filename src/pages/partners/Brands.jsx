@@ -385,7 +385,7 @@ export default function BrandsPartner() {
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              ["Dumb tech entry", "QR code or text prompt. No app rollout, no complicated partner software."],
+              ["Simple entry", "QR code or text prompt. No app rollout, no complicated partner software."],
               ["Survey learning", "Ask people why they came, what they want, and what would bring them back."],
               ["Smart reporting", "The engine turns scans, answers, district, and timing into plain-English next steps."],
             ].map(([title, copy]) => (
@@ -476,7 +476,7 @@ export default function BrandsPartner() {
             <Link to="/map?mode=partner&tab=map&filter=All" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
               Partner overview
             </Link>
-            <Link to="/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
+            <Link to="/marketing/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
               Pricing matrix
             </Link>
           </div>

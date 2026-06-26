@@ -431,7 +431,7 @@ export default function Dashboard() {
             </h2>
             <TextRows rows={propertyPerformance.rows} />
             <div className="mt-6">
-              <ReportButton to="/map?mode=partner&tab=map&filter=Properties" variant="secondary">View property activity</ReportButton>
+              <ReportButton to="/partners/properties" variant="secondary">View property activity</ReportButton>
             </div>
           </div>
         </section>

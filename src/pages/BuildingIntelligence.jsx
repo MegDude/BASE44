@@ -134,7 +134,7 @@ export default function BuildingIntelligence() {
       <section className="border-b border-[#0B1F33]/8 bg-white px-5 py-10 md:py-14">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-center gap-2 text-[12px] text-[#0B1F33]/52">
-            <Link to="/map?mode=partner&tab=map&filter=Properties" className="hover:text-[#0B1F33]">Properties</Link>
+            <Link to="/partners/properties" className="hover:text-[#0B1F33]">Properties</Link>
             <span>/</span>
             <Link to="/map?mode=partner&filter=Properties" className="hover:text-[#0B1F33]">Map</Link>
             <span>/</span>

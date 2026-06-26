@@ -103,6 +103,30 @@ function slugify(value) {
 
 const stopIds = tourSeedStops.map(([name], index) => `daa-stop-${String(index + 1).padStart(2, "0")}-${slugify(name)}`);
 
+const tourStopCopyOverrides = {
+  "We All Ride Mosaics": {
+    artist: "J Muzacz",
+    year: "2024",
+    description:
+      "Created by Austin mosaic artist J Muzacz, We All Ride celebrates the simple idea that cities feel better when people move through them together. Inspired by Austin's cycling community, the artwork was assembled with the help of hundreds of local volunteers, each placing glass tiles that became part of the finished piece. The result is a permanent reminder that public spaces are built by the people who use them.",
+    daaIntro:
+      "Created by Austin mosaic artist J Muzacz, We All Ride celebrates the simple idea that cities feel better when people move through them together.",
+    whyStopHere:
+      "Inspired by Austin's cycling community, the artwork was assembled with help from hundreds of local volunteers. Each glass tile became part of a finished piece that reminds people public spaces are built by the people who use them.",
+    whyStopBullets: [
+      "Community-built public artwork",
+      "A quiet place to pause while exploring Pease Park",
+      "Great photo opportunity with distinctive mosaic detail",
+      "An easy stop while walking or cycling through the Shoal Creek corridor",
+    ],
+    goodFor: ["Art lovers", "Families", "Walkers and cyclists", "Self-guided downtown art tours"],
+    nearbyLabels: ["Kingsbury Commons", "Tudor Cottage", "Shoal Creek Trail", "Treehouse overlook"],
+    ctaHeadline: "Look a little closer.",
+    ctaBody: "Thousands of individual tiles make one shared story, much like the city around them.",
+    sourceUrl: "https://jmuzacz.com/portfolio/we-all-ride",
+  },
+};
+
 function resolveTourStopImage(name, category, district, locationLabel) {
   const text = [name, category, district, locationLabel].join(" ").toLowerCase();
   if (text.includes("ballet austin")) return "/images/civic/ballet-austin-downtown.png";
@@ -118,6 +142,7 @@ function resolveTourStopImage(name, category, district, locationLabel) {
 
 export const daaTourStops = tourSeedStops.map(([name, category, district, locationLabel, address, lat, lng, artist, year], index) => {
   const id = stopIds[index];
+  const copyOverride = tourStopCopyOverrides[name] || {};
   const nearbyStops = [stopIds[(index + 1) % stopIds.length], stopIds[(index + 2) % stopIds.length], stopIds[(index + 3) % stopIds.length]];
   const relatedStops = stopIds
     .filter((candidateId, candidateIndex) => candidateIndex !== index && tourSeedStops[candidateIndex][1] === category)
@@ -132,15 +157,21 @@ export const daaTourStops = tourSeedStops.map(([name, category, district, locati
     locationLabel,
     address,
     coordinates: { lat, lng },
-    artist,
-    year,
+    artist: copyOverride.artist || artist,
+    year: copyOverride.year || year,
     curator: "Downtown Austin Alliance Foundation",
     sponsor: "Downtown Austin Alliance",
     imageUrl: resolveTourStopImage(name, category, district, locationLabel),
-    description: `${name} is part of the Downtown Austin Art & Parks Tour, connecting public art, parks, landmarks, and walkable downtown places into one self-guided civic experience.`,
+    description: copyOverride.description || `${name} is part of the Downtown Austin Art & Parks Tour, connecting public art, parks, landmarks, and walkable downtown places into one self-guided civic experience.`,
     popupCopy: `${String(index + 1).padStart(2, "0")} of 48 · ${category} in ${district}`,
-    daaIntro: "This stop is part of the Downtown Austin Alliance Art & Parks Tour, a self-guided collection of public art, parks, murals, and cultural landmarks that tell the story of downtown Austin.",
-    whyStopHere: `Stop here to notice how ${locationLabel} connects downtown's public space, local history, and everyday movement.`,
+    daaIntro: copyOverride.daaIntro || "This stop is part of the Downtown Austin Alliance Art & Parks Tour, a self-guided collection of public art, parks, murals, and cultural landmarks that tell the story of downtown Austin.",
+    whyStopHere: copyOverride.whyStopHere || `Stop here to notice how ${locationLabel} connects downtown's public space, local history, and everyday movement.`,
+    whyStopBullets: copyOverride.whyStopBullets || [],
+    goodFor: copyOverride.goodFor || [],
+    nearbyLabels: copyOverride.nearbyLabels || [],
+    ctaHeadline: copyOverride.ctaHeadline || "",
+    ctaBody: copyOverride.ctaBody || "",
+    sourceUrl: copyOverride.sourceUrl || "",
     nearbyStops,
     relatedStops,
     saveEnabled: true,

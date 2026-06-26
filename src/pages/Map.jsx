@@ -6133,6 +6133,9 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
     ["Visitors", "A simple way to understand the story of this part of Austin.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
     ["Route building", "Use this as a starting point for nearby art, parks, food, and perks.", "/images/imported/perks/downtown-dining-patio.png"],
   ];
+  const whyStopBullets = Array.isArray(stop.whyStopBullets) ? stop.whyStopBullets.filter(Boolean) : [];
+  const goodForLabels = Array.isArray(stop.goodFor) ? stop.goodFor.filter(Boolean) : [];
+  const nearbyLabels = Array.isArray(stop.nearbyLabels) ? stop.nearbyLabels.filter(Boolean) : [];
   const nearbyExperienceCards = [
     ["Art", "Public art and cultural stops close to this route.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
     ["Parks", "Green space and civic places that make the walk easier.", "/images/imported/perks/republic-square-yoga.jpg"],
@@ -6179,22 +6182,41 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
         <h3>Why People Stop Here</h3>
         <p>{stop.daaIntro}</p>
         <p>{stop.whyStopHere}</p>
+        {whyStopBullets.length > 0 && (
+          <ul className="dp-daa-clean-list" aria-label="Why stop here">
+            {whyStopBullets.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        )}
       </section>
 
       <section className="dp-civic-image-card-section" aria-label="What this stop is good for">
         <p className="dp-daa-kicker">What It's Good For</p>
-        <div className="dp-civic-image-card-grid">
-          {civicGoodFor.map(([title, body, image]) => (
-            <article key={title} className="dp-civic-image-card">
-              <img src={image} alt="" loading="lazy" />
-              <div>
-                <h4>{title}</h4>
-                <p>{body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        {goodForLabels.length > 0 ? (
+          <ul className="dp-daa-clean-list dp-daa-good-for-list" aria-label="Good for">
+            {goodForLabels.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        ) : (
+          <div className="dp-civic-image-card-grid">
+            {civicGoodFor.map(([title, body, image]) => (
+              <article key={title} className="dp-civic-image-card">
+                <img src={image} alt="" loading="lazy" />
+                <div>
+                  <h4>{title}</h4>
+                  <p>{body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
+
+      {stop.ctaHeadline && stop.ctaBody && (
+        <section className="dp-daa-story-block dp-daa-stop-cta" aria-label="Downtown Perks note">
+          <p className="dp-daa-kicker">Downtown Perks</p>
+          <h3>{stop.ctaHeadline}</h3>
+          <p>{stop.ctaBody}</p>
+        </section>
+      )}
 
       <section className="dp-daa-read-more" aria-label="DAA and DANA civic integration">
         <button
@@ -6240,17 +6262,23 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       <section className="dp-daa-related dp-civic-nearby-section" aria-label="Nearby experiences">
         <p className="dp-daa-kicker">Nearby Experiences</p>
         <h3>Use this stop as a starting point around {locationLabel}.</h3>
-        <div className="dp-civic-image-card-grid">
-          {nearbyExperienceCards.map(([title, body, image]) => (
-            <article key={title} className="dp-civic-image-card">
-              <img src={image} alt="" loading="lazy" />
-              <div>
-                <h4>{title}</h4>
-                <p>{body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        {nearbyLabels.length > 0 ? (
+          <ul className="dp-daa-clean-list dp-daa-nearby-list" aria-label="Nearby">
+            {nearbyLabels.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        ) : (
+          <div className="dp-civic-image-card-grid">
+            {nearbyExperienceCards.map(([title, body, image]) => (
+              <article key={title} className="dp-civic-image-card">
+                <img src={image} alt="" loading="lazy" />
+                <div>
+                  <h4>{title}</h4>
+                  <p>{body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="dp-daa-next-stops" aria-label="Next nearby stops">
@@ -10296,9 +10324,9 @@ export default function MapPage() {
             <p className="dp-tab-eyebrow">Campaign readout</p>
             <div>
               {[
-                ["Audience", "Nearby residents, hotel guests, and event traffic"],
-                ["Action", "Save, scan, RSVP, request, or directions"],
-                ["Measure", "Map opens, saves, scans, and follow-up activity"],
+                ["Audience", "Nearby residents, hotel guests, and event traffic."],
+                ["Action", "One clear save, scan, RSVP, request, or directions tap."],
+                ["Measure", "Map opens, saves, scans, and follow-up activity."],
               ].map(([label, copy]) => (
                 <article key={label}>
                   <span>{label}</span>
