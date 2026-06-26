@@ -367,8 +367,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
         <div className="dp-quick-search-head">
           <div>
             <p className="dp-quick-search-eyebrow">Downtown Austin</p>
-            <h2 id="dp-quick-search-title">What are you looking for?</h2>
-            <p className="dp-quick-search-support">Places, events, perks, buildings, restaurants, rooftops, coffee, live music and more.</p>
+            <h2 id="dp-quick-search-title">Search downtown</h2>
+            <p className="dp-quick-search-support">Find places, events, perks, buildings, coffee, music, rooftops, and more.</p>
           </div>
           <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
             <X size={18} />
@@ -462,10 +462,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           )}
         </div>
 
-        <div className="dp-quick-search-footer">
-          <span>Discover what is happening downtown right now.</span>
-          <span>Use ↑ ↓ to navigate</span>
-        </div>
+        <div className="dp-quick-search-footer" aria-hidden="true" />
       </div>
     </div>
   );
