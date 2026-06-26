@@ -10793,6 +10793,17 @@ export default function MapPage() {
     return rankPlacesForIntent(baseResults, query, urlState.mode);
   }
 
+  function openSearchResultsLayer() {
+    setConsoleCollapsed(false);
+    setFiltersOpen(false);
+    setSelectedId("");
+    setSelectedPlaceOverride(null);
+    setSelectedDrawerClosed(true);
+    setSelectedDrawerMinimized(false);
+    setClusterDrawer(null);
+    setActiveBottomTab(urlState.mode === "partner" ? "map" : "discover");
+  }
+
   async function askMapAgent(query, localResults) {
     try {
       const parsedIntent = parseMapIntent(query, urlState.mode);
@@ -10881,7 +10892,7 @@ export default function MapPage() {
     const nextFilter = resolveFilterForIntent(query, urlState.mode);
     const nextDistrict = parsedIntent.district || district;
     const localResults = getSmartResults(query, nextFilter || activeFilter);
-    setConsoleCollapsed(false);
+    openSearchResultsLayer();
     trackingEvents.searchSubmit(query);
     fireWorkflow("/api/search-log", {
       sessionId: getWorkflowSessionId(),
@@ -10893,8 +10904,8 @@ export default function MapPage() {
     if (nextFilter) setActiveFilter(nextFilter);
     if (parsedIntent.district) setDistrict(parsedIntent.district);
     setMapAnswer(buildAgenticMapAnswer(query, localResults, urlState.mode, nextDistrict, nextFilter || activeFilter));
-    setActiveBottomTab("discover");
     urlState.update({
+      tab: "map",
       query,
       q: "",
       filter: nextFilter || activeFilter,
@@ -10902,6 +10913,9 @@ export default function MapPage() {
       time: parsedIntent.timeContext || "",
       intent: parsedIntent.intents[0] || "",
       entityType: parsedIntent.entityType || "",
+      entityId: "",
+      listingId: "",
+      drawerClosed: "",
     });
 
     const agentAnswer = await askMapAgent(query, localResults);
@@ -10915,7 +10929,7 @@ export default function MapPage() {
     const nextFilter = resolveFilterForIntent(prompt, urlState.mode);
     const nextDistrict = parsedIntent.district || district;
     const localResults = getSmartResults(prompt, nextFilter || activeFilter);
-    setConsoleCollapsed(false);
+    openSearchResultsLayer();
     trackingEvents.searchSubmit(prompt);
     fireWorkflow("/api/search-log", {
       sessionId: getWorkflowSessionId(),
@@ -10927,8 +10941,8 @@ export default function MapPage() {
     if (nextFilter) setActiveFilter(nextFilter);
     if (parsedIntent.district) setDistrict(parsedIntent.district);
     setMapAnswer(buildAgenticMapAnswer(prompt, localResults, urlState.mode, nextDistrict, nextFilter || activeFilter));
-    setActiveBottomTab("discover");
     urlState.update({
+      tab: "map",
       query: prompt,
       q: "",
       filter: nextFilter || activeFilter,
@@ -10936,6 +10950,9 @@ export default function MapPage() {
       time: parsedIntent.timeContext || "",
       intent: parsedIntent.intents[0] || "",
       entityType: parsedIntent.entityType || "",
+      entityId: "",
+      listingId: "",
+      drawerClosed: "",
     });
 
     const agentAnswer = await askMapAgent(prompt, localResults);
@@ -10962,18 +10979,20 @@ export default function MapPage() {
     const nextFilter = resolveFilterForIntent(nextQuery, urlState.mode) || activeFilter;
     const localResults = getSmartResults(nextQuery, nextFilter);
     setResidentSearchIntent((current) => ({ ...current, time: item.id }));
-    setConsoleCollapsed(false);
+    openSearchResultsLayer();
     setFiltersOpen(false);
     setSearch(nextQuery);
     setActiveFilter(nextFilter);
     setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, nextFilter));
-    setActiveBottomTab("discover");
     urlState.update({
+      tab: "map",
       query: nextQuery,
       time: item.id,
       filter: nextFilter,
       radius,
       entityId: "",
+      listingId: "",
+      drawerClosed: "",
     });
   }
 
@@ -10982,16 +11001,18 @@ export default function MapPage() {
     const nextFilter = resolveFilterForIntent(nextQuery, urlState.mode) || activeFilter;
     const localResults = getSmartResults(nextQuery, nextFilter);
     setRadius(item.label);
-    setConsoleCollapsed(false);
+    openSearchResultsLayer();
     setFiltersOpen(false);
     setActiveFilter(nextFilter);
     setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, nextFilter));
-    setActiveBottomTab("discover");
     urlState.update({
+      tab: "map",
       query: nextQuery,
       radius: item.label,
       filter: nextFilter,
       entityId: "",
+      listingId: "",
+      drawerClosed: "",
     });
   }
 
@@ -11005,8 +11026,8 @@ export default function MapPage() {
       setActiveFilter(item.filter);
       const localResults = getSmartResults(nextQuery, item.filter);
       setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, item.filter));
-      setActiveBottomTab("discover");
-      urlState.update({ query: nextQuery, filter: item.filter, entityId: "" });
+      openSearchResultsLayer();
+      urlState.update({ tab: "map", query: nextQuery, filter: item.filter, entityId: "", listingId: "", drawerClosed: "" });
       const agentAnswer = await askMapAgent(nextQuery, localResults);
       if (agentAnswer?.answer) {
         setMapAnswer((current) => mergeAgentAnswerWithLocalResults(agentAnswer, localResults, current?.title || `Start with ${localResults[0]?.name || "Downtown"}.`));
