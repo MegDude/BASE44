@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from "r
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
-import { AuthProvider } from "@/lib/AuthContext";
+import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import Layout from "./components/Layout";
 import MapPage from "./pages/Map";
 import PartnerWorkspace from "./pages/PartnerWorkspace";
@@ -42,6 +42,22 @@ function MarketingFallback() {
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
     </div>
+  );
+}
+
+function ProtectedRoute({ children }) {
+  const location = useLocation();
+  const { isAuthenticated, isLoadingAuth } = useAuth();
+
+  if (isLoadingAuth) return <MarketingFallback />;
+  if (isAuthenticated) return children;
+
+  return (
+    <Navigate
+      to="/partners/sign-in"
+      replace
+      state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+    />
   );
 }
 
@@ -192,6 +208,54 @@ function ProductRoutes() {
               </Suspense>
             }
           />
+          <Route
+            path="/downtown-perks"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <DowntownLanding />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/downtown-perks/explore"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <ExplorePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/downtown-perks/events"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <EventsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/downtown-perks/perks"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PerksPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/downtown-perks/card"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <CardPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/downtown-perks/for-buildings"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <ForBuildings />
+              </Suspense>
+            }
+          />
 
           {/* Partner platform */}
           <Route
@@ -206,7 +270,23 @@ function ProductRoutes() {
             path="/partners/apply"
             element={
               <Suspense fallback={<MarketingFallback />}>
-                <PartnerAccess />
+                <PartnerAccess mode="sign-up" />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/sign-in"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerAccess mode="sign-in" />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/partners/sign-up"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerAccess mode="sign-up" />
               </Suspense>
             }
           />
@@ -284,17 +364,17 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route path="/partners/dashboard" element={<PartnersDashboardPage />} />
-          <Route path="/partners/dashboard/map" element={<MapPage />} />
-          <Route path="/partners/dashboard/properties" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
+          <Route path="/partners/dashboard/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
+          <Route path="/partners/dashboard/properties" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
           <Route path="/partners/dashboard/residential" element={<Navigate to="/partners/dashboard/properties" replace />} />
-          <Route path="/partners/dashboard/hotels" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/hotels" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
           <Route path="/partners/dashboard/hospitality" element={<Navigate to="/partners/dashboard/hotels" replace />} />
-          <Route path="/partners/dashboard/venues" element={<PartnersDashboardPage />} />
-          <Route path="/partners/dashboard/brands" element={<PartnersDashboardPage />} />
-          <Route path="/partners/dashboard/civic" element={<PartnersDashboardPage />} />
-          <Route path="/partners/dashboard/real-estate" element={<PartnersDashboardPage />} />
-          <Route path="/partners/dashboard/redemptions" element={<PartnersDashboardPage />} />
+          <Route path="/partners/dashboard/venues" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
+          <Route path="/partners/dashboard/brands" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
+          <Route path="/partners/dashboard/civic" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
+          <Route path="/partners/dashboard/real-estate" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
+          <Route path="/partners/dashboard/redemptions" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
           <Route
             path="/partners/campaigns"
             element={
@@ -319,9 +399,11 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route path="/partners/reports" element={<Dashboard />} />
-          <Route path="/partners/reporting" element={<Dashboard />} />
-          <Route path="/partners/analytics" element={<Dashboard />} />
+          <Route path="/partners/reports" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/partners/reporting" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/partners/analytics" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/partners/reports-preview" element={<PartnerWorkspace />} />
+          <Route path="/partners/analytics-preview" element={<PartnerWorkspace />} />
           <Route path="/partners/map" element={<MapPage />} />
           <Route path="/partners/start" element={<PartnerLifecycle />} />
           <Route path="/partners/register" element={<PartnerLifecycle />} />
@@ -344,40 +426,40 @@ function ProductRoutes() {
           <Route path="/workspace/billing" element={<Navigate to="/partner-workspace/billing" replace />} />
           <Route path="/workspace/settings" element={<Navigate to="/partner-workspace/profile" replace />} />
           <Route path="/partner-workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
-          <Route path="/partner-workspace/overview" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/map" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/offers" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/perks" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/parking" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/events" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/sources" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/profile" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/campaigns" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/residents" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/buildings" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/messages" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/surveys" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/team" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/billing" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/overview" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/map" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/offers" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/perks" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/parking" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/events" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/sources" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/profile" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/residents" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/buildings" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/messages" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/surveys" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/team" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/billing" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/dashboard" element={<Navigate to="/partners/dashboard" replace />} />
-          <Route path="/partner-workspace/reports" element={<PartnerWorkspace />} />
-          <Route path="/partner-workspace/analytics" element={<PartnerWorkspace />} />
+          <Route path="/partner-workspace/reports" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/analytics" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
           {/* Partner portal aliases: always enter the workspace shell, even when no partner is linked. */}
-          <Route path="/partner-portal" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/dashboard" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/properties" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/hotels" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/venues" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/brands" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/civic" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/real-estate" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/campaigns" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/reports" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/events" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/perks" element={<PartnerWorkspace />} />
-          <Route path="/partner-portal/*" element={<PartnerWorkspace />} />
+          <Route path="/partner-portal" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/dashboard" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/properties" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/hotels" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/venues" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/brands" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/civic" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/real-estate" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/reports" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/events" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/perks" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/*" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
 
           {/* ── MARKETING ROUTES (/marketing/*) ─────────────────────────── */}
           <Route

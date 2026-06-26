@@ -128,7 +128,7 @@ export default function TheWaterline() {
       </BrandSection>
 
       {/* Metrics */}
-      <BrandSection label="Outcomes" title="Numbers that hold.">
+      <BrandSection label="Signals" title="Numbers that hold.">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <SignalCard value="74%" label="Resident activation" sub="Cards activated within 30 days of move-in at partner buildings" delay={0} />
           <SignalCard value="2.8×" label="Event attendance" sub="vs. buildings without a curated event layer" delay={0.1} />

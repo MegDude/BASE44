@@ -57,7 +57,7 @@ export const SURVEY_CRM_STACK = {
     purpose: "Live reporting, partner summaries, export health, and operational review.",
   },
   ai: {
-    provider: "openai",
+    provider: "backend-agent",
     purpose: "Summaries, sentiment, resident segments, and recommended partner actions.",
   },
   automation: {
@@ -83,7 +83,7 @@ export const SURVEY_CRM_ENV_KEYS = [
   "GOOGLE_SHEETS_PRIVATE_KEY",
   "GOOGLE_SHEETS_SURVEY_SPREADSHEET_ID",
   "GOOGLE_SHEETS_SURVEY_TAB_NAME",
-  "OPENAI_API_KEY",
+  "BACKEND_AGENT_API_BASE_URL",
   "N8N_SURVEY_COMPLETION_WEBHOOK_URL",
 ] as const;
 

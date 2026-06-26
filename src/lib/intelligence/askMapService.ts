@@ -1,8 +1,5 @@
-import { runAskMapAgent } from "../../features/agent/askMapAgent";
-import type { AgentContext, AgentMode, AgentResponse } from "../../features/agent/types";
-import { formatAskMapResponse } from "../../features/ask-map/responseFormatter";
-import { getAskMapSystemPrompt } from "../../features/ask-map/promptLibrary";
-import { createOpenAIResponse } from "../openai";
+import type { AgentMode } from "../../features/agent/types";
+import { queryAgent } from "@/services/agent/agentClient";
 
 export type AskMapRequest = {
   query: string;
@@ -38,53 +35,27 @@ export function parseAskMapIntent(query = "", mode: AgentMode = "resident") {
   return "nearby";
 }
 
-function toAgentContext(request: AskMapRequest): AgentContext {
-  return {
-    query: String(request.query || ""),
-    mode: request.mode === "partner" ? "partner" : "resident",
-    district: request.district,
-    filter: request.filter,
-    parsedIntent: request.parsedIntent,
-    intentCategories: request.intentCategories,
-    context: request.context || [],
-    selectedEntity: request.selectedEntity || null,
-    userLocation: request.userLocation,
-    mapBounds: request.mapBounds,
-    timeFilter: request.timeFilter,
-  };
-}
-
-function mergeOpenAIText(response: AgentResponse, text: string, model: string): AgentResponse {
-  if (!text.trim()) return response;
-  return {
-    ...response,
-    answer: text.trim(),
-    summary: text.trim(),
-    source: "openai",
-    model,
-  };
-}
-
 export async function answerAskMap(request: AskMapRequest) {
-  const agentContext = toAgentContext(request);
-  const localResponse = await runAskMapAgent(agentContext);
-  const ai = await createOpenAIResponse({
-    systemPrompt: getAskMapSystemPrompt(agentContext.mode),
-    input: JSON.stringify({
-      query: agentContext.query,
-      mode: agentContext.mode,
-      district: agentContext.district,
-      filter: agentContext.filter,
-      intent: localResponse.intent,
-      candidates: (agentContext.context || []).slice(0, 8),
-      localAnswer: localResponse.answer,
-    }),
+  const mode = request.mode === "partner" ? "partner" : "resident";
+  const response = await queryAgent({
+    message: request.query,
+    query: request.query,
+    mode,
+    intent: parseAskMapIntent(request.query, mode),
+    context: {
+      parsedIntent: request.parsedIntent,
+      intentCategories: request.intentCategories,
+      selectedEntity: request.selectedEntity,
+      mapBounds: request.mapBounds,
+      timeFilter: request.timeFilter,
+    },
+    mapContext: request.context || [],
+    location: {
+      district: request.district,
+      coordinates: request.userLocation,
+    },
+    filter: request.filter,
   });
-  const response = ai ? mergeOpenAIText(localResponse, ai.text, ai.model) : localResponse;
 
-  return {
-    mode: response.mode,
-    intent: parseAskMapIntent(request.query, response.mode),
-    ...formatAskMapResponse(response),
-  };
+  return response;
 }

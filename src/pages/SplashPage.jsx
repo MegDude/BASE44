@@ -8,91 +8,131 @@ const storyStates = [
     id: "start",
     index: "01",
     navLabel: "Start",
-    kicker: "",
-    headline: ["More charm than a biscuit with honey."],
-    headlineParts: [
-      { text: "More charm", tone: "gold" },
-      { text: "than a biscuit", tone: "navy" },
-      { text: "with honey.", tone: "navy" },
+    kicker: "Downtown Perks",
+    headlineGroups: [
+      [
+        { text: "More charm", tone: "gold" },
+        { text: "than a", tone: "navy" },
+      ],
+      [
+        { text: "biscuit", tone: "navy" },
+        { text: "with honey.", tone: "navy" },
+      ],
     ],
     meaning: "Downtown Perks brings the heat — and the hospitality.",
     supporting: [
       "For the people who plan around live music, rooftop weather,",
       "taco runs, and “just one drink” - this is for you.",
     ],
+    visual: ["Music", "Rooftop", "Tacos"],
   },
   {
     id: "easier",
     index: "02",
     navLabel: "Easier",
-    kicker: "",
-    headline: ["Downtown should be easier to use."],
-    headlineParts: [
-      { text: "Downtown", tone: "navy" },
-      { text: "should be", tone: "navy" },
-      { text: "easier to use.", tone: "gold" },
+    kicker: "Less scattered",
+    headlineGroups: [
+      [
+        { text: "Downtown", tone: "navy" },
+        { text: "should be", tone: "navy", compact: true },
+      ],
+      [
+        { text: "easier to use.", tone: "gold" },
+      ],
     ],
-    meaning: "Easier to navigate. Easier to connect. \nMore useful day to day.",
+    meaning: "Easier to navigate. Easier to connect.\nMore useful day to day.",
     supporting: [
-      "Most things already exist. They’re just scattered. Across too many apps, group chats, tabs, feeds, newsletters, screenshots, and half-finished plans.",
+      "Most things already exist.",
+      "They’re just scattered.",
+      "Across too many apps, group chats, tabs, feeds,",
+      "newsletters, screenshots, and half-finished plans.",
     ],
+    visual: ["Apps", "Chats", "Tabs", "Plans"],
   },
   {
     id: "one-map",
     index: "03",
     navLabel: "One map",
-    kicker: "",
-    headline: ["So we built one map to bring everything together."],
-    headlineParts: [
-      { text: "So we built", tone: "navy" },
-      { text: "one map", tone: "gold" },
-      { text: "to bring", tone: "navy" },
-      { text: "everything", tone: "navy" },
-      { text: "together.", tone: "navy" },
+    kicker: "One place",
+    headlineGroups: [
+      [
+        { text: "So we built", tone: "navy" },
+        { text: "one map", tone: "gold" },
+      ],
+      [
+        { text: "to bring", tone: "navy" },
+        { text: "everything", tone: "navy" },
+      ],
+      [
+        { text: "together.", tone: "navy" },
+      ],
+    ],
+    meaning: "Not another app to manage. Not another feed to scroll.",
+    supporting: [
+      "Just a better way to figure out what’s happening, and worth showing up for.",
+    ],
+    visual: ["Perks", "Events", "Places"],
+  },
+  {
+    id: "access",
+    index: "04",
+    navLabel: "Access",
+    kicker: "All-access",
+    headlineGroups: [
+      [
+        { text: "Your all-access", tone: "gold" },
+      ],
+      [
+        { text: "pass to", tone: "navy" },
+        { text: "downtown.", tone: "navy" },
+      ],
     ],
     meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
     supporting: [
-      "Not another app to manage. Not another feed to scroll.",
-      "Just a better way to figure out what’s happening, and worth showing up for.",
+      "Coffee around the corner. A last-minute happy hour.",
+      "The resident event you would have missed.",
+      "Connecting the people, places and perks that make downtown feel alive.",
     ],
+    visual: ["Coffee", "Happy hour", "Resident event"],
   },
   {
     id: "perks",
-    index: "04",
+    index: "05",
     navLabel: "Perks",
-    kicker: "",
-    headline: ["Whether you’re making plans or part of them."],
-    headlineParts: [
-      { text: "Whether", tone: "navy" },
-      { text: "you’re", tone: "navy" },
-      { text: "making", tone: "gold" },
-      { text: "plans", tone: "gold" },
-      { text: "or part", tone: "navy" },
-      { text: "of them.", tone: "navy" },
+    kicker: "Choose local",
+    headlineGroups: [
+      [
+        { text: "Whether you’re", tone: "navy" },
+      ],
+      [
+        { text: "making plans", tone: "gold" },
+      ],
+      [
+        { text: "or part of them.", tone: "navy" },
+      ],
     ],
-    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
-    supporting: [],
+    meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that  that keep downtown interesting.",
+    supporting: [
+      "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
+    ],
+    visual: ["Discounts", "Rewards", "Extras"],
   },
   {
     id: "open",
-    index: "05",
+    index: "06",
     navLabel: "Open",
-    kicker: "",
-    prelude: [
-      "Helping residents make better",
-      "plans faster — while helping local",
-      "businesses stay relevant in the",
-      "moments that actually matter.",
-    ],
-    headline: ["So come on in. Open the map."],
-    headlineParts: [
-      { text: "So come on", tone: "navy" },
-      { text: "in ya'll", tone: "navy" },
-      { text: "Open the", tone: "gold" },
-      { text: "map.", tone: "gold" },
+    kicker: "Come on in",
+    headlineGroups: [
+      [
+        { text: "So come on in.", tone: "navy" },
+      ],
+      [
+        { text: "Open the map.", tone: "gold" },
+      ],
     ],
     meaning: "And maybe, grab something cold while you’re at it.",
     supporting: [],
+    visual: ["Open map", "Cold drink", "Downtown"],
   },
 ];
 
@@ -534,6 +574,30 @@ export default function SplashPage({
           <AnimatePresence mode="wait">
             <FixedStoryStage state={state} />
           </AnimatePresence>
+
+          <div className="dp-fixed-story-progress" aria-label="Story progress">
+            <nav className="dp-fixed-story-steps" aria-label="Story scenes">
+              <ol>
+                {storyStates.map((storyState, index) => (
+                  <li key={storyState.id}>
+                    <button
+                      type="button"
+                      className={index === active ? "is-active" : ""}
+                      aria-current={index === active ? "step" : undefined}
+                      onClick={() => activate(index)}
+                    >
+                      <span>{storyState.index}</span>
+                      {storyState.navLabel}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+            <span className="dp-fixed-story-progress-count">{state.index} / {storyStates.length}</span>
+            <span className="dp-fixed-story-progress-track" aria-hidden="true">
+              <span style={{ width: `${((active + 1) / storyStates.length) * 100}%` }} />
+            </span>
+          </div>
 
           <div className="dp-fixed-story-footer">
             <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">

@@ -236,7 +236,7 @@ export default function Navbar() {
           : "bg-white/94 text-[#0B1F33] shadow-[0_1px_0_rgba(11,31,51,0.04),0_2px_12px_rgba(11,31,51,0.04)]"
       }`}
     >
-      <div className="mx-auto flex h-[64px] max-w-7xl items-center justify-between px-5 md:px-6">
+      <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
         <Link to="/app?mode=resident&tab=map" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
           <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A] transition-colors duration-150 group-hover:text-[#B38F4F]" />
           <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">

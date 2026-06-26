@@ -65,6 +65,7 @@ import { getEntityAgentQuestions } from "@/platform";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
 import { trackingEvents } from "@/lib/analytics/track";
+import { queryAgent } from "@/services/agent/agentClient";
 import { completeSurveyFlow, getSurveyIntelligenceSummary } from "@/lib/surveys/surveyIntelligence";
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { luxuryPresenceListings } from "@/data/luxuryPresenceInventory";
@@ -475,24 +476,24 @@ const PANEL_COPY_LIMIT = 120;
 
 const LEGENDS_ANALYTICS_INSIGHT_COPY = {
   "Building Views": {
-    signal: "Shows how often this building becomes the first point of interest in the partner map.",
-    why: "High building views mean the address is working as a top-of-funnel residential signal before someone opens a specific listing.",
-    action: "Use this to decide which buildings deserve stronger listing placement, nearby context, or follow-up campaigns.",
+    signal: "Shows how often people open this building first.",
+    why: "When a building gets opened first, the address itself is helping people start the search.",
+    action: "Use this to decide which buildings deserve stronger listing photos, nearby context, or follow-up campaigns.",
   },
   "Listing Views": {
-    signal: "Tracks opens on active unit/listing details after someone has shown building-level interest.",
-    why: "This separates casual neighborhood browsing from specific inventory intent.",
+    signal: "Tracks opens on active units after someone has already looked at the building.",
+    why: "This separates casual browsing from people who are starting to compare real homes.",
     action: "Prioritize listings with repeat views for lead routing, agent follow-up, and stronger media.",
   },
   "Save Rate": {
-    signal: "Measures how often residents or prospects save a building, listing, or nearby residential context.",
-    why: "Saves are quieter than inquiries, but they mark a qualified comparison moment.",
+    signal: "Shows how often people save a building, listing, or nearby place.",
+    why: "Saves are quiet, but they usually mean someone wants to come back and compare.",
     action: "Use high save-rate inventory for retargeting, tour prompts, and comparison messaging.",
   },
   "Tour Requests": {
-    signal: "Counts moments where discovery moves into active showing or tour interest.",
-    why: "This is the clearest conversion bridge between map visibility and Legends follow-up.",
-    action: "Route these signals into the lead module and compare them against listing views.",
+    signal: "Counts when browsing turns into a tour request.",
+    why: "This is the clearest handoff from map interest to a Legends follow-up.",
+    action: "Send these requests into the lead flow and compare them against listing views.",
   },
   "Neighborhood Opens": {
     signal: "Shows when people open the surrounding district, walkability, and lifestyle context.",
@@ -506,33 +507,33 @@ const LEGENDS_ANALYTICS_INSIGHT_COPY = {
   },
   "Collection Opens": {
     signal: "Shows when users move from one property into curated downtown living collections.",
-    why: "Collection opens indicate comparison behavior and broader residential research.",
+    why: "Collection opens mean people are comparing neighborhoods, not just scrolling listings.",
     action: "Create or promote collections around the strongest building themes.",
   },
   "Comparison Opens": {
     signal: "Tracks when users compare this building against other downtown residential options.",
-    why: "Comparison behavior is a high-intent signal because the user is actively narrowing choices.",
+    why: "Comparison usually means someone is narrowing real options.",
     action: "Surface the building's strongest differentiators against nearby competitors.",
   },
   "Walkability Interest": {
-    signal: "Measures engagement with nearby errands, trails, grocery, transit, and daily-use places.",
+    signal: "Shows clicks into errands, trails, groceries, transit, and daily-use places.",
     why: "Walkability can make a listing feel practical before a prospect asks about square footage.",
     action: "Lead with the daily routine benefits that already attract clicks.",
   },
   "Dining Interest": {
-    signal: "Tracks engagement with nearby restaurants, happy hours, coffee, and date-night options.",
+    signal: "Shows clicks into restaurants, happy hours, coffee, and date-night options.",
     why: "Dining interest shows how the building fits into the resident's real week.",
-    action: "Pair listings with the strongest nearby dining and inKind signals.",
+    action: "Pair listings with the nearby dining and inKind benefits people already open.",
   },
   "Wellness Interest": {
-    signal: "Captures clicks into fitness, recovery, spa, trail, and routine-friendly wellness places.",
+    signal: "Shows clicks into fitness, recovery, spa, trail, and routine-friendly wellness places.",
     why: "Wellness interest points to lifestyle fit and recurring neighborhood value.",
-    action: "Use these signals to frame the building around daily routines, not only amenities.",
+    action: "Frame the building around daily routines, not only amenities.",
   },
   "Lifestyle Benefit Engagement": {
-    signal: "Combines engagement with benefits like walkability, dining, wellness, waterfront access, and local services.",
-    why: "This shows which lifestyle claims are actually earning attention.",
-    action: "Promote the benefits with the strongest engagement in panel copy, listing media, and campaigns.",
+    signal: "Shows which benefits get opened most: walkability, dining, wellness, waterfront access, or local services.",
+    why: "This shows which lifestyle claims people actually care about.",
+    action: "Lead with the benefits people already choose in panel copy, listing media, and campaigns.",
   },
 };
 
@@ -1119,11 +1120,11 @@ function getPartnerBusinessInsights(place) {
     return {
       intent: `People near ${district} are trying to solve parking before they commit to dinner, events, listings, hotels, or a night out.`,
       audience: `Best fit: event-goers, hotel guests, residents, restaurant guests, and visitors already close enough to act around ${district}.`,
-      opportunity: `Use ${name} as a conversion layer beside nearby plans so parking supports the visit instead of becoming the reason people drop off.`,
+      opportunity: `Put ${name} beside nearby plans so parking helps the visit instead of becoming the reason people give up.`,
       timing: "Strongest window: pre-arrival, event nights, dinner, and weekend planning",
-      placement: `Parking demand near ${district}`,
+      placement: `Parking near ${district}`,
       action: "Promote parking availability",
-      fit: booking?.rateLabel || booking?.availabilityLabel || "Reservable parking signal",
+      fit: booking?.rateLabel || booking?.availabilityLabel || "Reservable parking",
     };
   }
 
@@ -1133,13 +1134,13 @@ function getPartnerBusinessInsights(place) {
       ? getListingFactLine(listing)
       : rental
         ? [rental.priceLabel, rental.beds ? `${rental.beds} bd` : "", rental.baths ? `${rental.baths} ba` : "", rental.sqft ? `${Number(rental.sqft).toLocaleString()} sqft` : ""].filter(Boolean).join(" · ")
-        : listingCount ? `${listingCount} active listing${listingCount === 1 ? "" : "s"}` : "Residential demand signal";
+        : listingCount ? `${listingCount} active listing${listingCount === 1 ? "" : "s"}` : "Residential interest nearby";
     return {
-      intent: `Prospects, brokers, residents, and nearby businesses use ${name} to understand building demand, listing interest, and what makes the surrounding blocks useful.`,
+      intent: `Prospects, brokers, residents, and nearby businesses use ${name} to understand the building and what makes the surrounding blocks useful.`,
       audience: `Best fit: qualified residential prospects, Legends agents, property teams, nearby brands, and partners trying to reach people around ${district}.`,
       opportunity: `Use the pin to connect listing interest with walkable dining, hotel, wellness, event, and retail context around ${district}.`,
       timing: "Strongest window: showing research, lunch breaks, and after-work neighborhood comparison",
-      placement: `Legends demand near ${district}`,
+      placement: `Legends interest near ${district}`,
       action: "Review listing interest",
       fit: listingSignal,
     };
@@ -1149,7 +1150,7 @@ function getPartnerBusinessInsights(place) {
     return {
       intent: "Residents and hotel guests nearby are choosing where to eat, drink, or start the night. inKind works here because the value is immediate and tied to restaurants people can actually walk to.",
       audience: `Best fit: verified residents, nearby buildings, hotel guests, and dinner groups already moving through ${district}.`,
-      opportunity: `Use ${name} as a dining perk that can turn map intent into saves, scans, redemptions, and repeat visits.`,
+      opportunity: `Use ${name} as a dining perk that can turn nearby interest into saves, scans, redemptions, and repeat visits.`,
       timing: "Strongest window: 4 PM to 9 PM",
       placement: `inKind dining near ${district}`,
       action: "Lead with a simple dining perk",
@@ -2366,7 +2367,7 @@ function getEntityIdentity(place, mode = "resident") {
       entityType: "parking",
       displayTypeLabel: `Parking intelligence · ${district}`,
       displayTitle: place?.name || "Parking opportunity",
-      displaySubtitle: copy.value || "Parking demand signal",
+      displaySubtitle: copy.value || "Parking people can reserve",
       displayContext: truncatePanelCopy(copy.description || context, 130),
       address,
       neighborhood: district,
@@ -3421,8 +3422,8 @@ function getResidentFallbackOffer(place) {
     const campaignType = place?.campaignType || place?.raw?.campaignType;
     return {
       title: reward || "Campaign reward",
-      value: campaignType ? `${String(campaignType).replace(/-/g, " ")} campaign` : "Map-native campaign",
-      description: place?.description || `${name} is a map-native Downtown Perks campaign with pins, routes, rewards, and tracked resident engagement.`,
+      value: campaignType ? `${String(campaignType).replace(/-/g, " ")} campaign` : "Downtown Perks campaign",
+      description: place?.description || `${name} brings together pins, routes, rewards, and resident activity in one downtown campaign.`,
       terms: "Start the campaign from the map, follow participating pins, and track progress through Downtown Perks.",
     };
   }
@@ -3906,7 +3907,7 @@ const BURGER_BAR_CONGRESS_CONTENT = {
     ["Happy Hour Spotlight", "Increase awareness during afternoon and early evening traffic periods."],
     ["Resident Perk Campaign", "Reward nearby residents with exclusive offers and encourage repeat visits."],
     ["Event Night Promotion", "Capture traffic before concerts, sporting events, and downtown activations."],
-    ["Sponsored Campaign", "District-wide visibility across the Downtown Perks map and discovery surfaces."],
+    ["Sponsored Campaign", "Show up across the places people already open downtown."],
   ],
   audienceAlignment: [
     "Downtown residents",
@@ -5083,7 +5084,7 @@ function getLegendsDirectoryRowCopy(place) {
     meta: "Legends Real Estate",
     title: place?.name || profile?.buildingName || listing?.address || "Downtown residence",
     address: place?.address || profile?.neighborhood || place?.district || "Downtown Austin",
-    details: facts || "Listing interest and walkable demand signal",
+    details: facts || "Listing interest with walkable context",
   };
 }
 
@@ -5592,8 +5593,8 @@ function PartnerAskSection({ place, answer, loading, onAsk, onClose, onSelect })
 function PartnerSignalsSection({ place }) {
   const kind = getDestinationKind(place);
   const byKind = {
-    event: ["Attendance signal", "Group plans", "Pre-event dining", "Post-event traffic", "RSVP intent"],
-    brand: ["Audience fit", "Event crowd", "Local launch", "Nearby plans", "Save intent"],
+    event: ["Attendance", "Group plans", "Pre-event dining", "Post-event traffic", "RSVPs"],
+    brand: ["Audience fit", "Event crowd", "Local launch", "Nearby plans", "Saves"],
     hotel: ["Hotel guests", "Short walk", "Nearby dining", "Event traffic", "Guest plans"],
     dining: ["Dinner", "After work", "Groups", "Offer fit", "Nearby events"],
     nightlife: ["Tonight", "Groups", "Late plans", "After dinner", "Hotel guests"],
@@ -5645,7 +5646,7 @@ function PartnerNearbyContextSection({ opportunities = [] }) {
   if (!items.length) return null;
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="What To Launch Next" title="Practical moves from nearby context" />
+      <PartnerSectionHeader label="Partner Opportunity" title="Specific moves tied to this place" />
       <div className="dp-partner-opportunity-list">
         {items.map((item) => (
           <article key={item.title} className="dp-partner-opportunity-item">
@@ -5664,14 +5665,14 @@ function PartnerCampaignRecommendationsSection({ recommendations = [] }) {
   if (!recommendations.length) return null;
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="What To Launch Next" title="One practical move from nearby context" />
+      <PartnerSectionHeader label="Campaign Fit" title="A focused next step for this pin" />
       <div className="dp-partner-opportunity-list">
         {recommendations.slice(0, 2).map((item) => (
           <article key={item.actionTitle || item.title} className="dp-partner-opportunity-item">
             <h4>{item.actionTitle || item.title}</h4>
             <p>{item.whyNow || item.reason}</p>
             <small>{[item.bestAudience, item.suggestedTiming, ...(item.supportingEntities || [])].filter(Boolean).join(" · ")}</small>
-            <strong>{item.expectedOutcome || item.recommendedAction}</strong>
+            <strong>{item.nextSignal || item.recommendedAction}</strong>
           </article>
         ))}
       </div>
@@ -5870,7 +5871,7 @@ function PartnerNearbyPlacesSection({ place, places = [], onSelect }) {
   const contextItems = getNearbyContextItems(place, places).map((item, index) => {
     const normalized = normalizeContextItem(item);
     const matchedPlace = places.find((candidate) => String(candidate?.name || "").toLowerCase().includes(String(normalized.label || "").toLowerCase()));
-    const meta = String(normalized.value || getPartnerRelatedCopy(matchedPlace, place) || "").replace(/^Resident offer:/i, "Offer signal:");
+    const meta = String(normalized.value || getPartnerRelatedCopy(matchedPlace, place) || "").replace(/^Resident offer:/i, "Resident offer:");
     return {
       id: matchedPlace?.id || `${normalized.label}-${index}`,
       title: normalized.label || normalized.value,
@@ -6209,7 +6210,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
             <ul className="dp-daa-read-more-list">
               <li>DAA context highlights public art, parks, downtown routes, cultural stops, and public-realm updates.</li>
               <li>DANA context adds resident voice, neighborhood advocacy, community meetings, and local participation.</li>
-              <li>Partner mode turns civic signals into campaign moments for event promotion, route sponsorship, feedback, and nearby activity.</li>
+              <li>Partner mode turns civic interest into event promotion, route sponsorship, feedback, and nearby activity.</li>
             </ul>
           </div>
         )}
@@ -7876,7 +7877,7 @@ function LegendsResidentialIntelligenceDrawer({
         <>
           <section className="dp-entity-section">
             <h3>Partner intelligence</h3>
-            <p>{profile.buildingName} is tracked as a building-level demand signal, not just an individual listing.</p>
+            <p>{profile.buildingName} is read as a building people compare, not just a single listing.</p>
             <div className="dp-entity-row-list">
               {legendsResidentialPartnerSections.map(([title, copy]) => (
                 <div key={title} className="dp-entity-row">
@@ -7908,7 +7909,7 @@ function LegendsResidentialIntelligenceDrawer({
               <h4>{activeAnalyticsInsight}</h4>
               <dl>
                 <div>
-                  <dt>Signal</dt>
+                  <dt>What it shows</dt>
                   <dd>{analyticsInsight.signal}</dd>
                 </div>
                 <div>
@@ -9882,40 +9883,40 @@ export default function MapPage() {
 
   const reportSections = [
     {
-      section: "Quick read",
+      section: "Evening",
       value: "42%",
-      headline: "After-work activity is leading the week.",
-      copy: "Dinner, events, and nearby offers are leading.",
-      action: "View details",
+      headline: "People are making plans after work.",
+      copy: "Dinner, events, and simple nearby offers are getting attention.",
+      action: "Read more",
       target: "reports",
       observation: "People nearby are planning around dinner, events, and short walks after work.",
       trend: "Saves, scans, and directions rise together between 5 PM and 8 PM.",
-      recommendation: "Keep the offer close to the route.",
-      outcome: "More people can decide what to do next without leaving the map.",
+      recommendation: "Put one clear offer near the places people already pass.",
+      helps: "People can choose faster, and partners can see what actually helped.",
     },
     {
       section: "Short walks",
       value: "+18%",
-      headline: "Short routes outperform broad reach.",
-      copy: "Walkable places are getting the strongest activity.",
-      action: "See nearby activity",
+      headline: "Close by is doing the work.",
+      copy: "Walkable places are getting the strongest response.",
+      action: "See nearby",
       target: "reports",
-      observation: "Walkable paths around Rainey, Seaholm, Congress, and Waterloo are the clearest behavior clusters.",
-      trend: "Nearby saves are increasing faster than broad district reach.",
-      recommendation: "Use compact map placements.",
-      outcome: "Partners see cleaner attribution from the places people can actually reach.",
+      observation: "Rainey, Seaholm, Congress, and Waterloo are working because they are easy to reach.",
+      trend: "Nearby saves are rising faster than broad district browsing.",
+      recommendation: "Keep the message close to the walk.",
+      helps: "Partners get a cleaner read on what people can actually visit.",
     },
     {
       section: "Offers",
       value: "6.8%",
       headline: "Timed offers are easier to act on.",
-      copy: "One focused reason to visit beats a long campaign message.",
+      copy: "One good reason beats a long pitch.",
       action: "Plan offer",
       target: "campaigns",
-      observation: "Campaigns with a single save, scan, RSVP, or direction action are performing best.",
-      trend: "Offer clarity is improving downstream redemptions.",
-      recommendation: "Launch one after-work test.",
-      outcome: "The next campaign should be easier to measure and easier to repeat.",
+      observation: "People respond best when the next step is obvious: save, scan, RSVP, or get directions.",
+      trend: "Clearer offers are turning into more use.",
+      recommendation: "Try one after-work offer before adding more.",
+      helps: "The next campaign is easier to understand, measure, and repeat.",
     },
     {
       section: "Saved places",
@@ -9924,34 +9925,34 @@ export default function MapPage() {
       copy: "Saves are turning into directions and visits.",
       action: "View activity",
       target: "reports",
-      observation: "Residents are using saved places as a lightweight planning queue.",
+      observation: "Residents are using saved places as a short list for later.",
       trend: "Saves are rising before visits and card opens.",
-      recommendation: "Add nearby follow-up context.",
-      outcome: "More saved places turn into visits, RSVPs, and card use.",
+      recommendation: "Give saved places a useful next step nearby.",
+      helps: "More saved places turn into visits, RSVPs, and card use.",
     },
     {
-      section: "Best next step",
+      section: "Next best move",
       value: "3",
-      headline: "Run the next test near the strongest walk path.",
-      copy: "Pair one place with one clear resident action.",
+      headline: "Try the next idea where people already walk.",
+      copy: "Pair one place with one clear reason to go.",
       action: "Open campaigns",
       target: "campaigns",
-      observation: "The strongest opportunities sit near places people are already opening and saving.",
+      observation: "The strongest ideas sit near places people are already opening and saving.",
       trend: "Rainey, Seaholm, and Congress are overlapping around evening plans.",
-      recommendation: "Anchor the template to one place.",
-      outcome: "Partners get a cleaner test and residents get a more useful prompt.",
+      recommendation: "Start with one place, then widen from there.",
+      helps: "Partners get a clearer test and residents get a more useful nudge.",
     },
     {
-      section: "Ready to do",
+      section: "Ready",
       value: "4",
-      headline: "Turn this report into one live campaign.",
+      headline: "Turn this read into one live campaign.",
       copy: "Pick the place, timing, audience, and action.",
       action: "Open campaigns",
       target: "campaigns",
-      observation: "The report is strongest when it becomes a next step inside the map.",
+      observation: "A report is only useful if it helps someone do the next right thing.",
       trend: "Teams are reviewing reports and then opening campaign planning.",
-      recommendation: "Start with save or directions.",
-      outcome: "The product stays focused on discovery, understanding, and action.",
+      recommendation: "Start with saves or directions.",
+      helps: "The map stays focused on decisions, not dashboards.",
     },
   ];
 
@@ -9962,14 +9963,14 @@ export default function MapPage() {
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Weekly read</p>
             <h2>What changed nearby.</h2>
-            <p>A quick read on what people opened, saved, scanned, and used.</p>
+            <p>A plain read on what people opened, saved, scanned, and used.</p>
           </section>
 
           <section className="dp-partner-report-visual" aria-label="What changed this week">
             <div className="dp-report-signal-copy">
               <span>This week</span>
-              <strong>After-work activity is leading the week.</strong>
-              <p>Dinner plans, local events, and places within a short walk are seeing the most interest right now.</p>
+              <strong>After work is carrying the week.</strong>
+              <p>Dinner plans, local events, and short walks are getting the most attention right now.</p>
             </div>
             <div className="dp-partner-report-bars" aria-hidden="true">
               <i style={{ "--value": "76%" }} />
@@ -9997,7 +9998,7 @@ export default function MapPage() {
           <section className="dp-austin-growth-read" aria-label="Austin growth context">
             <span>City context</span>
             <strong>Austin passed 1 million residents.</strong>
-            <p>The latest Census estimate puts Austin at 1,002,632 residents in 2025, with 4,025 more people than July 2024. More people nearby makes walkable downtown moments matter even more.</p>
+            <p>Austin is bigger now, and downtown has to feel easier, not louder. The best moments are still the ones people can reach.</p>
             <div aria-label="Austin population context">
               <span><b>1,002,632</b> residents</span>
               <span><b>+4,025</b> year over year</span>
@@ -10008,8 +10009,8 @@ export default function MapPage() {
           <section className="dp-report-next-action">
             <div>
               <span>Next move</span>
-              <strong>Start with one nearby opportunity.</strong>
-              <p>The strongest activity is happening close to existing walk paths. A simple offer or event is often enough to turn interest into visits.</p>
+              <strong>Start with one useful reason to go.</strong>
+              <p>The strongest response is close to existing walk paths. A simple offer or event is often enough.</p>
             </div>
             <button type="button" onClick={() => openPartnerPanel("campaigns")}>Open campaigns</button>
           </section>
@@ -10041,7 +10042,7 @@ export default function MapPage() {
                   </div>
                   <div>
                     <dt>What this helps</dt>
-                    <dd>{item.outcome}</dd>
+                    <dd>{item.helps}</dd>
                   </div>
                 </dl>
               </details>
@@ -10054,10 +10055,10 @@ export default function MapPage() {
 
   function renderActivityPanel() {
     const activityRows = [
-      ["Nearby activity updated", "Views, saves, and offer taps are moving together.", "Open map", () => openPartnerMap("All")],
-      ["Dining is rising", "Happy hour and patios are getting stronger interest.", "Create offer", () => openPartnerPanel("campaigns")],
-      ["Events are being saved", "Evening plans are trending in Seaholm and Rainey.", "View events", () => openPartnerMap("Events")],
-      ["After work is busiest", "Most activity lands after work and on weekends.", "Review offer", () => openPartnerPanel("reports")],
+      ["People are opening the map", "Views, saves, and offer taps are moving together.", "Open map", () => openPartnerMap("All")],
+      ["Dining is warming up", "Happy hour and patios are getting more attention.", "Create offer", () => openPartnerPanel("campaigns")],
+      ["Events are being saved", "Evening plans are picking up in Seaholm and Rainey.", "View events", () => openPartnerMap("Events")],
+      ["After work is busiest", "Most action lands after work and on weekends.", "Review offer", () => openPartnerPanel("reports")],
     ];
     return (
       <div className="dp-tabs-content dp-partner-readable-panel">
@@ -10065,12 +10066,12 @@ export default function MapPage() {
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Activity</p>
             <h2>What people did nearby.</h2>
-            <p>Recent scans, saves, RSVPs, claims, and map opens.</p>
+            <p>A quick look at saves, scans, RSVPs, claims, and map opens.</p>
           </section>
 
           <section className="dp-partner-summary-grid" aria-label="Activity summary">
             {[
-              ["Map opens", "612", "This week"],
+              ["Map opens", "612", "Opened this week"],
               ["Saves", "284", "Places and offers"],
               ["Scans", "91", "Cards and QR"],
             ].map(([label, value, copy]) => (
@@ -10189,28 +10190,28 @@ export default function MapPage() {
         image: "/images/imported/perks/republic-square-01-slider-skyline-view-1.jpg",
         alt: "Downtown Austin skyline",
         label: "Skyline",
-        copy: "Put property campaigns where people first start comparing downtown lifestyle, views, and walkable daily routines.",
+        copy: "Show properties where people first compare downtown life, views, and daily routines.",
       },
       {
         title: "Waterloo movement",
         image: "/images/imported/perks/waterlook-greenway.png",
         alt: "Waterloo Greenway activity",
         label: "Waterloo",
-        copy: "Show up around park, trail, and civic activity when residents are already exploring what is nearby.",
+        copy: "Show up around the park and trail while people are already looking nearby.",
       },
       {
-        title: "Rainey intent",
+        title: "Rainey plans",
         image: "/images/partners/pricing/rail/rainey-street-placement.jpg",
         alt: "Rainey Street venue sign",
         label: "Rainey",
-        copy: "Connect listings to evening plans, hotel guests, dining, and venue traffic around one of downtown's strongest activity zones.",
+        copy: "Connect listings to evening plans, hotel guests, dining, and venues around Rainey.",
       },
     ];
 
     function renderCampaignRow(campaign, className, openEntity = false) {
       const contextLine = campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent;
-      const residentValue = campaign.residentFacingOffer || "A useful reason for residents to act from the map.";
-      const partnerValue = campaign.partnerInsight || "Shows where nearby activity can become visits, saves, scans, or requests.";
+      const residentValue = campaign.residentFacingOffer || "A useful reason for residents to go.";
+      const partnerValue = campaign.partnerInsight || "Shows where nearby interest can become visits, saves, scans, or requests.";
       const title = campaign.brandName || campaign.placeName || campaign.campaignName;
       const subtitle = campaign.brandName ? campaign.campaignName : campaign.area;
       return (
@@ -10225,8 +10226,8 @@ export default function MapPage() {
             <strong>{title}</strong>
             <small>{subtitle}</small>
             <em>{contextLine}</em>
-            <span className="dp-campaign-value-line"><b>Resident value</b>{residentValue}</span>
-            <span className="dp-campaign-value-line"><b>Partner signal</b>{partnerValue}</span>
+            <span className="dp-campaign-value-line"><b>Resident reason</b>{residentValue}</span>
+            <span className="dp-campaign-value-line"><b>Partner read</b>{partnerValue}</span>
           </span>
           <span className="dp-campaign-status" data-status={campaign.status}>{campaign.status}</span>
         </button>
@@ -10242,26 +10243,26 @@ export default function MapPage() {
           </div>
 
           <section className="dp-partner-readable-hero dp-campaign-hero">
-            <p className="dp-tab-eyebrow">Campaign layer</p>
-            <h2>Turn nearby intent into action.</h2>
-            <p>Plan offers, events, placements, and partner moments from the same map your residents use to decide where to go.</p>
+            <p className="dp-tab-eyebrow">Campaigns</p>
+            <h2>Give people one good reason to go.</h2>
+            <p>Plan offers, events, and local moments from the same map people use to choose where to go.</p>
           </section>
 
           <section className="dp-campaign-moment">
             <p className="dp-tab-eyebrow">Recommended moment</p>
-            <h3>After-work demand is building.</h3>
-            <p>Rainey and Congress are showing stronger dinner saves between 4 PM and 8 PM. Start with one clear reason to visit.</p>
+            <h3>After work is heating up.</h3>
+            <p>Rainey and Congress are seeing more dinner saves between 4 PM and 8 PM. Start with one clear reason to visit.</p>
             <div className="dp-campaign-meta-row" aria-label="Recommended campaign context">
               <span>Rainey + Congress</span>
               <span>Today, 4-8 PM</span>
-              <span>High intent</span>
+              <span>Strong interest</span>
             </div>
           </section>
 
           <section className="dp-campaign-suggestion">
             <p className="dp-tab-eyebrow">Suggested campaign</p>
             <h3>After-work dining offer</h3>
-            <p>Use a compact evening offer for people already comparing dinner, drinks, and walkable plans nearby.</p>
+            <p>Use a simple evening offer for people already choosing dinner, drinks, and walkable plans nearby.</p>
             <div className="dp-campaign-detail-list">
               <span><strong>Audience</strong> Residents + hotel guests</span>
               <span><strong>Format</strong> Happy hour, appetizer, or priority seating</span>
@@ -10275,7 +10276,7 @@ export default function MapPage() {
             <p className="dp-tab-eyebrow">Map placements</p>
             <h3>Show up where decisions start.</h3>
             <p>
-              Place campaigns inside real discovery moments: comparing buildings, planning a night out, finding an event, or choosing what is close enough to try.
+              Put the message where the decision is already happening: finding dinner, comparing buildings, planning a night out, or choosing what is close enough to try.
             </p>
             <div className="dp-campaign-visibility-rail" aria-label="Map placement examples">
               {visibilityPlacements.map((placement) => (
@@ -10290,7 +10291,7 @@ export default function MapPage() {
           </section>
 
           <section className="dp-campaign-layer-list">
-            <p className="dp-tab-eyebrow">Campaign pipeline</p>
+            <p className="dp-tab-eyebrow">Ready to run</p>
             <div>
               {liveCampaignLayerExamples.map((campaign) => renderCampaignRow(campaign, "dp-campaign-layer-row"))}
             </div>
@@ -10298,7 +10299,7 @@ export default function MapPage() {
 
           <section className="dp-brand-campaign-list">
             <p className="dp-tab-eyebrow">Brand examples</p>
-            <p>Each example is tied to a real downtown context, so partners can see what a map-native campaign can become.</p>
+            <p>Each example starts with a real downtown moment, so partners can see what would actually feel useful.</p>
             <div>
               {brandCampaignExamples.map((campaign) => renderCampaignRow(campaign, "dp-brand-campaign-row", true))}
             </div>
@@ -10317,21 +10318,21 @@ export default function MapPage() {
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Downtown Perks</p>
             <h2>One map for nearby.</h2>
-            <p>Places, perks, events, listings, and local help.</p>
+            <p>Places, perks, events, listings, and local help, all in one place.</p>
           </section>
 
           <section className="dp-partner-info-copy">
-            <p>Open the map, see what is close, save what fits, and make the next move.</p>
+            <p>Open the map, see what is close, save what fits, and make the next move without digging through five apps.</p>
           </section>
 
           <CommunityStoriesMapLayer />
 
           <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Downtown Perks utility">
             {[
-              ["Nearby", "Places, events, and services close enough to use."],
-              ["Perks", "Resident offers from spots people already visit."],
-              ["Homes", "Listings with walkable context nearby."],
-              ["Ready", "Saved places, RSVPs, scans, and next steps."],
+              ["Nearby", "Places, events, and services close enough to matter."],
+              ["Perks", "Resident offers from spots people already like."],
+              ["Homes", "Listings with the neighborhood right beside them."],
+              ["Ready", "Saved places, RSVPs, scans, and easy next steps."],
             ].map(([title, copy]) => (
               <article key={title} className="dp-partner-summary-card">
                 <span>{title}</span>
@@ -10346,7 +10347,7 @@ export default function MapPage() {
               ["Resident Map", "See what is nearby, open, useful, and worth leaving for."],
               ["Perks Card", "Save places and use resident access."],
               ["Ask The Map", "Ask for coffee, dinner, a workout, or tonight."],
-              ["Partner View", "See what people saved, scanned, joined, and used."],
+              ["Partner View", "See what people saved, scanned, joined, and used without squinting at a dashboard."],
             ].map(([title, copy]) => (
               <button key={title} type="button" className="dp-tab-row dp-partner-feed-row" onClick={() => title === "Partner View" ? openPartnerPanel("activity") : openPartnerMap("All")}>
                 <span className="dp-partner-feed-main">
@@ -10364,7 +10365,7 @@ export default function MapPage() {
               "Open the map",
               "Discover nearby places, events, perks, and listings",
               "Save a place, RSVP, or show your perks card",
-              "Partners see what people used and what helped them show up",
+              "Partners see what helped people show up",
             ].map((step, index) => (
               <div key={step}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
@@ -10791,73 +10792,74 @@ export default function MapPage() {
       const activeSecondaryFilter = SECONDARY_SEARCH_INTENT_RAIL.find((item) => item.filter === activeFilter || item.label === activeFilter);
       const activePrimaryFilter = PRIMARY_SEARCH_INTENT_RAIL.find((item) => item.filter === activeFilter || item.label === activeFilter);
       const activeFilterGroup = activeSecondaryFilter ? "secondary" : activePrimaryFilter ? "primary" : "";
-      const response = await fetch("/api/ask-map", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query,
-          mode: urlState.mode,
-          district: isAllNeighborhoodScope(district) ? "Downtown Austin" : district,
-          filter: activeFilter,
-          activeFilter,
-          activeFilterGroup,
-          isSecondaryFilter: Boolean(activeSecondaryFilter),
-          parsedIntent,
-          intentCategories: parsedIntent.intents.length
-            ? parsedIntent.intents
-            : urlState.mode === "partner"
+      const payload = await queryAgent({
+        message: query,
+        query,
+        sessionId: getWorkflowSessionId(),
+        mode: urlState.mode,
+        intent: parsedIntent.intents[0] || "ask_map",
+        district: isAllNeighborhoodScope(district) ? "Downtown Austin" : district,
+        location: {
+          label: isAllNeighborhoodScope(district) ? "Downtown Austin" : district,
+          coordinates: { lat: AUSTIN_CENTER[0], lng: AUSTIN_CENTER[1] },
+        },
+        filter: activeFilter,
+        activeFilter,
+        activeFilterGroup,
+        isSecondaryFilter: Boolean(activeSecondaryFilter),
+        parsedIntent,
+        intentCategories: parsedIntent.intents.length
+          ? parsedIntent.intents
+          : urlState.mode === "partner"
             ? ["activity", "campaigns", "perks", "events", "properties", "trends"]
             : ["nearby", "tonight", "perks", "events", "places"],
-          context: localResults.slice(0, 8).map((place) => {
-            const legendsListing = getResolvedLegendsListing(place);
-            const luxuryBuilding = getLuxuryPresenceBuilding(place);
-            const buildingListings = luxuryBuilding?.listings || place?.listings || [];
-            return {
-              id: place.id,
-              name: place.name,
-              category: place.category,
-              district: place.district,
-              type: place.type,
-              address: place.address || place.raw?.address || "",
-              summary: place.summary || place.description || place.raw?.summary || place.raw?.description || "",
-              offer: place.deals_offers || place.offer || place.raw?.deals_offers || place.raw?.offer || place.happyHour?.offer || place.raw?.happyHour?.offer || "",
-              timing: place.happyHour?.time || place.raw?.happyHour?.time || place.time || place.raw?.time || "",
-              latitude: place.latitude,
-              longitude: place.longitude,
-              hasPerk: hasActivePerkData(place),
-              listing: legendsListing
-                ? {
-                    address: legendsListing.address,
-                    price: legendsListing.priceDisplay || legendsListing.price,
-                    beds: legendsListing.beds,
-                    baths: legendsListing.baths,
-                    sqft: legendsListing.sqftDisplay || legendsListing.sqft,
-                    unit: legendsListing.unit,
-                    mls: legendsListing.mlsNumber || legendsListing.mls_number,
-                    daysOnMarket: legendsListing.daysOnMarket,
-                    status: legendsListing.status,
-                    building: legendsListing.buildingName || legendsListing.building_name,
-                  }
-                : undefined,
-              buildingListings: buildingListings.length
-                ? buildingListings.slice(0, 6).map((listing) => ({
-                    address: listing.address,
-                    unit: listing.unit,
-                    price: listing.price,
-                    beds: listing.beds,
-                    baths: listing.baths,
-                    sqft: listing.sqft,
-                    mls: listing.mls_number,
-                    status: listing.status,
-                  }))
-                : undefined,
-            };
-          }),
+        mapContext: localResults.slice(0, 8).map((place) => {
+          const legendsListing = getResolvedLegendsListing(place);
+          const luxuryBuilding = getLuxuryPresenceBuilding(place);
+          const buildingListings = luxuryBuilding?.listings || place?.listings || [];
+          return {
+            id: place.id,
+            name: place.name,
+            category: place.category,
+            district: place.district,
+            type: place.type,
+            address: place.address || place.raw?.address || "",
+            summary: place.summary || place.description || place.raw?.summary || place.raw?.description || "",
+            offer: place.deals_offers || place.offer || place.raw?.deals_offers || place.raw?.offer || place.happyHour?.offer || place.raw?.happyHour?.offer || "",
+            timing: place.happyHour?.time || place.raw?.happyHour?.time || place.time || place.raw?.time || "",
+            latitude: place.latitude,
+            longitude: place.longitude,
+            hasPerk: hasActivePerkData(place),
+            listing: legendsListing
+              ? {
+                  address: legendsListing.address,
+                  price: legendsListing.priceDisplay || legendsListing.price,
+                  beds: legendsListing.beds,
+                  baths: legendsListing.baths,
+                  sqft: legendsListing.sqftDisplay || legendsListing.sqft,
+                  unit: legendsListing.unit,
+                  mls: legendsListing.mlsNumber || legendsListing.mls_number,
+                  daysOnMarket: legendsListing.daysOnMarket,
+                  status: legendsListing.status,
+                  building: legendsListing.buildingName || legendsListing.building_name,
+                }
+              : undefined,
+            buildingListings: buildingListings.length
+              ? buildingListings.slice(0, 6).map((listing) => ({
+                  address: listing.address,
+                  unit: listing.unit,
+                  price: listing.price,
+                  beds: listing.beds,
+                  baths: listing.baths,
+                  sqft: listing.sqft,
+                  mls: listing.mls_number,
+                  status: listing.status,
+                }))
+              : undefined,
+          };
         }),
       });
 
-      if (!response.ok) return null;
-      const payload = await response.json();
       if (!payload?.answer) return null;
       return payload;
     } catch {

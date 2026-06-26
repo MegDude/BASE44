@@ -13,5 +13,5 @@
   <circle cx="80" cy="87" r="51" fill="#E8D7B3" stroke="rgba(255,255,255,.72)" stroke-width="2"/>
   <path d="M80 45c-8 0-14 6-14 14 0 12 14 24 14 24s14-12 14-24c0-8-6-14-14-14Z" fill="#C9272D"/>
   <circle cx="80" cy="59" r="5" fill="#F3E6C8"/>
-  <text x="80" y="110" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" font-style="italic" fill="#20242B">The Stay Put</text>
+  <text x="80" y="110" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" font-style="italic" fill="#20242B">The Stay Put</text>
 </svg>

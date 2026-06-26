@@ -1068,7 +1068,7 @@ html body #root#root .dp-workspace-section-copy h2 {
   margin: 0 !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: "Instrument Serif", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(28px, 5vw, 44px) !important;
   font-weight: 500 !important;
   letter-spacing: -.025em !important;
@@ -1307,7 +1307,7 @@ html body #root#root .dp-partner-page section > div[class*="absolute"][style*="l
 html body #root#root .dp-partner-page :is(h1, h2) {
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: "Instrument Serif", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: -.035em !important;
 }
@@ -1585,7 +1585,7 @@ html body #root .dp-resident-hero-overlay-title {
   margin: 0 !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(34px, 7vw, 52px) !important;
   font-weight: 400 !important;
   line-height: .98 !important;
@@ -1667,7 +1667,7 @@ html body #root .dp-home-page .dp-community-story-quote-icon {
 html body #root .dp-home-page .dp-community-story-copy blockquote {
   margin: 0;
   max-width: 52ch;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: clamp(25px, 4vw, 42px);
   font-weight: 400;
   line-height: 1.08;
@@ -1815,7 +1815,7 @@ html body #root .dp-map-page.dp-map-page .dp-survey-latest-list small {
 html body #root .dp-map-page.dp-map-page .dp-survey-summary-grid strong {
   display: block;
   margin-top: 6px;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: clamp(22px, 4vw, 34px);
   font-weight: 400;
   line-height: 1;
@@ -1936,7 +1936,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-det
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-detail strong {
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 18px !important;
   font-weight: 400 !important;
   color: #0B1F33 !important;
@@ -2348,7 +2348,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell.d
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell.dp-fixed-story-shell .dp-fixed-story-headline.dp-fixed-story-headline {
   max-width: min(100%, 860px) !important;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   letter-spacing: 0 !important;
 }
 
@@ -2825,7 +2825,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
   margin: 0 !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(58px, 7vw, 94px) !important;
   font-weight: 400 !important;
   letter-spacing: 0 !important;
@@ -2929,7 +2929,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-det
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-detail strong {
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(22px, 2.4vw, 29px) !important;
   font-weight: 400 !important;
   letter-spacing: 0 !important;
@@ -4632,7 +4632,7 @@ html body #root .dp-map-page.dp-map-page .dp-community-stories-map-layer {
 
 html body #root .dp-map-page.dp-map-page .dp-community-stories-map-layer h3 {
   margin: 4px 0 0;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: clamp(24px, 4vw, 34px);
   font-weight: 400;
   line-height: 1;
@@ -8076,7 +8076,7 @@ html body #root .dp-map-page.dp-map-page .dp-daa-related-grid span {
   }
 }
 
-/* Splash story final lock: last-loaded Canela-style headlines and true viewport-centered rails. */
+/* Splash story final lock: last-loaded Inter headlines and true viewport-centered rails. */
 html body #root .dp-splash-page.dp-fixed-story-page {
   position: fixed !important;
   inset: 0 !important;
@@ -8157,7 +8157,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 span,
 html body #root#root .dp-splash-page.dp-fixed-story-page h1.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page h1.dp-fixed-story-headline > span.dp-fixed-story-headline-line {
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 400 !important;
   letter-spacing: 0 !important;
   text-shadow: none !important;
@@ -8167,7 +8167,7 @@ html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1,
 html body #root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 span,
 html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline,
 html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline span {
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 400 !important;
   letter-spacing: 0 !important;
   text-shadow: none !important;
@@ -8327,7 +8327,7 @@ html body #root .dp-map-page.dp-map-page :is(.dp-saved-downtown-panel, .dp-civic
 
 html body #root .dp-map-page.dp-map-page :is(.dp-saved-downtown-panel, .dp-civic-guide-panel) :is(h2, h3, h4),
 html body #root .dp-map-page.dp-map-page :is(.dp-entity-title, .dp-map-panel-title) {
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   letter-spacing: 0 !important;
 }
 
@@ -8857,7 +8857,7 @@ html body #root :where(
   .dp-story-headline,
   .marketing-hero h1
 ) {
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 400 !important;
   color: var(--dp-governance-ink) !important;
 }
@@ -9349,7 +9349,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel .dp-entity-title {
   margin: 0 !important;
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(34px, 8vw, 48px) !important;
   line-height: .98 !important;
   font-weight: 400 !important;
@@ -9524,7 +9524,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel :is(.dp-destination-section h3, .dp-daa-story-block h3, .dp-civic-nearby-section h3, .dp-daa-next-stops h3, .dp-daa-participation h3) {
   margin: 0 !important;
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 28px !important;
   line-height: 1 !important;
   font-weight: 400 !important;
@@ -9606,7 +9606,7 @@ html body #root :is(
   main[class*="partner"],
   main[class*="Partner"]
 ) :is(h1, h2, .font-heading, .font-serif, .dp-section-title, .dp-hero-title) {
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 400 !important;
   line-height: .94 !important;
   letter-spacing: -0.04em !important;
@@ -10840,7 +10840,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
   max-width: 720px !important;
   min-height: 118px !important;
   margin: 0 auto !important;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(40px, 7vw, 62px) !important;
   font-weight: 400 !important;
   line-height: .94 !important;
@@ -11114,7 +11114,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-det
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-detail strong {
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 18px !important;
   font-weight: 400 !important;
   color: #0B1F33 !important;
@@ -12348,7 +12348,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-final-c
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline {
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(44px, 7.6vw, 76px) !important;
   font-weight: 400 !important;
   line-height: .94 !important;
@@ -12597,7 +12597,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
   margin: 0 auto !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(44px, 7vw, 74px) !important;
   font-weight: 400 !important;
   line-height: .95 !important;
@@ -13966,7 +13966,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
   box-shadow: none !important;
 }
 
-/* True EOF story headline lock: all story headings share one bold serif rule. */
+/* True EOF story headline lock: all story headings share one Inter rule. */
 html body #root#root .dp-splash-page.dp-fixed-story-page {
   --dp-story-headline-size: clamp(36px, 9.4vw, 64px);
   --dp-story-headline-leading: .98;
@@ -13977,7 +13977,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: var(--dp-story-headline-size) !important;
   font-weight: 700 !important;
   line-height: var(--dp-story-headline-leading) !important;
@@ -14712,7 +14712,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(36px, 9.4vw, 64px) !important;
   font-weight: 700 !important;
   line-height: .98 !important;
@@ -14963,7 +14963,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: var(--dp-story-headline-size) !important;
   font-weight: 700 !important;
   line-height: var(--dp-story-headline-leading) !important;
@@ -15058,7 +15058,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
   display: block !important;
   width: 100% !important;
   margin: 0 auto !important;
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(38px, 10.15vw, 66px) !important;
   font-weight: 400 !important;
   line-height: .96 !important;
@@ -15068,7 +15068,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment {
   display: inline !important;
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: inherit !important;
   font-weight: 400 !important;
   line-height: inherit !important;
@@ -15076,7 +15076,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="one-map"] .dp-fixed-story-headline-row {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(31px, 8vw, 64px) !important;
   font-weight: 400 !important;
   line-height: .98 !important;
@@ -15085,7 +15085,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="one-map"] .dp-fixed-story-headline-segment {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: inherit !important;
   font-weight: 400 !important;
   line-height: inherit !important;
@@ -15159,7 +15159,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy .dp-op
   margin: clamp(18px, 4vw, 28px) auto 0 !important;
 }
 
-/* Absolute final story headline governance: one serif size/weight system everywhere. */
+/* Absolute final story headline governance: one Inter size/weight system everywhere. */
 html body #root#root .dp-splash-page.dp-fixed-story-page {
   --dp-story-headline-size: clamp(36px, 9.4vw, 64px);
   --dp-story-headline-leading: .98;
@@ -15169,7 +15169,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headlin
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-row,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline-segment {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: var(--dp-story-headline-size) !important;
   font-weight: 700 !important;
   line-height: var(--dp-story-headline-leading) !important;
@@ -16078,7 +16078,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline .dp-fixed-story-line.dp-fixed-story-line--compact {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(38px, 10.15vw, 66px) !important;
   font-weight: 400 !important;
   line-height: .96 !important;
@@ -17486,7 +17486,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
-  font-family: "Instrument Serif", "Canela", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(54px, 7.2vw, 96px) !important;
   font-weight: 400 !important;
   line-height: .96 !important;
@@ -17899,7 +17899,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 /* Story typography governance: every scene uses one section style system. */
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
-  font-family: "Instrument Serif", "Canela", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(50px, 6.4vw, 88px) !important;
   font-weight: 400 !important;
   line-height: .96 !important;
@@ -18225,7 +18225,7 @@ html body #root#root :is(
   .events-card,
   .dp-event-card
 ) :is(h1, h2, h3, h4, .event-title) {
-  font-family: "Instrument Serif", Canela, Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
 
 /* 5173 marketing hero carousel: scoped to marketing only, no workspace leakage. */
@@ -18259,7 +18259,7 @@ html body #root#root main.dp-home-page .dp-marketing-hero-copy {
 html body #root#root main.dp-home-page .dp-marketing-hero-copy h1 {
   max-width: 12ch !important;
   margin: 0 !important;
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(56px, 9vw, 112px) !important;
   font-weight: 500 !important;
   line-height: .92 !important;
@@ -18429,7 +18429,7 @@ html body #root#root main.dp-home-page :is(.dp-marketing-value-panel, .dp-market
 html body #root#root main.dp-home-page :is(.dp-marketing-value-panel h2, .dp-marketing-section-head h2) {
   max-width: 720px !important;
   margin: 12px 0 0 !important;
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(40px, 5.6vw, 72px) !important;
   font-weight: 500 !important;
   line-height: .96 !important;
@@ -18712,7 +18712,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
-  font-family: "Instrument Serif", "Canela", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(46px, 6vw, 88px) !important;
   font-weight: 500 !important;
   line-height: .94 !important;
@@ -18972,7 +18972,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage[data-story-scene="start"] .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line) {
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(34px, 8.7vw, 50px) !important;
   font-weight: 400 !important;
   line-height: 1.02 !important;
@@ -19162,7 +19162,7 @@ html body #root#root :is(
   main.dp-partner-dashboard-page.dp-partner-dashboard-page,
   main.dp-campaigns-page.dp-campaigns-page
 ) :is(h1, h2, .font-heading) {
-  font-family: "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 400 !important;
   letter-spacing: -.035em !important;
   color: var(--dp-partner-page-ink) !important;
@@ -19828,7 +19828,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
-  font-family: "Instrument Serif", "Canela", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(42px, 6.2vw, 86px) !important;
   font-weight: 500 !important;
   line-height: .96 !important;
@@ -20320,7 +20320,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel.dp-part
   max-width: 10ch !important;
   margin: 0 !important;
   color: #0B1F33 !important;
-  font-family: "Instrument Serif", Georgia, serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(34px, 9vw, 52px) !important;
   font-weight: 500 !important;
   letter-spacing: -0.035em !important;
@@ -21135,7 +21135,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage:is([data-story-scene="easier"], [data-story-scene="one-map"], [data-story-scene="perks"], [data-story-scene="open"]) .dp-fixed-story-headline.dp-fixed-story-headline,
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage:is([data-story-scene="easier"], [data-story-scene="one-map"], [data-story-scene="perks"], [data-story-scene="open"]) .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
-  font-family: Canela, "Instrument Serif", Georgia, "Times New Roman", serif !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(29px, 7.45vw, 36px) !important;
   font-weight: 400 !important;
   line-height: 1.08 !important;
@@ -21189,4 +21189,1679 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: clamp(12.5px, 3.1vw, 15px) !important;
   font-weight: 700 !important;
   line-height: 1.22 !important;
+}
+
+/* Absolute EOF typography governance: Inter only across app surfaces. */
+html body #root,
+html body #root :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  small,
+  strong,
+  em,
+  b,
+  i,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  legend,
+  summary,
+  figcaption,
+  blockquote,
+  li,
+  dt,
+  dd,
+  .font-heading,
+  .font-serif,
+  .dp-serif,
+  .dp-display,
+  .dp-hero-title,
+  .dp-editorial-title,
+  .dp-scene-headline,
+  .dp-fixed-story-headline,
+  .dp-panel-shell,
+  .dp-detail-drawer,
+  .dp-map-drawer-shell,
+  .dp-map-campaign-drawer,
+  .dp-resident-tab-panel,
+  .dp-partner-readable-panel,
+  .dp-card,
+  .dp-panel-card,
+  .dp-nearby-item,
+  .dp-search-intent-console,
+  .dp-modal,
+  .dp-dialog,
+  .dp-popover,
+  .dp-sheet,
+  .dp-drawer
+) {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+/* Saved drawer mobile polish: bright surface, compact footer, no nested-card chrome. */
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
+  max-height: min(82dvh, calc(100dvh - 92px)) !important;
+  padding: 8px 10px calc(6px + env(safe-area-inset-bottom, 0px)) !important;
+  border-width: 1px 0 0 !important;
+  border-color: rgba(11, 31, 51, 0.06) !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 -14px 34px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell:has(.dp-saved-downtown-panel) .dp-panel-toolbar {
+  margin-bottom: 4px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell:has(.dp-saved-downtown-panel) :is(.dp-panel-back, .dp-panel-close) {
+  width: 32px !important;
+  height: 32px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel {
+  min-height: 0 !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-scroll.dp-saved-downtown-scroll {
+  display: flex !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 2px 0 56px !important;
+  scroll-padding-bottom: 64px !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-saved-downtown-header,
+  .dp-saved-collection-section,
+  .dp-saved-ask-section,
+  .dp-saved-empty-state
+) {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header {
+  display: grid !important;
+  gap: 4px !important;
+  padding: 0 2px 2px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header p,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-status {
+  margin: 0 !important;
+  font-size: 9px !important;
+  font-weight: 820 !important;
+  letter-spacing: 0.13em !important;
+  line-height: 1.1 !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header h2 {
+  margin: 0 !important;
+  font-size: clamp(22px, 5.8vw, 28px) !important;
+  font-weight: 720 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.02em !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header span {
+  max-width: 34ch !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero {
+  display: grid !important;
+  grid-template-columns: 86px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero img {
+  width: 86px !important;
+  height: 72px !important;
+  aspect-ratio: auto !important;
+  border-radius: 12px !important;
+  object-fit: cover !important;
+  box-shadow: 0 8px 18px rgba(11, 31, 51, 0.075) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero div {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero h3,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-section-heading h3,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section h3,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-empty-state h3 {
+  margin: 0 !important;
+  font-size: clamp(15px, 4vw, 18px) !important;
+  font-weight: 760 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.012em !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero p,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-empty-state p,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-body span:not(.dp-saved-card-status) {
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-section-heading {
+  margin: 0 0 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-card.dp-saved-collection-card {
+  display: grid !important;
+  grid-template-columns: 82px minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  min-height: 82px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.055) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 8px 20px rgba(11, 31, 51, 0.055) !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-media {
+  width: 82px !important;
+  height: 100% !important;
+  min-height: 82px !important;
+  aspect-ratio: auto !important;
+  border-radius: 0 !important;
+  background: rgba(11, 31, 51, 0.04) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-body {
+  display: grid !important;
+  align-content: center !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+  padding: 9px 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-body strong {
+  overflow: hidden !important;
+  font-size: 13.5px !important;
+  font-weight: 760 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.006em !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-body em {
+  overflow: hidden !important;
+  font-size: 10.5px !important;
+  font-style: normal !important;
+  font-weight: 720 !important;
+  line-height: 1.15 !important;
+  color: rgba(11, 31, 51, 0.5) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.5) !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-section[aria-label="Worth Exploring Nearby"] .dp-saved-collection-grid {
+  display: flex !important;
+  gap: 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 0 2px 4px !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-section[aria-label="Worth Exploring Nearby"] .dp-saved-collection-grid::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-section[aria-label="Worth Exploring Nearby"] .dp-saved-collection-card {
+  flex: 0 0 min(66vw, 220px) !important;
+  grid-template-columns: 1fr !important;
+  min-height: 0 !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-section[aria-label="Worth Exploring Nearby"] .dp-saved-card-media {
+  width: 100% !important;
+  height: 104px !important;
+  min-height: 104px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-section[aria-label="Worth Exploring Nearby"] .dp-saved-card-body strong {
+  white-space: normal !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section div {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  padding-bottom: 3px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section div::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section button,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-action-row button {
+  flex: 0 0 auto !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  font-weight: 560 !important;
+  letter-spacing: 0 !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 5 !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 5px 0 calc(5px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.055) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 -6px 16px rgba(11, 31, 51, 0.035) !important;
+  backdrop-filter: blur(10px) saturate(1.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 10.5px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button svg {
+  width: 13px !important;
+  height: 13px !important;
+  color: #C8A96A !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button span {
+  color: rgba(11, 31, 51, 0.72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-panel-bottom-spacer {
+  height: 8px !important;
+  min-height: 8px !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
+    max-height: 64dvh !important;
+    max-width: 680px !important;
+  }
+}
+
+/* Saved drawer final mobile fit: more breathing room, less footer depth. */
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
+  height: calc(100dvh - 24px) !important;
+  max-height: calc(100dvh - 24px) !important;
+  padding: 10px 12px calc(6px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel.dp-saved-downtown-panel {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-scroll.dp-saved-downtown-scroll {
+  gap: 15px !important;
+  padding: 2px 0 38px !important;
+  scroll-padding-bottom: 42px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header {
+  gap: 6px !important;
+  padding: 0 2px 4px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero {
+  grid-template-columns: 96px minmax(0, 1fr) !important;
+  gap: 13px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-hero img {
+  width: 96px !important;
+  height: 78px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-section-heading {
+  margin: 0 0 9px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-grid {
+  gap: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-collection-card.dp-saved-collection-card {
+  grid-template-columns: 88px minmax(0, 1fr) !important;
+  min-height: 88px !important;
+  border-color: rgba(11, 31, 51, 0.045) !important;
+  box-shadow: 0 6px 16px rgba(11, 31, 51, 0.045) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-media {
+  width: 88px !important;
+  min-height: 88px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-card-body {
+  gap: 4px !important;
+  padding: 10px 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-ask-section {
+  gap: 9px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer {
+  min-height: 34px !important;
+  padding: 2px 0 calc(2px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top-color: rgba(11, 31, 51, 0.045) !important;
+  box-shadow: 0 -4px 12px rgba(11, 31, 51, 0.025) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button {
+  height: 26px !important;
+  min-height: 26px !important;
+  gap: 3px !important;
+  padding: 0 2px !important;
+  font-size: 9.5px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer button svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* EOF map panel de-bulk lock: lighter typography, fewer card blocks, mobile-first drawers. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-panel,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-partner-readable-panel,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-resident-tab-panel,
+  .dp-saved-downtown-panel
+) {
+  color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-panel,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-partner-readable-panel,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-resident-tab-panel,
+  .dp-saved-downtown-panel
+) :is(h1, h2, h3, h4, h5, h6, p, span, small, strong, em, b, button, a, summary, dt, dd, li, label, input, textarea) {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  text-shadow: none !important;
+  letter-spacing: 0 !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-panel,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-partner-readable-panel,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-resident-tab-panel,
+  .dp-saved-downtown-panel
+) :is(h1, h2, .dp-entity-title, .dp-map-panel-title) {
+  font-size: clamp(24px, 6.8vw, 36px) !important;
+  font-weight: 430 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.015em !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-panel,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-partner-readable-panel,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-resident-tab-panel,
+  .dp-saved-downtown-panel
+) :is(h3, h4, strong, summary strong, .dp-partner-feed-main strong, .dp-campaign-row-copy strong, .dp-saved-card-body strong, .dp-report-next-action strong, .dp-report-signal-copy strong) {
+  font-weight: 500 !important;
+  letter-spacing: -0.006em !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-panel,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-partner-readable-panel,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-resident-tab-panel,
+  .dp-saved-downtown-panel
+) :is(p, small, em, dd, li, .dp-campaign-value-line, .dp-tab-row-copy, .dp-saved-card-body span) {
+  font-weight: 400 !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-tab-eyebrow,
+  .dp-report-label,
+  .dp-campaign-status,
+  .dp-saved-card-status,
+  .dp-drawer-meta-line,
+  .dp-entity-meta,
+  .dp-panel-kicker
+) {
+  font-weight: 500 !important;
+  letter-spacing: 0.09em !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-panel,
+  .dp-campaign-drawer,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer
+) {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 2px 0 calc(46px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-panel,
+  .dp-campaign-drawer,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer
+) .dp-tab-stack {
+  gap: 10px !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-panel,
+  .dp-campaign-drawer,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer
+) :is(
+  section,
+  article,
+  details,
+  .dp-partner-summary-card,
+  .dp-partner-report-card,
+  .dp-partner-report-visual,
+  .dp-report-next-action,
+  .dp-austin-growth-read,
+  .dp-partner-feed-row,
+  .dp-campaign-moment,
+  .dp-campaign-suggestion,
+  .dp-campaign-visibility-panel,
+  .dp-campaign-layer-list,
+  .dp-brand-campaign-list,
+  .dp-campaign-layer-row,
+  .dp-brand-campaign-row,
+  .dp-partner-info-copy,
+  .dp-partner-info-steps,
+  .dp-partner-intelligence-section,
+  .dp-partner-strategy-summary,
+  .dp-partner-nearby-guide,
+  .dp-partner-ask-section,
+  .dp-partner-tags-section,
+  .dp-partner-nearby-section
+) {
+  border-color: rgba(11, 31, 51, 0.055) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-partner-readable-panel,
+  .dp-campaign-drawer,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer
+) :is(
+  .dp-partner-readable-hero,
+  .dp-partner-summary-card,
+  .dp-partner-report-visual,
+  .dp-partner-report-card summary,
+  .dp-report-next-action,
+  .dp-austin-growth-read,
+  .dp-partner-feed-row,
+  .dp-campaign-moment,
+  .dp-campaign-suggestion,
+  .dp-campaign-visibility-panel,
+  .dp-campaign-layer-list,
+  .dp-brand-campaign-list,
+  .dp-campaign-layer-row,
+  .dp-brand-campaign-row,
+  .dp-partner-info-copy,
+  .dp-partner-info-steps,
+  .dp-partner-intelligence-section,
+  .dp-partner-strategy-summary,
+  .dp-partner-nearby-guide,
+  .dp-partner-ask-section,
+  .dp-partner-tags-section,
+  .dp-partner-nearby-section
+) {
+  padding: 11px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-partner-summary-grid, .dp-partner-report-analytics, .dp-partner-report-card-grid) {
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-summary-card.dp-partner-summary-card {
+  gap: 5px !important;
+  padding: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-partner-summary-card.dp-partner-summary-card strong {
+  font-size: clamp(19px, 5.8vw, 27px) !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-action-bar, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-entity-action-row) {
+  position: static !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 0 4px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-action-bar, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-entity-action-row)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-campaign-action-bar, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-entity-action-row) > :is(button, a, .dp-tab-primary-action, .dp-tab-secondary-action, .dp-panel-action, .dp-entity-action) {
+  flex: 0 0 auto !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 0 9px !important;
+  border: 1px solid rgba(11, 31, 51, 0.075) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.045em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-ask-rail, .dp-entity-text-rail, .dp-daa-question-rail, .dp-saved-ask-section > div) > :is(button, .dp-ask-prompt-chip, .dp-entity-text-chip, .dp-daa-question-card) {
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-height: 34px !important;
+  height: auto !important;
+  max-height: none !important;
+  max-width: min(78vw, 260px) !important;
+  padding: 8px 10px !important;
+  overflow: visible !important;
+  text-align: left !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  line-height: 1.22 !important;
+  font-weight: 400 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-ask-prompts, .dp-partner-ask-rail, .dp-entity-text-rail, .dp-daa-question-rail, .dp-saved-ask-section > div) > :is(button, .dp-ask-prompt-chip, .dp-entity-text-chip, .dp-daa-question-card) :is(span, strong, small) {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.22 !important;
+  font-weight: 400 !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-partner-summary-grid, .dp-partner-report-analytics) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-partner-report-card-grid.dp-partner-report-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Campaigns page de-bulk lock: open editorial layout, fewer boxes, no bento card chrome. */
+html body #root#root main.dp-campaigns-page.dp-campaigns-page {
+  gap: clamp(26px, 4.4vw, 58px) !important;
+  max-width: min(100%, 1180px) !important;
+  padding-inline: clamp(18px, 4.2vw, 44px) !important;
+  background:
+    linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 62%, #F7F8FB 100%) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(
+  .dp-campaigns-header,
+  .dp-campaigns-hero,
+  .dp-campaigns-section,
+  .dp-campaign-type-panel,
+  .dp-campaigns-preview article,
+  .dp-launch-section,
+  .dp-final-campaign-cta,
+  .dp-proof-grid article,
+  .dp-moment-scroller article,
+  .dp-metric-chip-row span,
+  .dp-campaign-faq article,
+  .dp-brand-network-showcase article,
+  .dp-two-sided-faq,
+  .dp-faq-item,
+  form
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header {
+  position: sticky !important;
+  top: 0 !important;
+  margin-inline: calc(clamp(18px, 4.2vw, 44px) * -1) !important;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) clamp(18px, 4.2vw, 44px) 10px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.065) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(12px) saturate(1.04) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.04) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header :is(nav a, > div a, > div button),
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-primary, .dp-campaigns-secondary, .dp-campaigns-gold, .dp-campaign-type-tabs button, .dp-campaigns-preview article button, .dp-faq-mode-row button, .dp-campaign-faq article button) {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 11px !important;
+  font-weight: 620 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-primary, .dp-campaigns-gold) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-secondary, .dp-campaigns-header nav a, .dp-campaign-type-tabs button, .dp-faq-mode-row button) {
+  border-bottom: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-primary, .dp-campaigns-secondary, .dp-campaigns-gold, button, a):is(:hover, :focus-visible, [aria-selected="true"]) {
+  border-color: rgba(200, 169, 106, 0.62) !important;
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  outline: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-brand {
+  min-height: 34px !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-weight: 680 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-hero {
+  grid-template-columns: minmax(0, 1.04fr) minmax(260px, 0.66fr) !important;
+  gap: clamp(24px, 5vw, 70px) !important;
+  padding: clamp(30px, 7vw, 82px) 0 clamp(18px, 4vw, 44px) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-hero h1 {
+  max-width: 780px !important;
+  font-size: clamp(42px, 8vw, 78px) !important;
+  line-height: 0.98 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-visual img,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller img,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-proof-grid img,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-brand-network-showcase img {
+  border: 0 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-visual figcaption {
+  width: auto !important;
+  max-width: none !important;
+  padding: 8px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-section,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-final-campaign-cta {
+  gap: clamp(14px, 2.4vw, 24px) !important;
+  padding: clamp(24px, 5vw, 56px) 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.065) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-panel,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-preview,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-launch-section,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-faq {
+  column-gap: clamp(26px, 5vw, 72px) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how ol {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how li,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-proof-grid article,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-faq article,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-faq-item {
+  padding: 14px 0 !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how li {
+  grid-template-columns: 48px minmax(0, 0.42fr) minmax(0, 1fr) !important;
+  align-items: baseline !important;
+  gap: 14px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how li :is(strong, p) {
+  margin: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller {
+  gap: 18px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller article {
+  flex-basis: min(72vw, 238px) !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller article strong {
+  display: block !important;
+  margin-top: 9px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-tabs {
+  gap: 18px !important;
+  padding-bottom: 2px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-tabs button[aria-selected="true"],
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-faq-mode-row button[aria-selected="true"] {
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-panel {
+  display: grid !important;
+  padding: 8px 0 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-panel ul {
+  gap: 7px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-panel li {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-preview article {
+  align-self: start !important;
+  padding: 16px 0 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-preview article div {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 14px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-metric-chip-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px 18px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-metric-chip-row span {
+  width: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-proof-grid {
+  gap: clamp(20px, 3vw, 34px) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-proof-grid article {
+  align-content: start !important;
+  padding-top: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-proof-grid article svg {
+  display: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-brand-network-showcase {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(20px, 3vw, 34px) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-brand-network-showcase article {
+  display: grid !important;
+  gap: 10px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-brand-network-showcase article div {
+  display: grid !important;
+  gap: 5px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page form {
+  gap: 12px !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page form label {
+  font-size: 11px !important;
+  font-weight: 580 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(input, select, textarea) {
+  min-height: 42px !important;
+  border-width: 0 0 1px !important;
+  border-color: rgba(11, 31, 51, 0.16) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 8px 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(input, select, textarea):focus {
+  border-color: rgba(200, 169, 106, 0.78) !important;
+  outline: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-two-sided-faq {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-faq-mode-row {
+  display: flex !important;
+  gap: 18px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-faq article button,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-faq-item button {
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding-inline: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-faq article > p,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-faq-item > p {
+  margin: 0 !important;
+  padding: 0 0 14px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-final-campaign-cta {
+  justify-items: start !important;
+  background: linear-gradient(180deg, transparent 0%, rgba(247, 248, 251, 0.88) 100%) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-footer {
+  border-top-color: rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-footer a {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 900px) {
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-hero,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-panel,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-preview,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-launch-section,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-faq {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-proof-grid,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-brand-network-showcase {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how li {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-how li p {
+    grid-column: 2 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page {
+    gap: 22px !important;
+    padding-top: 0 !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header {
+    position: sticky !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 8px 12px !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header nav {
+    grid-column: 1 / -1 !important;
+    order: 3 !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header > div {
+    display: flex !important;
+    gap: 12px !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header > div .dp-campaigns-secondary {
+    display: none !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header :is(nav a, > div a, > div button),
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-primary, .dp-campaigns-secondary, .dp-campaigns-gold, button, a) {
+    width: auto !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-hero {
+    padding-top: 28px !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-cta-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 14px !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-section,
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-final-campaign-cta {
+    padding-block: 30px !important;
+  }
+}
+
+/* App map full-width lock: remove layout caps that block edge-to-edge map use. */
+html body #root#root .dp-map-page.dp-map-page,
+html body #root#root .dp-map-page.dp-map-page :is(.dp-map-shell, .dp-map-canvas, .dp-map-search-anchor, .dp-map-bottom-nav) {
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-shell.dp-map-drawer-shell, .dp-map-directory-sheet, .dp-legends-directory-sheet) {
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Site/app responsive containment: replace leftover rails with fluid layouts. */
+html,
+html body,
+html body #root {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+html body #root :is(main, section, article, header, footer, nav, aside, div) {
+  min-width: 0;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-tabs {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 10px 16px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-tabs button {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 178px), 1fr)) !important;
+  gap: clamp(14px, 2vw, 22px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  padding-inline: 0 !important;
+  scroll-snap-type: none !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller article {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: initial !important;
+  scroll-snap-align: unset !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(.dp-campaigns-hero, .dp-campaigns-how, .dp-campaign-type-panel, .dp-campaigns-preview, .dp-launch-section, .dp-campaign-faq, .dp-proof-grid, .dp-brand-network-showcase) {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-moment-scroller {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-tabs {
+    gap: 8px 12px !important;
+  }
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page :is(.dp-opening-intro, .dp-opening-stage) {
+  overflow: hidden !important;
+  max-width: 100vw !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page.is-intro-active .dp-opening-video,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-video {
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-sheen {
+  left: 0 !important;
+  right: auto !important;
+  width: min(100%, 360px) !important;
+  max-width: 100% !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Partner analytics launch surface: readable, fluid, and report-ready. */
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics {
+  display: grid !important;
+  gap: clamp(24px, 4vw, 44px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(.dp-workspace-analytics-header, .dp-workspace-analytics-next) {
+  display: grid !important;
+  gap: 14px !important;
+  padding: 0 0 clamp(22px, 4vw, 38px) !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(.dp-workspace-analytics-header > span, .dp-workspace-analytics-kicker) {
+  margin: 0 !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-size: 10.5px !important;
+  font-weight: 620 !important;
+  letter-spacing: 0.14em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(h2, h3) {
+  max-width: 760px !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-weight: 520 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.08 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics h2 {
+  font-size: clamp(30px, 6vw, 52px) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics h3 {
+  font-size: clamp(20px, 3vw, 30px) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics p {
+  max-width: 720px !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 14px !important;
+  line-height: 1.66 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-actions,
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-next > div {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px 22px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-actions a {
+  display: inline-flex !important;
+  min-height: 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(200, 169, 106, 0.58) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 11px !important;
+  font-weight: 620 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-metrics {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(16px, 3vw, 30px) !important;
+  padding-block: clamp(4px, 1vw, 10px) clamp(20px, 4vw, 38px) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(.dp-workspace-analytics-metrics article, .dp-workspace-analytics-list a, .dp-workspace-analytics-list article, .dp-workspace-analytics-next article) {
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-metrics strong {
+  display: block !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: clamp(28px, 4.6vw, 46px) !important;
+  font-weight: 540 !important;
+  line-height: 0.95 !important;
+  tab-size: 4 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(.dp-workspace-analytics-metrics span, .dp-workspace-analytics-list strong, .dp-workspace-analytics-next strong) {
+  display: block !important;
+  margin-top: 9px !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1.25 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(28px, 6vw, 80px) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-grid > section {
+  display: grid !important;
+  align-content: start !important;
+  gap: 16px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-list {
+  display: grid !important;
+  gap: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-list :is(a, article),
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-next article {
+  display: grid !important;
+  position: relative !important;
+  gap: 6px !important;
+  padding-block: 16px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-list a {
+  padding-right: 28px !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-list a svg {
+  position: absolute !important;
+  top: 18px !important;
+  right: 0 !important;
+  width: 14px !important;
+  height: 14px !important;
+  color: #C8A96A !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(.dp-workspace-analytics-list span, .dp-workspace-analytics-next span) {
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics :is(.dp-workspace-analytics-list strong, .dp-workspace-analytics-list span, .dp-workspace-analytics-next strong, .dp-workspace-analytics-next span) {
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 820px) {
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-metrics,
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-actions,
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-analytics-next > div {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail a {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px 12px !important;
+    overflow: visible !important;
+    padding-bottom: 8px !important;
+  }
+
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-tabs.dp-partner-workspace-tabs > .dp-partner-workspace-tab.dp-partner-workspace-tab {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-inline: 0 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-lifecycle-rail {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Mobile-first story stage rebuild: copy owns the screen, no visual map blocking text. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-items: center !important;
+  width: min(100%, 980px) !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: clamp(18px, 4vw, 46px) clamp(18px, 5vw, 54px) !important;
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage::-webkit-scrollbar,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-visual,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  width: min(100%, 860px) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  place-items: center !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: center !important;
+  gap: clamp(12px, 2.4vw, 22px) !important;
+  width: min(100%, 820px) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-kicker-slot, .dp-fixed-story-prelude-slot, .dp-fixed-story-headline-slot, .dp-fixed-story-meaning-slot, .dp-fixed-story-supporting-slot) {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+  margin: 0 auto !important;
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  font-size: clamp(10px, 2.7vw, 12px) !important;
+  font-weight: 680 !important;
+  letter-spacing: 0.16em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  display: grid !important;
+  gap: clamp(2px, 1vw, 8px) !important;
+  width: min(100%, 820px) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(34px, 10.2vw, 78px) !important;
+  font-weight: 520 !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  overflow-wrap: anywhere !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  gap: 0.18em !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-segment.dp-fixed-story-headline-segment,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-line.dp-fixed-story-headline-line,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line.dp-fixed-story-line {
+  display: inline !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  font: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line--gold.dp-fixed-story-line--gold {
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-meaning, .dp-fixed-story-meaning-line, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+  width: min(100%, 700px) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(14px, 3.6vw, 18px) !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-wrap: pretty !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  display: grid !important;
+  gap: 7px !important;
+  padding-top: clamp(2px, 0.8vw, 8px) !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+    align-items: start !important;
+    width: 100% !important;
+    padding: clamp(10px, 3.2vw, 18px) 18px 12px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    gap: 10px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: clamp(32px, 10.6vw, 46px) !important;
+    line-height: 1 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-meaning, .dp-fixed-story-meaning-line, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
+    font-size: clamp(13px, 3.75vw, 15px) !important;
+    line-height: 1.38 !important;
+  }
 }

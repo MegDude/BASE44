@@ -69,13 +69,15 @@ export function recommendCampaigns({
   }
 
   if (!recommendations.length) {
+    const entityName = selectedEntity?.name || selectedEntity?.title || "this pin";
+    const district = selectedEntity?.district || selectedEntity?.neighborhood || "nearby downtown blocks";
     recommendations.push({
-      actionTitle: "One local test",
-      whyNow: "The nearest map context is enough to start small.",
-      bestAudience: "Nearby map users",
-      suggestedTiming: "This week",
-      expectedOutcome: "Baseline saves and directions.",
-      setupPath: "Launch",
+      actionTitle: `Test ${entityName} with one focused placement`,
+      whyNow: `${entityName} needs a clear nearby reason tied to ${district}, not a generic campaign.`,
+      bestAudience: selectedEntity?.category || selectedEntity?.type || "Nearby residents and visitors",
+      suggestedTiming: selectedEntity?.status === "open" || selectedEntity?.openNow ? "When the pin is active nearby" : "Use the next active window",
+      expectedOutcome: "Clearer saves, directions, and follow-up reporting for this specific entity.",
+      setupPath: "Plan",
     });
   }
 

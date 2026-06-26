@@ -287,8 +287,8 @@ export default function CampaignsPage() {
       </section>
 
       <section className="dp-campaigns-section">
-        <p className="dp-campaigns-eyebrow">Outcome proof</p>
-        <h2>Clear results, plain language.</h2>
+        <p className="dp-campaigns-eyebrow">What the report shows</p>
+        <h2>Useful signals from real activity.</h2>
         <div className="dp-proof-grid">
           {[
             ["People saved this.", "They wanted to keep the offer, event, or place close enough to come back to.", "/images/imported/perks/map-and-qr.png"],

@@ -400,7 +400,7 @@ export default function PartnerWorkspace() {
           {tab === "events" && <EventsManager key="events" user={user} />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}
-          {tab === "analytics" && <WorkspaceRegistryPanel key="analytics" tabId="analytics" />}
+          {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
@@ -508,7 +508,7 @@ function WorkspaceReports() {
       readout: [
         ["Observation", "Weekday evening decisions are clustering around dining and live plans."],
         ["Recommendation", "Lead with one after-work offer tied to a walkable route."],
-        ["Expected outcome", "More saves, directions, and clearer campaign attribution."],
+        ["Likely next signal", "More saves, directions, and clearer campaign attribution."],
       ],
       action: "View report",
     },
@@ -531,7 +531,7 @@ function WorkspaceReports() {
       readout: [
         ["Observation", "One-action campaigns are easier for residents to understand."],
         ["Recommendation", "Use a single CTA and a narrow time window."],
-        ["Expected outcome", "Higher completion and fewer drop-offs."],
+        ["Likely next signal", "Higher completion and fewer drop-offs."],
       ],
       action: "Plan offer",
     },
@@ -553,7 +553,7 @@ function WorkspaceReports() {
       copy: "Anchor the next placement to movement that is already happening nearby.",
       readout: [
         ["Recommendation", "Start with Rainey, Seaholm, or Congress based on current movement."],
-        ["Expected outcome", "Faster learning with less wasted reach."],
+        ["Likely next signal", "Faster learning with less wasted reach."],
       ],
       action: "Open campaigns",
     },
@@ -581,7 +581,7 @@ function WorkspaceReports() {
       <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
         <div>
           <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Reporting & Analytics</span>
-          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and outcomes.</h2>
+          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and follow-through.</h2>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
             See what people viewed, saved, scanned, opened, requested directions to, redeemed, and returned to. Use each signal to decide what to launch, improve, or repeat next.
           </p>
@@ -637,6 +637,109 @@ function WorkspaceReports() {
           </article>
         ))}
       </div>
+    </motion.section>
+  );
+}
+
+function WorkspaceAnalytics() {
+  const launchMetrics = [
+    ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands currently represented."],
+    ["1,284", "Resident reach", "People who can enter from buildings, QR links, campaigns, and the map."],
+    ["81,904", "Views", "Map, campaign, event, and partner detail views available for review."],
+    ["31,511", "Discovery actions", "Searches, saves, directions, scans, RSVPs, and offer opens."],
+  ];
+
+  const reportStreams = [
+    ["Performance report", "Partner activity by views, saves, directions, redemptions, and campaign action.", "/partner-workspace/reports"],
+    ["Map reports", "Open partner-mode reports directly on the live downtown map.", "/map?mode=partner&tab=reports"],
+    ["Campaign report", "Review what a campaign changed across source points, timing, and nearby activity.", "/partners/campaigns"],
+  ];
+
+  const onboardingTargets = [
+    ["Venues", "Bars, restaurants, coffee, live music, happy hours, and event-friendly places."],
+    ["Hotels", "Lobby QR, guest discovery, concierge prompts, and nearby recommendations."],
+    ["Residential", "Resident onboarding, building links, lobby QR, and neighborhood planning."],
+    ["Civic and parks", "Waterloo, trails, public spaces, art, events, and downtown participation."],
+  ];
+
+  const launchTasks = [
+    ["Reviewer link", "Send the latest app link plus this analytics tab so navigation and performance can be tested."],
+    ["Report visibility", "Keep reports reachable from workspace analytics and the partner map."],
+    ["Venue inputs", "Add bars and Sixth Street candidates once names, offers, images, and event hooks are ready."],
+    ["Photo queue", "Attach current, approved imagery before pushing partner campaigns wider."],
+  ];
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="dp-workspace-analytics"
+    >
+      <header className="dp-workspace-analytics-header">
+        <span>Analytics</span>
+        <h2>Review the launch signal from one place.</h2>
+        <p>
+          Use this section to test the app link, inspect reporting, and see which partners, source points, and campaigns need attention before launch.
+        </p>
+        <div className="dp-workspace-analytics-actions">
+          <Link to="/partner-workspace/reports">View reports</Link>
+          <Link to="/map?mode=partner&tab=reports">Open map reports</Link>
+        </div>
+      </header>
+
+      <div className="dp-workspace-analytics-metrics" aria-label="Launch analytics snapshot">
+        {launchMetrics.map(([value, label, detail]) => (
+          <article key={label}>
+            <strong>{value}</strong>
+            <span>{label}</span>
+            <p>{detail}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="dp-workspace-analytics-grid">
+        <section>
+          <p className="dp-workspace-analytics-kicker">Reports</p>
+          <h3>Reports are viewable from the workspace and map.</h3>
+          <div className="dp-workspace-analytics-list">
+            {reportStreams.map(([label, detail, href]) => (
+              <Link key={label} to={href}>
+                <strong>{label}</strong>
+                <span>{detail}</span>
+                <ArrowRight aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <p className="dp-workspace-analytics-kicker">Onboarding</p>
+          <h3>Focus the next three months on places that make the map useful.</h3>
+          <div className="dp-workspace-analytics-list is-static">
+            {onboardingTargets.map(([label, detail]) => (
+              <article key={label}>
+                <strong>{label}</strong>
+                <span>{detail}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <section className="dp-workspace-analytics-next">
+        <p className="dp-workspace-analytics-kicker">Launch follow-up</p>
+        <h3>Keep testing tied to the work that matters.</h3>
+        <div>
+          {launchTasks.map(([label, detail]) => (
+            <article key={label}>
+              <strong>{label}</strong>
+              <span>{detail}</span>
+            </article>
+          ))}
+        </div>
+      </section>
     </motion.section>
   );
 }

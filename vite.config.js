@@ -49,6 +49,28 @@ function localApiRoutes() {
       runLocalHandler(req, res, "./api/ask-map.js", logger, "Local ask-map handler failed");
     });
 
+    middlewares.use("/api/agent/query", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/agent/query.js", logger, "Local agent query handler failed");
+    });
+
+    middlewares.use("/api/agent/stream", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/agent/stream.js", logger, "Local agent stream handler failed");
+    });
+
     middlewares.use("/api/contact", async (req, res) => {
       if (req.method !== "POST") {
         res.statusCode = 405;

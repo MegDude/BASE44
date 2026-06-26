@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocations } from "@/lib/useLocations";
+import { queryAgent } from "@/services/agent/agentClient";
 
 const prompts = [
   "What is active near Rainey right now?",
@@ -138,22 +139,18 @@ export default function AskMapAgent() {
     setError("");
 
     try {
-      const response = await fetch("/api/ask-map", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: currentQuery,
-          mode,
-          district,
-          filter,
-          context: context.slice(0, 10).map(contextPayload),
-        }),
+      const payload = await queryAgent({
+        message: currentQuery,
+        query: currentQuery,
+        mode,
+        intent: "ask_map",
+        district,
+        filter,
+        location: {
+          label: district,
+        },
+        mapContext: context.slice(0, 10).map(contextPayload),
       });
-
-      const payload = await response.json();
-      if (!response.ok || !payload?.answer) {
-        throw new Error(payload?.error || "The map agent did not return an answer.");
-      }
 
       setAnswer(payload);
       setStatus("ready");
@@ -318,7 +315,7 @@ export default function AskMapAgent() {
               </div>
 
               <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/42">
-                Source: {answer?.source === "openai" ? `OpenAI ${answer.model || ""}` : "Local map intelligence fallback"}
+                Source: Backend agent gateway
               </div>
             </CardContent>
           </Card>

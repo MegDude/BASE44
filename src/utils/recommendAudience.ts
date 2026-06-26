@@ -42,13 +42,13 @@ export function recommendAudience({
   add(audiences, "Residents", "Nearby buildings support repeat local behavior.", properties, "Create a resident offer.");
   add(audiences, "Hotel Guests", "Nearby hotels shape quick dining and experience decisions.", hotels, "Create a guest-friendly offer.");
   add(audiences, "Event Guests", "Nearby events create pre- and post-plan demand.", events, "Time the offer around events.");
-  add(audiences, "Dining Audience", "Food and drink nearby create an active comparison set.", dining, "Give them one clear reason.");
-  add(audiences, "Civic Audience", "Public spaces nearby create walkable discovery moments.", civic, "Pair this pin with a route.");
+  add(audiences, "Dining Audience", "Nearby food and drink options show what people are already comparing in this part of downtown.", dining, "Position the offer around the specific place and time people are choosing.");
+  add(audiences, "Civic Audience", "Nearby civic and public-space anchors show where residents are already moving, meeting, or spending time.", civic, "Connect the pin to the most relevant public-space, event, or neighborhood context.");
 
   if (!audiences.length) {
     audiences.push({
       segment: selectedText.includes("hotel") ? "Hotel Guests" : "Nearby Visitors",
-      reason: "Immediate map context is the clearest signal.",
+      reason: "The nearby map context gives you a clear place to start.",
       nearbyEvidence: evidence.slice(0, 3).map((item) => item.name || item.title).filter(Boolean),
       recommendedAction: "Start with one simple offer.",
     });

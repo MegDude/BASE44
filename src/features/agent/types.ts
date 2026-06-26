@@ -56,7 +56,7 @@ export type AgentResponse = {
   collections: string[];
   campaigns: string[];
   events: string[];
-  source: "local-agent" | "openai" | "fallback";
+  source: "local-agent" | "backend-agent" | "fallback";
   model: string;
   memory?: Record<string, any>;
 };

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, BarChart3, Building2, MapPinned, Sparkles } from "lucide-react";
+import { ArrowRight, Building2, CheckCircle2 } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
   calculatePricingTotal,
@@ -15,44 +15,70 @@ const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
 const partnerCopy = {
   Venue: {
     label: "Venues",
-    description: "Appear when people nearby are deciding where to eat, drink, meet, shop, or explore.",
+    short: "Restaurants, bars, shops, coffee, wellness, and local destinations.",
+    description: "Show up when people nearby are deciding where to eat, drink, meet, shop, or explore.",
     media: "/images/imported/perks/bangers-outside.webp",
   },
   Property: {
     label: "Properties",
+    short: "Residential buildings, leasing teams, and resident programs.",
     description: "Connect residents to nearby perks, events, places, and neighborhood activity.",
     media: "/images/imported/perks/waterline-hero.webp",
   },
   Hotel: {
     label: "Hotels",
+    short: "Guest guides, concierge moments, lobby QR, and nearby discovery.",
     description: "Help guests discover what is nearby while measuring engagement beyond the lobby.",
     media: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
   },
   Brand: {
     label: "Brands",
+    short: "Campaigns, sponsorships, activations, and measurable reach.",
     description: "Reach people in real places during real downtown decision-making moments.",
-    media: "/images/imported/perks/featured-campaign.png",
+    media: "/images/imported/perks/yeti-campaign.png",
   },
   Civic: {
     label: "Civic",
+    short: "Districts, public programs, cultural moments, and wayfinding.",
     description: "Promote public spaces, programs, events, districts, and community participation.",
-    media: "/images/imported/perks/rebuplic-square-event.jpg",
+    media: "/images/imported/perks/civic-tour.png",
   },
   "Real Estate": {
     label: "Real Estate",
+    short: "Listings, leasing, development, and neighborhood context.",
     description: "Show properties alongside the places, amenities, and activity that shape buyer interest.",
-    media: "/images/imported/perks/real-estate-agent.png",
+    media: "/images/imported/perks/modern-austin-residences.jpg",
   },
   Resident: {
     label: "Residents",
+    short: "Resident access, building perks, saved places, and local help.",
     description: "Support resident access, building perks, saved places, and local discovery questions.",
     media: "/images/imported/perks/residents-leaving-buiklding.png",
   },
   Custom: {
     label: "Custom",
+    short: "Portfolios, sponsorships, research, integrations, and larger launches.",
     description: "Plan multi-location, sponsorship, research, integration, or enterprise partner setups.",
     media: "/images/imported/perks/multi-property.png",
   },
+};
+
+const planMedia = {
+  venueFreeListing: "/images/imported/perks/stay-put-sign.jpg",
+  venueBasicAnnual: "/images/imported/perks/venues-before-decide-what-to-do.png",
+  venueGrowthAnnual: "/images/imported/perks/qr-code-redemption.png",
+  venueProAnnual: "/images/imported/perks/dashboard.png",
+  propertyPartnerAnnual: "/images/imported/perks/multi-property.png",
+  propertyBasicBuildingAnnual: "/images/imported/perks/qr-in-lobby-lobb.png",
+  propertyResidentPlusAnnual: "/images/imported/perks/lobby-to-street-arrival.png",
+  hotelStarterAnnual: "/images/imported/perks/scn-qr-code-hotel.png",
+  hotelProAnnual: "/images/imported/perks/rooftop-pools-austin-hotel-van-zandt-hero.jpg",
+  brandAccessAnnual: "/images/imported/perks/yeti-store.png",
+  brandCampaignsAnnual: "/images/imported/perks/featured-campaign.png",
+  civicBasicAnnual: "/images/imported/perks/civic-tour.png",
+  civicPlusAnnual: "/images/imported/perks/civic-republic-square-1779052838327.png",
+  civicProAnnual: "/images/imported/perks/republic-square-terrace.jpg",
+  realEstateAnnual: "/images/imported/perks/modern-austin-residences.jpg",
 };
 
 const groupMedia = {
@@ -61,13 +87,59 @@ const groupMedia = {
   events: "/images/imported/perks/parker-jazz-club-2.jpg",
   placements: "/images/partners/pricing/rail/rainey-street-placement.jpg",
   broadcasts: "/images/imported/perks/resident-flow.png",
-  research: "/images/partners/pricing/rail/survey-qr-phone.jpg",
+  research: "/images/imported/perks/survey.png",
   reporting: "/images/imported/perks/reporting.png",
   activation: "/images/partners/pricing/rail/lobby-qr-tabletop.jpg",
   support: "/images/partners/pricing/rail/partner-dashboard.jpg",
   sponsorships: "/images/imported/perks/sponsorored-campaign.png",
   residentAccess: "/images/partners/pricing/rail/resident-map-phone.jpg",
 };
+
+const moduleMedia = {
+  unlimitedPerkCampaignsAnnual: "/images/partners/pricing/rail/cafe-perk-redemption.jpg",
+  surveySeriesAnnual: "/images/imported/perks/survey.png",
+  analyticsPlusAnnual: "/images/imported/perks/reporting.png",
+  analyticsProAnnual: "/images/imported/perks/dashboard.png",
+  districtSponsorAnnual: "/images/imported/perks/district-picnic.png",
+  perkCampaign: "/images/imported/perks/qr-code-redemption.png",
+  featuredCampaign: "/images/imported/perks/featured-campaign.png",
+  sponsoredCampaign: "/images/imported/perks/sponsorored-campaign.png",
+  eventBoost: "/images/imported/perks/parker-jazz-club-2.jpg",
+  featuredEvent: "/images/imported/perks/bluesotg-3cc.jpg",
+  sponsoredEvent: "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
+  categoryFeatured7d: "/images/imported/perks/live-map-listing.png",
+  categoryFeatured30d: "/images/imported/perks/map-ui.png",
+  categoryFeatured90d: "/images/imported/perks/vent-placement.png",
+  districtFeatured30d: "/images/imported/perks/downtown-austin.jpg",
+  districtFeatured90d: "/images/imported/perks/downtown-discovery.png",
+  broadcastPushSmall: "/images/imported/perks/walking-towards-coffee-shop.png",
+  broadcastPushMedium: "/images/imported/perks/resident-scan-qr-code.png",
+  broadcastPushLarge: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
+  broadcastEmailSmall: "/images/imported/perks/coffee-shop-card.png",
+  broadcastEmailMedium: "/images/imported/perks/residents-making-plans.png",
+  broadcastEmailLarge: "/images/imported/perks/people-at-event.png",
+  broadcastInApp: "/images/imported/perks/resident-flow.png",
+  singleSurvey: "/images/imported/perks/survey.png",
+  customResearchProject: "/images/imported/perks/boop-survey.png",
+  customPartnerReport: "/images/imported/perks/reporting.png",
+  inVenueActivation: "/images/imported/perks/00-venue-qr-code.png",
+  propertyActivation: "/images/imported/perks/qr-in-lobby-lobb.png",
+  multiLocationActivation: "/images/imported/perks/multi-property-2.png",
+  streetTeamHalfDay: "/images/imported/perks/atx-street.png",
+  streetTeamFullDay: "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
+  surveyPulse: "/images/imported/perks/00-qr-survey.png",
+  campaignLaunchKit: "/images/imported/perks/pricing-campaign-add-ons.png",
+  buildingPlacementPack: "/images/imported/perks/elevator-qr.png",
+  seasonalSponsor: "/images/imported/perks/swsx-desitnation-campaign.png",
+  residentJoinBuildingNotMember: "/images/imported/perks/desnudo-coffee-hands.png",
+};
+
+const enterprisePaths = [
+  { title: "Multi-property portfolios", copy: "Several buildings, shared reporting, location-level setup, and one cleaner portfolio view.", image: "/images/imported/perks/multi-property.png", slug: "multi-property" },
+  { title: "District programs", copy: "Coordinate public life, local partners, sponsors, and downtown activity across one district.", image: "/images/imported/perks/republic-square-terrace.jpg", slug: "district-programs" },
+  { title: "Destination sponsorships", copy: "Own a season, category, or downtown moment with campaigns and reporting built around it.", image: "/images/imported/perks/designation-campaign.png", slug: "destination-sponsorships" },
+  { title: "Major developments", copy: "Introduce a new building, mixed-use project, or neighborhood story from day one.", image: "/images/imported/perks/1-major-mixed-use.png", slug: "major-developments" },
+];
 
 const groupLabels = {
   annualAddOns: "Annual Add-ons",
@@ -83,65 +155,29 @@ const groupLabels = {
   residentAccess: "Resident Access",
 };
 
-const enterprisePaths = [
-  {
-    title: "Multi-property portfolios",
-    copy: "Centralize visibility, reporting, locations, and team access across multiple buildings.",
-    image: "/images/imported/perks/multi-property.png",
-    slug: "multi-property",
-  },
-  {
-    title: "District programs",
-    copy: "Coordinate civic, venue, property, and sponsor activity across a downtown district.",
-    image: "/images/imported/perks/republic-square-terrace.jpg",
-    slug: "district-programs",
-  },
-  {
-    title: "Destination sponsorships",
-    copy: "Own a seasonal or category moment with placements, campaigns, reporting, and activation.",
-    image: "/images/imported/perks/designation-campaign.png",
-    slug: "destination-sponsorships",
-  },
-  {
-    title: "Major developments",
-    copy: "Connect leasing, retail, hospitality, resident access, and neighborhood storytelling.",
-    image: "/images/imported/perks/1-major-mixed-use.png",
-    slug: "major-developments",
-  },
+const steps = [
+  ["1", "Choose your path", "Start with the partner type closest to how people find or use you downtown."],
+  ["2", "Pick a plan", "Select the lightest useful annual plan. You can add campaigns and support later."],
+  ["3", "Use the calculator", "At the end, confirm locations, add-ons, reporting needs, and send one clean setup request."],
 ];
 
 const faqItems = [
-  ["Can I start with a small setup?", "Yes. Choose a partner type, select the lowest useful plan, then add capabilities only when needed."],
-  ["Can campaigns be added later?", "Yes. Campaign, event, broadcast, reporting, and activation services can be added to an existing setup."],
-  ["What happens for multiple locations?", "The builder routes multi-location and custom plans to the enterprise review path so the workspace can be configured correctly."],
-  ["Does this connect to partner registration?", "Yes. The request review button carries the selected partner type, plan, add-ons, locations, and reporting needs into the contact flow."],
+  ["Can I start small?", "Yes. Pick the closest partner type, choose the lowest useful plan, then add only what you need."],
+  ["Do I have to configure everything now?", "No. The calculator is last so you can understand the options first and build the setup only when you are ready."],
+  ["Can campaigns be added later?", "Yes. Campaigns, events, broadcasts, reporting, and activation support can be added after the first setup."],
+  ["What happens for multiple locations?", "The calculator routes multi-location and custom plans to review so the workspace can be configured correctly."],
 ];
 
 const pageAnchors = [
+  ["How it works", "#pricing-steps"],
   ["Plans", "#partner-plans"],
-  ["Builder", "#pricing-builder"],
   ["Capabilities", "#capabilities"],
   ["Enterprise", "#enterprise"],
-  ["FAQ", "#pricing-faq"],
-];
-
-const outcomeTiles = [
-  ["Visibility", "Appear in map, listing, category, and district discovery moments.", MapPinned],
-  ["Participation", "Turn attention into saves, scans, RSVPs, redemptions, and visits.", Sparkles],
-  ["Reporting", "Understand what is working and what to improve next.", BarChart3],
+  ["Calculator", "#pricing-builder"],
 ];
 
 function normalizePartnerSlug(type) {
-  return String(type || "")
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-");
-}
-
-function persistPartnerSetup(setup) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(PARTNER_SETUP_KEY, JSON.stringify(setup));
-  window.dispatchEvent(new CustomEvent("dp:partner-setup-updated", { detail: setup }));
+  return String(type || "").trim().toLowerCase().replace(/\s+/g, "-");
 }
 
 function readPartnerSetup() {
@@ -153,17 +189,23 @@ function readPartnerSetup() {
   }
 }
 
+function persistPartnerSetup(setup) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(PARTNER_SETUP_KEY, JSON.stringify(setup));
+  window.dispatchEvent(new CustomEvent("dp:partner-setup-updated", { detail: setup }));
+}
+
 function trackPricingEvent(eventName, payload) {
   if (typeof window === "undefined") return;
-  const event = {
-    event: eventName,
-    timestamp: new Date().toISOString(),
-    source: "marketing_pricing",
-    ...payload,
-  };
-
+  const event = { event: eventName, timestamp: new Date().toISOString(), source: "marketing_pricing", ...payload };
   window.dispatchEvent(new CustomEvent("dp:analytics", { detail: event }));
   window.dataLayer?.push(event);
+}
+
+function scrollToCalculator() {
+  window.requestAnimationFrame(() => {
+    document.getElementById("pricing-builder")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 export default function PricingPage() {
@@ -175,24 +217,27 @@ export default function PricingPage() {
   const [locationCount, setLocationCount] = useState(Math.max(1, Number(storedSetup.locationCount) || 1));
   const [campaignInterest, setCampaignInterest] = useState(storedSetup.campaignInterest || "Offers and perks");
   const [reportingNeeds, setReportingNeeds] = useState(storedSetup.reportingNeeds || "Standard reporting");
+  const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("campaigns");
+  const [selectedEnterpriseSlug, setSelectedEnterpriseSlug] = useState(enterprisePaths[0].slug);
 
   const plans = useMemo(() => getPlansForPartnerType(partnerType), [partnerType]);
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) || plans[0];
-  const modules = PRICING_MODULE_GROUPS.flatMap((group) => group.modules);
+  const modules = useMemo(() => PRICING_MODULE_GROUPS.flatMap((group) => group.modules), []);
   const selectedModules = modules.filter((module) => selectedModuleIds.includes(module.id));
-  const annualAddOnTotal = selectedModules
-    .filter((module) => module.billing === "Annual add-on")
-    .reduce((sum, module) => sum + module.price, 0);
-  const oneTimeTotal = selectedModules
-    .filter((module) => module.billing === "One-time module")
-    .reduce((sum, module) => sum + module.price, 0);
+  const selectedModuleLabels = useMemo(() => selectedModules.map((module) => module.label), [selectedModules]);
+  const annualAddOnTotal = selectedModules.filter((module) => module.billing === "Annual add-on").reduce((sum, module) => sum + module.price, 0);
+  const oneTimeTotal = selectedModules.filter((module) => module.billing === "One-time module").reduce((sum, module) => sum + module.price, 0);
+  const recurringAnnualTotal = (selectedPlan?.annualPrice || 0) + annualAddOnTotal;
   const total = calculatePricingTotal(selectedPlan, selectedModules);
-  const totalText = selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(total);
-  const selectedPartnerLabel = partnerCopy[partnerType]?.label || partnerType;
-  const selectedAnnualLabel = selectedPlan?.annualPrice == null ? "Custom setup" : `${formatCurrency(total)}/year`;
   const checkoutTarget = selectedPlan?.checkoutKey ? resolveCheckoutTarget(selectedPlan.checkoutKey) : null;
   const partnerTypeSlug = normalizePartnerSlug(partnerType);
-  const selectedModuleLabels = useMemo(() => selectedModules.map((module) => module.label), [selectedModules]);
+  const selectedPartner = partnerCopy[partnerType] || partnerCopy.Custom;
+  const selectedPartnerLabel = selectedPartner.label;
+  const activeCapability = PRICING_MODULE_GROUPS.find((group) => group.id === activeCapabilityGroup) || PRICING_MODULE_GROUPS[0];
+  const selectedEnterprisePath = enterprisePaths.find((path) => path.slug === selectedEnterpriseSlug) || enterprisePaths[0];
+  const totalText = selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(total);
+  const recurringText = selectedPlan?.annualPrice == null ? "Custom" : `${formatCurrency(recurringAnnualTotal)}/year`;
+
   const setupPayload = useMemo(() => ({
     source: "marketing_pricing",
     organizationType: partnerTypeSlug,
@@ -204,6 +249,7 @@ export default function PricingPage() {
     modules: selectedModuleIds,
     moduleLabels: selectedModuleLabels,
     annualTotal: selectedPlan?.annualPrice == null ? "custom" : total,
+    recurringAnnualTotal: selectedPlan?.annualPrice == null ? "custom" : recurringAnnualTotal,
     oneTimeTotal,
     annualAddOnTotal,
     locationCount,
@@ -211,20 +257,7 @@ export default function PricingPage() {
     reportingNeeds,
     status: "pricing_selected",
     updatedAt: new Date().toISOString(),
-  }), [
-    annualAddOnTotal,
-    campaignInterest,
-    checkoutTarget,
-    locationCount,
-    oneTimeTotal,
-    partnerType,
-    partnerTypeSlug,
-    reportingNeeds,
-    selectedModuleIds,
-    selectedModuleLabels,
-    selectedPlan,
-    total,
-  ]);
+  }), [annualAddOnTotal, campaignInterest, checkoutTarget, locationCount, oneTimeTotal, partnerType, partnerTypeSlug, recurringAnnualTotal, reportingNeeds, selectedModuleIds, selectedModuleLabels, selectedPlan, total]);
 
   const setupParams = new URLSearchParams({
     intent: "partner-registration",
@@ -237,6 +270,7 @@ export default function PricingPage() {
     billingMode: checkoutTarget?.mode || "lead",
     modules: selectedModuleIds.join(","),
     annualTotal: selectedPlan?.annualPrice == null ? "custom" : String(total),
+    recurringAnnualTotal: selectedPlan?.annualPrice == null ? "custom" : String(recurringAnnualTotal),
     oneTimeTotal: String(oneTimeTotal),
     annualAddOnTotal: String(annualAddOnTotal),
     locationCount: String(locationCount),
@@ -246,7 +280,7 @@ export default function PricingPage() {
 
   if (partnerType === "Custom" || locationCount > 1 || selectedPlan?.annualPrice == null) {
     setupParams.set("interest", "enterprise");
-    setupParams.set("enterprise", "multi-property");
+    setupParams.set("enterprise", selectedEnterpriseSlug || "multi-property");
   }
 
   const setupHref = `/marketing/contact?${setupParams.toString()}`;
@@ -263,46 +297,33 @@ export default function PricingPage() {
     });
   }, []);
 
-  function choosePartner(type, scrollToBuilder = false) {
+  function choosePartner(type, shouldScroll = false) {
     const nextPlans = getPlansForPartnerType(type);
     setPartnerType(type);
     setSelectedPlanId(nextPlans[0]?.id || "");
     trackPricingEvent("partner_type_changed", { partnerType: type });
+    if (shouldScroll) scrollToCalculator();
+  }
 
-    if (scrollToBuilder) {
-      window.requestAnimationFrame(() => {
-        document.getElementById("pricing-builder")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    }
+  function selectPlan(plan, shouldScroll = false) {
+    setSelectedPlanId(plan.id);
+    trackPricingEvent("plan_selected", { partnerType, planId: plan.id, planLabel: plan.label, annualPrice: plan.annualPrice });
+    if (shouldScroll) scrollToCalculator();
   }
 
   function toggleModule(moduleId) {
-    setSelectedModuleIds((current) =>
-      current.includes(moduleId) ? current.filter((id) => id !== moduleId) : [...current, moduleId],
-    );
+    setSelectedModuleIds((current) => current.includes(moduleId) ? current.filter((id) => id !== moduleId) : [...current, moduleId]);
     trackPricingEvent("pricing_module_toggled", { moduleId, partnerType, planId: selectedPlan?.id });
   }
 
-  function selectPlan(plan) {
-    setSelectedPlanId(plan.id);
-    trackPricingEvent("plan_selected", {
-      partnerType,
-      planId: plan.id,
-      planLabel: plan.label,
-      annualPrice: plan.annualPrice,
-    });
+  function addModuleToSetup(moduleId) {
+    setSelectedModuleIds((current) => current.includes(moduleId) ? current : [...current, moduleId]);
+    trackPricingEvent("pricing_module_added", { moduleId, partnerType, planId: selectedPlan?.id });
   }
 
   function trackCta(label, href) {
     persistPartnerSetup(setupPayload);
-    trackPricingEvent("pricing_cta_clicked", {
-      label,
-      href,
-      partnerType,
-      planId: selectedPlan?.id,
-      annualTotal: selectedPlan?.annualPrice == null ? "custom" : total,
-      checkoutReady: checkoutTarget?.type !== "lead",
-    });
+    trackPricingEvent("pricing_cta_clicked", { label, href, partnerType, planId: selectedPlan?.id, annualTotal: selectedPlan?.annualPrice == null ? "custom" : total });
   }
 
   return (
@@ -310,59 +331,38 @@ export default function PricingPage() {
       <section className="dp-pricing-hero">
         <div className="dp-pricing-container">
           <nav className="dp-pricing-page-nav" aria-label="Pricing sections">
-            {pageAnchors.map(([label, href]) => (
-              <a key={label} href={href}>{label}</a>
-            ))}
+            {pageAnchors.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
           </nav>
           <div className="dp-pricing-hero-grid">
             <div className="dp-pricing-hero-copy">
               <p className="dp-pricing-eyebrow">Partner Pricing</p>
-              <h1>Build the setup that fits how you show up downtown.</h1>
-              <p>
-                Understand how people move through downtown, publish experiences they can discover, and measure the actions that follow.
-              </p>
+              <h1>Start simple. Build the setup at the end.</h1>
+              <p>Review the partner paths first, understand what each capability does, then use the calculator once you know what belongs in the setup.</p>
               <div className="dp-pricing-live-strip" aria-label="Current pricing setup">
-                <div>
-                  <span>Partner path</span>
-                  <strong>{selectedPartnerLabel}</strong>
-                </div>
-                <div>
-                  <span>Selected plan</span>
-                  <strong>{selectedPlan?.label || "Custom review"}</strong>
-                </div>
-                <div>
-                  <span>Current estimate</span>
-                  <strong>{selectedAnnualLabel}</strong>
-                </div>
+                <div><span>Partner path</span><strong>{selectedPartnerLabel}</strong></div>
+                <div><span>Selected plan</span><strong>{selectedPlan?.label || "Custom review"}</strong></div>
+                <div><span>Current estimate</span><strong>{recurringText}</strong></div>
               </div>
               <div className="dp-pricing-actions">
-                <a className="dp-pricing-button" href="#pricing-builder" onClick={() => trackCta("Build setup", "#pricing-builder")}>
-                  <span>Build setup</span>
-                  <ArrowRight aria-hidden="true" />
-                </a>
-                <a className="dp-pricing-button" href={setupHref} onClick={() => trackCta("Request setup review", setupHref)}>
-                  <span>Request setup review</span>
-                  <ArrowRight aria-hidden="true" />
-                </a>
+                <a className="dp-pricing-button" href="#partner-plans">Review plans</a>
+                <a className="dp-pricing-button" href="#pricing-builder" onClick={() => trackCta("Jump to calculator", "#pricing-builder")}>Open calculator</a>
               </div>
             </div>
-            <aside className="dp-pricing-hero-panel" aria-label="Pricing path">
-              <div className="dp-pricing-hero-panel-head">
-                <Building2 aria-hidden="true" />
-                <span>Workspace setup</span>
-              </div>
-              {["Choose partner type", "Select plan", "Add capabilities", "Review setup"].map((item, index) => (
-                <div key={item}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{item}</strong>
-                </div>
-              ))}
+            <aside className="dp-pricing-hero-panel" aria-label="Pricing flow">
+              <div className="dp-pricing-hero-panel-head"><Building2 aria-hidden="true" /><span>Pricing flow</span></div>
+              {steps.map(([number, title]) => <div key={number}><span>{number.padStart(2, "0")}</span><strong>{title}</strong></div>)}
             </aside>
           </div>
-          <div className="dp-pricing-outcome-grid" aria-label="Pricing outcomes">
-            {outcomeTiles.map(([title, copy, Icon]) => (
-              <article key={title}>
-                <Icon aria-hidden="true" />
+        </div>
+      </section>
+
+      <section className="dp-pricing-section" id="pricing-steps">
+        <div className="dp-pricing-container">
+          <SectionHeader eyebrow="How It Works" title="Three decisions, in the right order." copy="The page now explains the product before asking you to calculate the setup." />
+          <div className="dp-pricing-step-grid">
+            {steps.map(([number, title, copy]) => (
+              <article key={number}>
+                <span>{number}</span>
                 <h2>{title}</h2>
                 <p>{copy}</p>
               </article>
@@ -373,198 +373,75 @@ export default function PricingPage() {
 
       <section className="dp-pricing-section" id="partner-plans">
         <div className="dp-pricing-container">
-          <SectionHeader
-            eyebrow="Partner Plans"
-            title="Start with the role closest to your business."
-            copy="Each path uses the same clean workflow: pick a plan, add capabilities, and send the setup for review."
-          />
-          <div className="dp-pricing-card-grid">
-            {PARTNER_TYPES.map((type) => {
-              const copy = partnerCopy[type];
-              return (
-                <article className="dp-pricing-card" data-active={partnerType === type} key={type}>
-                  <figure>
-                    <img src={copy.media} alt="" loading="lazy" decoding="async" />
-                  </figure>
-                  <div>
-                    <p className="dp-pricing-kicker">Partner path</p>
-                    <h3>{copy.label}</h3>
-                    <p>{copy.description}</p>
-                    <button className="dp-pricing-button" type="button" onClick={() => choosePartner(type, true)}>
-                      <span>Select plan</span>
-                      <ArrowRight aria-hidden="true" />
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+          <SectionHeader eyebrow="Partner Paths" title="Choose the path closest to your business." copy="Each path changes the plan options below. Nothing is final until the calculator at the end." />
+          <div className="dp-pricing-partner-list" aria-label="Partner type selector">
+            {PARTNER_TYPES.map((type) => (
+              <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>
+                <span>{partnerCopy[type].label}</span>
+                <small>{partnerCopy[type].short}</small>
+              </button>
+            ))}
           </div>
-        </div>
-      </section>
-
-      <section className="dp-pricing-section dp-pricing-builder-section" id="pricing-builder" aria-label="Pricing builder">
-        <div className="dp-pricing-container">
-          <SectionHeader
-            eyebrow="Pricing Builder"
-            title="Choose the setup, then review the total."
-            copy="This calculator keeps the route simple and sends the selected context into the partner setup form."
-          />
-          <div className="dp-pricing-builder">
-            <div className="dp-pricing-builder-controls">
-              <fieldset>
-                <legend>Partner type</legend>
-                <div className="dp-pricing-choice-grid">
-                  {PARTNER_TYPES.map((type) => (
-                    <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>
-                      {partnerCopy[type].label}
-                    </button>
-                  ))}
+          <div className="dp-pricing-plan-list">
+            {plans.length > 0 ? plans.map((plan) => (
+              <article className="dp-pricing-plan-card" data-active={selectedPlan?.id === plan.id} key={plan.id}>
+                <figure><img src={planMedia[plan.id] || selectedPartner.media} alt="" loading="lazy" decoding="async" /></figure>
+                <div>
+                  <p className="dp-pricing-kicker">{selectedPartner.label}</p>
+                  <h3>{plan.label}</h3>
+                  <strong>{getPriceText(plan)}</strong>
+                  <p>{plan.summary || plan.bestFor}</p>
+                  <ul>
+                    {plan.includes.slice(0, 4).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}
+                  </ul>
+                  <button className="dp-pricing-button" type="button" onClick={() => selectPlan(plan, true)}>Select plan</button>
                 </div>
-              </fieldset>
-
-              <div className="dp-pricing-field-grid">
-                <label>
-                  <span>Number of locations/properties</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={locationCount}
-                    onChange={(event) => setLocationCount(Math.max(1, Number(event.target.value) || 1))}
-                  />
-                </label>
-                <label>
-                  <span>Campaign interest</span>
-                  <select value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}>
-                    <option>Offers and perks</option>
-                    <option>Events</option>
-                    <option>Featured visibility</option>
-                    <option>District or portfolio campaign</option>
-                    <option>Not sure yet</option>
-                  </select>
-                </label>
-                <label>
-                  <span>Reporting needs</span>
-                  <select value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}>
-                    <option>Standard reporting</option>
-                    <option>Campaign performance</option>
-                    <option>Portfolio reporting</option>
-                    <option>Exports and integrations</option>
-                    <option>Custom executive reporting</option>
-                  </select>
-                </label>
-              </div>
-
-              <fieldset>
-                <legend>Annual plan</legend>
-                <div className="dp-pricing-option-list">
-                  {plans.length > 0 ? plans.map((plan) => (
-                    <button
-                      key={plan.id}
-                      type="button"
-                      data-active={selectedPlan?.id === plan.id}
-                      onClick={() => selectPlan(plan)}
-                    >
-                      <span>
-                        <strong>{plan.label}</strong>
-                        <small>{plan.bestFor}</small>
-                      </span>
-                      <em>{getPriceText(plan)}</em>
-                    </button>
-                  )) : (
-                    <div className="dp-pricing-empty">
-                      <strong>Custom review</strong>
-                      <span>This path routes to the setup review form.</span>
-                    </div>
-                  )}
+              </article>
+            )) : (
+              <article className="dp-pricing-plan-card" data-active="true">
+                <figure><img src={partnerCopy.Custom.media} alt="" loading="lazy" decoding="async" /></figure>
+                <div>
+                  <p className="dp-pricing-kicker">Custom</p>
+                  <h3>Custom review</h3>
+                  <strong>Custom</strong>
+                  <p>Use the calculator at the end to describe the setup and send it for review.</p>
+                  <a className="dp-pricing-button" href="#pricing-builder">Open calculator</a>
                 </div>
-              </fieldset>
-
-              <fieldset>
-                <legend>Optional capabilities</legend>
-                <div className="dp-pricing-addon-stack">
-                  {PRICING_MODULE_GROUPS.map((group) => (
-                    <details key={group.id} open={["annualAddOns", "campaigns", "events"].includes(group.id)}>
-                      <summary>
-                        <span>{groupLabels[group.id] || group.heading}</span>
-                        <small>{group.modules.length} options</small>
-                      </summary>
-                      <div className="dp-pricing-option-list">
-                        {group.modules.map((module) => (
-                          <button
-                            key={module.id}
-                            type="button"
-                            data-active={selectedModuleIds.includes(module.id)}
-                            onClick={() => toggleModule(module.id)}
-                          >
-                            <span>
-                              <strong>{module.label}</strong>
-                              <small>{module.summary}</small>
-                            </span>
-                            <em>{getPriceText(module)}</em>
-                          </button>
-                        ))}
-                      </div>
-                    </details>
-                  ))}
-                </div>
-              </fieldset>
-            </div>
-
-            <aside className="dp-pricing-summary" aria-label="Setup summary">
-              <p className="dp-pricing-kicker">Setup summary</p>
-              <h2>{totalText}</h2>
-              <p className="dp-pricing-summary-context">{selectedPartnerLabel} / {locationCount} location{locationCount === 1 ? "" : "s"} / {selectedModules.length} add-on{selectedModules.length === 1 ? "" : "s"}</p>
-              <div className="dp-pricing-summary-plan">
-                <strong>{selectedPlan?.label || "Custom review"}</strong>
-                <span>{selectedPlan?.summary || "Select a standard plan or continue with custom review."}</span>
-              </div>
-              <dl>
-                <div><dt>Annual subscription</dt><dd>{selectedPlan ? getPriceText(selectedPlan) : "Custom"}</dd></div>
-                <div><dt>Annual add-ons</dt><dd>{formatCurrency(annualAddOnTotal)}</dd></div>
-                <div><dt>One-time support</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div>
-                <div><dt>Locations/properties</dt><dd>{locationCount}</dd></div>
-                <div><dt>Campaign interest</dt><dd>{campaignInterest}</dd></div>
-                <div><dt>Reporting needs</dt><dd>{reportingNeeds}</dd></div>
-              </dl>
-              <div className="dp-pricing-selected">
-                {selectedModules.length > 0 ? selectedModules.map((module) => (
-                  <button key={module.id} type="button" onClick={() => toggleModule(module.id)}>
-                    {module.label}
-                  </button>
-                )) : <span>No add-ons selected.</span>}
-              </div>
-              <p className="dp-pricing-checkout-note">
-                Pricing context will carry into the setup request so the contact page does not repeat the builder.
-              </p>
-              <a className="dp-pricing-button" href={setupHref} onClick={() => trackCta("Request setup review", setupHref)}>
-                <span>Request setup review</span>
-                <ArrowRight aria-hidden="true" />
-              </a>
-            </aside>
+              </article>
+            )}
           </div>
         </div>
       </section>
 
       <section className="dp-pricing-section" id="capabilities">
         <div className="dp-pricing-container">
-          <SectionHeader
-            eyebrow="Capabilities"
-            title="Add visibility, engagement, and reporting when it helps."
-            copy="Use these as optional building blocks rather than a long catalogue of disconnected actions."
-          />
-          <div className="dp-pricing-group-grid">
+          <SectionHeader eyebrow="Capabilities" title="Add only what helps." copy="Browse the groups first. Add-ons can be selected here or in the calculator at the end." />
+          <div className="dp-pricing-capability-tabs" aria-label="Capability groups">
             {PRICING_MODULE_GROUPS.map((group) => (
-              <article className="dp-pricing-group-card" key={group.id}>
-                <figure>
-                  <img src={groupMedia[group.id] || "/images/districts/congress-hero.jpg"} alt="" loading="lazy" decoding="async" />
-                </figure>
+              <button key={group.id} type="button" data-active={activeCapabilityGroup === group.id} onClick={() => setActiveCapabilityGroup(group.id)}>
+                {groupLabels[group.id] || group.heading}
+              </button>
+            ))}
+          </div>
+          <div className="dp-pricing-capability-layout">
+            <figure><img src={groupMedia[activeCapability.id] || selectedPartner.media} alt="" loading="lazy" decoding="async" /></figure>
+            <div className="dp-pricing-capability-copy">
+              <p className="dp-pricing-kicker">{groupLabels[activeCapability.id] || "Capability"}</p>
+              <h3>{activeCapability.heading}</h3>
+              <p>{activeCapability.sentence}</p>
+            </div>
+          </div>
+          <div className="dp-pricing-module-list">
+            {activeCapability.modules.map((module) => (
+              <article key={module.id} data-active={selectedModuleIds.includes(module.id)}>
+                <img src={moduleMedia[module.id] || groupMedia[activeCapability.id] || selectedPartner.media} alt="" loading="lazy" decoding="async" />
                 <div>
-                  <p className="dp-pricing-kicker">{groupLabels[group.id] || "Capability"}</p>
-                  <h3>{group.heading}</h3>
-                  <p>{group.sentence}</p>
-                  <button className="dp-pricing-button" type="button" onClick={() => document.getElementById("pricing-builder")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-                    <span>Add to setup</span>
-                    <ArrowRight aria-hidden="true" />
+                  <p className="dp-pricing-kicker">{module.billing}</p>
+                  <h3>{module.label}</h3>
+                  <strong>{getPriceText(module)}</strong>
+                  <p>{module.summary}</p>
+                  <button className="dp-pricing-button" type="button" onClick={() => addModuleToSetup(module.id)}>
+                    {selectedModuleIds.includes(module.id) ? "Added" : "Add to setup"}
                   </button>
                 </div>
               </article>
@@ -575,54 +452,102 @@ export default function PricingPage() {
 
       <section className="dp-pricing-section" id="enterprise">
         <div className="dp-pricing-container">
-          <SectionHeader
-            eyebrow="Enterprise"
-            title="For portfolios, districts, sponsorships, and custom programs."
-            copy="Larger setups route to a review path so the workspace, reporting, and team structure can be configured correctly."
-          />
-          <div className="dp-pricing-enterprise-grid">
+          <SectionHeader eyebrow="Enterprise" title="Need a larger setup?" copy="Select the closest custom path. The calculator will route multi-location and custom plans into setup review." />
+          <div className="dp-pricing-enterprise-list">
             {enterprisePaths.map((path) => (
-              <article className="dp-pricing-enterprise-card" key={path.slug}>
+              <button key={path.slug} type="button" data-active={selectedEnterpriseSlug === path.slug} onClick={() => setSelectedEnterpriseSlug(path.slug)}>
                 <img src={path.image} alt="" loading="lazy" decoding="async" />
-                <div>
-                  <p className="dp-pricing-kicker">Custom path</p>
-                  <h3>{path.title}</h3>
-                  <p>{path.copy}</p>
-                  <a className="dp-pricing-button" href={`/marketing/contact?intent=partner-registration&interest=enterprise&enterprise=${path.slug}`} onClick={() => trackCta(`Enterprise ${path.slug}`, `/marketing/contact?intent=partner-registration&interest=enterprise&enterprise=${path.slug}`)}>
-                    <span>Request custom setup</span>
-                    <ArrowRight aria-hidden="true" />
-                  </a>
-                </div>
-              </article>
+                <span>Custom path</span>
+                <strong>{path.title}</strong>
+                <small>{path.copy}</small>
+              </button>
             ))}
+          </div>
+          <div className="dp-pricing-enterprise-detail">
+            <div>
+              <p className="dp-pricing-kicker">Selected path</p>
+              <h3>{selectedEnterprisePath.title}</h3>
+              <p>{selectedEnterprisePath.copy}</p>
+            </div>
+            <a className="dp-pricing-button" href={`/marketing/contact?intent=partner-registration&interest=enterprise&enterprise=${selectedEnterprisePath.slug}`} onClick={() => trackCta("Request custom setup", selectedEnterprisePath.slug)}>
+              Request custom setup
+            </a>
           </div>
         </div>
       </section>
 
       <section className="dp-pricing-section" id="pricing-faq">
         <div className="dp-pricing-container dp-pricing-faq-layout">
-          <SectionHeader eyebrow="FAQ" title="Simple answers before setup." />
+          <SectionHeader eyebrow="FAQ" title="Quick answers before the calculator." />
           <div className="dp-pricing-faq-list">
-            {faqItems.map(([question, answer]) => (
-              <article key={question}>
-                <h3>{question}</h3>
+            {faqItems.map(([question, answer], index) => (
+              <details className="dp-pricing-faq-item" key={question} open={index === 0}>
+                <summary>
+                  <span>{question}</span>
+                  <span aria-hidden="true">+</span>
+                </summary>
                 <p>{answer}</p>
-              </article>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="dp-pricing-final">
+      <section className="dp-pricing-section dp-pricing-calculator-section" id="pricing-builder" aria-label="Pricing calculator">
         <div className="dp-pricing-container">
-          <p className="dp-pricing-eyebrow">Next Step</p>
-          <h2>Send the selected setup for review.</h2>
-          <p>The form will include the partner type, plan, locations, campaign interest, reporting needs, and selected add-ons.</p>
-          <div className="dp-pricing-final-actions">
-            <a className="dp-pricing-button" href={setupHref} onClick={() => trackCta("Request setup review", setupHref)}>
-              <span>Request setup review</span>
-              <ArrowRight aria-hidden="true" />
-            </a>
+          <SectionHeader eyebrow="Calculator" title="Build your setup." copy="Confirm the path, choose add-ons, and send one clean request when the estimate looks right." />
+          <div className="dp-pricing-calculator">
+            <div className="dp-pricing-calculator-controls">
+              <fieldset>
+                <legend>Partner type</legend>
+                <div className="dp-pricing-choice-grid">
+                  {PARTNER_TYPES.map((type) => <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>{partnerCopy[type].label}</button>)}
+                </div>
+              </fieldset>
+              <div className="dp-pricing-field-grid">
+                <label><span>Number of locations/properties</span><input type="number" min="1" value={locationCount} onChange={(event) => setLocationCount(Math.max(1, Number(event.target.value) || 1))} /></label>
+                <label><span>Campaign interest</span><select value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}><option>Offers and perks</option><option>Events</option><option>Featured placement</option><option>District or portfolio campaign</option><option>Not sure yet</option></select></label>
+                <label><span>Reporting needs</span><select value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}><option>Standard reporting</option><option>Campaign performance</option><option>Portfolio reporting</option><option>Exports and integrations</option><option>Custom executive reporting</option></select></label>
+              </div>
+              <fieldset>
+                <legend>Annual plan</legend>
+                <div className="dp-pricing-option-list">
+                  {plans.length > 0 ? plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><span><strong>{plan.label}</strong><small>{plan.bestFor}</small></span><em>{getPriceText(plan)}</em></button>) : <div className="dp-pricing-empty"><strong>Custom review</strong><span>This path routes to the setup review form.</span></div>}
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Optional capabilities</legend>
+                <div className="dp-pricing-addon-stack">
+                  {PRICING_MODULE_GROUPS.map((group) => (
+                    <details key={group.id} open={activeCapabilityGroup === group.id} onToggle={(event) => event.currentTarget.open && setActiveCapabilityGroup(group.id)}>
+                      <summary><span>{groupLabels[group.id] || group.heading}</span><small>{group.modules.length} {group.modules.length === 1 ? option : options}</small></summary>
+                      <div className="dp-pricing-option-list">
+                        {group.modules.map((module) => <button key={module.id} type="button" data-active={selectedModuleIds.includes(module.id)} onClick={() => toggleModule(module.id)}><span><strong>{module.label}</strong><small>{module.summary}</small></span><em>{getPriceText(module)}</em></button>)}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </fieldset>
+            </div>
+            <aside className="dp-pricing-summary" aria-label="Setup summary">
+              <p className="dp-pricing-kicker">Setup summary</p>
+              <h2>{totalText}</h2>
+              <p className="dp-pricing-summary-context">First-year estimate for {selectedPartnerLabel.toLowerCase()}.</p>
+              <div className="dp-pricing-summary-plan"><strong>{selectedPlan?.label || "Custom review"}</strong><span>{selectedPlan?.summary || "Select a standard plan or continue with custom review."}</span></div>
+              <dl>
+                <div><dt>Partner type</dt><dd>{selectedPartnerLabel}</dd></div>
+                <div><dt>Annual plan</dt><dd>{selectedPlan ? getPriceText(selectedPlan) : "Custom"}</dd></div>
+                <div><dt>Annual add-ons</dt><dd>{formatCurrency(annualAddOnTotal)}</dd></div>
+                <div><dt>One-time modules</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div>
+                <div><dt>Recurring annual</dt><dd>{selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(recurringAnnualTotal)}</dd></div>
+                <div><dt>Locations/properties</dt><dd>{locationCount}</dd></div>
+              </dl>
+              <div className="dp-pricing-selected" aria-label="Selected add-ons">{selectedModules.length > 0 ? selectedModules.map((module) => <button key={module.id} type="button" onClick={() => toggleModule(module.id)}>{module.label}</button>) : <span>No add-ons selected.</span>}</div>
+              <p className="dp-pricing-checkout-note">Pricing context carries into the setup request so the form does not repeat the calculator.</p>
+              <a className="dp-pricing-button" href={setupHref} onClick={() => trackCta("Continue with selected setup", setupHref)}>
+                Continue with selected setup <ArrowRight aria-hidden="true" />
+              </a>
+            </aside>
           </div>
         </div>
       </section>
@@ -631,11 +556,5 @@ export default function PricingPage() {
 }
 
 function SectionHeader({ eyebrow, title, copy }) {
-  return (
-    <header className="dp-pricing-section-header">
-      <p className="dp-pricing-eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      {copy ? <p>{copy}</p> : null}
-    </header>
-  );
+  return <header className="dp-pricing-section-header"><p className="dp-pricing-eyebrow">{eyebrow}</p><h2>{title}</h2>{copy ? <p>{copy}</p> : null}</header>;
 }

@@ -11,7 +11,7 @@
   <path filter="url(#pinShadow)" d="M80 176 54 145C31 137 14 115 14 88 14 51 43 21 80 21s66 30 66 67c0 27-17 49-40 57L80 176Z" fill="url(#gold)"/>
   <path d="M80 168 58 141C36 133 21 112 21 88c0-33 26-60 59-60s59 27 59 60c0 24-15 45-37 53L80 168Z" fill="none" stroke="#B5872A" stroke-width="5"/>
   <circle cx="80" cy="87" r="51" fill="#D9AE3E" stroke="rgba(255,255,255,.38)" stroke-width="2"/>
-  <text x="80" y="89" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="700" font-style="italic" fill="#C9272D">Topo</text>
-  <text x="80" y="113" text-anchor="middle" font-family="Georgia, serif" font-size="25" font-weight="700" font-style="italic" fill="#C9272D">Chico</text>
+  <text x="80" y="89" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700" font-style="italic" fill="#C9272D">Topo</text>
+  <text x="80" y="113" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="700" font-style="italic" fill="#C9272D">Chico</text>
   <text x="80" y="131" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="900" fill="#C9272D" letter-spacing="1.2">MINERAL WATER</text>
 </svg>

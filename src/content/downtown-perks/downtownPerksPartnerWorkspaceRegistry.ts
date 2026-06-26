@@ -30,7 +30,7 @@ export const PARTNER_PUBLIC_SYSTEM_COPY = {
   deprecatedCopyRule: "Remove legacy brand, portal, media-buy and startup-hype language from production copy.",
   principle:
     "People nearby are already deciding. Downtown Perks helps partners show up at the right moment.",
-  partnerOutcome: "This helps nearby people find and act on us.",
+  partnerSignal: "This helps nearby people find and act on us.",
   bridge: {
     headline: "Be the place people choose next.",
     body: [

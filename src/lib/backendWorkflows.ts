@@ -2,6 +2,18 @@ type JsonRecord = Record<string, unknown>;
 
 const SESSION_KEY = "dp_session_id";
 const PROFILE_KEY = "dp_profile_id";
+const DEFAULT_LOCAL_OPERATIONS_URL = "http://localhost:3014";
+
+function getOperationsApiBaseUrl() {
+  const configured = import.meta.env.VITE_OPERATIONS_API_BASE_URL || import.meta.env.VITE_BACKEND_PLATFORM_URL;
+  if (configured) return String(configured).replace(/\/$/, "");
+
+  if (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+    return DEFAULT_LOCAL_OPERATIONS_URL;
+  }
+
+  return "";
+}
 
 function getOrCreateBrowserId(key: string, prefix: string) {
   if (typeof window === "undefined") return `${prefix}-server`;
@@ -51,8 +63,50 @@ export async function postWorkflow(endpoint: string, payload: JsonRecord) {
   return body;
 }
 
+async function postOperationsAudit(endpoint: string, payload: JsonRecord, status: "attempted" | "completed" | "failed", error?: unknown) {
+  const operationsBaseUrl = getOperationsApiBaseUrl();
+  if (!operationsBaseUrl) return;
+
+  const sessionId = typeof payload.sessionId === "string" ? payload.sessionId : getWorkflowSessionId();
+  const profileId = typeof payload.profileId === "string" ? payload.profileId : getWorkflowProfileId();
+  const action = typeof payload.type === "string" ? payload.type : endpoint.replace(/^\/api\//, "").replace(/\//g, ".");
+
+  await fetch(`${operationsBaseUrl}/api/entities/TenantAuditLog`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      tenant_id: typeof payload.tenantId === "string" ? payload.tenantId : "tenant_platform",
+      workspace_id: typeof payload.workspaceId === "string" ? payload.workspaceId : "workspace_platform",
+      actor_id: profileId,
+      source: "5173-product",
+      action,
+      status,
+      target_endpoint: endpoint,
+      session_id: sessionId,
+      metadata: {
+        ...payload,
+        mirrored_from: "localhost:5173",
+        error: error instanceof Error ? error.message : error ? String(error) : undefined,
+      },
+      created_by: "5173-product",
+      updated_by: "5173-product",
+    }),
+  });
+}
+
 export function fireWorkflow(endpoint: string, payload: JsonRecord) {
-  void postWorkflow(endpoint, payload).catch((error) => {
+  void postOperationsAudit(endpoint, payload, "attempted").catch((error) => {
+    if (import.meta.env.DEV) console.warn(`[operations-audit] ${endpoint}`, error);
+  });
+
+  void postWorkflow(endpoint, payload).then(() => {
+    void postOperationsAudit(endpoint, payload, "completed").catch((error) => {
+      if (import.meta.env.DEV) console.warn(`[operations-audit] ${endpoint}`, error);
+    });
+  }).catch((error) => {
+    void postOperationsAudit(endpoint, payload, "failed", error).catch((auditError) => {
+      if (import.meta.env.DEV) console.warn(`[operations-audit] ${endpoint}`, auditError);
+    });
     if (import.meta.env.DEV) console.warn(`[workflow] ${endpoint}`, error);
   });
 }
