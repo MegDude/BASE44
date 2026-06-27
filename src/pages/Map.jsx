@@ -787,11 +787,11 @@ const RESIDENT_CONSOLE_FILTER_RAIL = [
   { id: "wellness", label: "Wellness", icon: HeartPulse, kind: "filter", filter: "Wellness", prompt: "Wellness nearby" },
   { id: "nightlife", label: "Nightlife", icon: Moon, kind: "filter", filter: "Nightlife", prompt: "Nightlife nearby" },
   { id: "arts", label: "Arts", icon: Landmark, kind: "filter", filter: "Arts", prompt: "Arts nearby" },
-  { id: "retail", label: "Retail", icon: Gift, kind: "filter", filter: "Retail", prompt: "Retail nearby" },
-  { id: "services", label: "Services", icon: Info, kind: "filter", filter: "Services", prompt: "Services nearby" },
+  { id: "retail", label: "Retail", icon: Sparkles, kind: "filter", filter: "Retail", prompt: "Retail nearby" },
+  { id: "services", label: "Services", icon: BriefcaseBusiness, kind: "filter", filter: "Services", prompt: "Services nearby" },
   { id: "properties", label: "Properties", icon: Building2, kind: "filter", filter: "Properties", prompt: "Properties nearby" },
   { id: "hotels", label: "Hotels", icon: Landmark, kind: "filter", filter: "Hotels", prompt: "Hotels nearby" },
-  { id: "civic", label: "Civic", icon: Landmark, kind: "filter", filter: "Civic", prompt: "Civic nearby" },
+  { id: "civic", label: "Civic", icon: Compass, kind: "filter", filter: "Civic", prompt: "Civic nearby" },
   { id: "live-music", label: "Live Music", icon: Music2, kind: "filter", filter: "Live Music", prompt: "Live music tonight" },
   { id: "happy-hour", label: "Happy Hour", icon: BadgePercent, kind: "filter", filter: "Happy Hour", prompt: "Happy hour nearby" },
   { id: "walkable", label: "Walkable", icon: Navigation, kind: "radius", radius: "5 min walk", prompt: "Walkable nearby" },
@@ -801,8 +801,8 @@ const RESIDENT_CONSOLE_FILTER_RAIL = [
   { id: "tonight", label: "Tonight", icon: CalendarDays, kind: "time", time: "tonight", prompt: "Events tonight" },
   { id: "this-week", label: "This Week", icon: CalendarRange, kind: "time", time: "this-week", prompt: "Events this week" },
   { id: "nearby", label: "Nearby", icon: Navigation, kind: "filter", filter: "Nearby", prompt: "Nearby" },
-  { id: "inkind", label: "inKind", icon: Utensils, kind: "filter", filter: "inKind", prompt: "inKind offers" },
-  { id: "legends", label: "Legends", icon: Building2, kind: "filter", filter: "Legends", prompt: "Legends listings" },
+  { id: "inkind", label: "inKind", icon: TicketPercent, kind: "filter", filter: "inKind", prompt: "inKind offers" },
+  { id: "legends", label: "Legends", icon: Star, kind: "filter", filter: "Legends", prompt: "Legends listings" },
   { id: "all-neighborhoods", label: "All neighborhoods", icon: MapPin, kind: "filter", filter: "All", prompt: "All neighborhoods" },
 ];
 
@@ -884,14 +884,14 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
 
 const RESIDENT_CONTEXT_RAILS = {
   Dining: [
-    { label: "Breakfast", kind: "filter", filter: "Breakfast", prompt: "Breakfast nearby" },
-    { label: "Brunch", kind: "filter", filter: "Brunch", prompt: "Brunch this weekend" },
-    { label: "Lunch", kind: "filter", filter: "Lunch", prompt: "Lunch nearby" },
-    { label: "Dinner", kind: "filter", filter: "Dinner", prompt: "Dinner tonight" },
-    { label: "Coffee", kind: "filter", filter: "Coffee", prompt: "Coffee within walking distance" },
-    { label: "Dessert", kind: "filter", filter: "Dessert", prompt: "Dessert nearby" },
-    { label: "Happy Hour", kind: "filter", filter: "Happy Hour", prompt: "Best happy hour nearby" },
-    { label: "Sushi", kind: "filter", filter: "Dining", prompt: "Best sushi downtown" },
+    { label: "Breakfast", kind: "filter", filter: "Breakfast", prompt: "Breakfast nearby", icon: Clock },
+    { label: "Brunch", kind: "filter", filter: "Brunch", prompt: "Brunch this weekend", icon: CalendarRange },
+    { label: "Lunch", kind: "filter", filter: "Lunch", prompt: "Lunch nearby", icon: Utensils },
+    { label: "Dinner", kind: "filter", filter: "Dinner", prompt: "Dinner tonight", icon: Moon },
+    { label: "Coffee", kind: "filter", filter: "Coffee", prompt: "Coffee within walking distance", icon: Coffee },
+    { label: "Dessert", kind: "filter", filter: "Dessert", prompt: "Dessert nearby", icon: Sparkles },
+    { label: "Happy Hour", kind: "filter", filter: "Happy Hour", prompt: "Best happy hour nearby", icon: BadgePercent },
+    { label: "Sushi", kind: "filter", filter: "Dining", prompt: "Best sushi downtown", icon: Star },
   ],
   Drinks: [
     { label: "Happy Hour", kind: "filter", filter: "Happy Hour", prompt: "Best happy hour nearby" },
@@ -3995,6 +3995,12 @@ function getLocalServiceProfile(place) {
     serviceType,
     prompt,
     whyUse,
+    oneSentence:
+      cleanDisplayCopy(service.oneSentence || place?.summary || raw.summary) ||
+      `${serviceType} help for downtown residents, buildings, and local businesses.`,
+    about:
+      cleanDisplayCopy(service.about || place?.description || raw.description || whyUse) ||
+      whyUse,
     bestFor: asCleanArray(service.bestFor || place?.bestFor || raw.bestFor),
     goodToKnow: asCleanArray(service.goodToKnow || place?.goodToKnow || raw.goodToKnow),
     downtownConnection:
@@ -4005,6 +4011,46 @@ function getLocalServiceProfile(place) {
     website: place?.website || raw.website || place?.url || raw.url || "",
     phone: place?.contact_phone || raw.contact_phone || place?.phone || raw.phone || "",
   };
+}
+
+function getLocalServiceCategoryLabel(profile) {
+  const labelMap = {
+    Home: "Home Services",
+    Property: "Property Services",
+    Money: "Money",
+    Legal: "Legal",
+    Health: "Health",
+    Community: "Community",
+    Business: "Business",
+    Design: "Design",
+  };
+  return (labelMap[profile.serviceCategory] || profile.serviceCategory || "Local Service").toUpperCase();
+}
+
+function getWhyPeopleChooseService(profile) {
+  const service = String(profile.serviceType || "").toLowerCase();
+  if (service.includes("roof")) {
+    return ["A roof starts leaking", "Hail damages shingles", "Insurance requests an inspection", "A building needs preventative maintenance", "It is time for a replacement"];
+  }
+  if (service.includes("plumb")) {
+    return ["A leak needs a quick answer", "A water heater stops working", "A condo has a plumbing issue", "A business needs scheduled repair", "A building wants someone already close to downtown"];
+  }
+  if (service.includes("restoration")) {
+    return ["Water damage needs cleanup", "Fire or smoke affects a space", "Mold needs professional attention", "A burst pipe affects more than one unit", "A property needs help getting back to normal"];
+  }
+  if (service.includes("real estate") || service.includes("condo")) {
+    return ["They are comparing downtown buildings", "They want to buy or sell with local context", "They need help understanding HOA, amenities, and walkability", "They are deciding whether a building fits daily life"];
+  }
+  if (service.includes("insurance")) {
+    return ["They want coverage explained clearly", "They need condo, home, auto, or business options", "They want to compare policies without calling five companies", "A property or business decision needs insurance context"];
+  }
+  if (service.includes("bank")) {
+    return ["They are opening an account", "They are buying a home", "They need a local loan or credit union", "They are starting or growing a business"];
+  }
+  if (service.includes("legal") || service.includes("injury")) {
+    return ["They need options explained clearly", "A contract, dispute, or accident needs advice", "They want practical guidance before taking the next step", "They need representation without getting lost in jargon"];
+  }
+  return profile.bestFor.slice(0, 5).map((item) => `They need help with ${String(item).toLowerCase()}`);
 }
 
 function getServiceRelatedPlaces(place, places = [], profile = getLocalServiceProfile(place)) {
@@ -4049,15 +4095,17 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) 
   const profile = getLocalServiceProfile(place);
   const relatedServices = getServiceRelatedPlaces(place, places, profile);
   const isSaved = savedIds?.has?.(place?.id);
+  const whyChoose = getWhyPeopleChooseService(profile);
 
   return (
-    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-local-service-drawer">
+    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-local-service-drawer dp-business-detail-drawer">
       <DestinationHero place={place} mode="resident" />
       <header className="dp-entity-panel-header dp-entity-summary dp-local-service-summary">
-        <p className="dp-entity-eyebrow">{profile.serviceCategory} · Local Service</p>
+        <p className="dp-entity-eyebrow">{getLocalServiceCategoryLabel(profile)}</p>
         <h2 className="dp-entity-title">{place.name}</h2>
         <p className="dp-entity-meta">{profile.serviceType}{place.district ? ` · ${place.district}` : ""}</p>
         <p className="dp-entity-dek">{profile.prompt}</p>
+        <p className="dp-business-one-line">{profile.oneSentence}</p>
       </header>
 
       <div className="dp-primary-action-row dp-editorial-hero-actions">
@@ -4079,12 +4127,16 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) 
         </a>
       </div>
 
-      <DestinationSection title="Why you'd use them" className="dp-local-service-section">
-        <p>{profile.whyUse}</p>
+      <DestinationSection title="About" className="dp-local-service-section">
+        <p>{profile.about}</p>
       </DestinationSection>
 
-      <DestinationSection title="Services" className="dp-local-service-section">
+      <DestinationSection title="Best For" className="dp-local-service-section">
         <LocalServiceRail title="Services" items={profile.bestFor} />
+      </DestinationSection>
+
+      <DestinationSection title="Why People Choose Them" className="dp-local-service-section">
+        <LocalServiceRail title="Why people choose them" items={whyChoose} />
       </DestinationSection>
 
       <DestinationSection title="Good to know" className="dp-local-service-section">
@@ -4099,7 +4151,7 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) 
         <LocalServiceRail title="Nearby buildings" items={profile.nearbyBuildings} />
       </DestinationSection>
 
-      <DestinationSection title="Nearby services" className="dp-local-service-section">
+      <DestinationSection title="Nearby businesses" className="dp-local-service-section">
         <LocalServiceRail title="Nearby services" items={relatedServices} onSelect={onSelect} kind="places" />
       </DestinationSection>
 
@@ -4111,7 +4163,17 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) 
         support="Places nearby that help this service stay connected to the rest of downtown."
       />
 
+      <DestinationSection title="Related Services" className="dp-local-service-section">
+        <LocalServiceRail title="Similar businesses" items={relatedServices} onSelect={onSelect} kind="places" />
+      </DestinationSection>
+
       <DestinationSection title="Contact" className="dp-local-service-section">
+        <div className="dp-business-contact-list">
+          {profile.website && <span><strong>Website</strong>{profile.website.replace(/^https?:\/\//, "")}</span>}
+          {profile.phone && <span><strong>Phone</strong>{profile.phone}</span>}
+          {place.address && <span><strong>Address</strong>{place.address}</span>}
+          <span><strong>Hours</strong>Check current availability before you go.</span>
+        </div>
         <div className="dp-primary-action-row">
           {profile.website && (
             <a href={profile.website} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
@@ -4123,6 +4185,164 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) 
           </a>
         </div>
       </DestinationSection>
+
+      <DestinationSection title="Map" className="dp-local-service-section">
+        <p>Save this business, get directions, or open nearby places from the map when you need local help.</p>
+        <div className="dp-primary-action-row">
+          <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
+            {isSaved ? "Saved" : "Save"}
+          </button>
+          <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+            Directions
+          </a>
+          <button
+            type="button"
+            className="dp-panel-action"
+            onClick={() => navigator.clipboard?.writeText?.(typeof window !== "undefined" ? window.location.href : "")}
+          >
+            Share
+          </button>
+        </div>
+      </DestinationSection>
+    </motion.div>
+  );
+}
+
+function getEventProfile(place) {
+  const raw = place?.raw || {};
+  const category = cleanDisplayCopy(String(place?.category || raw.category || "Event").replace(/^Event\s*\/\s*/i, "")) || "Event";
+  const summary = cleanDisplayCopy(place?.panelBody || raw.panelBody || place?.summary || raw.summary || place?.description || raw.description);
+  const description = cleanDisplayCopy(place?.description || raw.description || summary);
+  const aboutParts = [summary, description].filter(Boolean);
+  const about = aboutParts.length > 1 && aboutParts[0] !== aboutParts[1] ? aboutParts.join(" ") : aboutParts[0] || "A downtown event worth checking before you go.";
+  const primaryAction = cleanDisplayCopy(place?.primaryAction || raw.primaryAction || (place?.bookingUrl || raw.bookingUrl ? "Book" : "Save"));
+  const secondaryAction = cleanDisplayCopy(place?.secondaryAction || raw.secondaryAction || "Add to Calendar");
+  return {
+    eyebrow: category.toUpperCase(),
+    title: cleanDisplayCopy(place?.panelHeadline || raw.panelHeadline || place?.name || raw.name || "Downtown event"),
+    meta: [getEventTimeContext(place), cleanDisplayCopy(place?.district || raw.district)].filter(Boolean).join(" · "),
+    oneSentence: cleanDisplayCopy(place?.panelBody || raw.panelBody || summary) || "A downtown event to save, book, or build a plan around.",
+    about,
+    address: cleanDisplayCopy(place?.address || raw.address || ""),
+    time: getEventTimeContext(place),
+    duration: cleanDisplayCopy(place?.eventDuration || raw.eventDuration || ""),
+    room: cleanDisplayCopy(place?.eventRoom || raw.eventRoom || ""),
+    price: cleanDisplayCopy(place?.price || raw.price || place?.offer || raw.offer || ""),
+    addOn: cleanDisplayCopy(place?.addOn || raw.addOn || ""),
+    checkIn: cleanDisplayCopy(place?.checkIn || raw.checkIn || ""),
+    reservation: cleanDisplayCopy(place?.reservation || raw.reservation || ""),
+    included: asCleanArray(place?.included || raw.included),
+    goodFor: asCleanArray(place?.goodFor || raw.goodFor),
+    quickFacts: asCleanArray(place?.quickFacts || raw.quickFacts),
+    schedule: Array.isArray(place?.schedule || raw.schedule) ? (place?.schedule || raw.schedule) : [],
+    url: place?.bookingUrl || raw.bookingUrl || place?.website || raw.website || place?.url || raw.url || "",
+    primaryAction,
+    secondaryAction,
+  };
+}
+
+function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, onSave, onSelect }) {
+  const profile = getEventProfile(place);
+  const isSaved = savedIds?.has?.(place?.id);
+  const isRsvped = eventRsvps?.has?.(place?.id);
+  const factItems = [
+    profile.time && ["When", profile.time],
+    profile.duration && ["Duration", profile.duration],
+    profile.room && ["Location", profile.room],
+    profile.price && ["Price", profile.price],
+    profile.addOn && ["Add-on", profile.addOn],
+  ].filter(Boolean);
+  const beforeYouGo = [profile.checkIn, profile.reservation, "Confirm details before heading over. Event schedules and capacity can change."].filter(Boolean);
+
+  return (
+    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-event-detail-drawer">
+      <DestinationHero place={place} mode="resident" />
+      <header className="dp-entity-panel-header dp-entity-summary dp-event-summary">
+        <p className="dp-entity-eyebrow">{profile.eyebrow}</p>
+        <h2 className="dp-entity-title">{profile.title}</h2>
+        {profile.meta && <p className="dp-entity-meta">{profile.meta}</p>}
+        <p className="dp-entity-dek">{profile.oneSentence}</p>
+      </header>
+
+      <div className="dp-primary-action-row dp-editorial-hero-actions">
+        {profile.url ? (
+          <a href={profile.url} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
+            {profile.primaryAction}
+          </a>
+        ) : (
+          <button type="button" onClick={onRsvp} className="dp-panel-action dp-primary-action">
+            {isRsvped ? "Saved to Plans" : profile.primaryAction}
+          </button>
+        )}
+        <button type="button" onClick={onRsvp} className="dp-panel-action">
+          {isRsvped ? "Added" : profile.secondaryAction}
+        </button>
+        <button type="button" onClick={onSave} className="dp-panel-action">
+          {isSaved ? "Saved" : "Save"}
+        </button>
+        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+          Directions
+        </a>
+      </div>
+
+      <DestinationSection title="About" className="dp-event-section">
+        <p>{profile.about}</p>
+      </DestinationSection>
+
+      <DestinationSection title="When & where" className="dp-event-section">
+        <div className="dp-event-fact-rail">
+          {factItems.map(([label, value]) => (
+            <span key={`${label}-${value}`} className="dp-event-fact">
+              <strong>{label}</strong>
+              {value}
+            </span>
+          ))}
+          {profile.address && (
+            <span className="dp-event-fact">
+              <strong>Address</strong>
+              {profile.address}
+            </span>
+          )}
+        </div>
+      </DestinationSection>
+
+      {!!profile.included.length && (
+        <DestinationSection title="What to expect" className="dp-event-section">
+          <LocalServiceRail title="What to expect" items={profile.included} />
+        </DestinationSection>
+      )}
+
+      {!!profile.goodFor.length && (
+        <DestinationSection title="Good For" className="dp-event-section">
+          <LocalServiceRail title="Good for" items={profile.goodFor} />
+        </DestinationSection>
+      )}
+
+      {!!profile.schedule.length && (
+        <DestinationSection title="Schedule" className="dp-event-section">
+          <div className="dp-event-schedule-rail" aria-label="Event schedule">
+            {profile.schedule.slice(0, 12).map((item) => (
+              <span key={`${item.isoDate || item.label}-${item.className || item.room}`} className="dp-event-schedule-item">
+                <strong>{item.label || item.isoDate}</strong>
+                <span>{item.className}</span>
+                <small>{item.duration || item.room}</small>
+              </span>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
+
+      <DestinationSection title="Before You Go" className="dp-event-section">
+        <LocalServiceRail title="Before you go" items={beforeYouGo} />
+      </DestinationSection>
+
+      <NearbyImageRail
+        place={place}
+        places={places.filter((candidate) => candidate?.id !== place?.id && !isCampaignEntity(candidate))}
+        onSelect={onSelect}
+        title="Nearby After"
+        support="Keep the plan going with walkable places nearby."
+      />
     </motion.div>
   );
 }
@@ -5143,7 +5363,7 @@ function getRelatedPlaces(place, places = []) {
 
 function getV4DestinationSectionTitle(title = "") {
   const normalized = String(title || "").trim().toLowerCase();
-  if (["why it matters", "why go", "why go here", "overview", "description", "information", "about"].includes(normalized)) {
+  if (["why it matters", "why go", "why go here", "overview", "description", "information"].includes(normalized)) {
     return "Why this matters";
   }
   if (["nearby recommendations", "other inkind locations nearby", "next stops", "next nearby"].includes(normalized)) {
@@ -5152,7 +5372,7 @@ function getV4DestinationSectionTitle(title = "") {
   if (["ask about this", "ask downtown perks", "discovery"].includes(normalized)) {
     return "Ask the map";
   }
-  if (["good to know", "details", "listing details", "event details", "property details"].includes(normalized)) {
+  if (["details", "listing details", "event details", "property details"].includes(normalized)) {
     return "Useful context";
   }
   return title;
@@ -8381,6 +8601,28 @@ function getRelevantListingImage(place) {
 }
 
 function getLifestyleImage(place, mode) {
+  const text = placeCoreText({ ...place, mode });
+  const id = String(place?.id || place?.raw?.id || "").toLowerCase();
+  const explicitPanelImages = [
+    [/we all ride|bike mosaic|jmuzacz|daa-stop-04/, "/images/map-entities/civic/we-all-ride-mosaic-detail.webp"],
+    [/central library|daa-stop-19/, "/images/map-entities/civic/austin-central-library-rooftop.avif"],
+    [/republic square|daa-stop-08/, "/images/imported/perks/republic-square.jpg"],
+    [/palmer events center|daa-stop-26/, "/images/map-entities/events/palmer-events-center-grounds.webp"],
+    [/mozart|jazz night|movies on the lake/, "/images/map-entities/events/mozarts-jazz.jpg"],
+    [/summer wellness|fairmont spa|power flow|gentle yoga|recovery/, "/images/map-entities/fairmont-austin/summer-wellness-yoga.webp"],
+    [/\balte[nñ]o\b/, "/images/map-entities/1-hotel-austin/alteno-rendering.webp"],
+    [/\bwatr\b|1 hotel rooftop/, "/images/map-entities/1-hotel-austin/watr.webp"],
+    [/\bneighbors\b|1 hotel cafe|wine bar/, "/images/map-entities/1-hotel-austin/waterline-hotel.avif"],
+    [/rivian/, "/images/imported/perks/rivian.png"],
+    [/topo chico|hydration/, "/images/map-entities/brand-topo-chico/QQy0R7y0D6reyvxjtO4Bz0cdcHuLgAmkHIwGAgmZSW66otks8dM8TUD5adIiQD3uYp0A7d6_Bi1A6MzzsJGL23tYSN207sRP8FR68N8CKNi5neqrVfzauBbHFsGulopDHdKhJ-KsUl3viTXWsTncYZVu6qayfVjVzYoEdkj67yvaNR3KVp7a8Qavd6xUypKt.jpeg"],
+    [/yeti/, "/images/imported/perks/yeti-store.png"],
+    [/honey rose ritual/, "/images/entities/four-seasons/honey-rose-ritual.png"],
+    [/four seasons residences|partner-four-seasons|98 san jacinto/, "/images/property-listings-premium/four-seasons-residences.jpeg"],
+    [/four seasons hotel|four seasons austin/, "/images/entities/four-seasons/four-seasons-austin-pool-garden.png"],
+    [/waterline/, "/images/map/panels/waterline-austin.jpg"],
+  ];
+  const matched = explicitPanelImages.find(([pattern]) => pattern.test(`${id} ${text}`));
+  if (matched) return matched[1];
   return getRelevantListingImage(place) || resolveMapImage({ ...place, mode }, "drawerHeader");
 }
 
@@ -9186,6 +9428,13 @@ function SearchIntentConsole({
   const residentIntentRail = PRIMARY_SEARCH_INTENT_RAIL;
   const railIconFor = (item = {}) => {
     const text = `${item.id || ""} ${item.label || ""} ${item.filter || ""} ${item.kind || ""}`.toLowerCase();
+    if (/\b(inkind|in kind)\b/.test(text)) return TicketPercent;
+    if (/\b(legends)\b/.test(text)) return Star;
+    if (/\b(breakfast|morning)\b/.test(text)) return Clock;
+    if (/\b(brunch)\b/.test(text)) return CalendarRange;
+    if (/\b(happy hour)\b/.test(text)) return BadgePercent;
+    if (/\b(dessert|sushi)\b/.test(text)) return Sparkles;
+    if (/\b(service|services|plumber|roof|legal|insurance|bank)\b/.test(text)) return BriefcaseBusiness;
     if (item.kind === "time" || /\b(tonight|week|event|rsvp)\b/.test(text)) return CalendarDays;
     if (item.kind === "radius" || /\b(walk|nearby|route|open now)\b/.test(text)) return Navigation;
     if (/\b(perk|offer|redemption)\b/.test(text)) return Gift;
@@ -9193,12 +9442,13 @@ function SearchIntentConsole({
     if (/\b(audience|resident|guest|demand)\b/.test(text)) return Users;
     if (/\b(performance|activity|report|result|save|scan|visit)\b/.test(text)) return Activity;
     if (/\b(opportunit|next|trend|insight)\b/.test(text)) return TrendingUp;
-    if (/\b(property|residential|listing|legends|rental)\b/.test(text)) return Building2;
-    if (/\b(hotel|civic|explore|art|park|waterloo)\b/.test(text)) return Landmark;
-    if (/\b(brand|retail|shop)\b/.test(text)) return Gift;
+    if (/\b(property|residential|listing|rental)\b/.test(text)) return Building2;
+    if (/\b(hotel)\b/.test(text)) return Landmark;
+    if (/\b(civic|explore|art|park|waterloo)\b/.test(text)) return Compass;
+    if (/\b(brand|retail|shop)\b/.test(text)) return Sparkles;
     if (/\b(parking)\b/.test(text)) return Car;
     if (/\b(wellness|fitness)\b/.test(text)) return Heart;
-    if (/\b(dining|food|inkind)\b/.test(text)) return Utensils;
+    if (/\b(dining|food|lunch|dinner)\b/.test(text)) return Utensils;
     if (/\b(coffee)\b/.test(text)) return Coffee;
     if (/\b(drink|happy hour|nightlife)\b/.test(text)) return Wine;
     if (/\b(gap|coverage)\b/.test(text)) return Search;
@@ -12275,6 +12525,7 @@ export default function MapPage() {
                 const isInKindDining = isInKindEntity(selected);
                 const isBurgerBarPanel = isBurgerBarCongress(selected);
                 const isLocalService = isLocalServiceEntity(selected);
+                const isEventPanel = isEventEntity(selected) && !isCampaign && !isHappyHourEntity(selected);
                 const legendsResidentialContent = getLegendsResidentialContentForPlace(selected);
                 const legendsResidentialProfile = getLegendsResidentialProfileForPlace(selected);
                 const contactFormId = `map-contact-form-${selected.id}`;
@@ -12365,6 +12616,21 @@ export default function MapPage() {
                   );
                 }
 
+                if (urlState.mode === "partner" && !isProperty) {
+                  return (
+                    <PartnerIntelligenceDrawer
+                      place={selected}
+                      places={places}
+                      onSelect={selectPlace}
+                      onContact={openContactForm}
+                      answer={entityAnswer}
+                      loading={entityAssistantLoading}
+                      onAsk={askEntityAssistant}
+                      onCloseAnswer={() => setEntityAnswer(null)}
+                    />
+                  );
+                }
+
                 if (isLocalService) {
                   return (
                     <LocalServiceDrawer
@@ -12377,17 +12643,16 @@ export default function MapPage() {
                   );
                 }
 
-                if (urlState.mode === "partner" && !isProperty && !isDaaStop) {
+                if (isEventPanel) {
                   return (
-                    <PartnerIntelligenceDrawer
+                    <EventDetailDrawer
                       place={selected}
                       places={places}
+                      savedIds={savedIds}
+                      eventRsvps={eventRsvps}
+                      onRsvp={() => toggleRsvp(selected)}
+                      onSave={() => toggleSaved(selected)}
                       onSelect={selectPlace}
-                      onContact={openContactForm}
-                      answer={entityAnswer}
-                      loading={entityAssistantLoading}
-                      onAsk={askEntityAssistant}
-                      onCloseAnswer={() => setEntityAnswer(null)}
                     />
                   );
                 }

@@ -19,10 +19,9 @@ const storyStates = [
         { text: "with honey.", tone: "navy" },
       ],
     ],
-    meaning: "Downtown Perks brings the heat — and the hospitality.",
+    meaning: "",
     supporting: [
-      "For the people who plan around live music, rooftop weather,",
-      "taco runs, and “just one drink” - this is for you.",
+      "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” - this is for you.",
     ],
     visual: ["Music", "Rooftop", "Tacos"],
   },
@@ -40,7 +39,7 @@ const storyStates = [
         { text: "easier to use.", tone: "gold" },
       ],
     ],
-    meaning: "Easier to navigate. Easier to connect.\nMore useful day to day.",
+    meaning: "",
     supporting: [
       "Most things already exist.",
       "They’re just scattered.",
@@ -87,11 +86,11 @@ const storyStates = [
         { text: "downtown.", tone: "navy" },
       ],
     ],
-    meaning: "For residents, it means less searching and better plans. For local businesses, it means showing up naturally while people nearby are already deciding where to go.",
+    meaning: "",
     supporting: [
       "Coffee around the corner. A last-minute happy hour.",
       "The resident event you would have missed.",
-      "Connecting the people, places and perks that make downtown feel alive.",
+      "Connecting the people, places and perks that make downtown feel like home.",
     ],
     visual: ["Coffee", "Happy hour", "Resident event"],
   },
@@ -270,18 +269,20 @@ function FixedStoryStage({ state }) {
               })}
             </motion.h1>
           </motion.div>
-          <motion.div
-            className="dp-fixed-story-meaning-slot"
-            initial={proseMotion.initial}
-            animate={proseMotion.animate}
-            transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.42 }}
-          >
-            <motion.p key={`meaning-${state.id}`} className="dp-fixed-story-meaning">
-              {state.meaning.split("\n").map((line) => (
-                <span key={line} className="dp-fixed-story-meaning-line">{line}</span>
-              ))}
-            </motion.p>
-          </motion.div>
+          {state.meaning ? (
+            <motion.div
+              className="dp-fixed-story-meaning-slot"
+              initial={proseMotion.initial}
+              animate={proseMotion.animate}
+              transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.42 }}
+            >
+              <motion.p key={`meaning-${state.id}`} className="dp-fixed-story-meaning">
+                {state.meaning.split("\n").map((line) => (
+                  <span key={line} className="dp-fixed-story-meaning-line">{line}</span>
+                ))}
+              </motion.p>
+            </motion.div>
+          ) : null}
           <motion.div
             className="dp-fixed-story-supporting-slot"
             initial={proseMotion.initial}
@@ -318,6 +319,7 @@ export default function SplashPage({
   const [openNavMenu, setOpenNavMenu] = useState(null);
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
+    if (window.sessionStorage?.getItem("dp-opening-story-seen") === "true") return false;
     return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
   });
   const lockRef = useRef(false);
