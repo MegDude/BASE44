@@ -71,9 +71,9 @@ export function recommendAudience({
   }
 
   if (isPublicArt) {
-    add(audiences, "Walkers", "Nearby civic anchors make this useful for self-guided downtown routes.", civic, "Connect the stop to a public art trail.");
-    add(audiences, "Visitors", "Hotels and landmark stops nearby can turn this into an easy discovery moment.", hotels, "Position it as a free cultural stop.");
-    add(audiences, "Residents", "Residents nearby can use it as a short walk, photo stop, or family-friendly pause.", properties, "Add it to resident walking guides.");
+    add(audiences, "Residents nearby", "People living close by need simple reasons to take a different walk, meet a neighbor, or notice a public place they usually pass.", properties, "Add it to building welcome walks and weekend resident routes.");
+    add(audiences, "Civic and culture partners", "Nearby parks, trails, libraries, museums, and public art can work together as one easy route instead of separate stops.", civic, "Link it with nearby stops people can open next: parks, murals, trails, food, and events.");
+    add(audiences, "Hotel guests", "Guests nearby often want something free, local, and easy to do between meals, meetings, or events.", hotels, "Give hotel desks a simple route: start here, walk to the next stop, then show nearby food or coffee.");
     return audiences.slice(0, 4);
   }
 

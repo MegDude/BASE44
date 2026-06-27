@@ -92,6 +92,39 @@ function localApiRoutes() {
 
       runLocalHandler(req, res, "./api/campaign-requests.js", logger, "Local campaign request handler failed");
     });
+
+    middlewares.use("/api/daa/check-in", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/daa/check-in.js", logger, "Local DAA check-in handler failed");
+    });
+
+    middlewares.use("/api/events", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/events.js", logger, "Local platform event handler failed");
+    });
+
+    middlewares.use("/api/stripe/create-checkout-session", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/stripe/create-checkout-session-local.js", logger, "Local checkout handler failed");
+    });
   };
 
   return {

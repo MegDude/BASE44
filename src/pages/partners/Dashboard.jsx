@@ -72,8 +72,8 @@ const operatingWorkflow = [
 const performanceLoop = [
   ["Discovery", "People find you through the map, listings, recommendations, events, and perks."],
   ["Participation", "People save, scan, RSVP, redeem, visit, and engage."],
-  ["Measurement", "Every meaningful action becomes a signal."],
-  ["Reporting", "Those signals become usable reporting."],
+  ["Measurement", "Every meaningful action becomes something your team can review."],
+  ["Reporting", "Those actions become practical reporting."],
   ["Action", "Use those insights to improve the next campaign, offer, event, or experience."],
 ];
 

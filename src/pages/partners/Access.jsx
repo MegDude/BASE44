@@ -1,6 +1,13 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus, X } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
+import { useAuth } from "@/lib/AuthContext";
+import {
+  formatCurrency,
+  getPlansForPartnerType,
+  getPriceText,
+  PRICING_MODULES,
+} from "@/config/pricingRegistry";
 
 const PARTNER_PROFILE_KEY = "dp_partner_workspace:profile:current";
 
@@ -22,6 +29,22 @@ const TIMELINES = [
   "Still planning",
 ];
 
+const CAMPAIGN_INTERESTS = [
+  "Offers and perks",
+  "Events",
+  "Featured placement",
+  "District or portfolio campaign",
+  "Not sure yet",
+];
+
+const REPORTING_NEEDS = [
+  "Standard reporting",
+  "Campaign performance",
+  "Portfolio reporting",
+  "Exports and integrations",
+  "Custom reporting",
+];
+
 function getPartnerTypeLabel(value) {
   return PARTNER_TYPES.find((type) => type.value === value)?.label || value;
 }
@@ -35,30 +58,78 @@ function savePartnerProfile(profile) {
   }
 }
 
-function startPartnerSignIn(navigate) {
-  if (typeof window === "undefined") return;
+function startPartnerSignIn(navigate, signInPartner, email) {
+  signInPartner({
+    email,
+    organization_name: "Downtown Perks Partner",
+    contact_name: email || "Partner",
+    partner_type: "partner",
+  });
   navigate("/partner-workspace/overview");
+}
+
+function toPricingPartnerType(value) {
+  const normalized = String(value || "").toLowerCase();
+  if (normalized.includes("property")) return "Property";
+  if (normalized.includes("hotel")) return "Hotel";
+  if (normalized.includes("brand")) return "Brand";
+  if (normalized.includes("civic")) return "Civic";
+  if (normalized.includes("real")) return "Real Estate";
+  if (normalized.includes("resident")) return "Resident";
+  return "Venue";
 }
 
 export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
   const navigate = useNavigate();
+  const location = useLocation();
+  const { signInPartner } = useAuth();
+  const searchParams = new URLSearchParams(location.search);
+  const initialType = searchParams.get("type")
+    || searchParams.get("partnerTypeSlug")
+    || searchParams.get("partnerType")?.toLowerCase()
+    || "venue";
+  const initialPlan = searchParams.get("plan") || searchParams.get("sku") || "";
+  const initialModules = (searchParams.get("modules") || "").split(",").map((item) => item.trim()).filter(Boolean);
+  const initialCampaignInterest = searchParams.get("campaignInterest") || CAMPAIGN_INTERESTS[0];
+  const initialReportingNeeds = searchParams.get("reportingNeeds") || REPORTING_NEEDS[0];
   const [form, setForm] = useState({
     organization_name: "",
     contact_name: "",
     email: "",
     phone: "",
-    partner_type: "venue",
+    partner_type: PARTNER_TYPES.some((type) => type.value === initialType) ? initialType : "venue",
     timeline: "Still planning",
     website: "",
     bio: "",
   });
+  const [selectedModuleIds, setSelectedModuleIds] = useState(initialModules);
+  const pricingPartnerType = toPricingPartnerType(form.partner_type);
+  const availablePlans = useMemo(() => getPlansForPartnerType(pricingPartnerType), [pricingPartnerType]);
+  const [selectedPlanId, setSelectedPlanId] = useState(initialPlan);
+  const selectedPlan = availablePlans.find((plan) => plan.id === selectedPlanId) || availablePlans[0] || null;
+  const selectedModules = PRICING_MODULES.filter((module) => selectedModuleIds.includes(module.id));
+  const annualAddOnTotal = selectedModules.filter((module) => module.billing === "Annual add-on").reduce((sum, module) => sum + module.price, 0);
+  const oneTimeTotal = selectedModules.filter((module) => module.billing === "One-time module").reduce((sum, module) => sum + module.price, 0);
+  const annualEstimate = selectedPlan?.annualPrice == null ? null : selectedPlan.annualPrice + annualAddOnTotal;
+  const firstYearEstimate = selectedPlan?.annualPrice == null ? null : selectedPlan.annualPrice + annualAddOnTotal + oneTimeTotal;
+  const [campaignInterest, setCampaignInterest] = useState(initialCampaignInterest);
+  const [reportingNeeds, setReportingNeeds] = useState(initialReportingNeeds);
+  const [signInEmail, setSignInEmail] = useState("");
   const [saved, setSaved] = useState(false);
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
+  }
+
+  function toggleModule(moduleId) {
+    setSelectedModuleIds((current) => (
+      current.includes(moduleId)
+        ? current.filter((id) => id !== moduleId)
+        : [...current, moduleId]
+    ));
   }
 
   async function handleSubmit(event) {
@@ -81,6 +152,13 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       timeline: form.timeline,
       website: form.website,
       bio: form.bio,
+      selected_plan: selectedPlan?.id || "",
+      selected_plan_label: selectedPlan?.label || "",
+      selected_modules: selectedModuleIds,
+      campaign_interest: campaignInterest,
+      reporting_needs: reportingNeeds,
+      recurring_annual_total: annualEstimate,
+      first_year_estimate: firstYearEstimate,
       signup_email: form.email,
       access_status: "registration_submitted",
       updated_date: new Date().toISOString(),
@@ -98,8 +176,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           phone: form.phone,
           company: organizationName,
           partnerType: partnerTypeLabel,
-          planInterest: "Partner workspace registration",
-          selectedPlan: "Partner workspace registration",
+          planInterest: selectedPlan?.label || "Partner workspace registration",
+          selectedPlan: selectedPlan?.label || "Partner workspace registration",
+          addOns: selectedModules.map((module) => module.label).join(", "),
+          campaignInterest,
+          reportingNeeds,
           timing: form.timeline,
           message,
           pageUrl: typeof window !== "undefined" ? window.location.href : "",
@@ -113,16 +194,24 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       }
 
       savePartnerProfile(profile);
+      signInPartner(profile);
       setSaved(true);
       setSubmissionState("success");
-      setSubmissionMessage("Registration sent. We saved your workspace details and will connect the right package next.");
+      setSubmissionMessage("Registration saved. Opening your workspace now.");
       window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
     } catch (error) {
       savePartnerProfile(profile);
+      signInPartner(profile);
       setSaved(true);
       setSubmissionState("error");
-      setSubmissionMessage("We saved your workspace details. You can keep going while we connect the account.");
+      setSubmissionMessage("Your details are saved locally. Opening your workspace now.");
+      window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
     }
+  }
+
+  function handleSignIn(event) {
+    event.preventDefault();
+    startPartnerSignIn(navigate, signInPartner, signInEmail);
   }
 
   return (
@@ -132,42 +221,38 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           <button
             type="button"
             onClick={() => navigate("/partners")}
-            className="inline-flex h-9 items-center gap-2 rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[12px] font-semibold text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="dp-partner-back-button inline-flex items-center justify-center text-[#0B1F33]/68 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            aria-label="Back to partners"
+            title="Back to partners"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Partners
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate("/map?mode=partner&tab=map&filter=All")}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] border border-[#0B1F33]/10 bg-white text-[#0B1F33]/68 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
-            aria-label="Close partner access"
-          >
-            <X className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
 
         <section className="dp-partner-access-grid grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="dp-partner-access-copy">
             <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
-              Partner Access
+              Partner access
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Create a partner workspace." : "Sign in to your partner workspace."}
+              {isSignUp ? "Create your partner workspace." : "Open your partner workspace."}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Register the organization, location, and launch details we need to connect your partner workspace, package, modules, and reporting."
-                : "Open the partner workspace to manage saved work, partner details, campaigns, reports, and access. You can still preview the public workspace before approval."}
+                ? "Add the basics once, then continue into the workspace to finish your profile, map placement, campaigns, and billing."
+                : "Sign in to manage your profile, map details, campaigns, reports, team access, and billing."}
             </p>
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
-              {[
-                "Workspace: perks, events, profile, and civic intelligence.",
-                "Dashboard: activity, trade, civic, and partner reporting.",
-                "Campaigns: campaign builder and placement planning.",
-                "Map: partner inventory, panels, reports, and opportunities.",
-              ].map((item) => (
+              {(isSignUp ? [
+                "Choose the plan and add-ons that match your launch.",
+                "Share the partner details your workspace needs.",
+                "Continue into setup without re-entering the same information.",
+              ] : [
+                "Update partner details and map placement.",
+                "Manage campaigns, offers, and events.",
+                "Review reports, team access, and billing.",
+              ]).map((item) => (
                 <div key={item} className="flex gap-3">
                   <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-[#C8A96A]" />
                   <span>{item}</span>
@@ -186,6 +271,72 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   </h2>
                 </div>
 
+                <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected setup">
+                  <div className="dp-partner-access-setup-head">
+                    <p className="dp-partner-access-setup-label">Setup</p>
+                    <strong>{firstYearEstimate == null ? "Custom review" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
+                  </div>
+                  <div className="dp-partner-access-setup-fields">
+                    <label>
+                      <span>Subscription plan</span>
+                      <select
+                        className="dp-partner-access-control"
+                        value={selectedPlan?.id || ""}
+                        onChange={(event) => setSelectedPlanId(event.target.value)}
+                      >
+                        {availablePlans.map((plan) => (
+                          <option key={plan.id} value={plan.id}>
+                            {plan.label} - {getPriceText(plan)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Campaign interest</span>
+                      <select
+                        className="dp-partner-access-control"
+                        value={campaignInterest}
+                        onChange={(event) => setCampaignInterest(event.target.value)}
+                      >
+                        {CAMPAIGN_INTERESTS.map((option) => <option key={option}>{option}</option>)}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Reporting</span>
+                      <select
+                        className="dp-partner-access-control"
+                        value={reportingNeeds}
+                        onChange={(event) => setReportingNeeds(event.target.value)}
+                      >
+                        {REPORTING_NEEDS.map((option) => <option key={option}>{option}</option>)}
+                      </select>
+                    </label>
+                  </div>
+                  <div className="dp-partner-access-addon-list" aria-label="Available add-ons">
+                    {PRICING_MODULES.filter((module) => module.id !== "residentJoinBuildingNotMember").slice(0, 10).map((module) => (
+                      <button
+                        key={module.id}
+                        type="button"
+                        data-active={selectedModuleIds.includes(module.id)}
+                        onClick={() => toggleModule(module.id)}
+                      >
+                        <span>{module.label}</span>
+                        <small>{getPriceText(module)}</small>
+                      </button>
+                    ))}
+                  </div>
+                  <dl>
+                    <div>
+                      <dt>Annual estimate</dt>
+                      <dd>{annualEstimate == null ? "Custom" : `${formatCurrency(annualEstimate)}/year`}</dd>
+                    </div>
+                    <div>
+                      <dt>One-time add-ons</dt>
+                      <dd>{formatCurrency(oneTimeTotal)}</dd>
+                    </div>
+                  </dl>
+                </section>
+
                 <PartnerAccessField label="Organization name" value={form.organization_name} onChange={(value) => updateField("organization_name", value)} required />
                 <PartnerAccessField label="Contact name" value={form.contact_name} onChange={(value) => updateField("contact_name", value)} />
                 <PartnerAccessField label="Email" type="email" value={form.email} onChange={(value) => updateField("email", value)} required />
@@ -196,7 +347,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <select
                     value={form.partner_type}
                     onChange={(event) => updateField("partner_type", event.target.value)}
-                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-[#F7F8FB] px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
+                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
                   >
                     {PARTNER_TYPES.map((type) => (
                       <option key={type.value} value={type.value}>{type.label}</option>
@@ -251,18 +402,26 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 </button>
               </form>
             ) : (
-              <div className="dp-partner-access-signin">
+              <form className="dp-partner-access-signin" onSubmit={handleSignIn}>
                 <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner account</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                  Open your partner account
+                  Sign in
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Continue into your partner workspace to review saved details, workspace modules, campaigns, reports, and account setup.
+                  Enter your partner email to continue to your workspace.
                 </p>
+                <div className="mt-6">
+                  <PartnerAccessField
+                    label="Partner email"
+                    type="email"
+                    value={signInEmail}
+                    onChange={setSignInEmail}
+                    required
+                  />
+                </div>
                 <div className="dp-partner-access-actions mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
-                    type="button"
-                    onClick={() => startPartnerSignIn(navigate)}
+                    type="submit"
                     className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     <LogIn className="h-4 w-4 text-[#C8A96A]" />
@@ -276,13 +435,21 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
                   </Link>
                 </div>
-              </div>
+              </form>
             )}
           </div>
         </section>
       </div>
     </main>
   );
+}
+
+function formatSetupText(value) {
+  return String(value || "")
+    .replace(/Annual$/, " annual")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 function PartnerAccessField({ label, value, onChange, type = "text", required = false }) {

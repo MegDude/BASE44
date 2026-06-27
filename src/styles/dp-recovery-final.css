@@ -320,6 +320,248 @@ html body :is(.dp-search-intent-switch button, .dp-search-intent-prompt-rail > b
   -webkit-text-fill-color: #C8A96A !important;
 }
 
+/* Final shared drawer rhythm: compact top-to-content spacing across map panels. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-destination-content.dp-detail-content, .dp-map-panel-content.dp-detail-content, .dp-partner-detail-content, .dp-detail-content) {
+  gap: 10px !important;
+  row-gap: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: max-content !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 8px 0 2px !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) > :is(
+  .dp-entity-meta,
+  .dp-entity-eyebrow,
+  .dp-entity-title,
+  .dp-entity-subtitle,
+  .dp-entity-context,
+  .dp-entity-dek,
+  h1,
+  h2,
+  p,
+  small
+) {
+  position: static !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) > :is(.dp-entity-title, h1, h2) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: clamp(24px, 6.8vw, 34px) !important;
+  font-weight: 560 !important;
+  line-height: 1.08 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) > :is(.dp-entity-meta, .dp-entity-eyebrow, small) {
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.3 !important;
+  text-transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) > :is(.dp-entity-subtitle, .dp-entity-context, .dp-entity-dek, p) {
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 13px !important;
+  font-weight: 450 !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) + :is(
+  .dp-primary-action-row,
+  .dp-entity-action-row,
+  .dp-destination-action-row,
+  .dp-daa-destination-panel,
+  .dp-destination-section,
+  .dp-entity-section,
+  .dp-info-section,
+  .dp-contact-continuation,
+  .dp-perk-module
+) {
+  margin-top: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-primary-action-row, .dp-entity-action-row, .dp-destination-action-row) {
+  margin: 0 !important;
+  padding: 2px 0 4px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-primary-action-row, .dp-entity-action-row, .dp-destination-action-row) + :is(
+  .dp-daa-destination-panel,
+  .dp-destination-section,
+  .dp-entity-section,
+  .dp-info-section,
+  .dp-contact-continuation,
+  .dp-perk-module
+) {
+  margin-top: 0 !important;
+  padding-top: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-destination-section, .dp-entity-section, .dp-info-section, .dp-contact-continuation, .dp-perk-module) {
+  margin: 0 !important;
+  padding-top: 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-panel-detail-hero, .dp-destination-media, .dp-entity-hero, .dp-polished-panel-hero) + :is(.dp-entity-identity, .dp-entity-summary, .dp-entity-panel-header, .dp-detail-intro) {
+  margin-top: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) .dp-daa-destination-panel.dp-civic-guide-panel {
+  gap: 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) .dp-civic-guide-panel > section {
+  padding-bottom: 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) .dp-civic-guide-panel > section:first-child {
+  padding-top: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-detail-drawer,
+  aside.dp-panel-shell.dp-destination-drawer
+) :is(.dp-destination-section, .dp-entity-section, .dp-info-section, .dp-contact-continuation, .dp-perk-module) > :first-child {
+  margin-top: 0 !important;
+}
+
+/* Final civic drawer identity spacing: keep the top copy readable and stacked. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: max-content !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 14px 18px 10px !important;
+  overflow: visible !important;
+  background: #FFFFFF !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity > :is(.dp-entity-meta, .dp-entity-title, .dp-entity-subtitle, .dp-entity-context),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity > :is(.dp-entity-meta, .dp-entity-title, .dp-entity-subtitle, .dp-entity-context) {
+  position: static !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity > .dp-entity-title,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-destination-content.dp-detail-content > .dp-entity-identity.dp-entity-identity > .dp-entity-title {
+  font-size: clamp(28px, 7.4vw, 36px) !important;
+  font-weight: 560 !important;
+  line-height: 1.08 !important;
+}
+
 /* Final viewport guard: nav search and quick search must never leave the page. */
 html body #root :is(.dp-global-search-trigger, .dp-global-search-icon-button, .dp-product-shell-search-button) {
   box-sizing: border-box !important;

@@ -91,10 +91,11 @@ export default function HappyHoursPartner() {
         <div className="mx-auto max-w-7xl">
           <Link
             to="/partners/dashboard"
-            className="mb-8 inline-flex items-center gap-2 text-[12px] font-semibold text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            aria-label="Back to dashboard"
+            title="Back to dashboard"
           >
-            <ArrowLeft className="h-3.5 w-3.5 text-[#C8A96A]" />
-            Back to dashboard
+            <ArrowLeft className="h-4 w-4 text-[#C8A96A]" aria-hidden="true" />
           </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">

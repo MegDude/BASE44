@@ -18,16 +18,16 @@ export const heroMetrics = [
 
 export const operatingModelCards = [
   {
-    title: "Live Discovery",
-    body: "Nearby activity becomes visible in real time through one connected downtown layer.",
+    title: "Be useful nearby",
+    body: "Show up around the places, events, and routines people are already using downtown.",
   },
   {
-    title: "Map-Native Participation",
-    body: "Residents, guests, and visitors interact with the city through spatial discovery instead of fragmented searching.",
+    title: "Give one clear next step",
+    body: "Make it easy to save, scan, RSVP, request, call, book, or get directions.",
   },
   {
-    title: "Operational Visibility",
-    body: "Partners understand movement, interaction, saves, scans, and repeat participation behavior.",
+    title: "See what people used",
+    body: "Review opens, saves, scans, directions, RSVPs, and follow-up requests in plain language.",
   },
 ];
 
@@ -35,14 +35,12 @@ export const partnerStates = [
   {
     key: "properties",
     label: "Properties",
-    eyebrow: "PROPERTIES",
+    eyebrow: "Properties",
     headline: "You are not selling square footage. You are selling everything around it.",
     body: [
-      "Residents do not experience downtown as isolated buildings.",
-      "They experience it through routines, movement, convenience, events, coffee shops, restaurants, fitness studios, hospitality, and neighborhood energy.",
-      "Downtown Perks gives properties a live neighborhood layer residents can actually use.",
-      "Instead of static amenity lists, residents receive a connected map-native system for discovering what exists around them in real time.",
-      "The result is stronger onboarding, stronger participation, and stronger neighborhood attachment.",
+      "Residents do not choose a building in isolation.",
+      "They choose the coffee nearby, the walk to dinner, the trail access, the events they can actually make, and the small conveniences that make downtown feel easier.",
+      "Downtown Perks gives each building a useful neighborhood layer residents can open from day one.",
     ],
     pricing: ["Starter $99/year", "Core $149/year", "Portfolio Custom"],
     cta: "Bring This to Your Property",
@@ -58,7 +56,7 @@ export const partnerStates = [
       { label: "Resident unlocked happy hour near Seaholm", time: "12 min ago" },
     ],
     analyticsFraming:
-      "Resident activations, QR scans by placement, nearby venue opens, perk saves, event RSVPs, return opens, access requests, and top nearby places.",
+      "Resident access, QR scans by placement, nearby venue opens, perk saves, event RSVPs, return opens, access requests, and top nearby places.",
     intakeTargeting: "Resident onboarding + building QR access.",
     campaignType: "Building launch + neighborhood guide.",
     workspaceHref: "/partner-workspace/overview",
@@ -66,15 +64,14 @@ export const partnerStates = [
   {
     key: "hotels",
     label: "Hotels",
-    eyebrow: "HOTELS",
+    eyebrow: "Hotels",
     headline: "Extend the stay beyond the lobby.",
     body: [
       "Guests immediately ask the same question:",
       "What should we do nearby?",
-      "Most hotels still answer with static recommendations, printed lists, or disconnected links.",
-      "Downtown Perks transforms nearby discovery into a live operational guest layer.",
-      "Guests see nearby restaurants, events, experiences, nightlife, coffee shops, wellness, and local activity directly through one connected downtown map.",
-      "The experience feels less like searching the internet and more like understanding the neighborhood in real time.",
+      "Static recommendation lists go stale quickly.",
+      "Downtown Perks gives guests a live nearby guide for restaurants, events, coffee, nightlife, wellness, and local experiences.",
+      "It feels less like searching the internet and more like getting a useful local answer.",
     ],
     pricing: ["Starter $99/year", "Guest Experience $149/year", "Portfolio Custom"],
     cta: "Activate Guest Discovery",
@@ -90,7 +87,7 @@ export const partnerStates = [
       { label: "Guest unlocked coffee perk downtown", time: "1 hr ago" },
     ],
     analyticsFraming:
-      "Guest interactions, nearby opens, perk unlocks, guest saves, walkability, top nearby venues, return opens, RSVPs, and QR scans by placement.",
+      "Guest opens, nearby places, perk unlocks, saved places, walkable options, top nearby venues, return opens, RSVPs, and QR scans by placement.",
     intakeTargeting: "Guest discovery layer + concierge QR tracking.",
     campaignType: "Guest guide + lobby access path.",
     workspaceHref: "/partner-workspace/overview",
@@ -98,17 +95,12 @@ export const partnerStates = [
   {
     key: "venues",
     label: "Venues",
-    eyebrow: "VENUES",
+    eyebrow: "Venues",
     headline: "Be nearby when people are ready.",
     body: [
       "Most local advertising reaches people too early, too broadly, or too late.",
-      "Downtown Perks places venues inside moments of real-world intent.",
-      "People already nearby can discover your venue while actively deciding where to go next.",
-      "This creates stronger visibility during high-intent moments instead of passive awareness campaigns.",
-      "Not reach.",
-      "Relevance.",
-      "Not impressions.",
-      "Intent.",
+      "Downtown Perks places venues near the moment someone is deciding where to go next.",
+      "A nearby happy hour, a show before dinner, a patio after work, or a last-minute plan can become easy to act on.",
     ],
     pricing: ["Free Listing $0/year", "Basic $30/year", "Growth $79/year", "Pro $199/year"],
     cta: "Launch Venue Visibility",
@@ -132,14 +124,13 @@ export const partnerStates = [
   {
     key: "brands",
     label: "Brands",
-    eyebrow: "BRANDS",
+    eyebrow: "Brands",
     headline: "Buy the moment, not the impression.",
     body: [
-      "Most media platforms optimize for attention.",
-      "Downtown Perks optimizes for physical movement and contextual visibility.",
-      "Campaigns appear around real-world activity: events, neighborhoods, hospitality zones, nightlife corridors, residential clusters, and walkable traffic patterns.",
-      "This creates measurable local interaction tied directly to place and timing.",
-      "The result is more intelligent local activation with clearer attribution and stronger contextual relevance.",
+      "Most media buys chase attention.",
+      "Downtown Perks helps brands appear around real downtown plans.",
+      "Campaigns can connect to events, neighborhoods, hotels, residential buildings, nightlife corridors, and walkable routes.",
+      "The result is a local campaign people can understand, save, and use.",
     ],
     pricing: ["Starter $99/year", "Campaign $149/year", "Sponsorship Custom"],
     cta: "Run a Local Campaign",
@@ -163,14 +154,12 @@ export const partnerStates = [
   {
     key: "civic",
     label: "Civic",
-    eyebrow: "CIVIC",
+    eyebrow: "Civic",
     headline: "Make local participation easier.",
     body: [
-      "Cities, districts, chambers, and community organizations all face the same challenge: people miss things because discovery takes too much effort.",
-      "Downtown Perks creates a live participation layer residents can actually use.",
-      "Events, public initiatives, activations, wellness programs, district campaigns, and neighborhood experiences become visible through one shared downtown system.",
-      "The goal is not promotion.",
-      "The goal is participation.",
+      "People miss good local programs because finding them takes too much effort.",
+      "Downtown Perks makes civic events, public art, wellness programs, district campaigns, and community resources easier to find.",
+      "The goal is simple: help more people know what is here and take part.",
     ],
     pricing: ["Community $30/year", "Program $99/year", "District Custom"],
     cta: "Coordinate Community Activity",
@@ -186,7 +175,7 @@ export const partnerStates = [
       { label: "Community activation gained new enrollments", time: "2 hrs ago" },
     ],
     analyticsFraming:
-      "Event views, RSVPs, attendance proxy, saves, public resource opens, district movement, nearby business engagement, and repeat participation.",
+      "Event views, RSVPs, saves, public resource opens, nearby business opens, and repeat participation.",
     intakeTargeting: "Event visibility + district participation + RSVP tracking.",
     campaignType: "District participation + RSVP tracking.",
     workspaceHref: "/partner-workspace/reports",
@@ -194,16 +183,16 @@ export const partnerStates = [
 ];
 
 export const intelligenceMetrics = [
-  { value: "180k+", label: "Monthly Interactions", window: "Last 30 days", source: "Downtown layer baseline", action: "Prioritize high-return corridors." },
-  { value: "52%", label: "Repeat Engagement", window: "Last 90 days", source: "Partner activity sample", action: "Tune offers around repeat windows." },
+  { value: "180k+", label: "Monthly Opens", window: "Last 30 days", source: "Downtown layer baseline", action: "Prioritize useful corridors." },
+  { value: "52%", label: "Repeat Use", window: "Last 90 days", source: "Partner sample", action: "Tune offers around repeat windows." },
   { value: "40+", label: "Active Partners", window: "Current network", source: "Downtown Perks partner layer", action: "Fill coverage gaps by district." },
-  { value: "3.2x", label: "Campaign ROI", window: "Pilot average", source: "Demo campaign benchmark", action: "Shift spend toward intent moments." },
+  { value: "3.2x", label: "Campaign ROI", window: "Pilot average", source: "Demo campaign benchmark", action: "Put budget near the moments people can use." },
 ];
 
 export const analyticsCards = [
   { title: "Visibility", body: "See where partners are appearing across the live downtown layer." },
-  { title: "Engagement", body: "Track saves, scans, RSVPs, unlocks, directions, and repeat behavior." },
-  { title: "Movement", body: "Understand how activity changes by district, radius, time window, and source." },
+  { title: "Use", body: "Track saves, scans, RSVPs, unlocks, directions, and repeat visits." },
+  { title: "Local Patterns", body: "Understand what people use by district, nearby area, time window, and entry point." },
   { title: "Action", body: "Use recommended next steps to adjust timing, offer, placement, and campaign radius." },
 ];
 
@@ -226,12 +215,12 @@ export const partnerFaqs = [
   {
     question: "What metrics can partners actually see?",
     answer:
-      "Scans, saves, repeat interactions, engagement timing, participation patterns, and activation performance. The goal is operational visibility, not vanity metrics.",
+      "Scans, saves, repeat opens, timing, participation, and campaign results. The goal is practical reporting, not vanity metrics.",
   },
   {
     question: "How do campaigns work?",
     answer:
-      "Campaigns are tied to audience, district, radius, timing, placement, and a measurable next action such as a save, RSVP, direction tap, card open, scan, or redemption.",
+      "Campaigns are tied to who should see it, where it appears, when it runs, and one clear next step such as a save, RSVP, directions tap, card open, scan, or redemption.",
   },
   {
     question: "How does onboarding work?",

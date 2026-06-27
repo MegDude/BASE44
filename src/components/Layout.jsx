@@ -116,7 +116,7 @@ export default function Layout() {
     pathname.startsWith("/resident-app");
 
   const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
-  const showNavbar = pathname !== "/" && (pathname === "/app" || pathname === "/app/map" || pathname === "/map" || !isProductRoute);
+  const showNavbar = pathname !== "/";
   const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {

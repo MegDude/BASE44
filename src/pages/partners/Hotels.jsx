@@ -67,7 +67,7 @@ const HOTEL_FILTER_COPY = {
     label: "Walkable now",
     title: "Show the best nearby options without another app.",
     body: "Walkable context helps guests move from lobby, elevator, or room QR into a local plan they can actually use.",
-    result: "Logged-in view: distance-based recommendations, directions clicks, and route intent.",
+    result: "Logged-in view: distance-based recommendations, directions clicks, and route use.",
   },
   perks: {
     label: "Perks live",
@@ -77,7 +77,7 @@ const HOTEL_FILTER_COPY = {
   },
   saved: {
     label: "Saved by guests",
-    title: "Measure intent before the guest leaves the property.",
+    title: "See what guests save before they leave the property.",
     body: "Saved items show what guests are considering, what they return to, and which local categories matter most.",
     result: "Logged-in view: saved entities, source QR, stay-stage context, and follow-up opportunities.",
   },
@@ -123,8 +123,8 @@ export default function HotelsPartner() {
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.18) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,51,0.18) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Link to="/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
-              <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" /> Partner Directory
+            <Link to="/partners" className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-muted-foreground hover:text-primary transition-colors group" aria-label="Back to partners" title="Back to partners">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" aria-hidden="true" />
             </Link>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
@@ -479,7 +479,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
         </div>
-        <div className="border border-border/50 rounded-xl overflow-hidden">
+        <div className="border border-border/50 overflow-hidden">
           <div className="flex border-b border-border/40 overflow-x-auto">
             {TYPES.map(t => (
               <button key={t} onClick={() => setFormType(t)} className={`px-5 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"}`}>{t}</button>
@@ -489,27 +489,24 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
             <div className="p-8 md:border-r border-border/40 space-y-4">
               {[["Hotel Name", "text"], ["Your Name & Role", "text"], ["Email", "email"], ["Phone", "tel"]].map(([label, type]) => (
                 <div key={label}>
-                  <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">{label}</label>
-                  <input type={type} className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
+                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">{label}</label>
+                  <input type={type} className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
                 </div>
               ))}
               <div>
-                <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">What are you looking to set up</label>
+                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">What are you looking to set up</label>
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)} placeholder="Tell us about your hotel and what you want to offer guests."
-                  className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
+                  className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
+                <div className="dp-partner-prompt-inline" aria-label="Suggested prompts">
+                  {prompts.map(p => (
+                    <button key={p} type="button" onClick={() => setFormText(p)}>{p}</button>
+                  ))}
+                </div>
               </div>
-              <button className="w-full py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{submitLabel}</button>
+              <button className="w-full py-2.5 bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">{submitLabel}</button>
             </div>
             <div className="p-8 bg-muted/10 flex flex-col">
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Prompts</div>
-              <div className="space-y-2 flex-1">
-                {prompts.map(p => (
-                  <button key={p} onClick={() => setFormText(p)} className="w-full text-left px-4 py-2.5 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">{p}</button>
-                ))}
-              </div>
-              <div className="mt-6 pt-6 border-t border-border/40">
-                <p className="text-[12px] text-muted-foreground/60 italic">Questions? <a href="mailto:partners@downtownperks.com" className="text-primary hover:underline underline-offset-4">partners@downtownperks.com</a></p>
-              </div>
+              <p className="text-[13px] leading-6 text-[#0B1F33]/68">Share the guest need, lobby entry point, and nearby experiences you want to connect.</p>
             </div>
           </div>
         </div>

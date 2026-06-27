@@ -60,14 +60,14 @@ export function getAgentEntityType(entity: EntityLike) {
 export function getEntityAgentQuestions(entity: EntityLike) {
   const type = getAgentEntityType(entity);
   const questions: Record<string, string[]> = {
-    venue: ["Best time to visit?", "What is nearby?", "What makes this unique?", "Similar places?"],
-    hotel: ["What should guests do nearby?", "What is walkable?", "Best evening plan?", "Similar stays?"],
-    property: ["What amenities are nearby?", "What lifestyle fits here?", "Similar buildings?", "What is walkable?"],
-    event: ["What should I do before?", "What should I do after?", "Who is this for?", "What else is nearby?"],
-    perk: ["How do I use this?", "What else is nearby?", "What should I pair this with?", "Worth using tonight?"],
-    brand: ["Who is nearby?", "What should I launch?", "Where does this fit?", "Similar partners?"],
-    civic: ["Why does this matter?", "What is nearby?", "What should I attend?", "How can I join?"],
-    place: ["What is nearby?", "Worth going tonight?", "Similar spots?", "Best time to visit?"],
+    venue: ["Who is nearby?", "What offer fits here?", "What should we pair nearby?", "What should we promote?"],
+    hotel: ["What should guests see nearby?", "What is easy to walk to?", "What offer fits arrivals?", "What helps the concierge?"],
+    property: ["What helps residents nearby?", "What should leasing show?", "What services fit here?", "What is walkable?"],
+    event: ["What should we promote before?", "What should we promote after?", "Who is nearby?", "What else supports this?"],
+    perk: ["Who will use this?", "What should it pair with?", "Where should it appear?", "What makes it easy to use?"],
+    brand: ["Who is nearby?", "What should we launch?", "Where does this fit?", "What should we pair nearby?"],
+    civic: ["Who uses this stop?", "What route fits nearby?", "What should hotels mention?", "What can residents discover?"],
+    place: ["Who is nearby?", "What should we pair nearby?", "What makes this useful?", "What should we promote?"],
   };
   return questions[type] || questions.place;
 }

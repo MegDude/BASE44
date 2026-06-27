@@ -69,6 +69,12 @@ function isHotelLike(entity: Record<string, any>) {
   return /\b(hotel|hospitality|lodging|guest|stay)\b/.test(`${explicit} ${text}`);
 }
 
+function isCivicLike(entity: Record<string, any>) {
+  const explicit = explicitTypeText(entity);
+  const text = entityText(entity);
+  return /\b(civic|public art|public realm|park|plaza|trail|library|museum|monument|landmark|auditorium shores|lady bird|butler trail|shoal beach|republic square|palmer events|long center)\b/.test(`${explicit} ${text}`);
+}
+
 function isVenueLike(entity: Record<string, any>) {
   const explicit = explicitTypeText(entity);
   const text = entityText(entity);
@@ -105,7 +111,7 @@ function labelFor(entity: Record<string, any>) {
   const kind = getEntityKind(entity);
   const text = entityText(entity);
   const explicit = explicitTypeText(entity);
-  if (/\b(downtown austin alliance|daa|civic|public realm|district organization)\b/.test(text)) return "Civic";
+  if (/\b(downtown austin alliance|daa|civic|public realm|district organization)\b/.test(text) || isCivicLike(entity)) return "Civic";
   if (isListingEntity(entity)) return "Listing";
   if (isHotelLike(entity)) return "Hotel";
   if (isPropertyLike(entity)) return "Residential";
@@ -137,7 +143,7 @@ function groupLabelFor(type: string) {
   if (type === "Wellness") return "Wellness Nearby";
   if (type === "Retail") return "Nearby Shopping";
   if (type === "Culture") return "Culture Nearby";
-  if (type === "Civic") return "Places";
+  if (type === "Civic") return "Nearby civic stops";
   return "Places";
 }
 
@@ -153,7 +159,8 @@ function headlineFor(group: string) {
     "Coffee Nearby": "Coffee stops close by",
     "Wellness Nearby": "Wellness stops close by",
     "Nearby Shopping": "Useful shops nearby",
-    "Culture Nearby": "Culture and civic stops nearby",
+    "Culture Nearby": "Culture stops nearby",
+    "Nearby civic stops": "Public places that can make a simple downtown route",
     Places: "Useful places around this pin",
   };
   return headlines[group] || "Useful places around this pin";
@@ -183,24 +190,45 @@ function cardMetaFor(entity: Record<string, any>, type: string) {
   return `${typeLabelFor(type)} · ${district}`;
 }
 
-export function getRelatedPartnerAssets({ nearby = [] }: { nearby: NearbyRecommendation[] }) {
+function isCivicSelected(entity: Record<string, any>) {
+  return isCivicLike(entity) || labelFor(entity) === "Civic";
+}
+
+function shouldShowForCivicRoute(entity: Record<string, any>) {
+  if (isListingEntity(entity) || isPropertyLike(entity) || isHotelLike(entity) || isActualPerk(entity)) return false;
+  const type = labelFor(entity);
+  return type === "Civic" || type === "Culture";
+}
+
+export function getRelatedPartnerAssets({
+  nearby = [],
+  selectedEntity = null,
+}: {
+  nearby: NearbyRecommendation[];
+  selectedEntity?: Record<string, any> | null;
+}) {
   const groups = new Map<string, any[]>();
-  const groupOrder = [
-    "Events Nearby",
-    "Member Benefits",
-    "Homes Nearby",
-    "Nearby Buildings",
-    "Coffee Nearby",
-    "Dining Nearby",
-    "Drinks Nearby",
-    "Nearby Hotels",
-    "Wellness Nearby",
-    "Nearby Shopping",
-    "Culture Nearby",
-    "Places",
-  ];
+  const civicSelected = selectedEntity ? isCivicSelected(selectedEntity) : false;
+  const groupOrder = civicSelected
+    ? ["Nearby civic stops", "Culture Nearby", "Coffee Nearby", "Dining Nearby", "Drinks Nearby", "Events Nearby"]
+    : [
+      "Events Nearby",
+      "Member Benefits",
+      "Homes Nearby",
+      "Nearby Buildings",
+      "Coffee Nearby",
+      "Dining Nearby",
+      "Drinks Nearby",
+      "Nearby Hotels",
+      "Wellness Nearby",
+      "Nearby Shopping",
+      "Culture Nearby",
+      "Nearby civic stops",
+      "Places",
+    ];
   const seen = new Set<string>();
   nearby.forEach((item) => {
+    if (civicSelected && !shouldShowForCivicRoute(item.entity)) return;
     const type = labelFor(item.entity);
     const groupLabel = groupLabelFor(type);
     const key = String(item.entity?.id || item.entity?.name || item.entity?.title || "");

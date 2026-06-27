@@ -47,7 +47,6 @@ import AboutDowntownPerksModal from "@/components/modals/AboutDowntownPerksModal
 import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
 import { AppButton } from "@/components/ui/AppButton";
-import { AppButtonGroup } from "@/components/ui/AppButtonGroup";
 import { useMapEntityData } from "@/hooks/useMapEntityData";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
@@ -64,9 +63,9 @@ import { getRelatedPartnerAssets } from "@/utils/relatedPartnerAssets";
 import { getEntityAgentQuestions } from "@/platform";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
+import { getDaaCheckIn, recordDaaCheckIn } from "@/lib/daaCheckIns";
 import { trackingEvents } from "@/lib/analytics/track";
 import { queryAgent } from "@/services/agent/agentClient";
-import { getSurveyIntelligenceSummary } from "@/lib/surveys/surveyIntelligence";
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { luxuryPresenceListings } from "@/data/luxuryPresenceInventory";
 import { getLegendsPropertyContent } from "@/data/legendsPropertyContent";
@@ -117,6 +116,7 @@ const FILTERS = [
   "Events",
   "Campaigns",
   "Explore Downtown",
+  "Discovery Trails",
   "Places",
   "Dining",
   "Coffee",
@@ -327,9 +327,10 @@ const FILTER_MATCHERS = {
   Staycations: ["staycation", "staycations", "weekend escape", "hotel experience", "resident hotel", "hosting visitors", "four seasons", "proper", "zaza", "van zandt", "the loren"],
   Parking: ["parking", "garage", "reservable parking", "resident rate"],
   Rentals: ["rental", "rentals", "leasing", "lease", "available under", "bedroom rental", "mls", "property manager", "package service", "rooftop lounge"],
-  Brands: ["brand", "sponsor", "rivian", "yeti", "topo chico", "inspired closets", "the stay put", "waterline", "ariat", "lululemon", "equinox", "legends real estate"],
+  Brands: ["brand", "sponsor", "rivian", "yeti", "topo chico", "fine eyewear", "inspired closets", "the stay put", "waterline", "ariat", "lululemon", "equinox", "legends real estate"],
   Events: ["event", "activation", "music", "show", "festival", "rsvp"],
   Campaigns: ["campaign", "passport", "challenge", "guide", "access", "perk week", "series", "reward", "route", "collection"],
+  "Discovery Trails": ["discovery trail", "discovery_marker", "discovery marker", "see austin differently", "golden hour", "waterloo reflection", "photo trail", "vision of austin"],
   "Explore Downtown": ["explore downtown", "public art", "mural", "historic", "landmark", "community story", "waterloo", "park", "greenway", "cultural destination", "civic"],
   "Live Music": ["live music", "concert", "moody amphitheater", "show"],
   Culture: ["culture", "entertainment", "library", "city hall", "history", "museum"],
@@ -349,12 +350,12 @@ const FILTER_MATCHERS = {
   Nightlife: ["nightlife", "bar", "cocktail", "music", "late night"],
   "Arts & Culture": ["art", "arts", "culture", "museum", "gallery", "historic", "daa", "tour"],
   Walkable: ["walk", "walking", "walkable", "nearby", "trail"],
-  Trending: ["trending", "popular", "saved", "active", "demand"],
+  Trending: ["trending", "popular", "saved", "active", "interest"],
   Nearby: ["nearby", "walkable", "around the corner", "downtown"],
   Performance: ["performance", "report", "analytics", "insight", "scan", "save", "redemption"],
   Opportunity: ["opportunity", "coverage", "campaign", "activation", "launch"],
   Coverage: ["coverage", "gap", "visibility", "low coverage"],
-  Audience: ["audience", "resident", "guest", "movement", "engagement"],
+  Audience: ["audience", "resident", "guest", "nearby", "engagement"],
   Residents: ["resident", "building", "property", "home", "apartment"],
   Surveys: ["survey", "question", "feedback", "response"],
   Broadcasts: ["broadcast", "announcement", "visibility", "placement"],
@@ -381,18 +382,18 @@ const PARTNER_ASK_PROMPTS = [
   "Busy buildings",
   "inKind nearby",
   "Events watched",
-  "Demand nearby",
+  "Interest nearby",
 ];
 
 const PARTNER_CONTEXT_PROMPTS = {
   Properties: [
-    "Resident demand",
+    "Resident interest",
     "Saved perks",
     "Busy buildings",
     "Share next",
   ],
   Hotels: [
-    "Guest demand",
+    "Guest interest",
     "Saved nearby",
     "Hotel offers",
   ],
@@ -403,7 +404,7 @@ const PARTNER_CONTEXT_PROMPTS = {
   ],
   inKind: [
     "inKind nearby",
-    "Dining demand",
+    "Dining interest",
     "Dinner push",
   ],
   Brands: [
@@ -417,7 +418,7 @@ const PARTNER_CONTEXT_PROMPTS = {
     "Art walk",
   ],
   "Real Estate": [
-    "Home demand",
+    "Home interest",
     "Tours nearby",
     "Listing saves",
   ],
@@ -447,6 +448,7 @@ const CANONICAL_CATEGORY_LABELS = {
   perk: "Perks",
   offer: "Perks",
   campaign: "Campaigns",
+  discovery_marker: "Discovery Trail",
   place: "Place",
 };
 
@@ -531,7 +533,7 @@ const LEGENDS_ANALYTICS_INSIGHT_COPY = {
   },
   "Lifestyle Benefit Engagement": {
     signal: "Which benefits people open most: walkability, dining, wellness, waterfront access, or local services.",
-    why: "The strongest signals show what people are already trying to imagine for themselves.",
+    why: "The strongest choices show what people are already trying to imagine for themselves.",
     action: "Lead with the benefits people choose first and keep the rest secondary.",
   },
 };
@@ -618,6 +620,7 @@ const RESIDENT_SEARCH_FILTERS = [
   { label: "Properties", filter: "Properties" },
   { label: "Hotels", filter: "Hotels" },
   { label: "Civic", filter: "Civic" },
+  { label: "Discovery Trails", filter: "Discovery Trails" },
   { label: "Live Music", filter: "Live Music" },
   { label: "Happy Hour", filter: "Happy Hour" },
   { label: "Trending", filter: "Trending" },
@@ -637,6 +640,7 @@ const PARTNER_SEARCH_FILTERS = [
   { label: "Audience", filter: "Audience" },
   { label: "Campaigns", filter: "Campaigns" },
   { label: "Explore Downtown", filter: "Explore Downtown" },
+  { label: "Discovery Trails", filter: "Discovery Trails" },
   { label: "Residents", filter: "Residents" },
   { label: "Properties", filter: "Properties" },
   { label: "Hotels", filter: "Hotels" },
@@ -706,7 +710,7 @@ const RESIDENT_PROMPTS = [
 
 const PARTNER_PROMPTS = [
   "What campaign should I launch?",
-  "Show nearby resident demand",
+  "Show nearby resident interest",
   "What is trending nearby?",
   "Find sponsorship opportunities",
   "Show activation ideas",
@@ -837,6 +841,7 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
       { label: "Events", filter: "Events", icon: CalendarDays, prompt: "What should we do tonight?" },
       { label: "Perks", filter: "Perks", icon: Gift, prompt: "Find resident perks nearby" },
       { label: "Explore", filter: "Explore Downtown", icon: Compass, prompt: "Show me public art nearby" },
+      { label: "Trails", filter: "Discovery Trails", icon: Compass, prompt: "See Austin Differently" },
       { label: "Coffee", filter: "Coffee", icon: Coffee, prompt: "Coffee within walking distance" },
       { label: "Art Walk", filter: "Civic", icon: Landmark, prompt: "Art walk nearby" },
       { label: "Parking", filter: "Parking", icon: Car, prompt: "Parking nearby" },
@@ -846,8 +851,8 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
       { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo.png", prompt: "inKind dining nearby" },
       { label: "DANA", kind: "filter", filter: "Civic", logo: "/pins/brands/dana-logo-gold.svg", prompt: "DANA civic updates" },
       { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo.png", prompt: "Legends listings nearby" },
-      { label: "Fine Eyewear", kind: "filter", filter: "Campaigns", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "See Austin Differently" },
-      { label: "Waterloo Greenway", kind: "filter", filter: "Civic", logo: "/pins/brands/waterloo-greenway-logo-gold.svg", prompt: "Waterloo Greenway discovery trail" },
+      { label: "Fine Eyewear", kind: "filter", filter: "Discovery Trails", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "See Austin Differently" },
+      { label: "Waterloo Greenway", kind: "filter", filter: "Discovery Trails", logo: "/pins/brands/waterloo-greenway-logo-gold.svg", prompt: "Waterloo Greenway discovery trail" },
     ],
   },
   partner: {
@@ -855,19 +860,20 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
     placeholder: "",
     fallbackTitle: "Partner map",
     fallbackSignal: "Opportunity nearby",
-    pulseFallback: "Demand signal nearby",
+    pulseFallback: "Interest nearby",
     intentChips: [
       { label: "Performance", filter: "Performance", icon: Activity, prompt: "Compare campaign performance" },
       { label: "Campaigns", filter: "Campaigns", icon: Megaphone, prompt: "What campaign should I launch?" },
-      { label: "Demand", filter: "Audience", icon: Users, prompt: "Show nearby resident demand" },
+      { label: "Trails", filter: "Discovery Trails", icon: Compass, prompt: "Show discovery trail placements" },
+      { label: "Interest", filter: "Audience", icon: Users, prompt: "Show nearby resident interest" },
       { label: "Activation", filter: "Opportunity", icon: Sparkles, prompt: "Show activation ideas" },
       { label: "Insights", filter: "Reports", icon: TrendingUp, prompt: "What is trending nearby?" },
-      { label: "Parking", filter: "Parking", icon: Car, prompt: "Parking demand nearby" },
+      { label: "Parking", filter: "Parking", icon: Car, prompt: "Parking nearby" },
     ],
     filterRail: [
       { label: "Perks", kind: "filter", filter: "Perks", prompt: "Perk performance nearby" },
       { label: "Events", kind: "filter", filter: "Events", prompt: "Event sponsorship opportunities" },
-      { label: "Residential", kind: "filter", filter: "Properties", prompt: "Nearby resident demand" },
+      { label: "Residential", kind: "filter", filter: "Properties", prompt: "Nearby resident interest" },
       { label: "Hotels", kind: "filter", filter: "Hotels", prompt: "Hotel guest opportunity" },
       { label: "Civic", kind: "filter", filter: "Civic", prompt: "DAA sponsorship opportunity" },
       { label: "Brands", kind: "filter", filter: "Brands", prompt: "Brand activation opportunities" },
@@ -875,9 +881,9 @@ const SEARCH_CONSOLE_MODE_CONFIG = {
     featuredPins: [
       { label: "inKind", kind: "filter", filter: "inKind", logo: "/pins/brands/inkind-logo.png", prompt: "inKind dining performance" },
       { label: "DANA", kind: "filter", filter: "Civic", logo: "/pins/brands/dana-logo-gold.svg", prompt: "DANA sponsorship opportunity" },
-      { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo.png", prompt: "Legends listing demand" },
-      { label: "Fine Eyewear", kind: "filter", filter: "Campaigns", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "Fine Eyewear campaign performance" },
-      { label: "Waterloo Greenway", kind: "filter", filter: "Civic", logo: "/pins/brands/waterloo-greenway-logo-gold.svg", prompt: "Waterloo Greenway activation opportunity" },
+      { label: "Legends", kind: "filter", filter: "Legends", logo: "/pins/downtown-perks/legends-logo.png", prompt: "Legends listings nearby" },
+      { label: "Fine Eyewear", kind: "filter", filter: "Discovery Trails", logo: "/pins/brands/fine-eyewear-logo-gold.svg", prompt: "Fine Eyewear discovery trail" },
+      { label: "Waterloo Greenway", kind: "filter", filter: "Discovery Trails", logo: "/pins/brands/waterloo-greenway-logo-gold.svg", prompt: "Waterloo Greenway discovery trail" },
     ],
   },
 };
@@ -928,14 +934,14 @@ const PARTNER_CONTEXT_RAILS = {
   Performance: [
     { label: "Views", kind: "filter", filter: "Performance", prompt: "Compare campaign performance" },
     { label: "Saves", kind: "filter", filter: "Performance", prompt: "Saved activity nearby" },
-    { label: "Visits", kind: "filter", filter: "Performance", prompt: "Visit signals nearby" },
+    { label: "Visits", kind: "filter", filter: "Performance", prompt: "Visits nearby" },
     { label: "Redemptions", kind: "filter", filter: "Performance", prompt: "Redemption activity nearby" },
   ],
   Campaigns: [
     { label: "Launch Campaign", kind: "filter", filter: "Campaigns", prompt: "What campaign should I launch?" },
-    { label: "Resident Demand", kind: "filter", filter: "Audience", prompt: "Show nearby resident demand" },
+    { label: "Resident Interest", kind: "filter", filter: "Audience", prompt: "Show nearby resident interest" },
     { label: "Event Sponsorship", kind: "filter", filter: "Events", prompt: "Event sponsorship opportunities" },
-    { label: "Parking", kind: "filter", filter: "Parking", prompt: "Parking demand nearby", icon: Car },
+    { label: "Parking", kind: "filter", filter: "Parking", prompt: "Parking nearby", icon: Car },
   ],
   Demand: SEARCH_CONSOLE_MODE_CONFIG.partner.filterRail,
   Activation: SEARCH_CONSOLE_MODE_CONFIG.partner.filterRail,
@@ -1172,7 +1178,7 @@ function getPartnerBusinessInsights(place) {
     return {
       intent: "Residents nearby are solving practical home, move-in, or everyday setup needs.",
       audience: "Best fit: downtown residents, new movers, property teams, and people already planning a home upgrade.",
-      opportunity: `Use ${name} as a useful service stop that turns nearby resident intent into a consult, save, or follow-up.`,
+      opportunity: `Use ${name} as a useful service stop that turns nearby resident interest into a consult, save, or follow-up.`,
       timing: "Strongest window: move-ins, home resets, and weekend planning",
       placement: `Useful service near ${district}`,
       action: "Route to the right service step",
@@ -1184,7 +1190,7 @@ function getPartnerBusinessInsights(place) {
       intent: "People nearby are already making plans, comparing stops, or looking for a useful reason to engage.",
       audience: "Best fit: residents, visitors, hotel guests, and nearby audiences close enough to act.",
       opportunity: `Keep ${name} tied to a specific perk, scan, save, or visit instead of a generic brand impression.`,
-      timing: "Strongest window: active downtown plans and nearby intent",
+      timing: "Strongest window: active downtown plans nearby",
       placement: `Activation near ${district}`,
       action: "Lead with the active perk",
     };
@@ -1562,9 +1568,18 @@ function isCampaignEntity(place) {
   );
 }
 
+function isNeighborhoodEntity(place) {
+  const type = String(place?.type || place?.kind || place?.entityType || place?.raw?.type || place?.raw?.kind || "").toLowerCase();
+  const detailType = String(place?.detailDrawerType || place?.raw?.detailDrawerType || "").toLowerCase();
+  const category = String(place?.category || place?.raw?.category || "").toLowerCase();
+  const categoryKey = String(place?.category_key || place?.raw?.category_key || "").toLowerCase();
+  return type.includes("neighborhood") || detailType === "neighborhood" || category.includes("neighborhood") || categoryKey.includes("neighborhood");
+}
+
 function getMapDrawerPanelKind(place, mode = "resident") {
   if (!place) return "destination";
   const entityKind = getResidentEntityKind(place);
+  if (isNeighborhoodEntity(place)) return "place";
   if (isDaaTourPlace(place) || entityKind === "civic" || entityKind === "landmark") return "civic";
   if (isCampaignEntity(place) || entityKind === "campaign") return "campaign";
   if (entityKind === "event" || getDestinationKind(place) === "event") return "event";
@@ -1582,7 +1597,7 @@ function isBrandEntity(place) {
   const type = String(place.type || "").toLowerCase();
   const partnerType = String(place.partnerType || "").toLowerCase();
   const name = String(place.name || "").toLowerCase();
-  const knownBrands = ["rivian", "yeti", "topo chico", "inspired closets", "the stay put", "waterline", "ariat", "lululemon", "equinox", "austin fc", "legends real estate"];
+  const knownBrands = ["rivian", "yeti", "topo chico", "fine eyewear", "inspired closets", "the stay put", "waterline", "ariat", "lululemon", "equinox", "austin fc", "legends real estate"];
   const venueOnlySignals = ["bar", "nightlife", "restaurant", "coffee", "dining", "pizza", "cafe", "pub"];
   const knownBrandMatch = knownBrands.some((brand) => name === brand || name.startsWith(`${brand} `));
 
@@ -1655,6 +1670,7 @@ function isCivicEntity(place) {
 
 function isExploreDowntownEntity(place) {
   if (isCampaignEntity(place)) return false;
+  if (isNeighborhoodEntity(place)) return true;
   const source = String(place?.source || place?.raw?.source || "").toLowerCase();
   const category = String(place?.category || place?.raw?.category || "").toLowerCase();
   const civicCategory = String(place?.civicCategory || place?.raw?.civicCategory || "").toLowerCase();
@@ -1940,6 +1956,7 @@ function matchesFilter(place, activeFilter, savedIds) {
   if (activeFilter === "Venues") return isVenueEntity(place);
   if (activeFilter === "Wellness") return coreMatches(place, FILTER_MATCHERS.Wellness) || String(place.type || "").toLowerCase() === "wellness" || String(place.kind || place.raw?.kind || "").toLowerCase() === "wellness";
   if (activeFilter === "Events") return isEventEntity(place);
+  if (activeFilter === "Discovery Trails") return coreMatches(place, FILTER_MATCHERS["Discovery Trails"]) || String(place.type || place.kind || place.raw?.type || place.raw?.kind || "").toLowerCase() === "discovery_marker";
   if (activeFilter === "Civic") return isCivicEntity(place) || Boolean(getDaaStopFromPlace(place));
   if (activeFilter === "Parking") return isParkingEntity(place);
   if (["Printing", "Pharmacy", "Cleaners", "EV Charging", "Bike Share", "Visitor Info", "Shipping"].includes(activeFilter)) return isUtilityServiceEntity(place, activeFilter);
@@ -2486,14 +2503,15 @@ function getEntityIdentity(place, mode = "resident") {
 
   if (kind === "campaign" || isCampaignEntity(place)) {
     const raw = place?.raw || {};
-    const sponsor = place?.sponsorName || raw.sponsorName;
+    const partnerLine = place?.partnerLine || raw.partnerLine || place?.sponsorName || raw.sponsorName;
+    const campaignSummary = place?.summary || raw.summary || place?.description || raw.description || context;
     return {
       id: place?.id,
       entityType: "guide",
       displayTypeLabel: `${panelArchetype.eyebrow} · ${district}`,
       displayTitle: place?.name || place?.title || "Downtown campaign",
-      displaySubtitle: sponsor ? `Presented by ${sponsor}` : [district, address].filter(Boolean).join(" · "),
-      displayContext: truncatePanelCopy(place?.description || raw.description || place?.summary || raw.summary || context, 130),
+      displaySubtitle: partnerLine ? `Partner: ${partnerLine}` : [district, address].filter(Boolean).join(" · "),
+      displayContext: truncatePanelCopy(campaignSummary, 210),
       address,
       neighborhood: district,
       categoryLabel: panelArchetype.eyebrow,
@@ -3791,7 +3809,7 @@ const INKIND_DISCOVERY_PROFILES = [
       "Eligible Downtown Perks members can unlock additional dining value through participating restaurant benefits.",
     why:
       "It works for celebrations, business dinners, wine nights, and visiting friends who want downtown energy with a refined meal.",
-    loves: "Fresh pasta, wood-fired entrees, strong service, and a dining room that always feels in demand.",
+    loves: "Fresh pasta, wood-fired entrees, strong service, and a dining room people plan ahead for.",
     localTip: "Try earlier dinner windows or bar seating when the main room is booked.",
     goodFor: ["Anniversaries", "Business dinners", "Wine nights", "Visiting friends"],
     nearbyContext: "Easy from Congress, the Warehouse District, and nearby downtown hotels.",
@@ -3891,7 +3909,7 @@ function getInKindDiscoveryProfile(place) {
     story,
     benefit: "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
     why: `${name} is useful when you want a real local option nearby instead of scrolling for another place to go.`,
-    loves: cleanInKindResidentCopy(place?.raw?.knownFor || place?.raw?.cuisine || place?.category) || "Good food, easy access, and a reason to make nearby plans feel more intentional.",
+    loves: cleanInKindResidentCopy(place?.raw?.knownFor || place?.raw?.cuisine || place?.category) || "Good food, easy access, and a reason to make nearby plans feel more useful.",
     localTip: "Check the current benefit before you go, then save it for dinner plans, visiting friends, or an easy night out.",
     goodFor: ["Dinner nearby", "Date night", "Visiting friends", "Cocktails"],
     nearbyContext: `Useful for residents, hotel guests, and downtown plans around ${neighborhood}.`,
@@ -3922,7 +3940,7 @@ function InKindAppliedLayer({ place, mode = "resident" }) {
     ? [
         ["Discovery", "Downtown Perks places the restaurant in map search, nearby rails, saved places, and local recommendations."],
         ["Transaction", "inKind supports the payment-linked value or dining benefit after the resident decides to go."],
-        ["Reporting", "Partners can compare views, saves, directions, benefit opens, and redemption-ready intent around each location."],
+        ["Reporting", "Partners can compare views, saves, directions, benefit opens, and ready-to-use restaurant actions around each location."],
       ]
     : [
         ["Save it", `Add ${placeName} to your Downtown Perks saved places so it is easy to find later.`],
@@ -4343,6 +4361,154 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
         title="Nearby After"
         support="Keep the plan going with walkable places nearby."
       />
+    </motion.div>
+  );
+}
+
+function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", savedIds, onSave, onSelect }) {
+  const raw = place?.raw || {};
+  const image = getLifestyleImage(place, mode);
+  const isSaved = savedIds?.has?.(place.id);
+  const list = (key) => {
+    const value = place?.[key] || raw?.[key] || [];
+    return Array.isArray(value) ? value.filter(Boolean) : [];
+  };
+  const featuredPerk = place?.featuredPerk || raw?.featuredPerk;
+  const comparisonRows = place?.comparisonAttributes || raw?.comparisonAttributes;
+  const linkedNames = [...list("linkedBuildings"), ...list("linkedBusinesses")];
+  const linkedPlaces = linkedNames
+    .map((name) => places.find((candidate) => String(candidate.name || "").toLowerCase() === String(name).toLowerCase()))
+    .filter(Boolean)
+    .slice(0, 8);
+  const campaignRecommendations = list("campaignRecommendations");
+
+  return (
+    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-neighborhood-drawer">
+      <DestinationHero place={{ ...place, image }} mode={mode} />
+      <EntityIdentityPanel identity={getEntityIdentity(place, mode)} />
+      <section className="dp-destination-action-row dp-neighborhood-actions" aria-label={`${place.name} actions`}>
+        <button type="button" onClick={onSave}>{isSaved ? "Saved" : "Save"}</button>
+        <a href={directionsUrl(place)} target="_blank" rel="noreferrer">Directions</a>
+        <button
+          type="button"
+          onClick={() => {
+            if (navigator.share) {
+              navigator.share({ title: place.name, url: window.location.href }).catch(() => {});
+            } else {
+              navigator.clipboard?.writeText(window.location.href);
+            }
+          }}
+        >
+          Share
+        </button>
+      </section>
+
+      <DestinationSection title={mode === "partner" ? "Why this district matters" : (place.drawerHeadline || raw.drawerHeadline || "Why choose this neighborhood")}>
+        <p className="dp-why-people-go">{place.drawerBody || raw.drawerBody || place.description || place.summary}</p>
+        {(place.history || raw.history) && <p>{place.history || raw.history}</p>}
+      </DestinationSection>
+
+      {Array.isArray(comparisonRows) && comparisonRows.length > 0 && (
+        <DestinationSection title="Compare Neighborhoods">
+          <div className="dp-neighborhood-comparison-rail" aria-label="Neighborhood comparison">
+            {comparisonRows.map(([name, style, walkability, atmosphere]) => (
+              <article key={name} className="dp-neighborhood-comparison-card">
+                <strong>{name}</strong>
+                <span>{style}</span>
+                <em>{walkability} walkability</em>
+                <small>{atmosphere}</small>
+              </article>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
+
+      {list("residentialSnapshot").length > 0 && (
+        <DestinationSection title="Residential snapshot">
+          <div className="dp-civic-text-rail">
+            {list("residentialSnapshot").map((item) => (
+              <span key={item}><strong>{item}</strong></span>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
+
+      {list("notableBuildings").length > 0 && (
+        <DestinationSection title="Buildings nearby">
+          <div className="dp-civic-text-rail">
+            {list("notableBuildings").map((item) => (
+              <button key={item} type="button" onClick={() => {
+                const match = places.find((candidate) => String(candidate.name || "").toLowerCase() === String(item).toLowerCase());
+                if (match) onSelect(match);
+              }}>
+                <strong>{item}</strong>
+              </button>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
+
+      {list("dailyEssentials").length > 0 && (
+        <DestinationSection title="Everyday essentials">
+          <ul className="dp-daa-clean-list">
+            {list("dailyEssentials").map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </DestinationSection>
+      )}
+
+      {list("localHighlights").length > 0 && (
+        <DestinationSection title="Local highlights">
+          <div className="dp-civic-text-rail">
+            {list("localHighlights").map((item) => (
+              <button key={item} type="button" onClick={() => {
+                const match = places.find((candidate) => String(candidate.name || "").toLowerCase() === String(item).toLowerCase());
+                if (match) onSelect(match);
+              }}>
+                <strong>{item}</strong>
+              </button>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
+
+      {featuredPerk?.title && (
+        <DestinationSection title="Featured resident perk">
+          <p><strong>{featuredPerk.title}</strong></p>
+          <p>{featuredPerk.body}</p>
+        </DestinationSection>
+      )}
+
+      {list("bestFor").length > 0 && (
+        <DestinationSection title="Good for">
+          <ul className="dp-daa-clean-list">
+            {list("bestFor").map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </DestinationSection>
+      )}
+
+      {mode === "partner" && campaignRecommendations.length > 0 && (
+        <DestinationSection title="Campaign ideas">
+          <div className="dp-civic-text-rail">
+            {campaignRecommendations.map((item) => (
+              <span key={item}><strong>{item}</strong></span>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
+
+      {linkedPlaces.length > 0 && (
+        <DestinationSection title="Open nearby pins">
+          <div className="dp-daa-next-rail">
+            {linkedPlaces.map((candidate) => (
+              <button key={candidate.id} type="button" className="dp-daa-next-card" onClick={() => onSelect(candidate)}>
+                <span className="dp-daa-next-card-kicker">{candidate.category || candidate.type || "Nearby"}</span>
+                <strong>{candidate.name}</strong>
+                <em>{candidate.district || "Downtown Austin"}</em>
+              </button>
+            ))}
+          </div>
+        </DestinationSection>
+      )}
     </motion.div>
   );
 }
@@ -5592,7 +5758,7 @@ function getLegendsDirectoryRowCopy(place) {
       meta: `${String(listing.status || "Active").replace(/^./, (letter) => letter.toUpperCase())} · ${formatLegendsRentPrice(listing.priceLabel)}`,
       title: `${listing.building}${listing.unit ? ` #${listing.unit}` : ""}`,
       address: `${stripListingUnitFromAddress(listing.address, listing.unit)} · ${listing.neighborhood || "Downtown Austin"}`,
-      details: facts || "Rental demand and showing context",
+      details: facts || "Rental and showing context",
     };
   }
 
@@ -5946,7 +6112,7 @@ function getPartnerRelatedCopy(item, currentPlace) {
 
   if (isInKindEntity(item)) return "Dining value nearby";
   if (isEventEntity(item)) return "Event traffic nearby";
-  if (isHotelEntity(item)) return "Guest demand nearby";
+  if (isHotelEntity(item)) return "Guest interest nearby";
   if (getResolvedLegendsListing(item) || getLuxuryPresenceBuilding(item)) return "Residential interest nearby";
   if (itemKind === "brand") return "Campaign fit nearby";
   if (["dining", "nightlife", "coffee"].includes(itemKind)) return "Food and drinks nearby";
@@ -6070,17 +6236,44 @@ function PartnerNearbyGuide({ place }) {
 
 function PartnerAskSection({ place, answer, loading, onAsk, onClose, onSelect }) {
   const prompts = getEntityAgentQuestions(place).slice(0, 4);
+  const [draft, setDraft] = useState("");
+  const submitQuestion = (question = draft) => {
+    const nextQuestion = String(question || "").trim();
+    if (!nextQuestion || loading) return;
+    setDraft(nextQuestion);
+    onAsk(nextQuestion);
+  };
 
   return (
-    <section className="dp-partner-ask-section">
-      <h3>Ask Downtown Perks AI</h3>
+    <section className="dp-partner-ask-section dp-partner-ask-module" aria-label="Ask Downtown Perks">
+      <div className="dp-partner-ask-header">
+        <span>Ask the Map</span>
+        <h3>Use this placement with more context.</h3>
+      </div>
       <div className="dp-partner-ask-rail">
         {prompts.map((prompt) => (
-          <button key={prompt} type="button" onClick={() => onAsk(prompt)} disabled={loading}>
+          <button key={prompt} type="button" onClick={() => submitQuestion(prompt)} disabled={loading}>
             {prompt}
           </button>
         ))}
       </div>
+      <form
+        className="dp-partner-ask-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          submitQuestion();
+        }}
+      >
+        <input
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          placeholder="Ask what to launch, pair, or review next"
+          aria-label={`Ask about ${place?.name || "this placement"}`}
+        />
+        <button type="submit" disabled={loading || !draft.trim()}>
+          Ask
+        </button>
+      </form>
       <AnimatePresence initial={false}>
         {answer && (
           <motion.div
@@ -6091,7 +6284,14 @@ function PartnerAskSection({ place, answer, loading, onAsk, onClose, onSelect })
             role="status"
             aria-live="polite"
           >
-            <h4>{answer.title}</h4>
+            <div className="dp-partner-answer-header">
+              <h4>{answer.title}</h4>
+              {onClose && (
+                <button type="button" onClick={onClose} aria-label="Clear answer">
+                  Clear
+                </button>
+              )}
+            </div>
             <p>{answer.body}</p>
             {answer.picks?.length > 0 && (
               <div className="dp-partner-ask-rail">
@@ -6149,7 +6349,7 @@ function PartnerActivityIntelligence({ intelligence }) {
   const signals = (intelligence.signals || []).slice(0, 3);
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="Nearby Now" title="Where people are moving nearby" />
+      <PartnerSectionHeader label="Nearby" />
       <p>{intelligence.summary}</p>
       {signals.length > 0 && (
         <ul className="dp-partner-signal-list">
@@ -6184,7 +6384,7 @@ function PartnerCampaignRecommendationsSection({ recommendations = [] }) {
   if (!recommendations.length) return null;
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="Campaign Fit" title="A focused next step for this pin" />
+      <PartnerSectionHeader label="Best fit" />
       <div className="dp-partner-opportunity-list">
         {recommendations.slice(0, 2).map((item) => (
           <article key={item.actionTitle || item.title} className="dp-partner-opportunity-item">
@@ -6203,7 +6403,7 @@ function PartnerAudienceRecommendationsSection({ audiences = [] }) {
   if (!audiences.length) return null;
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="Who Is Nearby" title="Audiences already close" />
+      <PartnerSectionHeader label="People nearby" />
       <div className="dp-partner-opportunity-list">
         {audiences.slice(0, 2).map((item) => (
           <article key={item.segment} className="dp-partner-opportunity-item">
@@ -6241,10 +6441,8 @@ function CommunityStoriesMapLayer() {
 }
 
 function SurveyIntelligenceLayer({ place, compact = false }) {
-  const summary = getSurveyIntelligenceSummary(place);
   const isPerk = hasActivePerkData(place);
-  const entityName = place?.name || place?.title || summary.topPartner || "this pin";
-  const isMobility = /\b(rivian|mobility|test drive|ride request|vehicle|ev)\b/i.test([
+  const isMobility = /\b(rivian|test drive|ride request|vehicle|ev)\b/i.test([
     place?.name,
     place?.title,
     place?.category,
@@ -6254,40 +6452,19 @@ function SurveyIntelligenceLayer({ place, compact = false }) {
     place?.raw?.name,
     place?.raw?.category,
   ].filter(Boolean).join(" "));
-  const feedbackSummary = isMobility
-    ? "Use feedback to see whether people are saving the experience, requesting a drive, or building a route around nearby plans."
+  const items = isMobility
+    ? ["Who saves it", "Who asks for a ride", "Which nearby plans make it useful"]
     : isPerk
-      ? "Use feedback to see whether the perk is being saved, redeemed, and understood by residents."
-      : "Use feedback to see whether this pin is creating useful saves, directions, and follow-up activity.";
-  const metricRows = [
-    ["Feedback", `${summary.completionsToday}`, isPerk ? "Redemption follow-ups" : "Recent responses"],
-    ["Linked action", `${summary.redemptionLinkedCompletions}`, isMobility ? "Drive or route intent" : isPerk ? "Attached to perks" : "Saved or direction intent"],
-    ["Resident read", summary.averageRating.toFixed(1), "Average rating"],
-  ];
-  const openReports = () => {
-    const params = new URLSearchParams({
-      mode: "partner",
-      tab: "reports",
-      filter: "Surveys",
-    });
-    if (place?.id) params.set("entityId", place.id);
-    window.location.href = `/map?${params.toString()}`;
-  };
+      ? ["Who saves it", "Who uses it", "What people open next"]
+      : ["Who saves it", "Who asks for directions", "What people open next"];
 
   return (
-    <section className={`dp-survey-intelligence-layer ${compact ? "is-compact" : ""}`} aria-label="Feedback signal">
-      <PartnerSectionHeader label="Feedback Signal" title={`What people do after opening ${entityName}`} />
-      <p>{feedbackSummary}</p>
-      <div className="dp-survey-summary-grid" aria-label="Survey activity summary">
-        {metricRows.map(([label, value, copy]) => (
-          <article key={label}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-            <small>{copy}</small>
-          </article>
-        ))}
-      </div>
-      {!compact && <button type="button" className="dp-panel-action" onClick={openReports}>Open reports</button>}
+    <section className={`dp-survey-intelligence-layer ${compact ? "is-compact" : ""}`} aria-label="What to check">
+      <PartnerSectionHeader label="What to check" />
+      <p>Use this section to understand whether people save the place, use the offer, ask for directions, or keep exploring nearby.</p>
+      <ul className="dp-partner-signal-list">
+        {items.map((item) => <li key={item}>{item}</li>)}
+      </ul>
     </section>
   );
 }
@@ -6296,9 +6473,86 @@ function PartnerRelatedAssetsSection({ sections = [], onSelect }) {
   if (!sections.length) return null;
   return (
     <section className="dp-partner-intelligence-section">
-      <PartnerSectionHeader label="Explore Nearby" title="Places and moments around this pin" />
+      <PartnerSectionHeader label="Nearby places" />
       <EntityDiscoveryGrid sections={sections.slice(0, 6)} mode="partner" onSelect={onSelect} />
     </section>
+  );
+}
+
+function PartnerCampaignReviewSection({ place }) {
+  const reviewItems = Array.isArray(place?.measurement)
+    ? place.measurement
+    : Array.isArray(place?.raw?.measurement)
+      ? place.raw.measurement
+      : [];
+  if (!reviewItems.length) return null;
+
+  return (
+    <section className="dp-partner-intelligence-section dp-partner-campaign-review-section">
+      <PartnerSectionHeader label="What to review" />
+      <ul className="dp-partner-signal-list" aria-label="Campaign review points">
+        {reviewItems.slice(0, 8).map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function PartnerCampaignTrailSection({ place, places = [], onSelect }) {
+  const stopIds = [
+    ...(place?.campaignPins || []),
+    ...(place?.participatingEntities || []),
+    ...((place?.activationStops || []).map((stop) => stop.entityId).filter(Boolean)),
+  ];
+  const seen = new Set([place?.id]);
+  const relatedStops = stopIds
+    .map((id) => resolveMapEntityFromCollection(id, places))
+    .filter(Boolean)
+    .filter((item) => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    })
+    .slice(0, 8);
+
+  if (!relatedStops.length) return null;
+
+  return (
+    <section className="dp-partner-intelligence-section">
+      <PartnerSectionHeader label="Trail stops" />
+      <div className="dp-related-rail">
+        {relatedStops.map((item) => (
+          <button key={item.id} type="button" onClick={() => onSelect(item)} className="dp-related-place">
+            <img src={getLifestyleImage(item, "partner")} alt={item.name} onError={handlePanelImageError} />
+            <span>
+              <strong>{item.name}</strong>
+              <em>{getRelatedPlaceMeta(item, place, "partner")}</em>
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function PartnerCampaignDrawer({ place, places = [], onSelect, answer, loading, onAsk, onCloseAnswer }) {
+  return (
+    <motion.div className="dp-partner-detail-content dp-partner-intelligence-drawer">
+      <DestinationHero place={place} mode="partner" />
+      <EntityIdentityPanel identity={getEntityIdentity(place, "partner")} />
+      <MapNativeCampaignDetails place={place} mode="partner" />
+      <PartnerCampaignTrailSection place={place} places={places} onSelect={onSelect} />
+      <PartnerAskSection
+        place={place}
+        answer={answer}
+        loading={loading}
+        onAsk={onAsk}
+        onClose={onCloseAnswer}
+        onSelect={onSelect}
+      />
+      <PartnerDrawerActions place={place} />
+    </motion.div>
   );
 }
 
@@ -6313,6 +6567,20 @@ function isResidentialNearbyContextEntity(entity) {
 }
 
 function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, answer, loading, onAsk, onCloseAnswer }) {
+  if (isCampaignEntity(place)) {
+    return (
+      <PartnerCampaignDrawer
+        place={place}
+        places={places}
+        onSelect={onSelect}
+        answer={answer}
+        loading={loading}
+        onAsk={onAsk}
+        onCloseAnswer={onCloseAnswer}
+      />
+    );
+  }
+
   const nearbyResults = getNearbyRecommendations({
     selectedEntity: place,
     entities: places,
@@ -6328,7 +6596,7 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
   const opportunities = getNearbyPartnerOpportunities({ selectedEntity: place, nearby });
   const campaigns = recommendCampaigns({ selectedEntity: place, nearby });
   const audiences = recommendAudience({ selectedEntity: place, nearby });
-  const relatedAssets = getRelatedPartnerAssets({ nearby });
+  const relatedAssets = getRelatedPartnerAssets({ nearby, selectedEntity: place });
 
   return (
     <motion.div className="dp-partner-detail-content dp-partner-intelligence-drawer">
@@ -6347,6 +6615,7 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
         onClose={onCloseAnswer}
         onSelect={onSelect}
       />
+      <PartnerDrawerActions place={place} onContact={onContact} />
     </motion.div>
   );
 }
@@ -6606,34 +6875,41 @@ function getDaaStopFromPlace(place) {
 function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   const stop = getDaaStopFromPlace(place);
   const [isCivicReadMoreOpen, setIsCivicReadMoreOpen] = useState(false);
+  const [checkInRecord, setCheckInRecord] = useState(() => (stop?.id ? getDaaCheckIn(stop.id) : null));
+  useEffect(() => {
+    setCheckInRecord(stop?.id ? getDaaCheckIn(stop.id) : null);
+  }, [stop?.id]);
   if (!stop) return null;
 
   const stopNumber = String(stop.stopNumber).padStart(2, "0");
   const stopTitle = stop.displayName || stop.name;
-  const isSaved = savedIds?.has?.(place.id);
   const locationLabel = stop.locationLabel || place?.district || "Downtown Austin";
   const stopImage = stop.imageUrl || place.image || resolveEntityImage(place, "card") || MAP_PANEL_IMAGE_FALLBACK;
+  const introCopy = stop.daaIntro || "This stop is part of the Downtown Austin Alliance Art & Parks Tour.";
+  const reasonCopy = stop.whyStopHere || `Use this stop as a small pause in ${locationLabel}, then keep moving toward nearby art, parks, food, and public places.`;
   const nearbyPlaces = (stop.nearbyStops || [])
     .map((stopId) => places.find((candidate) => candidate.id === stopId) || getDaaTourStopById(stopId))
     .filter(Boolean)
     .slice(0, 4);
   const civicGoodFor = [
-    ["A quick downtown stop", "Easy to fold into a walk around the district.", stopImage],
-    ["Visitors", "A simple way to understand the story of this part of Austin.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
-    ["Route building", "Use this as a starting point for nearby art, parks, food, and perks.", "/images/imported/perks/downtown-dining-patio.png"],
+    ["Short walk", "A quick place to notice, pause, and keep exploring nearby.", stopImage],
+    ["Visitors", "An easy way to understand this part of downtown without a formal tour.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
+    ["Build a route", "Start here, then add nearby art, parks, coffee, food, or resident perks.", "/images/imported/perks/downtown-dining-patio.png"],
   ];
   const whyStopBullets = Array.isArray(stop.whyStopBullets) ? stop.whyStopBullets.filter(Boolean) : [];
   const goodForLabels = Array.isArray(stop.goodFor) ? stop.goodFor.filter(Boolean) : [];
-  const nearbyLabels = Array.isArray(stop.nearbyLabels) ? stop.nearbyLabels.filter(Boolean) : [];
-  const nearbyExperienceCards = [
-    ["Art", "Public art and cultural stops close to this route.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
-    ["Parks", "Green space and civic places that make the walk easier.", "/images/imported/perks/republic-square-yoga.jpg"],
-    ["Food", "Places to stop before or after the route.", "/images/imported/perks/downtown-dining-patio.png"],
-    ["Perks", "Resident benefits near the stop when they are active.", "/images/imported/perks/perks-offers-jpg-coffee-counter-qr-offer-redemption.png"],
-  ];
   const handleCheckInShare = async () => {
     const shareUrl = `${window.location.origin}/map?mode=resident&tab=map&filter=Civic&entityId=${encodeURIComponent(place.id)}`;
-    window.dispatchEvent(new CustomEvent("downtown-perks:daa-stop-check-in", { detail: { stopId: stop.id, stopName: stopTitle, shareUrl } }));
+    const nextCheckIn = await recordDaaCheckIn({
+      stopId: stop.id,
+      stopName: stopTitle,
+      stopNumber,
+      placeId: place.id,
+      district: stop.district || place?.district || "Downtown Austin",
+      shareUrl,
+      source: "resident-civic-drawer",
+    });
+    setCheckInRecord(nextCheckIn);
     if (navigator.share) {
       try {
         await navigator.share({
@@ -6653,13 +6929,36 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       window.location.href = shareUrl;
     }
   };
+  const openCivicLayer = () => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("mode", "resident");
+    params.set("tab", "map");
+    params.set("filter", "Civic");
+    params.delete("entityId");
+    window.history.pushState({}, "", `${window.location.pathname}?${params.toString()}`);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
   return (
     <div className="dp-daa-destination-panel dp-civic-guide-panel">
       <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
         <p className="dp-daa-kicker">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
-        <h3>{stop.detailHeadline || "Why People Stop Here"}</h3>
-        <p>{stop.daaIntro}</p>
-        <p>{stop.whyStopHere}</p>
+        <h3>{stop.detailHeadline || "Why stop here"}</h3>
+        <p>{introCopy}</p>
+        <p>{reasonCopy}</p>
+        <dl className="dp-daa-inline-facts" aria-label={`${stopTitle} details`}>
+          {[
+            ["Location", locationLabel],
+            ["Created", stop.year],
+            ["Managed by", stop.artist || "City of Austin"],
+            ["Experience", "Art & Parks Tour"],
+          ].map(([label, value]) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>{value || "Downtown Austin"}</dd>
+            </div>
+          ))}
+        </dl>
         {whyStopBullets.length > 0 && (
           <ul className="dp-daa-clean-list" aria-label="Why stop here">
             {whyStopBullets.map((item) => <li key={item}>{item}</li>)}
@@ -6674,15 +6973,12 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
             {goodForLabels.map((item) => <li key={item}>{item}</li>)}
           </ul>
         ) : (
-          <div className="dp-civic-image-card-grid">
-            {civicGoodFor.map(([title, body, image]) => (
-              <article key={title} className="dp-civic-image-card">
-                <img src={image} alt="" loading="lazy" />
-                <div>
-                  <h4>{title}</h4>
-                  <p>{body}</p>
-                </div>
-              </article>
+          <div className="dp-civic-text-rail">
+            {civicGoodFor.map(([title, body]) => (
+              <button key={title} type="button" onClick={openCivicLayer}>
+                <strong>{title}</strong>
+                <span>{body}</span>
+              </button>
             ))}
           </div>
         )}
@@ -6718,14 +7014,13 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
         {isCivicReadMoreOpen && (
           <div id={`daa-civic-more-${stop.id}`} className="dp-daa-read-more-panel">
             <p>
-              Downtown Perks connects DAA art and parks stops, DANA resident advocacy, civic campaigns, nearby events,
-              and local benefits into one map layer so residents can understand what is happening around them without
-              digging through separate lists.
+              Downtown Perks brings civic stops, nearby events, local places, and resident benefits into the same map so
+              downtown is easier to explore one stop at a time.
             </p>
             <ul className="dp-daa-read-more-list">
-              <li>DAA context highlights public art, parks, downtown routes, cultural stops, and public-realm updates.</li>
-              <li>DANA context adds resident voice, neighborhood advocacy, community meetings, and local participation.</li>
-              <li>Partner mode turns civic interest into event promotion, route sponsorship, feedback, and nearby activity.</li>
+              <li>Find public art, parks, routes, and cultural stops without opening another list.</li>
+              <li>Add coffee, food, events, and perks around the route when they are nearby.</li>
+              <li>Save places you want to remember and come back to later.</li>
             </ul>
           </div>
         )}
@@ -6737,44 +7032,18 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
           variant="primary"
           className="dp-daa-action-primary"
         >
-          <span className="dp-daa-action-primary-text" style={{ color: "#FFFFFF", WebkitTextFillColor: "#FFFFFF" }}>CHECK IN &amp; SHARE</span>
+          <span className="dp-daa-action-primary-text">Check in and share</span>
+          {checkInRecord && <span className="dp-daa-action-status">Checked in</span>}
         </AppButton>
-        <AppButtonGroup className="dp-daa-secondary-actions">
-          <AppButton onClick={onSave} variant="secondary">{isSaved ? "SAVED FOR LATER" : "SAVE FOR LATER"}</AppButton>
-          <AppButton href={directionsUrl(place)} target="_blank" rel="noreferrer" variant="secondary">GET DIRECTIONS</AppButton>
-        </AppButtonGroup>
-      </section>
-
-      <section className="dp-daa-related dp-civic-nearby-section" aria-label="Nearby experiences">
-        <p className="dp-daa-kicker">Nearby Experiences</p>
-        <h3>Use this stop as a starting point around {locationLabel}.</h3>
-        {nearbyLabels.length > 0 ? (
-          <ul className="dp-daa-clean-list dp-daa-nearby-list" aria-label="Nearby">
-            {nearbyLabels.map((item) => <li key={item}>{item}</li>)}
-          </ul>
-        ) : (
-          <div className="dp-civic-image-card-grid">
-            {nearbyExperienceCards.map(([title, body, image]) => (
-              <article key={title} className="dp-civic-image-card">
-                <img src={image} alt="" loading="lazy" />
-                <div>
-                  <h4>{title}</h4>
-                  <p>{body}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
       </section>
 
       <section className="dp-daa-next-stops" aria-label="Next nearby stops">
         <p className="dp-daa-kicker">Keep Exploring</p>
-        <h3>Continue the civic route nearby.</h3>
+        <h3>Continue the route nearby.</h3>
         <div className="dp-daa-next-rail">
           {nearbyPlaces.map((nearby) => {
             const nearbyStop = nearby.raw?.daaTourStop || nearby.daaTourStop || nearby;
             const nearbyPlace = nearby.raw ? nearby : places.find((candidate) => candidate.id === nearbyStop.id);
-            const nearbyImage = nearbyStop.imageUrl || nearbyPlace?.image || MAP_PANEL_IMAGE_FALLBACK;
             return (
               <button
                 key={nearbyStop.id}
@@ -6782,28 +7051,13 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
                 onClick={() => nearbyPlace && onSelect(nearbyPlace)}
                 className="dp-daa-next-card"
               >
-                <img src={nearbyImage} alt="" loading="lazy" />
-                <span>NEXT STOP</span>
+                <span className="dp-daa-next-card-kicker">Next stop</span>
                 <strong>{nearbyStop.name}</strong>
                 <em>{nearbyStop.district || "Downtown Austin"} · 4 min walk</em>
               </button>
             );
           })}
         </div>
-      </section>
-
-      <section className="dp-daa-highlights" aria-label="Highlights">
-        {[
-          ["Location", locationLabel],
-          ["Created", stop.year],
-          ["Managed By", stop.artist || "City of Austin"],
-          ["Experience", "Art & Parks Tour"],
-        ].map(([label, value]) => (
-          <div key={label} className="dp-daa-highlight">
-            <span>{label}</span>
-            <strong>{value || "Downtown Austin"}</strong>
-          </div>
-        ))}
       </section>
     </div>
   );
@@ -7459,7 +7713,7 @@ function PartnerDrawerActions({ place, onContact }) {
       onContact?.();
     };
     return (
-      <>
+      <section className="dp-partner-drawer-actions" aria-label="Partner actions">
         <div className="dp-primary-action-row dp-partner-action-row mt-3">
           <button type="button" onClick={viewListings} className="dp-panel-action dp-primary-action">
             <span>View Listings</span>
@@ -7473,26 +7727,26 @@ function PartnerDrawerActions({ place, onContact }) {
             <span>Contact</span>
           </button>
           <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action-text">
-            <span>View Nearby Activity</span>
+            <span>Review Nearby Activity</span>
           </Link>
         </div>
-      </>
+      </section>
     );
   }
   return (
-    <>
+    <section className="dp-partner-drawer-actions" aria-label="Partner actions">
       <div className="dp-primary-action-row dp-partner-action-row mt-3">
         <Link to={campaignRoute(place)} className="dp-panel-action dp-primary-action">
           <span>Create Campaign</span>
         </Link>
         <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action">
-          <span>View Nearby Activity</span>
+          <span>Review Nearby Activity</span>
         </Link>
         <button type="button" onClick={sharePlace} className="dp-panel-action">
           <span>Share</span>
         </button>
       </div>
-    </>
+    </section>
   );
 }
 
@@ -7529,8 +7783,8 @@ function MapNativeCampaignDetails({ place, mode }) {
     <section className="dp-destination-section dp-map-native-campaign-detail">
       <p className="dp-destination-section-kicker">Map-native campaign</p>
       <h3>How it works</h3>
-      {place.sponsorName && (
-        <p className="dp-destination-section-note">Presented by {place.sponsorName}</p>
+      {(place.partnerLine || place.sponsorName) && (
+        <p className="dp-destination-section-note">Partner: {place.partnerLine || place.sponsorName}</p>
       )}
       <p className="dp-destination-section-copy">
         {place.description || raw.description || place.summary || raw.summary || "This campaign lives inside the map with pins, routes, discovery placement, engagement metrics, and reporting."}
@@ -7570,7 +7824,7 @@ function MapNativeCampaignDetails({ place, mode }) {
           ))}
         </div>
       )}
-      {mode === "partner" && <SurveyIntelligenceLayer place={place} compact />}
+      {mode === "partner" && <PartnerCampaignReviewSection place={place} />}
     </section>
   );
 }
@@ -7596,6 +7850,7 @@ function ResidentDrawerActions({
   const isEvent = entityKind === "event";
   const isCampaign = entityKind === "campaign";
   const isAntonesVenue = isAntonesEntity(selected);
+  const isCivicStop = isDaaTourPlace(selected) || isCivicEntity(selected) || isExploreDowntownEntity(selected);
   const hasPerk = hasActivePerkData(selected);
   const contacts = getContactDetails(selected);
   const websiteContact = contacts.find((item) => item.kind === "website");
@@ -7614,6 +7869,10 @@ function ResidentDrawerActions({
       // Sharing is best-effort; the visible action should never block the drawer.
     }
   };
+
+  if (isCivicStop) {
+    return null;
+  }
 
   if (isRental) {
     const viewDetails = () => document.querySelector(".dp-destination-drawer .dp-rental-details")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -7721,12 +7980,16 @@ function ResidentDrawerActions({
         <button type="button" onClick={viewPerk} className="dp-panel-action dp-primary-action">
           {panelContent.primaryActionLabel || panelArchetype.primaryAction}
         </button>
+      ) : isCivicStop ? (
+        <button type="button" onClick={exploreNearby} className="dp-panel-action dp-primary-action">
+          Explore Nearby
+        </button>
       ) : (
         <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
           {savedIds.has(selected.id) ? "Saved" : "Save"}
         </button>
       )}
-      {!isEvent && hasPerk && (
+      {!isEvent && (hasPerk || isCivicStop) && (
         <button type="button" onClick={onSave} className="dp-panel-action">
           {savedIds.has(selected.id) ? "Saved" : "Save"}
         </button>
@@ -9046,7 +9309,7 @@ function getStoredMapView() {
       !params.get("listingId") &&
       !params.get("query") &&
       !params.get("q") &&
-      (params.get("filter") || "All") === "All";
+      ["All", "Perks"].includes(params.get("filter") || "Perks");
     if (isDefaultMapLaunch) {
       window.sessionStorage.removeItem(MAP_VIEW_STORAGE_KEY);
       return { center: AUSTIN_CENTER, zoom: INITIAL_MAP_ZOOM };
@@ -9769,7 +10032,7 @@ function useUrlMapState() {
   const tab = rawTab === "pass" ? "pass" : "map";
   const layer = searchParams.get("layer") || "";
   const rentalListingId = layer === "rentals" ? searchParams.get("listing") || "" : "";
-  const filter = searchParams.get("filter") || (layer === "rentals" ? "Rentals" : "All");
+  const filter = searchParams.get("filter") || (layer === "rentals" ? "Rentals" : mode === "partner" ? "All" : "Perks");
   const rawEntityId = searchParams.get("entityId") || "";
   const listingId = searchParams.get("listingId") || "";
   const listingEntityId = resolveMapEntityAlias(listingId);
@@ -9838,7 +10101,7 @@ export default function MapPage() {
   const [activeBottomTab, setActiveBottomTab] = useState(() => (
     urlState.mode === "partner" && urlState.panelTab
       ? urlState.panelTab
-      : urlState.mode === "resident" && urlState.tab === "map" && ["Perks", "Events", "Saved"].includes(urlState.filter)
+      : urlState.mode === "resident" && urlState.tab === "map" && ["Events", "Saved"].includes(urlState.filter)
         ? urlState.filter.toLowerCase()
         : "map"
   ));
@@ -10050,6 +10313,7 @@ export default function MapPage() {
   const isUsingFallbackPlaces = !filtered.length && !hasActiveCategoryScope && places.length > 0;
   const contextCount = displayPlaces.length;
   const isDefaultDiscoverScope = activeFilter === "All" && isAllNeighborhoodScope(district) && !effectiveSearch;
+  const isCleanResidentPerksLaunch = urlState.mode === "resident" && urlState.tab === "map" && activeFilter === "Perks" && isAllNeighborhoodScope(district) && !effectiveSearch && !selectedId;
   const contextLabel = contextCount > 0
     ? isDefaultDiscoverScope
       ? "Featured downtown places"
@@ -10098,7 +10362,7 @@ export default function MapPage() {
   const hiddenPreviewCount = Math.max(0, Math.min(discoverDisplayPlaces.length, 12) - previewPlaces.length);
   const hiddenSavedPreviewCount = Math.max(0, Math.min(residentSavedPlaces.length, 12) - savedDrawerPlaces.length);
   const searchPlaceholder = urlState.mode === "partner"
-    ? "Ask about demand, campaigns, or activity"
+    ? "Ask about campaigns, nearby use, or saved places"
     : "Ask about places, perks, events, or civic updates";
   const searchConsoleLabel = "Ask the map";
   const areaRailLabel = getAreaRailLabel(urlState.mode, activeFilter);
@@ -10424,75 +10688,75 @@ export default function MapPage() {
   const reportSections = [
     {
       section: "Evening",
-      value: "42%",
-      headline: "After-work intent is strongest.",
-      copy: "Dinner, events, and short-walk offers are driving the clearest partner demand.",
+      value: "Best window",
+      headline: "People plan fastest after work.",
+      copy: "Dinner, events, drinks, and short walks are the easiest moments to support.",
       action: "Read more",
       target: "reports",
-      observation: "Nearby residents, guests, and visitors are opening dinner, event, and short-walk options after work.",
-      trend: "Saves, scans, and directions rise together between 5 PM and 8 PM.",
+      observation: "Nearby residents, hotel guests, and visitors are opening dinner, event, and short-walk options after work.",
+      trend: "People save places, ask for directions, and use offers in the same early evening window.",
       recommendation: "Put one clear offer near the places people already pass.",
-      helps: "Partners can see which nearby moments are likely to become visits, scans, or requests.",
+      helps: "Partners can turn a nearby plan into a real visit without making people search again.",
     },
     {
       section: "Short walks",
-      value: "+18%",
-      headline: "Walkable placements are outperforming broad reach.",
-      copy: "The best response is coming from places close enough to act on now.",
+      value: "Close by",
+      headline: "The short walk matters.",
+      copy: "People are more likely to act when the place is close enough to reach now.",
       action: "See nearby",
       target: "reports",
-      observation: "Rainey, Seaholm, Congress, and Waterloo are working because they are easy to reach.",
-      trend: "Nearby saves are rising faster than broad district browsing.",
+      observation: "Rainey, Seaholm, Congress, and Waterloo work because the next stop feels easy.",
+      trend: "Nearby places get saved before broader district browsing.",
       recommendation: "Keep the message close to the walk.",
-      helps: "Partners get a cleaner read on which locations can realistically convert.",
+      helps: "Partners can focus on the places people can actually reach.",
     },
     {
       section: "Offers",
-      value: "6.8%",
-      headline: "Timed offers are easier to measure.",
-      copy: "Simple offers tied to a clear moment are easier to act on and read later.",
+      value: "Keep simple",
+      headline: "One clear offer works best.",
+      copy: "Simple offers tied to a clear moment are easier to understand and use.",
       action: "Plan offer",
       target: "campaigns",
       observation: "People respond best when the next step is obvious: save, scan, RSVP, or get directions.",
-      trend: "Clearer offers are turning into more use.",
+      trend: "Clear offers are easier for residents and guests to use.",
       recommendation: "Try one after-work offer before adding more.",
-      helps: "The next campaign is easier to launch, measure, and repeat.",
+      helps: "The next campaign is easier to launch, review, and improve.",
     },
     {
       section: "Saved places",
-      value: "312",
-      headline: "Saves are becoming partner intent.",
-      copy: "Saved places are a useful early signal before directions, scans, and visits.",
+      value: "Follow up",
+      headline: "Saved places show what people may come back to.",
+      copy: "A save usually means someone wants to compare, share, or return later.",
       action: "View activity",
       target: "reports",
       observation: "Residents and guests are using saved places as a short list for later.",
-      trend: "Saves are rising before visits and card opens.",
+      trend: "Saved places often come before directions, card opens, and visits.",
       recommendation: "Give saved places a useful next step nearby.",
-      helps: "More saved places can turn into visits, RSVPs, card use, or partner requests.",
+      helps: "Partners can follow interest with a clear reason to visit.",
     },
     {
       section: "Next best move",
-      value: "3",
-      headline: "Test the next idea where demand already exists.",
-      copy: "Pair one location with one clear action and one measurable window.",
+      value: "Try next",
+      headline: "Start where people already are.",
+      copy: "Pair one location with one clear action and one useful time of day.",
       action: "Open campaigns",
       target: "campaigns",
       observation: "The strongest ideas sit near places people are already opening and saving.",
       trend: "Rainey, Seaholm, and Congress are overlapping around evening plans.",
       recommendation: "Start with one place, then widen from there.",
-      helps: "Partners get a clearer test without creating a heavy campaign plan.",
+      helps: "Partners get a clearer test without building a heavy campaign plan.",
     },
     {
       section: "Ready",
-      value: "4",
+      value: "Next step",
       headline: "Turn the read into one partner action.",
-      copy: "Pick the place, timing, audience, and measurable next step.",
+      copy: "Pick the place, the time, and the one thing you want people to do.",
       action: "Open campaigns",
       target: "campaigns",
       observation: "A report is only useful if it helps someone do the next right thing.",
       trend: "Teams are reviewing reports and then opening campaign planning.",
       recommendation: "Start with saves, directions, scans, or requests.",
-      helps: "The map stays focused on partner decisions, not dashboard clutter.",
+      helps: "The map stays focused on useful partner decisions.",
     },
   ];
 
@@ -10502,15 +10766,15 @@ export default function MapPage() {
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Partner reports</p>
-            <h2>What nearby demand is doing.</h2>
-            <p>A practical read on opens, saves, scans, directions, and campaign-ready moments.</p>
+            <h2>What people are doing nearby.</h2>
+            <p>A practical read on what people open, save, use, and ask for around downtown.</p>
           </section>
 
           <section className="dp-partner-report-visual" aria-label="What changed this week">
             <div className="dp-report-signal-copy">
               <span>This week</span>
-              <strong>After work is carrying partner intent.</strong>
-              <p>Dinner, events, and short walks are where nearby demand is easiest to act on.</p>
+              <strong>After work is the clearest window.</strong>
+              <p>Dinner, events, drinks, and short walks are the moments partners can support first.</p>
             </div>
             <div className="dp-partner-report-bars" aria-hidden="true">
               <i style={{ "--value": "76%" }} />
@@ -10521,9 +10785,9 @@ export default function MapPage() {
 
           <section className="dp-partner-report-analytics" aria-label="Weekly read summary">
             {[
-              ["Map opens", "612", "Nearby discovery sessions"],
-              ["Saves", "284", "Places and offers shortlisted"],
-              ["Scans", "91", "Perks and partner actions used"],
+              ["People open", "Places", "Where residents and guests look first"],
+              ["People save", "Shortlists", "Places and offers they may revisit"],
+              ["People use", "Offers", "Perks, RSVPs, scans, and directions"],
             ].map(([label, value, copy]) => (
               <div key={label} className="dp-partner-summary-card">
                 <span>{label}</span>
@@ -10537,9 +10801,9 @@ export default function MapPage() {
             <p className="dp-tab-eyebrow">Readout</p>
             <div>
               {[
-                ["Strongest window", "5-8 PM", "Evening demand is clustering around dinner, drinks, and events."],
+                ["Strongest window", "5-8 PM", "People are choosing dinner, drinks, and events."],
                 ["Useful action", "One clear offer", "Partners get a cleaner test when the next step is save, scan, RSVP, or request."],
-                ["Reporting status", "Ready", "Activity is grouped for partner follow-up without exposing setup details."],
+                ["What to review", "Follow-up", "Look for places people save, directions they request, and offers they use."],
               ].map(([label, value, copy]) => (
                 <article key={label}>
                   <span>{label}</span>
@@ -10551,21 +10815,21 @@ export default function MapPage() {
           </section>
 
           <section className="dp-austin-growth-read" aria-label="Austin growth context">
-            <span>Market context</span>
-            <strong>Austin demand is getting denser.</strong>
-            <p>More people are making downtown decisions in shorter windows. The useful partner move is to show up close to the moment.</p>
+            <span>Downtown context</span>
+            <strong>People decide closer to the moment.</strong>
+            <p>Residents, hotel guests, and visitors often choose where to go while they are already nearby. Partners should make the next step obvious.</p>
             <div aria-label="Austin population context">
-              <span><b>1,002,632</b> residents</span>
-              <span><b>+4,025</b> year over year</span>
-              <span><b>#12</b> largest U.S. city</span>
+              <span><b>Residents</b> nearby buildings</span>
+              <span><b>Guests</b> nearby hotels</span>
+              <span><b>Visitors</b> nearby events</span>
             </div>
           </section>
 
           <section className="dp-report-next-action">
             <div>
               <span>Next move</span>
-              <strong>Start with one measurable reason to act.</strong>
-              <p>The strongest response is close to existing walk paths. A simple offer, event, or request path is usually enough.</p>
+              <strong>Give people one easy next step.</strong>
+              <p>Start with a simple offer, event, route, or request path near places people already pass.</p>
             </div>
             <button type="button" onClick={() => openPartnerPanel("campaigns")}>Open campaigns</button>
           </section>
@@ -10610,25 +10874,25 @@ export default function MapPage() {
 
   function renderActivityPanel() {
     const activityRows = [
-      ["Discovery is active", "Map opens, saves, and offer taps are moving together.", "Open map", () => openPartnerMap("All")],
-      ["Dining demand is warming up", "Happy hour, patios, and dinner searches are getting more attention.", "Create offer", () => openPartnerPanel("campaigns")],
-      ["Events are creating nearby intent", "Evening saves are picking up around Seaholm, Rainey, and Congress.", "View events", () => openPartnerMap("Events")],
-      ["After work is the clearest window", "Most partner-action signals are landing after work and on weekends.", "Review report", () => openPartnerPanel("reports")],
+      ["People are opening the map", "Nearby places, offers, and events are being saved together.", "Open map", () => openPartnerMap("All")],
+      ["Dining is getting attention", "Happy hour, patios, and dinner searches are picking up.", "Create offer", () => openPartnerPanel("campaigns")],
+      ["Events are shaping nearby plans", "Evening saves are picking up around Seaholm, Rainey, and Congress.", "View events", () => openPartnerMap("Events")],
+      ["After work is the clearest window", "People are most likely to save, ask for directions, or use an offer after work and on weekends.", "Review report", () => openPartnerPanel("reports")],
     ];
     return (
       <div className="dp-tabs-content dp-partner-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Partner activity</p>
-            <h2>What nearby audiences are doing.</h2>
-            <p>A quick read on opens, saves, scans, RSVPs, claims, and partner-ready actions.</p>
+            <h2>What people are doing nearby.</h2>
+            <p>A quick read on places people open, save, use, and ask for around downtown.</p>
           </section>
 
           <section className="dp-partner-summary-grid" aria-label="Activity summary">
             {[
-              ["Map opens", "612", "Nearby sessions this week"],
-              ["Saves", "284", "Places and offers shortlisted"],
-              ["Scans", "91", "Cards, perks, and QR actions"],
+              ["People open", "Places", "Where residents and guests look first"],
+              ["People save", "Shortlists", "Places and offers they may revisit"],
+              ["People use", "Offers", "Perks, RSVPs, scans, and directions"],
             ].map(([label, value, copy]) => (
               <article key={label} className="dp-partner-summary-card">
                 <span>{label}</span>
@@ -10748,7 +11012,7 @@ export default function MapPage() {
         copy: "Show properties where people first compare downtown life, views, and daily routines.",
       },
       {
-        title: "Waterloo movement",
+        title: "Waterloo walks",
         image: "/images/imported/perks/waterlook-greenway.png",
         alt: "Waterloo Greenway activity",
         label: "Waterloo",
@@ -10765,8 +11029,8 @@ export default function MapPage() {
 
     function renderCampaignRow(campaign, className, openEntity = false) {
       const contextLine = campaign.moment ? `${campaign.moment} · ${campaign.area}` : campaign.intent;
-      const audienceValue = campaign.residentFacingOffer || "A useful reason for nearby audiences to act.";
-      const partnerValue = campaign.partnerInsight || "Shows where nearby interest can become visits, saves, scans, or requests.";
+      const peopleValue = campaign.residentFacingOffer || "A useful reason for nearby people to act.";
+      const partnerValue = campaign.partnerInsight || "Shows where saves, directions, offer use, and requests can turn into visits.";
       const title = campaign.brandName || campaign.placeName || campaign.campaignName;
       const subtitle = campaign.brandName ? campaign.campaignName : campaign.area;
       return (
@@ -10781,8 +11045,8 @@ export default function MapPage() {
             <strong>{title}</strong>
             <small>{subtitle}</small>
             <em>{contextLine}</em>
-            <span className="dp-campaign-value-line"><b>Audience value</b>{audienceValue}</span>
-            <span className="dp-campaign-value-line"><b>Partner signal</b>{partnerValue}</span>
+            <span className="dp-campaign-value-line"><b>Who it helps</b>{peopleValue}</span>
+            <span className="dp-campaign-value-line"><b>What to watch</b>{partnerValue}</span>
           </span>
           <span className="dp-campaign-status" data-status={campaign.status}>{campaign.status}</span>
         </button>
@@ -10799,8 +11063,8 @@ export default function MapPage() {
 
           <section className="dp-partner-readable-hero dp-campaign-hero">
             <p className="dp-tab-eyebrow">Campaigns</p>
-            <h2>Turn nearby demand into one clear action.</h2>
-            <p>Build partner campaigns around the places, timing, and audiences already showing intent on the map.</p>
+            <h2>Turn nearby interest into one clear action.</h2>
+            <p>Build partner campaigns around the places, times, and people already close enough to act.</p>
           </section>
 
           <section className="dp-campaign-moment">
@@ -10817,9 +11081,9 @@ export default function MapPage() {
           <section className="dp-campaign-suggestion">
             <p className="dp-tab-eyebrow">Suggested campaign</p>
             <h3>After-work dining activation</h3>
-            <p>Use a simple evening offer for audiences already choosing dinner, drinks, and walkable plans nearby.</p>
+            <p>Use a simple evening offer for people already choosing dinner, drinks, and walkable plans nearby.</p>
             <div className="dp-campaign-detail-list">
-              <span><strong>Audience</strong> Residents, hotel guests, and visitors nearby</span>
+              <span><strong>Who it helps</strong> Residents, hotel guests, and visitors nearby</span>
               <span><strong>Format</strong> Happy hour, appetizer, or priority seating</span>
               <span><strong>Timing</strong> Today, 4-8 PM</span>
             </div>
@@ -10829,9 +11093,9 @@ export default function MapPage() {
             <p className="dp-tab-eyebrow">Campaign readout</p>
             <div>
               {[
-                ["Audience", "Nearby residents, hotel guests, and event traffic."],
+                ["Who it helps", "Nearby residents, hotel guests, and people already here for events."],
                 ["Action", "One clear save, scan, RSVP, request, or directions tap."],
-                ["Measure", "Map opens, saves, scans, and follow-up activity."],
+                ["Review", "What people open, save, use, and ask for after the campaign."],
               ].map(([label, copy]) => (
                 <article key={label}>
                   <span>{label}</span>
@@ -10886,21 +11150,21 @@ export default function MapPage() {
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Partner view</p>
-            <h2>See where nearby demand is forming.</h2>
+            <h2>See what people are doing nearby.</h2>
             <p>A partner-facing map for understanding where people are opening, saving, scanning, and deciding what to do next.</p>
           </section>
 
           <section className="dp-partner-info-copy">
-            <p>Use it to spot walkable demand, plan one timely offer, and understand what helped people move from interest to action.</p>
+            <p>Use it to spot walkable interest, plan one timely offer, and understand what helped people take the next step.</p>
           </section>
 
           <section className="dp-partner-info-operator-read" aria-label="Partner operating read">
             <p className="dp-tab-eyebrow">Operator read</p>
             <div>
               {[
-                ["Demand", "Where opens, saves, scans, and direction taps are clustering."],
+                ["Nearby interest", "Where opens, saves, scans, and direction taps are happening."],
                 ["Timing", "When a campaign or offer has the clearest window to matter."],
-                ["Action", "What to launch next without building a heavy dashboard first."],
+                ["Action", "What to launch next without adding extra work."],
               ].map(([title, copy]) => (
                 <article key={title}>
                   <strong>{title}</strong>
@@ -10912,8 +11176,8 @@ export default function MapPage() {
 
           <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Downtown Perks utility">
             {[
-              ["Nearby demand", "See where attention is forming close enough to act on."],
-              ["Campaign fit", "Match offers and moments to the audience already nearby."],
+              ["Nearby interest", "See where attention is forming close enough to act on."],
+              ["Campaign fit", "Match offers and moments to the people already nearby."],
               ["Property context", "Connect listings, hotels, venues, and daily routines."],
               ["Reporting", "Read saves, scans, RSVPs, and follow-up activity together."],
             ].map(([title, copy]) => (
@@ -10927,7 +11191,7 @@ export default function MapPage() {
           <section className="dp-partner-feed-list" aria-label="What Downtown Perks does">
             <p className="dp-tab-eyebrow">What it does</p>
             {[
-              ["Partner Map", "Find the places, categories, and districts where demand is active."],
+              ["Partner Map", "Find the places, categories, and districts people are opening."],
               ["Campaigns", "Turn a moment into one offer, placement, or partner action."],
               ["Activity", "See opens, saves, scans, RSVPs, and claims in plain language."],
               ["Reports", "Understand what changed and what to try next."],
@@ -10946,7 +11210,7 @@ export default function MapPage() {
             <p className="dp-tab-eyebrow">How it works</p>
             {[
               "Open the partner map",
-              "Read nearby demand by place, category, district, and time",
+              "Read what people open by place, category, district, and time",
               "Launch one campaign, offer, event, or follow-up path",
               "Use activity and reports to decide what to repeat",
             ].map((step, index) => (
@@ -11828,7 +12092,7 @@ export default function MapPage() {
           <MapFocus selected={selected} />
           <MapViewPersistence />
           <MapResizeStabilizer watchKey={mapResizeKey} />
-          <MapResultBoundsFitter places={mapPlaces} activeKey={mapResultBoundsKey} selectedId={selectedId} enabled={hasActiveCategoryScope && !userHasNavigatedMap} />
+          <MapResultBoundsFitter places={mapPlaces} activeKey={mapResultBoundsKey} selectedId={selectedId} enabled={hasActiveCategoryScope && !isCleanResidentPerksLaunch && !userHasNavigatedMap} />
           <MapZoomTracker onZoomChange={(zoom) => setMapZoom((current) => (Math.abs(current - zoom) > 0.01 ? zoom : current))} />
           <MapInteractionCollapse
             onUserNavigate={() => setUserHasNavigatedMap(true)}
@@ -12525,6 +12789,7 @@ export default function MapPage() {
                 const isInKindDining = isInKindEntity(selected);
                 const isBurgerBarPanel = isBurgerBarCongress(selected);
                 const isLocalService = isLocalServiceEntity(selected);
+                const isNeighborhoodPanel = isNeighborhoodEntity(selected);
                 const isEventPanel = isEventEntity(selected) && !isCampaign && !isHappyHourEntity(selected);
                 const legendsResidentialContent = getLegendsResidentialContentForPlace(selected);
                 const legendsResidentialProfile = getLegendsResidentialProfileForPlace(selected);
@@ -12612,6 +12877,19 @@ export default function MapPage() {
                         if (nextState?.district !== undefined) setDistrict(nextState.district || ALL_NEIGHBORHOODS);
                         urlState.update(nextState);
                       }}
+                    />
+                  );
+                }
+
+                if (isNeighborhoodPanel) {
+                  return (
+                    <NeighborhoodDetailDrawer
+                      place={selected}
+                      places={places}
+                      mode={urlState.mode}
+                      savedIds={savedIds}
+                      onSave={() => toggleSaved(selected)}
+                      onSelect={selectPlace}
                     />
                   );
                 }
@@ -12868,18 +13146,6 @@ export default function MapPage() {
                 );
               })()}
             </div>
-            {shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) && (
-              <PartnerDrawerActions
-                place={selected}
-                onContact={() => {
-                  setAgentFormPlaceId(selected.id);
-                  setAgentFormSubmitted(false);
-                  window.setTimeout(() => {
-                    document.getElementById(`map-contact-form-${selected.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-                  }, 80);
-                }}
-              />
-            )}
           </motion.aside>
         )}
       </AnimatePresence>

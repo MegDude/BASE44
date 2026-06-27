@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
 const RESIDENT_LINKS = [
-  { to: "/app?mode=resident&tab=map", label: "Resident Map", description: "Open the live resident map" },
+  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map", description: "Open the live resident map" },
   { to: "/app?mode=resident&tab=map&filter=Events", label: "Events", description: "See downtown events on the map" },
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks", description: "Find resident perks nearby" },
   { to: "/app?mode=resident&tab=pass", label: "Perks Card", description: "Open the resident card view" },
@@ -13,16 +13,16 @@ const RESIDENT_LINKS = [
 
 const PARTNER_LINKS = [
   { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
-  { to: "/partners/dashboard", label: "Dashboard", description: "Operational district intelligence" },
-  { to: "/partners/campaigns", label: "Campaigns", description: "Open Downtown Campaign Builder" },
-  { to: "/partner-workspace/overview", label: "Workspace", description: "Partner reports, campaigns, and activity" },
-  { to: "/partner-workspace/reports", label: "Reports", description: "Open connected reporting" },
+  { to: "/partners/dashboard", label: "Dashboard", description: "See what people opened, saved, and used" },
+  { to: "/partners/campaigns", label: "Campaigns", description: "Create a local offer or event placement" },
+  { to: "/partner-workspace/overview", label: "Workspace", description: "Manage reports, campaigns, and team access" },
+  { to: "/partner-workspace/reports", label: "Reports", description: "Review partner results" },
   { to: "/pricing", label: "Pricing", description: "Partner plans by category" },
-  { to: "/marketing/contact", label: "Contact", description: "Guided signup and checkout support" },
+  { to: "/partners/sign-up", label: "Sign Up", description: "Create a partner workspace" },
 ];
 
 const HAMBURGER_RESIDENT_LINKS = [
-  { to: "/app?mode=resident&tab=map", label: "Resident Map" },
+  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/app?mode=resident&tab=map&filter=Events", label: "Events" },
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks" },
   { to: "/app?mode=resident&tab=pass", label: "Perks Card" },
@@ -35,14 +35,14 @@ const HAMBURGER_PARTNER_LINKS = [
   { to: "/partner-workspace/overview", label: "Workspace" },
   { to: "/partner-workspace/reports", label: "Reports" },
   { to: "/pricing", label: "Pricing" },
-  { to: "/marketing/contact", label: "Contact" },
+  { to: "/partners/sign-up", label: "Sign Up" },
 ];
 
 const COMMERCE_LINKS = [
-  { to: "/app?mode=resident&tab=map", label: "Resident Map" },
+  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/pricing", label: "Pricing" },
-  { to: "/marketing/contact", label: "Contact" },
+  { to: "/partners/sign-up", label: "Sign Up" },
   { to: "/app", label: "Open App" },
 ];
 
@@ -215,7 +215,7 @@ export default function Navbar() {
   const isAppMapPath = location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map";
   const residentMapActive = isAppMapPath && !location.search.includes("mode=partner");
   const partnerMapActive = isAppMapPath && location.search.includes("mode=partner");
-  const isCommerceRoute = ["/marketing/contact", "/contact", "/pricing", "/marketing/pricing"].includes(location.pathname);
+  const isCommerceRoute = ["/pricing", "/partners/sign-in", "/partners/sign-up"].includes(location.pathname);
 
   function openQuickSearch() {
     setOpen(false);
@@ -237,7 +237,7 @@ export default function Navbar() {
       }`}
     >
       <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
-        <Link to="/app?mode=resident&tab=map" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
+        <Link to="/app?mode=resident&tab=map&filter=Perks" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
           <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A] transition-colors duration-150 group-hover:text-[#B38F4F]" />
           <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
             Downtown Perks
@@ -245,7 +245,7 @@ export default function Navbar() {
         </Link>
 
         {!open && (
-          <div className="hidden items-center gap-4 transition-all duration-200 md:flex">
+          <div className="hidden items-center gap-4 transition-all duration-200">
             {isCommerceRoute ? (
               COMMERCE_LINKS.map((link) => (
                 <Link
@@ -263,7 +263,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link
-                  to="/app?mode=resident&tab=map"
+                  to="/app?mode=resident&tab=map&filter=Perks"
                   className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
                     residentMapActive
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
@@ -328,7 +328,7 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/40 hover:bg-white hover:text-[#C8A96A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/40 hover:bg-white hover:text-[#C8A96A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>

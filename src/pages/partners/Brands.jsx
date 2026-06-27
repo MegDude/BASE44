@@ -1,15 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
-  BadgeCheck,
   Building2,
-  CalendarDays,
-  MapPin,
   Megaphone,
-  QrCode,
   Sparkles,
 } from "lucide-react";
 import PartnerMapIntelligenceLayer from "@/components/partner/PartnerMapIntelligenceLayer";
@@ -17,6 +13,19 @@ import FAQAccordionBlock from "@/components/ui/FAQAccordionBlock";
 import { FAQ_BRANDS } from "@/lib/faq-partner-data";
 
 const CAMPAIGN_POINTS = [
+  {
+    id: "campaign-see-austin-differently-fine-eyewear",
+    name: "See Austin Differently",
+    type: "Discovery trail",
+    district: "Waterloo",
+    lat: 30.27391,
+    lng: -97.73543,
+    logo: "/pins/brands/fine-eyewear-logo-gold.svg",
+    scans: 0,
+    saves: 0,
+    redemptions: 0,
+    signal: "Fine Eyewear × Waterloo Greenway",
+  },
   {
     id: "legends",
     name: "Legends Real Estate",
@@ -28,7 +37,7 @@ const CAMPAIGN_POINTS = [
     scans: 340,
     saves: 118,
     redemptions: 58,
-    signal: "Listings + resident demand",
+    signal: "Listings + resident interest",
   },
   {
     id: "paseo",
@@ -68,34 +77,30 @@ const CAMPAIGN_POINTS = [
   },
 ];
 
-const FORMATS = [
+const BRAND_OPERATING_MATRIX = [
   {
-    id: "placement",
     title: "Map placement",
-    icon: MapPin,
-    copy: "Show up when people nearby are already deciding where to go, what to do, or what to try next.",
-    details: ["District targeting", "Category context", "Nearby resident visibility"],
+    use: "Put the campaign beside the places and categories people are already opening.",
+    examples: "District pages, category searches, nearby recommendations",
+    measured: "Map opens, saves, directions, and offer taps",
   },
   {
-    id: "qr",
     title: "QR entry points",
-    icon: QrCode,
-    copy: "Connect lobby, venue, event, and campaign surfaces directly into the live downtown map.",
-    details: ["Building QR", "Venue QR", "Event QR"],
+    use: "Turn a lobby, venue, table tent, event sign, or printed piece into a direct map entry.",
+    examples: "Building QR, venue QR, event QR",
+    measured: "Scans, source placement, and follow-up actions",
   },
   {
-    id: "events",
-    title: "Event-linked campaigns",
-    icon: CalendarDays,
-    copy: "Tie the brand to something people can actually attend, save, scan, or redeem.",
-    details: ["RSVP flow", "Timed offer", "Post-event follow-up"],
+    title: "Event tie-ins",
+    use: "Connect the brand to a real event people can save, attend, or use nearby.",
+    examples: "RSVP path, timed offer, post-event follow-up",
+    measured: "RSVPs, saves, scans, and redemptions",
   },
   {
-    id: "resident",
     title: "Resident access",
-    icon: BadgeCheck,
-    copy: "Create useful resident-only moments without making the campaign feel like advertising.",
-    details: ["Card unlock", "Resident perk", "Building audience"],
+    use: "Create a resident-only reason to act without making the moment feel like an ad.",
+    examples: "Resident card unlock, building offer, local perk",
+    measured: "Card opens, saves, unlocks, and repeat use",
   },
 ];
 
@@ -106,11 +111,20 @@ const WORKFLOW = [
   ["04", "Track what happened", "Measure scans, saves, redemptions, visits, and district activity without relying on vague impressions."],
 ];
 
-const PROOF = [
-  ["12", "Campaigns live"],
-  ["4", "Active districts"],
-  ["2.4k", "Campaign scans"],
-  ["340", "Redemptions"],
+const BRAND_PRICING_MATRIX = [
+  ["Brand Starter", "$99 / year", "A brand profile on the partner map with basic placement, contact links, and save/share actions."],
+  ["Brand Campaign", "$149 / year", "Starter plus a campaign-ready page for one clear offer, event tie-in, QR entry point, or resident-facing activation."],
+  ["Campaign Add-ons", "Priced separately", "Extra placements, multi-location campaigns, event integrations, resident offers, surveys, and QR production."],
+  ["Custom Activations", "Custom scope", "District campaigns, sponsorships, sampling programs, larger brand partnerships, and work outside the standard module."],
+];
+
+const BRAND_MEASUREMENT_MATRIX = [
+  ["Scans", "QR codes, partner links, and campaign entry points", "Shows which physical or digital placement brought someone into the map."],
+  ["Saves", "Save buttons on places, offers, events, and campaigns", "Shows what people want to keep, compare, or come back to later."],
+  ["Redemptions", "Resident card use, offer unlocks, partner confirmation, or tracked follow-up", "Shows whether the campaign led to a real action."],
+  ["Places opened", "Map drawers, nearby recommendations, and category searches", "Shows which downtown context helped someone decide what to do next."],
+  ["Directions", "Direction taps from the campaign, pin, offer, or event", "Shows when interest turns into a likely visit."],
+  ["Follow-up", "Form starts, RSVPs, requests, shares, and calendar adds", "Shows which next step deserves more attention."],
 ];
 
 const PROMPTS = [
@@ -119,23 +133,6 @@ const PROMPTS = [
   "We want QR entry points connected to the map.",
   "We want to track real-world scans and redemptions.",
 ];
-
-function CountUp({ to, suffix = "" }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return undefined;
-    const controls = animate(0, Number(to), {
-      duration: 1.15,
-      onUpdate: (latest) => setValue(Math.round(latest)),
-    });
-    return controls.stop;
-  }, [inView, to]);
-
-  return <span ref={ref}>{value.toLocaleString()}{suffix}</span>;
-}
 
 function Section({ id, eyebrow, title, children, className = "" }) {
   return (
@@ -185,9 +182,8 @@ export default function BrandsPartner() {
       <section className="relative overflow-hidden px-5 py-16 md:py-24">
         <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(11,31,51,0.28) 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="relative mx-auto max-w-6xl">
-          <Link to="/map?mode=partner&tab=map&filter=All" className="mb-8 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:text-[#0B1F33]">
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Partner overview
+          <Link to="/partners" className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-[#0B1F33]/58 transition hover:text-[#0B1F33]" aria-label="Back to partners" title="Back to partners">
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           </Link>
 
           <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
@@ -201,24 +197,7 @@ export default function BrandsPartner() {
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <PrimaryButton href="#brand-form">Start a conversation</PrimaryButton>
-                <SecondaryButton href="#brand-map">See placement map</SecondaryButton>
-              </div>
-
-              <div className="mt-8 grid gap-3 sm:grid-cols-4">
-                {PROOF.map(([value, label], index) => (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => document.querySelector("#proof")?.scrollIntoView({ behavior: "smooth" })}
-                    className="rounded-md border border-[#0B1F33]/8 bg-white/86 p-3 text-left shadow-[0_8px_24px_rgba(11,31,51,0.05)] transition hover:border-[#C8A96A]/45"
-                  >
-                    <div className="font-heading text-2xl font-medium text-[#0B1F33]">
-                      {Number.isFinite(Number(value)) ? <CountUp to={value} /> : value}
-                    </div>
-                    <div className="mt-1 text-[11px] text-[#0B1F33]/58">{label}</div>
-                    {index === 0 && <span className="sr-only">View proof metrics</span>}
-                  </button>
-                ))}
+                <SecondaryButton href="#brand-map">See where it fits</SecondaryButton>
               </div>
             </motion.div>
 
@@ -244,61 +223,44 @@ export default function BrandsPartner() {
                 </div>
                 <p className="mt-4 text-[12px] leading-5 text-[#0B1F33]/62">{activePoint.signal}</p>
               </div>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {[
-                  ["Scans", activePoint.scans],
-                  ["Saves", activePoint.saves],
-                  ["Redemptions", activePoint.redemptions],
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-md border border-[#0B1F33]/8 bg-white p-3 text-center">
-                    <div className="text-[16px] font-semibold text-[#0B1F33]">{value}</div>
-                    <div className="mt-1 text-[10px] uppercase tracking-[0.12em] text-[#0B1F33]/48">{label}</div>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-4 text-[11px] leading-5 text-[#0B1F33]/52">Performance is grouped by placement, district, and action so the campaign can be adjusted while it is live.</p>
+              <p className="mt-4 text-[11px] leading-5 text-[#0B1F33]/52">Start with one place, one reason to act, and one clear way to measure what happened next.</p>
             </motion.aside>
           </div>
         </div>
       </section>
 
-      <Section id="brand-map" eyebrow="Spatial Placement" title="See where campaigns actually run.">
-        <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
-          <div className="overflow-hidden rounded-lg" style={{ height: 480 }}>
+      <Section id="brand-map" eyebrow="Brand placement" title="Where a brand can fit into downtown plans.">
+        <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="overflow-hidden" style={{ height: 440 }}>
             <PartnerMapIntelligenceLayer
               activeId={activePoint.id}
-              caption="Campaign intelligence layer"
-              insight="Campaign placements, QR scans, resident saves, and redemptions shown by downtown context."
+              caption="Brand placement map"
+              insight="Choose a real downtown context first: a building, hotel, event, district, or nearby route."
               kind="brand"
               onSelect={setActivePoint}
               points={CAMPAIGN_POINTS}
             />
           </div>
 
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-white">
-            <div className="border-b border-[#0B1F33]/8 p-4">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Placement layer</div>
-              <h3 className="mt-2 font-heading text-2xl font-medium">{activePoint.name}</h3>
-              <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{activePoint.signal}</p>
+          <div className="dp-brand-placement-panel">
+            <p className="dp-brand-micro-label">Selected example</p>
+            <h3>{activePoint.name}</h3>
+            <p>{activePoint.type} in {activePoint.district}. {activePoint.signal}.</p>
+            <div className="dp-brand-placement-actions">
+              <span>Best next step</span>
+              <strong>{activePoint.type.includes("QR") || activePoint.type.includes("access") ? "Connect the entry point" : "Create a clear campaign page"}</strong>
             </div>
-            <div className="divide-y divide-[#0B1F33]/8">
+            <div className="dp-brand-placement-list" aria-label="Brand placement examples">
               {CAMPAIGN_POINTS.map((point) => (
                 <button
                   key={point.id}
                   type="button"
                   onClick={() => setActivePoint(point)}
-                  className={`grid w-full grid-cols-[36px_1fr_auto] items-center gap-3 p-3 text-left transition ${
-                    point.id === activePoint.id ? "bg-[#0B1F33] text-white" : "hover:bg-white"
-                  }`}
+                  className={point.id === activePoint.id ? "is-active" : ""}
                 >
-                  <span className={`flex h-9 w-9 items-center justify-center rounded-md border ${
-                    point.id === activePoint.id ? "border-[#C8A96A]/60 bg-white/10 text-[#C8A96A]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]"
-                  }`}>
-                    <MapPin className="h-4 w-4" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-[13px] font-semibold">{point.name}</span>
-                    <span className="mt-0.5 block truncate text-[11px] opacity-65">{point.type} · {point.district}</span>
+                  <span>
+                    <strong>{point.name}</strong>
+                    <small>{point.type} · {point.district}</small>
                   </span>
                   <ArrowRight className="h-4 w-4 opacity-50" />
                 </button>
@@ -308,29 +270,24 @@ export default function BrandsPartner() {
         </div>
       </Section>
 
-      <Section eyebrow="Operating Model" title="A brand campaign becomes useful when it belongs to a place.">
-        <div className="grid gap-3 md:grid-cols-4">
-          {FORMATS.map((format) => {
-            const Icon = format.icon;
-            return (
-              <motion.article
-                key={format.id}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="dp-glass-card p-5"
-              >
-                <Icon className="h-5 w-5 text-[#C8A96A]" />
-                <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{format.title}</h3>
-                <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{format.copy}</p>
-                <div className="mt-4 space-y-1.5">
-                  {format.details.map((detail) => (
-                    <div key={detail} className="rounded-md border border-[#0B1F33]/8 bg-white/72 px-2.5 py-1.5 text-[11px] text-[#0B1F33]/62">{detail}</div>
-                  ))}
+      <Section eyebrow="Campaign setup" title="Choose the placement before choosing the offer.">
+        <div className="dp-brand-matrix-rail" aria-label="Brand campaign setup options">
+          {BRAND_OPERATING_MATRIX.map((item) => (
+            <article key={item.title} className="dp-brand-matrix-card">
+              <h3>{item.title}</h3>
+              <p>{item.use}</p>
+              <dl>
+                <div>
+                  <dt>Example</dt>
+                  <dd>{item.examples}</dd>
                 </div>
-              </motion.article>
-            );
-          })}
+                <div>
+                  <dt>What you can measure</dt>
+                  <dd>{item.measured}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
         </div>
       </Section>
 
@@ -353,46 +310,41 @@ export default function BrandsPartner() {
         </div>
       </Section>
 
-      <Section id="proof" eyebrow="Measurement" title="Proof that goes beyond impressions.">
-        <div className="grid gap-4 md:grid-cols-4">
-          {[
-            ["Scans", "2,400+", "People opened the campaign from QR, map, or placement."],
-            ["Saves", "630+", "People kept the place, offer, or event for later."],
-            ["Redemptions", "340+", "People used the offer or checked in through the resident card."],
-            ["Districts", "4", "Campaign activity grouped by downtown context."],
-          ].map(([label, value, copy]) => (
-            <div key={label} className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_12px_30px_rgba(11,31,51,0.05)]">
-              <div className="font-heading text-3xl font-medium text-[#0B1F33]">{value}</div>
-              <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{label}</div>
-              <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
+      <Section id="proof" eyebrow="Measurement" title="What can be measured, and how.">
+        <div className="dp-brand-measurement-table" role="table" aria-label="Brand campaign measurement">
+          <div role="row" className="dp-brand-measurement-head">
+            <span role="columnheader">What</span>
+            <span role="columnheader">How it is captured</span>
+            <span role="columnheader">Why it helps</span>
+          </div>
+          {BRAND_MEASUREMENT_MATRIX.map(([label, capture, helps]) => (
+            <div key={label} role="row" className="dp-brand-measurement-row">
+              <strong role="cell">{label}</strong>
+              <span role="cell">{capture}</span>
+              <span role="cell">{helps}</span>
             </div>
           ))}
         </div>
       </Section>
 
-      <Section id="pricing" eyebrow="Brand pricing" title="Start with the right annual setup, then add campaign placement when it matters.">
-        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Annual setup</p>
-            <div className="mt-3 font-heading text-3xl font-medium text-[#0B1F33]">$99-$149/year</div>
-            <p className="mt-4 text-[13px] leading-6 text-[#0B1F33]/64">
-              Brand Starter is $99/year and Brand Campaign is $149/year. Sponsorships, district activations, surveys, broadcasts, and larger placements are reviewed as custom add-ons.
+      <Section id="pricing" eyebrow="Brand pricing" title="Start with the annual module, then price larger activations separately.">
+        <div className="grid gap-5 lg:grid-cols-[0.76fr_1.24fr]">
+          <div>
+            <p className="text-[14px] leading-7 text-[#0B1F33]/66">
+              Brand pricing starts with a simple annual setup. Campaigns, custom activations, sponsorships, sampling, surveys, broadcasts, and larger district work are scoped separately when they sit outside the standard module.
             </p>
             <Link to="/marketing/pricing" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
               View pricing matrix
               <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
             </Link>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {[
-              ["Simple entry", "QR code or text prompt. No app rollout, no complicated partner software."],
-              ["Survey learning", "Ask people why they came, what they want, and what would bring them back."],
-              ["Smart reporting", "The engine turns scans, answers, district, and timing into plain-English next steps."],
-            ].map(([title, copy]) => (
-              <article key={title} className="rounded-md border border-[#0B1F33]/8 bg-white p-4">
-                <h3 className="text-[13px] font-semibold text-[#0B1F33]">{title}</h3>
-                <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/60">{copy}</p>
-              </article>
+          <div className="dp-brand-pricing-table" role="table" aria-label="Brand pricing options">
+            {BRAND_PRICING_MATRIX.map(([tier, price, copy]) => (
+              <div key={tier} role="row" className="dp-brand-pricing-row">
+                <strong role="cell">{tier}</strong>
+                <span role="cell">{price}</span>
+                <p role="cell">{copy}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -400,30 +352,10 @@ export default function BrandsPartner() {
 
       <Section id="brand-form" eyebrow="Brand Planning" title="Start a brand conversation." className="bg-white">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#C8A96A]">
-                <Building2 className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="font-body text-[14px] font-semibold">Buy the moment, not the impression.</h3>
-                <p className="mt-1 text-[12px] text-[#0B1F33]/58">$99-$149/year annual setup, with custom campaign add-ons when timing matters.</p>
-              </div>
-            </div>
-            <div className="mt-5 grid gap-2">
-              {PROMPTS.map((prompt) => (
-                <button
-                  key={prompt}
-                  type="button"
-                  onClick={() => setSelectedPrompt(prompt)}
-                  className={`rounded-md border px-3 py-2 text-left text-[12px] leading-5 transition ${
-                    selectedPrompt === prompt ? "border-[#C8A96A]/60 bg-white text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white/58 text-[#0B1F33]/62 hover:border-[#C8A96A]/45"
-                  }`}
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
+          <div className="dp-brand-form-context">
+            <Building2 className="h-5 w-5 text-[#C8A96A]" />
+            <h3>Start with the moment you want to own.</h3>
+            <p>Tell us where the campaign should live, who it should help, and what someone should be able to do next.</p>
           </div>
 
           <form onSubmit={submitPlan} className="grid gap-3 rounded-lg border border-[#0B1F33]/8 bg-white p-5">
@@ -440,6 +372,13 @@ export default function BrandsPartner() {
                 onChange={(event) => setSelectedPrompt(event.target.value)}
                 className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#C8A96A]"
               />
+              <div className="dp-partner-prompt-inline" aria-label="Suggested brand prompts">
+                {PROMPTS.map((prompt) => (
+                  <button key={prompt} type="button" onClick={() => setSelectedPrompt(prompt)}>
+                    {prompt}
+                  </button>
+                ))}
+              </div>
             </label>
             <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
               Start a conversation
@@ -456,7 +395,7 @@ export default function BrandsPartner() {
       <FAQAccordionBlock
         sectionEyebrow="Brand FAQs"
         sectionTitle="Questions about downtown campaigns"
-        sectionIntro="Brands use Downtown Perks to show up inside real downtown movement, not beside it."
+        sectionIntro="Brands use Downtown Perks to show up inside real downtown plans, not beside them."
         items={FAQ_BRANDS}
         styleVariant="split"
         showNumbers={false}
@@ -480,9 +419,6 @@ export default function BrandsPartner() {
               Pricing matrix
             </Link>
           </div>
-          <p className="mt-5 text-[12px] text-[#0B1F33]/52">
-            Questions? <a href="mailto:partners@downtownperks.com" className="font-semibold text-[#0B1F33] underline decoration-[#C8A96A]/50 underline-offset-4">partners@downtownperks.com</a>
-          </p>
         </div>
       </Section>
     </div>

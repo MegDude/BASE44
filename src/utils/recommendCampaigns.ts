@@ -71,12 +71,12 @@ export function recommendCampaigns({
 
   if (isPublicArt) {
     recommendations.push({
-      actionTitle: "Public Art Trail",
-      whyNow: "This stop is free, visual, and easy to add to a walking route.",
-      bestAudience: "Residents, visitors, families, and self-guided explorers.",
-      suggestedTiming: "Weekend afternoons and civic event windows",
-      expectedOutcome: "More saves, directions, and route completions.",
-      setupPath: "Feature",
+      actionTitle: "Civic discovery route",
+      whyNow: "This stop works best when it helps residents connect public art, parks, trails, food, and nearby events into one easy downtown plan.",
+      bestAudience: "Residents in nearby buildings, culture partners, hotel guests, and people already exploring downtown.",
+      suggestedTiming: "Weekend afternoons, building welcome moments, and civic event days",
+      expectedOutcome: "More saved stops, directions, and nearby places opened after the route.",
+      setupPath: "Add to route",
     });
     return recommendations;
   }

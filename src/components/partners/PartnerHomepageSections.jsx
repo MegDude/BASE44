@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, BarChart3, Building2, CalendarDays, ChevronDown, Compass, Hotel, Landmark, MapPin, RadioTower, Store } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import {
   analyticsCards,
-  heroMetrics,
   intakeFields,
   intakeGoals,
   intelligenceMetrics,
@@ -17,63 +16,16 @@ import {
 import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1];
-const partnerIconMap = {
-  properties: Building2,
-  hotels: Hotel,
-  venues: Store,
-  brands: RadioTower,
-  civic: Landmark,
-};
-
 const partnerDecisionMoments = [
-  {
-    id: "morning-start",
-    kicker: "Real Downtown Decisions",
-    title: "People are already nearby and deciding where to start their day.",
-    meta: "Morning",
-    value: "01",
-  },
-  {
-    id: "nearby-reason",
-    kicker: "Real Downtown Decisions",
-    title: "A small nearby reason can change where someone goes next.",
-    meta: "Nearby",
-    value: "02",
-  },
-  {
-    id: "easy-yes",
-    kicker: "Real Downtown Decisions",
-    title: "Nearby discovery turns into an easy yes.",
-    meta: "Discovery",
-    value: "03",
-  },
-  {
-    id: "visible-next",
-    kicker: "Real Downtown Decisions",
-    title: "Visible when nearby people are already deciding what to do next.",
-    meta: "Visibility",
-    value: "04",
-  },
-  {
-    id: "findable-moments",
-    kicker: "Real Downtown Decisions",
-    title: "Moments get more useful when people can actually find them.",
-    meta: "Moments",
-    value: "05",
-  },
-  {
-    id: "downtown-routine",
-    kicker: "Real Downtown Decisions",
-    title: "One good visit becomes part of a downtown routine.",
-    meta: "Routine",
-    value: "06",
-  },
+  ["Coffee before work", "A nearby offer residents can use on the way out."],
+  ["Dinner after a show", "A simple path from event discovery to a table nearby."],
+  ["Weekend guests", "Hotel recommendations tied to places people can reach easily."],
 ];
 
 function SectionShell({ id, eyebrow, title, intro, children, className = "" }) {
   return (
-    <section id={id} className={cn("bg-white px-5 py-16 text-[#0B1F33] md:px-8 md:py-24", className)}>
-      <div className="mx-auto max-w-7xl">
+    <section id={id} className={cn("bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20", className)}>
+      <div className="mx-auto max-w-6xl">
         {(eyebrow || title || intro) && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -84,7 +36,7 @@ function SectionShell({ id, eyebrow, title, intro, children, className = "" }) {
           >
             {eyebrow && <p className="dp-partner-label">{eyebrow}</p>}
             {title && <h2 className="dp-partner-section-title">{title}</h2>}
-            {intro && <p className="mt-5 max-w-3xl text-[16px] leading-[1.75] text-[#0B1F33]/62 md:text-[18px]">{intro}</p>}
+            {intro && <p className="mt-4 max-w-3xl text-[15px] leading-[1.68] text-[#0B1F33]/66 md:text-[16px]">{intro}</p>}
           </motion.div>
         )}
         {children}
@@ -114,89 +66,35 @@ function TextLink({ to, children, variant = "primary", className = "" }) {
 
 function PartnerPageNav() {
   return (
-    <div className="border-b border-[#0B1F33]/[0.06] bg-[#F7F8FB] px-5 pt-[88px] md:px-8">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className="dp-partner-page-nav bg-white px-5 pt-[82px] md:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-start gap-5 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <nav className="flex min-w-max items-center gap-5" aria-label="Partner page navigation">
           {partnerNavLinks.map((link) => (
-            <Link key={link.label} to={link.href} className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/56 transition-colors hover:text-[#0B1F33]">
+            <Link key={link.label} to={link.href} className="text-[12px] font-medium tracking-normal text-[#0B1F33]/58 transition-colors hover:text-[#0B1F33]">
               {link.label}
             </Link>
           ))}
         </nav>
-        <Link
-          to="/partners/campaigns"
-          className="hidden h-9 shrink-0 items-center bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#132238] md:inline-flex"
-        >
-          Book Intro Call
-        </Link>
       </div>
     </div>
   );
 }
 
 function PartnerHeroVisual() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeItem = partnerDecisionMoments[activeIndex] || partnerDecisionMoments[0];
-
-  useEffect(() => {
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return undefined;
-    const interval = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % partnerDecisionMoments.length);
-    }, 5200);
-    return () => window.clearInterval(interval);
-  }, []);
-
   return (
-    <div id="moments-that-matter" className="dp-partner-hero-visual relative min-h-[460px] overflow-hidden p-5 text-white md:min-h-[560px] md:p-6">
-      <div className="absolute inset-0 opacity-45" aria-hidden="true">
-        <div className="absolute inset-x-8 top-10 h-px bg-white/12" />
-        <div className="absolute inset-x-8 top-32 h-px bg-white/10" />
-        <div className="absolute inset-y-8 left-12 w-px bg-white/10" />
-        <div className="absolute inset-y-8 left-1/2 w-px bg-white/10" />
-        <div className="absolute inset-y-8 right-16 w-px bg-white/10" />
-        <div className="absolute left-[26%] top-[28%] h-2 w-2 bg-[#C8A96A]" />
-        <div className="absolute right-[26%] top-[44%] h-2 w-2 bg-white" />
-        <div className="absolute bottom-[26%] left-[42%] h-2 w-2 bg-[#C8A96A]" />
-      </div>
-
-      <div className="dp-resident-hero-overlay relative z-10 flex h-full min-h-[420px] flex-col justify-between">
-        <div className="dp-resident-hero-overlay-inner dp-media-glass--text">
-          <div className="dp-resident-hero-overlay-kicker">
-            {activeItem.kicker}
-          </div>
-          <p className="dp-resident-hero-overlay-title">
-            {activeItem.title}
-          </p>
-          <div className="dp-media-sequence" aria-label={`Slide ${activeIndex + 1} of ${partnerDecisionMoments.length}`}>
-            <span className="dp-sequence-current">{String(activeIndex + 1).padStart(2, "0")}</span>
-            <span className="dp-sequence-divider"> / </span>
-            <span className="dp-sequence-total">{String(partnerDecisionMoments.length).padStart(2, "0")}</span>
-          </div>
+    <div id="moments-that-matter" className="dp-partner-hero-visual relative overflow-hidden bg-[#0B1F33] p-5 text-white md:p-6">
+      <div className="relative z-10 grid min-h-[330px] content-between gap-8">
+        <div>
+          <p className="dp-partner-label text-[#C8A96A]">Partner map</p>
+          <h2 className="mt-4 max-w-[13ch] text-[34px] font-semibold leading-[1.02] text-white md:text-[46px]">Local plans, made easier.</h2>
         </div>
-
-        <div className="grid gap-3">
-          {partnerDecisionMoments.slice(0, 3).map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              className={cn(
-                "dp-partner-card-overlay border border-white/12 bg-white/[0.08] p-4 text-left backdrop-blur-md transition-colors",
-                activeIndex === index && "border-[#C8A96A]/55"
-              )}
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="dp-partner-card-kicker text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{item.meta}</p>
-                  <p className="dp-partner-card-title mt-1 text-[14px] font-medium text-white">{item.title}</p>
-                </div>
-                <span className="text-[20px] font-semibold text-white">{item.value}</span>
-              </div>
-            </button>
+        <div className="grid gap-4">
+          {partnerDecisionMoments.map(([title, body]) => (
+            <article key={title} className="border-t border-white/14 pt-4">
+              <strong className="block text-[13px] font-semibold text-white">{title}</strong>
+              <p className="mt-1 text-[12px] leading-5 text-white/70">{body}</p>
+            </article>
           ))}
-          <div className="border-t border-[#C8A96A]/40 pt-4">
-            <p className="text-[12px] leading-5 text-white/72">Launch visibility around the places, moments, and audiences that are already active nearby.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -207,28 +105,19 @@ export function PartnerHero() {
   return (
     <>
       <PartnerPageNav />
-      <section className="dp-partner-hero bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+      <section className="dp-partner-hero bg-white px-5 py-12 text-[#0B1F33] md:px-8 md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.58, ease }} className="max-w-3xl">
-            <p className="dp-partner-label">PARTNERS</p>
-            <h1 className="mt-5 max-w-[11ch] font-heading text-[58px] leading-[0.9] tracking-[-0.05em] text-[#0B1F33] md:text-[84px] lg:text-[96px]">
+            <p className="dp-partner-label">Partners</p>
+            <h1 className="mt-5 max-w-[14ch] font-body text-[38px] font-semibold leading-[1.04] tracking-normal text-[#0B1F33] md:text-[56px] lg:text-[64px]">
               Show up when downtown decisions happen.
             </h1>
-            <div className="mt-8 max-w-2xl space-y-3 text-[17px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px]">
-              <p>People are already downtown and deciding where to eat, drink, shop, stay, and spend time.</p>
-              <p>Downtown Perks helps properties, hotels, venues, brands, and civic organizations appear naturally in those moments.</p>
+            <div className="mt-7 max-w-2xl space-y-3 text-[15px] leading-[1.68] text-[#0B1F33]/68 md:text-[17px]">
+              <p>Downtown Perks helps properties, hotels, venues, brands, and civic organizations become useful while people nearby are making plans.</p>
             </div>
             <div className="mt-8 flex flex-wrap gap-6">
               <TextLink to="#shared-layer">See How It Works</TextLink>
               <TextLink to="#partner-system" variant="secondary">Explore Partner Types</TextLink>
-            </div>
-            <div className="mt-10 grid max-w-xl grid-cols-3 gap-3 border-t border-[#0B1F33]/[0.06] pt-5">
-              {heroMetrics.map((metric) => (
-                <div key={metric.label}>
-                  <p className="text-[24px] font-semibold leading-none text-[#0B1F33] md:text-[30px]">{metric.value}</p>
-                  <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{metric.label}</p>
-                </div>
-              ))}
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.58, delay: 0.08, ease }}>
@@ -245,26 +134,12 @@ export function SharedOperatingLayer() {
     <SectionShell
       id="shared-layer"
       eyebrow="THE SHARED DOWNTOWN LAYER"
-      title="Downtown works better when discovery becomes visible."
+      title="One map for the moments people already use."
       className="bg-white"
     >
       <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-        <div className="max-w-3xl space-y-4 text-[16px] leading-[1.78] text-[#0B1F33]/66 md:text-[18px]">
-          <p>Right now, most local participation lives inside disconnected platforms.</p>
-          <p>Google for restaurants.</p>
-          <p>Instagram for events.</p>
-          <p>Group texts for plans.</p>
-          <p>Maps for directions.</p>
-          <p>Five tabs open just to decide where to go tonight.</p>
-          <p>The problem is not a lack of options.</p>
-          <p>The problem is friction.</p>
-          <p>Downtown Perks reduces that friction by turning the neighborhood itself into one connected operational layer.</p>
-          <p>Residents discover nearby places.</p>
-          <p>Hotels guide guests beyond the lobby.</p>
-          <p>Venues become visible during moments of intent.</p>
-          <p>Brands activate around real-world movement.</p>
-          <p>Civic organizations coordinate participation at a district level.</p>
-          <p>Everything connects through one live map-native system.</p>
+        <div className="max-w-3xl text-[15px] leading-[1.72] text-[#0B1F33]/66 md:text-[16px]">
+          <p>People already use downtown in connected ways: coffee before work, dinner before a show, a hotel recommendation, a resident perk on the walk home. Downtown Perks brings those moments into one map so partners can be useful without making people search across five different places.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
           {operatingModelCards.map((card, index) => (
@@ -274,7 +149,7 @@ export function SharedOperatingLayer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.45, delay: index * 0.06, ease }}
-              className="border border-[#0B1F33]/[0.06] bg-[#F7F8FB] p-5"
+              className="border border-[#0B1F33]/[0.06] bg-white p-5"
             >
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">0{index + 1}</p>
               <h3 className="mt-4 text-[18px] font-semibold leading-tight text-[#0B1F33]">{card.title}</h3>
@@ -284,44 +159,6 @@ export function SharedOperatingLayer() {
         </div>
       </div>
     </SectionShell>
-  );
-}
-
-function PartnerDashboardPreview({ partner }) {
-  const Icon = partnerIconMap[partner.key] || Compass;
-
-  return (
-    <div className="border border-[#0B1F33]/[0.06] bg-white p-5 shadow-[0_8px_24px_rgba(11,31,51,0.06)]">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="dp-partner-label">Demo operating view</p>
-          <h3 className="mt-2 text-[20px] font-semibold leading-tight text-[#0B1F33]">{partner.label} activity</h3>
-        </div>
-        <span className="grid h-10 w-10 place-items-center bg-[#0B1F33] text-[#C8A96A]">
-          <Icon className="h-4 w-4" />
-        </span>
-      </div>
-      <div className="mt-6 grid grid-cols-3 gap-3">
-        {partner.metrics.map((metric) => (
-          <div key={metric.label} className="border-t border-[#0B1F33]/[0.06] pt-3">
-            <p className="text-[20px] font-semibold leading-none text-[#0B1F33]">{metric.value}</p>
-            <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/50">{metric.label}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-6 space-y-3">
-        {partner.activityFeed.map((item) => (
-          <div key={`${item.label}-${item.time}`} className="flex items-start justify-between gap-4 border-t border-[#0B1F33]/[0.06] pt-3">
-            <p className="text-[13px] leading-5 text-[#0B1F33]/72">{item.label}</p>
-            <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#C8A96A]">{item.time}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-6 border-t border-[#0B1F33]/[0.06] pt-4">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Analytics framing</p>
-        <p className="mt-2 text-[13px] leading-[1.65] text-[#0B1F33]/64">{partner.analyticsFraming}</p>
-      </div>
-    </div>
   );
 }
 
@@ -346,7 +183,7 @@ export function RotatingPartnerSystem() {
   return (
     <SectionShell id="partner-system" eyebrow="ROTATING PARTNER SYSTEM" title="One shared system. Different partner views.">
       <div
-        className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)_420px] lg:items-start"
+        className="grid gap-8 lg:grid-cols-[210px_minmax(0,1fr)] lg:items-start"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
@@ -402,9 +239,11 @@ export function RotatingPartnerSystem() {
             </div>
             <TextLink to={activePartner.ctaHref}>{activePartner.cta}</TextLink>
           </div>
+          <div className="mt-6 border-t border-[#0B1F33]/[0.06] pt-5">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]">What you can review</p>
+            <p className="mt-2 max-w-3xl text-[13px] leading-[1.68] text-[#0B1F33]/64">{activePartner.analyticsFraming}</p>
+          </div>
         </motion.div>
-
-        <PartnerDashboardPreview partner={activePartner} />
       </div>
     </SectionShell>
   );
@@ -414,9 +253,9 @@ export function IntelligenceLayer() {
   return (
     <SectionShell
       id="intelligence"
-      eyebrow="MEASURABLE DOWNTOWN INTELLIGENCE"
-      title="See how people move, engage, return, and participate."
-      intro="Downtown Perks transforms local participation into measurable operational visibility. The analytics experience should feel calm, readable, and operational. Not like enterprise BI software."
+      eyebrow="PARTNER REPORTING"
+      title="See what people opened, saved, and used."
+      intro="Reporting should help a partner decide what to do next. No jargon, no noisy dashboard language, and no fake complexity."
       className="bg-white"
     >
       <div className="grid gap-4 md:grid-cols-4">
@@ -472,83 +311,117 @@ export function PartnerFAQ() {
 
 export function DynamicIntakeWorkflow() {
   const [selectedType, setSelectedType] = useState("properties");
-  const [selectedGoal, setSelectedGoal] = useState(intakeGoals[0]);
-  const activePartner = useMemo(() => partnerStates.find((state) => state.key === selectedType) || partnerStates[0], [selectedType]);
+  const [selectedGoal, setSelectedGoal] = useState("Increase repeat visits");
+  const activePartner = useMemo(() => {
+    const matched = partnerStates.find((state) => state.key === selectedType);
+    if (matched) return matched;
+    if (selectedType === "real-estate") {
+      return {
+        label: "Real estate / leasing",
+        intakeTargeting: "Listing layer + neighborhood guide.",
+        campaignType: "Listing launch + buyer or renter follow-up.",
+        cta: "Bring This to Your Listings",
+      };
+    }
+    return {
+      label: "Custom",
+      intakeTargeting: "Custom onboarding + shared map setup.",
+      campaignType: "Pilot campaign built around your first use case.",
+      cta: "Start a Custom Pilot",
+    };
+  }, [selectedType]);
 
   return (
     <SectionShell
       id="get-started"
       eyebrow="PARTNER INTAKE"
-      title="Bring your part of downtown into the system."
-      intro="Select your organization type to see the right onboarding flow, activation structure, and operational setup."
+      title="Bring your part of downtown into the map."
+      intro="Choose what you are trying to do, then share the basics. The right partner path starts from there."
       className="bg-white"
     >
-      <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr]">
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">What are you trying to do?</p>
-          <div className="mt-4 flex flex-wrap gap-2">
+      <div className="dp-partner-intake-shell">
+        <div className="dp-partner-intake-controls">
+          <section>
+            <h3>What are you trying to do?</h3>
+            <div className="dp-partner-intake-choice-rail" role="listbox" aria-label="Partner goal">
             {intakeGoals.map((goal) => (
               <button
                 key={goal}
                 type="button"
                 onClick={() => setSelectedGoal(goal)}
-                className={cn(
-                  "border px-3 py-2 text-left text-[12px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]",
-                  selectedGoal === goal ? "border-[#C8A96A]/35 bg-[#C8A96A]/10 text-[#0B1F33]" : "border-[#0B1F33]/[0.06] bg-[#F7F8FB] text-[#0B1F33]/62"
-                )}
+                className={cn(selectedGoal === goal && "is-active")}
               >
                 {goal}
               </button>
             ))}
-          </div>
+            </div>
+          </section>
 
-          <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Partner type</p>
-          <div className="mt-4 grid gap-2">
+          <section>
+            <h3>Partner type</h3>
+            <div className="dp-partner-intake-choice-rail" role="tablist" aria-label="Partner type">
             {organizationTypes.map((type) => (
               <button
                 key={type.key}
                 type="button"
+                role="tab"
+                aria-selected={selectedType === type.key}
                 onClick={() => setSelectedType(type.key)}
-                className={cn(
-                  "flex items-center justify-between border px-4 py-3 text-left text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]",
-                  selectedType === type.key ? "border-[#0B1F33] bg-[#0B1F33] text-white" : "border-[#0B1F33]/[0.06] bg-[#F7F8FB] text-[#0B1F33]/68"
-                )}
+                className={cn(selectedType === type.key && "is-active")}
               >
                 {type.label}
-                {selectedType === type.key && <span className="h-1.5 w-1.5 bg-[#C8A96A]" aria-hidden="true" />}
               </button>
             ))}
-          </div>
+            </div>
+          </section>
 
-          <div className="mt-8 border border-[#0B1F33]/[0.06] bg-[#F7F8FB] p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Suggested path</p>
-            <p className="mt-3 text-[15px] font-semibold text-[#0B1F33]">{activePartner.intakeTargeting}</p>
-            <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Recommended campaign type</p>
-            <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{activePartner.campaignType}</p>
-            <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Current goal</p>
-            <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{selectedGoal}</p>
+          <div className="dp-partner-intake-readout">
+            <div>
+              <span>Suggested path</span>
+              <p>{activePartner.intakeTargeting}</p>
+            </div>
+            <div>
+              <span>Recommended campaign type</span>
+              <p>{activePartner.campaignType}</p>
+            </div>
+            <div>
+              <span>Current goal</span>
+              <p>{selectedGoal}</p>
+            </div>
           </div>
         </div>
 
-        <form className="grid gap-4 border border-[#0B1F33]/[0.06] bg-[#F7F8FB] p-5 md:grid-cols-2 md:p-6">
+        <form className="dp-partner-intake-form">
           {intakeFields.map((field) => {
             const isLarge = field === "Notes" || field === "Main goal";
+            const inputValue = field === "Partner type" ? activePartner.label : "";
+            const textValue = field === "Main goal" ? selectedGoal : undefined;
             return (
               <label key={field} className={cn("grid gap-2", isLarge && "md:col-span-2")}>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/52">{field}</span>
+                <span>{field}</span>
                 {isLarge ? (
-                  <textarea className="min-h-28 border border-[#0B1F33]/[0.06] bg-white px-3 py-2 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60" defaultValue={field === "Main goal" ? selectedGoal : ""} />
+                  <textarea
+                    className="min-h-28 border border-[#0B1F33]/[0.06] bg-white px-3 py-2 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60"
+                    value={textValue}
+                    onChange={() => {}}
+                    readOnly={field === "Main goal"}
+                  />
                 ) : (
-                  <input className="h-11 border border-[#0B1F33]/[0.06] bg-white px-3 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60" defaultValue={field === "Partner type" ? activePartner.label : ""} />
+                  <input
+                    className="h-11 border border-[#0B1F33]/[0.06] bg-white px-3 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60"
+                    value={inputValue}
+                    onChange={() => {}}
+                    readOnly={field === "Partner type"}
+                  />
                 )}
               </label>
             );
           })}
           <div className="md:col-span-2">
-            <button type="button" className="inline-flex h-12 items-center justify-center bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#132238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
+            <button type="button">
               {activePartner.cta || "Start the Pilot"}
             </button>
-            <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/52">This connects to the partner pilot workflow. Workspace setup begins after intake review.</p>
+            <p>This connects to the partner pilot workflow. Workspace setup begins after intake review.</p>
           </div>
         </form>
       </div>
@@ -559,14 +432,14 @@ export function DynamicIntakeWorkflow() {
 export function PartnerFinalCTA() {
   return (
     <section className="bg-[#0B1F33] px-5 py-16 text-white md:px-8 md:py-24">
-      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
+      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
         <div>
           <p className="dp-partner-label">FINAL CTA</p>
           <h2 className="mt-4 max-w-3xl font-heading text-[48px] leading-[0.94] tracking-[-0.04em] text-white md:text-[76px]">
             The city already moves. <span className="text-[#C8A96A]">Now make it visible.</span>
           </h2>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.72] text-white/68 md:text-[18px]">
-            Downtown Perks connects movement, discovery, participation, and visibility through one shared downtown operating layer.
+            Downtown Perks connects discovery, participation, and visibility through one shared downtown map.
           </p>
         </div>
         <div className="flex flex-wrap gap-6">
@@ -583,14 +456,12 @@ export function PartnerWorkspaceBridge() {
     <SectionShell id="workspace-bridge" eyebrow="WORKSPACE CONNECTION" title="Public story first. Workspace after login." className="bg-[#F7F8FB]">
       <div className="grid gap-4 md:grid-cols-3">
         {[
-          { icon: MapPin, title: "Map integration", body: "Partner CTAs connect back to the live map and partner map mode.", href: "/map?mode=partner&tab=map" },
-          { icon: BarChart3, title: "Public dashboard", body: "The demo dashboard remains a proof surface for reports and operating logic.", href: "/partners/dashboard" },
-          { icon: CalendarDays, title: "Workspace", body: "The operating workspace remains separate for campaigns, reports, and live partner work.", href: "/partner-workspace/overview" },
+          { title: "Map", body: "Open the partner map and review places, offers, events, and nearby context.", href: "/map?mode=partner&tab=map" },
+          { title: "Reports", body: "See what people opened, saved, scanned, and requested.", href: "/partners/dashboard" },
+          { title: "Workspace", body: "Manage campaigns, reports, and partner follow-up after login.", href: "/partner-workspace/overview" },
         ].map((item) => {
-          const Icon = item.icon;
           return (
             <Link key={item.title} to={item.href} className="group border border-[#0B1F33]/[0.06] bg-white p-5 transition-colors hover:border-[#C8A96A]/40">
-              <Icon className="h-5 w-5 text-[#C8A96A]" />
               <h3 className="mt-4 text-[17px] font-semibold text-[#0B1F33]">{item.title}</h3>
               <p className="mt-2 text-[13px] leading-[1.65] text-[#0B1F33]/62">{item.body}</p>
               <span className="mt-5 inline-flex text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] group-hover:text-[#C8A96A]">Open</span>

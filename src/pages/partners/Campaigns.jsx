@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Check, ChevronRight, MapPin, Save, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, ChevronRight, MapPin, Save, Send, Sparkles } from "lucide-react";
 import BrandNetworkShowcase from "@/components/marketing/BrandNetworkShowcase";
 import TwoSidedFAQHub from "@/components/marketing/TwoSidedFAQHub";
 
@@ -8,54 +8,70 @@ const campaignTypes = {
   Perks: {
     headline: "Give people a reason to stop by.",
     body: "Create a local offer that appears nearby when residents are deciding where to go. Perfect for restaurants, coffee shops, wellness businesses, retail, and services.",
-    examples: ["Free coffee with breakfast.", "Complimentary appetizer.", "Priority access.", "Resident-only specials."],
+    examples: [
+      ["Coffee or breakfast", "A morning perk people can use before work."],
+      ["Dinner or drinks", "A simple add-on for people already choosing where to go."],
+      ["Retail or service", "A useful resident reason to book, browse, or stop in."],
+    ],
     price: "Starting at $30",
     cta: "Create a Perk Campaign",
   },
   Events: {
     headline: "Fill the room.",
     body: "Promote events while people are making plans. Appear inside the map, event discovery surfaces, and nearby recommendation flows.",
-    examples: ["Live music", "Networking", "Fitness", "Community events"],
+    examples: [
+      ["Live music", "Help people find the show while they are making plans."],
+      ["Wellness class", "Put the class near residents, hotels, and nearby routines."],
+      ["Community event", "Make the event easier to save, share, and attend."],
+    ],
     price: "Starting at $20",
     cta: "Promote an Event",
   },
   Visibility: {
     headline: "Stay visible between visits.",
     body: "Appear throughout downtown discovery experiences even when people are not actively searching for you.",
-    examples: ["Featured listing", "Weekend spotlight", "Neighborhood feature"],
+    examples: [
+      ["Featured place", "Keep the business visible in the right nearby category."],
+      ["Weekend spotlight", "Show up when people are deciding where to spend time."],
+      ["Neighborhood guide", "Connect the place to the blocks around it."],
+    ],
     price: "Starting at $49",
     cta: "Start Visibility",
   },
   Property: {
     headline: "Turn the neighborhood into an amenity.",
     body: "Connect residents to nearby perks, events, local businesses, and neighborhood recommendations from one shared map.",
-    examples: ["Move-in week", "Resident guide", "Nearby perks"],
+    examples: [
+      ["Move-in week", "Introduce residents to the useful places around the building."],
+      ["Resident guide", "Make the neighborhood feel easier to use."],
+      ["Nearby perks", "Connect building life to local offers and events."],
+    ],
     price: "Property options",
     cta: "Explore Property Campaigns",
   },
   Hotel: {
     headline: "Extend the stay beyond the lobby.",
     body: "Connect guests to local experiences, partner offers, and neighborhood recommendations.",
-    examples: ["Guest guide", "Dinner tonight", "Weekend plans"],
+    examples: [
+      ["Guest guide", "Give the front desk a cleaner nearby recommendation path."],
+      ["Dinner tonight", "Show walkable restaurants, drinks, and events."],
+      ["Weekend plans", "Connect guests to easy downtown experiences."],
+    ],
     price: "Hotel options",
     cta: "Explore Hotel Campaigns",
   },
   Brand: {
     headline: "Better timing beats louder advertising.",
     body: "Reach people while they are nearby and actively making decisions.",
-    examples: ["Local launch", "Event tie-in", "Sampling moment"],
+    examples: [
+      ["Local launch", "Introduce the brand where people already spend time."],
+      ["Event tie-in", "Pair the brand with a nearby crowd and clear reason to engage."],
+      ["Sampling moment", "Turn a pop-up into a saved place, route, or request."],
+    ],
     price: "Brand options",
     cta: "Explore Brand Campaigns",
   },
 };
-
-const moments = [
-  ["Coffee before work", "/images/imported/perks/coffee-before-work.png"],
-  ["Lunch between meetings", "/images/map-entities/perks/partner_dining_patio_1779052819620.png"],
-  ["Happy hour nearby", "/images/imported/perks/cocktails.avif"],
-  ["Dinner plans", "/images/map-entities/dining/outdoor-dining-arrival.avif"],
-  ["Weekend plans", "/images/imported/perks/yeti-event.jpeg"],
-];
 
 const faqs = [
   ["How much does a campaign cost?", "Campaigns start at $20 for event boosts and $30 for perks. Larger visibility campaigns can be added when you want broader placement."],
@@ -158,18 +174,20 @@ export default function CampaignsPage() {
   return (
     <main className="dp-campaigns-page">
       <header className="dp-campaigns-header">
-        <Link to="/map?mode=resident&tab=map&filter=All" className="dp-campaigns-brand">Downtown Perks</Link>
-        <nav aria-label="Campaign page navigation">
-          <Link to="/partners/campaigns">Campaigns</Link>
-          <Link to="/map?mode=partner&tab=campaigns">Map</Link>
-          <Link to="/map?mode=resident&tab=map&filter=Events">Events</Link>
-          <Link to="/map?mode=resident&tab=map&filter=Perks">Perks</Link>
-          <Link to="/partners">Partners</Link>
-        </nav>
-        <div>
-          <button type="button" onClick={() => scrollToLaunch()} className="dp-campaigns-primary">Launch a Campaign</button>
-          <Link to="/map?mode=partner&tab=campaigns" className="dp-campaigns-secondary">Open Map</Link>
-        </div>
+        <button type="button" className="dp-campaigns-back" aria-label="Go back" onClick={() => navigate(-1)}>
+          <ArrowLeft size={18} aria-hidden="true" />
+        </button>
+        <Link to="/partners" className="dp-campaigns-brand">Downtown Perks Partners</Link>
+        <details className="dp-campaigns-menu">
+          <summary>Partner menu</summary>
+          <nav aria-label="Partner navigation">
+            <Link to="/partners">Partner Home</Link>
+            <Link to="/partners/campaigns">Campaigns</Link>
+            <Link to="/map?mode=partner&tab=campaigns">Partner Map</Link>
+            <Link to="/partners/dashboard">Dashboard</Link>
+            <Link to="/partners/sign-in">Sign In</Link>
+          </nav>
+        </details>
       </header>
 
       <section className="dp-campaigns-hero">
@@ -183,36 +201,27 @@ export default function CampaignsPage() {
           </div>
         </div>
         <figure className="dp-campaigns-visual">
-          <img src="/images/imported/perks/live-map-listing.png" alt="Downtown campaign map preview" loading="lazy" decoding="async" />
+          <img
+            src={new URLSearchParams(window.location.search).get("entityId")?.includes("heritage-boots") ? "/images/imported/perks/boot-wars.jpg" : "/images/imported/perks/featured-campaign-2.png"}
+            alt="Downtown partner campaign preview"
+            loading="lazy"
+            decoding="async"
+          />
           <figcaption>
-            <strong>Nearby decision moment</strong>
-            <span>Coffee before work · Lunch nearby · Happy hour tonight</span>
+            <strong>{new URLSearchParams(window.location.search).get("entityId")?.includes("heritage-boots") ? "Heritage Boots campaign" : "Partner campaign placement"}</strong>
+            <span>{new URLSearchParams(window.location.search).get("entityId")?.includes("heritage-boots") ? "Retail offer · Congress · partner map" : "Offer · event · nearby map"}</span>
           </figcaption>
         </figure>
       </section>
 
-      <section className="dp-campaigns-section">
-        <p className="dp-campaigns-eyebrow">The moments that matter</p>
-        <h2>Downtown runs on moments.</h2>
-        <p>Coffee before work. Lunch between meetings. Happy hour before a show. A last-minute dinner plan. A rooftop on a Saturday afternoon.</p>
-        <div className="dp-moment-scroller">
-          {moments.map(([title, image]) => (
-            <article key={title}>
-              <img src={image} alt={title} loading="lazy" decoding="async" />
-              <strong>{title}</strong>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="dp-campaigns-section dp-campaigns-how">
+      <section className="dp-campaigns-section dp-campaigns-how dp-campaigns-moment-process">
         <div>
           <p className="dp-campaigns-eyebrow">How campaigns work</p>
-          <h2>Simple by design.</h2>
-          <p>Keep the first step clear, then let the map carry the offer into the places people already use.</p>
+          <h2>Start with the moment, then make the next step clear.</h2>
+          <p>Coffee before work, lunch between meetings, happy hour before a show, or a last-minute dinner plan. Pick one real downtown moment and give people one useful reason to act.</p>
         </div>
         <ol>
-          {["Choose a goal|Decide what you want people to do.", "Select an audience|Choose who should see your offer.", "Create an offer|Make it clear, simple, and local.", "Launch|Go live in just a few minutes.", "See what happened|Track saves, visits, and redemptions."].map((step, index) => {
+          {["Choose a goal|Decide what you want people to do.", "Choose who it helps|Focus on residents, guests, visitors, or people near an event.", "Create the offer|Make it clear, simple, and local.", "Launch|Place it on the partner map and nearby surfaces.", "Review what happened|See what people saved, used, and asked for next."].map((step, index) => {
             const [title, body] = step.split("|");
             return <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><strong>{title}</strong><p>{body}</p></li>;
           })}
@@ -245,7 +254,14 @@ export default function CampaignsPage() {
             <p>{active.body}</p>
             <strong>{active.price}</strong>
           </div>
-          <ul>{active.examples.map((example) => <li key={example}><Check size={16} /> {example}</li>)}</ul>
+          <div className="dp-campaign-example-rail" aria-label={`${activeType} campaign examples`}>
+            {active.examples.map(([title, copy]) => (
+              <article key={title}>
+                <span>{title}</span>
+                <p>{copy}</p>
+              </article>
+            ))}
+          </div>
           <button
             type="button"
             onClick={() => {
@@ -288,7 +304,7 @@ export default function CampaignsPage() {
 
       <section className="dp-campaigns-section">
         <p className="dp-campaigns-eyebrow">What the report shows</p>
-        <h2>Useful signals from real activity.</h2>
+        <h2>Useful proof from real use.</h2>
         <div className="dp-proof-grid">
           {[
             ["People saved this.", "They wanted to keep the offer, event, or place close enough to come back to.", "/images/imported/perks/map-and-qr.png"],
@@ -346,16 +362,6 @@ export default function CampaignsPage() {
         </div>
       </section>
 
-      <section className="dp-final-campaign-cta">
-        <h2>Show up when it counts.</h2>
-        <p>People are already downtown. Campaigns help you appear when they are deciding what to do next.</p>
-        <button type="button" onClick={() => scrollToLaunch()} className="dp-campaigns-gold">Launch Your First Campaign</button>
-      </section>
-
-      <footer className="dp-campaign-footer">
-        <span>Downtown Perks</span>
-        <Link to="/map?mode=partner&tab=campaigns">Open partner map</Link>
-      </footer>
     </main>
   );
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
 import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';
@@ -18,7 +17,7 @@ const CIVIC_FORMATS = [
     bestFor: 'Always-on civic presence',
     placements: 'Map layer, district pins, recurring civic highlights, partner adjacency',
     activation: 'Always-on district visibility, civic information, or useful neighborhood guide',
-    kpi: 'Map opens, saved places, repeat discovery, visits',
+    kpi: 'Map opens, saved places, repeat use, visits',
     body: 'Use this format when the goal is to make a district, organization, or public-serving guide easier to see and navigate every day. This works best for groups that need a steady downtown presence instead of a one-time push.',
   },
   {
@@ -71,61 +70,61 @@ const CIVIC_EXAMPLES = [
   {
     name: 'Downtown Austin Alliance',
     type: 'District coordination',
-    desc: 'Rainey Street visibility layer showing events, venues, and district happenings',
-    proof: '↑ 340% district opens',
+    desc: 'Rainey Street layer showing events, venues, and district happenings',
+    proof: 'More district opens',
   },
   {
     name: 'Visit Austin',
     type: 'Visitor guidance',
     desc: 'Downtown attraction discovery and helpful wayfinding for visitors',
-    proof: '↑ 2.1k attributed visits',
+    proof: 'More visits from nearby discovery',
   },
   {
     name: 'Waterloo Greenway',
     type: 'Public space programming',
     desc: 'Event-led civic participation and programming visibility',
-    proof: '↑ 920 event RSVPs',
+    proof: 'More event RSVPs',
   },
   {
     name: 'Rainey Street Group',
     type: 'Venue coordination',
     desc: 'District-wide venue partnership and event layer',
-    proof: '↑ 48% repeat discovery',
+    proof: 'More repeat use',
   },
   {
     name: 'Red River',
     type: 'Music district guide',
     desc: 'Live event and venue discovery across the music district',
-    proof: '↑ 1.8k monthly scans',
+    proof: 'More monthly scans',
   },
   {
     name: 'Wellness Loop',
     type: 'Wellness coordination',
     desc: 'Connected wellness and fitness experience across downtown',
-    proof: '↑ 340 attributed visits',
+    proof: 'More visits after class',
   },
 ];
 
 const CIVIC_PLANNING_METRICS = [
   {
     label: 'Map opens',
-    value: '18k-28k',
-    detail: 'Monthly discovery range once resident buildings, public QR surfaces, and event markers are live.',
+    value: 'Monthly',
+    detail: 'What people open once resident buildings, public QR surfaces, and event markers are live.',
   },
   {
     label: 'District use',
-    value: '7k-14k',
-    detail: 'Expected saves, taps, and repeat guide use from residents and visitors already browsing downtown.',
+    value: 'By district',
+    detail: 'Saves, taps, and repeat guide use from residents and visitors already browsing downtown.',
   },
   {
     label: 'Event RSVPs',
-    value: '1.6k-3.2k',
-    detail: 'Planned RSVP range for civic programming with map placement, useful prompts, and building outreach.',
+    value: 'Events',
+    detail: 'RSVPs for civic programming with map placement, useful prompts, and building outreach.',
   },
   {
     label: 'Attributed visits',
-    value: '4k-8.4k',
-    detail: 'Likely visits when discovery, wayfinding, and event context are connected in one flow.',
+    value: 'Visits',
+    detail: 'Visits when wayfinding, nearby places, and event context are connected in one flow.',
   },
 ];
 
@@ -219,10 +218,10 @@ export default function CivicPartner() {
       <PartnerHero
         eyebrow="Civic"
         headline="A civic layer built for how downtown actually works."
-        description="Downtown Perks helps civic organizations surface events, districts, public moments, and local participation across one live downtown map. Make what is happening easier to find, easier to join, and easier to measure."
+        description="Downtown Perks helps civic organizations surface events, districts, public moments, and local participation across one live downtown map. Make what is happening easier to find, easier to join, and easier to review."
         primaryCTA="Explore civic formats"
         primaryCTAHref="#formats"
-        secondaryCTA="View civic analytics"
+        secondaryCTA="View civic results"
         secondaryCTAHref="#proof"
       />
 

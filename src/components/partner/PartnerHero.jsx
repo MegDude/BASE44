@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 /**
  * PartnerHero — Unified hero for all partner pages
@@ -24,10 +24,11 @@ export default function PartnerHero({
       <div className="max-w-7xl mx-auto px-5">
         <a
           href={backHref}
-          className="mb-8 inline-flex items-center gap-2 bg-transparent px-0 font-body text-[12px] font-medium text-[#0B1F33]/68 transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+          className="dp-partner-back-button mb-8 inline-flex items-center justify-center bg-transparent px-0 font-body text-[12px] font-medium text-[#0B1F33]/68 transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+          aria-label={backLabel}
+          title={backLabel}
         >
-          <span className="text-[#BFA46A]" aria-hidden="true">←</span>
-          {backLabel}
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         </a>
       </div>
       <div className={`max-w-7xl mx-auto px-5 grid grid-cols-1 gap-12 items-center ${preview ? 'md:grid-cols-2' : ''}`}>

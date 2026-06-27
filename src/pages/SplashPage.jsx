@@ -19,7 +19,7 @@ const storyStates = [
         { text: "with honey.", tone: "navy" },
       ],
     ],
-    meaning: "",
+    meaning: "Downtown Perks brings the heat — and the hospitality.",
     supporting: [
       "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” - this is for you.",
     ],
@@ -88,9 +88,8 @@ const storyStates = [
     ],
     meaning: "",
     supporting: [
-      "Coffee around the corner. A last-minute happy hour.",
-      "The resident event you would have missed.",
-      "Connecting the people, places and perks that make downtown feel like home.",
+      "Coffee around the corner. A last-minute happy hour. The resident event you would have missed.",
+      "Connecting the people, places and perks that make downtown feel like home, helping residents make better plans faster while local businesses stay relevant in the moments that actually matter.",
     ],
     visual: ["Coffee", "Happy hour", "Resident event"],
   },
@@ -111,9 +110,7 @@ const storyStates = [
       ],
     ],
     meaning: "Choosing local comes with its perks: discounts, rewards, and little extras from the places that keep downtown interesting.",
-    supporting: [
-      "Helping residents make better plans faster — while helping local businesses stay relevant in the moments that actually matter.",
-    ],
+    supporting: [],
     visual: ["Discounts", "Rewards", "Extras"],
   },
   {

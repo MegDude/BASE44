@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -11,32 +11,12 @@ import PartnerLifecycle from "./pages/PartnerLifecycle";
 import Dashboard from "./pages/Dashboard";
 import PartnersDashboardPage from "./pages/partners/Dashboard";
 
-// Marketing pages (lazy-loaded, not part of the app shell)
+// Platform pages
 import { lazy, Suspense } from "react";
-const SplashPage = lazy(() => import("./pages/SplashPage"));
-const HomePage = lazy(() => import("./pages/Home"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
-const ContactPage = lazy(() => import("./pages/Contact"));
-const DowntownLanding = lazy(() => import("./pages/downtown-perks/Landing"));
-const ForBuildings = lazy(() => import("./pages/downtown-perks/ForBuildings"));
-const PartnersIndex = lazy(() => import("./pages/partners/Index"));
-const PartnerVenues = lazy(() => import("./pages/partners/Venues"));
-const PartnerHotels = lazy(() => import("./pages/partners/Hotels"));
-const PartnerBrands = lazy(() => import("./pages/partners/Brands"));
-const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
-const PartnerResidential = lazy(() => import("./pages/partners/Residential"));
-const PartnerCivic = lazy(() => import("./pages/partners/Civic"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
-const PartnerRolePage = lazy(() => import("./pages/partners/RolePage"));
 const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
-const ResidentApp = lazy(() => import("./pages/resident-app"));
-const ExplorePage = lazy(() => import("./pages/downtown-perks/Explore"));
-const EventsPage = lazy(() => import("./pages/downtown-perks/Events"));
-const PerksPage = lazy(() => import("./pages/downtown-perks/PerksPage"));
-const CardPage = lazy(() => import("./pages/downtown-perks/PerksCard"));
-const BrandsDirectory = lazy(() => import("./pages/downtown-perks/brands/Index"));
-const InKindPartnerPage = lazy(() => import("./pages/downtown-perks/brands/InKind"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 
 function MarketingFallback() {
@@ -97,48 +77,22 @@ function HashScroll() {
   return null;
 }
 
-const OPENING_STORY_SESSION_KEY = "dp-opening-story-seen";
-
 function normalizeMapLaunchPath(pathname, search) {
   const params = new URLSearchParams(search || "");
   if (!params.get("mode")) params.set("mode", "resident");
   if (!params.get("tab")) params.set("tab", "map");
-  if (!params.get("filter")) params.set("filter", "All");
   const targetPath = pathname === "/app/map" ? "/app/map" : pathname === "/app" ? "/app" : "/map";
+  const isAppLaunch = targetPath === "/app" || targetPath === "/app/map";
+  if (!params.get("filter")) params.set("filter", params.get("mode") === "partner" ? "All" : "Perks");
+  if (isAppLaunch) {
+    ["entityId", "listing", "listingId", "campaignId", "drawerClosed", "query", "prompt", "q"].forEach((key) => params.delete(key));
+    if (params.get("mode") !== "partner") params.set("filter", "Perks");
+  }
   return `${targetPath}?${params.toString()}`;
 }
 
 function MapLaunchGate() {
-  const location = useLocation();
-  const [storySeen, setStorySeen] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return window.sessionStorage?.getItem(OPENING_STORY_SESSION_KEY) === "true";
-  });
-
-  const targetHref = useMemo(
-    () => normalizeMapLaunchPath(location.pathname, location.search),
-    [location.pathname, location.search],
-  );
-
-  const completeLaunchStory = useCallback(() => {
-    if (typeof window !== "undefined") {
-      window.sessionStorage?.setItem(OPENING_STORY_SESSION_KEY, "true");
-    }
-    setStorySeen(true);
-  }, []);
-
-  if (storySeen) return <MapPage />;
-
-  return (
-    <Suspense fallback={<MarketingFallback />}>
-      <SplashPage
-        residentMapHref={targetHref}
-        partnerMapHref="/map?mode=partner&tab=map&filter=All"
-        skipHref={targetHref}
-        onOpenMap={completeLaunchStory}
-      />
-    </Suspense>
-  );
+  return <MapPage />;
 }
 
 function ProductRoutes() {
@@ -149,16 +103,7 @@ function ProductRoutes() {
         <Route element={<Layout />}>
 
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
-          {/* Root opens with the Downtown Perks story before the product map. */}
-          <Route
-            path="/"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <SplashPage />
-              </Suspense>
-            }
-          />
-
+          <Route path="/" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/app" element={<MapLaunchGate />} />
           <Route path="/app/map" element={<MapLaunchGate />} />
           <Route path="/map" element={<MapLaunchGate />} />
@@ -170,104 +115,16 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route
-            path="/residents"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <ResidentApp />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/explore"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <ExplorePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/events"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <EventsPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/perks"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PerksPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/card"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <CardPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/downtown-perks"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <DowntownLanding />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/downtown-perks/explore"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <ExplorePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/downtown-perks/events"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <EventsPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/downtown-perks/perks"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PerksPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/downtown-perks/card"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <CardPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/downtown-perks/for-buildings"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <ForBuildings />
-              </Suspense>
-            }
-          />
+          <Route path="/residents" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/explore" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
+          <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
+          <Route path="/perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/card" element={<Navigate to="/app?mode=resident&tab=pass" replace />} />
+          <Route path="/downtown-perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/downtown-perks/*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
 
           {/* Partner platform */}
-          <Route
-            path="/partners"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnersIndex />
-              </Suspense>
-            }
-          />
+          <Route path="/partners" element={<Navigate to="/partners/sign-in" replace />} />
           <Route
             path="/partners/apply"
             element={
@@ -292,80 +149,18 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route
-            path="/partners/pricing"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PricingPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/properties"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerProperties />
-              </Suspense>
-            }
-          />
-          <Route path="/partners/residential" element={<Navigate to="/partners/properties" replace />} />
-          <Route
-            path="/partners/hotels"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerHotels />
-              </Suspense>
-            }
-          />
-          <Route path="/partners/hospitality" element={<Navigate to="/partners/hotels" replace />} />
-          <Route
-            path="/partners/venues"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerVenues />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/brands"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerBrands />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/directory"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerBrands />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/civic"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerCivic />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/real-estate"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerProperties />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/legends"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerProperties />
-              </Suspense>
-            }
-          />
+          <Route path="/pricing" element={<Suspense fallback={<MarketingFallback />}><PricingPage /></Suspense>} />
+          <Route path="/partners/pricing" element={<Navigate to="/pricing" replace />} />
+          <Route path="/partners/properties" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/partners/residential" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/partners/hotels" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
+          <Route path="/partners/hospitality" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
+          <Route path="/partners/venues" element={<Navigate to="/partners/sign-up?type=venue" replace />} />
+          <Route path="/partners/brands" element={<Navigate to="/partners/sign-up?type=brand" replace />} />
+          <Route path="/partners/directory" element={<Navigate to="/partners/sign-up?type=brand" replace />} />
+          <Route path="/partners/civic" element={<Navigate to="/partners/sign-up?type=civic" replace />} />
+          <Route path="/partners/real-estate" element={<Navigate to="/partners/sign-up?type=real-estate" replace />} />
+          <Route path="/partners/legends" element={<Navigate to="/partners/sign-up?type=property" replace />} />
           <Route path="/partners/dashboard" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
           <Route path="/partners/dashboard/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
           <Route path="/partners/dashboard/properties" element={<ProtectedRoute><PartnersDashboardPage /></ProtectedRoute>} />
@@ -393,48 +188,19 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route
-            path="/brands"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <BrandsDirectory />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/inkind"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <InKindPartnerPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/brands/inkind"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <InKindPartnerPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/partners/:role"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerRolePage />
-              </Suspense>
-            }
-          />
+          <Route path="/brands" element={<Navigate to="/app?mode=resident&tab=map&filter=Brands" replace />} />
+          <Route path="/brands/*" element={<Navigate to="/app?mode=resident&tab=map&filter=Brands" replace />} />
+          <Route path="/partners/inkind" element={<Navigate to="/app?mode=partner&tab=map&filter=Perks&query=inKind" replace />} />
+          <Route path="/partners/:role" element={<Navigate to="/partners/sign-up" replace />} />
           <Route path="/partners/reports" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/partners/reporting" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/partners/analytics" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/partners/reports-preview" element={<PartnerWorkspace />} />
           <Route path="/partners/analytics-preview" element={<PartnerWorkspace />} />
           <Route path="/partners/map" element={<MapPage />} />
-          <Route path="/partners/start" element={<PartnerLifecycle />} />
-          <Route path="/partners/register" element={<PartnerLifecycle />} />
-          <Route path="/partners/pricing" element={<Navigate to="/marketing/pricing" replace />} />
-          <Route path="/partners/checkout" element={<PartnerLifecycle />} />
+          <Route path="/partners/start" element={<Navigate to="/partners/sign-up" replace />} />
+          <Route path="/partners/register" element={<Navigate to="/partners/sign-up" replace />} />
+          <Route path="/partners/checkout" element={<Navigate to="/pricing#pricing-builder" replace />} />
           <Route path="/partners/provision" element={<PartnerLifecycle />} />
           <Route path="/partners/workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
@@ -487,128 +253,29 @@ function ProductRoutes() {
           <Route path="/partner-portal/perks" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/*" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
 
-          {/* ── MARKETING ROUTES (/marketing/*) ─────────────────────────── */}
-          <Route
-            path="/marketing"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <HomePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/home"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <HomePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/pricing"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PricingPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/contact"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <ContactPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/downtown"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <DowntownLanding />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/for-buildings"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <ForBuildings />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnersIndex />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/venues"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerVenues />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/hotels"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerHotels />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/brands"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerBrands />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/properties"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerProperties />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/residential"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerResidential />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/civic"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerCivic />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/marketing/partners/access"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerAccess />
-              </Suspense>
-            }
-          />
+          {/* Legacy public marketing URLs now enter the product or commerce flow. */}
+          <Route path="/marketing" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/marketing/home" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/marketing/pricing" element={<Navigate to="/pricing" replace />} />
+          <Route path="/marketing/contact" element={<Navigate to="/partners/sign-up" replace />} />
+          <Route path="/marketing/downtown" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/marketing/for-buildings" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/marketing/partners" element={<Navigate to="/partners/sign-up" replace />} />
+          <Route path="/marketing/partners/venues" element={<Navigate to="/partners/sign-up?type=venue" replace />} />
+          <Route path="/marketing/partners/hotels" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
+          <Route path="/marketing/partners/brands" element={<Navigate to="/partners/sign-up?type=brand" replace />} />
+          <Route path="/marketing/partners/properties" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/marketing/partners/residential" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/marketing/partners/civic" element={<Navigate to="/partners/sign-up?type=civic" replace />} />
+          <Route path="/marketing/partners/access" element={<Navigate to="/partners/sign-up" replace />} />
 
           {/* Legacy redirects for any bookmarked marketing URLs */}
-          <Route path="/home" element={<Navigate to="/marketing/home" replace />} />
-          <Route path="/pricing" element={<Navigate to="/marketing/pricing" replace />} />
-          <Route path="/contact" element={<Navigate to="/marketing/contact" replace />} />
-          <Route path="/splash" element={<Navigate to="/marketing" replace />} />
+          <Route path="/home" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/contact" element={<Navigate to="/partners/sign-up" replace />} />
+          <Route path="/splash" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
 
           {/* Catch-all → production app route */}
-          <Route path="*" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
+          <Route path="*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
         </Route>
       </Routes>
     </>

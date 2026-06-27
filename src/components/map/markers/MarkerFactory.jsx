@@ -1,17 +1,15 @@
 /**
  * Downtown Perks Marker Factory
  * Unified marker rendering system for all entity types
- * Uses the pinAssetRegistry SVG icon system — no emoji.
+ * Uses the shared mapIconRegistry SVG icon system through resolveEntityPin.
  */
 
 import L from 'leaflet';
 import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 
-// Design system: pins are the icon/logo itself. No filled circles, boxes,
-// cards, or solid backplates behind map pins.
 const SIZES = {
-  default: 28,
-  building: 30,
+  default: 34,
+  building: 36,
   selected: 1.25, // scale multiplier
 };
 
@@ -20,8 +18,8 @@ const SIZES = {
  * SVG pins sit directly on the map, so the icon uses navy by default.
  */
 const PIN_SVG_STYLE = `
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   display: block;
   flex-shrink: 0;
   stroke: #0B1F33;
@@ -29,8 +27,8 @@ const PIN_SVG_STYLE = `
 `;
 
 const PIN_SVG_STYLE_LG = `
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   display: block;
   flex-shrink: 0;
   stroke: #C8A96A;
@@ -53,21 +51,20 @@ function styledGlyph(glyph, large = false) {
 
 /**
  * Create a compact marker icon (unselected state)
- * Transparent hit area with only the SVG/icon visible on the map.
+ * Circular location pin using the shared icon registry.
  */
 export function createCompactMarker(entity) {
   const pin = resolveEntityPin(entity);
   const size = entity.markerType === 'building' ? SIZES.building : SIZES.default;
-  const iconSize = size - 14; // padding inside circle
   const glyph = styledGlyph(pin.glyph);
 
   const html = `
     <div style="
       width: ${size}px;
       height: ${size}px;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(200,169,106,0.72);
       box-shadow: none;
       display: flex;
       align-items: center;
@@ -75,6 +72,7 @@ export function createCompactMarker(entity) {
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       overflow: hidden;
+      color: #0B1F33;
     ">
       ${glyph}
     </div>
@@ -91,7 +89,7 @@ export function createCompactMarker(entity) {
 
 /**
  * Create a selected marker icon (slightly larger, gold ring accent)
- * Selected pins use the gold icon color only. No halo, ring, or filled backplate.
+ * Selected pins keep the same circular style with a stronger gold edge.
  */
 export function createSelectedMarker(entity) {
   const pin = resolveEntityPin(entity);
@@ -103,9 +101,9 @@ export function createSelectedMarker(entity) {
     <div style="
       width: ${size}px;
       height: ${size}px;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
+      border-radius: 999px;
+      background: #0B1F33;
+      border: 1px solid #C8A96A;
       box-shadow: none;
       display: flex;
       align-items: center;
@@ -114,6 +112,7 @@ export function createSelectedMarker(entity) {
       transform: translateY(-1px);
       animation: dpPinSelect 0.2s cubic-bezier(0.22,1,0.36,1);
       overflow: hidden;
+      color: #C8A96A;
     ">
       ${glyph}
     </div>

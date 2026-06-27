@@ -1,63 +1,80 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, useInView, animate } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, X, Building2, Star, Waves, Dumbbell, Car, Bell } from "lucide-react";
-import PartnerMapIntelligenceLayer from "@/components/partner/PartnerMapIntelligenceLayer";
-
-function CountUp({ to, duration = 1.2 }) {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  useEffect(() => {
-    if (!inView) return;
-    const c = animate(0, to, { duration, onUpdate: v => setVal(Math.round(v)) });
-    return c.stop;
-  }, [inView, to]);
-  return <span ref={ref}>{val.toLocaleString()}</span>;
-}
+import { ArrowLeft, ArrowRight, X, Building2, Star, Waves, Dumbbell, Car, Bell, MapPin } from "lucide-react";
 
 const BUILDINGS = [
   {
     id: "quincy", name: "The Quincy", address: "300 W 6th St", lat: 30.2680, lng: -97.7460,
-    dist: "0.2 mi to Congress", interactions: 214, saves: 44, unlocks: 19, scans: 42, rsvps: 8,
-    trend: "+14% this week", top: "Public Art Walk",
+    dist: "0.2 mi to Congress", top: "Public Art Walk", x: 45, y: 38,
     amenities: ["Pool", "Gym", "Parking", "Concierge"],
     nearby: ["Downtown Style Weekend", "Public Art Walk", "Rooftop Yoga", "Happy Hour at Half Step"],
   },
   {
     id: "seaholm", name: "Seaholm Residences", address: "222 West Ave", lat: 30.2700, lng: -97.7510,
-    dist: "0.3 mi to Seaholm", interactions: 188, saves: 36, unlocks: 17, scans: 34, rsvps: 6,
-    trend: "+9% this week", top: "Coffee near Seaholm",
+    dist: "0.3 mi to Seaholm", top: "Coffee near Seaholm", x: 26, y: 44,
     amenities: ["Pool", "Gym", "Dog Park"],
     nearby: ["Coffee near Seaholm", "Waterloo Sunset Series", "Wellness Walk Club"],
   },
   {
     id: "independent", name: "The Independent", address: "301 West Ave", lat: 30.2710, lng: -97.7500,
-    dist: "0.4 mi to Seaholm", interactions: 167, saves: 28, unlocks: 15, scans: 29, rsvps: 5,
-    trend: "+11% this week", top: "Dinner near Congress",
+    dist: "0.4 mi to Seaholm", top: "Dinner near Congress", x: 31, y: 36,
     amenities: ["Pool", "Parking", "Gym"],
     nearby: ["Dinner near Congress", "Public Art Walk", "Legends listing request"],
   },
   {
     id: "hanover", name: "Hanover Republic Square", address: "115 W 3rd St", lat: 30.2660, lng: -97.7420,
-    dist: "0.1 mi to Republic Sq", interactions: 142, saves: 24, unlocks: 12, scans: 23, rsvps: 4,
-    trend: "+7% this week", top: "Happy Hour nearby",
+    dist: "0.1 mi to Republic Sq", top: "Happy Hour nearby", x: 56, y: 50,
     amenities: ["Pool", "Concierge", "Parking"],
     nearby: ["Happy Hour at Half Step", "Public Art Walk"],
   },
   {
     id: "bowie", name: "The Bowie", address: "400 Bowie St", lat: 30.2645, lng: -97.7445,
-    dist: "0.2 mi to Convention Ctr", interactions: 128, saves: 22, unlocks: 11, scans: 19, rsvps: 3,
-    trend: "+6% this week", top: "Dinner near Rainey",
+    dist: "0.2 mi to Convention Ctr", top: "Dinner near Rainey", x: 36, y: 54,
     amenities: ["Gym", "Parking"],
     nearby: ["Dinner near Rainey", "Waterloo Sunset Series"],
   },
   {
     id: "6g", name: "Residences at 6G", address: "600 Guadalupe St", lat: 30.2730, lng: -97.7490,
-    dist: "0.3 mi to UT edge", interactions: 112, saves: 18, unlocks: 9, scans: 15, rsvps: 2,
-    trend: "+5% this week", top: "Coffee nearby",
+    dist: "0.3 mi to UT edge", top: "Coffee nearby", x: 42, y: 28,
     amenities: ["Gym", "Rooftop"],
     nearby: ["Coffee nearby", "Wellness Walk Club"],
+  },
+  {
+    id: "austonian", name: "The Austonian", address: "200 Congress Ave", lat: 30.2656, lng: -97.7435,
+    dist: "0.1 mi to Congress", top: "Congress Avenue dining", x: 61, y: 56,
+    amenities: ["Pool", "Gym", "Concierge"],
+    nearby: ["Congress Avenue dining", "Paramount Theatre", "Happy Hour at Half Step"],
+  },
+  {
+    id: "the-shore", name: "The Shore", address: "603 Davis St", lat: 30.2602, lng: -97.7389,
+    dist: "0.2 mi to Rainey", top: "Lady Bird Lake Trail", x: 79, y: 67,
+    amenities: ["Pool", "Gym", "Parking"],
+    nearby: ["Lady Bird Lake Trail", "Dinner near Rainey", "Hotel Van Zandt"],
+  },
+  {
+    id: "44-east", name: "44 East", address: "44 East Ave", lat: 30.2609, lng: -97.7382,
+    dist: "0.2 mi to Rainey", top: "Rainey dinner plans", x: 83, y: 59,
+    amenities: ["Pool", "Gym", "Concierge"],
+    nearby: ["Rainey dinner plans", "Waterloo Sunset Series", "Lady Bird Lake Trail"],
+  },
+  {
+    id: "fifth-and-west", name: "Fifth & West", address: "501 West Ave", lat: 30.2688, lng: -97.7505,
+    dist: "0.2 mi to Seaholm", top: "Coffee and errands", x: 28, y: 31,
+    amenities: ["Pool", "Gym", "Concierge"],
+    nearby: ["Coffee and errands", "Public Art Walk", "Wellness Walk Club"],
+  },
+  {
+    id: "spring", name: "Spring", address: "300 Bowie St", lat: 30.2670, lng: -97.7516,
+    dist: "0.2 mi to Whole Foods", top: "Market District errands", x: 22, y: 52,
+    amenities: ["Pool", "Parking", "Concierge"],
+    nearby: ["Market District errands", "Coffee near Seaholm", "Public Art Walk"],
+  },
+  {
+    id: "70-rainey", name: "70 Rainey", address: "70 Rainey St", lat: 30.2597, lng: -97.7396,
+    dist: "0.2 mi to Lady Bird Lake", top: "Trail and Rainey plans", x: 76, y: 74,
+    amenities: ["Pool", "Gym", "Parking"],
+    nearby: ["Trail and Rainey plans", "Dinner near Rainey", "Lady Bird Lake Trail"],
   },
 ];
 
@@ -70,63 +87,49 @@ const NEARBY = [
 ];
 
 const MAP_FILTERS = [
-  { id: "all", label: "Buildings", count: 6 },
+  { id: "all", label: "Buildings", count: 12 },
   { id: "perks", label: "Perks", count: 9 },
   { id: "events", label: "Events", count: 6 },
   { id: "walkable", label: "Walkable now", count: 8 },
   { id: "saved", label: "Saved by residents", count: 5 },
-  { id: "trending", label: "Trending nearby", count: 4 },
+  { id: "trending", label: "Popular nearby", count: 4 },
 ];
 
 const PROPERTY_FILTER_COPY = {
   all: {
     label: "Building portfolio",
-    title: "Compare each building against the neighborhood around it.",
-    body: "The workspace groups building profiles, resident access, map placement, nearby partners, and reporting in one operating view.",
-    result: "Logged-in view: building-level profile, owned entities, resident activity, team access, and billing context.",
+    title: "See each building beside the places residents can actually use.",
+    body: "This view brings the building, nearby places, resident access, and partner setup into one simple map.",
   },
   perks: {
     label: "Resident perks",
     title: "See which offers are close enough to become a resident habit.",
-    body: "Perk visibility connects each property to restaurants, wellness, retail, events, and partners that residents can actually use nearby.",
-    result: "Logged-in view: active perks, redemption status, partner attribution, and building-by-building usage.",
+    body: "Connect each property to restaurants, wellness, retail, and local offers that residents can use without planning a whole outing.",
   },
   events: {
     label: "Event context",
     title: "Show residents what is worth leaving the building for.",
-    body: "Events become useful when they sit beside distance, timing, category, and resident intent instead of living in a separate calendar.",
-    result: "Logged-in view: RSVPs, saves, event opens, attendance signals, and weekly performance.",
+    body: "Events are easier to use when residents can see what is nearby, when it starts, and what else they can do before or after.",
   },
   walkable: {
     label: "Walkable now",
     title: "Explain what is reachable from the front door.",
-    body: "The resident map demonstrates the practical neighborhood layer: coffee, dinner, wellness, parks, errands, and offers by proximity.",
-    result: "Logged-in view: map opens, directions, nearby saves, route intent, and district movement.",
+    body: "Show coffee, dinner, wellness, parks, errands, and offers by how easy they are to reach from the building.",
   },
   saved: {
     label: "Saved by residents",
     title: "Track what people keep for later.",
-    body: "Saved places are early intent signals. They show which partners and local moments residents expect to revisit.",
-    result: "Logged-in view: saved entities, category demand, partner ranking, and resident engagement history.",
+    body: "Saved places show what residents want to remember, revisit, or compare when they are making plans.",
   },
   trending: {
-    label: "Trending nearby",
-    title: "Spot the activity forming around a building.",
-    body: "Trending signals help teams understand what is gaining attention before it becomes a leasing, retention, or programming opportunity.",
-    result: "Logged-in view: trend changes, campaign lift, top partners, and recommended actions.",
+    label: "Popular nearby",
+    title: "See what residents are opening nearby.",
+    body: "See which nearby places, events, and offers are getting more attention so your team can plan around what residents already care about.",
   },
 };
 
-const LIVE_FEED = [
-  { text: "The Quincy resident saved Happy Hour at Half Step", time: "Just now" },
-  { text: "Seaholm resident opened Waterloo Sunset Series", time: "5 min ago" },
-  { text: "6G resident unlocked 15% off dinner nearby", time: "Trending" },
-  { text: "Hanover resident viewed coffee near Seaholm", time: "Nearby" },
-];
-
 const AMENITY_ICONS = { Pool: Waves, Gym: Dumbbell, Parking: Car, Concierge: Bell, "Dog Park": Star, Rooftop: Star };
 
-const FORM_TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
 const PROMPTS = [
   "We want to add a neighborhood layer for our residents.",
   "Help us set up building access.",
@@ -137,10 +140,8 @@ const PROMPTS = [
 export default function PropertiesPartner() {
   const [mapFilter, setMapFilter] = useState("all");
   const [activeBuilding, setActiveBuilding] = useState(null);
-  const [formType, setFormType] = useState("Property");
   const [formText, setFormText] = useState("");
 
-  const building = activeBuilding ? BUILDINGS.find(b => b.id === activeBuilding) : null;
   const activeFilterCopy = PROPERTY_FILTER_COPY[mapFilter] || PROPERTY_FILTER_COPY.all;
 
   function selectBuilding(b) {
@@ -156,15 +157,15 @@ export default function PropertiesPartner() {
           style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.18) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,51,0.18) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Link to="/brands" className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-primary transition-colors mb-8 group">
-              <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" /> Partner Directory
+            <Link to="/partners" className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-muted-foreground hover:text-primary transition-colors group" aria-label="Back to partners" title="Back to partners">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" aria-hidden="true" />
             </Link>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Property Partner Layer</span>
-              <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
-                Connect your building to what is <em className="text-primary">happening around it.</em>
+              <h1 className="dp-property-partner-hero-title font-body text-[31px] md:text-[38px] lg:text-[40px] font-semibold leading-[1.08] tracking-normal text-[#0B1F33] mb-5">
+                Connect your building to what is happening around it.
               </h1>
               <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">
                 Residents get a working map of nearby places, offers, and events. Your team gets a clearer picture of how they use the surrounding neighborhood.
@@ -181,12 +182,12 @@ export default function PropertiesPartner() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
               className="self-end border-l border-[#0B1F33]/10 pl-5">
-              <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#B38F4F]">Resident context</span>
-              <p className="mt-4 max-w-md font-heading text-[28px] font-bold leading-[1.02] tracking-[-0.02em] text-[#0B1F33] md:text-[36px]">
-                A clearer way to connect your building to the neighborhood around it.
+              <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B1F33]">Resident context</span>
+              <p className="mt-4 max-w-md font-heading text-[28px] font-bold leading-[1.04] tracking-normal text-[#0B1F33] md:text-[34px]">
+                Give residents a useful reason to open the map.
               </p>
               <p className="mt-4 max-w-sm font-body text-[14px] font-light leading-relaxed text-[#425466]">
-                Give residents a simple way to see what is nearby while your team understands which local moments are actually useful.
+                Connect your building to nearby places, offers, and events people can use. Start small, then add resident access, reporting, and planning tools as the building layer grows.
               </p>
             </motion.div>
           </div>
@@ -199,7 +200,7 @@ export default function PropertiesPartner() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
               <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Property Map</span>
-              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">See each building alongside what is walkable from it.</h2>
+              <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">See each building beside the places residents can reach easily.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select a building to see the nearby offers, events, and places that show up in the resident experience.</p>
           </div>
@@ -211,104 +212,14 @@ export default function PropertiesPartner() {
               </button>
             ))}
           </div>
-          <FilterInsight copy={activeFilterCopy} />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 overflow-hidden" style={{ height: 480 }}>
-              <PartnerMapIntelligenceLayer
-                activeId={activeBuilding}
-                caption="Property intelligence layer"
-                insight="Buildings, resident saves, nearby perks, and events in one working view."
-                kind="property"
-                nearby={NEARBY}
-                onSelect={selectBuilding}
-                points={BUILDINGS}
-              />
-            </div>
-            <div className="rounded-xl border border-border/50 bg-card/60 overflow-hidden flex flex-col">
-              {!building ? (
-                <>
-                  <div className="p-5 border-b border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-1">Resident use right now</div>
-                  </div>
-                  <div className="flex-1 divide-y divide-border/40 overflow-y-auto">
-                    {LIVE_FEED.map((item, i) => (
-                      <div key={i} className="p-4 flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-[12px] bg-primary/60 mt-1.5 shrink-0" />
-                        <div className="flex-1">
-                          <div className="text-[12px] text-foreground leading-relaxed">{item.text}</div>
-                        </div>
-                        <span className="text-[10px] text-muted-foreground shrink-0 whitespace-nowrap">{item.time}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="p-4 border-t border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Buildings</div>
-                    <div className="space-y-2">
-                      {BUILDINGS.slice(0, 4).map(b => (
-                        <button key={b.id} onClick={() => selectBuilding(b)}
-                          className="w-full flex items-center gap-2.5 p-2.5 rounded-lg border border-border/40 hover:border-primary/30 transition-all text-left">
-                          <Building2 className="w-3.5 h-3.5 text-primary/60 shrink-0" />
-                          <span className="text-[12px] font-medium text-foreground flex-1 truncate">{b.name}</span>
-                          <span className="text-[10px] text-muted-foreground">{b.interactions} interactions</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <motion.div key={building.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col h-full">
-                  <div className="p-5 border-b border-border/40 flex items-center justify-between">
-                    <div>
-                      <div className="font-medium text-foreground text-[13px]">{building.name}</div>
-                      <div className="text-[11px] text-muted-foreground mt-0.5">{building.dist}</div>
-                    </div>
-                    <button onClick={() => setActiveBuilding(null)} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
-                  </div>
-                  <div className="flex-1 p-5 space-y-4 overflow-y-auto">
-                    <div className="grid grid-cols-4 gap-2">
-                      {[{ l: "Scans", v: building.scans }, { l: "Saves", v: building.saves }, { l: "Unlocks", v: building.unlocks }, { l: "RSVPs", v: building.rsvps }].map((s, i) => (
-                        <div key={i} className="p-2.5 rounded-lg bg-muted/30 border border-border/40 text-center">
-                          <div className="font-heading text-lg font-medium text-foreground">{s.v}</div>
-                          <div className="text-[10px] text-muted-foreground mt-0.5">{s.l}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/20">
-                      <div className="text-[12px] font-medium text-foreground">Trend</div>
-                      <div className="text-[12px] font-medium text-primary">{building.trend}</div>
-                    </div>
-                    <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Amenities</div>
-                      <div className="flex flex-wrap gap-2">
-                        {building.amenities.map(a => {
-                          const Icon = AMENITY_ICONS[a] || Star;
-                          return (
-                            <span key={a} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[12px] border border-border/50 bg-muted/30 text-[11px] text-foreground/80">
-                              <Icon className="w-3 h-3 text-primary/50" />{a}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Live nearby</div>
-                      <div className="space-y-1.5">
-                        {building.nearby.map((n, i) => (
-                          <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                            <div className="w-1 h-1 rounded-[12px] bg-primary/40 shrink-0" />{n}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 border-t border-border/40 flex gap-2">
-                    <button className="flex-1 py-2.5 rounded-[12px] bg-primary text-primary-foreground text-[12px] font-medium hover:bg-primary/90 transition-all">View nearby</button>
-                    <button className="flex-1 py-2.5 rounded-[12px] border border-border/60 text-foreground/70 text-[12px] font-medium hover:text-foreground transition-all">Activate</button>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          </div>
+          <CompactPropertyMap
+            activeBuilding={activeBuilding}
+            activeFilterCopy={activeFilterCopy}
+            buildings={BUILDINGS}
+            nearby={NEARBY}
+            selectBuilding={selectBuilding}
+            setActiveBuilding={setActiveBuilding}
+          />
         </div>
       </section>
 
@@ -318,8 +229,8 @@ export default function PropertiesPartner() {
         { n: "2", label: "Residents get access", detail: "On day one they can open the map and see what is nearby." },
         { n: "3", label: "Nearby context goes live", detail: "Offers, events, and walkable venues appear in the right places." },
         { n: "4", label: "Residents use it", detail: "They save places, unlock offers, and RSVP to things nearby." },
-        { n: "5", label: "Your team sees the data", detail: "Track which activity is getting the most traction by building." },
-      ]} proof={["Resident access", "Nearby context", "Local perks", "Neighborhood signals"]} />
+        { n: "5", label: "Your team sees what worked", detail: "Review the places, offers, and events residents used most." },
+      ]} proof={["Resident access", "Nearby context", "Local perks", "Useful places"]} />
 
       {/* BUILDING CARDS */}
       <BuildingCards buildings={BUILDINGS} selectBuilding={selectBuilding} />
@@ -327,29 +238,132 @@ export default function PropertiesPartner() {
       {/* FORM */}
       <PartnerForm headline="Tell us about your building"
         body="Tell us about your building and what you want to connect. We will find the right setup."
-        formType={formType} setFormType={setFormType} formText={formText} setFormText={setFormText}
+        formText={formText} setFormText={setFormText}
         prompts={PROMPTS} defaultType="Property" />
-
-      {/* CLOSING CTA */}
-      <ClosingCTA eyebrow="Property partner layer"
-        headline="Give your residents a reason to open the map."
-        body="Buildings can start with Starter and scale up to Pro when resident access, reporting, and planning needs grow."
-        proof="Ready to walk through the setup? Reach out to our team."
-        ctaLabel="Add your building" ctaHref="#partner-form"
-        secondLabel="See the map" secondHref="#property-map" />
     </div>
   );
 }
 
-function FilterInsight({ copy }) {
+function CompactPropertyMap({ buildings, nearby, activeBuilding, setActiveBuilding, selectBuilding, activeFilterCopy }) {
+  const building = activeBuilding ? buildings.find(b => b.id === activeBuilding) : buildings[0];
+  const selected = building || buildings[0];
+  const nearbyForBuilding = selected.nearby.slice(0, 4);
+  const mapPins = buildings.map((b, index) => ({
+    ...b,
+    x: [18, 42, 62, 30, 72, 53][index] || 50,
+    y: [34, 28, 52, 64, 38, 72][index] || 50,
+  }));
+
   return (
-    <div className="dp-partner-filter-insight" aria-live="polite">
-      <div>
-        <span>{copy.label}</span>
-        <h3>{copy.title}</h3>
-        <p>{copy.body}</p>
+    <div className="dp-property-map-compact" aria-live="polite">
+      <div className="dp-property-map-copy">
+        <span>{activeFilterCopy.label}</span>
+        <h3>{activeFilterCopy.title}</h3>
+        <p>{activeFilterCopy.body}</p>
       </div>
-      <p>{copy.result}</p>
+
+      <div className="dp-property-building-rail" aria-label="Buildings">
+        {buildings.map(b => (
+          <button
+            key={b.id}
+            type="button"
+            className={b.id === selected.id ? "is-active" : ""}
+            onClick={() => selectBuilding(b)}
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            <span>
+              <strong>{b.name}</strong>
+              <small>{b.address}</small>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div className="dp-property-map-layout">
+        <div className="dp-property-mini-map" aria-label="Property map preview">
+          <div className="dp-property-mini-map-grid" aria-hidden="true" />
+          <div className="dp-property-mini-map-route" aria-hidden="true" />
+          {mapPins.map(pin => (
+            <button
+              key={pin.id}
+              type="button"
+              className={pin.id === selected.id ? "is-active" : ""}
+              style={{ "--x": `${pin.x}%`, "--y": `${pin.y}%` }}
+              onClick={() => selectBuilding(pin)}
+              aria-label={pin.name}
+            >
+              <span>{pin.name}</span>
+            </button>
+          ))}
+          {nearby.slice(0, 4).map((item, index) => (
+            <span
+              key={item.name}
+              className="dp-property-nearby-pin"
+              style={{
+                "--x": `${[28, 78, 46, 66][index] || 52}%`,
+                "--y": `${[18, 26, 78, 18][index] || 46}%`,
+              }}
+            >
+              {item.name}
+            </span>
+          ))}
+        </div>
+
+        <aside className="dp-property-map-detail" aria-label={`${selected.name} details`}>
+          <div className="dp-property-detail-header">
+            <div>
+              <span>Selected building</span>
+              <h3>{selected.name}</h3>
+              <p>{selected.address} · {selected.dist}</p>
+            </div>
+            {activeBuilding ? (
+              <button type="button" aria-label="Clear selected building" onClick={() => setActiveBuilding(null)}>
+                <X className="w-4 h-4" />
+              </button>
+            ) : null}
+          </div>
+
+          <div className="dp-property-detail-section">
+            <h4>What residents see nearby</h4>
+            <div className="dp-property-chip-rail">
+              {nearbyForBuilding.map(item => <span key={item}>{item}</span>)}
+            </div>
+          </div>
+
+          <div className="dp-property-detail-section">
+            <h4>Building amenities</h4>
+            <div className="dp-property-chip-rail">
+              {selected.amenities.map(a => {
+                const Icon = AMENITY_ICONS[a] || Star;
+                return (
+                  <span key={a}>
+                    <Icon className="w-3 h-3" />
+                    {a}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="dp-property-detail-section">
+            <h4>Best first setup</h4>
+            <p>Start with a resident welcome link, a lobby QR, and a nearby places rail tied to this building.</p>
+          </div>
+
+          <div className="dp-property-detail-section">
+            <h4>Useful next step</h4>
+            <p>Choose one nearby offer or event residents can use this week, then place it beside this building in the map.</p>
+          </div>
+
+          <div className="dp-property-detail-actions">
+            <a href="/map?mode=partner&tab=map&filter=Properties">
+              <MapPin className="w-3.5 h-3.5" />
+              Open map
+            </a>
+            <a href="#partner-form">Activate building</a>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }
@@ -400,7 +414,7 @@ function BuildingCards({ buildings, selectBuilding }) {
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
           <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live buildings</span>
-          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Activity across live buildings.</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Buildings ready for the resident map.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {buildings.slice(0, 3).map((b, i) => (
@@ -412,21 +426,19 @@ function BuildingCards({ buildings, selectBuilding }) {
                 <span className="font-heading font-medium text-[13px] text-foreground">{b.name}</span>
               </div>
               <div className="h-1.5 rounded-[12px] bg-border/50 mb-4 overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={inView ? { width: `${Math.min(100, (b.interactions / 230) * 100)}%` } : {}}
+                <motion.div initial={{ width: 0 }} animate={inView ? { width: `${70 + i * 8}%` } : {}}
                   transition={{ duration: 1, delay: 0.3 + i * 0.1 }} className="h-full rounded-[12px] bg-primary" />
               </div>
               <div className="space-y-2 text-[12px]">
-                {[["Interactions", b.interactions], ["Saves", b.saves], ["Unlocks", b.unlocks]].map(([l, v]) => (
-                  <div key={l} className="flex justify-between text-muted-foreground">
-                    <span>{l}</span><span className="text-foreground font-medium">{v}</span>
-                  </div>
-                ))}
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Trend</span><span className="text-primary font-medium">{b.trend}</span>
+                <div className="flex justify-between gap-4 text-muted-foreground">
+                  <span>Address</span><span className="text-foreground font-medium text-right">{b.address}</span>
+                </div>
+                <div className="flex justify-between gap-4 text-muted-foreground">
+                  <span>Nearby</span><span className="text-foreground font-medium text-right">{b.dist}</span>
                 </div>
               </div>
               <div className="mt-3 pt-3 border-t border-border/40">
-                <div className="text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em] mb-1">Top nearby</div>
+                <div className="text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em] mb-1">Good first placement</div>
                 <div className="text-[12px] text-foreground truncate">{b.top}</div>
               </div>
             </motion.div>
@@ -437,10 +449,9 @@ function BuildingCards({ buildings, selectBuilding }) {
   );
 }
 
-function PartnerForm({ headline, body, formType, setFormType, formText, setFormText, prompts, defaultType }) {
+function PartnerForm({ headline, body, formText, setFormText, prompts }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
-  const TYPES = ["Property", "Hotel", "Venue", "Brand", "Civic"];
   return (
     <section id="partner-form" ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
@@ -451,71 +462,31 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
         </div>
-        <div className="border border-border/50 rounded-xl overflow-hidden">
-          <div className="flex border-b border-border/40 overflow-x-auto">
-            {TYPES.map(t => (
-              <button key={t} onClick={() => setFormType(t)}
-                className={`px-5 py-4 text-[12px] font-medium whitespace-nowrap border-r border-border/40 last:border-r-0 transition-all ${formType === t ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"}`}>
-                {t}
-              </button>
-            ))}
-          </div>
+        <div className="border border-border/50 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="p-8 md:border-r border-border/40 space-y-4">
               {[["Organization / Building Name", "text"], ["Your Name & Role", "text"], ["Email", "email"], ["Phone", "tel"]].map(([label, type]) => (
                 <div key={label}>
-                  <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">{label}</label>
-                  <input type={type} className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
+                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">{label}</label>
+                  <input type={type} className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
                 </div>
               ))}
-              <div>
-                <label className="block text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1.5">What are you looking to do</label>
+              <div className="dp-partner-form-message">
+                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">What are you looking to do</label>
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)}
                   placeholder="Tell us about your building and what you want to connect."
-                  className="w-full bg-muted/30 border border-border/50 rounded-lg px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
+                  className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
+                <div className="dp-partner-prompt-inline" aria-label="Suggested prompts">
+                  {prompts.map(p => (
+                    <button key={p} type="button" onClick={() => setFormText(p)}>{p}</button>
+                  ))}
+                </div>
               </div>
-              <button className="w-full py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">Activate your building</button>
+              <button className="w-full py-2.5 bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">Activate your building</button>
             </div>
             <div className="p-8 bg-muted/10 flex flex-col">
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-4">Prompts</div>
-              <div className="space-y-2 flex-1">
-                {prompts.map(p => (
-                  <button key={p} onClick={() => setFormText(p)}
-                    className="w-full text-left px-4 py-2.5 rounded-lg border border-border/40 hover:border-primary/30 text-[13px] text-muted-foreground hover:text-foreground transition-all">{p}</button>
-                ))}
-              </div>
-              <div className="mt-6 pt-6 border-t border-border/40">
-                <p className="text-[12px] text-muted-foreground/60 italic">Questions? <a href="mailto:partners@downtownperks.com" className="text-primary hover:underline underline-offset-4">partners@downtownperks.com</a></p>
-                <p className="text-[11px] text-muted-foreground/40 mt-1">Downtown Perks · Austin, Texas</p>
-              </div>
+              <p className="text-[13px] leading-6 text-[#0B1F33]/68">Share the building, the resident need, and the first nearby experience you want to connect.</p>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondLabel, secondHref }) {
-  return (
-    <section className="py-12 px-5 border-t border-border/40">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
-            <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
-          </div>
-          <div className="space-y-4">
-            <div className="flex flex-wrap gap-3">
-              <a href={ctaHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
-                {ctaLabel} <ArrowRight className="w-4 h-4" />
-              </a>
-              <a href={secondHref} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
-                {secondLabel}
-              </a>
-            </div>
-            <p className="text-[12px] text-muted-foreground/50 italic">{proof}</p>
           </div>
         </div>
       </div>
