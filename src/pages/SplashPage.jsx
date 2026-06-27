@@ -310,12 +310,14 @@ export default function SplashPage({
   residentMapHref = "/map?mode=resident&tab=map&filter=All",
   partnerMapHref = "/map?mode=partner&tab=map&filter=All",
   onOpenMap,
+  replayOpening = false,
 } = {}) {
   const [active, setActive] = useState(0);
   const [storyMenuOpen, setStoryMenuOpen] = useState(false);
   const [openNavMenu, setOpenNavMenu] = useState(null);
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
+    if (replayOpening) return true;
     if (window.sessionStorage?.getItem("dp-opening-story-seen") === "true") return false;
     return !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
   });

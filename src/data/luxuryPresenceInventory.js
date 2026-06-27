@@ -6,12 +6,18 @@ const REPORT_IMAGE_BASE = "/images/reports";
 
 const PREMIUM_PROPERTY_IMAGES = {
   "301 west ave": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`,
-    gallery: [`${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`],
+    exterior: `${REPORT_IMAGE_BASE}/the-independent-301-west.jpg`,
+    gallery: [
+      `${REPORT_IMAGE_BASE}/the-independent-301-west.jpg`,
+      `${REPORT_IMAGE_BASE}/the-independent-301-west-alt.jpeg`,
+      `${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`,
+    ],
   },
   "222 west ave": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
+    exterior: `${REPORT_IMAGE_BASE}/seaholm-residences-building.jpg`,
     gallery: [
+      `${REPORT_IMAGE_BASE}/seaholm-residences-building.jpg`,
+      `${REPORT_IMAGE_BASE}/seaholm-residences-pool.jpg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-pool.webp`,
@@ -19,24 +25,31 @@ const PREMIUM_PROPERTY_IMAGES = {
     ],
   },
   "501 west ave": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
+    exterior: `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
     gallery: [
+      `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
+      `${REPORT_IMAGE_BASE}/fifth-and-west-entrance.jpeg`,
+      `${REPORT_IMAGE_BASE}/fifth-and-west-pool.avif`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west1.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west2.jpeg`,
     ],
   },
   "202 nueces": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
+    exterior: `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
     gallery: [
+      `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
+      `${REPORT_IMAGE_BASE}/austin-proper-bar.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences1.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences2.jpeg`,
     ],
   },
   "70 rainey": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey.jpeg`,
+    exterior: `${REPORT_IMAGE_BASE}/70-rainey-building.jpg`,
     gallery: [
+      `${REPORT_IMAGE_BASE}/70-rainey-building.jpg`,
+      `${REPORT_IMAGE_BASE}/70-rainey-sky-garden.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey1.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey2.jpeg`,
@@ -51,12 +64,18 @@ const PREMIUM_PROPERTY_IMAGES = {
     ],
   },
   "54 rainey": {
-    exterior: "/buildings/milago.webp",
-    gallery: ["/buildings/milago.webp"],
+    exterior: `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
+    gallery: [
+      `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
+      `${REPORT_IMAGE_BASE}/milago-pool.jpeg`,
+      "/buildings/milago.webp",
+    ],
   },
   "1212 guadalupe": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe.jpeg`,
+    exterior: `${REPORT_IMAGE_BASE}/sixth-guadalupe-building.jpg`,
     gallery: [
+      `${REPORT_IMAGE_BASE}/sixth-guadalupe-building.jpg`,
+      `${REPORT_IMAGE_BASE}/sixth-guadalupe-deck.jpg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe1.jpeg`,
     ],
@@ -168,9 +187,9 @@ const RAW_LISTINGS = [
   ["Spring Condominiums", "300 Bowie ST #1403", "$1,195,000", 2, 3, 1687, "4131783", "Seaholm", "300 bowie"],
   ["Austin Proper Residences", "202 Nueces ST #1405", "$2,995,000", 2, 3, 1646, "4043365", "2nd Street", "202 nueces"],
   ["70 Rainey", "70 Rainey ST #1409", "$7,000/MONTH", 2, 2, 1128, "9192982", "Rainey", "70 rainey"],
-  ["1212 Guadalupe", "1212 Guadalupe ST #601", "$220,000", 1, 1, 454, "3119350", "Downtown Core", "1212 guadalupe", `${REPORT_IMAGE_BASE}/sixth-guadalupe-austin.jpg`],
+  ["1212 Guadalupe", "1212 Guadalupe ST #601", "$220,000", 1, 1, 454, "3119350", "Downtown Core", "1212 guadalupe", `${REPORT_IMAGE_BASE}/sixth-guadalupe-building.jpg`],
   ["44 East", "44 East Ave #3304", "$1,125,000", 2, 2, 1172, "8947667", "Rainey", "44 east ave", `${REPORT_IMAGE_BASE}/44-east-austin.jpg`],
-  ["Milago", "54 Rainey ST #404", "$550,000", 2, 2, 1189, "9558786", "Rainey", "54 rainey", `${REPORT_IMAGE_BASE}/milago-austin.jpg`],
+  ["Milago", "54 Rainey ST #404", "$550,000", 2, 2, 1189, "9558786", "Rainey", "54 rainey", `${REPORT_IMAGE_BASE}/milago-building.jpeg`],
   ["Brazos Place", "800 Brazos ST #1111", "$335,000", 1, 1, 623, "4696550", "Congress", "800 brazos", `${REPORT_IMAGE_BASE}/200-congress-austin.jpg`],
 ];
 

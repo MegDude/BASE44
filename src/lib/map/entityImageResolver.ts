@@ -28,6 +28,7 @@ export function assertImageMatchesEntityType(entityType: string, imageAsset: str
 const FINAL_NEUTRAL_FALLBACK = "/images/imported/perks/places-nearby.png";
 const PROPERTY_PLACEHOLDER_REPLACEMENT = "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png";
 const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
+const REPORT_IMAGE_BASE = "/images/reports";
 const LOCAL_IMAGE_PRIORITY = {
   residential: [
     "/images/reports/the-independent-austin-tower.jpg",
@@ -91,56 +92,106 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
     `${PREMIUM_PROPERTY_IMAGE_BASE}/700-river2.jpeg`,
   ],
   "austin-proper-residences": [
+    `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
+    `${REPORT_IMAGE_BASE}/austin-proper-bar.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences2.jpeg`,
   ],
   "fifth-and-west": [
+    `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
+    `${REPORT_IMAGE_BASE}/fifth-and-west-entrance.jpeg`,
+    `${REPORT_IMAGE_BASE}/fifth-and-west-pool.avif`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west2.jpeg`,
   ],
   "four-seasons-residences": [
+    `${REPORT_IMAGE_BASE}/four-seasons-austin.jpg`,
+    `${REPORT_IMAGE_BASE}/four-seasons-grounds.avif`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/four-seasons-residences.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/four-seasons-residences1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/four-seasons-residences2.jpeg`,
   ],
+  "alexan-waterloo": [
+    `${REPORT_IMAGE_BASE}/alexan-waterloo-building.jpg`,
+    `${REPORT_IMAGE_BASE}/alexan-waterloo-pool.jpg`,
+  ],
+  milago: [
+    `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
+    `${REPORT_IMAGE_BASE}/milago-pool.jpeg`,
+    "/images/map-pins/property/milago.webp",
+    "/buildings/milago.webp",
+  ],
   natiivo: [
+    `${REPORT_IMAGE_BASE}/natiivo-building.jpg`,
+    `${REPORT_IMAGE_BASE}/natiivo-pool.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/natiivo.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/natiivo1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/natiivo2.jpeg`,
   ],
   paseo: [
+    `${REPORT_IMAGE_BASE}/paseo-building.webp`,
+    `${REPORT_IMAGE_BASE}/paseo-deck.jpeg`,
+    `${REPORT_IMAGE_BASE}/paseo-pool.webp`,
+    `${REPORT_IMAGE_BASE}/paseo-gym.webp`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/paseo.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/paseo1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/paseo2.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/paseo3.jpeg`,
   ],
   "seaholm-residences": [
+    `${REPORT_IMAGE_BASE}/seaholm-residences-building.jpg`,
+    `${REPORT_IMAGE_BASE}/seaholm-residences-pool.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-austin-tx-primary-photo.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-deck.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences-pool.webp`,
   ],
+  "the-shore": [
+    `${REPORT_IMAGE_BASE}/the-shore-austin.jpeg`,
+    `${REPORT_IMAGE_BASE}/the-shore-pool.jpg`,
+    `${REPORT_IMAGE_BASE}/the-shore-entrance.webp`,
+    `${REPORT_IMAGE_BASE}/the-shore-condos.jpg`,
+    "/images/map/panels/the-shore-austin.jpg",
+    "/images/imported/perks/the-shore.jpg",
+    "/images/properties/the-shore/hero.jpg",
+  ],
   "spring-condominiums": [
     "/images/map-listing-actual/spring-condominiums/spring-condos-tower.jpeg",
     "/images/map-listing-actual/spring-condominiums/spring-condos-entry.jpeg",
   ],
   "sixth-and-guadalupe": [
+    `${REPORT_IMAGE_BASE}/sixth-guadalupe-building.jpg`,
+    `${REPORT_IMAGE_BASE}/sixth-guadalupe-deck.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/sixth-and-guadalupe1.jpeg`,
   ],
   "the-austonian": [
+    `${REPORT_IMAGE_BASE}/austonian-building.jpg`,
+    `${REPORT_IMAGE_BASE}/austonian-terrace.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-austonian.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-austonian1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-austonian2.jpeg`,
   ],
   "the-independent": [
+    `${REPORT_IMAGE_BASE}/the-independent-301-west.jpg`,
+    `${REPORT_IMAGE_BASE}/the-independent-301-west-alt.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`,
+    "/images/map/panels/the-independent-austin-tower.jpg",
+    "/images/reports/the-independent-austin-tower.jpg",
   ],
   "the-modern": [
+    `${REPORT_IMAGE_BASE}/the-modern-building.jpeg`,
+    `${REPORT_IMAGE_BASE}/the-modern-pool.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-modern.png`,
+  ],
+  "the-quincy": [
+    `${REPORT_IMAGE_BASE}/the-quincy-building.webp`,
+    `${REPORT_IMAGE_BASE}/the-quincy-pool-deck.jpg`,
+    "/images/map-pins/property/the-quincy.jpg",
+    "/images/map-pins/property/the-quincy-1.jpg",
   ],
   "the-travis": [
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-travis.jpeg`,
@@ -148,6 +199,8 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-travis2.jpeg`,
   ],
   vesper: [
+    `${REPORT_IMAGE_BASE}/vesper-building.jpg`,
+    `${REPORT_IMAGE_BASE}/vesper-pool.png`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/vesper.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/vesper1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/vesper2.jpeg`,
@@ -158,9 +211,13 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
     `${PREMIUM_PROPERTY_IMAGE_BASE}/w-residences2.jpeg`,
   ],
   waterline: [
+    `${REPORT_IMAGE_BASE}/waterline-building.jpg`,
+    `${REPORT_IMAGE_BASE}/waterline-looking-west.jpg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/waterline.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/waterline-1.jpeg`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/waterline2.jpeg`,
+    "/images/map/panels/waterline-austin.jpg",
+    "/images/reports/waterline-austin.jpg",
   ],
 };
 
@@ -226,14 +283,18 @@ const premiumPropertyImageRules = [
   { key: "austin-proper-residences", terms: ["austin proper residences", "austin proper", "proper residences", "202 nueces"] },
   { key: "fifth-and-west", terms: ["fifth and west", "fifth & west", "5th and west", "501 west ave"] },
   { key: "four-seasons-residences", terms: ["four seasons residences", "four seasons residential", "four seasons"] },
+  { key: "alexan-waterloo", terms: ["alexan waterloo"] },
+  { key: "milago", terms: ["milago", "54 rainey"] },
   { key: "natiivo", terms: ["natiivo"] },
   { key: "paseo", terms: ["paseo", "the paseo", "modern austin residences", "80 rainey", "90 rainey"] },
   { key: "seaholm-residences", terms: ["seaholm residences", "seaholm", "222 west ave"] },
+  { key: "the-shore", terms: ["the shore", "shore austin", "603 davis"] },
   { key: "spring-condominiums", terms: ["spring condominiums", "spring condos", "spring austin", "300 bowie"] },
   { key: "sixth-and-guadalupe", terms: ["sixth and guadalupe", "sixth & guadalupe", "6th and guadalupe", "6th & guadalupe", "400 w 6th"] },
   { key: "the-austonian", terms: ["the austonian", "austonian", "200 congress"] },
   { key: "the-independent", terms: ["the independent", "independent", "jenga tower", "301 west ave"] },
   { key: "the-modern", terms: ["the modern", "modern austin"] },
+  { key: "the-quincy", terms: ["the quincy", "quincy", "300 w 6th"] },
   { key: "the-travis", terms: ["the travis", "travis"] },
   { key: "vesper", terms: ["vesper", "vesper atx", "84 east avenue"] },
   { key: "w-residences", terms: ["w residences", "w austin residences", "w hotel residences"] },
@@ -242,7 +303,7 @@ const premiumPropertyImageRules = [
 
 function resolvePremiumPropertyImageSet(entity: Record<string, unknown>): string[] {
   const text = entityText(entity);
-  const match = premiumPropertyImageRules.find((rule) => rule.terms.some((term) => text.includes(term)));
+  const match = premiumPropertyImageRules.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
   return match ? PREMIUM_PROPERTY_IMAGE_SETS[match.key] || [] : [];
 }
 
@@ -252,11 +313,11 @@ export const BUILDING_IMAGE_FALLBACK: Record<string, string> = {
   seaholm: "/buildings/seaholm.webp",
   "360": "/buildings/360.webp",
   shore: "/images/properties/the-shore/hero.jpg",
-  quincy: "/images/map-pins/property/the-quincy.jpg",
+  quincy: `${REPORT_IMAGE_BASE}/the-quincy-building.webp`,
   rainey70: "/images/imported/perks/70-rainey.webp",
   east44: "/images/map-pins/property/44-east.jpg",
-  natiivo: "/buildings/natiivo.webp",
-  waterline: "/images/imported/perks/waterline-hero.webp",
+  natiivo: `${REPORT_IMAGE_BASE}/natiivo-building.jpg`,
+  waterline: `${REPORT_IMAGE_BASE}/waterline-building.jpg`,
   block185: "/buildings/block-185.webp",
   catherine: "/buildings/catherine.webp",
   waller3: "/images/map-pins/property/3-waller.webp",
@@ -265,11 +326,19 @@ export const BUILDING_IMAGE_FALLBACK: Record<string, string> = {
   fivefiftyfive: "/buildings/five-fifty-five.webp",
   monarch: "/buildings/monarch.webp",
   spring: "/images/map-listing-actual/spring-condominiums/spring-condos-tower.jpeg",
-  milago: "/images/map-pins/property/milago.webp",
+  milago: `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
   bowie: "/buildings/bowie.webp",
   "hanover-republic-square": "/buildings/hanover-republic-square.jpg",
+  "fifth-and-west": `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
+  "austin-proper-residences": `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
+  "brazos-place": "/images/reports/200-congress-austin.jpg",
+  "311-west-5th": `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
+  "505-west-7th": "/images/map-pins/property/404-rio-grande.jpeg",
+  "506-west-7th": "/images/map-pins/property/404-rio-grande.jpeg",
+  "800-west-5th": "/images/reports/360-nueces-austin.jpg",
+  "1212-guadalupe": `${REPORT_IMAGE_BASE}/sixth-guadalupe-building.jpg`,
   "gables-republic-square": "/images/imported/perks/gables-republic-square.jpg",
-  "modern-austin-residences": "/images/imported/perks/paseo.webp",
+  "modern-austin-residences": `${REPORT_IMAGE_BASE}/paseo-building.webp`,
   "residential-west-avenue-300": "/images/imported/perks/residential-property-west-avenue-300.webp",
   "millenium-rainey": "/images/imported/perks/millenium-rainey.jpg",
   "towers-of-town-lake": "/images/map-pins/property/towers-of-town-lake.jpeg",
@@ -278,29 +347,38 @@ export const BUILDING_IMAGE_FALLBACK: Record<string, string> = {
 };
 
 const curatedBuildingImageOverrides: Record<string, string> = {
-  austonian: `${PREMIUM_PROPERTY_IMAGE_BASE}/the-austonian.jpeg`,
-  independent: `${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`,
-  seaholm: `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
+  austonian: `${REPORT_IMAGE_BASE}/austonian-building.jpg`,
+  independent: `${REPORT_IMAGE_BASE}/the-independent-301-west.jpg`,
+  seaholm: `${REPORT_IMAGE_BASE}/seaholm-residences-building.jpg`,
   "360": "/buildings/360.webp",
-  quincy: "/images/map-pins/property/the-quincy.jpg",
+  shore: `${REPORT_IMAGE_BASE}/the-shore-austin.jpeg`,
+  quincy: `${REPORT_IMAGE_BASE}/the-quincy-building.webp`,
   rainey70: `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey.jpeg`,
   east44: `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east.jpeg`,
-  natiivo: `${PREMIUM_PROPERTY_IMAGE_BASE}/natiivo.jpeg`,
-  waterline: `${PREMIUM_PROPERTY_IMAGE_BASE}/waterline.jpeg`,
+  natiivo: `${REPORT_IMAGE_BASE}/natiivo-building.jpg`,
+  waterline: `${REPORT_IMAGE_BASE}/waterline-building.jpg`,
   block185: "/buildings/block-185.webp",
   river700: `${PREMIUM_PROPERTY_IMAGE_BASE}/700-river.jpeg`,
   waller3: "/images/map-pins/property/3-waller.webp",
   rio404: "/images/map-pins/property/404-rio-grande.jpeg",
   monarch: "/buildings/monarch.webp",
-  milago: "/images/map-pins/property/milago.webp",
+  milago: `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
   bowie: "/buildings/bowie.webp",
   "hanover-republic-square": "/buildings/hanover-republic-square.jpg",
+  "fifth-and-west": `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
+  "austin-proper-residences": `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
+  "brazos-place": "/images/reports/200-congress-austin.jpg",
+  "311-west-5th": `${PREMIUM_PROPERTY_IMAGE_BASE}/fifth-and-west.jpeg`,
+  "505-west-7th": "/images/map-pins/property/404-rio-grande.jpeg",
+  "506-west-7th": "/images/map-pins/property/404-rio-grande.jpeg",
+  "800-west-5th": "/images/reports/360-nueces-austin.jpg",
+  "1212-guadalupe": `${REPORT_IMAGE_BASE}/sixth-guadalupe-building.jpg`,
   "gables-republic-square": "/images/imported/perks/gables-republic-square.jpg",
-  "modern-austin-residences": `${PREMIUM_PROPERTY_IMAGE_BASE}/paseo.jpeg`,
+  "modern-austin-residences": `${REPORT_IMAGE_BASE}/paseo-building.webp`,
   "residential-west-avenue-300": "/images/imported/perks/residential-property-west-avenue-300.webp",
   "millenium-rainey": "/images/imported/perks/millenium-rainey.jpg",
   "towers-of-town-lake": "/images/map-pins/property/towers-of-town-lake.jpeg",
-  "vesper-atx": `${PREMIUM_PROPERTY_IMAGE_BASE}/vesper.jpeg`,
+  "vesper-atx": `${REPORT_IMAGE_BASE}/vesper-building.jpg`,
   "windsor-on-the-lake": "/images/map-pins/property/windsor-on-the-lake.avif",
 };
 
@@ -354,6 +432,14 @@ const buildingImageRules = [
   { key: "milago", terms: ["milago"] },
   { key: "bowie", terms: ["the bowie", "bowie"] },
   { key: "hanover-republic-square", terms: ["hanover republic square", "303 w 5th", "305, west 5th", "west 5th street"] },
+  { key: "fifth-and-west", terms: ["fifth and west", "fifth & west", "501 west ave"] },
+  { key: "austin-proper-residences", terms: ["austin proper residences", "austin proper", "202 nueces"] },
+  { key: "brazos-place", terms: ["brazos place", "800 brazos"] },
+  { key: "311-west-5th", terms: ["311 w 5th", "311 west 5th"] },
+  { key: "505-west-7th", terms: ["505 w 7th", "505 west 7th"] },
+  { key: "506-west-7th", terms: ["506 w 7th", "506 west 7th"] },
+  { key: "800-west-5th", terms: ["800 w 5th", "800 west 5th"] },
+  { key: "1212-guadalupe", terms: ["1212 guadalupe"] },
   { key: "gables-republic-square", terms: ["gables republic square", "401 guadalupe"] },
   { key: "modern-austin-residences", terms: ["modern austin residences", "paseo", "80 rainey", "90 rainey"] },
   { key: "residential-west-avenue-300", terms: ["residential property west avenue 300", "300 west avenue"] },
@@ -733,6 +819,16 @@ function explicitTypeText(entity: Record<string, unknown>): string {
     .toLowerCase();
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function includesTerm(text: string, term: string): boolean {
+  const normalized = term.trim().toLowerCase();
+  if (!normalized) return false;
+  return new RegExp(`(^|[^a-z0-9])${escapeRegExp(normalized)}([^a-z0-9]|$)`).test(text);
+}
+
 function hasVenueIntent(entity: Record<string, unknown>): boolean {
   const explicit = explicitTypeText(entity);
   const text = entityText(entity);
@@ -778,14 +874,14 @@ function pickFrom(images: string[], seed: unknown): string {
 function matchingImageSet(entity: Record<string, unknown>): string[] | null {
   const text = entityText(entity);
   for (const rule of contentImageRules) {
-    if (rule.terms.some((term) => text.includes(term))) return entityImageSets[rule.key] || null;
+    if (rule.terms.some((term) => includesTerm(text, term))) return entityImageSets[rule.key] || null;
   }
   return null;
 }
 
 function actualVenueImageSet(entity: Record<string, unknown>) {
   const text = entityText(entity);
-  const match = actualVenueImageRules.find((rule) => rule.terms.some((term) => text.includes(term)));
+  const match = actualVenueImageRules.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
   return match ? actualVenueImageSets[match.key] || null : null;
 }
 
@@ -874,7 +970,7 @@ function looksHotel(entity: Record<string, unknown>): boolean {
 function buildingImageKey(entity: Record<string, unknown>): string | null {
   if (!looksResidential(entity)) return null;
   const text = entityText(entity);
-  const match = buildingImageRules.find((rule) => rule.terms.some((term) => text.includes(term)));
+  const match = buildingImageRules.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
   return match?.key || null;
 }
 
@@ -889,7 +985,7 @@ export function resolveBuildingImage(entity: Record<string, unknown>): string | 
 function hotelImageKey(entity: Record<string, unknown>): string | null {
   if (!looksHotel(entity)) return null;
   const text = entityText(entity);
-  const match = hotelImageRules.find((rule) => rule.terms.some((term) => text.includes(term)));
+  const match = hotelImageRules.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
   return match?.key || null;
 }
 
@@ -905,7 +1001,6 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
 
   const direct = directImage(entity, context);
   if (direct && hasListingIntent(entity)) return direct;
-  if (context === "drawerHeader" && direct && !direct.includes("/images/fallbacks/")) return direct;
 
   const canonical = resolveDowntownPerksEntityImage(entity);
   if (canonical?.src) return canonical.src;
@@ -918,6 +1013,8 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
     const hotelImage = resolveHotelImage(entity);
     if (hotelImage) return hotelImage;
   }
+
+  if (context === "drawerHeader" && direct && !direct.includes("/images/fallbacks/")) return direct;
 
   if (direct && !direct.includes("/images/fallbacks/")) return direct;
   if (direct && direct.includes("/images/map-pins/")) return direct;
@@ -969,7 +1066,7 @@ export function resolveEntityGallery(entity: Record<string, unknown>): string[] 
   const actualVenueSet = actualVenueImageSet(entity);
   const actualVenueGallery = actualVenueSet ? [actualVenueSet.hero, actualVenueSet.card, actualVenueSet.thumb, ...actualVenueSet.gallery] : [];
   const premiumPropertyImages = (looksResidential(entity) || looksHotel(entity)) ? resolvePremiumPropertyImageSet(entity) : [];
-  const matchedSet = matchingImageSet(entity) || [];
+  const matchedSet = premiumPropertyImages.length ? [] : matchingImageSet(entity) || [];
   const primary = resolveEntityImage(entity);
   return [primary, ...actualVenueGallery, ...premiumPropertyImages, ...explicitGallery, ...rawGallery, ...matchedSet]
     .filter((item): item is string => typeof item === "string" && item.trim().length > 0)

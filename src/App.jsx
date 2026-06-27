@@ -17,7 +17,10 @@ const PricingPage = lazy(() => import("./pages/Pricing"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
 const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
+const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
+const SplashPage = lazy(() => import("./pages/SplashPage"));
+const HomePage = lazy(() => import("./pages/Home"));
 
 function MarketingFallback() {
   return (
@@ -91,7 +94,26 @@ function normalizeMapLaunchPath(pathname, search) {
   return `${targetPath}?${params.toString()}`;
 }
 
+function SplashLaunchGate() {
+  const location = useLocation();
+  const residentMapHref = normalizeMapLaunchPath("/app/map", location.search);
+
+  return (
+    <Suspense fallback={<MarketingFallback />}>
+      <SplashPage
+        residentMapHref={residentMapHref}
+        partnerMapHref="/map?mode=partner&tab=map&filter=All"
+        replayOpening
+      />
+    </Suspense>
+  );
+}
+
 function MapLaunchGate() {
+  const location = useLocation();
+  if (location.pathname === "/app") {
+    return <SplashLaunchGate />;
+  }
   return <MapPage />;
 }
 
@@ -103,7 +125,7 @@ function ProductRoutes() {
         <Route element={<Layout />}>
 
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
-          <Route path="/" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/" element={<Suspense fallback={<MarketingFallback />}><HomePage /></Suspense>} />
           <Route path="/app" element={<MapLaunchGate />} />
           <Route path="/app/map" element={<MapLaunchGate />} />
           <Route path="/map" element={<MapLaunchGate />} />
@@ -151,8 +173,8 @@ function ProductRoutes() {
           />
           <Route path="/pricing" element={<Suspense fallback={<MarketingFallback />}><PricingPage /></Suspense>} />
           <Route path="/partners/pricing" element={<Navigate to="/pricing" replace />} />
-          <Route path="/partners/properties" element={<Navigate to="/partners/sign-up?type=property" replace />} />
-          <Route path="/partners/residential" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/partners/properties" element={<Suspense fallback={<MarketingFallback />}><PartnerProperties /></Suspense>} />
+          <Route path="/partners/residential" element={<Suspense fallback={<MarketingFallback />}><PartnerProperties /></Suspense>} />
           <Route path="/partners/hotels" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
           <Route path="/partners/hospitality" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
           <Route path="/partners/venues" element={<Navigate to="/partners/sign-up?type=venue" replace />} />
@@ -254,8 +276,8 @@ function ProductRoutes() {
           <Route path="/partner-portal/*" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
 
           {/* Legacy public marketing URLs now enter the product or commerce flow. */}
-          <Route path="/marketing" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
-          <Route path="/marketing/home" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/marketing" element={<Navigate to="/" replace />} />
+          <Route path="/marketing/home" element={<Navigate to="/" replace />} />
           <Route path="/marketing/pricing" element={<Navigate to="/pricing" replace />} />
           <Route path="/marketing/contact" element={<Navigate to="/partners/sign-up" replace />} />
           <Route path="/marketing/downtown" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
@@ -264,15 +286,15 @@ function ProductRoutes() {
           <Route path="/marketing/partners/venues" element={<Navigate to="/partners/sign-up?type=venue" replace />} />
           <Route path="/marketing/partners/hotels" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
           <Route path="/marketing/partners/brands" element={<Navigate to="/partners/sign-up?type=brand" replace />} />
-          <Route path="/marketing/partners/properties" element={<Navigate to="/partners/sign-up?type=property" replace />} />
-          <Route path="/marketing/partners/residential" element={<Navigate to="/partners/sign-up?type=property" replace />} />
+          <Route path="/marketing/partners/properties" element={<Navigate to="/partners/properties" replace />} />
+          <Route path="/marketing/partners/residential" element={<Navigate to="/partners/residential" replace />} />
           <Route path="/marketing/partners/civic" element={<Navigate to="/partners/sign-up?type=civic" replace />} />
           <Route path="/marketing/partners/access" element={<Navigate to="/partners/sign-up" replace />} />
 
           {/* Legacy redirects for any bookmarked marketing URLs */}
-          <Route path="/home" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/contact" element={<Navigate to="/partners/sign-up" replace />} />
-          <Route path="/splash" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/splash" element={<SplashLaunchGate />} />
 
           {/* Catch-all → production app route */}
           <Route path="*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />

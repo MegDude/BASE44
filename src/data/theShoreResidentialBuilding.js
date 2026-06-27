@@ -1,6 +1,6 @@
 export const THE_SHORE_PROPERTY_ID = "property-the-shore";
 
-export const THE_SHORE_HERO_IMAGE = "/images/properties/the-shore/hero.jpg";
+export const THE_SHORE_HERO_IMAGE = "/images/reports/the-shore-austin.jpeg";
 
 export const theShoreAvailableHomes = [
   {

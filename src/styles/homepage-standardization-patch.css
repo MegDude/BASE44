@@ -25480,3 +25480,49 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   font-weight: 450 !important;
   line-height: 1.4 !important;
 }
+
+/* Final product story action lock: search and Open Map sit centered as one pair. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  padding-inline: 16px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions {
+  display: inline-grid !important;
+  grid-template-columns: 44px minmax(148px, max-content) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  gap: 10px !important;
+  width: auto !important;
+  max-width: min(100%, 320px) !important;
+  margin-inline: auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-story-footer-search.dp-story-footer-search,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a.dp-button.dp-button-wide {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-story-footer-search.dp-story-footer-search {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a.dp-button.dp-button-wide {
+  width: auto !important;
+  min-width: 148px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 18px !important;
+  white-space: nowrap !important;
+}

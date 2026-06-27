@@ -3,6 +3,8 @@ import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, X, Building2, Star, Waves, Dumbbell, Car, Bell, MapPin } from "lucide-react";
 
+const PROPERTY_HERO_IMAGE = "/images/reports/waterline-building.jpg";
+
 const BUILDINGS = [
   {
     id: "quincy", name: "The Quincy", address: "300 W 6th St", lat: 30.2680, lng: -97.7460,
@@ -152,41 +154,47 @@ export default function PropertiesPartner() {
     <div className="dp-partner-page min-h-screen bg-white text-[#0B1F33]">
 
       {/* HERO */}
-      <section className="pt-36 pb-16 px-5 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(rgba(11,31,51,0.18) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,51,0.18) 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
-        <div className="max-w-6xl mx-auto">
+      <section className="min-h-[86vh] pt-36 pb-16 px-5 relative overflow-hidden text-white">
+        <img
+          src={PROPERTY_HERO_IMAGE}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-[#07192a]/72" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/55 to-transparent" />
+        <div className="relative max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Link to="/partners" className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-muted-foreground hover:text-primary transition-colors group" aria-label="Back to partners" title="Back to partners">
+            <Link to="/partners" className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-white/80 hover:text-white transition-colors group" aria-label="Back to partners" title="Back to partners">
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" aria-hidden="true" />
             </Link>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Property Partner Layer</span>
-              <h1 className="dp-property-partner-hero-title font-body text-[31px] md:text-[38px] lg:text-[40px] font-semibold leading-[1.08] tracking-normal text-[#0B1F33] mb-5">
+              <span className="text-[11px] font-medium text-[#E7C875] uppercase tracking-[0.16em] block mb-4">Property Partner Layer</span>
+              <h1 className="dp-property-partner-hero-title font-body text-[31px] md:text-[38px] lg:text-[40px] font-semibold leading-[1.08] tracking-normal text-white mb-5">
                 Connect your building to what is happening around it.
               </h1>
-              <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">
+              <p className="text-white/78 text-[14px] leading-relaxed mb-8 max-w-lg">
                 Residents get a working map of nearby places, offers, and events. Your team gets a clearer picture of how they use the surrounding neighborhood.
               </p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all ">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-white text-[#0B1F33] font-medium text-[13px] hover:bg-white/90 transition-all ">
                   Activate your building <ArrowRight className="w-4 h-4" />
                 </a>
-                <a href="#property-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
+                <a href="#property-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-white/32 text-white/80 font-medium text-[13px] hover:text-white transition-all">
                   See the resident layer
                 </a>
               </div>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
-              className="self-end border-l border-[#0B1F33]/10 pl-5">
-              <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B1F33]">Resident context</span>
-              <p className="mt-4 max-w-md font-heading text-[28px] font-bold leading-[1.04] tracking-normal text-[#0B1F33] md:text-[34px]">
+              className="self-end border-l border-white/24 pl-5">
+              <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#E7C875]">Resident context</span>
+              <p className="mt-4 max-w-md font-heading text-[28px] font-bold leading-[1.04] tracking-normal text-white md:text-[34px]">
                 Give residents a useful reason to open the map.
               </p>
-              <p className="mt-4 max-w-sm font-body text-[14px] font-light leading-relaxed text-[#425466]">
+              <p className="mt-4 max-w-sm font-body text-[14px] font-light leading-relaxed text-white/74">
                 Connect your building to nearby places, offers, and events people can use. Start small, then add resident access, reporting, and planning tools as the building layer grows.
               </p>
             </motion.div>

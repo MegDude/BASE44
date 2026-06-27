@@ -3,6 +3,12 @@ import data from "../data/locations.json";
 import { luxuryPresenceBuildingPlaces } from "../data/luxuryPresenceInventory";
 import { supplementalMapEntities } from "../data/supplementalMapEntities";
 import { getRepublicAustinMapPlaces } from "../data/imports/republicAustinPins";
+import {
+  ATTACHED_FEATURED_BRANDS,
+  ATTACHED_HAPPY_HOUR_PERK_LOCATIONS,
+  ATTACHED_LEGENDS_IMPORTED_PROPERTIES,
+  ATTACHED_SUPPLEMENTAL_DOWNTOWN_LOCATIONS,
+} from "../data/imports/attachedMapInventory";
 import { downtownParkingItems } from "../data/parkingBookings";
 import { waterlooParkInventory } from "../data/waterlooParkInventory";
 import { waterlooParkCampaignPins } from "../data/waterlooParkCampaignPins";
@@ -24,6 +30,7 @@ const FAIRMONT_HOTEL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-aust
 const FAIRMONT_POOL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-rooftop-pool.webp";
 const FAIRMONT_CABANA_IMAGE = "/images/map-entities/fairmont-austin/fairmont-pool-cabanas.webp";
 const FAIRMONT_BOOKING_URL = "https://na.spatime.com/fha78701/6840393/home";
+const LEGENDS_BRAND_LINE = "Legends Real Estate";
 
 function eventPlace({
   id,
@@ -112,6 +119,182 @@ function parkingBookingPlace(item) {
     },
     parkingBooking: item,
     source: "Downtown Perks parking booking layer",
+  };
+}
+
+function attachedHappyHourPerkPlace(item) {
+  const kind = String(item.kind || "").toLowerCase();
+  const specials = Array.isArray(item.specials) ? item.specials.filter(Boolean) : [];
+  const hasPerk = Boolean(item.hasPublicSpecial || specials.length);
+  const isDining = kind === "restaurant" || /restaurant|food|dining/i.test(item.category || "");
+  const isCoffee = /coffee|cafe/i.test(`${item.category || ""} ${item.name || ""}`);
+  const isNightlife = kind === "bar" || /bar|nightlife|cocktail|beer|wine/i.test(`${item.category || ""} ${item.specialLabel || ""}`);
+
+  return {
+    id: item.id,
+    venueId: String(item.id || "").replace(/^happy-hour-/, ""),
+    name: item.name,
+    venueName: item.name,
+    type: "venue",
+    kind: kind || "venue",
+    sourceType: "happy_hour",
+    markerType: "venue",
+    detailDrawerType: "venue",
+    pinKey: isNightlife ? "nightlife" : isCoffee ? "coffee" : "dining",
+    category: item.category || (isDining ? "Restaurant / Food" : "Bar / Nightlife"),
+    category_key: [
+      "happy hour",
+      hasPerk ? "resident perk" : "",
+      item.kind,
+      item.category,
+      item.district,
+      item.alignment,
+      ...specials,
+    ]
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_"),
+    latitude: item.latitude,
+    longitude: item.longitude,
+    district: item.district,
+    address: item.address,
+    website: item.website,
+    phone: item.phone,
+    email: item.email,
+    operatingHours: item.operatingHours,
+    summary: item.summary || `${item.category || "Downtown"} listing in Downtown Austin.`,
+    description: item.alignment || item.summary,
+    alignment_to_downtown_perks: item.alignment,
+    deals_offers: item.specialLabel || specials.join(" · "),
+    specials: item.specialLabel || specials.join(" · "),
+    events_available: item.eventsAvailable,
+    hasPerk,
+    hasHappyHour: true,
+    hasPerkPotential: hasPerk,
+    happyHour: {
+      days: item.operatingHours || "Confirm hours",
+      time: item.operatingHours || "Confirm time",
+      offer: item.specialLabel || specials.join(" · ") || "Save this nearby spot",
+      details: item.alignment || item.summary,
+      redemption: "Save it, get directions, or check what else is nearby.",
+    },
+    perk: hasPerk
+      ? {
+          title: item.specialLabel || "Resident perk",
+          value: item.specialLabel || specials[0],
+          description: item.alignment || "Resident-facing offer or special.",
+          isActive: true,
+        }
+      : undefined,
+    tags: ["Happy Hour", "Perks", item.kind, item.category, item.district, item.alignment].filter(Boolean),
+    raw: { attachedHappyHourPerk: item },
+    source: item.source || "User-provided happy hour and perk attachment",
+  };
+}
+
+function attachedSupplementalPlace(item) {
+  const category = String(item.sourceCategory || item.category || "Place").trim();
+  const icon = String(item.icon || "").toLowerCase();
+  return {
+    id: item.id,
+    name: item.name,
+    type: item.entityType || "venue",
+    kind: item.entityType || "venue",
+    sourceType: item.entityType || "venue",
+    markerType: item.entityType || "venue",
+    detailDrawerType: item.entityType || "venue",
+    pinKey: icon || (category.toLowerCase().includes("coffee") ? "coffee" : "venue"),
+    category,
+    category_key: [item.entityType, item.category, item.sourceCategory, item.alignment, item.name]
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_"),
+    latitude: item.latitude,
+    longitude: item.longitude,
+    district: item.district || "Downtown Austin",
+    address: item.address,
+    website: item.website,
+    summary: item.summary,
+    description: item.alignment || item.summary,
+    alignment_to_downtown_perks: item.alignment,
+    tags: [item.entityType, item.category, item.sourceCategory, item.alignment].filter(Boolean),
+    raw: { attachedSupplementalLocation: item },
+    source: item.source || "User-provided supplemental downtown locations",
+  };
+}
+
+function attachedLegendsPropertyPlace(item) {
+  const count = Number(item.groupedListingCount || 0);
+  return {
+    id: item.id,
+    name: item.name,
+    type: "property",
+    kind: "property",
+    entityType: "property",
+    sourceType: "building",
+    partnerType: "properties",
+    brand: LEGENDS_BRAND_LINE,
+    markerType: "property",
+    detailDrawerType: "property",
+    pinKey: "legends",
+    category: "Legends Residential / Grouped Listings",
+    category_key: ["legends", "residential property", "grouped listings", item.name, item.address, ...(item.categoryKeys || [])]
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_"),
+    latitude: item.latitude,
+    longitude: item.longitude,
+    district: "Downtown Austin",
+    address: item.address,
+    summary: count > 1
+      ? `${count} Legends listings are grouped at this downtown address.`
+      : "Legends listing pin with downtown residential context.",
+    description: "Open this property pin to compare listing interest with nearby dining, hotels, wellness, events, parking, and resident perks.",
+    groupedListingCount: count,
+    primaryAction: "Ask Legends",
+    secondaryAction: "View nearby",
+    tags: ["Legends", "Listings", "Residential", "Property", "MLS", `${count} grouped listings`],
+    raw: { attachedLegendsProperty: item },
+    source: "User-provided Legends import attachment",
+  };
+}
+
+function attachedFeaturedBrandPlace(item) {
+  const text = [item.category, item.type, item.iconType, item.tag, item.description].join(" ").toLowerCase();
+  const isProperty = /\b(property|residential|building|mixed-use|premium residential)\b/.test(text);
+  const isHotel = /\b(hotel|hospitality|stay)\b/.test(text);
+  const isVenue = /\b(venue|bar|restaurant|nightlife|dining)\b/.test(text);
+  const resolvedType = isProperty ? "property" : isHotel ? "hotel" : isVenue ? "venue" : item.type || "brand";
+
+  return {
+    id: `featured-${item.slug}`,
+    name: item.name,
+    type: resolvedType,
+    kind: resolvedType,
+    entityType: resolvedType,
+    sourceType: resolvedType === "property" ? "building" : resolvedType,
+    partnerType: isProperty ? "properties" : isHotel ? "hotel" : isVenue ? "venues" : "brand",
+    brand: item.name,
+    markerType: resolvedType,
+    detailDrawerType: resolvedType,
+    pinKey: item.iconType || resolvedType,
+    category: item.category,
+    category_key: [item.category, item.tag, item.type, item.iconType, ...(item.searchKeywords || []), ...(item.askMapIntentTags || [])]
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_"),
+    latitude: item.latitude,
+    longitude: item.longitude,
+    district: item.district,
+    address: item.address,
+    summary: item.description,
+    description: item.description,
+    route: item.route,
+    primaryAction: isProperty ? "Open Property Layer" : "Open Partner Layer",
+    secondaryAction: "Save",
+    tags: [item.category, item.tag, ...(item.searchKeywords || []), ...(item.askMapIntentTags || [])].filter(Boolean),
+    raw: { attachedFeaturedBrand: item },
+    source: "User-provided featured brand attachment",
   };
 }
 
@@ -1076,6 +1259,9 @@ const CORE_LOCATION_CATEGORY_KEYS = new Set([
   "coffee_cafe",
   "hotel_hospitality",
   "other_relevant",
+  "parking",
+  "parking_lot",
+  "parking_garage",
   "residential_property",
   "restaurant_food",
   "retail_business",
@@ -1286,12 +1472,16 @@ export function useLocations() {
   const republicAustinPlaces = getRepublicAustinMapPlaces();
   const canonicalGoogleRegistryPlaces = getActiveMapEntityLocations();
   const parkingPlaces = downtownParkingItems.filter((item) => item.active).map(parkingBookingPlace);
+  const attachedHappyHourPerkPlaces = ATTACHED_HAPPY_HOUR_PERK_LOCATIONS.map(attachedHappyHourPerkPlace);
+  const attachedSupplementalPlaces = ATTACHED_SUPPLEMENTAL_DOWNTOWN_LOCATIONS.map(attachedSupplementalPlace);
+  const attachedLegendsPropertyPlaces = ATTACHED_LEGENDS_IMPORTED_PROPERTIES.map(attachedLegendsPropertyPlace);
+  const attachedFeaturedBrandPlaces = ATTACHED_FEATURED_BRANDS.map(attachedFeaturedBrandPlace);
   const rentalPlaces = rentalListings.filter((item) => item.status === "active").map(rentalListingPlace);
   void happyHoursVersion;
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...rentalPlaces, ...supplementalMapEntities, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
