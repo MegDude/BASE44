@@ -173,10 +173,10 @@ function attachedHappyHourPerkPlace(item) {
     hasPerkPotential: hasPerk,
     happyHour: {
       days: item.operatingHours || "Confirm hours",
-      time: item.operatingHours || "Confirm time",
+      time: item.operatingHours || "",
       offer: item.specialLabel || specials.join(" · ") || "Save this nearby spot",
       details: item.alignment || item.summary,
-      redemption: "Save it, get directions, or check what else is nearby.",
+      redemption: "",
     },
     perk: hasPerk
       ? {

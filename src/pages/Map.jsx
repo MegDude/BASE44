@@ -3630,13 +3630,14 @@ function BusinessServiceDetails({ place }) {
   );
 }
 
-function ResidentPerkDetails({ place }) {
+function ResidentPerkDetails({ place, savedIds, onSave }) {
   const perk = getResidentPerkDetails(place);
   const entityKind = getResidentEntityKind(place);
   const isProperty = entityKind === "property";
   const sectionLabel = isProperty ? "Property access" : "Resident perk";
   const destinationKind = getDestinationKind(place);
   const panelContent = resolveEntityPanelContent(place, "resident");
+  const isSaved = savedIds?.has?.(place?.id);
   const useText = isProperty
     ? "Listings, tours, and neighborhood context."
     : destinationKind === "grocery"
@@ -3667,6 +3668,19 @@ function ResidentPerkDetails({ place }) {
           <p className="dp-perk-module-terms">
             {termsText}
           </p>
+        )}
+        {!isProperty && (
+          <div className="dp-primary-action-row dp-perk-action-row" aria-label={`${place.name} perk actions`}>
+            <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
+              Use Perk
+            </button>
+            <button type="button" onClick={onSave} className="dp-panel-action">
+              {isSaved ? "Saved" : "Save"}
+            </button>
+            <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+              Directions
+            </a>
+          </div>
         )}
       </div>
     </section>
@@ -5992,6 +6006,24 @@ function getNearbyCardImage(entity, mode = "resident") {
   return resolveMapImage(entity, "nearbyRail") || resolveEntityImage(entity, "nearbyRail") || getLifestyleImage(entity, mode) || MAP_PANEL_IMAGE_FALLBACK;
 }
 
+function getContextualRailFallbackImage(entity, mode = "resident") {
+  const text = placeCoreText({ ...entity, mode });
+  const kind = getDestinationKind(entity);
+  if (text.includes("fitness") || text.includes("athletic") || text.includes("gym") || text.includes("workout") || text.includes("orangetheory")) return "/images/fallbacks/fitness.jpg";
+  if (text.includes("wellness") || text.includes("yoga") || text.includes("pilates") || text.includes("spa") || text.includes("recovery")) return "/images/fallbacks/wellness.jpg";
+  if (text.includes("coffee") || text.includes("cafe") || text.includes("espresso")) return "/images/fallbacks/coffee.jpg";
+  if (text.includes("retail") || text.includes("shop") || text.includes("store") || text.includes("lululemon") || text.includes("yeti")) return "/images/fallbacks/retail.jpg";
+  if (text.includes("hotel") || kind === "hotel") return "/images/fallbacks/hotel.jpg";
+  if (text.includes("music") || text.includes("concert")) return "/images/fallbacks/music.jpg";
+  if (kind === "event" || text.includes("event")) return "/images/fallbacks/events.jpg";
+  if (kind === "property" || text.includes("residential") || text.includes("apartment") || text.includes("condo")) return "/images/fallbacks/property.jpg";
+  if (kind === "civic" || text.includes("park") || text.includes("square") || text.includes("library")) return "/images/fallbacks/civic.jpg";
+  if (kind === "grocery" || text.includes("grocery") || text.includes("market")) return "/images/fallbacks/grocery.jpg";
+  if (kind === "nightlife" || text.includes("bar") || text.includes("cocktail")) return "/images/fallbacks/drinks.jpg";
+  if (["dining", "restaurant", "food"].some((needle) => kind === needle || text.includes(needle))) return "/images/fallbacks/dining.jpg";
+  return "/images/fallbacks/brand.jpg";
+}
+
 function getNearbyRecommendationCards(place, places = [], mode = "resident", limit = 8) {
   const nearby = getNearbyRecommendations({
     selectedEntity: place,
@@ -6022,6 +6054,7 @@ function getNearbyRecommendationCards(place, places = [], mode = "resident", lim
         title: getNearbyCardEntityTitle(entity),
         meta: getNearbyCardMeta(entity, item.entity ? item : null, mode),
         image: getNearbyCardImage(entity, mode),
+        fallbackImage: getContextualRailFallbackImage(entity, mode),
       };
     })
     .filter(Boolean)
@@ -6038,7 +6071,7 @@ function NearbyImageRail({ place, places = [], onSelect, mode = "resident", titl
         {items.map((item) => (
           <button key={item.id} type="button" className="dp-nearby-image-card" onClick={() => onSelect?.(item.place)}>
             <span className="dp-nearby-image-media">
-              <img src={item.image} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />
+              <img src={item.image} alt="" loading="lazy" decoding="async" data-fallback-src={item.fallbackImage} onError={handlePanelImageError} />
             </span>
             <span className="dp-nearby-image-copy">
               <strong>{item.title}</strong>
@@ -6695,13 +6728,15 @@ function PartnerSimilarAudienceSection({ place, places = [], onSelect }) {
   return null;
 }
 
-function HappyHourDetails({ place }) {
+function HappyHourDetails({ place, savedIds, onSave }) {
   const happyHour = place.raw?.happyHour || place.happyHour || {};
   const days = happyHour.days || "This week";
   const time = String(happyHour.time || "").trim();
   const offer = happyHour.offer || "Food and drink specials nearby";
   const details = happyHour.details || place.raw?.summary || "A nearby happy hour for residents looking for an easy place to start.";
-  const redemption = happyHour.redemption || "Save it for later or get directions when you're ready.";
+  const rawRedemption = String(happyHour.redemption || "").trim();
+  const redemption = /\bsave\b.*\bdirections\b|\bdirections\b.*\bsave\b|what else is nearby/i.test(rawRedemption) ? "" : rawRedemption;
+  const isSaved = savedIds?.has?.(place?.id);
 
   return (
     <DestinationSection title="Happy Hour" className="dp-happy-hour-section">
@@ -6717,6 +6752,17 @@ function HappyHourDetails({ place }) {
           <span>Offer</span>
           <strong>{offer}</strong>
         </div>
+      </div>
+      <div className="dp-primary-action-row dp-perk-action-row" aria-label={`${place.name} happy hour actions`}>
+        <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
+          Use Perk
+        </button>
+        <button type="button" onClick={onSave} className="dp-panel-action">
+          {isSaved ? "Saved" : "Save"}
+        </button>
+        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+          Directions
+        </a>
       </div>
       {redemption && <p className="dp-destination-section-note">{redemption}</p>}
     </DestinationSection>
@@ -7978,6 +8024,10 @@ function ResidentDrawerActions({
     );
   }
 
+  if (hasPerk && !isEvent) {
+    return null;
+  }
+
   return (
     <div className="dp-primary-action-row">
       {isEvent ? (
@@ -8923,8 +8973,14 @@ function getPanelImageObjectPosition(place) {
 
 function handlePanelImageError(event) {
   const img = event.currentTarget;
-  if (img.dataset.fallbackApplied === "true") return;
-  img.dataset.fallbackApplied = "true";
+  const contextualFallback = img.dataset.fallbackSrc;
+  if (img.dataset.fallbackApplied !== "contextual" && contextualFallback && !String(img.getAttribute("src") || "").includes(contextualFallback)) {
+    img.dataset.fallbackApplied = "contextual";
+    img.src = contextualFallback;
+    return;
+  }
+  if (img.dataset.fallbackApplied === "final") return;
+  img.dataset.fallbackApplied = "final";
   img.src = MAP_PANEL_IMAGE_FALLBACK;
 }
 
@@ -12999,7 +13055,7 @@ export default function MapPage() {
                     )}
                     {urlState.mode === "resident" && isHappyHourEntity(selected) && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.36, duration: 0.18 }}>
-                        <HappyHourDetails place={selected} />
+                        <HappyHourDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} />
                       </motion.div>
                     )}
                     {isParking && (
@@ -13068,7 +13124,7 @@ export default function MapPage() {
 
                     {urlState.mode === "resident" && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.62, duration: 0.18 }}>
-                        <ResidentPerkDetails place={selected} />
+                        <ResidentPerkDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} />
                       </motion.div>
                     )}
 
@@ -13143,7 +13199,7 @@ export default function MapPage() {
                       )}
                     </AnimatePresence>
 
-                    {!isDaaStop && !isInKindDining && !isBurgerBarPanel && (
+                    {!isDaaStop && !isInKindDining && !isBurgerBarPanel && !isHappyHourEntity(selected) && !hasActivePerkData(selected) && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.92, duration: 0.18 }}>
                         <PeopleAlsoVisit place={selected} places={places} onSelect={selectPlace} mode={urlState.mode} />
                       </motion.div>

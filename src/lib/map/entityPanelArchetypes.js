@@ -325,7 +325,7 @@ const PANEL_CONTENT_BY_TYPE = {
     whyHeading: "Why People Come Here",
     whyBody: "{title} helps downtown feel more usable, memorable, and connected — a place residents and visitors can fold into real plans, walks, routines, and civic discovery.",
     bestFor: ["Visitors", "Downtown residents", "Walking routes", "Civic discovery", "Weekend plans"],
-    insight: "A civic place should answer why someone would go there before it explains what category it belongs to.",
+    insight: "Start here when you want an easy downtown landmark, nearby plans, and a walkable next stop.",
     nearbyHeading: "Nearby Now",
     askPrompts: ["What can I do here?", "What is nearby?", "Where should I walk next?", "What else should I see?"],
   },

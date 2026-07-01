@@ -167,7 +167,7 @@ export function getHappyHourPlaces() {
           time: first.startTime && first.endTime ? `${first.startTime}-${first.endTime}` : "",
           offer: first.specials,
           details: venue.description,
-          redemption: "Save it for later, get directions, or check what else is nearby.",
+          redemption: "",
         },
         source: "Downtown Perks normalized venue inventory",
       };
