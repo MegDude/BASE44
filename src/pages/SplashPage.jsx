@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown, MapPin, Menu, Search, Sparkles, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronDown, MapPin, Menu, Search, Sparkles, X } from "lucide-react";
 
 const storyStates = [
   {
@@ -12,16 +12,17 @@ const storyStates = [
     headlineGroups: [
       [
         { text: "More charm", tone: "gold" },
-        { text: "than a", tone: "navy" },
       ],
       [
-        { text: "biscuit", tone: "navy" },
+        { text: "than a biscuit", tone: "navy" },
+      ],
+      [
         { text: "with honey.", tone: "navy" },
       ],
     ],
     meaning: "Downtown Perks brings the heat — and the hospitality.",
     supporting: [
-      "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” - this is for you.",
+      "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” — this is for you.",
     ],
     visual: ["Music", "Rooftop", "Tacos"],
   },
@@ -57,9 +58,9 @@ const storyStates = [
       [
         { text: "So we built", tone: "navy" },
         { text: "one map", tone: "gold" },
+        { text: "to bring", tone: "navy" },
       ],
       [
-        { text: "to bring", tone: "navy" },
         { text: "everything", tone: "navy" },
       ],
       [
@@ -152,66 +153,117 @@ function clamp(value, min, max) {
 
 const storyEase = [0.22, 1, 0.36, 1];
 
-const storyMotion = {
-  section: {
-    initial: { opacity: 0, y: 18, filter: "blur(10px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-    exit: { opacity: 0, y: -12, filter: "blur(8px)" },
-  },
-  line: {
-    initial: { opacity: 0, y: 22, filter: "blur(8px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-  },
-  prose: {
-    initial: { opacity: 0, y: 14, filter: "blur(6px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+const splashStoryShellVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.32, ease: storyEase },
   },
 };
 
-function FixedStoryStage({ state }) {
+const storySceneVariants = {
+  hidden: { opacity: 0, y: 12, filter: "blur(8px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.52, ease: storyEase },
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    filter: "blur(6px)",
+    transition: { duration: 0.24, ease: storyEase },
+  },
+};
+
+const storyRevealVariants = {
+  hidden: ({ y = 16, blur = 8, reduceMotion = false } = {}) => ({
+    opacity: 0,
+    y: reduceMotion ? 0 : y,
+    filter: reduceMotion ? "none" : `blur(${blur}px)`,
+  }),
+  visible: ({ delay = 0, reduceMotion = false } = {}) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: reduceMotion ? 0 : 0.64,
+      delay: reduceMotion ? 0 : delay,
+      ease: storyEase,
+    },
+  }),
+  exit: ({ reduceMotion = false } = {}) => ({
+    opacity: reduceMotion ? 1 : 0,
+    y: reduceMotion ? 0 : -8,
+    filter: reduceMotion ? "none" : "blur(5px)",
+    transition: { duration: reduceMotion ? 0 : 0.18, ease: storyEase },
+  }),
+};
+
+const storySegmentVariants = {
+  hidden: ({ y = 10, blur = 5, reduceMotion = false } = {}) => ({
+    opacity: 0,
+    y: reduceMotion ? 0 : y,
+    filter: reduceMotion ? "none" : `blur(${blur}px)`,
+  }),
+  visible: ({ delay = 0, reduceMotion = false } = {}) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: reduceMotion ? 0 : 0.5,
+      delay: reduceMotion ? 0 : delay,
+      ease: storyEase,
+    },
+  }),
+  exit: ({ reduceMotion = false } = {}) => ({
+    opacity: reduceMotion ? 1 : 0,
+    y: reduceMotion ? 0 : -6,
+    filter: reduceMotion ? "none" : "blur(4px)",
+    transition: { duration: reduceMotion ? 0 : 0.16, ease: storyEase },
+  }),
+};
+
+function SplashStoryScene({ scene, activeIndex, onStep, onActivate }) {
   const reduceMotion = useReducedMotion();
-  const sceneMotion = reduceMotion ? {
-    initial: { opacity: 1 },
-    animate: { opacity: 1 },
-    exit: { opacity: 1 },
-  } : storyMotion.section;
-  const lineMotion = reduceMotion ? {
-    initial: { opacity: 1 },
-    animate: { opacity: 1 },
-  } : storyMotion.line;
-  const proseMotion = reduceMotion ? {
-    initial: { opacity: 1 },
-    animate: { opacity: 1 },
-  } : storyMotion.prose;
-  const sceneTransition = reduceMotion ? { duration: 0 } : { duration: 0.52, ease: storyEase };
-  const lineTransition = reduceMotion ? { duration: 0 } : { duration: 0.46, ease: storyEase };
-  const proseTransition = reduceMotion ? { duration: 0 } : { duration: 0.42, ease: storyEase };
+  const motionState = { reduceMotion };
+  const headlineRows = scene.headlineGroups || (scene.headlineParts || scene.headline.map((text) => ({ text, tone: "navy" }))).map((part) => [part]);
+  const headlineBaseDelay = 0.14;
+  const headlineDelayStep = 0.13;
+  const meaningDelay = headlineBaseDelay + headlineRows.length * headlineDelayStep + 0.12;
+  const supportingDelay = meaningDelay + (scene.meaning ? 0.16 : 0.04);
+  const controlsDelay = supportingDelay + (scene.supporting.length ? 0.18 : 0.1);
 
   return (
     <motion.section
-      key={state.id}
+      key={scene.id}
       className="dp-fixed-story-stage dp-scene-stage"
-      data-story-scene={state.id}
+      data-story-scene={scene.id}
+      data-story-active="true"
       aria-label="Downtown Perks story"
-      initial={sceneMotion.initial}
-      animate={sceneMotion.animate}
-      exit={sceneMotion.exit}
-      transition={sceneTransition}
+      initial={reduceMotion ? false : "hidden"}
+      animate="visible"
+      exit={reduceMotion ? undefined : "exit"}
+      variants={storySceneVariants}
     >
       <div className="dp-fixed-story-state">
-        <div className="dp-fixed-story-copy">
-          <div className="dp-fixed-story-kicker-slot">
-            <p key={`kicker-${state.id}`} className="dp-fixed-story-kicker">{state.kicker}</p>
-          </div>
-          {state.prelude?.length ? (
+        <motion.div className="dp-fixed-story-copy" initial="hidden" animate="visible" exit="exit">
+          <motion.div
+            className="dp-fixed-story-kicker-slot dp-story-reveal"
+            custom={{ ...motionState, delay: 0, y: 12, blur: 5 }}
+            variants={storyRevealVariants}
+          >
+            <p key={`kicker-${scene.id}`} className="dp-fixed-story-kicker">{scene.kicker}</p>
+          </motion.div>
+          {scene.prelude?.length ? (
             <motion.div
-              className="dp-fixed-story-prelude-slot"
-              initial={proseMotion.initial}
-              animate={proseMotion.animate}
-              transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.02 }}
+              className="dp-fixed-story-prelude-slot dp-story-reveal"
+              custom={{ ...motionState, delay: 0.08, y: 14, blur: 6 }}
+              variants={storyRevealVariants}
             >
-              <p key={`prelude-${state.id}`} className="dp-fixed-story-prelude">
-                {state.prelude.map((line) => (
+              <p key={`prelude-${scene.id}`} className="dp-fixed-story-prelude">
+                {scene.prelude.map((line) => (
                   <span key={line} className="dp-fixed-story-prelude-line">{line}</span>
                 ))}
               </p>
@@ -219,18 +271,16 @@ function FixedStoryStage({ state }) {
           ) : null}
           <motion.div
             className="dp-fixed-story-headline-slot"
-            initial={proseMotion.initial}
-            animate={proseMotion.animate}
-            transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.04 }}
+            custom={{ ...motionState, delay: headlineBaseDelay, y: 18, blur: 8 }}
+            variants={storyRevealVariants}
           >
-            <motion.h1 key={`headline-${state.id}`} className="dp-fixed-story-headline">
-              {state.headlineGroups ? state.headlineGroups.map((group, groupIndex) => (
+            <motion.h1 key={`headline-${scene.id}`} className="dp-fixed-story-headline">
+              {headlineRows.map((group, groupIndex) => (
                 <motion.span
-                  key={`${state.id}-headline-group-${groupIndex}`}
-                  className="dp-fixed-story-headline-row"
-                  initial={lineMotion.initial}
-                  animate={lineMotion.animate}
-                  transition={{ ...lineTransition, delay: reduceMotion ? 0 : 0.1 + groupIndex * 0.12 }}
+                  key={`${scene.id}-headline-group-${groupIndex}`}
+                  className="dp-fixed-story-headline-row dp-story-reveal"
+                  custom={{ ...motionState, delay: headlineBaseDelay + groupIndex * headlineDelayStep, y: 18, blur: 8 }}
+                  variants={storyRevealVariants}
                 >
                   {group.map((part, partIndex) => {
                     const segmentClassName = [
@@ -240,68 +290,227 @@ function FixedStoryStage({ state }) {
                       part.bold ? "dp-fixed-story-line--bold" : "",
                     ].filter(Boolean).join(" ");
 
-                    return <span key={`${part.text}-${partIndex}`} className={segmentClassName}>{part.text}</span>;
+                    return (
+                      <motion.span
+                        key={`${part.text}-${partIndex}`}
+                        className={segmentClassName}
+                        custom={{ ...motionState, delay: headlineBaseDelay + groupIndex * headlineDelayStep + partIndex * 0.045, y: 8, blur: 4 }}
+                        variants={storySegmentVariants}
+                      >
+                        {part.text}
+                      </motion.span>
+                    );
                   })}
                 </motion.span>
-              )) : (state.headlineParts || state.headline.map((text) => ({ text, tone: "navy" }))).map((part) => {
-                const lineClassName = [
-                  "dp-fixed-story-line",
-                  "dp-fixed-story-headline-line",
-                  part.tone === "gold" ? "dp-fixed-story-line--gold" : "dp-fixed-story-line--navy",
-                  part.compact ? "dp-fixed-story-line--compact" : "",
-                  part.bold ? "dp-fixed-story-line--bold" : "",
-                ].filter(Boolean).join(" ");
-
-                return (
-                  <motion.span
-                    key={part.text}
-                    className={lineClassName}
-                    initial={lineMotion.initial}
-                    animate={lineMotion.animate}
-                    transition={{ ...lineTransition, delay: reduceMotion ? 0 : 0.1 + (state.headlineParts || []).findIndex((item) => item.text === part.text) * 0.1 }}
-                  >
-                    {part.text}
-                  </motion.span>
-                );
-              })}
+              ))}
             </motion.h1>
           </motion.div>
-          {state.meaning ? (
+          {scene.meaning ? (
             <motion.div
-              className="dp-fixed-story-meaning-slot"
-              initial={proseMotion.initial}
-              animate={proseMotion.animate}
-              transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.42 }}
+              className="dp-fixed-story-meaning-slot dp-story-reveal"
+              custom={{ ...motionState, delay: meaningDelay, y: 14, blur: 6 }}
+              variants={storyRevealVariants}
             >
-              <motion.p key={`meaning-${state.id}`} className="dp-fixed-story-meaning">
-                {state.meaning.split("\n").map((line) => (
+              <motion.p key={`meaning-${scene.id}`} className="dp-fixed-story-meaning">
+                {scene.meaning.split("\n").map((line) => (
                   <span key={line} className="dp-fixed-story-meaning-line">{line}</span>
                 ))}
               </motion.p>
             </motion.div>
           ) : null}
           <motion.div
-            className="dp-fixed-story-supporting-slot"
-            initial={proseMotion.initial}
-            animate={proseMotion.animate}
-            transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.66 }}
+            className="dp-fixed-story-supporting-slot dp-story-reveal"
+            custom={{ ...motionState, delay: supportingDelay, y: 14, blur: 6 }}
+            variants={storyRevealVariants}
           >
-            <motion.div key={`supporting-${state.id}`} className="dp-fixed-story-supporting">
-              {state.supporting.map((line, lineIndex) => (
+            <motion.div key={`supporting-${scene.id}`} className="dp-fixed-story-supporting">
+              {scene.supporting.map((line, lineIndex) => (
                 <motion.p
                   key={line}
-                  initial={proseMotion.initial}
-                  animate={proseMotion.animate}
-                  transition={{ ...proseTransition, delay: reduceMotion ? 0 : 0.76 + lineIndex * 0.08 }}
+                  custom={{ ...motionState, delay: supportingDelay + lineIndex * 0.08, y: 10, blur: 5 }}
+                  variants={storySegmentVariants}
                 >
                   {line}
                 </motion.p>
               ))}
             </motion.div>
           </motion.div>
-        </div>
+          <motion.div
+            className="dp-story-scene-controls dp-story-reveal"
+            aria-label="Story controls"
+            custom={{ ...motionState, delay: controlsDelay, y: 10, blur: 4 }}
+            variants={storyRevealVariants}
+          >
+            <button type="button" onClick={() => onStep(-1)} disabled={activeIndex === 0} aria-label="Previous story scene">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <div className="dp-story-scene-dots" aria-label="Story scenes">
+              {storyStates.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={index === activeIndex ? "is-active" : ""}
+                  aria-label={`Show ${item.navLabel}`}
+                  aria-current={index === activeIndex ? "step" : undefined}
+                  onClick={() => onActivate(index)}
+                />
+              ))}
+            </div>
+            <button type="button" onClick={() => onStep(1)} disabled={activeIndex === storyStates.length - 1} aria-label="Next story scene">
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </motion.div>
+        </motion.div>
 
       </div>
+    </motion.section>
+  );
+}
+
+function SplashStoryHeader({
+  residentMapHref,
+  partnerMapHref,
+  storyMenuOpen,
+  openNavMenu,
+  onLaunchMap,
+  onOpenSearch,
+  onToggleMobileMenu,
+  onToggleNavMenu,
+}) {
+  return (
+    <div className="dp-product-shell-topbar dp-splash-story-header">
+      <div className="dp-story-header-inner">
+        <Link
+          to={residentMapHref}
+          className="dp-product-shell-brand dp-story-app-brand"
+          aria-label="Downtown Perks app"
+          onClick={onLaunchMap}
+        >
+          <MapPin className="dp-story-brand-icon" aria-hidden="true" />
+          <span>Downtown Perks</span>
+        </Link>
+
+        <nav className="dp-product-shell-nav-rail dp-story-desktop-nav" aria-label="Downtown Perks navigation">
+          <Link className="dp-story-nav-link is-active" to={residentMapHref} onClick={onLaunchMap}>
+            Resident Map
+          </Link>
+          <Link className="dp-story-nav-link" to={partnerMapHref} onClick={onLaunchMap}>
+            Partner Map
+          </Link>
+
+          <div className="dp-story-nav-menu-wrap">
+            <button
+              type="button"
+              className={`dp-story-nav-menu-trigger ${openNavMenu === "residents" ? "is-active" : ""}`}
+              aria-expanded={openNavMenu === "residents"}
+              aria-controls="residents-navigation"
+              onClick={() => onToggleNavMenu("residents")}
+            >
+              Residents
+              <ChevronDown aria-hidden="true" />
+            </button>
+            {openNavMenu === "residents" && (
+              <div id="residents-navigation" className="dp-story-nav-menu-panel">
+                {residentNavLinks.map((link) => (
+                  <Link key={link.to} to={link.to} onClick={onLaunchMap}>
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="dp-story-nav-menu-wrap">
+            <button
+              type="button"
+              className={`dp-story-nav-menu-trigger ${openNavMenu === "partners" ? "is-active" : ""}`}
+              aria-expanded={openNavMenu === "partners"}
+              aria-controls="partners-navigation"
+              onClick={() => onToggleNavMenu("partners")}
+            >
+              Partners
+              <ChevronDown aria-hidden="true" />
+            </button>
+            {openNavMenu === "partners" && (
+              <div id="partners-navigation" className="dp-story-nav-menu-panel">
+                {partnerNavLinks.map((link) => (
+                  <Link key={link.to} to={link.to} onClick={onLaunchMap}>
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </nav>
+
+        <div className="dp-story-mobile-actions">
+          <button
+            type="button"
+            className="dp-product-shell-menu-button dp-story-top-search"
+            aria-label="Search Downtown Perks"
+            onClick={onOpenSearch}
+          >
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="dp-product-shell-menu-button"
+            aria-label={storyMenuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={storyMenuOpen}
+            aria-controls="dp-story-navigation-menu"
+            onClick={onToggleMobileMenu}
+          >
+            {storyMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
+          </button>
+        </div>
+
+        {storyMenuOpen && (
+          <nav id="dp-story-navigation-menu" className="dp-product-shell-menu" aria-label="Downtown Perks navigation">
+            <div className="dp-story-mobile-menu-group">
+              <p>Residents</p>
+              {residentNavLinks.map((link) => (
+                <Link key={link.to} to={link.to} onClick={onLaunchMap}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+            <div className="dp-story-mobile-menu-group">
+              <p>Partners</p>
+              {partnerNavLinks.map((link) => (
+                <Link key={link.to} to={link.to} onClick={onLaunchMap}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SplashStoryFooter({ isLast, residentMapHref, onLaunchMap }) {
+  return (
+    <div className="dp-fixed-story-footer dp-splash-story-footer">
+      <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">
+        <Link className="dp-button dp-button-primary dp-button-wide" to={residentMapHref} onClick={onLaunchMap}>
+          Open the Map
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function SplashStoryShell({ children }) {
+  return (
+    <motion.section
+      className="dp-fixed-story-shell dp-splash-story-shell"
+      aria-label="Downtown Perks story"
+      initial="hidden"
+      animate="visible"
+      variants={splashStoryShellVariants}
+    >
+      {children}
     </motion.section>
   );
 }
@@ -467,131 +676,27 @@ export default function SplashPage({
       )}
 
       {!showIntro && (
-        <section className="dp-fixed-story-shell" aria-label="Downtown Perks story">
-          <div className="dp-product-shell-topbar">
-            <div className="dp-story-header-inner">
-              <Link
-                to={residentMapHref}
-                className="dp-product-shell-brand dp-story-app-brand"
-                aria-label="Downtown Perks app"
-                onClick={markMapLaunchReady}
-              >
-                <MapPin className="dp-story-brand-icon" aria-hidden="true" />
-                <span>Downtown Perks</span>
-              </Link>
-
-              <nav className="dp-product-shell-nav-rail dp-story-desktop-nav" aria-label="Downtown Perks navigation">
-                <Link className="dp-story-nav-link is-active" to={residentMapHref} onClick={markMapLaunchReady}>
-                  Resident Map
-                </Link>
-                <Link className="dp-story-nav-link" to={partnerMapHref} onClick={markMapLaunchReady}>
-                  Partner Map
-                </Link>
-
-                <div className="dp-story-nav-menu-wrap">
-                  <button
-                    type="button"
-                    className={`dp-story-nav-menu-trigger ${openNavMenu === "residents" ? "is-active" : ""}`}
-                    aria-expanded={openNavMenu === "residents"}
-                    aria-controls="residents-navigation"
-                    onClick={() => toggleNavMenu("residents")}
-                  >
-                    Residents
-                    <ChevronDown aria-hidden="true" />
-                  </button>
-                  {openNavMenu === "residents" && (
-                    <div id="residents-navigation" className="dp-story-nav-menu-panel">
-                      {residentNavLinks.map((link) => (
-                        <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
-                          {link.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="dp-story-nav-menu-wrap">
-                  <button
-                    type="button"
-                    className={`dp-story-nav-menu-trigger ${openNavMenu === "partners" ? "is-active" : ""}`}
-                    aria-expanded={openNavMenu === "partners"}
-                    aria-controls="partners-navigation"
-                    onClick={() => toggleNavMenu("partners")}
-                  >
-                    Partners
-                    <ChevronDown aria-hidden="true" />
-                  </button>
-                  {openNavMenu === "partners" && (
-                    <div id="partners-navigation" className="dp-story-nav-menu-panel">
-                      {partnerNavLinks.map((link) => (
-                        <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
-                          {link.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </nav>
-
-              <div className="dp-story-mobile-actions">
-                <button
-                  type="button"
-                  className="dp-product-shell-menu-button"
-                  aria-label={storyMenuOpen ? "Close navigation" : "Open navigation"}
-                  aria-expanded={storyMenuOpen}
-                  aria-controls="dp-story-navigation-menu"
-                  onClick={() => {
-                    setOpenNavMenu(null);
-                    setStoryMenuOpen((open) => !open);
-                  }}
-                >
-                  {storyMenuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
-                </button>
-              </div>
-
-              {storyMenuOpen && (
-                <nav id="dp-story-navigation-menu" className="dp-product-shell-menu" aria-label="Downtown Perks navigation">
-                  <div className="dp-story-mobile-menu-group">
-                    <p>Residents</p>
-                    {residentNavLinks.map((link) => (
-                      <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                  <div className="dp-story-mobile-menu-group">
-                    <p>Partners</p>
-                    {partnerNavLinks.map((link) => (
-                      <Link key={link.to} to={link.to} onClick={markMapLaunchReady}>
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                </nav>
-              )}
-            </div>
-          </div>
+        <SplashStoryShell>
+          <SplashStoryHeader
+            residentMapHref={residentMapHref}
+            partnerMapHref={partnerMapHref}
+            storyMenuOpen={storyMenuOpen}
+            openNavMenu={openNavMenu}
+            onLaunchMap={markMapLaunchReady}
+            onOpenSearch={openSearch}
+            onToggleNavMenu={toggleNavMenu}
+            onToggleMobileMenu={() => {
+              setOpenNavMenu(null);
+              setStoryMenuOpen((open) => !open);
+            }}
+          />
 
           <AnimatePresence mode="wait">
-            <FixedStoryStage state={state} />
+            <SplashStoryScene scene={state} activeIndex={active} onStep={go} onActivate={activate} />
           </AnimatePresence>
 
-          <div className="dp-fixed-story-footer">
-            <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">
-              <button
-                type="button"
-                className="dp-global-search-icon-button dp-story-footer-search"
-                aria-label="Search Downtown Perks"
-                onClick={openSearch}
-              >
-                <Search className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <Link className="dp-button dp-button-primary dp-button-wide" to={residentMapHref} onClick={markMapLaunchReady}>
-                Open the Map
-              </Link>
-            </div>
-          </div>
-        </section>
+          <SplashStoryFooter isLast={isLast} residentMapHref={residentMapHref} onLaunchMap={markMapLaunchReady} />
+        </SplashStoryShell>
       )}
     </main>
   );

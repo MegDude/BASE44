@@ -164,7 +164,7 @@ export function getHappyHourPlaces() {
         happyHourImageStatus: venue.images.imageStatus,
         happyHour: {
           days: first.days,
-          time: first.startTime && first.endTime ? `${first.startTime}-${first.endTime}` : "Confirm time",
+          time: first.startTime && first.endTime ? `${first.startTime}-${first.endTime}` : "",
           offer: first.specials,
           details: venue.description,
           redemption: "Save it for later, get directions, or check what else is nearby.",

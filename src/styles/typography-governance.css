@@ -17,6 +17,833 @@
   --dp-weight-label: 560;
 }
 
+/* Mobile map product system: one bright, aligned language for pins, drawers, tabs, cards, and partner views. */
+html body #root#root .dp-map-page.dp-map-page {
+  --dp-map-surface: #ffffff;
+  --dp-map-surface-soft: #ffffff;
+  --dp-map-text: #0B1F33;
+  --dp-map-muted: #5F6E7C;
+  --dp-map-faint: #7A8794;
+  --dp-map-line: rgba(11, 31, 51, 0.10);
+  --dp-map-line-soft: rgba(11, 31, 51, 0.07);
+  --dp-map-accent: #C8A96A;
+  --dp-map-accent-soft: rgba(200, 169, 106, 0.14);
+  --dp-map-radius: 12px;
+  --dp-map-card-radius: 10px;
+  --dp-map-gutter: 16px;
+  --dp-map-shadow: 0 16px 42px rgba(11, 31, 51, 0.12);
+  background: #ffffff !important;
+  color: var(--dp-map-text) !important;
+  font-family: var(--dp-font-sans) !important;
+  letter-spacing: 0 !important;
+  overflow-x: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page *,
+html body #root#root .dp-map-page.dp-map-page *::before,
+html body #root#root .dp-map-page.dp-map-page *::after {
+  box-sizing: border-box !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, h5, h6, p, span, small, strong, em, label, button, a, input, textarea, select, li, dd, dt) {
+  font-family: var(--dp-font-sans) !important;
+  letter-spacing: 0 !important;
+  text-align: left;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, .dp-tab-title, .dp-map-panel-title, .dp-destination-title, .dp-panel-title, .dp-card-credential-title) {
+  color: var(--dp-map-text) !important;
+  -webkit-text-fill-color: var(--dp-map-text) !important;
+  font-weight: var(--dp-weight-heading) !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(p, li, dd, dt, .dp-map-panel-body-copy, .dp-map-panel-subtitle, .dp-destination-section-copy, .dp-destination-section-note, .dp-tab-subtitle, .dp-tab-row small, .dp-panel-row small, .dp-partner-feed-row small) {
+  color: var(--dp-map-muted) !important;
+  -webkit-text-fill-color: var(--dp-map-muted) !important;
+  font-size: 13px !important;
+  font-weight: var(--dp-weight-body) !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-eyebrow, .dp-map-panel-section-label, .dp-tab-eyebrow, .dp-destination-section-kicker, .dp-panel-header-title, .dp-card-credential-kicker, .dp-tab-signal, small) {
+  color: var(--dp-map-faint) !important;
+  -webkit-text-fill-color: var(--dp-map-faint) !important;
+  font-size: 10px !important;
+  font-weight: var(--dp-weight-label) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-destination-drawer,
+  .dp-detail-drawer,
+  .dp-pass-panel,
+  .dp-resident-card-sheet,
+  .dp-map-sheet,
+  .dp-search-intent-console,
+  .dp-product-shell-menu,
+  .leaflet-popup-content-wrapper
+) {
+  border: 1px solid var(--dp-map-line-soft) !important;
+  background: var(--dp-map-surface) !important;
+  background-color: var(--dp-map-surface) !important;
+  background-image: none !important;
+  color: var(--dp-map-text) !important;
+  box-shadow: var(--dp-map-shadow) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-tabs-content,
+  .dp-map-drawer-content,
+  .dp-drawer-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-detail-content,
+  .dp-partner-detail-content,
+  .dp-destination-content,
+  .dp-partner-intelligence-drawer,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body
+) {
+  background: #ffffff !important;
+  color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-partner-feed-row,
+  .dp-campaign-panel,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-card-credential,
+  .dp-entity-discovery-card,
+  .dp-partner-opportunity-item,
+  .dp-campaign-activation-row,
+  .dp-resident-perk-card,
+  .dp-local-service-chip,
+  .dp-map-native-campaign-detail,
+  .dp-partner-ask-module,
+  .dp-property-detail-section,
+  .dp-property-map-detail,
+  .dp-destination-section
+) {
+  border: 1px solid var(--dp-map-line-soft) !important;
+  border-radius: var(--dp-map-card-radius) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-partner-feed-row,
+  .dp-entity-discovery-card,
+  .dp-partner-opportunity-item,
+  .dp-local-service-chip
+) {
+  display: grid !important;
+  gap: 5px !important;
+  width: 100% !important;
+  padding: 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-pass-action,
+  .dp-entity-action,
+  .dp-map-sheet-action-footer button,
+  .dp-map-sheet-action-footer a,
+  .dp-search-intent-console button,
+  .dp-search-segment,
+  .dp-console-chip
+) {
+  min-height: 38px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: var(--dp-weight-medium) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-primary-action, .dp-panel-action.dp-primary-action, .dp-tab-primary-action, .dp-entity-action.is-primary, button[aria-pressed="true"], .is-active) {
+  border-color: rgba(200, 169, 106, 0.34) !important;
+  background: var(--dp-map-accent-soft) !important;
+  color: var(--dp-map-text) !important;
+  -webkit-text-fill-color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+  width: calc(100% - 20px) !important;
+  min-width: 0 !important;
+  max-width: 430px !important;
+  margin: 0 auto 8px !important;
+  padding: 6px !important;
+  border: 1px solid var(--dp-map-line-soft) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 12px 34px rgba(11, 31, 51, 0.13) !important;
+  backdrop-filter: blur(14px) saturate(1.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav button {
+  position: relative !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: var(--dp-map-faint) !important;
+  -webkit-text-fill-color: var(--dp-map-faint) !important;
+  font-size: 10.5px !important;
+  font-weight: var(--dp-weight-medium) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav button[aria-pressed="true"] {
+  background: var(--dp-map-accent-soft) !important;
+  color: var(--dp-map-text) !important;
+  -webkit-text-fill-color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-live-pin {
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  background: #ffffff !important;
+  color: var(--dp-map-text) !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.16) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-live-pin:is(.is-selected, .is-active),
+html body #root#root .dp-map-page.dp-map-page .dp-map-pin-badge.is-selected {
+  border-color: rgba(200, 169, 106, 0.62) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, 0.18), 0 10px 24px rgba(11, 31, 51, 0.16) !important;
+}
+
+@media (max-width: 759px) {
+  html body #root#root .dp-map-page.dp-map-page {
+    --dp-map-gutter: 14px;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-map-search-anchor, .dp-panel-shell, .dp-map-drawer-shell, .dp-destination-drawer, .dp-detail-drawer) {
+    max-width: min(100%, 430px) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-shell, .dp-map-drawer-shell, .dp-destination-drawer, .dp-detail-drawer) {
+    border-radius: 18px 18px 0 0 !important;
+    padding: 12px var(--dp-map-gutter) calc(78px + env(safe-area-inset-bottom)) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(
+    .dp-panel-header,
+    .dp-map-panel-header,
+    .dp-map-sheet-toolbar,
+    .dp-destination-header,
+    .dp-tabs-header
+  ) {
+    padding-inline: 0 !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(
+    .dp-tabs-content,
+    .dp-map-drawer-content,
+    .dp-drawer-scroll,
+    .dp-map-panel-scroll,
+    .dp-destination-scroll,
+    .dp-detail-content,
+    .dp-partner-detail-content,
+    .dp-destination-content,
+    .dp-map-sheet-scroll,
+    .dp-pass-panel-body
+  ) {
+    padding-inline: 0 !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-tab-title, .dp-map-panel-title, .dp-destination-title) {
+    max-width: 100% !important;
+    font-size: 18px !important;
+    line-height: 1.18 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-section-title, .dp-destination-section-title, .dp-property-detail-header h3) {
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(
+    .dp-panel-row,
+    .dp-tab-row,
+    .dp-partner-feed-row,
+    .dp-campaign-panel,
+    .dp-map-panel-section,
+    .dp-map-panel-note,
+    .dp-card-credential,
+    .dp-entity-discovery-card,
+    .dp-partner-opportunity-item,
+    .dp-destination-section
+  ) {
+    margin-inline: 0 !important;
+  }
+}
+
+/* Last-loaded drawer correction: nearby/perk rails are horizontal scrollers, detail bodies scroll to the bottom. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll
+) {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding-bottom: calc(144px + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail,
+  .dp-property-nearby-rows
+) {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: auto !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 2px 2px 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail,
+  .dp-property-nearby-rows
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail > *,
+  .dp-related-rail > *,
+  .dp-inkind-related-rail > *,
+  .dp-daa-next-rail > *,
+  .dp-property-nearby-rows > *
+) {
+  flex: 0 0 clamp(168px, 58vw, 228px) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: clamp(168px, 58vw, 228px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-card,
+  .dp-related-place,
+  .dp-inkind-related-card,
+  .dp-daa-next-card,
+  .dp-property-nearby-row
+) :is(strong, em, span, p) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section h3,
+  .dp-info-section h3,
+  .dp-entity-section h3,
+  .dp-perk-module-title
+) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+@media (min-width: 375px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-drawer-panel,
+    aside.dp-map-panel.dp-detail-drawer
+  ) :is(
+    .dp-destination-section h3,
+    .dp-info-section h3,
+    .dp-entity-section h3,
+    .dp-perk-module-title
+  ) {
+    white-space: nowrap !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll {
+  padding: 14px var(--dp-panel-x) calc(144px + env(safe-area-inset-bottom)) !important;
+  padding-bottom: calc(144px + env(safe-area-inset-bottom)) !important;
+  overflow-y: auto !important;
+}
+
+/* Absolute final detail panel polish: readable spacing, white surfaces, and horizontal nearby rails. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) {
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-content,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-partner-detail-content
+) {
+  gap: 16px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-map-native-campaign-detail,
+  .dp-resident-perk-card,
+  .dp-property-detail-section,
+  .dp-property-map-detail,
+  .dp-entity-summary,
+  .dp-entity-panel-header,
+  .dp-partner-drawer-actions,
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-contact-continuation,
+  .dp-perk-module,
+  .dp-info-section,
+  .dp-entity-section
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section + .dp-destination-section,
+  .dp-map-panel-section + .dp-map-panel-section,
+  .dp-destination-section + .dp-map-panel-section,
+  .dp-map-panel-section + .dp-destination-section
+) {
+  margin-top: 4px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  .dp-map-panel-title,
+  .dp-destination-title,
+  .dp-entity-title,
+  .dp-detail-title,
+  .dp-map-panel-section-title,
+  .dp-destination-section-title,
+  .dp-destination-section h3,
+  .dp-info-section h3,
+  .dp-entity-section h3,
+  .dp-perk-module-title
+) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  color: var(--dp-panel-text, #0B1F33) !important;
+  font-family: var(--dp-body-font, inherit) !important;
+  font-size: clamp(1rem, 4.2vw, 1.22rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  text-wrap: balance !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+@media (min-width: 375px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-drawer-panel,
+    aside.dp-map-panel.dp-detail-drawer
+  ) :is(
+    .dp-destination-section h3,
+    .dp-info-section h3,
+    .dp-entity-section h3,
+    .dp-perk-module-title
+  ) {
+    white-space: nowrap !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section-copy,
+  .dp-destination-section-note,
+  .dp-destination-section-support,
+  .dp-why-people-go,
+  .dp-map-panel-body-copy,
+  .dp-panel-subtitle,
+  .dp-map-panel-subtitle,
+  .dp-drawer-meta-line,
+  .dp-entity-context,
+  .dp-entity-subtitle,
+  p,
+  li,
+  dd
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: clamp(0.9rem, 3.6vw, 0.98rem) !important;
+  line-height: 1.48 !important;
+  letter-spacing: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-media,
+  .dp-destination-hero-media,
+  .dp-polished-panel-hero,
+  .dp-panel-detail-hero
+) {
+  margin-bottom: 4px !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-section,
+  .dp-related-section
+) {
+  gap: 10px !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail,
+  .dp-property-nearby-rows
+) {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: column !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 2px 2px 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: #ffffff !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail,
+  .dp-property-nearby-rows
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-card,
+  .dp-related-place,
+  .dp-inkind-related-card,
+  .dp-daa-next-card,
+  .dp-property-nearby-row
+) {
+  flex: 0 0 clamp(168px, 58vw, 228px) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: start !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: clamp(168px, 58vw, 228px) !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  scroll-snap-align: start !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-media,
+  .dp-related-place > img,
+  .dp-inkind-related-card img,
+  .dp-daa-next-card img
+) {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 1.45 / 1 !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-media img,
+  .dp-related-place > img,
+  .dp-inkind-related-card img,
+  .dp-daa-next-card img
+) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-copy,
+  .dp-related-place span,
+  .dp-inkind-related-card span,
+  .dp-daa-next-card span
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 3px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 1px !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-copy strong,
+  .dp-related-place strong,
+  .dp-inkind-related-card strong,
+  .dp-daa-next-card strong
+) {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  color: #0B1F33 !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-copy em,
+  .dp-related-place em,
+  .dp-inkind-related-card em,
+  .dp-daa-next-card em
+) {
+  display: -webkit-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  color: rgba(11, 31, 51, 0.6) !important;
+  font-size: 0.76rem !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1.28 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+@media (max-width: 374px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-drawer-panel,
+    aside.dp-map-panel.dp-detail-drawer
+  ) :is(
+    .dp-nearby-image-card,
+    .dp-related-place,
+    .dp-inkind-related-card,
+    .dp-daa-next-card,
+    .dp-property-nearby-row
+  ) {
+    flex-basis: 174px !important;
+    max-width: 174px !important;
+  }
+}
+
 /* Partner pages: global de-rounding, intake polish, and brand matrices */
 html body #root#root .dp-partner-page :is(button, a, input, textarea, select, [role="button"], [role="tab"]) {
   border-radius: 0 !important;
@@ -5522,5 +6349,3029 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list em,
   html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dd {
     text-align: left !important;
+  }
+}
+
+/* Final splash story lock: center the search/map pair by the pair itself, with tight spacing. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
+  transform: translateX(-50%) !important;
+  display: inline-grid !important;
+  grid-template-columns: 38px max-content !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  gap: 4px !important;
+  width: max-content !important;
+  min-width: 0 !important;
+  max-width: calc(100vw - 28px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions .dp-story-footer-search.dp-story-footer-search,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions a.dp-button.dp-button-wide {
+  height: 38px !important;
+  min-height: 38px !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions .dp-story-footer-search.dp-story-footer-search {
+  width: 38px !important;
+  min-width: 38px !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions a.dp-button.dp-button-wide {
+  width: auto !important;
+  min-width: 148px !important;
+  padding: 0 16px !important;
+  white-space: nowrap !important;
+}
+
+/* Final splash headline weight lock. */
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-opening-copy h1 span,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline span,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-headline.dp-fixed-story-headline :is(.dp-fixed-story-line, .dp-fixed-story-headline-line, .dp-fixed-story-headline-row, .dp-fixed-story-headline-segment) {
+  font-weight: 800 !important;
+  font-synthesis-weight: auto !important;
+  font-variation-settings: "wght" 800 !important;
+}
+
+/* Final local service rail lock: service names and categories wrap inside every chip. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-rail.dp-local-service-rail {
+  align-items: stretch !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip.dp-local-service-chip {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 64px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip.dp-local-service-chip strong,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip.dp-local-service-chip span {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  hyphens: auto !important;
+}
+
+/* Final Legends real-estate directory lock: copy stays listing-focused and the list never clips. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet {
+  position: fixed !important;
+  inset-inline: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(100vw, 520px) !important;
+  max-width: min(100vw, 520px) !important;
+  height: min(86dvh, calc(100dvh - 72px)) !important;
+  max-height: min(86dvh, calc(100dvh - 72px)) !important;
+  min-height: min(560px, calc(100dvh - 88px)) !important;
+  margin-inline: auto !important;
+  padding: 8px 14px calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-handle,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-toolbar,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-header {
+  flex: 0 0 auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-header {
+  gap: 6px !important;
+  padding: 0 2px 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-title {
+  max-width: 100% !important;
+  font-size: clamp(20px, 5.8vw, 26px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.01em !important;
+  white-space: normal !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-subtitle {
+  max-width: 100% !important;
+  margin-top: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.42 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-count {
+  margin-top: 2px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-map-directory-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  display: grid !important;
+  align-content: start !important;
+  gap: 0 !important;
+  padding: 4px 2px calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-legends-result-row {
+  grid-template-columns: 32px minmax(0, 1fr) auto !important;
+  min-height: 72px !important;
+  padding: 10px 2px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet :is(.dp-legends-result-title, .dp-legends-result-address, .dp-legends-result-details) {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-panel-bottom-spacer {
+  height: 72px !important;
+  min-height: 72px !important;
+}
+
+/* Final Legends logo lock: show the supplied rounded-square mark without floating lines. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin:has(.dp-live-pin--legends-logo),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin:has(.dp-live-pin--legends-logo),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin .dp-live-pin.dp-live-pin--legends-logo {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  filter: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin:has(.dp-live-pin--legends-logo),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin:has(.dp-live-pin--legends-logo) {
+  margin-left: -18px !important;
+  margin-top: -18px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo::before,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo::after,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__halo,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core::before,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core::after,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin-badge:has(.dp-live-pin__legends-logo)::before,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin-badge:has(.dp-live-pin__legends-logo)::after {
+  display: none !important;
+  content: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin-badge:has(.dp-live-pin__legends-logo) {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-live-pin.dp-live-pin--legends-logo :is(.dp-pin-logo, .dp-live-pin__legends-logo),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-pin-logo.dp-live-pin__legends-logo, img[src*="legends-logo"]) {
+  display: block !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-legends-directory-sheet.dp-legends-directory-sheet .dp-legends-result-row {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
+/* Final responsive visual story refactor: mobile-first bounded stage with live map motion. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active),
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 249, 250, 0.98)),
+    radial-gradient(circle at 50% 12%, rgba(200, 169, 106, 0.14), transparent 34%) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+  --dp-story-header-h: 52px;
+  --dp-story-footer-h: 58px;
+  --dp-story-side-pad: 16px;
+  display: grid !important;
+  grid-template-rows: var(--dp-story-header-h) minmax(0, 1fr) var(--dp-story-footer-h) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+  display: grid !important;
+  align-items: stretch !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  padding: 2px var(--dp-story-side-pad) 2px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  display: grid !important;
+  grid-template-rows: minmax(132px, 0.42fr) minmax(0, 1fr) !important;
+  gap: 6px !important;
+  width: min(100%, 980px) !important;
+  max-width: 980px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual {
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map {
+  position: relative !important;
+  width: min(100%, 360px) !important;
+  height: 100% !important;
+  min-height: 130px !important;
+  max-height: 190px !important;
+  margin-inline: auto !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(135deg, rgba(11, 31, 51, 0.04), rgba(200, 169, 106, 0.12)),
+    #ffffff !important;
+  box-shadow: 0 18px 42px rgba(11, 31, 51, 0.09) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-grid {
+  position: absolute !important;
+  inset: 0 !important;
+  opacity: 0.52 !important;
+  background-image:
+    linear-gradient(rgba(11, 31, 51, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 31, 51, 0.055) 1px, transparent 1px) !important;
+  background-size: 38px 38px !important;
+  transform: rotate(-6deg) scale(1.12) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-route-line {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  color: rgba(184, 150, 62, 0.72) !important;
+  filter: drop-shadow(0 8px 18px rgba(184, 150, 62, 0.18)) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 82px !important;
+  height: 82px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(200, 169, 106, 0.42) !important;
+  border-radius: 999px !important;
+  background: #0b1f33 !important;
+  color: #ffffff !important;
+  text-align: center !important;
+  transform: translate(-50%, -50%) !important;
+  box-shadow: 0 18px 36px rgba(11, 31, 51, 0.22) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core span {
+  color: #c8a96a !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.08em !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core strong {
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 720 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin {
+  position: absolute !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  max-width: 132px !important;
+  padding: 6px 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #0b1f33 !important;
+  box-shadow: 0 10px 24px rgba(11, 31, 51, 0.10) !important;
+  font-size: 10.5px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin i {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 999px !important;
+  background: #c8a96a !important;
+  box-shadow: 0 0 0 5px rgba(200, 169, 106, 0.14) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin--1 {
+  left: 16px !important;
+  top: 18px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin--2 {
+  right: 14px !important;
+  top: 44px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin--3 {
+  left: 22px !important;
+  bottom: 24px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin--4 {
+  right: 18px !important;
+  bottom: 20px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  display: grid !important;
+  align-content: center !important;
+  gap: 7px !important;
+  width: min(100%, 600px) !important;
+  max-width: 600px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.12em !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  width: 100% !important;
+  max-width: 100% !important;
+  font-size: 40px !important;
+  line-height: 0.94 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  justify-content: center !important;
+  gap: 0.18em !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline :is(.dp-fixed-story-headline-segment, .dp-fixed-story-line, .dp-fixed-story-headline-line) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  max-width: 34rem !important;
+  margin-inline: auto !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 13px !important;
+  font-weight: 480 !important;
+  line-height: 1.3 !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, max-content) 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-top: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls button:disabled {
+  opacity: 0.34 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots button {
+  width: 7px !important;
+  min-width: 7px !important;
+  height: 7px !important;
+  min-height: 7px !important;
+  border: 0 !important;
+  background: rgba(11, 31, 51, 0.18) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots button.is-active {
+  width: 20px !important;
+  min-width: 20px !important;
+  background: #c8a96a !important;
+}
+
+@media (min-width: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 28px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 62px !important;
+    text-align: left !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    text-align: left !important;
+    margin-inline: 0 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls {
+    justify-content: start !important;
+  }
+}
+
+@media (max-height: 720px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    grid-template-rows: minmax(112px, 0.34fr) minmax(0, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map {
+    min-height: 108px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 35px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 12px !important;
+    line-height: 1.28 !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core {
+    animation: dp-story-pulse 3.2s ease-in-out infinite !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin {
+    animation: dp-story-float 4.4s ease-in-out infinite !important;
+  }
+}
+
+@keyframes dp-story-pulse {
+  0%, 100% { box-shadow: 0 18px 36px rgba(11, 31, 51, 0.22), 0 0 0 0 rgba(200, 169, 106, 0.16); }
+  50% { box-shadow: 0 18px 36px rgba(11, 31, 51, 0.20), 0 0 0 12px rgba(200, 169, 106, 0); }
+}
+
+@keyframes dp-story-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+
+/* Absolute final splash story visibility lock: approved copy must never clip. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+  --dp-story-header-h: 50px !important;
+  --dp-story-footer-h: 56px !important;
+  --dp-story-side-pad: 14px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+  height: var(--dp-story-header-h) !important;
+  min-height: var(--dp-story-header-h) !important;
+  padding-inline: var(--dp-story-side-pad) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-product-shell-menu-button,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-story-top-search.dp-story-top-search {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-top-search.dp-story-top-search {
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 0 var(--dp-story-side-pad) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  display: grid !important;
+  grid-template-rows: 118px minmax(0, 1fr) !important;
+  gap: 4px !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  align-items: stretch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual.dp-story-visual {
+  min-height: 0 !important;
+  height: 118px !important;
+  max-height: 118px !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map.dp-story-visual-map {
+  min-height: 112px !important;
+  height: 112px !important;
+  max-height: 112px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core {
+  width: 70px !important;
+  height: 70px !important;
+  padding: 8px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core strong {
+  font-size: 10px !important;
+  line-height: 1.05 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin.dp-story-visual-pin {
+  max-width: 112px !important;
+  padding: 5px 7px !important;
+  font-size: 9.5px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
+  .dp-fixed-story-copy,
+  .dp-fixed-story-kicker-slot,
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot,
+  .dp-fixed-story-supporting,
+  .dp-story-scene-controls
+) {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  align-content: center !important;
+  gap: 6px !important;
+  padding: 0 0 2px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  font-size: clamp(26px, 9.2vw, 38px) !important;
+  line-height: 0.98 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 0.16em !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: clamp(11px, 3.15vw, 13px) !important;
+  line-height: 1.24 !important;
+  margin: 0 auto !important;
+  max-width: 34rem !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+  margin-top: 0 !important;
+  grid-template-columns: 30px minmax(0, max-content) 30px !important;
+  gap: 7px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+  min-height: var(--dp-story-footer-h) !important;
+  height: var(--dp-story-footer-h) !important;
+  padding: 8px var(--dp-story-side-pad) calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions {
+  display: inline-flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  width: max-content !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions .dp-story-footer-search.dp-story-footer-search {
+  display: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions a.dp-button.dp-button-wide {
+  min-width: 164px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 18px !important;
+}
+
+@media (max-height: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    grid-template-rows: 86px minmax(0, 1fr) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual.dp-story-visual {
+    height: 86px !important;
+    max-height: 86px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map.dp-story-visual-map {
+    min-height: 82px !important;
+    height: 82px !important;
+    max-height: 82px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin.dp-story-visual-pin {
+    display: none !important;
+  }
+}
+
+@media (min-width: 760px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 28px !important;
+    align-items: center !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual.dp-story-visual,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map.dp-story-visual-map {
+    height: min(48dvh, 340px) !important;
+    max-height: 340px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: clamp(46px, 5.4vw, 68px) !important;
+  }
+}
+
+/* Absolute final splash header action lock: search and hamburger are adjacent, never overlaid. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-header-inner.dp-story-header-inner {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  justify-content: stretch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand {
+  position: static !important;
+  grid-column: 1 !important;
+  justify-self: start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  width: max-content !important;
+  max-width: calc(100vw - 112px) !important;
+  height: 34px !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand .dp-story-brand-icon {
+  display: inline-flex !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand span {
+  display: inline-block !important;
+  min-width: 0 !important;
+  max-width: calc(100vw - 142px) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions {
+  position: static !important;
+  grid-column: 2 !important;
+  justify-self: end !important;
+  inset: auto !important;
+  transform: none !important;
+  display: grid !important;
+  grid-template-columns: 34px 34px !important;
+  align-items: center !important;
+  justify-content: end !important;
+  justify-items: center !important;
+  gap: 8px !important;
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
+  height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-story-top-search.dp-story-top-search,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-product-shell-menu-button.dp-product-shell-menu-button {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  max-width: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-story-top-search.dp-story-top-search {
+  grid-column: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-product-shell-menu-button.dp-product-shell-menu-button:not(.dp-story-top-search) {
+  grid-column: 2 !important;
+}
+
+/* Absolute final story rescue: keep every approved-copy scene visible on mobile. */
+@media (max-width: 759px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active),
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    --dp-story-header-h: 52px !important;
+    --dp-story-footer-h: 54px !important;
+    --dp-story-side-pad: 14px !important;
+    grid-template-rows: var(--dp-story-header-h) minmax(0, 1fr) var(--dp-story-footer-h) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+    display: block !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 var(--dp-story-side-pad) 4px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    min-height: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 4px 0 8px !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual.dp-story-visual {
+    flex: 0 0 auto !important;
+    display: block !important;
+    width: 100% !important;
+    height: 86px !important;
+    min-height: 86px !important;
+    max-height: 86px !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map.dp-story-visual-map {
+    width: min(100%, 330px) !important;
+    height: 82px !important;
+    min-height: 82px !important;
+    max-height: 82px !important;
+    border-radius: 14px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin.dp-story-visual-pin {
+    display: none !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core {
+    width: 58px !important;
+    height: 58px !important;
+    padding: 6px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core strong {
+    font-size: 8.5px !important;
+    line-height: 1.05 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    flex: 0 0 auto !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    text-align: center !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
+    .dp-fixed-story-kicker-slot,
+    .dp-fixed-story-headline-slot,
+    .dp-fixed-story-meaning-slot,
+    .dp-fixed-story-supporting-slot,
+    .dp-fixed-story-supporting,
+    .dp-story-scene-controls
+  ) {
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+    margin: 0 0 5px !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 7px !important;
+    font-size: clamp(25px, 8.4vw, 34px) !important;
+    line-height: 1.02 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 0.14em !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline :is(.dp-fixed-story-headline-segment, .dp-fixed-story-line, .dp-fixed-story-headline-line) {
+    display: inline !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    width: 100% !important;
+    max-width: 36rem !important;
+    margin: 0 auto 6px !important;
+    font-size: clamp(10.5px, 3vw, 12.5px) !important;
+    line-height: 1.24 !important;
+    text-align: center !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, max-content) 28px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin: 2px auto 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+}
+
+/* Absolute final story spacing pass: less chrome, more room for approved scene copy. */
+@media (max-width: 759px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    --dp-story-header-h: 52px !important;
+    --dp-story-footer-h: 52px !important;
+    --dp-story-side-pad: 14px !important;
+    grid-template-rows: var(--dp-story-header-h) minmax(0, 1fr) var(--dp-story-footer-h) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+    padding-block: 0 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    justify-content: center !important;
+    gap: 8px !important;
+    padding-block: 4px 6px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual.dp-story-visual {
+    height: 82px !important;
+    min-height: 82px !important;
+    max-height: 82px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map.dp-story-visual-map {
+    height: 78px !important;
+    min-height: 78px !important;
+    max-height: 78px !important;
+    border-radius: 14px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core {
+    width: 56px !important;
+    height: 56px !important;
+    padding: 6px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core span {
+    font-size: 8px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core.dp-story-visual-core strong {
+    font-size: 8.5px !important;
+    line-height: 1.05 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    padding-block: 0 !important;
+    display: grid !important;
+    gap: 6px !important;
+    align-content: center !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+    margin: 0 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    margin: 0 !important;
+    font-size: clamp(24px, 7.8vw, 32px) !important;
+    line-height: 1.02 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    margin-bottom: 0 !important;
+    line-height: 1.26 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+    grid-template-columns: 28px minmax(0, max-content) 28px !important;
+    gap: 7px !important;
+    margin-top: 2px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    min-height: var(--dp-story-footer-h) !important;
+    height: var(--dp-story-footer-h) !important;
+    padding-block: 7px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions a.dp-button.dp-button-wide {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+}
+
+/* Absolute final splash header rail lock: brand, search, and menu stay on one line. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar {
+  display: flex !important;
+  align-items: center !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 14px !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-header-inner.dp-story-header-inner {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  gap: 10px !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand {
+  position: static !important;
+  display: inline-flex !important;
+  flex: 1 1 auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 86px) !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand .dp-story-brand-icon {
+  display: inline-block !important;
+  flex: 0 0 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-app-brand.dp-story-app-brand span {
+  display: inline-block !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions {
+  position: static !important;
+  display: inline-flex !important;
+  flex: 0 0 76px !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-story-top-search.dp-story-top-search,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-product-shell-menu-button.dp-product-shell-menu-button {
+  position: static !important;
+  display: inline-flex !important;
+  flex: 0 0 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  max-width: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+/* Final splash scene cleanup: remove visual spacer bands and let approved copy own the stage. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-map,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-grid,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-route-line,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin {
+  display: none !important;
+}
+
+@media (max-width: 759px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active),
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    max-height: none !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+    --dp-story-header-h: 52px !important;
+    --dp-story-footer-h: auto !important;
+    --dp-story-side-pad: 16px !important;
+    display: grid !important;
+    grid-template-rows: 52px minmax(0, 1fr) auto !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    padding: 8px var(--dp-story-side-pad) 10px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 430px !important;
+    min-height: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    display: grid !important;
+    grid-template-rows: auto auto auto auto auto !important;
+    align-content: center !important;
+    justify-items: center !important;
+    gap: 9px !important;
+    width: 100% !important;
+    max-width: 430px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    text-align: center !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
+    .dp-fixed-story-kicker-slot,
+    .dp-fixed-story-prelude-slot,
+    .dp-fixed-story-headline-slot,
+    .dp-fixed-story-meaning-slot,
+    .dp-fixed-story-supporting-slot,
+    .dp-fixed-story-supporting
+  ) {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+    margin: 0 !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    margin: 0 !important;
+    font-size: 30px !important;
+    line-height: 1.04 !important;
+    letter-spacing: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+    gap: 0.16em !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    width: 100% !important;
+    max-width: 36rem !important;
+    margin: 0 auto !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, max-content) 30px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    min-height: 30px !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 2px auto 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 52px !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 7px var(--dp-story-side-pad) 10px !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: min(100%, 260px) !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-story-final-ctas.dp-fixed-map-actions a.dp-button.dp-button-wide {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    margin: 0 !important;
+  }
+}
+
+/* Absolute final map product polish: this wins over older drawer/card/tab overrides. */
+html body #root#root .dp-map-page.dp-map-page {
+  --dp-map-surface: #ffffff;
+  --dp-map-text: #0B1F33;
+  --dp-map-muted: #5F6E7C;
+  --dp-map-faint: #7A8794;
+  --dp-map-line-soft: rgba(11, 31, 51, 0.07);
+  --dp-map-accent: #C8A96A;
+  --dp-map-accent-soft: rgba(200, 169, 106, 0.14);
+  --dp-map-card-radius: 10px;
+  --dp-map-gutter: 16px;
+  --dp-map-shadow: 0 16px 42px rgba(11, 31, 51, 0.12);
+  background: #ffffff !important;
+  color: var(--dp-map-text) !important;
+  font-family: var(--dp-font-sans) !important;
+  letter-spacing: 0 !important;
+  overflow-x: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, h5, h6, p, span, small, strong, em, label, button, a, input, textarea, select, li, dd, dt) {
+  font-family: var(--dp-font-sans) !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, .dp-tab-title, .dp-map-panel-title, .dp-destination-title, .dp-panel-title, .dp-card-credential-title) {
+  color: var(--dp-map-text) !important;
+  -webkit-text-fill-color: var(--dp-map-text) !important;
+  font-weight: var(--dp-weight-heading) !important;
+  line-height: 1.16 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(p, li, dd, dt, .dp-map-panel-body-copy, .dp-map-panel-subtitle, .dp-destination-section-copy, .dp-destination-section-note, .dp-tab-subtitle, .dp-tab-row small, .dp-panel-row small, .dp-partner-feed-row small) {
+  color: var(--dp-map-muted) !important;
+  -webkit-text-fill-color: var(--dp-map-muted) !important;
+  font-size: 13px !important;
+  font-weight: var(--dp-weight-body) !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-eyebrow, .dp-map-panel-section-label, .dp-tab-eyebrow, .dp-destination-section-kicker, .dp-panel-header-title, .dp-card-credential-kicker, .dp-tab-signal, small) {
+  color: var(--dp-map-faint) !important;
+  -webkit-text-fill-color: var(--dp-map-faint) !important;
+  font-size: 10px !important;
+  font-weight: var(--dp-weight-label) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.04em !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-shell, .dp-map-panel, .dp-map-drawer-shell, .dp-destination-drawer, .dp-detail-drawer, .dp-pass-panel, .dp-resident-card-sheet, .dp-map-sheet, .dp-search-intent-console, .leaflet-popup-content-wrapper) {
+  border: 1px solid var(--dp-map-line-soft) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: var(--dp-map-text) !important;
+  box-shadow: var(--dp-map-shadow) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-tabs-content, .dp-map-drawer-content, .dp-drawer-scroll, .dp-map-panel-scroll, .dp-destination-scroll, .dp-detail-content, .dp-partner-detail-content, .dp-destination-content, .dp-partner-intelligence-drawer, .dp-map-sheet-scroll, .dp-pass-panel-body) {
+  background: #ffffff !important;
+  color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-row, .dp-tab-row, .dp-partner-feed-row, .dp-campaign-panel, .dp-map-panel-section, .dp-map-panel-note, .dp-card-credential, .dp-entity-discovery-card, .dp-partner-opportunity-item, .dp-campaign-activation-row, .dp-resident-perk-card, .dp-local-service-chip, .dp-map-native-campaign-detail, .dp-partner-ask-module, .dp-property-detail-section, .dp-property-map-detail, .dp-destination-section) {
+  border: 1px solid var(--dp-map-line-soft) !important;
+  border-radius: var(--dp-map-card-radius) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-action, .dp-panel-action-text, .dp-primary-action, .dp-tab-primary-action, .dp-tab-secondary-action, .dp-pass-action, .dp-entity-action, .dp-map-sheet-action-footer button, .dp-map-sheet-action-footer a, .dp-search-intent-console button, .dp-search-segment, .dp-console-chip) {
+  min-height: 38px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: var(--dp-weight-medium) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav {
+  width: calc(100% - 20px) !important;
+  max-width: 430px !important;
+  margin: 0 auto 8px !important;
+  padding: 6px !important;
+  border: 1px solid var(--dp-map-line-soft) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 12px 34px rgba(11, 31, 51, 0.13) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
+  min-width: 0 !important;
+  min-height: 44px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: var(--dp-map-faint) !important;
+  -webkit-text-fill-color: var(--dp-map-faint) !important;
+  font-size: 10.5px !important;
+  font-weight: var(--dp-weight-medium) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"] {
+  background: var(--dp-map-accent-soft) !important;
+  color: var(--dp-map-text) !important;
+  -webkit-text-fill-color: var(--dp-map-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-live-pin {
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  background: #ffffff !important;
+  color: var(--dp-map-text) !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.16) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-live-pin:is(.is-selected, .is-active),
+html body #root#root .dp-map-page.dp-map-page .dp-map-pin-badge.is-selected {
+  border-color: rgba(200, 169, 106, 0.62) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, 0.18), 0 10px 24px rgba(11, 31, 51, 0.16) !important;
+}
+
+@media (max-width: 759px) {
+  html body #root#root .dp-map-page.dp-map-page {
+    --dp-map-gutter: 14px;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-shell, .dp-map-drawer-shell, .dp-destination-drawer, .dp-detail-drawer) {
+    max-width: min(100%, 430px) !important;
+    border-radius: 18px 18px 0 0 !important;
+    padding: 12px var(--dp-map-gutter) calc(78px + env(safe-area-inset-bottom)) !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-header, .dp-map-panel-header, .dp-map-sheet-toolbar, .dp-destination-header, .dp-tabs-header, .dp-tabs-content, .dp-map-drawer-content, .dp-drawer-scroll, .dp-map-panel-scroll, .dp-destination-scroll, .dp-detail-content, .dp-partner-detail-content, .dp-destination-content, .dp-map-sheet-scroll, .dp-pass-panel-body) {
+    padding-inline: 0 !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-tab-title, .dp-map-panel-title, .dp-destination-title) {
+    max-width: 100% !important;
+    font-size: 18px !important;
+    line-height: 1.18 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-section-title, .dp-destination-section-title, .dp-property-detail-header h3) {
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+  }
+}
+
+/* Absolute final cinematic story system: mobile-first staged copy reveal. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) {
+  --dp-story-navy: #0B1F33;
+  --dp-story-gold: #C8A96A;
+  --dp-story-muted: rgba(11, 31, 51, 0.66);
+  --dp-story-side-pad: 20px;
+  --dp-story-header-h: 52px;
+  --dp-story-footer-h: 62px;
+  background: #ffffff !important;
+  color: var(--dp-story-navy) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-shell.dp-fixed-story-shell {
+  display: grid !important;
+  grid-template-rows: var(--dp-story-header-h) minmax(0, 1fr) auto !important;
+  width: 100% !important;
+  min-height: 100svh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+  display: grid !important;
+  align-items: center !important;
+  justify-items: center !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 10px var(--dp-story-side-pad) 14px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  max-width: 430px !important;
+  min-height: 100% !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  display: grid !important;
+  align-content: center !important;
+  justify-items: center !important;
+  gap: 0 !important;
+  width: min(100%, 430px) !important;
+  max-width: 430px !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
+  .dp-fixed-story-kicker-slot,
+  .dp-fixed-story-prelude-slot,
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot,
+  .dp-fixed-story-supporting,
+  .dp-story-scene-controls
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-reveal {
+  will-change: opacity, transform, filter !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker-slot.dp-fixed-story-kicker-slot {
+  margin-bottom: 16px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+  margin: 0 !important;
+  color: var(--dp-story-muted) !important;
+  -webkit-text-fill-color: var(--dp-story-muted) !important;
+  font-family: var(--dp-font-sans) !important;
+  font-size: 12px !important;
+  font-weight: var(--dp-weight-label) !important;
+  line-height: 1 !important;
+  letter-spacing: 0.06em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  margin-bottom: 22px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  display: grid !important;
+  justify-items: center !important;
+  gap: 2px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  color: var(--dp-story-navy) !important;
+  -webkit-text-fill-color: var(--dp-story-navy) !important;
+  font-family: var(--dp-font-story-serif) !important;
+  font-size: 52px !important;
+  font-weight: 400 !important;
+  line-height: 0.95 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.14em !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline :is(.dp-fixed-story-headline-segment, .dp-fixed-story-line, .dp-fixed-story-headline-line) {
+  display: inline-block !important;
+  max-width: 100% !important;
+  color: var(--dp-story-navy) !important;
+  -webkit-text-fill-color: var(--dp-story-navy) !important;
+  font-family: var(--dp-font-story-serif) !important;
+  font-size: inherit !important;
+  font-weight: 400 !important;
+  line-height: inherit !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line--gold.dp-fixed-story-line--gold {
+  color: var(--dp-story-gold) !important;
+  -webkit-text-fill-color: var(--dp-story-gold) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  margin-bottom: 14px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  width: 100% !important;
+  max-width: 360px !important;
+  margin: 0 auto !important;
+  color: var(--dp-story-navy) !important;
+  -webkit-text-fill-color: var(--dp-story-navy) !important;
+  font-family: var(--dp-font-sans) !important;
+  font-size: 19px !important;
+  font-weight: var(--dp-weight-heading) !important;
+  line-height: 1.24 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-line.dp-fixed-story-meaning-line {
+  display: inline !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  margin-bottom: 34px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  display: grid !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 360px !important;
+  margin: 0 auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  color: var(--dp-story-muted) !important;
+  -webkit-text-fill-color: var(--dp-story-muted) !important;
+  font-family: var(--dp-font-sans) !important;
+  font-size: 16px !important;
+  font-weight: var(--dp-weight-body) !important;
+  line-height: 1.42 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, max-content) 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: auto !important;
+  min-height: 44px !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  border-radius: 999px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button:disabled {
+  opacity: 0.34 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots button {
+  width: 8px !important;
+  height: 8px !important;
+  min-width: 8px !important;
+  min-height: 8px !important;
+  border-radius: 999px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots button.is-active {
+  width: 22px !important;
+  background: var(--dp-story-gold) !important;
+}
+
+@media (max-width: 359px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) {
+    --dp-story-side-pad: 18px;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 45px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 17px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 14.5px !important;
+  }
+}
+
+@media (min-width: 390px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 56px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 20px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 16.5px !important;
+  }
+}
+
+@media (min-width: 414px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 58px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-reveal,
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-reveal * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* Absolute final story stage occupancy: use the full scene, not a compact island. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+  align-items: stretch !important;
+  justify-items: center !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  padding-block: 10px 14px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  align-items: stretch !important;
+  justify-items: center !important;
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  grid-template-rows:
+    minmax(12px, 0.7fr)
+    auto
+    auto
+    auto
+    auto
+    minmax(18px, 0.45fr)
+    auto !important;
+  align-content: stretch !important;
+  align-items: center !important;
+  min-height: 100% !important;
+  height: 100% !important;
+  padding-bottom: max(2px, env(safe-area-inset-bottom)) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker-slot.dp-fixed-story-kicker-slot {
+  grid-row: 2 !important;
+  margin-bottom: 14px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot.dp-fixed-story-prelude-slot {
+  grid-row: 3 !important;
+  margin-bottom: 12px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  grid-row: 3 !important;
+  min-height: max-content !important;
+  margin-bottom: 20px !important;
+  padding-block: 2px 5px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot + .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  grid-row: 4 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  min-height: max-content !important;
+  padding-block: 2px 4px !important;
+  line-height: 0.98 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  grid-row: 4 !important;
+  margin-bottom: 13px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot + .dp-fixed-story-headline-slot + .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  grid-row: 5 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  grid-row: 5 !important;
+  margin-bottom: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot + .dp-fixed-story-headline-slot + .dp-fixed-story-meaning-slot + .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  grid-row: 6 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+  grid-row: 7 !important;
+  align-self: end !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+@media (max-height: 740px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+    grid-template-rows:
+      minmax(6px, 0.45fr)
+      auto
+      auto
+      auto
+      auto
+      minmax(10px, 0.25fr)
+      auto !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker-slot.dp-fixed-story-kicker-slot {
+    margin-bottom: 10px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+    margin-bottom: 14px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+    margin-bottom: 10px !important;
+  }
+}
+
+/* Absolute final story grid growth lock: make the inner story fill the stage row. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage {
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-content: stretch !important;
+  place-items: stretch center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-content: stretch !important;
+  place-items: stretch center !important;
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  overflow: visible !important;
+}
+
+/* Absolute final story type expansion: larger copy, tight sections, fixed markers. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-stage.dp-fixed-story-stage,
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-scene-stage.dp-scene-stage {
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-content: stretch !important;
+  align-items: stretch !important;
+  overflow-x: hidden !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-state.dp-fixed-story-state {
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-content: stretch !important;
+  align-items: stretch !important;
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-copy.dp-fixed-story-copy {
+  grid-template-rows:
+    auto
+    auto
+    auto
+    auto
+    minmax(0, 1fr)
+    auto !important;
+  align-content: stretch !important;
+  align-items: start !important;
+  justify-items: center !important;
+  row-gap: 0 !important;
+  gap: 0 !important;
+  width: min(100%, 430px) !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  padding: 0 0 max(2px, env(safe-area-inset-bottom)) !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(
+  .dp-fixed-story-kicker-slot,
+  .dp-fixed-story-prelude-slot,
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker-slot.dp-fixed-story-kicker-slot {
+  grid-row: 1 !important;
+  align-self: start !important;
+  padding-top: 2px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot.dp-fixed-story-prelude-slot {
+  grid-row: 2 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  grid-row: 2 !important;
+  min-height: max-content !important;
+  overflow: visible !important;
+  padding-block: 2px 4px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot + .dp-fixed-story-headline-slot.dp-fixed-story-headline-slot {
+  grid-row: 3 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  grid-row: 3 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot + .dp-fixed-story-headline-slot + .dp-fixed-story-meaning-slot.dp-fixed-story-meaning-slot {
+  grid-row: 4 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  grid-row: 4 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-prelude-slot + .dp-fixed-story-headline-slot + .dp-fixed-story-meaning-slot + .dp-fixed-story-supporting-slot.dp-fixed-story-supporting-slot {
+  grid-row: 5 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+  grid-row: 6 !important;
+  align-self: end !important;
+  margin: 0 auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
+  font-size: 13px !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+  gap: 0 !important;
+  font-size: 58px !important;
+  line-height: 0.96 !important;
+  letter-spacing: 0 !important;
+  padding-block: 0 4px !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
+  gap: 0.12em !important;
+  min-height: 1em !important;
+  line-height: inherit !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline :is(.dp-fixed-story-headline-segment, .dp-fixed-story-line, .dp-fixed-story-headline-line) {
+  line-height: inherit !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+  max-width: 390px !important;
+  font-size: 21px !important;
+  line-height: 1.16 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting {
+  gap: 0 !important;
+  max-width: 390px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+  font-size: 17px !important;
+  line-height: 1.28 !important;
+}
+
+@media (max-width: 359px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 52px !important;
+    line-height: 0.97 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 19.5px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 16px !important;
+  }
+}
+
+@media (min-width: 390px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 64px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-meaning.dp-fixed-story-meaning {
+    font-size: 22px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-supporting.dp-fixed-story-supporting p {
+    font-size: 17.5px !important;
+  }
+}
+
+@media (min-width: 414px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
+    font-size: 66px !important;
+  }
+}
+
+/* Absolute final mobile map panel system: one shell, one scroll model, one visual language. */
+html body #root#root .dp-map-page.dp-map-page {
+  --dp-panel-bg: #ffffff;
+  --dp-panel-text: #0B1F33;
+  --dp-panel-muted: rgba(11, 31, 51, 0.64);
+  --dp-panel-faint: rgba(11, 31, 51, 0.48);
+  --dp-panel-border: rgba(11, 31, 51, 0.08);
+  --dp-panel-radius: 20px;
+  --dp-panel-shadow: 0 -16px 44px rgba(11, 31, 51, 0.10);
+  --dp-panel-x: clamp(16px, 4.5vw, 22px);
+  --dp-panel-y: 16px;
+  --dp-panel-gap: 12px;
+  --dp-panel-bottom-clearance: calc(96px + env(safe-area-inset-bottom));
+  --dp-control-height: 44px;
+  --dp-row-icon: 36px;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-sheet,
+  .dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-resident-card-sheet,
+  .dp-saved-downtown-panel,
+  .dp-map-campaign-drawer,
+  .dp-map-reports-drawer,
+  .dp-partner-readable-panel,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) {
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(100%, 430px) !important;
+  max-width: min(100%, 430px) !important;
+  max-height: min(88dvh, calc(100dvh - 72px)) !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid var(--dp-panel-border) !important;
+  border-bottom: 0 !important;
+  border-radius: var(--dp-panel-radius) var(--dp-panel-radius) 0 0 !important;
+  background: var(--dp-panel-bg) !important;
+  background-color: var(--dp-panel-bg) !important;
+  background-image: none !important;
+  color: var(--dp-panel-text) !important;
+  box-shadow: var(--dp-panel-shadow) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-handle,
+  .dp-map-sheet-handle,
+  .dp-map-directory-handle
+) {
+  flex: 0 0 auto !important;
+  width: 42px !important;
+  height: 4px !important;
+  min-height: 4px !important;
+  margin: 10px auto 8px !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.14) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-toolbar,
+  .dp-panel-header,
+  .dp-map-panel-header,
+  .dp-map-sheet-toolbar,
+  .dp-map-directory-toolbar,
+  .dp-drawer-control-row
+) {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 8px var(--dp-panel-x) !important;
+  border-bottom: 1px solid var(--dp-panel-border) !important;
+  background: #ffffff !important;
+  color: var(--dp-panel-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-map-panel-icon-button,
+  .dp-drawer-control,
+  .dp-drawer-icon-control,
+  .dp-map-panel-button--icon
+) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--dp-control-height) !important;
+  height: var(--dp-control-height) !important;
+  min-width: var(--dp-control-height) !important;
+  min-height: var(--dp-control-height) !important;
+  padding: 0 !important;
+  border: 1px solid var(--dp-panel-border) !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: var(--dp-panel-text) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-body,
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-tabs-content,
+  .dp-map-drawer-content,
+  .dp-detail-content,
+  .dp-destination-content,
+  .dp-partner-detail-content,
+  .dp-grouped-list,
+  .dp-map-directory-list,
+  .dp-resident-tab-panel-list
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 14px var(--dp-panel-x) var(--dp-panel-bottom-clearance) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-tab-panel {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-resident-tab-panel-header,
+  .dp-map-directory-header,
+  .dp-panel-header-copy,
+  .dp-resident-card-identity
+) {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  padding: 14px var(--dp-panel-x) 10px !important;
+  border-bottom: 1px solid var(--dp-panel-border) !important;
+  background: #ffffff !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-title,
+  .dp-map-panel-title,
+  .dp-tab-title,
+  .dp-destination-title,
+  .dp-map-directory-title,
+  .dp-resident-tab-panel-header h2,
+  .dp-map-panel-section-title
+) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  color: var(--dp-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-panel-text) !important;
+  font-family: var(--dp-font-sans) !important;
+  font-size: 20px !important;
+  font-weight: var(--dp-weight-heading) !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-map-panel-section-title,
+  .dp-destination-section-title,
+  .dp-property-detail-header h3,
+  .dp-directory-story,
+  .dp-grouped-title,
+  .dp-legends-result-title
+) {
+  font-size: 15px !important;
+  line-height: 1.22 !important;
+  font-weight: var(--dp-weight-heading) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-eyebrow,
+  .dp-map-panel-eyebrow,
+  .dp-map-panel-section-label,
+  .dp-tab-eyebrow,
+  .dp-destination-section-kicker,
+  .dp-panel-header-title,
+  .dp-card-credential-kicker,
+  .dp-map-directory-eyebrow,
+  .dp-directory-context,
+  .dp-legends-result-meta
+) {
+  color: var(--dp-panel-faint) !important;
+  -webkit-text-fill-color: var(--dp-panel-faint) !important;
+  font-family: var(--dp-font-sans) !important;
+  font-size: 11px !important;
+  font-weight: var(--dp-weight-medium) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  p,
+  li,
+  dd,
+  dt,
+  .dp-panel-subtitle,
+  .dp-map-panel-subtitle,
+  .dp-map-panel-body-copy,
+  .dp-destination-section-copy,
+  .dp-destination-section-note,
+  .dp-directory-meaning,
+  .dp-grouped-meta,
+  .dp-grouped-offer,
+  .dp-legends-result-address,
+  .dp-legends-result-details
+) {
+  color: var(--dp-panel-muted) !important;
+  -webkit-text-fill-color: var(--dp-panel-muted) !important;
+  font-size: 13px !important;
+  font-weight: var(--dp-weight-body) !important;
+  line-height: 1.42 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-directory-result-row,
+  .dp-grouped-row,
+  .dp-legends-result-row,
+  .dp-partner-feed-row,
+  .dp-campaign-activation-row,
+  .dp-partner-opportunity-item,
+  .dp-resident-perk-card,
+  .dp-local-service-chip,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-card-credential,
+  .dp-entity-discovery-card,
+  .dp-destination-section,
+  .dp-map-native-campaign-detail,
+  .dp-partner-ask-module,
+  .dp-property-detail-section
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 1px solid var(--dp-panel-border) !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-directory-result-row,
+  .dp-grouped-row,
+  .dp-legends-result-row,
+  .dp-partner-feed-row
+) {
+  display: grid !important;
+  grid-template-columns: var(--dp-row-icon) minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-height: 64px !important;
+  padding: 10px !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-directory-result-row.is-selected,
+  .dp-panel-row.is-selected,
+  .dp-legends-result-row[data-selected="true"]
+) {
+  border-color: rgba(200, 169, 106, 0.46) !important;
+  background: rgba(200, 169, 106, 0.10) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-directory-action,
+  .dp-grouped-status,
+  .dp-legends-result-action,
+  .dp-panel-action,
+  .dp-panel-action-text,
+  .dp-primary-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-pass-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-map-sheet-action-footer button,
+  .dp-map-sheet-action-footer a
+) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 38px !important;
+  min-width: 38px !important;
+  padding: 0 14px !important;
+  border-radius: 999px !important;
+  font-family: var(--dp-font-sans) !important;
+  font-size: 12px !important;
+  font-weight: var(--dp-weight-medium) !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-primary-action, .dp-map-panel-button--primary, .dp-tab-primary-action) {
+  border-color: rgba(11, 31, 51, 0.94) !important;
+  background: var(--dp-panel-text) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-map-sheet-action-footer,
+  .dp-panel-footer,
+  .dp-saved-sticky-footer
+) {
+  flex: 0 0 auto !important;
+  padding: 12px var(--dp-panel-x) calc(12px + env(safe-area-inset-bottom)) !important;
+  border-top: 1px solid var(--dp-panel-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(img, .dp-polished-panel-hero img, .dp-panel-detail-hero img, .dp-destination-hero-media img) {
+  max-width: 100% !important;
+  border-radius: 12px !important;
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-polished-panel-hero, .dp-panel-detail-hero, .dp-destination-hero-media) {
+  max-height: 180px !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  width: calc(100% - 20px) !important;
+  max-width: 430px !important;
+  margin: 0 auto 8px !important;
+  padding: 6px !important;
+  border: 1px solid var(--dp-panel-border) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 12px 34px rgba(11, 31, 51, 0.13) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 5px 2px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: var(--dp-panel-faint) !important;
+  -webkit-text-fill-color: var(--dp-panel-faint) !important;
+  font-size: 10.5px !important;
+  font-weight: var(--dp-weight-medium) !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"] {
+  background: rgba(200, 169, 106, 0.14) !important;
+  color: var(--dp-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-panel-text) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button svg {
+  width: 16px !important;
+  height: 16px !important;
+  stroke-width: 2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(.dp-nav-activity-badge) {
+  position: absolute !important;
+  top: 3px !important;
+  right: 8px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  border-radius: 999px !important;
+  background: var(--dp-panel-text) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 10px !important;
+  line-height: 16px !important;
+  text-align: center !important;
+}
+
+@media (max-width: 359px) {
+  html body #root#root .dp-map-page.dp-map-page {
+    --dp-panel-x: 14px;
+    --dp-panel-bottom-clearance: calc(92px + env(safe-area-inset-bottom));
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-title, .dp-map-panel-title, .dp-tab-title, .dp-destination-title, .dp-map-directory-title, .dp-resident-tab-panel-header h2) {
+    font-size: 18px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-row, .dp-tab-row, .dp-directory-result-row, .dp-grouped-row, .dp-legends-result-row) {
+    grid-template-columns: 32px minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+  }
+}
+
+@media (min-width: 760px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    .dp-panel-shell,
+    .dp-map-sheet,
+    .dp-map-drawer-shell,
+    .dp-map-directory-sheet,
+    .dp-detail-drawer,
+    .dp-destination-drawer
+  ) {
+    max-width: 720px !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+}
+
+/* Absolute final detail drawer readability: full-width copy and reliable bottom scroll. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) {
+  max-height: min(88dvh, calc(100dvh - 72px)) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll
+) {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 14px var(--dp-panel-x) calc(132px + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-content,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-local-service-drawer,
+  .dp-event-detail-drawer,
+  .dp-neighborhood-drawer
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  column-count: 1 !important;
+  columns: auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-map-native-campaign-detail,
+  .dp-resident-perk-card,
+  .dp-property-detail-section,
+  .dp-property-map-detail,
+  .dp-panel-detail-hero,
+  .dp-polished-panel,
+  .dp-destination-hero,
+  .dp-entity-summary,
+  .dp-entity-panel-header,
+  .dp-partner-drawer-actions,
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-rental-detail-columns,
+  .dp-panel-linked-grid,
+  .dp-partner-intel-grid,
+  .dp-partner-signal-list,
+  .dp-partner-opportunity-list,
+  .dp-local-service-rail,
+  .dp-partner-nearby-grid,
+  .dp-partner-nearby-rail,
+  .dp-partner-guide-list,
+  .dp-partner-ask-rail,
+  .dp-entity-discovery-grid,
+  .dp-related-assets-grid,
+  .dp-nearby-image-rail,
+  .dp-discovery-image-rail
+) {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  column-count: 1 !important;
+  columns: auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-content,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer
+) > * {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section-copy,
+  .dp-destination-section-note,
+  .dp-destination-section-support,
+  .dp-why-people-go,
+  .dp-map-panel-body-copy,
+  .dp-panel-subtitle,
+  .dp-map-panel-subtitle,
+  .dp-drawer-meta-line,
+  p,
+  li
+) {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  column-count: 1 !important;
+  columns: auto !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-panel-linked-grid,
+  .dp-rental-detail-columns,
+  .dp-partner-intel-grid,
+  .dp-partner-nearby-grid,
+  .dp-partner-nearby-rail,
+  .dp-local-service-rail,
+  .dp-nearby-image-rail,
+  .dp-discovery-image-rail
+) :is(article, div, button, a, section, p, span) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-panel-bottom-spacer,
+  .dp-bottom-spacer
+) {
+  display: block !important;
+  width: 100% !important;
+  min-height: calc(124px + env(safe-area-inset-bottom)) !important;
+  flex: 0 0 calc(124px + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-header,
+  .dp-drawer-control-row
+) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3 !important;
+  background: #ffffff !important;
+}
+
+@media (max-width: 759px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-drawer-panel,
+    aside.dp-map-panel.dp-detail-drawer
+  ) :is(
+  .dp-panel-linked-grid,
+  .dp-rental-detail-columns,
+  .dp-partner-intel-grid,
+  .dp-partner-nearby-grid,
+  .dp-partner-nearby-rail,
+  .dp-local-service-rail,
+  .dp-nearby-image-rail,
+  .dp-discovery-image-rail
+  ) {
+    display: grid !important;
+    grid-auto-flow: row !important;
+    grid-auto-columns: auto !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow-x: visible !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-drawer-panel,
+    aside.dp-map-panel.dp-detail-drawer
+  ) :is(
+    .dp-panel-linked-grid > *,
+    .dp-rental-detail-columns > *,
+    .dp-partner-intel-grid > *,
+    .dp-partner-nearby-grid > *,
+    .dp-partner-nearby-rail > *,
+    .dp-local-service-rail > *,
+    .dp-nearby-image-rail > *,
+    .dp-discovery-image-rail > *
+  ) {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* EOF lock: detail drawer rails stay horizontal and panel scroll bodies keep bottom clearance. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll) {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 14px var(--dp-panel-x) calc(144px + env(safe-area-inset-bottom)) !important;
+  padding-bottom: calc(144px + env(safe-area-inset-bottom)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-panel.dp-map-drawer-shell.dp-map-drawer-shell .dp-map-panel-scroll.dp-map-panel-scroll.dp-destination-scroll.dp-destination-scroll.dp-drawer-scroll.dp-drawer-scroll {
+  padding: 14px var(--dp-panel-x) calc(144px + env(safe-area-inset-bottom)) !important;
+  padding-bottom: calc(144px + env(safe-area-inset-bottom)) !important;
+  overflow-y: auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail,
+  .dp-property-nearby-rows
+) {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: auto !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 2px 2px 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail,
+  .dp-property-nearby-rows
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-nearby-image-rail > *,
+  .dp-related-rail > *,
+  .dp-inkind-related-rail > *,
+  .dp-daa-next-rail > *,
+  .dp-property-nearby-rows > *
+) {
+  flex: 0 0 clamp(168px, 58vw, 228px) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: clamp(168px, 58vw, 228px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-panel,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-destination-section h3,
+  .dp-info-section h3,
+  .dp-entity-section h3,
+  .dp-perk-module-title
+) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+@media (min-width: 375px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-drawer-panel,
+    aside.dp-map-panel.dp-detail-drawer
+  ) :is(
+    .dp-destination-section h3,
+    .dp-info-section h3,
+    .dp-entity-section h3,
+    .dp-perk-module-title
+  ) {
+    white-space: nowrap !important;
   }
 }
