@@ -1,6 +1,6 @@
 import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { pathToFileURL } from 'node:url'
 
 const DEFAULT_BASE44_APP_ID = "cbef744a8545c389ef439ea6";
@@ -8,6 +8,30 @@ const DEFAULT_BASE44_APP_BASE_URL = "https://downtown-perks-live.base44.app";
 
 process.env.VITE_BASE44_APP_ID ||= DEFAULT_BASE44_APP_ID;
 process.env.VITE_BASE44_APP_BASE_URL ||= DEFAULT_BASE44_APP_BASE_URL;
+
+function normalizeGoogleMapsEnv(mode) {
+  const env = loadEnv(mode, process.cwd(), "");
+  const googleMapsApiKey =
+    process.env.VITE_GOOGLE_MAPS_API_KEY ||
+    env.VITE_GOOGLE_MAPS_API_KEY ||
+    process.env.GOOGLE_MAPS_API_KEY ||
+    env.GOOGLE_MAPS_API_KEY ||
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+    env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+    process.env.REACT_APP_GOOGLE_MAPS_API_KEY ||
+    env.REACT_APP_GOOGLE_MAPS_API_KEY ||
+    "";
+  const googleMapsMapId =
+    process.env.VITE_GOOGLE_MAPS_MAP_ID ||
+    env.VITE_GOOGLE_MAPS_MAP_ID ||
+    process.env.GOOGLE_MAPS_MAP_ID ||
+    env.GOOGLE_MAPS_MAP_ID ||
+    "";
+
+  process.env.VITE_GOOGLE_MAPS_API_KEY = googleMapsApiKey;
+  process.env.VITE_GOOGLE_MAPS_MAP_ID = googleMapsMapId;
+  return { googleMapsApiKey, googleMapsMapId };
+}
 
 function localApiRoutes() {
   async function runLocalHandler(req, res, handlerPath, logger, errorMessage) {
@@ -139,8 +163,15 @@ function localApiRoutes() {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const { googleMapsApiKey, googleMapsMapId } = normalizeGoogleMapsEnv(mode);
+
+  return {
   logLevel: 'error', // Suppress warnings, only show errors
+  define: {
+    "import.meta.env.VITE_GOOGLE_MAPS_API_KEY": JSON.stringify(googleMapsApiKey),
+    "import.meta.env.VITE_GOOGLE_MAPS_MAP_ID": JSON.stringify(googleMapsMapId),
+  },
   plugins: [
     localApiRoutes(),
     base44({
@@ -154,4 +185,5 @@ export default defineConfig({
     }),
     react(),
   ]
+  };
 });

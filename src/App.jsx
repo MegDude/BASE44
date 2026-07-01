@@ -89,10 +89,9 @@ function normalizeMapLaunchPath(pathname, search) {
   if (!params.get("tab")) params.set("tab", "map");
   const targetPath = pathname === "/app/map" ? "/app/map" : pathname === "/app" ? "/app" : "/map";
   const isAppLaunch = targetPath === "/app" || targetPath === "/app/map";
-  if (!params.get("filter")) params.set("filter", params.get("mode") === "partner" ? "All" : "Perks");
+  if (!params.get("filter") && !params.get("collection") && !params.get("layer")) params.set("filter", "All");
   if (isAppLaunch) {
-    ["entityId", "listing", "listingId", "campaignId", "drawerClosed", "query", "prompt", "q"].forEach((key) => params.delete(key));
-    if (params.get("mode") !== "partner") params.set("filter", "Perks");
+    ["entityId", "listing", "listingId", "campaignId", "drawerClosed"].forEach((key) => params.delete(key));
   }
   return `${targetPath}?${params.toString()}`;
 }
@@ -141,7 +140,7 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route path="/residents" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/residents" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/explore" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
           <Route path="/perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
