@@ -19,7 +19,6 @@ const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
 const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
-const HomePage = lazy(() => import("./pages/Home"));
 const ROUTER_FUTURE_FLAGS = {
   v7_startTransition: true,
   v7_relativeSplatPath: true,
@@ -128,7 +127,7 @@ function ProductRoutes() {
           <Route element={<Layout />}>
 
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
-          <Route path="/" element={<Suspense fallback={<MarketingFallback />}><HomePage /></Suspense>} />
+          <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/app" element={<MapLaunchGate />} />
           <Route path="/app/map" element={<MapLaunchGate />} />
           <Route path="/map" element={<MapLaunchGate />} />
