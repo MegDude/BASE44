@@ -2,6 +2,7 @@ import { categoryImageFallbacks, districtImageFallbacks, perkImageRegistry } fro
 import { resolveDowntownPerksEntityImage } from "../../data/downtownPerksEntityImages";
 
 export type ImageResolveContext = "pin" | "drawerHeader" | "nearbyRail" | "relatedRail" | "card" | "fallback";
+const IMAGE_RESOLVER_WARNINGS = import.meta.env.DEV && import.meta.env.VITE_IMAGE_RESOLVER_WARNINGS === "true";
 
 export function assertImageMatchesEntityType(entityType: string, imageAsset: string) {
   const asset = String(imageAsset || "").toLowerCase();
@@ -20,7 +21,7 @@ export function assertImageMatchesEntityType(entityType: string, imageAsset: str
     ["wellness", ["/wellness/", "/map-entities/perks/partner_wellness", "/perks/"]],
   ];
   const rule = rules.find(([type]) => type === normalizedType);
-  if (rule && !rule[1].some((prefix) => asset.includes(prefix))) {
+  if (IMAGE_RESOLVER_WARNINGS && rule && !rule[1].some((prefix) => asset.includes(prefix))) {
     console.warn(`${rule[0][0].toUpperCase()}${rule[0].slice(1)} image mismatch`, imageAsset);
   }
 }
@@ -1048,7 +1049,7 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
   const categoryKey = Object.keys(categoryImageFallbacks).find((key) => category.includes(key) || key.includes(category));
   const fallback = categoryImageFallbacks[category] || (categoryKey ? categoryImageFallbacks[categoryKey] : undefined) || categoryImageFallbacks.default;
 
-  if (import.meta.env.DEV && !fallback) {
+  if (IMAGE_RESOLVER_WARNINGS && !fallback) {
     console.warn("[ImageResolver] Missing image", entity);
   }
 

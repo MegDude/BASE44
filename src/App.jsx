@@ -21,6 +21,10 @@ const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
 const HomePage = lazy(() => import("./pages/Home"));
+const ROUTER_FUTURE_FLAGS = {
+  v7_startTransition: true,
+  v7_relativeSplatPath: true,
+};
 
 function MarketingFallback() {
   return (
@@ -308,7 +312,7 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router>
+        <Router future={ROUTER_FUTURE_FLAGS}>
           <ProductRoutes />
         </Router>
         <Toaster />

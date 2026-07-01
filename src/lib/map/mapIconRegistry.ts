@@ -1,6 +1,7 @@
 export type MapIconKey =
   | "coffee"
   | "dining"
+  | "restaurant"
   | "venue"
   | "nightlife"
   | "bar"
@@ -8,6 +9,7 @@ export type MapIconKey =
   | "wellness"
   | "property"
   | "residential"
+  | "building"
   | "listing"
   | "hotel"
   | "event"
@@ -38,6 +40,9 @@ export type MapIconKey =
   | "lululemon"
   | "four-seasons"
   | "service"
+  | "services"
+  | "spark"
+  | "district"
   | "guide"
   | "journal"
   | "legends"
@@ -58,6 +63,7 @@ function icon(paths: string) {
 export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
   coffee: { label: "Coffee", glyph: icon('<path d="M5 8h10v5a5 5 0 0 1-10 0V8Z"/><path d="M15 9h2a3 3 0 0 1 0 6h-2"/><path d="M4 20h13"/><path d="M8 4v1M12 4v1"/>') },
   dining: { label: "Dining", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
+  restaurant: { label: "Restaurant", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
   venue: { label: "Venue", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
   nightlife: { label: "Drinks", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/>') },
   bar: { label: "Bar", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/>') },
@@ -65,6 +71,7 @@ export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
   wellness: { label: "Wellness", glyph: icon('<path d="M4 14h4l2-8 4 14 2-6h4"/><path d="M7 20h10"/>') },
   property: { label: "Property", glyph: icon('<path d="M4 21h16"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/>') },
   residential: { label: "Residential", glyph: icon('<path d="M3 11 12 4l9 7"/><path d="M5 10v11h14V10"/><path d="M9 21v-6h6v6"/>') },
+  building: { label: "Building", glyph: icon('<path d="M4 21h16"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/>') },
   listing: { label: "Listing", glyph: icon('<path d="M4 21h16"/><path d="M7 21V5h10v16"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2"/><path d="M9 16h6"/>') },
   hotel: { label: "Hotel", glyph: icon('<path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M7 11h10"/><path d="M7 16h10"/><path d="M9 7h.01M15 7h.01"/>') },
   event: { label: "Event", glyph: icon('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M8 14h3M13 14h3M8 17h3"/>') },
@@ -95,6 +102,9 @@ export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
   lululemon: { label: "Lululemon", glyph: icon('<path d="M4 14h4l2-8 4 14 2-6h4"/><path d="M7 20h10"/>') },
   "four-seasons": { label: "Four Seasons", glyph: icon('<path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M7 11h10"/><path d="M7 16h10"/><path d="M9 7h.01M15 7h.01"/>') },
   service: { label: "Service", glyph: icon('<path d="M4 21V9l8-5 8 5v12"/><path d="M8 21v-7h8v7"/><path d="M9 11h6"/>') },
+  services: { label: "Services", glyph: icon('<path d="M4 21V9l8-5 8 5v12"/><path d="M8 21v-7h8v7"/><path d="M9 11h6"/>') },
+  spark: { label: "Highlight", glyph: icon('<path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z"/>') },
+  district: { label: "District", glyph: icon('<path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/><circle cx="12" cy="11" r="2"/>') },
   guide: { label: "Local Guide", glyph: icon('<path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/>') },
   journal: { label: "Journal", glyph: icon('<path d="M6 4h11a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 8h7M8 12h7M8 16h5"/>') },
   legends: {
