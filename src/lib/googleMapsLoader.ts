@@ -5,13 +5,18 @@ let googleMapsLoadAttempts = 0;
 
 function readGoogleMapsApiKey() {
   const env = import.meta.env || {};
-  return (
+  const rawKey = (
     env.VITE_GOOGLE_MAPS_API_KEY ||
     env.GOOGLE_MAPS_API_KEY ||
     env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
     env.REACT_APP_GOOGLE_MAPS_API_KEY ||
     ""
   );
+  return String(rawKey).trim().replace(/^['"]|['"]$/g, "");
+}
+
+function isPlausibleGoogleMapsApiKey(apiKey: string) {
+  return /^AIza[0-9A-Za-z_-]{30,}$/.test(apiKey);
 }
 
 function normalizeLibraries(libraries: string[] = ["maps", "marker"]) {
@@ -19,7 +24,9 @@ function normalizeLibraries(libraries: string[] = ["maps", "marker"]) {
 }
 
 export function getGoogleMapsConfigError() {
-  return readGoogleMapsApiKey() ? "" : "missing-api-key";
+  const apiKey = readGoogleMapsApiKey();
+  if (!apiKey) return "missing-api-key";
+  return isPlausibleGoogleMapsApiKey(apiKey) ? "" : "invalid-api-key";
 }
 
 export function resetGoogleMapsLoaderForRetry() {
@@ -42,6 +49,10 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
   const apiKey = readGoogleMapsApiKey();
   if (!apiKey) {
     googleMapsPromise = Promise.reject(new Error("missing-api-key"));
+    return googleMapsPromise;
+  }
+  if (!isPlausibleGoogleMapsApiKey(apiKey)) {
+    googleMapsPromise = Promise.reject(new Error("invalid-api-key"));
     return googleMapsPromise;
   }
 

@@ -9883,8 +9883,8 @@ function GoogleMapCanvas({
     };
   }, [loadState, mapItems, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, selectedId]);
 
-  const errorCopy = loadError === "missing-api-key"
-    ? "Map could not load. Add VITE_GOOGLE_MAPS_API_KEY to the Vite environment."
+  const errorCopy = loadError === "missing-api-key" || loadError === "invalid-api-key"
+    ? "Map could not load. Check Google Maps configuration."
     : "Map could not load. Check Google Maps API configuration.";
 
   return (
