@@ -6,16 +6,18 @@ const REPORT_IMAGE_BASE = "/images/reports";
 
 const PREMIUM_PROPERTY_IMAGES = {
   "301 west ave": {
-    exterior: `${REPORT_IMAGE_BASE}/the-independent-301-west.jpg`,
+    exterior: "/images/map/listings/301-west-ave.jpg",
     gallery: [
+      "/images/map/listings/301-west-ave.jpg",
       `${REPORT_IMAGE_BASE}/the-independent-301-west.jpg`,
       `${REPORT_IMAGE_BASE}/the-independent-301-west-alt.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/the-independent.jpeg`,
     ],
   },
   "222 west ave": {
-    exterior: `${REPORT_IMAGE_BASE}/seaholm-residences-building.jpg`,
+    exterior: "/images/map/listings/seaholm-residences-222-west.jpg",
     gallery: [
+      "/images/map/listings/seaholm-residences-222-west.jpg",
       `${REPORT_IMAGE_BASE}/seaholm-residences-building.jpg`,
       `${REPORT_IMAGE_BASE}/seaholm-residences-pool.jpg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/seaholm-residences.jpeg`,
@@ -25,8 +27,9 @@ const PREMIUM_PROPERTY_IMAGES = {
     ],
   },
   "501 west ave": {
-    exterior: `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
+    exterior: "/images/map/panels/fifth-and-west-austin.jpg",
     gallery: [
+      "/images/map/panels/fifth-and-west-austin.jpg",
       `${REPORT_IMAGE_BASE}/fifth-and-west-building.jpeg`,
       `${REPORT_IMAGE_BASE}/fifth-and-west-entrance.jpeg`,
       `${REPORT_IMAGE_BASE}/fifth-and-west-pool.avif`,
@@ -36,8 +39,9 @@ const PREMIUM_PROPERTY_IMAGES = {
     ],
   },
   "202 nueces": {
-    exterior: `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
+    exterior: "/images/map/listings/202-nueces-austin.jpg",
     gallery: [
+      "/images/map/listings/202-nueces-austin.jpg",
       `${REPORT_IMAGE_BASE}/austin-proper-202-nueces.jpg`,
       `${REPORT_IMAGE_BASE}/austin-proper-bar.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
@@ -46,8 +50,9 @@ const PREMIUM_PROPERTY_IMAGES = {
     ],
   },
   "70 rainey": {
-    exterior: `${REPORT_IMAGE_BASE}/70-rainey-building.jpg`,
+    exterior: "/images/map/panels/70-rainey-austin.jpg",
     gallery: [
+      "/images/map/panels/70-rainey-austin.jpg",
       `${REPORT_IMAGE_BASE}/70-rainey-building.jpg`,
       `${REPORT_IMAGE_BASE}/70-rainey-sky-garden.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/70-rainey.jpeg`,
@@ -56,16 +61,18 @@ const PREMIUM_PROPERTY_IMAGES = {
     ],
   },
   "44 east ave": {
-    exterior: `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east.jpeg`,
+    exterior: "/images/map/panels/44-east-austin.jpg",
     gallery: [
+      "/images/map/panels/44-east-austin.jpg",
       `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east1.jpeg`,
       `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east2.jpeg`,
     ],
   },
   "54 rainey": {
-    exterior: `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
+    exterior: "/images/map/panels/milago-austin.jpg",
     gallery: [
+      "/images/map/panels/milago-austin.jpg",
       `${REPORT_IMAGE_BASE}/milago-building.jpeg`,
       `${REPORT_IMAGE_BASE}/milago-pool.jpeg`,
       "/buildings/milago.webp",

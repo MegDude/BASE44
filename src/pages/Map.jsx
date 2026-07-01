@@ -10664,20 +10664,31 @@ export default function MapPage() {
     ];
 
     return (
-      <div className="dp-saved-downtown-panel min-h-0 flex-1 overflow-hidden">
-        <div className="dp-saved-downtown-scroll">
-          <section className="dp-saved-downtown-header">
+      <div className="dp-tabs-content dp-resident-tab-panel dp-saved-downtown-panel min-h-0 flex-1 overflow-hidden">
+        <div className="dp-saved-downtown-scroll dp-tab-stack">
+          <section className="dp-resident-tab-panel-header dp-saved-downtown-header">
             <p>MY DOWNTOWN</p>
             <h2>Saved Downtown</h2>
-            <span>Places, events and experiences you've chosen to come back to.</span>
+            <span>Your saved places, benefits, events, and next nearby options.</span>
+            <strong>{residentSavedPlaces.length} saved</strong>
           </section>
 
-          <section className="dp-saved-collection-hero" aria-label="Your Downtown Collection">
-            <img src="/images/imported/perks/01-town-lake.png" alt="Downtown Austin lifestyle near Lady Bird Lake" loading="lazy" />
-            <div>
-              <h3>Your Downtown Collection</h3>
-              <p>Save places worth revisiting, benefits worth using and experiences worth planning around.</p>
-            </div>
+          <section className="dp-partner-summary-grid dp-saved-summary-grid" aria-label="Saved downtown summary">
+            <article className="dp-partner-summary-card">
+              <span>Places</span>
+              <strong>{savedGroups.places.length}</strong>
+              <p>Downtown stops worth revisiting.</p>
+            </article>
+            <article className="dp-partner-summary-card">
+              <span>Benefits</span>
+              <strong>{savedGroups.benefits.length}</strong>
+              <p>Resident perks ready when nearby.</p>
+            </article>
+            <article className="dp-partner-summary-card">
+              <span>Events</span>
+              <strong>{savedGroups.events.length}</strong>
+              <p>Plans you may want to time around.</p>
+            </article>
           </section>
 
           {!residentSavedPlaces.length && (
@@ -10701,7 +10712,7 @@ export default function MapPage() {
               <div className="dp-saved-section-heading">
                 <h3>Worth Revisiting</h3>
               </div>
-              <div className="dp-saved-collection-grid dp-saved-collection-grid--compact">
+              <div className="dp-saved-collection-grid">
                 {continueItems.map((place, index) => renderSavedCollectionCard(place, index === 0 ? "Saved three days ago." : index === 1 ? "Event this Thursday." : "New events added."))}
               </div>
             </section>
@@ -10712,7 +10723,7 @@ export default function MapPage() {
               <div className="dp-saved-section-heading">
                 <h3>Worth Exploring Nearby</h3>
               </div>
-              <div className="dp-saved-collection-grid dp-saved-collection-grid--compact">
+              <div className="dp-saved-collection-grid">
                 {recommended.map((place) => renderSavedCollectionCard(place, "Popular Nearby"))}
               </div>
             </section>
@@ -10731,7 +10742,7 @@ export default function MapPage() {
 
           <div className="dp-panel-bottom-spacer" aria-hidden="true" />
         </div>
-        <footer className="dp-saved-sticky-footer">
+        <footer className="dp-saved-sticky-footer dp-map-sheet-action-footer">
           <button type="button" onClick={() => openResidentDiscovery("All")}>
             <Navigation aria-hidden="true" />
             <span>Nearby</span>
