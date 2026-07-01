@@ -13,7 +13,6 @@ import {
   ChevronDown,
   Compass,
   Coffee,
-  CreditCard,
   CalendarDays,
   CalendarRange,
   Car,
@@ -188,6 +187,7 @@ const FILTERS = [
 ];
 
 const MAP_NATIVE_PARTNER_PANELS = ["campaigns", "activity", "reports", "info", "civic"];
+const MAP_NATIVE_RESIDENT_PANELS = ["info"];
 
 const DISCOVER_FEATURED_ORDER = [
   "priority-the-waterline",
@@ -5878,7 +5878,7 @@ const RESIDENT_BOTTOM_TABS = [
   { id: "perks", label: "Perks", icon: TicketPercent },
   { id: "events", label: "Events", icon: CalendarDays },
   { id: "saved", label: "Saved", icon: Bookmark },
-  { id: "card", label: "Card", icon: CreditCard },
+  { id: "info", label: "Info", icon: Info },
 ];
 
 const PARTNER_BOTTOM_TABS = [
@@ -5897,7 +5897,7 @@ function MapBottomNav({ mode, activeTab, activeFilter, urlTab, contextCount = 0,
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = mode === "resident"
-            ? (tab.id === "card" ? urlTab === "pass" : urlTab === "map" && activeTab === tab.id && (tab.id !== "map" || activeFilter === "All"))
+            ? (urlTab === "map" && activeTab === tab.id && (tab.id !== "map" || activeFilter === "All"))
             : urlTab === "map" && activeTab === tab.id;
           return (
             <button
@@ -10092,8 +10092,12 @@ function useUrlMapState() {
   const pathMode = location.pathname.startsWith("/partners") ? "partner" : "resident";
   const pathTab = "map";
   const rawTab = searchParams.get("tab") || pathTab;
-  const panelTab = MAP_NATIVE_PARTNER_PANELS.includes(rawTab) ? rawTab : "";
   const mode = searchParams.get("mode") === "partner" ? "partner" : searchParams.get("mode") === "resident" ? "resident" : pathMode;
+  const panelTab = mode === "partner" && MAP_NATIVE_PARTNER_PANELS.includes(rawTab)
+    ? rawTab
+    : mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(rawTab)
+      ? rawTab
+      : "";
   const tab = rawTab === "pass" ? "pass" : "map";
   const layer = searchParams.get("layer") || "";
   const rentalListingId = layer === "rentals" ? searchParams.get("listing") || "" : "";
@@ -10164,7 +10168,7 @@ export default function MapPage() {
   }, []);
   const [resultsExpanded, setResultsExpanded] = useState(false);
   const [activeBottomTab, setActiveBottomTab] = useState(() => (
-    urlState.mode === "partner" && urlState.panelTab
+    urlState.panelTab
       ? urlState.panelTab
       : urlState.mode === "resident" && urlState.tab === "map" && ["Perks", "Events", "Saved"].includes(urlState.filter)
         ? urlState.filter.toLowerCase()
@@ -10188,13 +10192,13 @@ export default function MapPage() {
   const searchRollupRef = useRef(null);
 
   useEffect(() => {
-    if (urlState.mode === "partner" && urlState.panelTab) {
+    if (urlState.panelTab) {
       setActiveBottomTab(urlState.panelTab);
       setConsoleCollapsed(true);
       setSelectedId("");
       setClusterDrawer(null);
     }
-  }, [urlState.mode, urlState.panelTab]);
+  }, [urlState.panelTab]);
   const [pulsingPinId, setPulsingPinId] = useState("");
   const [agentFormPlaceId, setAgentFormPlaceId] = useState("");
   const [agentFormSubmitted, setAgentFormSubmitted] = useState(false);
@@ -11199,27 +11203,161 @@ export default function MapPage() {
   }
 
   function renderInfoPanel() {
+    const isPartnerInfo = urlState.mode === "partner";
+    const scrollToInfoFaq = () => {
+      document.querySelector(".dp-info-guide-faq")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    const content = isPartnerInfo
+      ? {
+          eyebrow: "PARTNER GUIDE",
+          headline: "Everything you need to grow your presence downtown.",
+          copy: "Create campaigns, publish offers, measure results, and understand how people interact with your business from one workspace.",
+          primary: ["Open Workspace", () => navigate("/partner-workspace/overview")],
+          secondary: ["Contact Support", () => navigate("/partners/sign-up?intent=support")],
+          overview: [
+            ["Your Workspace", "Manage your profile, locations, team, and settings."],
+            ["Campaigns", "Create offers, events, promotions, and featured placements."],
+            ["Reports", "See visits, saves, scans, and participation."],
+            ["QR Experiences", "Create QR touchpoints that connect people to your business."],
+          ],
+          steps: ["Complete your profile.", "Choose a plan.", "Launch your first campaign.", "Generate QR experiences.", "Measure results."],
+          how: [
+            ["People discover you.", "Your places, offers, and events appear where people are already choosing what to do."],
+            ["People interact.", "Residents and visitors can save, scan, RSVP, request directions, or open a detail panel."],
+            ["You learn what works.", "Reports turn nearby activity into a clear next step."],
+          ],
+          features: [
+            ["Business Profile", "Keep your public presence current."],
+            ["Campaigns", "Run offers, events, and featured placements."],
+            ["Events", "Promote moments people can attend."],
+            ["Offers", "Give nearby people one simple reason to visit."],
+            ["QR Experiences", "Connect physical touchpoints to the map."],
+            ["Reports", "Read saves, scans, visits, and follow-up activity."],
+            ["Team Members", "Invite the right people into the workspace."],
+            ["Billing", "Manage plans and account access."],
+            ["Notifications", "Stay aware of useful activity."],
+            ["Permissions", "Control who can update your presence."],
+          ],
+          tipsTitle: "Helpful tips",
+          tips: [
+            "Update your hours regularly.",
+            "Refresh campaigns monthly.",
+            "Use QR codes in physical spaces.",
+            "Measure what people actually do.",
+            "Keep offers time-sensitive.",
+          ],
+          faq: [
+            ["How do campaigns work?", "Start with one place, one audience, and one clear action. Then review what people saved, scanned, opened, or used."],
+            ["How are scans measured?", "QR scans are grouped with the related place, campaign, or offer so the report stays easy to read."],
+            ["How do I invite team members?", "Open the workspace and add people from your team settings when your account supports it."],
+            ["How do QR codes work?", "QR codes can point to offers, events, places, or partner moments that people can open from the map."],
+            ["How do billing and plans work?", "Plans are managed from the partner workspace and can be adjusted as your presence grows."],
+          ],
+          help: ["Need a hand?", "We are here to help you set up the right next step.", "Partner Documentation", () => navigate("/partners")],
+        }
+      : {
+          eyebrow: "USING DOWNTOWN PERKS",
+          headline: "Everything you need to get more out of downtown.",
+          copy: "Find nearby places, save your favorites, unlock local perks, and discover what is happening around you.",
+          primary: ["Explore the Map", () => openResidentLayer("All")],
+          secondary: ["Get Your Perks Card", () => switchMode("resident", "pass", "", { collapseConsole: true })],
+          overview: [
+            ["Map", "Find what is nearby."],
+            ["Events", "See what is happening today."],
+            ["Perks", "Unlock local offers."],
+            ["Saved", "Keep your favorite places together."],
+          ],
+          steps: ["Open the map.", "Find somewhere nearby.", "Save your favorites.", "Visit.", "Come back."],
+          how: [
+            ["People open Downtown Perks.", "Start with the map, a category, or a nearby search."],
+            ["They find something nearby.", "Open places, events, perks, listings, and useful local details."],
+            ["They enjoy more of downtown.", "Save what matters, get directions, and use the card when available."],
+          ],
+          features: [
+            ["Live Map", "See useful places around you."],
+            ["Nearby Places", "Find food, coffee, events, services, and listings."],
+            ["Events", "Check what is happening today or this week."],
+            ["Perks", "Open offers that are available nearby."],
+            ["Resident Card", "Confirm resident access when a partner asks."],
+            ["Saved Places", "Keep favorites in one place."],
+            ["Directions", "Get to the next stop quickly."],
+            ["Share", "Send a place or plan to someone else."],
+            ["Notifications", "Stay aware of useful nearby moments."],
+            ["Search", "Ask the map for what you need right now."],
+          ],
+          tipsTitle: "Local tips",
+          tips: [
+            "Explore somewhere new after work.",
+            "Save places before the weekend.",
+            "Check events before heading out.",
+            "Use your Perks Card when available.",
+            "Build your own downtown routine.",
+          ],
+          faq: [
+            ["How do perks work?", "Open a perk from the map and follow the partner instructions shown in the detail panel."],
+            ["Is Downtown Perks free?", "You can explore the map freely. Some resident access features may depend on your building or membership."],
+            ["Do I need an account?", "You can browse nearby places without one, but saved places and resident access work better when connected to you."],
+            ["How do I save places?", "Open a place, event, listing, or perk and use the saved action when it is available."],
+            ["How do I unlock offers?", "Open the Perks layer and show the resident card or offer details when a partner asks."],
+            ["How do I report a problem?", "Use the support action and include the place, offer, or listing you were viewing."],
+          ],
+          help: ["Need some help?", "We are happy to point you in the right direction.", "Frequently Asked Questions", scrollToInfoFaq],
+        };
+
     return (
-      <div className="dp-tabs-content dp-partner-readable-panel dp-partner-info-panel">
+      <div className={`dp-tabs-content dp-partner-readable-panel dp-partner-info-panel dp-shared-info-panel ${isPartnerInfo ? "is-partner" : "is-resident"}`}>
         <div className="dp-tab-stack">
-          <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow">Partner view</p>
-            <h2>See what people are doing nearby.</h2>
-            <p>A partner-facing map for understanding where people are opening, saving, scanning, and deciding what to do next.</p>
-          </section>
-
-          <section className="dp-partner-info-copy">
-            <p>Use it to spot walkable interest, plan one timely offer, and understand what helped people take the next step.</p>
-          </section>
-
-          <section className="dp-partner-info-operator-read" aria-label="Partner operating read">
-            <p className="dp-tab-eyebrow">Operator read</p>
+          <section className="dp-partner-readable-hero dp-info-guide-hero">
             <div>
-              {[
-                ["Nearby interest", "Where opens, saves, scans, and direction taps are happening."],
-                ["Timing", "When a campaign or offer has the clearest window to matter."],
-                ["Action", "What to launch next without adding extra work."],
-              ].map(([title, copy]) => (
+              <p className="dp-tab-eyebrow">{content.eyebrow}</p>
+              <h2>{content.headline}</h2>
+              <p>{content.copy}</p>
+            </div>
+            <div className="dp-info-guide-media" aria-hidden="true">
+              <Info className="h-5 w-5" />
+              <span>{isPartnerInfo ? "Partner owner guide" : "Resident local guide"}</span>
+            </div>
+            <div className="dp-info-guide-actions">
+              <button type="button" className="dp-tab-primary-action" onClick={content.primary[1]}>{content.primary[0]}</button>
+              <button type="button" className="dp-tab-secondary-action" onClick={content.secondary[1]}>{content.secondary[0]}</button>
+            </div>
+          </section>
+
+          <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Quick overview">
+            {content.overview.map(([title, copy]) => (
+              <article key={title} className="dp-partner-summary-card">
+                <span>{title}</span>
+                <p>{copy}</p>
+              </article>
+            ))}
+          </section>
+
+          <section className="dp-partner-info-steps" aria-label="Getting started">
+            <p className="dp-tab-eyebrow">Getting started</p>
+            {content.steps.map((step, index) => (
+              <div key={step}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <p>{step}</p>
+              </div>
+            ))}
+          </section>
+
+          <section className="dp-partner-feed-list dp-info-guide-list" aria-label="How it works">
+            <p className="dp-tab-eyebrow">How it works</p>
+            {content.how.map(([title, copy]) => (
+              <article key={title} className="dp-tab-row dp-partner-feed-row">
+                <span className="dp-partner-feed-main">
+                  <span className="dp-tab-row-icon"><Compass className="h-4 w-4" /></span>
+                  <span><strong>{title}</strong><small>{copy}</small></span>
+                </span>
+              </article>
+            ))}
+          </section>
+
+          <section className="dp-info-guide-features" aria-label="Features">
+            <p className="dp-tab-eyebrow">Features</p>
+            <div>
+              {content.features.map(([title, copy]) => (
                 <article key={title}>
                   <strong>{title}</strong>
                   <p>{copy}</p>
@@ -11228,51 +11366,36 @@ export default function MapPage() {
             </div>
           </section>
 
-          <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Downtown Perks utility">
-            {[
-              ["Nearby interest", "See where attention is forming close enough to act on."],
-              ["Campaign fit", "Match offers and moments to the people already nearby."],
-              ["Property context", "Connect listings, hotels, venues, and daily routines."],
-              ["Reporting", "Read saves, scans, RSVPs, and follow-up activity together."],
-            ].map(([title, copy]) => (
-              <article key={title} className="dp-partner-summary-card">
-                <span>{title}</span>
-                <p>{copy}</p>
-              </article>
+          <section className="dp-info-guide-tips" aria-label={content.tipsTitle}>
+            <p className="dp-tab-eyebrow">{content.tipsTitle}</p>
+            <div>
+              {content.tips.map((tip) => <span key={tip}>{tip}</span>)}
+            </div>
+          </section>
+
+          <section className="dp-info-guide-faq" aria-label="Frequently Asked Questions">
+            <p className="dp-tab-eyebrow">Frequently Asked Questions</p>
+            {content.faq.map(([question, answer], index) => (
+              <details key={question} open={index === 0}>
+                <summary>{question}</summary>
+                <p>{answer}</p>
+              </details>
             ))}
           </section>
 
-          <section className="dp-partner-feed-list" aria-label="What Downtown Perks does">
-            <p className="dp-tab-eyebrow">What it does</p>
-            {[
-              ["Partner Map", "Find the places, categories, and districts people are opening."],
-              ["Campaigns", "Turn a moment into one offer, placement, or partner action."],
-              ["Activity", "See opens, saves, scans, RSVPs, and claims in plain language."],
-              ["Reports", "Understand what changed and what to try next."],
-            ].map(([title, copy]) => (
-              <button key={title} type="button" className="dp-tab-row dp-partner-feed-row" onClick={() => title === "Campaigns" ? openPartnerPanel("campaigns") : title === "Activity" ? openPartnerPanel("activity") : title === "Reports" ? openPartnerPanel("reports") : openPartnerMap("All")}>
-                <span className="dp-partner-feed-main">
-                  <span className="dp-tab-row-icon"><Info className="h-4 w-4" /></span>
-                  <span><strong>{title}</strong><small>{copy}</small></span>
-                </span>
-                <span className="dp-tab-signal">Open</span>
-              </button>
-            ))}
+          <section className="dp-report-next-action dp-info-guide-help" aria-label="Need help">
+            <div>
+              <span>Need help?</span>
+              <strong>{content.help[0]}</strong>
+              <p>{content.help[1]}</p>
+            </div>
+            <button type="button" onClick={content.secondary[1]}>Contact Support</button>
+            <button type="button" onClick={content.help[3]}>{content.help[2]}</button>
           </section>
 
-          <section className="dp-partner-info-steps" aria-label="How it works">
-            <p className="dp-tab-eyebrow">How it works</p>
-            {[
-              "Open the partner map",
-              "Read what people open by place, category, district, and time",
-              "Launch one campaign, offer, event, or follow-up path",
-              "Use activity and reports to decide what to repeat",
-            ].map((step, index) => (
-              <div key={step}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <p>{step}</p>
-              </div>
-            ))}
+          <section className="dp-campaign-action-bar dp-info-guide-footer" aria-label="Information actions">
+            <button type="button" className="dp-tab-primary-action" onClick={content.primary[1]}>{content.primary[0]}</button>
+            <button type="button" className="dp-tab-secondary-action" onClick={content.secondary[1]}>{content.secondary[0]}</button>
           </section>
         </div>
       </div>
@@ -12412,11 +12535,16 @@ export default function MapPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => switchMode("resident", "pass", "", { collapseConsole: true })}
-                  aria-pressed={urlState.tab === "pass"}
+                  onClick={() => {
+                    clearOpenMapSelection();
+                    setConsoleCollapsed(true);
+                    setActiveBottomTab("info");
+                    navigate("/map?mode=resident&tab=info");
+                  }}
+                  aria-pressed={urlState.tab === "map" && activeBottomTab === "info"}
                 >
-                  <CreditCard className="h-4 w-4" />
-                  <span>Card</span>
+                  <Info className="h-4 w-4" />
+                  <span>Info</span>
                 </button>
               </>
             )}
@@ -12474,7 +12602,7 @@ export default function MapPage() {
         {urlState.tab === "map" && (
           urlState.mode === "partner"
             ? ["activity", "campaigns", "reports", "info", "civic"].includes(activeBottomTab) || isLegendsDirectoryLayer
-            : ["perks", "events", "saved"].includes(activeBottomTab) || isLegendsDirectoryLayer
+            : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isLegendsDirectoryLayer
         ) && (!selected || selectedDrawerClosed) && (
           <motion.aside
             initial={{ opacity: 0, y: 44 }}
@@ -12614,6 +12742,16 @@ export default function MapPage() {
               </>
             ) : urlState.mode !== "partner" && isResidentSavedDrawer ? (
               renderSavedCollectionPanel()
+            ) : urlState.mode !== "partner" && activeBottomTab === "info" ? (
+              <div className="dp-resident-tab-panel dp-resident-info-tab-panel min-h-0 flex-1 overflow-hidden">
+                <div
+                  className="dp-resident-tab-panel-list dp-resident-info-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]"
+                  style={{ paddingBottom: "96px" }}
+                >
+                  {renderInfoPanel()}
+                  <div className="dp-panel-bottom-spacer" aria-hidden="true" />
+                </div>
+              </div>
             ) : urlState.mode !== "partner" ? (
             <div className="dp-resident-tab-panel min-h-0 flex-1 overflow-hidden">
               {residentPanelCopy && (
