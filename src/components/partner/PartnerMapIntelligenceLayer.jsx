@@ -18,9 +18,9 @@ const KIND_ICONS = {
 
 const VISUAL_SETS = {
   civic: [
-    "/images/imported/perks/republic-square.jpg",
+    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
     "/images/splash/walkable-map.png",
-    "/images/imported/perks/downtonw-trail.jpg",
+    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
   ],
   brand: [
     "/images/splash/walkable-map.png",

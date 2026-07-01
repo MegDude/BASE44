@@ -512,7 +512,7 @@ const entityImageSets: Record<string, string[]> = {
   ],
   geraldines: [
     "/images/imported/perks/geraldine-s.jpg",
-    "/images/imported/perks/hotel-van-zandt-first-thiursdays.png",
+    "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
   ],
   "joes-coffee": [
     "/images/imported/perks/joe-s-coffee.png",
@@ -547,7 +547,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/waterlook-greenway.png",
   ],
   "republic-square": [
-    "/images/imported/perks/republic-square.jpg",
+    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
     "/images/imported/perks/republic-square-bar.jpg",
     "/images/imported/perks/republic-square-outside.jpg",
     "/images/imported/perks/republic-square-facade.jpg",
@@ -567,19 +567,19 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
   ],
   "event-photo": [
-    "/images/imported/perks/hotel-van-zandt-first-thiursdays.png",
+    "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
     "/images/imported/perks/people-at-event.png",
     "/images/imported/perks/member-appreciation-maw26-header-1-1680x962.jpg",
     "/images/imported/perks/rebuplic-square-event.jpg",
     "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
   ],
   "civic-photo": [
-    "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg",
+    "/images/map-entities/perks/downtown_art_walk_1779052670656.png",
     "/images/imported/perks/visitors-at-second-saturdays-at-the-blanton-3-3-1024x683.jpg",
     "/images/imported/perks/blanton-grounds-photo-by-casey-dunn.jpg",
-    "/images/imported/perks/republic-square.jpg",
+    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
     "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
-    "/images/imported/perks/downtonw-trail.jpg",
+    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
   ],
   "wellness-photo": [
     "/images/imported/perks/republic-square-yoga.jpg",
@@ -592,12 +592,12 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/redeem-perk.png",
   ],
   rivian: [
-    "/images/imported/perks/rivian.png",
+    "/images/map-entities/brand-rivian/9JvnMPQ8kGuv11XCFhP4qI_0lIktNCTBBolhYsLAFdFrKtTRzkUq5Q31tv6T9ELH3voX6p5GdrTZtXeDJWPYBEvUKXwLboA0PHejrLBKAKZRKo7n0xwA5CQMUmC8eVeK__frO4QU1gVFAspV_WYn7zp3DhW7gT6T0Q9jZr3jl_veaPOYtJKM9M09OEVs68Sg.jpeg",
     "/images/imported/perks/rivian-campaign.png",
     "/images/imported/perks/02-rivian.png",
   ],
   yeti: [
-    "/images/imported/perks/yeti-store.png",
+    "/images/map-entities/brand-yeti/18jUQczpkw9VEXy7XTbIZuJ0dTzty0_oBHG31LrEeKkCzgOTo_7tvcZ9ym7g711P_BiLXIR3Tv9EVHE17CYD4lWpL3rDUzLu3hGcTPAHJYPV9nxqumot8ugOR_CdjTrvpAe9GPwYSME2cBx9jrk4aHZCavUrzWdo2ox0Zb_nzjV2MBL1b8iKNd_n2R6tCTno.jpeg",
     "/images/imported/perks/yeti-bar-inside.webp",
     "/images/imported/perks/yeti-event.jpeg",
     "/images/imported/perks/yeti.png",
@@ -667,7 +667,7 @@ const entityImageSets: Record<string, string[]> = {
   ],
   event: [
     ...LOCAL_IMAGE_PRIORITY.event,
-    "/images/imported/perks/hotel-van-zandt-first-thiursdays.png",
+    "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
     "/images/imported/perks/people-at-event.png",
     "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
     "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
@@ -696,11 +696,11 @@ const entityImageSets: Record<string, string[]> = {
   ],
   civic: [
     ...LOCAL_IMAGE_PRIORITY.civic,
-    "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg",
+    "/images/map-entities/perks/downtown_art_walk_1779052670656.png",
     "/images/imported/perks/visitors-at-second-saturdays-at-the-blanton-3-3-1024x683.jpg",
     "/images/imported/perks/waterlook-trail.png",
-    "/images/imported/perks/republic-square.jpg",
-    "/images/imported/perks/downtonw-trail.jpg",
+    "/images/map-entities/perks/civic_republic_square_1779052838327.png",
+    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
     "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
   ],
   commercial: [

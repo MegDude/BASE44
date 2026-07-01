@@ -90,7 +90,7 @@ const RAINEY_STREET_CENTER = [30.25855, -97.73835];
 const AUSTIN_CENTER = RAINEY_STREET_CENTER;
 const INITIAL_MAP_ZOOM = 18;
 const MAP_VIEW_STORAGE_KEY = "downtown-perks-map-view-v1";
-const MAP_PANEL_IMAGE_FALLBACK = "/images/imported/perks/republic-square.jpg";
+const MAP_PANEL_IMAGE_FALLBACK = "/images/map-entities/perks/civic_republic_square_1779052838327.png";
 const LEGENDS_BRAND_LINE = "Legends Real Estate";
 const MAP_DRAWER_SURFACE_STYLE = {
   backgroundColor: "rgba(255, 255, 255, 0.94)",
@@ -1051,7 +1051,7 @@ function getAllAreaLabel(mode, activeFilter) {
 }
 
 const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
-const DEMO_CARD_CODE = "DP-DEMO-78701";
+const DEMO_CARD_CODE = "DP-RES-78701";
 const PERKS_CARD_QR_SRC = "/images/card/perks-card-qr.png";
 
 const RESIDENT_OFFER_RECORDS = [
@@ -3035,7 +3035,7 @@ function PinBadge({ place, selected = false, size = "sm" }) {
   );
 }
 
-function DemoQrTile({ code = "DP-DEMO-78701" }) {
+function DemoQrTile({ code = "DP-RES-78701" }) {
   return (
     <div className="dp-info-row bg-white/72 p-2">
       <DemoQrCode code={code} className="mx-auto h-28 w-28" />
@@ -6947,7 +6947,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
     .slice(0, 4);
   const civicGoodFor = [
     ["Short walk", "A quick place to notice, pause, and keep exploring nearby.", stopImage],
-    ["Visitors", "An easy way to understand this part of downtown without a formal tour.", "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg"],
+    ["Visitors", "An easy way to understand this part of downtown without a formal tour.", "/images/map-entities/perks/downtown_art_walk_1779052670656.png"],
     ["Build a route", "Start here, then add nearby art, parks, coffee, food, or resident perks.", "/images/imported/perks/downtown-dining-patio.png"],
   ];
   const whyStopBullets = Array.isArray(stop.whyStopBullets) ? stop.whyStopBullets.filter(Boolean) : [];
@@ -8927,16 +8927,17 @@ function getLifestyleImage(place, mode) {
   const explicitPanelImages = [
     [/we all ride|bike mosaic|jmuzacz|daa-stop-04/, "/images/map-entities/civic/we-all-ride-mosaic-detail.webp"],
     [/central library|daa-stop-19/, "/images/map-entities/civic/austin-central-library-rooftop.avif"],
-    [/republic square|daa-stop-08/, "/images/imported/perks/republic-square.jpg"],
+    [/republic square|daa-stop-08/, "/images/map-entities/perks/civic_republic_square_1779052838327.png"],
     [/palmer events center|daa-stop-26/, "/images/map-entities/events/palmer-events-center-grounds.webp"],
     [/mozart|jazz night|movies on the lake/, "/images/map-entities/events/mozarts-jazz.jpg"],
     [/summer wellness|fairmont spa|power flow|gentle yoga|recovery/, "/images/map-entities/fairmont-austin/summer-wellness-yoga.webp"],
     [/\balte[nñ]o\b/, "/images/map-entities/1-hotel-austin/alteno-rendering.webp"],
     [/\bwatr\b|1 hotel rooftop/, "/images/map-entities/1-hotel-austin/watr.webp"],
     [/\bneighbors\b|1 hotel cafe|wine bar/, "/images/map-entities/1-hotel-austin/waterline-hotel.avif"],
-    [/rivian/, "/images/imported/perks/rivian.png"],
+    [/rivian/, "/images/map-entities/brand-rivian/9JvnMPQ8kGuv11XCFhP4qI_0lIktNCTBBolhYsLAFdFrKtTRzkUq5Q31tv6T9ELH3voX6p5GdrTZtXeDJWPYBEvUKXwLboA0PHejrLBKAKZRKo7n0xwA5CQMUmC8eVeK__frO4QU1gVFAspV_WYn7zp3DhW7gT6T0Q9jZr3jl_veaPOYtJKM9M09OEVs68Sg.jpeg"],
     [/topo chico|hydration/, "/images/map-entities/brand-topo-chico/QQy0R7y0D6reyvxjtO4Bz0cdcHuLgAmkHIwGAgmZSW66otks8dM8TUD5adIiQD3uYp0A7d6_Bi1A6MzzsJGL23tYSN207sRP8FR68N8CKNi5neqrVfzauBbHFsGulopDHdKhJ-KsUl3viTXWsTncYZVu6qayfVjVzYoEdkj67yvaNR3KVp7a8Qavd6xUypKt.jpeg"],
-    [/yeti/, "/images/imported/perks/yeti-store.png"],
+    [/yeti/, "/images/map-entities/brand-yeti/18jUQczpkw9VEXy7XTbIZuJ0dTzty0_oBHG31LrEeKkCzgOTo_7tvcZ9ym7g711P_BiLXIR3Tv9EVHE17CYD4lWpL3rDUzLu3hGcTPAHJYPV9nxqumot8ugOR_CdjTrvpAe9GPwYSME2cBx9jrk4aHZCavUrzWdo2ox0Zb_nzjV2MBL1b8iKNd_n2R6tCTno.jpeg"],
+    [/malin|public art|art walk|johnston/, "/images/map-entities/perks/downtown_art_walk_1779052670656.png"],
     [/honey rose ritual/, "/images/entities/four-seasons/honey-rose-ritual.png"],
     [/four seasons residences|partner-four-seasons|98 san jacinto/, "/images/property-listings-premium/four-seasons-residences.jpeg"],
     [/four seasons hotel|four seasons austin/, "/images/entities/four-seasons/four-seasons-austin-pool-garden.png"],
@@ -10423,6 +10424,11 @@ export default function MapPage() {
   const isResidentSavedDrawer = urlState.mode === "resident" && activeBottomTab === "saved";
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
   const drawerPreviewPlaces = isResidentSavedDrawer ? savedDrawerPlaces : previewPlaces;
+  const legendsDirectoryPlaces = isLegendsDirectoryLayer
+    ? discoverDisplayPlaces
+      .filter((place) => isRentalEntity(place) || getLegendsResidentialProfileForPlace(place) || isLegendsMapPlace(place))
+      .slice(0, 80)
+    : [];
   const hiddenPreviewCount = Math.max(0, Math.min(discoverDisplayPlaces.length, 12) - previewPlaces.length);
   const hiddenSavedPreviewCount = Math.max(0, Math.min(residentSavedPlaces.length, 12) - savedDrawerPlaces.length);
   const searchPlaceholder = urlState.mode === "partner"
@@ -10654,7 +10660,6 @@ export default function MapPage() {
       { places: [], events: [], benefits: [] },
     );
     const recommended = getMyDowntownSuggestions();
-    const continueItems = residentSavedPlaces.slice(0, 3);
     const askPrompts = [
       "What should I visit first?",
       "What's closest right now?",
@@ -10673,22 +10678,10 @@ export default function MapPage() {
             <strong>{residentSavedPlaces.length} saved</strong>
           </section>
 
-          <section className="dp-partner-summary-grid dp-saved-summary-grid" aria-label="Saved downtown summary">
-            <article className="dp-partner-summary-card">
-              <span>Places</span>
-              <strong>{savedGroups.places.length}</strong>
-              <p>Downtown stops worth revisiting.</p>
-            </article>
-            <article className="dp-partner-summary-card">
-              <span>Benefits</span>
-              <strong>{savedGroups.benefits.length}</strong>
-              <p>Resident perks ready when nearby.</p>
-            </article>
-            <article className="dp-partner-summary-card">
-              <span>Events</span>
-              <strong>{savedGroups.events.length}</strong>
-              <p>Plans you may want to time around.</p>
-            </article>
+          <section className="dp-saved-overview-rail" aria-label="Saved downtown summary">
+            <span><strong>{savedGroups.places.length}</strong> places</span>
+            <span><strong>{savedGroups.benefits.length}</strong> benefits</span>
+            <span><strong>{savedGroups.events.length}</strong> events</span>
           </section>
 
           {!residentSavedPlaces.length && (
@@ -10703,25 +10696,12 @@ export default function MapPage() {
             </section>
           )}
 
-          {renderSavedCollectionSection("Recently Saved", savedGroups.places)}
-          {renderSavedCollectionSection("Ready for Tonight", savedGroups.events)}
-          {renderSavedCollectionSection("Benefits To Use", savedGroups.benefits)}
-
-          {!!continueItems.length && (
-            <section className="dp-saved-collection-section" aria-label="Worth Revisiting">
-              <div className="dp-saved-section-heading">
-                <h3>Worth Revisiting</h3>
-              </div>
-              <div className="dp-saved-collection-grid">
-                {continueItems.map((place, index) => renderSavedCollectionCard(place, index === 0 ? "Saved three days ago." : index === 1 ? "Event this Thursday." : "New events added."))}
-              </div>
-            </section>
-          )}
+          {renderSavedCollectionSection("Saved Places", residentSavedPlaces)}
 
           {!!recommended.length && (
-            <section className="dp-saved-collection-section" aria-label="Worth Exploring Nearby">
+            <section className="dp-saved-collection-section" aria-label="Explore Nearby">
               <div className="dp-saved-section-heading">
-                <h3>Worth Exploring Nearby</h3>
+                <h3>Explore Nearby</h3>
               </div>
               <div className="dp-saved-collection-grid">
                 {recommended.map((place) => renderSavedCollectionCard(place, "Popular Nearby"))}
@@ -10740,22 +10720,21 @@ export default function MapPage() {
             </div>
           </section>
 
-          <div className="dp-panel-bottom-spacer" aria-hidden="true" />
+          <section className="dp-saved-action-row dp-saved-primary-actions" aria-label="Saved downtown actions">
+            <button type="button" onClick={() => openResidentDiscovery("All")}>
+              <Navigation aria-hidden="true" />
+              <span>Nearby</span>
+            </button>
+            <button type="button" onClick={() => openResidentDiscovery("Events")}>
+              <CalendarDays aria-hidden="true" />
+              <span>Events</span>
+            </button>
+            <button type="button" onClick={shareSavedCollection}>
+              <Send aria-hidden="true" />
+              <span>Share</span>
+            </button>
+          </section>
         </div>
-        <footer className="dp-saved-sticky-footer dp-map-sheet-action-footer">
-          <button type="button" onClick={() => openResidentDiscovery("All")}>
-            <Navigation aria-hidden="true" />
-            <span>Nearby</span>
-          </button>
-          <button type="button" onClick={() => openResidentDiscovery("Events")}>
-            <CalendarDays aria-hidden="true" />
-            <span>Events</span>
-          </button>
-          <button type="button" onClick={shareSavedCollection}>
-            <Send aria-hidden="true" />
-            <span>Share</span>
-          </button>
-        </footer>
       </div>
     );
   }
@@ -12301,7 +12280,7 @@ export default function MapPage() {
                   <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
                   <h2 className="dp-map-panel-title">Your Downtown Card</h2>
                   <p className="dp-map-panel-subtitle">
-                    Show your card to verify resident access, check into participating events, and connect with eligible Downtown Perks benefits.
+                    Use your card when a participating place, event, or building benefit asks for resident access.
                   </p>
                 </section>
 
@@ -12313,25 +12292,25 @@ export default function MapPage() {
                   <h3 className="dp-card-credential-title">Downtown Austin</h3>
                   <p className="dp-card-credential-copy">
                     {passPresented
-                      ? "Demo scan complete. This resident pass is ready for partner access, event check-in, or perk verification."
-                      : "Show this QR code when a partner asks for resident access."}
+                      ? "Resident access is confirmed. You can use this card for eligible perks, event check-ins, and participating partner experiences."
+                      : "Show this QR code when a participating partner asks to confirm resident access."}
                   </p>
                   <div className="dp-card-qr-wrap">
                     <DemoQrCode code={DEMO_CARD_CODE} className="dp-card-qr-image" />
                   </div>
                   <div className="dp-card-scan-demo" aria-live="polite">
-                    <span>{passPresented ? "Resident access verified" : "Demo scanner waiting"}</span>
+                    <span>{passPresented ? "Resident access confirmed" : "Ready when a partner asks"}</span>
                     <button type="button" onClick={presentResidentPass}>
-                      {passPresented ? "Scan Again" : "Run Demo Scan"}
+                      {passPresented ? "Show Again" : "Confirm Access"}
                     </button>
                   </div>
                   <div className="dp-card-verification-row">
-                    <span>{passPresented ? "Verified scan · Downtown Austin" : "Verified Resident · Downtown Austin"}</span>
+                    <span>{passPresented ? "Confirmed resident · Downtown Austin" : "Verified resident · Downtown Austin"}</span>
                     <code>{DEMO_CARD_CODE}</code>
                   </div>
                 </section>
 
-                <MapPanelMatrix label="MEMBERSHIP">
+                <MapPanelMatrix label="RESIDENT STATUS">
                   <MapPanelMatrixRow label="Status" value="Verified Resident" />
                   <MapPanelMatrixRow label="Access" value="Downtown Austin" />
                   <MapPanelMatrixRow label="Active Through" value="December 2026" />
@@ -12340,23 +12319,23 @@ export default function MapPage() {
 
                 <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Current access">
                   <p className="dp-map-panel-section-label">CURRENT ACCESS</p>
-                  <h3 className="dp-map-panel-section-title">Resident welcome access</h3>
-                  <p className="dp-map-panel-body-copy">Participating partners may offer resident-only benefits, event access, featured experiences, or limited-time offers through Downtown Perks.</p>
-                  <span className="dp-map-panel-small-note">Available when active</span>
+                  <h3 className="dp-map-panel-section-title">Resident benefits nearby</h3>
+                  <p className="dp-map-panel-body-copy">Participating places can use this card for eligible resident perks, event entry, featured experiences, and limited-time offers.</p>
+                  <span className="dp-map-panel-small-note">Availability can vary by partner, event, and building.</span>
                 </section>
 
                 <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Tonight nearby">
                   <p className="dp-map-panel-section-label">TONIGHT NEARBY</p>
-                  <p className="dp-map-panel-body-copy">Two walkable events are nearby tonight. Open the events layer to see what is happening before you head out.</p>
+                  <p className="dp-map-panel-body-copy">Open the Events layer to see walkable plans, check-in moments, and resident-friendly experiences before you head out.</p>
                 </section>
 
                 <section className="dp-map-panel-note">
-                  <p className="dp-map-panel-section-label">RESIDENT REFUND RULE</p>
-                  <p className="dp-map-panel-body-copy">If your building joins Downtown Perks after you purchase resident access, we will automatically refund or credit your membership.</p>
+                  <p className="dp-map-panel-section-label">BUILDING MEMBERSHIP</p>
+                  <p className="dp-map-panel-body-copy">If your building joins Downtown Perks after you purchase individual access, your resident membership can be credited or refunded through the building plan.</p>
                 </section>
             </div>
             <footer className="dp-map-sheet-action-footer">
-              <MapPanelButton action="open-detail" label={passPresented ? "Verified" : "Show QR"} ariaLabel={passPresented ? "Show verified resident QR again" : "Show resident QR code"} variant="primary" onPress={presentResidentPass} />
+              <MapPanelButton action="open-detail" label={passPresented ? "Confirmed" : "Show QR"} ariaLabel={passPresented ? "Show confirmed resident QR again" : "Show resident QR code"} variant="primary" onPress={presentResidentPass} />
               <div className="dp-map-sheet-action-grid">
                 <MapPanelButton action="open-detail" label="Add Wallet" ariaLabel={walletAdded ? "Add wallet already completed" : "Add card to wallet"} variant="secondary" onPress={saveResidentPassForLater} />
                 <MapPanelButton action="open-filter" label="Perks" ariaLabel="Open Perks panel" variant="secondary" onPress={() => switchMode("resident", "map", "Perks")} />
@@ -12504,7 +12483,7 @@ export default function MapPage() {
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isLegendsDirectoryLayer
               ? "dp-map-directory-sheet dp-legends-directory-sheet"
-              : `dp-panel-shell dp-map-drawer-shell ${activeBottomTab === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
+              : `dp-panel-shell dp-map-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activeBottomTab === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
             style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
@@ -12585,11 +12564,11 @@ export default function MapPage() {
                     Active Legends inventory with building context, walkable demand, and nearby lifestyle signals for each address.
                   </span>
                   <strong className="dp-map-directory-count">
-                    {drawerPreviewPlaces.filter((place) => isRentalEntity(place) || getLegendsResidentialProfileForPlace(place) || isLegendsMapPlace(place)).length || discoverDisplayPlaces.length} active listings
+                    {legendsDirectoryPlaces.length || discoverDisplayPlaces.length} active listings
                   </strong>
                 </section>
                 <div className="dp-map-directory-list">
-                  {drawerPreviewPlaces.filter((place) => isRentalEntity(place) || getLegendsResidentialProfileForPlace(place) || isLegendsMapPlace(place)).map((place) => (
+                  {legendsDirectoryPlaces.map((place) => (
                     isRentalEntity(place) ? (
                       <LegendsRentalResultRow
                         key={place.id}
@@ -12625,9 +12604,9 @@ export default function MapPage() {
                       })()
                     )
                   ))}
-                  {!drawerPreviewPlaces.length && (
+                  {!legendsDirectoryPlaces.length && (
                     <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
-                      No active Legends inventory is visible yet. Try Living Here, Rentals, or a nearby residential search.
+                      No active Legends inventory is visible yet. Try Legends, Listings, or a nearby real estate search.
                     </div>
                   )}
                   <div className="dp-panel-bottom-spacer" aria-hidden="true" />

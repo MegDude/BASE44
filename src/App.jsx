@@ -1,18 +1,17 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import Layout from "./components/Layout";
-import MapPage from "./pages/Map";
-import PartnerWorkspace from "./pages/PartnerWorkspace";
-import PartnerLifecycle from "./pages/PartnerLifecycle";
-import Dashboard from "./pages/Dashboard";
-import PartnersDashboardPage from "./pages/partners/Dashboard";
 
 // Platform pages
-import { lazy, Suspense } from "react";
+const MapPage = lazy(() => import("./pages/Map"));
+const PartnerWorkspace = lazy(() => import("./pages/PartnerWorkspace"));
+const PartnerLifecycle = lazy(() => import("./pages/PartnerLifecycle"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
@@ -125,8 +124,9 @@ function ProductRoutes() {
   return (
     <>
       <HashScroll />
-      <Routes>
-        <Route element={<Layout />}>
+      <Suspense fallback={<MarketingFallback />}>
+        <Routes>
+          <Route element={<Layout />}>
 
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
           <Route path="/" element={<Suspense fallback={<MarketingFallback />}><HomePage /></Suspense>} />
@@ -302,8 +302,9 @@ function ProductRoutes() {
 
           {/* Catch-all → production app route */}
           <Route path="*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
-        </Route>
-      </Routes>
+          </Route>
+        </Routes>
+      </Suspense>
     </>
   );
 }

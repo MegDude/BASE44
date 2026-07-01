@@ -189,12 +189,12 @@ function resolveTourStopImage(name, category, district, locationLabel) {
   const text = [name, category, district, locationLabel].join(" ").toLowerCase();
   if (text.includes("ballet austin")) return "/images/civic/ballet-austin-downtown.png";
   if (text.includes("waterloo") || text.includes("waller creek")) return "/images/imported/perks/waterlook-trail.png";
-  if (text.includes("republic square")) return "/images/imported/perks/republic-square.jpg";
-  if (text.includes("lady bird") || text.includes("hike-and-bike") || text.includes("trail")) return "/images/imported/perks/downtonw-trail.jpg";
+  if (text.includes("republic square")) return "/images/map-entities/perks/civic_republic_square_1779052838327.png";
+  if (text.includes("lady bird") || text.includes("hike-and-bike") || text.includes("trail")) return "/images/map-entities/perks/civic_lake_trail_1779052853070.png";
   if (text.includes("blanton") || text.includes("museum")) return "/images/imported/perks/visitors-at-second-saturdays-at-the-blanton-3-3-1024x683.jpg";
-  if (text.includes("gallery") || text.includes("art") || text.includes("mural")) return "/images/imported/perks/art-gallery-johnston-exhibition-768x512.jpg";
+  if (text.includes("gallery") || text.includes("art") || text.includes("mural")) return "/images/map-entities/perks/downtown_art_walk_1779052670656.png";
   if (text.includes("park") || text.includes("square") || text.includes("grounds")) return "/images/imported/perks/republic-square-yoga.jpg";
-  if (text.includes("theatre") || text.includes("amphitheater") || text.includes("music")) return "/images/imported/perks/hotel-van-zandt-first-thiursdays.png";
+  if (text.includes("theatre") || text.includes("amphitheater") || text.includes("music")) return "/images/map-entities/perks/moody_theater_live_music_1779052684229.png";
   return "/images/imported/perks/blanton-grounds-photo-by-casey-dunn.jpg";
 }
 

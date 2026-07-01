@@ -565,6 +565,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
 }
 
 /* Final resident and shared panel pass: saved/card tabs, action rows, and nearby rails stay unclipped. */
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell.dp-saved-drawer-shell,
 html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
   height: auto !important;
   max-height: min(88dvh, calc(100dvh - 64px)) !important;
@@ -9873,4 +9874,807 @@ html body #root#root .dp-map-page.dp-map-page :is(
   white-space: normal !important;
   overflow-wrap: anywhere !important;
   line-height: 1.3 !important;
+}
+
+/* Absolute final resident saved/card lock: keep Saved resident-native and Card visually aligned. */
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
+  width: min(100%, 430px) !important;
+  max-width: calc(100vw - 12px) !important;
+  height: auto !important;
+  max-height: min(82dvh, calc(100dvh - 86px)) !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 14px 34px rgba(11, 31, 51, 0.12) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel.dp-saved-downtown-panel {
+  display: flex !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-downtown-scroll.dp-saved-downtown-scroll {
+  display: grid !important;
+  gap: 12px !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 2px 0 8px !important;
+  scroll-padding-bottom: 16px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-downtown-scroll::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header.dp-saved-downtown-header {
+  display: grid !important;
+  gap: 4px !important;
+  margin: 0 !important;
+  padding: 0 2px 2px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header h2 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: clamp(22px, 5.8vw, 29px) !important;
+  font-weight: 620 !important;
+  line-height: 1.06 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header :is(p, strong) {
+  margin: 0 !important;
+  color: #9a7a32 !important;
+  font-size: 9.5px !important;
+  font-weight: 620 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header span {
+  max-width: 40ch !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.38 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail.dp-saved-overview-rail {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail span {
+  display: grid !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  align-content: center !important;
+  padding: 8px 7px !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+  font-weight: 560 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: uppercase !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail strong {
+  display: block !important;
+  color: #0B1F33 !important;
+  font-size: 20px !important;
+  font-weight: 620 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel :is(.dp-saved-summary-grid, .dp-partner-summary-grid) {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-section {
+  display: grid !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-section-heading {
+  margin: 0 !important;
+  padding: 0 2px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-section-heading h3,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section h3 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 620 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-card {
+  display: grid !important;
+  grid-template-columns: 78px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  min-height: 78px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-card-media {
+  width: 78px !important;
+  height: 78px !important;
+  min-width: 78px !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: rgba(11, 31, 51, 0.04) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-card-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-card-body {
+  display: grid !important;
+  min-width: 0 !important;
+  align-content: center !important;
+  gap: 4px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-card-body strong {
+  min-width: 0 !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 620 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-card-body :is(span, em) {
+  min-width: 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 1.28 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section {
+  display: grid !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section > div,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-action-row {
+  display: flex !important;
+  gap: 7px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section > div::-webkit-scrollbar,
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-action-row::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel :is(.dp-saved-ask-section button, .dp-saved-action-row button) {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-width: max-content !important;
+  min-height: 34px !important;
+  max-width: min(76vw, 248px) !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 11px !important;
+  background: rgba(11, 31, 51, 0.035) !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  font-weight: 560 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-action-row button:first-child {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-action-row svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-sticky-footer {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet--resident-card.dp-resident-card-sheet {
+  width: min(100%, 430px) !important;
+  max-width: calc(100vw - 12px) !important;
+  max-height: min(82dvh, calc(100dvh - 86px)) !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 14px 34px rgba(11, 31, 51, 0.12) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-scroll {
+  gap: 12px !important;
+  min-height: 0 !important;
+  padding: 10px 12px 12px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-resident-card-identity, .dp-card-credential, .dp-map-panel-section, .dp-map-panel-note) {
+  margin: 0 !important;
+  padding: 0 0 12px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-map-panel-title, .dp-card-credential-title, .dp-map-panel-section-title) {
+  color: #0B1F33 !important;
+  font-size: clamp(17px, 4.45vw, 21px) !important;
+  font-weight: 620 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-map-panel-subtitle, .dp-card-credential-copy, .dp-map-panel-body-copy, .dp-map-panel-small-note) {
+  color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential::before,
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential::after,
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-qr-wrap::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-qr-wrap {
+  width: min(46vw, 156px) !important;
+  max-width: 156px !important;
+  margin: 12px auto 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-footer {
+  display: flex !important;
+  gap: 8px !important;
+  padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: #ffffff !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-footer :is(.dp-map-panel-button, .dp-app-button, button, a) {
+  flex: 0 0 auto !important;
+  min-height: 34px !important;
+  min-width: 72px !important;
+  padding: 0 12px !important;
+  border-radius: 11px !important;
+  box-shadow: none !important;
+  font-size: 10.75px !important;
+  font-weight: 560 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+@media (min-width: 700px) {
+  html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell.dp-saved-drawer-shell,
+  html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel),
+  html body #root#root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet--resident-card.dp-resident-card-sheet {
+    border-radius: 18px !important;
+    max-height: min(720px, calc(100dvh - 32px)) !important;
+  }
+}
+
+/* Absolute final full-width panel polish: white, scrollable, edge-safe, and unboxed. */
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-drawer-shell,
+  aside.dp-map-directory-sheet,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet
+) {
+  box-sizing: border-box !important;
+  width: calc(100vw - 8px) !important;
+  max-width: calc(100vw - 8px) !important;
+  min-width: 0 !important;
+  max-height: min(88dvh, calc(100dvh - 44px)) !important;
+  margin-inline: auto !important;
+  border-color: rgba(11, 31, 51, 0.05) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-map-directory-list,
+  .dp-tabs-content,
+  .dp-tab-stack,
+  .dp-saved-downtown-scroll
+) {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-toolbar,
+  .dp-map-directory-toolbar,
+  .dp-map-sheet-toolbar,
+  .dp-map-sheet-action-footer,
+  .dp-panel-footer
+) {
+  max-width: 100% !important;
+  flex-shrink: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-close,
+  .dp-panel-back,
+  .dp-map-directory-close,
+  .dp-map-directory-back,
+  .dp-map-sheet-toolbar .dp-map-panel-button,
+  .dp-map-sheet-action-footer button,
+  .dp-map-sheet-action-footer a
+) {
+  flex: 0 0 auto !important;
+  max-width: min(58vw, 180px) !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell.dp-saved-drawer-shell,
+html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
+  width: calc(100vw - 8px) !important;
+  max-width: calc(100vw - 8px) !important;
+  height: auto !important;
+  max-height: min(88dvh, calc(100dvh - 44px)) !important;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  border: 0 !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 -12px 28px rgba(11, 31, 51, 0.1) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel.dp-saved-downtown-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-downtown-scroll.dp-saved-downtown-scroll {
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 14px !important;
+  padding: 2px 0 10px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header.dp-saved-downtown-header {
+  padding-inline: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail.dp-saved-overview-rail {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail span {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: baseline !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  font-size: 11px !important;
+  font-weight: 560 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail strong {
+  font-size: 15px !important;
+  font-weight: 680 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-grid {
+  gap: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-card {
+  grid-template-columns: 76px minmax(0, 1fr) !important;
+  gap: 11px !important;
+  min-height: 86px !important;
+  padding: 9px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-card + .dp-saved-collection-card {
+  border-top: 1px solid rgba(11, 31, 51, 0.06) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-card-media {
+  width: 76px !important;
+  height: 76px !important;
+  min-width: 76px !important;
+  border-radius: 10px !important;
+  background: #f7f8f8 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section {
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel :is(.dp-saved-ask-section button, .dp-saved-action-row button) {
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.055) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-action-row button:first-child {
+  background: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer,
+  aside.dp-map-drawer-panel,
+  .dp-map-sheet,
+  .dp-map-directory-sheet
+) :is(
+  .dp-panel-linked-card,
+  .dp-info-row,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-resident-card-identity,
+  .dp-card-credential
+) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+@media (min-width: 700px) {
+  html body #root#root .dp-map-page.dp-map-page :is(
+    aside.dp-panel-shell,
+    aside.dp-map-drawer-shell,
+    aside.dp-map-directory-sheet,
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-panel.dp-detail-drawer,
+    .dp-map-sheet,
+    .dp-pass-panel,
+    .dp-resident-card-sheet
+  ) {
+    width: min(760px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: min(86dvh, calc(100dvh - 32px)) !important;
+    border-radius: 18px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell.dp-saved-drawer-shell,
+  html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-saved-downtown-panel) {
+    width: min(760px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 18px !important;
+  }
+}
+
+/* Last-word rendered class override for full-width, bright-white, reachable app panels. */
+.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet
+) {
+  box-sizing: border-box !important;
+  width: calc(100vw - 8px) !important;
+  max-width: calc(100vw - 8px) !important;
+  min-width: 0 !important;
+  max-height: min(88dvh, calc(100dvh - 44px)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: 0 !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 -12px 28px rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  overflow: hidden !important;
+}
+
+.dp-map-page :is(.dp-panel-scroll, .dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll, .dp-map-sheet-scroll, .dp-map-directory-list, .dp-saved-downtown-scroll) {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.dp-map-page .dp-saved-drawer-shell,
+.dp-map-page .dp-saved-downtown-panel {
+  width: calc(100vw - 8px) !important;
+  max-width: calc(100vw - 8px) !important;
+}
+
+.dp-map-page .dp-saved-downtown-panel {
+  width: 100% !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.dp-map-page .dp-saved-overview-rail span,
+.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-card,
+.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section,
+.dp-map-page .dp-saved-downtown-panel .dp-saved-action-row button {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.dp-map-page .dp-saved-overview-rail span,
+.dp-map-page .dp-saved-downtown-panel .dp-saved-ask-section {
+  background: transparent !important;
+}
+
+.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-card {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-card + .dp-saved-collection-card {
+  border-top: 1px solid rgba(11, 31, 51, 0.06) !important;
+}
+
+@media (min-width: 700px) {
+  .dp-map-page :is(
+    aside.dp-panel-shell,
+    aside.dp-map-drawer-shell,
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-directory-sheet,
+    .dp-map-sheet,
+    .dp-pass-panel,
+    .dp-resident-card-sheet
+  ) {
+    width: min(760px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 18px !important;
+  }
+
+  .dp-map-page .dp-saved-drawer-shell {
+    width: min(760px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+}
+
+/* Last-word bottom navigation lock: fixed, full-width, and edge-safe. */
+html body #root#root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav),
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell {
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 700 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+  pointer-events: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-width: 0 !important;
+  min-height: 58px !important;
+  margin: 0 !important;
+  padding: 5px max(8px, env(safe-area-inset-left, 0px)) 6px max(8px, env(safe-area-inset-right, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  background-image: none !important;
+  box-shadow: 0 -8px 24px rgba(11, 31, 51, 0.1) !important;
+  pointer-events: auto !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav :is(button, a) {
+  display: grid !important;
+  grid-template-rows: 18px auto !important;
+  place-items: center !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 47px !important;
+  height: 47px !important;
+  padding: 4px 2px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 10px !important;
+  font-weight: 560 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav :is(button, a) span:not(.dp-nav-activity-badge) {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav :is(button, a) :is(svg, .lucide) {
+  width: 17px !important;
+  height: 17px !important;
+  color: currentColor !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active) {
+  background: rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
 }
