@@ -649,7 +649,7 @@ export default function SplashPage({
             autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             onEnded={finishIntro}
             onError={finishIntro}
           />

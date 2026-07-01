@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Component, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Marker, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -2950,15 +2950,16 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes })
   const escapedJsId = escapeJsString(place.id);
   const escapedLabel = escapeHtmlAttribute(ariaLabel);
   const pinLabel = escapeHtmlAttribute(pin.label);
-  const kind = escapeHtmlAttribute(getMarkerDataKind(place));
-  const imagePinClass = pin.asset ? "dp-live-pin--image-asset" : "";
+  const iconKey = getEntityIconKey(place);
+  const kind = escapeHtmlAttribute(iconKey);
   const activeClass = selected ? "is-selected is-active" : "";
   const pulseClass = "";
   const rental = place?.raw?.rentalListing || place?.rentalListing || {};
   const rentalPriceLabel = place?.priceLabel || place?.raw?.priceLabel || rental.priceLabel;
   const priceLabel = isRentalEntity(place) && rentalPriceLabel ? `<span class="dp-live-pin__price">${escapeHtmlAttribute(rentalPriceLabel)}</span>` : "";
+  const iconSvg = entityIconSvg(iconKey);
 
-  return `<button type="button" class="dp-live-pin ${imagePinClass} ${classes} ${activeClass} ${pulseClass}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}" onclick="window.__dpOpenMapPin && window.__dpOpenMapPin('${escapedJsId}')"><span class="dp-live-pin__halo" aria-hidden="true"></span><span class="dp-live-pin__core">${pin.glyph}</span>${priceLabel}</button>`;
+  return `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}" onclick="window.__dpOpenMapPin && window.__dpOpenMapPin('${escapedJsId}')"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span>${priceLabel}</button>`;
 }
 
 function getMarkerDataKind(place) {
@@ -2973,6 +2974,127 @@ function getMarkerDataKind(place) {
   if (isBrandEntity(place)) return "brand";
   if (isVenueEntity(place)) return "venue";
   return String(place?.type || "place").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+function getEntityIconKey(entity) {
+  const haystack = [
+    entity?.icon,
+    entity?.kind,
+    entity?.type,
+    entity?.category,
+    entity?.group,
+    entity?.tags?.join?.(" "),
+    entity?.title,
+    entity?.name,
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  if (haystack.includes("legend")) return "legends";
+  if (haystack.includes("inkind")) return "inkind";
+  if (haystack.includes("coffee") || haystack.includes("cafe") || haystack.includes("espresso")) return "coffee";
+  if (haystack.includes("drink") || haystack.includes("bar") || haystack.includes("cocktail") || haystack.includes("nightlife")) return "drinks";
+  if (haystack.includes("event")) return "event";
+  if (haystack.includes("music") || haystack.includes("live")) return "music";
+  if (haystack.includes("hotel")) return "hotel";
+  if (haystack.includes("property") || haystack.includes("residential") || haystack.includes("building") || haystack.includes("rental")) return "property";
+  if (haystack.includes("civic") || haystack.includes("museum") || haystack.includes("art") || haystack.includes("culture")) return "civic";
+  if (haystack.includes("retail") || haystack.includes("shop")) return "retail";
+  if (haystack.includes("fitness") || haystack.includes("gym")) return "fitness";
+  if (haystack.includes("wellness") || haystack.includes("spa") || haystack.includes("recovery")) return "wellness";
+  if (haystack.includes("parking")) return "parking";
+  if (haystack.includes("service")) return "service";
+  if (haystack.includes("restaurant") || haystack.includes("dining") || haystack.includes("food") || haystack.includes("sushi")) return "dining";
+  if (haystack.includes("partner")) return "partner";
+  if (haystack.includes("perk") || haystack.includes("offer")) return "perk";
+  return "perk";
+}
+
+const ENTITY_ICON_PATHS = {
+  dining: '<path d="M4 3v8"/><path d="M8 3v8"/><path d="M6 3v18"/><path d="M14 3v18"/><path d="M14 3c3 2 4 5 4 8 0 2-1 3-4 3"/>',
+  inkind: '<path d="M4 3v8"/><path d="M8 3v8"/><path d="M6 3v18"/><path d="M14 3v18"/><path d="M14 3c3 2 4 5 4 8 0 2-1 3-4 3"/>',
+  coffee: '<path d="M4 8h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2"/><path d="M6 2v2"/><path d="M10 2v2"/><path d="M14 2v2"/>',
+  drinks: '<path d="M8 21h8"/><path d="M12 15v6"/><path d="M5 3h14l-2 7a5 5 0 0 1-10 0Z"/>',
+  event: '<path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/>',
+  music: '<path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/>',
+  hotel: '<path d="M3 21V9a2 2 0 0 1 2-2h8a4 4 0 0 1 4 4v10"/><path d="M3 14h18"/><path d="M7 11h.01"/>',
+  property: '<path d="M4 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 21v-5h4v5"/><path d="M8 7h.01"/><path d="M12 7h.01"/><path d="M8 11h.01"/><path d="M12 11h.01"/>',
+  civic: '<path d="M3 21h18"/><path d="M4 10h16"/><path d="M6 10v8"/><path d="M10 10v8"/><path d="M14 10v8"/><path d="M18 10v8"/><path d="M12 3 4 8h16Z"/>',
+  retail: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  wellness: '<path d="M11 20A7 7 0 0 1 4 13c0-5 7-10 8-10s8 5 8 10a7 7 0 0 1-7 7"/><path d="M12 20V9"/>',
+  fitness: '<path d="M6 6v12"/><path d="M18 6v12"/><path d="M6 12h12"/><path d="M3 9v6"/><path d="M21 9v6"/>',
+  parking: '<path d="M7 21V3h7a5 5 0 0 1 0 10H7"/><path d="M7 13h7"/>',
+  service: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-3-3Z"/>',
+  partner: '<path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9Z"/>',
+  perk: '<path d="M19 5 5 19"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/>',
+  legends: '<path fill="currentColor" stroke="none" d="M12 12.8c-.6-1.5-1.7-3.8-3.4-5.4C6.9 5.8 4.5 4.7 2.9 5.9 1.2 7.2 2 10.5 4 12.5c1.7 1.7 4.5 2.2 6.4 1.8-.4 1.6-1.4 3.1-2.9 4.5l1.3 1.3c1.5-1.4 2.5-2.9 3.1-4.5.6 1.6 1.6 3.1 3.1 4.5l1.3-1.3c-1.5-1.4-2.5-2.9-2.9-4.5 1.9.4 4.7-.1 6.4-1.8 2-2 2.8-5.3 1.1-6.6-1.6-1.2-4-.1-5.7 1.5-1.6 1.6-2.7 3.9-3.2 5.4z"/>',
+};
+
+function entityIconSvg(iconKey) {
+  const paths = ENTITY_ICON_PATHS[iconKey] || ENTITY_ICON_PATHS.perk;
+  return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">${paths}</svg>`;
+}
+
+const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
+  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+  { featureType: "poi", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.business", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.medical", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.school", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.sports_complex", stylers: [{ visibility: "off" }] },
+  { featureType: "transit.station", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ visibility: "off" }] },
+  { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#F8F8F5" }] },
+  { featureType: "landscape.man_made", elementType: "geometry", stylers: [{ color: "#EFEDE7" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#DDE9DF" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
+  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#F7F6F3" }] },
+  { featureType: "road.local", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#647278" }, { weight: 1 }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 2 }] },
+  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#60736D" }, { weight: 1 }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#DCEBF3" }] },
+];
+
+function svgMarkerDataUrl(svg) {
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function legacyDowntownMarkerIcon(maps, place, selected = false) {
+  const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
+  const isInKind = isInKindEntity(place);
+  const size = selected ? 38 : 34;
+  const fill = selected ? "#C8A96A" : isLegends ? "#C8A96A" : "#0B1F33";
+  const stroke = selected ? "#0B1F33" : isInKind ? "#C8A96A" : "#FFFFFF";
+  const iconColor = selected || isLegends ? "#0B1F33" : "#C8A96A";
+  const iconKey = getEntityIconKey(place);
+  const paths = ENTITY_ICON_PATHS[iconKey] || ENTITY_ICON_PATHS.perk;
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="${fill}" stroke="${stroke}" stroke-width="2.4"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.5}" fill="none" stroke="#C8A96A" stroke-opacity="${selected ? "0.85" : "0.28"}" stroke-width="1"/>
+      <g transform="translate(${size / 2 - 9} ${size / 2 - 9}) scale(0.75)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+    </svg>`;
+  return {
+    url: svgMarkerDataUrl(svg),
+    scaledSize: new maps.Size(size, size),
+    anchor: new maps.Point(size / 2, size / 2),
+  };
+}
+
+function legacyDowntownClusterIcon(maps, count) {
+  const safeCount = Math.min(Number(count) || 0, 99);
+  const size = safeCount > 49 ? 52 : safeCount > 9 ? 44 : 36;
+  const label = safeCount > 99 ? "99+" : String(safeCount);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="#0B1F33" stroke="#C8A96A" stroke-width="3"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 7}" fill="none" stroke="#FFFFFF" stroke-opacity="0.38" stroke-width="1"/>
+      <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#FFFFFF">${label}</text>
+    </svg>`;
+  return {
+    url: svgMarkerDataUrl(svg),
+    scaledSize: new maps.Size(size, size),
+    anchor: new maps.Point(size / 2, size / 2),
+  };
 }
 
 function pinIcon(place, selected, pulsing = false) {
@@ -9702,6 +9824,22 @@ function GoogleMapCanvas({
 
   useEffect(() => {
     let cancelled = false;
+    let readinessTimeoutId;
+    let markedReady = false;
+    const markMapReady = () => {
+      if (cancelled || markedReady) return;
+      markedReady = true;
+      if (readinessTimeoutId) window.clearTimeout(readinessTimeoutId);
+      setLoadState("ready");
+      publishViewport();
+    };
+    const failMapLoad = (errorType = "authorization-failure") => {
+      if (cancelled) return;
+      if (readinessTimeoutId) window.clearTimeout(readinessTimeoutId);
+      containerRef.current?.replaceChildren();
+      setLoadState("error");
+      setLoadError(errorType);
+    };
     const configError = getGoogleMapsConfigError();
     if (configError) {
       setLoadState("error");
@@ -9714,43 +9852,67 @@ function GoogleMapCanvas({
       .then((maps) => {
         if (cancelled || !containerRef.current) return;
         mapsRef.current = maps;
-        if (!mapRef.current) {
-          mapRef.current = new maps.Map(containerRef.current, {
-            center: { lat: center[0], lng: center[1] },
-            zoom,
-            minZoom: 13,
-            maxZoom: 20,
-            disableDefaultUI: true,
-            clickableIcons: false,
-            gestureHandling: "greedy",
-            mapId: import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || undefined,
-          });
-          mapRef.current.addListener("dragstart", () => onUserNavigate?.());
-          mapRef.current.addListener("zoom_changed", () => onUserNavigate?.());
-          mapRef.current.addListener("idle", () => {
-            const map = mapRef.current;
-            if (!map) return;
-            const currentCenter = map.getCenter?.();
-            if (currentCenter) {
-              window.sessionStorage.setItem(
-                MAP_VIEW_STORAGE_KEY,
-                JSON.stringify({ center: [currentCenter.lat(), currentCenter.lng()], zoom: map.getZoom() }),
-              );
-            }
-            publishViewport();
-          });
+        try {
+          if (!mapRef.current) {
+            mapRef.current = new maps.Map(containerRef.current, {
+              center: { lat: center[0], lng: center[1] },
+              zoom,
+              minZoom: 13,
+              maxZoom: 20,
+              disableDefaultUI: true,
+              clickableIcons: false,
+              gestureHandling: "greedy",
+              mapId: import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || undefined,
+              styles: DOWNTOWN_PERKS_GOOGLE_MAP_STYLES,
+            });
+            mapRef.current.addListener("dragstart", () => onUserNavigate?.());
+            mapRef.current.addListener("zoom_changed", () => onUserNavigate?.());
+            mapRef.current.addListener("idle", () => {
+              const map = mapRef.current;
+              if (!map) return;
+              if (containerRef.current?.querySelector(".gm-err-container")) {
+                failMapLoad("authorization-failure");
+                return;
+              }
+              const currentCenter = map.getCenter?.();
+              if (currentCenter) {
+                window.sessionStorage.setItem(
+                  MAP_VIEW_STORAGE_KEY,
+                  JSON.stringify({ center: [currentCenter.lat(), currentCenter.lng()], zoom: map.getZoom() }),
+                );
+              }
+              publishViewport();
+              markMapReady();
+            });
+          } else if (containerRef.current.querySelector(".gm-style")) {
+            markMapReady();
+          }
+        } catch (error) {
+          if (cancelled) return;
+          failMapLoad(/api|auth|key|billing|quota/i.test(error?.message || "") ? "authorization-failure" : "map-initialization-failure");
+          return;
         }
-        setLoadState("ready");
-        publishViewport();
+        readinessTimeoutId = window.setTimeout(() => {
+          if (cancelled || markedReady) return;
+          if (containerRef.current?.querySelector(".gm-err-container")) {
+            failMapLoad("authorization-failure");
+            return;
+          }
+          if (containerRef.current?.querySelector(".gm-style")) {
+            markMapReady();
+            return;
+          }
+          failMapLoad("authorization-failure");
+        }, 4500);
       })
       .catch((error) => {
         if (cancelled) return;
-        setLoadState("error");
-        setLoadError(error?.message || "loader-failure");
+        failMapLoad(error?.message || "loader-failure");
       });
 
     return () => {
       cancelled = true;
+      if (readinessTimeoutId) window.clearTimeout(readinessTimeoutId);
     };
   }, [center, onUserNavigate, publishViewport, zoom]);
 
@@ -9797,12 +9959,16 @@ function GoogleMapCanvas({
       else marker?.setMap?.(null);
     });
     markersRef.current = [];
+    const canUseAdvancedMarkers = Boolean(
+      maps.marker?.AdvancedMarkerElement &&
+      (import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID),
+    );
 
     mapItems.forEach((item) => {
       if (item.type === "cluster") {
         const element = document.createElement("button");
         element.type = "button";
-        element.className = "dp-google-map-cluster";
+        element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
         element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
         element.setAttribute("aria-label", `Open ${item.count} places nearby`);
         element.addEventListener("click", () => {
@@ -9817,9 +9983,16 @@ function GoogleMapCanvas({
           }
         });
 
-        const marker = maps.marker?.AdvancedMarkerElement
-          ? new maps.marker.AdvancedMarkerElement({ map, position: { lat: item.coords[0], lng: item.coords[1] }, content: element, title: `${item.count} places nearby`, anchorLeft: "-50%", anchorTop: "-50%" })
-          : new maps.Marker({ map, position: { lat: item.coords[0], lng: item.coords[1] }, title: `${item.count} places nearby`, label: String(Math.min(item.count, 99)) });
+        const marker = canUseAdvancedMarkers
+          ? new maps.marker.AdvancedMarkerElement({ map, position: { lat: item.coords[0], lng: item.coords[1] }, content: element, title: `${item.count} places nearby`, anchorLeft: "0", anchorTop: "0" })
+          : new maps.Marker({
+              map,
+              position: { lat: item.coords[0], lng: item.coords[1] },
+              title: `${item.count} places nearby`,
+              icon: legacyDowntownClusterIcon(maps, item.count),
+              optimized: true,
+            });
+        if (!canUseAdvancedMarkers) marker.addListener("click", () => onClusterOpen(item));
         markersRef.current.push(marker);
         return;
       }
@@ -9853,22 +10026,24 @@ function GoogleMapCanvas({
         onSelectNearestLegends(place);
       });
 
-      const marker = maps.marker?.AdvancedMarkerElement
+      const marker = canUseAdvancedMarkers
         ? new maps.marker.AdvancedMarkerElement({
             map,
             position: { lat: coords[0], lng: coords[1] },
             content: button || wrapper,
             title: place.name,
-            anchorLeft: "-50%",
-            anchorTop: "-50%",
+            anchorLeft: "0",
+            anchorTop: "0",
           })
         : new maps.Marker({
             map,
             position: { lat: coords[0], lng: coords[1] },
             title: place.name,
+            icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId),
+            optimized: true,
           });
 
-      if (!maps.marker?.AdvancedMarkerElement) {
+      if (!canUseAdvancedMarkers) {
         marker.addListener("click", () => onSelect(place));
       }
       markersRef.current.push(marker);
@@ -9883,9 +10058,13 @@ function GoogleMapCanvas({
     };
   }, [loadState, mapItems, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, selectedId]);
 
-  const errorCopy = loadError === "missing-api-key" || loadError === "invalid-api-key"
-    ? "Map could not load. Check Google Maps configuration."
-    : "Map could not load. Check Google Maps API configuration.";
+  const isConfigError = loadError === "missing-api-key" || loadError === "invalid-api-key";
+  const errorTitle = isConfigError ? "Google Maps is not configured." : "Google Maps could not load";
+  const errorCopy = isConfigError
+    ? "Add VITE_GOOGLE_MAPS_API_KEY to .env.local."
+    : loadError === "authorization-failure"
+      ? "Map could not load. Enable Maps JavaScript API for this browser key and check referrer restrictions."
+      : "Map could not load. Check Google Maps API configuration.";
 
   return (
     <div className="dp-google-map-shell h-full w-full">
@@ -9897,12 +10076,46 @@ function GoogleMapCanvas({
       )}
       {loadState === "error" && (
         <div className="dp-google-map-state dp-google-map-state-error" role="alert">
-          <strong>Google Maps is not configured</strong>
+          <strong>{errorTitle}</strong>
           <span>{errorCopy}</span>
         </div>
       )}
     </div>
   );
+}
+
+function GoogleMapFailureState() {
+  return (
+    <div className="dp-google-map-shell h-full w-full">
+      <div className="dp-google-map-canvas h-full w-full" role="application" aria-label="Downtown Austin map" />
+      <div className="dp-google-map-state dp-google-map-state-error" role="alert">
+        <strong>Google Maps could not load</strong>
+        <span>Map could not load. Enable Maps JavaScript API for this browser key and check referrer restrictions.</span>
+      </div>
+    </div>
+  );
+}
+
+class GoogleMapErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error) {
+    if (import.meta.env.DEV) {
+      console.warn("[Downtown Perks] Google Maps render failed", error);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) return <GoogleMapFailureState />;
+    return this.props.children;
+  }
 }
 
 function ClusterMarker({ cluster, onOpen }) {
@@ -12002,7 +12215,7 @@ export default function MapPage() {
 
     const handlePinOpen = (event) => {
       if (event.target?.closest?.(".dp-map-drawer-shell, .dp-destination-drawer, .dp-panel-shell")) return;
-      const pin = event.target?.closest?.(".dp-live-pin[data-entity-id]");
+      const pin = event.target?.closest?.(".dp-map-pin[data-entity-id], .dp-live-pin[data-entity-id]");
       if (!pin) return;
       const entityId = pin.getAttribute("data-entity-id");
       const place = places.find((item) => item.id === entityId);
@@ -12014,7 +12227,7 @@ export default function MapPage() {
 
     const handleLeafletMarkerOpen = (event) => {
       if (event.target?.closest?.(".dp-map-drawer-shell, .dp-destination-drawer, .dp-panel-shell")) return;
-      if (event.target?.closest?.(".dp-live-pin[data-entity-id], .dp-leaflet-cluster")) return;
+      if (event.target?.closest?.(".dp-map-pin[data-entity-id], .dp-live-pin[data-entity-id], .dp-leaflet-cluster")) return;
       const marker = event.target?.closest?.(".leaflet-marker-icon.dp-leaflet-pin[title]");
       if (!marker) return;
       const title = marker.getAttribute("title");
@@ -12684,8 +12897,13 @@ export default function MapPage() {
   const primarySearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS);
   const advancedSearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_ADVANCED_SEARCH_FILTERS : RESIDENT_ADVANCED_SEARCH_FILTERS);
   const searchRollupLabel = `Ask the map · ${activeFilter === "All" ? (urlState.mode === "partner" ? "Partners" : "Residents") : activeFilter}`;
-  const hasOpenMapPanel = urlState.tab === "pass" || Boolean(selected) || Boolean(clusterDrawer) || (urlState.tab === "map" && MAP_NATIVE_PARTNER_PANELS.includes(activeBottomTab));
-  const showBottomNavigation = urlState.tab === "map" || urlState.tab === "pass";
+  const hasOpenMapPanel = urlState.tab === "pass" || Boolean(selected) || Boolean(clusterDrawer) || (
+    urlState.tab === "map" && (
+      MAP_NATIVE_PARTNER_PANELS.includes(activeBottomTab) ||
+      MAP_NATIVE_RESIDENT_PANELS.includes(activeBottomTab)
+    )
+  );
+  const showBottomNavigation = urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab);
 
   return (
     <div
@@ -12693,26 +12911,28 @@ export default function MapPage() {
       data-map-zoom={mapZoom.toFixed(2)}
     >
       <div className="absolute inset-x-0 bottom-0 top-0">
-        <GoogleMapCanvas
-          center={initialMapView.center}
-          zoom={initialMapView.zoom}
-          mapItems={clusteredMapItems}
-          fitPlaces={discoverDisplayPlaces}
-          fitActiveKey={mapResultBoundsKey}
-          fitEnabled={hasActiveCategoryScope && !isCleanResidentPerksLaunch && !userHasNavigatedMap}
-          selected={selected}
-          selectedId={selectedId}
-          pulsingPinId={pulsingPinId}
-          onSelect={selectPlace}
-          onSelectNearestLegends={selectNearestLegendsListing}
-          onClusterOpen={openClusterDrawer}
-          onZoomChange={(nextZoom) => setMapZoom((current) => (Math.abs(current - nextZoom) > 0.01 ? nextZoom : current))}
-          onViewportChange={updateViewportBounds}
-          onUserNavigate={() => {
-            setUserHasNavigatedMap(true);
-            if (urlState.mode !== "resident" && !consoleHasActiveWork) setConsoleCollapsed(true);
-          }}
-        />
+        <GoogleMapErrorBoundary>
+          <GoogleMapCanvas
+            center={initialMapView.center}
+            zoom={initialMapView.zoom}
+            mapItems={clusteredMapItems}
+            fitPlaces={discoverDisplayPlaces}
+            fitActiveKey={mapResultBoundsKey}
+            fitEnabled={hasActiveCategoryScope && !isCleanResidentPerksLaunch && !userHasNavigatedMap}
+            selected={selected}
+            selectedId={selectedId}
+            pulsingPinId={pulsingPinId}
+            onSelect={selectPlace}
+            onSelectNearestLegends={selectNearestLegendsListing}
+            onClusterOpen={openClusterDrawer}
+            onZoomChange={(nextZoom) => setMapZoom((current) => (Math.abs(current - nextZoom) > 0.01 ? nextZoom : current))}
+            onViewportChange={updateViewportBounds}
+            onUserNavigate={() => {
+              setUserHasNavigatedMap(true);
+              if (urlState.mode !== "resident" && !consoleHasActiveWork) setConsoleCollapsed(true);
+            }}
+          />
+        </GoogleMapErrorBoundary>
       </div>
 
       {urlState.tab === "map" && (
@@ -12964,7 +13184,7 @@ export default function MapPage() {
                     setActiveBottomTab("info");
                     navigate("/map?mode=resident&tab=info");
                   }}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "info"}
+                  aria-pressed={activeBottomTab === "info"}
                 >
                   <Info className="h-4 w-4" />
                   <span>Info</span>
@@ -13010,7 +13230,7 @@ export default function MapPage() {
                 <button
                   type="button"
                   onClick={() => openPartnerPanel("info")}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "info"}
+                  aria-pressed={activeBottomTab === "info"}
                 >
                   <Info className="h-4 w-4" />
                   <span>Info</span>

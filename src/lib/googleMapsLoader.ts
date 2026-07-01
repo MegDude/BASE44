@@ -1,17 +1,12 @@
 const GOOGLE_MAPS_SCRIPT_ID = "downtown-perks-google-maps-js";
+const GOOGLE_MAPS_CALLBACK_NAME = "__downtownPerksGoogleMapsReady";
 
 let googleMapsPromise: Promise<any> | null = null;
 let googleMapsLoadAttempts = 0;
 
 function readGoogleMapsApiKey() {
   const env = import.meta.env || {};
-  const rawKey = (
-    env.VITE_GOOGLE_MAPS_API_KEY ||
-    env.GOOGLE_MAPS_API_KEY ||
-    env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-    env.REACT_APP_GOOGLE_MAPS_API_KEY ||
-    ""
-  );
+  const rawKey = env.VITE_GOOGLE_MAPS_API_KEY || "";
   return String(rawKey).trim().replace(/^['"]|['"]$/g, "");
 }
 
@@ -19,8 +14,26 @@ function isPlausibleGoogleMapsApiKey(apiKey: string) {
   return /^AIza[0-9A-Za-z_-]{30,}$/.test(apiKey);
 }
 
-function normalizeLibraries(libraries: string[] = ["maps", "marker"]) {
+function normalizeLibraries(libraries: string[] = ["geometry", "marker", "places"]) {
   return Array.from(new Set(libraries.filter(Boolean))).sort();
+}
+
+function waitForGoogleMapsReady(resolve: (maps: any) => void, reject: (error: Error) => void) {
+  let attempts = 0;
+  const check = () => {
+    const maps = window.google?.maps;
+    if (maps?.Map) {
+      resolve(maps);
+      return;
+    }
+    attempts += 1;
+    if (attempts > 80) {
+      reject(new Error("loader-failure"));
+      return;
+    }
+    window.setTimeout(check, 100);
+  };
+  check();
 }
 
 export function getGoogleMapsConfigError() {
@@ -33,6 +46,9 @@ export function resetGoogleMapsLoaderForRetry() {
   googleMapsPromise = null;
   const existingScript = typeof document !== "undefined" ? document.getElementById(GOOGLE_MAPS_SCRIPT_ID) : null;
   existingScript?.remove();
+  if (typeof window !== "undefined") {
+    delete (window as any)[GOOGLE_MAPS_CALLBACK_NAME];
+  }
 }
 
 export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean } = {}) {
@@ -56,17 +72,48 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
     return googleMapsPromise;
   }
 
-  const requestedLibraries = normalizeLibraries(options.libraries || ["maps", "marker"]);
+  const requestedLibraries = normalizeLibraries(options.libraries || ["geometry", "marker", "places"]);
 
   googleMapsPromise = new Promise((resolve, reject) => {
+    let settled = false;
+    const resolveReady = () => {
+      if (settled) return;
+      waitForGoogleMapsReady(
+        (maps) => {
+          if (settled) return;
+          settled = true;
+          googleMapsLoadAttempts = 0;
+          resolve(maps);
+        },
+        (error) => {
+          if (settled) return;
+          settled = true;
+          reject(error);
+        },
+      );
+    };
+    const rejectOnce = (error: Error) => {
+      if (settled) return;
+      settled = true;
+      reject(error);
+    };
+    const previousAuthFailure = (window as any).gm_authFailure;
+
+    (window as any).gm_authFailure = () => {
+      previousAuthFailure?.();
+      googleMapsPromise = null;
+      rejectOnce(new Error("authorization-failure"));
+    };
+
     const existingScript = document.getElementById(GOOGLE_MAPS_SCRIPT_ID) as HTMLScriptElement | null;
     if (existingScript) {
       if (window.google?.maps) {
-        resolve(window.google.maps);
+        resolveReady();
         return;
       }
-      existingScript.addEventListener("load", () => resolve(window.google.maps), { once: true });
-      existingScript.addEventListener("error", () => reject(new Error("loader-failure")), { once: true });
+      (window as any)[GOOGLE_MAPS_CALLBACK_NAME] = resolveReady;
+      existingScript.addEventListener("load", resolveReady, { once: true });
+      existingScript.addEventListener("error", () => rejectOnce(new Error("loader-failure")), { once: true });
       return;
     }
 
@@ -76,29 +123,28 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
       v: "weekly",
       libraries: requestedLibraries.join(","),
       loading: "async",
+      callback: GOOGLE_MAPS_CALLBACK_NAME,
     });
 
+    (window as any)[GOOGLE_MAPS_CALLBACK_NAME] = resolveReady;
     script.id = GOOGLE_MAPS_SCRIPT_ID;
     script.async = true;
     script.defer = true;
     script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
-    script.onload = () => {
-      googleMapsLoadAttempts = 0;
-      if (window.google?.maps) resolve(window.google.maps);
-      else reject(new Error("loader-failure"));
-    };
+    script.onload = resolveReady;
     script.onerror = () => {
       const shouldRetry = options.retry !== false && googleMapsLoadAttempts < 1;
       googleMapsLoadAttempts += 1;
       googleMapsPromise = null;
       script.remove();
+      delete (window as any)[GOOGLE_MAPS_CALLBACK_NAME];
       if (shouldRetry) {
         window.setTimeout(() => {
-          loadGoogleMaps({ ...options, retry: false }).then(resolve).catch(reject);
+          loadGoogleMaps({ ...options, retry: false }).then(resolve).catch(rejectOnce);
         }, 550);
         return;
       }
-      reject(new Error("loader-failure"));
+      rejectOnce(new Error("loader-failure"));
     };
     document.head.appendChild(script);
   });

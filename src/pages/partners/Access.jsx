@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
@@ -83,7 +83,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
   const navigate = useNavigate();
   const location = useLocation();
-  const { signInPartner } = useAuth();
+  const { isAuthenticated, user, signInPartner } = useAuth();
   const searchParams = new URLSearchParams(location.search);
   const initialType = searchParams.get("type")
     || searchParams.get("partnerTypeSlug")
@@ -115,10 +115,15 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const firstYearEstimate = selectedPlan?.annualPrice == null ? null : selectedPlan.annualPrice + annualAddOnTotal + oneTimeTotal;
   const [campaignInterest, setCampaignInterest] = useState(initialCampaignInterest);
   const [reportingNeeds, setReportingNeeds] = useState(initialReportingNeeds);
-  const [signInEmail, setSignInEmail] = useState("");
   const [saved, setSaved] = useState(false);
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
+
+  useEffect(() => {
+    if (isSignUp || !isAuthenticated) return;
+    if (user?.organization_name || user?.partner_type === "partner") navigate("/partner-workspace/overview", { replace: true });
+    else navigate("/partners/apply", { replace: true });
+  }, [isAuthenticated, isSignUp, navigate, user]);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -209,9 +214,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     }
   }
 
-  function handleSignIn(event) {
-    event.preventDefault();
-    startPartnerSignIn(navigate, signInPartner, signInEmail);
+  function handleSignIn() {
+    startPartnerSignIn(navigate, signInPartner, user?.email || "partner@downtownperks.local");
   }
 
   return (
@@ -235,12 +239,12 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               Partner access
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Create your partner workspace." : "Open your partner workspace."}
+              {isSignUp ? "Create your partner workspace." : "Partner sign in"}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
                 ? "Add the basics once, then continue into the workspace to finish your profile, map placement, campaigns, and billing."
-                : "Sign in to manage your profile, map details, campaigns, reports, team access, and billing."}
+                : "Sign in to manage your organization, campaigns, offers, events, reports, team access, and billing."}
             </p>
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
@@ -249,9 +253,9 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 "Share the partner details your workspace needs.",
                 "Continue into setup without re-entering the same information.",
               ] : [
-                "Update partner details and map placement.",
-                "Manage campaigns, offers, and events.",
-                "Review reports, team access, and billing.",
+                "Use sign in if your organization already has a workspace.",
+                "Create a partner account if this is your first setup.",
+                "Request team access if someone else owns the organization.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
                   <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-[#C8A96A]" />
@@ -402,26 +406,18 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 </button>
               </form>
             ) : (
-              <form className="dp-partner-access-signin" onSubmit={handleSignIn}>
+              <div className="dp-partner-access-signin">
                 <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner account</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                  Sign in
+                  Choose your access path
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Enter your partner email to continue to your workspace.
+                  Continue to the right place for your organization, workspace, team access, and billing.
                 </p>
-                <div className="mt-6">
-                  <PartnerAccessField
-                    label="Partner email"
-                    type="email"
-                    value={signInEmail}
-                    onChange={setSignInEmail}
-                    required
-                  />
-                </div>
                 <div className="dp-partner-access-actions mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSignIn}
                     className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     <LogIn className="h-4 w-4 text-[#C8A96A]" />
@@ -431,11 +427,17 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     to="/partners/sign-up"
                     className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
-                    Register account
+                    Create partner account
                     <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
                   </Link>
+                  <Link
+                    to="/partners/apply?intent=request-access"
+                    className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                  >
+                    Request team access
+                  </Link>
                 </div>
-              </form>
+              </div>
             )}
           </div>
         </section>

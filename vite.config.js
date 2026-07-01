@@ -14,21 +14,16 @@ function normalizeGoogleMapsEnv(mode) {
   const googleMapsApiKey =
     process.env.VITE_GOOGLE_MAPS_API_KEY ||
     env.VITE_GOOGLE_MAPS_API_KEY ||
-    process.env.GOOGLE_MAPS_API_KEY ||
-    env.GOOGLE_MAPS_API_KEY ||
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-    env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
-    process.env.REACT_APP_GOOGLE_MAPS_API_KEY ||
-    env.REACT_APP_GOOGLE_MAPS_API_KEY ||
     "";
   const googleMapsMapId =
+    process.env.VITE_GOOGLE_MAP_ID ||
+    env.VITE_GOOGLE_MAP_ID ||
     process.env.VITE_GOOGLE_MAPS_MAP_ID ||
     env.VITE_GOOGLE_MAPS_MAP_ID ||
-    process.env.GOOGLE_MAPS_MAP_ID ||
-    env.GOOGLE_MAPS_MAP_ID ||
     "";
 
   process.env.VITE_GOOGLE_MAPS_API_KEY = googleMapsApiKey;
+  process.env.VITE_GOOGLE_MAP_ID = googleMapsMapId;
   process.env.VITE_GOOGLE_MAPS_MAP_ID = googleMapsMapId;
   return { googleMapsApiKey, googleMapsMapId };
 }
@@ -170,6 +165,7 @@ export default defineConfig(({ mode }) => {
   logLevel: 'error', // Suppress warnings, only show errors
   define: {
     "import.meta.env.VITE_GOOGLE_MAPS_API_KEY": JSON.stringify(googleMapsApiKey),
+    "import.meta.env.VITE_GOOGLE_MAP_ID": JSON.stringify(googleMapsMapId),
     "import.meta.env.VITE_GOOGLE_MAPS_MAP_ID": JSON.stringify(googleMapsMapId),
   },
   plugins: [

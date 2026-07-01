@@ -28,7 +28,7 @@
   "missingRatingCount": 202,
   "duplicateTitleCount": 3,
   "note": "Google Maps is source material only. Runtime product uses the Downtown Perks canonical registry.",
-  "googleMapsListUrl": "https://maps.app.goo.gl/XW1pvU9PyCt8pbve9",
+  "googleMapsListUrl": "",
   "expectedFullListCount": 369,
   "syncStatus": "seed_only_missing_apify_credentials",
   "syncedAt": "2026-06-24T08:14:09.431Z"

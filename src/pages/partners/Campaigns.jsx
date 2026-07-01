@@ -60,6 +60,17 @@ const campaignTypes = {
     price: "Hotel options",
     cta: "Explore Hotel Campaigns",
   },
+  Venue: {
+    headline: "Be visible when someone nearby is deciding where to go.",
+    body: "Reach residents, guests, workers, and visitors while they are already making plans downtown.",
+    examples: [
+      ["Events", "Promote shows, pop-ups, classes, and one-night moments."],
+      ["Happy hours", "Feature time-sensitive reasons to stop by."],
+      ["Limited-time offers", "Give nearby people a clear reason to visit now."],
+    ],
+    price: "Events start at $20. Offers start at $30.",
+    cta: "Create Venue Campaign",
+  },
   Brand: {
     headline: "Better timing beats louder advertising.",
     body: "Reach people while they are nearby and actively making decisions.",
@@ -71,7 +82,137 @@ const campaignTypes = {
     price: "Brand options",
     cta: "Explore Brand Campaigns",
   },
+  Civic: {
+    headline: "Turn public activity into measurable participation.",
+    body: "Promote districts, cultural programs, public spaces, tours, events, and community experiences while tracking engagement.",
+    examples: [
+      ["Public events", "Make civic moments easier to find and attend."],
+      ["Cultural tours", "Connect stops, routes, and downtown context."],
+      ["Survey participation", "Invite feedback from people already downtown."],
+    ],
+    price: "Civic campaigns can support public programming, discovery, and participation reporting.",
+    cta: "Create Civic Campaign",
+  },
+  "Real Estate": {
+    headline: "Show listings inside the neighborhood context buyers care about.",
+    body: "Connect available properties to nearby restaurants, hotels, parks, events, buildings, and walkable downtown activity.",
+    examples: [
+      ["Listings", "Show inventory with the places and routines around it."],
+      ["Open houses", "Connect visits to neighborhood context."],
+      ["Lead generation", "Turn discovery into qualified interest."],
+    ],
+    price: "Real estate campaigns can support listings, neighborhood visibility, and qualified interest.",
+    cta: "Create Real Estate Campaign",
+  },
 };
+
+const partnerRail = [
+  {
+    key: "properties",
+    type: "Property",
+    title: "Properties",
+    headline: "Turn your building into a connected neighborhood amenity.",
+    body: "Help residents discover nearby perks, events, services, and places while giving your leasing and resident teams measurable engagement data.",
+    audience: "Residents, prospects, leasing teams, resident experience teams, and nearby local partners.",
+    bestFor: ["Resident perks", "Lobby QR experiences", "Move-in guides", "Amenity programming", "Neighborhood engagement"],
+    pricing: "Property campaigns can support resident offers, events, and local visibility.",
+    primaryCta: "Create Property Campaign",
+    secondaryCta: "Open Map",
+    faq: ["Can this support resident events?", "Can we connect multiple buildings?", "What reporting will our team see?"],
+  },
+  {
+    key: "hotels",
+    type: "Hotel",
+    title: "Hotels",
+    headline: "Help guests find what is worth doing nearby.",
+    body: "Give guests a live downtown guide connected to offers, events, restaurants, bars, cultural stops, and concierge-ready recommendations.",
+    audience: "Guests, front desk teams, concierge teams, nearby restaurants, event partners, and visitor-facing programs.",
+    bestFor: ["Lobby QR access", "Guest guides", "Concierge recommendations", "Nearby dining", "Event visibility"],
+    pricing: "Hotel campaigns can support guest discovery, QR access, and nearby recommendations.",
+    primaryCta: "Create Hotel Campaign",
+    secondaryCta: "Open Map",
+    faq: ["Can this work without an app download?", "Can guests scan from the lobby or room?", "Can concierge teams use this?"],
+  },
+  {
+    key: "venues",
+    type: "Venue",
+    title: "Venues",
+    headline: "Be visible when someone nearby is deciding where to eat, drink, meet, or go next.",
+    body: "Reach residents, guests, workers, and visitors while they are already making plans downtown.",
+    audience: "Residents, guests, workers, and visitors who are already deciding what to do nearby.",
+    bestFor: ["Promote events", "Feature happy hours", "Publish limited-time offers", "Drive nearby visits"],
+    pricing: "Events start at $20. Offers start at $30.",
+    primaryCta: "Create Venue Campaign",
+    secondaryCta: "Open Partner Map",
+    faq: ["Can I promote an event?", "Can I add a happy hour?", "How quickly can this go live?"],
+  },
+  {
+    key: "brands",
+    type: "Brand",
+    title: "Brands",
+    headline: "Place your brand inside real downtown decisions.",
+    body: "Connect activations, sponsorships, product moments, and local campaigns to people already moving through downtown.",
+    audience: "Nearby audiences, event guests, shoppers, visitors, workers, residents, and district-level campaign moments.",
+    bestFor: ["Brand activations", "Sponsored discovery", "Event tie-ins", "Retail moments", "Local audience reach"],
+    pricing: "Brand campaigns can support visibility, activations, and sponsored placements.",
+    primaryCta: "Create Brand Campaign",
+    secondaryCta: "Open Map",
+    faq: ["Can we sponsor a district or moment?", "Can this support an activation?", "What performance data is included?"],
+  },
+  {
+    key: "civic",
+    type: "Civic",
+    title: "Civic",
+    headline: "Turn public activity into measurable participation.",
+    body: "Promote districts, cultural programs, public spaces, tours, events, and community experiences while tracking engagement.",
+    audience: "Residents, workers, visitors, downtown stakeholders, civic groups, and public program audiences.",
+    bestFor: ["Public events", "Cultural tours", "District wayfinding", "Community programs", "Survey participation"],
+    pricing: "Civic campaigns can support public programming, discovery, and participation reporting.",
+    primaryCta: "Create Civic Campaign",
+    secondaryCta: "Open Map",
+    faq: ["Can we promote public events?", "Can this support surveys?", "Can we track participation by area?"],
+  },
+  {
+    key: "real-estate",
+    type: "Real Estate",
+    title: "Real Estate",
+    headline: "Show listings inside the neighborhood context buyers care about.",
+    body: "Connect available properties to nearby restaurants, hotels, parks, events, buildings, and walkable downtown activity.",
+    audience: "Buyers, renters, brokers, leasing teams, listing agents, and people comparing downtown neighborhoods.",
+    bestFor: ["Listings", "Buyer interest", "Neighborhood context", "Open houses", "Lead generation"],
+    pricing: "Real estate campaigns can support listings, neighborhood visibility, and qualified interest.",
+    primaryCta: "Create Real Estate Campaign",
+    secondaryCta: "Open Map",
+    faq: ["Can I promote listings?", "Can this support open houses?", "Can leads connect to our CRM?"],
+  },
+];
+
+const campaignTypeBySlug = {
+  properties: "Property",
+  property: "Property",
+  hotels: "Hotel",
+  hotel: "Hotel",
+  venues: "Venue",
+  venue: "Venue",
+  brands: "Brand",
+  brand: "Brand",
+  civic: "Civic",
+  "real-estate": "Real Estate",
+  real_estate: "Real Estate",
+  realestate: "Real Estate",
+  perks: "Perks",
+  events: "Events",
+  visibility: "Visibility",
+};
+
+function slugForCampaignType(type) {
+  if (type === "Real Estate") return "real-estate";
+  if (type === "Property") return "properties";
+  if (type === "Hotel") return "hotels";
+  if (type === "Venue") return "venues";
+  if (type === "Brand") return "brands";
+  return String(type || "venues").toLowerCase();
+}
 
 const faqs = [
   ["How much does a campaign cost?", "Campaigns start at $20 for event boosts and $30 for perks. Larger visibility campaigns can be added when you want broader placement."],
@@ -84,7 +225,10 @@ const faqs = [
 
 function scrollToLaunch(type) {
   const url = new URL(window.location.href);
-  if (type) url.searchParams.set("campaignType", type);
+  if (type) {
+    url.searchParams.set("type", slugForCampaignType(type));
+    url.searchParams.delete("campaignType");
+  }
   window.history.replaceState({}, "", `${url.pathname}${url.search}#launch-campaign`);
   document.getElementById("launch-campaign")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -106,7 +250,8 @@ async function submitCampaignRequest(payload) {
 
 export default function CampaignsPage() {
   const navigate = useNavigate();
-  const [activeType, setActiveType] = useState("Perks");
+  const [activeType, setActiveType] = useState("Venue");
+  const [activeRailKey, setActiveRailKey] = useState("venues");
   const [openFaq, setOpenFaq] = useState(0);
   const [previewSaved, setPreviewSaved] = useState(false);
   const [status, setStatus] = useState({ type: "idle", message: "" });
@@ -121,15 +266,19 @@ export default function CampaignsPage() {
     organization: "",
   });
   const active = campaignTypes[activeType];
+  const activeRail = partnerRail.find((item) => item.key === activeRailKey) || partnerRail[2];
   const draftSummary = useMemo(() => [form.goal, form.campaignType, form.place].filter(Boolean).join(" · "), [form]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const requestedType = params.get("campaignType");
+    const requestedSlug = params.get("type") || params.get("campaignType");
+    const requestedType = campaignTypeBySlug[String(requestedSlug || "").toLowerCase()] || (window.location.hash === "#venues" ? "Venue" : "");
     if (requestedType && campaignTypes[requestedType]) {
       setActiveType(requestedType);
       setForm((current) => ({ ...current, campaignType: requestedType }));
     }
+    const railKey = partnerRail.find((item) => item.type === requestedType || item.key === requestedSlug)?.key;
+    setActiveRailKey(railKey || "venues");
   }, []);
 
   const updateForm = (field, value) => {
@@ -196,7 +345,7 @@ export default function CampaignsPage() {
           <h1>Show up when people are already making plans.</h1>
           <p>People are already downtown. Already walking. Already looking for somewhere to go. Campaigns help your business appear at the moment those decisions are happening.</p>
           <div className="dp-campaigns-cta-row">
-            <button type="button" onClick={() => scrollToLaunch()} className="dp-campaigns-primary">Launch a Campaign</button>
+            <button type="button" onClick={() => scrollToLaunch(activeRail.type)} className="dp-campaigns-primary">Launch a Campaign</button>
             <Link to="/map?mode=partner&tab=campaigns" className="dp-campaigns-secondary">Open the Map</Link>
           </div>
         </div>
@@ -232,6 +381,55 @@ export default function CampaignsPage() {
         <p className="dp-campaigns-eyebrow">Campaign types</p>
         <h2>Different moments. Different opportunities.</h2>
         <p>Choose the way your business can participate, then keep the offer simple enough for someone nearby to act on.</p>
+        <div className="dp-campaign-type-tabs" role="tablist" aria-label="Partner campaign types">
+          {partnerRail.map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              role="tab"
+              aria-selected={activeRailKey === item.key}
+              onClick={() => {
+                setActiveRailKey(item.key);
+                setActiveType(item.type);
+                updateForm("campaignType", item.type);
+                const url = new URL(window.location.href);
+                url.searchParams.set("type", item.key);
+                window.history.replaceState({}, "", `${url.pathname}${url.search}${window.location.hash}`);
+              }}
+            >
+              {item.title}
+            </button>
+          ))}
+        </div>
+        <article className="dp-campaign-type-panel" id={activeRailKey}>
+          <div>
+            <p className="dp-campaigns-eyebrow">Campaign type</p>
+            <h3>{activeRail.title}</h3>
+            <p><strong>{activeRail.headline}</strong></p>
+            <p>{activeRail.body}</p>
+            <p>{activeRail.audience}</p>
+            <strong>{activeRail.pricing}</strong>
+            <div className="dp-campaigns-cta-row">
+              <button type="button" onClick={() => scrollToLaunch(activeRail.type)} className="dp-campaigns-primary">{activeRail.primaryCta}</button>
+              <Link to="/map?mode=partner&tab=campaigns" className="dp-campaigns-secondary">{activeRail.secondaryCta}</Link>
+            </div>
+          </div>
+          <div className="dp-campaign-example-rail" aria-label={`${activeRail.title} campaign fit`}>
+            <article>
+              <span>Best for</span>
+              <ul>
+                {activeRail.bestFor.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            </article>
+            <article>
+              <span>FAQ</span>
+              <ul>
+                {activeRail.faq.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            </article>
+          </div>
+        </article>
+
         <div className="dp-campaign-type-tabs" role="tablist" aria-label="Campaign types">
           {Object.keys(campaignTypes).map((type) => (
             <button
