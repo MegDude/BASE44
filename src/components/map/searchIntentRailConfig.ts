@@ -35,17 +35,24 @@ import {
 } from "lucide-react";
 
 export const SEARCH_INTENT_RAIL = [
-  { id: "happy_hour", label: "Happy Hour", filter: "Happy Hour", prompt: "Happy hour nearby", icon: BadgePercent, defaultVisible: true },
-  { id: "coffee", label: "Coffee", filter: "Coffee", prompt: "Coffee nearby", icon: Coffee, defaultVisible: true },
   { id: "breakfast", label: "Breakfast", filter: "Breakfast", prompt: "Breakfast nearby", icon: Clock, defaultVisible: true },
+  { id: "coffee", label: "Coffee", filter: "Coffee", prompt: "Coffee nearby", icon: Coffee, defaultVisible: true },
   { id: "lunch", label: "Lunch", filter: "Lunch", prompt: "Lunch nearby", icon: Utensils, defaultVisible: true },
   { id: "dining", label: "Dining", filter: "Dining", prompt: "Dining nearby", icon: Sparkles, defaultVisible: true },
   { id: "drinks", label: "Drinks", filter: "Drinks", prompt: "Drinks nearby", icon: Wine, defaultVisible: true },
+  { id: "happy_hour", label: "Happy Hour", filter: "Happy Hour", prompt: "Happy Hour nearby", icon: BadgePercent, defaultVisible: true },
   { id: "events", label: "Events", filter: "Events", prompt: "Events nearby", icon: CalendarDays, defaultVisible: true },
+  { id: "happy_hour_route", label: "HH Route", filter: "Happy Hour", collection: "warehouse-district-happy-hour", prompt: "Warehouse District happy hour walking route", icon: Route, defaultVisible: true },
+  { id: "dining_route", label: "Dining Route", filter: "inKind", collection: "inkind-dining-market", prompt: "inKind dining market walking route", icon: Route, defaultVisible: true },
+  { id: "daa_art_walk", label: "DAA Art Walk", filter: "Civic", collection: "daa-art-walk", prompt: "DAA Art Walk walking route", icon: Route, defaultVisible: true },
+  { id: "waterloo_walk", label: "Waterloo Walk", filter: "Civic", collection: "waterloo-greenway", prompt: "Waterloo Greenway discovery walk", icon: Route, defaultVisible: true },
+  { id: "stories_walk", label: "Stories Walk", filter: "Civic", collection: "downtown-stories-walk", prompt: "Downtown stories walk", icon: Route, defaultVisible: true },
+  { id: "inkind", label: "inKind", filter: "inKind", prompt: "inKind offers", icon: CreditCard, defaultVisible: true },
   { id: "hotels", label: "Hotels", filter: "Hotels", prompt: "Hotels nearby", icon: Hotel, defaultVisible: true },
   { id: "properties", label: "Properties", filter: "Properties", prompt: "Properties nearby", icon: Building2, defaultVisible: true },
   { id: "legends", label: "Legends", filter: "Legends", prompt: "Legends listings", icon: Star, defaultVisible: true },
-  { id: "inkind", label: "inKind", filter: "inKind", prompt: "inKind offers", icon: CreditCard, defaultVisible: true },
+  { id: "coffee_route", label: "Coffee Route", filter: "Coffee", collection: "coffee-before-work", prompt: "Coffee before work walking route", icon: Route, defaultVisible: false },
+  { id: "hotel_route", label: "Hotel Walk", filter: "Hotels", collection: "hotel-guest-arrival-route", prompt: "Hotel guest arrival walking route", icon: Route, defaultVisible: false },
   { id: "arts", label: "Arts", filter: "Arts & Culture", prompt: "Arts nearby", icon: Palette, defaultVisible: false },
   { id: "live_music", label: "Live Music", filter: "Live Music", prompt: "Live music tonight", icon: Music, defaultVisible: false },
   { id: "civic", label: "Civic", filter: "Civic", prompt: "Civic nearby", icon: Landmark, defaultVisible: false },
@@ -73,17 +80,22 @@ export const SEARCH_INTENT_RAIL = [
 ] as const;
 
 const PRIMARY_SEARCH_INTENT_IDS = [
-  "happy_hour",
-  "coffee",
   "breakfast",
+  "coffee",
   "lunch",
   "dining",
   "drinks",
+  "happy_hour",
   "events",
+  "happy_hour_route",
+  "dining_route",
+  "daa_art_walk",
+  "waterloo_walk",
+  "stories_walk",
+  "inkind",
   "hotels",
   "properties",
   "legends",
-  "inkind",
 ] as const;
 
 const SECONDARY_SEARCH_INTENT_IDS = [
@@ -93,6 +105,8 @@ const SECONDARY_SEARCH_INTENT_IDS = [
   "fitness",
   "wellness",
   "retail",
+  "coffee_route",
+  "hotel_route",
   "parking",
   "utilities",
 ] as const;

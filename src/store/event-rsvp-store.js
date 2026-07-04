@@ -27,16 +27,23 @@ export const useEventRsvpStore = create(
       addRsvp: (event, source = "resident") =>
         set((state) => {
           const rsvp = normalizeEvent(event, source);
-          const existing = state.rsvps.filter((item) => item.id !== rsvp.id);
+          const currentRsvps = Array.isArray(state.rsvps) ? state.rsvps : [];
+          const existing = currentRsvps.filter((item) => item.id !== rsvp.id);
           return { rsvps: [rsvp, ...existing].slice(0, 50) };
         }),
 
       removeRsvp: (eventId) =>
-        set((state) => ({
-          rsvps: state.rsvps.filter((item) => item.id !== eventId),
-        })),
+        set((state) => {
+          const currentRsvps = Array.isArray(state.rsvps) ? state.rsvps : [];
+          return {
+            rsvps: currentRsvps.filter((item) => item.id !== eventId),
+          };
+        }),
 
-      isRsvped: (eventId) => get().rsvps.some((item) => item.id === eventId),
+      isRsvped: (eventId) => {
+        const currentRsvps = Array.isArray(get().rsvps) ? get().rsvps : [];
+        return currentRsvps.some((item) => item.id === eventId);
+      },
     }),
     {
       name: "downtown-perks-event-rsvps",

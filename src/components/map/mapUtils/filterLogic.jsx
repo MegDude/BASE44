@@ -30,8 +30,11 @@ export function hasFreePerks(item) {
  * Smart filter: event-based venue detection
  */
 export function isEventBased(item) {
-  const EVENT_CATEGORIES = ["entertainment", "bar", "fitness", "wellness"];
-  return EVENT_CATEGORIES.includes(item.category);
+  const text = `${item.name || ""} ${item.title || ""} ${item.category || ""} ${item.description || ""} ${item.tags || ""}`.toLowerCase();
+  if (/\b(civic|public realm|trail|greenway|park|plaza|library|city hall|government|waterfront|butler trail|ann and roy butler)\b/.test(text)) {
+    return false;
+  }
+  return /\b(event|rsvp|concert|show|festival|market|class|series|live music|ticket|tonight)\b/.test(text);
 }
 
 /**

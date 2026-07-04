@@ -1,0 +1,52 @@
+[
+  {
+    "collectionId": "warehouse-district-happy-hour",
+    "title": "Warehouse District Happy Hour",
+    "stopCount": 4,
+    "validStopCount": 4,
+    "missingStopIds": [],
+    "missingCoordinates": [],
+    "routePathPoints": 4,
+    "status": "pass"
+  },
+  {
+    "collectionId": "downtown-stories-walk",
+    "title": "Downtown Stories Walk",
+    "stopCount": 4,
+    "validStopCount": 4,
+    "missingStopIds": [],
+    "missingCoordinates": [],
+    "routePathPoints": 4,
+    "status": "pass"
+  },
+  {
+    "collectionId": "inkind-dining-market",
+    "title": "inKind Dining Market",
+    "stopCount": 4,
+    "validStopCount": 4,
+    "missingStopIds": [],
+    "missingCoordinates": [],
+    "routePathPoints": 4,
+    "status": "pass"
+  },
+  {
+    "collectionId": "coffee-before-work",
+    "title": "Coffee Before Work",
+    "stopCount": 3,
+    "validStopCount": 3,
+    "missingStopIds": [],
+    "missingCoordinates": [],
+    "routePathPoints": 3,
+    "status": "pass"
+  },
+  {
+    "collectionId": "hotel-guest-arrival-route",
+    "title": "Hotel Guest Arrival Route",
+    "stopCount": 4,
+    "validStopCount": 4,
+    "missingStopIds": [],
+    "missingCoordinates": [],
+    "routePathPoints": 4,
+    "status": "pass"
+  }
+]

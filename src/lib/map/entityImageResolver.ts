@@ -30,6 +30,7 @@ const FINAL_NEUTRAL_FALLBACK = "/images/imported/perks/places-nearby.png";
 const PROPERTY_PLACEHOLDER_REPLACEMENT = "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png";
 const PREMIUM_PROPERTY_IMAGE_BASE = "/images/property-listings-premium";
 const REPORT_IMAGE_BASE = "/images/reports";
+const ATTACHED_IMAGE_BASE = "/images/map-entities/attached";
 const LOCAL_IMAGE_PRIORITY = {
   residential: [
     "/images/reports/the-independent-austin-tower.jpg",
@@ -132,6 +133,9 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
     `${PREMIUM_PROPERTY_IMAGE_BASE}/natiivo2.jpeg`,
   ],
   paseo: [
+    `${ATTACHED_IMAGE_BASE}/properties/paseo/exterior-sunset.jpeg`,
+    `${ATTACHED_IMAGE_BASE}/properties/paseo/rooftop-pool.jpeg`,
+    `${ATTACHED_IMAGE_BASE}/properties/paseo/daydreamer-lobby.jpeg`,
     `${REPORT_IMAGE_BASE}/paseo-building.webp`,
     `${REPORT_IMAGE_BASE}/paseo-deck.jpeg`,
     `${REPORT_IMAGE_BASE}/paseo-pool.webp`,
@@ -200,6 +204,12 @@ const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
     `${PREMIUM_PROPERTY_IMAGE_BASE}/the-travis2.jpeg`,
   ],
   vesper: [
+    `${ATTACHED_IMAGE_BASE}/properties/vesper/exterior-01.jpg`,
+    `${ATTACHED_IMAGE_BASE}/properties/vesper/model-living-room.jpg`,
+    `${ATTACHED_IMAGE_BASE}/properties/vesper/rooftop-pool-lounge.jpg`,
+    `${ATTACHED_IMAGE_BASE}/properties/vesper/rooftop-lounge.jpg`,
+    `${ATTACHED_IMAGE_BASE}/properties/vesper/living-room-sunset.jpg`,
+    `${ATTACHED_IMAGE_BASE}/properties/vesper/rooftop-exterior-02.jpg`,
     `${REPORT_IMAGE_BASE}/vesper-building.jpg`,
     `${REPORT_IMAGE_BASE}/vesper-pool.png`,
     `${PREMIUM_PROPERTY_IMAGE_BASE}/vesper.jpeg`,
@@ -379,7 +389,7 @@ const curatedBuildingImageOverrides: Record<string, string> = {
   "residential-west-avenue-300": "/images/imported/perks/residential-property-west-avenue-300.webp",
   "millenium-rainey": "/images/imported/perks/millenium-rainey.jpg",
   "towers-of-town-lake": "/images/map-pins/property/towers-of-town-lake.jpeg",
-  "vesper-atx": `${REPORT_IMAGE_BASE}/vesper-building.jpg`,
+  "vesper-atx": `${ATTACHED_IMAGE_BASE}/properties/vesper/exterior-01.jpg`,
   "windsor-on-the-lake": "/images/map-pins/property/windsor-on-the-lake.avif",
 };
 
@@ -498,6 +508,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/map-entities/dining/violet-crown-wine-coffee.jpg",
   ],
   "bangers": [
+    `${ATTACHED_IMAGE_BASE}/venues/bangers.jpg`,
     "/images/restaurants/bangers-bar.webp",
   ],
   "via-313": [
@@ -511,6 +522,8 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
   ],
   geraldines: [
+    `${ATTACHED_IMAGE_BASE}/venues/geraldines-rooftop.jpg`,
+    `${ATTACHED_IMAGE_BASE}/venues/geraldines-live.jpeg`,
     "/images/imported/perks/geraldine-s.jpg",
     "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
   ],
@@ -524,9 +537,17 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/daydreamer-paseo-9qzwfotyqhhddwxerfwvtfwvu-hrr7vr0obl9-41abxqezzfexmrnzxrpbnqdfnqjw9ol.jpg",
   ],
   desnudo: [
+    `${ATTACHED_IMAGE_BASE}/venues/desnudo-coffee.avif`,
     "/images/imported/perks/desnudo-coffee-nicolaimccrary-3-zsd7wp.avif",
     "/images/imported/perks/desnudo-coffee-trailer.png",
     "/images/imported/perks/desnudo-coffee-hands.png",
+  ],
+  "shangri-la": [
+    `${ATTACHED_IMAGE_BASE}/venues/shangri-la.avif`,
+  ],
+  "restaurant-francois": [
+    `${ATTACHED_IMAGE_BASE}/venues/restaurant-francois-interior-exterior.avif`,
+    `${ATTACHED_IMAGE_BASE}/venues/restaurant-francois-martini-flight.avif`,
   ],
   "royal-blue": [
     "/images/imported/perks/royal-blue-grocery.png",
@@ -541,6 +562,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/rooftop-pools-austin-hotel-van-zandt-hero.jpg",
   ],
   waterloo: [
+    `${ATTACHED_IMAGE_BASE}/civic/waterloo-park.jpeg`,
     "/images/imported/perks/03-waterloo-park.jpg",
     "/images/imported/perks/waterlook-trail.png",
     "/images/imported/perks/04-waterlook-trail.jpg",
@@ -634,10 +656,14 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-26-fnm2bj.avif",
   ],
   "stay-put": [
+    `${ATTACHED_IMAGE_BASE}/venues/stay-put-patio.png`,
     "/images/imported/perks/stayput.png",
     "/images/map-entities/rainey-bars/stay-put-pool.jpeg",
     "/images/map-entities/rainey-bars/stay-put-jazz.jpeg",
     "/images/imported/perks/stay-put-sign.jpg",
+  ],
+  anthem: [
+    `${ATTACHED_IMAGE_BASE}/venues/anthem.jpg`,
   ],
   property: [
     ...LOCAL_IMAGE_PRIORITY.residential,
@@ -728,6 +754,8 @@ const contentImageRules = [
   { key: "joes-coffee", terms: ["jo's coffee", "jos coffee", "joe's coffee"] },
   { key: "daydreamer", terms: ["daydreamer", "paseo coffee"] },
   { key: "desnudo", terms: ["desnudo"] },
+  { key: "shangri-la", terms: ["shangri la", "shangri-la", "treasury shangri"] },
+  { key: "restaurant-francois", terms: ["restaurant françois", "restaurant francois", "françois", "francois"] },
   { key: "royal-blue", terms: ["royal blue"] },
   { key: "standard-proof", terms: ["standard proof", "whiskey", "distillery"] },
   { key: "hotel-van-zandt", terms: ["hotel van zandt", "van zandt first thursday"] },
@@ -746,6 +774,7 @@ const contentImageRules = [
   { key: "tecovas", terms: ["tecovas", "teacoves"] },
   { key: "fine-eyewear", terms: ["fine eyewear", "optique", "eyewear", "frame adjustment", "styling offer"] },
   { key: "stay-put", terms: ["stay put", "brewery", "house brew"] },
+  { key: "anthem", terms: ["anthem"] },
   { key: "parking", terms: ["parking", "garage", "reservable parking", "resident parking", "ev charging"] },
   { key: "hotel", terms: ["hotel", "hospitality", "guest", "four seasons", "van zandt", "rooftop access", "spa"] },
   { key: "coffee", terms: ["coffee", "cafe", "espresso", "morning", "jo's"] },

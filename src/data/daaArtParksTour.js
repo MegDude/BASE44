@@ -5,6 +5,29 @@ export const DAA_TOUR_TITLE = "Downtown Austin Art & Parks Tour";
 export const DAA_TOUR_PRESENTED_BY = "Presented by the Downtown Austin Alliance";
 export const DAA_TOUR_STOP_COUNT = 48;
 
+export const daaArtWalkImages = [
+  {
+    src: "/images/partners/civic/daa-art-walk/daa-art-walk-2.jpg",
+    title: "DAA Art Walk Community Moment",
+    label: "Downtown civic activation",
+  },
+  {
+    src: "/images/partners/civic/daa-art-walk/daa-art-walk-6.jpeg",
+    title: "Public Sculpture Stop",
+    label: "Outdoor sculpture and parks route",
+  },
+  {
+    src: "/images/partners/civic/daa-art-walk/daa-art-walk-5.jpg",
+    title: "Downtown Mural Stop",
+    label: "Murals and street art",
+  },
+  {
+    src: "/images/partners/civic/daa-art-walk/daa-art-walk-3.jpg",
+    title: "Iconic Art Stop",
+    label: "Family-friendly public art",
+  },
+];
+
 export const daaTourDistricts = [
   "Downtown Core",
   "Congress",
@@ -183,10 +206,50 @@ const tourStopCopyOverrides = {
       reward: "Visit 5 participating artworks",
     },
   },
+  "Malin's Fountain": {
+    imageUrl: "/images/partners/civic/daa-art-walk/daa-art-walk-6.jpeg",
+    detailHeadline: "Sculpture as a downtown pause point.",
+    daaIntro:
+      "This Art & Parks Tour stop frames downtown public art as something to notice while moving through the city, not something hidden inside a gallery.",
+    whyStopHere:
+      "Use this stop as the opening rhythm of the DAA Art Walk: slow down, look at the material and setting, then keep moving toward the next sculpture, mural, plaza, or park.",
+    goodFor: ["Public art", "Sculpture", "Slow looking", "Photo stops", "Self-guided walks"],
+    ctaHeadline: "Check in at the art walk.",
+    ctaBody:
+      "Check in to record this stop to the Downtown Austin Alliance workspace and keep your Art & Parks Tour progress attached to the route.",
+  },
+  "East 6th Street Murals": {
+    imageUrl: "/images/partners/civic/daa-art-walk/daa-art-walk-5.jpg",
+    detailHeadline: "A mural corridor with downtown energy.",
+    daaIntro:
+      "The DAA Art & Parks Tour includes mural moments that make downtown feel visible, colorful, and lived-in from the sidewalk.",
+    whyStopHere:
+      "This is the kind of stop that works best on foot: close enough to notice brushwork, color, texture, and the way the artwork changes the block around it.",
+    goodFor: ["Murals", "Street art", "Photos", "Visitors", "Walking routes"],
+    ctaHeadline: "Save the mural stop.",
+    ctaBody:
+      "Check in or save this stop to keep the mural route context connected to your downtown walk.",
+  },
+  "Austin Convention Center Public Art": {
+    imageUrl: "/images/partners/civic/daa-art-walk/daa-art-walk-3.jpg",
+    detailHeadline: "Public art hiding in plain sight.",
+    daaIntro:
+      "This stop helps connect convention traffic, downtown residents, and visitors to Austin's public art layer.",
+    whyStopHere:
+      "Pause here before heading toward nearby civic stops, murals, parks, restaurants, and event venues.",
+    goodFor: ["Public art", "Families", "Visitors", "Convention Center", "Photo stops"],
+    ctaHeadline: "Add this to your walking route.",
+    ctaBody:
+      "Check in to record the stop and keep the DAA Art Walk context connected to your route.",
+  },
 };
 
 function resolveTourStopImage(name, category, district, locationLabel) {
   const text = [name, category, district, locationLabel].join(" ").toLowerCase();
+  if (text.includes("mural")) return "/images/partners/civic/daa-art-walk/daa-art-walk-5.jpg";
+  if (text.includes("sculpture") || text.includes("fountain") || text.includes("public art")) return "/images/partners/civic/daa-art-walk/daa-art-walk-6.jpeg";
+  if (text.includes("art") || text.includes("gallery")) return "/images/partners/civic/daa-art-walk/daa-art-walk-3.jpg";
+  if (text.includes("republic square") || text.includes("park") || text.includes("public realm")) return "/images/partners/civic/daa-art-walk/daa-art-walk-2.jpg";
   if (text.includes("ballet austin")) return "/images/civic/ballet-austin-downtown.png";
   if (text.includes("waterloo") || text.includes("waller creek")) return "/images/imported/perks/waterlook-trail.png";
   if (text.includes("republic square")) return "/images/map-entities/perks/civic_republic_square_1779052838327.png";

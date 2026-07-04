@@ -26,7 +26,7 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
   },
   "stay-put": {
-    src: "/images/reports/stay-put-rainey-patio.jpg",
+    src: "/images/map-entities/attached/venues/stay-put-patio.png",
     alt: "Stay Put patio on Rainey Street",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /STAY PUT/",
   },
@@ -41,7 +41,7 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
   },
   geraldines: {
-    src: "/images/reports/geraldines-bar.jpg",
+    src: "/images/map-entities/attached/venues/geraldines-rooftop.jpg",
     alt: "Geraldine's bar inside Hotel Van Zandt",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /VENUES/",
   },
@@ -61,7 +61,7 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /6G/",
   },
   "the-paseo": {
-    src: "/images/reports/paseo-building.webp",
+    src: "/images/map-entities/attached/properties/paseo/exterior-sunset.jpeg",
     alt: "Paseo residential tower on Rainey Street",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
   },
@@ -106,7 +106,7 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
   },
   vesper: {
-    src: "/images/reports/vesper-building.jpg",
+    src: "/images/map-entities/attached/properties/vesper/exterior-01.jpg",
     alt: "Vesper residences in East Downtown Austin",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
   },

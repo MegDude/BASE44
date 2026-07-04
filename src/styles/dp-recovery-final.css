@@ -3549,7 +3549,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-filter-icon {
 
 
 /* Final Legends/logo restoration and story control polish. */
-html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-prompt-rail, .dp-search-intent-filter-rail) .dp-search-intent-filter-logo[src*="/pins/downtown-perks/legends-logo"] {
+html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-prompt-rail, .dp-search-intent-filter-rail) .dp-search-intent-filter-logo[src*="/pins/circular/special/legends-badge"] {
   display: block !important;
   width: 34px !important;
   min-width: 34px !important;

@@ -100,7 +100,7 @@ function categoryKey(category: RepublicAustinPin["category"]) {
   if (category === "EV Charging") return "ev_charging mobility republic_austin";
   if (category === "Transit") return "transit metro mobility republic_austin";
   if (category === "Grocery") return "grocery pharmacy retail republic_austin";
-  if (category === "Culture") return "culture entertainment civic events republic_austin";
+  if (category === "Culture") return "culture entertainment civic republic_austin";
   if (category === "Fitness") return "fitness wellness republic_austin";
   if (category === "Hotel") return "hotel hospitality republic_austin";
   return "dining bars restaurants republic_austin";
@@ -856,8 +856,8 @@ const seedRecords: Seed[] = [
     partnerCopy: "Shows outdoor movement that supports coffee, fitness, hotel, and dining nearby.",
     recommendedPerk: "Trail-friendly resident offer.",
     perkType: "Recreation",
-    mapTag: "Trail",
-    tags: ["trail", "walking", "lake"],
+    mapTag: "Civic",
+    tags: ["civic", "trail", "walking", "lake", "waterfront", "public realm"],
   },
   {
     name: "Lady Bird Lake / Colorado River",
@@ -934,11 +934,11 @@ export function getRepublicAustinMapPlaces() {
       name: pin.name,
       type: pin.category === "Hotel" ? "hotel" : pin.category === "Culture" || pin.category === "Transit" || pin.category === "EV Charging" ? "civic" : "venue",
       partnerType: partnerType(pin.category),
-      category: `${pin.category} / Republic Austin`,
-      category_key: categoryKey(pin.category),
+      category: pin.name === "Ann & Roy Butler Trail Access" ? "Civic / Trail Access" : `${pin.category} / Republic Austin`,
+      category_key: pin.name === "Ann & Roy Butler Trail Access" ? "civic trail waterfront public_realm republic_austin" : categoryKey(pin.category),
       markerType: "standard",
       detailDrawerType: "republic-austin",
-      pinKey: pinKey(pin.category),
+      pinKey: pin.name === "Ann & Roy Butler Trail Access" ? "civic" : pinKey(pin.category),
       latitude: pin.lat,
       longitude: pin.lng,
       district: pin.district,

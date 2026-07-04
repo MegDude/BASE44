@@ -1,4 +1,4 @@
-import { DAA_CAMPAIGN_ID } from "@/data/daaCampaignStrategy";
+import { DAA_CAMPAIGN_ID, DAA_WORKSPACE_ID } from "@/data/daaCampaignStrategy";
 import { getWorkflowProfileId, getWorkflowSessionId } from "@/lib/backendWorkflows";
 import { platformEventTypes, publishPlatformEvent } from "@/lib/platformEvents";
 
@@ -46,6 +46,8 @@ export async function recordDaaCheckIn(payload = {}) {
   const checkedInAt = new Date().toISOString();
   const record = {
     campaignId: DAA_CAMPAIGN_ID,
+    workspaceId: DAA_WORKSPACE_ID,
+    workspaceName: "Downtown Austin Alliance",
     stopId: payload.stopId,
     stopName: payload.stopName,
     stopNumber: payload.stopNumber,
@@ -76,6 +78,7 @@ export async function recordDaaCheckIn(payload = {}) {
       entityId: synced.placeId,
       entityType: "civic",
       campaignId: synced.campaignId,
+      workspaceId: synced.workspaceId || DAA_WORKSPACE_ID,
       district: synced.district,
       source: "daa-civic-check-in",
       result: "checked-in",
@@ -84,6 +87,8 @@ export async function recordDaaCheckIn(payload = {}) {
         stopName: synced.stopName,
         stopNumber: synced.stopNumber,
         shareUrl: synced.shareUrl,
+        database: "interactions",
+        storage: body.storage || null,
       },
     });
     window.dispatchEvent?.(new CustomEvent("downtown-perks:daa-stop-check-in", { detail: synced }));
@@ -96,6 +101,7 @@ export async function recordDaaCheckIn(payload = {}) {
       entityId: local.placeId,
       entityType: "civic",
       campaignId: local.campaignId,
+      workspaceId: local.workspaceId || DAA_WORKSPACE_ID,
       district: local.district,
       source: "daa-civic-check-in",
       result: "saved-locally",

@@ -134,6 +134,17 @@ function localApiRoutes() {
       runLocalHandler(req, res, "./api/events.js", logger, "Local platform event handler failed");
     });
 
+    middlewares.use("/api/map-actions", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/map-actions.js", logger, "Local map action handler failed");
+    });
+
     middlewares.use("/api/stripe/create-checkout-session", async (req, res) => {
       if (req.method !== "POST") {
         res.statusCode = 405;

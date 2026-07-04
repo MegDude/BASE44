@@ -1,3 +1,5 @@
+import { getGeneratedLegendsListingsForRecord } from "./legendsGeneratedListings";
+
 export const LEGENDS_RECONCILIATION_NOTE = {
   rentalsProvided: 14,
   uniqueRentalsIntegrated: 13,
@@ -20,6 +22,7 @@ const BUILDING_COORDS = {
 
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
 const REPORT_IMAGE_BASE = "/images/reports";
+const LEGENDS_PIN_ASSET = "/pins/circular/special/legends-badge.svg";
 
 const SEAHOLM_RESIDENCES_IMAGES = [
   `${REPORT_IMAGE_BASE}/seaholm-residences-222-west.jpg`,
@@ -193,34 +196,54 @@ function listingCopy(type, priceDisplay, beds, baths, sqft, daysOnMarket) {
   return `Want to live here? This Downtown Austin residence is listed at ${priceDisplay}. ${detailText} Downtown Perks residents can contact Legends Real Estate for details, availability, private tour options, and property access that may not always be visible on other listing sites.`;
 }
 
+function generatedListingFor(address) {
+  return getGeneratedLegendsListingsForRecord({ id: address, name: address, address })[0] || null;
+}
+
+function parseGeneratedFacts(facts) {
+  const text = String(facts || "");
+  return {
+    mlsNumber: text.match(/\bMLS\s+([A-Z0-9-]+)/i)?.[1] || "",
+    status: text.match(/\b(Active|Pending|Closed|Coming Soon|Hold|Withdrawn)\b/i)?.[1] || "",
+  };
+}
+
 function toListing(row, type) {
   const [address, city, state, zip, price, beds, baths, sqft, daysOnMarket] = row;
-  const id = `legends-${type}-${slug(address)}`;
+  const generated = generatedListingFor(address);
+  const generatedFacts = parseGeneratedFacts(generated?.listingFacts);
+  const id = generated?.id || `legends-${type}-${slug(address)}`;
   const coords = offsetCoordinate(BUILDING_COORDS[baseAddress(address)], id);
   const listingTypeLabel = type === "rent" ? "For Rent" : "For Sale";
   const priceDisplay = type === "rent" ? `${price}/mo` : price;
-  const panelCopy = listingCopy(type, price, beds, baths, sqft, daysOnMarket);
-  const gallery = imageSetForAddress(address, id);
+  const panelCopy = generated?.summary || listingCopy(type, price, beds, baths, sqft, daysOnMarket);
+  const gallery = [generated?.imageAsset, ...imageSetForAddress(address, id)].filter(Boolean).filter((item, index, list) => list.indexOf(item) === index);
   const prefilledMessage = type === "rent"
     ? `Hi Legends Real Estate, I’m interested in living at ${address}. Please send rental availability, showing options, and anything useful to know about the building and nearby area.`
     : `Hi Legends Real Estate, I’m interested in living at ${address}. Please send availability, showing options, and anything useful to know about the building and nearby area.`;
+  const buildingName = generated?.buildingName || "";
+  const neighborhood = generated?.neighborhood || "Downtown";
+  const displayName = buildingName ? `${buildingName} ${generated?.unit ? `#${generated.unit}` : address}` : address;
 
   return {
     id,
-    name: address,
+    name: displayName,
     type: "property",
     partnerType: "properties",
     brand: "Legends Real Estate",
     pinKey: "legends",
+    pinAsset: LEGENDS_PIN_ASSET,
     category: "Residential Property",
-    category_key: `legends_${type}_listing`,
+    category_key: `legends_${type}_listing ${generated?.panelMetadata || ""} ${generated?.propertyType || ""} ${generated?.style || ""}`,
     latitude: coords[0],
     longitude: coords[1],
     image: gallery[0],
     gallery,
-    district: zip === "78705" ? "West Campus" : "Downtown Austin",
+    district: zip === "78705" ? "West Campus" : neighborhood || "Downtown Austin",
+    buildingName,
     address: `${address}, ${city}, ${state} ${zip}`,
-    summary: panelCopy,
+    summary: generated?.summary || panelCopy,
+    description: generated?.interestCopy || panelCopy,
     deals_offers: "Exclusive resident property discovery through Legends Real Estate",
     specials: `${listingTypeLabel} with resident access to availability and showing options`,
     source: "Legends Real Estate verified listing layer",
@@ -228,10 +251,16 @@ function toListing(row, type) {
     contact_phone: "",
     contact_email: "",
     legendsListing: {
+      id,
       brand: "Legends Real Estate",
+      buildingName,
+      unit: generated?.unit || "",
       listingType: type,
       listingTypeLabel,
-      neighborhood: "Downtown",
+      propertyType: generated?.propertyType || "Residential Property",
+      status: generatedFacts.status || "Active",
+      mlsNumber: generatedFacts.mlsNumber,
+      neighborhood,
       address,
       city,
       state,
@@ -246,6 +275,27 @@ function toListing(row, type) {
       image: gallery[0],
       gallery,
       panelCopy,
+      panelTitle: generated?.panelTitle || buildingName || address,
+      panelSubtitle: generated?.panelSubtitle || `${address}, ${city}, ${state} ${zip}`,
+      panelMetadata: generated?.panelMetadata || "",
+      residentExperience: generated?.residentExperience || "",
+      benefitMatrix: generated?.benefitMatrix || [],
+      walkableNearby: generated?.walkableNearby || "",
+      coffee: generated?.coffee || [],
+      dining: generated?.dining || [],
+      drinks: generated?.drinks || [],
+      wellness: generated?.wellness || [],
+      groceries: generated?.groceries || [],
+      whyItMatters: generated?.whyItMatters || "",
+      placesNearby: generated?.placesNearby || [],
+      goodToKnow: generated?.goodToKnow || [],
+      listingFacts: generated?.listingFacts || "",
+      interestCopy: generated?.interestCopy || "",
+      ctaPrimary: generated?.ctaPrimary || "Explore Neighborhood",
+      ctaSecondary: generated?.ctaSecondary || "View Listing",
+      ctaTour: generated?.ctaTour || "Schedule Tour",
+      ctaContact: generated?.ctaContact || "Contact Legends Real Estate",
+      pinAsset: LEGENDS_PIN_ASSET,
       source: "residents-map",
       mapSource: "Residents Map",
       prefilledMessage,
