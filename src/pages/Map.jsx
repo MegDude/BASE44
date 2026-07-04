@@ -9350,6 +9350,17 @@ function LegendsResidentialIntelligenceDrawer({
     if (isHotelEntity(candidate)) return "Hotel";
     return candidate?.category || candidate?.type || "Place";
   };
+  const getNearbyIcon = (candidate) => {
+    const category = getNearbyCategory(candidate).toLowerCase();
+    if (category.includes("coffee")) return Coffee;
+    if (category.includes("dining")) return Utensils;
+    if (category.includes("wellness")) return Dumbbell;
+    if (category.includes("retail")) return Sparkles;
+    if (category.includes("civic")) return Landmark;
+    if (category.includes("hotel")) return Building2;
+    if (isEventEntity(candidate)) return CalendarDays;
+    return MapPin;
+  };
   const nearbyCards = places
     .filter((candidate) => {
       if (!candidate?.id || candidate.id === place?.id || !getPlaceCoords(candidate)) return false;
@@ -9497,7 +9508,7 @@ function LegendsResidentialIntelligenceDrawer({
               <div className="dp-legends-nearby-grid">
                 {nearbyCards.map((candidate) => {
                   const image = resolveEntityImage(candidate, "card");
-                  const Icon = getPanelIcon(candidate);
+                  const Icon = getNearbyIcon(candidate);
                   return (
                     <button key={candidate.id} type="button" className="dp-legends-nearby-card" onClick={() => onSelect(candidate)}>
                       <span className="dp-legends-nearby-card-media" aria-hidden="true">
