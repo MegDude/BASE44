@@ -43224,7 +43224,7 @@ html body #root .dp-map-page.dp-map-page :is(
   gap: 24px !important;
   padding: 24px !important;
   background: #FFFFFF !important;
-  scroll-padding-bottom: 96px !important;
+  scroll-padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 html body #root .dp-map-page.dp-map-page :is(

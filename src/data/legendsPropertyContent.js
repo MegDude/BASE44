@@ -84,10 +84,7 @@ function imagePath(asset) {
 }
 
 function pinPath(asset) {
-  const value = String(asset || "").trim();
-  if (!value || /legends/i.test(value)) return "/pins/circular/special/legends-badge.svg";
-  if (value.startsWith("/")) return value;
-  return `/pins/${value}`;
+  return "/pins/circular/special/legends-badge.svg";
 }
 
 const parsedRows = parseCsv(legendsPropertyContentCsv);

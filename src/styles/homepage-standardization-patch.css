@@ -22337,8 +22337,9 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-sticky-footer.dp-saved-s
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-panel-bottom-spacer {
-  height: 8px !important;
-  min-height: 8px !important;
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
 }
 
 @media (min-width: 768px) {

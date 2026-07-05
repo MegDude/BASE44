@@ -22,9 +22,11 @@ const BUILDING_COORDS = {
 
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
 const REPORT_IMAGE_BASE = "/images/reports";
+const USER_SUPPLIED_IMAGE_BASE = "/images/user-supplied";
 const LEGENDS_PIN_ASSET = "/pins/circular/special/legends-badge.svg";
 
 const SEAHOLM_RESIDENCES_IMAGES = [
+  `${USER_SUPPLIED_IMAGE_BASE}/seaholm-residences-entry.png`,
   `${REPORT_IMAGE_BASE}/seaholm-residences-222-west.jpg`,
   `${REPORT_IMAGE_BASE}/the-independent-austin-tower.jpg`,
 ];
@@ -186,14 +188,14 @@ function imageSetForAddress(address, id) {
 
 function listingCopy(type, priceDisplay, beds, baths, sqft, daysOnMarket) {
   if (beds === 0 && baths === 0 && sqft === 0) {
-    return "Want to live here? This Downtown Austin listing is available through Legends Real Estate, with property details ready to confirm. Downtown Perks residents can ask about availability, showing options, and listings that may not be easy to find on the usual listing sites.";
+    return "This Downtown Austin listing is available through Legends Real Estate. Ask for current availability, showing times, and building details without starting from scratch.";
   }
 
   const detailText = `${beds} bed • ${baths} bath • ${withCommas(sqft)} sq ft • ${daysOnMarket} days on market.`;
   if (type === "rent") {
-    return `Want to live here? This Downtown Austin rental is listed at ${priceDisplay}/mo. ${detailText} Downtown Perks residents can contact Legends Real Estate for availability, showing times, and access to property options that may not always be surfaced on other listing sites.`;
+    return `This Downtown Austin rental is listed at ${priceDisplay}/mo. ${detailText} Ask Legends Real Estate for current availability, showing times, and similar homes nearby.`;
   }
-  return `Want to live here? This Downtown Austin residence is listed at ${priceDisplay}. ${detailText} Downtown Perks residents can contact Legends Real Estate for details, availability, private tour options, and property access that may not always be visible on other listing sites.`;
+  return `This Downtown Austin residence is listed at ${priceDisplay}. ${detailText} Ask Legends Real Estate for listing details, private tour options, and similar downtown homes.`;
 }
 
 function generatedListingFor(address) {
@@ -219,8 +221,8 @@ function toListing(row, type) {
   const panelCopy = generated?.summary || listingCopy(type, price, beds, baths, sqft, daysOnMarket);
   const gallery = [generated?.imageAsset, ...imageSetForAddress(address, id)].filter(Boolean).filter((item, index, list) => list.indexOf(item) === index);
   const prefilledMessage = type === "rent"
-    ? `Hi Legends Real Estate, I’m interested in living at ${address}. Please send rental availability, showing options, and anything useful to know about the building and nearby area.`
-    : `Hi Legends Real Estate, I’m interested in living at ${address}. Please send availability, showing options, and anything useful to know about the building and nearby area.`;
+    ? `Hi Legends Real Estate, I’m interested in ${address}. Please send rental availability, showing options, and anything useful to know about the building and nearby area.`
+    : `Hi Legends Real Estate, I’m interested in ${address}. Please send listing details, showing options, and anything useful to know about the building and nearby area.`;
   const buildingName = generated?.buildingName || "";
   const neighborhood = generated?.neighborhood || "Downtown";
   const displayName = buildingName ? `${buildingName} ${generated?.unit ? `#${generated.unit}` : address}` : address;
@@ -231,6 +233,8 @@ function toListing(row, type) {
     type: "property",
     partnerType: "properties",
     brand: "Legends Real Estate",
+    brandLogo: LEGENDS_PIN_ASSET,
+    logo: LEGENDS_PIN_ASSET,
     pinKey: "legends",
     pinAsset: LEGENDS_PIN_ASSET,
     category: "Residential Property",
@@ -253,6 +257,8 @@ function toListing(row, type) {
     legendsListing: {
       id,
       brand: "Legends Real Estate",
+      brandLogo: LEGENDS_PIN_ASSET,
+      logo: LEGENDS_PIN_ASSET,
       buildingName,
       unit: generated?.unit || "",
       listingType: type,

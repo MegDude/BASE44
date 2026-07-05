@@ -9727,10 +9727,10 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-panel-bottom-spacer,
   .dp-bottom-spacer
 ) {
-  display: block !important;
-  width: 100% !important;
-  min-height: calc(124px + env(safe-area-inset-bottom)) !important;
-  flex: 0 0 calc(124px + env(safe-area-inset-bottom)) !important;
+  display: none !important;
+  width: 0 !important;
+  min-height: 0 !important;
+  flex: 0 0 0 !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(
@@ -13982,4 +13982,576 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-stop__n
   width: var(--dp-zoom-stop-number-size) !important;
   height: var(--dp-zoom-stop-number-size) !important;
   font-size: clamp(10px, calc(var(--dp-zoom-stop-number-size) * 0.52), 13px) !important;
+}
+
+/* Universal drawer governance: one mobile-first shell for resident and partner map tabs. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page {
+  --dp-pin-size: 34px;
+  --dp-pin-size-selected: 38px;
+  --dp-pin-cluster-size: 42px;
+  --dp-pin-navy: #0B1F33;
+  --dp-pin-gold: #C8A96A;
+  --dp-pin-gold-soft: rgba(200, 169, 106, 0.28);
+  --dp-drawer-safe-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-panel-bottom-spacer {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-panel-body.hidden, .dp-panel-scroll.hidden) {
+  display: none !important;
+  padding-bottom: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell.dp-map-drawer-shell:not(.dp-detail-drawer),
+  aside.dp-map-campaign-drawer,
+  aside.dp-map-reports-drawer,
+  .dp-drawer-shell
+) {
+  position: absolute !important;
+  inset-inline: 0 !important;
+  bottom: 0 !important;
+  z-index: 620 !important;
+  width: min(100%, 768px) !important;
+  max-width: min(100%, 768px) !important;
+  max-height: min(82dvh, calc(100dvh - 84px)) !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #0B1F33 !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-bottom: 0 !important;
+  border-radius: 20px 20px 0 0 !important;
+  box-shadow: 0 -16px 44px rgba(11, 31, 51, 0.1) !important;
+  backdrop-filter: blur(10px) saturate(1.08) !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-handle, .dp-panel-handle) {
+  width: 42px !important;
+  height: 3px !important;
+  margin: 0 auto 8px !important;
+  flex-shrink: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.16) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-toolbar, .dp-panel-toolbar) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-icon-button, .dp-panel-back, .dp-panel-close) {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-drawer-content,
+  .dp-panel-body,
+  .dp-panel-scroll,
+  .dp-resident-tab-panel,
+  .dp-tabs-content
+) {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-drawer-scroll,
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll,
+  .dp-panel-scroll,
+  .dp-tab-stack
+) {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: var(--dp-drawer-safe-bottom) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-tab-header,
+  .dp-resident-tab-panel-header,
+  .dp-saved-downtown-header,
+  .dp-partner-readable-hero,
+  .dp-map-directory-header
+) {
+  padding: 2px 4px 10px !important;
+  margin: 0 0 6px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-header p, .dp-resident-tab-panel-header p, .dp-tab-eyebrow, .dp-map-directory-eyebrow) {
+  margin: 0 0 4px !important;
+  font: 700 10px/1.2 Inter, sans-serif !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-header h2, .dp-resident-tab-panel-header h2, .dp-partner-readable-hero h2, .dp-map-directory-title) {
+  margin: 0 !important;
+  font-family: "Instrument Serif", Georgia, serif !important;
+  font-size: 25px !important;
+  line-height: 1.02 !important;
+  font-weight: 500 !important;
+  color: #0B1F33 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-header span, .dp-resident-tab-panel-header span, .dp-partner-readable-hero p, .dp-map-directory-subtitle) {
+  display: block !important;
+  margin-top: 4px !important;
+  font: 400 13px/1.35 Inter, sans-serif !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-header strong, .dp-resident-tab-panel-header strong, .dp-map-directory-count) {
+  display: inline-flex !important;
+  margin-top: 6px !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  color: #8C6837 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-row, .dp-directory-result-row, .dp-legends-result-row) {
+  width: 100% !important;
+  min-height: 54px !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 9px !important;
+  padding: 8px 4px !important;
+  text-align: left !important;
+  color: #0B1F33 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-context, .dp-legends-result-meta) {
+  display: block !important;
+  font: 700 10px/1.2 Inter, sans-serif !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: rgba(11, 31, 51, 0.52) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-story, .dp-directory-copy strong, .dp-legends-result-title) {
+  display: block !important;
+  margin-top: 2px !important;
+  font: 700 13px/1.2 Inter, sans-serif !important;
+  color: #0B1F33 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-meaning, .dp-directory-copy small, .dp-legends-result-address, .dp-legends-result-details) {
+  display: block !important;
+  margin-top: 2px !important;
+  font: 400 11px/1.25 Inter, sans-serif !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-action, .dp-directory-cta, .dp-legends-result-action, .dp-tab-signal, .dp-campaign-status) {
+  min-width: 44px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(200, 169, 106, 0.35) !important;
+  border-radius: 7px !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  color: #0B1F33 !important;
+  background: rgba(200, 169, 106, 0.1) !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-primary-action, .dp-tab-secondary-action, .dp-info-guide-actions button, .dp-campaign-action-bar button, .dp-report-next-action button, .dp-saved-action-row button, .dp-action-link) {
+  height: 30px !important;
+  min-height: 30px !important;
+  min-width: max-content !important;
+  padding: 0 11px !important;
+  border-radius: 7px !important;
+  font: 700 10px/1 Inter, sans-serif !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-tab-primary-action {
+  border: 1px solid rgba(200, 169, 106, 0.42) !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-tab-secondary-action {
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-partner-summary-grid, .dp-partner-report-analytics, .dp-campaign-readout > div, .dp-partner-info-grid) {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-partner-summary-card, .dp-campaign-readout article, .dp-partner-report-readout article, .dp-partner-report-card) {
+  min-height: 58px !important;
+  padding: 9px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-row, .dp-partner-feed-row, .dp-campaign-layer-row, .dp-brand-campaign-row) {
+  width: 100% !important;
+  min-height: 56px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  padding: 9px 4px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-shell *, .dp-map-drawer-shell *) {
+  box-sizing: border-box !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-shell button, .dp-map-drawer-shell button) {
+  max-width: 100% !important;
+  font-family: Inter, sans-serif !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-shell h2, .dp-map-drawer-shell h2, .dp-drawer-shell h3, .dp-map-drawer-shell h3, .dp-drawer-shell strong, .dp-map-drawer-shell strong, .dp-drawer-shell p, .dp-map-drawer-shell p, .dp-drawer-shell span, .dp-map-drawer-shell span, .dp-drawer-shell small, .dp-map-drawer-shell small) {
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-pin, .dp-custom-map-pin, .dp-marker, .dp-map-pin-badge) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: var(--dp-pin-navy) !important;
+  color: var(--dp-pin-gold) !important;
+  border: 1.5px solid var(--dp-pin-gold) !important;
+  box-shadow:
+    0 6px 16px rgba(11, 31, 51, 0.22),
+    0 0 0 3px rgba(200, 169, 106, 0.14) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-pin svg, .dp-custom-map-pin svg, .dp-marker svg, .dp-map-pin-badge svg, .dp-pin-svg, .dp-map-icon-svg) {
+  display: block !important;
+  margin: auto !important;
+  stroke: var(--dp-pin-gold) !important;
+  color: var(--dp-pin-gold) !important;
+  stroke-width: 2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-cluster, .dp-cluster-marker) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: var(--dp-pin-navy) !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid var(--dp-pin-gold) !important;
+  font: 700 12px/1 Inter, sans-serif !important;
+  box-shadow:
+    0 8px 20px rgba(11, 31, 51, 0.25),
+    0 0 0 4px rgba(200, 169, 106, 0.16) !important;
+}
+
+/* Final detail-drawer polish: white surfaces, glass actions, soft prompt chips. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) :is(
+  .dp-map-panel-content,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-entity-drawer,
+  .dp-perk-module,
+  .dp-destination-section,
+  .dp-entity-section,
+  .dp-entity-assistant,
+  .dp-discovery-context-section,
+  .dp-nearby-image-section
+) {
+  background: #FFFFFF !important;
+  background-image: none !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-perk-action-row {
+  width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-perk-action-row > .dp-perk-cta {
+  appearance: none !important;
+  min-height: 32px !important;
+  height: auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 8px 18px rgba(11, 31, 51, 0.055) !important;
+  font: 650 11px/1.1 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-perk-action-row > .dp-perk-cta:is(.is-primary, .is-secondary, .is-tertiary) {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(11, 31, 51, 0.1) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-perk-action-row > .dp-perk-cta:is(:hover, :focus-visible, :active) {
+  border-color: rgba(200, 169, 106, 0.42) !important;
+  color: #8C6837 !important;
+  -webkit-text-fill-color: #8C6837 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 0 0 3px rgba(200, 169, 106, 0.14),
+    0 10px 22px rgba(11, 31, 51, 0.08) !important;
+  transform: translateY(-1px) !important;
+  outline: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-ask-prompts {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: flex-start !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-ask-prompt-chip {
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: auto !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(11, 31, 51, 0.76) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.76) !important;
+  box-shadow: none !important;
+  font: 450 12px/1.25 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer
+) .dp-ask-prompt-chip:is(:hover, :focus-visible, :active) {
+  color: #8C6837 !important;
+  -webkit-text-fill-color: #8C6837 !important;
+  border-color: rgba(200, 169, 106, 0.34) !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.1) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-detail-framework.dp-map-drawer-panel.dp-map-drawer-shell .dp-perk-action-row.dp-perk-action-row {
+  width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-detail-framework.dp-map-drawer-panel.dp-map-drawer-shell .dp-perk-action-row.dp-perk-action-row > .dp-perk-cta.dp-perk-cta {
+  min-height: 32px !important;
+  height: auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.84),
+    0 8px 18px rgba(11, 31, 51, 0.055) !important;
+  font: 650 11px/1.1 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-detail-framework.dp-map-drawer-panel.dp-map-drawer-shell .dp-perk-action-row.dp-perk-action-row > .dp-perk-cta.dp-perk-cta:is(:hover, :focus-visible, :active) {
+  border-color: rgba(200, 169, 106, 0.42) !important;
+  color: #8C6837 !important;
+  -webkit-text-fill-color: #8C6837 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 0 0 3px rgba(200, 169, 106, 0.14),
+    0 10px 22px rgba(11, 31, 51, 0.08) !important;
+  transform: translateY(-1px) !important;
+  outline: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-detail-framework.dp-map-drawer-panel.dp-map-drawer-shell .dp-ask-prompts.dp-ask-prompts {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: flex-start !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-detail-framework.dp-map-drawer-panel.dp-map-drawer-shell .dp-ask-prompt-chip.dp-ask-prompt-chip {
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: auto !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(11, 31, 51, 0.76) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.76) !important;
+  box-shadow: none !important;
+  font: 450 12px/1.25 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-detail-framework.dp-map-drawer-panel.dp-map-drawer-shell section.dp-entity-assistant.dp-entity-assistant .dp-ask-prompts.dp-ask-prompts > button.dp-ask-prompt-chip.dp-ask-prompt-chip {
+  max-width: 100% !important;
+  min-height: 32px !important;
+  height: auto !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(11, 31, 51, 0.76) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.76) !important;
+  box-shadow: none !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 450 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
 }

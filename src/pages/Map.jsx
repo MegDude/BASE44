@@ -1686,7 +1686,24 @@ function isFrostTowerEntity(place) {
 
 function isHotelEntity(place) {
   if (isPropertyEntity(place)) return false;
-  return coreMatches(place, FILTER_MATCHERS.Hotels);
+  const type = getExplicitEntityType(place);
+  const category = getExplicitEntityCategory(place);
+  const categoryKey = getExplicitEntityCategoryKey(place);
+  const partnerType = getExplicitPartnerType(place);
+  const name = String(place?.name || place?.title || place?.raw?.name || place?.raw?.title || "").toLowerCase();
+  return (
+    type === "hotel" ||
+    type === "hospitality" ||
+    partnerType === "hotel" ||
+    partnerType === "hotels" ||
+    partnerType === "hospitality" ||
+    category === "hotel" ||
+    category === "hotel / hospitality" ||
+    category.includes("hotel / hospitality") ||
+    categoryKey.includes("hotel_hospitality") ||
+    categoryKey === "hotel" ||
+    /\b(hotel|inn|resort|stay|lodging)\b/i.test(name)
+  );
 }
 
 function isCampaignEntity(place) {
@@ -3641,7 +3658,6 @@ function PartnerQrScanner({ onVerified }) {
               ) : (
                 <ScanLine className="h-9 w-9 text-[#C8A96A]" />
               )}
-              <div className="dp-panel-bottom-spacer" aria-hidden="true" />
             </div>
           )}
           {scannerStatus === "scanning" && scannerSource !== "demo" && (
@@ -4053,13 +4069,15 @@ function ResidentPerkDetails({ place, savedIds, onSave }) {
   const perkValue = String(perk.value || "").trim();
   const normalizedPerkTitle = perkTitle.toLowerCase();
   const normalizedPerkValue = perkValue.toLowerCase();
+  const isGenericPerkTitle = /^(resident perk|resident offer|perk)$/i.test(perkTitle.trim());
+  const displayPerkTitle = isGenericPerkTitle && perkValue ? perkValue : perkTitle;
   const normalizedUseText = String(useText || "").trim().toLowerCase();
-  const shouldShowValue = perkValue && normalizedPerkValue !== normalizedPerkTitle;
-  const shouldShowUseText = normalizedUseText && normalizedUseText !== normalizedPerkTitle && normalizedUseText !== normalizedPerkValue;
+  const shouldShowValue = perkValue && normalizedPerkValue !== String(displayPerkTitle || "").trim().toLowerCase();
+  const shouldShowUseText = normalizedUseText && normalizedUseText !== String(displayPerkTitle || "").trim().toLowerCase() && normalizedUseText !== normalizedPerkValue;
   const shouldShowTerms = termsText
     && termsText.toLowerCase() !== normalizedUseText
     && termsText.toLowerCase() !== normalizedPerkValue
-    && termsText.toLowerCase() !== normalizedPerkTitle;
+    && termsText.toLowerCase() !== String(displayPerkTitle || "").trim().toLowerCase();
 
   return (
     <section className="dp-destination-section dp-perk-module">
@@ -4069,7 +4087,7 @@ function ResidentPerkDetails({ place, savedIds, onSave }) {
           {sectionLabel}
         </div>
         <h3 className="dp-perk-module-title">
-          {perkTitle}
+          {displayPerkTitle}
         </h3>
         {shouldShowValue && (
           <p className="dp-perk-module-value">
@@ -4089,7 +4107,7 @@ function ResidentPerkDetails({ place, savedIds, onSave }) {
         {!isProperty && (
           <div className="dp-perk-action-row" aria-label={`${place.name} perk actions`}>
             <button type="button" onClick={onSave} className="dp-perk-cta is-primary">
-              Use Perk
+              Use
             </button>
             <button type="button" onClick={onSave} className="dp-perk-cta is-secondary">
               {isSaved ? "Saved" : "Save"}
@@ -5794,6 +5812,7 @@ function getNearbyAreaPlaces(place, places = [], limit = 4) {
 
 function getNearbyKindLabel(candidate, candidateKind) {
   const text = placeText(candidate);
+  if (isHotelEntity(candidate)) return "Hotel nearby";
   if (candidateKind === "coffee") return "Coffee nearby";
   if (candidateKind === "grocery") return "Grocery nearby";
   if (candidateKind === "hotel") return "Hotel experiences nearby";
@@ -6479,7 +6498,13 @@ function getContextualRailFallbackImage(entity, mode = "resident") {
   return "/images/fallbacks/brand.jpg";
 }
 
-function getNearbyRecommendationCards(place, places = [], mode = "resident", limit = 8) {
+function matchesNearbyTargetKind(entity, targetKind = "") {
+  if (!targetKind) return true;
+  if (targetKind === "hotel") return isHotelEntity(entity);
+  return getDestinationKind(entity) === targetKind;
+}
+
+function getNearbyRecommendationCards(place, places = [], mode = "resident", limit = 8, targetKind = "") {
   const nearby = getNearbyRecommendations({
     selectedEntity: place,
     entities: places,
@@ -6487,7 +6512,7 @@ function getNearbyRecommendationCards(place, places = [], mode = "resident", lim
     fallbackRadiusMeters: mode === "partner" ? 2200 : 1800,
     limit: Math.max(limit * 2, 10),
     mode,
-  }).filter((item) => item?.entity?.id);
+  }).filter((item) => item?.entity?.id && matchesNearbyTargetKind(item.entity, targetKind));
 
   const related = getRelatedRecommendations({
     selectedEntity: place,
@@ -6495,7 +6520,7 @@ function getNearbyRecommendationCards(place, places = [], mode = "resident", lim
     excludeIds: nearby.map((item) => item.entity.id),
     limit,
     mode,
-  }).filter((item) => item?.entity?.id);
+  }).filter((item) => item?.entity?.id && matchesNearbyTargetKind(item.entity, targetKind));
 
   return dedupeRailItems([...nearby, ...related], place, limit)
     .map((item) => {
@@ -6636,10 +6661,10 @@ function getRouteAwareNearbyCards(place, places = [], mode = "resident", route =
     .slice(0, limit);
 }
 
-function NearbyImageRail({ place, places = [], onSelect, mode = "resident", title = "Nearby", support = "", route = null, savedIds = new Set() }) {
+function NearbyImageRail({ place, places = [], onSelect, mode = "resident", title = "Nearby", support = "", route = null, savedIds = new Set(), targetKind = "" }) {
   const items = route?.stops?.length
     ? getRouteAwareNearbyCards(place, places, mode, route, savedIds, 10)
-    : getNearbyRecommendationCards(place, places, mode, 8);
+    : getNearbyRecommendationCards(place, places, mode, 8, targetKind);
   if (!items.length) return null;
 
   return (
@@ -6668,10 +6693,13 @@ function NearbyContext({ place, places = [], onSelect, mode = "resident", route 
   const panelContent = resolveEntityPanelContent(place, mode);
   const isDaaPanel = isDaaCivicEntity(place) || Boolean(getDaaStopFromPlace(place));
   const isRouteContext = route?.stops?.length && (isDaaArtWalkRoute(route) || Boolean(getDaaStopFromPlace(place)) || isCivicEntity(place));
+  const isHotelPanel = isHotelEntity(place);
   const title = isDaaPanel
     ? isDaaArtWalkRoute(route) || Boolean(getDaaStopFromPlace(place)) ? "Art Walk Stops Nearby" : "DAA Routes & Initiatives"
     : isRouteContext
       ? isWaterlooGreenwayRoute(route) ? "Along This Waterloo Walk" : "Route Stops Nearby"
+    : isHotelPanel
+      ? "Hotels nearby"
     : panelContent.nearbyHeading || resolveEntityPanelArchetype(place).nearbyTitle;
   const support = isDaaPanel
     ? isDaaArtWalkRoute(route) || Boolean(getDaaStopFromPlace(place))
@@ -6682,7 +6710,7 @@ function NearbyContext({ place, places = [], onSelect, mode = "resident", route 
       ? "Nearby perks, saved places, events, gardens, and next Waterloo stops tied to this route."
       : "Nearby stops, saved places, and civic context tied to this route."
     : "";
-  return <NearbyImageRail place={place} places={places} onSelect={onSelect} mode={mode} title={title} support={support} route={route} savedIds={savedIds} />;
+  return <NearbyImageRail place={place} places={places} onSelect={onSelect} mode={mode} title={title} support={support} route={route} savedIds={savedIds} targetKind={isHotelPanel ? "hotel" : ""} />;
 }
 
 function getPropertyNearbyCards(place, places = [], mode = "resident") {
@@ -6755,9 +6783,11 @@ function getPartnerRelatedCopy(item, currentPlace) {
 function PeopleAlsoVisit({ place, places, onSelect, mode = "resident" }) {
   const isPropertyLike = getResidentEntityKind(place) === "property" || Boolean(getResolvedLegendsListing(place) || getLuxuryPresenceBuilding(place));
   if (isPropertyLike) return null;
-  const related = getRelatedPlaces(place, places);
+  const isHotelPanel = isHotelEntity(place);
+  const related = getRelatedPlaces(place, places)
+    .filter((item) => !isHotelPanel || isHotelEntity(item));
   if (!related.length) return null;
-  const title = resolveEntityPanelContent(place, mode).nearbyHeading || "Nearby";
+  const title = isHotelPanel ? "Hotels nearby" : resolveEntityPanelContent(place, mode).nearbyHeading || "Nearby";
   return (
     <DestinationSection title={title} className="dp-related-section">
       <div className="dp-related-rail">
@@ -10327,6 +10357,7 @@ function GoogleMapCanvas({
   const interactionHandlersRef = useRef({ onUserNavigate, onViewportChange, onZoomChange });
   const [loadState, setLoadState] = useState(() => (getGoogleMapsConfigError() ? "error" : "loading"));
   const [loadError, setLoadError] = useState(() => getGoogleMapsConfigError());
+  const [mapZoom, setMapZoom] = useState(() => Number(zoom) || INITIAL_MAP_ZOOM);
 
   useEffect(() => {
     interactionHandlersRef.current = { onUserNavigate, onViewportChange, onZoomChange };
@@ -10356,6 +10387,7 @@ function GoogleMapCanvas({
     if (!map) return;
     const bounds = map.getBounds?.();
     const currentZoom = map.getZoom?.() || initialViewRef.current.zoom || INITIAL_MAP_ZOOM;
+    setMapZoom(currentZoom);
     interactionHandlersRef.current.onZoomChange?.(currentZoom);
     if (!bounds) return;
     interactionHandlersRef.current.onViewportChange?.({
@@ -12606,7 +12638,6 @@ export default function MapPage() {
             </div>
           </section>
 
-          <div className="dp-panel-bottom-spacer" aria-hidden="true" />
       </div>
       </div>
     );
@@ -14264,7 +14295,6 @@ export default function MapPage() {
             <div
               className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "hidden" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
               data-panel-body
-              style={{ paddingBottom: "96px" }}
             >
               {urlState.mode === "partner" && activePartnerPanel === "activity" && renderActivityPanel()}
               {urlState.mode === "partner" && activePartnerPanel === "reports" && renderReportsPanel()}
@@ -14353,7 +14383,6 @@ export default function MapPage() {
                       No active Legends inventory is visible yet. Try Legends, Listings, or a nearby real estate search.
                     </div>
                   )}
-                  <div className="dp-panel-bottom-spacer" aria-hidden="true" />
                 </div>
               </>
             ) : urlState.mode !== "partner" && isResidentSavedDrawer ? (
@@ -14362,10 +14391,8 @@ export default function MapPage() {
               <div className="dp-resident-tab-panel dp-resident-info-tab-panel min-h-0 flex-1 overflow-hidden">
                 <div
                   className="dp-resident-tab-panel-list dp-resident-info-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]"
-                  style={{ paddingBottom: "96px" }}
                 >
                   {renderInfoPanel()}
-                  <div className="dp-panel-bottom-spacer" aria-hidden="true" />
                 </div>
               </div>
             ) : urlState.mode !== "partner" ? (
@@ -14380,7 +14407,6 @@ export default function MapPage() {
               )}
               <div
                 className="dp-resident-tab-panel-list min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] md:space-y-2"
-                style={{ paddingBottom: "96px" }}
               >
               {drawerPreviewPlaces.map((place) => (
                 (() => {
@@ -14420,7 +14446,7 @@ export default function MapPage() {
                   }
                   const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
                   const offerTitle = offer?.title || offer?.offer || place.perk?.offer || place.recommended_perk || place.partner_opportunity || "";
-                  const actionText = activeBottomTab === "perks" && hasActivePerkData(place) ? "Use Perk" : "Open";
+                  const actionText = activeBottomTab === "perks" && hasActivePerkData(place) ? "Use" : "Open";
                   return (
                     <button
                       key={place.id}
@@ -14465,7 +14491,6 @@ export default function MapPage() {
                   {resultsExpanded ? "Show less" : `Show more (${isResidentSavedDrawer ? hiddenSavedPreviewCount : hiddenPreviewCount})`}
                 </button>
               )}
-              <div className="dp-panel-bottom-spacer" aria-hidden="true" />
               </div>
             </div>
             ) : null}
@@ -14989,7 +15014,6 @@ export default function MapPage() {
                         <PeopleAlsoVisit place={selected} places={places} onSelect={selectPlace} mode={urlState.mode} />
                       </motion.div>
                     )}
-                    <div className="dp-panel-bottom-spacer" aria-hidden="true" />
                   </motion.div>
                 );
               })()}
