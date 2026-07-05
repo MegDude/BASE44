@@ -47,6 +47,7 @@ const WORKSPACE_CATEGORIES = [
 const FRIENDLY_ENTITLEMENTS = ["Map Listing", "Campaigns", "Offers", "Events", "Surveys", "Reports", "QR Experiences", "Audience", "Media"];
 const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
 const WORKSPACE_ACTIVATION_KEY = "dp_partner_workspace:activation";
+const PARTNER_SESSION_KEY = "dp_partner_workspace:session";
 
 const PARTNER_LIFECYCLE_LINKS = [
   { label: "Partner Type", href: "/partners/start", detail: "Choose the lane, workspace template, recommended plan, and default modules.", icon: UserPlus },
@@ -183,6 +184,27 @@ function readPartnerSetup() {
   return getStoredJson(PARTNER_SETUP_KEY, {});
 }
 
+function readCheckoutSetup(search = "") {
+  const params = new URLSearchParams(search);
+  const setup = readPartnerSetup();
+  const modules = params.get("modules");
+  const moduleLabels = params.get("moduleLabels");
+
+  return {
+    ...setup,
+    partnerType: params.get("partnerType") || setup.partnerType,
+    plan: params.get("plan") || setup.plan,
+    sku: params.get("sku") || setup.sku,
+    checkoutKey: params.get("sku") || setup.checkoutKey,
+    modules: modules ? modules.split(",").map((module) => module.trim()).filter(Boolean) : setup.modules,
+    moduleLabels: moduleLabels ? moduleLabels.split(",").map((label) => label.trim()).filter(Boolean) : setup.moduleLabels,
+    annualTotal: params.get("annualTotal") || setup.annualTotal,
+    recurringAnnualTotal: params.get("recurringAnnualTotal") || setup.recurringAnnualTotal,
+    oneTimeTotal: params.get("oneTimeTotal") || setup.oneTimeTotal,
+    annualAddOnTotal: params.get("annualAddOnTotal") || setup.annualAddOnTotal,
+  };
+}
+
 function normalizeBusinessName(setup = {}) {
   return (
     setup.businessName ||
@@ -220,6 +242,25 @@ function getWorkspaceActivation() {
   return getStoredJson(WORKSPACE_ACTIVATION_KEY, null);
 }
 
+function writePartnerWorkspaceSession(profile = {}, activation = {}) {
+  if (typeof window === "undefined") return;
+  const organizationName = profile.organization_name || profile.partner_name || activation.organizationName || "Downtown Perks Partner";
+  const session = {
+    type: "partner",
+    user: {
+      id: profile.email || organizationName,
+      email: profile.email || "",
+      full_name: profile.full_name || profile.contact_name || organizationName,
+      organization_name: organizationName,
+      partner_type: profile.partner_type || activation.partnerType || "partner",
+      role: "partner",
+    },
+    checkoutSessionId: activation.id,
+    createdAt: activation.createdAt || new Date().toISOString(),
+  };
+  setStoredJson(PARTNER_SESSION_KEY, session);
+}
+
 function provisionWorkspaceFromCheckout(search = "") {
   if (typeof window === "undefined") return null;
   const params = new URLSearchParams(search);
@@ -228,7 +269,7 @@ function provisionWorkspaceFromCheckout(search = "") {
   if (!hasCheckoutSignal && existing) return existing;
   if (!hasCheckoutSignal) return null;
 
-  const setup = readPartnerSetup();
+  const setup = readCheckoutSetup(search);
   const businessName = normalizeBusinessName(setup);
   const modules = getPurchasedModules(setup);
   const activation = {
@@ -270,6 +311,7 @@ function provisionWorkspaceFromCheckout(search = "") {
   setStoredJson(WORKSPACE_ACTIVATION_KEY, activation);
   setStoredJson(workspaceKey("profile"), profile);
   setStoredJson("dp_partner_workspace:profile:current", profile);
+  writePartnerWorkspaceSession(profile, activation);
   return activation;
 }
 
@@ -395,7 +437,8 @@ export default function PartnerWorkspace() {
   const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
   const [activation, setActivation] = useState(() => getWorkspaceActivation());
   const navigate = useNavigate();
-  const isPublicWorkspaceUser = user.email === PUBLIC_PARTNER_USER.email;
+  const workspaceDisplayName = activation?.organizationName || user.organization_name || user.partner_name || user.full_name || user.email?.split("@")[0] || "Your workspace";
+  const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
 
   useEffect(() => {
@@ -413,7 +456,7 @@ export default function PartnerWorkspace() {
 
   useEffect(() => {
     base44.auth.me()
-      .then((u) => setUser({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}), ...(u || {}) }))
+      .then((u) => setUser({ ...PUBLIC_PARTNER_USER, ...(u || {}), ...(getStoredProfile() || {}) }))
       .catch(() => setUser((currentUser) => ({ ...currentUser, ...(getStoredProfile() || {}) })));
   }, []);
 
@@ -450,7 +493,7 @@ export default function PartnerWorkspace() {
             <div className="dp-partner-workspace-title-copy">
               <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
               <h1 className="dp-partner-workspace-title font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
-                {isReportsTab ? "Monthly Reports" : tab === "overview" ? `${activation?.organizationName || user.partner_name || "Workspace"} Home` : user.full_name || user.email?.split("@")[0] || "Your workspace"}
+                {isReportsTab ? "Monthly Reports" : tab === "overview" ? `${workspaceDisplayName} Home` : workspaceDisplayName}
               </h1>
               <p className="dp-partner-workspace-support text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">
                 {isReportsTab

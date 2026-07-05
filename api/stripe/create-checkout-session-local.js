@@ -56,6 +56,28 @@ function normalizeMetadata(metadata) {
   );
 }
 
+function buildWorkspaceSuccessUrl(appBaseUrl, metadata) {
+  const params = new URLSearchParams({
+    checkout: "success",
+  });
+
+  [
+    "partnerType",
+    "plan",
+    "sku",
+    "modules",
+    "moduleLabels",
+    "annualTotal",
+    "recurringAnnualTotal",
+    "oneTimeTotal",
+    "annualAddOnTotal",
+  ].forEach((key) => {
+    if (metadata[key]) params.set(key, metadata[key]);
+  });
+
+  return `${appBaseUrl}/partner-workspace/overview?${params.toString()}&session_id={CHECKOUT_SESSION_ID}`;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
@@ -112,14 +134,15 @@ export default async function handler(req, res) {
     if (rejectBlockedMonthlyPrice(res, [defaultPrice])) return;
 
     const appBaseUrl = getAppBaseUrl();
+    const normalizedMetadata = normalizeMetadata(metadata);
     const session = await stripe.checkout.sessions.create({
       mode,
       line_items: checkoutLineItems.length
         ? checkoutLineItems
         : [{ price: defaultPrice, quantity: Number(quantity) || 1 }],
-      success_url: `${appBaseUrl}/partner-workspace/overview?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: buildWorkspaceSuccessUrl(appBaseUrl, normalizedMetadata),
       cancel_url: `${appBaseUrl}/pricing?checkout=cancelled`,
-      metadata: normalizeMetadata(metadata),
+      metadata: normalizedMetadata,
     });
 
     res.status(200).json({ checkoutUrl: session.url });
