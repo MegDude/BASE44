@@ -15195,6 +15195,21 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   text-align: left !important;
 }
 
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-primary-action-row > .dp-panel-action,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-destination-action-row > .dp-panel-action,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-partner-action-row > .dp-panel-action,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-editorial-hero-actions > .dp-panel-action,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-perk-action-row > .dp-perk-cta,
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-neighborhood-actions > .dp-panel-action {
+  inline-size: 100% !important;
+  width: 100% !important;
+  min-inline-size: 0 !important;
+  max-inline-size: none !important;
+  max-width: none !important;
+  justify-self: stretch !important;
+  flex: 1 1 0 !important;
+}
+
 @media (min-width: 640px) {
   html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-map-drawer-shell {
     border-radius: 0 !important;
