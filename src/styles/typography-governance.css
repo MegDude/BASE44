@@ -6827,6 +6827,84 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page select.dp-pa
   appearance: auto !important;
 }
 
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-section {
+  display: grid !important;
+  gap: 12px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: rgba(247, 248, 251, 0.72) !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-section-head {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-section-head h3 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card {
+  display: grid !important;
+  gap: 4px !important;
+  min-height: 112px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 7px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  text-align: left !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card span {
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  font-size: 9.5px !important;
+  font-weight: 720 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card strong {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 13.5px !important;
+  font-weight: 680 !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card small {
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card[data-active="true"] {
+  border-color: rgba(184, 150, 62, 0.44) !important;
+  background: rgba(200, 169, 106, 0.1) !important;
+  box-shadow: inset 0 0 0 1px rgba(184, 150, 62, 0.24) !important;
+}
+
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-action {
   justify-content: flex-start !important;
   text-transform: none !important;
@@ -6843,6 +6921,10 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
 
   html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-setup dd {
     text-align: left !important;
+  }
+
+  html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 }
 

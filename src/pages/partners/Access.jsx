@@ -12,14 +12,54 @@ import {
 const PARTNER_PROFILE_KEY = "dp_partner_workspace:profile:current";
 
 const PARTNER_TYPES = [
-  { value: "venue", label: "Venues" },
-  { value: "property", label: "Properties / Buildings" },
-  { value: "hotel", label: "Hotels" },
-  { value: "brand", label: "Brands" },
-  { value: "civic", label: "Civic / Community" },
-  { value: "real-estate", label: "Real Estate" },
-  { value: "resident", label: "Residents" },
-  { value: "custom", label: "Custom" },
+  {
+    value: "property",
+    label: "Properties",
+    section: "Residential",
+    summary: "Buildings, multifamily, condos, apartments, and resident access programs.",
+  },
+  {
+    value: "hotel",
+    label: "Hotels",
+    section: "Hospitality",
+    summary: "Hotels, guest guides, lobby QR access, and nearby recommendations.",
+  },
+  {
+    value: "venue",
+    label: "Venues",
+    section: "Local Operators",
+    summary: "Restaurants, bars, cafes, fitness, wellness, retail, and experiences.",
+  },
+  {
+    value: "brand",
+    label: "Brands",
+    section: "Campaigns",
+    summary: "Brands, sponsors, activations, campaigns, and district placements.",
+  },
+  {
+    value: "civic",
+    label: "Civic",
+    section: "Community",
+    summary: "Civic groups, districts, chambers, public spaces, and community programs.",
+  },
+  {
+    value: "real-estate",
+    label: "Real Estate",
+    section: "Listings",
+    summary: "Agents, brokers, listings, property marketing, and lead capture.",
+  },
+  {
+    value: "resident",
+    label: "Residents",
+    section: "Access",
+    summary: "Resident access, building join requests, cards, and member workflows.",
+  },
+  {
+    value: "custom",
+    label: "Custom",
+    section: "Other",
+    summary: "A different partnership model, portfolio, or launch path.",
+  },
 ];
 
 const TIMELINES = [
@@ -49,6 +89,20 @@ function getPartnerTypeLabel(value) {
   return PARTNER_TYPES.find((type) => type.value === value)?.label || value;
 }
 
+function normalizePartnerType(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (!normalized) return "";
+  if (["property", "properties", "building", "buildings", "residential"].includes(normalized)) return "property";
+  if (["hotel", "hotels", "hospitality"].includes(normalized)) return "hotel";
+  if (["venue", "venues", "restaurant", "restaurants", "business", "businesses"].includes(normalized)) return "venue";
+  if (["brand", "brands", "sponsor", "sponsors"].includes(normalized)) return "brand";
+  if (["civic", "community", "district"].includes(normalized)) return "civic";
+  if (["realestate", "real-estate", "real estate", "listing", "listings", "agent", "broker"].includes(normalized)) return "real-estate";
+  if (["resident", "residents"].includes(normalized)) return "resident";
+  if (normalized === "custom") return "custom";
+  return "";
+}
+
 function savePartnerProfile(profile) {
   if (typeof window === "undefined") return;
   try {
@@ -70,6 +124,7 @@ function startPartnerSignIn(navigate, signInPartner, email) {
 
 function toPricingPartnerType(value) {
   const normalized = String(value || "").toLowerCase();
+  if (!normalized) return "";
   if (normalized.includes("property")) return "Property";
   if (normalized.includes("hotel")) return "Hotel";
   if (normalized.includes("brand")) return "Brand";
@@ -85,10 +140,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const location = useLocation();
   const { isAuthenticated, user, signInPartner } = useAuth();
   const searchParams = new URLSearchParams(location.search);
-  const initialType = searchParams.get("type")
-    || searchParams.get("partnerTypeSlug")
-    || searchParams.get("partnerType")?.toLowerCase()
-    || "venue";
+  const initialType = normalizePartnerType(
+    searchParams.get("type")
+      || searchParams.get("partnerTypeSlug")
+      || searchParams.get("partnerType"),
+  );
   const initialPlan = searchParams.get("plan") || searchParams.get("sku") || "";
   const initialModules = (searchParams.get("modules") || "").split(",").map((item) => item.trim()).filter(Boolean);
   const initialCampaignInterest = searchParams.get("campaignInterest") || CAMPAIGN_INTERESTS[0];
@@ -98,7 +154,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     contact_name: "",
     email: "",
     phone: "",
-    partner_type: PARTNER_TYPES.some((type) => type.value === initialType) ? initialType : "venue",
+    partner_type: initialType,
     timeline: "Still planning",
     website: "",
     bio: "",
@@ -118,6 +174,16 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [saved, setSaved] = useState(false);
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
+  const hasPartnerType = Boolean(form.partner_type);
+
+  useEffect(() => {
+    if (!hasPartnerType) {
+      setSelectedPlanId("");
+      return;
+    }
+    if (selectedPlanId && availablePlans.some((plan) => plan.id === selectedPlanId)) return;
+    setSelectedPlanId(availablePlans[0]?.id || "");
+  }, [availablePlans, hasPartnerType, selectedPlanId]);
 
   useEffect(() => {
     if (isSignUp || !isAuthenticated) return;
@@ -127,6 +193,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
+  }
+
+  function selectPartnerType(value) {
+    updateField("partner_type", value);
+    setSubmissionMessage("");
   }
 
   function toggleModule(moduleId) {
@@ -141,6 +212,12 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     event.preventDefault();
     setSubmissionState("submitting");
     setSubmissionMessage("");
+
+    if (!form.partner_type) {
+      setSubmissionState("idle");
+      setSubmissionMessage("Choose a partner type before registering the account.");
+      return;
+    }
 
     const partnerTypeLabel = getPartnerTypeLabel(form.partner_type);
     const organizationName = form.organization_name || form.contact_name || "Downtown Perks Partner";
@@ -275,10 +352,38 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   </h2>
                 </div>
 
+                <section className="dp-partner-type-section" aria-labelledby="partner-type-heading">
+                  <div className="dp-partner-type-section-head">
+                    <p className="dp-partner-access-label">Partner type</p>
+                    <h3 id="partner-type-heading">Choose the section that fits this workspace.</h3>
+                  </div>
+                  <div className="dp-partner-type-grid" role="radiogroup" aria-label="Partner type">
+                    {PARTNER_TYPES.map((type) => {
+                      const isActive = form.partner_type === type.value;
+                      return (
+                        <button
+                          key={type.value}
+                          type="button"
+                          role="radio"
+                          aria-checked={isActive}
+                          data-active={isActive}
+                          onClick={() => selectPartnerType(type.value)}
+                          className="dp-partner-type-card"
+                        >
+                          <span>{type.section}</span>
+                          <strong>{type.label}</strong>
+                          <small>{type.summary}</small>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <input value={form.partner_type} tabIndex={-1} aria-hidden="true" className="sr-only" onChange={() => {}} />
+                </section>
+
                 <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected setup">
                   <div className="dp-partner-access-setup-head">
                     <p className="dp-partner-access-setup-label">Setup</p>
-                    <strong>{firstYearEstimate == null ? "Custom review" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
+                    <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom review" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
                   </div>
                   <div className="dp-partner-access-setup-fields">
                     <label>
@@ -286,13 +391,20 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                       <select
                         className="dp-partner-access-control"
                         value={selectedPlan?.id || ""}
+                        disabled={!hasPartnerType || !availablePlans.length}
                         onChange={(event) => setSelectedPlanId(event.target.value)}
                       >
-                        {availablePlans.map((plan) => (
-                          <option key={plan.id} value={plan.id}>
-                            {plan.label} - {getPriceText(plan)}
-                          </option>
-                        ))}
+                        {!hasPartnerType ? (
+                          <option value="">Choose partner type first</option>
+                        ) : availablePlans.length ? (
+                          availablePlans.map((plan) => (
+                            <option key={plan.id} value={plan.id}>
+                              {plan.label} - {getPriceText(plan)}
+                            </option>
+                          ))
+                        ) : (
+                          <option value="">Custom review</option>
+                        )}
                       </select>
                     </label>
                     <label>
@@ -345,19 +457,6 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <PartnerAccessField label="Contact name" value={form.contact_name} onChange={(value) => updateField("contact_name", value)} />
                 <PartnerAccessField label="Email" type="email" value={form.email} onChange={(value) => updateField("email", value)} required />
                 <PartnerAccessField label="Phone" type="tel" value={form.phone} onChange={(value) => updateField("phone", value)} />
-
-                <div>
-                  <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Partner type</label>
-                  <select
-                    value={form.partner_type}
-                    onChange={(event) => updateField("partner_type", event.target.value)}
-                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
-                  >
-                    {PARTNER_TYPES.map((type) => (
-                      <option key={type.value} value={type.value}>{type.label}</option>
-                    ))}
-                  </select>
-                </div>
 
                 <div>
                   <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Launch timing</label>
