@@ -15152,6 +15152,49 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   background: rgba(200, 169, 106, 0.12) !important;
 }
 
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-primary-action-row, .dp-secondary-action-row, .dp-destination-action-row, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-survey-action-row, .dp-daa-action-panel, .dp-neighborhood-actions) > :is(button, a, .dp-panel-action, .dp-app-button, .dp-panel-action-text, .dp-perk-cta) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  justify-self: stretch !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-partner-opportunity-list, .dp-entity-discovery-grid, .dp-partner-ask-rail) {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-auto-flow: row !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-partner-opportunity-item, .dp-entity-discovery-card, .dp-partner-ask-rail button) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-entity-discovery-card {
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  justify-content: stretch !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-entity-discovery-card :is(strong, small, span) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell .dp-partner-ask-rail button {
+  white-space: normal !important;
+  text-align: left !important;
+}
+
 @media (min-width: 640px) {
   html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-map-drawer-shell {
     border-radius: 0 !important;
