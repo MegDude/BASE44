@@ -15210,6 +15210,26 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   flex: 1 1 0 !important;
 }
 
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell :is(.dp-primary-action-row, .dp-secondary-action-row, .dp-destination-action-row, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-editorial-hero-actions, .dp-perk-action-row, .dp-neighborhood-actions) > :is(button.dp-panel-action, a.dp-panel-action, .dp-panel-action, .dp-panel-action-text, .dp-perk-cta, .dp-app-button),
+html body #root#root :is(aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell, aside.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer) :is(.dp-primary-action-row, .dp-secondary-action-row, .dp-destination-action-row, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-editorial-hero-actions, .dp-perk-action-row, .dp-neighborhood-actions) > :is(button.dp-panel-action, a.dp-panel-action, .dp-panel-action, .dp-panel-action-text, .dp-perk-cta, .dp-app-button) {
+  display: inline-flex !important;
+  inline-size: 100% !important;
+  width: 100% !important;
+  min-inline-size: 0 !important;
+  min-width: 0 !important;
+  max-inline-size: none !important;
+  max-width: none !important;
+  min-height: 40px !important;
+  height: auto !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.16) !important;
+  border-radius: 8px !important;
+  justify-self: stretch !important;
+  flex: 1 1 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
 @media (min-width: 640px) {
   html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-map-drawer-shell {
     border-radius: 0 !important;
