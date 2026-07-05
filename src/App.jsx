@@ -19,6 +19,7 @@ const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
 const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
+const AdminMarketingStudio = lazy(() => import("./pages/AdminMarketingStudio"));
 const ROUTER_FUTURE_FLAGS = {
   v7_startTransition: true,
   v7_relativeSplatPath: true,
@@ -35,9 +36,16 @@ function MarketingFallback() {
 function ProtectedRoute({ children }) {
   const location = useLocation();
   const { isAuthenticated, isLoadingAuth } = useAuth();
+  const params = new URLSearchParams(location.search);
+  const hasWorkspaceActivation =
+    typeof window !== "undefined" &&
+    Boolean(window.localStorage.getItem("dp_partner_workspace:activation"));
+  const canBootstrapWorkspace =
+    location.pathname.startsWith("/partner-workspace") &&
+    (params.get("checkout") === "success" || params.get("provisioned") === "1" || hasWorkspaceActivation);
 
   if (isLoadingAuth) return <MarketingFallback />;
-  if (isAuthenticated) return children;
+  if (isAuthenticated || canBootstrapWorkspace) return children;
 
   return (
     <Navigate
@@ -139,6 +147,16 @@ function ProductRoutes() {
               </Suspense>
             }
           />
+          <Route path="/admin-studio" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/command-center" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/campaign-builder" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/audience-builder" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/content-library" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/approval-queue" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/distribution" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/performance" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/partner-intelligence" element={<AdminMarketingStudio />} />
+          <Route path="/studio" element={<Navigate to="/admin-studio/command-center" replace />} />
           <Route path="/residents" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/explore" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
@@ -234,7 +252,11 @@ function ProductRoutes() {
           <Route path="/workspace/map" element={<Navigate to="/partner-workspace/map" replace />} />
           <Route path="/workspace/offers" element={<Navigate to="/partner-workspace/offers" replace />} />
           <Route path="/workspace/events" element={<Navigate to="/partner-workspace/events" replace />} />
+          <Route path="/workspace/surveys" element={<Navigate to="/partner-workspace/surveys" replace />} />
+          <Route path="/workspace/broadcasts" element={<Navigate to="/partner-workspace/broadcasts" replace />} />
           <Route path="/workspace/campaigns" element={<Navigate to="/partner-workspace/campaigns" replace />} />
+          <Route path="/workspace/audience" element={<Navigate to="/partner-workspace/audience" replace />} />
+          <Route path="/workspace/media" element={<Navigate to="/partner-workspace/media" replace />} />
           <Route path="/workspace/reports" element={<Navigate to="/partner-workspace/reports" replace />} />
           <Route path="/workspace/analytics" element={<Navigate to="/partner-workspace/analytics" replace />} />
           <Route path="/workspace/profile" element={<Navigate to="/partner-workspace/profile" replace />} />
@@ -248,9 +270,13 @@ function ProductRoutes() {
           <Route path="/partner-workspace/perks" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/parking" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/events" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/surveys" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/broadcasts" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/sources" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/profile" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/audience" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/media" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/residents" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/buildings" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/messages" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />

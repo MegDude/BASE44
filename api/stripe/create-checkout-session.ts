@@ -134,8 +134,8 @@ export default async function handler(req: any, res: any) {
       line_items: checkoutLineItems.length
         ? checkoutLineItems
         : [{ price: defaultPrice, quantity: Number(quantity) || 1 }],
-      success_url: `${appBaseUrl}/#partners/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appBaseUrl}/#partners/pricing?payment=cancelled`,
+      success_url: `${appBaseUrl}/partner-workspace/overview?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appBaseUrl}/pricing?checkout=cancelled`,
       metadata: normalizeMetadata(metadata),
     });
 

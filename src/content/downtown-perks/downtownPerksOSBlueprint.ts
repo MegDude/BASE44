@@ -1,0 +1,167 @@
+import {
+  BarChart3,
+  BookImage,
+  CheckCircle2,
+  CircleDot,
+  Layers3,
+  Megaphone,
+  Network,
+  Send,
+  Users,
+} from "lucide-react";
+
+export const DOWNTOWN_PERKS_OS_AREAS = [
+  {
+    id: "resident",
+    label: "Resident App",
+    job: "Decide where to go, what to unlock, and what is nearby.",
+    routes: ["Map", "Perks", "Events", "Saved", "Card / Pass", "Ask the Map"],
+  },
+  {
+    id: "partner",
+    label: "Partner Workspace",
+    job: "Launch offers, events, campaigns, surveys, reports, and billing from one flow.",
+    routes: ["Home", "Listings", "Perks", "Events", "Campaigns", "Surveys", "Reports", "Billing"],
+  },
+  {
+    id: "studio",
+    label: "Admin Marketing Studio",
+    job: "Govern content, campaigns, partners, approvals, distribution, and reporting.",
+    routes: ["Command Center", "Campaign Builder", "Audience Builder", "Content Library", "Approval Queue", "Distribution", "Performance", "Partner Intelligence"],
+  },
+  {
+    id: "public",
+    label: "Public Site",
+    job: "Sell the system clearly and elegantly.",
+    routes: ["Home", "Resident", "Partners", "Pricing", "Events", "Map Preview", "Join"],
+  },
+] as const;
+
+export const CAMPAIGN_OBJECT_FIELDS = [
+  "id",
+  "type",
+  "objective",
+  "partnerId",
+  "locations",
+  "audience",
+  "content",
+  "media",
+  "placement",
+  "budget",
+  "status",
+  "preview",
+  "test",
+  "approval",
+  "report",
+] as const;
+
+export const CAMPAIGN_CREATION_FLOW = [
+  "Objective",
+  "Campaign Type",
+  "Audience",
+  "Content",
+  "Placement",
+  "Preview",
+  "Test",
+  "Launch",
+  "Report",
+] as const;
+
+export const ADMIN_STUDIO_ROUTES = [
+  {
+    id: "command-center",
+    label: "Command Center",
+    path: "/admin-studio/command-center",
+    icon: CircleDot,
+    purpose: "See what needs attention now across partners, campaigns, and content.",
+    primaryCta: "Review queue",
+    priority: "4 partner campaigns need approval before public placement.",
+    cards: ["Needs approval", "Today live", "Drafts at risk", "Recommended action"],
+  },
+  {
+    id: "campaign-builder",
+    label: "Campaign Builder",
+    path: "/admin-studio/campaign-builder",
+    icon: Layers3,
+    purpose: "Create campaign types for perks, events, surveys, sponsored placements, and partner activations.",
+    primaryCta: "Launch test",
+    priority: "Build once, then preview and test before launch.",
+    cards: [...CAMPAIGN_CREATION_FLOW],
+  },
+  {
+    id: "audience-builder",
+    label: "Audience Builder",
+    path: "/admin-studio/audience-builder",
+    icon: Users,
+    purpose: "Select target users, buildings, districts, behavior, and saved segments.",
+    primaryCta: "Save audience",
+    priority: "Start with district, building, and behavior signals.",
+    cards: ["District", "Building", "Resident behavior", "Saved places", "Uploaded list"],
+  },
+  {
+    id: "content-library",
+    label: "Content Library",
+    path: "/admin-studio/content-library",
+    icon: BookImage,
+    purpose: "Manage images, videos, logos, copy, rights, crops, and approved variants.",
+    primaryCta: "Add asset",
+    priority: "Use approved media only for map and campaign placements.",
+    cards: ["Images", "Video", "Logos", "Copy", "Rights", "Crops"],
+  },
+  {
+    id: "approval-queue",
+    label: "Approval Queue",
+    path: "/admin-studio/approval-queue",
+    icon: CheckCircle2,
+    purpose: "Approve partner submissions or request edits before public distribution.",
+    primaryCta: "Approve / request edit",
+    priority: "Paid and public placements cannot skip review.",
+    cards: ["Submitted", "Needs edit", "Approved", "Scheduled"],
+  },
+  {
+    id: "distribution",
+    label: "Distribution",
+    path: "/admin-studio/distribution",
+    icon: Send,
+    purpose: "Push campaigns to map, email, QR, social, partner pages, and reporting.",
+    primaryCta: "Publish",
+    priority: "Choose placement only after preview and test send pass.",
+    cards: ["Map", "Email", "QR", "Social", "Partner page", "Report"],
+  },
+  {
+    id: "performance",
+    label: "Performance",
+    path: "/admin-studio/performance",
+    icon: BarChart3,
+    purpose: "See what worked and generate the next report.",
+    primaryCta: "Export report",
+    priority: "Track impressions, saves, clicks, visits, and redemptions.",
+    cards: ["Impressions", "Saves", "Clicks", "Visits", "Redemptions", "Report"],
+  },
+  {
+    id: "partner-intelligence",
+    label: "Partner Intelligence",
+    path: "/admin-studio/partner-intelligence",
+    icon: Network,
+    purpose: "View partner health, activity, plan fit, and recommended next action.",
+    primaryCta: "Recommend action",
+    priority: "Use signals to suggest offers, events, surveys, or upgraded placements.",
+    cards: ["Health", "Activity", "Plan", "Audience fit", "Next move"],
+  },
+] as const;
+
+export const CAMPAIGN_TYPES = [
+  "Perk",
+  "Event",
+  "Survey",
+  "Sponsored Placement",
+  "Partner Activation",
+  "Broadcast",
+] as const;
+
+export const STUDIO_STATUS_CARDS = [
+  { label: "Needs approval", value: "4", note: "Partner campaigns awaiting review" },
+  { label: "Live campaigns", value: "12", note: "Running across map and QR surfaces" },
+  { label: "Draft tests", value: "7", note: "Previewed but not launched" },
+  { label: "Reports due", value: "3", note: "Ready for partner summaries" },
+] as const;

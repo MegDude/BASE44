@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bot, Bell, Search, ShieldCheck, WalletCards } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bot, Bell, Search, ShieldCheck, WalletCards, Lock } from "lucide-react";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 import {
@@ -44,7 +44,9 @@ const WORKSPACE_CATEGORIES = [
   { label: "Real Estate", href: "/partners/real-estate", description: "Show available properties alongside the places, amenities, and activity that shape buyer decisions." },
 ];
 
-const FRIENDLY_ENTITLEMENTS = ["Analytics", "Campaigns", "Offers", "Events", "Reports", "QR Experiences", "Exports", "API Access"];
+const FRIENDLY_ENTITLEMENTS = ["Map Listing", "Campaigns", "Offers", "Events", "Surveys", "Reports", "QR Experiences", "Audience", "Media"];
+const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
+const WORKSPACE_ACTIVATION_KEY = "dp_partner_workspace:activation";
 
 const PARTNER_LIFECYCLE_LINKS = [
   { label: "Partner Type", href: "/partners/start", detail: "Choose the lane, workspace template, recommended plan, and default modules.", icon: UserPlus },
@@ -55,10 +57,14 @@ const PARTNER_LIFECYCLE_LINKS = [
 ];
 
 const WORKSPACE_CAPABILITY_LINKS = [
-  { label: "Map", href: "/partner-workspace/map", description: "Review placement, pins, discovery context, and nearby audience movement." },
+  { label: "Map Listing", href: "/partner-workspace/map", description: "Manage the public map listing, placement, images, categories, and live preview." },
   { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, validations, and in-market offers." },
   { label: "Events", href: "/partner-workspace/events", description: "Publish events and keep them connected to map discovery and reporting." },
-  { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan placements, broadcasts, partner moments, and district campaigns." },
+  { label: "Surveys", href: "/partner-workspace/surveys", description: "Build surveys, choose an audience, send a test, and launch when ready." },
+  { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan placements, messages, QR codes, events, and offers from one workflow." },
+  { label: "Broadcasts", href: "/partner-workspace/broadcasts", description: "Create email and SMS campaigns when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
+  { label: "Audience", href: "/partner-workspace/audience", description: "Choose districts, buildings, segments, uploaded contacts, and saved audiences." },
+  { label: "Media", href: "/partner-workspace/media", description: "Keep logos, photos, videos, copy, and QR assets ready to publish." },
   { label: "Reports", href: "/partner-workspace/reports", description: "See monthly performance, saves, redemptions, activity, and recommendations." },
   { label: "Analytics", href: "/partner-workspace/analytics", description: "Understand what people view, save, open, scan, and act on." },
   { label: "Profile", href: "/partner-workspace/profile", description: "Keep organization details, contacts, listings, and workspace context current." },
@@ -137,6 +143,10 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/offers") || pathname.includes("/perks")) return "offers";
   if (pathname.includes("/campaigns")) return "campaigns";
   if (pathname.includes("/events")) return "events";
+  if (pathname.includes("/surveys")) return "surveys";
+  if (pathname.includes("/broadcasts") || pathname.includes("/messages")) return "broadcasts";
+  if (pathname.includes("/audience") || pathname.includes("/segmentation")) return "audience";
+  if (pathname.includes("/media")) return "media";
   if (pathname.includes("/properties") || pathname.includes("/hotels") || pathname.includes("/venues") || pathname.includes("/brands") || pathname.includes("/civic") || pathname.includes("/real-estate") || pathname.includes("/sources") || pathname.includes("/residents") || pathname.includes("/buildings")) return "sources";
   if (pathname.includes("/reports")) return "reports";
   if (pathname.includes("/analytics")) return "analytics";
@@ -167,6 +177,106 @@ function setStoredJson(key, value) {
   } catch {
     // Local storage can be unavailable in restricted browser contexts.
   }
+}
+
+function readPartnerSetup() {
+  return getStoredJson(PARTNER_SETUP_KEY, {});
+}
+
+function normalizeBusinessName(setup = {}) {
+  return (
+    setup.businessName ||
+    setup.organizationName ||
+    setup.companyName ||
+    setup.partnerName ||
+    (setup.partnerType ? `${setup.partnerType} Workspace` : "") ||
+    "Downtown Perks Partner"
+  );
+}
+
+function getPurchasedModules(setup = {}) {
+  const modules = Array.isArray(setup.modules)
+    ? setup.modules
+    : String(setup.modules || "")
+        .split(",")
+        .map((module) => module.trim())
+        .filter(Boolean);
+
+  return Array.from(new Set([
+    "map",
+    "offers",
+    "events",
+    "campaigns",
+    "surveys",
+    "reports",
+    "qr",
+    "audience",
+    "media",
+    ...modules,
+  ]));
+}
+
+function getWorkspaceActivation() {
+  return getStoredJson(WORKSPACE_ACTIVATION_KEY, null);
+}
+
+function provisionWorkspaceFromCheckout(search = "") {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(search);
+  const hasCheckoutSignal = params.get("checkout") === "success" || params.get("provisioned") === "1";
+  const existing = getWorkspaceActivation();
+  if (!hasCheckoutSignal && existing) return existing;
+  if (!hasCheckoutSignal) return null;
+
+  const setup = readPartnerSetup();
+  const businessName = normalizeBusinessName(setup);
+  const modules = getPurchasedModules(setup);
+  const activation = {
+    id: params.get("session_id") || existing?.id || `workspace-${Date.now()}`,
+    organizationName: businessName,
+    partnerType: setup.partnerType || setup.organizationType || "Partner",
+    plan: setup.plan || "Workspace plan",
+    sku: setup.sku || setup.checkoutKey || "workspace",
+    modules,
+    moduleLabels: Array.isArray(setup.moduleLabels) ? setup.moduleLabels : [],
+    annualTotal: setup.annualTotal || "configured",
+    status: "active",
+    createdAt: existing?.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    checklist: [
+      { id: "profile", label: "Complete business profile", done: Boolean(setup.businessName || setup.organizationName || setup.partnerName) },
+      { id: "map", label: "Publish map listing", done: modules.includes("map") },
+      { id: "offer", label: "Create first offer", done: modules.includes("offers") },
+      { id: "campaign", label: "Launch first campaign", done: modules.includes("campaigns") },
+      { id: "audience", label: "Choose target audience", done: modules.includes("audience") },
+      { id: "media", label: "Add media and QR assets", done: modules.includes("media") || modules.includes("qr") },
+    ],
+  };
+
+  const profile = {
+    partner_name: businessName,
+    organization_name: businessName,
+    full_name: setup.contactName || setup.contact || businessName,
+    email: setup.email || PUBLIC_PARTNER_USER.email,
+    partner_type: activation.partnerType,
+    planInterest: activation.plan,
+    selectedPlan: activation.plan,
+    website: setup.website || "",
+    phone: setup.phone || "",
+    address: setup.address || "",
+    district: setup.district || "Downtown Austin",
+  };
+
+  setStoredJson(WORKSPACE_ACTIVATION_KEY, activation);
+  setStoredJson(workspaceKey("profile"), profile);
+  setStoredJson("dp_partner_workspace:profile:current", profile);
+  return activation;
+}
+
+function hasWorkspaceModule(activation, moduleId) {
+  if (!activation) return moduleId !== "broadcasts";
+  const modules = activation.modules || [];
+  return modules.includes(moduleId) || modules.includes(moduleId.replace(/s$/, ""));
 }
 
 function getStoredProfile() {
@@ -283,9 +393,23 @@ export default function PartnerWorkspace() {
   const location = useLocation();
   const [user, setUser] = useState(() => ({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}) }));
   const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
+  const [activation, setActivation] = useState(() => getWorkspaceActivation());
   const navigate = useNavigate();
   const isPublicWorkspaceUser = user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
+
+  useEffect(() => {
+    const nextActivation = provisionWorkspaceFromCheckout(location.search);
+    if (!nextActivation) return;
+    setActivation(nextActivation);
+    setUser((currentUser) => ({
+      ...currentUser,
+      ...(getStoredProfile() || {}),
+      partner_name: nextActivation.organizationName,
+      organization_name: nextActivation.organizationName,
+      partner_type: nextActivation.partnerType,
+    }));
+  }, [location.search]);
 
   useEffect(() => {
     base44.auth.me()
@@ -326,12 +450,14 @@ export default function PartnerWorkspace() {
             <div className="dp-partner-workspace-title-copy">
               <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
               <h1 className="dp-partner-workspace-title font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
-                {isReportsTab ? "Monthly Reports" : tab === "overview" ? "Workspace Home" : user.full_name || user.email?.split("@")[0] || "Your workspace"}
+                {isReportsTab ? "Monthly Reports" : tab === "overview" ? `${activation?.organizationName || user.partner_name || "Workspace"} Home` : user.full_name || user.email?.split("@")[0] || "Your workspace"}
               </h1>
               <p className="dp-partner-workspace-support text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">
                 {isReportsTab
                   ? "Readable partner reports organized around what changed, what worked, and what to do next."
-                  : "Registration, pricing, checkout, provisioning, and daily operations now move through one connected workspace path."}
+                  : activation
+                    ? `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
+                    : "Registration, pricing, checkout, provisioning, and daily operations now move through one connected workspace path."}
               </p>
             </div>
             <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
@@ -393,11 +519,15 @@ export default function PartnerWorkspace() {
       {/* Tab content */}
       <div className="max-w-6xl mx-auto px-5 py-8">
         <AnimatePresence mode="wait">
-          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser ? "unlinked" : "active"} />}
+          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
           {tab === "campaigns" && <WorkspaceRegistryPanel key="campaigns" tabId="campaigns" />}
           {tab === "offers" && <PerksManager key="offers" user={user} />}
           {tab === "events" && <EventsManager key="events" user={user} />}
+          {tab === "surveys" && <WorkspaceRegistryPanel key="surveys" tabId="surveys" />}
+          {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
+          {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
+          {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
@@ -744,10 +874,11 @@ function WorkspaceAnalytics() {
   );
 }
 
-function WorkspaceOverview({ user, setTab, mode = "active" }) {
+function WorkspaceOverview({ user, setTab, mode = "active", activation = null }) {
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(demoOrganizations[0]?.id);
+  const [upgradePrompt, setUpgradePrompt] = useState(null);
 
   useEffect(() => {
     listWorkspaceItems("Perk", "perks", user.email).then(setPerks);
@@ -778,6 +909,31 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}>
+      {activation && (
+        <section className="dp-workspace-overview-section dp-workspace-activation-panel">
+          <div>
+            <p className="dp-workspace-eyebrow">Workspace ready</p>
+            <h2>{activation.organizationName} is active.</h2>
+            <p>
+              Your plan is connected. Start with the map listing, then publish the first offer, event, survey, or campaign when the content is ready.
+            </p>
+          </div>
+          <div className="dp-workspace-activation-status" aria-label="Workspace activation checklist">
+            {activation.checklist?.map((item) => (
+              <span key={item.id} className={item.done ? "is-done" : ""}>
+                <Check aria-hidden="true" />
+                {item.label}
+              </span>
+            ))}
+          </div>
+          <div className="dp-workspace-link-row" aria-label="Workspace first actions">
+            <Link to="/partner-workspace/profile">Finish profile</Link>
+            <Link to="/partner-workspace/map">Preview map listing</Link>
+            <Link to="/partner-workspace/campaigns">Create campaign</Link>
+          </div>
+        </section>
+      )}
+
       {isPreviewMode && (
         <section className="dp-workspace-overview-section dp-workspace-intake-panel">
           <div className="dp-workspace-section-copy">
@@ -911,13 +1067,31 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
           </p>
         </div>
         <div className="dp-workspace-module-grid">
-          {WORKSPACE_CAPABILITY_LINKS.map((capability) => (
-            <Link key={capability.label} to={capability.href} className="dp-workspace-module-card">
-              <span>{capability.label}</span>
-              <p>{capability.description}</p>
-              <ChevronRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          ))}
+          {WORKSPACE_CAPABILITY_LINKS.map((capability) => {
+            const locked = capability.lockedByDefault && !hasWorkspaceModule(activation, capability.addonId || capability.label.toLowerCase());
+            if (locked) {
+              return (
+                <button
+                  key={capability.label}
+                  type="button"
+                  className="dp-workspace-module-card is-locked"
+                  onClick={() => setUpgradePrompt(capability)}
+                >
+                  <span>{capability.label}</span>
+                  <p>{capability.description}</p>
+                  <small><Lock className="h-3.5 w-3.5" aria-hidden="true" /> Add-on</small>
+                </button>
+              );
+            }
+
+            return (
+              <Link key={capability.label} to={capability.href} className="dp-workspace-module-card">
+                <span>{capability.label}</span>
+                <p>{capability.description}</p>
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            );
+          })}
         </div>
         <div className="dp-workspace-entitlement-row" aria-label="Included plan access">
           {FRIENDLY_ENTITLEMENTS.map((entitlement) => (
@@ -925,6 +1099,36 @@ function WorkspaceOverview({ user, setTab, mode = "active" }) {
           ))}
         </div>
       </section>
+
+      {upgradePrompt && (
+        <div className="dp-workspace-upgrade-backdrop" role="presentation" onClick={() => setUpgradePrompt(null)}>
+          <section
+            className="dp-workspace-upgrade-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="workspace-upgrade-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}>
+              <X aria-hidden="true" />
+            </button>
+            <p className="dp-workspace-eyebrow">Add-on</p>
+            <h2 id="workspace-upgrade-title">Unlock {upgradePrompt.label}</h2>
+            <p>
+              Reach the right residents, guests, buildings, or districts with a focused email and SMS campaign. Preview it, send a test, schedule it, then measure opens, clicks, and actions.
+            </p>
+            <ul>
+              <li>Target by district, building, segment, or uploaded list.</li>
+              <li>Preview and test before anything goes live.</li>
+              <li>Track opens, clicks, saves, scans, and conversions.</li>
+            </ul>
+            <div className="dp-workspace-upgrade-actions">
+              <Link to="/partner-workspace/billing?addon=broadcasts">Unlock Broadcasts</Link>
+              <button type="button" onClick={() => setUpgradePrompt(null)}>Maybe later</button>
+            </div>
+          </section>
+        </div>
+      )}
 
       <DaaCivicWorkspacePanel />
 

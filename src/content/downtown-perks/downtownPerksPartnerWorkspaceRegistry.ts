@@ -15,8 +15,12 @@ export type PartnerWorkspaceTab =
   | "map"
   | "offers"
   | "events"
+  | "surveys"
+  | "broadcasts"
   | "sources"
   | "campaigns"
+  | "audience"
+  | "media"
   | "reports"
   | "analytics"
   | "profile"
@@ -71,8 +75,12 @@ export const PARTNER_ROUTES = {
   workspaceMap: "/partner-workspace/map",
   workspaceOffers: "/partner-workspace/offers",
   workspaceEvents: "/partner-workspace/events",
+  workspaceSurveys: "/partner-workspace/surveys",
+  workspaceBroadcasts: "/partner-workspace/broadcasts",
   workspaceSources: "/partner-workspace/sources",
   workspaceCampaigns: "/partner-workspace/campaigns",
+  workspaceAudience: "/partner-workspace/audience",
+  workspaceMedia: "/partner-workspace/media",
   workspaceReports: "/partner-workspace/reports",
   workspaceAnalytics: "/partner-workspace/analytics",
   workspaceProfile: "/partner-workspace/profile",
@@ -708,8 +716,12 @@ export const PARTNER_WORKSPACE_NAV: Array<{ id: PartnerWorkspaceTab; label: stri
   { id: "map", label: "Map", href: PARTNER_ROUTES.workspaceMap, helper: "Your place in the downtown map." },
   { id: "offers", label: "Offers", href: PARTNER_ROUTES.workspaceOffers, helper: "Perks people can use." },
   { id: "events", label: "Events", href: PARTNER_ROUTES.workspaceEvents, helper: "Plans worth showing up for." },
+  { id: "surveys", label: "Surveys", href: PARTNER_ROUTES.workspaceSurveys, helper: "Ask the right audience." },
   { id: "sources", label: "Sources", href: PARTNER_ROUTES.workspaceSources, helper: "Where people enter from." },
   { id: "campaigns", label: "Campaigns", href: PARTNER_ROUTES.workspaceCampaigns, helper: "Campaigns tied to real places." },
+  { id: "broadcasts", label: "Broadcasts", href: PARTNER_ROUTES.workspaceBroadcasts, helper: "Send email and SMS campaigns." },
+  { id: "audience", label: "Audience", href: PARTNER_ROUTES.workspaceAudience, helper: "Build the right segment." },
+  { id: "media", label: "Media", href: PARTNER_ROUTES.workspaceMedia, helper: "Assets ready to publish." },
   { id: "reports", label: "Reports", href: PARTNER_ROUTES.workspaceReports, helper: "Show what happened." },
   { id: "analytics", label: "Analytics", href: PARTNER_ROUTES.workspaceAnalytics, helper: "A clearer read on nearby action." },
   { id: "profile", label: "Profile", href: PARTNER_ROUTES.workspaceProfile, helper: "How people see you on the map." },
@@ -764,6 +776,14 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     success: "Event saved. It can now be surfaced in the map and events feed.",
     emptyState: "No events yet. Add something worth showing up for.",
   },
+  surveys: {
+    route: PARTNER_ROUTES.workspaceSurveys,
+    headline: "Ask the right people.",
+    body: "Create a survey, choose the audience, preview it, send a test, then launch when it is ready.",
+    fields: ["Survey title", "Questions", "Audience", "Delivery method", "Preview", "Test send", "Launch"],
+    createCta: "Create survey",
+    emptyState: "No surveys yet. Start with one question you actually need answered.",
+  },
   sources: {
     route: PARTNER_ROUTES.workspaceSources,
     headline: "Where people enter from.",
@@ -783,6 +803,28 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     steps: ["Goal", "Audience", "Placement", "Offer or event", "Source points", "Timing", "Budget/pricing", "Review"],
     success: "Campaign saved. Review placement, source points, and timing before launch.",
     emptyState: "No campaigns yet. Start with one moment where better timing would matter.",
+  },
+  broadcasts: {
+    route: PARTNER_ROUTES.workspaceBroadcasts,
+    headline: "Broadcasts for email and SMS.",
+    body: "Plan a message, choose who should get it, preview, test, schedule, and send. If Broadcasts are not included in the plan, this module stays visible and locked until upgraded.",
+    steps: ["Message", "Audience", "Media", "Preview", "Test", "Schedule", "Send"],
+    createCta: "Create broadcast",
+    emptyState: "Broadcasts are ready to unlock when this workspace needs email or SMS campaigns.",
+  },
+  audience: {
+    route: PARTNER_ROUTES.workspaceAudience,
+    headline: "Build the right audience.",
+    body: "Select residents, guests, buildings, districts, saved segments, or uploaded contacts before launching a campaign, event, survey, or broadcast.",
+    filters: ["District", "Building", "Resident", "Hotel guest", "Interests", "Campaign history", "Uploaded list", "Saved segment"],
+    emptyState: "No saved segments yet. Build one from a campaign, event, survey, or broadcast.",
+  },
+  media: {
+    route: PARTNER_ROUTES.workspaceMedia,
+    headline: "Keep launch assets ready.",
+    body: "Store logos, photos, short videos, campaign images, QR assets, and approved copy in one place before publishing.",
+    fields: ["Logo", "Gallery", "Campaign media", "Event media", "Offer media", "QR assets", "Approved copy"],
+    emptyState: "No media uploaded yet. Add the assets people will see on the map and in campaigns.",
   },
   reports: {
     route: PARTNER_ROUTES.workspaceReports,

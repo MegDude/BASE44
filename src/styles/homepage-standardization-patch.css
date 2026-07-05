@@ -1460,6 +1460,7 @@ html body #root#root .dp-workspace-module-card {
   min-height: 118px !important;
   align-content: start !important;
   gap: 8px !important;
+  width: 100% !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
   border-radius: 6px !important;
   background: #FFFFFF !important;
@@ -1467,6 +1468,7 @@ html body #root#root .dp-workspace-module-card {
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   box-shadow: none !important;
+  text-align: left !important;
 }
 
 html body #root#root .dp-workspace-module-card span {
@@ -1494,6 +1496,178 @@ html body #root#root .dp-workspace-module-card svg {
 
 html body #root#root .dp-workspace-module-card:hover {
   border-color: rgba(200, 169, 106, .5) !important;
+}
+
+html body #root#root .dp-workspace-module-card.is-locked {
+  cursor: pointer !important;
+}
+
+html body #root#root .dp-workspace-module-card.is-locked small {
+  display: inline-flex !important;
+  width: fit-content !important;
+  align-items: center !important;
+  gap: 5px !important;
+  border: 1px solid rgba(200, 169, 106, .32) !important;
+  border-radius: 4px !important;
+  background: rgba(200, 169, 106, .09) !important;
+  padding: 4px 7px !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+html body #root#root .dp-workspace-module-card.is-locked small svg {
+  position: static !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root#root .dp-workspace-activation-panel {
+  display: grid !important;
+  gap: 16px !important;
+  border-color: rgba(200, 169, 106, .26) !important;
+}
+
+html body #root#root .dp-workspace-activation-panel h2 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: clamp(22px, 3vw, 32px) !important;
+  line-height: 1.08 !important;
+}
+
+html body #root#root .dp-workspace-activation-panel p {
+  max-width: 760px !important;
+  color: rgba(11, 31, 51, .64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .64) !important;
+  font-size: 13.5px !important;
+  line-height: 1.58 !important;
+}
+
+html body #root#root .dp-workspace-activation-status {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-workspace-activation-status span {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 42px !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 6px !important;
+  background: #FFFFFF !important;
+  padding: 9px 10px !important;
+  color: rgba(11, 31, 51, .64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .64) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+html body #root#root .dp-workspace-activation-status span.is-done {
+  border-color: rgba(200, 169, 106, .34) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-workspace-activation-status svg {
+  width: 15px !important;
+  height: 15px !important;
+  color: #C8A96A !important;
+}
+
+html body #root#root .dp-workspace-upgrade-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9998 !important;
+  display: grid !important;
+  place-items: center !important;
+  background: rgba(11, 31, 51, .18) !important;
+  padding: 18px !important;
+}
+
+html body #root#root .dp-workspace-upgrade-modal {
+  position: relative !important;
+  width: min(560px, 100%) !important;
+  border: 1px solid rgba(11, 31, 51, .08) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  padding: 22px !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 24px 70px rgba(11, 31, 51, .18) !important;
+}
+
+html body #root#root .dp-workspace-upgrade-modal h2 {
+  margin: 4px 36px 10px 0 !important;
+  font-size: 24px !important;
+  line-height: 1.1 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-workspace-upgrade-modal p,
+html body #root#root .dp-workspace-upgrade-modal li {
+  color: rgba(11, 31, 51, .64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, .64) !important;
+  font-size: 13px !important;
+  line-height: 1.56 !important;
+}
+
+html body #root#root .dp-workspace-upgrade-modal ul {
+  margin: 14px 0 0 !important;
+  padding-left: 18px !important;
+}
+
+html body #root#root .dp-workspace-upgrade-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 18px !important;
+}
+
+html body #root#root .dp-workspace-upgrade-actions a,
+html body #root#root .dp-workspace-upgrade-actions button {
+  display: inline-flex !important;
+  min-height: 42px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  padding: 0 14px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+html body #root#root .dp-workspace-upgrade-actions a {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root#root .dp-workspace-upgrade-actions button,
+html body #root#root .dp-workspace-upgrade-close {
+  border: 1px solid rgba(11, 31, 51, .09) !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-workspace-upgrade-close {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  display: grid !important;
+  width: 34px !important;
+  height: 34px !important;
+  place-items: center !important;
+  border-radius: 6px !important;
+}
+
+html body #root#root .dp-workspace-upgrade-close svg {
+  width: 16px !important;
+  height: 16px !important;
 }
 
 html body #root#root .dp-workspace-entitlement-row {
@@ -1548,6 +1722,10 @@ html body #root#root .dp-workspace-entitlement-row span {
 
   html body #root#root .dp-workspace-category-grid,
   html body #root#root .dp-workspace-module-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-workspace-activation-status {
     grid-template-columns: 1fr !important;
   }
 

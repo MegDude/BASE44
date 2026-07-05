@@ -99,9 +99,10 @@ const DEFAULT_INTERACTION_MARKER_LIMIT = 36;
 const DEFAULT_HIGH_ZOOM_MARKER_LIMIT = 60;
 const INTENT_MARKER_FALLBACK_LIMIT = 96;
 const MAP_VIEW_STORAGE_KEY = "downtown-perks-map-view-v1";
+const MAP_USER_NAVIGATED_STORAGE_KEY = "downtown-perks-map-user-navigated-v1";
 const MAP_USER_CONTEXT_STORAGE_KEY = "downtown-perks-map-user-context-v1";
 const MAP_PANEL_IMAGE_FALLBACK = "/images/map-entities/perks/civic_republic_square_1779052838327.png";
-const STREET_LEVEL_ZOOM = 17.5;
+const STREET_LEVEL_ZOOM = 17;
 const DAA_CIVIC_VIDEOS = [
   {
     title: "DAA Art Walk",
@@ -3179,22 +3180,33 @@ function svgMarkerDataUrl(svg) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
-function legacyDowntownMarkerIcon(maps, place, selected = false) {
+function getZoomScaledMarkerSize(zoom, baseSize) {
+  const numericZoom = Number(zoom) || 0;
+  if (numericZoom >= 19) return Math.round(baseSize * 1.5);
+  if (numericZoom >= 18) return Math.round(baseSize * 1.34);
+  if (numericZoom >= 17) return Math.round(baseSize * 1.17);
+  if (numericZoom >= 16) return Math.round(baseSize * 1.06);
+  return baseSize;
+}
+
+function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
-  const size = 36;
+  const size = getZoomScaledMarkerSize(zoom, 36);
   const stopNumber = Number(place?.routeStopNumber || 0);
   const fill = isLegends ? "#FFFFFF" : "#0B1F33";
   const stroke = "#C8A96A";
   const iconColor = isLegends ? "#0B1F33" : "#C8A96A";
   const iconKey = getEntityIconKey(place);
   const paths = ENTITY_ICON_PATHS[iconKey] || ENTITY_ICON_PATHS.perk;
+  const iconSize = Math.max(18, Math.round(size * 0.5));
+  const iconScale = Math.max(0.75, size / 48);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="${fill}" stroke="${stroke}" stroke-width="${isLegends ? "2.4" : "1.8"}"/>
       ${isLegends ? "" : `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 7}" fill="none" stroke="#FFFFFF" stroke-opacity="0.26" stroke-width="1"/>`}
       ${isLegends ? "" : `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.4}" fill="none" stroke="#0B3E31" stroke-opacity="0.2" stroke-width="1"/>`}
       ${selected ? `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 0.8}" fill="none" stroke="#C8A96A" stroke-opacity="0.42" stroke-width="1.2"/>` : ""}
-      <g transform="translate(${size / 2 - 9} ${size / 2 - 9}) scale(0.75)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
       ${stopNumber ? `<circle cx="${size - 7}" cy="7" r="6" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.2"/><text x="${size - 7}" y="7.6" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
   return {
@@ -3204,9 +3216,10 @@ function legacyDowntownMarkerIcon(maps, place, selected = false) {
   };
 }
 
-function legacyDowntownClusterIcon(maps, count) {
+function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const safeCount = Math.min(Number(count) || 0, 99);
-  const size = safeCount > 49 ? 52 : safeCount > 9 ? 44 : 36;
+  const baseSize = safeCount > 49 ? 52 : safeCount > 9 ? 44 : 36;
+  const size = getZoomScaledMarkerSize(zoom, baseSize);
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
@@ -7340,13 +7353,13 @@ function HappyHourDetails({ place, savedIds, onSave }) {
       </div>
       {shouldShowRedemption && <p className="dp-destination-section-note">{redemption}</p>}
       <div className="dp-primary-action-row dp-perk-action-row" aria-label={`${place.name} happy hour actions`}>
-        <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
+        <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action dp-perk-cta is-primary">
           Use Perk
         </button>
-        <button type="button" onClick={onSave} className="dp-panel-action">
+        <button type="button" onClick={onSave} className="dp-panel-action dp-perk-cta is-secondary">
           {isSaved ? "Saved" : "Save"}
         </button>
-        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action dp-perk-cta is-tertiary">
           Directions
         </a>
       </div>
@@ -10322,6 +10335,11 @@ function GoogleMapCanvas({
   const markUserNavigated = useCallback(() => {
     if (programmaticMoveRef.current) return;
     userNavigatedRef.current = true;
+    try {
+      window.sessionStorage.setItem(MAP_USER_NAVIGATED_STORAGE_KEY, "true");
+    } catch {
+      // Viewport control is best-effort; storage failures should not block map gestures.
+    }
     interactionHandlersRef.current.onUserNavigate?.();
   }, []);
 
@@ -10394,6 +10412,8 @@ function GoogleMapCanvas({
               styles: DOWNTOWN_PERKS_GOOGLE_MAP_STYLES,
             });
             mapRef.current.addListener("dragstart", markUserNavigated);
+            mapRef.current.addListener("drag", markUserNavigated);
+            mapRef.current.addListener("dragend", markUserNavigated);
             mapRef.current.addListener("zoom_changed", markUserNavigated);
             mapRef.current.addListener("idle", () => {
               const map = mapRef.current;
@@ -10403,7 +10423,7 @@ function GoogleMapCanvas({
                 return;
               }
               const currentCenter = map.getCenter?.();
-              if (currentCenter) {
+              if (currentCenter && !programmaticMoveRef.current) {
                 window.sessionStorage.setItem(
                   MAP_VIEW_STORAGE_KEY,
                   JSON.stringify({ center: [currentCenter.lat(), currentCenter.lng()], zoom: map.getZoom() }),
@@ -10600,7 +10620,7 @@ function GoogleMapCanvas({
               map,
               position: { lat: item.coords[0], lng: item.coords[1] },
               title: `${item.count} places nearby`,
-              icon: legacyDowntownClusterIcon(maps, item.count),
+              icon: legacyDowntownClusterIcon(maps, item.count, mapZoom),
               optimized: true,
             });
         if (!canUseAdvancedMarkers) marker.addListener("click", () => onClusterOpen(item));
@@ -10652,7 +10672,7 @@ function GoogleMapCanvas({
             map,
             position: { lat: coords[0], lng: coords[1] },
             title: place.name,
-            icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId),
+            icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, mapZoom),
             optimized: true,
           });
 
@@ -10669,7 +10689,7 @@ function GoogleMapCanvas({
       });
       markersRef.current = [];
     };
-  }, [collectionRoute, loadState, mapItems, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, runProgrammaticMove, selectedId]);
+  }, [collectionRoute, loadState, mapItems, mapZoom, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, runProgrammaticMove, selectedId]);
 
   const isConfigError = loadError === "missing-api-key" || loadError === "invalid-api-key";
   const errorTitle = isConfigError ? "Google Maps is not configured." : "Google Maps could not load";
@@ -11438,7 +11458,15 @@ export default function MapPage() {
   const [neighborhoodsOpen, setNeighborhoodsOpen] = useState(false);
   const [secondaryRailOpen, setSecondaryRailOpen] = useState(false);
   const [mapAnswer, setMapAnswer] = useState(null);
-  const [userHasNavigatedMap, setUserHasNavigatedMap] = useState(() => initialMapView.zoom >= STREET_LEVEL_ZOOM);
+  const [userHasNavigatedMap, setUserHasNavigatedMap] = useState(() => {
+    if (initialMapView.zoom >= STREET_LEVEL_ZOOM) return true;
+    if (typeof window === "undefined") return false;
+    try {
+      return window.sessionStorage.getItem(MAP_USER_NAVIGATED_STORAGE_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
   const [userInteractionContext, setUserInteractionContext] = useState(() => {
     if (typeof window === "undefined") return { actions: [], searches: [], selectedPins: [], savedPins: [] };
     try {
@@ -11613,8 +11641,14 @@ export default function MapPage() {
   const consoleHasActiveWork = Boolean(effectiveSearch || mapAnswer || filtersOpen || neighborhoodsOpen || intelOpen);
 
   useEffect(() => {
-    setUserHasNavigatedMap((current) => (mapZoom >= STREET_LEVEL_ZOOM ? true : false));
-  }, [urlState.mode, district]);
+    if (mapZoom < STREET_LEVEL_ZOOM) return;
+    setUserHasNavigatedMap(true);
+    try {
+      window.sessionStorage.setItem(MAP_USER_NAVIGATED_STORAGE_KEY, "true");
+    } catch {
+      // Session storage can be unavailable; keep the in-memory camera lock.
+    }
+  }, [mapZoom]);
 
   useEffect(() => {
     const scopedResultSet = Boolean(effectiveSearch) || !isAllNeighborhoodScope(district);
@@ -13849,6 +13883,11 @@ export default function MapPage() {
             onZoomChange={(nextZoom) => setMapZoom((current) => (Math.abs(current - nextZoom) > 0.01 ? nextZoom : current))}
             onViewportChange={updateViewportBounds}
             onUserNavigate={() => {
+              try {
+                window.sessionStorage.setItem(MAP_USER_NAVIGATED_STORAGE_KEY, "true");
+              } catch {
+                // Session storage is best-effort only.
+              }
               setUserHasNavigatedMap(true);
               if (urlState.mode !== "resident" && !consoleHasActiveWork) setConsoleCollapsed(true);
             }}
