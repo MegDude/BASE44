@@ -7022,6 +7022,80 @@ function PartnerActivityIntelligence({ intelligence }) {
   );
 }
 
+function getPartnerPerkMetric(place, keys, fallback) {
+  const raw = place?.raw || {};
+  const analytics = place?.analytics || raw.analytics || place?.metrics || raw.metrics || place?.measurement || raw.measurement || {};
+  const source = {
+    ...raw,
+    ...place,
+    ...(analytics && !Array.isArray(analytics) ? analytics : {}),
+  };
+  const value = keys
+    .map((key) => source?.[key])
+    .find((item) => item !== undefined && item !== null && item !== "" && !Array.isArray(item));
+  if (value === undefined) return fallback;
+  if (typeof value === "number") return value.toLocaleString();
+  return String(value);
+}
+
+function PartnerPerkIntelligencePanel({ place }) {
+  if (!hasActivePerkData(place)) return null;
+  const perk = getResidentPerkDetails(place);
+  const district = place?.district || place?.neighborhood || place?.raw?.district || "Downtown";
+  const reach = getPartnerPerkMetric(place, ["reach", "views", "impressions", "profileViews", "mapViews"], "Ready");
+  const yieldRate = getPartnerPerkMetric(place, ["yield", "conversion", "conversionRate", "redemptionRate"], "Live");
+  const impact = getPartnerPerkMetric(place, ["impact", "redemptions", "redeems", "saves", "actions"], "Track");
+  const signals = [
+    `${district} residents can save, open, and use this perk from the map.`,
+    perk.value || perk.offer || "The offer gives people one clear reason to act nearby.",
+    "Review saves, directions, card opens, and redemptions before changing the campaign.",
+  ].filter(Boolean);
+
+  return (
+    <section className="dp-partner-intelligence-section dp-partner-perk-intel-panel" aria-label={`${place?.name || "Partner"} perk intelligence`}>
+      <div className="dp-partner-perk-intel-header">
+        <span>Activity Intel</span>
+        <h3>{perk.offer || "Resident perk is live"}</h3>
+        <p>{perk.description || "Use this perk as a measurable action point inside the partner intelligence view."}</p>
+      </div>
+
+      <div className="dp-partner-perk-stat-grid" aria-label="Perk performance snapshot">
+        <article>
+          <span>Live Reach</span>
+          <strong>{reach}</strong>
+        </article>
+        <article>
+          <span>Yield</span>
+          <strong>{yieldRate}</strong>
+        </article>
+        <article>
+          <span>Impact</span>
+          <strong>{impact}</strong>
+        </article>
+      </div>
+
+      <div className="dp-partner-perk-offer-card">
+        <div>
+          <span>{perk.category || "Perk"}</span>
+          <strong>{perk.value || "Resident Pass access"}</strong>
+          {perk.terms && <p>{perk.terms}</p>}
+        </div>
+        <em>{perk.isActive ? "Live" : "Draft"}</em>
+      </div>
+
+      <ul className="dp-partner-signal-list dp-partner-perk-signal-list">
+        {signals.slice(0, 3).map((signal) => <li key={signal}>{signal}</li>)}
+      </ul>
+
+      <div className="dp-partner-perk-action-row" aria-label={`${place?.name || "Partner"} perk actions`}>
+        <Link to={campaignRoute(place)} className="dp-perk-cta is-primary">Build Campaign</Link>
+        <Link to={getPartnerDashboardRoute(place)} className="dp-perk-cta is-secondary">Track Performance</Link>
+        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-perk-cta is-tertiary">View Intel</a>
+      </div>
+    </section>
+  );
+}
+
 function PartnerNearbyContextSection({ opportunities = [] }) {
   const items = opportunities.slice(0, 2);
   if (!items.length) return null;
@@ -7265,6 +7339,7 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
       <DestinationHero place={place} mode="partner" />
       <EntityIdentityPanel identity={getEntityIdentity(place, "partner")} />
       <PartnerActivityIntelligence intelligence={intelligence} />
+      <PartnerPerkIntelligencePanel place={place} />
       <PartnerCampaignRecommendationsSection recommendations={campaigns.length ? campaigns : opportunities} />
       <SurveyIntelligenceLayer place={place} />
       <PartnerAudienceRecommendationsSection audiences={audiences} />

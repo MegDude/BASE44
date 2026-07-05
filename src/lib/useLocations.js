@@ -7,6 +7,7 @@ import {
   ATTACHED_FEATURED_BRANDS,
   ATTACHED_HAPPY_HOUR_PERK_LOCATIONS,
   ATTACHED_LEGENDS_IMPORTED_PROPERTIES,
+  ATTACHED_RAIL_MIGRATED_LOCATIONS,
   ATTACHED_SUPPLEMENTAL_DOWNTOWN_LOCATIONS,
 } from "../data/imports/attachedMapInventory";
 import { downtownParkingItems } from "../data/parkingBookings";
@@ -1487,6 +1488,7 @@ export function useLocations() {
   const canonicalGoogleRegistryPlaces = getActiveMapEntityLocations();
   const parkingPlaces = downtownParkingItems.filter((item) => item.active).map(parkingBookingPlace);
   const attachedHappyHourPerkPlaces = ATTACHED_HAPPY_HOUR_PERK_LOCATIONS.map(attachedHappyHourPerkPlace);
+  const attachedRailMigratedPlaces = ATTACHED_RAIL_MIGRATED_LOCATIONS.map(attachedSupplementalPlace);
   const attachedSupplementalPlaces = ATTACHED_SUPPLEMENTAL_DOWNTOWN_LOCATIONS.map(attachedSupplementalPlace);
   const attachedLegendsPropertyPlaces = ATTACHED_LEGENDS_IMPORTED_PROPERTIES.map(attachedLegendsPropertyPlace);
   const attachedFeaturedBrandPlaces = ATTACHED_FEATURED_BRANDS.map(attachedFeaturedBrandPlace);
@@ -1495,9 +1497,9 @@ export function useLocations() {
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
-    .filter((item) => isDowntownAustin78701Entity(item) || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
+    .filter((item) => isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
       const isVia313 = String(item.name || "").toLowerCase().includes("via 313");
       const isRoyalBlue = String(item.name || "").toLowerCase().includes("royal blue grocery");
