@@ -2283,11 +2283,31 @@ function matchesFilter(place, activeFilter, savedIds) {
   return (Array.isArray(tokens) ? tokens : []).some((token) => text.includes(String(token).toLowerCase()));
 }
 
+function getAskMapCategoryHint(place, fallback = "places") {
+  if (!place) return fallback;
+  if (hasActivePerkData(place)) return "perks";
+  const kind = getDestinationKind(place);
+  const hintByKind = {
+    brand: "brand activations",
+    civic: "civic places",
+    coffee: "coffee",
+    dining: "dining",
+    event: "events",
+    grocery: "errands",
+    hotel: "hotels",
+    nightlife: "drinks",
+    parking: "parking",
+    property: "properties",
+    retail: "shopping",
+    service: "services",
+  };
+  return hintByKind[kind] || fallback;
+}
+
 function buildMapAnswer(query, results, mode, district, activeFilter) {
   const cleanQuery = query.trim();
   const scope = isAllNeighborhoodScope(district) ? "downtown" : district;
   const topResults = results.slice(0, 3);
-  const categoryHint = activeFilter === "All" ? "places" : activeFilter.toLowerCase();
 
   if (!topResults.length) {
     return {
@@ -2302,6 +2322,7 @@ function buildMapAnswer(query, results, mode, district, activeFilter) {
   }
 
   const best = topResults[0];
+  const categoryHint = activeFilter === "All" ? getAskMapCategoryHint(best) : String(activeFilter || "places").toLowerCase();
   const bestName = best?.name || "the first nearby option";
   const bestDistrict = best?.district || scope;
   const why =
@@ -2333,16 +2354,20 @@ function buildAgenticMapAnswer(query, results, mode, district, activeFilter) {
   const alternatives = topResults.slice(1).map((place) => place.name).filter(Boolean);
   const scope = isAllNeighborhoodScope(district) ? "downtown" : district;
   const audience = mode === "partner" ? "partner" : "resident";
+  const normalizedFilter = String(activeFilter || "").toLowerCase();
+  const isCivicFilter = normalizedFilter.includes("civic") || normalizedFilter === "daa";
+  const isDiningFilter = normalizedFilter.includes("dining") || normalizedFilter.includes("dinner");
+  const isInKindFilter = normalizedFilter.includes("inkind");
 
   if (!topResults.length) return base;
 
   const answerStack = {
     bestMatch: best,
     alternatives,
-    collections: activeFilter === "Civic" ? ["Downtown Austin Art & Parks Tour"] : activeFilter === "Dinner" || activeFilter === "Dining" ? ["Best Sushi Downtown", "Dinner Tonight"] : activeFilter === "inKind" ? ["Date Night Downtown", "Brunch Collection"] : [],
-    campaigns: activeFilter === "Civic" ? ["DAA Art Walk Sponsor"] : activeFilter === "Dinner" || activeFilter === "Dining" ? ["Downtown Sushi Week", "Resident Dining Week"] : activeFilter === "inKind" ? ["Downtown Sushi Passport", "Restaurant Week"] : [],
+    collections: isCivicFilter ? ["Downtown Austin Art & Parks Tour"] : isDiningFilter ? ["Best Sushi Downtown", "Dinner Tonight"] : isInKindFilter ? ["Date Night Downtown", "Brunch Collection"] : [],
+    campaigns: isCivicFilter ? ["DAA Art Walk Sponsor"] : isDiningFilter ? ["Downtown Sushi Week", "Resident Dining Week"] : isInKindFilter ? ["Downtown Sushi Passport", "Restaurant Week"] : [],
     events: topResults.filter(isEventEntity).map((place) => place.name).slice(0, 2),
-    nextAction: mode === "partner" ? "Launch Campaign" : activeFilter === "Civic" ? "Open Tour Stop" : activeFilter === "Dinner" || activeFilter === "Dining" ? "Reserve Table" : "Open Recommendation",
+    nextAction: mode === "partner" ? "Launch Campaign" : isCivicFilter ? "Open Tour Stop" : isDiningFilter ? "Reserve Table" : "Open Recommendation",
   };
 
   if (audience === "partner") {
@@ -4765,7 +4790,7 @@ function LocalServiceRail({ title, items = [], onSelect, kind = "text" }) {
   );
 }
 
-function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) {
+function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, answer, loading, onAsk, onCloseAnswer, mode = "resident" }) {
   const profile = getLocalServiceProfile(place);
   const relatedServices = getServiceRelatedPlaces(place, places, profile);
   const isSaved = savedIds?.has?.(place?.id);
@@ -4878,6 +4903,18 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect }) 
           </button>
         </div>
       </DestinationSection>
+
+      {onAsk && (
+        <EntityAssistant
+          place={place}
+          mode={mode}
+          answer={answer}
+          loading={loading}
+          onAsk={onAsk}
+          onClose={onCloseAnswer}
+          onSelect={onSelect}
+        />
+      )}
     </motion.div>
   );
 }
@@ -4915,7 +4952,7 @@ function getEventProfile(place) {
   };
 }
 
-function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, onSave, onSelect }) {
+function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, onSave, onSelect, answer, loading, onAsk, onCloseAnswer, mode = "resident" }) {
   const profile = getEventProfile(place);
   const isSaved = savedIds?.has?.(place?.id);
   const isRsvped = (Array.isArray(eventRsvps) ? eventRsvps : []).some((item) => item.id === place?.id);
@@ -5021,6 +5058,18 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
         title="Nearby After"
         support="Keep the plan going with walkable places nearby."
       />
+
+      {onAsk && (
+        <EntityAssistant
+          place={place}
+          mode={mode}
+          answer={answer}
+          loading={loading}
+          onAsk={onAsk}
+          onClose={onCloseAnswer}
+          onSelect={onSelect}
+        />
+      )}
     </motion.div>
   );
 }
@@ -6141,7 +6190,7 @@ function buildEntityAssistantAnswer(prompt, selected, localResults = [], mode = 
   const luxuryBuilding = getLuxuryPresenceBuilding(selected);
 
   if (mode === "partner") {
-    return buildAgenticMapAnswer(prompt, [selected, ...pickedPlaces], mode, selected?.district || "Downtown Austin", "All");
+    return buildAgenticMapAnswer(prompt, [selected, ...pickedPlaces], mode, selected?.district || "Downtown Austin", getAskMapCategoryHint(selected, "activity"));
   }
 
   if (legendsListing) {
@@ -6167,7 +6216,7 @@ function buildEntityAssistantAnswer(prompt, selected, localResults = [], mode = 
     };
   }
 
-  return buildAgenticMapAnswer(prompt, [selected, ...pickedPlaces], mode, selected?.district || "Downtown Austin", "All");
+  return buildAgenticMapAnswer(prompt, [selected, ...pickedPlaces], mode, selected?.district || "Downtown Austin", getAskMapCategoryHint(selected));
 }
 
 function getRelatedPlaces(place, places = []) {
@@ -14076,18 +14125,62 @@ export default function MapPage() {
 
   async function askEntityAssistant(prompt) {
     if (!selected) return;
-    const entityPrompt = `${prompt} for ${selected.name}`;
+    const cleanPrompt = String(prompt || "").trim();
+    if (!cleanPrompt) return;
+    const entityPrompt = cleanPrompt.toLowerCase().includes(String(selected.name || "").toLowerCase()) ? cleanPrompt : `${cleanPrompt} for ${selected.name}`;
     const nearbyPlaces = getNearbyAreaPlaces(selected, places, 6).map((item) => item.candidate);
     const localResults = nearbyPlaces.length ? nearbyPlaces : getSmartResults(entityPrompt).filter((place) => place.id !== selected.id).slice(0, 6);
     const localAnswer = buildEntityAssistantAnswer(entityPrompt, selected, localResults, urlState.mode);
+    const currentDistrict = selected.district || (isAllNeighborhoodScope(district) ? "Downtown Austin" : district);
+    const resultPayload = [selected, ...localResults.filter((place) => place.id !== selected.id)];
+
+    openSearchResultsLayer();
+    recordMapUserAction("search", {
+      query: entityPrompt,
+      filter: activeFilter,
+      district: currentDistrict,
+      entityId: selected.id,
+      entityName: selected.name,
+      resultCount: resultPayload.length,
+      source: "entity_prompt",
+    });
+    trackingEvents.searchSubmit(entityPrompt);
+    fireWorkflow("/api/search-log", {
+      sessionId: getWorkflowSessionId(),
+      query: entityPrompt,
+      lat: AUSTIN_CENTER[0],
+      lng: AUSTIN_CENTER[1],
+    });
+    setSearch(entityPrompt);
+    setMapAnswer(localAnswer);
     setEntityAnswer(localAnswer);
     setEntityAssistantLoading(true);
+    urlState.update({
+      tab: "map",
+      query: entityPrompt,
+      q: "",
+      filter: activeFilter,
+      district: isAllNeighborhoodScope(district) ? "" : district,
+      entityId: selected.id,
+      layer: "",
+      listingId: "",
+      drawerClosed: "",
+    });
 
-    const agentAnswer = await askMapAgent(entityPrompt, [selected, ...localResults.filter((place) => place.id !== selected.id)]);
-    if (agentAnswer?.answer) {
-      setEntityAnswer((current) => mergeAgentAnswerWithLocalResults(agentAnswer, localResults, current?.title || `Start with ${localResults[0]?.name || selected?.name || "Downtown"}.`));
+    try {
+      const agentAnswer = await askMapAgent(entityPrompt, resultPayload);
+      if (agentAnswer?.answer) {
+        const mergedAnswer = mergeAgentAnswerWithLocalResults(
+          agentAnswer,
+          localResults,
+          localAnswer?.title || `Start with ${localResults[0]?.name || selected?.name || "Downtown"}.`
+        );
+        setEntityAnswer(mergedAnswer);
+        setMapAnswer(mergedAnswer);
+      }
+    } finally {
+      setEntityAssistantLoading(false);
     }
-    setEntityAssistantLoading(false);
   }
 
   function clearOpenMapSelection() {
@@ -15119,6 +15212,11 @@ export default function MapPage() {
                       savedIds={savedIds}
                       onSave={() => toggleSaved(selected)}
                       onSelect={selectPlace}
+                      answer={entityAnswer}
+                      loading={entityAssistantLoading}
+                      onAsk={askEntityAssistant}
+                      onCloseAnswer={() => setEntityAnswer(null)}
+                      mode={urlState.mode}
                     />
                   );
                 }
@@ -15133,6 +15231,11 @@ export default function MapPage() {
                       onRsvp={() => toggleRsvp(selected)}
                       onSave={() => toggleSaved(selected)}
                       onSelect={selectPlace}
+                      answer={entityAnswer}
+                      loading={entityAssistantLoading}
+                      onAsk={askEntityAssistant}
+                      onCloseAnswer={() => setEntityAnswer(null)}
+                      mode={urlState.mode}
                     />
                   );
                 }
@@ -15271,7 +15374,7 @@ export default function MapPage() {
                       </motion.div>
                     )}
 
-                    {!isRental && !legendsResidentialContent && !isDaaStop && !isInKindDining && !isBurgerBarPanel && (
+                    {!isRental && !legendsResidentialContent && !isInKindDining && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.64, duration: 0.18 }}>
                         <EntityAssistant
                           place={selected}
