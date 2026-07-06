@@ -11751,11 +11751,13 @@ function useUrlMapState() {
   const pathMode = location.pathname.startsWith("/partners") ? "partner" : "resident";
   const pathTab = "map";
   const rawTab = searchParams.get("tab") || pathTab;
+  const rawPanel = searchParams.get("panel") || "";
   const mode = searchParams.get("mode") === "partner" ? "partner" : searchParams.get("mode") === "resident" ? "resident" : pathMode;
-  const panelTab = mode === "partner" && MAP_NATIVE_PARTNER_PANELS.includes(rawTab)
-    ? rawTab
-    : mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(rawTab)
-      ? rawTab
+  const panelCandidate = rawPanel || rawTab;
+  const panelTab = mode === "partner" && MAP_NATIVE_PARTNER_PANELS.includes(panelCandidate)
+    ? panelCandidate
+    : mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(panelCandidate)
+      ? panelCandidate
       : "";
   const tab = rawTab === "pass" ? "pass" : "map";
   const layer = searchParams.get("layer") || "";
@@ -14551,7 +14553,7 @@ export default function MapPage() {
                     clearOpenMapSelection();
                     setConsoleCollapsed(true);
                     setActiveBottomTab("info");
-                    navigate("/map?mode=resident&tab=info");
+                    navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(activeFilter || "All")}&panel=info`);
                   }}
                   aria-pressed={activeBottomTab === "info"}
                 >
@@ -14611,7 +14613,7 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
-        {urlState.tab === "map" && (
+        {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
           urlState.mode === "partner"
             ? ["activity", "campaigns", "reports", "info", "civic"].includes(activeBottomTab) || isLegendsDirectoryLayer
             : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isLegendsDirectoryLayer

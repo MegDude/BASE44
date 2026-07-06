@@ -18464,3 +18464,304 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-saved-downtown-pan
     border-radius: 18px !important;
   }
 }
+
+/* Final resident/partner Info drawer lock: compact native guide, one safe scroll body. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-resident-info-tab-panel),
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-shared-info-panel) {
+  box-sizing: border-box !important;
+  display: flex !important;
+  width: calc(100vw - 8px) !important;
+  max-width: calc(100vw - 8px) !important;
+  max-height: min(88dvh, calc(100dvh - 44px)) !important;
+  min-height: 0 !important;
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 -12px 28px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-resident-info-tab-panel) > .dp-panel-body.hidden,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-shared-info-panel) > .dp-panel-body.hidden {
+  display: none !important;
+  flex: 0 0 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-resident-info-tab-panel.dp-resident-info-tab-panel {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-resident-info-scroll.dp-resident-info-scroll {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 2px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-resident-info-scroll::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel.dp-shared-info-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel .dp-tab-stack {
+  display: grid !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-hero.dp-info-guide-hero {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 2px 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-hero h2 {
+  max-width: 15ch !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: "Instrument Serif", Georgia, serif !important;
+  font-size: clamp(28px, 8vw, 38px) !important;
+  font-weight: 620 !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-hero p:not(.dp-tab-eyebrow) {
+  max-width: 46ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-media {
+  display: inline-flex !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 7px 9px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: rgba(11, 31, 51, 0.035) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 10px !important;
+  font-weight: 720 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-media svg {
+  flex: 0 0 auto !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-actions,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-footer,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-help {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-help > div {
+  grid-column: 1 / -1 !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-actions button,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-footer button,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-help button {
+  display: inline-flex !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 36px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 10px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.14 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel :is(
+  .dp-partner-summary-card,
+  .dp-partner-info-steps,
+  .dp-info-guide-list,
+  .dp-info-guide-features,
+  .dp-info-guide-tips,
+  .dp-info-guide-faq,
+  .dp-info-guide-help,
+  .dp-info-guide-footer
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 11px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel .dp-partner-info-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel .dp-partner-summary-card {
+  padding: 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 8px !important;
+  background: rgba(11, 31, 51, 0.025) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel :is(.dp-tab-eyebrow, .dp-info-guide-help span) {
+  margin: 0 0 7px !important;
+  color: #9A7A32 !important;
+  -webkit-text-fill-color: #9A7A32 !important;
+  font-size: 9.5px !important;
+  font-weight: 760 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel :is(article p, small, summary + p, .dp-info-guide-help p, .dp-partner-info-steps p) {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 12px !important;
+  line-height: 1.36 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-features > div,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-tips > div {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-features article,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-tips span {
+  min-width: 0 !important;
+  padding: 9px !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 8px !important;
+  background: rgba(11, 31, 51, 0.025) !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.22 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-list .dp-tab-row,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-faq details,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel .dp-partner-info-steps > div {
+  min-width: 0 !important;
+  padding: 9px 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-list .dp-tab-row:first-of-type,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-faq details:first-of-type,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel .dp-partner-info-steps > div:first-of-type {
+  border-top: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-faq summary {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 760 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 420px) {
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-features > div,
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-tips > div {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (min-width: 700px) {
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-resident-info-tab-panel),
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell:has(.dp-shared-info-panel) {
+    width: min(760px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 18px !important;
+  }
+}
