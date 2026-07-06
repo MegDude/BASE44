@@ -16071,3 +16071,337 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
     width: 100% !important;
   }
 }
+
+/* Resident access: standalone Perks Card signup and building verification. */
+html body #root#root .dp-resident-access-page {
+  min-height: 100dvh !important;
+  padding: clamp(86px, 10vw, 116px) 0 clamp(54px, 7vw, 88px) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 248, 251, 1) 100%) !important;
+  color: #0B1F33 !important;
+  overflow-x: hidden !important;
+}
+
+html body #root#root .dp-resident-access-shell {
+  width: min(100% - 28px, 1120px) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.78fr) !important;
+  gap: clamp(24px, 5vw, 58px) !important;
+  align-items: start !important;
+}
+
+html body #root#root .dp-resident-access-copy {
+  display: grid !important;
+  gap: 18px !important;
+  padding-top: clamp(6px, 2vw, 24px) !important;
+}
+
+html body #root#root .dp-resident-access-eyebrow {
+  margin: 0 !important;
+  color: #9A7A2E !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-resident-access-copy h1 {
+  max-width: 700px !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: clamp(38px, 6vw, 76px) !important;
+  font-weight: 620 !important;
+  letter-spacing: 0 !important;
+  line-height: 0.98 !important;
+}
+
+html body #root#root .dp-resident-access-copy > p {
+  max-width: 620px !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  font-size: clamp(15px, 2vw, 18px) !important;
+  line-height: 1.62 !important;
+}
+
+html body #root#root .dp-resident-access-includes {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  max-width: 640px !important;
+}
+
+html body #root#root .dp-resident-access-includes span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 34px !important;
+  padding: 0 11px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 12px !important;
+  font-weight: 680 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-resident-access-includes svg,
+html body #root#root .dp-resident-access-panel svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: #B8963E !important;
+  stroke: #B8963E !important;
+}
+
+html body #root#root .dp-resident-access-panel {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 18px !important;
+  padding: clamp(18px, 2.8vw, 26px) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 18px 52px rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root .dp-resident-access-plan {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(184, 150, 62, 0.32) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+}
+
+html body #root#root .dp-resident-access-plan h2 {
+  margin: 7px 0 6px !important;
+  color: #0B1F33 !important;
+  font-size: 32px !important;
+  font-weight: 680 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-resident-access-plan span {
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-resident-access-panel fieldset {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+html body #root#root .dp-resident-access-panel legend,
+html body #root#root .dp-resident-access-fields label > span {
+  display: block !important;
+  margin: 0 0 10px !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-resident-access-paths {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-resident-access-paths button {
+  min-width: 0 !important;
+  min-height: 112px !important;
+  display: grid !important;
+  align-content: start !important;
+  gap: 8px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  text-align: left !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.04) !important;
+}
+
+html body #root#root .dp-resident-access-paths button[data-active="true"] {
+  border-color: rgba(184, 150, 62, 0.56) !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+  box-shadow: 0 16px 36px rgba(184, 150, 62, 0.12) !important;
+}
+
+html body #root#root .dp-resident-access-paths strong {
+  display: block !important;
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  font-weight: 720 !important;
+  line-height: 1.24 !important;
+}
+
+html body #root#root .dp-resident-access-paths span {
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 12.5px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root .dp-resident-access-fields {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+html body #root#root .dp-resident-access-fields label {
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-resident-access-fields :is(input, select) {
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-access-message {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: rgba(247, 248, 251, 0.88) !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 13px !important;
+  line-height: 1.48 !important;
+}
+
+html body #root#root .dp-resident-access-message.is-error {
+  border-color: rgba(138, 75, 18, 0.28) !important;
+  color: #8A4B12 !important;
+}
+
+html body #root#root .dp-resident-access-message button {
+  justify-self: start !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 740 !important;
+}
+
+html body #root#root .dp-resident-access-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-resident-access-actions :is(button, a) {
+  min-height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 999px !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 14px 30px rgba(11, 31, 51, 0.13) !important;
+  font-size: 12px !important;
+  font-weight: 740 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-resident-access-actions a {
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-os-resident-admin {
+  grid-column: 1 / -1 !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  gap: 12px !important;
+  margin-top: 16px !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid article {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 8px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid :is(strong, p, dl, dt, dd) {
+  margin: 0 !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid strong {
+  color: #0B1F33 !important;
+  font-size: 14px !important;
+  line-height: 1.25 !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid p,
+html body #root#root .dp-os-resident-admin-grid dt {
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid dl {
+  display: grid !important;
+  gap: 6px !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid dl div {
+  display: grid !important;
+  grid-template-columns: 0.7fr 1fr !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-os-resident-admin-grid dd {
+  color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 680 !important;
+  line-height: 1.4 !important;
+  text-align: right !important;
+}
+
+@media (max-width: 840px) {
+  html body #root#root .dp-resident-access-shell {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 620px) {
+  html body #root#root .dp-resident-access-shell {
+    width: min(100% - 24px, 1120px) !important;
+  }
+
+  html body #root#root .dp-resident-access-paths,
+  html body #root#root .dp-resident-access-fields {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root .dp-resident-access-actions :is(button, a) {
+    width: 100% !important;
+  }
+}
