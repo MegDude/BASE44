@@ -13057,7 +13057,7 @@ export default function MapPage() {
         }
       : {
           eyebrow: "USING DOWNTOWN PERKS",
-          headline: "Use the map to decide what to do next.",
+          headline: "Everything you need to get more out of downtown.",
           copy: "Find nearby places, compare the moment, save what matters, and open resident perks when they apply.",
           primary: ["Explore the Map", () => openResidentLayer("All")],
           secondary: ["Get Your Perks Card", () => switchMode("resident", "pass", "", { collapseConsole: true })],

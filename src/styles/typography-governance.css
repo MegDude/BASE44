@@ -18556,15 +18556,19 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-hero.dp
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-hero h2 {
-  max-width: 15ch !important;
+  display: -webkit-box !important;
+  max-width: min(100%, 24ch) !important;
   margin: 0 !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   font-family: "Instrument Serif", Georgia, serif !important;
-  font-size: clamp(28px, 8vw, 38px) !important;
+  font-size: clamp(26px, 7vw, 34px) !important;
   font-weight: 620 !important;
-  line-height: 0.98 !important;
+  line-height: 1 !important;
   letter-spacing: 0 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
   text-wrap: balance !important;
 }
 
