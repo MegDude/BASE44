@@ -17175,6 +17175,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   pointer-events: none !important;
 }
 
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions {
   position: static !important;
   width: min(100%, 292px) !important;
@@ -17189,6 +17190,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   pointer-events: auto !important;
 }
 
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions a.dp-button,
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions a {
   width: 100% !important;
   min-height: 46px !important;
@@ -17206,6 +17208,8 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   font-weight: 820 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
+  padding: 0 18px !important;
+  margin: 0 !important;
 }
 
 @media (max-width: 700px) {
