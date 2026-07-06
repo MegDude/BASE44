@@ -228,6 +228,12 @@ export default function PricingPage() {
     persistPartnerSetup(setupPayload);
     setCheckoutMessage("");
 
+    if (isResident) {
+      trackCta("Get Perks Card", "/card");
+      window.location.href = "/card";
+      return;
+    }
+
     if (!checkoutTarget || checkoutTarget.type === "lead" || selectedPlan?.annualPrice === 0 || selectedPlan?.annualPrice == null) {
       trackCta("Continue to registration", setupHref);
       window.location.href = setupHref;

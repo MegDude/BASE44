@@ -13,6 +13,7 @@ const PartnerLifecycle = lazy(() => import("./pages/PartnerLifecycle"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
+const ResidentAccess = lazy(() => import("./pages/ResidentAccess"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
 const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
@@ -156,12 +157,15 @@ function ProductRoutes() {
           <Route path="/admin-studio/distribution" element={<AdminMarketingStudio />} />
           <Route path="/admin-studio/performance" element={<AdminMarketingStudio />} />
           <Route path="/admin-studio/partner-intelligence" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio/residents" element={<AdminMarketingStudio />} />
           <Route path="/studio" element={<Navigate to="/admin-studio/command-center" replace />} />
           <Route path="/residents" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/explore" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
           <Route path="/perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
-          <Route path="/card" element={<Navigate to="/app?mode=resident&tab=pass" replace />} />
+          <Route path="/card" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
+          <Route path="/resident-sign-up" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
+          <Route path="/resident-access" element={<Navigate to="/card" replace />} />
           <Route path="/downtown-perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/downtown-perks/*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
 

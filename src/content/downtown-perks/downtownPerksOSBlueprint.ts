@@ -139,6 +139,16 @@ export const ADMIN_STUDIO_ROUTES = [
     cards: ["Impressions", "Saves", "Clicks", "Visits", "Redemptions", "Report"],
   },
   {
+    id: "residents",
+    label: "Residents",
+    path: "/admin-studio/residents",
+    icon: Users,
+    purpose: "Review resident access, building checks, card status, and saved activity.",
+    primaryCta: "Review residents",
+    priority: "Verify building requests and keep resident access clean.",
+    cards: ["Verified", "Building review", "Perks Card", "Recent access", "Needs follow-up"],
+  },
+  {
     id: "partner-intelligence",
     label: "Partner Intelligence",
     path: "/admin-studio/partner-intelligence",

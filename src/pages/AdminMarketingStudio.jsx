@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Check, ChevronRight, Sparkles } from "lucide-react";
 import {
@@ -141,6 +142,53 @@ function SystemMap() {
   );
 }
 
+function readResidentRecords() {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(window.localStorage.getItem("dp_admin_resident_records") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function ResidentAdminPanel() {
+  const records = useMemo(() => readResidentRecords(), []);
+  const visibleRecords = records.length
+    ? records
+    : [
+        {
+          id: "sample-resident",
+          fullName: "Sample Resident",
+          email: "resident@example.com",
+          buildingName: "Building review",
+          unitNumber: "Pending",
+          verificationStatus: "pending_building_review",
+          accessPath: "building",
+        },
+      ];
+
+  return (
+    <section className="dp-os-wire-card dp-os-resident-admin" aria-label="Resident access management">
+      <span>Admin only</span>
+      <h2>Resident access manager.</h2>
+      <p>Review card access, building checks, unit details, and resident records from one quiet admin view.</p>
+      <div className="dp-os-resident-admin-grid">
+        {visibleRecords.map((record) => (
+          <article key={record.id}>
+            <strong>{record.fullName || "Resident"}</strong>
+            <p>{record.email || "No email yet"}</p>
+            <dl>
+              <div><dt>Building</dt><dd>{record.buildingName || "Perks Card"}</dd></div>
+              <div><dt>Unit</dt><dd>{record.unitNumber || "Not provided"}</dd></div>
+              <div><dt>Status</dt><dd>{String(record.verificationStatus || record.accessPath || "saved").replace(/_/g, " ")}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function AdminMarketingStudio() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -194,6 +242,7 @@ export default function AdminMarketingStudio() {
         </section>
 
         <div className="dp-os-studio-grid">
+          {activeRoute.id === "residents" ? <ResidentAdminPanel /> : null}
           <StudioRouteWireframe route={activeRoute} />
           <CampaignFlowCard />
           <CampaignObjectPanel />

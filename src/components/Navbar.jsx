@@ -8,7 +8,7 @@ const RESIDENT_LINKS = [
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map", description: "Open the live resident map" },
   { to: "/app?mode=resident&tab=map&filter=Events", label: "Events", description: "See downtown events on the map" },
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks", description: "Find resident perks nearby" },
-  { to: "/app?mode=resident&tab=pass", label: "Perks Card", description: "Open the resident card view" },
+  { to: "/card", label: "Perks Card", description: "Get or verify resident access" },
 ];
 
 const PARTNER_LINKS = [
@@ -25,7 +25,7 @@ const HAMBURGER_RESIDENT_LINKS = [
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/app?mode=resident&tab=map&filter=Events", label: "Events" },
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks" },
-  { to: "/app?mode=resident&tab=pass", label: "Perks Card" },
+  { to: "/card", label: "Perks Card" },
 ];
 
 const HAMBURGER_PARTNER_LINKS = [
@@ -40,10 +40,10 @@ const HAMBURGER_PARTNER_LINKS = [
 
 const COMMERCE_LINKS = [
   { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
+  { to: "/card", label: "Perks Card" },
   { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/pricing", label: "Pricing" },
   { to: "/partners/sign-up", label: "Sign Up" },
-  { to: "/app", label: "Open App" },
 ];
 
 function NavLinkItem({ link, className, onClick, children }) {
@@ -215,7 +215,7 @@ export default function Navbar() {
   const isAppMapPath = location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map";
   const residentMapActive = isAppMapPath && !location.search.includes("mode=partner");
   const partnerMapActive = isAppMapPath && location.search.includes("mode=partner");
-  const isCommerceRoute = ["/pricing", "/partners/sign-in", "/partners/sign-up"].includes(location.pathname);
+  const isCommerceRoute = ["/pricing", "/partners/sign-in", "/partners/sign-up", "/card", "/resident-sign-up"].includes(location.pathname);
 
   function openQuickSearch() {
     setOpen(false);
