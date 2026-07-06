@@ -819,7 +819,7 @@ const eventPlaces = [
     image: "/images/map-entities/dining/outdoor-dining-arrival.avif",
     rsvpCount: 38,
     tags: ["Brunch", "Perks Card", "Dining", "Residents"],
-    summary: "Use your card at participating brunch spots and keep the plan simple: pick what is close, show the card, and sit down.",
+    summary: "The Sunday Brunch Card perk gives residents brunch value at participating downtown dining partners, making a nearby weekend meal easier to choose and compare.",
   }),
   eventPlace({
     id: "morning-yoga-waterloo",

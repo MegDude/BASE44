@@ -55,7 +55,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
   const residentUid = useMemo(() => getOrCreateResidentUid(), []);
   const issuedAt = useMemo(() => new Date().toISOString(), []);
   const perkValue = item.perk_value || item.offer || item.primaryAction || 'resident perk';
-  const perkDescription = item.perk_description || item.description || item.summary || `Show this QR at ${item.name} to use the resident perk.`;
+  const perkDescription = item.perk_description || item.description || item.summary || `${item.name} includes a resident perk through Downtown Perks, giving verified residents a specific local benefit tied to this pin.`;
   const qrPayload = useMemo(() => {
     const cardUrl = new URL('/map', typeof window !== 'undefined' ? window.location.origin : 'https://base-44-h2iq.vercel.app');
     cardUrl.searchParams.set('mode', 'resident');

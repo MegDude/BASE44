@@ -167,42 +167,6 @@ export default function DowntownPerksStory({
           ))}
         </div>
 
-        <motion.div
-          className="dp-story-os__device"
-          key={`${scene.id}-device`}
-          initial={reduceMotion ? false : { opacity: 0, y: 24, rotate: -1.5 }}
-          animate={{ opacity: 1, y: 0, rotate: scene.id === "open" ? 0 : -1.5 }}
-          transition={{ duration: 0.58, delay: 0.08, ease }}
-        >
-          <div className="dp-story-os__device-top">
-            <span />
-            <strong>Downtown Perks</strong>
-          </div>
-          <div className="dp-story-os__device-tabs">
-            {visual.tabs.map((tab, index) => (
-              <span key={tab} data-active={index === 0}>{tab}</span>
-            ))}
-          </div>
-          <div className="dp-story-os__device-map">
-            <span data-pin="one" />
-            <span data-pin="two" />
-            <span data-pin="three" />
-            <i />
-          </div>
-          <div className="dp-story-os__device-cards">
-            {visual.cards.map((card, index) => (
-              <motion.div
-                key={`${scene.id}-${card.label}`}
-                initial={reduceMotion ? false : { opacity: 0, x: 18 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.42, delay: 0.22 + index * 0.07, ease }}
-              >
-                <span>{card.label}</span>
-                <strong>{card.value}</strong>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
 
       <div className="dp-story-os__ambient" aria-hidden="true">
