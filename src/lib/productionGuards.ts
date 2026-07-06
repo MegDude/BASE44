@@ -21,16 +21,17 @@ export function hasFrontendSupabaseAuth(env: ImportMetaEnv = import.meta.env): b
 export function getFrontendProductionGuard(env: ImportMetaEnv = import.meta.env) {
   const production = isProductionLike(env);
   const accountAccessEnabled = hasFrontendSupabaseAuth(env);
-  const demoMode = production && !accountAccessEnabled;
+  const accountAccessBlocked = production && !accountAccessEnabled;
 
   return {
     production,
     accountAccessEnabled,
-    demoMode,
-    persistenceLabel: demoMode ? "Not configured" : "Connected",
+    demoMode: accountAccessBlocked,
+    persistenceLabel: "Not configured",
     accountAccessLabel: accountAccessEnabled ? "Enabled" : "Missing Supabase env vars",
-    writeModeLabel: demoMode ? "Demo session only" : "Durable",
-    message: demoMode ? PRODUCTION_ACCOUNT_ACCESS_MESSAGE : "",
+    writeModeLabel: "Demo session only",
+    message: accountAccessBlocked ? PRODUCTION_ACCOUNT_ACCESS_MESSAGE : "",
+    persistenceMessage: PRODUCTION_PERSISTENCE_MESSAGE,
   };
 }
 

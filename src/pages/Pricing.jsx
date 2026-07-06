@@ -428,7 +428,11 @@ export default function PricingPage() {
     <main className="dp-pricing-page">
       <section className="dp-pricing-section dp-pricing-calculator-section" id="pricing-builder" aria-label="Pricing calculator">
         <div className="dp-pricing-container">
-          <SectionHeader eyebrow="Pricing" title="Choose your plan." />
+          <SectionHeader
+            eyebrow="Pricing"
+            title="Choose your plan."
+            copy="Start with the right partner type, choose a plan, and add only the modules you need. Your selections carry into registration and checkout."
+          />
           <div className="dp-pricing-calculator">
             <div className="dp-pricing-calculator-controls">
               <fieldset>

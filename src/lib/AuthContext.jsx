@@ -1,8 +1,10 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { appParams } from '@/lib/app-params';
+import { supabaseClient } from "@/lib/supabase/client";
 import {
   canUseProductionAccountAccess,
+  isProductionLike,
   PRODUCTION_ACCOUNT_ACCESS_MESSAGE,
 } from "@/lib/productionGuards";
 
@@ -42,10 +44,55 @@ export const AuthProvider = ({ children }) => {
     // Downtown Perks is public-first. Viewing the site must never depend on
     // Base44 auth or app settings. If a token already exists, hydrate the user
     // quietly for partner/workspace conveniences; otherwise render as a guest.
+    if (isProductionLike() && canUseProductionAccountAccess() && supabaseClient) {
+      let subscription;
+      hydrateSupabaseSession();
+      const authState = supabaseClient.auth.onAuthStateChange((_event, session) => {
+        applySupabaseSession(session);
+      });
+      subscription = authState.data?.subscription;
+      return () => subscription?.unsubscribe?.();
+    }
     if (appParams.token) {
       checkUserAuth();
     }
   }, []);
+
+  const applySupabaseSession = (session) => {
+    const currentUser = session?.user;
+    if (!currentUser) {
+      setIsLoadingAuth(false);
+      setUser(null);
+      setIsAuthenticated(false);
+      return;
+    }
+
+    const profile = {
+      id: currentUser.id,
+      email: currentUser.email || "",
+      full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Partner",
+      organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Partner",
+      partner_type: currentUser.user_metadata?.partner_type || "partner",
+      role: "partner",
+      authProvider: "supabase",
+    };
+    setUser(profile);
+    setIsAuthenticated(true);
+    setIsLoadingAuth(false);
+    setAuthError(null);
+  };
+
+  const hydrateSupabaseSession = async () => {
+    try {
+      setIsLoadingAuth(true);
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) throw error;
+      applySupabaseSession(data?.session);
+    } catch (error) {
+      setIsLoadingAuth(false);
+      setAuthError(error.message || "Supabase session could not be loaded.");
+    }
+  };
 
   const checkAppState = async () => {
     setIsLoadingPublicSettings(false);
@@ -75,11 +122,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = (shouldRedirect = true) => {
+  const logout = async (shouldRedirect = true) => {
     setUser(null);
     setIsAuthenticated(false);
     setPartnerSession(null);
     writePartnerSession(null);
+
+    if (isProductionLike() && supabaseClient) {
+      await supabaseClient.auth.signOut().catch(() => {});
+      if (shouldRedirect) window.location.href = "/partners/sign-in";
+      return;
+    }
     
     if (shouldRedirect) {
       // Use the SDK's logout method which handles token cleanup and redirect
@@ -94,22 +147,50 @@ export const AuthProvider = ({ children }) => {
     return null;
   };
 
-  const signInPartner = (profile = {}) => {
+  const signInPartner = async (profile = {}) => {
     if (!canUseProductionAccountAccess()) {
       setAuthError(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
       setUser(null);
       setIsAuthenticated(false);
       setPartnerSession(null);
       writePartnerSession(null);
-      return null;
+      return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
     }
 
     const organizationName = profile.organization_name || profile.company || "Downtown Perks Partner";
+    const email = profile.email || profile.signup_email || "";
+
+    if (isProductionLike()) {
+      if (!supabaseClient) {
+        setAuthError(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
+        return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+      }
+      if (!email) {
+        const message = "Enter the email for your partner account before requesting sign-in access.";
+        setAuthError(message);
+        return { type: "error", message };
+      }
+      const { error } = await supabaseClient.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/partner-workspace/overview`,
+        },
+      });
+      if (error) {
+        const message = error.message || "Supabase sign-in could not be started.";
+        setAuthError(message);
+        return { type: "error", message };
+      }
+      const message = "Check your email for the secure partner sign-in link.";
+      setAuthError(message);
+      return { type: "supabase_otp", email, message };
+    }
+
     const nextSession = {
       type: "partner",
       user: {
-        id: profile.email || profile.signup_email || organizationName,
-        email: profile.email || profile.signup_email || "",
+        id: email || organizationName,
+        email,
         full_name: profile.full_name || profile.contact_name || organizationName,
         organization_name: organizationName,
         partner_type: profile.partner_type || "partner",

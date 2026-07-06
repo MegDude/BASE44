@@ -465,12 +465,23 @@ function useProductionReadinessStatus() {
 }
 
 function ProductionReadinessStatusBlock({ status }) {
+  const allConnected =
+    status.persistence === "Connected" &&
+    status.accountAccess === "Enabled" &&
+    status.writeMode === "Durable";
+  const statusMessage =
+    status.warning ||
+    status.accountNotice ||
+    (allConnected
+      ? "Production writes and sign-in are connected."
+      : "This action requires production persistence before it can be treated as permanent.");
+
   return (
     <section className="dp-production-readiness" aria-label="Production readiness">
       <div>
         <p>Production readiness</p>
         <h2>Persistence and account access</h2>
-        <span>{status.warning || status.accountNotice || "Production writes and sign-in are connected."}</span>
+        <span>{statusMessage}</span>
       </div>
       <dl>
         <div>

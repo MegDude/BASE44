@@ -117,15 +117,16 @@ function savePartnerProfile(profile) {
   }
 }
 
-function startPartnerSignIn(navigate, signInPartner, email) {
+async function startPartnerSignIn(navigate, signInPartner, email) {
   if (!canUseProductionAccountAccess()) return null;
-  signInPartner({
+  const session = await signInPartner({
     email,
     organization_name: "Downtown Perks Partner",
     contact_name: email || "Partner",
     partner_type: "partner",
   });
-  navigate("/partner-workspace/overview");
+  if (session?.type === "partner") navigate("/partner-workspace/overview");
+  return session;
 }
 
 function toPricingPartnerType(value) {
@@ -180,6 +181,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [saved, setSaved] = useState(false);
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
+  const [signInEmail, setSignInEmail] = useState("");
   const hasPartnerType = Boolean(form.partner_type);
   const accountAccessEnabled = canUseProductionAccountAccess();
 
@@ -286,9 +288,15 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       setSaved(true);
       setSubmissionState("success");
       if (accountAccessEnabled) {
-        signInPartner(profile);
-        setSubmissionMessage("Registration submitted. Opening your workspace.");
-        window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+        const session = await signInPartner(profile);
+        if (session?.type === "partner") {
+          setSubmissionMessage("Registration submitted. Opening your workspace.");
+          window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+        } else if (session?.type === "supabase_otp") {
+          setSubmissionMessage(session.message);
+        } else {
+          setSubmissionMessage(session?.message || PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
+        }
       } else {
         setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
       }
@@ -297,22 +305,38 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       setSaved(true);
       setSubmissionState("error");
       if (accountAccessEnabled) {
-        signInPartner(profile);
-        setSubmissionMessage(`${DEMO_WRITE_MESSAGE} Opening your workspace.`);
-        window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+        const session = await signInPartner(profile);
+        if (session?.type === "partner") {
+          setSubmissionMessage(`${DEMO_WRITE_MESSAGE} Opening your workspace.`);
+          window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+        } else if (session?.type === "supabase_otp") {
+          setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${session.message}`);
+        } else {
+          setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${session?.message || PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
+        }
       } else {
         setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
       }
     }
   }
 
-  function handleSignIn() {
+  async function handleSignIn() {
     if (!accountAccessEnabled) {
       setSubmissionState("error");
       setSubmissionMessage(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
       return;
     }
-    startPartnerSignIn(navigate, signInPartner, user?.email || "partner@downtownperks.local");
+    if (!signInEmail && !user?.email) {
+      setSubmissionState("error");
+      setSubmissionMessage("Enter the email for your partner account before requesting sign-in access.");
+      return;
+    }
+    setSubmissionState("submitting");
+    setSubmissionMessage("");
+    const session = await startPartnerSignIn(navigate, signInPartner, signInEmail || user?.email || "partner@downtownperks.local");
+    if (session?.type === "partner") return;
+    setSubmissionState("idle");
+    setSubmissionMessage(session?.message || "Check your email for the secure partner sign-in link.");
   }
 
   return (
@@ -535,21 +559,38 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
                   Continue to the right place for your organization, team access, and billing.
                 </p>
+                <PartnerAccessField
+                  label="Partner email"
+                  type="email"
+                  value={signInEmail}
+                  onChange={setSignInEmail}
+                  required={accountAccessEnabled}
+                />
+                {submissionMessage ? (
+                  <p
+                    className={`text-[12px] leading-5 ${
+                      submissionState === "error" ? "text-[#8A4B12]" : "text-[#0B1F33]/68"
+                    }`}
+                    role="status"
+                  >
+                    {submissionMessage}
+                  </p>
+                ) : null}
                 <div className="dp-partner-access-actions mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
                     onClick={handleSignIn}
-                    disabled={!accountAccessEnabled}
+                    disabled={!accountAccessEnabled || submissionState === "submitting"}
                     className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     <LogIn className="h-4 w-4 text-[#C8A96A]" />
-                    {accountAccessEnabled ? "Sign in" : "Sign-in unavailable"}
+                    {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
                     className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
-                    Create partner account
+                    Submit setup request
                     <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
                   </Link>
                   <Link
