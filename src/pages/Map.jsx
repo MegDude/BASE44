@@ -3909,6 +3909,7 @@ function getResidentPerkDetails(place) {
   if (luxuryBuilding) {
     const listings = luxuryBuilding.listings || place?.listings || [];
     const panelContent = luxuryBuilding.panelContent || place?.panelContent || {};
+    const buildingName = cleanDisplayCopy(place?.name || place?.title || luxuryBuilding.name || "This building");
     const activeText = listings.length === 1 ? "1 active listing" : `${listings.length} active listings`;
     const listingFacts = listings
       .slice(0, 4)
@@ -3916,9 +3917,9 @@ function getResidentPerkDetails(place) {
       .join(" • ");
 
     return {
-      offer: "Want To Live Here?",
+      offer: `${buildingName} Resident Access`,
       value: place?.listingSummary || `${activeText}${place?.priceRange ? ` from ${place.priceRange}` : ""}`,
-      description: panelContent.body || `${place?.name || "This downtown building"} has ${activeText}. Downtown Perks residents can review real listing details, compare nearby perks and places, and contact Legends Real Estate for showing options.`,
+      description: panelContent.body || `${buildingName} has ${activeText}. Downtown Perks residents can review real listing details, compare nearby perks and places, and contact Legends Real Estate for showing options.`,
       terms: listingFacts || "Contact Legends Real Estate for availability, showing options, MLS details, and similar downtown properties.",
       validUntil: "",
       source: "",
@@ -3927,6 +3928,7 @@ function getResidentPerkDetails(place) {
     };
   }
   if (legendsListing) {
+    const listingName = cleanDisplayCopy(place?.name || legendsListing.buildingName || legendsListing.address || "This downtown home");
     const detailText = [
       legendsListing.priceDisplay,
       legendsListing.beds ? `${legendsListing.beds} bd` : "",
@@ -3935,9 +3937,9 @@ function getResidentPerkDetails(place) {
     ].filter(Boolean).join(" · ");
 
     return {
-      offer: "Want To Live Here?",
+      offer: `${listingName} Resident Listing Access`,
       value: detailText || "Resident listing access",
-      description: legendsListing.interestCopy || `${place?.name || legendsListing.address} is available through Legends Real Estate. Downtown Perks residents can contact Legends to discover availability, showing options, and property opportunities that may not always be easy to find on other listing sites.`,
+      description: legendsListing.interestCopy || `${listingName} is available through Legends Real Estate. Downtown Perks residents can contact Legends to discover availability, showing options, and property opportunities that may not always be easy to find on other listing sites.`,
       terms: legendsListing.listingFacts || "Use the contact form to ask about availability, showing times, private tour options, and similar downtown properties.",
       validUntil: "",
       source: "",
@@ -4056,7 +4058,7 @@ function getResidentFallbackOffer(place) {
       ? [legendsListing.priceDisplay, legendsListing.beds ? `${legendsListing.beds} bd` : "", legendsListing.baths ? `${legendsListing.baths} ba` : "", legendsListing.sqftDisplay].filter(Boolean).join(" · ")
       : "";
     return {
-      title: "Want To Live Here?",
+      title: legendsListing ? `${name} Listing Access` : `${name} Resident Access`,
       value: listingDetail || "Listing and neighborhood context",
       description: legendsListing
         ? `${name} is a downtown home listing. Review the unit details, see what is walkable nearby, and contact Legends Real Estate when you want showing options.`
@@ -8926,7 +8928,6 @@ function ResidentDrawerActions({
   savedIds,
   eventRsvps = [],
   legendsListing,
-  agentFormPlaceId,
   onContact,
   onRsvp,
   onShowCard,
@@ -9010,7 +9011,6 @@ function ResidentDrawerActions({
             type="button"
             onClick={onContact}
             className="dp-panel-action"
-            aria-expanded={agentFormPlaceId === selected.id}
           >
             {panelArchetype.tertiaryAction}
           </button>
@@ -9285,7 +9285,6 @@ function TheShoreResidentialEntityDrawer({
   mode,
   places,
   savedIds,
-  agentFormPlaceId,
   agentFormSubmitted,
   onSelect,
   onSave,
@@ -9298,7 +9297,6 @@ function TheShoreResidentialEntityDrawer({
   const isSaved = savedIds?.has?.(place.id);
   const contactFormId = `shore-contact-form-${place.id}`;
   const availableHomesId = "shore-available-homes";
-  const showContactForm = agentFormPlaceId === place.id;
   const findByName = (name) => {
     const target = String(name || "").toLowerCase();
     return resolveMapEntityFromCollection(name, places)
@@ -9386,7 +9384,7 @@ function TheShoreResidentialEntityDrawer({
             <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
             <button type="button" className="dp-entity-action" onClick={onShowCard}>Show Card</button>
             <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved" : "Save Building"}</button>
-            <button type="button" className="dp-entity-action" onClick={openContact} aria-expanded={showContactForm}>{building.cta.secondary}</button>
+            <button type="button" className="dp-entity-action" onClick={openContact} aria-controls={contactFormId}>{building.cta.secondary}</button>
           </div>
 
           <section className="dp-entity-section">
@@ -9461,63 +9459,61 @@ function TheShoreResidentialEntityDrawer({
             <p>{building.cta.body}</p>
             <div className="dp-entity-action-row">
               <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
-              <button type="button" className="dp-entity-action" onClick={openContact} aria-expanded={showContactForm}>{building.cta.secondary}</button>
+              <button type="button" className="dp-entity-action" onClick={openContact} aria-controls={contactFormId}>{building.cta.secondary}</button>
             </div>
             <p className="dp-shore-disclaimer">{building.cta.footer}</p>
           </section>
 
-          {showContactForm && (
-            <form
-              id={contactFormId}
-              className="dp-contact-continuation dp-shore-contact-form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                onSubmitContact();
-              }}
-            >
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
-                <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Contact Listing Agent</h3>
-              </div>
-              {agentFormSubmitted ? (
-                <p className="mt-4 text-[13px] leading-5 text-[#0B1F33]/70">Sent. The request is ready with The Shore attached.</p>
-              ) : (
-                <>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                      Name
-                      <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Your name" />
-                    </label>
-                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                      Email
-                      <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="you@example.com" />
-                    </label>
-                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                      Phone
-                      <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Phone number" />
-                    </label>
-                    <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                      Timeline
-                      <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70">
-                        <option>ASAP</option>
-                        <option>30-60 days</option>
-                        <option>60-90 days</option>
-                        <option>Just exploring</option>
-                      </select>
-                    </label>
-                  </div>
-                  <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                    Notes
-                    <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue="I would like more information about available homes at The Shore." />
+          <form
+            id={contactFormId}
+            className="dp-contact-continuation dp-shore-contact-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSubmitContact();
+            }}
+          >
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
+              <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Contact Listing Agent</h3>
+            </div>
+            {agentFormSubmitted ? (
+              <p className="mt-4 text-[13px] leading-5 text-[#0B1F33]/70">Sent. The request is ready with The Shore attached.</p>
+            ) : (
+              <>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                    Name
+                    <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Your name" />
                   </label>
-                  <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
-                    Submit Interest
-                    <Send className="h-3.5 w-3.5 text-[#C8A96A]" />
-                  </button>
-                </>
-              )}
-            </form>
-          )}
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                    Email
+                    <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="you@example.com" />
+                  </label>
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                    Phone
+                    <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Phone number" />
+                  </label>
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                    Timeline
+                    <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70">
+                      <option>ASAP</option>
+                      <option>30-60 days</option>
+                      <option>60-90 days</option>
+                      <option>Just exploring</option>
+                    </select>
+                  </label>
+                </div>
+                <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                  Notes
+                  <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue="I would like more information about available homes at The Shore." />
+                </label>
+                <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
+                  Submit Interest
+                  <Send className="h-3.5 w-3.5 text-[#C8A96A]" />
+                </button>
+              </>
+            )}
+          </form>
         </>
       )}
     </div>
@@ -9922,17 +9918,17 @@ function LegendsResidentialIntelligenceDrawer({
             )}
           </section>
 
-          <section className="dp-entity-section dp-legends-inquiry-section">
-            <h3>Request information</h3>
-            <p className="dp-legends-inquiry-intro">Your request goes to {LEGENDS_BRAND_LINE} with the building, listing, timing, and message attached.</p>
-            <LegendsContactForm formId={legendsInquiryFormId} listing={inquiryListing} />
-          </section>
-
           <section className="dp-entity-section">
             <div className="dp-entity-action-row dp-legends-action-carousel">
               <button type="button" className="dp-entity-action is-primary" onClick={openInquiry}>Schedule Tour</button>
               <button type="button" className="dp-entity-action" onClick={() => onFilter?.("Legends")}>Compare Buildings</button>
             </div>
+          </section>
+
+          <section id={legendsInquiryFormId} className="dp-entity-section dp-legends-inquiry-section">
+            <h3>Request information</h3>
+            <p className="dp-legends-inquiry-intro">Your request goes to {LEGENDS_BRAND_LINE} with the building, listing, timing, and message attached.</p>
+            <LegendsContactForm formId={`${legendsInquiryFormId}-form`} listing={inquiryListing} />
           </section>
         </>
       )}
@@ -14982,7 +14978,6 @@ export default function MapPage() {
                       mode={urlState.mode}
                       places={places}
                       savedIds={savedIds}
-                      agentFormPlaceId={agentFormPlaceId}
                       agentFormSubmitted={agentFormSubmitted}
                       onSelect={selectPlace}
                       onSave={() => toggleSaved(selected)}
@@ -15116,7 +15111,6 @@ export default function MapPage() {
                           savedIds={savedIds}
                           eventRsvps={eventRsvps}
                           legendsListing={legendsListing}
-                          agentFormPlaceId={agentFormPlaceId}
                           onContact={openContactForm}
                           onRsvp={() => toggleRsvp(selected)}
                           onShowCard={() => openResidentQrModal(selected, "show_card", "resident_drawer_actions")}
@@ -15250,6 +15244,12 @@ export default function MapPage() {
                       </motion.div>
                     )}
 
+                    {!isDaaStop && !isInKindDining && !isBurgerBarPanel && !isHappyHourEntity(selected) && !hasActivePerkData(selected) && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.92, duration: 0.18 }}>
+                        <PeopleAlsoVisit place={selected} places={places} onSelect={selectPlace} mode={urlState.mode} />
+                      </motion.div>
+                    )}
+
                     {isProperty && legendsListing && (
                       <LegendsContactForm
                         formId={contactFormId}
@@ -15260,71 +15260,60 @@ export default function MapPage() {
                       />
                     )}
 
-                    <AnimatePresence initial={false}>
-                      {isProperty && !legendsListing && (
-                        <motion.form
-                          id={contactFormId}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -4, height: 0 }}
-                          onSubmit={(event) => {
-                            event.preventDefault();
-                            setAgentFormSubmitted(true);
-                          }}
-                          className="dp-contact-continuation mt-8 md:mt-10"
-                        >
-                          <div>
-                            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
-                            <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Interested in living here?</h3>
+                    {isProperty && !legendsListing && (
+                      <form
+                        id={contactFormId}
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          setAgentFormSubmitted(true);
+                        }}
+                        className="dp-contact-continuation mt-8 md:mt-10"
+                      >
+                        <div>
+                          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
+                          <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Interested in living here?</h3>
+                        </div>
+
+                        {agentFormSubmitted ? (
+                          <div className="mt-5 border-t border-[rgba(11,31,51,.06)] pt-5 text-[13px] leading-5 text-[#0B1F33]/70">
+                            Sent. The listing request is ready for the agent with this property attached.
                           </div>
-
-                          {agentFormSubmitted ? (
-                            <div className="mt-5 border-t border-[rgba(11,31,51,.06)] pt-5 text-[13px] leading-5 text-[#0B1F33]/70">
-                              Sent. The listing request is ready for the agent with this property attached.
-                            </div>
-                          ) : (
-                            <>
-                              <div className="mt-3 grid gap-2 sm:grid-cols-2 md:mt-4">
-                                <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                                  Name
-                                  <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="Your name" />
-                                </label>
-                                <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                                  Email
-                                  <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="you@example.com" />
-                                </label>
-                                <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                                  Phone
-                                  <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="Phone number" />
-                                </label>
-                                <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                                  Move Timeline
-                                  <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10">
-                                    <option>ASAP</option>
-                                    <option>30-60 days</option>
-                                    <option>60-90 days</option>
-                                    <option>Just exploring</option>
-                                  </select>
-                                </label>
-                              </div>
-                              <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
-                                Message optional
-                                <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue={`I would like more information about ${selected.name}.`} />
+                        ) : (
+                          <>
+                            <div className="mt-3 grid gap-2 sm:grid-cols-2 md:mt-4">
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                                Name
+                                <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="Your name" />
                               </label>
-                              <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
-                                Submit Interest →
-                                <Send className="h-3.5 w-3.5 text-[#C8A96A] md:h-4 md:w-4" />
-                              </button>
-                            </>
-                          )}
-                        </motion.form>
-                      )}
-                    </AnimatePresence>
-
-                    {!isDaaStop && !isInKindDining && !isBurgerBarPanel && !isHappyHourEntity(selected) && !hasActivePerkData(selected) && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.92, duration: 0.18 }}>
-                        <PeopleAlsoVisit place={selected} places={places} onSelect={selectPlace} mode={urlState.mode} />
-                      </motion.div>
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                                Email
+                                <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="you@example.com" />
+                              </label>
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                                Phone
+                                <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="Phone number" />
+                              </label>
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                                Move Timeline
+                                <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10">
+                                  <option>ASAP</option>
+                                  <option>30-60 days</option>
+                                  <option>60-90 days</option>
+                                  <option>Just exploring</option>
+                                </select>
+                              </label>
+                            </div>
+                            <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                              Message optional
+                              <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue={`I would like more information about ${selected.name}.`} />
+                            </label>
+                            <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
+                              Submit Interest
+                              <Send className="h-3.5 w-3.5 text-[#C8A96A] md:h-4 md:w-4" />
+                            </button>
+                          </>
+                        )}
+                      </form>
                     )}
                   </motion.div>
                 );

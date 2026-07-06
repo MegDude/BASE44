@@ -17657,3 +17657,83 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-foo
   transform: none !important;
   pointer-events: auto !important;
 }
+
+/* Absolute final story no-fill pass: remove full background panels and color blocks. */
+html body #root#root main.dp-splash-page.dp-fixed-story-page,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-splash-story-shell,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-product-shell-topbar,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-splash-story-header,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-header-inner,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-desktop-nav,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-nav-link,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-nav-menu-trigger,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-top-search,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__map-world,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__scene,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__ambient,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-top,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-map,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__controls,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__ambient::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device::after,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__controls::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__controls::after,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__ambient-chip,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__pin,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs span,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards div,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__controls button,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__controls > button {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device {
+  opacity: 0.42 !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-map {
+  border: 1px solid rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device-map i,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__progress i,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__dots button.is-active {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: #C8A96A !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__progress div,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__dots button {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 1px solid rgba(11, 31, 51, 0.16) !important;
+}
