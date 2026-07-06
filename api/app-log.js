@@ -1,4 +1,4 @@
-import { supabaseServer } from "../../../../../src/lib/supabaseServer.js";
+import { supabaseServer } from "../src/lib/supabaseServer.js";
 
 function clean(value, limit = 500) {
   if (value === null || value === undefined) return "";
@@ -22,13 +22,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const appId = clean(req.query?.appId, 160);
-  const surface = clean(req.query?.surface, 120) || "app";
   const body = normalizeBody(req.body || {});
   const metadata = {
-    appId,
-    surface,
     path: clean(body.path || body.url || req.headers.referer, 1000),
+    sourceUrl: clean(req.url, 1000),
     body,
     capturedAt: new Date().toISOString(),
   };
