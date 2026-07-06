@@ -13,6 +13,7 @@ const PartnerLifecycle = lazy(() => import("./pages/PartnerLifecycle"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
+const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentAccess = lazy(() => import("./pages/ResidentAccess"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
@@ -325,7 +326,7 @@ function ProductRoutes() {
 
           {/* Legacy redirects for any bookmarked marketing URLs */}
           <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/contact" element={<Navigate to="/partners/sign-up" replace />} />
+          <Route path="/contact" element={<Suspense fallback={<MarketingFallback />}><ContactPage /></Suspense>} />
           <Route path="/splash" element={<SplashLaunchGate />} />
 
           {/* Catch-all → production app route */}

@@ -35,6 +35,9 @@ function getQueryContext() {
     reportingNeeds: params.get("reportingNeeds") || "",
     interest: params.get("interest") || "",
     enterprise: params.get("enterprise") || "",
+    customOption: params.get("customOption") || "",
+    customOptionTitle: params.get("customOptionTitle") || "",
+    message: params.get("message") || "",
   };
 }
 
@@ -56,7 +59,7 @@ export default function ContactPage() {
     ...initialForm,
     partnerType: partnerTypes.includes(queryContext.partnerType) ? queryContext.partnerType : initialForm.partnerType,
     interest: queryContext.interest === "enterprise" ? "enterprise" : queryContext.intent || initialForm.interest,
-    message: queryContext.enterprise ? `Enterprise setup request: ${queryContext.enterprise}.` : "",
+    message: queryContext.message || (queryContext.enterprise ? `Enterprise setup request: ${queryContext.enterprise}.` : ""),
   }));
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ type: "idle", message: "" });
@@ -72,6 +75,7 @@ export default function ContactPage() {
     ["Campaign interest", queryContext.campaignInterest],
     ["Reporting needs", queryContext.reportingNeeds],
     ["Enterprise", queryContext.enterprise],
+    ["Custom option", queryContext.customOptionTitle || queryContext.customOption],
   ].filter(([, value]) => value);
 
   function updateField(field, value) {
@@ -173,7 +177,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="dp-contact-section">
+      <section className="dp-contact-section" id="contact">
         <div className="dp-contact-container dp-contact-form-grid">
           <header>
             <p className="dp-contact-eyebrow">Request Details</p>

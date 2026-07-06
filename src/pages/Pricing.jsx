@@ -71,6 +71,85 @@ const groupLabels = {
 
 const partnerAddOnGroups = PRICING_MODULE_GROUPS.filter((group) => group.id !== "residentAccess");
 
+const customOptions = [
+  {
+    id: "multi-property-portfolios",
+    title: "Multi-property portfolios",
+    description: "For owners, managers, and leasing teams working across several buildings.",
+    bestFor: [
+      "Apartment groups",
+      "Condo associations",
+      "Mixed-use properties",
+      "Portfolio leasing teams",
+    ],
+    included: [
+      "Shared resident access",
+      "Building-level reporting",
+      "QR setup by property",
+      "Portfolio overview",
+    ],
+    cta: "Talk through portfolio setup",
+    message: "I'm interested in multi-property portfolio pricing.",
+  },
+  {
+    id: "district-programs",
+    title: "District programs",
+    description: "For organizations coordinating activity across a downtown area.",
+    bestFor: [
+      "District groups",
+      "Nonprofits",
+      "Public-space partners",
+      "Neighborhood programs",
+    ],
+    included: [
+      "District map presence",
+      "Event and program listings",
+      "QR entry points",
+      "Participation reporting",
+    ],
+    cta: "Plan a district program",
+    message: "I'm interested in planning a district program.",
+  },
+  {
+    id: "destination-sponsorships",
+    title: "Destination sponsorships",
+    description: "For brands that want to support local experiences people already choose.",
+    bestFor: [
+      "Local campaigns",
+      "Seasonal sponsorships",
+      "Hospitality moments",
+      "Downtown activations",
+    ],
+    included: [
+      "Sponsored placement",
+      "Campaign page",
+      "Event or offer connection",
+      "Performance recap",
+    ],
+    cta: "Discuss sponsorship",
+    message: "I'm interested in destination sponsorship options.",
+  },
+  {
+    id: "major-developments",
+    title: "Major developments",
+    description: "For new buildings, mixed-use projects, and teams shaping a larger downtown experience.",
+    bestFor: [
+      "New developments",
+      "Mixed-use projects",
+      "Leasing launches",
+      "Neighborhood positioning",
+    ],
+    included: [
+      "Launch plan",
+      "Resident or visitor journey",
+      "Partner coordination",
+      "Custom reporting",
+    ],
+    cta: "Talk through the project",
+    message: "I'm interested in Downtown Perks for a major development.",
+  },
+];
+
 function normalizePartnerSlug(type) {
   return String(type || "").trim().toLowerCase().replace(/\s+/g, "-");
 }
@@ -107,6 +186,7 @@ export default function PricingPage() {
   const [campaignInterest, setCampaignInterest] = useState(storedSetup.campaignInterest || "Offers and perks");
   const [reportingNeeds, setReportingNeeds] = useState(storedSetup.reportingNeeds || "Standard reporting");
   const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("campaigns");
+  const [activeCustomOption, setActiveCustomOption] = useState(storedSetup.customOption || customOptions[0].id);
   const [checkoutState, setCheckoutState] = useState("idle");
   const [checkoutMessage, setCheckoutMessage] = useState("");
 
@@ -126,6 +206,7 @@ export default function PricingPage() {
   const partnerTypeSlug = normalizePartnerSlug(partnerType);
   const selectedPartner = partnerCopy[partnerType] || partnerCopy.Custom;
   const selectedPartnerLabel = selectedPartner.label;
+  const selectedCustomOption = customOptions.find((option) => option.id === activeCustomOption) || customOptions[0];
   const totalText = selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(total);
   const estimatedTotalLabel = isResident ? "Estimated annual total" : "Estimated first-year total";
 
@@ -146,9 +227,11 @@ export default function PricingPage() {
     locationCount,
     campaignInterest,
     reportingNeeds,
+    customOption: partnerType === "Custom" ? selectedCustomOption.id : "",
+    customOptionTitle: partnerType === "Custom" ? selectedCustomOption.title : "",
     status: "pricing_selected",
     updatedAt: new Date().toISOString(),
-  }), [annualAddOnTotal, campaignInterest, checkoutTarget, locationCount, oneTimeTotal, partnerType, partnerTypeSlug, recurringAnnualTotal, reportingNeeds, selectedModuleIds, selectedModuleLabels, selectedPlan, total]);
+  }), [annualAddOnTotal, campaignInterest, checkoutTarget, locationCount, oneTimeTotal, partnerType, partnerTypeSlug, recurringAnnualTotal, reportingNeeds, selectedCustomOption.id, selectedCustomOption.title, selectedModuleIds, selectedModuleLabels, selectedPlan, total]);
 
   const setupParams = new URLSearchParams({
     intent: "partner-registration",
@@ -168,6 +251,12 @@ export default function PricingPage() {
     campaignInterest,
     reportingNeeds,
   });
+
+  if (partnerType === "Custom") {
+    setupParams.set("customOption", selectedCustomOption.id);
+    setupParams.set("customOptionTitle", selectedCustomOption.title);
+    setupParams.set("message", selectedCustomOption.message);
+  }
 
   if (partnerType === "Custom" || locationCount > 1 || selectedPlan?.annualPrice == null) {
     setupParams.set("interest", "custom");
@@ -205,6 +294,49 @@ export default function PricingPage() {
   function toggleModule(moduleId) {
     setSelectedModuleIds((current) => current.includes(moduleId) ? current.filter((id) => id !== moduleId) : [...current, moduleId]);
     trackPricingEvent("pricing_module_toggled", { moduleId, partnerType, planId: selectedPlan?.id });
+  }
+
+  function selectCustomOption(optionId) {
+    setActiveCustomOption(optionId);
+    setPartnerType("Custom");
+    const next = customOptions.find((option) => option.id === optionId);
+    trackPricingEvent("custom_pricing_option_selected", { optionId, optionTitle: next?.title });
+  }
+
+  function contactCustomOption(option) {
+    setPartnerType("Custom");
+    const nextPayload = {
+      ...setupPayload,
+      partnerType: "Custom",
+      organizationType: "custom",
+      customOption: option.id,
+      customOptionTitle: option.title,
+      campaignInterest: option.title,
+      status: "custom_pricing_contact",
+    };
+    persistPartnerSetup(nextPayload);
+    trackPricingEvent("custom_pricing_cta_clicked", { optionId: option.id, optionTitle: option.title });
+    const params = new URLSearchParams({
+      intent: "partner-registration",
+      interest: "enterprise",
+      partnerType: "Custom",
+      partnerTypeSlug: "custom",
+      customOption: option.id,
+      customOptionTitle: option.title,
+      campaignInterest: option.title,
+      message: option.message,
+      annualTotal: "custom",
+      recurringAnnualTotal: "custom",
+      locationCount: String(locationCount),
+      reportingNeeds,
+    });
+    window.location.href = `/contact?${params.toString()}#contact`;
+  }
+
+  function viewCustomOptionDetails(option) {
+    setActiveCustomOption(option.id);
+    setPartnerType("Custom");
+    document.getElementById("custom-pricing-detail")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
   function trackCta(label, href) {
@@ -352,6 +484,60 @@ export default function PricingPage() {
                     <label><span>Campaign interest</span><select value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}><option>Offers and perks</option><option>Events</option><option>Featured placement</option><option>District or portfolio campaign</option><option>Not sure yet</option></select></label>
                     <label><span>Reporting needs</span><select value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}><option>Standard reporting</option><option>Campaign performance</option><option>Portfolio reporting</option><option>Exports and integrations</option><option>Custom executive reporting</option></select></label>
                   </div>
+                  <fieldset className="dp-custom-options-fieldset">
+                    <legend>Enterprise / Custom</legend>
+                    <div className="dp-pricing-addons-head">
+                      <h3>Custom setup paths</h3>
+                      <p>Choose the shape of the program so the next step carries the right business context.</p>
+                      <span>Built for portfolios, districts, sponsorships, and larger development work.</span>
+                    </div>
+                    <div className="dp-custom-option-grid">
+                      {customOptions.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className="dp-custom-option-card"
+                          aria-expanded={activeCustomOption === option.id}
+                          aria-controls="custom-pricing-detail"
+                          onClick={() => selectCustomOption(option.id)}
+                        >
+                          <span className="dp-custom-option-title">{option.title}</span>
+                          <span className="dp-custom-option-copy">{option.description}</span>
+                        </button>
+                      ))}
+                    </div>
+                    {selectedCustomOption ? (
+                      <div className="dp-custom-option-detail" id="custom-pricing-detail">
+                        <p className="dp-pricing-guide-eyebrow">
+                          <span className="dp-pricing-guide-eyebrow-text">Custom Setup</span>
+                        </p>
+                        <h3>{selectedCustomOption.title}</h3>
+                        <p>{selectedCustomOption.description}</p>
+                        <div className="dp-custom-option-detail-grid">
+                          <div>
+                            <h4>Good for</h4>
+                            <ul>
+                              {selectedCustomOption.bestFor.map((item) => <li key={item}>{item}</li>)}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4>Included</h4>
+                            <ul>
+                              {selectedCustomOption.included.map((item) => <li key={item}>{item}</li>)}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="dp-pricing-guide-actions">
+                          <button type="button" className="dp-button dp-button-primary" onClick={() => contactCustomOption(selectedCustomOption)}>
+                            {selectedCustomOption.cta}
+                          </button>
+                          <button type="button" className="dp-button dp-button-secondary" onClick={() => viewCustomOptionDetails(selectedCustomOption)}>
+                            View details
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+                  </fieldset>
                   <fieldset>
                     <legend>Add-ons</legend>
                     <div className="dp-pricing-addons-head">
