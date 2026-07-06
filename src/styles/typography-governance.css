@@ -17759,6 +17759,31 @@ html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-f
   -webkit-backdrop-filter: none !important;
 }
 
+html body #root#root main.dp-splash-page.dp-fixed-story-page,
+html body #root#root main.dp-splash-page.dp-fixed-story-page *,
+html body #root#root main.dp-splash-page.dp-fixed-story-page *::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page *::after {
+  background-image: none !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page::after,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell::after,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-splash-story-shell::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-splash-story-shell::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell.dp-fixed-story-shell.dp-splash-story-shell.dp-splash-story-shell::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell.dp-fixed-story-shell.dp-splash-story-shell.dp-splash-story-shell::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
 /* Absolute final story copy rhythm: keep the original deck, but lock intentional line breaks. */
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline,
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__headline {
