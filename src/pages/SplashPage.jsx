@@ -53,7 +53,7 @@ const storyStates = [
   },
   {
     id: "one-map",
-    index: "03",
+    index: "06",
     navLabel: "One map",
     kicker: "One place",
     headlineGroups: [
@@ -67,9 +67,9 @@ const storyStates = [
         { text: "together.", tone: "navy" },
       ],
     ],
-    meaning: "Not another app to manage. Not another feed to scroll.",
+    meaning: "Not another app to manage.\nNot another feed to scroll.",
     supporting: [
-      "Just a better way to figure out what’s happening, and worth showing up for.",
+      "Just a better way to figure out what’s\nhappening, and worth showing up for.",
     ],
     visual: ["Perks", "Events", "Places"],
   },

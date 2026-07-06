@@ -18215,6 +18215,30 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   margin-top: clamp(24px, 4svh, 42px) !important;
 }
 
+/* Exact One place story rhythm: preserve intentional line placement from the story script. */
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__scene {
+  gap: clamp(14px, 2.4svh, 24px) !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline {
+  margin-bottom: clamp(8px, 1.8svh, 18px) !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__meaning {
+  width: min(100%, 520px) !important;
+  margin-top: clamp(10px, 2svh, 24px) !important;
+  white-space: pre-line !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__supporting {
+  width: min(100%, 540px) !important;
+  margin-top: clamp(28px, 5svh, 56px) !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__supporting p {
+  white-space: pre-line !important;
+}
+
 /* Final Saved drawer layout lock: one vertical panel, no clipped horizontal rails. */
 html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell.dp-saved-drawer-shell {
   box-sizing: border-box !important;
