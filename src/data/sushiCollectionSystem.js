@@ -191,7 +191,7 @@ export const sushiVenueEntities = [
     perk: {
       title: "Resident reverse happy hour",
       value: "Resident drinks perk",
-      description: "Show your Downtown Perks card and unlock resident reverse happy hour pricing on select sushi, sake, and cocktails.",
+      description: "The BarChi perk unlocks resident reverse happy hour pricing on select sushi, sake, and cocktails.",
       isActive: true,
     },
     primaryAction: "View perk",

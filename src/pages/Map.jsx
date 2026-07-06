@@ -1122,30 +1122,114 @@ function getAllAreaLabel(mode, activeFilter) {
 const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
 const DEMO_CARD_CODE = "DP-RES-78701";
 const PERKS_CARD_QR_SRC = "/images/card/perks-card-qr.png";
+const RESIDENT_TOUCHPOINTS_STORAGE_KEY = "downtown-perks-resident-touchpoints";
+const RESIDENT_QR_EVENT_TYPE = "resident_qr_presented";
+
+function getQrImageUrl(value) {
+  const encoded = encodeURIComponent(String(value || DEMO_CARD_CODE));
+  return `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=12&data=${encoded}`;
+}
+
+function getResidentProfileUid() {
+  return getWorkflowProfileId();
+}
+
+function getEntityTouchpointId(place) {
+  return String(place?.id || place?.entityId || place?.raw?.id || place?.slug || "resident-card");
+}
+
+function getEntityTouchpointName(place) {
+  return String(place?.name || place?.title || place?.raw?.name || "Downtown Perks");
+}
+
+function buildResidentQrPayload({ place, action = "show_card", source = "resident_map" } = {}) {
+  const uid = getResidentProfileUid();
+  const entityId = getEntityTouchpointId(place);
+  const entityName = getEntityTouchpointName(place);
+  const sessionId = getWorkflowSessionId();
+  const issuedAt = new Date().toISOString();
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : LIVE_CARD_URL;
+  const qrUrl = new URL("/map", baseUrl);
+  qrUrl.searchParams.set("mode", "resident");
+  qrUrl.searchParams.set("tab", "pass");
+  qrUrl.searchParams.set("residentUid", uid);
+  qrUrl.searchParams.set("touchpoint", action);
+  qrUrl.searchParams.set("entityId", entityId);
+
+  return {
+    type: "downtown_perks.resident_qr",
+    version: 1,
+    uid,
+    profileId: uid,
+    sessionId,
+    action,
+    source,
+    entityId,
+    entityName,
+    issuedAt,
+    qrValue: qrUrl.toString(),
+  };
+}
+
+function recordResidentTouchpoint(payload) {
+  if (!payload?.uid) return;
+  const event = {
+    id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    ...payload,
+    eventType: RESIDENT_QR_EVENT_TYPE,
+    capturedAt: new Date().toISOString(),
+    path: typeof window !== "undefined" ? `${window.location.pathname}${window.location.search}` : "",
+  };
+
+  if (typeof window !== "undefined") {
+    try {
+      const current = JSON.parse(window.localStorage.getItem(RESIDENT_TOUCHPOINTS_STORAGE_KEY) || "[]");
+      const next = [event, ...(Array.isArray(current) ? current : [])].slice(0, 200);
+      window.localStorage.setItem(RESIDENT_TOUCHPOINTS_STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      // Local capture is best-effort; backend workflow still receives the event below.
+    }
+    window.dispatchEvent(new CustomEvent("downtown-perks:resident-touchpoint", { detail: event }));
+  }
+
+  fireWorkflow("/api/track", {
+    type: RESIDENT_QR_EVENT_TYPE,
+    entityId: event.entityId,
+    entityType: "resident_touchpoint",
+    profileId: event.uid,
+    sessionId: event.sessionId,
+    sourceType: "resident_qr",
+    value: event,
+  });
+
+  if (event.action === "use_perk") {
+    trackingEvents.redeem(event.entityId);
+  }
+}
 
 const RESIDENT_OFFER_RECORDS = [
-  ["DANA", ["dana", "downtown austin neighborhood association"], "Resident advocacy & premium meetings", "Resident civic access", "DANA helps residents stay connected to advocacy, neighborhood meetings, and decisions that shape downtown living.", "Save it to follow upcoming resident meetings and local advocacy updates.", "Civic"],
-  ["Downtown Austin Alliance", ["downtown austin alliance", "daa"], "Infrastructure & Public Realm Updates", "Downtown civic updates", "Show your Resident Pass when the offer is active.", "Save it to keep civic updates and downtown route context close by.", "Civic"],
-  ["Waterloo Greenway", ["waterloo greenway", "waterloo park"], "Park Activation & Green Space Access", "Park and event access", "Waterloo Greenway connects residents with park events, green space, trails, and cultural moments nearby.", "Save it for nearby park events, wellness moments, and community programming.", "Civic"],
-  ["The Paseo", ["the paseo", "paseo"], "Priority move-in incentive", "Residential access", "The Paseo gives residents a clearer way to compare building life with nearby dining, retail, events, and services.", "Save it and open the listing or building drawer when you want details.", "Property"],
-  ["The Waterline", ["the waterline", "waterline"], "Reserved co-working access", "Residential amenity access", "The Waterline connects residents to a mixed-use district with work, dining, hotel, retail, and lake access nearby.", "Save it to compare building amenities and nearby routines.", "Property"],
-  ["The Independent", ["the independent", "independent"], "Skydeck guest passes", "Resident building benefit", "The Independent gives residents a Seaholm anchor with dining, events, lake access, and daily routines close by.", "Save it to explore nearby perks and building context.", "Property"],
-  ["70 Rainey", ["70 rainey", "seventy rainey"], "Herb garden harvest share", "Resident building benefit", "70 Rainey connects residents to Rainey restaurants, music, trail access, and everyday local stops.", "Save it to compare nearby routines and resident benefits.", "Property"],
-  ["The Shore", ["the shore", "shore"], "Verified Resident: Lakeside Infinity Pool Access", "Resident access", "The Shore connects resident access with lakefront routines, Rainey dining, and nearby perks.", "Available to verified residents through the Resident Pass.", "Property"],
-  ["Fixe Austin's Southern House", ["fixe", "fixe southern house", "fixe austin's southern house", "fixe austins southern house"], "Free biscuit board for the table", "Resident dining perk", "Show your Downtown Perks card and receive a complimentary biscuit board with dinner for two or more.", "Valid dine-in only. One per table. Subject to restaurant approval and availability. Not valid with other offers.", "Dining"],
-  ["Perry's Steakhouse & Grille", ["perry's", "perrys", "perry's steakhouse", "perrys steakhouse", "perry's steakhouse & grille"], "Complimentary Bar 79 starter", "Resident steakhouse perk", "Show your Downtown Perks card and receive a complimentary Bar 79 starter with dinner for two or more.", "Valid dine-in only. One per table. Dinner only. Subject to restaurant approval and availability. Not valid with other offers.", "Dining"],
-  ["Truluck's Ocean's Finest Seafood & Crab", ["truluck", "truluck's", "trulucks", "truluck's ocean's finest seafood & crab"], "Complimentary bubbles or dessert", "Resident seafood perk", "Show your Downtown Perks card and receive a complimentary glass of bubbles or dessert with dinner for two or more.", "Valid dine-in only. One per table. Subject to restaurant approval and availability. Alcohol option only for guests 21+. Not valid with other offers.", "Dining"],
-  ["BarChi Sushi", ["barchi", "barchi sushi", "bar chi", "bar chi sushi"], "Resident reverse happy hour", "Resident drinks perk", "Show your Downtown Perks card and unlock resident reverse happy hour pricing on select sushi, sake, and cocktails.", "Valid during approved reverse happy hour windows only. Dine-in only. Subject to restaurant approval and availability. Alcohol only for guests 21+.", "Drinks"],
-  ["Comedor", ["comedor"], "Mezcal welcome pour", "Resident dining perk", "Show your Downtown Perks card and receive a complimentary mezcal welcome pour or spirit-free house agua with dinner.", "Valid dine-in only. One per guest with dinner purchase. Alcohol option only for guests 21+. Subject to restaurant approval and availability.", "Dining"],
+  ["DANA", ["dana", "downtown austin neighborhood association"], "Resident advocacy & premium meetings", "Resident civic access", "The DANA perk gives residents easier access to civic meetings, advocacy updates, and neighborhood decisions that shape downtown living.", "Save it to follow upcoming resident meetings and local advocacy updates.", "Civic"],
+  ["Downtown Austin Alliance", ["downtown austin alliance", "daa"], "Infrastructure & Public Realm Updates", "Downtown civic updates", "The DAA perk gives residents a direct civic-update layer for public realm, safety, mobility, and infrastructure changes around downtown.", "Save it to keep civic updates and downtown route context close by.", "Civic"],
+  ["Waterloo Greenway", ["waterloo greenway", "waterloo park"], "Park Activation & Green Space Access", "Park and event access", "The Waterloo Greenway perk connects residents to park programming, green space access, trail moments, and cultural events nearby.", "Save it for nearby park events, wellness moments, and community programming.", "Civic"],
+  ["The Paseo", ["the paseo", "paseo"], "Priority move-in incentive", "Residential access", "The Paseo perk gives residents priority context for move-in incentives, building life, nearby dining, retail, events, and services.", "Save it and open the listing or building drawer when you want details.", "Property"],
+  ["The Waterline", ["the waterline", "waterline"], "Reserved co-working access", "Residential amenity access", "The Waterline perk highlights reserved co-working access and mixed-use resident benefits tied to dining, hotel, retail, and lake routines.", "Save it to compare building amenities and nearby routines.", "Property"],
+  ["The Independent", ["the independent", "independent"], "Skydeck guest passes", "Resident building benefit", "The Independent perk gives residents skydeck guest-pass context plus a Seaholm anchor for nearby dining, events, lake access, and daily routines.", "Save it to explore nearby perks and building context.", "Property"],
+  ["70 Rainey", ["70 rainey", "seventy rainey"], "Herb garden harvest share", "Resident building benefit", "The 70 Rainey perk gives residents herb garden harvest-share access tied to Rainey restaurants, music, trail access, and everyday local stops.", "Save it to compare nearby routines and resident benefits.", "Property"],
+  ["The Shore", ["the shore", "shore"], "Verified Resident: Lakeside Infinity Pool Access", "Resident access", "The Shore perk gives verified residents lakeside infinity pool access and lakefront benefit context around Rainey dining and nearby resident offers.", "Available to verified residents through the Resident Pass.", "Property"],
+  ["Fixe Austin's Southern House", ["fixe", "fixe southern house", "fixe austin's southern house", "fixe austins southern house"], "Free biscuit board for the table", "Resident dining perk", "The Fixe perk gives residents a complimentary biscuit board with dinner for two or more.", "Valid dine-in only. One per table. Subject to restaurant approval and availability. Not valid with other offers.", "Dining"],
+  ["Perry's Steakhouse & Grille", ["perry's", "perrys", "perry's steakhouse", "perrys steakhouse", "perry's steakhouse & grille"], "Complimentary Bar 79 starter", "Resident steakhouse perk", "The Perry's perk gives residents a complimentary Bar 79 starter with dinner for two or more.", "Valid dine-in only. One per table. Dinner only. Subject to restaurant approval and availability. Not valid with other offers.", "Dining"],
+  ["Truluck's Ocean's Finest Seafood & Crab", ["truluck", "truluck's", "trulucks", "truluck's ocean's finest seafood & crab"], "Complimentary bubbles or dessert", "Resident seafood perk", "The Truluck's perk gives residents a complimentary glass of bubbles or dessert with dinner for two or more.", "Valid dine-in only. One per table. Subject to restaurant approval and availability. Alcohol option only for guests 21+. Not valid with other offers.", "Dining"],
+  ["BarChi Sushi", ["barchi", "barchi sushi", "bar chi", "bar chi sushi"], "Resident reverse happy hour", "Resident drinks perk", "The BarChi perk unlocks resident reverse happy hour pricing on select sushi, sake, and cocktails.", "Valid during approved reverse happy hour windows only. Dine-in only. Subject to restaurant approval and availability. Alcohol only for guests 21+.", "Drinks"],
+  ["Comedor", ["comedor"], "Mezcal welcome pour", "Resident dining perk", "The Comedor perk gives residents a complimentary mezcal welcome pour or spirit-free house agua with dinner.", "Valid dine-in only. One per guest with dinner purchase. Alcohol option only for guests 21+. Subject to restaurant approval and availability.", "Dining"],
   ["Dean's Italian Steakhouse", ["dean's", "deans", "dean's italian steakhouse", "deans italian steakhouse"], "This summer, give the gift of Dean's", "$100 gift card + $25 bonus card", "Purchase a $100 Dean's Italian Steakhouse gift card between May 25 and August 1 and receive a $25 bonus card for a future visit - yours to enjoy before Labor Day, September 7. Whether you're celebrating someone special or treating yourself, there's no better time to give the gift of a great meal.", "Purchase gift cards through Dean's Italian Steakhouse. $25 bonus card is for a future visit and must be enjoyed before Labor Day, September 7.", "Dining"],
-  ["Banger's Sausage House & Beer Garden", ["banger", "banger’s", "banger's", "banger's sausage house", "banger's sausage house & beer garden"], "Beer garden and live energy nearby", "Drinks nearby", "A downtown favorite for beer, outdoor gatherings, and live music energy.", "Show the Resident Pass when the offer is active.", "Drinks"],
-  ["The Stay Put", ["stay put", "the stay put"], "Free house brew with Resident Pass", "Resident drink offer", "The Stay Put gives residents an easy nearby drink stop around Rainey.", "Show the Resident Pass when the offer is active.", "Drinks"],
-  ["Lustre Pearl", ["lustre pearl"], "Happy Hour pricing for residents anytime", "Resident drink offer", "Lustre Pearl gives residents a familiar Rainey stop with simple resident value.", "Show the Resident Pass when the offer is active.", "Drinks"],
-  ["Half Step", ["half step"], "Cocktails around the corner", "Drinks nearby", "Craft cocktails and a relaxed Rainey Street atmosphere just a short walk away.", "Save it and show Resident Pass when active.", "Drinks"],
-  ["BATHE", ["bathe"], "10% Off First Soak", "Wellness perk", "BATHE gives residents a bathhouse reset with sauna, cold plunge, soaking pools, massage, sound immersion, and coworking.", "Claim the wellness perk and confirm availability before visiting.", "Wellness"],
-  ["YETI", ["yeti"], "Free Custom Engraving For Verified Residents", "Retail resident offer", "YETI gives residents and visitors an outdoor retail moment tied to downtown routes, the lake, and weekend plans.", "Show the Resident Pass in-store when the offer is active.", "Retail"],
-  ["Rivian", ["rivian"], "Priority Test Drives & Resident Charging Perks", "Mobility resident offer", "Rivian connects downtown residents to weekend routes, local exploration, and useful mobility moments.", "Save it and open the partner drawer for current test-drive details.", "Mobility"],
-  ["Standard Proof Whiskey Co.", ["standard proof"], "Complimentary Whiskey Flight Upgrade", "Resident drink offer", "Standard Proof gives residents a focused drinks stop near Rainey activity.", "Show the Resident Pass when the offer is active.", "Drinks"],
+  ["Banger's Sausage House & Beer Garden", ["banger", "banger’s", "banger's", "banger's sausage house", "banger's sausage house & beer garden"], "Beer garden and live energy nearby", "Drinks nearby", "The Banger's perk gives residents beer garden value tied to outdoor gatherings, live music energy, and easy Rainey-area group plans.", "Show the Resident Pass when the offer is active.", "Drinks"],
+  ["The Stay Put", ["stay put", "the stay put"], "Free house brew with Resident Pass", "Resident drink offer", "The Stay Put perk gives residents a free house brew as a simple nearby drink offer around Rainey.", "Show the Resident Pass when the offer is active.", "Drinks"],
+  ["Lustre Pearl", ["lustre pearl"], "Happy Hour pricing for residents anytime", "Resident drink offer", "The Lustre Pearl perk gives residents happy hour pricing anytime, turning a familiar Rainey stop into an easier-value drink plan.", "Show the Resident Pass when the offer is active.", "Drinks"],
+  ["Half Step", ["half step"], "Cocktails around the corner", "Drinks nearby", "The Half Step perk highlights resident cocktail access around a craft cocktail stop close to Rainey Street.", "Save it and show Resident Pass when active.", "Drinks"],
+  ["BATHE", ["bathe"], "10% Off First Soak", "Wellness perk", "The BATHE perk gives residents 10% off a first soak across sauna, cold plunge, soaking pools, massage, sound immersion, and coworking.", "Claim the wellness perk and confirm availability before visiting.", "Wellness"],
+  ["YETI", ["yeti"], "Free Custom Engraving For Verified Residents", "Retail resident offer", "The YETI perk gives verified residents free custom engraving in-store, tied to downtown routes, lake days, and weekend plans.", "Show the Resident Pass in-store when the offer is active.", "Retail"],
+  ["Rivian", ["rivian"], "Priority Test Drives & Resident Charging Perks", "Mobility resident offer", "The Rivian perk gives residents priority test-drive access and charging-perk context for weekend routes and local exploration.", "Save it and open the partner drawer for current test-drive details.", "Mobility"],
+  ["Standard Proof Whiskey Co.", ["standard proof"], "Complimentary Whiskey Flight Upgrade", "Resident drink offer", "The Standard Proof perk gives residents a complimentary whiskey flight upgrade at a focused Rainey-area drinks stop.", "Show the Resident Pass when the offer is active.", "Drinks"],
 ].map(([name, aliases, title, value, description, terms, category]) => ({
   name,
   aliases,
@@ -3461,12 +3545,65 @@ function DemoQrTile({ code = "DP-RES-78701" }) {
 function DemoQrCode({ code = DEMO_CARD_CODE, className = "" }) {
   return (
     <img
-      src={PERKS_CARD_QR_SRC}
+      src={getQrImageUrl(code)}
       alt={`Downtown Perks resident QR code for ${code}`}
       className={`${className} block bg-white object-contain [image-rendering:crisp-edges]`}
       loading="eager"
       decoding="async"
+      onError={(event) => {
+        if (!event.currentTarget.src.endsWith(PERKS_CARD_QR_SRC)) {
+          event.currentTarget.src = PERKS_CARD_QR_SRC;
+        }
+      }}
     />
+  );
+}
+
+function ResidentQrModal({ data, onClose }) {
+  if (!data) return null;
+
+  const placeName = getEntityTouchpointName(data.place);
+  const actionLabel = data.action === "use_perk" ? "Perk access" : "Resident card";
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="dp-resident-qr-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.section
+          className="dp-resident-qr-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="resident-qr-title"
+          initial={{ opacity: 0, y: 16, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.98 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
+            <X className="h-4 w-4" />
+          </button>
+          <p className="dp-resident-qr-eyebrow">VERIFIED RESIDENT</p>
+          <h2 id="resident-qr-title">Show this QR</h2>
+          <p className="dp-resident-qr-copy">
+            This code is tied to one resident profile UID and records this {actionLabel.toLowerCase()} touchpoint for {placeName}.
+          </p>
+          <div className="dp-resident-qr-frame">
+            <DemoQrCode code={data.qrValue} className="dp-resident-qr-image" />
+          </div>
+          <div className="dp-resident-qr-meta">
+            <span>{actionLabel}</span>
+            <strong>{placeName}</strong>
+            <code>{data.uid}</code>
+          </div>
+        </motion.section>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
@@ -3689,6 +3826,28 @@ function cleanDisplayCopy(value) {
   return text;
 }
 
+function isPerkMechanicsCopy(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (!text) return false;
+  return /^(show|save|use|open|claim|redeem|check|ask|present)\b/.test(text)
+    || /\b(show your|show the|resident pass|downtown perks card|save it|use it|ask for it|when active|before visiting|confirm availability)\b/.test(text);
+}
+
+function getPerkOutlineCopy(place, perk = {}) {
+  const name = place?.name || place?.title || "This partner";
+  const title = cleanDisplayCopy(perk.offer || perk.title);
+  const value = cleanDisplayCopy(perk.value);
+  const description = cleanDisplayCopy(perk.description);
+
+  if (description && !isPerkMechanicsCopy(description)) return description;
+  if (value && title && value.toLowerCase() !== title.toLowerCase()) {
+    return `${title.replace(/[.!?]+$/g, "")}: ${value.replace(/[.!?]+$/g, "")}.`;
+  }
+  if (title) return `${name} offers ${title.replace(/[.!?]+$/g, "").toLowerCase()}.`;
+  if (value) return `${name} offers ${value.replace(/[.!?]+$/g, "").toLowerCase()}.`;
+  return `${name} has an active resident perk available through Downtown Perks.`;
+}
+
 function getCanonicalResidentOffer(place) {
   if (!place) return null;
   const text = placeText(place);
@@ -3795,16 +3954,18 @@ function getResidentPerkDetails(place) {
   const inKindPartner = isInKindPartner(place);
   const offer = listedOffer || canonicalOffer?.title || fallbackOffer.title;
   const value = cleanPerkValue(embeddedPerk?.value || listedOffer) || canonicalOffer?.value || fallbackOffer.value || "Resident Pass access";
-  const description = inKindPartner
+  const rawDescription = inKindPartner
     ? cleanDisplayCopy(embeddedPerk?.description) ||
       cleanDisplayCopy(raw.alignment_to_downtown_perks) ||
-      `${place?.name || "This inKind partner"} gives residents a simple dining reason to choose a nearby restaurant: easy value, a walkable plan, and a place worth saving for dinner or drinks.`
+      `${place?.name || "This inKind partner"} offers resident dining value through inKind, giving residents a benefit to compare against nearby dinner or drinks.`
     : listedOffer
     ? cleanDisplayCopy(embeddedPerk?.description) ||
       cleanDisplayCopy(raw.alignment_to_downtown_perks) ||
-      cleanDisplayCopy(raw.summary) ||
-      fallbackOffer.description
+      getPerkOutlineCopy(place, { offer, value })
     : canonicalOffer?.description || fallbackOffer.description;
+  const description = isPerkMechanicsCopy(rawDescription)
+    ? getPerkOutlineCopy(place, { offer, value, description: "" })
+    : rawDescription;
   const terms = inKindPartner
     ? cleanDisplayCopy(raw.terms || raw.perk_terms) || "Save it to your Resident Pass, open it when you are nearby, and redeem when the inKind offer is active."
     : cleanDisplayCopy(raw.terms || raw.perk_terms) || canonicalOffer?.terms || fallbackOffer.terms;
@@ -3913,7 +4074,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Resident Dining Credit",
       value: "Resident dining value",
-      description: `${name} gives residents a clear reason to choose a nearby restaurant through inKind: simple value, easy redemption, and a walkable place worth saving around ${district}.`,
+      description: `${name} offers resident dining value through inKind, giving residents a credit-style benefit or restaurant-backed dining offer around ${district}.`,
       terms: "Save it to your Downtown Access and redeem when the inKind offer is active.",
     };
   }
@@ -3922,7 +4083,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Free Size Upgrade",
       value: "Resident coffee upgrade",
-      description: `${name} is a good nearby coffee move for quick mornings, casual meetings, or a short walk through ${district}.`,
+      description: `${name} offers a resident coffee upgrade, turning a nearby coffee stop into extra value for mornings, meetings, or a short walk through ${district}.`,
       terms: "Save the offer and ask for it when it is active.",
     };
   }
@@ -3931,7 +4092,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Resident Pizza Offer",
       value: "Easy dinner option",
-      description: `${name} works well for a quick dinner, group plan, or late decision near ${district}.`,
+      description: `${name} offers a resident pizza benefit for quick dinners, group plans, or late decisions near ${district}.`,
       terms: "Save the offer and ask for it when it is active.",
     };
   }
@@ -3940,7 +4101,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Grocery Discount",
       value: "Resident shopping value",
-      description: `${name} is a useful local grocery stop for coffee, snacks, pantry basics, wine, and quick downtown errands around ${district}.`,
+      description: `${name} offers resident grocery value for coffee, snacks, pantry basics, wine, and quick downtown errands around ${district}.`,
       terms: "Save the offer and use it when a resident discount is active.",
     };
   }
@@ -3949,7 +4110,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Resident Cocktail Pricing",
       value: "Easy after-hours option",
-      description: `${name} is a nearby option for drinks, music, or an after-dinner plan around ${district}.`,
+      description: `${name} offers resident cocktail pricing for drinks, music, or an after-dinner plan around ${district}.`,
       terms: "Save the offer and ask for it when it is active.",
     };
   }
@@ -3958,7 +4119,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Complimentary Dessert",
       value: "Walkable dining option",
-      description: `${name} is a useful nearby dining option when you want less searching and a clear next move in ${district}.`,
+      description: `${name} offers a complimentary dessert-style dining benefit so residents have a clear walkable dinner reason in ${district}.`,
       terms: "Save the offer and ask for it when it is active.",
     };
   }
@@ -3967,7 +4128,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Preferred Resident Dining Access",
       value: "Local access context",
-      description: `${name} can be useful for lounges, dining, stays, or guest plans near ${district}.`,
+      description: `${name} offers preferred resident dining or hospitality access for lounges, guest plans, and local hotel experiences near ${district}.`,
       terms: "Save it and check what resident access is available.",
     };
   }
@@ -3976,7 +4137,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Priority Event Access",
       value: "Save or RSVP",
-      description: `${name} is a nearby event to save when you are deciding what to do around ${district}.`,
+      description: `${name} offers priority event access or resident RSVP value for plans around ${district}.`,
       terms: "RSVP or save it when a resident offer is available. Timing may vary.",
     };
   }
@@ -3985,7 +4146,7 @@ function getResidentFallbackOffer(place) {
     return {
       title: "Exclusive In-Store Offer",
       value: "Retail access nearby",
-      description: `${name} is a nearby shopping or appointment stop residents can keep in mind around ${district}.`,
+      description: `${name} offers an exclusive in-store resident benefit for nearby shopping, fittings, appointments, or retail stops around ${district}.`,
       terms: "Save the offer and ask for it when it is active.",
     };
   }
@@ -3993,7 +4154,7 @@ function getResidentFallbackOffer(place) {
   return {
     title: "Resident Perk",
     value: "Save it or go now",
-    description: `${name} is in the map so residents can quickly decide whether it fits the moment near ${district}.`,
+    description: `${name} has a resident perk available through Downtown Perks, giving residents a benefit to compare, save, and use near ${district}.`,
     terms: "Save it, get directions, or ask for the resident offer when available.",
   };
 }
@@ -4051,19 +4212,13 @@ function BusinessServiceDetails({ place }) {
   );
 }
 
-function ResidentPerkDetails({ place, savedIds, onSave }) {
+function ResidentPerkDetails({ place, savedIds, onSave, onUse }) {
   const perk = getResidentPerkDetails(place);
   const entityKind = getResidentEntityKind(place);
   const isProperty = entityKind === "property";
   const sectionLabel = isProperty ? "Property access" : "Resident perk";
-  const destinationKind = getDestinationKind(place);
-  const panelContent = resolveEntityPanelContent(place, "resident");
   const isSaved = savedIds?.has?.(place?.id);
-  const useText = isProperty
-    ? "Listings, tours, and neighborhood context."
-    : destinationKind === "grocery"
-      ? "Save the offer and use it when active."
-    : panelContent.perkInstructions || "Show your Resident Pass when the offer is active.";
+  const useText = isProperty ? "Listings, tours, and neighborhood context." : getPerkOutlineCopy(place, perk);
   const termsText = String(perk.terms || "").trim();
   const perkTitle = isProperty ? "Want to live here?" : formatResidentPerkHeading(perk.offer);
   const perkValue = String(perk.value || "").trim();
@@ -4106,7 +4261,7 @@ function ResidentPerkDetails({ place, savedIds, onSave }) {
         )}
         {!isProperty && (
           <div className="dp-perk-action-row" aria-label={`${place.name} perk actions`}>
-            <button type="button" onClick={onSave} className="dp-perk-cta is-primary">
+            <button type="button" onClick={onUse || onSave} className="dp-perk-cta is-primary">
               Use
             </button>
             <button type="button" onClick={onSave} className="dp-perk-cta is-secondary">
@@ -4219,7 +4374,7 @@ const INKIND_DISCOVERY_PROFILES = [
     story:
       "One of downtown's most celebrated dining rooms, Comedor blends contemporary Mexican cooking with dramatic architecture, warm hospitality, and a menu designed for sharing.",
     benefit:
-      "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+      "The Downtown Perks benefit adds resident dining value at this participating restaurant.",
     why:
       "Residents keep it on the short list for date nights, client dinners, mezcal rounds, and the kind of meal that feels worth walking to.",
     loves: "Contemporary Mexican plates, mezcal, cocktails, and a room that feels distinctly Austin.",
@@ -4261,7 +4416,7 @@ const INKIND_DISCOVERY_PROFILES = [
     story:
       "Emmer & Rye is a Rainey-area dining room built around seasonal Texas ingredients, thoughtful hospitality, and a menu that changes with what is fresh.",
     benefit:
-      "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+      "The Downtown Perks benefit adds resident dining value at this participating restaurant.",
     why:
       "Residents choose it when dinner should feel local, creative, and close enough to walk to before or after Rainey plans.",
     loves: "Seasonal plates, handmade pastas, local ingredients, and a dining room that rewards ordering a few things to share.",
@@ -4275,7 +4430,7 @@ const INKIND_DISCOVERY_PROFILES = [
     story:
       "Geraldine's is a polished Rainey dining and live music spot inside Hotel Van Zandt, good for cocktails, dinner, and plans before or after a show.",
     benefit:
-      "Use your Downtown Perks membership here to enjoy additional dining value or claim the current resident perk when available.",
+      "The Downtown Perks benefit adds resident dining value and current resident-perk access when available.",
     why:
       "It gives residents a dependable reason to stay around Rainey when dinner, drinks, and live music can all happen in one place.",
     loves: "Cocktails, dinner, live music, hotel energy, and a room that works for both dates and groups.",
@@ -4289,7 +4444,7 @@ const INKIND_DISCOVERY_PROFILES = [
     story:
       "Parkside is a downtown staple for oysters, cocktails, and a room that works before shows, after work, or when dinner needs to stay central.",
     benefit:
-      "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+      "The Downtown Perks benefit adds resident dining value at this participating restaurant.",
     why:
       "Residents use it for reliable seafood, easy downtown meetups, and nights when Congress Avenue is already part of the plan.",
     loves: "Oysters, cocktails, seafood plates, and a central downtown location.",
@@ -4334,7 +4489,7 @@ function getInKindDiscoveryProfile(place) {
   return {
     subtitle: `${cuisine} near ${neighborhood}.`,
     story,
-    benefit: "Use your Downtown Perks membership here to enjoy additional dining value at this participating restaurant.",
+    benefit: "The Downtown Perks benefit adds resident dining value at this participating restaurant.",
     why: `${name} is useful when you want a real local option nearby instead of scrolling for another place to go.`,
     loves: cleanInKindResidentCopy(place?.raw?.knownFor || place?.raw?.cuisine || place?.category) || "Good food, easy access, and a reason to make nearby plans feel more useful.",
     localTip: "Check the current benefit before you go, then save it for dinner plans, visiting friends, or an easy night out.",
@@ -4346,12 +4501,15 @@ function getInKindDiscoveryProfile(place) {
 function getAppliedInKindPerk(place) {
   const raw = place?.raw || {};
   const embeddedPerk = raw.perk && typeof raw.perk === "object" ? raw.perk : place?.perk && typeof place.perk === "object" ? place.perk : null;
+  const title = cleanDisplayCopy(embeddedPerk?.title || raw.perkTitle || raw.offer || place?.offer) || "inKind dining benefit";
+  const rawValue = cleanDisplayCopy(embeddedPerk?.value || raw.deals_offers || place?.deals_offers || place?.offer);
+  const value = /^(resident dining perk|resident drink offer|resident perk|perk)$/i.test(rawValue) ? title : rawValue || "Resident dining value applied through inKind";
   return {
-    title: cleanDisplayCopy(embeddedPerk?.title || raw.perkTitle || raw.offer || place?.offer) || "inKind dining benefit",
-    value: cleanDisplayCopy(embeddedPerk?.value || raw.deals_offers || place?.deals_offers || place?.offer) || "Resident dining value applied through inKind",
+    title,
+    value,
     description:
       cleanDisplayCopy(embeddedPerk?.description || raw.perkDescription) ||
-      "Save the restaurant in Downtown Perks, open the current inKind benefit when you are ready to dine, and redeem during the active restaurant window.",
+      "A restaurant-backed dining benefit or credit-style value residents can use when the active inKind offer is available.",
     terms:
       cleanDisplayCopy(raw.terms || raw.perk_terms) ||
       "Offer availability, eligible checks, and redemption windows are managed by the participating restaurant and inKind. Check the active benefit before ordering.",
@@ -6476,8 +6634,48 @@ function getNearbyCardMeta(entity, recommendation = null, mode = "resident") {
   return [kind, recommendation?.distanceLabel, district, perk].filter(Boolean).join(" · ");
 }
 
+const WATERLOO_RAIL_IMAGES_BY_KEY = {
+  "waterloo-park": "/images/map-entities/attached/civic/waterloo-park.jpeg",
+  "moody-amphitheater": "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+  "great-lawn": "/images/imported/perks/03-waterloo-park.jpg",
+  "waller-creek-trail": "/images/imported/perks/04-waterlook-trail.jpg",
+  "downtown-austin-alliance-daa": "/images/imported/perks/austin-downtown.jpg",
+  "downtown-austin-alliance": "/images/imported/perks/austin-downtown.jpg",
+  "moody-amphitheater-activation-plot": "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+  "waterloo-moody-amphitheater-activation-plot": "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+  "public-art-tours": "/images/partners/civic/daa-art-walk/daa-art-walk-2.jpg",
+  "waterloo-public-art-tours": "/images/partners/civic/daa-art-walk/daa-art-walk-2.jpg",
+  "family-events": "/images/imported/perks/community-0087-edibleaustin-picnic-2015-768x512.jpg",
+  "waterloo-family-events": "/images/imported/perks/community-0087-edibleaustin-picnic-2015-768x512.jpg",
+  "brand-activations": "/images/imported/perks/brand-activations.png",
+  "waterloo-brand-activations": "/images/imported/perks/brand-activations.png",
+  "food-truck-activations": "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
+  "waterloo-food-truck-activations": "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
+  "concert-series": "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
+  "waterloo-concert-series": "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
+};
+
+function getWaterlooRailImage(entity) {
+  const explicit = entity?.image || entity?.imageUrl || entity?.thumbnail || entity?.heroImage;
+  if (explicit && !String(explicit).includes("/images/fallbacks/")) return explicit;
+  const keys = [
+    entity?.id,
+    entity?.slug,
+    entity?.name,
+    entity?.title,
+    entity?.raw?.id,
+    entity?.raw?.name,
+  ]
+    .map((value) => String(value || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""))
+    .filter(Boolean);
+  for (const key of keys) {
+    if (WATERLOO_RAIL_IMAGES_BY_KEY[key]) return WATERLOO_RAIL_IMAGES_BY_KEY[key];
+  }
+  return "";
+}
+
 function getNearbyCardImage(entity, mode = "resident") {
-  return resolveMapImage(entity, "nearbyRail") || resolveEntityImage(entity, "nearbyRail") || getLifestyleImage(entity, mode) || MAP_PANEL_IMAGE_FALLBACK;
+  return getWaterlooRailImage(entity) || resolveMapImage(entity, "nearbyRail") || resolveEntityImage(entity, "nearbyRail") || getLifestyleImage(entity, mode) || MAP_PANEL_IMAGE_FALLBACK;
 }
 
 function getContextualRailFallbackImage(entity, mode = "resident") {
@@ -6656,7 +6854,22 @@ function getRouteAwareNearbyCards(place, places = [], mode = "resident", route =
     };
   });
 
-  return dedupeRailItems([...routeCards, ...placeCards], place, limit)
+  const protectedPlaceCards = [];
+  if (isWaterlooGreenwayRoute(route)) {
+    const daaEntity = places.find((candidate) => candidate?.id === "downtown-austin-alliance-civic-layer");
+    if (daaEntity && daaEntity.id !== place.id && !routeStopIds.has(daaEntity.id)) {
+      protectedPlaceCards.push({
+        id: daaEntity.id,
+        place: daaEntity,
+        title: "Downtown Austin Alliance (DAA)",
+        meta: ["Saved nearby", formatDistanceLabel(getDistanceMeters(place, daaEntity)), daaEntity.district || "Congress"].filter(Boolean).join(" · "),
+        image: getNearbyCardImage(daaEntity, mode),
+        fallbackImage: getContextualRailFallbackImage(daaEntity, mode),
+      });
+    }
+  }
+
+  return dedupeRailItems([...routeCards, ...protectedPlaceCards, ...placeCards], place, limit)
     .filter((item) => item?.place?.id)
     .slice(0, limit);
 }
@@ -7426,7 +7639,7 @@ function PartnerSimilarAudienceSection({ place, places = [], onSelect }) {
   return null;
 }
 
-function HappyHourDetails({ place, savedIds, onSave }) {
+function HappyHourDetails({ place, savedIds, onSave, onUse }) {
   const happyHour = place.raw?.happyHour || place.happyHour || {};
   const days = happyHour.days || "This week";
   const time = String(happyHour.time || "").trim();
@@ -7458,7 +7671,7 @@ function HappyHourDetails({ place, savedIds, onSave }) {
       </div>
       {shouldShowRedemption && <p className="dp-destination-section-note">{redemption}</p>}
       <div className="dp-primary-action-row dp-perk-action-row" aria-label={`${place.name} happy hour actions`}>
-        <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action dp-perk-cta is-primary">
+        <button type="button" onClick={onUse || onSave} className="dp-panel-action dp-primary-action dp-perk-cta is-primary">
           Use Perk
         </button>
         <button type="button" onClick={onSave} className="dp-panel-action dp-perk-cta is-secondary">
@@ -7530,14 +7743,14 @@ function ParkingBookingDetails({ place, mode }) {
       name: "Evening parking offer",
       audience: "Residents heading out",
       price: item.pricingLabel || firstRate,
-      description: "Show nearby parking when people are making evening plans.",
+      description: "Resident-rate parking gives people a clearer nearby option while they are making evening plans.",
       features: ["Resident rate", "Directions", "Reservation time"],
     },
     {
       name: "Event parking",
       audience: "Event-goers nearby",
       price: "Custom",
-      description: "Open limited spaces around concerts, dinners, and downtown events.",
+      description: "Timed event parking creates limited-space inventory around concerts, dinners, and downtown events.",
       features: ["Timed spaces", "People nearby", "Results report"],
     },
   ];
@@ -8763,6 +8976,9 @@ function ResidentDrawerActions({
         <button type="button" onClick={onSave} className="dp-panel-action">
           {savedIds.has(selected.id) ? "Saved" : panelArchetype.secondaryAction}
         </button>
+        <button type="button" onClick={onShowCard} className="dp-panel-action">
+          Show Card
+        </button>
         <button type="button" onClick={onContact} className="dp-panel-action">
           {panelArchetype.tertiaryAction}
         </button>
@@ -8787,6 +9003,9 @@ function ResidentDrawerActions({
           </button>
           <button type="button" onClick={onSave} className="dp-panel-action">
             {savedIds.has(selected.id) ? "Saved" : panelArchetype.secondaryAction}
+          </button>
+          <button type="button" onClick={onShowCard} className="dp-panel-action">
+            Show Card
           </button>
           <button
             type="button"
@@ -8877,6 +9096,11 @@ function ResidentDrawerActions({
           {savedIds.has(selected.id) ? "Saved" : "Save"}
         </button>
       )}
+      {!isEvent && onShowCard && (
+        <button type="button" onClick={onShowCard} className="dp-panel-action">
+          Show Card
+        </button>
+      )}
       {!isEvent && (
         <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action">
           Directions
@@ -8932,6 +9156,7 @@ function CleanIndependentEntityDrawer({
   savedIds,
   onSelect,
   onSave,
+  onShowCard,
   onFilter,
   onRoute,
 }) {
@@ -8993,6 +9218,7 @@ function CleanIndependentEntityDrawer({
       ) : (
         <div className="dp-entity-action-row" aria-label="Resident actions">
           <button type="button" className="dp-entity-action is-primary" onClick={() => onFilter?.("Perks")}>Perks Nearby</button>
+          <button type="button" className="dp-entity-action" onClick={onShowCard}>Show Card</button>
           <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-entity-action">Get Directions</a>
           <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved" : "Save"}</button>
         </div>
@@ -9064,6 +9290,7 @@ function TheShoreResidentialEntityDrawer({
   agentFormSubmitted,
   onSelect,
   onSave,
+  onShowCard,
   onContact,
   onSubmitContact,
 }) {
@@ -9158,6 +9385,7 @@ function TheShoreResidentialEntityDrawer({
         <>
           <div className="dp-entity-action-row" aria-label="The Shore residential actions">
             <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
+            <button type="button" className="dp-entity-action" onClick={onShowCard}>Show Card</button>
             <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved" : "Save Building"}</button>
             <button type="button" className="dp-entity-action" onClick={openContact} aria-expanded={showContactForm}>{building.cta.secondary}</button>
           </div>
@@ -11537,11 +11765,19 @@ export default function MapPage() {
   const [district, setDistrict] = useState(urlState.district);
   const [passPresented, setPassPresented] = useState(false);
   const [walletAdded, setWalletAdded] = useState(false);
+  const [residentQrModal, setResidentQrModal] = useState(null);
+  const openResidentQrModal = useCallback((place = null, action = "show_card", source = "resident_map") => {
+    const payload = buildResidentQrPayload({ place, action, source });
+    recordResidentTouchpoint(payload);
+    setPassPresented(true);
+    setResidentQrModal({ ...payload, place });
+  }, []);
+  const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
   const presentResidentPass = useCallback((event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
-    setPassPresented(true);
-  }, []);
+    openResidentQrModal(null, "show_card", "resident_pass");
+  }, [openResidentQrModal]);
   const saveResidentPassForLater = useCallback((event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
@@ -14141,7 +14377,7 @@ export default function MapPage() {
                       : "Show this QR code when a participating partner asks to confirm resident access."}
                   </p>
                   <div className="dp-card-qr-wrap">
-                    <DemoQrCode code={DEMO_CARD_CODE} className="dp-card-qr-image" />
+                    <DemoQrCode code={residentCardPayload.qrValue} className="dp-card-qr-image" />
                   </div>
                   <div className="dp-card-scan-demo" aria-live="polite">
                     <span>{passPresented ? "Resident access confirmed" : "Ready when a partner asks"}</span>
@@ -14151,7 +14387,7 @@ export default function MapPage() {
                   </div>
                   <div className="dp-card-verification-row">
                     <span>{passPresented ? "Confirmed resident · Downtown Austin" : "Verified resident · Downtown Austin"}</span>
-                    <code>{DEMO_CARD_CODE}</code>
+                    <code>{residentCardPayload.uid}</code>
                   </div>
                 </section>
 
@@ -14751,6 +14987,7 @@ export default function MapPage() {
                       agentFormSubmitted={agentFormSubmitted}
                       onSelect={selectPlace}
                       onSave={() => toggleSaved(selected)}
+                      onShowCard={() => openResidentQrModal(selected, "show_card", "the_shore_residential_drawer")}
                       onContact={openContactForm}
                       onSubmitContact={() => setAgentFormSubmitted(true)}
                     />
@@ -14794,6 +15031,7 @@ export default function MapPage() {
                       savedIds={savedIds}
                       onSelect={selectPlace}
                       onSave={() => toggleSaved(selected)}
+                      onShowCard={() => openResidentQrModal(selected, "show_card", "clean_residential_drawer")}
                       onFilter={openEntityFilter}
                       onRoute={(nextState) => {
                         setSelectedId("");
@@ -14882,7 +15120,7 @@ export default function MapPage() {
                           agentFormPlaceId={agentFormPlaceId}
                           onContact={openContactForm}
                           onRsvp={() => toggleRsvp(selected)}
-                          onShowCard={() => switchMode("resident", "pass")}
+                          onShowCard={() => openResidentQrModal(selected, "show_card", "resident_drawer_actions")}
                           onAskMap={() => askEntityAssistant(`Which nearby perks make ${selected.name} fit?`)}
                           onSave={() => toggleSaved(selected)}
                         />
@@ -14922,7 +15160,7 @@ export default function MapPage() {
                     )}
                     {urlState.mode === "resident" && isHappyHourEntity(selected) && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.36, duration: 0.18 }}>
-                        <HappyHourDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} />
+                        <HappyHourDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} onUse={() => openResidentQrModal(selected, "use_perk", "happy_hour_details")} />
                       </motion.div>
                     )}
                     {isParking && (
@@ -14960,7 +15198,7 @@ export default function MapPage() {
                     )}
                     {urlState.mode === "resident" && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.18 }}>
-                        <ResidentPerkDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} />
+                        <ResidentPerkDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} onUse={() => openResidentQrModal(selected, "use_perk", "resident_perk_details")} />
                       </motion.div>
                     )}
                     {(selected.raw?.isWaterlooPark || selected.isWaterlooPark) && (
@@ -15096,6 +15334,13 @@ export default function MapPage() {
           </motion.aside>
         )}
       </AnimatePresence>
+
+      {residentQrModal && (
+        <ResidentQrModal
+          data={residentQrModal}
+          onClose={() => setResidentQrModal(null)}
+        />
+      )}
 
       <AboutDowntownPerksModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
     </div>

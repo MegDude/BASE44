@@ -83,8 +83,7 @@ const storyStates = [
         { text: "Your all-access", tone: "gold" },
       ],
       [
-        { text: "pass to", tone: "navy" },
-        { text: "downtown.", tone: "navy" },
+        { text: "pass to downtown.", tone: "navy" },
       ],
     ],
     meaning: "",
@@ -335,34 +334,34 @@ function SplashStoryScene({ scene, activeIndex, onStep, onActivate }) {
               ))}
             </motion.div>
           </motion.div>
-          <motion.div
-            className="dp-story-scene-controls dp-story-reveal"
-            aria-label="Story controls"
-            custom={{ ...motionState, delay: controlsDelay, y: 10, blur: 4 }}
-            variants={storyRevealVariants}
-          >
-            <button type="button" onClick={() => onStep(-1)} disabled={activeIndex === 0} aria-label="Previous story scene">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            </button>
-            <div className="dp-story-scene-dots" aria-label="Story scenes">
-              {storyStates.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={index === activeIndex ? "is-active" : ""}
-                  aria-label={`Show ${item.navLabel}`}
-                  aria-current={index === activeIndex ? "step" : undefined}
-                  onClick={() => onActivate(index)}
-                />
-              ))}
-            </div>
-            <button type="button" onClick={() => onStep(1)} disabled={activeIndex === storyStates.length - 1} aria-label="Next story scene">
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </motion.div>
         </motion.div>
 
       </div>
+      <motion.div
+        className="dp-story-scene-controls dp-story-reveal"
+        aria-label="Story controls"
+        custom={{ ...motionState, delay: controlsDelay, y: 10, blur: 4 }}
+        variants={storyRevealVariants}
+      >
+        <button type="button" onClick={() => onStep(-1)} disabled={activeIndex === 0} aria-label="Previous story scene">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        </button>
+        <div className="dp-story-scene-dots" aria-label="Story scenes">
+          {storyStates.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              className={index === activeIndex ? "is-active" : ""}
+              aria-label={`Show ${item.navLabel}`}
+              aria-current={index === activeIndex ? "step" : undefined}
+              onClick={() => onActivate(index)}
+            />
+          ))}
+        </div>
+        <button type="button" onClick={() => onStep(1)} disabled={activeIndex === storyStates.length - 1} aria-label="Next story scene">
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </button>
+      </motion.div>
     </motion.section>
   );
 }

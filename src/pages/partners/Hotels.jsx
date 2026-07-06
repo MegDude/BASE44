@@ -49,7 +49,7 @@ const HOTEL_FILTER_COPY = {
     label: "Hotel portfolio",
     title: "See what each property gives guests access to nearby.",
     body: "The guest layer connects hotel locations to dining, events, perks, QR entry points, and nearby recommendations.",
-    result: "Logged-in view: hotel profile, QR status, guest engagement, reporting access, and billing context.",
+    result: "Logged-in view: hotel profile, QR status, guest activity, reporting access, and billing context.",
   },
   events: {
     label: "Events nearby",

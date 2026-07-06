@@ -61,7 +61,7 @@ const CAMPAIGN_POINTS = [
     scans: 410,
     saves: 122,
     redemptions: 74,
-    signal: "Guest arrival + nearby discovery",
+    signal: "Guest arrival + local visibility",
   },
   {
     id: "waterline",

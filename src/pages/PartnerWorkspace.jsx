@@ -945,7 +945,7 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
 
   const QUICK_ACTIONS = [
     { label: "Create offer", sub: "Launch a resident benefit, validation, or limited-time reason to visit.", icon: Star, tab: "offers" },
-    { label: "Create event", sub: "Publish programming that should appear in nearby discovery.", icon: Calendar, tab: "events" },
+    { label: "Create event", sub: "Publish programming that should appear in local recommendations.", icon: Calendar, tab: "events" },
     { label: "Launch campaign", sub: "Connect a message, audience, placement, and measurable action.", icon: LayoutDashboard, tab: "campaigns" },
     { label: "Generate report", sub: "Review performance, attribution, and the next best action.", icon: ShieldCheck, tab: "reports" },
   ];

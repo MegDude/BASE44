@@ -15230,6 +15230,97 @@ html body #root#root :is(aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel
   overflow-wrap: anywhere !important;
 }
 
+/* Absolute final splash story media controls lock: one elegant fixed position for every scene. */
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 18px)) !important;
+  z-index: 80 !important;
+  display: grid !important;
+  grid-template-columns: 28px max-content 28px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  width: max-content !important;
+  min-width: 0 !important;
+  min-height: 32px !important;
+  margin: 0 !important;
+  padding: 3px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.08) !important;
+  backdrop-filter: blur(18px) !important;
+  transform: translateX(-50%) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button:is(:hover, :focus-visible) {
+  background: rgba(200, 169, 106, 0.12) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  outline: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button:disabled {
+  opacity: 0.28 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls svg {
+  width: 13px !important;
+  height: 13px !important;
+  stroke-width: 1.8 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  height: 28px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots button {
+  width: 5px !important;
+  height: 5px !important;
+  min-width: 5px !important;
+  min-height: 5px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.2) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots button.is-active {
+  width: 16px !important;
+  min-width: 16px !important;
+  background: #C8A96A !important;
+}
+
+@media (max-width: 520px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls {
+    bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 14px)) !important;
+  }
+}
+
 @media (min-width: 640px) {
   html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-map-drawer-shell {
     border-radius: 0 !important;
@@ -15249,5 +15340,734 @@ html body #root#root :is(aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel
 
   html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-entity-identity, .dp-destination-section, .dp-map-panel-section, .dp-panel-section, .dp-partner-intelligence-section, .dp-survey-intelligence-layer, .dp-partner-ask-section, .dp-map-native-campaign-detail, .dp-entity-assistant, .dp-partner-nearby-guide, .dp-related-section) {
     padding: 18px 20px !important;
+  }
+}
+
+/* Absolute final entity drawer flow lock: hero, summary, actions, then content. */
+html body #root#root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell :is(.dp-destination-scroll, .dp-drawer-scroll, .dp-map-panel-scroll) {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell .dp-entity-drawer {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-drawer-control-row {
+  order: -1 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-entity-handle {
+  order: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-entity-hero {
+  order: 1 !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-panel-header, .dp-entity-summary, .dp-entity-identity) {
+  order: 2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) {
+  order: 3 !important;
+  position: static !important;
+  transform: none !important;
+  z-index: auto !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-legends-brand-card, .dp-entity-section, .dp-detail-section, .dp-detail-body) {
+  order: 4 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-drawer.dp-entity-drawer > .dp-entity-summary.dp-entity-summary,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-drawer.dp-entity-drawer > .dp-entity-panel-header.dp-entity-panel-header {
+  order: 2 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-drawer.dp-entity-drawer > .dp-entity-action-row.dp-entity-action-row,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-drawer.dp-entity-drawer > .dp-primary-action-row.dp-primary-action-row,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-drawer.dp-entity-drawer > .dp-secondary-action-row.dp-secondary-action-row,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-entity-drawer.dp-entity-drawer > .dp-legends-action-carousel.dp-legends-action-carousel {
+  order: 3 !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  z-index: auto !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+/* Resident QR modal: shared Use / Show Card confirmation surface. */
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1200 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 18px !important;
+  background: rgba(8, 18, 31, 0.58) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.08) !important;
+  backdrop-filter: blur(16px) saturate(1.08) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-modal {
+  position: relative !important;
+  width: min(360px, calc(100vw - 32px)) !important;
+  max-height: calc(100dvh - 36px) !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 28px 80px rgba(5, 14, 24, 0.24) !important;
+  padding: 24px !important;
+  text-align: center !important;
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-close {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-eyebrow {
+  margin: 2px 0 8px !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  color: #9A7A2E !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-modal h2 {
+  margin: 0 !important;
+  font-size: 24px !important;
+  line-height: 1.12 !important;
+  font-weight: 760 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-copy {
+  margin: 10px auto 0 !important;
+  max-width: 30ch !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-frame {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(248px, 70vw) !important;
+  aspect-ratio: 1 !important;
+  margin: 20px auto 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  box-shadow: inset 0 0 0 10px rgba(200, 169, 106, 0.1) !important;
+  padding: 16px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-image {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 8px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-meta {
+  display: grid !important;
+  gap: 5px !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  background: rgba(11, 31, 51, 0.04) !important;
+  font-size: 12px !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-meta strong,
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-meta code {
+  color: #0B1F33 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-meta code {
+  overflow-wrap: anywhere !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 420px) {
+  html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-modal {
+    width: calc(100vw - 24px) !important;
+    padding: 22px 18px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-frame {
+    width: min(226px, 72vw) !important;
+    padding: 14px !important;
+  }
+}
+
+/* Pricing configurator final lock: clean rails, polished surfaces, no stray divider treatment. */
+html body #root#root main.dp-pricing-page.dp-pricing-page {
+  background: #F7F8FB !important;
+  color: #0B1F33 !important;
+  overflow-x: hidden !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-section {
+  min-height: 100dvh !important;
+  padding: clamp(24px, 4.8vw, 52px) 0 clamp(54px, 7vw, 86px) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(247, 248, 251, 1) 100%) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container {
+  width: min(100% - 28px, 1180px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header {
+  margin: 0 0 clamp(16px, 3vw, 26px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header h2 {
+  max-width: 680px !important;
+  color: #0B1F33 !important;
+  font-size: clamp(31px, 4.6vw, 54px) !important;
+  font-weight: 640 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.03 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-eyebrow,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-kicker {
+  margin: 0 0 9px !important;
+  color: #9A7A2E !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px) !important;
+  gap: clamp(18px, 3.4vw, 36px) !important;
+  align-items: start !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding: clamp(18px, 2.8vw, 26px) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 18px 52px rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset + fieldset,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid {
+  margin-top: clamp(18px, 3vw, 26px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator legend,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid label > span {
+  display: block !important;
+  margin: 0 0 10px !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid > button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-card {
+  min-width: 0 !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.04) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid > button {
+  min-height: 84px !important;
+  padding: 14px !important;
+  color: #0B1F33 !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-partner-type-grid > button, .dp-pricing-plan-choice, .dp-pricing-option-list > button)[data-active="true"] {
+  border-color: rgba(184, 150, 62, 0.56) !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+  box-shadow: 0 16px 36px rgba(184, 150, 62, 0.12) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid strong,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice strong,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list strong,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary-plan strong {
+  display: block !important;
+  color: #0B1F33 !important;
+  font-size: 14.5px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.22 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid small,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice small,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list small,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary-plan span {
+  display: block !important;
+  margin-top: 5px !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 12.5px !important;
+  line-height: 1.42 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice em,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list em {
+  color: #0B1F33 !important;
+  font-size: 13.5px !important;
+  font-style: normal !important;
+  font-weight: 780 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice ul {
+  grid-column: 1 / -1 !important;
+  margin: 2px 0 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-plan-choice li, .dp-pricing-resident-card li) {
+  display: grid !important;
+  grid-template-columns: 15px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  align-items: start !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 12.5px !important;
+  line-height: 1.38 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-plan-choice li svg, .dp-pricing-resident-card li svg) {
+  width: 14px !important;
+  height: 14px !important;
+  margin-top: 2px !important;
+  color: #B8963E !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addons-head {
+  display: grid !important;
+  gap: 5px !important;
+  margin-bottom: 12px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addons-head h3,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-access h3 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: clamp(20px, 2.8vw, 28px) !important;
+  font-weight: 680 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.14 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addons-head p,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addons-head span,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-intro p,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-checkout-note,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-footer-note {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail {
+  display: flex !important;
+  gap: 8px !important;
+  margin: 10px 0 12px !important;
+  padding: 0 0 8px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: thin !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button {
+  flex: 0 0 auto !important;
+  min-height: 42px !important;
+  min-width: max(132px, max-content) !important;
+  display: grid !important;
+  gap: 2px !important;
+  padding: 9px 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  text-align: left !important;
+  scroll-snap-align: start !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button[data-active="true"] {
+  border-color: rgba(184, 150, 62, 0.58) !important;
+  background: rgba(184, 150, 62, 0.1) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail span {
+  color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 720 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail small {
+  color: rgba(11, 31, 51, 0.56) !important;
+  font-size: 10.5px !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-panel {
+  display: grid !important;
+  gap: 12px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(247, 248, 251, 0.78) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-intro {
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-intro strong {
+  display: block !important;
+  color: #0B1F33 !important;
+  font-size: 13.5px !important;
+  font-weight: 720 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list {
+  display: grid !important;
+  gap: 9px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  align-items: center !important;
+  min-height: 58px !important;
+  padding: 12px 14px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid :is(input, select) {
+  width: 100% !important;
+  min-height: 42px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+  position: sticky !important;
+  top: 22px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary h2 {
+  margin: 0 0 8px !important;
+  color: #0B1F33 !important;
+  font-size: clamp(36px, 4.4vw, 56px) !important;
+  font-weight: 640 !important;
+  line-height: 0.98 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary-context {
+  margin: 0 0 14px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary-plan {
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 14px 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl div {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  align-items: baseline !important;
+  padding: 10px 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl div:first-child {
+  border-top: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary :is(dt, dd) {
+  min-width: 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 12.5px !important;
+  line-height: 1.4 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dd {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-weight: 720 !important;
+  text-align: right !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  margin: 0 0 14px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected :is(button, span) {
+  width: auto !important;
+  min-height: 32px !important;
+  padding: 7px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 11.5px !important;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-button,
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-action {
+  min-height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 999px !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 14px 30px rgba(11, 31, 51, 0.13) !important;
+  font-size: 12px !important;
+  font-weight: 740 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-button svg,
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-action svg {
+  width: 14px !important;
+  height: 14px !important;
+  color: #C8A96A !important;
+  stroke: #C8A96A !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-access {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-card {
+  display: grid !important;
+  gap: 14px !important;
+  padding: 18px !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-card h4 {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-size: 22px !important;
+  font-weight: 720 !important;
+  line-height: 1.1 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-card > div > strong {
+  display: block !important;
+  color: #0B1F33 !important;
+  font-size: 24px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-footer-note {
+  max-width: 740px !important;
+  margin: 18px 0 0 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page {
+  background: #F7F8FB !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-shell {
+  width: min(100%, 1120px) !important;
+  margin-inline: auto !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-panel {
+  padding: clamp(18px, 2.8vw, 26px) !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 18px 52px rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card {
+  min-height: 104px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 9px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.04) !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card[data-active="true"] {
+  border-color: rgba(184, 150, 62, 0.56) !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+}
+
+@media (max-width: 1023px) {
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+    position: static !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 639px) {
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container {
+    width: min(100% - 24px, 1180px) !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+    padding: 16px !important;
+    border-radius: 9px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-card-grid,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid,
+  html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl div {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice em,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list em,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dd {
+    justify-self: start !important;
+    text-align: left !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary > .dp-pricing-button,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-button,
+  html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-action {
+    width: 100% !important;
   }
 }

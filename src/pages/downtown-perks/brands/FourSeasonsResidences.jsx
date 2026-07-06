@@ -48,7 +48,7 @@ export default function FourSeasonsResidences() {
               Four Seasons Residences already offers a premium residential experience. Downtown Perks extends that experience into the surrounding neighborhood with a live, useful downtown layer residents can open anytime.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Dining, events, wellness, local offers, and nearby discovery all come together in one place. The result is a residential amenity that feels current, practical, and aligned with everyday downtown life.
+              Dining, events, wellness, local offers, and local recommendations all come together in one place. The result is a residential amenity that feels current, practical, and aligned with everyday downtown life.
             </p>
           </div>
           <div className="space-y-4">

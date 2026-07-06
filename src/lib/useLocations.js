@@ -250,7 +250,7 @@ function attachedLegendsPropertyPlace(item) {
     summary: count > 1
       ? `${count} Legends listings are grouped at this downtown address.`
       : "Legends listing pin with downtown residential context.",
-    description: "Open this property pin to compare listing interest with nearby dining, hotels, wellness, events, parking, and resident perks.",
+    description: "This property pin combines listing interest with nearby dining, hotels, wellness, events, parking, and resident perks.",
     groupedListingCount: count,
     primaryAction: "Ask Legends",
     secondaryAction: "View nearby",
@@ -1161,7 +1161,7 @@ const civicLayerPlaces = [
     perk: {
       title: "Infrastructure & Public Realm Updates",
       value: "Downtown civic updates",
-      description: "Show your Resident Pass when the offer is active.",
+      description: "The DAA perk gives residents a civic-update layer for public realm improvements, downtown routes, event context, bike lanes, and parks-connected mobility.",
       terms: "Save it to keep civic updates and downtown route context close by.",
       isActive: true,
     },
@@ -1172,7 +1172,7 @@ const civicLayerPlaces = [
       { title: "Bike Lanes", label: "Mobility and public realm", src: "/videos/partners/civic/daa-bike-lanes.mp4" },
       { title: "Waterloo Loop", label: "Connected civic route", src: "/videos/partners/civic/daa-waterloo-loop.mp4" },
     ],
-    image: "/images/imported/perks/republic-square.jpg",
+    image: "/images/imported/perks/daa-campaign.png",
     source: "Downtown Perks civic layer",
   },
   {
@@ -1222,9 +1222,9 @@ const civicLayerPlaces = [
     district: "Waterloo",
     address: "500 E 12th St, Austin, TX 78701",
     summary: "Waterloo Greenway campaign hub for activations, event zones, sponsor placements, and public realm programming.",
-    description: "Use this layer to see Waterloo Greenway campaigns, activation plots, event zones, and civic programming opportunities together.",
+    description: "This layer combines Waterloo Greenway campaigns, activation plots, event zones, and civic programming opportunities in one map view.",
     tags: ["Waterloo Greenway", "Campaigns", "Activations", "Plots", "DAA"],
-    image: "/images/imported/perks/waterlook-trail.png",
+    image: "/images/map-entities/attached/civic/waterloo-park.jpeg",
     source: "Downtown Perks civic layer",
   },
   {
@@ -1244,7 +1244,7 @@ const civicLayerPlaces = [
     summary: "Activation plot for sponsor moments, public programming, food, music, and civic campaign visibility.",
     description: "A Waterloo Greenway plot that can host event-linked partner activations and public realm campaign moments.",
     tags: ["Waterloo Greenway", "Great Lawn", "Activation Plot", "Campaigns"],
-    image: "/images/imported/perks/waterlook-greenway.png",
+    image: "/images/imported/perks/03-waterloo-park.jpg",
     source: "Downtown Perks civic layer",
   },
   {
@@ -1264,7 +1264,7 @@ const civicLayerPlaces = [
     summary: "Event-adjacent activation plot for audiences arriving at concerts, civic events, and Waterloo programming.",
     description: "A campaign-ready activation plot connected to Moody Amphitheater audiences and Waterloo Greenway event flow.",
     tags: ["Moody Amphitheater", "Waterloo Greenway", "Activation Plot", "Events"],
-    image: "/images/imported/perks/hotel-van-zandt-first-thiursdays.png",
+    image: "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
     source: "Downtown Perks civic layer",
   },
 ];
@@ -1297,8 +1297,14 @@ const WATERLOO_COORDS = {
   "waterloo-event-zones": [30.27356, -97.73568],
 };
 
+function resolveWaterlooImage(imageName, fallback = "/images/map-entities/attached/civic/waterloo-park.jpeg") {
+  if (!imageName) return fallback;
+  return String(imageName).startsWith("/") ? imageName : `/images/waterloo/${imageName}`;
+}
+
 function waterlooInventoryPlace(pin) {
   const coords = WATERLOO_COORDS[pin.id] || [pin.lat, pin.lng];
+  const image = resolveWaterlooImage(pin.imageAssets.thumbnail || pin.imageAssets.heroImage);
   return {
     id: pin.id,
     name: pin.name,
@@ -1317,7 +1323,7 @@ function waterlooInventoryPlace(pin) {
     description: pin.description,
     drawerCopy: pin.drawerCopy,
     tags: pin.tags,
-    image: `/images/waterloo/${pin.imageAssets.thumbnail || pin.imageAssets.heroImage || "waterloo-hero-aerial.jpg"}`,
+    image,
     waterlooPin: pin,
     isWaterlooPark: true,
     source: "Downtown Perks Waterloo Park inventory",
@@ -1344,7 +1350,7 @@ function waterlooCampaignPlace(pin, index) {
     description: pin.description,
     drawerCopy: pin.campaignCardCopy,
     tags: [pin.category, "Waterloo Park", "Events", "Partner Placement"],
-    image: `/images/waterloo/${pin.imageRequirement}`,
+    image: resolveWaterlooImage(pin.imageRequirement, "/images/imported/perks/waterlook-greenway.png"),
     waterlooCampaignPin: pin,
     isWaterlooPark: true,
     rsvp_count: pin.kind === "event" ? 42 + index : undefined,
@@ -1559,7 +1565,7 @@ export function useLocations() {
               summary: "Local downtown grocery stop for coffee, snacks, pantry basics, wine, and quick errands.",
               alignment_to_downtown_perks: "Resident grocery discounts and neighborhood shopping value for everyday downtown errands.",
               deals_offers: "Resident grocery discount when shopping in-store",
-              specials: "Show your Downtown Perks Card at checkout for resident shopping value.",
+              specials: "Resident shopping value on groceries, coffee, snacks, pantry basics, wine, and quick downtown errands.",
             }
           : {}),
         ...(isStandardProof

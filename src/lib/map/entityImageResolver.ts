@@ -76,6 +76,27 @@ const BLOCKED_PLACEHOLDER_IMAGES = new Set([
   "/images/legends-listings/83dcefb7 (5).jpeg",
 ]);
 
+const WATERLOO_ENTITY_IMAGES: Record<string, string> = {
+  "waterloo-park": `${ATTACHED_IMAGE_BASE}/civic/waterloo-park.jpeg`,
+  "moody-amphitheater": "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+  "great-lawn": "/images/imported/perks/03-waterloo-park.jpg",
+  "waller-creek-trail": "/images/imported/perks/04-waterlook-trail.jpg",
+  "downtown-austin-alliance-daa": "/images/imported/perks/austin-downtown.jpg",
+  "downtown-austin-alliance": "/images/imported/perks/austin-downtown.jpg",
+  "moody-amphitheater-activation-plot": "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+  "waterloo-moody-amphitheater-activation-plot": "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
+  "public-art-tours": "/images/partners/civic/daa-art-walk/daa-art-walk-2.jpg",
+  "waterloo-public-art-tours": "/images/partners/civic/daa-art-walk/daa-art-walk-2.jpg",
+  "family-events": "/images/imported/perks/community-0087-edibleaustin-picnic-2015-768x512.jpg",
+  "waterloo-family-events": "/images/imported/perks/community-0087-edibleaustin-picnic-2015-768x512.jpg",
+  "brand-activations": "/images/imported/perks/brand-activations.png",
+  "waterloo-brand-activations": "/images/imported/perks/brand-activations.png",
+  "food-truck-activations": "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
+  "waterloo-food-truck-activations": "/images/imported/perks/austin-downtown-farmers-market-59703d6252.jpg",
+  "concert-series": "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
+  "waterloo-concert-series": "/images/imported/perks/drop-in-summer-concert-series-photo-by-brynn-osborn-e1715893817272.jpg",
+};
+
 const PREMIUM_PROPERTY_IMAGE_SETS: Record<string, string[]> = {
   "44-east": [
     `${PREMIUM_PROPERTY_IMAGE_BASE}/44-east.jpeg`,
@@ -516,6 +537,15 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/via313-january-2019-114.jpg",
     "/images/imported/perks/friends-at-pizza-night-at-via-313.png",
   ],
+  uchiba: [
+    "/images/imported/perks/uchiba-nigiri-richardcasteel-atx-19-axtqpf.avif",
+  ],
+  tenten: [
+    "/images/imported/perks/ten-ten.avif",
+  ],
+  sammies: [
+    "/images/imported/perks/sammies-interior-mackenziesmithkelley-atx-1-qsurii.avif",
+  ],
   "emmer-rye": [
     "/images/restaurants/emmer-rye-interior.jpg",
     "/images/restaurants/emmer-rye-dish.webp",
@@ -544,10 +574,14 @@ const entityImageSets: Record<string, string[]> = {
   ],
   "shangri-la": [
     `${ATTACHED_IMAGE_BASE}/venues/shangri-la.avif`,
+    "/images/imported/perks/treasury-shangri-la-interior-exterior-richardcasteel-atx-6-2-thdhqh.avif",
   ],
   "restaurant-francois": [
     `${ATTACHED_IMAGE_BASE}/venues/restaurant-francois-interior-exterior.avif`,
     `${ATTACHED_IMAGE_BASE}/venues/restaurant-francois-martini-flight.avif`,
+    "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
+    "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-26-fnm2bj.avif",
+    "/images/imported/perks/restaurantfrancois-martiniflight-richardcasteel-atx-5-h31lmk.avif",
   ],
   "royal-blue": [
     "/images/imported/perks/royal-blue-grocery.png",
@@ -583,6 +617,10 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/cocktails.avif",
     "/images/imported/perks/rooftop-cocktails.png",
     "/images/imported/perks/the-elephant-room.jpg",
+  ],
+  "lake-photo": [
+    "/images/imported/perks/14-paddleboard-on-lake.png",
+    "/images/map-entities/perks/civic_lake_trail_1779052853070.png",
   ],
   "live-music-photo": [
     "/images/map-entities/perks/moody_theater_live_music_1779052684229.png",
@@ -702,6 +740,9 @@ const entityImageSets: Record<string, string[]> = {
   ],
   dining: [
     ...LOCAL_IMAGE_PRIORITY.dining,
+    "/images/imported/perks/uchiba-nigiri-richardcasteel-atx-19-axtqpf.avif",
+    "/images/imported/perks/ten-ten.avif",
+    "/images/imported/perks/sammies-interior-mackenziesmithkelley-atx-1-qsurii.avif",
     "/images/map-entities/dining/outdoor-dining-arrival.avif",
     "/images/map-entities/dining/dinner-table.avif",
     "/images/map-entities/dining/gourmet-food.avif",
@@ -751,6 +792,9 @@ const contentImageRules = [
   { key: "violet-crown", terms: ["violet crown"] },
   { key: "bangers", terms: ["banger", "bangers"] },
   { key: "via-313", terms: ["via 313", "via313", "detroit-style pizza"] },
+  { key: "uchiba", terms: ["uchiba"] },
+  { key: "tenten", terms: ["tenten", "ten ten"] },
+  { key: "sammies", terms: ["sammies", "sammie's"] },
   { key: "emmer-rye", terms: ["emmer", "emmer & rye"] },
   { key: "geraldines", terms: ["geraldine", "geraldine's"] },
   { key: "joes-coffee", terms: ["jo's coffee", "jos coffee", "joe's coffee"] },
@@ -762,6 +806,7 @@ const contentImageRules = [
   { key: "standard-proof", terms: ["standard proof", "whiskey", "distillery"] },
   { key: "hotel-van-zandt", terms: ["hotel van zandt", "van zandt first thursday"] },
   { key: "waterloo", terms: ["waterloo", "waller creek", "moody amphitheater"] },
+  { key: "lake-photo", terms: ["lake", "boat", "lady bird", "waterfront"] },
   { key: "republic-square", terms: ["republic square"] },
   { key: "live-music-photo", terms: ["antone", "nightclub", "live music", "music venue"] },
   { key: "happy-hour-photo", terms: ["happy hour", "cocktail special", "resident cocktail pricing"] },
@@ -1028,6 +1073,15 @@ export function resolveHotelImage(entity: Record<string, unknown>): string | nul
 }
 
 export function resolveMapImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string {
+  const waterlooKey = [
+    slug(entity.id),
+    slug(entity.name),
+    slug(entity.title),
+    slug((entity.raw as Record<string, unknown> | undefined)?.id),
+    slug((entity.raw as Record<string, unknown> | undefined)?.name),
+  ].find((key) => key && WATERLOO_ENTITY_IMAGES[key]);
+  if (waterlooKey) return WATERLOO_ENTITY_IMAGES[waterlooKey];
+
   const actualVenue = actualVenueImage(entity, context);
   if (actualVenue) return actualVenue;
 

@@ -56,7 +56,7 @@ export const CHECKOUT_LABELS: Record<StripeProductKey, string> = {
   customPartnerReport: "Custom Partner Report",
   surveyPulse: "Survey Pulse",
   seasonalSponsor: "Seasonal Sponsor",
-  residentJoinBuildingNotMember: "Resident Join (Building Not Member)",
+  residentJoinBuildingNotMember: "Perks Card",
 };
 
 export type CheckoutKey = StripeProductKey;

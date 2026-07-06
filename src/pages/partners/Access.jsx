@@ -52,7 +52,7 @@ const PARTNER_TYPES = [
     value: "resident",
     label: "Residents",
     section: "Access",
-    summary: "Resident access, building join requests, cards, and member workflows.",
+    summary: "Perks Card access, saved places, local offers, and downtown recommendations.",
   },
   {
     value: "custom",
@@ -131,7 +131,7 @@ function toPricingPartnerType(value) {
   if (normalized.includes("civic")) return "Civic";
   if (normalized.includes("real")) return "Real Estate";
   if (normalized.includes("resident")) return "Resident";
-  return "Venue";
+  return "";
 }
 
 export default function PartnerAccess({ mode = "sign-in" }) {
@@ -166,7 +166,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const selectedPlan = availablePlans.find((plan) => plan.id === selectedPlanId) || availablePlans[0] || null;
   const selectedModules = PRICING_MODULES.filter((module) => selectedModuleIds.includes(module.id));
   const annualAddOnTotal = selectedModules.filter((module) => module.billing === "Annual add-on").reduce((sum, module) => sum + module.price, 0);
-  const oneTimeTotal = selectedModules.filter((module) => module.billing === "One-time module").reduce((sum, module) => sum + module.price, 0);
+  const oneTimeTotal = selectedModules.filter((module) => module.billing === "One-time service").reduce((sum, module) => sum + module.price, 0);
   const annualEstimate = selectedPlan?.annualPrice == null ? null : selectedPlan.annualPrice + annualAddOnTotal;
   const firstYearEstimate = selectedPlan?.annualPrice == null ? null : selectedPlan.annualPrice + annualAddOnTotal + oneTimeTotal;
   const [campaignInterest, setCampaignInterest] = useState(initialCampaignInterest);
@@ -320,7 +320,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Add the basics once, then continue into the workspace to finish your profile, map placement, campaigns, and billing."
+                ? "Choose the right path first, then continue into the workspace to finish your profile, map placement, campaigns, and billing."
                 : "Sign in to manage your organization, campaigns, offers, events, reports, team access, and billing."}
             </p>
 
@@ -328,10 +328,10 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               {(isSignUp ? [
                 "Choose the plan and add-ons that match your launch.",
                 "Share the partner details your workspace needs.",
-                "Continue into setup without re-entering the same information.",
+                "Continue into the workspace without re-entering the same information.",
               ] : [
                 "Use sign in if your organization already has a workspace.",
-                "Create a partner account if this is your first setup.",
+                "Create a partner account if this is your first workspace.",
                 "Request team access if someone else owns the organization.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
@@ -382,7 +382,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
                 <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected setup">
                   <div className="dp-partner-access-setup-head">
-                    <p className="dp-partner-access-setup-label">Setup</p>
+                    <p className="dp-partner-access-setup-label">Plan</p>
                     <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom review" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
                   </div>
                   <div className="dp-partner-access-setup-fields">
@@ -480,7 +480,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
                     className="dp-partner-access-control w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
-                    placeholder="Tell us the organization, location, package, modules, launch timing, or custom request you want connected to this account."
+                    placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
                   />
                 </div>
 

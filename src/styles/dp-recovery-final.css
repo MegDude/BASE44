@@ -47202,6 +47202,53 @@ html body #root .dp-map-page.dp-map-page :is(.dp-destination-content, .dp-detail
   color: #0B1F33 !important;
 }
 
+/* Final drawer flow lock: one mounted drawer, one scroll owner, no floating actions. */
+html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell :is(.dp-destination-scroll, .dp-drawer-scroll, .dp-map-panel-scroll) {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-detail-drawer.dp-entity-drawer-shell .dp-entity-drawer {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-drawer-control-row {
+  order: -1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-entity-handle {
+  order: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > .dp-entity-hero {
+  order: 1 !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-panel-header, .dp-entity-summary, .dp-entity-identity) {
+  order: 2 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-entity-action-row, .dp-primary-action-row, .dp-secondary-action-row, .dp-legends-action-carousel) {
+  order: 3 !important;
+  position: static !important;
+  transform: none !important;
+  z-index: auto !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-entity-drawer > :is(.dp-legends-brand-card, .dp-entity-section, .dp-detail-section, .dp-detail-body) {
+  order: 4 !important;
+}
+
 html body #root .dp-map-page.dp-map-page .dp-drawer-control-row {
   position: relative !important;
   z-index: 5 !important;

@@ -77,7 +77,7 @@ const CIVIC_EXAMPLES = [
     name: 'Visit Austin',
     type: 'Visitor guidance',
     desc: 'Downtown attraction discovery and helpful wayfinding for visitors',
-    proof: 'More visits from nearby discovery',
+    proof: 'More visits from local visibility',
   },
   {
     name: 'Waterloo Greenway',

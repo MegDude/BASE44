@@ -295,7 +295,7 @@ const PANEL_CONTENT_BY_TYPE = {
     whyBody: "This offer gives residents a simple reason to choose {title} when they are already nearby.",
     bestFor: ["Quick local decisions", "Trying somewhere new", "Turning a nearby place into a routine", "Saving without hunting for codes"],
     insight: "The best perks do not interrupt behavior. They make the next local choice easier.",
-    perkInstructions: "Show your Resident Pass when the offer is active.",
+    perkInstructions: "The resident offer should describe the benefit first; redemption details belong in the terms.",
     nearbyHeading: "Perks nearby",
     askPrompts: ["How do I use this?", "What else is nearby?", "Is this good today?", "What other perks are close?"],
   },
@@ -419,7 +419,7 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
     content.insight = "";
     content.perkTitle = "Resident perk";
     content.perkValue = "Free custom engraving for verified residents.";
-    content.perkInstructions = "Show your Resident Pass in-store when the offer is active.";
+    content.perkInstructions = "Free custom engraving for verified residents.";
     content.nearbyHeading = "Nearby";
     content.askPrompts = ["Where does YETI show up nearby?", "What perk can I use?", "What should I pair with this?", "What is walkable from here?"];
   }

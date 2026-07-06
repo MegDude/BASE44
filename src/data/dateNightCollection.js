@@ -324,7 +324,7 @@ export const dateNightCollectionEntities = [
     amenities: ["Indoor seating", "Covered patio", "Waterfront seating", "Fresh bakery", "Coffee roasted in-house", "Tea and specialty drinks", "Desserts", "Wi-Fi", "Accessible entrance", "Restrooms", "Pet-friendly outdoor seating"],
     residentPerk: {
       title: "Lake Night Upgrade",
-      description: "Show your Downtown Perks Card during participating live music or movie nights to receive a complimentary bakery upgrade or featured drink enhancement with a qualifying purchase. Availability may vary by event.",
+      description: "The Lake Night Upgrade perk gives residents a complimentary bakery upgrade or featured drink enhancement with a qualifying purchase during participating live music or movie nights. Availability may vary by event.",
     },
     upcomingEventsLabel: "See what's happening this week at Mozart's.",
     upcomingEvents: [

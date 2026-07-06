@@ -7,12 +7,12 @@ const footerGroups = {
     { to: "/card", label: "Perks Card" },
   ],
   Partners: [
-    { to: "/marketing/contact", label: "Partner Signup" },
+    { to: "/partners/sign-up", label: "Partner Signup" },
     { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
   ],
   Platform: [
-    { to: "/marketing/pricing", label: "Pricing" },
-    { to: "/marketing/contact", label: "Contact" },
+    { to: "/pricing", label: "Pricing" },
+    { to: "/partners/sign-up", label: "Contact" },
   ],
 };
 
@@ -29,7 +29,7 @@ export default function HomeFooter() {
               </span>
             </Link>
             <p className="mb-4 max-w-sm text-[14px] font-light leading-6 text-[#FFFFFF]/72 sm:text-[15px] md:text-sm md:leading-6">
-              Downtown Perks helps residents make better local plans and helps the places around them show up at the right moment.
+              Helping people discover more of downtown while helping local businesses, properties and organizations reach them at the right moment.
             </p>
           </div>
 
