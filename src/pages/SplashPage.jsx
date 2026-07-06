@@ -35,9 +35,10 @@ const storyStates = [
     headlineGroups: [
       [
         { text: "Downtown", tone: "navy" },
-        { text: "should be", tone: "navy", compact: true },
+        { text: "should", tone: "navy", compact: true },
       ],
       [
+        { text: "be", tone: "navy", compact: true },
         { text: "easier to use.", tone: "gold" },
       ],
     ],
@@ -59,12 +60,10 @@ const storyStates = [
       [
         { text: "So we built", tone: "navy" },
         { text: "one map", tone: "gold" },
+      ],
+      [
         { text: "to bring", tone: "navy" },
-      ],
-      [
         { text: "everything", tone: "navy" },
-      ],
-      [
         { text: "together.", tone: "navy" },
       ],
     ],

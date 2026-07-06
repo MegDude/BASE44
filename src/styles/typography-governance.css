@@ -17758,3 +17758,61 @@ html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-f
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+/* Absolute final story copy rhythm: keep the original deck, but lock intentional line breaks. */
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__headline {
+  width: min(100%, 720px) !important;
+  gap: clamp(4px, 0.65vw, 9px) !important;
+  line-height: 0.96 !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline-row,
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__headline-row {
+  flex-wrap: nowrap !important;
+  column-gap: 0.18em !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__meaning {
+  width: min(100%, 560px) !important;
+  margin-top: clamp(14px, 2.2vw, 26px) !important;
+  font-size: clamp(15.5px, 1.45vw, 18px) !important;
+  line-height: 1.48 !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__supporting {
+  width: min(100%, 510px) !important;
+  margin-top: clamp(24px, 3.4vw, 44px) !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__supporting p {
+  font-size: clamp(15px, 1.4vw, 17px) !important;
+  line-height: 1.62 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__supporting {
+  width: min(100%, 470px) !important;
+  margin-top: clamp(18px, 2.8vw, 34px) !important;
+  gap: 4px !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__supporting p {
+  font-size: clamp(15px, 1.32vw, 16.5px) !important;
+  line-height: 1.48 !important;
+  text-wrap: balance !important;
+}
+
+@media (max-width: 560px) {
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline,
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__headline {
+    font-size: clamp(38px, 11.2vw, 50px) !important;
+  }
+
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline-row,
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="easier"] .dp-story-os__headline-row {
+    white-space: normal !important;
+    text-wrap: balance !important;
+  }
+}
