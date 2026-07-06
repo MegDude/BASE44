@@ -3072,7 +3072,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-card-body.dp-saved-card-
   --dp-navy-soft: rgba(11, 31, 51, 0.72);
   --dp-navy-muted: rgba(11, 31, 51, 0.54);
   --dp-gold: #C8A96A;
-  --dp-gold-deep: #B8963E;
+  --dp-gold-deep: #C8A96A;
   --dp-white: #FFFFFF;
   --dp-glass: rgba(255, 255, 255, 0.78);
   --dp-glass-strong: rgba(255, 255, 255, 0.9);
@@ -6080,7 +6080,7 @@ html body #root#root .dp-partner-access-page .dp-partner-access-action {
 }
 
 html body #root#root .dp-partner-access-page .dp-partner-access-action:is(:hover, :focus-visible) {
-  color: #B8963E !important;
+  color: #C8A96A !important;
 }
 
 @media (max-width: 820px) {
@@ -6171,7 +6171,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-hero-copy 
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-eyebrow {
   margin-bottom: 18px !important;
-  color: #B8963E !important;
+  color: #C8A96A !important;
   font-size: 13px !important;
   font-weight: 620 !important;
   line-height: 1.25 !important;
@@ -6667,9 +6667,9 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-eyebrow,
 html body #root#root .dp-partner-access-page.dp-partner-access-page :is(svg, .lucide) {
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
-  stroke: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  stroke: #C8A96A !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-eyebrow {
@@ -6773,7 +6773,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   width: 6px;
   height: 6px;
   margin-right: 8px;
-  background: #B8963E;
+  background: #C8A96A;
   vertical-align: 1px;
 }
 
@@ -6872,8 +6872,8 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card span {
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
   font-size: 9.5px !important;
   font-weight: 720 !important;
   line-height: 1.1 !important;
@@ -11561,8 +11561,8 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-line--gold.dp-fixed-story-line--gold {
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :is(.dp-fixed-story-kicker, .dp-fixed-story-prelude, .dp-fixed-story-meaning, .dp-fixed-story-meaning-line, .dp-fixed-story-supporting, .dp-fixed-story-supporting p) {
@@ -11580,8 +11580,8 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
   max-width: none !important;
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
   font-size: clamp(11px, 1.18vw, 14px) !important;
   font-weight: 800 !important;
   line-height: 1.15 !important;
@@ -14660,8 +14660,8 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-perk-intel-header span,
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-perk-offer-card span,
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-perk-stat-grid span {
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
   font: 720 9.5px/1.1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
@@ -15716,7 +15716,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-plan-c
   width: 14px !important;
   height: 14px !important;
   margin-top: 2px !important;
-  color: #B8963E !important;
+  color: #C8A96A !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addons-head {
@@ -16211,8 +16211,8 @@ html body #root#root .dp-resident-access-includes svg,
 html body #root#root .dp-resident-access-panel svg {
   width: 14px !important;
   height: 14px !important;
-  color: #B8963E !important;
-  stroke: #B8963E !important;
+  color: #C8A96A !important;
+  stroke: #C8A96A !important;
 }
 
 html body #root#root .dp-resident-access-panel {
@@ -16488,8 +16488,8 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-kicker {
   margin: 0 !important;
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(11px, 1.1vw, 13px) !important;
   font-weight: 740 !important;
@@ -16506,7 +16506,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   gap: clamp(2px, 0.55vw, 7px) !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-family: var(--dp-font-story-serif), "Instrument Serif", Georgia, "Times New Roman", serif !important;
   font-size: clamp(42px, 7.4vw, 72px) !important;
   font-weight: 420 !important;
   letter-spacing: 0 !important;
@@ -16544,8 +16544,8 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-line--gold {
-  color: #B8963E !important;
-  -webkit-text-fill-color: #B8963E !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-line--navy {
