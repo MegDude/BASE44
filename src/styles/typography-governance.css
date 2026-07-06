@@ -18186,3 +18186,31 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
     line-height: 1.55 !important;
   }
 }
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-product-shell-topbar.dp-product-shell-topbar.dp-splash-story-header.dp-splash-story-header {
+  display: none !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline,
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="easier"] .dp-story-os__headline {
+  width: min(100%, 380px) !important;
+  font-size: clamp(31px, 8.6vw, 42px) !important;
+  line-height: 1.02 !important;
+  gap: 7px !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline-row,
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="easier"] .dp-story-os__headline-row {
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__meaning {
+  margin-top: clamp(18px, 3svh, 30px) !important;
+}
+
+html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-os[data-story-scene="one-map"] .dp-story-os__supporting {
+  width: min(100%, 520px) !important;
+  margin-top: clamp(24px, 4svh, 42px) !important;
+}
