@@ -16,25 +16,25 @@ const PARTNER_TYPES = [
     value: "property",
     label: "Properties",
     section: "Residential",
-    summary: "Buildings, multifamily, condos, apartments, and resident access programs.",
+    summary: "Apartment communities, condominiums, HOAs, and property teams.",
   },
   {
     value: "hotel",
     label: "Hotels",
     section: "Hospitality",
-    summary: "Hotels, guest guides, lobby QR access, and nearby recommendations.",
+    summary: "Help guests find restaurants, events, and local favorites.",
   },
   {
     value: "venue",
     label: "Venues",
-    section: "Local Operators",
+    section: "Local Places",
     summary: "Restaurants, bars, cafes, fitness, wellness, retail, and experiences.",
   },
   {
     value: "brand",
     label: "Brands",
     section: "Campaigns",
-    summary: "Brands, sponsors, activations, campaigns, and district placements.",
+    summary: "Run local campaigns and understand what people do next.",
   },
   {
     value: "civic",
@@ -46,7 +46,7 @@ const PARTNER_TYPES = [
     value: "real-estate",
     label: "Real Estate",
     section: "Listings",
-    summary: "Agents, brokers, listings, property marketing, and lead capture.",
+    summary: "Show buyers and renters what makes the neighborhood valuable.",
   },
   {
     value: "resident",
@@ -258,8 +258,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           phone: form.phone,
           company: organizationName,
           partnerType: partnerTypeLabel,
-          planInterest: selectedPlan?.label || "Partner workspace registration",
-          selectedPlan: selectedPlan?.label || "Partner workspace registration",
+          planInterest: selectedPlan?.label || "Partner account registration",
+          selectedPlan: selectedPlan?.label || "Partner account registration",
           addOns: selectedModules.map((module) => module.label).join(", "),
           campaignInterest,
           reportingNeeds,
@@ -279,14 +279,14 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       signInPartner(profile);
       setSaved(true);
       setSubmissionState("success");
-      setSubmissionMessage("Registration saved. Opening your workspace now.");
+      setSubmissionMessage("Registration saved. Opening your account now.");
       window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
     } catch (error) {
       savePartnerProfile(profile);
       signInPartner(profile);
       setSaved(true);
       setSubmissionState("error");
-      setSubmissionMessage("Your details are saved locally. Opening your workspace now.");
+      setSubmissionMessage("Your details are saved locally. Opening your account now.");
       window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
     }
   }
@@ -316,22 +316,22 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               Partner access
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Create your partner workspace." : "Partner sign in"}
+              {isSignUp ? "Create your partner account." : "Partner sign in"}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Choose the right path first, then continue into the workspace to finish your profile, map placement, campaigns, and billing."
+                ? "Choose the right path first, then add your profile, map listing, campaigns, and billing."
                 : "Sign in to manage your organization, campaigns, offers, events, reports, team access, and billing."}
             </p>
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
               {(isSignUp ? [
                 "Choose the plan and add-ons that match your launch.",
-                "Share the partner details your workspace needs.",
-                "Continue into the workspace without re-entering the same information.",
+                "Share the details your account needs.",
+                "Continue without re-entering the same information.",
               ] : [
-                "Use sign in if your organization already has a workspace.",
-                "Create a partner account if this is your first workspace.",
+                "Use sign in if your organization already has an account.",
+                "Create a partner account if this is your first time here.",
                 "Request team access if someone else owns the organization.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
@@ -355,7 +355,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <section className="dp-partner-type-section" aria-labelledby="partner-type-heading">
                   <div className="dp-partner-type-section-head">
                     <p className="dp-partner-access-label">Partner type</p>
-                    <h3 id="partner-type-heading">Choose the section that fits this workspace.</h3>
+                    <h3 id="partner-type-heading">Choose the section that fits you.</h3>
                   </div>
                   <div className="dp-partner-type-grid" role="radiogroup" aria-label="Partner type">
                     {PARTNER_TYPES.map((type) => {
@@ -380,7 +380,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <input value={form.partner_type} tabIndex={-1} aria-hidden="true" className="sr-only" onChange={() => {}} />
                 </section>
 
-                <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected setup">
+                <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected plan">
                   <div className="dp-partner-access-setup-head">
                     <p className="dp-partner-access-setup-label">Plan</p>
                     <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom review" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
@@ -511,7 +511,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   Choose your access path
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Continue to the right place for your organization, workspace, team access, and billing.
+                  Continue to the right place for your organization, team access, and billing.
                 </p>
                 <div className="dp-partner-access-actions mt-6 flex flex-col gap-3 sm:flex-row">
                   <button

@@ -63,7 +63,7 @@ const groupLabels = {
   broadcasts: "Broadcasts",
   research: "Research",
   reporting: "Reporting",
-  activation: "Activation",
+  activation: "Launch Support",
   support: "Support",
   sponsorships: "Sponsorship",
   residentAccess: "Resident Access",

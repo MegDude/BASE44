@@ -54,6 +54,7 @@ import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyL
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
 import { resolveEntityPanelArchetype, resolveEntityPanelContent } from "../lib/map/entityPanelArchetypes";
 import { resolveEntityPin } from "../lib/map/entityPinResolver";
+import { normalizeMapIconKey } from "../lib/map/mapIconRegistry";
 import { formatDistanceLabel, getDistanceMeters, getNearbyRecommendations } from "@/utils/nearbyRecommendations";
 import { getRelatedRecommendations } from "@/utils/relatedRecommendations";
 import { buildMapIntelligence } from "@/utils/mapIntelligence";
@@ -3149,7 +3150,7 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes })
   const escapedId = escapeHtmlAttribute(place.id);
   const escapedLabel = escapeHtmlAttribute(ariaLabel);
   const pinLabel = escapeHtmlAttribute(pin.label);
-  const iconKey = getEntityIconKey(place);
+  const iconKey = normalizeMapIconKey(pin.label);
   const kind = escapeHtmlAttribute(iconKey);
   const activeClass = selected ? "is-selected is-active" : "";
   const pulseClass = pulsing ? "is-pulsing" : "";
@@ -3159,7 +3160,7 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes })
   const isLegendsPin = isLegendsMapPlace(place) || Boolean(getLegendsListing(place) || getLegendsResidentialProfileForPlace(place));
   const iconSvg = isLegendsPin
     ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${LEGENDS_PIN_LOGO}" alt="" aria-hidden="true" loading="eager" decoding="async" />`
-    : entityIconSvg(iconKey);
+    : pin.glyph;
 
   const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span>${priceLabel}</button>`;
   const stopNumber = Number(place?.routeStopNumber || 0);
@@ -3181,61 +3182,10 @@ function getMarkerDataKind(place) {
   return String(place?.type || "place").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
-function getEntityIconKey(entity) {
-  const haystack = [
-    entity?.icon,
-    entity?.kind,
-    entity?.type,
-    entity?.category,
-    entity?.group,
-    entity?.tags?.join?.(" "),
-    entity?.title,
-    entity?.name,
-  ].filter(Boolean).join(" ").toLowerCase();
+const LEGENDS_MARKER_FALLBACK_PATH = '<path fill="currentColor" stroke="none" d="M12 12.8c-.6-1.5-1.7-3.8-3.4-5.4C6.9 5.8 4.5 4.7 2.9 5.9 1.2 7.2 2 10.5 4 12.5c1.7 1.7 4.5 2.2 6.4 1.8-.4 1.6-1.4 3.1-2.9 4.5l1.3 1.3c1.5-1.4 2.5-2.9 3.1-4.5.6 1.6 1.6 3.1 3.1 4.5l1.3-1.3c-1.5-1.4-2.5-2.9-2.9-4.5 1.9.4 4.7-.1 6.4-1.8 2-2 2.8-5.3 1.1-6.6-1.6-1.2-4-.1-5.7 1.5-1.6 1.6-2.7 3.9-3.2 5.4z"/>';
 
-  if (haystack.includes("legend")) return "legends";
-  if (haystack.includes("inkind")) return "inkind";
-  if (haystack.includes("coffee") || haystack.includes("cafe") || haystack.includes("espresso")) return "coffee";
-  if (haystack.includes("drink") || haystack.includes("bar") || haystack.includes("cocktail") || haystack.includes("nightlife")) return "drinks";
-  if (haystack.includes("event")) return "event";
-  if (haystack.includes("music") || haystack.includes("live")) return "music";
-  if (haystack.includes("hotel")) return "hotel";
-  if (haystack.includes("property") || haystack.includes("residential") || haystack.includes("building") || haystack.includes("rental")) return "property";
-  if (haystack.includes("civic") || haystack.includes("museum") || haystack.includes("art") || haystack.includes("culture")) return "civic";
-  if (haystack.includes("retail") || haystack.includes("shop")) return "retail";
-  if (haystack.includes("fitness") || haystack.includes("gym")) return "fitness";
-  if (haystack.includes("wellness") || haystack.includes("spa") || haystack.includes("recovery")) return "wellness";
-  if (haystack.includes("parking")) return "parking";
-  if (haystack.includes("service")) return "service";
-  if (haystack.includes("restaurant") || haystack.includes("dining") || haystack.includes("food") || haystack.includes("sushi")) return "dining";
-  if (haystack.includes("partner")) return "partner";
-  if (haystack.includes("perk") || haystack.includes("offer")) return "perk";
-  return "perk";
-}
-
-const ENTITY_ICON_PATHS = {
-  dining: '<path d="M4 3v8"/><path d="M8 3v8"/><path d="M6 3v18"/><path d="M14 3v18"/><path d="M14 3c3 2 4 5 4 8 0 2-1 3-4 3"/>',
-  inkind: '<path d="M4 3v8"/><path d="M8 3v8"/><path d="M6 3v18"/><path d="M14 3v18"/><path d="M14 3c3 2 4 5 4 8 0 2-1 3-4 3"/>',
-  coffee: '<path d="M4 8h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2"/><path d="M6 2v2"/><path d="M10 2v2"/><path d="M14 2v2"/>',
-  drinks: '<path d="M8 21h8"/><path d="M12 15v6"/><path d="M5 3h14l-2 7a5 5 0 0 1-10 0Z"/>',
-  event: '<path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/>',
-  music: '<path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/>',
-  hotel: '<path d="M3 21V9a2 2 0 0 1 2-2h8a4 4 0 0 1 4 4v10"/><path d="M3 14h18"/><path d="M7 11h.01"/>',
-  property: '<path d="M4 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 21v-5h4v5"/><path d="M8 7h.01"/><path d="M12 7h.01"/><path d="M8 11h.01"/><path d="M12 11h.01"/>',
-  civic: '<path d="M3 21h18"/><path d="M4 10h16"/><path d="M6 10v8"/><path d="M10 10v8"/><path d="M14 10v8"/><path d="M18 10v8"/><path d="M12 3 4 8h16Z"/>',
-  retail: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
-  wellness: '<path d="M11 20A7 7 0 0 1 4 13c0-5 7-10 8-10s8 5 8 10a7 7 0 0 1-7 7"/><path d="M12 20V9"/>',
-  fitness: '<path d="M6 6v12"/><path d="M18 6v12"/><path d="M6 12h12"/><path d="M3 9v6"/><path d="M21 9v6"/>',
-  parking: '<path d="M7 21V3h7a5 5 0 0 1 0 10H7"/><path d="M7 13h7"/>',
-  service: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-3-3Z"/>',
-  partner: '<path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9Z"/>',
-  perk: '<path d="M19 5 5 19"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/>',
-  legends: '<path fill="currentColor" stroke="none" d="M12 12.8c-.6-1.5-1.7-3.8-3.4-5.4C6.9 5.8 4.5 4.7 2.9 5.9 1.2 7.2 2 10.5 4 12.5c1.7 1.7 4.5 2.2 6.4 1.8-.4 1.6-1.4 3.1-2.9 4.5l1.3 1.3c1.5-1.4 2.5-2.9 3.1-4.5.6 1.6 1.6 3.1 3.1 4.5l1.3-1.3c-1.5-1.4-2.5-2.9-2.9-4.5 1.9.4 4.7-.1 6.4-1.8 2-2 2.8-5.3 1.1-6.6-1.6-1.2-4-.1-5.7 1.5-1.6 1.6-2.7 3.9-3.2 5.4z"/>',
-};
-
-function entityIconSvg(iconKey) {
-  const paths = ENTITY_ICON_PATHS[iconKey] || ENTITY_ICON_PATHS.perk;
-  return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">${paths}</svg>`;
+function mapIconSvgInner(glyph) {
+  return String(glyph || "").match(/<svg[^>]*>([\s\S]*?)<\/svg>/i)?.[1] || "";
 }
 
 const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
@@ -3297,8 +3247,8 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const fill = isLegends ? "#FFFFFF" : "#0B1F33";
   const stroke = "#C8A96A";
   const iconColor = isLegends ? "#0B1F33" : "#C8A96A";
-  const iconKey = getEntityIconKey(place);
-  const paths = ENTITY_ICON_PATHS[iconKey] || ENTITY_ICON_PATHS.perk;
+  const pin = resolveEntityPin(place);
+  const paths = isLegends ? LEGENDS_MARKER_FALLBACK_PATH : mapIconSvgInner(pin.glyph);
   const iconSize = Math.max(18, Math.round(size * 0.5));
   const iconScale = Math.max(0.75, size / 48);
   const svg = `

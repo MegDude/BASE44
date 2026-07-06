@@ -39,11 +39,15 @@ const PIN_SVG_STYLE_LG = `
  * Inject inline style onto the SVG string returned by pinAssetRegistry.
  * The registry SVGs use currentColor; we set stroke directly for consistency.
  */
-function styledGlyph(glyph, large = false) {
-  if (!glyph) return '';
+function styledGlyph(pin, large = false) {
+  if (!pin?.glyph) return '';
+  if (pin.asset) {
+    return `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${pin.asset}" alt="" aria-hidden="true" style="width:${large ? 22 : 19}px;height:${large ? 22 : 19}px;display:block;object-fit:contain;" />`;
+  }
+
   // Replace the opening <svg tag to add inline style
   const style = large ? PIN_SVG_STYLE_LG : PIN_SVG_STYLE;
-  return glyph.replace(
+  return pin.glyph.replace(
     '<svg ',
     `<svg style="${style}" `
   );
@@ -56,7 +60,7 @@ function styledGlyph(glyph, large = false) {
 export function createCompactMarker(entity) {
   const pin = resolveEntityPin(entity);
   const size = entity.markerType === 'building' ? SIZES.building : SIZES.default;
-  const glyph = styledGlyph(pin.glyph);
+  const glyph = styledGlyph(pin);
 
   const html = `
     <div style="
@@ -95,7 +99,7 @@ export function createSelectedMarker(entity) {
   const pin = resolveEntityPin(entity);
   const baseSize = entity.markerType === 'building' ? SIZES.building : SIZES.default;
   const size = Math.round(baseSize * SIZES.selected);
-  const glyph = styledGlyph(pin.glyph, true);
+  const glyph = styledGlyph(pin, true);
 
   const html = `
     <div style="
@@ -139,10 +143,12 @@ export function createSelectedMarker(entity) {
  */
 export function createPillMarker(entity) {
   const pin = resolveEntityPin(entity);
-  const pillGlyph = pin.glyph.replace(
-    '<svg ',
-    `<svg style="width:14px;height:14px;display:block;flex-shrink:0;stroke:#0B1F33;fill:none;" `
-  );
+  const pillGlyph = pin.asset
+    ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${pin.asset}" alt="" aria-hidden="true" style="width:16px;height:16px;display:block;object-fit:contain;" />`
+    : pin.glyph.replace(
+      '<svg ',
+      `<svg style="width:14px;height:14px;display:block;flex-shrink:0;stroke:#0B1F33;fill:none;" `
+    );
 
   const html = `
     <div style="

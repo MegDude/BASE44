@@ -15997,7 +15997,49 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
   border-radius: 10px !important;
   background: rgba(255, 255, 255, 0.94) !important;
-  box-shadow: 0 18px 52px rgba(11, 31, 51, 0.055) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-grid {
+  align-items: start !important;
+  gap: clamp(24px, 4vw, 52px) !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-copy {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-title {
+  max-width: 620px !important;
+  margin-top: 0 !important;
+  font-size: clamp(36px, 5vw, 58px) !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-lede {
+  margin-top: 0 !important;
+  max-width: 560px !important;
+  font-size: 15px !important;
+  line-height: 1.62 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-form {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-form.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0 !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-form-head,
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-section-head,
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-setup-head {
+  margin: 0 !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid {
@@ -16007,17 +16049,35 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card {
-  min-height: 104px !important;
-  padding: 14px !important;
+  min-height: 96px !important;
+  padding: 13px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 9px !important;
+  border-radius: 8px !important;
   background: #FFFFFF !important;
-  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.04) !important;
+  box-shadow: none !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card[data-active="true"] {
   border-color: rgba(184, 150, 62, 0.56) !important;
   background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-setup {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-addon-list button,
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-setup dl > div {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-action {
+  box-shadow: none !important;
 }
 
 @media (max-width: 1023px) {
@@ -16403,5 +16463,167 @@ html body #root#root .dp-os-resident-admin-grid dd {
 
   html body #root#root .dp-resident-access-actions :is(button, a) {
     width: 100% !important;
+  }
+}
+
+/* Final fixed-story typography lock: scene colors come from data classes, not span position. */
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy {
+  width: min(100%, 760px) !important;
+  display: grid !important;
+  justify-items: center !important;
+  gap: clamp(12px, 1.8vw, 18px) !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] :is(
+  .dp-fixed-story-kicker-slot,
+  .dp-fixed-story-headline-slot,
+  .dp-fixed-story-meaning-slot,
+  .dp-fixed-story-supporting-slot
+) {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-kicker {
+  margin: 0 !important;
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(11px, 1.1vw, 13px) !important;
+  font-weight: 740 !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1.15 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline {
+  width: min(100%, 720px) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  justify-items: center !important;
+  gap: clamp(2px, 0.55vw, 7px) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(42px, 7.4vw, 72px) !important;
+  font-weight: 420 !important;
+  letter-spacing: 0 !important;
+  line-height: 0.94 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline-row {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  column-gap: 0.22em !important;
+  row-gap: 0.06em !important;
+  margin: 0 !important;
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  font: inherit !important;
+  line-height: inherit !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline-segment {
+  min-width: 0 !important;
+  margin: 0 !important;
+  font: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: 0 !important;
+  line-height: inherit !important;
+  text-shadow: none !important;
+  white-space: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-line--gold {
+  color: #B8963E !important;
+  -webkit-text-fill-color: #B8963E !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-line--navy {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-meaning {
+  width: min(100%, 600px) !important;
+  margin: 0 auto !important;
+  color: rgba(11, 31, 51, 0.74) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.74) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(17px, 2vw, 22px) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.36 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting {
+  width: min(100%, 660px) !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  gap: clamp(8px, 1.2vw, 12px) !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  text-align: center !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting p {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  font: inherit !important;
+  font-size: clamp(14.5px, 1.45vw, 17px) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.58 !important;
+  text-align: center !important;
+  text-wrap: pretty !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-headline {
+  width: min(100%, 680px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene="access"] .dp-fixed-story-supporting {
+  width: min(100%, 690px) !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-copy {
+    width: min(100%, 350px) !important;
+    gap: 11px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-headline {
+    width: min(100%, 350px) !important;
+    gap: 3px !important;
+    font-size: clamp(37px, 10.2vw, 48px) !important;
+    line-height: 0.96 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-kicker {
+    font-size: 10.5px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting {
+    width: min(100%, 342px) !important;
+    gap: 8px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[data-story-scene] .dp-fixed-story-supporting p {
+    font-size: 14px !important;
+    line-height: 1.48 !important;
   }
 }

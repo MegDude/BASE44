@@ -83,7 +83,7 @@ export const ADMIN_STUDIO_ROUTES = [
     label: "Campaign Builder",
     path: "/admin-studio/campaign-builder",
     icon: Layers3,
-    purpose: "Create campaign types for perks, events, surveys, sponsored placements, and partner activations.",
+    purpose: "Create campaign types for perks, events, surveys, sponsored placements, and partner programs.",
     primaryCta: "Launch test",
     priority: "Build once, then preview and test before launch.",
     cards: [...CAMPAIGN_CREATION_FLOW],
@@ -165,7 +165,7 @@ export const CAMPAIGN_TYPES = [
   "Event",
   "Survey",
   "Sponsored Placement",
-  "Partner Activation",
+  "Partner Program",
   "Broadcast",
 ] as const;
 

@@ -60,7 +60,7 @@ function CampaignFlowCard() {
       <div>
         <span>Campaign flow</span>
         <h2>Objective to report, with governance built in.</h2>
-        <p>All perks, events, surveys, placements, and activations use the same campaign object and launch path.</p>
+        <p>All perks, events, surveys, placements, and partner programs use the same campaign object and launch path.</p>
       </div>
       <ol>
         {CAMPAIGN_CREATION_FLOW.map((step, index) => (
@@ -113,7 +113,7 @@ function CampaignObjectPanel() {
     <section className="dp-os-wire-card" aria-label="Campaign object">
       <span>Shared data object</span>
       <h2>Campaign is the central object.</h2>
-      <p>Perks, events, surveys, sponsored placements, broadcasts, and partner activations become campaign types instead of disconnected modules.</p>
+      <p>Perks, events, surveys, sponsored placements, broadcasts, and partner programs become campaign types instead of disconnected tools.</p>
       <div className="dp-os-chip-grid">
         {CAMPAIGN_TYPES.map((type) => <span key={type}>{type}</span>)}
       </div>
