@@ -75,6 +75,11 @@ function responseMessage(action) {
   return "Map action saved.";
 }
 
+function demoResponseMessage(action) {
+  if (["save", "unsave"].includes(action)) return "Saved for this demo session.";
+  return "Saved for this demo session. This action requires production persistence before it can be treated as permanent.";
+}
+
 async function recordSupabaseAction(payload) {
   if (!supabaseServer) return { stored: false, reason: "supabase_not_configured" };
 
@@ -118,8 +123,9 @@ export default async function handler(req, res) {
       ok: true,
       id: payload.id,
       action: payload.action,
-      message: responseMessage(payload.action),
+      message: storage.stored ? responseMessage(payload.action) : demoResponseMessage(payload.action),
       storage,
+      writeMode: storage.stored ? "durable" : "demo_session_only",
     });
   } catch (error) {
     return res.status(500).json({

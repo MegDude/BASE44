@@ -59,7 +59,12 @@ function normalizeResident(body = {}) {
 }
 
 async function storeResident(record) {
-  if (!supabaseServer) return { stored: false, reason: "supabase_not_configured" };
+  if (!supabaseServer) return {
+    stored: false,
+    reason: "supabase_not_configured",
+    writeMode: "demo_session_only",
+    message: "Saved for this demo session.",
+  };
 
   const { error } = await supabaseServer.from("resident_profiles").insert({
     user_id: record.id,
@@ -82,7 +87,7 @@ async function storeResident(record) {
     });
   }
 
-  return { stored: true, tables: ["resident_profiles", "resident_memberships"] };
+  return { stored: true, writeMode: "durable", tables: ["resident_profiles", "resident_memberships"] };
 }
 
 export default async function handler(req, res) {
@@ -97,9 +102,10 @@ export default async function handler(req, res) {
 
   try {
     const storage = await storeResident(record);
+    const resident = storage.stored ? record : { ...record, temporary: true, writeMode: "demo_session_only" };
     return res.status(200).json({
       ok: true,
-      resident: record,
+      resident,
       storage,
       next: record.verificationStatus === "verified" ? "open_app" : "checkout_or_review",
     });

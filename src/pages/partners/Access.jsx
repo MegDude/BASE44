@@ -3,6 +3,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import {
+  canUseProductionAccountAccess,
+  DEMO_WRITE_MESSAGE,
+  PRODUCTION_ACCOUNT_ACCESS_MESSAGE,
+} from "@/lib/productionGuards";
+import {
   formatCurrency,
   getPlansForPartnerType,
   getPriceText,
@@ -113,6 +118,7 @@ function savePartnerProfile(profile) {
 }
 
 function startPartnerSignIn(navigate, signInPartner, email) {
+  if (!canUseProductionAccountAccess()) return null;
   signInPartner({
     email,
     organization_name: "Downtown Perks Partner",
@@ -175,6 +181,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
   const hasPartnerType = Boolean(form.partner_type);
+  const accountAccessEnabled = canUseProductionAccountAccess();
 
   useEffect(() => {
     if (!hasPartnerType) {
@@ -276,22 +283,35 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       }
 
       savePartnerProfile(profile);
-      signInPartner(profile);
       setSaved(true);
       setSubmissionState("success");
-      setSubmissionMessage("Registration saved. Opening your account now.");
-      window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+      if (accountAccessEnabled) {
+        signInPartner(profile);
+        setSubmissionMessage("Registration submitted. Opening your workspace.");
+        window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+      } else {
+        setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
+      }
     } catch (error) {
       savePartnerProfile(profile);
-      signInPartner(profile);
       setSaved(true);
       setSubmissionState("error");
-      setSubmissionMessage("Your details are saved locally. Opening your account now.");
-      window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+      if (accountAccessEnabled) {
+        signInPartner(profile);
+        setSubmissionMessage(`${DEMO_WRITE_MESSAGE} Opening your workspace.`);
+        window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
+      } else {
+        setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
+      }
     }
   }
 
   function handleSignIn() {
+    if (!accountAccessEnabled) {
+      setSubmissionState("error");
+      setSubmissionMessage(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
+      return;
+    }
     startPartnerSignIn(navigate, signInPartner, user?.email || "partner@downtownperks.local");
   }
 
@@ -316,12 +336,14 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               Partner access
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Create your partner account." : "Partner sign in"}
+              {isSignUp ? "Register your partner setup." : "Partner sign in"}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
                 ? "Choose the right path first, then add your profile, map listing, campaigns, and billing."
-                : "Sign in to manage your organization, campaigns, offers, events, reports, team access, and billing."}
+                : accountAccessEnabled
+                  ? "Sign in to manage your organization, campaigns, offers, events, reports, team access, and billing."
+                  : PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
             </p>
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
@@ -348,7 +370,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <div className="dp-partner-access-form-head">
                   <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Sign up</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                    Register your partner account
+                    Register your partner setup
                   </h2>
                 </div>
 
@@ -501,7 +523,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] disabled:cursor-wait disabled:opacity-70"
                 >
                   {saved ? <Check className="h-4 w-4 text-[#C8A96A]" /> : <UserPlus className="h-4 w-4 text-[#C8A96A]" />}
-                  {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Register account"}
+                  {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Submit setup request"}
                 </button>
               </form>
             ) : (
@@ -517,10 +539,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <button
                     type="button"
                     onClick={handleSignIn}
+                    disabled={!accountAccessEnabled}
                     className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
                   >
                     <LogIn className="h-4 w-4 text-[#C8A96A]" />
-                    Sign in
+                    {accountAccessEnabled ? "Sign in" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"

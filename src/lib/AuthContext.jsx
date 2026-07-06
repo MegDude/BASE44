@@ -1,12 +1,17 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { appParams } from '@/lib/app-params';
+import {
+  canUseProductionAccountAccess,
+  PRODUCTION_ACCOUNT_ACCESS_MESSAGE,
+} from "@/lib/productionGuards";
 
 const AuthContext = createContext();
 const PARTNER_SESSION_KEY = "dp_partner_workspace:session";
 
 function readPartnerSession() {
   if (typeof window === "undefined") return null;
+  if (!canUseProductionAccountAccess()) return null;
   try {
     return JSON.parse(window.localStorage.getItem(PARTNER_SESSION_KEY) || "null");
   } catch {
@@ -20,6 +25,7 @@ function writePartnerSession(session) {
     window.localStorage.removeItem(PARTNER_SESSION_KEY);
     return;
   }
+  if (!canUseProductionAccountAccess()) return;
   window.localStorage.setItem(PARTNER_SESSION_KEY, JSON.stringify(session));
 }
 
@@ -89,6 +95,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInPartner = (profile = {}) => {
+    if (!canUseProductionAccountAccess()) {
+      setAuthError(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
+      setUser(null);
+      setIsAuthenticated(false);
+      setPartnerSession(null);
+      writePartnerSession(null);
+      return null;
+    }
+
     const organizationName = profile.organization_name || profile.company || "Downtown Perks Partner";
     const nextSession = {
       type: "partner",
