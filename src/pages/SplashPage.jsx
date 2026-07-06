@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ChevronDown, MapPin, Menu, Search, Sparkles, X } from "lucide-react";
+import { motion } from "framer-motion";
+import { ChevronDown, MapPin, Menu, Search, Sparkles, X } from "lucide-react";
+import DowntownPerksStory from "@/components/story/DowntownPerksStory";
 
 const storyStates = [
   {
@@ -160,212 +161,6 @@ const splashStoryShellVariants = {
   },
 };
 
-const storySceneVariants = {
-  hidden: { opacity: 0, y: 12, filter: "blur(8px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.52, ease: storyEase },
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    filter: "blur(6px)",
-    transition: { duration: 0.24, ease: storyEase },
-  },
-};
-
-const storyRevealVariants = {
-  hidden: ({ y = 16, blur = 8, reduceMotion = false } = {}) => ({
-    opacity: 0,
-    y: reduceMotion ? 0 : y,
-    filter: reduceMotion ? "none" : `blur(${blur}px)`,
-  }),
-  visible: ({ delay = 0, reduceMotion = false } = {}) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: reduceMotion ? 0 : 0.64,
-      delay: reduceMotion ? 0 : delay,
-      ease: storyEase,
-    },
-  }),
-  exit: ({ reduceMotion = false } = {}) => ({
-    opacity: reduceMotion ? 1 : 0,
-    y: reduceMotion ? 0 : -8,
-    filter: reduceMotion ? "none" : "blur(5px)",
-    transition: { duration: reduceMotion ? 0 : 0.18, ease: storyEase },
-  }),
-};
-
-const storySegmentVariants = {
-  hidden: ({ y = 10, blur = 5, reduceMotion = false } = {}) => ({
-    opacity: 0,
-    y: reduceMotion ? 0 : y,
-    filter: reduceMotion ? "none" : `blur(${blur}px)`,
-  }),
-  visible: ({ delay = 0, reduceMotion = false } = {}) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: reduceMotion ? 0 : 0.5,
-      delay: reduceMotion ? 0 : delay,
-      ease: storyEase,
-    },
-  }),
-  exit: ({ reduceMotion = false } = {}) => ({
-    opacity: reduceMotion ? 1 : 0,
-    y: reduceMotion ? 0 : -6,
-    filter: reduceMotion ? "none" : "blur(4px)",
-    transition: { duration: reduceMotion ? 0 : 0.16, ease: storyEase },
-  }),
-};
-
-function SplashStoryScene({ scene, activeIndex, onStep, onActivate }) {
-  const reduceMotion = useReducedMotion();
-  const motionState = { reduceMotion };
-  const headlineRows = scene.headlineGroups || (scene.headlineParts || scene.headline.map((text) => ({ text, tone: "navy" }))).map((part) => [part]);
-  const headlineBaseDelay = 0.14;
-  const headlineDelayStep = 0.13;
-  const meaningDelay = headlineBaseDelay + headlineRows.length * headlineDelayStep + 0.12;
-  const supportingDelay = meaningDelay + (scene.meaning ? 0.16 : 0.04);
-  const controlsDelay = supportingDelay + (scene.supporting.length ? 0.18 : 0.1);
-
-  return (
-    <motion.section
-      key={scene.id}
-      className="dp-fixed-story-stage dp-scene-stage"
-      data-story-scene={scene.id}
-      data-story-active="true"
-      aria-label="Downtown Perks story"
-      initial={reduceMotion ? false : "hidden"}
-      animate="visible"
-      exit={reduceMotion ? undefined : "exit"}
-      variants={storySceneVariants}
-    >
-      <div className="dp-fixed-story-state">
-        <motion.div className="dp-fixed-story-copy" initial="hidden" animate="visible" exit="exit">
-          <motion.div
-            className="dp-fixed-story-kicker-slot dp-story-reveal"
-            custom={{ ...motionState, delay: 0, y: 12, blur: 5 }}
-            variants={storyRevealVariants}
-          >
-            <p key={`kicker-${scene.id}`} className="dp-fixed-story-kicker">{scene.kicker}</p>
-          </motion.div>
-          {scene.prelude?.length ? (
-            <motion.div
-              className="dp-fixed-story-prelude-slot dp-story-reveal"
-              custom={{ ...motionState, delay: 0.08, y: 14, blur: 6 }}
-              variants={storyRevealVariants}
-            >
-              <p key={`prelude-${scene.id}`} className="dp-fixed-story-prelude">
-                {scene.prelude.map((line) => (
-                  <span key={line} className="dp-fixed-story-prelude-line">{line}</span>
-                ))}
-              </p>
-            </motion.div>
-          ) : null}
-          <motion.div
-            className="dp-fixed-story-headline-slot"
-            custom={{ ...motionState, delay: headlineBaseDelay, y: 18, blur: 8 }}
-            variants={storyRevealVariants}
-          >
-            <motion.h1 key={`headline-${scene.id}`} className="dp-fixed-story-headline">
-              {headlineRows.map((group, groupIndex) => (
-                <motion.span
-                  key={`${scene.id}-headline-group-${groupIndex}`}
-                  className="dp-fixed-story-headline-row dp-story-reveal"
-                  custom={{ ...motionState, delay: headlineBaseDelay + groupIndex * headlineDelayStep, y: 18, blur: 8 }}
-                  variants={storyRevealVariants}
-                >
-                  {group.map((part, partIndex) => {
-                    const segmentClassName = [
-                      "dp-fixed-story-headline-segment",
-                      part.tone === "gold" ? "dp-fixed-story-line--gold" : "dp-fixed-story-line--navy",
-                      part.compact ? "dp-fixed-story-line--compact" : "",
-                      part.bold ? "dp-fixed-story-line--bold" : "",
-                    ].filter(Boolean).join(" ");
-
-                    return (
-                      <motion.span
-                        key={`${part.text}-${partIndex}`}
-                        className={segmentClassName}
-                        custom={{ ...motionState, delay: headlineBaseDelay + groupIndex * headlineDelayStep + partIndex * 0.045, y: 8, blur: 4 }}
-                        variants={storySegmentVariants}
-                      >
-                        {part.text}
-                      </motion.span>
-                    );
-                  })}
-                </motion.span>
-              ))}
-            </motion.h1>
-          </motion.div>
-          {scene.meaning ? (
-            <motion.div
-              className="dp-fixed-story-meaning-slot dp-story-reveal"
-              custom={{ ...motionState, delay: meaningDelay, y: 14, blur: 6 }}
-              variants={storyRevealVariants}
-            >
-              <motion.p key={`meaning-${scene.id}`} className="dp-fixed-story-meaning">
-                {scene.meaning.split("\n").map((line) => (
-                  <span key={line} className="dp-fixed-story-meaning-line">{line}</span>
-                ))}
-              </motion.p>
-            </motion.div>
-          ) : null}
-          <motion.div
-            className="dp-fixed-story-supporting-slot dp-story-reveal"
-            custom={{ ...motionState, delay: supportingDelay, y: 14, blur: 6 }}
-            variants={storyRevealVariants}
-          >
-            <motion.div key={`supporting-${scene.id}`} className="dp-fixed-story-supporting">
-              {scene.supporting.map((line, lineIndex) => (
-                <motion.p
-                  key={line}
-                  custom={{ ...motionState, delay: supportingDelay + lineIndex * 0.08, y: 10, blur: 5 }}
-                  variants={storySegmentVariants}
-                >
-                  {line}
-                </motion.p>
-              ))}
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-      </div>
-      <motion.div
-        className="dp-story-scene-controls dp-story-reveal"
-        aria-label="Story controls"
-        custom={{ ...motionState, delay: controlsDelay, y: 10, blur: 4 }}
-        variants={storyRevealVariants}
-      >
-        <button type="button" onClick={() => onStep(-1)} disabled={activeIndex === 0} aria-label="Previous story scene">
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        </button>
-        <div className="dp-story-scene-dots" aria-label="Story scenes">
-          {storyStates.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              className={index === activeIndex ? "is-active" : ""}
-              aria-label={`Show ${item.navLabel}`}
-              aria-current={index === activeIndex ? "step" : undefined}
-              onClick={() => onActivate(index)}
-            />
-          ))}
-        </div>
-        <button type="button" onClick={() => onStep(1)} disabled={activeIndex === storyStates.length - 1} aria-label="Next story scene">
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </button>
-      </motion.div>
-    </motion.section>
-  );
-}
-
 function SplashStoryHeader({
   residentMapHref,
   partnerMapHref,
@@ -521,6 +316,7 @@ export default function SplashPage({
   replayOpening = false,
 } = {}) {
   const [active, setActive] = useState(0);
+  const [storyDirection, setStoryDirection] = useState(1);
   const [storyMenuOpen, setStoryMenuOpen] = useState(false);
   const [openNavMenu, setOpenNavMenu] = useState(null);
   const [showIntro, setShowIntro] = useState(() => {
@@ -531,7 +327,6 @@ export default function SplashPage({
   });
   const lockRef = useRef(false);
   const touchStartRef = useRef(null);
-  const state = storyStates[active];
 
   const finishIntro = useCallback(() => {
     setShowIntro(false);
@@ -562,12 +357,17 @@ export default function SplashPage({
   }, []);
 
   const activate = useCallback((next) => {
-    setActive(clamp(next, 0, storyStates.length - 1));
+    setActive((current) => {
+      const target = clamp(next, 0, storyStates.length - 1);
+      setStoryDirection(target >= current ? 1 : -1);
+      return target;
+    });
   }, []);
 
   const go = useCallback((delta) => {
     if (showIntro || lockRef.current) return;
     lockRef.current = true;
+    setStoryDirection(delta >= 0 ? 1 : -1);
     setActive((current) => clamp(current + delta, 0, storyStates.length - 1));
     window.setTimeout(() => {
       lockRef.current = false;
@@ -690,9 +490,13 @@ export default function SplashPage({
             }}
           />
 
-          <AnimatePresence mode="wait">
-            <SplashStoryScene scene={state} activeIndex={active} onStep={go} onActivate={activate} />
-          </AnimatePresence>
+          <DowntownPerksStory
+            scenes={storyStates}
+            activeIndex={active}
+            direction={storyDirection}
+            onStep={go}
+            onActivate={activate}
+          />
 
           <SplashStoryFooter isLast={isLast} residentMapHref={residentMapHref} onLaunchMap={markMapLaunchReady} />
         </SplashStoryShell>
