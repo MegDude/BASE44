@@ -23,6 +23,55 @@ function slug(value) {
     .replace(/^-|-$/g, "");
 }
 
+function parseLegacyOsmEntityId(value) {
+  const match = String(value || "").trim().toLowerCase().match(/^(.+)-(node|way|relation|osm)-([0-9]+)$/);
+  if (!match) return null;
+  return {
+    slug: normalizePropertyId(match[1]),
+    osmType: match[2],
+    osmId: match[3],
+  };
+}
+
+function getEntityOsmId(entity) {
+  return String(
+    entity?.osm_id ??
+      entity?.osmId ??
+      entity?.raw?.osm_id ??
+      entity?.raw?.osmId ??
+      entity?.source?.osm_id ??
+      "",
+  ).trim();
+}
+
+function getEntityOsmType(entity) {
+  return String(
+    entity?.osm_type ??
+      entity?.osmType ??
+      entity?.raw?.osm_type ??
+      entity?.raw?.osmType ??
+      entity?.source?.osm_type ??
+      "",
+  ).trim().toLowerCase();
+}
+
+function getEntitySlugCandidates(entity) {
+  return [
+    entity?.slug,
+    entity?.raw?.slug,
+    entity?.id,
+    entity?.entityId,
+    entity?.raw?.id,
+    entity?.raw?.entityId,
+    entity?.name,
+    entity?.title,
+    entity?.raw?.name,
+    entity?.raw?.title,
+  ]
+    .filter(Boolean)
+    .map((value) => normalizePropertyId(value));
+}
+
 const BUILDING_NAME_ALIASES = {
   "70-rainey": "luxury-building-70-rainey",
   "44-east": "luxury-building-44-east",
@@ -267,6 +316,7 @@ export function resolveMapEntityFromCollection(entityId, entities = []) {
   const raw = String(entityId || "").trim();
   const rawNormalized = raw.toLowerCase();
   const rawSlug = normalizePropertyId(raw);
+  const legacyOsm = parseLegacyOsmEntityId(raw);
   const exactMatch = entities.find((entity) => {
     return [
       entity?.id,
@@ -278,6 +328,19 @@ export function resolveMapEntityFromCollection(entityId, entities = []) {
     ].some((value) => String(value || "").toLowerCase() === rawNormalized || normalizePropertyId(value) === rawSlug);
   });
   if (exactMatch) return exactMatch;
+
+  if (legacyOsm) {
+    const osmMatch = entities.find((entity) => {
+      const entityOsmId = getEntityOsmId(entity);
+      if (!entityOsmId || entityOsmId !== legacyOsm.osmId) return false;
+      const entityOsmType = getEntityOsmType(entity);
+      return !entityOsmType || legacyOsm.osmType === "osm" || entityOsmType === legacyOsm.osmType;
+    });
+    if (osmMatch) return osmMatch;
+
+    const slugMatch = entities.find((entity) => getEntitySlugCandidates(entity).includes(legacyOsm.slug));
+    if (slugMatch) return slugMatch;
+  }
 
   const id = resolveMapEntityAlias(entityId);
   if (!id) return null;
