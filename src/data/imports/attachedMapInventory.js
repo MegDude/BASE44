@@ -9655,6 +9655,8 @@ export const ATTACHED_RAIL_MIGRATED_LOCATIONS = [
     address: "200 San Jacinto Blvd, Austin, TX 78701",
     summary: "Downtown crepe and cafe stop.",
     alignment: "Breakfast, coffee, lunch, and casual resident perk discovery.",
+    image: "/images/imported/perks/coffee-and-croissant.png",
+    imageUrl: "/images/imported/perks/coffee-and-croissant.png",
     source: "User-provided rail card migration",
     sourceCategory: "Dining",
   },

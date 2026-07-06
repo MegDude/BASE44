@@ -77,7 +77,7 @@ const FALLBACK_IMAGES: Record<SearchResultKind, string> = {
   property: "/images/map-pins/property/downtown-view.jpg",
   partner: "/images/imported/perks/edgerooftop-homepage-sipinthescene-638515e802064.jpg",
   venue: "/images/imported/perks/edgerooftop-homepage-sipinthescene-638515e802064.jpg",
-  event: "/images/imported/perks/rainey-is-back.png",
+  event: "/images/map-entities/events/palmer-events-center-grounds.webp",
   perk: "/images/imported/perks/happy-hour-2.png",
   hotel: "/images/map-pins/property/hotel-van-zandt.webp",
   brand: "/images/imported/perks/designation-campaign.png",
