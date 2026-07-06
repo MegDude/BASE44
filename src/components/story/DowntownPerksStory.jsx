@@ -46,6 +46,63 @@ const chipVariants = {
   }),
 };
 
+const sceneVisualConfig = {
+  start: {
+    mode: "local-moments",
+    tabs: ["Map", "Tonight", "Local"],
+    cards: [
+      { label: "Live music", value: "8 min" },
+      { label: "Rooftop weather", value: "Now" },
+      { label: "Late tacos", value: "Saved" },
+    ],
+  },
+  easier: {
+    mode: "scattered-to-simple",
+    tabs: ["Apps", "Chats", "Plans"],
+    cards: [
+      { label: "Screenshots", value: "12" },
+      { label: "Group chats", value: "4" },
+      { label: "Open tabs", value: "9" },
+    ],
+  },
+  "one-map": {
+    mode: "map-assembly",
+    tabs: ["Map", "Perks", "Events"],
+    cards: [
+      { label: "Coffee", value: "2 min" },
+      { label: "Happy hour", value: "5:00" },
+      { label: "Resident event", value: "Tonight" },
+    ],
+  },
+  access: {
+    mode: "resident-pass",
+    tabs: ["Card", "Saved", "Deals"],
+    cards: [
+      { label: "Perks Card", value: "Active" },
+      { label: "Saved places", value: "18" },
+      { label: "Instant deals", value: "Nearby" },
+    ],
+  },
+  perks: {
+    mode: "offer-carousel",
+    tabs: ["Perks", "Rewards", "Extras"],
+    cards: [
+      { label: "Coffee perk", value: "Unlock" },
+      { label: "Dinner offer", value: "Save" },
+      { label: "Local extra", value: "New" },
+    ],
+  },
+  open: {
+    mode: "open-map",
+    tabs: ["Open", "Route", "Go"],
+    cards: [
+      { label: "Map ready", value: "Now" },
+      { label: "Best nearby", value: "Live" },
+      { label: "Saved route", value: "Start" },
+    ],
+  },
+};
+
 function normalizeHeadlineRows(scene) {
   if (Array.isArray(scene.headlineGroups)) return scene.headlineGroups;
   if (Array.isArray(scene.headlineParts)) return [scene.headlineParts];
@@ -64,6 +121,7 @@ export default function DowntownPerksStory({
   const scene = scenes[activeIndex] || scenes[0];
   const headlineRows = normalizeHeadlineRows(scene);
   const visualItems = scene.visual || [];
+  const visual = sceneVisualConfig[scene.id] || sceneVisualConfig.start;
   const progress = ((activeIndex + 1) / scenes.length) * 100;
 
   return (
@@ -73,6 +131,80 @@ export default function DowntownPerksStory({
       data-story-active="true"
       aria-label="Downtown Perks story"
     >
+      <div className="dp-story-os__map-world" data-mode={visual.mode} aria-hidden="true">
+        <svg className="dp-story-os__route" viewBox="0 0 1000 560" preserveAspectRatio="none">
+          <motion.path
+            className="dp-story-os__route-shadow"
+            d="M70 358 C180 178 326 188 445 282 C562 374 645 394 744 272 C820 178 904 188 948 290"
+            pathLength="1"
+            initial={reduceMotion ? false : { pathLength: 0 }}
+            animate={{ pathLength: reduceMotion ? 1 : Math.min(1, 0.18 + progress / 100) }}
+            transition={{ duration: 0.72, ease }}
+          />
+          <motion.path
+            className="dp-story-os__route-line"
+            d="M70 358 C180 178 326 188 445 282 C562 374 645 394 744 272 C820 178 904 188 948 290"
+            pathLength="1"
+            initial={reduceMotion ? false : { pathLength: 0 }}
+            animate={{ pathLength: reduceMotion ? 1 : Math.min(1, 0.18 + progress / 100) }}
+            transition={{ duration: 0.72, ease }}
+          />
+        </svg>
+
+        <div className="dp-story-os__pin-field">
+          {visualItems.map((item, index) => (
+            <motion.span
+              key={`${scene.id}-pin-${item}`}
+              className="dp-story-os__pin"
+              data-index={index}
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.5, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16 + index * 0.08, ease }}
+            >
+              <i />
+              <em>{item}</em>
+            </motion.span>
+          ))}
+        </div>
+
+        <motion.div
+          className="dp-story-os__device"
+          key={`${scene.id}-device`}
+          initial={reduceMotion ? false : { opacity: 0, y: 24, rotate: -1.5 }}
+          animate={{ opacity: 1, y: 0, rotate: scene.id === "open" ? 0 : -1.5 }}
+          transition={{ duration: 0.58, delay: 0.08, ease }}
+        >
+          <div className="dp-story-os__device-top">
+            <span />
+            <strong>Downtown Perks</strong>
+          </div>
+          <div className="dp-story-os__device-tabs">
+            {visual.tabs.map((tab, index) => (
+              <span key={tab} data-active={index === 0}>{tab}</span>
+            ))}
+          </div>
+          <div className="dp-story-os__device-map">
+            <span data-pin="one" />
+            <span data-pin="two" />
+            <span data-pin="three" />
+            <i />
+          </div>
+          <div className="dp-story-os__device-cards">
+            {visual.cards.map((card, index) => (
+              <motion.div
+                key={`${scene.id}-${card.label}`}
+                initial={reduceMotion ? false : { opacity: 0, x: 18 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.42, delay: 0.22 + index * 0.07, ease }}
+              >
+                <span>{card.label}</span>
+                <strong>{card.value}</strong>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
       <div className="dp-story-os__ambient" aria-hidden="true">
         {visualItems.map((item, index) => (
           <motion.span

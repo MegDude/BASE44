@@ -16661,6 +16661,242 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os {
   overflow: hidden !important;
   isolation: isolate !important;
   color: #0B1F33 !important;
+  background:
+    linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 52%, #FFFFFF 100%) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__map-world {
+  position: absolute !important;
+  inset: clamp(78px, 10dvh, 112px) clamp(12px, 3vw, 54px) clamp(82px, 10dvh, 118px) !important;
+  z-index: -2 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  pointer-events: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route {
+  position: absolute !important;
+  inset: 4% 4% 8% !important;
+  width: 92% !important;
+  height: 88% !important;
+  overflow: visible !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route-shadow,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route-line {
+  fill: none !important;
+  vector-effect: non-scaling-stroke !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route-shadow {
+  stroke: rgba(11, 31, 51, 0.055) !important;
+  stroke-width: 18 !important;
+  stroke-linecap: round !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route-line {
+  stroke: rgba(200, 169, 106, 0.46) !important;
+  stroke-width: 2.4 !important;
+  stroke-linecap: round !important;
+  stroke-dasharray: 1 10 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin-field {
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin {
+  position: absolute !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 34px !important;
+  padding: 0 12px 0 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  box-shadow: 0 16px 38px rgba(11, 31, 51, 0.075) !important;
+  backdrop-filter: blur(18px) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin i {
+  width: 10px !important;
+  height: 10px !important;
+  border: 2px solid #C8A96A !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 4px rgba(200, 169, 106, 0.12) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin em {
+  font-style: normal !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="0"] {
+  left: 8% !important;
+  top: 27% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="1"] {
+  right: 9% !important;
+  top: 38% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="2"] {
+  left: 16% !important;
+  bottom: 18% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="3"] {
+  right: 18% !important;
+  bottom: 20% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device {
+  position: absolute !important;
+  right: clamp(20px, 6vw, 104px) !important;
+  bottom: clamp(68px, 10dvh, 118px) !important;
+  width: clamp(230px, 22vw, 315px) !important;
+  display: grid !important;
+  gap: 10px !important;
+  padding: 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  box-shadow: 0 26px 70px rgba(11, 31, 51, 0.13) !important;
+  backdrop-filter: blur(24px) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-top {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 22px !important;
+  color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 780 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-top span {
+  width: 9px !important;
+  height: 9px !important;
+  border: 2px solid #C8A96A !important;
+  border-radius: 999px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs span {
+  min-height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 10px !important;
+  font-weight: 740 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs span[data-active="true"] {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-map {
+  position: relative !important;
+  height: 112px !important;
+  overflow: hidden !important;
+  border-radius: 17px !important;
+  background:
+    linear-gradient(90deg, rgba(11, 31, 51, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(11, 31, 51, 0.045) 1px, transparent 1px),
+    #F8FAFB !important;
+  background-size: 28px 28px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-map i {
+  position: absolute !important;
+  left: 18px !important;
+  right: 18px !important;
+  top: 52% !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, transparent, rgba(200, 169, 106, 0.86), transparent) !important;
+  transform: rotate(-9deg) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-map span {
+  position: absolute !important;
+  width: 12px !important;
+  height: 12px !important;
+  border: 2px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  background: #C8A96A !important;
+  box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-map span[data-pin="one"] {
+  left: 21% !important;
+  top: 36% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-map span[data-pin="two"] {
+  left: 50% !important;
+  top: 48% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-map span[data-pin="three"] {
+  right: 21% !important;
+  top: 28% !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards {
+  display: grid !important;
+  gap: 7px !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards div {
+  min-height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 0 11px !important;
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards span,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards strong {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards span {
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-weight: 620 !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards strong {
+  color: #0B1F33 !important;
+  font-weight: 780 !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient {
@@ -16927,12 +17163,99 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__dots butt
   background: #C8A96A !important;
 }
 
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
+  z-index: 58 !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  pointer-events: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions {
+  position: static !important;
+  width: min(100%, 292px) !important;
+  min-width: 0 !important;
+  max-width: 292px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions a {
+  width: 100% !important;
+  min-height: 46px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 999px !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 18px 42px rgba(11, 31, 51, 0.18) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 820 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
 @media (max-width: 700px) {
   html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os {
-    padding: 96px 20px 146px !important;
+    padding: 94px 20px 154px !important;
   }
 
   html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient-chip {
+    display: none !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__map-world {
+    inset: 78px 0 104px !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route {
+    inset: 18% -16% 18% !important;
+    width: 132% !important;
+    height: 64% !important;
+    opacity: 0.72 !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin {
+    transform: scale(0.88) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="0"] {
+    left: 3% !important;
+    top: 22% !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="1"] {
+    right: -8% !important;
+    top: 42% !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="2"] {
+    left: 5% !important;
+    bottom: 18% !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device {
+    right: -86px !important;
+    bottom: 92px !important;
+    width: 214px !important;
+    opacity: 0.58 !important;
+    transform: rotate(-3deg) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-cards div:nth-child(n+3) {
     display: none !important;
   }
 
@@ -16960,6 +17283,15 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__dots butt
     width: min(calc(100vw - 22px), 390px) !important;
     grid-template-columns: 34px minmax(84px, 1fr) auto 34px !important;
     gap: 6px !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 76px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 18px) !important;
+  }
+
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions {
+    width: min(calc(100vw - 44px), 274px) !important;
   }
 }
 
