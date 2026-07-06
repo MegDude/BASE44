@@ -17815,4 +17815,20 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-s
     white-space: normal !important;
     text-wrap: balance !important;
   }
+
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline {
+    width: min(100%, 360px) !important;
+    font-size: clamp(29px, 8.2vw, 40px) !important;
+    gap: 6px !important;
+    line-height: 1.02 !important;
+  }
+
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__headline-row {
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+  }
+
+  html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os[data-story-scene="one-map"] .dp-story-os__scene {
+    width: min(calc(100vw - 24px), 790px) !important;
+  }
 }
