@@ -13019,95 +13019,79 @@ export default function MapPage() {
       ? {
           eyebrow: "PARTNER GUIDE",
           headline: "Everything you need to grow your presence downtown.",
-          copy: "Create campaigns, publish offers, measure results, and understand how people interact with your business from one workspace.",
+          copy: "Manage your downtown presence, launch campaigns, and read the actions people take from the map.",
           primary: ["Open Workspace", () => navigate("/partner-workspace/overview")],
           secondary: ["Contact Support", () => navigate("/partners/sign-up?intent=support")],
           overview: [
-            ["Your Workspace", "Manage your profile, locations, team, and settings."],
-            ["Campaigns", "Create offers, events, promotions, and featured placements."],
-            ["Reports", "See visits, saves, scans, and participation."],
-            ["QR Experiences", "Create QR touchpoints that connect people to your business."],
+            ["Workspace", "Profile, locations, team, and account settings."],
+            ["Campaigns", "Offers, events, QR moments, and featured placements."],
+            ["Reports", "Saves, scans, visits, and follow-up activity."],
+            ["Map Presence", "How your business appears in nearby decisions."],
           ],
-          steps: ["Complete your profile.", "Choose a plan.", "Launch your first campaign.", "Generate QR experiences.", "Measure results."],
+          steps: ["Complete your profile.", "Launch one clear campaign.", "Review what people did next."],
           how: [
-            ["People discover you.", "Your places, offers, and events appear where people are already choosing what to do."],
-            ["People interact.", "Residents and visitors can save, scan, RSVP, request directions, or open a detail panel."],
-            ["You learn what works.", "Reports turn nearby activity into a clear next step."],
+            ["Show up nearby.", "Your place, offer, or event appears while people are deciding what to do."],
+            ["Capture action.", "Saves, scans, RSVPs, direction taps, and QR moments connect back to your business."],
+            ["Improve the next move.", "Reports turn local activity into a practical campaign decision."],
           ],
           features: [
-            ["Business Profile", "Keep your public presence current."],
-            ["Campaigns", "Run offers, events, and featured placements."],
+            ["Profile", "Keep your public listing current."],
+            ["Offers", "Give nearby people a reason to visit."],
             ["Events", "Promote moments people can attend."],
-            ["Offers", "Give nearby people one simple reason to visit."],
-            ["QR Experiences", "Connect physical touchpoints to the map."],
-            ["Reports", "Read saves, scans, visits, and follow-up activity."],
-            ["Team Members", "Invite the right people into the workspace."],
-            ["Billing", "Manage plans and account access."],
-            ["Notifications", "Stay aware of useful activity."],
-            ["Permissions", "Control who can update your presence."],
+            ["QR", "Connect physical touchpoints to the map."],
+            ["Reports", "Read saves, scans, visits, and use."],
+            ["Team", "Manage access and permissions."],
           ],
           tipsTitle: "Helpful tips",
           tips: [
-            "Update your hours regularly.",
-            "Refresh campaigns monthly.",
-            "Use QR codes in physical spaces.",
-            "Measure what people actually do.",
-            "Keep offers time-sensitive.",
+            "Keep hours and images current.",
+            "Make each campaign time-specific.",
+            "Use QR codes where people already pause.",
           ],
           faq: [
-            ["How do campaigns work?", "Start with one place, one audience, and one clear action. Then review what people saved, scanned, opened, or used."],
-            ["How are scans measured?", "QR scans are grouped with the related place, campaign, or offer so the report stays easy to read."],
-            ["How do I invite team members?", "Open the workspace and add people from your team settings when your account supports it."],
-            ["How do QR codes work?", "QR codes can point to offers, events, places, or partner moments that people can open from the map."],
-            ["How do billing and plans work?", "Plans are managed from the partner workspace and can be adjusted as your presence grows."],
+            ["How do campaigns work?", "Start with one place, one audience, and one action. Then review what people saved, scanned, opened, or used."],
+            ["How are scans measured?", "QR scans are grouped with the related place, campaign, or offer."],
+            ["How do QR codes work?", "QR codes can point to offers, events, places, or partner moments from the map."],
           ],
           help: ["Need a hand?", "We are here to help you set up the right next step.", "Partner Documentation", () => navigate("/partners")],
         }
       : {
           eyebrow: "USING DOWNTOWN PERKS",
-          headline: "Everything you need to get more out of downtown.",
-          copy: "Find nearby places, save your favorites, unlock local perks, and discover what is happening around you.",
+          headline: "Use the map to decide what to do next.",
+          copy: "Find nearby places, compare the moment, save what matters, and open resident perks when they apply.",
           primary: ["Explore the Map", () => openResidentLayer("All")],
           secondary: ["Get Your Perks Card", () => switchMode("resident", "pass", "", { collapseConsole: true })],
           overview: [
-            ["Map", "Find what is nearby."],
-            ["Events", "See what is happening today."],
-            ["Perks", "Unlock local offers."],
-            ["Saved", "Keep your favorite places together."],
+            ["Map", "Restaurants, coffee, events, services, and buildings nearby."],
+            ["Perks", "Resident benefits and partner offers in context."],
+            ["Saved", "Places and plans you want to come back to."],
+            ["Card", "Your resident QR for participating moments."],
           ],
-          steps: ["Open the map.", "Find somewhere nearby.", "Save your favorites.", "Visit.", "Come back."],
+          steps: ["Search or choose a filter.", "Open the place, event, or perk.", "Save it, get directions, or show your card."],
           how: [
-            ["People open Downtown Perks.", "Start with the map, a category, or a nearby search."],
-            ["They find something nearby.", "Open places, events, perks, listings, and useful local details."],
-            ["They enjoy more of downtown.", "Save what matters, get directions, and use the card when available."],
+            ["Start with intent.", "Use a category, nearby search, or Ask the Map prompt."],
+            ["Open the right layer.", "Places, events, perks, listings, and useful local details stay connected to the map."],
+            ["Act without losing context.", "Save, get directions, share, or show your resident card from the same flow."],
           ],
           features: [
-            ["Live Map", "See useful places around you."],
-            ["Nearby Places", "Find food, coffee, events, services, and listings."],
-            ["Events", "Check what is happening today or this week."],
-            ["Perks", "Open offers that are available nearby."],
-            ["Resident Card", "Confirm resident access when a partner asks."],
-            ["Saved Places", "Keep favorites in one place."],
-            ["Directions", "Get to the next stop quickly."],
-            ["Share", "Send a place or plan to someone else."],
-            ["Notifications", "Stay aware of useful nearby moments."],
-            ["Search", "Ask the map for what you need right now."],
+            ["Nearby", "Dining, coffee, services, events, and buildings."],
+            ["Perks", "Benefits attached to places and partner moments."],
+            ["Events", "What is happening today or this week."],
+            ["Resident Card", "A QR pass for participating partners."],
+            ["Saved", "A personal list of places and plans."],
+            ["Ask the Map", "Prompts for what you need right now."],
           ],
           tipsTitle: "Local tips",
           tips: [
-            "Explore somewhere new after work.",
             "Save places before the weekend.",
             "Check events before heading out.",
-            "Use your Perks Card when available.",
-            "Build your own downtown routine.",
+            "Show your card when a perk asks for it.",
           ],
           faq: [
-            ["How do perks work?", "Open a perk from the map and follow the partner instructions shown in the detail panel."],
-            ["Is Downtown Perks free?", "You can explore the map freely. Some resident access features may depend on your building or membership."],
-            ["Do I need an account?", "You can browse nearby places without one, but saved places and resident access work better when connected to you."],
-            ["How do I save places?", "Open a place, event, listing, or perk and use the saved action when it is available."],
+            ["How do perks work?", "Open a perk from the map to see the benefit, where it applies, and what to show."],
+            ["Do I need an account?", "You can browse freely. Saved places and resident access work best when connected to your resident profile."],
+            ["How do I save places?", "Open a place, event, listing, or perk and use the save action when it appears."],
             ["How do I unlock offers?", "Open the Perks layer and show the resident card or offer details when a partner asks."],
-            ["How do I report a problem?", "Use the support action and include the place, offer, or listing you were viewing."],
           ],
           help: ["Need some help?", "We are happy to point you in the right direction.", "Frequently Asked Questions", scrollToInfoFaq],
         };
@@ -13201,10 +13185,6 @@ export default function MapPage() {
             <button type="button" onClick={content.help[3]}>{content.help[2]}</button>
           </section>
 
-          <section className="dp-campaign-action-bar dp-info-guide-footer" aria-label="Information actions">
-            <button type="button" className="dp-tab-primary-action" onClick={content.primary[1]}>{content.primary[0]}</button>
-            <button type="button" className="dp-tab-secondary-action" onClick={content.secondary[1]}>{content.secondary[0]}</button>
-          </section>
         </div>
       </div>
     );
@@ -14347,7 +14327,7 @@ export default function MapPage() {
                 query: search || "",
               });
             }}
-            isCollapsed={consoleCollapsed}
+            isCollapsed={consoleCollapsed || hasOpenMapPanel}
             onCollapse={() => setConsoleCollapsed(true)}
             onExpand={() => setConsoleCollapsed(false)}
           />

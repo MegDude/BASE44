@@ -11753,9 +11753,9 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-resident-card-sheet
 ) {
   z-index: 900 !important;
-  bottom: 0 !important;
-  max-height: calc(100dvh - var(--dp-map-bottom-dock-h) - 10px) !important;
-  padding-bottom: calc(14px + var(--dp-map-bottom-dock-h)) !important;
+  bottom: calc(var(--dp-map-bottom-dock-h) + 8px) !important;
+  max-height: calc(100dvh - var(--dp-map-bottom-dock-h) - 104px) !important;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(
@@ -11770,8 +11770,8 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-resident-info-scroll,
   .dp-saved-downtown-scroll
 ) {
-  scroll-padding-bottom: calc(var(--dp-map-bottom-dock-h) + 24px) !important;
-  padding-bottom: calc(var(--dp-map-bottom-dock-h) + 24px) !important;
+  scroll-padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)) !important;
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet-action-footer,
@@ -11787,17 +11787,17 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-detail-d
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet,
 html body #root#root .dp-map-page.dp-map-page .dp-pass-panel.dp-pass-panel,
 html body #root#root .dp-map-page.dp-map-page .dp-resident-card-sheet.dp-resident-card-sheet {
-  bottom: 0 !important;
+  bottom: calc(var(--dp-map-bottom-dock-h) + 8px) !important;
   z-index: 900 !important;
-  max-height: calc(100dvh - 10px) !important;
-  padding-bottom: calc(var(--dp-map-bottom-dock-h) + 14px) !important;
+  max-height: calc(100dvh - var(--dp-map-bottom-dock-h) - 104px) !important;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll,
 html body #root#root .dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell :is(.dp-panel-scroll, .dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll, .dp-resident-tab-panel-list, .dp-resident-info-scroll, .dp-saved-downtown-scroll),
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet :is(.dp-map-sheet-scroll, .dp-pass-panel-body) {
-  padding-bottom: calc(var(--dp-map-bottom-dock-h) + 28px) !important;
-  scroll-padding-bottom: calc(var(--dp-map-bottom-dock-h) + 28px) !important;
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* Final Downtown Perks Google marker contract: circular icon pins only. */
@@ -14098,12 +14098,12 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
   .dp-drawer-shell
 ) {
   position: absolute !important;
-  inset-inline: 0 !important;
-  bottom: 0 !important;
+  inset-inline: 4px !important;
+  bottom: calc(var(--dp-map-bottom-dock-h, 64px) + 8px) !important;
   z-index: 620 !important;
-  width: min(100%, 768px) !important;
-  max-width: min(100%, 768px) !important;
-  max-height: min(82dvh, calc(100dvh - 84px)) !important;
+  width: auto !important;
+  max-width: calc(100vw - 8px) !important;
+  max-height: min(78dvh, calc(100dvh - var(--dp-map-bottom-dock-h, 64px) - 112px)) !important;
   min-height: 0 !important;
   margin-inline: auto !important;
   display: flex !important;
@@ -18764,4 +18764,126 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-faq sum
     max-width: calc(100vw - 24px) !important;
     border-radius: 18px !important;
   }
+}
+
+/* Final shared map panel geometry: stay below search, above nav, and avoid blank scroll tails. */
+html body #root#root .dp-map-page.dp-map-page.dp-map-page {
+  --dp-map-panel-top-clearance: 116px;
+  --dp-map-panel-bottom-clearance: calc(var(--dp-map-bottom-dock-h, 64px) + 8px);
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-drawer-shell,
+  aside.dp-map-drawer-panel,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  aside.dp-map-panel.dp-detail-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet
+) {
+  box-sizing: border-box !important;
+  right: 4px !important;
+  bottom: var(--dp-map-panel-bottom-clearance) !important;
+  left: 4px !important;
+  width: auto !important;
+  max-width: calc(100vw - 8px) !important;
+  max-height: calc(100dvh - var(--dp-map-panel-top-clearance) - var(--dp-map-panel-bottom-clearance)) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-map-directory-list,
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll
+) {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-panel-bottom-spacer {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-map-sheet-action-footer,
+  .dp-saved-sticky-footer
+) {
+  bottom: calc(var(--dp-map-bottom-dock-h, 64px) + 8px) !important;
+}
+
+@media (max-height: 740px) {
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page {
+    --dp-map-panel-top-clearance: 96px;
+  }
+}
+
+@media (min-width: 700px) {
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page {
+    --dp-map-panel-top-clearance: 104px;
+    --dp-map-panel-bottom-clearance: 16px;
+  }
+
+  html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    aside.dp-panel-shell,
+    aside.dp-map-drawer-shell,
+    aside.dp-map-drawer-panel,
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-directory-sheet,
+    aside.dp-map-panel.dp-detail-drawer,
+    .dp-map-sheet,
+    .dp-pass-panel,
+    .dp-resident-card-sheet
+  ) {
+    right: 12px !important;
+    left: 12px !important;
+    width: min(760px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 18px !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-detail-drawer,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-detail-drawer,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-destination-drawer,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-directory-sheet {
+  bottom: var(--dp-map-panel-bottom-clearance) !important;
+  max-height: calc(100dvh - var(--dp-map-panel-top-clearance) - var(--dp-map-panel-bottom-clearance)) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.dp-map-drawer-shell :is(
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll
+) {
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)) !important;
 }
