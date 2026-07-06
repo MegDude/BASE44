@@ -16699,6 +16699,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route-lin
   stroke-width: 2.4 !important;
   stroke-linecap: round !important;
   stroke-dasharray: 1 10 !important;
+  animation: dp-story-route-drift 16s linear infinite !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin-field {
@@ -16724,6 +16725,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin {
   font-weight: 720 !important;
   letter-spacing: 0.01em !important;
   line-height: 1 !important;
+  animation: dp-story-pin-float 5.6s ease-in-out infinite !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin i {
@@ -16747,16 +16749,19 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="1"] {
   right: 9% !important;
   top: 38% !important;
+  animation-delay: 0.8s !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="2"] {
   left: 16% !important;
   bottom: 18% !important;
+  animation-delay: 1.5s !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin[data-index="3"] {
   right: 18% !important;
   bottom: 20% !important;
+  animation-delay: 2.1s !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device {
@@ -16772,6 +16777,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device {
   background: rgba(255, 255, 255, 0.88) !important;
   box-shadow: 0 26px 70px rgba(11, 31, 51, 0.13) !important;
   backdrop-filter: blur(24px) !important;
+  animation: dp-story-device-breathe 7s ease-in-out infinite !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-top {
@@ -17172,7 +17178,20 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   display: flex !important;
   justify-content: center !important;
   padding: 0 16px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   pointer-events: none !important;
+}
+
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer::before,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer::after,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions::before,
+html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions::after {
+  display: none !important;
+  content: none !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions,
@@ -17186,6 +17205,9 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   justify-content: center !important;
   margin: 0 !important;
   padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   transform: none !important;
   pointer-events: auto !important;
 }
@@ -17296,6 +17318,29 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
 
   html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.dp-splash-story-footer .dp-fixed-map-actions {
     width: min(calc(100vw - 44px), 274px) !important;
+  }
+}
+
+@keyframes dp-story-route-drift {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -90; }
+}
+
+@keyframes dp-story-pin-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
+}
+
+@keyframes dp-story-device-breathe {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__route-line,
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin,
+  html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device {
+    animation: none !important;
   }
 }
 
