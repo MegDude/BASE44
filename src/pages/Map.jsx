@@ -3186,7 +3186,55 @@ function escapeJsString(value) {
     .replace(/\r/g, "\\r");
 }
 
-function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes }) {
+function getZoomScaledMarkerSize(zoom, baseSize) {
+  const numericZoom = Number(zoom) || 0;
+  if (numericZoom >= 20) return Math.round(baseSize * 1.62);
+  if (numericZoom >= 19) return Math.round(baseSize * 1.5);
+  if (numericZoom >= 18) return Math.round(baseSize * 1.34);
+  if (numericZoom >= 17) return Math.round(baseSize * 1.17);
+  if (numericZoom >= 16) return Math.round(baseSize * 1.06);
+  if (numericZoom >= 15) return Math.round(baseSize * 1.02);
+  return baseSize;
+}
+
+function getZoomMarkerMetrics(zoom, { selected = false, clusterCount = 0 } = {}) {
+  const pinSize = getZoomScaledMarkerSize(zoom, selected ? 40 : 36);
+  const clusterBase = clusterCount > 49 ? 52 : clusterCount > 9 ? 44 : 38;
+  const clusterSize = getZoomScaledMarkerSize(zoom, clusterBase);
+  return {
+    pinSize,
+    pinIconSize: Math.max(17, Math.round(pinSize * 0.47)),
+    legendsLogoSize: Math.max(22, Math.round(pinSize * 0.66)),
+    stopNumberSize: Math.max(18, Math.round(pinSize * 0.43)),
+    clusterSize,
+    largeClusterSize: getZoomScaledMarkerSize(zoom, 58),
+  };
+}
+
+function zoomMarkerStyleAttribute(zoom, options = {}) {
+  const metrics = getZoomMarkerMetrics(zoom, options);
+  return [
+    `--dp-zoom-pin-size:${metrics.pinSize}px`,
+    `--dp-zoom-pin-icon-size:${metrics.pinIconSize}px`,
+    `--dp-zoom-legends-logo-size:${metrics.legendsLogoSize}px`,
+    `--dp-zoom-stop-number-size:${metrics.stopNumberSize}px`,
+    `--dp-zoom-cluster-size:${metrics.clusterSize}px`,
+    `--dp-zoom-large-cluster-size:${metrics.largeClusterSize}px`,
+  ].join(";");
+}
+
+function applyZoomMarkerStyle(element, zoom, options = {}) {
+  if (!element) return;
+  const metrics = getZoomMarkerMetrics(zoom, options);
+  element.style.setProperty("--dp-zoom-pin-size", `${metrics.pinSize}px`);
+  element.style.setProperty("--dp-zoom-pin-icon-size", `${metrics.pinIconSize}px`);
+  element.style.setProperty("--dp-zoom-legends-logo-size", `${metrics.legendsLogoSize}px`);
+  element.style.setProperty("--dp-zoom-stop-number-size", `${metrics.stopNumberSize}px`);
+  element.style.setProperty("--dp-zoom-cluster-size", `${metrics.clusterSize}px`);
+  element.style.setProperty("--dp-zoom-large-cluster-size", `${metrics.largeClusterSize}px`);
+}
+
+function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, zoom = INITIAL_MAP_ZOOM }) {
   const escapedId = escapeHtmlAttribute(place.id);
   const escapedLabel = escapeHtmlAttribute(ariaLabel);
   const pinLabel = escapeHtmlAttribute(pin.label);
@@ -3202,10 +3250,11 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes })
     ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${LEGENDS_PIN_LOGO}" alt="" aria-hidden="true" loading="eager" decoding="async" />`
     : pin.glyph;
 
-  const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span>${priceLabel}</button>`;
+  const zoomStyle = zoomMarkerStyleAttribute(zoom, { selected });
+  const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" style="${zoomStyle}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span>${priceLabel}</button>`;
   const stopNumber = Number(place?.routeStopNumber || 0);
   if (!stopNumber) return buttonHtml;
-  return `<div class="dp-collection-stop ${selected ? "is-current" : ""}" data-collection-stop="${stopNumber}">${buttonHtml}<span class="dp-collection-stop__number">${stopNumber}</span></div>`;
+  return `<div class="dp-collection-stop ${selected ? "is-current" : ""}" style="${zoomStyle}" data-collection-stop="${stopNumber}">${buttonHtml}<span class="dp-collection-stop__number">${stopNumber}</span></div>`;
 }
 
 function getMarkerDataKind(place) {
@@ -3271,18 +3320,9 @@ function svgMarkerDataUrl(svg) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
-function getZoomScaledMarkerSize(zoom, baseSize) {
-  const numericZoom = Number(zoom) || 0;
-  if (numericZoom >= 19) return Math.round(baseSize * 1.5);
-  if (numericZoom >= 18) return Math.round(baseSize * 1.34);
-  if (numericZoom >= 17) return Math.round(baseSize * 1.17);
-  if (numericZoom >= 16) return Math.round(baseSize * 1.06);
-  return baseSize;
-}
-
 function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
-  const size = getZoomScaledMarkerSize(zoom, 36);
+  const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
   const fill = isLegends ? "#FFFFFF" : "#0B1F33";
   const stroke = "#C8A96A";
@@ -3344,7 +3384,20 @@ function getCollectionRouteStyle(collectionRoute) {
   };
 }
 
-function pinIcon(place, selected, pulsing = false) {
+function getZoomRouteMetrics(zoom) {
+  const scale = Math.max(1, getZoomScaledMarkerSize(zoom, 100) / 100);
+  return {
+    strokeWeight: Math.round((4 * scale) * 10) / 10,
+    ambientStrokeWeight: Math.round((8 * scale) * 10) / 10,
+    overlapStrokeWeight: Math.round((5 * scale) * 10) / 10,
+    dotScale: Math.round((2.1 * scale) * 10) / 10,
+    dashedDotScale: Math.round((2.4 * scale) * 10) / 10,
+    repeat: zoom >= 18 ? "34px" : zoom >= 17 ? "38px" : "42px",
+    dashedRepeat: zoom >= 18 ? "24px" : zoom >= 17 ? "27px" : "30px",
+  };
+}
+
+function pinIcon(place, selected, pulsing = false, zoom = INITIAL_MAP_ZOOM) {
   const pin = resolveEntityPin(place);
   const isEventPin = isEventEntity(place);
   const isHappyHourPin = isHappyHourEntity(place);
@@ -3362,7 +3415,7 @@ function pinIcon(place, selected, pulsing = false) {
   const legendsPinClass = isLegendsPin ? "dp-live-pin--legends dp-live-pin--legends-logo" : "";
   const rentalPinClass = isRentalEntity(place) ? "dp-live-pin--rental" : "";
   const shouldPulse = false;
-  const pinSize = selected ? 32 : 28;
+  const pinSize = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const iconSize = [pinSize, pinSize];
   const iconAnchor = [pinSize / 2, pinSize / 2];
   const ariaLabel = legendsListing ? `Legends listing at ${legendsListing.address}` : `${place.name} details`;
@@ -3375,6 +3428,7 @@ function pinIcon(place, selected, pulsing = false) {
       selected,
       pulsing: shouldPulse,
       classes: `${eventPinClass} ${happyHourPinClass} ${campaignPinClass} ${legendsPinClass} ${rentalPinClass}`,
+      zoom,
     }),
     iconSize,
     iconAnchor,
@@ -3382,12 +3436,12 @@ function pinIcon(place, selected, pulsing = false) {
   });
 }
 
-function clusterIcon(count) {
+function clusterIcon(count, zoom = INITIAL_MAP_ZOOM) {
   const safeCount = Number.isFinite(Number(count)) ? Number(count) : 2;
-  const size = safeCount > 24 ? 38 : safeCount > 8 ? 34 : 32;
+  const size = getZoomMarkerMetrics(zoom, { clusterCount: safeCount }).clusterSize;
   return L.divIcon({
     className: "dp-leaflet-cluster",
-    html: `<div class="dp-map-cluster" aria-hidden="true"><span>${safeCount > 99 ? "99+" : safeCount}</span></div>`,
+    html: `<div class="dp-map-cluster" style="${zoomMarkerStyleAttribute(zoom, { clusterCount: safeCount })}" aria-hidden="true"><span>${safeCount > 99 ? "99+" : safeCount}</span></div>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   });
@@ -10809,7 +10863,7 @@ function GoogleMapCanvas({
     lastSelectedFocusRef.current = focusId;
     runProgrammaticMove(() => {
       map.panTo({ lat: coords[0], lng: coords[1] });
-      if ((map.getZoom?.() || 0) < 17) map.setZoom(17);
+      if ((map.getZoom?.() || 0) < 18) map.setZoom(18);
     });
   }, [runProgrammaticMove, selected, selectedId]);
 
@@ -10826,7 +10880,7 @@ function GoogleMapCanvas({
     if (coords.length === 1) {
       runProgrammaticMove(() => {
         map.panTo({ lat: coords[0][0], lng: coords[0][1] });
-        map.setZoom(Math.max(map.getZoom?.() || 16, 17));
+        map.setZoom(Math.max(map.getZoom?.() || 16, 18));
       });
       return;
     }
@@ -10837,7 +10891,7 @@ function GoogleMapCanvas({
       map.fitBounds(bounds, 64);
       maps.event.addListenerOnce(map, "bounds_changed", () => {
         if ((map.getZoom?.() || 0) < 15) map.setZoom(15);
-        if ((map.getZoom?.() || 0) > 17) map.setZoom(17);
+        if ((map.getZoom?.() || 0) > 18) map.setZoom(18);
       });
     });
   }, [fitActiveKey, fitEnabled, fitPlaces, runProgrammaticMove, selectedId]);
@@ -10854,12 +10908,13 @@ function GoogleMapCanvas({
     if (routePath.length < 2) return undefined;
 
     const style = getCollectionRouteStyle(collectionRoute);
+    const routeMetrics = getZoomRouteMetrics(mapZoom);
     const ambientRoute = new maps.Polyline({
       map,
       path: routePath,
       strokeColor: style.ambientColor,
       strokeOpacity: style.ambientOpacity,
-      strokeWeight: 14,
+      strokeWeight: routeMetrics.ambientStrokeWeight,
       clickable: false,
       zIndex: 18,
     });
@@ -10868,7 +10923,7 @@ function GoogleMapCanvas({
       path: routePath,
       strokeColor: style.overlapColor,
       strokeOpacity: style.overlapOpacity,
-      strokeWeight: 9,
+      strokeWeight: routeMetrics.overlapStrokeWeight,
       clickable: false,
       zIndex: 19,
     });
@@ -10877,7 +10932,7 @@ function GoogleMapCanvas({
       path: routePath,
       strokeColor: style.mainColor,
       strokeOpacity: style.mainOpacity,
-      strokeWeight: 4,
+      strokeWeight: routeMetrics.strokeWeight,
       clickable: true,
       zIndex: 21,
       icons: [{
@@ -10888,10 +10943,10 @@ function GoogleMapCanvas({
           strokeColor: style.overlapColor,
           strokeOpacity: 0.86,
           strokeWeight: 1.4,
-          scale: style.isDashed ? 2.4 : 2.1,
+          scale: style.isDashed ? routeMetrics.dashedDotScale : routeMetrics.dotScale,
         },
         offset: "14px",
-        repeat: style.isDashed ? "30px" : "42px",
+        repeat: style.isDashed ? routeMetrics.dashedRepeat : routeMetrics.repeat,
       }],
     });
 
@@ -10901,7 +10956,7 @@ function GoogleMapCanvas({
       collectionRoutePolylinesRef.current.forEach((polyline) => polyline?.setMap?.(null));
       collectionRoutePolylinesRef.current = [];
     };
-  }, [collectionRoute, loadState]);
+  }, [collectionRoute, loadState, mapZoom]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -10930,6 +10985,7 @@ function GoogleMapCanvas({
         element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
         element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
         element.setAttribute("aria-label", `Open ${item.count} places nearby`);
+        applyZoomMarkerStyle(element, mapZoom, { clusterCount: item.count });
         element.addEventListener("click", () => {
           onClusterOpen(item);
           const bounds = new maps.LatLngBounds();
@@ -10938,7 +10994,7 @@ function GoogleMapCanvas({
             runProgrammaticMove(() => {
               map.fitBounds(bounds, 64);
               maps.event.addListenerOnce(map, "bounds_changed", () => {
-                if ((map.getZoom?.() || 0) > 17) map.setZoom(17);
+                if ((map.getZoom?.() || 0) > 18) map.setZoom(18);
               });
             });
           }
@@ -10969,6 +11025,7 @@ function GoogleMapCanvas({
 
       const wrapper = document.createElement("div");
       wrapper.className = "dp-google-map-marker-shell";
+      applyZoomMarkerStyle(wrapper, mapZoom, { selected: place.id === selectedId });
       wrapper.innerHTML = mapPinButtonHtml({
         place,
         pin: resolveEntityPin(place),
@@ -10976,6 +11033,7 @@ function GoogleMapCanvas({
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
         classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
+        zoom: mapZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
       button?.addEventListener("click", (event) => {
@@ -11099,12 +11157,12 @@ function ClusterMarker({ cluster, onOpen }) {
       map.flyToBounds(bounds.pad(0.18), {
         animate: true,
         duration: 0.55,
-        maxZoom: Math.min(Math.max(map.getZoom() + 2, 16), 17),
+        maxZoom: Math.min(Math.max(map.getZoom() + 2, 16), 18),
         paddingTopLeft: [24, 112],
         paddingBottomRight: [24, 104],
       });
     } else {
-      map.flyTo(cluster.coords, Math.min(map.getZoom() + 2, 17), { duration: 0.55 });
+      map.flyTo(cluster.coords, Math.min(map.getZoom() + 2, 18), { duration: 0.55 });
     }
 
     window.setTimeout(() => onOpen(cluster), 180);
@@ -11187,7 +11245,7 @@ function ClusterMarker({ cluster, onOpen }) {
     <Marker
       ref={markerRef}
       position={cluster.coords}
-      icon={clusterIcon(cluster.count)}
+      icon={clusterIcon(cluster.count, map.getZoom())}
       eventHandlers={{
         click: expandCluster,
       }}
@@ -11196,6 +11254,7 @@ function ClusterMarker({ cluster, onOpen }) {
 }
 
 function PlaceMarker({ place, selected, pulsing, onSelect, onSelectNearestLegends, onHover, onHoverEnd }) {
+  const map = useMap();
   const markerRef = useRef(null);
 
   useEffect(() => {
@@ -11268,7 +11327,7 @@ function PlaceMarker({ place, selected, pulsing, onSelect, onSelectNearestLegend
     <Marker
       ref={markerRef}
       position={place.coords}
-      icon={pinIcon(place, selected, pulsing)}
+      icon={pinIcon(place, selected, pulsing, map.getZoom())}
       keyboard
       title={place.name}
       alt={place.name}
