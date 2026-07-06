@@ -3,29 +3,105 @@
  * States: idle | scanning | success | error
  */
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
+
+const RESIDENT_ACCESS_STORAGE_KEY = 'dp_resident_access:current';
+const PROFILE_STORAGE_KEY = 'dp_profile_id';
+const TOUCHPOINT_STORAGE_KEY = 'downtown-perks-resident-touchpoints';
+
+function getOrCreateResidentUid() {
+  if (typeof window === 'undefined') return 'profile-server';
+
+  try {
+    const resident = JSON.parse(window.localStorage.getItem(RESIDENT_ACCESS_STORAGE_KEY) || 'null');
+    const residentUid = resident?.id || resident?.residentId || resident?.uid || resident?.profileId;
+    if (residentUid) return String(residentUid);
+
+    const existing = window.localStorage.getItem(PROFILE_STORAGE_KEY);
+    if (existing) return existing;
+
+    const next =
+      typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? `profile-${crypto.randomUUID()}`
+        : `profile-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, next);
+    return next;
+  } catch {
+    return `profile-${Date.now()}`;
+  }
+}
+
+function recordResidentQrTouchpoint(event) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    const current = JSON.parse(window.localStorage.getItem(TOUCHPOINT_STORAGE_KEY) || '[]');
+    const next = [event, ...(Array.isArray(current) ? current : [])].slice(0, 200);
+    window.localStorage.setItem(TOUCHPOINT_STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    // Local touchpoint capture should never block the redemption UI.
+  }
+
+  window.dispatchEvent(new CustomEvent('downtown-perks:resident-touchpoint', { detail: event }));
+}
 
 export default function QRCodeModal({ item, onClose, onSuccess }) {
   const { trackAction } = useUnifiedMapStore();
   const [state, setState] = useState('idle'); // idle | confirming | success | error
   const [rating, setRating] = useState(0);
+  const residentUid = useMemo(() => getOrCreateResidentUid(), []);
+  const issuedAt = useMemo(() => new Date().toISOString(), []);
+  const perkValue = item.perk_value || item.offer || item.primaryAction || 'resident perk';
+  const perkDescription = item.perk_description || item.description || item.summary || `Show this QR at ${item.name} to use the resident perk.`;
+  const qrPayload = useMemo(() => {
+    const cardUrl = new URL('/map', typeof window !== 'undefined' ? window.location.origin : 'https://base-44-h2iq.vercel.app');
+    cardUrl.searchParams.set('mode', 'resident');
+    cardUrl.searchParams.set('tab', 'pass');
+    cardUrl.searchParams.set('residentUid', residentUid);
+    cardUrl.searchParams.set('touchpoint', 'use_perk');
+    cardUrl.searchParams.set('entityId', item.id);
 
-  const qrValue = JSON.stringify({
-    type: 'perk_redemption',
-    venueId: item.id,
-    venueName: item.name,
-    timestamp: new Date().toISOString(),
-  });
+    return {
+      type: 'downtown_perks.resident_qr',
+      version: 1,
+      uid: residentUid,
+      profileId: residentUid,
+      venueId: item.id,
+      venueName: item.name,
+      perkValue,
+      perkDescription,
+      qrValue: cardUrl.toString(),
+      timestamp: issuedAt,
+    };
+  }, [issuedAt, item.id, item.name, perkDescription, perkValue, residentUid]);
+  const qrValue = JSON.stringify(qrPayload);
+
+  useEffect(() => {
+    recordResidentQrTouchpoint({
+      id: `${item.id}-${residentUid}-${issuedAt}`,
+      eventType: 'resident_qr_presented',
+      action: 'use_perk',
+      source: 'unified_drawer_qr_modal',
+      uid: residentUid,
+      profileId: residentUid,
+      entityId: item.id,
+      entityName: item.name,
+      perkValue,
+      perkDescription,
+      issuedAt,
+    });
+  }, [issuedAt, item.id, item.name, perkDescription, perkValue, residentUid]);
 
   const handleConfirm = async () => {
     setState('confirming');
     try {
       await trackAction(item.id, 'redeem', {
         itemType: 'venue',
-        perkValue: item.perk_value,
+        perkValue,
+        residentUid,
       });
       setState('success');
       setTimeout(() => onSuccess?.(), 2000);
@@ -80,10 +156,10 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
             >
               <div>
                 <h2 className="text-2xl font-bold text-foreground mb-1">
-                  Get {item.perk_value}
+                  {perkValue}
                 </h2>
                 <p className="text-[13px] text-muted-foreground">
-                  Scan this QR at {item.name}
+                  {perkDescription}
                 </p>
               </div>
 

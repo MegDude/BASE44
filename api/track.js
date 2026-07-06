@@ -13,7 +13,8 @@ const ACTION_TYPE_MAP = {
   redeem: 'redemption',
   rsvp: 'rsvp',
   filter_apply: 'open',
-  building_anchor: 'open'
+  building_anchor: 'open',
+  resident_qr_presented: 'redemption'
 };
 
 function normalizeActionType(type) {

@@ -15467,12 +15467,29 @@ html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-modal h2 {
   font-weight: 760 !important;
 }
 
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-value {
+  margin: 8px auto 0 !important;
+  max-width: 32ch !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  font-weight: 760 !important;
+  color: #9A7A2E !important;
+}
+
 html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-copy {
   margin: 10px auto 0 !important;
   max-width: 30ch !important;
   font-size: 13px !important;
   line-height: 1.5 !important;
   color: rgba(11, 31, 51, 0.68) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-terms {
+  margin: 8px auto 0 !important;
+  max-width: 32ch !important;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  color: rgba(11, 31, 51, 0.56) !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-frame {

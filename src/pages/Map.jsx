@@ -1123,6 +1123,7 @@ function getAllAreaLabel(mode, activeFilter) {
 const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
 const DEMO_CARD_CODE = "DP-RES-78701";
 const PERKS_CARD_QR_SRC = "/images/card/perks-card-qr.png";
+const RESIDENT_ACCESS_STORAGE_KEY = "dp_resident_access:current";
 const RESIDENT_TOUCHPOINTS_STORAGE_KEY = "downtown-perks-resident-touchpoints";
 const RESIDENT_QR_EVENT_TYPE = "resident_qr_presented";
 
@@ -1132,6 +1133,15 @@ function getQrImageUrl(value) {
 }
 
 function getResidentProfileUid() {
+  if (typeof window !== "undefined") {
+    try {
+      const resident = JSON.parse(window.localStorage.getItem(RESIDENT_ACCESS_STORAGE_KEY) || "null");
+      const residentUid = resident?.id || resident?.residentId || resident?.uid || resident?.profileId;
+      if (residentUid) return String(residentUid);
+    } catch {
+      // Fall back to the workflow profile id below.
+    }
+  }
   return getWorkflowProfileId();
 }
 
@@ -1143,10 +1153,35 @@ function getEntityTouchpointName(place) {
   return String(place?.name || place?.title || place?.raw?.name || "Downtown Perks");
 }
 
+function getResidentQrPerkCopy(place) {
+  if (!place) {
+    return {
+      title: "Downtown Perks Card",
+      value: "Verified resident access",
+      description: "Use this card for eligible resident perks, event check-ins, and participating partner experiences.",
+      terms: "Availability can vary by partner, event, and building.",
+    };
+  }
+
+  const perk = getResidentPerkDetails(place);
+  const title = formatResidentPerkHeading(perk.offer);
+  const value = String(perk.value || perk.offer || "").trim();
+  const description = getPerkOutlineCopy(place, perk) || perk.description || place.summary || place.description || "";
+  const terms = String(perk.terms || "").trim();
+
+  return {
+    title,
+    value,
+    description,
+    terms,
+  };
+}
+
 function buildResidentQrPayload({ place, action = "show_card", source = "resident_map" } = {}) {
   const uid = getResidentProfileUid();
   const entityId = getEntityTouchpointId(place);
   const entityName = getEntityTouchpointName(place);
+  const perk = getResidentQrPerkCopy(place);
   const sessionId = getWorkflowSessionId();
   const issuedAt = new Date().toISOString();
   const baseUrl = typeof window !== "undefined" ? window.location.origin : LIVE_CARD_URL;
@@ -1167,6 +1202,10 @@ function buildResidentQrPayload({ place, action = "show_card", source = "residen
     source,
     entityId,
     entityName,
+    perkTitle: perk.title,
+    perkValue: perk.value,
+    perkDescription: perk.description,
+    perkTerms: perk.terms,
     issuedAt,
     qrValue: qrUrl.toString(),
   };
@@ -1196,11 +1235,12 @@ function recordResidentTouchpoint(payload) {
   fireWorkflow("/api/track", {
     type: RESIDENT_QR_EVENT_TYPE,
     entityId: event.entityId,
-    entityType: "resident_touchpoint",
+    entityType: "perk",
     profileId: event.uid,
     sessionId: event.sessionId,
-    sourceType: "resident_qr",
-    value: event,
+    sourceType: "resident_card",
+    value: 1,
+    metadata: event,
   });
 
   if (event.action === "use_perk") {
@@ -3514,6 +3554,10 @@ function ResidentQrModal({ data, onClose }) {
 
   const placeName = getEntityTouchpointName(data.place);
   const actionLabel = data.action === "use_perk" ? "Perk access" : "Resident card";
+  const title = data.perkTitle || (data.action === "use_perk" ? `${placeName} resident perk` : "Downtown Perks Card");
+  const value = data.perkValue && data.perkValue !== title ? data.perkValue : "";
+  const description = data.perkDescription || `This code is tied to one resident profile UID and records this ${actionLabel.toLowerCase()} touchpoint for ${placeName}.`;
+  const terms = data.perkTerms || "";
 
   return (
     <AnimatePresence>
@@ -3539,10 +3583,10 @@ function ResidentQrModal({ data, onClose }) {
             <X className="h-4 w-4" />
           </button>
           <p className="dp-resident-qr-eyebrow">VERIFIED RESIDENT</p>
-          <h2 id="resident-qr-title">Show this QR</h2>
-          <p className="dp-resident-qr-copy">
-            This code is tied to one resident profile UID and records this {actionLabel.toLowerCase()} touchpoint for {placeName}.
-          </p>
+          <h2 id="resident-qr-title">{title}</h2>
+          {value && <p className="dp-resident-qr-value">{value}</p>}
+          <p className="dp-resident-qr-copy">{description}</p>
+          {terms && <p className="dp-resident-qr-terms">{terms}</p>}
           <div className="dp-resident-qr-frame">
             <DemoQrCode code={data.qrValue} className="dp-resident-qr-image" />
           </div>
