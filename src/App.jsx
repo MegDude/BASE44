@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
+import { canUseProductionAccountAccess } from "@/lib/productionGuards";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -42,7 +43,9 @@ function ProtectedRoute({ children }) {
   const hasWorkspaceActivation =
     typeof window !== "undefined" &&
     Boolean(window.localStorage.getItem("dp_partner_workspace:activation"));
+  const accountAccessEnabled = canUseProductionAccountAccess();
   const canBootstrapWorkspace =
+    accountAccessEnabled &&
     location.pathname.startsWith("/partner-workspace") &&
     (params.get("checkout") === "success" || params.get("provisioned") === "1" || hasWorkspaceActivation);
 

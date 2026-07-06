@@ -10,6 +10,12 @@ import {
   getOrganizationEntities,
   workspaceStatusCopy,
 } from "@/config/workspaceArchitecture";
+import {
+  canUseProductionAccountAccess,
+  DEMO_WRITE_MESSAGE,
+  getFrontendProductionGuard,
+  markDemoRecord,
+} from "@/lib/productionGuards";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -244,6 +250,7 @@ function getWorkspaceActivation() {
 
 function writePartnerWorkspaceSession(profile = {}, activation = {}) {
   if (typeof window === "undefined") return;
+  if (!canUseProductionAccountAccess()) return;
   const organizationName = profile.organization_name || profile.partner_name || activation.organizationName || "Downtown Perks Partner";
   const session = {
     type: "partner",
@@ -272,7 +279,7 @@ function provisionWorkspaceFromCheckout(search = "") {
   const setup = readCheckoutSetup(search);
   const businessName = normalizeBusinessName(setup);
   const modules = getPurchasedModules(setup);
-  const activation = {
+  const activationBase = {
     id: params.get("session_id") || existing?.id || `workspace-${Date.now()}`,
     organizationName: businessName,
     partnerType: setup.partnerType || setup.organizationType || "Partner",
@@ -293,6 +300,9 @@ function provisionWorkspaceFromCheckout(search = "") {
       { id: "media", label: "Add media and QR assets", done: modules.includes("media") || modules.includes("qr") },
     ],
   };
+  const activation = canUseProductionAccountAccess()
+    ? activationBase
+    : markDemoRecord(activationBase);
 
   const profile = {
     partner_name: businessName,
@@ -380,9 +390,10 @@ async function createWorkspaceItem(entityName, kind, email, payload) {
     });
     return normalizeWorkspaceItem(remoteItem || enriched, email);
   } catch {
-    const nextItems = [enriched, ...getStoredItems(kind, email)];
+    const demoItem = markDemoRecord(enriched);
+    const nextItems = [demoItem, ...getStoredItems(kind, email)];
     setStoredItems(kind, email, nextItems);
-    return enriched;
+    return demoItem;
   }
 }
 
@@ -398,8 +409,9 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
   );
 
   if (!id || String(id).startsWith("local-")) {
-    setStoredItems(kind, email, localItems.map((item) => (item.id === id ? { ...item, ...localUpdate } : item)));
-    return localUpdate;
+    const demoUpdate = markDemoRecord(localUpdate);
+    setStoredItems(kind, email, localItems.map((item) => (item.id === id ? { ...item, ...demoUpdate } : item)));
+    return demoUpdate;
   }
 
   try {
@@ -407,12 +419,75 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
     return normalizeWorkspaceItem(remoteItem || localUpdate, email);
   } catch {
     const exists = localItems.some((item) => item.id === id);
+    const demoUpdate = markDemoRecord(localUpdate);
     const nextItems = exists
-      ? localItems.map((item) => (item.id === id ? { ...item, ...localUpdate } : item))
-      : [localUpdate, ...localItems];
+      ? localItems.map((item) => (item.id === id ? { ...item, ...demoUpdate } : item))
+      : [demoUpdate, ...localItems];
     setStoredItems(kind, email, nextItems);
-    return localUpdate;
+    return demoUpdate;
   }
+}
+
+function useProductionReadinessStatus() {
+  const [status, setStatus] = useState(() => {
+    const frontend = getFrontendProductionGuard();
+    return {
+      persistence: frontend.persistenceLabel,
+      accountAccess: frontend.accountAccessLabel,
+      writeMode: frontend.writeModeLabel,
+      warning: frontend.demoMode ? "This action requires production persistence before it can be treated as permanent." : "",
+      accountNotice: frontend.message,
+    };
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/production-readiness")
+      .then((response) => response.json())
+      .then((payload) => {
+        if (cancelled || !payload || typeof payload !== "object") return;
+        setStatus((current) => ({
+          ...current,
+          persistence: payload.persistence || current.persistence,
+          accountAccess: payload.accountAccess || current.accountAccess,
+          writeMode: payload.writeMode || current.writeMode,
+          warning: payload.warning || "",
+          accountNotice: payload.accountNotice || current.accountNotice || "",
+        }));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return status;
+}
+
+function ProductionReadinessStatusBlock({ status }) {
+  return (
+    <section className="dp-production-readiness" aria-label="Production readiness">
+      <div>
+        <p>Production readiness</p>
+        <h2>Persistence and account access</h2>
+        <span>{status.warning || status.accountNotice || "Production writes and sign-in are connected."}</span>
+      </div>
+      <dl>
+        <div>
+          <dt>Persistence</dt>
+          <dd>{status.persistence}</dd>
+        </div>
+        <div>
+          <dt>Account access</dt>
+          <dd>{status.accountAccess}</dd>
+        </div>
+        <div>
+          <dt>Write mode</dt>
+          <dd>{status.writeMode}</dd>
+        </div>
+      </dl>
+    </section>
+  );
 }
 
 async function deleteWorkspaceItem(entityName, kind, email, id) {
@@ -440,6 +515,8 @@ export default function PartnerWorkspace() {
   const workspaceDisplayName = activation?.organizationName || user.organization_name || user.partner_name || user.full_name || user.email?.split("@")[0] || "Your workspace";
   const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
+  const productionReadiness = useProductionReadinessStatus();
+  const accountAccessEnabled = canUseProductionAccountAccess();
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -472,6 +549,7 @@ export default function PartnerWorkspace() {
   }, [tab, location.pathname, navigate]);
 
   function handleSignIn() {
+    if (!accountAccessEnabled) return;
     navigate("/partners/sign-in");
   }
 
@@ -499,7 +577,9 @@ export default function PartnerWorkspace() {
                 {isReportsTab
                   ? "Readable partner reports organized around what changed, what worked, and what to do next."
                   : activation
-                    ? `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
+                    ? activation.writeMode === "demo_session_only"
+                      ? `${activation.plan} is available for this demo session. Add production persistence before treating workspace records as permanent.`
+                      : `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
                     : "Registration, pricing, checkout, provisioning, and daily operations now move through one connected workspace path."}
               </p>
             </div>
@@ -510,9 +590,10 @@ export default function PartnerWorkspace() {
               <button
                 type="button"
                 onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut}
+                disabled={isPublicWorkspaceUser && !accountAccessEnabled}
                 className="dp-partner-workspace-signin"
               >
-                {isPublicWorkspaceUser ? "Sign in" : "Sign out"}
+                {isPublicWorkspaceUser ? accountAccessEnabled ? "Sign in" : "Sign-in unavailable" : "Sign out"}
               </button>
             </div>
           </div>
@@ -528,6 +609,8 @@ export default function PartnerWorkspace() {
               );
             })}
           </nav>
+
+          <ProductionReadinessStatusBlock status={productionReadiness} />
 
           {/* Tabs — animated sliding indicator */}
           <div className="dp-partner-workspace-tabs relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
@@ -1870,8 +1953,9 @@ function ProfileSection({ user, setUser }) {
       saveStoredProfile(normalizedUser);
       setUser(normalizedUser);
     } catch {
-      saveStoredProfile(nextUser);
-      setUser(nextUser);
+      const demoUser = markDemoRecord(nextUser);
+      saveStoredProfile(demoUser);
+      setUser(demoUser);
     } finally {
       setSaving(false);
       setSaved(true);
@@ -1919,7 +2003,7 @@ function ProfileSection({ user, setUser }) {
         </div>
 
         <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
-          {saved ? <><Check className="w-3.5 h-3.5" /> Saved</> : saving ? "Saving…" : "Save profile"}
+          {saved ? <><Check className="w-3.5 h-3.5" /> {form.writeMode === "demo_session_only" || user.writeMode === "demo_session_only" ? DEMO_WRITE_MESSAGE : "Saved"}</> : saving ? "Saving…" : "Save profile"}
         </button>
       </form>
     </motion.div>

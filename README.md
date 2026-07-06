@@ -28,6 +28,26 @@ VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
 
 Run the app: `npm run dev`
 
+**Production Persistence Requirements**
+
+Before production writes are considered permanent, configure Supabase/Postgres.
+
+Required for sign-in:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+Required for server-side durable writes:
+- `DATABASE_URL`
+
+or:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+Without these variables, the app must run in demo/temporary mode. Sign-in is disabled in production until the Supabase frontend auth variables are present, and write flows must show demo-session status instead of implying permanent account, CRM, campaign, checkout, registration, event, perk, or workspace records.
+
+For the map to load locally and in Vercel, set:
+- `VITE_GOOGLE_MAPS_API_KEY`
+
 **Publish your changes**
 
 Open [Base44.com](http://Base44.com) and click on Publish.

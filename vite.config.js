@@ -166,6 +166,17 @@ function localApiRoutes() {
 
       runLocalHandler(req, res, "./api/resident-access.js", logger, "Local resident access handler failed");
     });
+
+    middlewares.use("/api/production-readiness", async (req, res) => {
+      if (req.method !== "GET") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/production-readiness.js", logger, "Local production readiness handler failed");
+    });
   };
 
   return {
