@@ -17659,6 +17659,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-foo
 }
 
 /* Absolute final story no-fill pass: remove full background panels and color blocks. */
+html body #root#root main.dp-splash-page,
 html body #root#root main.dp-splash-page.dp-fixed-story-page,
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-shell,
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-splash-story-shell,
@@ -17688,6 +17689,10 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-fixed-story-foo
   -webkit-backdrop-filter: none !important;
 }
 
+html body #root#root main.dp-splash-page::before,
+html body #root#root main.dp-splash-page::after,
+html body #root#root main.dp-splash-page.dp-fixed-story-page::before,
+html body #root#root main.dp-splash-page.dp-fixed-story-page::after,
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__ambient::before,
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device::before,
 html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__device::after,
