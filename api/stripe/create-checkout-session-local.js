@@ -57,6 +57,21 @@ function normalizeMetadata(metadata) {
 }
 
 function buildWorkspaceSuccessUrl(appBaseUrl, metadata) {
+  if (metadata.accessType === "resident") {
+    const params = new URLSearchParams({
+      checkout: "success",
+      mode: "resident",
+      tab: "pass",
+      filter: "Perks",
+    });
+
+    ["residentId", "verificationStatus", "buildingName"].forEach((key) => {
+      if (metadata[key]) params.set(key, metadata[key]);
+    });
+
+    return `${appBaseUrl}/app?${params.toString()}&session_id={CHECKOUT_SESSION_ID}`;
+  }
+
   const params = new URLSearchParams({
     checkout: "success",
   });
@@ -141,7 +156,7 @@ export default async function handler(req, res) {
         ? checkoutLineItems
         : [{ price: defaultPrice, quantity: Number(quantity) || 1 }],
       success_url: buildWorkspaceSuccessUrl(appBaseUrl, normalizedMetadata),
-      cancel_url: `${appBaseUrl}/pricing?checkout=cancelled`,
+      cancel_url: normalizedMetadata.accessType === "resident" ? `${appBaseUrl}/card?checkout=cancelled` : `${appBaseUrl}/pricing?checkout=cancelled`,
       metadata: normalizedMetadata,
     });
 

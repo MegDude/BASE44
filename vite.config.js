@@ -155,6 +155,17 @@ function localApiRoutes() {
 
       runLocalHandler(req, res, "./api/stripe/create-checkout-session-local.js", logger, "Local checkout handler failed");
     });
+
+    middlewares.use("/api/resident-access", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/resident-access.js", logger, "Local resident access handler failed");
+    });
   };
 
   return {

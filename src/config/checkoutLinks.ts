@@ -64,7 +64,7 @@ export type CheckoutKey = StripeProductKey;
 export function resolveCheckoutTarget(key: CheckoutKey) {
   const product = STRIPE_PRODUCTS[key];
   const label = CHECKOUT_LABELS[key];
-  const mode = key.toLowerCase().includes("annual") ? "subscription" : "payment";
+  const mode = key.toLowerCase().includes("annual") || key === "residentJoinBuildingNotMember" ? "subscription" : "payment";
 
   if (product.checkoutUrl && mode !== "subscription") return { type: "url" as const, url: product.checkoutUrl, label, mode };
   if (product.priceId) return { type: "price" as const, priceId: product.priceId, label, mode };
