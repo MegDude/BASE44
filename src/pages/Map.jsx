@@ -6430,8 +6430,7 @@ function getWhyGoActionPrompt(chip, place) {
   return byChip[chip] || `${chip} for ${name}`;
 }
 
-function WhyGoChips({ place, onAsk, onContact }) {
-  const contactLabels = new Set(["Private Tour", "Schedule Tour", "Ask Legends", "Contact Legends", "Want To Live Here"]);
+function WhyGoChips({ place, onAsk }) {
   return (
     <DestinationSection title={getWhyGoSectionTitle(place)}>
       <div className="dp-destination-chip-row">
@@ -6440,9 +6439,6 @@ function WhyGoChips({ place, onAsk, onContact }) {
             key={chip}
             type="button"
             onClick={() => {
-              if (contactLabels.has(chip) && typeof onContact === "function") {
-                onContact();
-              }
               if (typeof onAsk === "function") {
                 onAsk(getWhyGoActionPrompt(chip, place));
               }
@@ -8411,7 +8407,7 @@ function PropertyNearbyRows({ rows = [], onAsk }) {
   );
 }
 
-function LegendsResidentialMatrixPanel({ place, onAsk, onContact }) {
+function LegendsResidentialMatrixPanel({ place, onAsk }) {
   const content = getLegendsResidentialContentForPlace(place);
   if (!content) return null;
   const guideRows = [
@@ -8484,12 +8480,6 @@ function LegendsResidentialMatrixPanel({ place, onAsk, onContact }) {
         <div className="dp-property-action-footer">
           <button type="button" className="dp-tab-primary-action" onClick={() => onAsk?.(`Open listing details for ${content.building_name}`)}>
             {content.cta_listing || "View Listing"}
-          </button>
-          <button type="button" className="dp-tab-secondary-action" onClick={onContact}>
-            {content.cta_tour || "Schedule Tour"}
-          </button>
-          <button type="button" className="dp-tab-secondary-action" onClick={onContact}>
-            {content.cta_contact || "Contact Legends"}
           </button>
         </div>
       </div>
@@ -9031,7 +9021,6 @@ function ResidentDrawerActions({
   savedIds,
   eventRsvps = [],
   legendsListing,
-  onContact,
   onRsvp,
   onShowCard,
   onAskMap,
@@ -9082,9 +9071,6 @@ function ResidentDrawerActions({
         <button type="button" onClick={onShowCard} className="dp-panel-action">
           Show Card
         </button>
-        <button type="button" onClick={onContact} className="dp-panel-action">
-          {panelArchetype.tertiaryAction}
-        </button>
       </div>
     );
   }
@@ -9109,13 +9095,6 @@ function ResidentDrawerActions({
           </button>
           <button type="button" onClick={onShowCard} className="dp-panel-action">
             Show Card
-          </button>
-          <button
-            type="button"
-            onClick={onContact}
-            className="dp-panel-action"
-          >
-            {panelArchetype.tertiaryAction}
           </button>
         </div>
       </>
@@ -9487,7 +9466,6 @@ function TheShoreResidentialEntityDrawer({
             <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
             <button type="button" className="dp-entity-action" onClick={onShowCard}>Show Card</button>
             <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved" : "Save Building"}</button>
-            <button type="button" className="dp-entity-action" onClick={openContact} aria-controls={contactFormId}>{building.cta.secondary}</button>
           </div>
 
           <section className="dp-entity-section">
@@ -9874,7 +9852,6 @@ function LegendsResidentialIntelligenceDrawer({
             {hasActiveListings && (
               <button type="button" className="dp-entity-action is-primary" onClick={openAvailability}>View Availability</button>
             )}
-            <button type="button" className="dp-entity-action" onClick={openInquiry}>Request Information</button>
             <button type="button" className="dp-entity-action" onClick={onSave}>{isSaved ? "Saved Building" : "Save Building"}</button>
           </>
         </div>
