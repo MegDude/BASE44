@@ -1,5 +1,9 @@
 # Downtown Perks OS Rebuild Blueprint
 
+Canonical rebuild specification: [Downtown Perks Product Operating System Specification](./product-operating-system-specification.md).
+
+This file remains a historical blueprint and product-area summary. New rebuild work should follow the Product Operating System Specification first, then use this file only for supporting context.
+
 Downtown Perks should behave like a premium native-feeling operating system for downtown discovery, not a dashboard.
 
 ## Product Areas
