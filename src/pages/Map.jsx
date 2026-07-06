@@ -3549,7 +3549,7 @@ function DemoQrCode({ code = DEMO_CARD_CODE, className = "" }) {
   );
 }
 
-function ResidentQrModal({ data, onClose }) {
+function ResidentQrModal({ data, onClose, onBack }) {
   if (!data) return null;
 
   const placeName = getEntityTouchpointName(data.place);
@@ -3579,6 +3579,9 @@ function ResidentQrModal({ data, onClose }) {
           transition={{ duration: 0.18, ease: "easeOut" }}
           onClick={(event) => event.stopPropagation()}
         >
+          <button type="button" className="dp-resident-qr-back" onClick={onBack || onClose} aria-label="Back to map">
+            <ArrowLeft className="h-4 w-4" />
+          </button>
           <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
             <X className="h-4 w-4" />
           </button>
@@ -6471,7 +6474,9 @@ function MapSheet({ variant, ariaLabel, onClose, onBack, children, className = "
 function MapSheetToolbar({ eyebrow, onBack, onClose }) {
   return (
     <div className="dp-map-sheet-toolbar">
-      <MapPanelButton action="back" label="Map" ariaLabel="Return to map" variant="secondary" onPress={onBack} />
+      <MapPanelButton action="back" label="Back" ariaLabel="Return to map" variant="icon" onPress={onBack}>
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+      </MapPanelButton>
       <span className="dp-map-sheet-toolbar-title">{eyebrow}</span>
       <MapPanelButton action="close" label="Close" ariaLabel="Close panel" variant="icon" onPress={onClose}>
         <X className="h-4 w-4" aria-hidden="true" />
@@ -15332,6 +15337,7 @@ export default function MapPage() {
       {residentQrModal && (
         <ResidentQrModal
           data={residentQrModal}
+          onBack={() => setResidentQrModal(null)}
           onClose={() => setResidentQrModal(null)}
         />
       )}
