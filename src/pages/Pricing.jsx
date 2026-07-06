@@ -35,7 +35,7 @@ const partnerCopy = {
     label: "Brands",
     short: "Campaigns, sponsorships, activations, and measurable reach.",
     description: "Reach people in real places during real downtown decision-making moments.",
-    media: "/images/imported/perks/yeti-campaign.png",
+    media: "/images/map-entities/brand-yeti/yeti-austin-fc.png",
   },
   Civic: {
     label: "Civic",
@@ -73,7 +73,7 @@ const planMedia = {
   propertyResidentPlusAnnual: "/images/imported/perks/lobby-to-street-arrival.png",
   hotelStarterAnnual: "/images/imported/perks/scn-qr-code-hotel.png",
   hotelProAnnual: "/images/imported/perks/rooftop-pools-austin-hotel-van-zandt-hero.jpg",
-  brandAccessAnnual: "/images/imported/perks/yeti-store.png",
+  brandAccessAnnual: "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg",
   brandCampaignsAnnual: "/images/imported/perks/featured-campaign.png",
   civicBasicAnnual: "/images/imported/perks/civic-tour.png",
   civicPlusAnnual: "/images/imported/perks/civic-republic-square-1779052838327.png",

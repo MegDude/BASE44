@@ -619,12 +619,14 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/02-rivian.png",
   ],
   yeti: [
-    "/images/map-entities/brand-yeti/18jUQczpkw9VEXy7XTbIZuJ0dTzty0_oBHG31LrEeKkCzgOTo_7tvcZ9ym7g711P_BiLXIR3Tv9EVHE17CYD4lWpL3rDUzLu3hGcTPAHJYPV9nxqumot8ugOR_CdjTrvpAe9GPwYSME2cBx9jrk4aHZCavUrzWdo2ox0Zb_nzjV2MBL1b8iKNd_n2R6tCTno.jpeg",
+    "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg",
+    "/images/map-entities/brand-yeti/yeti-austin-fc.png",
     "/images/imported/perks/yeti-bar-inside.webp",
     "/images/imported/perks/yeti-event.jpeg",
     "/images/imported/perks/yeti.png",
   ],
   "topo-chico": [
+    "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg",
     "/images/map-entities/brand-topo-chico/b1g2sfUyEIlTZ9VEepoCGMqVCLXHb0D-kzHHHFUwYqO_q2dw0vkhg5cFGV7ogZYYcoKjYrSIf3UPg1CFBvs9oenhBSpjg-PcikVcaoO-kcZ3YyPdpTt5PSc6cs24NuetCoYLC1FmPT9Pj0o099AbIU7lTkr_h4fDMlotA0ZA-GaBzWODjOtsGnjWkhciQqIR.jpeg",
     "/images/map-entities/brand-topo-chico/pY2OKGdMlKsBrbk_PXgTqTr8MWqVyOENfCgwhPk8gIDqcRa77Rty1G1ckUw71k40VsjMCCxK5qYCthVrOTlYMcPoBhqlY_QZQhDG4duxU2_wIFIDHmisbVQMOn8nqWk3YLdDCan7L3xZF2qpVdaw-Optii2gViGtyC1_mZLEsJseVXMJC8k2sLhMvN_z0_pN.jpeg",
   ],

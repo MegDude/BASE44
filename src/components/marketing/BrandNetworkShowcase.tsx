@@ -12,7 +12,7 @@ const brandCards = [
   {
     name: "YETI",
     type: "Austin brand",
-    image: "/images/imported/perks/yeti-store.png",
+    image: "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg",
     body: "Trail mornings, event days, hotel guests, and outdoor plans connected to a useful local offer.",
     example: "Pair a gear moment with lake walks, music nights, or rooftop events.",
     href: "/brands/yeti",
