@@ -49840,3 +49840,62 @@ html body :is(.dp-search-intent-switch button, .dp-search-intent-prompt-rail > b
   color: #C8A96A !important;
   -webkit-text-fill-color: #C8A96A !important;
 }
+
+/* Absolute terminal map bottom navigation contract: full-width dock, flat tabs, both views. */
+html body #root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav),
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+html body .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav),
+html body .dp-map-bottom-nav-shell {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body .dp-map-bottom-nav,
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  display: grid !important;
+  grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a),
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, :hover, :focus, :focus-visible),
+html body .dp-map-bottom-nav :is(button, a),
+html body .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, :hover, :focus, :focus-visible) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::before,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::after,
+html body .dp-map-bottom-nav :is(button, a)::before,
+html body .dp-map-bottom-nav :is(button, a)::after {
+  display: none !important;
+  content: none !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
