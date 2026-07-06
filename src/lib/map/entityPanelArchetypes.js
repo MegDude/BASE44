@@ -267,6 +267,169 @@ function formatPanelTemplate(template, title) {
   return template.replace(/\{title\}/g, title);
 }
 
+function compactPanelSentence(value = "") {
+  const text = safePanelText(value, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s+([,.!?;:])/g, "$1")
+    .trim();
+  if (!text) return "";
+  const firstSentence = text.match(/^(.+?[.!?])(?:\s|$)/)?.[1] || text;
+  return firstSentence.length > 230 ? `${firstSentence.slice(0, 227).trim()}...` : firstSentence;
+}
+
+function panelCategoryLabel(entity = {}, productionType = "venue") {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const explicit = safePanelText(entity.category || raw.category || entity.subcategory || raw.subcategory || "", "");
+  if (explicit) {
+    return explicit
+      .replace(/[_|/]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
+  const labels = {
+    restaurant: "dining",
+    coffee: "coffee",
+    "bars-nightlife": "drinks and nightlife",
+    rooftop: "rooftop plans",
+    retail: "retail",
+    hotel: "hotel and guest plans",
+    event: "event",
+    perk: "resident perk",
+    campaign: "campaign",
+    guide: "local guide",
+    "landmark-civic": "civic stop",
+    "active-listing": "available listing",
+    "residential-tower": "residential building",
+  };
+  return labels[productionType] || "downtown stop";
+}
+
+function panelOfferLine(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return compactPanelSentence(raw.perk?.title || raw.offer || entity.offer || entity.deals_offers || raw.deals_offers || entity.perkValue || raw.perkValue || "");
+}
+
+function panelActualContext(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return compactPanelSentence(
+    raw.panelContext ||
+      raw.downtown_perks_summary ||
+      raw.context ||
+      entity.context ||
+      raw.summary ||
+      entity.summary ||
+      raw.description ||
+      entity.description ||
+      raw.campaignObjective ||
+      entity.campaignObjective ||
+      raw.partnerInsight ||
+      entity.partnerInsight,
+  );
+}
+
+function buildContextualPanelWhy(entity = {}, title = "this destination", type = "venue") {
+  const productionType = inferProductionType(entity);
+  const district = panelDistrictFor(entity);
+  const category = panelCategoryLabel(entity, productionType);
+  const actualContext = panelActualContext(entity);
+  const offer = panelOfferLine(entity);
+  const address = panelSubtitleFor(entity);
+  const locationLine = address ? `${district}, near ${address}` : district;
+  const lowerCategory = category.toLowerCase();
+  const categoryLabel = lowerCategory === "venue" ? "downtown stop" : lowerCategory;
+
+  if (type === "propertyOverview") {
+    return {
+      heading: `Why ${title} works`,
+      body: actualContext || `${title} belongs in the map because its resident experience is shaped by what is walkable from ${district}: nearby dining, services, parks, events, and daily routines.`,
+      insight: `${title} should help residents compare the building and the neighborhood together, not as separate decisions.`,
+    };
+  }
+
+  if (type === "listing") {
+    return {
+      heading: `Why this listing fits`,
+      body: actualContext || `${title} is an active listing in ${locationLine}, so the panel should help a resident understand the home, the block, and the nearby routine before they ask for a showing.`,
+      insight: `This listing matters when its price, layout, building context, and nearby places are presented as one decision.`,
+    };
+  }
+
+  if (type === "event") {
+    return {
+      heading: `Why ${title} fits tonight`,
+      body: actualContext || `${title} gives residents a time-specific reason to make a plan around ${district}, then pair it with food, drinks, parking, or a walkable next stop.`,
+      insight: `This event pin should make the next step clear: when to go, what to pair with it, and what is nearby before or after.`,
+    };
+  }
+
+  if (type === "perk") {
+    return {
+      heading: `Why this perk fits`,
+      body: offer
+        ? `${title} gives residents a clear benefit: ${offer}`
+        : actualContext || `${title} gives residents a specific local benefit tied to where they already are in ${district}.`,
+      insight: `This perk should lead with the resident value first, then make redemption simple from the map.`,
+    };
+  }
+
+  if (type === "hotel") {
+    return {
+      heading: `Why ${title} fits the stay`,
+      body: actualContext || `${title} works as a ${district} base because guests can connect the stay to nearby dining, coffee, events, services, and walkable downtown routines.`,
+      insight: `This hotel pin should help guests turn the area around the lobby into a practical plan.`,
+    };
+  }
+
+  if (type === "brand") {
+    return {
+      heading: `Why ${title} belongs here`,
+      body: actualContext || `${title} belongs on the map when the brand connects to real ${district} routines, nearby events, resident perks, or places people already use.`,
+      insight: `This brand pin should explain the useful local moment, not just name the brand.`,
+    };
+  }
+
+  if (type === "civic") {
+    return {
+      heading: `Why people come here`,
+      body: actualContext || `${title} gives residents and visitors a civic, cultural, or public-space reason to spend time around ${district}.`,
+      insight: `This civic pin should make the place easier to understand, visit, and connect to nearby stops.`,
+    };
+  }
+
+  if (type === "service") {
+    return {
+      heading: `Why residents use ${title}`,
+      body: actualContext || `${title} supports practical downtown life around ${district}, from errands and appointments to the everyday needs that make the neighborhood easier to use.`,
+      insight: `This service pin should help residents solve something nearby without leaving the map flow.`,
+    };
+  }
+
+  if (type === "localGuide") {
+    return {
+      heading: `Why this guide helps`,
+      body: actualContext || `${title} organizes ${district} options into a clearer route so residents can choose a first stop and build the rest of the plan around what is close.`,
+      insight: `This guide should reduce scattered choices into a useful local sequence.`,
+    };
+  }
+
+  if (type === "campaign") {
+    return {
+      heading: `Why ${title} fits`,
+      body: actualContext || `${title} works as a ${district} campaign when it connects to a specific nearby routine, audience, offer, or measurable next step.`,
+      insight: `This campaign pin should explain who is close enough to act and what action they should take.`,
+    };
+  }
+
+  return {
+    heading: `Why ${title} fits`,
+    body: offer
+      ? `${title} is a ${categoryLabel} in ${locationLine} with a specific resident-facing reason to go: ${offer}`
+      : actualContext || `${title} is a ${categoryLabel} in ${locationLine}, so this panel should explain the actual reason to go, what kind of moment it supports, and what nearby plan it completes.`,
+    insight: `This pin matters because ${title} gives people a specific ${categoryLabel} option around ${district}, not a generic nearby result.`,
+  };
+}
+
 const PANEL_CONTENT_BY_TYPE = {
   venue: {
     eyebrow: "Downtown place",
@@ -405,6 +568,11 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
     nearbyHeading: base.nearbyHeading || "Nearby",
     askPrompts: [...(base.askPrompts || [])],
   };
+
+  const contextualWhy = buildContextualPanelWhy(entity, title, type);
+  content.whyHeading = contextualWhy.heading || content.whyHeading;
+  content.whyBody = contextualWhy.body || content.whyBody;
+  content.insight = contextualWhy.insight || content.insight;
 
   if (mode === "partner" && type !== "propertyOverview") {
     content.context = content.context || "Use this pin to understand nearby demand, timing, and the next useful action.";

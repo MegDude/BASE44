@@ -17742,3 +17742,19 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__dots 
   background-image: none !important;
   border: 1px solid rgba(11, 31, 51, 0.16) !important;
 }
+
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page,
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page.is-intro-active,
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page:not(.is-intro-active),
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page .dp-fixed-story-shell.dp-fixed-story-shell,
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page .dp-splash-story-shell.dp-splash-story-shell,
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page .dp-product-shell-topbar.dp-product-shell-topbar,
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page .dp-splash-story-header.dp-splash-story-header,
+html body #root#root main.dp-splash-page.dp-splash-page.dp-fixed-story-page.dp-fixed-story-page .dp-story-header-inner.dp-story-header-inner {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
