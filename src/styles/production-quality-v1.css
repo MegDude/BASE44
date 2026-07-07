@@ -478,3 +478,35 @@ body :is(
   color: rgba(11, 31, 51, 0.66) !important;
   box-shadow: none !important;
 }
+
+html body #root .dp-pricing-page.dp-pricing-page {
+  --font-heading: var(--dp-app-font) !important;
+  --font-body: var(--dp-app-font) !important;
+  --dp-font-story-serif: var(--dp-app-font) !important;
+  --dp-pricing-heading-font: var(--dp-app-font) !important;
+}
+
+html body #root .dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, h5, h6, .font-heading, .font-serif) {
+  font-family: var(--dp-app-font) !important;
+  font-weight: 540 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-pricing-page.dp-pricing-page :is(strong, b, .font-bold, .font-extrabold, .font-black) {
+  font-weight: 600 !important;
+}
+
+html body #root .dp-pricing-page.dp-pricing-page :is(.font-semibold, [class*="font-semibold"]) {
+  font-weight: 540 !important;
+}
+
+html body #root .dp-pricing-page.dp-pricing-page .dp-pricing-calculator .dp-pricing-selected button,
+html body #root .dp-pricing-page.dp-pricing-page .dp-pricing-calculator .dp-pricing-selected span,
+html body #root .dp-pricing-page.dp-pricing-page .dp-pricing-selected button,
+html body #root .dp-pricing-page.dp-pricing-page .dp-pricing-selected span {
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(11, 31, 51, 0.09) !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  box-shadow: none !important;
+}
