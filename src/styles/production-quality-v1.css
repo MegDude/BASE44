@@ -539,3 +539,125 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary .d
   color: rgba(11, 31, 51, 0.66) !important;
   box-shadow: none !important;
 }
+
+/* Map interaction restoration: the app quality layer must not shrink or hide the map command console or bottom tab bar. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding-right: clamp(10px, 2vw, 20px) !important;
+  padding-left: clamp(10px, 2vw, 20px) !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.dp-search-intent-console-wrap,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console {
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
+  width: min(100%, 760px) !important;
+  max-width: min(100%, 760px) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console :is(button, a[role="button"], input, select, textarea),
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console :is(.dp-console-chip, .dp-search-intent-collapse, .dp-search-intent-clear, .dp-search-intent-submit) {
+  border-radius: inherit;
+  min-height: 0 !important;
+  transform: none;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-input-row {
+  min-height: 42px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-input-row input {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console :is(.dp-search-intent-clear, .dp-search-intent-submit, .dp-search-intent-collapse) {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell.dp-map-bottom-nav-shell,
+html body #root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  pointer-events: none !important;
+  z-index: 700 !important;
+}
+
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+  display: grid !important;
+  grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) {
+  display: flex !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  height: 64px !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) {
+    min-height: 62px !important;
+    height: 62px !important;
+  }
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell.dp-map-bottom-nav-shell > nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav.dp-map-bottom-nav {
+  right: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  border-radius: 0 !important;
+}

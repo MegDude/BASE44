@@ -12090,7 +12090,7 @@ export default function MapPage() {
       setConsoleCollapsed(false);
       return;
     }
-    setConsoleCollapsed(urlState.mode === "partner" || activeFilter === "Legends" || activeFilter === "Listings");
+    setConsoleCollapsed(activeFilter === "Legends" || activeFilter === "Listings");
   }, [activeFilter, effectiveSearch, district, selectedId, urlState.mode]);
 
   const neighborhoodBasePlaces = useMemo(() => {
@@ -12150,6 +12150,7 @@ export default function MapPage() {
 
   const selected = useMemo(
     () => {
+      if (!selectedId) return null;
       const overrideId = selectedPlaceOverride?.id ? resolveMapEntityAlias(selectedPlaceOverride.id) : "";
       const override = overrideId && overrideId === selectedId ? selectedPlaceOverride : null;
       return resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
@@ -13318,6 +13319,18 @@ export default function MapPage() {
   }, [activePartnerPanel, clusterDrawer, selectedId, urlState.tab]);
 
   useEffect(() => {
+    const isCleanMapView =
+      urlState.tab === "map" &&
+      activeBottomTab === "map" &&
+      !selectedId &&
+      !clusterDrawer &&
+      !activePartnerPanel &&
+      activeFilter !== "Legends" &&
+      activeFilter !== "Listings";
+    if (isCleanMapView) setConsoleCollapsed(false);
+  }, [activeBottomTab, activeFilter, activePartnerPanel, clusterDrawer, selectedId, urlState.tab]);
+
+  useEffect(() => {
     function onKeyDown(event) {
       if (event.key === "Escape") {
         if (!consoleCollapsed && !selectedId && !clusterDrawer && !aboutOpen) {
@@ -13750,7 +13763,7 @@ export default function MapPage() {
     setSelectedDrawerClosed(true);
     setSelectedDrawerMinimized(false);
     setClusterDrawer(null);
-    setActiveBottomTab(urlState.mode === "partner" ? "map" : "discover");
+    setActiveBottomTab("map");
   }
 
   async function askMapAgent(query, localResults) {
@@ -14313,6 +14326,19 @@ export default function MapPage() {
       MAP_NATIVE_RESIDENT_PANELS.includes(activeBottomTab)
     )
   );
+  const isCleanMapCommandView =
+    urlState.tab === "map" &&
+    activeBottomTab === "map" &&
+    !selected &&
+    !clusterDrawer &&
+    !activePartnerPanel &&
+    activeFilter !== "Legends" &&
+    activeFilter !== "Listings";
+  const shouldCollapseSearchConsole =
+    !isCleanMapCommandView ||
+    hasOpenMapPanel ||
+    activeFilter === "Legends" ||
+    activeFilter === "Listings";
   const showBottomNavigation = urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab);
 
   return (
@@ -14405,7 +14431,7 @@ export default function MapPage() {
                 query: search || "",
               });
             }}
-            isCollapsed={consoleCollapsed || hasOpenMapPanel}
+            isCollapsed={shouldCollapseSearchConsole}
             onCollapse={() => setConsoleCollapsed(true)}
             onExpand={() => setConsoleCollapsed(false)}
           />
@@ -14542,10 +14568,11 @@ export default function MapPage() {
       )}
 
 	      {showBottomNavigation && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[700] pb-[env(safe-area-inset-bottom)]">
+        <div className="dp-map-bottom-nav-shell pointer-events-none fixed inset-x-0 bottom-0 z-[700] pb-[env(safe-area-inset-bottom)]">
           <nav
             className="dp-map-bottom-nav pointer-events-auto grid grid-cols-5"
             aria-label="Map bottom navigation"
+            style={{ "--dp-bottom-nav-count": 5 }}
           >
             {urlState.mode === "resident" && (
               <>
