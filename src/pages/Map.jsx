@@ -12283,14 +12283,29 @@ export default function MapPage() {
       if (!selectedId) return null;
       const overrideId = selectedPlaceOverride?.id ? resolveMapEntityAlias(selectedPlaceOverride.id) : "";
       const override = overrideId && overrideId === selectedId ? selectedPlaceOverride : null;
-      return resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
+      const candidate = resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
+      if (!candidate) return null;
+      if ((activeFilter !== "All" || urlState.collection || effectiveSearch) && !matchesFilter(candidate, activeFilter, savedIds)) return null;
+      return candidate;
     },
-    [luxuryPresenceListingPlaces, places, selectedId, selectedPlaceOverride],
+    [activeFilter, effectiveSearch, luxuryPresenceListingPlaces, places, savedIds, selectedId, selectedPlaceOverride, urlState.collection],
   );
   const selectedResidentAction = useMemo(
     () => (selected ? getResidentDetailAction(selected) : null),
     [selected],
   );
+
+  useEffect(() => {
+    if (!selectedId || !selected) return;
+    if (activeFilter === "All" && !urlState.collection && !effectiveSearch) return;
+    if (matchesFilter(selected, activeFilter, savedIds)) return;
+    setSelectedId("");
+    setSelectedPlaceOverride(null);
+    setSelectedDrawerClosed(true);
+    setSelectedDrawerMinimized(false);
+    urlState.update({ entityId: "" });
+  }, [activeFilter, effectiveSearch, savedIds, selected, selectedId, urlState]);
+
   const clusterPlacesForDrawer = clusterDrawer?.places || [];
 
   const hasActiveCategoryScope = activeFilter !== "All" || !isAllNeighborhoodScope(district) || Boolean(effectiveSearch) || Boolean(urlState.collection || urlState.layer);
@@ -15398,7 +15413,7 @@ export default function MapPage() {
                         />
                       </motion.div>
                     )}
-                    {urlState.mode === "resident" && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
+                    {urlState.mode === "resident" && hasActivePerkData(selected) && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.18 }}>
                         <ResidentPerkDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} onUse={() => openResidentQrModal(selected, "use_perk", "resident_perk_details")} />
                       </motion.div>

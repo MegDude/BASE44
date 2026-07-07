@@ -9774,7 +9774,7 @@ export const ATTACHED_RAIL_MIGRATED_LOCATIONS = [
   },
   {
     id: "rail-migrated-waterloo-records-video",
-    name: "Waterloo Records & Video",
+    name: "Waterloo Records",
     entityType: "venue",
     category: "retail",
     icon: "retail",
@@ -9782,7 +9782,7 @@ export const ATTACHED_RAIL_MIGRATED_LOCATIONS = [
     longitude: -97.7546,
     address: "600 N Lamar Blvd, Austin, TX 78703",
     summary: "Austin music retail landmark close to the west edge of downtown.",
-    alignment: "Retail, music culture, and event-adjacent discovery.",
+    alignment: "Retail, music culture, vinyl, and local shopping discovery.",
     source: "User-provided rail card migration",
     sourceCategory: "Retail",
   },

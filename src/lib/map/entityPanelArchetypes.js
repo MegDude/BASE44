@@ -393,7 +393,7 @@ function buildContextualPanelWhy(entity = {}, title = "this destination", type =
     return {
       heading: `Why people come here`,
       body: actualContext || `${title} gives residents and visitors a civic, cultural, or public-space reason to spend time around ${district}.`,
-      insight: `This civic pin should make the place easier to understand, visit, and connect to nearby stops.`,
+      insight: `This place should be easy to understand, visit, and connect to nearby stops.`,
     };
   }
 

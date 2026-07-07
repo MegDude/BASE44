@@ -196,6 +196,13 @@ function attachedHappyHourPerkPlace(item) {
 function attachedSupplementalPlace(item) {
   const category = String(item.sourceCategory || item.category || "Place").trim();
   const icon = String(item.icon || "").toLowerCase();
+  const explicitIntentTerms = [
+    item.entityType,
+    item.category,
+    item.sourceCategory,
+    item.icon,
+    item.name,
+  ].filter(Boolean);
   return {
     id: item.id,
     name: item.name,
@@ -206,7 +213,7 @@ function attachedSupplementalPlace(item) {
     detailDrawerType: item.entityType || "venue",
     pinKey: icon || (category.toLowerCase().includes("coffee") ? "coffee" : "venue"),
     category,
-    category_key: [item.entityType, item.category, item.sourceCategory, item.alignment, item.name]
+    category_key: explicitIntentTerms
       .join(" ")
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "_"),
@@ -218,10 +225,22 @@ function attachedSupplementalPlace(item) {
     summary: item.summary,
     description: item.alignment || item.summary,
     alignment_to_downtown_perks: item.alignment,
-    tags: [item.entityType, item.category, item.sourceCategory, item.alignment].filter(Boolean),
+    searchKeywords: explicitIntentTerms,
+    tags: [item.entityType, item.category, item.sourceCategory].filter(Boolean),
     raw: { attachedSupplementalLocation: item },
     source: item.source || "User-provided supplemental downtown locations",
   };
+}
+
+function isProductionReadyRailMigratedLocation(item) {
+  const type = String(item?.entityType || "").toLowerCase();
+  const category = String(item?.category || item?.sourceCategory || "").toLowerCase();
+  const id = String(item?.id || "").toLowerCase();
+
+  if (id === "rail-migrated-waterloo-records-video") return true;
+  if (["event", "campaign"].includes(type)) return false;
+  if (/\b(perk|campaign|event)\b/i.test(category)) return false;
+  return true;
 }
 
 function attachedLegendsPropertyPlace(item) {
@@ -1494,7 +1513,9 @@ export function useLocations() {
   const canonicalGoogleRegistryPlaces = getActiveMapEntityLocations();
   const parkingPlaces = downtownParkingItems.filter((item) => item.active).map(parkingBookingPlace);
   const attachedHappyHourPerkPlaces = ATTACHED_HAPPY_HOUR_PERK_LOCATIONS.map(attachedHappyHourPerkPlace);
-  const attachedRailMigratedPlaces = ATTACHED_RAIL_MIGRATED_LOCATIONS.map(attachedSupplementalPlace);
+  const attachedRailMigratedPlaces = ATTACHED_RAIL_MIGRATED_LOCATIONS
+    .filter(isProductionReadyRailMigratedLocation)
+    .map(attachedSupplementalPlace);
   const attachedSupplementalPlaces = ATTACHED_SUPPLEMENTAL_DOWNTOWN_LOCATIONS.map(attachedSupplementalPlace);
   const attachedLegendsPropertyPlaces = ATTACHED_LEGENDS_IMPORTED_PROPERTIES.map(attachedLegendsPropertyPlace);
   const attachedFeaturedBrandPlaces = ATTACHED_FEATURED_BRANDS.map(attachedFeaturedBrandPlace);

@@ -39,6 +39,11 @@ export function enrichWithArchiveLocationContext(entity) {
   const recommendedImage = reference.currentImage && reference.imageStatus === "OK" ? reference.currentImage : undefined;
   const residentDescription = reference.residentShortDescription || reference.recommendedPanelCopy;
   const offer = reference.recommendedPerk;
+  const hasExplicitOffer = hasUsefulText(entity.deals_offers || entity.offer || entity.specials || entity.perk);
+  const canPublishArchiveOffer =
+    hasUsefulText(offer) &&
+    String(reference.priority || "").toLowerCase() !== "backlog" &&
+    String(entity.source || "").toLowerCase() !== "user-provided rail card migration";
 
   return {
     ...entity,
@@ -48,13 +53,13 @@ export function enrichWithArchiveLocationContext(entity) {
     image: entity.image || recommendedImage,
     summary: hasUsefulText(entity.summary) ? entity.summary : residentDescription,
     description: hasUsefulText(entity.description) ? entity.description : residentDescription,
-    deals_offers: entity.deals_offers || entity.offer || offer,
-    specials: entity.specials || offer,
+    deals_offers: entity.deals_offers || entity.offer || (canPublishArchiveOffer ? offer : undefined),
+    specials: entity.specials || (canPublishArchiveOffer ? offer : undefined),
     why_people_go: entity.why_people_go || reference.whyPeopleGo,
     partnerOpportunity: entity.partnerOpportunity || reference.partnerOpportunity,
     partnerInsight: entity.partnerInsight || reference.partnerOpportunity,
     residentCta: entity.residentCta || reference.residentCta,
-    recommendedPerk: entity.recommendedPerk || offer,
+    recommendedPerk: entity.recommendedPerk || (hasExplicitOffer || canPublishArchiveOffer ? offer : undefined),
     tags: mergeTags(entity.tags, reference.tags),
     archiveLocationContext: reference,
     source: entity.source || "Archive 2 location reference",
