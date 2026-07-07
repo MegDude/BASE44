@@ -1655,6 +1655,46 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-
   overscroll-behavior: contain !important;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-entity-drawer-shell
+) :is(
+  .dp-entity-subtitle,
+  .dp-entity-context,
+  .dp-entity-dek,
+  .dp-perk-module-description,
+  .dp-perk-module-terms,
+  .dp-perk-module-value,
+  .dp-destination-section p,
+  .dp-destination-section-copy,
+  .dp-destination-section-note,
+  .dp-destination-section-support
+) {
+  max-width: 64ch !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 13.25px !important;
+  font-weight: 450 !important;
+  line-height: 1.58 !important;
+  letter-spacing: 0 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-entity-drawer-shell
+) :is(
+  .dp-perk-module-description,
+  .dp-perk-module-terms,
+  .dp-perk-module-value
+) {
+  margin-top: 8px !important;
+}
+
 @media (max-width: 520px) {
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
     aside.dp-map-drawer-shell,
