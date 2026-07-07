@@ -51195,3 +51195,184 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
 }
+
+/* Map command console: stays below app navigation, rolls up centered, preserves contrast. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+  top: max(88px, calc(env(safe-area-inset-top, 0px) + 76px)) !important;
+  right: 0 !important;
+  left: 0 !important;
+  z-index: 940 !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
+  pointer-events: none !important;
+  width: min(100%, 560px) !important;
+  max-width: calc(100vw - 28px) !important;
+  margin: 0 auto !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed {
+  position: fixed !important;
+  top: max(76px, calc(env(safe-area-inset-top, 0px) + 66px)) !important;
+  right: auto !important;
+  left: 50% !important;
+  z-index: 960 !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: auto !important;
+  max-width: calc(100vw - 32px) !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console {
+  pointer-events: auto !important;
+  width: min(100%, 560px) !important;
+  max-width: calc(100vw - 28px) !important;
+  margin: 0 auto !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 16px 36px rgba(11, 31, 51, 0.14) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-rollup.dp-search-intent-rollup {
+  pointer-events: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.14) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-label,
+  .dp-search-brand-mark,
+  .dp-search-intent-search-icon,
+  .dp-search-intent-filter-icon,
+  .dp-search-intent-filter-label,
+  .dp-search-rollup-main,
+  .dp-search-intent-top-actions,
+  label,
+  span,
+  small,
+  strong
+) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-brand-mark {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(input, textarea, select) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  caret-color: #0B1F33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(input, textarea)::placeholder {
+  color: rgba(11, 31, 51, 0.52) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.52) !important;
+  opacity: 1 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-audience-tabs,
+  .dp-search-intent-switch
+) {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-audience-tabs,
+  .dp-search-intent-switch
+) > button {
+  border: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-audience-tabs,
+  .dp-search-intent-switch
+) > button:is(.is-active, [aria-selected="true"]) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  text-decoration: underline !important;
+  text-decoration-color: #C8A96A !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 4px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-submit,
+  .dp-search-intent-prompt-rail > button.is-active,
+  .dp-search-intent-prompt-rail > button[aria-selected="true"],
+  .dp-search-intent-prompt-rail > button[aria-pressed="true"]
+) {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-submit,
+  .dp-search-intent-prompt-rail > button.is-active,
+  .dp-search-intent-prompt-rail > button[aria-selected="true"],
+  .dp-search-intent-prompt-rail > button[aria-pressed="true"]
+) :is(svg, span, small, strong) {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  stroke: currentColor !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(.dp-search-intent-collapse, .dp-search-more-toggle, .dp-search-intent-clear) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-rollup :is(svg, span, small, strong),
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-rollup .dp-search-rollup-main {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+@media (max-width: 520px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+    top: max(86px, calc(env(safe-area-inset-top, 0px) + 74px)) !important;
+    padding: 0 12px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed {
+    top: max(74px, calc(env(safe-area-inset-top, 0px) + 64px)) !important;
+  }
+}
