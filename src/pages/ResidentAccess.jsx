@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2, CreditCard, Home, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, CreditCard, Home, MapPin, QrCode, ShieldCheck } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
   markLocalRecord,
@@ -48,6 +48,42 @@ function writeResidentAccess(record) {
   window.localStorage.setItem(RESIDENT_RECORDS_KEY, JSON.stringify([record, ...records].slice(0, 200)));
 }
 
+function readCurrentResidentAccess() {
+  if (typeof window === "undefined") return null;
+  try {
+    return JSON.parse(window.localStorage.getItem(RESIDENT_ACCESS_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function getResidentCardCode(record) {
+  const source = record?.id || record?.email || record?.fullName || "resident";
+  const clean = String(source).replace(/[^a-z0-9]/gi, "").slice(-10).toUpperCase();
+  return `DP-${clean || "RESIDENT"}`;
+}
+
+function getResidentMapHref(record) {
+  const params = new URLSearchParams({
+    mode: "resident",
+    tab: "card",
+    filter: "Perks",
+  });
+
+  if (record?.id) params.set("residentId", record.id);
+  if (record?.verificationStatus) params.set("access", record.verificationStatus);
+
+  return `/app?${params.toString()}`;
+}
+
+function getResidentQrSrc(record) {
+  const fallbackBase = "https://base-44-h2iq.vercel.app";
+  const base = typeof window === "undefined" ? fallbackBase : window.location.origin;
+  const url = new URL(getResidentMapHref(record), base);
+  url.searchParams.set("card", getResidentCardCode(record));
+  return `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=12&data=${encodeURIComponent(url.toString())}`;
+}
+
 function toApp(record, extra = {}) {
   writeResidentAccess({ ...record, ...extra });
   const params = new URLSearchParams({
@@ -62,6 +98,7 @@ function toApp(record, extra = {}) {
 
 export default function ResidentAccess() {
   const checkoutTarget = useMemo(() => resolveCheckoutTarget("residentJoinBuildingNotMember"), []);
+  const [residentCard, setResidentCard] = useState(() => readCurrentResidentAccess());
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -76,6 +113,10 @@ export default function ResidentAccess() {
   const [message, setMessage] = useState("");
 
   const isBuildingPath = form.accessPath === "building";
+  const checkoutParams = typeof window === "undefined" ? new URLSearchParams() : new URLSearchParams(window.location.search);
+  const checkoutSucceeded = checkoutParams.get("checkout") === "success";
+  const checkoutCancelled = checkoutParams.get("checkout") === "cancelled";
+  const visibleCard = residentCard && (state === "success" || checkoutSucceeded);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -102,7 +143,9 @@ export default function ResidentAccess() {
     }
 
     if (checkoutTarget.type !== "price" && checkoutTarget.type !== "product") {
-      toApp(resident, { paymentStatus: "saved_without_stripe" });
+      setResidentCard(resident);
+      setState("error");
+      setMessage("We saved your details, but checkout is not available right now. Please try again shortly.");
       return;
     }
 
@@ -139,15 +182,16 @@ export default function ResidentAccess() {
       const result = await createResidentRecord();
       const resident = result.resident;
       if (isBuildingPath && resident.verificationStatus === "verified") {
+        setResidentCard(resident);
         setState("success");
-        setMessage("Building access verified. Opening your resident map now.");
-        window.setTimeout(() => toApp(resident, { accessSource: "building" }), 450);
+        setMessage("Building access verified. Your Downtown Perks Card is ready.");
         return;
       }
 
       if (isBuildingPath && resident.verificationStatus === "pending_building_review") {
+        setResidentCard(resident);
         setState("success");
-        setMessage("Your building request was received. You can continue with individual Perks Card access or open the map.");
+        setMessage("Your building request was received. You can open the map now or continue with individual Perks Card checkout.");
         return;
       }
 
@@ -160,6 +204,9 @@ export default function ResidentAccess() {
 
   return (
     <main className="dp-resident-access-page">
+      <nav className="dp-resident-access-topbar" aria-label="Resident access navigation">
+        <a href={APP_HREF}>Open resident map</a>
+      </nav>
       <section className="dp-resident-access-shell" aria-labelledby="resident-access-title">
         <div className="dp-resident-access-copy">
           <p className="dp-resident-access-eyebrow">Resident Access</p>
@@ -252,6 +299,36 @@ export default function ResidentAccess() {
             </div>
           ) : null}
 
+          {checkoutCancelled ? (
+            <div className="dp-resident-access-message" role="status">
+              Checkout was cancelled. Your details are still here when you are ready to continue.
+            </div>
+          ) : null}
+
+          {visibleCard ? (
+            <section className="dp-resident-access-card" aria-label="Your Downtown Perks QR card">
+              <div className="dp-resident-access-card-copy">
+                <p className="dp-resident-access-eyebrow">Your QR Card</p>
+                <h3>{residentCard.fullName || "Resident access"}</h3>
+                <p>Show this code when a partner needs to scan your Downtown Perks Card.</p>
+              </div>
+              <div className="dp-resident-access-qr">
+                <img src={getResidentQrSrc(residentCard)} alt={`Downtown Perks QR card for ${getResidentCardCode(residentCard)}`} width="220" height="220" />
+                <code>{getResidentCardCode(residentCard)}</code>
+              </div>
+              <div className="dp-resident-access-actions">
+                <a href={getResidentMapHref(residentCard)}>
+                  <MapPin aria-hidden="true" />
+                  Open my map
+                </a>
+                <button type="button" onClick={() => toApp(residentCard, { accessSource: "resident_card" })}>
+                  <QrCode aria-hidden="true" />
+                  Use this card
+                </button>
+              </div>
+            </section>
+          ) : null}
+
           <div className="dp-resident-access-actions">
             <button type="submit" disabled={state === "loading"}>
               {state === "loading" ? "Checking access" : isBuildingPath ? "Verify and Continue" : "Continue to Checkout"}
@@ -259,7 +336,7 @@ export default function ResidentAccess() {
             </button>
             <a href={APP_HREF}>
               <MapPin aria-hidden="true" />
-              Open App
+              Open resident map
             </a>
           </div>
         </form>

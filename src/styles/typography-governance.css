@@ -58,7 +58,7 @@ html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp
 html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-panel-toolbar, .dp-map-panel-header, .dp-drawer-control-row) {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important;
+  justify-content: flex-end !important;
   gap: 8px !important;
   width: 100% !important;
   min-height: 44px !important;
@@ -4723,50 +4723,58 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-inte
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-context-row-primary.dp-search-context-row-primary.dp-search-context-row-primary,
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-filter-rail.dp-search-intent-filter-rail.dp-search-intent-filter-rail {
-  display: flex !important;
-  flex-wrap: nowrap !important;
+  display: grid !important;
+  grid-auto-flow: row !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   align-items: center !important;
-  gap: 8px !important;
-  min-height: 32px !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-height: 34px !important;
   margin: 0 !important;
-  padding: 4px 0 2px !important;
+  padding: 0 !important;
   overflow-x: auto !important;
-  overflow-y: hidden !important;
+  overflow-y: visible !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   scrollbar-width: none !important;
 }
 
+html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-context-row-primary.dp-search-context-row-primary.dp-search-context-row-primary,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-filter-rail.dp-search-intent-filter-rail.dp-search-intent-filter-rail {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail.dp-search-intent-prompt-rail > button,
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-context-row-primary.dp-search-context-row-primary.dp-search-context-row-primary > button,
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-filter-rail.dp-search-intent-filter-rail.dp-search-intent-filter-rail > button {
+  position: relative !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  flex: 0 0 auto !important;
-  width: auto !important;
-  min-width: 30px !important;
-  max-width: 118px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-  max-height: 30px !important;
-  padding: 0 11px !important;
-  gap: 6px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(11, 31, 51, 0.07) !important;
-  border-radius: 10px !important;
-  background: rgba(255, 255, 255, 0.54) !important;
-  color: rgba(11, 31, 51, 0.62) !important;
-  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 4px !important;
+  gap: 4px !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
   box-shadow: none !important;
   font-family: var(--dp-font-sans) !important;
-  font-size: 10.5px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
-  letter-spacing: 0.02em !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
@@ -4869,21 +4877,32 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-inte
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-filter-rail.dp-search-intent-filter-rail.dp-search-intent-filter-rail > button:focus-visible {
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  border-color: rgba(200, 169, 106, 0.34) !important;
-  background: rgba(255, 255, 255, 0.82) !important;
-  box-shadow: 0 0 16px rgba(200, 169, 106, 0.12) !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail.dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]),
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-context-row-primary.dp-search-context-row-primary.dp-search-context-row-primary > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]),
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-filter-rail.dp-search-intent-filter-rail.dp-search-intent-filter-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]) {
-  border-color: rgba(200, 169, 106, 0.38) !important;
-  background: #0B1F33 !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
-  box-shadow:
-    0 10px 22px rgba(11, 31, 51, 0.14),
-    0 0 18px rgba(200, 169, 106, 0.16) !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail.dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"])::after,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-context-row-primary.dp-search-context-row-primary.dp-search-context-row-primary > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"])::after,
+html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console > .dp-search-intent-filter-rail.dp-search-intent-filter-rail.dp-search-intent-filter-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"])::after {
+  position: absolute !important;
+  right: 18% !important;
+  bottom: 2px !important;
+  left: 18% !important;
+  height: 1px !important;
+  border-radius: 0 !important;
+  background: rgba(11, 31, 51, 0.42) !important;
+  content: "" !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-search-intent-console :is(.dp-search-intent-filter-icon, .dp-search-intent-filter-logo, .dp-search-intent-prompt-rail svg, .dp-search-intent-filter-rail svg, .dp-search-context-row-primary svg) {
@@ -17249,10 +17268,56 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
 html body #root#root .dp-resident-access-page {
   min-height: 100dvh !important;
   padding: clamp(86px, 10vw, 116px) 0 clamp(54px, 7vw, 88px) !important;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 248, 251, 1) 100%) !important;
+  background: #F7F8FB !important;
   color: #0B1F33 !important;
   overflow-x: hidden !important;
+}
+
+html body #root#root .dp-resident-access-topbar {
+  position: fixed !important;
+  z-index: 20 !important;
+  top: max(16px, calc(env(safe-area-inset-top, 0px) + 12px)) !important;
+  left: 50% !important;
+  width: min(calc(100% - 28px), 1120px) !important;
+  min-height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 6px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 14px 36px rgba(11, 31, 51, 0.075) !important;
+  backdrop-filter: blur(16px) saturate(160%) !important;
+  transform: translateX(-50%) !important;
+}
+
+html body #root#root .dp-resident-access-topbar :is(button, a) {
+  min-height: 36px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 720 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-resident-access-topbar a {
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root#root .dp-resident-access-topbar svg {
+  width: 14px !important;
+  height: 14px !important;
 }
 
 html body #root#root .dp-resident-access-shell {
@@ -17312,7 +17377,7 @@ html body #root#root .dp-resident-access-includes span {
   min-height: 34px !important;
   padding: 0 11px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.72) !important;
   font-size: 12px !important;
@@ -17347,7 +17412,7 @@ html body #root#root .dp-resident-access-plan {
   padding: 16px !important;
   border: 1px solid rgba(184, 150, 62, 0.32) !important;
   border-radius: 10px !important;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
+  background: #FFFFFF !important;
 }
 
 html body #root#root .dp-resident-access-plan h2 {
@@ -17405,9 +17470,9 @@ html body #root#root .dp-resident-access-paths button {
 }
 
 html body #root#root .dp-resident-access-paths button[data-active="true"] {
-  border-color: rgba(184, 150, 62, 0.56) !important;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%) !important;
-  box-shadow: 0 16px 36px rgba(184, 150, 62, 0.12) !important;
+  border-color: rgba(200, 169, 106, 0.56) !important;
+  background: #FFFFFF !important;
+  box-shadow: inset 3px 0 0 #C8A96A, 0 16px 36px rgba(11, 31, 51, 0.065) !important;
 }
 
 html body #root#root .dp-resident-access-paths strong {
@@ -17486,7 +17551,7 @@ html body #root#root .dp-resident-access-actions :is(button, a) {
   gap: 8px !important;
   padding: 0 16px !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 16px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 14px 30px rgba(11, 31, 51, 0.13) !important;
@@ -17499,6 +17564,64 @@ html body #root#root .dp-resident-access-actions :is(button, a) {
 html body #root#root .dp-resident-access-actions a {
   background: #FFFFFF !important;
   color: #0B1F33 !important;
+}
+
+html body #root#root .dp-resident-access-card {
+  display: grid !important;
+  gap: 16px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 18px 42px rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root .dp-resident-access-card-copy {
+  display: grid !important;
+  gap: 7px !important;
+}
+
+html body #root#root .dp-resident-access-card-copy :is(h3, p) {
+  margin: 0 !important;
+}
+
+html body #root#root .dp-resident-access-card-copy h3 {
+  color: #0B1F33 !important;
+  font-size: 20px !important;
+  font-weight: 720 !important;
+  line-height: 1.18 !important;
+}
+
+html body #root#root .dp-resident-access-card-copy p {
+  color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 13px !important;
+  line-height: 1.48 !important;
+}
+
+html body #root#root .dp-resident-access-qr {
+  display: grid !important;
+  justify-items: center !important;
+  gap: 10px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 14px !important;
+  background: #F7F8FB !important;
+}
+
+html body #root#root .dp-resident-access-qr img {
+  width: min(100%, 220px) !important;
+  height: auto !important;
+  display: block !important;
+  border: 10px solid #FFFFFF !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root .dp-resident-access-qr code {
+  color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.08em !important;
 }
 
 html body #root#root .dp-os-resident-admin {

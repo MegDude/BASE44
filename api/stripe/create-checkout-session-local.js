@@ -101,7 +101,7 @@ export default async function handler(req, res) {
 
   const stripe = getStripeClient();
   if (!stripe) {
-    res.status(500).json({ error: "Missing STRIPE_SECRET_KEY" });
+    res.status(503).json({ error: "Checkout is not available right now. Please try again shortly." });
     return;
   }
 
