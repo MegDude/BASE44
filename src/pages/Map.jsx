@@ -1679,25 +1679,6 @@ function matchesCollection(place, collection) {
   return text.includes(key.replace(/-/g, " "));
 }
 
-function padViewportBounds(bounds, ratio = 0.16) {
-  if (!bounds) return null;
-  const latSpan = Math.max(0.0001, Number(bounds.north) - Number(bounds.south));
-  const lngSpan = Math.max(0.0001, Number(bounds.east) - Number(bounds.west));
-  return {
-    north: Number(bounds.north) + latSpan * ratio,
-    south: Number(bounds.south) - latSpan * ratio,
-    east: Number(bounds.east) + lngSpan * ratio,
-    west: Number(bounds.west) - lngSpan * ratio,
-  };
-}
-
-function isPlaceInsideBounds(place, bounds) {
-  const coords = getPlaceCoords(place);
-  if (!coords || !bounds) return false;
-  const [lat, lng] = coords;
-  return lat <= bounds.north && lat >= bounds.south && lng <= bounds.east && lng >= bounds.west;
-}
-
 function getMarkerDisclosureLimit({ hasIntent, isFocusedIntent, isDefaultDiscoverScope, userHasNavigatedMap, mapZoom }) {
   if (isDefaultDiscoverScope && !userHasNavigatedMap) return INITIAL_DISCOVERY_MARKER_LIMIT;
   if (isFocusedIntent && mapZoom >= 17.5) return FOCUSED_INTENT_HIGH_ZOOM_LIMIT;
@@ -1712,7 +1693,6 @@ function selectProgressiveMarkerPlaces(places, {
   activeFilter,
   collection,
   effectiveSearch,
-  viewportBounds,
   mapZoom,
   selectedId,
   userHasNavigatedMap,
@@ -10793,7 +10773,7 @@ function MapResultBoundsFitter({ places = [], activeKey, selectedId, enabled = f
       map.flyToBounds(bounds.pad(0.22), {
         animate: true,
         duration: 0.45,
-        maxZoom: 16.5,
+        maxZoom: MAP_STREET_FOCUS_ZOOM,
         paddingTopLeft: [28, topPadding],
         paddingBottomRight: [28, bottomPadding],
       });
@@ -11123,7 +11103,7 @@ function GoogleMapCanvas({
             runProgrammaticMove(() => {
               map.fitBounds(bounds, 64);
               maps.event.addListenerOnce(map, "bounds_changed", () => {
-                if ((map.getZoom?.() || 0) > 18) map.setZoom(18);
+                if ((map.getZoom?.() || 0) > MAP_STREET_FOCUS_ZOOM) map.setZoom(MAP_STREET_FOCUS_ZOOM);
               });
             });
           }
@@ -12380,13 +12360,12 @@ export default function MapPage() {
       activeFilter,
       collection: urlState.collection,
       effectiveSearch,
-      viewportBounds,
       mapZoom,
       selectedId,
       userHasNavigatedMap,
       isDefaultDiscoverScope: urlState.mode === "resident" && isDefaultDiscoverScope,
     });
-  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, isDefaultDiscoverScope, mapZoom, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap, viewportBounds]);
+  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, isDefaultDiscoverScope, mapZoom, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap]);
   const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
