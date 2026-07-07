@@ -2373,3 +2373,32 @@ html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.d
   line-height: 1.22 !important;
   text-align: center !important;
 }
+
+/* Partner Ask the Map submit: gold glyph, no visible button chrome. */
+html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-partner .dp-search-intent-input-row .dp-search-intent-submit.dp-search-intent-submit,
+html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-partner .dp-search-intent-submit.dp-search-intent-submit {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  outline-offset: 3px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-partner .dp-search-intent-submit.dp-search-intent-submit:is(:hover, :focus-visible, :active) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #B38F4F !important;
+  -webkit-text-fill-color: #B38F4F !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-partner .dp-search-intent-submit.dp-search-intent-submit :is(svg, .lucide) {
+  color: currentColor !important;
+  stroke: currentColor !important;
+  fill: none !important;
+}
