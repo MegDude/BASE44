@@ -80,13 +80,16 @@ export const SEARCH_INTENT_RAIL = [
 ] as const;
 
 const PRIMARY_SEARCH_INTENT_IDS = [
-  "breakfast",
   "coffee",
-  "lunch",
   "dining",
-  "drinks",
   "happy_hour",
   "events",
+] as const;
+
+const SECONDARY_SEARCH_INTENT_IDS = [
+  "breakfast",
+  "lunch",
+  "drinks",
   "happy_hour_route",
   "dining_route",
   "daa_art_walk",
@@ -96,9 +99,6 @@ const PRIMARY_SEARCH_INTENT_IDS = [
   "hotels",
   "properties",
   "legends",
-] as const;
-
-const SECONDARY_SEARCH_INTENT_IDS = [
   "arts",
   "live_music",
   "civic",

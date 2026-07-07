@@ -309,6 +309,74 @@ const actualVenueImageRules = [
   { key: "scholz-garten", terms: ["scholz garten", "scholz"] },
 ];
 
+const brandPerkImageOverrides: Array<{
+  terms: string[];
+  hero: string;
+  rail?: string;
+  card?: string;
+  thumb?: string;
+}> = [
+  {
+    terms: ["lustre pearl", "happy-hour-lustre-pearl", "partner-lustre-pearl-rainey"],
+    hero: "/images/imported/perks/brand-updates/lustre-pearl-happy-hour.png",
+  },
+  {
+    terms: ["rainey patio night", "resident event", "monday meetups", "happy hour", "rooftop event"],
+    hero: "/images/imported/perks/4-residnet-event.png",
+    rail: "/images/imported/perks/people-at-event.png",
+  },
+  {
+    terms: ["banger", "sausage house", "beer garden"],
+    hero: "/images/imported/perks/brand-updates/bangers-patio.jpg",
+    rail: "/images/imported/perks/brand-updates/bangers-sausage.webp",
+    card: "/images/imported/perks/brand-updates/bangers-patio.jpg",
+  },
+  {
+    terms: ["stay put", "deep ellum"],
+    hero: "/images/map/panels/stay-put-rainey-patio.jpg",
+    rail: "/images/imported/perks/brand-updates/stay-put-patio.png",
+    card: "/images/map-entities/rainey-bars/stay-put-jazz.jpeg",
+  },
+  {
+    terms: ["hotel van zandt", "van zandt"],
+    hero: "/images/map/panels/hotel-van-zandt-rooftop-pool.jpg",
+    rail: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
+  },
+  {
+    terms: ["geraldine", "geraldines", "geraldine's"],
+    hero: "/images/map/panels/geraldines-bar.jpg",
+    rail: "/images/map-entities/attached/venues/geraldines-live.jpeg",
+  },
+  {
+    terms: ["rainey street historic", "rainey street"],
+    hero: "/images/districts/rainey-hero.jpg",
+    rail: "/images/map-entities/rainey-bars/rainey-street.jpeg",
+  },
+  {
+    terms: ["salvation pizza", "via 313", "pizza"],
+    hero: "/images/map/panels/salvation-pizza-rainey.jpg",
+    rail: "/images/map-entities/rainey-bars/via-313.jpeg",
+  },
+  {
+    terms: ["emmer", "rye"],
+    hero: "/images/restaurants/emmer-rye-interior.jpg",
+    rail: "/images/map-entities/rainey-bars/emmer-rye-bread.png",
+  },
+  {
+    terms: ["half step"],
+    hero: "/images/restaurants/half-step.jpg",
+  },
+  {
+    terms: ["stagger lee"],
+    hero: "/images/imported/perks/happy-hour-2.png",
+  },
+  {
+    terms: ["paseo"],
+    hero: `${ATTACHED_IMAGE_BASE}/properties/paseo/exterior-sunset.jpeg`,
+    rail: `${ATTACHED_IMAGE_BASE}/properties/paseo/daydreamer-lobby.jpeg`,
+  },
+];
+
 const premiumPropertyImageRules = [
   { key: "44-east", terms: ["44 east", "44 east ave"] },
   { key: "70-rainey", terms: ["70 rainey", "70 rainey st", "rainey 70"] },
@@ -848,6 +916,7 @@ function entityText(entity: Record<string, unknown>): string {
   return [
     entity.id,
     entity.name,
+    entity.title,
     entity.brand,
     entity.category,
     entity.category_key,
@@ -860,6 +929,7 @@ function entityText(entity: Record<string, unknown>): string {
     entity.description,
     raw.id,
     raw.name,
+    raw.title,
     raw.address,
     raw.entityType,
     raw.type,
@@ -969,6 +1039,16 @@ function actualVenueImage(entity: Record<string, unknown>, context: ImageResolve
   if (context === "pin" || context === "nearbyRail" || context === "relatedRail") return set.thumb;
   if (context === "card") return set.card;
   return set.hero;
+}
+
+function brandPerkImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string | null {
+  const text = entityText(entity);
+  const match = brandPerkImageOverrides.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
+  if (!match) return null;
+  if (context === "pin") return match.thumb || match.rail || match.card || match.hero;
+  if (context === "nearbyRail" || context === "relatedRail") return match.rail || match.thumb || match.card || match.hero;
+  if (context === "card") return match.card || match.rail || match.hero;
+  return match.hero;
 }
 
 function firstGalleryImage(entity: Record<string, unknown>): string | null {
@@ -1082,6 +1162,9 @@ export function resolveMapImage(entity: Record<string, unknown>, context: ImageR
     slug((entity.raw as Record<string, unknown> | undefined)?.name),
   ].find((key) => key && WATERLOO_ENTITY_IMAGES[key]);
   if (waterlooKey) return WATERLOO_ENTITY_IMAGES[waterlooKey];
+
+  const brandPerk = brandPerkImage(entity, context);
+  if (brandPerk) return brandPerk;
 
   const actualVenue = actualVenueImage(entity, context);
   if (actualVenue) return actualVenue;

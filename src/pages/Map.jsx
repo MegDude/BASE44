@@ -13,6 +13,7 @@ import {
   ChevronDown,
   Compass,
   Coffee,
+  CreditCard,
   CalendarDays,
   CalendarRange,
   Car,
@@ -5081,6 +5082,8 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
     profile.price && ["Price", profile.price],
     profile.addOn && ["Add-on", profile.addOn],
   ].filter(Boolean);
+  const aboutText = String(profile.about || "").trim();
+  const shouldShowAbout = aboutText && aboutText !== String(profile.oneSentence || "").trim();
 
   return (
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-event-detail-drawer">
@@ -5109,24 +5112,13 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
         )}
       </div>
 
-      <DestinationSection title="RSVP" className="dp-event-section dp-event-rsvp-section">
-        <div className="dp-event-rsvp-module">
-          <div>
-            <strong>{isRsvped ? "Your RSVP is recorded" : "Confirm your RSVP"}</strong>
-            <p>{isRsvped ? "This action was submitted to Downtown Perks reporting and saved to your resident plans." : "Submit this event RSVP with the event, partner, workspace, district, and session context attached."}</p>
-          </div>
-          <button type="button" onClick={onRsvp} className={isRsvped ? "is-complete" : ""}>
-            <TicketPercent className="h-4 w-4" aria-hidden="true" />
-            <span>{isRsvped ? "RSVP Submitted" : "Submit RSVP"}</span>
-          </button>
-        </div>
-      </DestinationSection>
+      {shouldShowAbout && (
+        <DestinationSection title="About" className="dp-event-section">
+          <p>{aboutText}</p>
+        </DestinationSection>
+      )}
 
-      <DestinationSection title="About" className="dp-event-section">
-        <p>{profile.about}</p>
-      </DestinationSection>
-
-      <DestinationSection title="When & where" className="dp-event-section">
+      <DestinationSection title="Details" className="dp-event-section">
         <div className="dp-event-fact-rail">
           {factItems.map(([label, value]) => (
             <span key={`${label}-${value}`} className="dp-event-fact">
@@ -5173,8 +5165,7 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
         place={place}
         places={places.filter((candidate) => candidate?.id !== place?.id && !isCampaignEntity(candidate))}
         onSelect={onSelect}
-        title="Nearby After"
-        support="Keep the plan going with walkable places nearby."
+        title="Nearby"
       />
 
       {onAsk && (
@@ -6893,8 +6884,34 @@ function getWaterlooRailImage(entity) {
   return "";
 }
 
+function getBrandPerkRailImage(entity) {
+  const text = [
+    entity?.id,
+    entity?.slug,
+    entity?.name,
+    entity?.title,
+    entity?.raw?.id,
+    entity?.raw?.name,
+    entity?.raw?.title,
+    getNearbyCardEntityTitle(entity),
+    placeCoreText(entity),
+  ].filter(Boolean).join(" ").toLowerCase();
+  if (/rainey\s+patio\s+night|monday\s+meetups|resident\s+event|rooftop\s+event/.test(text)) return "/images/imported/perks/people-at-event.png";
+  if (/lustre\s+pearl|partner-lustre-pearl-rainey|happy-hour-lustre-pearl/.test(text)) return "/images/imported/perks/brand-updates/lustre-pearl-happy-hour.png";
+  if (/banger'?s?|sausage\s+house|beer\s+garden/.test(text)) return "/images/imported/perks/brand-updates/bangers-sausage.webp";
+  if (/stay\s+put|deep\s+ellum/.test(text)) return "/images/imported/perks/brand-updates/stay-put-patio.png";
+  if (/hotel\s+van\s+zandt|van\s+zandt/.test(text)) return "/images/imported/perks/hotel-van-zandt-entrance.jpg";
+  if (/geraldine/.test(text)) return "/images/map-entities/attached/venues/geraldines-live.jpeg";
+  if (/rainey\s+street\s+historic|rainey\s+street/.test(text)) return "/images/map-entities/rainey-bars/rainey-street.jpeg";
+  if (/stagger\s+lee/.test(text)) return "/images/imported/perks/happy-hour-2.png";
+  if (/emmer|rye/.test(text)) return "/images/map-entities/rainey-bars/emmer-rye-bread.png";
+  if (/half\s+step/.test(text)) return "/images/restaurants/half-step.jpg";
+  if (/\bpaseo\b/.test(text)) return "/images/map-entities/attached/properties/paseo/daydreamer-lobby.jpeg";
+  return "";
+}
+
 function getNearbyCardImage(entity, mode = "resident") {
-  return getWaterlooRailImage(entity) || resolveMapImage(entity, "nearbyRail") || resolveEntityImage(entity, "nearbyRail") || getLifestyleImage(entity, mode) || MAP_PANEL_IMAGE_FALLBACK;
+  return getBrandPerkRailImage(entity) || getWaterlooRailImage(entity) || resolveMapImage(entity, "nearbyRail") || resolveEntityImage(entity, "nearbyRail") || getLifestyleImage(entity, mode) || MAP_PANEL_IMAGE_FALLBACK;
 }
 
 function getContextualRailFallbackImage(entity, mode = "resident") {
@@ -8719,6 +8736,8 @@ function LegendsContactForm({ listing, formId }) {
         setSubmitting(true);
         const form = new FormData(event.currentTarget);
         const listingPayload = {
+          id: form.get("listingId"),
+          name: form.get("listingName"),
           listingType: form.get("listingType"),
           address: form.get("address"),
           price: form.get("price"),
@@ -8729,6 +8748,7 @@ function LegendsContactForm({ listing, formId }) {
           neighborhood: form.get("neighborhood"),
           source: form.get("source"),
           brand: form.get("brand"),
+          contactEmail: form.get("contactEmail"),
         };
         try {
           await postWorkflow("/api/listing-interest", {
@@ -8740,6 +8760,7 @@ function LegendsContactForm({ listing, formId }) {
             listing: listingPayload,
             sessionId: getWorkflowSessionId(),
             profileId: getWorkflowProfileId(),
+            pageUrl: typeof window !== "undefined" ? window.location.href : "",
           });
           setSubmitted(true);
         } catch (error) {
@@ -8785,6 +8806,8 @@ function LegendsContactForm({ listing, formId }) {
         <textarea name="message" className="min-h-16 dp-soft-field rounded-[2px] bg-white px-2.5 py-2 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue={listing.prefilledMessage} />
       </label>
 
+      <input type="hidden" name="listingId" value={listing.id || ""} />
+      <input type="hidden" name="listingName" value={listing.buildingName || listing.name || listing.address || ""} />
       <input type="hidden" name="listingType" value={listing.listingType === "rent" ? "Rent" : "Sale"} />
       <input type="hidden" name="address" value={`${listing.address}, ${listing.city}, ${listing.state} ${listing.zip}`} />
       <input type="hidden" name="price" value={listing.price} />
@@ -8795,6 +8818,7 @@ function LegendsContactForm({ listing, formId }) {
       <input type="hidden" name="neighborhood" value={listing.neighborhood} />
       <input type="hidden" name="source" value={listing.source} />
       <input type="hidden" name="brand" value="Legends Real Estate" />
+      <input type="hidden" name="contactEmail" value={listing.contactEmail || ""} />
 
       {submitError && (
         <p className="mt-3 text-[12px] leading-5 text-red-700">
@@ -9458,6 +9482,8 @@ function TheShoreResidentialEntityDrawer({
   onShowCard,
   onContact,
   onSubmitContact,
+  onBack,
+  onClose,
 }) {
   const building = theShoreResidentialBuilding;
   const isPartnerMode = mode === "partner";
@@ -9480,12 +9506,21 @@ function TheShoreResidentialEntityDrawer({
   const openContact = () => {
     onContact();
     window.setTimeout(() => {
-      document.getElementById(contactFormId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      document.getElementById(contactFormId)?.scrollIntoView({ behavior: "smooth", block: "end" });
     }, 120);
   };
 
   return (
     <div className="dp-entity-drawer dp-shore-residential-drawer" role="document">
+      <div className="dp-drawer-control-row" aria-label="Drawer controls">
+        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back to map">
+          <ArrowLeft aria-hidden="true" />
+        </button>
+        <span className="dp-drawer-control-title">{building.name}</span>
+        <button type="button" className="dp-drawer-icon-control dp-drawer-close" onClick={onClose} aria-label="Close panel">
+          <X aria-hidden="true" />
+        </button>
+      </div>
       <div className="dp-entity-handle" aria-hidden="true" />
 
       <figure className="dp-entity-hero dp-entity-hero-image">
@@ -9735,6 +9770,9 @@ function getLegendsInquiryListing(place, profile) {
   const zip = source.zip || source.postalCode || "78701";
 
   return {
+    id: source.id || source.listingId || source.entityId || place?.id || "",
+    name: source.name || source.title || source.buildingName || place?.name || place?.title || address,
+    buildingName: source.buildingName || source.building_name || profile?.buildingName || place?.buildingName || place?.name || "",
     listingType: source.listingType || source.listing_type || rental?.listingType || "sale",
     listingTypeLabel: source.listingTypeLabel || source.listing_type_label || (rental ? "Rental" : "Residential"),
     address,
@@ -9750,6 +9788,7 @@ function getLegendsInquiryListing(place, profile) {
     daysOnMarket: source.daysOnMarket || "",
     neighborhood: source.neighborhood || profile?.neighborhood || place?.district || "Downtown Austin",
     source: source.source || "Downtown Perks map",
+    contactEmail: source.contactEmail || source.contact_email || profile?.contactEmail || profile?.contact_email || place?.contactEmail || place?.contact_email || place?.email || "",
     prefilledMessage: `I would like more information about ${address}.`,
   };
 }
@@ -10180,6 +10219,11 @@ function getLifestyleImage(place, mode) {
     [/rivian/, "/images/map-entities/brand-rivian/9JvnMPQ8kGuv11XCFhP4qI_0lIktNCTBBolhYsLAFdFrKtTRzkUq5Q31tv6T9ELH3voX6p5GdrTZtXeDJWPYBEvUKXwLboA0PHejrLBKAKZRKo7n0xwA5CQMUmC8eVeK__frO4QU1gVFAspV_WYn7zp3DhW7gT6T0Q9jZr3jl_veaPOYtJKM9M09OEVs68Sg.jpeg"],
     [/topo chico|hydration/, "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg"],
     [/yeti/, "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg"],
+    [/lustre pearl|happy-hour-lustre-pearl|partner-lustre-pearl-rainey/, "/images/imported/perks/brand-updates/lustre-pearl-happy-hour.png"],
+    [/banger|sausage house|beer garden/, "/images/imported/perks/brand-updates/bangers-patio.jpg"],
+    [/stay put|deep ellum/, "/images/imported/perks/brand-updates/stay-put-patio.png"],
+    [/half step/, "/images/restaurants/half-step.jpg"],
+    [/stagger lee/, "/images/imported/perks/happy-hour-2.png"],
     [/malin|public art|art walk|johnston/, "/images/map-entities/perks/downtown_art_walk_1779052670656.png"],
     [/honey rose ritual/, "/images/entities/four-seasons/honey-rose-ritual.png"],
     [/four seasons residences|partner-four-seasons|98 san jacinto/, "/images/property-listings-premium/four-seasons-residences.jpeg"],
@@ -10207,8 +10251,10 @@ function getPanelImageObjectPosition(place) {
   if (kind === "property" || text.includes("building") || text.includes("residential")) return "center center";
   if (kind === "hotel" || text.includes("hotel")) return "center center";
   if (text.includes("via 313")) return "28% 24%";
+  if (text.includes("lustre pearl")) return "50% 42%";
   if (text.includes("banger")) return "48% 42%";
   if (text.includes("stay put")) return "50% 38%";
+  if (text.includes("stagger lee") || text.includes("half step")) return "50% 44%";
   if (text.includes("geraldine")) return "50% 42%";
   if (text.includes("anthem")) return "50% 45%";
   if (text.includes("emmer") || text.includes("rye")) return "50% 44%";
@@ -12294,6 +12340,15 @@ export default function MapPage() {
     () => (selected ? getResidentDetailAction(selected) : null),
     [selected],
   );
+
+  useEffect(() => {
+    if (!selected?.id || selectedDrawerClosed) return;
+    window.requestAnimationFrame(() => {
+      document.querySelectorAll(".dp-detail-drawer .dp-drawer-scroll, .dp-detail-drawer .dp-map-panel-scroll, .dp-destination-drawer .dp-destination-scroll").forEach((node) => {
+        node.scrollTop = 0;
+      });
+    });
+  }, [selected?.id, selectedDrawerClosed]);
 
   useEffect(() => {
     if (!selectedId || !selected) return;
@@ -14445,7 +14500,7 @@ export default function MapPage() {
         </GoogleMapErrorBoundary>
       </div>
 
-      {urlState.tab === "map" && activeCollectionRoute?.stops?.length ? (
+      {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed) ? (
         <CollectionRoutePanel
           route={activeCollectionRoute}
           selectedStopId={selectedId}
@@ -14649,6 +14704,20 @@ export default function MapPage() {
                   onClick={() => {
                     clearOpenMapSelection();
                     setConsoleCollapsed(true);
+                    setActiveBottomTab("info");
+                    setActiveFilter("All");
+                    navigate("/map?mode=resident&tab=map&filter=All&panel=info");
+                  }}
+                  aria-pressed={activeBottomTab === "info"}
+                >
+                  <Info className="h-4 w-4" />
+                  <span>Home</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearOpenMapSelection();
+                    setConsoleCollapsed(true);
                     setActiveBottomTab("map");
                     setActiveFilter("All");
                     navigate("/map?mode=resident&tab=map&filter=All");
@@ -14691,27 +14760,13 @@ export default function MapPage() {
                   onClick={() => {
                     clearOpenMapSelection();
                     setConsoleCollapsed(true);
-                    setActiveBottomTab("saved");
-                    setActiveFilter("Saved");
-                    navigate("/map?mode=resident&tab=map&filter=Saved");
+                    setActiveBottomTab("card");
+                    navigate("/map?mode=resident&tab=pass");
                   }}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "saved"}
+                  aria-pressed={urlState.tab === "pass"}
                 >
-                  <Bookmark className="h-4 w-4" />
-                  <span>Saved</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    clearOpenMapSelection();
-                    setConsoleCollapsed(true);
-                    setActiveBottomTab("info");
-                    navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(activeFilter || "All")}&panel=info`);
-                  }}
-                  aria-pressed={activeBottomTab === "info"}
-                >
-                  <Info className="h-4 w-4" />
-                  <span>Info</span>
+                  <CreditCard className="h-4 w-4" />
+                  <span>Card</span>
                 </button>
               </>
             )}
@@ -15198,6 +15253,8 @@ export default function MapPage() {
                       onShowCard={() => openResidentQrModal(selected, "show_card", "the_shore_residential_drawer")}
                       onContact={openContactForm}
                       onSubmitContact={() => setAgentFormSubmitted(true)}
+                      onBack={goBackToMap}
+                      onClose={closeSelectedMapDrawer}
                     />
                   );
                 }

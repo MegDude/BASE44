@@ -123,10 +123,6 @@ function SplashLaunchGate() {
 
 function MapLaunchGate() {
   const location = useLocation();
-  const params = new URLSearchParams(location.search || "");
-  if (params.get("mode") === "resident" && params.get("tab") === "pass") {
-    return <Navigate to="/card" replace />;
-  }
   if (location.pathname === "/app" && !location.search) {
     return <SplashLaunchGate />;
   }

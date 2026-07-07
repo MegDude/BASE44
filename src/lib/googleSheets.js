@@ -123,3 +123,31 @@ export async function appendContactLead(lead) {
 
   return response.json();
 }
+
+export async function appendListingInterestLead(interest) {
+  const listing = interest?.listing || {};
+
+  return appendContactLead({
+    createdAt: interest.createdAt || new Date().toISOString(),
+    sourcePage: interest.sourcePage || "Listing Interest",
+    entryPath: interest.entryPath || "resident_map_detail_drawer",
+    name: interest.name,
+    email: interest.email,
+    phone: interest.phone,
+    company: listing.brand || "Legends Real Estate",
+    partnerType: "Real Estate",
+    productTitle: listing.address || listing.name || listing.id || "Legends listing",
+    priceText: listing.price || "",
+    billingKind: listing.listingType || "",
+    selectedPlan: listing.neighborhood || "",
+    selectedAddOns: [
+      listing.beds ? `${listing.beds} beds` : "",
+      listing.baths ? `${listing.baths} baths` : "",
+      listing.sqft ? `${listing.sqft} sqft` : "",
+    ].filter(Boolean).join(" · "),
+    checkoutMode: "listing_interest",
+    timing: interest.moveTimeline || "",
+    message: interest.message || "",
+    pageUrl: interest.pageUrl || "",
+  });
+}

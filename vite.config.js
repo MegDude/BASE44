@@ -145,6 +145,17 @@ function localApiRoutes() {
       runLocalHandler(req, res, "./api/map-actions.js", logger, "Local map action handler failed");
     });
 
+    middlewares.use("/api/listing-interest", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/listing-interest.js", logger, "Local listing interest handler failed");
+    });
+
     middlewares.use("/api/stripe/create-checkout-session", async (req, res) => {
       if (req.method !== "POST") {
         res.statusCode = 405;
