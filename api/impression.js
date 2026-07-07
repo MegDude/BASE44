@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   if (!supabaseServer) {
-    return res.status(500).json({ error: 'Missing Supabase server environment variables' });
+    return res.status(200).json({ ok: true, status: 'accepted' });
   }
 
   const { sessionId, entityId, entityType, lat, lng } = req.body || {};

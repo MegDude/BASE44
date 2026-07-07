@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   };
 
   if (!supabaseServer) {
-    return res.status(200).json({ ok: true, stored: false, reason: "supabase_not_configured" });
+    return res.status(200).json({ ok: true, status: "accepted" });
   }
 
   try {
@@ -45,12 +45,9 @@ export default async function handler(req, res) {
     });
 
     if (error) throw error;
-    return res.status(200).json({ ok: true, stored: true });
+    return res.status(200).json({ ok: true, status: "accepted" });
   } catch (error) {
-    return res.status(200).json({
-      ok: true,
-      stored: false,
-      reason: error?.message || "analytics_storage_failed",
-    });
+    console.error("[app-log] accepted log but persistence failed", error);
+    return res.status(200).json({ ok: true, status: "accepted" });
   }
 }

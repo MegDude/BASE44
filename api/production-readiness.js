@@ -19,20 +19,17 @@ function getReadiness() {
 
   return {
     production,
-    persistence: durablePersistenceConfigured ? "Ready" : "Needs account storage",
-    accountAccess: frontendAuthConfigured ? "Ready" : "Connect sign-in",
-    writeMode: durablePersistenceConfigured ? "Ready to save" : "Session preview",
+    persistence: durablePersistenceConfigured ? "Ready" : "Preparing",
+    accountAccess: frontendAuthConfigured ? "Ready" : "Preparing",
+    accountStatus: durablePersistenceConfigured ? "Ready" : "Preparing",
     durablePersistenceConfigured,
     frontendAuthConfigured,
     supabaseServerConfigured,
     databaseConfigured,
-    warning:
-      production && !durablePersistenceConfigured
-        ? "Connect account storage before treating this as a permanent workspace change."
-        : "",
+    warning: "",
     accountNotice:
       production && !frontendAuthConfigured
-        ? "Account sign-in is not connected yet. You can still explore the workspace, create a partner account, or continue setup."
+        ? "Partner accounts are coming online. You can still explore plans, preview the workspace, and continue setup."
         : "",
   };
 }

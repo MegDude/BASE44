@@ -36,7 +36,8 @@ function localApiRoutes() {
     });
     req.on("end", async () => {
       try {
-        const { default: handler } = await import(pathToFileURL(`${process.cwd()}/${handlerPath}`).href);
+        const handlerUrl = `${pathToFileURL(`${process.cwd()}/${handlerPath}`).href}?t=${Date.now()}`;
+        const { default: handler } = await import(handlerUrl);
         req.body = rawBody ? JSON.parse(rawBody) : {};
         res.status = (code) => {
           res.statusCode = code;
@@ -154,6 +155,17 @@ function localApiRoutes() {
       }
 
       runLocalHandler(req, res, "./api/listing-interest.js", logger, "Local listing interest handler failed");
+    });
+
+    middlewares.use("/api/redeem", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/redeem.js", logger, "Local redeem handler failed");
     });
 
     middlewares.use("/api/stripe/create-checkout-session", async (req, res) => {

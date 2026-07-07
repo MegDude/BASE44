@@ -258,18 +258,35 @@ export function getMapPanelStandard(entity = {}, mode = "resident") {
 }
 
 export function buildMapActionPayload({ entity, standard, action, mode, form = {}, sessionId, profileId }) {
+  const raw = entity?.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const partnerId = entity?.partnerId || raw.partnerId || raw.partner_id || raw.ownerId || raw.owner_id || "";
+  const workspaceId = entity?.workspaceId || raw.workspaceId || raw.workspace_id || partnerId || "";
+  const campaignId = entity?.campaignId || raw.campaignId || raw.campaign_id || "";
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const route = typeof window !== "undefined" ? `${window.location.pathname}${window.location.search}` : "";
   return {
+    id: `${action}-${entity?.id || entity?.entityId || raw.id || "entity"}-${Date.now()}`,
     action,
     mode,
     sessionId,
     profileId,
+    pageUrl,
+    route,
+    campaignId,
+    partnerId,
+    workspaceId,
+    listingId: entity?.listingId || raw.listingId || raw.listing_id || "",
     entity: {
-      id: entity?.id || entity?.entityId || "",
-      name: entity?.name || entity?.title || "",
+      id: entity?.id || entity?.entityId || raw.id || "",
+      name: entity?.name || entity?.title || raw.name || raw.title || "",
       type: entity?.type || entity?.kind || entity?.entityType || standard?.category || "place",
-      category: entity?.category || entity?.raw?.category || standard?.label || "",
-      district: entity?.district || entity?.neighborhood || entity?.raw?.district || "",
-      address: entity?.address || entity?.raw?.address || "",
+      category: entity?.category || raw.category || standard?.label || "",
+      district: entity?.district || entity?.neighborhood || raw.district || "",
+      address: entity?.address || raw.address || "",
+      partnerId,
+      workspaceId,
+      campaignId,
+      brand: entity?.brand || raw.brand || raw.partnerName || raw.partner_name || "",
     },
     standard: {
       category: standard?.category,
@@ -277,6 +294,11 @@ export function buildMapActionPayload({ entity, standard, action, mode, form = {
       label: standard?.label,
     },
     form,
+    metadata: {
+      standardTitle: standard?.title,
+      standardSubtitle: standard?.subtitle,
+      standardPrimaryAction: standard?.primaryAction,
+    },
     source: "map_standard_panel",
   };
 }

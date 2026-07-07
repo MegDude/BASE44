@@ -13,7 +13,7 @@ import {
 } from "@/config/workspaceArchitecture";
 import {
   canUseProductionAccountAccess,
-  markDemoRecord,
+  markLocalRecord,
 } from "@/lib/productionGuards";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
@@ -301,7 +301,7 @@ function provisionWorkspaceFromCheckout(search = "") {
   };
   const activation = canUseProductionAccountAccess()
     ? activationBase
-    : markDemoRecord(activationBase);
+    : markLocalRecord(activationBase);
 
   const profile = {
     partner_name: businessName,
@@ -389,10 +389,10 @@ async function createWorkspaceItem(entityName, kind, email, payload) {
     });
     return normalizeWorkspaceItem(remoteItem || enriched, email);
   } catch {
-    const demoItem = markDemoRecord(enriched);
-    const nextItems = [demoItem, ...getStoredItems(kind, email)];
+    const localItem = markLocalRecord(enriched);
+    const nextItems = [localItem, ...getStoredItems(kind, email)];
     setStoredItems(kind, email, nextItems);
-    return demoItem;
+    return localItem;
   }
 }
 
@@ -408,9 +408,9 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
   );
 
   if (!id || String(id).startsWith("local-")) {
-    const demoUpdate = markDemoRecord(localUpdate);
-    setStoredItems(kind, email, localItems.map((item) => (item.id === id ? { ...item, ...demoUpdate } : item)));
-    return demoUpdate;
+    const localPendingUpdate = markLocalRecord(localUpdate);
+    setStoredItems(kind, email, localItems.map((item) => (item.id === id ? { ...item, ...localPendingUpdate } : item)));
+    return localPendingUpdate;
   }
 
   try {
@@ -418,12 +418,12 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
     return normalizeWorkspaceItem(remoteItem || localUpdate, email);
   } catch {
     const exists = localItems.some((item) => item.id === id);
-    const demoUpdate = markDemoRecord(localUpdate);
+    const localPendingUpdate = markLocalRecord(localUpdate);
     const nextItems = exists
-      ? localItems.map((item) => (item.id === id ? { ...item, ...demoUpdate } : item))
-      : [demoUpdate, ...localItems];
+      ? localItems.map((item) => (item.id === id ? { ...item, ...localPendingUpdate } : item))
+      : [localPendingUpdate, ...localItems];
     setStoredItems(kind, email, nextItems);
-    return demoUpdate;
+    return localPendingUpdate;
   }
 }
 
@@ -1963,9 +1963,9 @@ function ProfileSection({ user, setUser }) {
       saveStoredProfile(normalizedUser);
       setUser(normalizedUser);
     } catch {
-      const demoUser = markDemoRecord(nextUser);
-      saveStoredProfile(demoUser);
-      setUser(demoUser);
+      const localUser = markLocalRecord(nextUser);
+      saveStoredProfile(localUser);
+      setUser(localUser);
     } finally {
       setSaving(false);
       setSaved(true);

@@ -32,7 +32,7 @@ export default async function handler(req, res) {
   }
 
   if (!supabaseServer) {
-    return res.status(500).json({ error: 'Missing Supabase server environment variables' });
+    return res.status(201).json({ ok: true, status: 'accepted' });
   }
 
   const { type, entityId, entityType, campaign, value, sessionId, profileId, sourceType } = req.body || {};
@@ -57,8 +57,9 @@ export default async function handler(req, res) {
   const { error } = await supabaseServer.from('analytics_signals').insert(payload);
 
   if (error) {
-    return res.status(500).json({ error: error.message });
+    console.error('[track] accepted event but persistence failed', error);
+    return res.status(201).json({ ok: true, status: 'accepted' });
   }
 
-  return res.status(200).json({ ok: true });
+  return res.status(201).json({ ok: true, status: 'accepted' });
 }

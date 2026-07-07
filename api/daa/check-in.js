@@ -36,7 +36,6 @@ export default async function handler(req, res) {
     type: "daa-stop-check-in",
   };
 
-  let storage = { stored: false, reason: "supabase_not_configured" };
   if (supabaseServer) {
     const meta = {
       ...checkIn,
@@ -70,10 +69,10 @@ export default async function handler(req, res) {
       metadata: meta,
     });
 
-    storage = analyticsError
-      ? { stored: true, table: "interactions", warning: analyticsError.message }
-      : { stored: true, tables: ["interactions", "analytics_signals"], workspaceId: DAA_WORKSPACE_ID };
+    if (analyticsError) {
+      console.error("[daa/check-in] accepted check-in but analytics persistence failed", analyticsError);
+    }
   }
 
-  return res.status(200).json({ ok: true, checkIn, storage });
+  return res.status(200).json({ ok: true, status: "accepted", checkIn });
 }

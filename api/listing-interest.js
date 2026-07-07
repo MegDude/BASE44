@@ -112,10 +112,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (!supabaseServer) {
-    return res.status(500).json({ error: 'Missing Supabase server environment variables' });
-  }
-
   const { name, email, phone, moveTimeline, message, sessionId, profileId, pageUrl } = req.body || {};
   const listing = cleanListing(req.body?.listing);
   if (!clean(name) || !clean(email) || !clean(phone) || !listing.address) {
@@ -135,19 +131,21 @@ export default async function handler(req, res) {
     pageUrl: clean(pageUrl, 1000),
   };
 
-  const { error } = await supabaseServer.from('listing_interest_requests').insert({
-    name: interest.name,
-    email: interest.email,
-    phone: interest.phone,
-    move_timeline: interest.moveTimeline || null,
-    message: interest.message || null,
-    listing: interest.listing,
-    session_id: interest.sessionId || null,
-    profile_id: interest.profileId || null
-  });
+  if (supabaseServer) {
+    const { error } = await supabaseServer.from('listing_interest_requests').insert({
+      name: interest.name,
+      email: interest.email,
+      phone: interest.phone,
+      move_timeline: interest.moveTimeline || null,
+      message: interest.message || null,
+      listing: interest.listing,
+      session_id: interest.sessionId || null,
+      profile_id: interest.profileId || null
+    });
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
 
   const [sheet, notification] = await Promise.all([
@@ -157,7 +155,7 @@ export default async function handler(req, res) {
 
   return res.status(200).json({
     ok: true,
-    storage: { status: "stored", table: "listing_interest_requests" },
+    status: "accepted",
     sheet,
     notification,
   });

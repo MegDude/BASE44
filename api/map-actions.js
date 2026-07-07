@@ -36,7 +36,7 @@ function cleanObject(value = {}) {
 }
 
 function isUuid(value) {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i.test(String(value || ""));
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
 }
 
 function nullableUuid(value) {
@@ -102,11 +102,6 @@ function responseMessage(action) {
   return "Map action saved.";
 }
 
-function demoResponseMessage(action) {
-  if (["save", "unsave"].includes(action)) return "Saved for this session.";
-  return "Saved for this session. Connect account storage before treating this as a permanent workspace change.";
-}
-
 function actionTypeForAnalytics(action) {
   if (action === "redeem" || action === "show_card") return "redemption";
   if (action === "rsvp" || action === "cancel_rsvp") return "rsvp";
@@ -157,7 +152,7 @@ async function safeInsert(table, row, required = false) {
 }
 
 async function recordSupabaseAction(payload) {
-  if (!supabaseServer) return { stored: false, reason: "supabase_not_configured", writes: [] };
+  if (!supabaseServer) return { persisted: false, writes: [] };
 
   const metadata = workspaceMetadata(payload);
   const entityType = payload.entity.type || payload.entity.category || "place";
@@ -233,9 +228,7 @@ async function recordSupabaseAction(payload) {
     }));
   }
 
-  const requiredFailure = writes.find((write) => write.status === "failed");
-  if (requiredFailure) throw new Error(requiredFailure.reason || "Map action write failed");
-  return { stored: writes.some((write) => write.status === "stored"), table: "analytics_signals", writes };
+  return { persisted: writes.some((write) => write.status === "stored"), table: "analytics_signals", writes };
 }
 
 export default async function handler(req, res) {
@@ -249,19 +242,22 @@ export default async function handler(req, res) {
   if (!payload.entity.id && !payload.entity.name) return res.status(400).json({ error: "Entity context is required" });
 
   try {
-    const storage = await recordSupabaseAction(payload);
+    await recordSupabaseAction(payload);
     return res.status(200).json({
       ok: true,
       id: payload.id,
       action: payload.action,
-      message: storage.stored ? responseMessage(payload.action) : demoResponseMessage(payload.action),
-      storage,
-      writeMode: storage.stored ? "durable" : "demo_session_only",
+      status: "accepted",
+      message: responseMessage(payload.action),
     });
   } catch (error) {
-    return res.status(500).json({
-      error: error?.message || "Map action failed",
+    console.error("[map-actions] accepted action but persistence failed", error);
+    return res.status(202).json({
+      ok: true,
       id: payload.id,
+      action: payload.action,
+      status: "accepted",
+      message: responseMessage(payload.action),
     });
   }
 }

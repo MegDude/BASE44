@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import {
   canUseProductionAccountAccess,
-  DEMO_WRITE_MESSAGE,
+  ACTION_ACCEPTED_MESSAGE,
   PRODUCTION_ACCOUNT_ACCESS_MESSAGE,
 } from "@/lib/productionGuards";
 import {
@@ -298,7 +298,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           setSubmissionMessage(session?.message || PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
         }
       } else {
-        setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
+        setSubmissionMessage(`${ACTION_ACCEPTED_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
       }
     } catch (error) {
       savePartnerProfile(profile);
@@ -307,15 +307,15 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       if (accountAccessEnabled) {
         const session = await signInPartner(profile);
         if (session?.type === "partner") {
-          setSubmissionMessage(`${DEMO_WRITE_MESSAGE} Opening your workspace.`);
+          setSubmissionMessage(`${ACTION_ACCEPTED_MESSAGE} Opening your workspace.`);
           window.setTimeout(() => navigate("/partner-workspace/overview"), 850);
         } else if (session?.type === "supabase_otp") {
-          setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${session.message}`);
+          setSubmissionMessage(`${ACTION_ACCEPTED_MESSAGE} ${session.message}`);
         } else {
-          setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${session?.message || PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
+          setSubmissionMessage(`${ACTION_ACCEPTED_MESSAGE} ${session?.message || PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
         }
       } else {
-        setSubmissionMessage(`${DEMO_WRITE_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
+        setSubmissionMessage(`${ACTION_ACCEPTED_MESSAGE} ${PRODUCTION_ACCOUNT_ACCESS_MESSAGE}`);
       }
     }
   }

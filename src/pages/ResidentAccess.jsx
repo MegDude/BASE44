@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, CreditCard, Home, MapPin, ShieldCheck } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
-  markDemoRecord,
+  markLocalRecord,
 } from "@/lib/productionGuards";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
@@ -90,9 +90,9 @@ export default function ResidentAccess() {
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(payload.error || "Resident access could not be saved.");
-    const resident = payload.storage?.stored ? payload.resident : markDemoRecord(payload.resident);
+    const resident = markLocalRecord(payload.resident);
     writeResidentAccess(resident);
-    return { resident, storage: payload.storage || { stored: false } };
+    return { resident };
   }
 
   async function startCheckout(resident) {

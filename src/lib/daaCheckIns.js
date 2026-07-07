@@ -87,8 +87,7 @@ export async function recordDaaCheckIn(payload = {}) {
         stopName: synced.stopName,
         stopNumber: synced.stopNumber,
         shareUrl: synced.shareUrl,
-        database: "interactions",
-        storage: body.storage || null,
+        accepted: body.status === "accepted" || body.ok === true,
       },
     });
     window.dispatchEvent?.(new CustomEvent("downtown-perks:daa-stop-check-in", { detail: synced }));

@@ -9286,6 +9286,7 @@ function ResidentDrawerActions({
   onShowCard,
   onAskMap,
   onSave,
+  onTrackAction,
 }) {
   const entityKind = getResidentEntityKind(selected);
   const panelArchetype = resolveEntityPanelArchetype(selected);
@@ -9302,6 +9303,7 @@ function ResidentDrawerActions({
   const viewPerk = () => document.querySelector(".dp-destination-drawer .dp-inkind-perk-zone, .dp-destination-drawer .dp-perk-module, .dp-destination-drawer .dp-happy-hour-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
   const exploreNearby = () => document.querySelector(".dp-destination-drawer .dp-discovery-context-section, .dp-destination-drawer .dp-property-nearby-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
   const sharePlace = async () => {
+    onTrackAction?.("share", "resident_drawer_share");
     const shareUrl = typeof window !== "undefined" ? window.location.href : "";
     const shareData = { title: selected.name, text: selected.summary || selected.description || selected.name, url: shareUrl };
     try {
@@ -9371,7 +9373,7 @@ function ResidentDrawerActions({
         <button type="button" onClick={onSave} className="dp-panel-action">
           {savedIds.has(selected.id) ? "Saved" : "Save"}
         </button>
-        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action" onClick={() => onTrackAction?.("directions", "resident_campaign_route")}>
           Route
         </a>
       </div>
@@ -9384,7 +9386,7 @@ function ResidentDrawerActions({
         <button type="button" onClick={onSave} className="dp-panel-action dp-primary-action">
           {savedIds.has(selected.id) ? "Saved" : "Save"}
         </button>
-        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action" onClick={() => onTrackAction?.("directions", "resident_antones_directions")}>
           Directions
         </a>
         <Link to={selectedResidentAction?.href || "/map?mode=resident&tab=map&filter=Events"} className="dp-panel-action">
@@ -9400,7 +9402,7 @@ function ResidentDrawerActions({
         <button type="button" onClick={viewPerk} className="dp-panel-action dp-primary-action">
           Claim Resident Perk
         </button>
-        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action" onClick={() => onTrackAction?.("directions", "resident_inkind_directions")}>
           Directions
         </a>
         <button type="button" onClick={onSave} className="dp-panel-action">
@@ -9444,17 +9446,17 @@ function ResidentDrawerActions({
         </button>
       )}
       {!isEvent && (
-        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={directionsUrl(selected)} target="_blank" rel="noreferrer" className="dp-panel-action" onClick={() => onTrackAction?.("directions", "resident_drawer_directions")}>
           Directions
         </a>
       )}
       {!isEvent && websiteContact && (
-        <a href={websiteContact.href} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={websiteContact.href} target="_blank" rel="noreferrer" className="dp-panel-action" onClick={() => onTrackAction?.("website", "resident_drawer_website")}>
           Website
         </a>
       )}
       {isEvent && websiteContact && (
-        <a href={websiteContact.href} target="_blank" rel="noreferrer" className="dp-panel-action">
+        <a href={websiteContact.href} target="_blank" rel="noreferrer" className="dp-panel-action" onClick={() => onTrackAction?.("website", "resident_event_website")}>
           {panelArchetype.secondaryAction}
         </a>
       )}
@@ -12182,12 +12184,83 @@ export default function MapPage() {
   const [passPresented, setPassPresented] = useState(false);
   const [walletAdded, setWalletAdded] = useState(false);
   const [residentQrModal, setResidentQrModal] = useState(null);
+  const buildMapActionPayload = useCallback((place = null, action = "explore", source = "resident_map", extra = {}) => {
+    const raw = place?.raw || {};
+    const entityId = getEntityTouchpointId(place);
+    const entityName = getEntityTouchpointName(place);
+    const entityType = workflowEntityType(place || {});
+    const partnerId = place?.partnerId || raw.partnerId || raw.partner_id || raw.ownerId || raw.owner_id || "";
+    const workspaceId = place?.workspaceId || raw.workspaceId || raw.workspace_id || partnerId || "";
+    const campaignId = place?.campaignId || raw.campaignId || raw.campaign_id || urlState.campaignId || "";
+    const route = typeof window !== "undefined" ? `${window.location.pathname}${window.location.search}` : "";
+    const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+    const form = extra.form && typeof extra.form === "object" ? extra.form : {};
+    const metadata = extra.metadata && typeof extra.metadata === "object" ? extra.metadata : {};
+
+    return {
+      id: extra.id || `${action}-${entityId}-${Date.now()}`,
+      action,
+      mode: urlState.mode,
+      sessionId: getWorkflowSessionId(),
+      profileId: getWorkflowProfileId(),
+      source,
+      pageUrl,
+      route,
+      filter: activeFilter,
+      collection: urlState.collection,
+      campaignId,
+      partnerId,
+      workspaceId,
+      listingId: place?.listingId || raw.listingId || raw.listing_id || "",
+      entity: {
+        id: entityId,
+        name: entityName,
+        type: entityType,
+        category: place?.category || raw.category || "",
+        district: place?.district || raw.district || district || "",
+        address: place?.address || raw.address || "",
+        partnerId,
+        workspaceId,
+        campaignId,
+        brand: place?.brand || raw.brand || raw.partnerName || raw.partner_name || "",
+      },
+      standard: {
+        category: form.category || place?.category || raw.category || entityType,
+        intent: form.intent || action,
+        label: form.label || place?.primaryAction || action,
+      },
+      form,
+      metadata: {
+        ...metadata,
+        district,
+        entityKind: getResidentEntityKind(place),
+      },
+    };
+  }, [activeFilter, district, urlState.campaignId, urlState.collection, urlState.mode]);
   const openResidentQrModal = useCallback((place = null, action = "show_card", source = "resident_map") => {
     const payload = buildResidentQrPayload({ place, action, source });
+    const mapAction = action === "use_perk" ? "redeem" : "show_card";
+    const workflowPayload = buildMapActionPayload(place, mapAction, source, {
+      form: {
+        intent: action,
+        label: action === "use_perk" ? "Use resident perk" : "Show resident card",
+        perkId: payload.entityId,
+        qrValue: payload.qrValue,
+        status: action === "use_perk" ? "redeemed" : "presented",
+      },
+      metadata: payload,
+    });
+    fireWorkflow("/api/map-actions", workflowPayload);
+    fireWorkflow("/api/redeem", {
+      ...payload,
+      ...workflowPayload,
+      action,
+      status: action === "use_perk" ? "redeemed" : "presented",
+    });
     recordResidentTouchpoint(payload);
     setPassPresented(true);
     setResidentQrModal({ ...payload, place });
-  }, []);
+  }, [buildMapActionPayload]);
   const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
   const presentResidentPass = useCallback((event) => {
     event?.preventDefault?.();
@@ -13859,11 +13932,19 @@ export default function MapPage() {
 
   function toggleSaved(place) {
     const nextSaved = !savedIds.has(place.id);
+    const action = nextSaved ? "save" : "unsave";
     setSavedIds((current) => {
       const next = new Set(current);
       next.has(place.id) ? next.delete(place.id) : next.add(place.id);
       return next;
     });
+    fireWorkflow("/api/map-actions", buildMapActionPayload(place, action, "resident_save_action", {
+      form: {
+        intent: action,
+        label: nextSaved ? "Save entity" : "Remove saved entity",
+        status: nextSaved ? "active" : "inactive",
+      },
+    }));
     if (nextSaved) {
       recordMapUserAction("save", {
         entityId: place.id,
@@ -13928,6 +14009,12 @@ export default function MapPage() {
     if (normalized.includes("direction")) {
       if (firstPick && typeof window !== "undefined") {
         trackingEvents.directions(firstPick.id);
+        fireWorkflow("/api/map-actions", buildMapActionPayload(firstPick, "directions", "ask_map_answer_action", {
+          form: {
+            intent: "directions",
+            label: "Ask the Map directions",
+          },
+        }));
         fireWorkflow("/api/visit", {
           profileId: getWorkflowProfileId(),
           venueId: firstPick.id,
@@ -13946,45 +14033,32 @@ export default function MapPage() {
   async function toggleRsvp(place) {
     if ((Array.isArray(eventRsvps) ? eventRsvps : []).some((item) => item.id === place.id)) {
       removeEventRsvp(place.id);
+      fireWorkflow("/api/map-actions", buildMapActionPayload(place, "cancel_rsvp", "map_event_detail_drawer", {
+        form: {
+          status: "cancelled",
+          partnerId: place.partnerId || place.raw?.partnerId || "",
+          workspaceId: place.workspaceId || place.raw?.workspaceId || "",
+          eventId: place.id,
+          category: "event",
+          intent: "cancel_rsvp",
+          label: "Cancel Event RSVP",
+        },
+      }));
       return;
     }
-    const payload = {
-      id: `rsvp-${place.id}-${Date.now()}`,
-      action: "rsvp",
-      mode: urlState.mode,
-      sessionId: getWorkflowSessionId(),
-      profileId: getWorkflowProfileId(),
-      source: "map_event_detail_drawer",
-      entity: {
-        id: place.id,
-        name: place.name,
-        type: place.type || "event",
-        category: place.category || "Event",
-        district: place.district || "",
-        address: place.address || "",
-      },
-      standard: {
-        category: "event",
-        intent: "rsvp",
-        label: "Event RSVP",
-      },
+    const payload = buildMapActionPayload(place, "rsvp", "map_event_detail_drawer", {
       form: {
         status: "rsvped",
         partnerId: place.partnerId || place.raw?.partnerId || "",
         workspaceId: place.workspaceId || place.raw?.workspaceId || "",
         eventId: place.id,
+        category: "event",
+        intent: "rsvp",
+        label: "Event RSVP",
       },
-    };
+    });
     try {
-      const response = await fetch("/api/map-actions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) {
-        const result = await response.json().catch(() => ({}));
-        throw new Error(result?.error || "RSVP failed");
-      }
+      await postWorkflow("/api/map-actions", payload);
     } catch (error) {
       console.warn("RSVP action failed", error);
       return;
@@ -15553,6 +15627,16 @@ export default function MapPage() {
                           onShowCard={() => openResidentQrModal(selected, "show_card", "resident_drawer_actions")}
                           onAskMap={() => askEntityAssistant(`Which nearby perks make ${selected.name} fit?`)}
                           onSave={() => toggleSaved(selected)}
+                          onTrackAction={(action, source, extra = {}) => {
+                            fireWorkflow("/api/map-actions", buildMapActionPayload(selected, action, source, {
+                              form: {
+                                intent: action,
+                                label: action,
+                                ...extra.form,
+                              },
+                              metadata: extra.metadata,
+                            }));
+                          }}
                         />
                       )}
                     </motion.div>

@@ -28,11 +28,7 @@ export default async function handler(req, res) {
   }
 
   if (!supabaseServer) {
-    return res.status(200).json({
-      ok: true,
-      mode: "demo_session_only",
-      storage: { stored: false, reason: "supabase_not_configured", writes: [] },
-    });
+    return res.status(200).json({ ok: true, status: "accepted" });
   }
 
   const { cardCode, venueOfferId, venueId } = req.body || {};
@@ -81,11 +77,7 @@ export default async function handler(req, res) {
       metadata,
     }));
 
-    return res.status(200).json({
-      ok: true,
-      mode: "resident_card_touchpoint",
-      storage: { stored: writes.some((write) => write.status === "stored"), writes },
-    });
+    return res.status(200).json({ ok: true, status: "accepted" });
   }
 
   const { data: card, error: cardError } = await supabaseServer

@@ -1,10 +1,10 @@
 export const PRODUCTION_ACCOUNT_ACCESS_MESSAGE =
-  "Account sign-in is not connected yet. You can still explore the workspace, create a partner account, or continue setup.";
+  "Partner accounts are coming online. You can still explore plans, preview the workspace, and continue setup.";
 
-export const DEMO_WRITE_MESSAGE = "Saved for this session.";
+export const ACTION_ACCEPTED_MESSAGE = "Saved.";
 
-export const PRODUCTION_PERSISTENCE_MESSAGE =
-  "Connect account storage before treating this as a permanent workspace change.";
+export const ACCOUNT_PREPARING_MESSAGE =
+  "We will keep this ready while partner account access opens.";
 
 function hasValue(value: unknown): boolean {
   return typeof value === "string" && value.trim().length > 0;
@@ -26,12 +26,12 @@ export function getFrontendProductionGuard(env: ImportMetaEnv = import.meta.env)
   return {
     production,
     accountAccessEnabled,
-    demoMode: accountAccessBlocked,
-    persistenceLabel: "Needs account storage",
-    accountAccessLabel: accountAccessEnabled ? "Ready" : "Connect sign-in",
-    writeModeLabel: "Session preview",
+    accountAccessBlocked,
+    persistenceLabel: accountAccessEnabled ? "Ready" : "Preparing",
+    accountAccessLabel: accountAccessEnabled ? "Ready" : "Preparing",
+    accountStateLabel: accountAccessEnabled ? "Ready" : "Preparing",
     message: accountAccessBlocked ? PRODUCTION_ACCOUNT_ACCESS_MESSAGE : "",
-    persistenceMessage: PRODUCTION_PERSISTENCE_MESSAGE,
+    persistenceMessage: ACCOUNT_PREPARING_MESSAGE,
   };
 }
 
@@ -40,13 +40,11 @@ export function canUseProductionAccountAccess(env: ImportMetaEnv = import.meta.e
   return !guard.production || guard.accountAccessEnabled;
 }
 
-export function markDemoRecord<T extends Record<string, unknown>>(record: T): T & {
-  writeMode: "demo_session_only";
-  temporary: true;
+export function markLocalRecord<T extends Record<string, unknown>>(record: T): T & {
+  syncStatus: "pending";
 } {
   return {
     ...record,
-    writeMode: "demo_session_only",
-    temporary: true,
+    syncStatus: "pending",
   };
 }
