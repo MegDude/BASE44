@@ -915,3 +915,186 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 ) {
   display: none !important;
 }
+
+/* No internal panel chrome: drawers use spacing and type, not shaded boxes, glows, outlines, or divider lines. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(
+  section,
+  article,
+  details,
+  form,
+  fieldset,
+  header,
+  footer,
+  nav,
+  ul,
+  ol,
+  li,
+  table,
+  thead,
+  tbody,
+  tr,
+  th,
+  td,
+  hr,
+  [class*="card"],
+  [class*="panel"],
+  [class*="section"],
+  [class*="row"],
+  [class*="tile"],
+  [class*="chip"],
+  [class*="badge"],
+  [class*="rail"],
+  [class*="grid"],
+  [class*="list"],
+  [class*="item"],
+  [class*="summary"],
+  [class*="readout"],
+  [class*="metric"],
+  [class*="stat"],
+  [class*="signal"],
+  [class*="module"],
+  [class*="surface"],
+  [class*="shadow"],
+  [class*="border"],
+  [class*="outline"],
+  button,
+  a
+) {
+  border: 0 !important;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(
+  section,
+  article,
+  details,
+  header,
+  footer,
+  [class*="card"],
+  [class*="panel"],
+  [class*="section"],
+  [class*="row"],
+  [class*="tile"],
+  [class*="item"],
+  [class*="summary"],
+  [class*="readout"],
+  [class*="metric"],
+  [class*="stat"],
+  [class*="module"],
+  [class*="surface"]
+)::before,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(
+  section,
+  article,
+  details,
+  header,
+  footer,
+  [class*="card"],
+  [class*="panel"],
+  [class*="section"],
+  [class*="row"],
+  [class*="tile"],
+  [class*="item"],
+  [class*="summary"],
+  [class*="readout"],
+  [class*="metric"],
+  [class*="stat"],
+  [class*="module"],
+  [class*="surface"]
+)::after {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(
+  img,
+  picture,
+  video,
+  canvas,
+  svg,
+  .dp-hero-image,
+  .dp-destination-media,
+  .dp-brand-logo,
+  .dp-map-pin-art,
+  .dp-qr-preview
+) {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  outline: 0 !important;
+}
