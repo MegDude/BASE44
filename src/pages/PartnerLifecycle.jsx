@@ -38,26 +38,26 @@ const setupModules = [
   "Team",
   "Billing",
   "QR Experiences",
-  "API",
-  "AI Assistant",
+  "Connections",
+  "Map Assistant",
 ];
 
 const provisioningSteps = [
   "Organization",
   "Workspace",
-  "Owner user",
-  "Permissions",
-  "Partner profile",
-  "Analytics",
+  "Owner access",
+  "Team access",
+  "Public profile",
+  "Activity view",
   "Reports",
-  "Campaign collections",
-  "Offers collection",
-  "Events collection",
-  "Map layer",
-  "QR account",
-  "Billing record",
-  "Subscription",
-  "AI context",
+  "Campaign tools",
+  "Offers",
+  "Events",
+  "Map presence",
+  "QR materials",
+  "Billing",
+  "Membership",
+  "Map assistant",
 ];
 
 function getStoredSetup() {
@@ -163,7 +163,7 @@ function LifecycleShell({ stage, children }) {
           <p>Partner platform</p>
           <h1>Start your workspace once. Operate from one place.</h1>
           <span>
-            Registration, plan selection, checkout, provisioning, and daily operations now move through one connected Downtown Perks path.
+            Registration, plan selection, checkout, workspace setup, and daily operations now move through one connected Downtown Perks path.
           </span>
         </div>
         <Link to="/partner-workspace/overview">
@@ -208,7 +208,7 @@ function StartStage({ setup, setSetup }) {
       <div className="dp-partner-lifecycle-section-head">
         <p>Partner type</p>
         <h2>Choose the lane that matches the work.</h2>
-        <span>Selecting a lane stores the workspace template, plan recommendation, and default modules for registration.</span>
+        <span>Selecting a lane keeps your recommended plan, workspace tools, and setup details together.</span>
       </div>
       <div className="dp-partner-type-grid">
         {partnerTypes.map((type) => {
@@ -273,7 +273,7 @@ function RegisterStage({ setup, setSetup }) {
       <div className="dp-partner-lifecycle-section-head">
         <p>Registration</p>
         <h2>Confirm the organization and setup details.</h2>
-        <span>These details route the correct workspace, permissions, profile, reports, billing, and AI context.</span>
+        <span>These details shape your workspace, public profile, reports, billing, and launch tools.</span>
       </div>
 
       <form className="dp-partner-register-form" onSubmit={handleSubmit}>
@@ -344,7 +344,7 @@ function CheckoutStage({ setup, setSetup }) {
       ...setup,
       checkoutStatus: isStripeReady ? "stripe_ready_confirmed" : "registration_confirmed",
       subscription: selectedPlan,
-      invoiceMode: isStripeReady ? "Stripe price configured" : "Stripe configuration pending",
+      invoiceMode: isStripeReady ? "Secure checkout available" : "Team-assisted checkout",
     };
     setSetup(nextSetup);
     saveSetup(nextSetup);
@@ -402,7 +402,7 @@ function CheckoutStage({ setup, setSetup }) {
       <div className="dp-partner-lifecycle-section-head">
         <p>Checkout</p>
         <h2>Confirm billing and activate the workspace.</h2>
-        <span>Stripe handles subscriptions, invoices, coupons, tax, and billing history. This local build carries the setup into provisioning.</span>
+        <span>Review your selected plan, add-ons, and account details before continuing.</span>
       </div>
       <div className="dp-checkout-grid">
         <article>
@@ -410,9 +410,9 @@ function CheckoutStage({ setup, setSetup }) {
           <h3>{selectedPlan}</h3>
           <p>{setup.partnerType || "Partner"} workspace subscription</p>
           <dl>
-            <div><dt>Organization</dt><dd>{setup.organization || "Not provided yet"}</dd></div>
-            <div><dt>Contact</dt><dd>{setup.email || "Not provided yet"}</dd></div>
-            <div><dt>Billing</dt><dd>{isStripeReady ? "Stripe checkout configured" : "Confirm in registration"}</dd></div>
+            <div><dt>Organization</dt><dd>{setup.organization || "Add during setup"}</dd></div>
+            <div><dt>Contact</dt><dd>{setup.email || "Add during setup"}</dd></div>
+            <div><dt>Billing</dt><dd>{isStripeReady ? "Secure checkout available" : "Team-assisted checkout"}</dd></div>
             <div><dt>Annual total</dt><dd>{annualTotal == null ? "Custom" : formatCurrency(annualTotal)}</dd></div>
             <div><dt>One-time total</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div>
           </dl>
@@ -426,11 +426,10 @@ function CheckoutStage({ setup, setSetup }) {
           <CreditCard aria-hidden="true" />
           <h3>Payment path</h3>
           <p>{isStripeReady
-            ? "The selected plan maps to Stripe configuration in this build. Confirm to create the workspace handoff."
-            : "Stripe environment values are not present for this plan in the local build. Confirming keeps the setup moving without pretending payment has completed."}</p>
-          {checkoutTarget?.priceId ? <small>Price ID ready: {checkoutTarget.priceId}</small> : null}
+            ? "Continue through secure checkout. Your workspace details stay connected to the selected plan."
+            : "This plan needs a quick review before payment. We will keep your setup details together for the next step."}</p>
           <button type="button" onClick={handleCheckout} disabled={isSubmittingCheckout}>
-            {isSubmittingCheckout ? "Starting checkout..." : isStripeReady ? "Confirm checkout" : "Confirm setup"}
+            {isSubmittingCheckout ? "Opening checkout..." : isStripeReady ? "Continue to checkout" : "Continue with setup"}
           </button>
           {checkoutError ? <p className="dp-partner-form-error" role="alert">{checkoutError}</p> : null}
           <Link to="/partner-workspace/billing?checkout=1">Open billing module</Link>
@@ -456,9 +455,9 @@ function ProvisionStage({ setup }) {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-provision-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Provision workspace</p>
-        <h2>{complete ? "Workspace ready." : "Creating your workspace."}</h2>
-        <span>{setup.organization || "Your organization"} is being connected to modules, permissions, reports, billing, and AI context.</span>
+        <p>Workspace setup</p>
+        <h2>{complete ? "Workspace is ready." : "Preparing your workspace."}</h2>
+        <span>{setup.organization || "Your organization"} is being connected to profile tools, offers, events, reports, billing, and map visibility.</span>
       </div>
       <div className="dp-provision-list">
         {provisioningSteps.map((step, index) => (

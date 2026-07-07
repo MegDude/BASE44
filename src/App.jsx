@@ -247,9 +247,9 @@ function ProductRoutes() {
           <Route path="/partners/reports-preview" element={<PartnerWorkspace />} />
           <Route path="/partners/analytics-preview" element={<PartnerWorkspace />} />
           <Route path="/partners/map" element={<MapPage />} />
-          <Route path="/partners/start" element={<Navigate to="/partners/sign-up" replace />} />
-          <Route path="/partners/register" element={<Navigate to="/partners/sign-up" replace />} />
-          <Route path="/partners/checkout" element={<Navigate to="/pricing#pricing-builder" replace />} />
+          <Route path="/partners/start" element={<PartnerLifecycle />} />
+          <Route path="/partners/register" element={<PartnerLifecycle />} />
+          <Route path="/partners/checkout" element={<PartnerLifecycle />} />
           <Route path="/partners/provision" element={<PartnerLifecycle />} />
           <Route path="/partners/workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
