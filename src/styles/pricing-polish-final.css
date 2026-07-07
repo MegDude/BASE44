@@ -1,0 +1,195 @@
+/* Final pricing polish: bright surfaces, collapsible custom paths, no warm or dark add-on chrome. */
+html body #root#root main.dp-pricing-page.dp-pricing-page {
+  background: #F7F8FB !important;
+  color: #0B1F33 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+  gap: clamp(18px, 3vw, 28px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator .dp-pricing-field-grid,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset + fieldset,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup {
+  margin-top: 28px !important;
+  padding-top: 24px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator legend,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid label > span {
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 11px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-card,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-card {
+  border: 1px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice[data-active="true"],
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid button[data-active="true"],
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list button[data-active="true"],
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-card[aria-expanded="true"] {
+  border-color: rgba(200, 169, 106, 0.72) !important;
+  background: #FFFFFF !important;
+  box-shadow: inset 3px 0 0 #C8A96A !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  min-height: 54px !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  list-style: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary::after {
+  content: "" !important;
+  width: 9px !important;
+  height: 9px !important;
+  flex: 0 0 auto !important;
+  border-right: 1.5px solid rgba(11, 31, 51, 0.62) !important;
+  border-bottom: 1.5px solid rgba(11, 31, 51, 0.62) !important;
+  transform: rotate(45deg) translateY(-2px) !important;
+  transition: transform 180ms ease !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup[open] > summary::after {
+  transform: rotate(225deg) translateY(-2px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary span {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary strong {
+  color: #0B1F33 !important;
+  font-size: 17px !important;
+  font-weight: 680 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary small {
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 13px !important;
+  font-weight: 430 !important;
+  line-height: 1.42 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-body {
+  display: grid !important;
+  gap: 18px !important;
+  padding-top: 18px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-detail {
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding: 18px 0 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-detail-grid {
+  gap: 18px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-detail-grid > div {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail {
+  gap: 18px !important;
+  margin: 12px 0 18px !important;
+  padding: 0 0 6px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button[data-active="true"] {
+  min-width: auto !important;
+  min-height: 36px !important;
+  padding: 0 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button[data-active="true"] {
+  color: #0B1F33 !important;
+  box-shadow: inset 0 -2px 0 #C8A96A !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button :is(span, small),
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button[data-active="true"] :is(span, small) {
+  color: currentColor !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-panel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected span {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  box-shadow: inset 0 -1px 0 rgba(200, 169, 106, 0.72) !important;
+}

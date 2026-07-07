@@ -214,7 +214,7 @@ export default function PricingPage() {
     source: "pricing",
     organizationType: partnerTypeSlug,
     partnerType,
-    plan: selectedPlan?.label || "Custom review",
+    plan: selectedPlan?.label || "Custom setup",
     sku: selectedPlan?.id || "custom",
     checkoutKey: selectedPlan?.checkoutKey || "custom",
     checkoutTarget,
@@ -398,7 +398,7 @@ export default function PricingPage() {
             source: "pricing",
             setupVersion: "workspace_activation_v1",
             partnerType,
-            plan: selectedPlan?.label || "Custom review",
+            plan: selectedPlan?.label || "Custom setup",
             sku: selectedPlan?.id || "custom",
             modules: selectedModuleIds.join(","),
             moduleLabels: selectedModuleLabels.join(", "),
@@ -464,10 +464,11 @@ export default function PricingPage() {
                 </section>
               ) : (
                 <>
-                  <fieldset>
-                    <legend>Plan cards</legend>
-                    <div className="dp-pricing-plan-card-grid">
-                      {plans.length > 0 ? plans.map((plan) => (
+                  {plans.length > 0 ? (
+                    <fieldset>
+                      <legend>Plans</legend>
+                      <div className="dp-pricing-plan-card-grid">
+                        {plans.map((plan) => (
                         <button key={plan.id} type="button" className="dp-pricing-plan-choice" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
                           <span>
                             <strong>{plan.label}</strong>
@@ -478,70 +479,76 @@ export default function PricingPage() {
                             {plan.includes.slice(0, 4).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}
                           </ul>
                         </button>
-                      )) : (
-                        <div className="dp-pricing-empty"><strong>Custom review</strong><span>This path routes to plan review.</span></div>
-                      )}
-                    </div>
-                  </fieldset>
+                        ))}
+                      </div>
+                    </fieldset>
+                  ) : null}
                   <div className="dp-pricing-field-grid">
                     <label><span>Number of locations/properties</span><input type="number" min="1" value={locationCount} onChange={(event) => setLocationCount(Math.max(1, Number(event.target.value) || 1))} /></label>
                     <label><span>Campaign interest</span><select value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}><option>Offers and perks</option><option>Events</option><option>Featured placement</option><option>District or portfolio campaign</option><option>Not sure yet</option></select></label>
                     <label><span>Reporting needs</span><select value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}><option>Standard reporting</option><option>Campaign performance</option><option>Portfolio reporting</option><option>Exports and integrations</option><option>Custom executive reporting</option></select></label>
                   </div>
-                  <fieldset className="dp-custom-options-fieldset">
-                    <legend>Enterprise / Custom</legend>
-                    <div className="dp-pricing-addons-head">
-                      <h3>Custom setup paths</h3>
-                      <p>Choose the shape of the program so the next step carries the right business context.</p>
-                      <span>Built for portfolios, districts, sponsorships, and larger development work.</span>
-                    </div>
-                    <div className="dp-custom-option-grid">
-                      {customOptions.map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          className="dp-custom-option-card"
-                          aria-expanded={activeCustomOption === option.id}
-                          aria-controls="custom-pricing-detail"
-                          onClick={() => selectCustomOption(option.id)}
-                        >
-                          <span className="dp-custom-option-title">{option.title}</span>
-                          <span className="dp-custom-option-copy">{option.description}</span>
-                        </button>
-                      ))}
-                    </div>
-                    {selectedCustomOption ? (
-                      <div className="dp-custom-option-detail" id="custom-pricing-detail">
-                        <p className="dp-pricing-guide-eyebrow">
-                          <span className="dp-pricing-guide-eyebrow-text">Custom Setup</span>
-                        </p>
-                        <h3>{selectedCustomOption.title}</h3>
-                        <p>{selectedCustomOption.description}</p>
-                        <div className="dp-custom-option-detail-grid">
-                          <div>
-                            <h4>Good for</h4>
-                            <ul>
-                              {selectedCustomOption.bestFor.map((item) => <li key={item}>{item}</li>)}
-                            </ul>
-                          </div>
-                          <div>
-                            <h4>Included</h4>
-                            <ul>
-                              {selectedCustomOption.included.map((item) => <li key={item}>{item}</li>)}
-                            </ul>
-                          </div>
-                        </div>
-                        <div className="dp-pricing-guide-actions">
-                          <button type="button" className="dp-button dp-button-primary" onClick={() => contactCustomOption(selectedCustomOption)}>
-                            {selectedCustomOption.cta}
-                          </button>
-                          <button type="button" className="dp-button dp-button-secondary" onClick={() => viewCustomOptionDetails(selectedCustomOption)}>
-                            View details
-                          </button>
-                        </div>
+                  <details className="dp-custom-options-fieldset dp-custom-options-rollup">
+                    <summary>
+                      <span>
+                        <strong>Enterprise / Custom</strong>
+                        <small>Custom setup paths for portfolios, districts, sponsorships, and larger development work.</small>
+                      </span>
+                    </summary>
+                    <div className="dp-custom-options-body">
+                      <div className="dp-pricing-addons-head">
+                        <h3>Custom setup paths</h3>
+                        <p>Choose the shape of the program so the next step carries the right business context.</p>
+                        <span>Built for portfolios, districts, sponsorships, and larger development work.</span>
                       </div>
-                    ) : null}
-                  </fieldset>
+                      <div className="dp-custom-option-grid">
+                        {customOptions.map((option) => (
+                          <button
+                            key={option.id}
+                            type="button"
+                            className="dp-custom-option-card"
+                            aria-expanded={activeCustomOption === option.id}
+                            aria-controls="custom-pricing-detail"
+                            onClick={() => selectCustomOption(option.id)}
+                          >
+                            <span className="dp-custom-option-title">{option.title}</span>
+                            <span className="dp-custom-option-copy">{option.description}</span>
+                          </button>
+                        ))}
+                      </div>
+                      {selectedCustomOption ? (
+                        <div className="dp-custom-option-detail" id="custom-pricing-detail">
+                          <p className="dp-pricing-guide-eyebrow">
+                            <span className="dp-pricing-guide-eyebrow-text">Custom Setup</span>
+                          </p>
+                          <h3>{selectedCustomOption.title}</h3>
+                          <p>{selectedCustomOption.description}</p>
+                          <div className="dp-custom-option-detail-grid">
+                            <div>
+                              <h4>Good for</h4>
+                              <ul>
+                                {selectedCustomOption.bestFor.map((item) => <li key={item}>{item}</li>)}
+                              </ul>
+                            </div>
+                            <div>
+                              <h4>Included</h4>
+                              <ul>
+                                {selectedCustomOption.included.map((item) => <li key={item}>{item}</li>)}
+                              </ul>
+                            </div>
+                          </div>
+                          <div className="dp-pricing-guide-actions">
+                            <button type="button" className="dp-button dp-button-primary" onClick={() => contactCustomOption(selectedCustomOption)}>
+                              {selectedCustomOption.cta}
+                            </button>
+                            <button type="button" className="dp-button dp-button-secondary" onClick={() => viewCustomOptionDetails(selectedCustomOption)}>
+                              View details
+                            </button>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </details>
                   <fieldset>
                     <legend>Add-ons</legend>
                     <div className="dp-pricing-addons-head">
@@ -588,7 +595,7 @@ export default function PricingPage() {
               <p className="dp-pricing-kicker">Order Summary</p>
               <h2>{totalText}</h2>
               <p className="dp-pricing-summary-context">{estimatedTotalLabel}</p>
-              <div className="dp-pricing-summary-plan"><strong>{selectedPlan?.label || "Custom review"}</strong><span>{selectedPlan?.summary || "Select a standard plan or continue with custom review."}</span></div>
+              <div className="dp-pricing-summary-plan"><strong>{selectedPlan?.label || "Custom setup"}</strong><span>{selectedPlan?.summary || "Select a standard plan or continue with custom setup."}</span></div>
               <dl>
                 <div><dt>{isResident ? "Access" : "Partner type"}</dt><dd>{isResident ? "Perks Card" : selectedPartnerLabel}</dd></div>
                 <div><dt>{isResident ? "Perks Card" : "Annual plan"}</dt><dd>{selectedPlan ? getPriceText(selectedPlan) : "Custom"}</dd></div>

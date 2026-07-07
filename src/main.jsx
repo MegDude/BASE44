@@ -22,6 +22,7 @@ import '@/styles/partner-map-polish-final.css'
 import '@/styles/resident-drawer-polish-final.css'
 import '@/styles/search-command-console-glass-final.css'
 import '@/styles/partner-activity-drawer-final.css'
+import '@/styles/pricing-polish-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
