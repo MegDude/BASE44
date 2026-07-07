@@ -51115,3 +51115,83 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     --dp-panel-gap: 10px;
   }
 }
+
+/* Event detail facts: one polished row, shared left edge, consistent type. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-event-detail-drawer .dp-event-section {
+  align-items: stretch !important;
+  gap: 10px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-event-detail-drawer .dp-event-section h3 {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 15px !important;
+  line-height: 1.15 !important;
+  font-weight: 720 !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-event-detail-drawer .dp-event-fact-rail {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: start !important;
+  gap: 10px 14px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-event-detail-drawer .dp-event-fact {
+  display: grid !important;
+  align-content: start !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  font-weight: 520 !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  overflow-wrap: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-event-detail-drawer .dp-event-fact strong {
+  display: block !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.48) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.48) !important;
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+  font-weight: 740 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
