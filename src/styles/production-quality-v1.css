@@ -127,9 +127,9 @@ body :is(
   [data-dp-surface="application"]
 ) :where(h1, h2, h3, h4, .font-heading, .dp-panel-title, .dp-section-title, .dp-hero-title, .dp-destination-title, .dp-map-panel-title) {
   color: var(--dp-app-ink) !important;
-  font-weight: 650 !important;
+  font-weight: 560 !important;
   letter-spacing: 0 !important;
-  line-height: 1.08 !important;
+  line-height: 1.12 !important;
   text-wrap: balance;
 }
 
@@ -205,4 +205,243 @@ body :is(
   ) :where(button, a[role="button"], .dp-button, .dp-action-button, .dp-primary-action, .dp-secondary-action) {
     min-height: 48px;
   }
+}
+
+/* Production Quality V1 polish lock: native-product weight, no warm/yellow rollback. */
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) {
+  background: #ffffff !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(
+  .bg-yellow-50,
+  .bg-yellow-100,
+  .bg-amber-50,
+  .bg-amber-100,
+  .bg-orange-50,
+  .bg-orange-100,
+  [class*="bg-yellow"],
+  [class*="bg-amber"],
+  [class*="bg-orange"],
+  [class*="bg-dp-cream"],
+  [class*="bg-cream"],
+  [class*="bg-beige"]
+) {
+  background: #ffffff !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(
+  .text-yellow-500,
+  .text-yellow-600,
+  .text-amber-500,
+  .text-amber-600,
+  .text-orange-500,
+  .text-orange-600,
+  [class*="text-yellow"],
+  [class*="text-amber"],
+  [class*="text-orange"]
+) {
+  color: var(--dp-app-ink) !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(strong, b, .font-bold, .font-extrabold, .font-black) {
+  font-weight: 600 !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(.font-semibold, [class*="font-semibold"]) {
+  font-weight: 540 !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(
+  .card,
+  .dp-card,
+  .dp-panel-card,
+  .dp-summary-card,
+  .dp-metric-card,
+  .dp-insight-card,
+  .dp-workspace-card,
+  .dp-report-card,
+  .dp-dashboard-card,
+  .dp-panel-shell,
+  .dp-detail-drawer,
+  .dp-bottom-sheet,
+  .dp-modal,
+  .dp-dialog,
+  .dp-popover,
+  .dp-surface,
+  .dp-glass-panel
+) {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(11, 31, 51, 0.075) !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, 0.045) !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  [data-dp-surface="application"]
+) :where(.dp-button, .dp-action-button, .dp-primary-action, .dp-secondary-action, .dp-panel-action, .dp-workspace-action, .dp-register-action) {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(11, 31, 51, 0.12) !important;
+  color: var(--dp-app-ink) !important;
+  box-shadow: 0 8px 20px rgba(11, 31, 51, 0.045) !important;
+  font-weight: 540 !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  [data-dp-surface="application"]
+) :where(.dp-button:hover, .dp-action-button:hover, .dp-primary-action:hover, .dp-secondary-action:hover, .dp-panel-action:hover, .dp-workspace-action:hover, .dp-register-action:hover) {
+  border-color: rgba(11, 31, 51, 0.2) !important;
+  box-shadow: 0 10px 24px rgba(11, 31, 51, 0.06) !important;
 }
