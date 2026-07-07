@@ -54,14 +54,44 @@ function entityName(entity: MapEntity = {}) {
   return entity?.name || entity?.title || entity?.raw?.name || entity?.raw?.title || "";
 }
 
+function normalizeName(value = "") {
+  return String(value)
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\b(the|at|austin|tx)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function uniqueNames(names: string[]) {
   const seen = new Set<string>();
-  return names.filter((name) => {
-    const key = name.trim().toLowerCase();
+  const kept: string[] = [];
+  names.forEach((name) => {
+    const cleanName = String(name || "").trim();
+    const key = normalizeName(cleanName);
     if (!key || seen.has(key)) return false;
+    if (kept.some((existing) => key.startsWith(`${normalizeName(existing)} `) || normalizeName(existing).startsWith(`${key} `))) {
+      return false;
+    }
     seen.add(key);
+    kept.push(cleanName);
     return true;
   });
+  return kept;
+}
+
+function isSelectedNameOverlap(selectedEntity: MapEntity, candidate: MapEntity) {
+  const selected = normalizeName(entityName(selectedEntity));
+  const candidateName = normalizeName(entityName(candidate));
+  if (!selected || !candidateName) return false;
+  return selected.includes(candidateName) || candidateName.includes(selected);
+}
+
+function formatNameList(names: string[]) {
+  if (!names.length) return "";
+  if (names.length === 1) return names[0];
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
 }
 
 function isCivicContext(entity: MapEntity = {}) {
@@ -94,8 +124,8 @@ function getNearbyNames(selectedEntity: MapEntity, nearby: NearbyRecommendation[
     if (preferred.length) candidates = preferred;
   }
 
-  const filteredNames = uniqueNames(candidates.map(entityName).filter(Boolean));
-  const fallbackNames = uniqueNames(originalEntities.map(entityName).filter(Boolean));
+  const filteredNames = uniqueNames(candidates.filter((entity) => !isSelectedNameOverlap(selectedEntity, entity)).map(entityName).filter(Boolean));
+  const fallbackNames = uniqueNames(originalEntities.filter((entity) => !isSelectedNameOverlap(selectedEntity, entity)).map(entityName).filter(Boolean));
   return (filteredNames.length ? filteredNames : fallbackNames).slice(0, 4);
 }
 
@@ -109,14 +139,14 @@ export function buildMapIntelligence({
   const metrics = metricEntries(selectedEntity);
   const nearbyNames = getNearbyNames(selectedEntity, nearby);
   const hasActivity = metrics.length > 0;
+  const nearbyCopy = formatNameList(nearbyNames.slice(0, 2));
   const summary = hasActivity
     ? "Current activity and nearby map context point to the next useful move."
     : nearbyNames.length
-      ? `${nearbyNames.slice(0, 3).join(", ")} shape the nearby context.`
+      ? `${nearbyCopy} ${nearbyNames.length === 1 ? "shapes" : "shape"} the nearby context.`
       : "Nearby places are enough to start with right now.";
 
   const signals = [
-    nearbyNames.length ? `${nearbyNames.slice(0, 3).join(", ")} are close enough to influence plans.` : "",
     metrics.length ? `${metrics.length} local ${metrics.length === 1 ? "read is" : "reads are"} available for this pin.` : "",
   ].filter(Boolean);
 

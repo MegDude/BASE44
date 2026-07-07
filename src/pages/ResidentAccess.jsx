@@ -2,15 +2,12 @@ import { useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, CreditCard, Home, MapPin, ShieldCheck } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
-  DEMO_WRITE_MESSAGE,
-  getFrontendProductionGuard,
   markDemoRecord,
-  PRODUCTION_ACCOUNT_ACCESS_MESSAGE,
 } from "@/lib/productionGuards";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
-const APP_HREF = "/app?mode=resident&tab=pass&filter=Perks";
+const APP_HREF = "/app?mode=resident&tab=map&filter=Perks";
 
 const INCLUDED = [
   "Perks Card",
@@ -55,7 +52,7 @@ function toApp(record, extra = {}) {
   writeResidentAccess({ ...record, ...extra });
   const params = new URLSearchParams({
     mode: "resident",
-    tab: "pass",
+    tab: "map",
     filter: "Perks",
     residentId: record.id,
     access: record.verificationStatus || "perks_card",
@@ -129,7 +126,7 @@ export default function ResidentAccess() {
       }),
     });
     const result = await response.json().catch(() => ({}));
-    if (!response.ok || !result.checkoutUrl) throw new Error(result.error || "Checkout is not connected yet.");
+    if (!response.ok || !result.checkoutUrl) throw new Error(result.error || "Checkout is unavailable right now.");
     window.location.href = result.checkoutUrl;
   }
 
@@ -141,18 +138,16 @@ export default function ResidentAccess() {
     try {
       const result = await createResidentRecord();
       const resident = result.resident;
-      const isDurable = Boolean(result.storage?.stored);
-      const demoPrefix = isDurable ? "" : `${DEMO_WRITE_MESSAGE} `;
       if (isBuildingPath && resident.verificationStatus === "verified") {
         setState("success");
-        setMessage(`${demoPrefix}Building access verified for this session. Opening your card now.`);
+        setMessage("Building access verified. Opening your resident map now.");
         window.setTimeout(() => toApp(resident, { accessSource: "building" }), 450);
         return;
       }
 
       if (isBuildingPath && resident.verificationStatus === "pending_building_review") {
         setState("success");
-        setMessage(`${demoPrefix}Your building request is saved for this session. Connect account storage before treating it as permanent. You can use the Perks Card path now, or open the app.`);
+        setMessage("Your building request was received. You can continue with individual Perks Card access or open the map.");
         return;
       }
 
@@ -180,12 +175,6 @@ export default function ResidentAccess() {
         </div>
 
         <form className="dp-resident-access-panel" onSubmit={handleSubmit}>
-          {getFrontendProductionGuard().demoMode ? (
-            <div className="dp-resident-access-message is-error" role="status">
-              {PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
-            </div>
-          ) : null}
-
           <div className="dp-resident-access-plan">
             <div>
               <p className="dp-resident-access-eyebrow">Perks Card</p>

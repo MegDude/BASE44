@@ -64,6 +64,7 @@ export default function Layout() {
   const isProductRoute =
     pathname === "/app" ||
     pathname === "/app/map" ||
+    pathname === "/about" ||
     pathname === "/map" ||
     pathname === "/partner-map" ||
     pathname.startsWith("/partner-workspace") ||

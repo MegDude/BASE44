@@ -149,7 +149,7 @@ export default function PerksCard() {
 
             <div className="mt-6 grid gap-3">
               <Link
-                to="/map?mode=resident&tab=pass"
+                to="/card"
                 className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-5 text-[13px] font-semibold text-white transition-colors hover:bg-[#0B1F33]"
               >
                 <Sparkles className="w-4 h-4" />
@@ -168,7 +168,7 @@ export default function PerksCard() {
               <div className="rounded-md border border-[#0B1F33]/8 bg-white/78 p-4">
                 <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">
                   <QrCode className="h-3.5 w-3.5 text-[#C8A96A]" />
-                  Resident demo code
+                  Resident access code
                 </div>
                 <div className="mt-3 rounded-md border border-[#0B1F33]/10 bg-white p-3 text-center">
                   <img

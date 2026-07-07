@@ -63,14 +63,6 @@ export default function DowntownPerksStory({
       aria-label="Downtown Perks story"
     >
       <div className="dp-story-os__frame">
-        <div className="dp-story-os__meta" aria-label={`Scene ${activeIndex + 1} of ${scenes.length}`}>
-          <span>{scene.index}</span>
-          <div aria-hidden="true">
-            <i style={{ width: `${progress}%` }} />
-          </div>
-          <span>{String(scenes.length).padStart(2, "0")}</span>
-        </div>
-
         <AnimatePresence mode="wait" custom={direction}>
           <motion.article
             key={scene.id}
@@ -150,9 +142,7 @@ export default function DowntownPerksStory({
           <ArrowLeft aria-hidden="true" />
         </button>
         <div className="dp-story-os__progress" aria-label={`Story scene ${activeIndex + 1} of ${scenes.length}`}>
-          <span>{scene.index}</span>
           <div><i style={{ width: `${progress}%` }} /></div>
-          <span>{String(scenes.length).padStart(2, "0")}</span>
         </div>
         <div className="dp-story-os__dots" aria-label="Story scenes">
           {scenes.map((item, index) => (

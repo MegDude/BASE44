@@ -159,10 +159,10 @@ export default function BuildingIntelligence() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  to="/map?mode=resident&tab=pass"
+                  to="/card"
                   className="inline-flex h-10 items-center gap-2 rounded-[3px] bg-[#0B1F33] px-4 text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#0B1F33]"
                 >
-                  Resident Pass
+                  Perks Card
                   <CreditCard className="h-4 w-4" />
                 </Link>
                 <button

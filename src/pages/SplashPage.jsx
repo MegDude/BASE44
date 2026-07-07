@@ -63,7 +63,7 @@ const storyStates = [
       ],
       [
         { text: "to bring", tone: "navy" },
-        { text: "everything", tone: "navy" },
+        { text: "it all", tone: "navy" },
         { text: "together.", tone: "navy" },
       ],
     ],
@@ -117,7 +117,7 @@ const storyStates = [
     id: "open",
     index: "06",
     navLabel: "Open",
-    kicker: "HOWDY",
+    kicker: "Welcome to Downtown",
     headlineGroups: [
       [
         { text: "So come on in ya'll", tone: "navy" },
@@ -136,7 +136,7 @@ const residentNavLinks = [
   { to: "/map?mode=resident&tab=map&filter=All", label: "Resident Map" },
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Perks" },
   { to: "/map?mode=resident&tab=map&filter=Events", label: "Events" },
-  { to: "/map?mode=resident&tab=pass&filter=All", label: "Perks Card" },
+  { to: "/card", label: "Perks Card" },
 ];
 
 const partnerNavLinks = [
@@ -458,9 +458,9 @@ export default function SplashPage({
               <Sparkles className="h-3.5 w-3.5" />
               Downtown Perks
             </div>
-            <h1>
-              <span>Where Downtown</span>
-              <span>Meets You</span>
+            <h1 className="hero-title no-forced-breaks text-dp-navy">
+              Where downtown <br />
+              <span className="text-dp-gold">meets you.</span>
             </h1>
             <p>
               <span>Built for the people who actually live downtown</span>
@@ -496,6 +496,10 @@ export default function SplashPage({
             onStep={go}
             onActivate={activate}
           />
+
+          <Link className="dp-story-skip-link" to={residentMapHref} onClick={markMapLaunchReady}>
+            Skip story
+          </Link>
 
           <SplashStoryFooter isLast={isLast} residentMapHref={residentMapHref} onLaunchMap={markMapLaunchReady} />
         </SplashStoryShell>

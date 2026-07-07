@@ -66,7 +66,7 @@ function isPropertyLike(entity: Record<string, any>) {
 function isHotelLike(entity: Record<string, any>) {
   const explicit = explicitTypeText(entity);
   const text = entityText(entity);
-  return /\b(hotel|hospitality|lodging|guest|stay)\b/.test(`${explicit} ${text}`);
+  return /\b(hotel|hospitality|lodging)\b/.test(explicit) || /\b(hotel|inn|suites|proper|zaza|van zandt|four seasons)\b/.test(text);
 }
 
 function isCivicLike(entity: Record<string, any>) {
@@ -115,10 +115,11 @@ function labelFor(entity: Record<string, any>) {
   if (isListingEntity(entity)) return "Listing";
   if (isHotelLike(entity)) return "Hotel";
   if (isPropertyLike(entity)) return "Residential";
+  if (kind.includes("brand")) return "Brand";
+  if (/\b(brands|brand|retail_business|retail|shop|shopping|store|boots|eyewear|yeti|rivian|lululemon|equinox|ariat)\b/.test(explicit)) return "Brand";
   if (kind.includes("event")) return "Event";
   if (kind.includes("hotel")) return "Hotel";
   if (kind.includes("property") || kind.includes("properties")) return "Residential";
-  if (kind.includes("brand")) return "Brand";
   if (kind.includes("civic")) return "Civic";
   const categoryText = `${explicit} ${text}`;
   if (/\b(coffee|cafe|espresso)\b/.test(categoryText)) return "Coffee";
@@ -142,6 +143,7 @@ function groupLabelFor(type: string) {
   if (type === "Drinks") return "Drinks Nearby";
   if (type === "Wellness") return "Wellness Nearby";
   if (type === "Retail") return "Nearby Shopping";
+  if (type === "Brand") return "Nearby Shopping";
   if (type === "Culture") return "Culture Nearby";
   if (type === "Civic") return "Nearby civic stops";
   return "Places";
@@ -200,6 +202,20 @@ function shouldShowForCivicRoute(entity: Record<string, any>) {
   return type === "Civic" || type === "Culture";
 }
 
+function isBrandOrRetailSelected(entity: Record<string, any> | null | undefined) {
+  if (!entity) return false;
+  const text = `${explicitTypeText(entity)} ${entityText(entity)}`;
+  const kind = getEntityKind(entity);
+  return kind.includes("brand") || /\b(brand|retail|shop|shopping|store|boots|eyewear|yeti|rivian|lululemon|equinox|ariat)\b/.test(text);
+}
+
+function isUsefulForBrandActivation(entity: Record<string, any>) {
+  if (!entity || isListingEntity(entity) || isPropertyLike(entity)) return false;
+  const type = labelFor(entity);
+  if (type === "Hotel" || type === "Civic") return false;
+  return ["Event", "Dining", "Drinks", "Coffee", "Wellness", "Retail", "Culture", "Brand", "Perk", "Places"].includes(type);
+}
+
 export function getRelatedPartnerAssets({
   nearby = [],
   selectedEntity = null,
@@ -209,8 +225,11 @@ export function getRelatedPartnerAssets({
 }) {
   const groups = new Map<string, any[]>();
   const civicSelected = selectedEntity ? isCivicSelected(selectedEntity) : false;
+  const brandSelected = isBrandOrRetailSelected(selectedEntity);
   const groupOrder = civicSelected
     ? ["Nearby civic stops", "Culture Nearby", "Coffee Nearby", "Dining Nearby", "Drinks Nearby", "Events Nearby"]
+    : brandSelected
+      ? ["Events Nearby", "Nearby Shopping", "Dining Nearby", "Drinks Nearby", "Coffee Nearby", "Wellness Nearby", "Culture Nearby", "Places"]
     : [
       "Events Nearby",
       "Member Benefits",
@@ -229,8 +248,10 @@ export function getRelatedPartnerAssets({
   const seen = new Set<string>();
   nearby.forEach((item) => {
     if (civicSelected && !shouldShowForCivicRoute(item.entity)) return;
+    if (brandSelected && !isUsefulForBrandActivation(item.entity)) return;
     const type = labelFor(item.entity);
     const groupLabel = groupLabelFor(type);
+    if (!groupOrder.includes(groupLabel)) return;
     const key = String(item.entity?.id || item.entity?.name || item.entity?.title || "");
     if (!key || seen.has(key)) return;
     seen.add(key);
@@ -252,6 +273,6 @@ export function getRelatedPartnerAssets({
   });
   return Array.from(groups.entries())
     .sort(([a], [b]) => groupOrder.indexOf(a) - groupOrder.indexOf(b))
-    .map(([title, items]) => ({ title, label: title, headline: headlineFor(title), items: items.slice(0, 8) }))
+    .map(([title, items]) => ({ title, label: title, headline: headlineFor(title), items: items.slice(0, 4) }))
     .filter((section) => section.items.length);
 }

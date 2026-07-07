@@ -4,7 +4,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
-import { canUseProductionAccountAccess } from "@/lib/productionGuards";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -16,6 +15,7 @@ const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentAccess = lazy(() => import("./pages/ResidentAccess"));
+const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
 const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
@@ -43,9 +43,7 @@ function ProtectedRoute({ children }) {
   const hasWorkspaceActivation =
     typeof window !== "undefined" &&
     Boolean(window.localStorage.getItem("dp_partner_workspace:activation"));
-  const accountAccessEnabled = canUseProductionAccountAccess();
   const canBootstrapWorkspace =
-    accountAccessEnabled &&
     location.pathname.startsWith("/partner-workspace") &&
     (params.get("checkout") === "success" || params.get("provisioned") === "1" || hasWorkspaceActivation);
 
@@ -125,7 +123,11 @@ function SplashLaunchGate() {
 
 function MapLaunchGate() {
   const location = useLocation();
-  if (location.pathname === "/app") {
+  const params = new URLSearchParams(location.search || "");
+  if (params.get("mode") === "resident" && params.get("tab") === "pass") {
+    return <Navigate to="/card" replace />;
+  }
+  if (location.pathname === "/app" && !location.search) {
     return <SplashLaunchGate />;
   }
   return <MapPage />;
@@ -168,6 +170,7 @@ function ProductRoutes() {
           <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
           <Route path="/perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/card" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
+          <Route path="/about" element={<Suspense fallback={<MarketingFallback />}><AboutPage /></Suspense>} />
           <Route path="/resident-sign-up" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
           <Route path="/resident-access" element={<Navigate to="/card" replace />} />
           <Route path="/downtown-perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
@@ -271,6 +274,7 @@ function ProductRoutes() {
           <Route path="/workspace/team" element={<Navigate to="/partner-workspace/team" replace />} />
           <Route path="/workspace/billing" element={<Navigate to="/partner-workspace/billing" replace />} />
           <Route path="/workspace/settings" element={<Navigate to="/partner-workspace/profile" replace />} />
+          <Route path="/app/workspace/profile" element={<Navigate to="/partner-workspace/profile" replace />} />
           <Route path="/partner-workspace" element={<Navigate to="/partner-workspace/overview" replace />} />
           <Route path="/partner-workspace/overview" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/map" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />

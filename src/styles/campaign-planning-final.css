@@ -1,0 +1,54 @@
+/* Final lock for the compact campaign planning workspace. Imported last. */
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-plan-header > button.dp-campaigns-primary.dp-campaigns-primary,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-next-step form button.dp-campaigns-primary.dp-campaigns-primary,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-live-preview article > button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 18px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #0B1F33 !important;
+  background-color: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 10px 24px rgba(11, 31, 51, 0.12) !important;
+  font-size: 14px !important;
+  font-weight: 720 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root main.dp-campaigns-page.dp-campaigns-page.dp-campaigns-page .dp-campaign-plan-header.dp-campaign-plan-header > button.dp-campaigns-primary.dp-campaigns-primary.dp-campaigns-primary,
+html body #root#root#root#root main.dp-campaigns-page.dp-campaigns-page.dp-campaigns-page .dp-campaign-next-step.dp-campaign-next-step form > .dp-campaigns-cta-row .dp-campaigns-primary.dp-campaigns-primary.dp-campaigns-primary,
+html body #root#root#root#root main.dp-campaigns-page.dp-campaigns-page.dp-campaigns-page .dp-campaign-live-preview.dp-campaign-live-preview article > button {
+  border-radius: 14px !important;
+  border-start-start-radius: 14px !important;
+  border-start-end-radius: 14px !important;
+  border-end-start-radius: 14px !important;
+  border-end-end-radius: 14px !important;
+}
+
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-next-step form a.dp-campaigns-secondary.dp-campaigns-secondary,
+html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-preview-head a {
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 680 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}

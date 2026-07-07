@@ -18,7 +18,7 @@ export type MapAction =
 
 export const mapRoutes = {
   residentMap: "/map?mode=resident&tab=map",
-  residentPass: "/map?mode=resident&tab=pass",
+  residentPass: "/card",
   partnerMap: "/map?mode=partner&tab=map",
   dashboard: "/partners/dashboard",
   partnerWorkspace: "/partner-workspace/overview",
@@ -88,7 +88,7 @@ export function directionsUrl(entity: Partial<NormalizedEntity>) {
 
 export const panelActionRoutes = {
   showCard: (entityId?: string) =>
-    `/map?mode=resident&tab=pass${entityId ? `&sourceEntity=${encodeURIComponent(entityId)}` : ""}`,
+    `/card${entityId ? `?sourceEntity=${encodeURIComponent(entityId)}` : ""}`,
   venueQuery: (name: string) =>
     `/map?mode=resident&tab=map&filter=Venues&query=${encodeURIComponent(name)}`,
   nearbyPerks: (entityId?: string) =>

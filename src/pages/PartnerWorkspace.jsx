@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bot, Bell, Search, ShieldCheck, WalletCards, Lock } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bot, Bell, Search, ShieldCheck, WalletCards } from "lucide-react";
+import "@/styles/workspace-profile-editor.css";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 import {
@@ -12,8 +13,6 @@ import {
 } from "@/config/workspaceArchitecture";
 import {
   canUseProductionAccountAccess,
-  DEMO_WRITE_MESSAGE,
-  getFrontendProductionGuard,
   markDemoRecord,
 } from "@/lib/productionGuards";
 
@@ -428,79 +427,6 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
   }
 }
 
-function useProductionReadinessStatus() {
-  const [status, setStatus] = useState(() => {
-    const frontend = getFrontendProductionGuard();
-    return {
-      persistence: frontend.persistenceLabel,
-      accountAccess: frontend.accountAccessLabel,
-      writeMode: frontend.writeModeLabel,
-      warning: frontend.demoMode ? "Connect account storage before treating this as a permanent workspace change." : "",
-      accountNotice: frontend.message,
-    };
-  });
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/production-readiness")
-      .then((response) => response.json())
-      .then((payload) => {
-        if (cancelled || !payload || typeof payload !== "object") return;
-        setStatus((current) => ({
-          ...current,
-          persistence: payload.persistence || current.persistence,
-          accountAccess: payload.accountAccess || current.accountAccess,
-          writeMode: payload.writeMode || current.writeMode,
-          warning: payload.warning || "",
-          accountNotice: payload.accountNotice || current.accountNotice || "",
-        }));
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return status;
-}
-
-function ProductionReadinessStatusBlock({ status }) {
-  const allConnected =
-    status.persistence === "Ready" &&
-    status.accountAccess === "Ready" &&
-    status.writeMode === "Ready to save";
-  const statusMessage =
-    status.warning ||
-    status.accountNotice ||
-    (allConnected
-      ? "Account sign-in and workspace saving are connected."
-      : "Connect account storage before treating this as a permanent workspace change.");
-
-  return (
-    <section className="dp-production-readiness" aria-label="Account setup status">
-      <div>
-        <p>Account setup</p>
-        <h2>Sign-in and workspace saving</h2>
-        <span>{statusMessage}</span>
-      </div>
-      <dl>
-        <div>
-          <dt>Workspace saving</dt>
-          <dd>{status.persistence}</dd>
-        </div>
-        <div>
-          <dt>Account access</dt>
-          <dd>{status.accountAccess}</dd>
-        </div>
-        <div>
-          <dt>Saving mode</dt>
-          <dd>{status.writeMode}</dd>
-        </div>
-      </dl>
-    </section>
-  );
-}
-
 async function deleteWorkspaceItem(entityName, kind, email, id) {
   if (id && !String(id).startsWith("local-")) {
     try {
@@ -526,7 +452,6 @@ export default function PartnerWorkspace() {
   const workspaceDisplayName = activation?.organizationName || user.organization_name || user.partner_name || user.full_name || user.email?.split("@")[0] || "Your workspace";
   const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
-  const productionReadiness = useProductionReadinessStatus();
   const accountAccessEnabled = canUseProductionAccountAccess();
 
   useEffect(() => {
@@ -544,8 +469,32 @@ export default function PartnerWorkspace() {
 
   useEffect(() => {
     base44.auth.me()
-      .then((u) => setUser({ ...PUBLIC_PARTNER_USER, ...(u || {}), ...(getStoredProfile() || {}) }))
-      .catch(() => setUser((currentUser) => ({ ...currentUser, ...(getStoredProfile() || {}) })));
+      .then((u) => setUser((currentUser) => {
+        const activeWorkspace = getWorkspaceActivation();
+        return {
+          ...PUBLIC_PARTNER_USER,
+          ...currentUser,
+          ...(u || {}),
+          ...(getStoredProfile() || {}),
+          ...(activeWorkspace ? {
+            partner_name: activeWorkspace.organizationName,
+            organization_name: activeWorkspace.organizationName,
+            partner_type: activeWorkspace.partnerType,
+          } : {}),
+        };
+      }))
+      .catch(() => setUser((currentUser) => {
+        const activeWorkspace = getWorkspaceActivation();
+        return {
+          ...currentUser,
+          ...(getStoredProfile() || {}),
+          ...(activeWorkspace ? {
+            partner_name: activeWorkspace.organizationName,
+            organization_name: activeWorkspace.organizationName,
+            partner_type: activeWorkspace.partnerType,
+          } : {}),
+        };
+      }));
   }, []);
 
   useEffect(() => {
@@ -588,10 +537,8 @@ export default function PartnerWorkspace() {
                 {isReportsTab
                   ? "Readable partner reports organized around what changed, what worked, and what to do next."
                   : activation
-                    ? activation.writeMode === "demo_session_only"
-                      ? `${activation.plan} is available for this session. Connect account storage before treating workspace changes as permanent.`
-                      : `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
-                    : "Registration, pricing, checkout, provisioning, and daily operations now move through one connected workspace path."}
+                    ? `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
+                    : "Build your partner profile, offers, events, campaigns, and reporting in one place."}
               </p>
             </div>
             <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
@@ -604,7 +551,7 @@ export default function PartnerWorkspace() {
                 disabled={isPublicWorkspaceUser && !accountAccessEnabled}
                 className="dp-partner-workspace-signin"
               >
-                {isPublicWorkspaceUser ? accountAccessEnabled ? "Sign in" : "Sign-in unavailable" : "Sign out"}
+                {isPublicWorkspaceUser ? accountAccessEnabled ? "Sign in" : "Account access" : "Sign out"}
               </button>
             </div>
           </div>
@@ -620,8 +567,6 @@ export default function PartnerWorkspace() {
               );
             })}
           </nav>
-
-          <ProductionReadinessStatusBlock status={productionReadiness} />
 
           {/* Tabs — animated sliding indicator */}
           <div className="dp-partner-workspace-tabs relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
@@ -1216,7 +1161,7 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
                 >
                   <span>{capability.label}</span>
                   <p>{capability.description}</p>
-                  <small><Lock className="h-3.5 w-3.5" aria-hidden="true" /> Add-on</small>
+                  <small>Available with Plus</small>
                 </button>
               );
             }
@@ -1926,27 +1871,75 @@ function EventForm({ user, event, onClose, onSave }) {
 // ─── PROFILE ──────────────────────────────────────────────────────────────────
 
 function ProfileSection({ user, setUser }) {
+  const storedProfile = getStoredProfile() || {};
+  const defaultStory = "Waterloo Greenway connects downtown visitors with park experiences, outdoor events, cultural programming, and public spaces throughout the Greenway.";
+  const defaultAction = "Attend events, discover public art, join community programs, learn more, volunteer, and support local initiatives.";
   const [form, setForm] = useState(() => ({
-    organization_name: user?.organization_name || "",
-    partner_type: user?.partner_type || "venue",
-    website: user?.website || "",
-    phone: user?.phone || "",
-    bio: user?.bio || "",
-    ...(getStoredProfile() || {}),
+    ...(storedProfile),
+    partner_name: user?.partner_name || user?.organization_name || storedProfile.partner_name || "Waterloo Greenway",
+    organization_name: user?.organization_name || user?.partner_name || storedProfile.organization_name || "Waterloo Greenway",
+    partner_category: user?.partner_category || storedProfile.partner_category || user?.partner_type || "Civic / Community",
+    partner_type: user?.partner_type || storedProfile.partner_type || "civic",
+    district: user?.district || storedProfile.district || "Waterloo",
+    primary_location: user?.primary_location || user?.address || storedProfile.primary_location || "Waterloo Park, Austin, TX",
+    membership_plan: user?.membership_plan || user?.plan || storedProfile.membership_plan || "Founding Partner",
+    best_contact: user?.best_contact || user?.full_name || storedProfile.best_contact || "Waterloo Greenway team",
+    email: user?.email || user?.contact_email || storedProfile.email || "",
+    contact_email: user?.contact_email || user?.email || storedProfile.contact_email || "",
+    phone: user?.phone || user?.contact_phone || storedProfile.phone || "",
+    website: user?.website || storedProfile.website || "",
+    audience_size: user?.audience_size || user?.audience_reach || storedProfile.audience_size || "Downtown residents, visitors, event guests, and park supporters",
+    public_summary: user?.public_summary || user?.bio || storedProfile.public_summary || defaultStory,
+    public_action: user?.public_action || storedProfile.public_action || defaultAction,
+    operating_hours: user?.operating_hours || storedProfile.operating_hours || "Daily park hours with event-specific schedules",
+    neighborhood: user?.neighborhood || storedProfile.neighborhood || "Waterloo Park and Red River",
+    nearby_landmarks: user?.nearby_landmarks || storedProfile.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District",
+    keywords: user?.keywords || storedProfile.keywords || "parks, public art, events, trails, community",
+    category: user?.category || storedProfile.category || "Parks and culture",
+    map_visibility: user?.map_visibility || storedProfile.map_visibility || "Visible on map, search, events, offers, and QR experiences",
   }));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
+    const latestStoredProfile = getStoredProfile() || {};
     setForm({
-      organization_name: user?.organization_name || "",
-      partner_type: user?.partner_type || "venue",
-      website: user?.website || "",
-      phone: user?.phone || "",
-      bio: user?.bio || "",
-      ...(getStoredProfile() || {}),
+      ...(latestStoredProfile),
+      partner_name: user?.partner_name || user?.organization_name || latestStoredProfile.partner_name || "Waterloo Greenway",
+      organization_name: user?.organization_name || user?.partner_name || latestStoredProfile.organization_name || "Waterloo Greenway",
+      partner_category: user?.partner_category || latestStoredProfile.partner_category || user?.partner_type || "Civic / Community",
+      partner_type: user?.partner_type || latestStoredProfile.partner_type || "civic",
+      district: user?.district || latestStoredProfile.district || "Waterloo",
+      primary_location: user?.primary_location || user?.address || latestStoredProfile.primary_location || "Waterloo Park, Austin, TX",
+      membership_plan: user?.membership_plan || user?.plan || latestStoredProfile.membership_plan || "Founding Partner",
+      best_contact: user?.best_contact || user?.full_name || latestStoredProfile.best_contact || "Waterloo Greenway team",
+      email: user?.email || user?.contact_email || latestStoredProfile.email || "",
+      contact_email: user?.contact_email || user?.email || latestStoredProfile.contact_email || "",
+      phone: user?.phone || user?.contact_phone || latestStoredProfile.phone || "",
+      website: user?.website || latestStoredProfile.website || "",
+      audience_size: user?.audience_size || user?.audience_reach || latestStoredProfile.audience_size || "Downtown residents, visitors, event guests, and park supporters",
+      public_summary: user?.public_summary || user?.bio || latestStoredProfile.public_summary || defaultStory,
+      public_action: user?.public_action || latestStoredProfile.public_action || defaultAction,
+      operating_hours: user?.operating_hours || latestStoredProfile.operating_hours || "Daily park hours with event-specific schedules",
+      neighborhood: user?.neighborhood || latestStoredProfile.neighborhood || "Waterloo Park and Red River",
+      nearby_landmarks: user?.nearby_landmarks || latestStoredProfile.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District",
+      keywords: user?.keywords || latestStoredProfile.keywords || "parks, public art, events, trails, community",
+      category: user?.category || latestStoredProfile.category || "Parks and culture",
+      map_visibility: user?.map_visibility || latestStoredProfile.map_visibility || "Visible on map, search, events, offers, and QR experiences",
     });
-  }, [user.email]);
+  }, [user.email, user.organization_name, user.partner_name, user.full_name, user.partner_type]);
+
+  function update(field, value) {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+      ...(field === "partner_name" ? { organization_name: value } : {}),
+      ...(field === "email" ? { contact_email: value } : {}),
+      ...(field === "phone" ? { contact_phone: value } : {}),
+      ...(field === "public_summary" ? { bio: value } : {}),
+      ...(field === "membership_plan" ? { plan: value } : {}),
+    }));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -1955,11 +1948,17 @@ function ProfileSection({ user, setUser }) {
       ...PUBLIC_PARTNER_USER,
       ...user,
       ...form,
-      full_name: form.organization_name || user.full_name || PUBLIC_PARTNER_USER.full_name,
+      full_name: form.best_contact || user.full_name || PUBLIC_PARTNER_USER.full_name,
+      organization_name: form.partner_name,
+      partner_name: form.partner_name,
+      contact_email: form.email,
+      contact_phone: form.phone,
+      audience_reach: form.audience_size,
+      bio: form.public_summary,
     };
 
     try {
-      const updated = await base44.auth.updateMe(form);
+      const updated = await base44.auth.updateMe(nextUser);
       const normalizedUser = { ...nextUser, ...(updated || {}) };
       saveStoredProfile(normalizedUser);
       setUser(normalizedUser);
@@ -1975,49 +1974,173 @@ function ProfileSection({ user, setUser }) {
   }
 
   const PARTNER_TYPES = [
-    { value: "property", label: "Property / Building" },
+    { value: "property", label: "Property" },
     { value: "hotel", label: "Hotel" },
     { value: "venue", label: "Venue" },
+    { value: "restaurant", label: "Restaurant" },
+    { value: "retail", label: "Retail" },
     { value: "brand", label: "Brand" },
     { value: "civic", label: "Civic / Community" },
+    { value: "real-estate", label: "Real Estate" },
   ];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="mb-6">
-        <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Profile</h2>
-        <p className="text-muted-foreground text-[13px] mt-0.5">Your organization info shown on the downtown map.</p>
+    <motion.div className="dp-profile-editor" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <div className="dp-profile-editor__intro">
+        <div>
+          <p className="dp-profile-editor__eyebrow">Partner Page</p>
+          <h2 className="dp-profile-editor__title">Your public profile</h2>
+          <p>Everything residents see across the map, search results, events, offers, and QR experiences starts here.</p>
+        </div>
+        <span className="dp-profile-editor__status">Founding Partner</span>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-xl space-y-5">
-        <div className="p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-[#F7F8FB] mb-2">
-          <div className="text-[10.5px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.12em] mb-1.5">Account</div>
-          <div className="text-[13px] font-medium text-[#0B1F33]">{user.full_name}</div>
-          <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{user.email}</div>
+      <form onSubmit={handleSubmit} className="dp-profile-editor__layout">
+        <div className="dp-profile-editor__sections">
+          <section className="dp-profile-editor__section">
+            <header>
+              <p>Identity</p>
+              <h3 className="dp-profile-section-title">Partner identity</h3>
+            </header>
+            <div className="dp-profile-editor__grid">
+              <ProfileField label="Partner Name" value={form.partner_name} onChange={value => update("partner_name", value)} required />
+              <ProfileSelect label="Partner Category" value={form.partner_type} onChange={value => update("partner_type", value)} options={PARTNER_TYPES} />
+              <ProfileField label="District" value={form.district} onChange={value => update("district", value)} />
+              <ProfileField label="Primary Location" value={form.primary_location} onChange={value => update("primary_location", value)} />
+              <ProfileField label="Membership Plan" value={form.membership_plan} onChange={value => update("membership_plan", value)} />
+            </div>
+          </section>
+
+          <section className="dp-profile-editor__section">
+            <header>
+              <p>Contact</p>
+              <h3 className="dp-profile-section-title">Contact information</h3>
+            </header>
+            <div className="dp-profile-editor__grid">
+              <ProfileField label="Best Contact" value={form.best_contact} onChange={value => update("best_contact", value)} />
+              <ProfileField label="Email" value={form.email} onChange={value => update("email", value)} type="email" />
+              <ProfileField label="Phone" value={form.phone} onChange={value => update("phone", value)} type="tel" />
+              <ProfileField label="Website" value={form.website} onChange={value => update("website", value)} type="url" />
+              <ProfileField label="Audience Size" value={form.audience_size} onChange={value => update("audience_size", value)} />
+            </div>
+          </section>
+
+          <section className="dp-profile-editor__section">
+            <header>
+              <p>Story</p>
+              <h3 className="dp-profile-section-title">Public story</h3>
+            </header>
+            <ProfileTextarea
+              label="About this place"
+              helper="Help visitors understand why they should stop here."
+              value={form.public_summary}
+              onChange={value => update("public_summary", value)}
+              placeholder="Describe the experience, atmosphere, community value, or what makes this place worth discovering."
+            />
+            <ProfileTextarea
+              label="What can people do here?"
+              value={form.public_action}
+              onChange={value => update("public_action", value)}
+              placeholder="Attend events, discover public art, join community programs, reserve tickets, learn more, volunteer, or support local initiatives."
+            />
+          </section>
+
+          <section className="dp-profile-editor__section">
+            <header>
+              <p>Discovery</p>
+              <h3 className="dp-profile-section-title">Discovery settings</h3>
+            </header>
+            <div className="dp-profile-editor__grid">
+              <ProfileField label="Operating Hours" value={form.operating_hours} onChange={value => update("operating_hours", value)} />
+              <ProfileField label="Neighborhood" value={form.neighborhood} onChange={value => update("neighborhood", value)} />
+              <ProfileField label="Nearby Landmarks" value={form.nearby_landmarks} onChange={value => update("nearby_landmarks", value)} />
+              <ProfileField label="Keywords" value={form.keywords} onChange={value => update("keywords", value)} />
+              <ProfileField label="Category" value={form.category} onChange={value => update("category", value)} />
+              <ProfileField label="Map Visibility" value={form.map_visibility} onChange={value => update("map_visibility", value)} />
+            </div>
+          </section>
+
+          <div className="dp-profile-editor__actions">
+            <button type="submit" disabled={saving} className="dp-profile-editor__primary">
+              {saved ? <><Check aria-hidden="true" /> Changes saved</> : saving ? "Saving..." : "Save Changes"}
+            </button>
+            <Link to="/map?mode=resident&tab=map&filter=All" className="dp-profile-editor__secondary">
+              Preview Public Page
+            </Link>
+          </div>
         </div>
 
-        <FormField label="Organization name" value={form.organization_name} onChange={v => setForm(f => ({ ...f, organization_name: v }))} />
-        <div>
-          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Partner type</label>
-          <select value={form.partner_type} onChange={e => setForm(f => ({ ...f, partner_type: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
-            {PARTNER_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-          </select>
-        </div>
-        <FormField label="Website" value={form.website} onChange={v => setForm(f => ({ ...f, website: v }))} type="url" />
-        <FormField label="Phone" value={form.phone} onChange={v => setForm(f => ({ ...f, phone: v }))} type="tel" />
-        <div>
-          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">About</label>
-          <textarea rows={4} value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
-            placeholder="Describe your organization, venue, or program."
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors resize-none placeholder:text-[#0B1F33]/25" />
-        </div>
-
-        <button type="submit" disabled={saving} className="inline-flex items-center gap-2 px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
-          {saved ? <><Check className="w-3.5 h-3.5" /> {form.writeMode === "demo_session_only" || user.writeMode === "demo_session_only" ? DEMO_WRITE_MESSAGE : "Saved"}</> : saving ? "Saving…" : "Save profile"}
-        </button>
+        <aside className="dp-profile-preview" aria-label="Live profile preview">
+          <div className="dp-profile-preview__phone">
+            <div className="dp-profile-preview__image">
+              <span>{form.partner_type || "partner"}</span>
+            </div>
+            <div className="dp-profile-preview__body">
+              <p className="dp-profile-preview__meta">{form.category || form.partner_type} / {form.district || "Downtown Austin"}</p>
+              <h3>{form.partner_name || "Partner Name"}</h3>
+              <p className="dp-profile-preview__location">{form.neighborhood || form.primary_location}</p>
+              <p className="dp-profile-preview__description">{form.public_summary || defaultStory}</p>
+              <button type="button">Open on map</button>
+              <div className="dp-profile-preview__nearby">
+                <span>Nearby recommendations</span>
+                <p>{form.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District"}</p>
+              </div>
+              <dl>
+                <div>
+                  <dt>Likely audience</dt>
+                  <dd>{form.audience_size}</dd>
+                </div>
+                <div>
+                  <dt>Visible across</dt>
+                  <dd>Map, search, events, offers, and QR experiences</dd>
+                </div>
+                <div>
+                  <dt>Suggested improvement</dt>
+                  <dd>Publish updates that help visitors discover upcoming events, seasonal experiences, and ways to explore {form.partner_name || "this place"}.</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </aside>
       </form>
     </motion.div>
+  );
+}
+
+function ProfileField({ label, value, onChange, type = "text", required = false }) {
+  return (
+    <label className="dp-profile-field">
+      <span>{label}</span>
+      <input
+        type={type}
+        value={value || ""}
+        onChange={event => onChange(event.target.value)}
+        required={required}
+      />
+    </label>
+  );
+}
+
+function ProfileSelect({ label, value, onChange, options }) {
+  return (
+    <label className="dp-profile-field">
+      <span>{label}</span>
+      <select value={value || ""} onChange={event => onChange(event.target.value)}>
+        {options.map(option => (
+          <option key={option.value} value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
+  return (
+    <label className="dp-profile-field dp-profile-field--textarea">
+      <span>{label}</span>
+      {helper && <em>{helper}</em>}
+      <textarea value={value || ""} onChange={event => onChange(event.target.value)} placeholder={placeholder} rows={5} />
+    </label>
   );
 }
 
