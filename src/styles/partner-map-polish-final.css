@@ -1420,6 +1420,38 @@ html body #root#root#root#root .dp-map-page.dp-map-page :is(
   scroll-snap-align: none !important;
 }
 
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(
+  .dp-entity-discovery-grid,
+  .dp-nearby-image-rail,
+  .dp-related-rail,
+  .dp-inkind-related-rail,
+  .dp-daa-next-rail
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  grid-auto-columns: unset !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  scroll-snap-type: none !important;
+}
+
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(
+  .dp-entity-discovery-card,
+  .dp-nearby-image-card,
+  .dp-related-place,
+  .dp-inkind-related-card
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  justify-self: stretch !important;
+}
+
 html body #root#root#root#root .dp-map-page.dp-map-page :is(
   .dp-nearby-image-media,
   .dp-nearby-image-card img,
@@ -1661,6 +1693,8 @@ html body #root#root .dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp
     inline-size: calc(100vw - 16px) !important;
     max-width: calc(100vw - 16px) !important;
     max-inline-size: calc(100vw - 16px) !important;
+    min-width: 0 !important;
+    min-inline-size: 0 !important;
     height: auto !important;
     max-height: min(78dvh, calc(100dvh - 132px)) !important;
     min-height: 0 !important;
@@ -1678,6 +1712,8 @@ html body #root#root .dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp
     inline-size: calc(100vw - 16px) !important;
     max-width: calc(100vw - 16px) !important;
     max-inline-size: calc(100vw - 16px) !important;
+    min-width: 0 !important;
+    min-inline-size: 0 !important;
     height: auto !important;
     max-height: min(78dvh, calc(100dvh - 132px)) !important;
   }
@@ -1702,4 +1738,63 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-bott
   background-color: transparent !important;
   background-image: none !important;
   box-shadow: none !important;
+}
+
+/* Final map drawer rail lock: detail panels must stack nearby/discovery cards on mobile. */
+@media (max-width: 767px) {
+  html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(
+    .dp-entity-discovery-grid,
+    .dp-nearby-image-rail,
+    .dp-related-rail,
+    .dp-inkind-related-rail,
+    .dp-daa-next-rail
+  ) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-flow: row !important;
+    grid-auto-columns: unset !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding-inline: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    scroll-snap-type: none !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer :is(
+    .dp-entity-discovery-card,
+    .dp-nearby-image-card,
+    .dp-related-place,
+    .dp-inkind-related-card
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    justify-self: stretch !important;
+  }
+}
+
+/* Absolute final detail-drawer rail lock: nearby and discovery cards stack on mobile. */
+html body #root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer .dp-entity-discovery-grid.dp-entity-discovery-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  grid-auto-columns: unset !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  scroll-snap-type: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-map-panel.dp-panel-shell.dp-panel-shell.dp-detail-drawer.dp-detail-drawer.dp-destination-drawer.dp-destination-drawer.dp-map-drawer-shell.dp-map-drawer-shell .dp-partner-intelligence-drawer.dp-partner-intelligence-drawer .dp-entity-discovery-grid.dp-entity-discovery-grid .dp-entity-discovery-card.dp-entity-discovery-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  justify-self: stretch !important;
 }
