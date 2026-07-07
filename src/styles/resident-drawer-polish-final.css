@@ -1558,3 +1558,135 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
 }
+
+/* Viewport-safe drawer/panel contract: never clip content; scroll inside the sheet. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  aside.dp-map-drawer-shell,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-entity-drawer-shell.dp-map-drawer-shell,
+  .dp-map-drawer-shell,
+  .dp-detail-drawer.dp-map-drawer-shell,
+  .dp-destination-drawer.dp-map-drawer-shell,
+  .dp-entity-drawer-shell.dp-map-drawer-shell
+) {
+  inset: auto max(6px, env(safe-area-inset-right, 0px)) 0 max(6px, env(safe-area-inset-left, 0px)) !important;
+  top: auto !important;
+  bottom: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: auto !important;
+  max-width: min(760px, calc(100vw - 12px)) !important;
+  height: auto !important;
+  max-height: min(82dvh, calc(100dvh - 92px)) !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  overflow: hidden !important;
+  contain: layout paint !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-map-drawer-shell,
+  .dp-detail-drawer.dp-map-drawer-shell,
+  .dp-destination-drawer.dp-map-drawer-shell,
+  .dp-entity-drawer-shell.dp-map-drawer-shell
+) > :is(.dp-map-panel-header, .dp-drawer-control-row, .dp-panel-toolbar, .dp-map-sheet-toolbar) {
+  flex: 0 0 auto !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-map-drawer-shell,
+  .dp-detail-drawer.dp-map-drawer-shell,
+  .dp-destination-drawer.dp-map-drawer-shell,
+  .dp-entity-drawer-shell.dp-map-drawer-shell
+) :is(
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-panel-scroll,
+  .dp-panel-body,
+  .dp-resident-tab-panel,
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll,
+  .dp-map-sheet-scroll
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: calc(min(82dvh, calc(100dvh - 92px)) - 50px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-map-drawer-shell,
+  .dp-detail-drawer.dp-map-drawer-shell,
+  .dp-destination-drawer.dp-map-drawer-shell,
+  .dp-entity-drawer-shell.dp-map-drawer-shell
+) :is(
+  .dp-map-panel-content,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-event-detail-drawer,
+  .dp-local-service-drawer,
+  .dp-business-detail-drawer,
+  .dp-neighborhood-drawer,
+  .dp-entity-drawer,
+  .dp-legends-property-drawer
+) {
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-collection-route-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: min(42dvh, calc(100dvh - 130px)) !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+
+@media (max-width: 520px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+    aside.dp-map-drawer-shell,
+    aside.dp-panel-shell.dp-map-drawer-shell,
+    aside.dp-detail-drawer.dp-map-drawer-shell,
+    aside.dp-destination-drawer.dp-map-drawer-shell,
+    aside.dp-entity-drawer-shell.dp-map-drawer-shell,
+    .dp-map-drawer-shell,
+    .dp-detail-drawer.dp-map-drawer-shell,
+    .dp-destination-drawer.dp-map-drawer-shell,
+    .dp-entity-drawer-shell.dp-map-drawer-shell
+  ) {
+    max-height: min(78dvh, calc(100dvh - 104px)) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+    .dp-map-drawer-shell,
+    .dp-detail-drawer.dp-map-drawer-shell,
+    .dp-destination-drawer.dp-map-drawer-shell,
+    .dp-entity-drawer-shell.dp-map-drawer-shell
+  ) :is(
+    .dp-map-panel-scroll,
+    .dp-destination-scroll,
+    .dp-drawer-scroll,
+    .dp-panel-scroll,
+    .dp-panel-body,
+    .dp-resident-tab-panel,
+    .dp-resident-tab-panel-list,
+    .dp-resident-info-scroll,
+    .dp-saved-downtown-scroll,
+    .dp-map-sheet-scroll
+  ) {
+    max-height: calc(min(78dvh, calc(100dvh - 104px)) - 50px) !important;
+  }
+}
