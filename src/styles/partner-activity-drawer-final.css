@@ -240,3 +240,678 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root .dp-
   text-align: right !important;
   white-space: normal !important;
 }
+
+/* Global mobile drawer refactor: last-loaded safety contract for all map drawers and sheets. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) {
+  color: #0B1F33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  letter-spacing: 0 !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  box-sizing: border-box !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) *,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) *::before,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) *::after {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-body,
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-resident-tab-panel,
+  .dp-resident-tab-panel-list,
+  .dp-saved-downtown-scroll,
+  .dp-card-drawer-body,
+  .dp-public-preview-panel-body,
+  .dp-workspace-panel-body,
+  .dp-profile-panel-body,
+  .dp-editor-panel-body
+) {
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding-bottom: max(96px, calc(72px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-entity-meta,
+  .dp-entity-eyebrow,
+  .dp-section-label,
+  .dp-tab-eyebrow,
+  .dp-panel-eyebrow,
+  .dp-destination-eyebrow
+) {
+  color: rgba(11, 31, 51, 0.54) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.54) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(h1, h2, .dp-entity-title, .dp-panel-title, .dp-map-panel-title, .dp-destination-title) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: clamp(22px, 6.2vw, 26px) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(h3, .dp-section-title, .dp-destination-section h3, .dp-info-section h3, .dp-map-panel-section-title) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 15.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.24 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(p, li, dd, .dp-entity-context, .dp-entity-subtitle, .dp-destination-section p, .dp-info-section p, .dp-panel-copy, .dp-map-panel-body-copy) {
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  aside.dp-panel-shell,
+  aside.dp-map-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-public-preview-panel,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) :is(small, time, .dp-entity-meta, .dp-panel-meta, .dp-row-meta, .dp-card-meta) {
+  color: rgba(11, 31, 51, 0.52) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.52) !important;
+  font-size: 11.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-card,
+  .dp-partner-feed-row,
+  .dp-entity-discovery-card,
+  .dp-related-place,
+  .dp-saved-place-card,
+  .dp-pass-card-row,
+  .dp-event-fact,
+  .dp-info-row,
+  .dp-panel-row
+) :is(strong, h4, .dp-row-title) {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-partner-summary-card,
+  .dp-partner-feed-row,
+  .dp-entity-discovery-card,
+  .dp-related-place,
+  .dp-saved-place-card,
+  .dp-pass-card-row,
+  .dp-event-fact,
+  .dp-info-row,
+  .dp-panel-row
+) :is(small, span:not(.dp-tab-row-icon), .dp-row-meta) {
+  font-size: 11.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-perk-cta,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-primary-action-row > :is(a, button),
+  .dp-secondary-action-row > :is(a, button)
+) {
+  min-height: 44px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.18 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-destination-section,
+  .dp-info-section,
+  .dp-partner-intelligence-section,
+  .dp-map-panel-section,
+  .dp-event-section,
+  .dp-entity-assistant,
+  .dp-partner-ask-section
+) {
+  gap: 12px !important;
+  margin-block: 0 22px !important;
+  padding-inline: 16px !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+    aside.dp-panel-shell,
+    aside.dp-map-panel,
+    aside.dp-map-drawer-shell,
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer,
+    aside.dp-map-directory-sheet,
+    .dp-map-sheet,
+    .dp-pass-panel,
+    .dp-card-drawer,
+    .dp-saved-drawer-shell,
+    .dp-public-preview-panel,
+    .dp-workspace-panel,
+    .dp-profile-panel,
+    .dp-editor-panel
+  ) {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    max-height: 88dvh !important;
+    border-radius: 18px 18px 0 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+    .dp-panel-body,
+    .dp-panel-scroll,
+    .dp-map-panel-scroll,
+    .dp-destination-scroll,
+    .dp-drawer-scroll,
+    .dp-map-sheet-scroll,
+    .dp-pass-panel-body,
+    .dp-resident-tab-panel,
+    .dp-resident-tab-panel-list,
+    .dp-saved-downtown-scroll,
+    .dp-card-drawer-body,
+    .dp-public-preview-panel-body,
+    .dp-workspace-panel-body,
+    .dp-profile-panel-body,
+    .dp-editor-panel-body
+  ) {
+    padding-inline: 16px !important;
+    padding-bottom: max(96px, calc(72px + env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(table, thead, tbody, tr, th, td) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+    aside.dp-panel-shell,
+    aside.dp-map-panel,
+    aside.dp-map-drawer-shell,
+    aside.dp-detail-drawer,
+    aside.dp-destination-drawer
+  ) {
+    width: clamp(420px, 34vw, 480px) !important;
+    max-width: min(480px, calc(100vw - 32px)) !important;
+  }
+}
+
+/* Final search command controls: transparent submit glyph and text-only audience switcher. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-submit.dp-search-intent-submit,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console .dp-search-intent-input-row .dp-search-intent-submit.dp-search-intent-submit {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-submit.dp-search-intent-submit :is(svg, .lucide),
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console .dp-search-intent-input-row .dp-search-intent-submit.dp-search-intent-submit :is(svg, .lucide) {
+  color: currentColor !important;
+  stroke: currentColor !important;
+  fill: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-switch.dp-search-intent-switch,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs {
+  gap: 14px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-switch.dp-search-intent-switch > button,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-switch.dp-search-intent-switch > button:is(.is-active, [aria-selected="true"], :hover, :focus-visible, :active),
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button:is(.is-active, [aria-selected="true"], :hover, :focus-visible, :active) {
+  min-height: 30px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-switch.dp-search-intent-switch > button:is(.is-active, [aria-selected="true"]),
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button:is(.is-active, [aria-selected="true"]) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+/* Final pin/perk/listing drawer bounds: smaller, left-aligned, never outside mobile viewport. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-shell.dp-detail-drawer,
+  aside.dp-map-drawer-shell.dp-destination-drawer,
+  aside.dp-entity-drawer-shell,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) {
+  inset: auto 0 0 0 !important;
+  top: auto !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: min(100vw, 760px) !important;
+  max-width: min(100vw, 760px) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: min(88dvh, calc(100dvh - 76px)) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 18px 18px 0 0 !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-shell.dp-detail-drawer,
+  aside.dp-map-drawer-shell.dp-destination-drawer,
+  aside.dp-entity-drawer-shell,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-panel-toolbar,
+  .dp-drawer-toolbar,
+  .dp-drawer-control-row,
+  .dp-map-panel-header,
+  .dp-panel-header
+) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 5 !important;
+  flex: 0 0 auto !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 8px 12px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer,
+  aside.dp-destination-drawer,
+  aside.dp-map-drawer-shell.dp-detail-drawer,
+  aside.dp-map-drawer-shell.dp-destination-drawer,
+  aside.dp-entity-drawer-shell,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) :is(
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-panel-scroll,
+  .dp-panel-body
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: calc(min(88dvh, calc(100dvh - 76px)) - 48px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding: 0 16px max(112px, calc(88px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-partner-detail-content,
+  .dp-partner-intelligence-drawer,
+  .dp-destination-content,
+  .dp-detail-content,
+  .dp-event-detail-drawer,
+  .dp-resident-perk-details,
+  .dp-clean-residential-drawer
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-entity-identity,
+  .dp-destination-section,
+  .dp-info-section,
+  .dp-partner-intelligence-section,
+  .dp-survey-intelligence-layer,
+  .dp-partner-ask-section,
+  .dp-partner-drawer-actions
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 16px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-partner-perk-action-row,
+  .dp-partner-action-row,
+  .dp-inkind-perk-actions,
+  .dp-editorial-hero-actions
+) {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 0 0 4px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-partner-perk-action-row,
+  .dp-partner-action-row,
+  .dp-inkind-perk-actions,
+  .dp-editorial-hero-actions
+) > :is(a, button, .dp-panel-action, .dp-perk-cta) {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+/* Resident tab cleanup: flatten card-in-card UI into native rows and suppress decorative summaries. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-saved-overview-rail,
+  .dp-favorites-matrix,
+  .dp-info-guide-media,
+  .dp-info-guide-feature-grid,
+  .dp-info-guide-overview,
+  .dp-info-guide-faq,
+  .dp-austin-growth-read,
+  .dp-partner-summary-grid
+) {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-resident-tab-panel-header,
+  .dp-saved-downtown-header,
+  .dp-info-guide-hero
+) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+  margin: 0 !important;
+  padding: 14px 0 12px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-resident-tab-panel-header,
+  .dp-saved-downtown-header,
+  .dp-info-guide-hero
+) :is(span, strong, p:not(.dp-tab-eyebrow)) {
+  display: block !important;
+  max-width: 100% !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 13.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll,
+  .dp-tab-stack
+) {
+  display: grid !important;
+  align-content: start !important;
+  gap: 0 !important;
+  padding: 0 16px max(112px, calc(88px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-directory-result-row,
+  .dp-resident-native-row,
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-compact-place-row,
+  .dp-saved-collection-card,
+  .dp-saved-collection-section,
+  .dp-saved-empty-state,
+  .dp-saved-ask-section,
+  .dp-info-row,
+  .dp-partner-feed-row,
+  .dp-partner-summary-card,
+  .dp-tab-discovery-card,
+  .dp-tab-perk-card
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 5px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 12px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-saved-collection-grid,
+  .dp-saved-action-row,
+  .dp-saved-primary-actions,
+  .dp-saved-ask-section > div,
+  .dp-info-guide-actions,
+  .dp-partner-feed-list
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-tab-row-icon,
+  .dp-saved-card-media,
+  .dp-resident-native-row > span:first-child,
+  .dp-tab-discovery-media
+) {
+  display: none !important;
+}
