@@ -22296,6 +22296,170 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :i
   outline: 0 !important;
 }
 
+/* Shared panel content grid: every readable panel uses the same left edge. */
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
+  --dp-panel-content-gutter: 16px;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero,
+  .dp-campaign-hero,
+  .dp-campaign-moment,
+  .dp-campaign-suggestion,
+  .dp-campaign-readout,
+  .dp-campaign-visibility-panel,
+  .dp-campaign-layer-list,
+  .dp-brand-campaign-list,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-entity-identity,
+  .dp-entity-summary,
+  .dp-entity-panel-header,
+  .dp-detail-intro,
+  .dp-destination-section,
+  .dp-nearby-section,
+  .dp-related-section,
+  .dp-partner-intelligence-section,
+  .dp-survey-intelligence-layer,
+  .dp-partner-ask-section,
+  .dp-partner-drawer-actions,
+  .dp-info-guide-help,
+  .dp-info-guide-faq,
+  .dp-partner-info-steps,
+  .dp-partner-summary-card,
+  .dp-partner-feed-row,
+  .dp-partner-report-card,
+  .dp-partner-opportunity-item,
+  .dp-partner-signal-list li,
+  .dp-entity-discovery-card,
+  .dp-partner-metric-card,
+  .dp-partner-asset-card,
+  .dp-inkind-related-card,
+  .dp-partner-perk-stat-grid article,
+  .dp-partner-perk-offer-card,
+  .dp-partner-report-visual,
+  .dp-partner-report-analytics,
+  .dp-partner-report-readout,
+  .dp-partner-report-card-grid,
+  .dp-report-next-action,
+  .dp-austin-growth-read
+) {
+  padding-left: var(--dp-panel-content-gutter) !important;
+  padding-right: var(--dp-panel-content-gutter) !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-partner-report-analytics,
+  .dp-partner-report-card-grid
+) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-report-analytics .dp-partner-summary-card,
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-report-card-grid .dp-partner-report-card {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-partner-readable-hero,
+  .dp-partner-summary-card,
+  .dp-partner-feed-row,
+  .dp-partner-report-card,
+  .dp-partner-opportunity-item,
+  .dp-partner-signal-list li,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-partner-intelligence-section,
+  .dp-partner-ask-section
+) > :is(h1, h2, h3, h4, p, span, strong, small, em, ul, ol, dl, div, button, a) {
+  margin-left: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-summary-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 3px !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-summary-card :is(span, strong, p) {
+  width: 100% !important;
+  justify-self: stretch !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-report-card :is(summary, .dp-report-mini-table, .dp-report-mini-table > div) {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-report-card-footer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: start !important;
+  gap: 3px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-report-card-footer :is(span, em),
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-report-mini-table :is(dt, dd) {
+  width: 100% !important;
+  margin-left: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-feed-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: start !important;
+  justify-items: stretch !important;
+  gap: 6px !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-feed-main {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 3px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-feed-main > .dp-tab-row-icon {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-feed-main > span:not(.dp-tab-row-icon),
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-partner-feed-main :is(strong, small) {
+  width: 100% !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-tab-signal {
+  justify-self: start !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
 html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-campaign-action-bar {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
