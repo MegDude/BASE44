@@ -16,6 +16,7 @@ import '@/styles/pricing-clean.css'
 import '@/styles/contact-clean.css'
 import '@/styles/typography-governance.css'
 import '@/styles/production-quality-v1.css'
+import '@/styles/partner-map-polish-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

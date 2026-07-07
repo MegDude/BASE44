@@ -13307,9 +13307,9 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!selectedId) return;
-    setActiveBottomTab("map");
+    if (!urlState.panelTab) setActiveBottomTab("map");
     setConsoleCollapsed(true);
-  }, [consoleHasActiveWork, selectedId, urlState.mode]);
+  }, [consoleHasActiveWork, selectedId, urlState.mode, urlState.panelTab]);
 
   useEffect(() => {
     if (selectedId || clusterDrawer || activePartnerPanel || urlState.tab === "pass" || urlState.tab === "campaigns") {
