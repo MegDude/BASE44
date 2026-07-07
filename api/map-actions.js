@@ -76,8 +76,8 @@ function responseMessage(action) {
 }
 
 function demoResponseMessage(action) {
-  if (["save", "unsave"].includes(action)) return "Saved for this demo session.";
-  return "Saved for this demo session. This action requires production persistence before it can be treated as permanent.";
+  if (["save", "unsave"].includes(action)) return "Saved for this session.";
+  return "Saved for this session. Connect account storage before treating this as a permanent workspace change.";
 }
 
 async function recordSupabaseAction(payload) {

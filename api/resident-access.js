@@ -63,7 +63,7 @@ async function storeResident(record) {
     stored: false,
     reason: "supabase_not_configured",
     writeMode: "demo_session_only",
-    message: "Saved for this demo session.",
+    message: "Saved for this session.",
   };
 
   const { error } = await supabaseServer.from("resident_profiles").insert({

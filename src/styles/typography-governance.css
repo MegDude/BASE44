@@ -18915,7 +18915,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-panel-shell.d
   padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
   scroll-padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)) !important;
 }
-/* Production readiness guard panel */
+/* Account setup guard panel */
 html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-production-readiness {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

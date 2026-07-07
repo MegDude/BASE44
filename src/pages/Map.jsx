@@ -10810,7 +10810,8 @@ function GoogleMapCanvas({
         try {
           if (!mapRef.current) {
             const initialView = initialViewRef.current;
-            mapRef.current = new maps.Map(containerRef.current, {
+            const googleMapId = import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || undefined;
+            const mapOptions = {
               center: { lat: initialView.center[0], lng: initialView.center[1] },
               zoom: initialView.zoom,
               minZoom: 13,
@@ -10818,9 +10819,9 @@ function GoogleMapCanvas({
               disableDefaultUI: true,
               clickableIcons: false,
               gestureHandling: "greedy",
-              mapId: import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || undefined,
-              styles: DOWNTOWN_PERKS_GOOGLE_MAP_STYLES,
-            });
+              ...(googleMapId ? { mapId: googleMapId } : { styles: DOWNTOWN_PERKS_GOOGLE_MAP_STYLES }),
+            };
+            mapRef.current = new maps.Map(containerRef.current, mapOptions);
             mapRef.current.addListener("dragstart", markUserNavigated);
             mapRef.current.addListener("drag", markUserNavigated);
             mapRef.current.addListener("dragend", markUserNavigated);

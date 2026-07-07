@@ -435,7 +435,7 @@ function useProductionReadinessStatus() {
       persistence: frontend.persistenceLabel,
       accountAccess: frontend.accountAccessLabel,
       writeMode: frontend.writeModeLabel,
-      warning: frontend.demoMode ? "This action requires production persistence before it can be treated as permanent." : "",
+      warning: frontend.demoMode ? "Connect account storage before treating this as a permanent workspace change." : "",
       accountNotice: frontend.message,
     };
   });
@@ -466,26 +466,26 @@ function useProductionReadinessStatus() {
 
 function ProductionReadinessStatusBlock({ status }) {
   const allConnected =
-    status.persistence === "Connected" &&
-    status.accountAccess === "Enabled" &&
-    status.writeMode === "Durable";
+    status.persistence === "Ready" &&
+    status.accountAccess === "Ready" &&
+    status.writeMode === "Ready to save";
   const statusMessage =
     status.warning ||
     status.accountNotice ||
     (allConnected
-      ? "Production writes and sign-in are connected."
-      : "This action requires production persistence before it can be treated as permanent.");
+      ? "Account sign-in and workspace saving are connected."
+      : "Connect account storage before treating this as a permanent workspace change.");
 
   return (
-    <section className="dp-production-readiness" aria-label="Production readiness">
+    <section className="dp-production-readiness" aria-label="Account setup status">
       <div>
-        <p>Production readiness</p>
-        <h2>Persistence and account access</h2>
+        <p>Account setup</p>
+        <h2>Sign-in and workspace saving</h2>
         <span>{statusMessage}</span>
       </div>
       <dl>
         <div>
-          <dt>Persistence</dt>
+          <dt>Workspace saving</dt>
           <dd>{status.persistence}</dd>
         </div>
         <div>
@@ -493,7 +493,7 @@ function ProductionReadinessStatusBlock({ status }) {
           <dd>{status.accountAccess}</dd>
         </div>
         <div>
-          <dt>Write mode</dt>
+          <dt>Saving mode</dt>
           <dd>{status.writeMode}</dd>
         </div>
       </dl>
@@ -589,7 +589,7 @@ export default function PartnerWorkspace() {
                   ? "Readable partner reports organized around what changed, what worked, and what to do next."
                   : activation
                     ? activation.writeMode === "demo_session_only"
-                      ? `${activation.plan} is available for this demo session. Add production persistence before treating workspace records as permanent.`
+                      ? `${activation.plan} is available for this session. Connect account storage before treating workspace changes as permanent.`
                       : `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
                     : "Registration, pricing, checkout, provisioning, and daily operations now move through one connected workspace path."}
               </p>

@@ -1,10 +1,10 @@
 export const PRODUCTION_ACCOUNT_ACCESS_MESSAGE =
-  "Production account access is not available yet. Add Supabase environment variables before enabling sign-in.";
+  "Account sign-in is not connected yet. You can still explore the workspace, create a partner account, or continue setup.";
 
-export const DEMO_WRITE_MESSAGE = "Saved for this demo session.";
+export const DEMO_WRITE_MESSAGE = "Saved for this session.";
 
 export const PRODUCTION_PERSISTENCE_MESSAGE =
-  "This action requires production persistence before it can be treated as permanent.";
+  "Connect account storage before treating this as a permanent workspace change.";
 
 function hasValue(value: unknown): boolean {
   return typeof value === "string" && value.trim().length > 0;
@@ -27,9 +27,9 @@ export function getFrontendProductionGuard(env: ImportMetaEnv = import.meta.env)
     production,
     accountAccessEnabled,
     demoMode: accountAccessBlocked,
-    persistenceLabel: "Not configured",
-    accountAccessLabel: accountAccessEnabled ? "Enabled" : "Missing Supabase env vars",
-    writeModeLabel: "Demo session only",
+    persistenceLabel: "Needs account storage",
+    accountAccessLabel: accountAccessEnabled ? "Ready" : "Connect sign-in",
+    writeModeLabel: "Session preview",
     message: accountAccessBlocked ? PRODUCTION_ACCOUNT_ACCESS_MESSAGE : "",
     persistenceMessage: PRODUCTION_PERSISTENCE_MESSAGE,
   };

@@ -152,7 +152,7 @@ export default function ResidentAccess() {
 
       if (isBuildingPath && resident.verificationStatus === "pending_building_review") {
         setState("success");
-        setMessage(`${demoPrefix}Your building request is not permanent until production persistence is connected. You can use the Perks Card path now, or open the app for this session.`);
+        setMessage(`${demoPrefix}Your building request is saved for this session. Connect account storage before treating it as permanent. You can use the Perks Card path now, or open the app.`);
         return;
       }
 

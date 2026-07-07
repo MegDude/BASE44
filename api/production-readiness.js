@@ -19,20 +19,20 @@ function getReadiness() {
 
   return {
     production,
-    persistence: durablePersistenceConfigured ? "Connected" : "Not configured",
-    accountAccess: frontendAuthConfigured ? "Enabled" : "Missing Supabase env vars",
-    writeMode: durablePersistenceConfigured ? "Durable" : "Demo session only",
+    persistence: durablePersistenceConfigured ? "Ready" : "Needs account storage",
+    accountAccess: frontendAuthConfigured ? "Ready" : "Connect sign-in",
+    writeMode: durablePersistenceConfigured ? "Ready to save" : "Session preview",
     durablePersistenceConfigured,
     frontendAuthConfigured,
     supabaseServerConfigured,
     databaseConfigured,
     warning:
       production && !durablePersistenceConfigured
-        ? "This action requires production persistence before it can be treated as permanent."
+        ? "Connect account storage before treating this as a permanent workspace change."
         : "",
     accountNotice:
       production && !frontendAuthConfigured
-        ? "Production account access is not available yet. Add Supabase environment variables before enabling sign-in."
+        ? "Account sign-in is not connected yet. You can still explore the workspace, create a partner account, or continue setup."
         : "",
   };
 }
