@@ -1,11 +1,19 @@
 const GOOGLE_MAPS_SCRIPT_ID = "downtown-perks-google-maps-js";
 const GOOGLE_MAPS_CALLBACK_NAME = "__downtownPerksGoogleMapsReady";
 
+declare global {
+  interface Window {
+    google?: {
+      maps?: any;
+    };
+  }
+}
+
 let googleMapsPromise: Promise<any> | null = null;
 let googleMapsLoadAttempts = 0;
 
 function readGoogleMapsApiKey() {
-  const env = import.meta.env || {};
+  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
   const rawKey = env.VITE_GOOGLE_MAPS_API_KEY || "";
   return String(rawKey).trim().replace(/^['"]|['"]$/g, "");
 }
