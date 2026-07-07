@@ -51048,7 +51048,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   aside.dp-detail-drawer.dp-map-drawer-shell,
   aside.dp-map-drawer-shell
 ) :is(.dp-primary-action-row, .dp-secondary-action-row, .dp-entity-action-row, .dp-destination-action-row, .dp-partner-drawer-actions) {
-  order: 3 !important;
+  order: 4 !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -51069,15 +51069,22 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   .dp-contact-continuation,
   .dp-perk-module,
   .dp-happy-hour-section,
-  .dp-inkind-editorial-panel,
-  .dp-entity-assistant
+  .dp-inkind-editorial-panel
 ) {
-  order: 4 !important;
+  order: 3 !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-entity-assistant {
+  order: 5 !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
