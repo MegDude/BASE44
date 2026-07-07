@@ -6870,6 +6870,13 @@ function InteractiveMatrix({
 }) {
   const firstItemId = items[0]?.id || "";
   const [selectedId, setSelectedId] = useState(initialSelectedId || firstItemId);
+  const previousInitialSelectedId = useRef(initialSelectedId);
+  useEffect(() => {
+    if (initialSelectedId === previousInitialSelectedId.current) return;
+    previousInitialSelectedId.current = initialSelectedId;
+    const nextSelectedId = items.some((item) => item.id === initialSelectedId) ? initialSelectedId : firstItemId;
+    if (nextSelectedId) setSelectedId(nextSelectedId);
+  }, [firstItemId, initialSelectedId, items]);
   const selectedItem = items.find((item) => item.id === selectedId) || items[0] || null;
 
   if (!items.length) {
@@ -13598,54 +13605,293 @@ export default function MapPage() {
           ],
           help: ["Need some help?", "We are happy to point you in the right direction.", "Frequently Asked Questions", scrollToInfoFaq],
         };
+    const makeVisibilityRelatedItems = (filter) => places
+      .filter((place) => matchesFilter(place, filter, savedIds))
+      .slice(0, 4)
+      .map((place) => ({
+        id: place.id,
+        title: place.name,
+        type: place.category || place.type || "Nearby",
+        imageUrl: resolveEntityImage(place, "card"),
+      }));
+    const visibilityCategories = [
+      {
+        id: "coffee",
+        label: "Coffee",
+        filter: "Coffee",
+        description: "Shows nearby cafes, breakfast stops, and places useful before work or weekend plans.",
+        status: activeFilter === "Coffee" ? "Showing now" : "Nearby",
+        meta: ["Cafes", "Morning", "Walkable"],
+      },
+      {
+        id: "dining",
+        label: "Dining",
+        filter: "Dining",
+        description: "Prioritizes restaurants, dinner spots, and places worth planning around before or after events.",
+        status: activeFilter === "Dining" ? "Showing now" : "Useful now",
+        meta: ["Restaurants", "Dinner", "Plans"],
+      },
+      {
+        id: "happy-hour",
+        label: "Happy Hour",
+        filter: "Happy Hour",
+        description: "Finds drink specials, after-work stops, and resident-friendly value nearby.",
+        status: activeFilter === "Happy Hour" ? "Showing now" : "Tonight",
+        meta: ["After work", "Drinks", "Value"],
+      },
+      {
+        id: "events",
+        label: "Events",
+        filter: "Events",
+        description: "Shows live music, civic moments, sports, parks, and things happening soon.",
+        status: activeFilter === "Events" ? "Showing now" : "Active",
+        meta: ["Today", "This week", "RSVP"],
+      },
+      {
+        id: "perks",
+        label: "Perks",
+        filter: "Perks",
+        description: "Surfaces resident benefits and card moments tied to participating places.",
+        status: activeFilter === "Perks" ? "Showing now" : "Resident value",
+        meta: ["Offers", "Card", "Nearby"],
+      },
+      {
+        id: "hotels",
+        label: "Hotels",
+        filter: "Hotels",
+        description: "Shows hotels, lobby moments, guest-friendly places, and staycation context.",
+        status: activeFilter === "Hotels" ? "Showing now" : "Guest layer",
+        meta: ["Hotels", "Guests", "Concierge"],
+      },
+      {
+        id: "properties",
+        label: "Properties",
+        filter: "Properties",
+        description: "Shows residential buildings, listings, and nearby lifestyle context.",
+        status: activeFilter === "Properties" ? "Showing now" : "Living here",
+        meta: ["Buildings", "Listings", "Districts"],
+      },
+      {
+        id: "legends",
+        label: "Legends",
+        filter: "Legends",
+        description: "Highlights Legends residential listings, buildings, and downtown living context.",
+        status: activeFilter === "Legends" ? "Showing now" : "Real estate",
+        meta: ["Listings", "Buildings", "Tours"],
+      },
+      {
+        id: "arts",
+        label: "Arts",
+        filter: "Arts & Culture",
+        description: "Brings forward galleries, public art, culture stops, and district stories.",
+        status: activeFilter === "Arts & Culture" ? "Showing now" : "Culture",
+        meta: ["Art", "Stories", "Walks"],
+      },
+      {
+        id: "retail",
+        label: "Retail",
+        filter: "Retail",
+        description: "Shows shops, brands, errands, and places worth opening while walking downtown.",
+        status: activeFilter === "Retail" ? "Showing now" : "Shopping",
+        meta: ["Stores", "Brands", "Errands"],
+      },
+      {
+        id: "fitness",
+        label: "Fitness",
+        filter: "Fitness",
+        description: "Prioritizes gyms, wellness partners, trail access, and active downtown routines.",
+        status: activeFilter === "Fitness" ? "Showing now" : "Active",
+        meta: ["Wellness", "Movement", "Trail"],
+      },
+      {
+        id: "services",
+        label: "Services",
+        filter: "Services",
+        description: "Shows useful local services, everyday errands, and practical downtown resources.",
+        status: activeFilter === "Services" ? "Showing now" : "Useful",
+        meta: ["Errands", "Local", "Support"],
+      },
+      {
+        id: "parking",
+        label: "Parking",
+        filter: "Parking",
+        description: "Helps compare garages, arrival options, and places to park before a plan.",
+        status: activeFilter === "Parking" ? "Showing now" : "Arrival",
+        meta: ["Garages", "Arrival", "Routes"],
+      },
+      {
+        id: "civic",
+        label: "Civic",
+        filter: "Civic",
+        description: "Shows parks, public spaces, district programs, civic stops, and community resources.",
+        status: activeFilter === "Civic" ? "Showing now" : "Public",
+        meta: ["Parks", "Public", "District"],
+      },
+    ];
+    const partnerManageItems = [
+      {
+        id: "profile",
+        label: "Profile",
+        title: "Profile",
+        description: "Control the name, story, contact details, and public identity residents see first.",
+        status: "Published",
+        meta: ["Identity", "Contact", "Story"],
+        primaryAction: { label: "Open Profile", action: "open-href", href: "/partner-workspace/profile" },
+      },
+      {
+        id: "map-presence",
+        label: "Map Presence",
+        title: "Map Presence",
+        description: "Control category, district, images, map visibility, and the first impression residents see.",
+        status: "Map connected",
+        meta: ["Category", "District", "Images"],
+        primaryAction: { label: "Update Map Presence", action: "open-href", href: "/partner-workspace/map" },
+      },
+      {
+        id: "campaigns",
+        label: "Campaigns",
+        title: "Campaigns",
+        description: "Create and manage local moments that can appear on the map, resident feed, QR paths, or partner reports.",
+        status: "Recommended",
+        meta: ["Reach", "Timing", "Reporting"],
+        primaryAction: { label: "Open Campaigns", action: "open-href", href: "/partner-workspace/campaigns" },
+        secondaryActions: [{ label: "Create Campaign", action: "open-href", href: "/partner-workspace/campaigns?intent=new" }],
+      },
+      {
+        id: "offers",
+        label: "Offers",
+        title: "Offers",
+        description: "Give nearby people one clear reason to save, scan, request directions, or visit.",
+        status: "Draft next",
+        meta: ["Perks", "Redemptions", "Visits"],
+        primaryAction: { label: "Open Offers", action: "open-href", href: "/partner-workspace/offers" },
+        secondaryActions: [{ label: "Create Offer", action: "open-href", href: "/partner-workspace/offers?intent=new" }],
+      },
+      {
+        id: "events",
+        label: "Events",
+        title: "Events",
+        description: "Promote moments people can attend and connect RSVP activity back to map reporting.",
+        status: "Available",
+        meta: ["RSVP", "Calendar", "Nearby"],
+        primaryAction: { label: "Open Events", action: "open-href", href: "/partner-workspace/events" },
+        secondaryActions: [{ label: "Preview Events", action: "partner-map-filter", filter: "Events" }],
+      },
+      {
+        id: "qr",
+        label: "QR",
+        title: "QR",
+        description: "Connect printed materials, lobby moments, scans, and resident card interactions to reporting.",
+        status: "Connected",
+        meta: ["Scans", "Print", "Card"],
+        primaryAction: { label: "Open QR Materials", action: "open-href", href: "/partner-workspace/media?section=qr" },
+      },
+      {
+        id: "audience",
+        label: "Audience",
+        title: "Audience",
+        description: "Understand who saves, scans, opens directions, and returns from nearby map activity.",
+        status: "Signals live",
+        meta: ["Residents", "Visitors", "Segments"],
+        primaryAction: { label: "Open Audience", action: "open-href", href: "/partner-workspace/audience" },
+      },
+      {
+        id: "media",
+        label: "Media",
+        title: "Media",
+        description: "Keep the images and brand assets that appear across map cards, panels, and QR moments current.",
+        status: "Needs review",
+        meta: ["Photos", "Logo", "Cards"],
+        primaryAction: { label: "Open Media", action: "open-href", href: "/partner-workspace/media" },
+      },
+      {
+        id: "reports",
+        label: "Reports",
+        title: "Reports",
+        description: "Read saves, scans, directions, RSVPs, and follow-up activity in one operating view.",
+        status: "Live",
+        meta: ["Saves", "Scans", "Directions"],
+        primaryAction: { label: "View Reports", action: "open-href", href: "/partner-workspace/reports" },
+      },
+      {
+        id: "membership",
+        label: "Membership",
+        title: "Membership",
+        description: "Review plan access, billing, add-ons, and the tools included with your current membership.",
+        status: "Active",
+        meta: ["Plan", "Billing", "Access"],
+        primaryAction: { label: "Open Membership", action: "open-href", href: "/partner-workspace/billing" },
+      },
+      {
+        id: "account",
+        label: "Account",
+        title: "Account",
+        description: "Review team access, account details, notifications, and workspace preferences.",
+        status: "Team access",
+        meta: ["Team", "Settings", "Access"],
+        primaryAction: { label: "Open Account", action: "open-href", href: "/partner-workspace/profile?section=account" },
+      },
+    ];
     const matrixItems = isPartnerInfo
-      ? [
-          ["profile", "Profile", "Map Presence", "Control the first impression residents see across the map, search, QR paths, and partner moments.", "Ready", "Update Map Presence", () => openPartnerPanel("campaigns")],
-          ["campaigns", "Campaigns", "Campaigns", "Create local moments that can appear on the map, resident feed, QR paths, or partner reports.", "Recommended", "Open Campaigns", () => openPartnerPanel("campaigns")],
-          ["offers", "Offers", "Offers", "Give nearby people one clear reason to save, scan, request directions, or visit.", "Draft next", "Create Offer", () => openPartnerPanel("campaigns")],
-          ["events", "Events", "Events", "Promote moments people can attend and connect RSVP activity back to map reporting.", "Available", "View Events", () => openPartnerMap("Events")],
-          ["qr", "QR", "QR", "Connect physical touchpoints, resident cards, scans, and printed moments to reports.", "Ready", "Open QR", () => switchMode("partner", "pass")],
-          ["reports", "Reports", "Reports", "Read saves, scans, directions, RSVPs, and follow-up activity in one place.", "Live", "View Reports", () => openPartnerPanel("reports")],
-        ].map(([id, label, title, description, status, actionLabel, actionFn]) => ({
-          id,
-          label,
-          title,
-          description,
-          status,
-          meta: ["Partner workspace", "Map connected"],
-          primaryAction: { label: actionLabel, action: id },
-          secondaryActions: [{ label: "Preview Resident View", action: "preview" }],
-          actionFn,
+      ? partnerManageItems.map((item) => ({
+          ...item,
+          eyebrow: "Workspace area",
+          secondaryActions: [
+            ...(item.secondaryActions || []),
+            { label: "Preview Resident View", action: "preview" },
+          ],
         }))
-      : [
-          ["coffee", "Coffee", "Coffee", "Shows cafes, breakfast stops, and places useful before work or weekend plans.", "Nearby", "Show on map", () => openResidentLayer("Coffee")],
-          ["dining", "Dining", "Dining", "Prioritizes restaurants, dinner spots, and places worth planning around before or after events.", "Useful now", "Show on map", () => openResidentLayer("Dining")],
-          ["happy-hour", "Happy Hour", "Happy Hour", "Finds drink specials, after-work stops, and resident-friendly value nearby.", "Tonight", "Show on map", () => openResidentLayer("Happy Hour")],
-          ["events", "Events", "Events", "Shows live music, civic moments, sports, parks, and things happening soon.", "Active", "Show on map", () => openResidentLayer("Events")],
-          ["perks", "Perks", "Perks", "Surfaces resident benefits and card moments tied to participating places.", "Resident value", "Show on map", () => openResidentLayer("Perks")],
-          ["properties", "Properties", "Properties", "Shows residential buildings, listings, and nearby lifestyle context.", "Living here", "Show on map", () => openResidentLayer("Properties")],
-        ].map(([id, label, title, description, status, actionLabel, actionFn]) => ({
-          id,
-          label,
-          title,
-          description,
-          status,
-          meta: ["Map layer", "Downtown Austin"],
-          primaryAction: { label: actionLabel, action: id },
-          secondaryActions: [{ label: "Ask the Map", action: "ask" }],
-          actionFn,
-        }));
+      : visibilityCategories.map((item) => {
+          const relatedItems = makeVisibilityRelatedItems(item.filter);
+          return {
+            ...item,
+            eyebrow: "Map priority",
+            title: item.label,
+            meta: [
+              ...item.meta,
+              relatedItems.length ? `${relatedItems.length} examples` : "Downtown Austin",
+            ],
+            primaryAction: { label: activeFilter === item.filter ? "Hide" : "Show on map", action: activeFilter === item.filter ? "hide-filter" : "show-filter", filter: item.filter },
+            secondaryActions: [
+              { label: "Ask the Map", action: "ask", prompt: `${item.label} nearby` },
+              { label: "Set as default", action: "show-filter", filter: item.filter },
+            ],
+            relatedItems,
+          };
+        });
     const handleInfoMatrixAction = (action, item) => {
       if (action.action === "ask") {
-        void applyPrompt(`${item.title} nearby`);
+        void applyPrompt(action.prompt || `${item.title} nearby`);
         return;
       }
       if (action.action === "preview") {
         openPartnerMap("All");
         return;
       }
-      item.actionFn?.();
+      if (action.action === "show-filter" && action.filter) {
+        openResidentLayer(action.filter);
+        return;
+      }
+      if (action.action === "hide-filter") {
+        openResidentLayer("All");
+        return;
+      }
+      if (action.action === "partner-map-filter" && action.filter) {
+        openPartnerMap(action.filter);
+        return;
+      }
+      if (action.action === "open-href" && action.href) {
+        navigate(action.href);
+        return;
+      }
+      if (action.action === "open-related" && action.relatedId) {
+        const relatedPlace = places.find((candidate) => candidate.id === action.relatedId);
+        if (relatedPlace) selectPlace(relatedPlace);
+      }
     };
+    const infoMatrixSelectedId = isPartnerInfo
+      ? "profile"
+      : visibilityCategories.find((item) => item.filter === activeFilter)?.id || "coffee";
 
     return (
       <div className={`dp-tabs-content dp-partner-readable-panel dp-partner-info-panel dp-shared-info-panel ${isPartnerInfo ? "is-partner" : "is-resident"}`}>
@@ -13667,12 +13913,13 @@ export default function MapPage() {
           </section>
 
           <InteractiveMatrix
-            eyebrow={isPartnerInfo ? "Workspace" : "Nearby"}
-            title={isPartnerInfo ? "Manage the parts residents can see." : "Choose what the map prioritizes."}
-            description={isPartnerInfo ? "Select a workspace area to see what it controls and the next useful action." : "Select a layer to understand what appears nearby before opening it on the map."}
+            eyebrow={isPartnerInfo ? "Workspace tools" : "Nearby visibility"}
+            title={isPartnerInfo ? "Manage the parts of your downtown presence residents can see." : "Choose what the map prioritizes."}
+            description={isPartnerInfo ? "Select a workspace area to see what it controls, what is current, and the next useful action." : "Pick a category to see what appears, why it is useful, and what to open next."}
             items={matrixItems}
+            initialSelectedId={infoMatrixSelectedId}
             onAction={handleInfoMatrixAction}
-            className="dp-info-interactive-matrix"
+            className={`dp-info-interactive-matrix ${isPartnerInfo ? "dp-partner-manage-matrix" : "dp-visibility-matrix"}`}
           />
 
           <section className="dp-partner-info-steps" aria-label="Getting started">
