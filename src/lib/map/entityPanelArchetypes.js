@@ -135,6 +135,10 @@ function inferProductionType(entity = {}) {
     return "perk";
   }
 
+  if (/\b(retail|retail_business|shop|store|boutique|eyewear|frames|lens|lenses|optical|vision partner|fine eyewear)\b/.test(text)) {
+    return "retail";
+  }
+
   if (
     /\b(active listing|available listing|listing|rental|mls|unit|for rent|for sale)\b/.test(text) ||
     hasObjectSignal(entity, ["rentalListing", "legendsListing", "luxuryPresenceListing"])
@@ -257,9 +261,10 @@ function panelEntityType(entity = {}) {
   if (productionType === "hotel") return "hotel";
   if (productionType === "landmark-civic") return "civic";
   if (productionType === "guide") return "localGuide";
+  if (productionType === "retail") return "retail";
   if (/\b(brand|activation|campaign|sponsor|yeti|dana|inkind|waterloo greenway|fine eyewear)\b/.test(text)) return "brand";
   if (/\b(service|salon|spa|doctor|dental|care|repair|charging|parking|mobility|errand)\b/.test(text) || /\b(service|parking|mobility)\b/.test(explicit)) return "service";
-  if (["restaurant", "coffee", "bars-nightlife", "rooftop", "retail"].includes(productionType)) return "venue";
+  if (["restaurant", "coffee", "bars-nightlife", "rooftop"].includes(productionType)) return "venue";
   return "venue";
 }
 
@@ -461,6 +466,16 @@ const PANEL_CONTENT_BY_TYPE = {
     perkInstructions: "The resident offer should describe the benefit first; redemption details belong in the terms.",
     nearbyHeading: "Perks nearby",
     askPrompts: ["How do I use this?", "What else is nearby?", "Is this good today?", "What other perks are close?"],
+  },
+  retail: {
+    eyebrow: "Retail",
+    primaryActionLabel: "View Details",
+    whyHeading: "Why this stop is useful",
+    whyBody: "{title} works as a nearby retail stop for fittings, appointments, errands, and resident value when people are already moving through downtown.",
+    bestFor: ["Shopping nearby", "Appointments", "Errands", "Resident value"],
+    insight: "Useful retail pins should help people decide whether to save, visit, or plan the next stop nearby.",
+    nearbyHeading: "Retail nearby",
+    askPrompts: ["What perk is available?", "Is this close to me?", "What else is nearby?", "When should I go?"],
   },
   hotel: {
     eyebrow: "Hotel",

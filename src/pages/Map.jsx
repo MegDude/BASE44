@@ -1975,6 +1975,17 @@ function isBrandEntity(place) {
   );
 }
 
+function isRetailBrandEntity(place) {
+  const text = placeCoreText(place);
+  const id = String(place?.id || place?.raw?.id || "").toLowerCase();
+  const name = String(place?.name || place?.raw?.name || "").toLowerCase();
+  return Boolean(
+    id === "partner-fine-eyewear" ||
+    name === "fine eyewear" ||
+    /\b(eyewear|frames|lens|lenses|optical|vision partner|retail_business|retail|shop|store|boutique)\b/i.test(text)
+  );
+}
+
 function isVenueEntity(place) {
   if (isCampaignEntity(place) || isPropertyEntity(place) || isHotelEntity(place) || isBrandEntity(place)) return false;
   return hasVenueSignals(place) || coreMatches(place, FILTER_MATCHERS.Venues) || String(place.type || "").toLowerCase() === "venue";
@@ -5761,6 +5772,7 @@ function getDestinationKind(place) {
   if (isRentalEntity(place)) return "rental";
   if (kind === "parking" || isParkingEntity(place)) return "parking";
   if (kind === "service" || isServiceEntity(place)) return "service";
+  if (kind === "retail" || isRetailBrandEntity(place)) return "retail";
   if (kind === "perk" || kind === "brand-activation-perk" || text.includes("brand perk") || text.includes("resident perk")) return "perk";
   if (kind === "brand" || isBrandEntity(place) || text.includes("partnerType brands")) return "brand";
   if (text.includes("ev charging") || text.includes("charging") || text.includes("transit") || text.includes("mobility")) return "mobility";
@@ -6082,15 +6094,31 @@ function getEntityIdentityKeys(item) {
     raw.listing_id,
     source.slug,
     raw.slug,
+    source.parentId,
+    raw.parentId,
+    raw.parent_id,
   ];
   return values.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
 }
 
 function getRailDedupeKey(item) {
   const source = item?.entity || item?.candidate || item?.place || item;
+  const raw = source?.raw || {};
   const rawName = source?.name || source?.title || source?.label || item?.title || item?.label || item?.value || source;
   const name = normalizeRailDedupeText(rawName);
+  const combined = normalizeRailDedupeText([
+    rawName,
+    source?.brand,
+    raw.brand,
+    source?.parentId,
+    raw.parentId,
+    raw.parent_id,
+    source?.category,
+    raw.category,
+  ].filter(Boolean).join(" "));
   if (!name) return "";
+  if (/\btopo\s+chico\b/.test(combined)) return "brand-perk:topo-chico";
+  if (/\binspired\s+closets?\b/.test(combined)) return "brand-perk:inspired-closets";
   if (/\b1\s*hotel\b/.test(name)) return "place:1-hotel";
   if (/\bvia\s*313\b/.test(name) || /\bvia313\b/.test(name)) return "place:via-313";
   if (/\bbangers?\b/.test(name)) return "place:bangers";
@@ -6182,6 +6210,9 @@ function getNearbyAreaPlaces(place, places = [], limit = 4) {
 
 function getNearbyKindLabel(candidate, candidateKind) {
   const text = placeText(candidate);
+  if (isPerkLikeEntity(candidate)) return "Perk";
+  if (isBrandLikeEntity(candidate)) return "Brand";
+  if (isServiceLikeEntity(candidate)) return "Service";
   if (isHotelEntity(candidate)) return "Hotel nearby";
   if (candidateKind === "coffee") return "Coffee nearby";
   if (candidateKind === "grocery") return "Grocery nearby";
@@ -6206,6 +6237,99 @@ function getExplicitPerkTitle(candidate) {
   if (!title) return "";
   const generic = ["night-out nearby", "coffee nearby", "pizza plan", "want to live here?", "resident perk"];
   return generic.includes(title.toLowerCase()) ? "" : formatResidentPerkHeading(title);
+}
+
+function isPerkLikeEntity(candidate) {
+  const raw = candidate?.raw || {};
+  const text = placeText(candidate);
+  return Boolean(
+    hasActivePerkData(candidate) ||
+    raw.perk ||
+    candidate?.perk ||
+    /(^|\b)(perk|offer|resident\s+benefit|resident\s+value|redemption)(\b|$)/i.test(text)
+  );
+}
+
+function isBrandLikeEntity(candidate) {
+  const raw = candidate?.raw || {};
+  const text = [
+    candidate?.type,
+    candidate?.kind,
+    candidate?.partnerType,
+    candidate?.category,
+    candidate?.category_key,
+    raw.type,
+    raw.kind,
+    raw.partnerType,
+    raw.category,
+    raw.category_key,
+    candidate?.brand,
+    raw.brand,
+  ].filter(Boolean).join(" ");
+  return /\b(brand|brands|campaign\s+brand|sponsor)\b/i.test(text) && !isPerkLikeEntity(candidate);
+}
+
+function isServiceLikeEntity(candidate) {
+  const raw = candidate?.raw || {};
+  const text = [
+    candidate?.type,
+    candidate?.kind,
+    candidate?.category,
+    candidate?.category_key,
+    raw.type,
+    raw.kind,
+    raw.category,
+    raw.category_key,
+  ].filter(Boolean).join(" ");
+  return /\b(service|services|home\s+organization|storage|consult)\b/i.test(text) && !isPerkLikeEntity(candidate);
+}
+
+function getNearbyRailCategory(candidate, candidateKind = getDestinationKind(candidate)) {
+  const text = placeText(candidate);
+  if (candidateKind === "dining" || isInKindEntity(candidate)) return "Dining";
+  if (candidateKind === "event" || isEventEntity(candidate)) {
+    return /\b(perk|card\s+perk|resident\s+benefit|offer)\b/i.test(text) ? "Perk" : "Event";
+  }
+  if (isPerkLikeEntity(candidate)) return "Perk";
+  if (isBrandLikeEntity(candidate)) return "Brand";
+  if (isServiceLikeEntity(candidate)) return "Service";
+  if (isHotelEntity(candidate) || candidateKind === "hotel") return "Hotel";
+  if (candidateKind === "coffee") return "Coffee";
+  if (candidateKind === "grocery") return "Grocery";
+  if (candidateKind === "event") return "Event";
+  if (candidateKind === "property") return "Building";
+  if (candidateKind === "nightlife") return "Drinks";
+  if (candidateKind === "dining") return "Dining";
+  if (candidateKind === "retail") return "Retail";
+  if (candidateKind === "civic") return "Civic";
+  return "Nearby";
+}
+
+function isResidentialRailListing(candidate) {
+  const raw = candidate?.raw || {};
+  const text = [
+    candidate?.id,
+    candidate?.name,
+    candidate?.title,
+    candidate?.address,
+    candidate?.category,
+    candidate?.category_key,
+    candidate?.type,
+    candidate?.partnerType,
+    raw.id,
+    raw.name,
+    raw.title,
+    raw.address,
+    raw.category,
+    raw.category_key,
+    raw.type,
+    raw.partnerType,
+  ].filter(Boolean).join(" ");
+  return (
+    /#\s*[A-Za-z0-9-]+/.test(text) ||
+    /\b(unit|condo|condominium|residence|residences|apartment|apartments|penthouse|listing|mls)\b/i.test(text) ||
+    /\b(the\s+austonian|waterline|the\s+shore|paseo|360\s+condos|spring\s+condominiums|w\s+residences)\b/i.test(text)
+  );
 }
 
 function getNearbyContextItems(place, places = []) {
@@ -6838,10 +6962,9 @@ function getNearbyCardEntityTitle(entity) {
 }
 
 function getNearbyCardMeta(entity, recommendation = null, mode = "resident") {
-  const kind = getNearbyKindLabel(entity, getDestinationKind(entity)).replace(/\s+nearby$/i, "");
+  const kind = getNearbyRailCategory(entity, getDestinationKind(entity));
   const district = entity?.district || entity?.neighborhood || entity?.raw?.district || "Downtown Austin";
-  const perk = mode === "resident" ? getExplicitPerkTitle(entity) : "";
-  return [kind, recommendation?.distanceLabel, district, perk].filter(Boolean).join(" · ");
+  return [kind, recommendation?.distanceLabel, district].filter(Boolean).join(" · ");
 }
 
 const WATERLOO_RAIL_IMAGES_BY_KEY = {
@@ -6896,6 +7019,12 @@ function getBrandPerkRailImage(entity) {
     getNearbyCardEntityTitle(entity),
     placeCoreText(entity),
   ].filter(Boolean).join(" ").toLowerCase();
+  if (/topo\s+chico|hydration/.test(text)) return "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg";
+  if (/sunday\s+brunch|brunch\s+card|brunch/.test(text)) return "/images/imported/perks/boozy-brunch.png";
+  if (/rooftop\s+social|rooftop/.test(text)) return "/images/imported/perks/hospitality-rooftop-social.png";
+  if (/coffee\s+walk|walking\s+towards\s+coffee|morning\s+coffee/.test(text)) return "/images/imported/perks/walking-towards-coffee-shop.png";
+  if (/burger\s+bar\s+congress|hopdoddy|burger\s+bar/.test(text)) return "/images/map-listing-actual/burger-bar/burger-bar-congress-arrival.jpeg";
+  if (/inspired\s+closets?/.test(text)) return "/images/fallbacks/retail.jpg";
   if (/rainey\s+patio\s+night|monday\s+meetups|resident\s+event|rooftop\s+event/.test(text)) return "/images/imported/perks/people-at-event.png";
   if (/lustre\s+pearl|partner-lustre-pearl-rainey|happy-hour-lustre-pearl/.test(text)) return "/images/imported/perks/brand-updates/lustre-pearl-happy-hour.png";
   if (/banger'?s?|sausage\s+house|beer\s+garden/.test(text)) return "/images/imported/perks/brand-updates/bangers-sausage.webp";
@@ -6960,8 +7089,8 @@ function getNearbyRecommendationCards(place, places = [], mode = "resident", lim
     .map((item) => {
       const entity = item.entity || item.candidate || item.place || item;
       if (!entity?.id) return null;
-      const isResidentialListing = Boolean(getResolvedLegendsListing(entity) || getLuxuryPresenceBuilding(entity) || isLegendsListingLike(entity));
-      if (getDestinationKind(place) !== "property" && isResidentialListing && !hasActivePerkData(entity)) return null;
+      const isResidentialListing = Boolean(getResolvedLegendsListing(entity) || getLuxuryPresenceBuilding(entity) || isLegendsListingLike(entity) || isResidentialRailListing(entity));
+      if (isResidentialListing) return null;
       return {
         id: entity.id,
         place: entity,
@@ -7008,6 +7137,7 @@ function getRouteAwareNearbyCards(place, places = [], mode = "resident", route =
       distanceLabel: formatDistanceLabel(getDistanceMeters(place, stop)),
     }))
     .filter((item) => item.entity?.id && item.entity.id !== place.id)
+    .filter((item) => !isResidentialRailListing(item.entity))
     .sort((a, b) => {
       const aUpcoming = currentIndex >= 0 && a.routeIndex > currentIndex ? 0 : 1;
       const bUpcoming = currentIndex >= 0 && b.routeIndex > currentIndex ? 0 : 1;
@@ -7025,6 +7155,7 @@ function getRouteAwareNearbyCards(place, places = [], mode = "resident", route =
   }).filter((item) => {
     const entity = item?.entity;
     if (!entity?.id) return false;
+    if (isResidentialRailListing(entity)) return false;
     if (isCivicDiscoveryRoute && (
       getDestinationKind(entity) === "property" ||
       isPropertyEntity(entity) ||
@@ -7039,6 +7170,7 @@ function getRouteAwareNearbyCards(place, places = [], mode = "resident", route =
   const savedNearby = places
     .filter((candidate) => {
       if (!candidate?.id || !savedIds?.has?.(candidate.id) || candidate.id === place.id || routeStopIds.has(candidate.id)) return false;
+      if (isResidentialRailListing(candidate)) return false;
       if (!isCivicDiscoveryRoute) return true;
       return !(
         getDestinationKind(candidate) === "property" ||
@@ -10467,6 +10599,10 @@ function getResidentEntityKind(place) {
     text.includes("rsvp")
   ) {
     return "event";
+  }
+
+  if (type === "retail" || category.includes("retail") || isRetailBrandEntity(place)) {
+    return "retail";
   }
 
   if (hasActivePerkData(place) || text.includes("perk") || text.includes("offer") || text.includes("discount")) {

@@ -1487,10 +1487,10 @@ export const supplementalMapEntities = [
   entity({
     id: "partner-fine-eyewear",
     name: "Fine Eyewear",
-    type: "brand",
-    partnerType: "brands",
+    type: "retail",
+    partnerType: "retail",
     brand: "Fine Eyewear",
-    category: "Brand / Vision + Discovery",
+    category: "Retail / Vision + Discovery",
     category_key: "brand retail_business eyewear discovery_trail waterloo_greenway see_austin_differently",
     latitude: 30.261,
     longitude: -97.741,
