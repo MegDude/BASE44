@@ -93,7 +93,9 @@ import { resolveMapCollectionRoute } from "@/lib/map/collectionRoutes";
 
 const RAINEY_STREET_CENTER = [30.25855, -97.73835];
 const AUSTIN_CENTER = RAINEY_STREET_CENTER;
-const INITIAL_MAP_ZOOM = 17;
+const INITIAL_MAP_ZOOM = 15.6;
+const MAP_MAX_ZOOM = 22;
+const MAP_STREET_FOCUS_ZOOM = 18;
 const INITIAL_DISCOVERY_MARKER_LIMIT = 16;
 const DEFAULT_INTERACTION_MARKER_LIMIT = 36;
 const DEFAULT_HIGH_ZOOM_MARKER_LIMIT = 60;
@@ -129,7 +131,7 @@ const MAP_VIEW_STORAGE_KEY = "downtown-perks-map-view-v1";
 const MAP_USER_NAVIGATED_STORAGE_KEY = "downtown-perks-map-user-navigated-v1";
 const MAP_USER_CONTEXT_STORAGE_KEY = "downtown-perks-map-user-context-v1";
 const MAP_PANEL_IMAGE_FALLBACK = "/images/map-entities/perks/civic_republic_square_1779052838327.png";
-const STREET_LEVEL_ZOOM = 17;
+const STREET_LEVEL_ZOOM = 18.25;
 const DAA_CIVIC_VIDEOS = [
   {
     title: "DAA Art Walk",
@@ -1720,10 +1722,7 @@ function selectProgressiveMarkerPlaces(places, {
   const selectedPlace = selectedId ? deduped.find((place) => resolveMapEntityAlias(place.id) === selectedId) : null;
   const hasIntent = Boolean(effectiveSearch || collection || activeFilter !== "All");
   const isFocusedIntent = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch && FOCUSED_INTENT_FILTERS.has(resolveFilterForIntent(effectiveSearch, "resident") || ""));
-  const shouldUseViewport = Boolean(viewportBounds && (userHasNavigatedMap || hasIntent || mapZoom >= 16));
-  const paddedBounds = shouldUseViewport ? padViewportBounds(viewportBounds, hasIntent ? 0.28 : 0.18) : null;
-  const viewportPlaces = paddedBounds ? deduped.filter((place) => isPlaceInsideBounds(place, paddedBounds)) : deduped;
-  const source = viewportPlaces.length ? viewportPlaces : deduped;
+  const source = deduped;
   const limit = getMarkerDisclosureLimit({ hasIntent, isFocusedIntent, isDefaultDiscoverScope, userHasNavigatedMap, mapZoom });
   const sorted = effectiveSearch ? sortSearchPlaces(source, effectiveSearch) : sortDiscoverPlaces(source);
   const selectedFirst = selectedPlace ? [selectedPlace, ...sorted.filter((place) => place.id !== selectedPlace.id)] : sorted;
@@ -3340,26 +3339,27 @@ function escapeJsString(value) {
 
 function getZoomScaledMarkerSize(zoom, baseSize) {
   const numericZoom = Number(zoom) || 0;
-  if (numericZoom >= 20) return Math.round(baseSize * 1.62);
-  if (numericZoom >= 19) return Math.round(baseSize * 1.5);
-  if (numericZoom >= 18) return Math.round(baseSize * 1.34);
-  if (numericZoom >= 17) return Math.round(baseSize * 1.17);
-  if (numericZoom >= 16) return Math.round(baseSize * 1.06);
-  if (numericZoom >= 15) return Math.round(baseSize * 1.02);
+  if (numericZoom >= 22) return Math.round(baseSize * 1.55);
+  if (numericZoom >= 21) return Math.round(baseSize * 1.45);
+  if (numericZoom >= 20) return Math.round(baseSize * 1.36);
+  if (numericZoom >= 19) return Math.round(baseSize * 1.25);
+  if (numericZoom >= 18) return Math.round(baseSize * 1.15);
+  if (numericZoom >= 17) return Math.round(baseSize * 1.08);
+  if (numericZoom >= 16) return Math.round(baseSize * 1);
   return baseSize;
 }
 
 function getZoomMarkerMetrics(zoom, { selected = false, clusterCount = 0 } = {}) {
-  const pinSize = getZoomScaledMarkerSize(zoom, selected ? 40 : 36);
-  const clusterBase = clusterCount > 49 ? 52 : clusterCount > 9 ? 44 : 38;
+  const pinSize = getZoomScaledMarkerSize(zoom, selected ? 32 : 28);
+  const clusterBase = clusterCount > 49 ? 42 : clusterCount > 9 ? 36 : 30;
   const clusterSize = getZoomScaledMarkerSize(zoom, clusterBase);
   return {
     pinSize,
-    pinIconSize: Math.max(17, Math.round(pinSize * 0.47)),
-    legendsLogoSize: Math.max(22, Math.round(pinSize * 0.66)),
-    stopNumberSize: Math.max(18, Math.round(pinSize * 0.43)),
+    pinIconSize: Math.max(13, Math.round(pinSize * 0.48)),
+    legendsLogoSize: Math.max(17, Math.round(pinSize * 0.66)),
+    stopNumberSize: Math.max(14, Math.round(pinSize * 0.43)),
     clusterSize,
-    largeClusterSize: getZoomScaledMarkerSize(zoom, 58),
+    largeClusterSize: getZoomScaledMarkerSize(zoom, 46),
   };
 }
 
@@ -3508,7 +3508,7 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
 
 function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const safeCount = Math.min(Number(count) || 0, 99);
-  const baseSize = safeCount > 49 ? 52 : safeCount > 9 ? 44 : 36;
+  const baseSize = safeCount > 49 ? 42 : safeCount > 9 ? 36 : 30;
   const size = getZoomScaledMarkerSize(zoom, baseSize);
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
@@ -10646,7 +10646,7 @@ function getStoredMapView() {
     const center = Array.isArray(parsed?.center) ? parsed.center.map(Number) : null;
     const zoom = Number(parsed?.zoom);
     const validCenter = center?.length === 2 && center.every(Number.isFinite);
-    const validZoom = Number.isFinite(zoom) && zoom >= 13 && zoom <= 20;
+    const validZoom = Number.isFinite(zoom) && zoom >= 13 && zoom <= MAP_MAX_ZOOM;
     return {
       center: validCenter ? center : AUSTIN_CENTER,
       zoom: validZoom ? zoom : INITIAL_MAP_ZOOM,
@@ -10916,7 +10916,7 @@ function GoogleMapCanvas({
               center: { lat: initialView.center[0], lng: initialView.center[1] },
               zoom: initialView.zoom,
               minZoom: 13,
-              maxZoom: 20,
+              maxZoom: MAP_MAX_ZOOM,
               disableDefaultUI: true,
               clickableIcons: false,
               gestureHandling: "greedy",
@@ -10991,7 +10991,8 @@ function GoogleMapCanvas({
     lastSelectedFocusRef.current = focusId;
     runProgrammaticMove(() => {
       map.panTo({ lat: coords[0], lng: coords[1] });
-      if ((map.getZoom?.() || 0) < 18) map.setZoom(18);
+      const currentZoom = map.getZoom?.() || INITIAL_MAP_ZOOM;
+      if (currentZoom < INITIAL_MAP_ZOOM) map.setZoom(INITIAL_MAP_ZOOM);
     });
   }, [runProgrammaticMove, selected, selectedId]);
 
@@ -11008,7 +11009,7 @@ function GoogleMapCanvas({
     if (coords.length === 1) {
       runProgrammaticMove(() => {
         map.panTo({ lat: coords[0][0], lng: coords[0][1] });
-        map.setZoom(Math.max(map.getZoom?.() || 16, 18));
+        map.setZoom(Math.max(map.getZoom?.() || INITIAL_MAP_ZOOM, INITIAL_MAP_ZOOM));
       });
       return;
     }
@@ -11019,7 +11020,7 @@ function GoogleMapCanvas({
       map.fitBounds(bounds, 64);
       maps.event.addListenerOnce(map, "bounds_changed", () => {
         if ((map.getZoom?.() || 0) < 15) map.setZoom(15);
-        if ((map.getZoom?.() || 0) > 18) map.setZoom(18);
+        if ((map.getZoom?.() || 0) > MAP_STREET_FOCUS_ZOOM) map.setZoom(MAP_STREET_FOCUS_ZOOM);
       });
     });
   }, [fitActiveKey, fitEnabled, fitPlaces, runProgrammaticMove, selectedId]);
