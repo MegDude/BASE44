@@ -14387,6 +14387,7 @@ export default function MapPage() {
     activeFilter !== "Legends" &&
     activeFilter !== "Listings";
   const shouldCollapseSearchConsole =
+    consoleCollapsed ||
     !isCleanMapCommandView ||
     hasOpenMapPanel ||
     activeFilter === "Legends" ||
