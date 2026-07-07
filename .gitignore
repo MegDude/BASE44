@@ -23,6 +23,8 @@ dist-ssr
 .next
 out
 coverage
+playwright-report
+test-results
 
 # local files
 *.local
