@@ -52306,3 +52306,355 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active)::after {
   background: #C8A96A !important;
 }
+
+/* Resident native shell: scroll-safe panels, native rows, and scan-ready perk QR. */
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident {
+  --dp-resident-nav-height: calc(64px + env(safe-area-inset-bottom, 0px));
+  --dp-resident-panel-bottom-pad: calc(var(--dp-resident-nav-height) + 24px);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-resident-card-sheet
+) {
+  max-height: calc(100dvh - 72px) !important;
+  border-radius: 22px 22px 0 0 !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-panel-body,
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-resident-tab-panel,
+  .dp-resident-tab-panel-list,
+  .dp-saved-downtown-scroll,
+  .dp-pass-panel-body
+) {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: calc(100dvh - 144px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: var(--dp-resident-panel-bottom-pad) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-resident-tab-panel,
+  .dp-resident-info-tab-panel,
+  .dp-saved-downtown-panel
+) {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-tab-stack {
+  gap: 28px !important;
+  padding-bottom: 0 !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-tab-panel-list {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-resident-tab-panel-header, .dp-resident-card-identity) {
+  padding: 2px 2px 0 !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-resident-tab-panel-header h2, .dp-map-panel-title) {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(24px, 6vw, 28px) !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.06 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-resident-tab-panel-header p, .dp-map-panel-eyebrow, .dp-map-panel-section-label) {
+  color: #C8A96A !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-resident-tab-panel-header span, .dp-map-panel-subtitle, .dp-map-panel-body-copy) {
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-native-row {
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: start !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.035) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-tab-panel-list .dp-directory-result-row.dp-resident-native-row,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-directory-result-row.dp-resident-native-row {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-native-row-body {
+  display: block !important;
+  min-width: 0 !important;
+  position: relative !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-native-row-main {
+  display: grid !important;
+  width: 100% !important;
+  gap: 3px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-row-action-strip {
+  display: flex !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  padding-top: 10px !important;
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-row-action-strip::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-row-action-strip :is(button, a) {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 680 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-row-action-strip :is(button, a):last-child {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-row-action-strip button:disabled {
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  background: #F7F8FB !important;
+  color: rgba(11, 31, 51, 0.45) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.45) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet-action-footer {
+  position: sticky !important;
+  bottom: 0 !important;
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet-action-grid {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-card-credential,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-card-qr-wrap {
+  background: #FFFFFF !important;
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-card-qr-image,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-image {
+  width: min(70vw, 260px) !important;
+  height: min(70vw, 260px) !important;
+  max-width: 100% !important;
+}
+
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-qr-wrap.dp-card-qr-wrap {
+  width: min(72vw, 264px) !important;
+  max-width: min(72vw, 264px) !important;
+  padding: 12px !important;
+}
+
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-qr-image.dp-card-qr-image {
+  display: block !important;
+  width: min(62vw, 232px) !important;
+  height: min(62vw, 232px) !important;
+  max-width: none !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-modal {
+  width: min(calc(100vw - 24px), 420px) !important;
+  max-height: calc(100dvh - 24px) !important;
+  overflow-y: auto !important;
+  border-radius: 22px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: fit-content !important;
+  margin: 8px 0 0 !important;
+  padding: 6px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 999px !important;
+  background: #F7F8FB !important;
+  color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-status.is-ready {
+  border-color: rgba(200, 169, 106, 0.38) !important;
+  background: rgba(200, 169, 106, 0.08) !important;
+}
+
+/* Keep bottom tabs readable above mobile browser/home-indicator chrome. */
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-bottom-nav-shell,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+  min-height: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  padding-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav {
+  height: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+  align-items: start !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-bottom-nav :is(button, a) {
+  height: 64px !important;
+  min-height: 64px !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  transform: translateY(-2px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-bottom-nav :is(button, a)::after {
+  top: 4px !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-detail-drawer.dp-map-drawer-shell,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-destination-drawer.dp-map-drawer-shell {
+  bottom: var(--dp-resident-nav-height) !important;
+  max-height: calc(100dvh - 72px - var(--dp-resident-nav-height)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-card-sheet {
+  margin-bottom: var(--dp-resident-nav-height) !important;
+  max-height: calc(100dvh - 72px - var(--dp-resident-nav-height)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-panel-body,
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-resident-tab-panel-list,
+  .dp-saved-downtown-scroll
+) {
+  scroll-padding-bottom: 36px !important;
+  padding-bottom: 36px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-panel-shell.dp-map-drawer-shell,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-detail-drawer.dp-map-drawer-shell,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-destination-drawer.dp-map-drawer-shell {
+  bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(100dvh - 140px - env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 710 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-card-sheet.dp-resident-card-sheet {
+  margin-bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(100dvh - 140px - env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Resident tab panels use native stacked rows; directory rails elsewhere stay untouched. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-tab-panel-list.dp-resident-tab-panel-list {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-tab-panel-list.dp-resident-tab-panel-list .dp-directory-result-row.dp-resident-native-row,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-directory-result-row.dp-resident-native-row {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}

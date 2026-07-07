@@ -260,7 +260,7 @@ const FILTERS = [
 ];
 
 const MAP_NATIVE_PARTNER_PANELS = ["campaigns", "activity", "reports", "info", "civic"];
-const MAP_NATIVE_RESIDENT_PANELS = ["info"];
+const MAP_NATIVE_RESIDENT_PANELS = ["info", "perks", "events", "saved"];
 const MAP_COLLECTION_FILTER_ALIASES = {
   legends: "Legends",
   inkind: "inKind",
@@ -3778,15 +3778,27 @@ function DemoQrCode({ code = DEMO_CARD_CODE, className = "" }) {
   );
 }
 
-function ResidentQrModal({ data, onClose, onBack }) {
+function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
   if (!data) return null;
 
   const placeName = getEntityTouchpointName(data.place);
-  const actionLabel = data.action === "use_perk" ? "Perk access" : "Resident card";
+  const isPerkRedemption = data.action === "use_perk";
+  const redemptionStatus = data.redemptionStatus || data.status || (isPerkRedemption ? "ready" : "presented");
+  const actionLabel = isPerkRedemption ? "Ready to scan" : "Resident card";
   const title = data.perkTitle || (data.action === "use_perk" ? `${placeName} resident perk` : "Downtown Perks Card");
   const value = data.perkValue && data.perkValue !== title ? data.perkValue : "";
-  const description = data.perkDescription || `This code is tied to one resident profile UID and records this ${actionLabel.toLowerCase()} touchpoint for ${placeName}.`;
+  const description = isPerkRedemption
+    ? "Partner scans this code to apply the perk."
+    : data.perkDescription || `Show this code when a participating partner asks to confirm resident access for ${placeName}.`;
   const terms = data.perkTerms || "";
+  const expiresAt = data.expiresAt ? new Date(data.expiresAt) : null;
+  const validityLabel = redemptionStatus === "redeemed"
+    ? "Redeemed"
+    : redemptionStatus === "expired"
+      ? "Expired"
+      : redemptionStatus === "unavailable"
+        ? "Currently unavailable"
+        : "Ready to scan";
 
   return (
     <AnimatePresence>
@@ -3814,9 +3826,10 @@ function ResidentQrModal({ data, onClose, onBack }) {
           <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
             <X className="h-4 w-4" />
           </button>
-          <p className="dp-resident-qr-eyebrow">VERIFIED RESIDENT</p>
+          <p className="dp-resident-qr-eyebrow">{isPerkRedemption ? "RESIDENT PERK" : "VERIFIED RESIDENT"}</p>
           <h2 id="resident-qr-title">{title}</h2>
           {value && <p className="dp-resident-qr-value">{value}</p>}
+          <p className={`dp-resident-qr-status is-${redemptionStatus}`}>{validityLabel}</p>
           <p className="dp-resident-qr-copy">{description}</p>
           {terms && <p className="dp-resident-qr-terms">{terms}</p>}
           <div className="dp-resident-qr-frame">
@@ -3826,6 +3839,7 @@ function ResidentQrModal({ data, onClose, onBack }) {
             <span>{actionLabel}</span>
             <strong>{placeName}</strong>
             <code>{data.uid}</code>
+            {expiresAt && redemptionStatus === "ready" && <small>Valid until {expiresAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</small>}
           </div>
         </motion.section>
       </motion.div>
@@ -12169,20 +12183,28 @@ function useUrlMapState() {
   const rawTab = searchParams.get("tab") || pathTab;
   const rawPanel = searchParams.get("panel") || "";
   const mode = searchParams.get("mode") === "partner" ? "partner" : searchParams.get("mode") === "resident" ? "resident" : pathMode;
-  const panelCandidate = rawPanel || rawTab;
+  const residentPanelCandidate = rawPanel || (rawTab === "home" ? "info" : rawTab);
+  const panelCandidate = mode === "resident" ? residentPanelCandidate : rawPanel || rawTab;
   const panelTab = mode === "partner" && MAP_NATIVE_PARTNER_PANELS.includes(panelCandidate)
     ? panelCandidate
     : mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(panelCandidate)
       ? panelCandidate
       : "";
-  const tab = rawTab === "pass" ? "pass" : "map";
+  const tab = rawTab === "pass" || rawTab === "card" ? "pass" : "map";
   const layer = searchParams.get("layer") || "";
   const collection = searchParams.get("collection") || "";
   const stopId = searchParams.get("stop") || "";
   const rentalListingId = layer === "rentals" ? searchParams.get("listing") || "" : "";
   const collectionFilter = getCollectionFilter(collection);
   const layerFilter = getLayerFilter(layer);
-  const filter = searchParams.get("filter") || collectionFilter || (layer === "rentals" ? "Rentals" : layerFilter || (mode === "partner" ? "All" : "All"));
+  const residentTabFilter = mode === "resident" && panelCandidate === "perks"
+    ? "Perks"
+    : mode === "resident" && panelCandidate === "events"
+      ? "Events"
+      : mode === "resident" && panelCandidate === "saved"
+        ? "Saved"
+        : "";
+  const filter = searchParams.get("filter") || collectionFilter || residentTabFilter || (layer === "rentals" ? "Rentals" : layerFilter || (mode === "partner" ? "All" : "All"));
   const rawEntityId = searchParams.get("entityId") || searchParams.get("entity") || stopId || "";
   const listingId = searchParams.get("listingId") || "";
   const listingEntityId = resolveMapEntityAlias(listingId);
@@ -12239,6 +12261,14 @@ export default function MapPage() {
   const [passPresented, setPassPresented] = useState(false);
   const [walletAdded, setWalletAdded] = useState(false);
   const [residentQrModal, setResidentQrModal] = useState(null);
+  const [redeemedPerkIds] = useState(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      return new Set(JSON.parse(window.localStorage.getItem("downtown-perks-redeemed-perks") || "[]"));
+    } catch {
+      return new Set();
+    }
+  });
   const buildMapActionPayload = useCallback((place = null, action = "explore", source = "resident_map", extra = {}) => {
     const raw = place?.raw || {};
     const entityId = getEntityTouchpointId(place);
@@ -12295,26 +12325,38 @@ export default function MapPage() {
   const openResidentQrModal = useCallback((place = null, action = "show_card", source = "resident_map") => {
     const payload = buildResidentQrPayload({ place, action, source });
     const mapAction = action === "use_perk" ? "redeem" : "show_card";
+    const expiresAt = action === "use_perk" ? new Date(Date.now() + 10 * 60 * 1000).toISOString() : "";
     const workflowPayload = buildMapActionPayload(place, mapAction, source, {
       form: {
         intent: action,
         label: action === "use_perk" ? "Use resident perk" : "Show resident card",
         perkId: payload.entityId,
         qrValue: payload.qrValue,
-        status: action === "use_perk" ? "redeemed" : "presented",
+        status: action === "use_perk" ? "ready" : "presented",
+        expiresAt,
       },
-      metadata: payload,
+      metadata: { ...payload, expiresAt },
     });
+    if (action === "use_perk") {
+      fireWorkflow(`/api/perks/${encodeURIComponent(payload.entityId)}/redemption-token`, {
+        ...workflowPayload,
+        token: payload.qrValue,
+        qrPayload: payload.qrValue,
+        status: "ready",
+        expiresAt,
+      });
+    }
     fireWorkflow("/api/map-actions", workflowPayload);
     fireWorkflow("/api/redeem", {
       ...payload,
       ...workflowPayload,
       action,
-      status: action === "use_perk" ? "redeemed" : "presented",
+      status: action === "use_perk" ? "ready" : "presented",
+      expiresAt,
     });
     recordResidentTouchpoint(payload);
     setPassPresented(true);
-    setResidentQrModal({ ...payload, place });
+    setResidentQrModal({ ...payload, place, redemptionStatus: action === "use_perk" ? "ready" : "presented", expiresAt });
   }, [buildMapActionPayload]);
   const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
   const presentResidentPass = useCallback((event) => {
@@ -15650,28 +15692,43 @@ export default function MapPage() {
                   }
                   const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
                   const offerTitle = offer?.title || offer?.offer || place.perk?.offer || place.recommended_perk || place.partner_opportunity || "";
-                  const actionText = activeBottomTab === "perks" && hasActivePerkData(place) ? "Use" : "Open";
+                  const isPerkRow = activeBottomTab === "perks" && hasActivePerkData(place);
+                  const perkRedeemed = redeemedPerkIds.has(place.id);
                   return (
-                    <button
+                    <article
                       key={place.id}
-                      type="button"
-                      onClick={() => selectPlace(place)}
-                      className={`dp-directory-result-row grid w-full grid-cols-[34px_1fr_auto] items-start gap-2 p-1.5 text-left transition-all md:grid-cols-[42px_1fr_auto] md:gap-3 md:p-2 ${
+                      className={`dp-directory-result-row dp-resident-native-row grid w-full grid-cols-[34px_1fr] items-start gap-2 p-1.5 text-left transition-all md:grid-cols-[42px_1fr] md:gap-3 md:p-2 ${
                         place.id === selectedId ? "dp-panel-row is-selected text-[#0B1F33]" : "dp-panel-row text-[#0B1F33]"
                       }`}
                     >
                       <PinBadge place={place} selected={place.id === selectedId} />
-                      <span className="min-w-0">
-                        <span className="dp-directory-context block truncate">{offer?.category || place.category || "Downtown place"}</span>
-                        <span className="dp-directory-story block truncate">{place.name}</span>
-                        <span className="dp-directory-meaning mt-0.5 block truncate">
-                          {place.district ? `${place.district} · ` : ""}{offerTitle || "Explore what is useful nearby."}
-                        </span>
+                      <span className="min-w-0 dp-resident-native-row-body">
+                        <button type="button" className="dp-resident-native-row-main" onClick={() => selectPlace(place)} aria-label={`Open ${place.name}`}>
+                          <span className="dp-directory-context block truncate">{offer?.category || place.category || "Downtown place"}</span>
+                          <span className="dp-directory-story block truncate">{place.name}</span>
+                          <span className="dp-directory-meaning mt-0.5 block">
+                            {place.district ? `${place.district} · ` : ""}{offerTitle || "Explore what is useful nearby."}
+                          </span>
+                        </button>
+                        {isPerkRow ? (
+                          <span className="dp-resident-row-action-strip" aria-label={`${place.name} perk actions`}>
+                            <button type="button" onClick={() => toggleSaved(place)} aria-pressed={savedIds.has(place.id)}>
+                              {savedIds.has(place.id) ? "Saved" : "Save"}
+                            </button>
+                            <a href={directionsUrl(place)} target="_blank" rel="noreferrer">
+                              Directions
+                            </a>
+                            <button type="button" onClick={() => openResidentQrModal(place, "use_perk", "resident_perks_panel")} disabled={perkRedeemed}>
+                              {perkRedeemed ? "Redeemed" : "Use perk"}
+                            </button>
+                          </span>
+                        ) : (
+                          <span className="dp-resident-row-action-strip" aria-label={`${place.name} actions`}>
+                            <button type="button" onClick={() => selectPlace(place)}>View details</button>
+                          </span>
+                        )}
                       </span>
-                      <span className="dp-directory-action">
-                        {actionText}
-                      </span>
-                    </button>
+                    </article>
                   );
                 })()
               ))}
@@ -16244,7 +16301,7 @@ export default function MapPage() {
       </AnimatePresence>
 
       {residentQrModal && (
-        <ResidentQrModal
+        <ResidentPerkRedemptionSheet
           data={residentQrModal}
           onBack={() => setResidentQrModal(null)}
           onClose={() => setResidentQrModal(null)}
