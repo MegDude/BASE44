@@ -94,6 +94,7 @@ import { resolveMapCollectionRoute } from "@/lib/map/collectionRoutes";
 const RAINEY_STREET_CENTER = [30.25855, -97.73835];
 const AUSTIN_CENTER = RAINEY_STREET_CENTER;
 const INITIAL_MAP_ZOOM = 15.6;
+const SELECTED_ROUTE_INITIAL_MAX_ZOOM = 16.4;
 const MAP_MAX_ZOOM = 22;
 const MAP_STREET_FOCUS_ZOOM = 18;
 const INITIAL_DISCOVERY_MARKER_LIMIT = 16;
@@ -1695,14 +1696,17 @@ function selectProgressiveMarkerPlaces(places, {
   effectiveSearch,
   mapZoom,
   selectedId,
+  savedIds,
   userHasNavigatedMap,
   isDefaultDiscoverScope,
 }) {
   const deduped = dedupeMapPinPlaces(places);
-  const selectedPlace = selectedId ? deduped.find((place) => resolveMapEntityAlias(place.id) === selectedId) : null;
   const hasIntent = Boolean(effectiveSearch || collection || activeFilter !== "All");
   const isFocusedIntent = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch && FOCUSED_INTENT_FILTERS.has(resolveFilterForIntent(effectiveSearch, "resident") || ""));
-  const source = deduped;
+  const source = isFocusedIntent
+    ? deduped.filter((place) => matchesFilter(place, activeFilter, savedIds || new Set()))
+    : deduped;
+  const selectedPlace = selectedId ? source.find((place) => resolveMapEntityAlias(place.id) === selectedId) : null;
   const limit = getMarkerDisclosureLimit({ hasIntent, isFocusedIntent, isDefaultDiscoverScope, userHasNavigatedMap, mapZoom });
   const sorted = effectiveSearch ? sortSearchPlaces(source, effectiveSearch) : sortDiscoverPlaces(source);
   const selectedFirst = selectedPlace ? [selectedPlace, ...sorted.filter((place) => place.id !== selectedPlace.id)] : sorted;
@@ -10611,10 +10615,12 @@ function getStoredMapView() {
   if (typeof window === "undefined") return { center: AUSTIN_CENTER, zoom: INITIAL_MAP_ZOOM };
   try {
     const params = new URLSearchParams(window.location.search || "");
+    const hasSelectedEntity =
+      Boolean(params.get("entityId")) ||
+      Boolean(params.get("listing")) ||
+      Boolean(params.get("listingId"));
     const isDefaultMapLaunch =
-      !params.get("entityId") &&
-      !params.get("listing") &&
-      !params.get("listingId") &&
+      !hasSelectedEntity &&
       !params.get("query") &&
       !params.get("q") &&
       ["All", "Perks"].includes(params.get("filter") || "Perks");
@@ -10629,7 +10635,7 @@ function getStoredMapView() {
     const validZoom = Number.isFinite(zoom) && zoom >= 13 && zoom <= MAP_MAX_ZOOM;
     return {
       center: validCenter ? center : AUSTIN_CENTER,
-      zoom: validZoom ? zoom : INITIAL_MAP_ZOOM,
+      zoom: validZoom ? Math.min(zoom, hasSelectedEntity ? SELECTED_ROUTE_INITIAL_MAX_ZOOM : MAP_MAX_ZOOM) : INITIAL_MAP_ZOOM,
     };
   } catch {
     return { center: AUSTIN_CENTER, zoom: INITIAL_MAP_ZOOM };
@@ -12362,10 +12368,11 @@ export default function MapPage() {
       effectiveSearch,
       mapZoom,
       selectedId,
+      savedIds,
       userHasNavigatedMap,
       isDefaultDiscoverScope: urlState.mode === "resident" && isDefaultDiscoverScope,
     });
-  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, isDefaultDiscoverScope, mapZoom, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap]);
+  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, isDefaultDiscoverScope, mapZoom, savedIds, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap]);
   const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),

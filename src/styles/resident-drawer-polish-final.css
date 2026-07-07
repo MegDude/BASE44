@@ -1,0 +1,672 @@
+/* Resident bottom-nav drawer polish. Loaded last; scoped to resident map surfaces only. */
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident {
+  --dp-resident-panel-text: #0B1F33;
+  --dp-resident-panel-muted: rgba(11, 31, 51, 0.62);
+  --dp-resident-panel-faint: rgba(11, 31, 51, 0.46);
+  --dp-resident-panel-gold: #C8A96A;
+  --dp-resident-panel-line: rgba(11, 31, 51, 0.075);
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer
+) {
+  min-height: 0 !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  color: var(--dp-resident-panel-text) !important;
+  border: 0 !important;
+  box-shadow: 0 -18px 42px rgba(11, 31, 51, 0.12) !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-map-drawer-shell,
+  .dp-map-directory-sheet
+) {
+  left: max(6px, env(safe-area-inset-left, 0px)) !important;
+  right: max(6px, env(safe-area-inset-right, 0px)) !important;
+  width: auto !important;
+  max-width: min(760px, calc(100vw - 12px)) !important;
+  max-height: min(82dvh, calc(100dvh - 118px)) !important;
+  margin-inline: auto !important;
+  padding: 0 !important;
+  border-radius: 14px 14px 0 0 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-panel-toolbar,
+  .dp-map-panel-header,
+  .dp-drawer-control-row,
+  .dp-panel-header,
+  .dp-map-directory-toolbar
+) {
+  flex: 0 0 auto !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 8px 12px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-resident-panel-line) !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-panel-handle,
+  .dp-map-sheet-handle,
+  .dp-map-directory-handle
+) {
+  display: none !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-panel-body,
+  .dp-panel-scroll,
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-resident-tab-panel,
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll,
+  .dp-map-directory-list,
+  .dp-grouped-list
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll,
+  .dp-map-sheet-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll,
+  .dp-map-directory-list,
+  .dp-grouped-list
+) {
+  padding: 12px 14px max(96px, calc(22px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-resident-tab-panel-header,
+  .dp-saved-downtown-header,
+  .dp-map-directory-header,
+  .dp-resident-card-identity,
+  .dp-entity-identity,
+  .dp-entity-summary,
+  .dp-entity-panel-header,
+  .dp-detail-intro,
+  .dp-map-panel-section,
+  .dp-map-panel-note,
+  .dp-destination-section,
+  .dp-nearby-section,
+  .dp-related-section,
+  .dp-saved-empty-state,
+  .dp-saved-ask-section,
+  .dp-saved-collection-section,
+  .dp-card-credential,
+  .dp-panel-detail-hero
+) {
+  display: grid !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-resident-tab-panel-header,
+  .dp-saved-downtown-header,
+  .dp-map-directory-header,
+  .dp-resident-card-identity,
+  .dp-entity-identity,
+  .dp-entity-summary,
+  .dp-entity-panel-header,
+  .dp-detail-intro
+) + * {
+  margin-top: 14px !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-resident-tab-panel-header > p,
+  .dp-saved-downtown-header > p,
+  .dp-map-directory-eyebrow,
+  .dp-map-panel-eyebrow,
+  .dp-map-panel-section-label,
+  .dp-entity-eyebrow,
+  .dp-panel-eyebrow,
+  .dp-destination-section-kicker,
+  .dp-card-credential-kicker,
+  .dp-saved-card-status,
+  .dp-directory-context,
+  .dp-grouped-meta,
+  .dp-tab-row-meta span,
+  .dp-partner-section-kicker,
+  [class*="eyebrow"],
+  [class*="Eyebrow"],
+  [class*="kicker"],
+  [class*="Kicker"]
+) {
+  margin: 0 !important;
+  color: var(--dp-resident-panel-gold) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-gold) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 720 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  h1,
+  h2,
+  h3,
+  .dp-map-panel-title,
+  .dp-panel-title,
+  .dp-destination-title,
+  .dp-map-directory-title,
+  .dp-card-credential-title,
+  .dp-resident-tab-panel-header h2,
+  .dp-saved-downtown-header h2,
+  .dp-saved-empty-state h3,
+  .dp-saved-collection-section h3,
+  .dp-saved-ask-section h3
+) {
+  margin: 0 !important;
+  color: var(--dp-resident-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-text) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(18px, 4.8vw, 24px) !important;
+  font-weight: 680 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-map-panel-section-title,
+  .dp-destination-section-title,
+  .dp-saved-collection-section h3,
+  .dp-saved-ask-section h3
+) {
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  p,
+  li,
+  small,
+  span,
+  em,
+  .dp-map-panel-subtitle,
+  .dp-map-panel-body-copy,
+  .dp-map-panel-small-note,
+  .dp-map-directory-subtitle,
+  .dp-directory-meaning,
+  .dp-grouped-offer,
+  .dp-saved-card-body > span,
+  .dp-card-credential-copy
+) {
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-map-panel-subtitle,
+  .dp-map-panel-body-copy,
+  .dp-map-panel-small-note,
+  .dp-map-directory-subtitle,
+  .dp-resident-tab-panel-header > span,
+  .dp-saved-downtown-header > span,
+  .dp-saved-empty-state p,
+  .dp-card-credential-copy,
+  .dp-directory-meaning,
+  .dp-grouped-offer,
+  .dp-saved-card-body > span,
+  .dp-destination-section p,
+  .dp-nearby-section p,
+  .dp-related-section p
+) {
+  margin: 0 !important;
+  color: var(--dp-resident-panel-muted) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-muted) !important;
+  font-size: 12.5px !important;
+  font-weight: 450 !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-directory-result-row,
+  .dp-tab-row,
+  .dp-compact-place-row,
+  .dp-saved-collection-card,
+  .dp-grouped-row,
+  .dp-legends-result-row,
+  .dp-rental-list-row,
+  .dp-tab-discovery-card,
+  .dp-tab-perk-card,
+  .dp-info-row
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 9px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-directory-result-row + .dp-directory-result-row,
+  .dp-tab-row + .dp-tab-row,
+  .dp-saved-collection-card + .dp-saved-collection-card,
+  .dp-grouped-row + .dp-grouped-row,
+  .dp-legends-result-row + .dp-legends-result-row
+) {
+  border-top: 1px solid var(--dp-resident-panel-line) !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-directory-story,
+  .dp-grouped-title,
+  .dp-saved-card-body strong,
+  .dp-tab-discovery-body h3,
+  .dp-partner-feed-main strong,
+  .dp-legends-result-title
+) {
+  color: var(--dp-resident-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-text) !important;
+  font-size: 13.5px !important;
+  font-weight: 680 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-directory-action,
+  .dp-grouped-status,
+  .dp-legends-result-action,
+  .dp-compact-place-actions em
+) {
+  align-self: center !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-resident-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-text) !important;
+  font-size: 11px !important;
+  font-weight: 680 !important;
+  line-height: 1.15 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-map-panel-icon-button,
+  .dp-drawer-control,
+  .dp-drawer-icon-control,
+  .dp-map-panel-button,
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-pass-action,
+  .dp-perk-cta,
+  .dp-action-link,
+  .dp-scanner-action,
+  .dp-saved-action-row button,
+  .dp-saved-ask-section button,
+  .dp-map-sheet-action-footer button,
+  .dp-map-sheet-action-footer a
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-pass-action,
+  .dp-perk-cta,
+  .dp-scanner-action,
+  .dp-saved-action-row button,
+  .dp-saved-ask-section button,
+  .dp-map-sheet-action-footer button,
+  .dp-map-sheet-action-footer a
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  color: var(--dp-resident-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-text) !important;
+  font-size: 12px !important;
+  font-weight: 680 !important;
+  line-height: 1.15 !important;
+  text-align: left !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px !important;
+  white-space: normal !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-destination-action-row,
+  .dp-neighborhood-actions,
+  .dp-perk-action-row,
+  .dp-inkind-perk-actions,
+  .dp-saved-action-row,
+  .dp-map-sheet-action-grid,
+  .dp-map-sheet-action-footer
+) {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav-shell {
+  padding: 0 10px max(8px, env(safe-area-inset-bottom, 0px)) !important;
+  background: linear-gradient(to top, rgba(247, 248, 251, 0.94), rgba(247, 248, 251, 0)) !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav {
+  width: min(100%, 460px) !important;
+  min-height: 54px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button {
+  min-width: 0 !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.56) !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button:is([aria-pressed="true"], .is-active) {
+  color: var(--dp-resident-panel-text) !important;
+  -webkit-text-fill-color: var(--dp-resident-panel-text) !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button:is([aria-pressed="true"], .is-active)::before,
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button::before,
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button svg {
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 0 4px !important;
+  color: currentColor !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident .dp-map-bottom-nav.dp-map-bottom-nav > button span {
+  max-width: 100% !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(a, button):focus-visible {
+  outline: 2px solid var(--dp-resident-panel-gold) !important;
+  outline-offset: 3px !important;
+}
+
+@media (min-width: 760px) {
+  html body #root#root#root main.dp-map-page.dp-map-page-resident.dp-map-page-resident :is(
+    .dp-resident-tab-panel-list,
+    .dp-resident-info-scroll,
+    .dp-saved-downtown-scroll,
+    .dp-map-sheet-scroll,
+    .dp-destination-scroll,
+    .dp-drawer-scroll,
+    .dp-map-directory-list,
+    .dp-grouped-list
+  ) {
+    padding: 16px 18px max(84px, calc(26px + env(safe-area-inset-bottom, 0px))) !important;
+  }
+}
+
+/* High-specificity resident drawer terminal lock. */
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-map-drawer-shell > .dp-resident-tab-panel,
+  .dp-map-drawer-shell > .dp-saved-downtown-panel,
+  .dp-map-drawer-shell > .dp-resident-info-tab-panel,
+  .dp-map-drawer-shell .dp-resident-tab-panel,
+  .dp-map-drawer-shell .dp-saved-downtown-panel,
+  .dp-map-drawer-shell .dp-resident-info-tab-panel
+) {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-resident-tab-panel-list,
+  .dp-resident-info-scroll,
+  .dp-saved-downtown-scroll
+) {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding: 12px 14px max(98px, calc(28px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-tab-eyebrow,
+  .dp-panel-eyebrow,
+  .dp-map-panel-eyebrow,
+  .dp-map-panel-section-label,
+  .dp-entity-eyebrow,
+  .dp-map-directory-eyebrow,
+  .dp-directory-context,
+  .dp-saved-card-status,
+  .dp-card-credential-kicker,
+  .dp-grouped-meta,
+  .dp-partner-section-kicker
+) {
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 720 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-directory-result-row,
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-compact-place-row,
+  .dp-saved-collection-card,
+  .dp-grouped-row,
+  .dp-legends-result-row,
+  .dp-rental-list-row,
+  .dp-tab-discovery-card,
+  .dp-tab-perk-card,
+  .dp-info-row,
+  .dp-saved-empty-state,
+  .dp-saved-overview-rail,
+  .dp-saved-ask-section,
+  .dp-saved-ask-section > div,
+  .dp-saved-action-row,
+  .dp-saved-primary-actions
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-directory-result-row,
+  .dp-panel-row,
+  .dp-tab-row,
+  .dp-compact-place-row,
+  .dp-saved-collection-card,
+  .dp-grouped-row,
+  .dp-legends-result-row,
+  .dp-rental-list-row
+) {
+  padding: 9px 0 !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-saved-empty-state button,
+  .dp-saved-ask-section button,
+  .dp-saved-primary-actions button,
+  .dp-action-link,
+  .dp-tab-primary-action,
+  .dp-tab-secondary-action,
+  .dp-panel-action,
+  .dp-primary-action,
+  .dp-perk-cta,
+  .dp-pass-action,
+  .dp-map-panel-button
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 680 !important;
+  line-height: 1.15 !important;
+  text-align: left !important;
+  justify-content: space-between !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident .dp-map-drawer-shell :is(
+  .dp-saved-action-row,
+  .dp-saved-primary-actions,
+  .dp-saved-ask-section > div
+) {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+html body #root#root#root#root#root#root main.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-map-panel-icon-button,
+  .dp-drawer-control,
+  .dp-drawer-icon-control
+) {
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}

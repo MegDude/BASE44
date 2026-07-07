@@ -19,6 +19,7 @@ import '@/styles/production-quality-v1.css'
 import '@/styles/campaign-planning-final.css'
 import '@/styles/about-editorial-final.css'
 import '@/styles/partner-map-polish-final.css'
+import '@/styles/resident-drawer-polish-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

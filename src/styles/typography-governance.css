@@ -14943,47 +14943,47 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
 
 /* Final map zoom readability lock: pins grow with street-level zoom without moving off their coordinates. */
 html body #root#root .dp-map-page.dp-map-page.dp-map-page {
-  --dp-zoom-pin-size: 36px;
-  --dp-zoom-pin-icon-size: 17px;
-  --dp-zoom-legends-logo-size: 22px;
-  --dp-zoom-cluster-size: 42px;
-  --dp-zoom-large-cluster-size: 52px;
-  --dp-zoom-stop-number-size: 18px;
+  --dp-zoom-pin-size: 28px;
+  --dp-zoom-pin-icon-size: 13px;
+  --dp-zoom-legends-logo-size: 18px;
+  --dp-zoom-cluster-size: 30px;
+  --dp-zoom-large-cluster-size: 46px;
+  --dp-zoom-stop-number-size: 14px;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page[data-map-zoom^="16"] {
-  --dp-zoom-pin-size: 38px;
-  --dp-zoom-pin-icon-size: 18px;
-  --dp-zoom-legends-logo-size: 24px;
-  --dp-zoom-cluster-size: 44px;
-  --dp-zoom-large-cluster-size: 54px;
+  --dp-zoom-pin-size: 28px;
+  --dp-zoom-pin-icon-size: 13px;
+  --dp-zoom-legends-logo-size: 18px;
+  --dp-zoom-cluster-size: 30px;
+  --dp-zoom-large-cluster-size: 46px;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page[data-map-zoom^="17"] {
-  --dp-zoom-pin-size: 42px;
-  --dp-zoom-pin-icon-size: 20px;
-  --dp-zoom-legends-logo-size: 27px;
-  --dp-zoom-cluster-size: 48px;
-  --dp-zoom-large-cluster-size: 58px;
-  --dp-zoom-stop-number-size: 20px;
+  --dp-zoom-pin-size: 30px;
+  --dp-zoom-pin-icon-size: 14px;
+  --dp-zoom-legends-logo-size: 20px;
+  --dp-zoom-cluster-size: 32px;
+  --dp-zoom-large-cluster-size: 48px;
+  --dp-zoom-stop-number-size: 14px;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page[data-map-zoom^="18"] {
-  --dp-zoom-pin-size: 48px;
-  --dp-zoom-pin-icon-size: 23px;
-  --dp-zoom-legends-logo-size: 31px;
-  --dp-zoom-cluster-size: 54px;
-  --dp-zoom-large-cluster-size: 64px;
-  --dp-zoom-stop-number-size: 22px;
+  --dp-zoom-pin-size: 32px;
+  --dp-zoom-pin-icon-size: 15px;
+  --dp-zoom-legends-logo-size: 21px;
+  --dp-zoom-cluster-size: 35px;
+  --dp-zoom-large-cluster-size: 52px;
+  --dp-zoom-stop-number-size: 15px;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page:is([data-map-zoom^="19"], [data-map-zoom^="20"], [data-map-zoom^="21"]) {
-  --dp-zoom-pin-size: 54px;
-  --dp-zoom-pin-icon-size: 26px;
-  --dp-zoom-legends-logo-size: 35px;
-  --dp-zoom-cluster-size: 60px;
-  --dp-zoom-large-cluster-size: 72px;
-  --dp-zoom-stop-number-size: 24px;
+  --dp-zoom-pin-size: 36px;
+  --dp-zoom-pin-icon-size: 17px;
+  --dp-zoom-legends-logo-size: 24px;
+  --dp-zoom-cluster-size: 40px;
+  --dp-zoom-large-cluster-size: 58px;
+  --dp-zoom-stop-number-size: 16px;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-google-map-marker-shell {
