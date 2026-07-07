@@ -445,3 +445,36 @@ body :is(
   border-color: rgba(11, 31, 51, 0.2) !important;
   box-shadow: 0 10px 24px rgba(11, 31, 51, 0.06) !important;
 }
+
+.dp-pricing-page,
+.dp-pricing-page :where(h1, h2, h3, h4, p, a, button, input, select, textarea, label, small, span, strong, dt, dd, li) {
+  font-family: var(--dp-app-font) !important;
+}
+
+.dp-pricing-page :where(h1, h2, h3, h4, .font-heading) {
+  color: var(--dp-app-ink) !important;
+  font-weight: 540 !important;
+  letter-spacing: 0 !important;
+}
+
+.dp-pricing-page :where(strong, b, .font-bold, .font-extrabold, .font-black) {
+  font-weight: 600 !important;
+}
+
+.dp-pricing-page :where(.font-semibold, [class*="font-semibold"]) {
+  font-weight: 540 !important;
+}
+
+.dp-pricing-page :where(.dp-pricing-calculator-controls, .dp-pricing-summary, .dp-pricing-plan-card, .dp-pricing-module-list article, .dp-pricing-resident-card) {
+  background: #ffffff !important;
+  border-color: rgba(11, 31, 51, 0.075) !important;
+  box-shadow: 0 10px 26px rgba(11, 31, 51, 0.045) !important;
+}
+
+.dp-pricing-page :where(.dp-pricing-selected button, .dp-pricing-selected span) {
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(11, 31, 51, 0.09) !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  box-shadow: none !important;
+}

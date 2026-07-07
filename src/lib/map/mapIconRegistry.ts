@@ -25,6 +25,7 @@ export type MapIconKey =
   | "discovery"
   | "attraction"
   | "culture"
+  | "entertainment"
   | "brand"
   | "campaign"
   | "analytics"
@@ -87,6 +88,7 @@ export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
   discovery: { label: "Discovery Trail", glyph: icon('<path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/><circle cx="12" cy="11" r="2"/>') },
   attraction: { label: "Attraction", glyph: icon('<path d="M4 7h3l2-3h6l2 3h3v13H4V7Z"/><circle cx="12" cy="13" r="3"/><path d="M17 10h.01"/>') },
   culture: { label: "Arts & Culture", glyph: icon('<path d="M4 20h16"/><path d="M6 20V9l6-5 6 5v11"/><path d="M9 20v-6h6v6"/><path d="M9 10h6"/>') },
+  entertainment: { label: "Entertainment", glyph: icon('<path d="M4 20h16"/><path d="M6 20V9l6-5 6 5v11"/><path d="M9 20v-6h6v6"/><path d="M9 10h6"/>') },
   brand: { label: "Brand", glyph: icon('<path d="M8 3h8l5 5v8l-5 5H8l-5-5V8l5-5Z"/><path d="M9 12h6"/><path d="M12 9v6"/>') },
   campaign: { label: "Campaign", glyph: icon('<path d="M4 13V7l11-3v12L4 13Z"/><path d="M4 13l2 7h4l-2-6"/><path d="M18 8v4"/>') },
   analytics: { label: "Reports", glyph: icon('<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/>') },
