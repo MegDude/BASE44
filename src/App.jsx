@@ -296,6 +296,9 @@ function ProductRoutes() {
           <Route path="/partner-workspace/analytics" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
+          <Route path="/partner/audience" element={<Navigate to="/partner-workspace/audience" replace />} />
+          <Route path="/partner/audiences" element={<Navigate to="/partner-workspace/audience" replace />} />
+
           {/* Partner portal aliases: always enter the workspace shell, even when no partner is linked. */}
           <Route path="/partner-portal" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/dashboard" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
