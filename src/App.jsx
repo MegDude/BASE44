@@ -59,6 +59,11 @@ function ProtectedRoute({ children }) {
   );
 }
 
+function RedirectWithSearch({ to }) {
+  const location = useLocation();
+  return <Navigate to={`${to}${location.search}${location.hash}`} replace />;
+}
+
 function HashScroll() {
   const location = useLocation();
 
@@ -173,7 +178,7 @@ function ProductRoutes() {
           <Route path="/downtown-perks/*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
 
           {/* Partner platform */}
-          <Route path="/partners" element={<Navigate to="/partners/sign-in" replace />} />
+          <Route path="/partners" element={<RedirectWithSearch to="/partners/register" />} />
           <Route
             path="/partners/apply"
             element={
@@ -192,14 +197,10 @@ function ProductRoutes() {
           />
           <Route
             path="/partners/sign-up"
-            element={
-              <Suspense fallback={<MarketingFallback />}>
-                <PartnerAccess mode="sign-up" />
-              </Suspense>
-            }
+            element={<RedirectWithSearch to="/partners/register" />}
           />
           <Route path="/pricing" element={<Suspense fallback={<MarketingFallback />}><PricingPage /></Suspense>} />
-          <Route path="/partners/pricing" element={<Navigate to="/pricing" replace />} />
+          <Route path="/partners/pricing" element={<RedirectWithSearch to="/pricing" />} />
           <Route path="/partners/properties" element={<Suspense fallback={<MarketingFallback />}><PartnerProperties /></Suspense>} />
           <Route path="/partners/residential" element={<Suspense fallback={<MarketingFallback />}><PartnerProperties /></Suspense>} />
           <Route path="/partners/hotels" element={<Navigate to="/partners/sign-up?type=hotel" replace />} />
@@ -317,7 +318,7 @@ function ProductRoutes() {
           {/* Legacy public marketing URLs now enter the product or commerce flow. */}
           <Route path="/marketing" element={<Navigate to="/" replace />} />
           <Route path="/marketing/home" element={<Navigate to="/" replace />} />
-          <Route path="/marketing/pricing" element={<Navigate to="/pricing" replace />} />
+          <Route path="/marketing/pricing" element={<RedirectWithSearch to="/pricing" />} />
           <Route path="/marketing/contact" element={<Navigate to="/partners/sign-up" replace />} />
           <Route path="/marketing/downtown" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/marketing/for-buildings" element={<Navigate to="/partners/sign-up?type=property" replace />} />
