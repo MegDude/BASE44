@@ -3020,6 +3020,26 @@ function getEntityIdentity(place, mode = "resident") {
     };
   }
 
+  if (kind === "retail" || destinationKind === "retail" || isRetailBrandEntity(place)) {
+    const perk = getResidentPerkDetails(place);
+    const offerTitle = formatResidentPerkHeading(perk?.offer || getExplicitGroupedOffer(place) || "");
+    return {
+      id: place?.id,
+      entityType: "retail",
+      displayTypeLabel: `Retail · ${district}`,
+      displayTitle: place?.name || place?.title || panelTitle || "Downtown retail",
+      displaySubtitle: offerTitle || [panelSubtitle || getCanonicalCategoryLabel(place), address || district].filter(Boolean).join(" · "),
+      displayContext: truncatePanelCopy(panelContext || perk?.description || context, 130),
+      parentEntityName: place?.name,
+      perkTitle: offerTitle,
+      offerTitle,
+      address,
+      neighborhood: district,
+      categoryLabel: "Retail",
+      panelArchetype,
+    };
+  }
+
   if (panelArchetype.id === "perk") {
     if (mode === "partner") {
       const copy = getPartnerPanelCopy(place);
