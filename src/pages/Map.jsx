@@ -3341,6 +3341,13 @@ const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
   { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }] },
 ];
 
+function getInlineGoogleMapStyles() {
+  return DOWNTOWN_PERKS_GOOGLE_MAP_STYLES.map((style) => ({
+    ...style,
+    stylers: (style.stylers || []).filter((styler) => !Object.prototype.hasOwnProperty.call(styler, "weight")),
+  })).filter((style) => style.stylers.length);
+}
+
 function svgMarkerDataUrl(svg) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
@@ -10819,7 +10826,7 @@ function GoogleMapCanvas({
               disableDefaultUI: true,
               clickableIcons: false,
               gestureHandling: "greedy",
-              ...(googleMapId ? { mapId: googleMapId } : { styles: DOWNTOWN_PERKS_GOOGLE_MAP_STYLES }),
+              ...(googleMapId ? { mapId: googleMapId } : { styles: getInlineGoogleMapStyles() }),
             };
             mapRef.current = new maps.Map(containerRef.current, mapOptions);
             mapRef.current.addListener("dragstart", markUserNavigated);
