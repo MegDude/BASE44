@@ -4957,6 +4957,10 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, an
         <p className="dp-business-one-line">{profile.oneSentence}</p>
       </header>
 
+      <DestinationSection title="About" className="dp-local-service-section">
+        <p>{profile.about}</p>
+      </DestinationSection>
+
       <div className="dp-primary-action-row dp-editorial-hero-actions">
         {profile.website && (
           <a href={profile.website} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
@@ -4975,10 +4979,6 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, an
           Directions
         </a>
       </div>
-
-      <DestinationSection title="About" className="dp-local-service-section">
-        <p>{profile.about}</p>
-      </DestinationSection>
 
       <DestinationSection title="Best For" className="dp-local-service-section">
         <LocalServiceRail title="Services" items={profile.bestFor} />
@@ -5020,7 +5020,7 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, an
         <div className="dp-business-contact-list">
           {profile.website && <span><strong>Website</strong>{profile.website.replace(/^https?:\/\//, "")}</span>}
           {profile.phone && <span><strong>Phone</strong>{profile.phone}</span>}
-          {place.address && <span><strong>Address</strong>{place.address}</span>}
+          {place.address && <span><strong>Where</strong>{place.address}</span>}
           <span><strong>Hours</strong>Check current availability before you go.</span>
         </div>
         <div className="dp-primary-action-row">
@@ -5126,6 +5126,29 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
         <p className="dp-entity-dek">{profile.oneSentence}</p>
       </header>
 
+      {shouldShowAbout && (
+        <DestinationSection title="About" className="dp-event-section">
+          <p>{aboutText}</p>
+        </DestinationSection>
+      )}
+
+      <DestinationSection title="Quick facts" className="dp-event-section">
+        <div className="dp-event-fact-rail">
+          {factItems.map(([label, value]) => (
+            <span key={`${label}-${value}`} className="dp-event-fact">
+              <strong>{label}</strong>
+              {value}
+            </span>
+          ))}
+          {profile.address && (
+            <span className="dp-event-fact">
+              <strong>Where</strong>
+              {profile.address}
+            </span>
+          )}
+        </div>
+      </DestinationSection>
+
       <div className="dp-primary-action-row dp-editorial-hero-actions">
         <button type="button" onClick={onRsvp} className="dp-panel-action dp-primary-action">
           {isRsvped ? "RSVP Submitted" : "RSVP"}
@@ -5142,29 +5165,6 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
           </a>
         )}
       </div>
-
-      {shouldShowAbout && (
-        <DestinationSection title="About" className="dp-event-section">
-          <p>{aboutText}</p>
-        </DestinationSection>
-      )}
-
-      <DestinationSection title="Details" className="dp-event-section">
-        <div className="dp-event-fact-rail">
-          {factItems.map(([label, value]) => (
-            <span key={`${label}-${value}`} className="dp-event-fact">
-              <strong>{label}</strong>
-              {value}
-            </span>
-          ))}
-          {profile.address && (
-            <span className="dp-event-fact">
-              <strong>Address</strong>
-              {profile.address}
-            </span>
-          )}
-        </div>
-      </DestinationSection>
 
       {!!profile.included.length && (
         <DestinationSection title="What to expect" className="dp-event-section">
@@ -6536,7 +6536,7 @@ function getV4DestinationSectionTitle(title = "") {
     return "Ask the map";
   }
   if (["details", "listing details", "event details", "property details"].includes(normalized)) {
-    return "Useful context";
+    return "Quick facts";
   }
   return title;
 }
@@ -6856,6 +6856,102 @@ function MapPanelMatrixRow({ label, value }) {
       <strong>{label}</strong>
       <em>{value}</em>
     </span>
+  );
+}
+
+function InteractiveMatrix({
+  title,
+  eyebrow,
+  description,
+  items = [],
+  initialSelectedId = "",
+  onAction,
+  className = "",
+}) {
+  const firstItemId = items[0]?.id || "";
+  const [selectedId, setSelectedId] = useState(initialSelectedId || firstItemId);
+  const selectedItem = items.find((item) => item.id === selectedId) || items[0] || null;
+
+  if (!items.length) {
+    return (
+      <section className={`dp-interactive-matrix ${className}`.trim()}>
+        {eyebrow && <p className="dp-interactive-matrix-eyebrow">{eyebrow}</p>}
+        <h3>{title}</h3>
+        {description && <p className="dp-interactive-matrix-copy">{description}</p>}
+        <div className="dp-matrix-empty-state">Nothing to show yet.</div>
+      </section>
+    );
+  }
+
+  const handleAction = (action, item = selectedItem) => {
+    if (!action || !item) return;
+    onAction?.(action, item);
+  };
+
+  return (
+    <section className={`dp-interactive-matrix ${className}`.trim()} aria-label={title}>
+      <div className="dp-interactive-matrix-header">
+        {eyebrow && <p className="dp-interactive-matrix-eyebrow">{eyebrow}</p>}
+        <h3>{title}</h3>
+        {description && <p className="dp-interactive-matrix-copy">{description}</p>}
+      </div>
+      <div className="dp-matrix-layout">
+        <div className="dp-matrix-selector-rail" role="tablist" aria-label={`${title} options`}>
+          {items.map((item) => {
+            const active = item.id === selectedItem?.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                className={active ? "is-active" : ""}
+                onClick={() => setSelectedId(item.id)}
+              >
+                <span>{item.label || item.title}</span>
+                {item.status && <small>{item.status}</small>}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="dp-matrix-detail-panel" role="tabpanel" aria-live="polite">
+          {selectedItem.eyebrow && <p className="dp-interactive-matrix-eyebrow">{selectedItem.eyebrow}</p>}
+          <h4>{selectedItem.title}</h4>
+          {selectedItem.meta?.length ? (
+            <div className="dp-matrix-meta-row">
+              {selectedItem.meta.slice(0, 4).map((meta) => <span key={meta}>{meta}</span>)}
+            </div>
+          ) : null}
+          <p>{selectedItem.description}</p>
+          <div className="dp-matrix-action-row">
+            {selectedItem.primaryAction && (
+              <button type="button" className="dp-matrix-action-primary" onClick={() => handleAction(selectedItem.primaryAction)}>
+                {selectedItem.primaryAction.label}
+              </button>
+            )}
+            {selectedItem.secondaryActions?.slice(0, 3).map((action) => (
+              <button key={action.label} type="button" onClick={() => handleAction(action)}>
+                {action.label}
+              </button>
+            ))}
+          </div>
+          {!!selectedItem.relatedItems?.length && (
+            <div className="dp-matrix-related-rail" aria-label={`${selectedItem.title} related items`}>
+              {selectedItem.relatedItems.slice(0, 4).map((related) => (
+                <button key={related.id} type="button" onClick={() => handleAction({ action: "open-related", relatedId: related.id }, selectedItem)}>
+                  {related.imageUrl && <img src={related.imageUrl} alt="" loading="lazy" />}
+                  <span>
+                    <strong>{related.title}</strong>
+                    <small>{related.type}</small>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -11714,7 +11810,6 @@ function SearchIntentConsole({
 }) {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [moreOpen, setMoreOpen] = useState(false);
-  const audienceTabsRef = useRef(null);
   const activeSearchLabel = query || activeFilter || "All";
   const promptPlaceholders = ["Coffee nearby", "What's happening tonight?", "Walkable dinner spots", "Happy hour near me"];
   useEffect(() => {
@@ -11723,21 +11818,6 @@ function SearchIntentConsole({
     }, 3600);
     return () => window.clearInterval(timer);
   }, [promptPlaceholders.length]);
-  useEffect(() => {
-    const tablist = audienceTabsRef.current;
-    if (!tablist) return;
-    const clearShape = (element) => {
-      element.style.setProperty("background", "transparent", "important");
-      element.style.setProperty("background-color", "transparent", "important");
-      element.style.setProperty("background-image", "none", "important");
-      element.style.setProperty("border", "0", "important");
-      element.style.setProperty("border-radius", "0", "important");
-      element.style.setProperty("box-shadow", "none", "important");
-      element.style.setProperty("padding", "0", "important");
-    };
-    clearShape(tablist);
-    tablist.querySelectorAll("button").forEach(clearShape);
-  }, [mode]);
 
   const residentIntentRail = PRIMARY_SEARCH_INTENT_RAIL;
   const railIconFor = (item = {}) => {
@@ -11965,84 +12045,52 @@ function SearchIntentConsole({
   );
 
   const renderModeSwitch = () => (
-    <>
-      <style>{`
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs {
-          background: transparent !important;
-          background-color: transparent !important;
-          border: 0 !important;
-          border-radius: 0 !important;
-          box-shadow: none !important;
-          padding: 0 !important;
-        }
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button,
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button.is-active,
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button[aria-selected="true"],
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button:hover,
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button:focus-visible,
-        html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-audience-tabs.dp-search-intent-audience-tabs > button:active {
-          background: transparent !important;
-          background-color: transparent !important;
-          background-image: none !important;
-          border: 0 !important;
-          border-radius: 0 !important;
-          box-shadow: none !important;
-          padding: 0 !important;
-        }
-      `}</style>
-      <div ref={audienceTabsRef} className="dp-search-intent-switch dp-search-intent-audience-tabs" role="tablist" aria-label="Map audience">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={mode === "resident"}
-          className={mode === "resident" ? "is-active" : ""}
-          onClick={() => onModeChange("resident")}
-          onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("resident"))}
-        >
-          Residents
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={mode === "partner"}
-          className={mode === "partner" ? "is-active" : ""}
-          onClick={() => onModeChange("partner")}
-          onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("partner"))}
-        >
-          Partners
-        </button>
-      </div>
-    </>
+    <div className="dp-search-intent-switch dp-search-intent-audience-tabs" role="tablist" aria-label="Map audience">
+      <button
+        type="button"
+        role="tab"
+        aria-selected={mode === "resident"}
+        className={mode === "resident" ? "is-active" : ""}
+        onClick={() => onModeChange("resident")}
+        onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("resident"))}
+      >
+        Residents
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={mode === "partner"}
+        className={mode === "partner" ? "is-active" : ""}
+        onClick={() => onModeChange("partner")}
+        onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("partner"))}
+      >
+        Partners
+      </button>
+    </div>
   );
 
-  if (isCollapsed) {
-    return (
-      <div className="dp-search-intent-console-wrap is-collapsed">
-        <button
-          type="button"
-          className="dp-search-intent-rollup"
-          aria-label="Expand search and filters"
-          aria-expanded="false"
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={onExpand}
-        >
-          <span className="dp-search-brand-mark">
-            <Sparkles className="dp-search-rollup-icon" aria-hidden="true" />
-            <span className="dp-search-rollup-main">Ask the Map</span>
-          </span>
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="dp-search-intent-console-wrap">
+    <div className={`dp-search-intent-console-wrap ${isCollapsed ? "is-collapsed" : ""}`}>
+      <button
+        type="button"
+        className="dp-search-intent-rollup"
+        aria-label="Expand search and filters"
+        aria-expanded={!isCollapsed}
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={onExpand}
+      >
+        <span className="dp-search-brand-mark">
+          <Sparkles className="dp-search-rollup-icon" aria-hidden="true" />
+          <span className="dp-search-rollup-main">Ask the Map</span>
+        </span>
+      </button>
       <section
         className="dp-search-intent-console pointer-events-auto"
         role="region"
         aria-label="Map command console"
-        aria-expanded="true"
-        data-state="focused"
+        aria-expanded={!isCollapsed}
+        aria-hidden={isCollapsed}
+        data-state={isCollapsed ? "collapsed" : "focused"}
         onPointerDown={(event) => event.stopPropagation()}
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail">
@@ -12267,11 +12315,26 @@ export default function MapPage() {
     event?.stopPropagation?.();
     openResidentQrModal(null, "show_card", "resident_pass");
   }, [openResidentQrModal]);
-  const saveResidentPassForLater = useCallback((event) => {
+  const saveResidentPassForLater = useCallback(async (event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
-    setWalletAdded(true);
-  }, []);
+    try {
+      await postWorkflow("/api/map-actions", {
+        action: "add_wallet",
+        type: "resident_card",
+        profileId: getWorkflowProfileId(),
+        sessionId: getWorkflowSessionId(),
+        source: "resident_card_sheet",
+        payload: residentCardPayload,
+      });
+      setWalletAdded(true);
+    } catch (error) {
+      console.warn("Wallet action failed", error);
+      if (typeof window !== "undefined") {
+        window.alert("We couldn't add the card right now. Please try again.");
+      }
+    }
+  }, [residentCardPayload]);
   const [resultsExpanded, setResultsExpanded] = useState(false);
   const [activeBottomTab, setActiveBottomTab] = useState(() => (
     urlState.panelTab
@@ -12945,6 +13008,58 @@ export default function MapPage() {
       "What should I do tonight?",
       residentSavedPlaces[0]?.name ? `What's happening near ${residentSavedPlaces[0].name}?` : "What's happening near YETI?",
     ];
+    const favoriteMatrixItems = (residentSavedPlaces.length ? residentSavedPlaces : recommended).slice(0, 8).map((place) => {
+      const group = getSavedItemGroup(place);
+      const related = getRelatedPlaces(place, places).slice(0, 3);
+      return {
+        id: place.id,
+        label: place.name,
+        eyebrow: group === "events" ? "Event" : group === "benefits" ? "Perk" : "Place",
+        title: place.name,
+        description: getSavedItemCopy(place),
+        status: savedIds.has(place.id) ? "Saved" : "Suggested",
+        meta: [
+          place.category || place.type || "Downtown",
+          getSavedLocationLabel(place),
+          placeDistanceLabel(place),
+        ].filter(Boolean),
+        primaryAction: { label: "Open", action: "open" },
+        secondaryActions: [
+          { label: savedIds.has(place.id) ? "Remove" : "Save", action: savedIds.has(place.id) ? "remove" : "save" },
+          { label: "Directions", action: "directions" },
+          { label: "Share", action: "share" },
+        ],
+        relatedItems: related.map((item) => ({
+          id: item.id,
+          title: item.name,
+          type: item.category || item.type || "Nearby",
+          imageUrl: resolveEntityImage(item, "card"),
+        })),
+      };
+    });
+    const handleFavoriteMatrixAction = (action, item) => {
+      const place = places.find((candidate) => candidate.id === item.id) || residentSavedPlaces.find((candidate) => candidate.id === item.id);
+      if (action.action === "open" && place) {
+        selectPlace(place);
+        return;
+      }
+      if ((action.action === "save" || action.action === "remove") && place) {
+        toggleSaved(place);
+        return;
+      }
+      if (action.action === "directions" && place) {
+        window.open(directionsUrl(place), "_blank", "noopener,noreferrer");
+        return;
+      }
+      if (action.action === "share") {
+        shareSavedCollection();
+        return;
+      }
+      if (action.action === "open-related" && action.relatedId) {
+        const relatedPlace = places.find((candidate) => candidate.id === action.relatedId);
+        if (relatedPlace) selectPlace(relatedPlace);
+      }
+    };
 
     return (
       <div className="dp-tabs-content dp-resident-tab-panel dp-saved-downtown-panel min-h-0 flex-1 overflow-hidden">
@@ -12974,7 +13089,14 @@ export default function MapPage() {
             </section>
           )}
 
-          {renderSavedCollectionSection("Saved Places", residentSavedPlaces)}
+          <InteractiveMatrix
+            eyebrow="Saved"
+            title="Saved places, perks, events, and buildings."
+            description="Choose an item to see why it matters, what to do next, and what is connected nearby."
+            items={favoriteMatrixItems}
+            onAction={handleFavoriteMatrixAction}
+            className="dp-favorites-matrix"
+          />
 
           {!!recommended.length && (
             <section className="dp-saved-collection-section" aria-label="Explore Nearby">
@@ -13476,6 +13598,54 @@ export default function MapPage() {
           ],
           help: ["Need some help?", "We are happy to point you in the right direction.", "Frequently Asked Questions", scrollToInfoFaq],
         };
+    const matrixItems = isPartnerInfo
+      ? [
+          ["profile", "Profile", "Map Presence", "Control the first impression residents see across the map, search, QR paths, and partner moments.", "Ready", "Update Map Presence", () => openPartnerPanel("campaigns")],
+          ["campaigns", "Campaigns", "Campaigns", "Create local moments that can appear on the map, resident feed, QR paths, or partner reports.", "Recommended", "Open Campaigns", () => openPartnerPanel("campaigns")],
+          ["offers", "Offers", "Offers", "Give nearby people one clear reason to save, scan, request directions, or visit.", "Draft next", "Create Offer", () => openPartnerPanel("campaigns")],
+          ["events", "Events", "Events", "Promote moments people can attend and connect RSVP activity back to map reporting.", "Available", "View Events", () => openPartnerMap("Events")],
+          ["qr", "QR", "QR", "Connect physical touchpoints, resident cards, scans, and printed moments to reports.", "Ready", "Open QR", () => switchMode("partner", "pass")],
+          ["reports", "Reports", "Reports", "Read saves, scans, directions, RSVPs, and follow-up activity in one place.", "Live", "View Reports", () => openPartnerPanel("reports")],
+        ].map(([id, label, title, description, status, actionLabel, actionFn]) => ({
+          id,
+          label,
+          title,
+          description,
+          status,
+          meta: ["Partner workspace", "Map connected"],
+          primaryAction: { label: actionLabel, action: id },
+          secondaryActions: [{ label: "Preview Resident View", action: "preview" }],
+          actionFn,
+        }))
+      : [
+          ["coffee", "Coffee", "Coffee", "Shows cafes, breakfast stops, and places useful before work or weekend plans.", "Nearby", "Show on map", () => openResidentLayer("Coffee")],
+          ["dining", "Dining", "Dining", "Prioritizes restaurants, dinner spots, and places worth planning around before or after events.", "Useful now", "Show on map", () => openResidentLayer("Dining")],
+          ["happy-hour", "Happy Hour", "Happy Hour", "Finds drink specials, after-work stops, and resident-friendly value nearby.", "Tonight", "Show on map", () => openResidentLayer("Happy Hour")],
+          ["events", "Events", "Events", "Shows live music, civic moments, sports, parks, and things happening soon.", "Active", "Show on map", () => openResidentLayer("Events")],
+          ["perks", "Perks", "Perks", "Surfaces resident benefits and card moments tied to participating places.", "Resident value", "Show on map", () => openResidentLayer("Perks")],
+          ["properties", "Properties", "Properties", "Shows residential buildings, listings, and nearby lifestyle context.", "Living here", "Show on map", () => openResidentLayer("Properties")],
+        ].map(([id, label, title, description, status, actionLabel, actionFn]) => ({
+          id,
+          label,
+          title,
+          description,
+          status,
+          meta: ["Map layer", "Downtown Austin"],
+          primaryAction: { label: actionLabel, action: id },
+          secondaryActions: [{ label: "Ask the Map", action: "ask" }],
+          actionFn,
+        }));
+    const handleInfoMatrixAction = (action, item) => {
+      if (action.action === "ask") {
+        void applyPrompt(`${item.title} nearby`);
+        return;
+      }
+      if (action.action === "preview") {
+        openPartnerMap("All");
+        return;
+      }
+      item.actionFn?.();
+    };
 
     return (
       <div className={`dp-tabs-content dp-partner-readable-panel dp-partner-info-panel dp-shared-info-panel ${isPartnerInfo ? "is-partner" : "is-resident"}`}>
@@ -13496,14 +13666,14 @@ export default function MapPage() {
             </div>
           </section>
 
-          <section className="dp-partner-summary-grid dp-partner-info-grid" aria-label="Quick overview">
-            {content.overview.map(([title, copy]) => (
-              <article key={title} className="dp-partner-summary-card">
-                <span>{title}</span>
-                <p>{copy}</p>
-              </article>
-            ))}
-          </section>
+          <InteractiveMatrix
+            eyebrow={isPartnerInfo ? "Workspace" : "Nearby"}
+            title={isPartnerInfo ? "Manage the parts residents can see." : "Choose what the map prioritizes."}
+            description={isPartnerInfo ? "Select a workspace area to see what it controls and the next useful action." : "Select a layer to understand what appears nearby before opening it on the map."}
+            items={matrixItems}
+            onAction={handleInfoMatrixAction}
+            className="dp-info-interactive-matrix"
+          />
 
           <section className="dp-partner-info-steps" aria-label="Getting started">
             <p className="dp-tab-eyebrow">Getting started</p>
@@ -13525,18 +13695,6 @@ export default function MapPage() {
                 </span>
               </article>
             ))}
-          </section>
-
-          <section className="dp-info-guide-features" aria-label="Features">
-            <p className="dp-tab-eyebrow">Features</p>
-            <div>
-              {content.features.map(([title, copy]) => (
-                <article key={title}>
-                  <strong>{title}</strong>
-                  <p>{copy}</p>
-                </article>
-              ))}
-            </div>
           </section>
 
           <section className="dp-info-guide-tips" aria-label={content.tipsTitle}>
@@ -14672,12 +14830,7 @@ export default function MapPage() {
   const primarySearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS);
   const advancedSearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_ADVANCED_SEARCH_FILTERS : RESIDENT_ADVANCED_SEARCH_FILTERS);
   const searchRollupLabel = `Ask the map · ${activeFilter === "All" ? (urlState.mode === "partner" ? "Partners" : "Residents") : activeFilter}`;
-  const hasOpenMapPanel = urlState.tab === "pass" || Boolean(selected) || Boolean(clusterDrawer) || (
-    urlState.tab === "map" && (
-      MAP_NATIVE_PARTNER_PANELS.includes(activeBottomTab) ||
-      MAP_NATIVE_RESIDENT_PANELS.includes(activeBottomTab)
-    )
-  );
+  const hasOpenMapPanel = urlState.tab === "pass" || Boolean(selected) || Boolean(clusterDrawer) || Boolean(activePartnerPanel);
   const isCleanMapCommandView =
     urlState.tab === "map" &&
     activeBottomTab === "map" &&
@@ -14688,7 +14841,6 @@ export default function MapPage() {
     activeFilter !== "Listings";
   const shouldCollapseSearchConsole =
     consoleCollapsed ||
-    !isCleanMapCommandView ||
     hasOpenMapPanel ||
     activeFilter === "Legends" ||
     activeFilter === "Listings";
@@ -15612,7 +15764,12 @@ export default function MapPage() {
                     <DestinationHero place={selected} mode={urlState.mode} />
                     <EntityIdentityPanel identity={getEntityIdentity(selected, urlState.mode)} />
                     {standardActionPanel}
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06, duration: 0.18 }}>
+                    {!isInKindDining && !isBurgerBarPanel && !isHappyHourEntity(selected) && !(urlState.mode === "resident" && hasActivePerkData(selected)) && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.18 }}>
+                        <PanelContext place={selected} mode={urlState.mode} />
+                      </motion.div>
+                    )}
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.18 }}>
                       {urlState.mode === "partner" && shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? null : urlState.mode === "partner" ? (
                         <PartnerDrawerActions place={selected} onContact={openContactForm} />
                       ) : (
@@ -15640,11 +15797,6 @@ export default function MapPage() {
                         />
                       )}
                     </motion.div>
-                    {!isInKindDining && !isBurgerBarPanel && !isHappyHourEntity(selected) && !(urlState.mode === "resident" && hasActivePerkData(selected)) && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.18 }}>
-                        <PanelContext place={selected} mode={urlState.mode} />
-                      </motion.div>
-                    )}
                     {isCampaign && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.18 }}>
                         <MapNativeCampaignDetails place={selected} mode={urlState.mode} />

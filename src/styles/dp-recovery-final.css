@@ -51376,3 +51376,933 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     top: max(74px, calc(env(safe-area-inset-top, 0px) + 64px)) !important;
   }
 }
+
+/* 2026 resident map polish lock: persistent console, full-width nav, native matrices. */
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap {
+  transition: opacity 180ms ease, transform 180ms ease !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) .dp-search-intent-rollup {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  inset: 0 auto auto 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-console {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-6px) scale(0.985) !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  padding-block: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+html body #root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  padding-inline: 0 !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: 0 -10px 24px rgba(11, 31, 51, 0.035) !important;
+}
+
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-detail-hero, .dp-destination-hero) {
+  width: 100% !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-detail-hero, .dp-destination-hero) > :is(.dp-destination-media, figure, img, picture, video),
+html body #root .dp-map-page.dp-map-page :is(.dp-destination-media, .dp-destination-hero-media) {
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(.dp-panel-detail-hero, .dp-destination-hero, .dp-destination-media) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-interactive-matrix {
+  display: grid !important;
+  gap: 14px !important;
+  width: 100% !important;
+  padding: 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  box-shadow: 0 10px 24px rgba(11, 31, 51, 0.035) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-interactive-matrix-header {
+  display: grid !important;
+  gap: 5px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-interactive-matrix-eyebrow {
+  margin: 0 !important;
+  color: #C8A96A !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-interactive-matrix :is(h3, h4) {
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 680 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.2 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-interactive-matrix-copy,
+html body #root .dp-map-page.dp-map-page .dp-matrix-detail-panel p {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-layout {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail {
+  display: flex !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  padding: 0 0 3px !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail button {
+  flex: 0 0 auto !important;
+  min-width: 116px !important;
+  min-height: 44px !important;
+  display: grid !important;
+  align-content: center !important;
+  gap: 3px !important;
+  padding: 9px 11px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail button.is-active,
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail button[aria-selected="true"] {
+  border-color: rgba(200, 169, 106, 0.42) !important;
+  color: #0B1F33 !important;
+  box-shadow: inset 0 -2px 0 #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail button span {
+  font-size: 13px !important;
+  font-weight: 680 !important;
+  line-height: 1.1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail button small {
+  color: rgba(11, 31, 51, 0.52) !important;
+  font-size: 11px !important;
+  line-height: 1.1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-detail-panel {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 14px !important;
+  border-radius: 14px !important;
+  background: #F7F8FB !important;
+  color: #0B1F33 !important;
+  transition: opacity 160ms ease, transform 160ms ease !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-meta-row,
+html body #root .dp-map-page.dp-map-page .dp-matrix-action-row,
+html body #root .dp-map-page.dp-map-page .dp-matrix-related-rail {
+  display: flex !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-meta-row span {
+  flex: 0 0 auto !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-action-row button {
+  min-height: 44px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  color: #0B1F33 !important;
+  font-size: 13px !important;
+  font-weight: 680 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-action-row .dp-matrix-action-primary {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-related-rail button {
+  flex: 0 0 168px !important;
+  display: grid !important;
+  grid-template-columns: 42px 1fr !important;
+  gap: 9px !important;
+  align-items: center !important;
+  min-height: 58px !important;
+  padding: 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-matrix-related-rail img {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 10px !important;
+  object-fit: cover !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page .dp-matrix-layout {
+    grid-template-columns: minmax(170px, 0.42fr) minmax(0, 1fr) !important;
+    align-items: stretch !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-matrix-selector-rail {
+    display: grid !important;
+    overflow: visible !important;
+  }
+}
+
+/* Terminal map navigation rhythm: restored search console + matching top/bottom chrome. */
+html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor,
+html body .dp-map-search-anchor.dp-map-search-anchor {
+  position: fixed !important;
+  top: max(76px, calc(env(safe-area-inset-top, 0px) + 70px)) !important;
+  right: 0 !important;
+  left: 0 !important;
+  z-index: 720 !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  padding: 0 12px !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.dp-search-intent-console-wrap,
+html body .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
+  width: min(100%, 720px) !important;
+  max-width: min(720px, calc(100vw - 24px)) !important;
+  margin: 0 auto !important;
+  pointer-events: auto !important;
+  transition: opacity 180ms ease, transform 180ms ease !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed).dp-search-intent-console-wrap,
+html body .dp-search-intent-console-wrap:not(.is-collapsed).dp-search-intent-console-wrap {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console,
+html body section.dp-search-intent-console.dp-search-intent-console {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: min(246px, calc(100dvh - 168px)) !important;
+  padding: 12px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  background-image: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 18px 38px rgba(11, 31, 51, 0.1) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page section.dp-search-intent-console::-webkit-scrollbar,
+html body section.dp-search-intent-console::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-header.dp-search-intent-console-header,
+html body .dp-search-intent-console-header.dp-search-intent-console-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-label.dp-search-intent-label,
+html body .dp-search-intent-label.dp-search-intent-label,
+html body #root .dp-map-page.dp-map-page .dp-search-brand-mark.dp-search-brand-mark,
+html body .dp-search-brand-mark.dp-search-brand-mark {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 720 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.1 !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-label.dp-search-intent-label,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-brand-mark.dp-search-brand-mark,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-brand-mark.dp-search-brand-mark span {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-top-actions.dp-search-intent-top-actions,
+html body .dp-search-intent-top-actions.dp-search-intent-top-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch.dp-search-intent-switch,
+html body .dp-search-intent-switch.dp-search-intent-switch {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch > button,
+html body .dp-search-intent-switch > button {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 740 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch > button::after,
+html body .dp-search-intent-switch > button::after,
+html body [data-dp-nav-root="true"] :is(a, button)::after,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)::after,
+html body .dp-map-bottom-nav :is(button, a)::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 0 !important;
+  bottom: -1px !important;
+  left: 0 !important;
+  display: block !important;
+  height: 2px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: background-color 180ms ease, opacity 180ms ease !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch > button:is(.is-active, [aria-selected="true"]),
+html body .dp-search-intent-switch > button:is(.is-active, [aria-selected="true"]) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-switch > button:is(.is-active, [aria-selected="true"])::after,
+html body .dp-search-intent-switch > button:is(.is-active, [aria-selected="true"])::after,
+html body [data-dp-nav-root="true"] :is(a, button):is(.active, .is-active, [aria-current="page"], [aria-selected="true"])::after,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active)::after,
+html body .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active)::after {
+  background: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row.dp-search-intent-input-row,
+html body .dp-search-intent-input-row.dp-search-intent-input-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  margin: 0 !important;
+  padding: 0 8px 0 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input,
+html body .dp-search-intent-input-row input {
+  min-width: 0 !important;
+  height: 40px !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 14px !important;
+  font-weight: 520 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row input::placeholder,
+html body .dp-search-intent-input-row input::placeholder {
+  color: rgba(11, 31, 51, 0.46) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.46) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit.dp-search-intent-submit,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-clear.dp-search-intent-clear,
+html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse.dp-search-intent-collapse,
+html body .dp-search-intent-submit.dp-search-intent-submit,
+html body .dp-search-intent-clear.dp-search-intent-clear,
+html body .dp-search-intent-collapse.dp-search-intent-collapse {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-submit.dp-search-intent-submit {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body #root .dp-map-page.dp-map-page .dp-search-context-row.dp-search-context-row-primary,
+html body .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+html body .dp-search-context-row.dp-search-context-row-primary {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 28px !important;
+  margin: 0 !important;
+  padding: 0 0 2px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body #root .dp-map-page.dp-map-page .dp-search-context-row::-webkit-scrollbar,
+html body .dp-search-intent-prompt-rail::-webkit-scrollbar,
+html body .dp-search-context-row::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button,
+html body #root .dp-map-page.dp-map-page .dp-search-context-row-primary > button,
+html body #root .dp-map-page.dp-map-page .dp-console-chip.dp-console-chip,
+html body #root .dp-map-page.dp-map-page .dp-search-segment.dp-search-segment,
+html body .dp-search-intent-prompt-rail > button,
+html body .dp-search-context-row-primary > button,
+html body .dp-console-chip.dp-console-chip,
+html body .dp-search-segment.dp-search-segment {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button::after,
+html body #root .dp-map-page.dp-map-page .dp-search-context-row-primary > button::after,
+html body #root .dp-map-page.dp-map-page .dp-console-chip.dp-console-chip::after,
+html body #root .dp-map-page.dp-map-page .dp-search-segment.dp-search-segment::after,
+html body .dp-search-intent-prompt-rail > button::after,
+html body .dp-search-context-row-primary > button::after,
+html body .dp-console-chip.dp-console-chip::after,
+html body .dp-search-segment.dp-search-segment::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: block !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .dp-search-context-row-primary > button:is(.is-active, [aria-selected="true"], [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .dp-console-chip.dp-console-chip:is(.is-active, [aria-selected="true"], [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .dp-search-segment.dp-search-segment:is(.is-active, [aria-selected="true"], [data-active="true"]),
+html body .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]),
+html body .dp-search-context-row-primary > button:is(.is-active, [aria-selected="true"], [data-active="true"]),
+html body .dp-console-chip.dp-console-chip:is(.is-active, [aria-selected="true"], [data-active="true"]),
+html body .dp-search-segment.dp-search-segment:is(.is-active, [aria-selected="true"], [data-active="true"]) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"])::after,
+html body #root .dp-map-page.dp-map-page .dp-search-context-row-primary > button:is(.is-active, [aria-selected="true"], [data-active="true"])::after,
+html body #root .dp-map-page.dp-map-page .dp-console-chip.dp-console-chip:is(.is-active, [aria-selected="true"], [data-active="true"])::after,
+html body #root .dp-map-page.dp-map-page .dp-search-segment.dp-search-segment:is(.is-active, [aria-selected="true"], [data-active="true"])::after,
+html body .dp-search-intent-prompt-rail > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"])::after,
+html body .dp-search-context-row-primary > button:is(.is-active, [aria-selected="true"], [data-active="true"])::after,
+html body .dp-console-chip.dp-console-chip:is(.is-active, [aria-selected="true"], [data-active="true"])::after,
+html body .dp-search-segment.dp-search-segment:is(.is-active, [aria-selected="true"], [data-active="true"])::after {
+  background: #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail > button :is(svg, .lucide),
+html body .dp-search-intent-prompt-rail > button :is(svg, .lucide) {
+  width: 15px !important;
+  height: 15px !important;
+  color: currentColor !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) .dp-search-intent-rollup,
+html body .dp-search-intent-console-wrap:not(.is-collapsed) .dp-search-intent-rollup {
+  position: absolute !important;
+  inset: 0 auto auto 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.dp-search-intent-console-wrap,
+html body .dp-search-intent-console-wrap.is-collapsed.dp-search-intent-console-wrap {
+  position: fixed !important;
+  top: max(74px, calc(env(safe-area-inset-top, 0px) + 64px)) !important;
+  left: 50% !important;
+  right: auto !important;
+  width: auto !important;
+  max-width: calc(100vw - 32px) !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed section.dp-search-intent-console,
+html body .dp-search-intent-console-wrap.is-collapsed section.dp-search-intent-console {
+  max-height: 0 !important;
+  min-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-6px) scale(0.985) !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup,
+html body .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 128px !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  box-shadow: 0 14px 30px rgba(11, 31, 51, 0.1) !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+}
+
+html body [data-dp-nav-root="true"] {
+  background: rgba(255, 255, 255, 0.97) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  box-shadow: 0 12px 30px rgba(11, 31, 51, 0.06) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+}
+
+html body [data-dp-nav-root="true"] :is(a, button) {
+  position: relative !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body [data-dp-nav-root="true"] :is(a, button):is(.active, .is-active, [aria-current="page"], [aria-selected="true"]) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell,
+html body #root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav),
+html body .dp-map-bottom-nav-shell {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 -12px 30px rgba(11, 31, 51, 0.06) !important;
+  pointer-events: none !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+}
+
+html body #root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav,
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body .dp-map-bottom-nav.dp-map-bottom-nav {
+  display: grid !important;
+  grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: 64px !important;
+  height: 64px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a),
+html body .dp-map-bottom-nav :is(button, a) {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  padding: 0 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.56) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 620 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active),
+html body .dp-map-bottom-nav :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) :is(svg, .lucide),
+html body .dp-map-bottom-nav :is(button, a) :is(svg, .lucide) {
+  width: 19px !important;
+  height: 19px !important;
+  color: currentColor !important;
+  stroke-width: 2 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a) span:not(.dp-nav-activity-badge),
+html body .dp-map-bottom-nav :is(button, a) span:not(.dp-nav-activity-badge) {
+  color: currentColor !important;
+  -webkit-text-fill-color: currentColor !important;
+  font-size: 11.5px !important;
+  font-weight: 620 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-nav-activity-badge.dp-nav-activity-badge,
+html body .dp-nav-activity-badge.dp-nav-activity-badge {
+  position: absolute !important;
+  top: 8px !important;
+  right: calc(50% - 22px) !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  padding: 0 4px !important;
+  border-radius: 999px !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-size: 10px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-search-intent-switch > button,
+  .dp-search-intent-prompt-rail > button,
+  .dp-search-context-row-primary > button,
+  .dp-console-chip,
+  .dp-search-segment,
+  .dp-search-intent-submit,
+  .dp-search-intent-clear,
+  .dp-search-intent-collapse,
+  .dp-map-bottom-nav button,
+  .dp-map-bottom-nav a
+):focus-visible,
+html body [data-dp-nav-root="true"] :is(a, button):focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.7) !important;
+  outline-offset: 3px !important;
+}
+
+@media (max-width: 520px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor,
+  html body .dp-map-search-anchor.dp-map-search-anchor {
+    top: max(74px, calc(env(safe-area-inset-top, 0px) + 66px)) !important;
+    padding: 0 10px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console,
+  html body section.dp-search-intent-console.dp-search-intent-console {
+    max-height: min(232px, calc(100dvh - 152px)) !important;
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-top-actions.dp-search-intent-top-actions,
+  html body .dp-search-intent-top-actions.dp-search-intent-top-actions {
+    gap: 9px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-switch.dp-search-intent-switch,
+  html body .dp-search-intent-switch.dp-search-intent-switch {
+    gap: 9px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+  html body #root .dp-map-page.dp-map-page .dp-search-context-row.dp-search-context-row-primary,
+  html body .dp-search-intent-prompt-rail.dp-search-intent-prompt-rail,
+  html body .dp-search-context-row.dp-search-context-row-primary {
+    gap: 10px !important;
+  }
+}
+
+/* Absolute final nav-width authority: defeat older repeated-id map locks. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-bottom-nav-shell.dp-map-bottom-nav-shell,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav),
+html body .dp-map-bottom-nav-shell.dp-map-bottom-nav-shell {
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  border-radius: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav,
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav,
+html body .dp-map-bottom-nav.dp-map-bottom-nav {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+  border-radius: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a),
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, :hover, :focus, :focus-visible),
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a),
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active, :hover, :focus, :focus-visible) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a)::after,
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a)::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 50% !important;
+  bottom: auto !important;
+  left: auto !important;
+  top: 0 !important;
+  display: block !important;
+  width: 28px !important;
+  height: 2px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translateX(50%) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active)::after,
+html body nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-current="page"], .is-active)::after {
+  background: #C8A96A !important;
+}

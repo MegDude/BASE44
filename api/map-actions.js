@@ -19,6 +19,7 @@ const ALLOWED_ACTIONS = new Set([
   "phone",
   "share",
   "explore",
+  "add_wallet",
 ]);
 
 function clean(value, limit = 500) {
@@ -99,11 +100,13 @@ function responseMessage(action) {
   if (action === "directions") return "Directions action recorded.";
   if (action === "save") return "Saved.";
   if (action === "unsave") return "Removed from saved.";
+  if (action === "add_wallet") return "Wallet action recorded.";
   return "Map action saved.";
 }
 
 function actionTypeForAnalytics(action) {
   if (action === "redeem" || action === "show_card") return "redemption";
+  if (action === "add_wallet") return "redemption";
   if (action === "rsvp" || action === "cancel_rsvp") return "rsvp";
   if (action === "directions") return "visit_intent";
   if (action === "save" || action === "unsave") return "save";
@@ -116,6 +119,14 @@ function pointsForAction(action) {
   if (action === "rsvp") return 10;
   if (action === "save") return 5;
   return 1;
+}
+
+function campaignTableForAction(action) {
+  if (action === "directions") return "campaign_directions";
+  if (action === "rsvp") return "campaign_rsvps";
+  if (action === "redeem" || action === "show_card" || action === "add_wallet") return "campaign_redemptions";
+  if (["website", "phone", "share", "explore"].includes(action)) return "campaign_clicks";
+  return "";
 }
 
 function workspaceMetadata(payload) {
@@ -202,11 +213,11 @@ async function recordSupabaseAction(payload) {
     }));
   }
 
-  if (payload.action === "redeem" || payload.action === "show_card") {
+  if (payload.action === "redeem" || payload.action === "show_card" || payload.action === "add_wallet") {
     writes.push(await safeInsert("perk_redemptions", {
       perk_id: nullableUuid(payload.form.perkId || payload.entity.id),
       source: payload.source || "resident_card",
-      status: payload.action === "redeem" ? "redeemed" : "presented",
+      status: payload.action === "redeem" ? "redeemed" : payload.action === "add_wallet" ? "wallet_added" : "presented",
       metadata,
     }));
   }
@@ -224,6 +235,30 @@ async function recordSupabaseAction(payload) {
       perk_id: payload.form.perkId || null,
       campaign_id: payload.campaignId || payload.entity.campaignId || null,
       status: "new",
+      metadata,
+    }));
+  }
+
+  const campaignTable = campaignTableForAction(payload.action);
+  if (campaignTable && nullableUuid(payload.campaignId)) {
+    writes.push(await safeInsert(campaignTable, {
+      campaign_id: nullableUuid(payload.campaignId),
+      partner_id: nullableUuid(payload.partnerId || payload.entity.partnerId),
+      entity_id: uuidEntityId,
+      source: payload.source || "map",
+      status: payload.action === "cancel_rsvp" ? "cancelled" : "active",
+      metadata,
+    }));
+  }
+
+  if (payload.campaignId && ["request_info", "request_tour", "reserve", "campaign_request", "rsvp", "redeem", "add_wallet"].includes(payload.action)) {
+    writes.push(await safeInsert("campaign_conversions", {
+      campaign_id: nullableUuid(payload.campaignId),
+      partner_id: nullableUuid(payload.partnerId || payload.entity.partnerId),
+      entity_id: uuidEntityId,
+      conversion_type: payload.action,
+      source: payload.source || "map",
+      status: "active",
       metadata,
     }));
   }
