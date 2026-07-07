@@ -1,0 +1,208 @@
+/*
+  Downtown Perks Production Quality V1
+  Final presentation layer for the canonical application build.
+  This file is intentionally imported last. It does not change routes, state,
+  map logic, checkout, data loading, or curated content.
+*/
+
+:root {
+  --dp-app-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  --dp-app-ink: #0b1f33;
+  --dp-app-muted: rgba(11, 31, 51, 0.64);
+  --dp-app-subtle: rgba(11, 31, 51, 0.48);
+  --dp-app-line: rgba(11, 31, 51, 0.1);
+  --dp-app-line-soft: rgba(11, 31, 51, 0.07);
+  --dp-app-surface: rgba(255, 255, 255, 0.9);
+  --dp-app-glass: rgba(255, 255, 255, 0.08);
+  --dp-app-glass-border: rgba(255, 255, 255, 0.14);
+  --dp-app-shadow-soft: 0 10px 32px rgba(0, 0, 0, 0.08);
+  --dp-app-control-radius: 16px;
+  --dp-app-motion: 220ms cubic-bezier(.22, 1, .36, 1);
+  --font-heading: var(--dp-app-font);
+  --font-body: var(--dp-app-font);
+  --dp-font-story-serif: var(--dp-app-font);
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) {
+  color: var(--dp-app-ink);
+  font-family: var(--dp-app-font) !important;
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(
+  *,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  small,
+  strong,
+  em,
+  .font-heading,
+  .font-serif,
+  .dp-serif,
+  [class*="font-serif"]
+) {
+  font-family: var(--dp-app-font) !important;
+  letter-spacing: 0 !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-campaign-builder-page,
+  .dp-brand-analytics-page,
+  .dp-admin-shell,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  .dp-dashboard-shell,
+  .dp-campaign-shell,
+  .dp-crm-shell,
+  .dp-media-shell,
+  .dp-billing-shell,
+  .dp-settings-shell,
+  [data-dp-surface="application"]
+) :where(h1, h2, h3, h4, .font-heading, .dp-panel-title, .dp-section-title, .dp-hero-title, .dp-destination-title, .dp-map-panel-title) {
+  color: var(--dp-app-ink) !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.08 !important;
+  text-wrap: balance;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  [data-dp-surface="application"]
+) :where(.dp-panel-shell, .dp-detail-drawer, .dp-bottom-sheet, .dp-modal, .dp-dialog, .dp-popover, .dp-surface, .dp-glass-panel) {
+  border-color: var(--dp-app-glass-border) !important;
+  box-shadow: var(--dp-app-shadow-soft) !important;
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  [data-dp-surface="application"]
+) :where(button, a[role="button"], .dp-button, .dp-action-button, .dp-primary-action, .dp-secondary-action) {
+  border-radius: var(--dp-app-control-radius);
+  min-height: 44px;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(.22, 1, .36, 1);
+}
+
+body :is(
+  .dp-map-page,
+  .dp-partner-page,
+  .partner-workspace-page,
+  .dp-report-page,
+  .dp-pricing-page,
+  .dp-registration-page,
+  .dp-partner-register-page,
+  .dp-partner-checkout-page,
+  .dp-product-shell,
+  .dp-app-shell,
+  .dp-workspace-shell,
+  [data-dp-surface="application"]
+) :where(button:active, a[role="button"]:active, .dp-button:active, .dp-action-button:active) {
+  transform: translateY(1px);
+}
+
+@media (min-width: 768px) {
+  body :is(
+    .dp-map-page,
+    .dp-partner-page,
+    .partner-workspace-page,
+    .dp-report-page,
+    .dp-pricing-page,
+    .dp-registration-page,
+    .dp-partner-register-page,
+    .dp-partner-checkout-page,
+    .dp-product-shell,
+    .dp-app-shell,
+    .dp-workspace-shell,
+    [data-dp-surface="application"]
+  ) :where(button, a[role="button"], .dp-button, .dp-action-button, .dp-primary-action, .dp-secondary-action) {
+    min-height: 48px;
+  }
+}

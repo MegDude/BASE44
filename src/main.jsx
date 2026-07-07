@@ -15,6 +15,7 @@ import '@/styles/homepage-standardization-patch.css'
 import '@/styles/pricing-clean.css'
 import '@/styles/contact-clean.css'
 import '@/styles/typography-governance.css'
+import '@/styles/production-quality-v1.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
