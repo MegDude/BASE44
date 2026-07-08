@@ -2229,3 +2229,143 @@ html body #root .dp-map-page.dp-map-page .dp-route-mini-exit {
     min-width: 0 !important;
   }
 }
+
+/* Legends listings use the standalone butterfly mark as the pin art. */
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell:has(.dp-live-pin--legends-logo),
+  .leaflet-marker-icon.dp-leaflet-pin:has(.dp-live-pin--legends-logo),
+  .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin:has(.dp-live-pin--legends-logo)
+) {
+  width: var(--dp-zoom-pin-size, 38px) !important;
+  height: var(--dp-zoom-pin-size, 38px) !important;
+  min-width: var(--dp-zoom-pin-size, 38px) !important;
+  min-height: var(--dp-zoom-pin-size, 38px) !important;
+  overflow: visible !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  outline: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--legends-logo,
+  .dp-live-pin.dp-live-pin--legends-logo,
+  .leaflet-marker-icon.dp-leaflet-pin .dp-live-pin.dp-live-pin--legends-logo
+) {
+  width: var(--dp-zoom-pin-size, 38px) !important;
+  height: var(--dp-zoom-pin-size, 38px) !important;
+  min-width: var(--dp-zoom-pin-size, 38px) !important;
+  min-height: var(--dp-zoom-pin-size, 38px) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  outline: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--legends-logo::before,
+  .dp-map-pin.dp-live-pin--legends-logo::after,
+  .dp-live-pin.dp-live-pin--legends-logo::before,
+  .dp-live-pin.dp-live-pin--legends-logo::after,
+  .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__halo,
+  .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core::before,
+  .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core::after
+) {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--legends-logo .dp-map-pin__icon,
+  .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core,
+  .leaflet-marker-icon.dp-leaflet-pin .dp-live-pin.dp-live-pin--legends-logo .dp-live-pin__core
+) {
+  width: var(--dp-zoom-pin-size, 38px) !important;
+  height: var(--dp-zoom-pin-size, 38px) !important;
+  min-width: var(--dp-zoom-pin-size, 38px) !important;
+  min-height: var(--dp-zoom-pin-size, 38px) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--legends-logo img.dp-live-pin__legends-logo,
+  .dp-map-pin.dp-live-pin--legends-logo .dp-pin-logo,
+  .dp-live-pin.dp-live-pin--legends-logo img.dp-live-pin__legends-logo,
+  .dp-live-pin.dp-live-pin--legends-logo .dp-pin-logo,
+  .dp-map-pin-badge .dp-live-pin__legends-logo
+) {
+  display: block !important;
+  width: var(--dp-zoom-legends-logo-size, 36px) !important;
+  height: var(--dp-zoom-legends-logo-size, 36px) !important;
+  min-width: var(--dp-zoom-legends-logo-size, 36px) !important;
+  min-height: var(--dp-zoom-legends-logo-size, 36px) !important;
+  max-width: var(--dp-zoom-legends-logo-size, 36px) !important;
+  max-height: var(--dp-zoom-legends-logo-size, 36px) !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--legends-logo:hover,
+  .dp-map-pin.dp-live-pin--legends-logo:focus-visible,
+  .dp-live-pin.dp-live-pin--legends-logo:hover,
+  .dp-live-pin.dp-live-pin--legends-logo:focus-visible
+) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer[data-panel-kind="residential"] :is(
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll
+) {
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-drawer[data-panel-kind="residential"] :is(
+  .dp-legends-residential-drawer,
+  .dp-legends-intelligence-drawer,
+  .dp-entity-drawer,
+  .dp-destination-content,
+  .dp-detail-content
+) {
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+}

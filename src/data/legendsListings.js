@@ -23,7 +23,7 @@ const BUILDING_COORDS = {
 const LEGENDS_IMAGE_BASE = "/images/legends-listings";
 const REPORT_IMAGE_BASE = "/images/reports";
 const USER_SUPPLIED_IMAGE_BASE = "/images/user-supplied";
-const LEGENDS_PIN_ASSET = "/pins/circular/special/legends-badge.svg";
+const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo-gold.svg";
 
 const SEAHOLM_RESIDENCES_IMAGES = [
   `${USER_SUPPLIED_IMAGE_BASE}/seaholm-residences-entry.png`,

@@ -157,7 +157,7 @@ const DAA_CIVIC_VIDEOS = [
   },
 ];
 const LEGENDS_BRAND_LINE = "Legends Real Estate";
-const LEGENDS_PIN_LOGO = "/pins/circular/special/legends-badge.svg";
+const LEGENDS_PIN_LOGO = "/pins/downtown-perks/legends-logo-gold.svg";
 const MAP_DRAWER_SURFACE_STYLE = {
   backgroundColor: "rgba(255, 255, 255, 0.94)",
   backgroundImage: "none",
@@ -3475,7 +3475,10 @@ function getMarkerDataKind(place) {
   return String(place?.type || "place").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
-const LEGENDS_MARKER_FALLBACK_PATH = '<path fill="currentColor" stroke="none" d="M12 12.8c-.6-1.5-1.7-3.8-3.4-5.4C6.9 5.8 4.5 4.7 2.9 5.9 1.2 7.2 2 10.5 4 12.5c1.7 1.7 4.5 2.2 6.4 1.8-.4 1.6-1.4 3.1-2.9 4.5l1.3 1.3c1.5-1.4 2.5-2.9 3.1-4.5.6 1.6 1.6 3.1 3.1 4.5l1.3-1.3c-1.5-1.4-2.5-2.9-2.9-4.5 1.9.4 4.7-.1 6.4-1.8 2-2 2.8-5.3 1.1-6.6-1.6-1.2-4-.1-5.7 1.5-1.6 1.6-2.7 3.9-3.2 5.4z"/>';
+const LEGENDS_LOGO_SVG_PATHS = `
+  <path d="M60 75 48.6 50.4 28 68.8 17.5 42.2 4 30.8 24.1 8.2 51.6 23.8 60 12.6l8.4 11.2L95.9 8.2 116 30.8l-13.5 11.4L92 68.8 71.4 50.4 60 75Z" fill="none" stroke="#C8A96A" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M24.1 8.2 28 68.8M51.6 23.8 28 68.8M51.6 23.8 48.6 50.4M68.4 23.8 71.4 50.4M95.9 8.2 92 68.8M68.4 23.8 92 68.8M60 12.6v62.4M48.6 50.4h22.8" fill="none" stroke="#C8A96A" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
+`;
 
 function mapIconSvgInner(glyph) {
   return String(glyph || "").match(/<svg[^>]*>([\s\S]*?)<\/svg>/i)?.[1] || "";
@@ -3536,11 +3539,23 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
-  const fill = isLegends ? "#FFFFFF" : "#0B1F33";
+  if (isLegends) {
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 120 120">
+        <g transform="translate(0 16)">${LEGENDS_LOGO_SVG_PATHS}</g>
+        ${stopNumber ? `<circle cx="108" cy="14" r="10" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.6"/><text x="108" y="15" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
+      </svg>`;
+    return {
+      url: svgMarkerDataUrl(svg),
+      scaledSize: new maps.Size(size, size),
+      anchor: new maps.Point(size / 2, size / 2),
+    };
+  }
+  const fill = "#0B1F33";
   const stroke = "#BFA46A";
-  const iconColor = isLegends ? "#0B1F33" : "#BFA46A";
+  const iconColor = "#BFA46A";
   const pin = resolveEntityPin(place);
-  const paths = isLegends ? LEGENDS_MARKER_FALLBACK_PATH : mapIconSvgInner(pin.glyph);
+  const paths = mapIconSvgInner(pin.glyph);
   const iconSize = Math.max(18, Math.round(size * 0.5));
   const iconScale = Math.max(0.75, size / 48);
   const svg = `

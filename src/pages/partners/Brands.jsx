@@ -33,7 +33,7 @@ const CAMPAIGN_POINTS = [
     district: "2nd Street",
     lat: 30.2659,
     lng: -97.7475,
-    logo: "/pins/circular/special/legends-badge.svg",
+    logo: "/pins/downtown-perks/legends-logo-gold.svg",
     scans: 340,
     saves: 118,
     redemptions: 58,
