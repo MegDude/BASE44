@@ -1811,3 +1811,85 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     max-height: calc(100dvh - 20px - env(safe-area-inset-top, 0px)) !important;
   }
 }
+
+/* Pin/listing detail drawers use the full panel depth; no reserved bottom blocker. */
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-panel.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-panel.dp-detail-drawer,
+  aside.dp-map-drawer-panel.dp-destination-drawer,
+  aside.dp-entity-drawer-shell.dp-detail-drawer,
+  aside[data-panel-kind].dp-detail-drawer
+) {
+  bottom: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(
+  aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-panel.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-panel.dp-detail-drawer,
+  aside.dp-map-drawer-panel.dp-destination-drawer,
+  aside.dp-entity-drawer-shell.dp-detail-drawer,
+  aside[data-panel-kind].dp-detail-drawer
+) {
+  bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-panel.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-panel.dp-detail-drawer,
+  aside.dp-map-drawer-panel.dp-destination-drawer,
+  aside.dp-entity-drawer-shell.dp-detail-drawer,
+  aside[data-panel-kind].dp-detail-drawer
+) > :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll, .dp-panel-scroll, .dp-panel-body) {
+  flex: 1 1 auto !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 16px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-panel.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-panel.dp-detail-drawer,
+  aside.dp-map-drawer-panel.dp-destination-drawer,
+  aside.dp-entity-drawer-shell.dp-detail-drawer,
+  aside[data-panel-kind].dp-detail-drawer
+) > :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll, .dp-panel-scroll, .dp-panel-body) > :last-child {
+  margin-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page :is(
+  aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-map-panel.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-panel.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-panel.dp-detail-drawer,
+  aside.dp-map-drawer-panel.dp-destination-drawer,
+  aside.dp-entity-drawer-shell.dp-detail-drawer,
+  aside[data-panel-kind].dp-detail-drawer
+) :is(.dp-entity-drawer, .dp-destination-content, .dp-detail-content, .dp-resident-perk-details, .dp-event-detail-drawer) {
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+}
