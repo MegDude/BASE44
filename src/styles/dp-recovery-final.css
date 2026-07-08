@@ -52714,3 +52714,163 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+/* Resident pass text-flow lock: prevent squeezed rows, clipped IDs, and action overlap. */
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet.dp-map-sheet--resident-card.dp-resident-card-sheet {
+  width: min(100%, 428px) !important;
+  max-width: calc(100vw - 12px) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-sheet-scroll {
+  gap: 14px !important;
+  padding: 12px 14px calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card :is(
+  .dp-resident-card-identity,
+  .dp-card-credential,
+  .dp-map-panel-section,
+  .dp-map-panel-note
+) {
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card :is(
+  .dp-map-panel-title,
+  .dp-card-credential-title,
+  .dp-map-panel-section-title
+) {
+  max-width: 100% !important;
+  text-wrap: balance !important;
+  overflow-wrap: anywhere !important;
+  hyphens: auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card :is(
+  .dp-map-panel-subtitle,
+  .dp-card-credential-copy,
+  .dp-map-panel-body-copy,
+  .dp-map-panel-small-note
+) {
+  max-width: 100% !important;
+  text-wrap: pretty !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-credential-header {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card :is(.dp-card-credential-kicker, .dp-card-credential-status) {
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-credential-status {
+  flex: 0 0 auto !important;
+  text-align: right !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-scan-demo {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-scan-demo span {
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-scan-demo button {
+  justify-self: end !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-verification-row {
+  display: grid !important;
+  gap: 5px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  text-align: left !important;
+  justify-items: stretch !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-verification-row span {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-verification-row code {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  color: rgba(11, 31, 51, 0.54) !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
+  font-size: 9.5px !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+  white-space: normal !important;
+  word-break: break-all !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix {
+  display: grid !important;
+  gap: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix-row,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix > span {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix-row:last-child,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix > span:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix :is(strong, em) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix em {
+  text-align: right !important;
+}
+
+@media (max-width: 390px) {
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-scan-demo,
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix-row,
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix > span {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-card-scan-demo button,
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-sheet--resident-card .dp-map-panel-matrix em {
+    justify-self: start !important;
+    text-align: left !important;
+  }
+}
