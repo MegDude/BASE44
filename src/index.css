@@ -10122,8 +10122,31 @@ html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-header {
   border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
 }
 
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-back,
+html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-close {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  display: inline-flex !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+}
+
 html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-panel-header-copy {
+  grid-column: 2 !important;
+  justify-self: stretch !important;
   min-width: 0 !important;
+  width: 100% !important;
   text-align: center !important;
 }
 
@@ -10245,6 +10268,10 @@ html body #root .dp-map-page.dp-map-page .dp-resident-tab-panel-list {
 }
 
 html body #root .dp-map-page.dp-map-page .dp-directory-result-row {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 10px !important;
   width: 100% !important;
   min-width: 0 !important;
   min-height: 72px !important;
