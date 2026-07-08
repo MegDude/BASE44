@@ -1893,3 +1893,339 @@ html body #root .dp-map-page.dp-map-page :is(
   min-height: 0 !important;
   padding-bottom: 0 !important;
 }
+
+/* Collection and walking-route panels share the same compact map sheet system. */
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel {
+  left: max(12px, env(safe-area-inset-left, 0px)) !important;
+  right: auto !important;
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  width: min(404px, calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))) !important;
+  max-width: calc(100vw - 24px) !important;
+  max-height: min(54dvh, 480px) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 14px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 14px 34px rgba(11, 31, 51, 0.12) !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  backdrop-filter: blur(18px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.05) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel::before {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header p,
+html body #root .dp-map-page.dp-map-page .dp-route-mini-kicker {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 740 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header-actions {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-route-panel-control {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 42px !important;
+  min-height: 32px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 3px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-route-panel-control:is(:hover, :focus-visible) {
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel h2 {
+  display: block !important;
+  margin: 0 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(18px, 4.8vw, 23px) !important;
+  font-weight: 680 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.08 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__description {
+  display: block !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 13px !important;
+  font-weight: 440 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.42 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__meta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__meta span {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 24px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.54) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.54) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__meta span + span::before {
+  content: "/" !important;
+  margin-right: 6px !important;
+  color: rgba(11, 31, 51, 0.28) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.28) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .dp-route-cta {
+  display: inline-flex !important;
+  flex: 1 1 118px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  padding: 0 10px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  white-space: normal !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .dp-route-cta--primary {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .dp-route-cta--secondary {
+  border-color: rgba(200, 169, 106, 0.38) !important;
+  background: rgba(200, 169, 106, 0.1) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .dp-route-cta--tertiary {
+  flex-grow: 0 !important;
+  min-width: 92px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops {
+  display: flex !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 -14px -2px !important;
+  padding: 0 14px 2px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  scrollbar-width: thin !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button {
+  display: grid !important;
+  grid-template-columns: 24px minmax(0, 1fr) !important;
+  flex: 0 0 min(210px, 68vw) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  padding: 7px 9px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  scroll-snap-align: start !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button span {
+  display: grid !important;
+  place-items: center !important;
+  width: 22px !important;
+  height: 22px !important;
+  border: 1px solid rgba(200, 169, 106, 0.55) !important;
+  border-radius: 999px !important;
+  background: #FFFFFF !important;
+  color: #C8A96A !important;
+  -webkit-text-fill-color: #C8A96A !important;
+  font-size: 10px !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  font-size: 12px !important;
+  font-weight: 660 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.16 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button.is-active {
+  border-color: rgba(200, 169, 106, 0.56) !important;
+  background: rgba(200, 169, 106, 0.08) !important;
+  box-shadow: inset 0 -2px 0 #C8A96A !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-collection-route-panel--minimized {
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-height: 74px !important;
+  max-height: 92px !important;
+  padding: 12px 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-route-mini-main {
+  min-width: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-route-mini-main strong {
+  overflow: hidden !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-route-mini-main em {
+  color: rgba(11, 31, 51, 0.58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 11px !important;
+  font-style: normal !important;
+  font-weight: 540 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-route-mini-exit {
+  min-width: 44px !important;
+  min-height: 40px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 2px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+@media (max-width: 720px) {
+  html body #root .dp-map-page.dp-map-page .dp-collection-route-panel {
+    right: max(10px, env(safe-area-inset-right, 0px)) !important;
+    left: max(10px, env(safe-area-inset-left, 0px)) !important;
+    bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: min(44dvh, 376px) !important;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 13px 13px 12px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .dp-route-cta {
+    flex-basis: calc(50% - 4px) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .dp-route-cta--tertiary {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+}
