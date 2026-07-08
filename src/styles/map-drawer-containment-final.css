@@ -1522,6 +1522,17 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-align: center !important;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell > .dp-panel-toolbar {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 42px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 8px !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell :is(.dp-panel-back, .dp-panel-close) {
   position: static !important;
   inset: auto !important;
@@ -1537,6 +1548,16 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   border-radius: 10px !important;
   background: transparent !important;
   box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell > .dp-panel-toolbar .dp-panel-back {
+  grid-column: 1 !important;
+  justify-self: start !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell > .dp-panel-toolbar .dp-panel-close {
+  grid-column: 3 !important;
+  justify-self: end !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell .dp-panel-header-copy {
