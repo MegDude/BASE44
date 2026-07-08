@@ -1365,6 +1365,44 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   overflow: hidden !important;
 }
 
+/* Final event-content scroll and text-flow correction. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll) {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-event-detail-drawer.dp-event-detail-drawer {
+  min-height: max-content !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-event-detail-drawer.dp-event-detail-drawer :is(.dp-destination-section, .dp-event-section, .dp-nearby-image-section, .dp-entity-assistant) h3 {
+  display: block !important;
+  min-height: 17px !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-event-detail-drawer.dp-event-detail-drawer .dp-event-quick-facts-section.dp-event-quick-facts-section {
+  min-height: 92px !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-event-detail-drawer.dp-event-detail-drawer .dp-event-quick-fact-grid.dp-event-quick-fact-grid {
+  min-height: 63px !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell:not(.dp-detail-drawer):not(.dp-destination-drawer):not(.dp-entity-drawer-shell) :is(.dp-resident-tab-panel, .dp-resident-tab-panel-header, .dp-resident-tab-panel-list, .dp-saved-downtown-panel, .dp-resident-info-tab-panel) {
   width: 100% !important;
   max-width: 100% !important;
