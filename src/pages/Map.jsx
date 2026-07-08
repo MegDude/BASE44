@@ -1160,6 +1160,15 @@ const PERKS_CARD_QR_SRC = "/images/card/perks-card-qr.png";
 const RESIDENT_ACCESS_STORAGE_KEY = "dp_resident_access:current";
 const RESIDENT_TOUCHPOINTS_STORAGE_KEY = "downtown-perks-resident-touchpoints";
 const RESIDENT_QR_EVENT_TYPE = "resident_qr_presented";
+const RESIDENT_CARD_ENTITY = {
+  id: "resident-card",
+  name: "Downtown Perks Card",
+  type: "card",
+  category: "Resident Card",
+  district: "Downtown Austin",
+  summary: "Verified resident access for eligible perks, offers, and event access.",
+  raw: { type: "card", category: "Resident Card" },
+};
 
 function getQrImageUrl(value) {
   const encoded = encodeURIComponent(String(value || DEMO_CARD_CODE));
@@ -1217,10 +1226,13 @@ function buildResidentQrPayload({ place, action = "show_card", source = "residen
   const entityName = getEntityTouchpointName(place);
   const perk = getResidentQrPerkCopy(place);
   const sessionId = getWorkflowSessionId();
+  const cardId = `card-${uid}`;
+  const cardNumber = `DP-${String(uid).replace(/^profile-/, "").slice(0, 8).toUpperCase() || "78701"}`;
   const issuedAt = new Date().toISOString();
   const baseUrl = typeof window !== "undefined" ? window.location.origin : LIVE_CARD_URL;
   const qrUrl = new URL("/card", baseUrl);
   qrUrl.searchParams.set("residentUid", uid);
+  qrUrl.searchParams.set("cardId", cardId);
   qrUrl.searchParams.set("touchpoint", action);
   qrUrl.searchParams.set("entityId", entityId);
 
@@ -1228,7 +1240,12 @@ function buildResidentQrPayload({ place, action = "show_card", source = "residen
     type: "downtown_perks.resident_qr",
     version: 1,
     uid,
+    residentId: uid,
     profileId: uid,
+    cardId,
+    cardNumber,
+    cardStatus: "active",
+    buildingName: "Downtown Austin",
     sessionId,
     action,
     source,
@@ -1267,11 +1284,24 @@ function recordResidentTouchpoint(payload) {
   fireWorkflow("/api/track", {
     type: RESIDENT_QR_EVENT_TYPE,
     entityId: event.entityId,
-    entityType: "perk",
+    entityType: event.action === "use_perk" ? "perk" : "card",
     profileId: event.uid,
     sessionId: event.sessionId,
     sourceType: "resident_card",
     value: 1,
+    metadata: event,
+  });
+  fireWorkflow("/api/resident-card/events", {
+    type: "resident_card_shown",
+    residentId: event.residentId || event.uid,
+    profileId: event.profileId || event.uid,
+    cardId: event.cardId,
+    cardNumber: event.cardNumber,
+    source: event.source || "resident_map",
+    entityType: event.action === "use_perk" ? "perk" : "card",
+    entityId: event.entityId,
+    partnerId: event.partnerId || event.entityId,
+    sessionId: event.sessionId,
     metadata: event,
   });
 
@@ -3789,7 +3819,7 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
   const value = data.perkValue && data.perkValue !== title ? data.perkValue : "";
   const description = isPerkRedemption
     ? "Partner scans this code to apply the perk."
-    : data.perkDescription || `Show this code when a participating partner asks to confirm resident access for ${placeName}.`;
+    : "Show this QR code to use eligible resident perks, offers, and event access.";
   const terms = data.perkTerms || "";
   const expiresAt = data.expiresAt ? new Date(data.expiresAt) : null;
   const validityLabel = redemptionStatus === "redeemed"
@@ -3838,7 +3868,8 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
           <div className="dp-resident-qr-meta">
             <span>{actionLabel}</span>
             <strong>{placeName}</strong>
-            <code>{data.uid}</code>
+            <span>{data.buildingName || "Downtown Austin"}</span>
+            <code>{data.cardNumber || data.uid}</code>
             {expiresAt && redemptionStatus === "ready" && <small>Valid until {expiresAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</small>}
           </div>
         </motion.section>
@@ -12405,10 +12436,11 @@ export default function MapPage() {
     };
   }, [activeFilter, district, urlState.campaignId, urlState.collection, urlState.mode]);
   const openResidentQrModal = useCallback((place = null, action = "show_card", source = "resident_map") => {
-    const payload = buildResidentQrPayload({ place, action, source });
+    const qrPlace = place || RESIDENT_CARD_ENTITY;
+    const payload = buildResidentQrPayload({ place: place || null, action, source });
     const mapAction = action === "use_perk" ? "redeem" : "show_card";
     const expiresAt = action === "use_perk" ? new Date(Date.now() + 10 * 60 * 1000).toISOString() : "";
-    const workflowPayload = buildMapActionPayload(place, mapAction, source, {
+    const workflowPayload = buildMapActionPayload(qrPlace, mapAction, source, {
       form: {
         intent: action,
         label: action === "use_perk" ? "Use resident perk" : "Show resident card",
@@ -12438,7 +12470,7 @@ export default function MapPage() {
     });
     recordResidentTouchpoint(payload);
     setPassPresented(true);
-    setResidentQrModal({ ...payload, place, redemptionStatus: action === "use_perk" ? "ready" : "presented", expiresAt });
+    setResidentQrModal({ ...payload, place: qrPlace, redemptionStatus: action === "use_perk" ? "ready" : "presented", expiresAt });
   }, [buildMapActionPayload]);
   const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
   const presentResidentPass = useCallback((event) => {
