@@ -2,7 +2,7 @@ import { categoryImageFallbacks, districtImageFallbacks, perkImageRegistry } fro
 import { resolveDowntownPerksEntityImage } from "../../data/downtownPerksEntityImages";
 
 export type ImageResolveContext = "pin" | "drawerHeader" | "nearbyRail" | "relatedRail" | "card" | "fallback";
-const IMAGE_RESOLVER_WARNINGS = import.meta.env.DEV && import.meta.env.VITE_IMAGE_RESOLVER_WARNINGS === "true";
+const IMAGE_RESOLVER_WARNINGS = Boolean(import.meta.env?.DEV && import.meta.env?.VITE_IMAGE_RESOLVER_WARNINGS === "true");
 
 export function assertImageMatchesEntityType(entityType: string, imageAsset: string) {
   const asset = String(imageAsset || "").toLowerCase();
@@ -321,11 +321,6 @@ const brandPerkImageOverrides: Array<{
     hero: "/images/imported/perks/brand-updates/lustre-pearl-happy-hour.png",
   },
   {
-    terms: ["rainey patio night", "resident event", "monday meetups", "happy hour", "rooftop event"],
-    hero: "/images/imported/perks/4-residnet-event.png",
-    rail: "/images/imported/perks/people-at-event.png",
-  },
-  {
     terms: ["banger", "sausage house", "beer garden"],
     hero: "/images/imported/perks/brand-updates/bangers-patio.jpg",
     rail: "/images/imported/perks/brand-updates/bangers-sausage.webp",
@@ -339,13 +334,18 @@ const brandPerkImageOverrides: Array<{
   },
   {
     terms: ["hotel van zandt", "van zandt"],
-    hero: "/images/map/panels/hotel-van-zandt-rooftop-pool.jpg",
+    hero: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
     rail: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
   },
   {
     terms: ["geraldine", "geraldines", "geraldine's"],
-    hero: "/images/map/panels/geraldines-bar.jpg",
-    rail: "/images/map-entities/attached/venues/geraldines-live.jpeg",
+    hero: "/images/map-entities/attached/venues/geraldines-stage.jpeg",
+    rail: "/images/map-entities/attached/venues/geraldines-stage.jpeg",
+  },
+  {
+    terms: ["rainey patio night", "resident event", "monday meetups", "happy hour", "rooftop event"],
+    hero: "/images/imported/perks/4-residnet-event.png",
+    rail: "/images/imported/perks/people-at-event.png",
   },
   {
     terms: ["rainey street historic", "rainey street"],
@@ -353,7 +353,12 @@ const brandPerkImageOverrides: Array<{
     rail: "/images/map-entities/rainey-bars/rainey-street.jpeg",
   },
   {
-    terms: ["salvation pizza", "via 313", "pizza"],
+    terms: ["via 313"],
+    hero: "/images/imported/perks/via313.jpg",
+    rail: "/images/map-entities/rainey-bars/via-313.jpeg",
+  },
+  {
+    terms: ["salvation pizza"],
     hero: "/images/map/panels/salvation-pizza-rainey.jpg",
     rail: "/images/map-entities/rainey-bars/via-313.jpeg",
   },
@@ -484,7 +489,7 @@ const curatedBuildingImageOverrides: Record<string, string> = {
 };
 
 export const HOTEL_IMAGE_FALLBACK: Record<string, string> = {
-  hotelVanZandt: "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
+  hotelVanZandt: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
   austinProper: "/hotels/austin-proper.webp",
   fourSeasons: "/images/imported/perks/four-seasons-resi.jpg",
   hyattCentric: "/hotels/hyatt-centric.webp",
@@ -499,7 +504,7 @@ export const HOTEL_IMAGE_FALLBACK: Record<string, string> = {
 };
 
 const curatedHotelImageOverrides: Record<string, string> = {
-  hotelVanZandt: "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
+  hotelVanZandt: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
   austinProper: `${PREMIUM_PROPERTY_IMAGE_BASE}/austin-proper-residences.jpeg`,
   fourSeasons: `${PREMIUM_PROPERTY_IMAGE_BASE}/four-seasons-residences.jpeg`,
   fairmontAustin: "/images/map-pins/property/fairmont-austin.jpg",
@@ -621,6 +626,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
   ],
   geraldines: [
+    `${ATTACHED_IMAGE_BASE}/venues/geraldines-stage.jpeg`,
     `${ATTACHED_IMAGE_BASE}/venues/geraldines-rooftop.jpg`,
     `${ATTACHED_IMAGE_BASE}/venues/geraldines-live.jpeg`,
     "/images/imported/perks/geraldine-s.jpg",
@@ -658,8 +664,8 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/rotal-blue-inside.png",
   ],
   "hotel-van-zandt": [
-    "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     "/images/imported/perks/hotel-van-zandt-entrance.jpg",
+    "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     "/images/imported/perks/hotel-van-zandt-image-2578566-810.jpg",
     "/images/imported/perks/hotel-van-zandt-pool.jpg",
     "/images/imported/perks/rooftop-pools-austin-hotel-van-zandt-hero.jpg",
@@ -788,6 +794,7 @@ const entityImageSets: Record<string, string[]> = {
   ],
   hotel: [
     ...LOCAL_IMAGE_PRIORITY.hotel,
+    "/images/imported/perks/hotel-van-zandt-entrance.jpg",
     "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     "/images/imported/perks/four-seasons-resi.jpg",
     "/images/imported/perks/four-seasons-residents-lounge.jpeg",
@@ -816,6 +823,7 @@ const entityImageSets: Record<string, string[]> = {
     "/images/map-entities/dining/dinner-table.avif",
     "/images/map-entities/dining/gourmet-food.avif",
     "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-38-rr9smo.avif",
+    "/images/map-entities/attached/venues/geraldines-stage.jpeg",
     "/images/imported/perks/geraldine-s.jpg",
     "/images/restaurants/bangers-bar.webp",
     "/images/imported/perks/via313.jpg",
@@ -946,6 +954,23 @@ function entityText(entity: Record<string, unknown>): string {
     .toLowerCase();
 }
 
+function identityText(entity: Record<string, unknown>): string {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return [
+    entity.id,
+    entity.name,
+    entity.title,
+    entity.brand,
+    raw.id,
+    raw.name,
+    raw.title,
+    raw.brand,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
 function explicitTypeText(entity: Record<string, unknown>): string {
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
   return [
@@ -1042,7 +1067,7 @@ function actualVenueImage(entity: Record<string, unknown>, context: ImageResolve
 }
 
 function brandPerkImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string | null {
-  const text = entityText(entity);
+  const text = identityText(entity);
   const match = brandPerkImageOverrides.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
   if (!match) return null;
   if (context === "pin") return match.thumb || match.rail || match.card || match.hero;
@@ -1127,7 +1152,12 @@ function looksHotel(entity: Record<string, unknown>): boolean {
 
 function buildingImageKey(entity: Record<string, unknown>): string | null {
   if (!looksResidential(entity)) return null;
-  const text = entityText(entity);
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  const text = [
+    identityText(entity),
+    entity.address,
+    raw.address,
+  ].filter(Boolean).join(" ").toLowerCase();
   const match = buildingImageRules.find((rule) => rule.terms.some((term) => includesTerm(text, term)));
   return match?.key || null;
 }

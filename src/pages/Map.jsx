@@ -7237,7 +7237,7 @@ function getBrandPerkRailImage(entity) {
   if (/banger'?s?|sausage\s+house|beer\s+garden/.test(text)) return "/images/imported/perks/brand-updates/bangers-sausage.webp";
   if (/stay\s+put|deep\s+ellum/.test(text)) return "/images/imported/perks/brand-updates/stay-put-patio.png";
   if (/hotel\s+van\s+zandt|van\s+zandt/.test(text)) return "/images/imported/perks/hotel-van-zandt-entrance.jpg";
-  if (/geraldine/.test(text)) return "/images/map-entities/attached/venues/geraldines-live.jpeg";
+  if (/geraldine/.test(text)) return "/images/map-entities/attached/venues/geraldines-stage.jpeg";
   if (/rainey\s+street\s+historic|rainey\s+street/.test(text)) return "/images/map-entities/rainey-bars/rainey-street.jpeg";
   if (/stagger\s+lee/.test(text)) return "/images/imported/perks/happy-hour-2.png";
   if (/emmer|rye/.test(text)) return "/images/map-entities/rainey-bars/emmer-rye-bread.png";

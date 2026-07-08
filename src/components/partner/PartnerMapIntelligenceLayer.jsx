@@ -28,8 +28,8 @@ const VISUAL_SETS = {
     "/images/residents/downtown-rooftop-evening.png",
   ],
   hotel: [
+    "/images/imported/perks/hotel-van-zandt-entrance.jpg",
     "/images/partners/hospitality-rooftop-social.png",
-    "/images/imported/perks/hotel-van-zandt-2560x1570.webp",
     "/images/splash/walkable-map.png",
   ],
   property: [

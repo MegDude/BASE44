@@ -48,7 +48,7 @@ const partnerTypes = [
     price: "$149 annually",
     outcome: "Help guests experience more than the lobby.",
     overview: "Recommended for hotels that want a polished local guide, QR handoff, and measurable guest engagement.",
-    image: "/images/map-pins/property/hotel-van-zandt-rooftop-pool.jpg",
+    image: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
     includes: ["Hotel profile", "Guest QR path", "Nearby recommendations", "Event visibility", "Guest activity reporting", "Concierge-ready links"],
   },
   {
@@ -61,7 +61,7 @@ const partnerTypes = [
     price: "$99 annually",
     outcome: "Become tonight's decision.",
     overview: "A clean fit for restaurants, cafes, nightlife, music, and cultural venues that want to turn nearby intent into visits.",
-    image: "/images/map-entities/attached/venues/geraldines-live.jpeg",
+    image: "/images/map-entities/attached/venues/geraldines-stage.jpeg",
     includes: ["Venue profile", "Offer publishing", "Event publishing", "Directions activity", "Resident saves", "Campaign reporting"],
   },
   {

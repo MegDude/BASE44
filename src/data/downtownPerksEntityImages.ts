@@ -6,14 +6,34 @@ export type DowntownPerksEntityImage = {
 
 export const downtownPerksEntityImages = {
   "first-thursday-visibility": {
-    src: "/images/reports/hotel-van-zandt-rooftop-pool.jpg",
-    alt: "Hotel Van Zandt rooftop pool above Rainey Street",
+    src: "/images/reports/hotel-van-zandt-entrance.jpg",
+    alt: "Hotel Van Zandt entrance on Rainey Street",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /HOTEL VAN ZANDT /",
   },
   "hotel-van-zandt": {
     src: "/images/reports/hotel-van-zandt-entrance.jpg",
     alt: "Hotel Van Zandt entrance on Rainey Street",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /HOTEL VAN ZANDT /",
+  },
+  "1-hotel-austin": {
+    src: "/images/map-entities/1-hotel-austin/waterline-hotel.avif",
+    alt: "1 Hotel Austin at Waterline",
+    sourceFolder: "/Users/megdude/Downloads/BASE44 2/public/images/map-entities/1-hotel-austin/",
+  },
+  "1-hotel-austin-alteno": {
+    src: "/images/map-entities/1-hotel-austin/alteno.webp",
+    alt: "Alteño restaurant inside 1 Hotel Austin",
+    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
+  },
+  "1-hotel-austin-watr": {
+    src: "/images/map-entities/1-hotel-austin/watr.webp",
+    alt: "Watr rooftop restaurant inside 1 Hotel Austin",
+    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
+  },
+  "1-hotel-austin-neighbors": {
+    src: "/images/map-entities/1-hotel-austin/neighbors.webp",
+    alt: "Neighbors cafe inside 1 Hotel Austin",
+    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /VESPA ON RAINEY/",
   },
   "four-seasons": {
     src: "/images/reports/four-seasons-austin.jpg",
@@ -71,9 +91,9 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /DESNUDO/",
   },
   geraldines: {
-    src: "/images/map-entities/attached/venues/geraldines-rooftop.jpg",
-    alt: "Geraldine's bar inside Hotel Van Zandt",
-    sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /VENUES/",
+    src: "/images/map-entities/attached/venues/geraldines-stage.jpeg",
+    alt: "Geraldine's live music stage inside Hotel Van Zandt",
+    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /1. HOTEL VAN ZANDT/",
   },
   "the-independent": {
     src: "/images/reports/the-independent-301-west.jpg",
@@ -185,11 +205,25 @@ export const downtownPerksEntityImages = {
     alt: "200 Congress Avenue building in downtown Austin",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
   },
+  "the-bowie": {
+    src: "/images/map-entities/properties/BOWIE.jpeg",
+    alt: "The Bowie residential tower in Austin",
+    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /NEW NEW IMAGES/",
+  },
+  "heritage-boots": {
+    src: "/images/map-entities/brand-heritage-boots/Boot-wars.jpg",
+    alt: "Heritage Boots western retail detail",
+    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PINS STICKER STYLE/",
+  },
 } as const satisfies Record<string, DowntownPerksEntityImage>;
 
 const downtownPerksEntityImageAliases: Array<{ key: keyof typeof downtownPerksEntityImages; terms: string[] }> = [
   { key: "first-thursday-visibility", terms: ["first thursday visibility", "van zandt first thursday"] },
+  { key: "1-hotel-austin-alteno", terms: ["1 hotel austin alteno", "alteno", "alteño"] },
+  { key: "1-hotel-austin-watr", terms: ["1 hotel austin watr", "watr"] },
+  { key: "1-hotel-austin-neighbors", terms: ["1-hotel-austin-neighbors", "1 hotel austin neighbors", "neighbors cafe"] },
   { key: "hotel-van-zandt", terms: ["hotel van zandt", "van zandt"] },
+  { key: "1-hotel-austin", terms: ["1 hotel austin", "one hotel austin"] },
   { key: "four-seasons", terms: ["four seasons hotel", "four seasons austin", "four seasons downtown", "four seasons"] },
   { key: "austin-proper", terms: ["austin proper", "proper hotel", "proper residences"] },
   { key: "stay-put", terms: ["stay put"] },
@@ -224,6 +258,8 @@ const downtownPerksEntityImageAliases: Array<{ key: keyof typeof downtownPerksEn
   { key: "360-nueces", terms: ["360 nueces", "360 condominiums"] },
   { key: "555-east-5th", terms: ["555 east 5th", "555 e 5th", "five fifty five"] },
   { key: "200-congress", terms: ["200 congress", "austonian"] },
+  { key: "the-bowie", terms: ["the bowie", "bowie", "311 bowie"] },
+  { key: "heritage-boots", terms: ["heritage boots", "western retail"] },
 ];
 
 function normalizeText(value: unknown) {
