@@ -2369,3 +2369,41 @@ html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer.dp-destination-d
   min-height: 0 !important;
   padding-bottom: 0 !important;
 }
+
+/* Delete the reserved bottom-nav block from selected pin detail drawers. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-entity-drawer-shell.dp-map-drawer-shell
+) {
+  bottom: 0 !important;
+  margin-bottom: 0 !important;
+  max-height: calc(100dvh - 72px) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-entity-drawer-shell.dp-map-drawer-shell
+) :is(
+  .dp-map-panel-scroll,
+  .dp-destination-scroll,
+  .dp-drawer-scroll
+) {
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident :is(
+  aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-destination-drawer.dp-map-drawer-shell,
+  aside.dp-entity-drawer-shell.dp-map-drawer-shell
+) :is(
+  .dp-legends-residential-drawer,
+  .dp-legends-intelligence-drawer,
+  .dp-entity-drawer
+) {
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
