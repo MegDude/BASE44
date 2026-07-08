@@ -73,7 +73,7 @@ export default function HowItWorksSection() {
               className="grid grid-cols-[34px_1fr] gap-4"
             >
               <div>
-                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">
+                <div className="font-heading text-[16px] font-bold leading-none text-[#A98B4A] md:text-[20px]">
                   {step.step}
                 </div>
               </div>

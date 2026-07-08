@@ -92,7 +92,7 @@ export default function UnifiedDrawer({ selected, onMarkerSelect }) {
                   setDrawerState('collapsed');
                   clearSelection();
                 }}
-                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
                 aria-label="Close drawer"
               >
                 <X className="h-4 w-4" />
@@ -175,7 +175,7 @@ function DrawerFull({ selected }) {
       </div>
 
       <div className="flex aspect-[2/1] w-full items-center justify-center rounded-lg border border-[#0B1F33]/8 bg-white">
-        <div className="flex h-20 w-20 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33] text-xl font-semibold text-[#C8A96A]">
+        <div className="flex h-20 w-20 items-center justify-center rounded-md border border-[#BFA46A]/50 bg-[#0B1F33] text-xl font-semibold text-[#BFA46A]">
           <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
         </div>
       </div>

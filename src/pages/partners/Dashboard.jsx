@@ -102,7 +102,7 @@ function PartnerPageShell({ children }) {
 
 function Eyebrow({ children }) {
   return (
-    <p className="m-0 font-body text-[11px] font-bold uppercase tracking-[0.12em] text-[#C8A96A]">
+    <p className="m-0 font-body text-[11px] font-bold uppercase tracking-[0.12em] text-[#BFA46A]">
       {children}
     </p>
   );
@@ -124,7 +124,7 @@ function SectionHeader({ eyebrow, title, copy }) {
 
 function Surface({ children, className = "" }) {
   return (
-    <div className={`bg-white shadow-[0_18px_48px_rgba(11,31,51,.045),0_0_34px_rgba(200,169,106,.05)] ${className}`}>
+    <div className={`bg-white shadow-[0_18px_48px_rgba(11,31,51,.045),0_0_34px_rgba(191,164,106,.05)] ${className}`}>
       {children}
     </div>
   );
@@ -140,7 +140,7 @@ function ActionLink({ to, children, variant = "primary" }) {
   return (
     <Link to={to} className={`${base} ${styles}`}>
       <span>{children}</span>
-      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#C8A96A]" aria-hidden="true" />
+      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#BFA46A]" aria-hidden="true" />
     </Link>
   );
 }
@@ -200,7 +200,7 @@ export default function PartnersDashboard() {
               <Eyebrow>Workspace</Eyebrow>
               <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight text-[#0B1F33]">Ready to launch</h2>
             </div>
-            <ShieldCheck className="h-6 w-6 text-[#C8A96A]" aria-hidden="true" />
+            <ShieldCheck className="h-6 w-6 text-[#BFA46A]" aria-hidden="true" />
           </div>
           <p className="mt-4 font-body text-[14px] leading-[1.55] text-[rgba(11,31,51,.66)]">
             Your workspace is active and ready to manage campaigns, offers, events, listings, QR experiences, and reporting. If setup is incomplete, we'll show the next recommended action.
@@ -208,7 +208,7 @@ export default function PartnersDashboard() {
           <div className="mt-5 grid gap-3">
             {readinessSteps.slice(0, 3).map(([title, copy]) => (
               <div key={title} className="grid grid-cols-[22px_1fr] gap-3">
-                <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 text-[#C8A96A]" aria-hidden="true" />
+                <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 text-[#BFA46A]" aria-hidden="true" />
                 <div>
                   <p className="font-body text-[14px] font-semibold text-[#0B1F33]">{title}</p>
                   <p className="mt-1 font-body text-[13px] leading-[1.45] text-[rgba(11,31,51,.62)]">{copy}</p>
@@ -249,7 +249,7 @@ export default function PartnersDashboard() {
           title="Everything connects to performance."
           copy="Listings, offers, events, visibility, feedback, and team access all support the same daily rhythm: create participation, measure what happened, then improve the next move."
         />
-        <div className="grid gap-0 bg-white p-5 shadow-[0_18px_48px_rgba(11,31,51,.04),0_0_34px_rgba(200,169,106,.045)] sm:p-6 lg:grid-cols-2">
+        <div className="grid gap-0 bg-white p-5 shadow-[0_18px_48px_rgba(11,31,51,.04),0_0_34px_rgba(191,164,106,.045)] sm:p-6 lg:grid-cols-2">
           {includedCapabilities.map(([title, copy], index) => (
             <div key={title} className={`grid gap-2 py-4 ${index > 1 ? "lg:border-t lg:border-[rgba(11,31,51,.06)]" : ""} ${index % 2 === 1 ? "lg:pl-6" : "lg:pr-6"} ${index > 0 ? "border-t border-[rgba(11,31,51,.06)] lg:border-t-0" : ""}`}>
               <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{title}</p>
@@ -265,7 +265,7 @@ export default function PartnersDashboard() {
           <div className="mt-5 grid gap-4">
             {operatingWorkflow.map(([title, copy], index) => (
               <div key={title} className="grid grid-cols-[34px_1fr] gap-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-[4px] bg-white font-body text-[12px] font-semibold text-[#C8A96A] shadow-[0_8px_20px_rgba(11,31,51,.055)]">
+                <span className="flex h-7 w-7 items-center justify-center rounded-[4px] bg-white font-body text-[12px] font-semibold text-[#BFA46A] shadow-[0_8px_20px_rgba(11,31,51,.055)]">
                   {index + 1}
                 </span>
                 <div>
@@ -282,7 +282,7 @@ export default function PartnersDashboard() {
           <div className="mt-5 grid gap-3">
             {performanceLoop.map(([title, copy]) => (
               <div key={title} className="grid grid-cols-[26px_1fr] gap-3">
-                <Compass className="mt-0.5 h-4.5 w-4.5 text-[#C8A96A]" aria-hidden="true" />
+                <Compass className="mt-0.5 h-4.5 w-4.5 text-[#BFA46A]" aria-hidden="true" />
                 <div>
                   <p className="font-body text-[15px] font-semibold text-[#0B1F33]">{title}</p>
                   <p className="mt-1 font-body text-[13px] leading-[1.48] text-[rgba(11,31,51,.64)]">{copy}</p>

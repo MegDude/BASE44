@@ -42,7 +42,7 @@ const formDefaults = {
 };
 
 function fieldClass(extra = "") {
-  return `h-11 w-full bg-white px-0 text-[15px] text-[#0B1F33] shadow-[inset_0_-1px_0_rgba(11,31,51,0.14)] outline-none transition focus:shadow-[inset_0_-2px_0_#B38F4F] ${extra}`;
+  return `h-11 w-full bg-white px-0 text-[15px] text-[#0B1F33] shadow-[inset_0_-1px_0_rgba(11,31,51,0.14)] outline-none transition focus:shadow-[inset_0_-2px_0_#A98B4A] ${extra}`;
 }
 
 function normalizeHappyHourForm(form) {
@@ -86,21 +86,21 @@ export default function HappyHoursPartner() {
   return (
     <main className="dp-happy-hours-page min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="relative overflow-hidden px-5 py-10 md:px-8 md:py-16">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(200,169,106,0.24),transparent)]" />
-        <div className="pointer-events-none absolute right-[8%] top-[12%] h-72 w-72 bg-[#C8A96A]/8 blur-[80px]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(191,164,106,0.24),transparent)]" />
+        <div className="pointer-events-none absolute right-[8%] top-[12%] h-72 w-72 bg-[#BFA46A]/8 blur-[80px]" />
         <div className="mx-auto max-w-7xl">
           <Link
             to="/partners/dashboard"
-            className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-label="Back to dashboard"
             title="Back to dashboard"
           >
-            <ArrowLeft className="h-4 w-4 text-[#C8A96A]" aria-hidden="true" />
+            <ArrowLeft className="h-4 w-4 text-[#BFA46A]" aria-hidden="true" />
           </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
           <motion.div initial="hidden" animate="show" variants={reveal}>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner happy hours</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Partner happy hours</p>
             <h1 className="mt-5 max-w-[13ch] font-heading text-[42px] font-semibold leading-[1.02] tracking-[-0.025em] sm:text-[50px] md:text-[72px] md:leading-[0.98] lg:text-[82px]">
               Put the first round on the map.
             </h1>
@@ -115,14 +115,14 @@ export default function HappyHoursPartner() {
             <div className="mt-7 flex flex-wrap gap-2">
               <Link
                 to="/map?mode=partner&tab=map&filter=Happy%20Hours"
-                className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[12px] font-semibold text-white shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_18px_rgba(200,169,106,0.09)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[12px] font-semibold text-white shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_18px_rgba(191,164,106,0.09)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 Open happy hour map
-                <ArrowRight className="h-3.5 w-3.5 text-[#C8A96A]" />
+                <ArrowRight className="h-3.5 w-3.5 text-[#BFA46A]" />
               </Link>
               <a
                 href="#add-happy-hour"
-                className="inline-flex h-10 items-center justify-center bg-white px-4 text-[12px] font-semibold text-[#0B1F33] shadow-[inset_0_-1px_0_rgba(11,31,51,0.14)] transition hover:-translate-y-px hover:shadow-[inset_0_-2px_0_#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="inline-flex h-10 items-center justify-center bg-white px-4 text-[12px] font-semibold text-[#0B1F33] shadow-[inset_0_-1px_0_rgba(11,31,51,0.14)] transition hover:-translate-y-px hover:shadow-[inset_0_-2px_0_#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 Add a happy hour
               </a>
@@ -136,7 +136,7 @@ export default function HappyHoursPartner() {
             className="relative min-h-[360px] overflow-hidden"
           >
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.04)_1px,transparent_1px),linear-gradient(0deg,rgba(11,31,51,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
-            <div className="absolute left-[8%] top-[16%] h-36 w-36 bg-[#B38F4F]/12 blur-3xl" />
+            <div className="absolute left-[8%] top-[16%] h-36 w-36 bg-[#A98B4A]/12 blur-3xl" />
             <div className="absolute bottom-[8%] right-[10%] h-44 w-44 bg-[#0B1F33]/7 blur-3xl" />
             {featured.slice(0, 5).map((item, index) => {
               const positions = [
@@ -156,9 +156,9 @@ export default function HappyHoursPartner() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.42, ease, delay: 0.22 + index * 0.08 }}
                 >
-                  <span className="relative grid h-9 w-9 place-items-center bg-[#0B1F33] text-[#B38F4F] shadow-[0_12px_24px_rgba(11,31,51,0.18),0_0_18px_rgba(179,143,79,0.14)]">
+                  <span className="relative grid h-9 w-9 place-items-center bg-[#0B1F33] text-[#A98B4A] shadow-[0_12px_24px_rgba(11,31,51,0.18),0_0_18px_rgba(179,143,79,0.14)]">
                     <Clock className="h-4 w-4" />
-                    <span className="absolute -inset-2 bg-[#B38F4F]/16 blur-md" />
+                    <span className="absolute -inset-2 bg-[#A98B4A]/16 blur-md" />
                   </span>
                 </motion.div>
               );
@@ -186,7 +186,7 @@ export default function HappyHoursPartner() {
       <section className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto max-w-7xl">
           <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="max-w-3xl">
-            <p className="text-[13px] font-semibold text-[#B38F4F]">What shows up</p>
+            <p className="text-[13px] font-semibold text-[#A98B4A]">What shows up</p>
             <h2 className="mt-3 text-[34px] font-semibold leading-[1] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
               A useful offer, timed to the decision.
             </h2>
@@ -206,8 +206,8 @@ export default function HappyHoursPartner() {
                   transition={{ duration: 0.46, ease, delay: index * 0.08 }}
                   className="relative pl-5"
                 >
-                  <span className="absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-[#B38F4F]/55 shadow-[0_0_18px_rgba(179,143,79,0.22)]" />
-                  <p className="text-[13px] font-semibold text-[#B38F4F]">{item.time}</p>
+                  <span className="absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-[#A98B4A]/55 shadow-[0_0_18px_rgba(179,143,79,0.22)]" />
+                  <p className="text-[13px] font-semibold text-[#A98B4A]">{item.time}</p>
                   <h3 className="mt-1 text-[20px] font-semibold tracking-[-0.02em] text-[#0B1F33]">{item.title}</h3>
                   <p className="mt-2 text-[14px] leading-6 text-[#0B1F33]/62">{item.body}</p>
                 </motion.article>
@@ -225,17 +225,17 @@ export default function HappyHoursPartner() {
                     transition={{ duration: 0.42, ease, delay: index * 0.05 }}
                     className="relative min-h-[190px] w-[245px] shrink-0 pl-5"
                   >
-                    <span className="absolute left-0 top-0 h-full w-px bg-[#B38F4F]/45 shadow-[0_0_18px_rgba(179,143,79,0.18)]" />
+                    <span className="absolute left-0 top-0 h-full w-px bg-[#A98B4A]/45 shadow-[0_0_18px_rgba(179,143,79,0.18)]" />
                     <div className="flex items-start justify-between gap-3">
-                      <span className="text-[13px] font-semibold text-[#B38F4F]">{item.happyHour?.time}</span>
-                      <Clock className="h-4 w-4 shrink-0 text-[#B38F4F]" />
+                      <span className="text-[13px] font-semibold text-[#A98B4A]">{item.happyHour?.time}</span>
+                      <Clock className="h-4 w-4 shrink-0 text-[#A98B4A]" />
                     </div>
                     <h3 className="mt-4 text-[20px] font-semibold leading-[1.05] tracking-[-0.02em] text-[#0B1F33]">{item.venueName || item.name}</h3>
                     <p className="mt-2 text-[13px] leading-5 text-[#0B1F33]/58">{item.happyHour?.days} · {item.district}</p>
                     <p className="mt-4 text-[13px] leading-5 text-[#0B1F33]/68">{item.happyHour?.offer}</p>
                     <Link
                       to={`/map?mode=partner&tab=map&filter=Happy%20Hours&entityId=${item.id}`}
-                      className="mt-5 inline-flex items-center gap-2 text-[12px] font-semibold text-[#0B1F33] transition hover:text-[#B38F4F]"
+                      className="mt-5 inline-flex items-center gap-2 text-[12px] font-semibold text-[#0B1F33] transition hover:text-[#A98B4A]"
                     >
                       View on map
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -251,7 +251,7 @@ export default function HappyHoursPartner() {
       <section id="add-happy-hour" className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
-            <p className="text-[13px] font-semibold text-[#B38F4F]">Add one</p>
+            <p className="text-[13px] font-semibold text-[#A98B4A]">Add one</p>
             <h2 className="mt-3 text-[34px] font-semibold leading-[1] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
               Give the map the details residents need.
             </h2>
@@ -268,7 +268,7 @@ export default function HappyHoursPartner() {
                   transition={{ duration: 0.38, ease, delay: index * 0.07 }}
                   className="flex items-center gap-3 text-[15px] font-medium text-[#0B1F33]"
                 >
-                  <Sparkles className="h-4 w-4 text-[#B38F4F]" />
+                  <Sparkles className="h-4 w-4 text-[#A98B4A]" />
                   {item}
                 </motion.div>
               ))}
@@ -317,14 +317,14 @@ export default function HappyHoursPartner() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
                 type="submit"
-                className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[12px] font-semibold text-white shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_18px_rgba(179,143,79,0.09)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[12px] font-semibold text-white shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_18px_rgba(179,143,79,0.09)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
               >
-                <Plus className="h-3.5 w-3.5 text-[#B38F4F]" />
+                <Plus className="h-3.5 w-3.5 text-[#A98B4A]" />
                 Save happy hour
               </button>
               <Link
                 to="/map?mode=partner&tab=map&filter=Happy%20Hours"
-                className="inline-flex h-10 items-center justify-center bg-white px-4 text-[12px] font-semibold text-[#0B1F33] shadow-[inset_0_-1px_0_rgba(11,31,51,0.14)] transition hover:-translate-y-px hover:shadow-[inset_0_-2px_0_#B38F4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="inline-flex h-10 items-center justify-center bg-white px-4 text-[12px] font-semibold text-[#0B1F33] shadow-[inset_0_-1px_0_rgba(11,31,51,0.14)] transition hover:-translate-y-px hover:shadow-[inset_0_-2px_0_#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
               >
                 View map
               </Link>
@@ -338,7 +338,7 @@ export default function HappyHoursPartner() {
         <div className="mx-auto max-w-7xl border-t border-[#0B1F33]/10 pt-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <p className="text-[13px] font-semibold text-[#B38F4F]">Next move</p>
+              <p className="text-[13px] font-semibold text-[#A98B4A]">Next move</p>
               <h2 className="mt-3 text-[34px] font-semibold leading-[1] tracking-[-0.03em] text-[#0B1F33] md:text-[56px]">
                 Make the hour easier to choose.
               </h2>
@@ -348,10 +348,10 @@ export default function HappyHoursPartner() {
             </div>
             <Link
               to="/map?mode=partner&tab=map&filter=Happy%20Hours"
-              className="inline-flex h-10 w-fit items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[12px] font-semibold text-white shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_18px_rgba(179,143,79,0.09)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+              className="inline-flex h-10 w-fit items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[12px] font-semibold text-white shadow-[0_12px_26px_rgba(11,31,51,0.14),0_0_18px_rgba(179,143,79,0.09)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
             >
               Open happy hour map
-              <MapPin className="h-3.5 w-3.5 text-[#B38F4F]" />
+              <MapPin className="h-3.5 w-3.5 text-[#A98B4A]" />
             </Link>
           </div>
         </div>

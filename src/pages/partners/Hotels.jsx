@@ -162,7 +162,7 @@ export default function HotelsPartner() {
                   ))}
                 </div>
                 <div className="px-5 py-2.5 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#C8A96A]" />
+                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#BFA46A]" />
                   <span className="text-[11px] text-muted-foreground/60">Updated 2 min ago</span>
                 </div>
               </div>
@@ -357,7 +357,7 @@ function StepsSection({ label, headline, steps, proof }) {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
             {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }} className="grid grid-cols-[30px_1fr] gap-3 md:block">
-                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">{s.n}</div>
+                <div className="font-heading text-[16px] font-bold leading-none text-[#A98B4A] md:text-[20px]">{s.n}</div>
                 <div>
                   <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.label}</div>
                   <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{s.detail}</div>
@@ -369,7 +369,7 @@ function StepsSection({ label, headline, steps, proof }) {
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2">
             {proof.map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 + i * 0.05 }} className="flex items-center gap-2 py-2">
-                <div className="h-px w-4 shrink-0 bg-[#B38F4F]" />
+                <div className="h-px w-4 shrink-0 bg-[#A98B4A]" />
                 <span className="text-[12px] leading-5 text-[#425466]">{item}</span>
               </motion.div>
             ))}
@@ -395,7 +395,7 @@ function GuestFlowSection({ steps, feed }) {
             {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: i * 0.08 }}
                 className="grid grid-cols-[30px_1fr] gap-3">
-                <span className="font-heading text-[16px] font-bold leading-none text-[#B38F4F]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-heading text-[16px] font-bold leading-none text-[#A98B4A]">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.step}</div>
                   <div className="mt-1 text-[12px] leading-5 text-[#425466]">{s.desc}</div>
@@ -410,7 +410,7 @@ function GuestFlowSection({ steps, feed }) {
             <div className="divide-y divide-border/40">
               {feed.map((item, i) => (
                 <div key={i} className="p-4 flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#C8A96A] mt-1.5 shrink-0 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#BFA46A] mt-1.5 shrink-0 animate-pulse" />
                   <div className="flex-1">
                     <div className="text-[12px] text-foreground">{item.text}</div>
                     <div className="text-[11px] text-muted-foreground mt-0.5">{item.hotel}</div>

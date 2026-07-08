@@ -64,7 +64,7 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
 
   return (
     <section id={id} className={cn("relative overflow-hidden bg-white px-5 py-14 text-[#0B1F33] md:px-8 md:py-20", className)}>
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(200,169,106,0.16),transparent)]" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(191,164,106,0.16),transparent)]" aria-hidden="true" />
 
       <div className="mx-auto max-w-7xl">
         <motion.div
@@ -74,11 +74,11 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-3xl"
         >
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">
+          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">
             How Downtown Perks works
           </p>
           <h2 className="font-heading text-[42px] font-medium leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[72px]">
-            Open the map. Find the moment. <span className="text-[#C8A96A]">Go.</span>
+            Open the map. Find the moment. <span className="text-[#BFA46A]">Go.</span>
           </h2>
           <p className="mt-5 max-w-xl text-[16px] leading-[1.7] text-[#425466] md:text-[18px]">
             Downtown Perks helps residents find nearby places, events, perks, and local favorites without bouncing between apps, websites, group chats, and screenshots. For partners, it creates visibility when people nearby are already deciding where to go.
@@ -109,7 +109,7 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
               <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92),rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(11,31,51,0.16))]" />
 
               <div className="absolute left-5 top-5 z-10 max-w-[20rem] sm:left-6 sm:top-6">
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C8A96A]">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#BFA46A]">
                   {active.label}
                 </span>
                 <h3 className="mt-3 font-heading text-[38px] font-medium leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
@@ -124,7 +124,7 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
                 <div className="relative flex items-center justify-between">
                   <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#0B1F33]/12" />
                   <div
-                    className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#C8A96A] transition-all duration-700"
+                    className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#BFA46A] transition-all duration-700"
                     style={{ width: `${(activeStep / (journeySteps.length - 1)) * 100}%` }}
                   />
 
@@ -139,7 +139,7 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
                         onClick={() => setActiveStep(index)}
                         className={`relative z-10 grid h-9 w-9 place-items-center rounded-sm transition-all duration-500 sm:h-10 sm:w-10 ${
                           reached
-                            ? "bg-[#0B1F33] text-[#C8A96A] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
+                            ? "bg-[#0B1F33] text-[#BFA46A] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
                             : "bg-white/84 text-[#0B1F33]/42 shadow-[0_8px_20px_rgba(11,31,51,0.05)]"
                         }`}
                         aria-label={`Show step ${step.number}: ${step.label}`}

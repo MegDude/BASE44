@@ -4,14 +4,20 @@ import {
   ArrowRight,
   BadgeCheck,
   Building2,
+  CalendarDays,
+  Camera,
   Check,
   CreditCard,
   Hotel,
   Landmark,
+  Megaphone,
   MapPin,
+  Plug,
+  QrCode,
   Receipt,
   Sparkles,
   Store,
+  Users,
 } from "lucide-react";
 import { ANNUAL_PLANS, PRICING_MODULES, formatCurrency } from "@/config/pricingRegistry";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
@@ -19,14 +25,190 @@ import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
 
 const partnerTypes = [
-  { id: "property", label: "Property", icon: Building2, template: "Resident amenity workspace", plan: "Property Starter" },
-  { id: "hotel", label: "Hotel", icon: Hotel, template: "Guest experience workspace", plan: "Hotel Starter" },
-  { id: "venue", label: "Venue", icon: Store, template: "Local discovery workspace", plan: "Venue Basic" },
-  { id: "restaurant", label: "Restaurant", icon: Store, template: "Dining and offer workspace", plan: "Venue Basic" },
-  { id: "retail", label: "Retail", icon: Store, template: "Shopping and campaign workspace", plan: "Venue Growth" },
-  { id: "brand", label: "Brand", icon: Sparkles, template: "Campaign workspace", plan: "Brand Starter" },
-  { id: "civic", label: "Civic", icon: Landmark, template: "District and program workspace", plan: "Civic Community" },
-  { id: "real-estate", label: "Real Estate", icon: MapPin, template: "Listing intelligence workspace", plan: "Real Estate Starter" },
+  {
+    id: "property",
+    label: "Property",
+    eyebrow: "Property",
+    icon: Building2,
+    template: "Resident amenity workspace",
+    plan: "Resident Plus",
+    price: "$99 annually",
+    outcome: "The neighborhood becomes part of your amenity.",
+    overview: "Best for buildings that want residents to regularly discover local businesses, events, and neighborhood experiences.",
+    image: "/images/map-pins/property/the-independent-301-west.jpg",
+    includes: ["Building profile", "Interactive map listing", "Resident welcome QR", "Unlimited perks", "Unlimited events", "Campaign reporting", "Priority support"],
+  },
+  {
+    id: "hotel",
+    label: "Hotel",
+    eyebrow: "Hotels",
+    icon: Hotel,
+    template: "Guest experience workspace",
+    plan: "Hotel Starter",
+    price: "$149 annually",
+    outcome: "Help guests experience more than the lobby.",
+    overview: "Recommended for hotels that want a polished local guide, QR handoff, and measurable guest engagement.",
+    image: "/images/map-pins/property/hotel-van-zandt-rooftop-pool.jpg",
+    includes: ["Hotel profile", "Guest QR path", "Nearby recommendations", "Event visibility", "Guest activity reporting", "Concierge-ready links"],
+  },
+  {
+    id: "venue",
+    label: "Venue",
+    eyebrow: "Venues",
+    icon: Store,
+    template: "Local discovery workspace",
+    plan: "Venue Basic",
+    price: "$99 annually",
+    outcome: "Become tonight's decision.",
+    overview: "A clean fit for restaurants, cafes, nightlife, music, and cultural venues that want to turn nearby intent into visits.",
+    image: "/images/map-entities/attached/venues/geraldines-live.jpeg",
+    includes: ["Venue profile", "Offer publishing", "Event publishing", "Directions activity", "Resident saves", "Campaign reporting"],
+  },
+  {
+    id: "restaurant",
+    label: "Restaurant",
+    eyebrow: "Restaurants",
+    icon: Store,
+    template: "Dining and offer workspace",
+    plan: "Venue Basic",
+    price: "$99 annually",
+    outcome: "Give nearby residents a clear reason to choose you.",
+    overview: "Recommended for restaurants and cafes that want perks, events, and moments to appear when people are deciding what is nearby.",
+    image: "/images/map-listing-actual/burger-bar/burger-bar-congress-arrival.jpeg",
+    includes: ["Dining profile", "Perk campaigns", "Happy hour placement", "QR redemption", "Resident saves", "Performance reporting"],
+  },
+  {
+    id: "brand",
+    label: "Brand",
+    eyebrow: "Brands",
+    icon: Sparkles,
+    template: "Campaign workspace",
+    plan: "Brand Starter",
+    price: "$249 annually",
+    outcome: "Meet people while they're already downtown.",
+    overview: "Built for sponsors and destination brands that want to support experiences residents already choose.",
+    image: "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg",
+    includes: ["Brand profile", "Sponsored campaigns", "District targeting", "QR moments", "Activation reporting", "Audience signals"],
+  },
+  {
+    id: "civic",
+    label: "Civic",
+    eyebrow: "Civic",
+    icon: Landmark,
+    template: "District and program workspace",
+    plan: "Civic Community",
+    price: "Custom",
+    outcome: "Help more people discover their city.",
+    overview: "For organizations coordinating public spaces, events, wayfinding, community participation, and district-level storytelling.",
+    image: "/images/map-entities/attached/civic/waterloo-park.jpeg",
+    includes: ["Civic profile", "Public programming", "Event publishing", "Wayfinding", "Participation reporting", "Community prompts"],
+  },
+  {
+    id: "real-estate",
+    label: "Real Estate",
+    eyebrow: "Real estate",
+    icon: MapPin,
+    template: "Listing intelligence workspace",
+    plan: "Real Estate Starter",
+    price: "$199 annually",
+    outcome: "Show the neighborhood before the showing.",
+    overview: "For leasing, sales, and development teams that need the surrounding district to help tell the property story.",
+    image: "/images/map-pins/property/waterline-building.jpg",
+    includes: ["Listing profile", "Neighborhood context", "Map visibility", "Inquiry path", "Tour requests", "Performance reporting"],
+  },
+  {
+    id: "retail",
+    label: "Retail",
+    eyebrow: "Retail",
+    icon: Store,
+    template: "Shopping and campaign workspace",
+    plan: "Venue Growth",
+    price: "$149 annually",
+    outcome: "Turn nearby browsing into a reason to stop in.",
+    overview: "Recommended for shops and service businesses that want local discovery, resident saves, and offer-driven visits.",
+    image: "/images/fallbacks/retail.jpg",
+    includes: ["Retail profile", "Offer publishing", "QR redemption", "Resident saves", "Directions activity", "Campaign reporting"],
+  },
+];
+
+const trustPartners = ["Toast", "BuildingLink", "SevenRooms", "OpenTable", "Eventbrite", "Stripe", "Square", "HubSpot", "Salesforce", "Google", "Shopify", "Zapier"];
+
+const systemGroups = [
+  { title: "Keep your rewards", tools: ["Toast", "Square Loyalty", "inKind"] },
+  { title: "Keep your bookings", tools: ["SevenRooms", "OpenTable", "Resy"] },
+  { title: "Keep your property systems", tools: ["BuildingLink", "ActiveBuilding", "Entrata", "Yardi"] },
+];
+
+const impactGroups = [
+  {
+    title: "Bring in more customers",
+    items: [
+      ["Perk Campaign", "For offers residents can use this week.", "Use when traffic needs a clear next step.", "More saves, directions, and redemptions.", "$49"],
+      ["Featured Campaign", "For moments that should lead the map.", "Use during launches, weekends, or seasonal pushes.", "Higher visibility in nearby discovery.", "$99"],
+      ["Sponsored Campaign", "For district-level attention.", "Use when the audience should extend beyond one listing.", "Broader reach with reporting.", "$249"],
+    ],
+  },
+  {
+    title: "Promote an event",
+    items: [
+      ["Featured Event", "For events that need resident attention.", "Use before a planned activation.", "More RSVPs and detail views.", "$49"],
+      ["Sponsored Event", "For larger moments or destination events.", "Use when event discovery should be amplified.", "More map impressions and saves.", "$149"],
+      ["Event Boost", "For same-week momentum.", "Use when attendance needs one more push.", "Better timing around nearby intent.", "$79"],
+    ],
+  },
+  {
+    title: "Learn from your community",
+    items: [
+      ["Survey", "For direct resident feedback.", "Use when you need a simple answer quickly.", "Clearer planning signals.", "$99"],
+      ["Survey Series", "For recurring insight.", "Use across launches, seasons, or campaigns.", "Better trend visibility.", "$249"],
+      ["Research", "For custom audience questions.", "Use when decisions need deeper context.", "A more useful resident view.", "Custom"],
+    ],
+  },
+  {
+    title: "Increase visibility",
+    items: [
+      ["Featured Placement", "For stronger map presence.", "Use when discovery matters most.", "More high-intent views.", "$99"],
+      ["District Sponsorship", "For supporting a broader downtown area.", "Use when the brand should be tied to place.", "District-level attribution.", "Custom"],
+      ["Homepage Placement", "For major moments.", "Use when a campaign deserves front-door visibility.", "A clearer path from awareness to action.", "$299"],
+    ],
+  },
+];
+
+const professionalServices = [
+  ["Launch Kit", QrCode, "QR setup, welcome materials, and publishing support."],
+  ["Photography", Camera, "Polished images for profiles, offers, events, and listings."],
+  ["Creative", Megaphone, "Campaign copy, offer framing, and resident-facing messaging."],
+  ["Resident Activation", Users, "Launch communication that helps people understand what to do."],
+  ["Street Team", MapPin, "On-site support for QR placement and event activation."],
+  ["Training", BadgeCheck, "A practical workspace handoff for your team."],
+  ["Research", Sparkles, "Resident feedback, survey setup, and insight packaging."],
+  ["Custom Campaign", CalendarDays, "A tailored launch or district activation plan."],
+];
+
+const integrationGroups = [
+  ["Hospitality", ["Toast", "SevenRooms", "OpenTable", "Resy", "inKind"]],
+  ["Property", ["BuildingLink", "Entrata", "Yardi", "ActiveBuilding"]],
+  ["Marketing", ["HubSpot", "Mailchimp", "Salesforce", "Zapier"]],
+  ["Commerce", ["Stripe", "Square", "Shopify", "Clover"]],
+  ["Google", ["Business Profile", "Calendar", "Maps"]],
+];
+
+const timelineSteps = [
+  "Choose your membership",
+  "Create your workspace",
+  "Connect your existing software",
+  "Publish your first offer or event",
+  "Residents begin discovering your business",
+  "Track visits, engagement and results",
+];
+
+const faqItems = [
+  ["Can I connect Toast?", "Yes. Downtown Perks can sit alongside Toast and related hospitality tools so offers and QR moments support the systems your team already uses."],
+  ["Can residents keep existing rewards?", "Yes. Existing loyalty and rewards programs stay where they are. Downtown Perks helps people discover and use them at the right moment."],
+  ["Do I need an app?", "No. Residents can use QR, map, and card experiences without forcing a new download before they understand the value."],
+  ["Can I cancel?", "Yes. Standard memberships can be reviewed before renewal, and custom programs are scoped with clear terms before launch."],
+  ["Can multiple locations share one account?", "Yes. Portfolio and multi-location setups can share a workspace while keeping location-level visibility and reporting."],
+  ["Can buildings invite residents automatically?", "Yes. Property teams can use QR, resident welcome paths, and connected communication tools to make adoption simpler."],
 ];
 
 const setupModules = [
@@ -40,6 +222,17 @@ const setupModules = [
   "QR Experiences",
   "Connections",
   "Map Assistant",
+];
+
+const workspacePreviewRows = [
+  ["Map profile", "Your public presence across the downtown map and nearby discovery surfaces."],
+  ["Perks and offers", "Resident-facing reasons to save, visit, redeem, or return."],
+  ["Events", "Moments your team can publish for residents, guests, and visitors."],
+  ["QR experiences", "Scan paths for printed materials, front desks, staff, and events."],
+  ["Campaigns", "Simple local pushes connected to map context and audience signals."],
+  ["Reporting", "Activity from saves, scans, redemptions, directions, and RSVPs."],
+  ["Connections", "Context for the tools and workflows your business already uses."],
+  ["Billing", "Membership and checkout details connected to your workspace setup."],
 ];
 
 const provisioningSteps = [
@@ -76,7 +269,7 @@ function normalizePartnerType(value) {
 
 function hydrateSetupFromParams(search) {
   const params = new URLSearchParams(search);
-  const selectedType = normalizePartnerType(params.get("partnerType") || params.get("partnerLabel"));
+  const selectedType = normalizePartnerType(params.get("partnerType") || params.get("partnerLabel") || params.get("type"));
   const planId = params.get("plan") || params.get("sku");
   const selectedPlan = ANNUAL_PLANS.find((plan) => plan.id === planId);
   const moduleIds = (params.get("modules") || "")
@@ -139,6 +332,7 @@ function trackLifecycleEvent(eventName, payload = {}) {
 }
 
 function getStage(pathname) {
+  if (pathname.includes("/sign-up")) return "start";
   if (pathname.includes("/start")) return "start";
   if (pathname.includes("/register")) return "register";
   if (pathname.includes("/checkout")) return "checkout";
@@ -146,25 +340,33 @@ function getStage(pathname) {
   return "start";
 }
 
-function LifecycleShell({ stage, children }) {
-  const steps = [
-    ["Partner type", "/partners/start"],
-    ["Registration", "/partners/register"],
-    ["Pricing", "/partners/pricing"],
-    ["Checkout", "/partners/checkout"],
-    ["Workspace", "/partners/provision"],
-  ];
-  const activeIndex = stage === "start" ? 0 : stage === "register" ? 1 : stage === "checkout" ? 3 : stage === "provision" ? 4 : 2;
+function getSelectedPartnerType(setup = {}) {
+  return normalizePartnerType(setup.organizationType || setup.partnerType || setup.industry) || partnerTypes[0];
+}
 
+function formatPlanTotal(setup, fallback = "$99") {
+  if (setup?.annualTotal && setup.annualTotal !== "custom") return formatCurrency(Number(setup.annualTotal));
+  return fallback;
+}
+
+function LifecycleShell({ stage, children }) {
   return (
-    <main className="dp-partner-lifecycle-page">
+    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage}`}>
       <header className="dp-partner-lifecycle-hero">
         <div>
-          <p>Partner platform</p>
-          <h1>Start your workspace once. Operate from one place.</h1>
+          <p>Partner membership</p>
+          <h1>Grow your business without replacing the tools you already use.</h1>
           <span>
-            Registration, plan selection, checkout, workspace setup, and daily operations now move through one connected Downtown Perks path.
+            Downtown Perks connects your business with the people already living, working and staying downtown. Keep your existing software,
+            rewards, and workflows. Simply make everything easier to discover.
           </span>
+          <div className="dp-partner-lifecycle-hero-actions">
+            <Link to={stage === "register" ? "#partner-signup" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
+              {stage === "register" ? "Continue to signup" : "Become a Founding Partner"}
+              <ArrowRight aria-hidden="true" />
+            </Link>
+            <Link to="/partners/tools#partners">Explore the Platform</Link>
+          </div>
         </div>
         <Link to="/partner-workspace/overview">
           Open Workspace
@@ -172,22 +374,43 @@ function LifecycleShell({ stage, children }) {
         </Link>
       </header>
 
-      <nav className="dp-partner-lifecycle-progress" aria-label="Partner setup progress">
-        {steps.map(([label, href], index) => (
-          <Link key={label} to={href} className={index <= activeIndex ? "is-active" : ""}>
-            <small>{index + 1}</small>
-            <span>{label}</span>
-          </Link>
-        ))}
-      </nav>
+      <section className="dp-partner-trust-strip" aria-label="Connected tools">
+        <span>Works with</span>
+        <div>
+          {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
+        </div>
+      </section>
 
       {children}
     </main>
   );
 }
 
-function StartStage({ setup, setSetup }) {
-  const navigate = useNavigate();
+function ExistingSystemsSection() {
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-systems-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Existing systems</p>
+        <h2>Everything you already use keeps working.</h2>
+        <span>
+          You have already invested in software that runs your business. Downtown Perks sits alongside those systems instead of replacing them,
+          bringing rewards, reservations, resident portals, events, and discovery into one connected neighborhood experience.
+        </span>
+      </div>
+      <div className="dp-partner-system-grid">
+        {systemGroups.map((group) => (
+          <article key={group.title}>
+            <h3>{group.title}</h3>
+            <div>{group.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ChooseBusinessSection({ setup, setSetup }) {
+  const selectedType = getSelectedPartnerType(setup);
 
   function selectType(type) {
     const nextSetup = {
@@ -200,30 +423,257 @@ function StartStage({ setup, setSetup }) {
     };
     setSetup(nextSetup);
     saveSetup(nextSetup);
-    navigate(`/partners/register?partnerType=${encodeURIComponent(type.id)}`);
+    trackLifecycleEvent("partner_type_selected", { partnerType: type.label, source: "membership_journey" });
   }
 
   return (
-    <section className="dp-partner-lifecycle-section">
+    <section id="partners" className="dp-partner-lifecycle-section dp-partner-business-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Partner type</p>
-        <h2>Choose the lane that matches the work.</h2>
-        <span>Selecting a lane keeps your recommended plan, workspace tools, and setup details together.</span>
+        <p>Choose your business</p>
+        <h2>Start with the outcome you need.</h2>
+        <span>Select the closest match so the membership recommendation, workspace tools, and checkout context stay aligned.</span>
       </div>
-      <div className="dp-partner-type-grid">
-        {partnerTypes.map((type) => {
-          const Icon = type.icon;
+      <div className="dp-partner-lifestyle-grid">
+        {partnerTypes.slice(0, 7).map((type) => {
+          const isSelected = selectedType.id === type.id;
           return (
-            <button key={type.id} type="button" onClick={() => selectType(type)}>
-              <Icon aria-hidden="true" />
-              <strong>{type.label}</strong>
-              <small>{type.template}</small>
-              <span>{type.plan}</span>
+            <button key={type.id} type="button" className={isSelected ? "is-selected" : ""} onClick={() => selectType(type)}>
+              <img src={type.image} alt="" loading="lazy" />
+              <span>{type.eyebrow}</span>
+              <strong>{type.outcome}</strong>
             </button>
           );
         })}
       </div>
     </section>
+  );
+}
+
+function RecommendedMembership({ setup }) {
+  const selectedType = getSelectedPartnerType(setup);
+  const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
+  const pricingHref = `/pricing?intent=partner-registration&partnerType=${encodeURIComponent(selectedType.id)}`;
+
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-recommendation-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Recommended for your business</p>
+        <h2>{selectedType.plan}</h2>
+        <span>{selectedType.overview}</span>
+      </div>
+      <div className="dp-partner-recommendation-grid">
+        <article className="dp-partner-recommended-plan">
+          <span>Recommended</span>
+          <h3>{selectedType.plan}</h3>
+          <p>{selectedType.overview}</p>
+          <strong>{total === "Custom" ? "Custom setup" : `${total} annually`}</strong>
+          <div>
+            {selectedType.includes.map((item) => (
+              <span key={item}><Check aria-hidden="true" />{item}</span>
+            ))}
+          </div>
+          <Link to={pricingHref}>
+            Choose {selectedType.plan}
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </article>
+        <details className="dp-partner-plan-comparison">
+          <summary>View all memberships</summary>
+          <div>
+            {partnerTypes.slice(0, 7).map((type) => (
+              <Link key={type.id} to={`/pricing?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
+                <span>{type.label}</span>
+                <strong>{type.plan}</strong>
+                <em>{type.price}</em>
+              </Link>
+            ))}
+          </div>
+        </details>
+      </div>
+    </section>
+  );
+}
+
+function GrowImpactSection({ setup, setSetup }) {
+  function addImpact(label) {
+    const currentLabels = Array.isArray(setup.moduleLabels) ? setup.moduleLabels : [];
+    const nextLabels = currentLabels.includes(label) ? currentLabels : [...currentLabels, label];
+    const nextSetup = { ...setup, moduleLabels: nextLabels };
+    setSetup(nextSetup);
+    saveSetup(nextSetup);
+  }
+
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-impact-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Grow your impact</p>
+        <h2>Optional ways to grow faster.</h2>
+        <span>Add campaigns, events, research, and visibility only when they match the next outcome you want.</span>
+      </div>
+      <div className="dp-partner-impact-groups">
+        {impactGroups.map((group) => (
+          <article key={group.title}>
+            <h3>{group.title}</h3>
+            <div>
+              {group.items.map(([headline, who, when, outcome, price]) => (
+                <button key={headline} type="button" onClick={() => addImpact(headline)}>
+                  <Sparkles aria-hidden="true" />
+                  <strong>{headline}</strong>
+                  <span>{who}</span>
+                  <small>{when}</small>
+                  <em>{outcome}</em>
+                  <b>{price}</b>
+                  <i>{Array.isArray(setup.moduleLabels) && setup.moduleLabels.includes(headline) ? "Added" : "Add"}</i>
+                </button>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function LivePricingSummary({ setup }) {
+  const selectedType = getSelectedPartnerType(setup);
+  const modules = Array.isArray(setup.moduleLabels) && setup.moduleLabels.length ? setup.moduleLabels : ["None"];
+  const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
+
+  return (
+    <aside className="dp-partner-plan-summary" aria-label="Live pricing summary">
+      <p>Your plan</p>
+      <dl>
+        <div><dt>Business</dt><dd>{selectedType.label}</dd></div>
+        <div><dt>Membership</dt><dd>{setup.plan || selectedType.plan}</dd></div>
+        <div><dt>Annual</dt><dd>{total}</dd></div>
+        <div><dt>Campaigns</dt><dd>{modules.slice(0, 2).join(", ")}{modules.length > 2 ? ` +${modules.length - 2}` : ""}</dd></div>
+        <div><dt>Professional services</dt><dd>Optional</dd></div>
+        <div><dt>Today's total</dt><dd>{total}</dd></div>
+      </dl>
+      <Link to={`/partners/register?partnerType=${encodeURIComponent(selectedType.id)}`}>
+        Continue
+        <ArrowRight aria-hidden="true" />
+      </Link>
+    </aside>
+  );
+}
+
+function ProfessionalServicesSection() {
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-services-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Professional launch services</p>
+        <h2>Want us to help?</h2>
+        <span>
+          Whether you need photography, campaign planning, QR installation, or a complete launch, our team can help you get everything live quickly.
+        </span>
+      </div>
+      <div className="dp-partner-services-grid">
+        {professionalServices.map(([title, Icon, copy]) => (
+          <article key={title}>
+            <Icon aria-hidden="true" />
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function IntegrationsSection() {
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-integrations-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Integrations</p>
+        <h2>Works with the software you already trust.</h2>
+        <span>
+          Downtown Perks connects with many of the tools businesses already use every day, reducing duplicate work while making customer experiences easier to discover.
+        </span>
+      </div>
+      <div className="dp-partner-integration-grid">
+        {integrationGroups.map(([category, tools]) => (
+          <article key={category}>
+            <Plug aria-hidden="true" />
+            <h3>{category}</h3>
+            <div>{tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
+          </article>
+        ))}
+      </div>
+      <Link className="dp-partner-text-link" to="/partners/tools#integrations">View integrations</Link>
+    </section>
+  );
+}
+
+function TimelineSection() {
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-timeline-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Launch timeline</p>
+        <h2>Most partners launch within a few days.</h2>
+        <span>A clear path from membership selection to workspace, publishing, and measurable downtown activity.</span>
+      </div>
+      <div className="dp-partner-timeline">
+        {timelineSteps.map((step) => <span key={step}>{step}</span>)}
+      </div>
+    </section>
+  );
+}
+
+function FaqSection() {
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-faq-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>FAQ</p>
+        <h2>Common questions before launch.</h2>
+      </div>
+      <div className="dp-partner-faq-list">
+        {faqItems.map(([question, answer]) => (
+          <details key={question}>
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function FinalCtaSection() {
+  return (
+    <section className="dp-partner-lifecycle-section dp-partner-final-cta">
+      <p>Ready to become part of downtown?</p>
+      <h2>Connect the experiences people remember.</h2>
+      <span>
+        Whether you manage a building, run a restaurant, welcome hotel guests, or organize community events, Downtown Perks helps people discover
+        your business at the moments that matter most.
+      </span>
+      <div>
+        <Link to="/partners/register">Become a Founding Partner</Link>
+        <Link to="/contact">Book a Demo</Link>
+      </div>
+    </section>
+  );
+}
+
+function StartStage({ setup, setSetup }) {
+  return (
+    <>
+      <ExistingSystemsSection />
+      <ChooseBusinessSection setup={setup} setSetup={setSetup} />
+      <div className="dp-partner-purchase-grid">
+        <div>
+          <RecommendedMembership setup={setup} />
+          <GrowImpactSection setup={setup} setSetup={setSetup} />
+          <ProfessionalServicesSection />
+          <IntegrationsSection />
+          <TimelineSection />
+          <FaqSection />
+          <FinalCtaSection />
+        </div>
+        <LivePricingSummary setup={setup} />
+      </div>
+    </>
   );
 }
 
@@ -268,60 +718,92 @@ function RegisterStage({ setup, setSetup }) {
     navigate("/partners/pricing");
   }
 
+  const businessFields = [
+    ["organization", "Organization"],
+    ["website", "Website"],
+    ["address", "Address"],
+    ["industry", "Industry"],
+    ["googleBusiness", "Google Business profile"],
+  ];
+  const contactFields = [
+    ["contact", "Primary contact"],
+    ["email", "Email"],
+    ["phone", "Phone"],
+    ["manager", "Manager or owner"],
+  ];
+  const requiredFields = ["organization", "contact", "email"];
+  const renderField = ([field, label]) => (
+    <label key={field}>
+      <span>{label}{requiredFields.includes(field) ? " *" : ""}</span>
+      <input
+        value={form[field]}
+        type={field === "email" ? "email" : field === "website" ? "url" : "text"}
+        required={requiredFields.includes(field)}
+        aria-invalid={submitted && requiredFields.includes(field) && !form[field]?.trim() ? "true" : "false"}
+        onChange={(event) => updateField(field, event.target.value)}
+      />
+    </label>
+  );
+
   return (
-    <section className="dp-partner-lifecycle-section">
+    <section id="partner-signup" className="dp-partner-lifecycle-section dp-partner-register-intake">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Registration</p>
-        <h2>Confirm the organization and setup details.</h2>
-        <span>These details shape your workspace, public profile, reports, billing, and launch tools.</span>
+        <p>Signup details</p>
+        <h2>Create the workspace around your business.</h2>
+        <span>Add the details your team needs for the public profile, launch tools, checkout handoff, and workspace setup.</span>
       </div>
 
-      <form className="dp-partner-register-form" onSubmit={handleSubmit}>
-        {[
-          ["organization", "Organization"],
-          ["website", "Website"],
-          ["address", "Address"],
-          ["contact", "Primary contact"],
-          ["phone", "Phone"],
-          ["email", "Email"],
-          ["manager", "Manager or owner"],
-          ["industry", "Industry"],
-          ["googleBusiness", "Google Business profile"],
-        ].map(([field, label]) => (
-          <label key={field}>
-            <span>{label}{["organization", "contact", "email"].includes(field) ? " *" : ""}</span>
-            <input
-              value={form[field]}
-              type={field === "email" ? "email" : field === "website" ? "url" : "text"}
-              required={["organization", "contact", "email"].includes(field)}
-              aria-invalid={submitted && ["organization", "contact", "email"].includes(field) && !form[field]?.trim() ? "true" : "false"}
-              onChange={(event) => updateField(field, event.target.value)}
-            />
-          </label>
-        ))}
-        <label className="dp-partner-register-form-wide">
-          <span>Description, categories, amenities, hours, logo, images, or launch notes</span>
-          <textarea value={form.description} onChange={(event) => updateField("description", event.target.value)} />
-        </label>
+      <div className="dp-partner-register-layout">
+        <form className="dp-partner-register-form" onSubmit={handleSubmit}>
+          <fieldset className="dp-partner-register-group">
+            <legend>Business profile</legend>
+            <div className="dp-partner-register-fields">
+              {businessFields.map(renderField)}
+            </div>
+          </fieldset>
+
+          <fieldset className="dp-partner-register-group">
+            <legend>Contact</legend>
+            <div className="dp-partner-register-fields">
+              {contactFields.map(renderField)}
+            </div>
+          </fieldset>
+
+          <fieldset className="dp-partner-register-group">
+            <legend>Launch notes</legend>
+            <label className="dp-partner-register-form-wide">
+              <span>Profile notes, categories, amenities, hours, images, or launch priorities</span>
+              <textarea value={form.description} onChange={(event) => updateField("description", event.target.value)} />
+            </label>
+          </fieldset>
+
+          <div className="dp-partner-register-submit">
+            <button type="submit">
+              Continue to pricing
+              <ArrowRight aria-hidden="true" />
+            </button>
+            {submitted && (!form.organization.trim() || !form.contact.trim() || !form.email.trim()) ? (
+              <p className="dp-partner-form-error" role="alert">Please complete the highlighted fields to continue.</p>
+            ) : null}
+          </div>
+        </form>
 
         <aside className="dp-workspace-preview-card">
           <p>Workspace preview</p>
-          <h3>This is what your workspace will include.</h3>
-          <div>
-            {setupModules.map((module) => (
-              <span key={module}><Check aria-hidden="true" />{module}</span>
+          <h3>What opens after signup.</h3>
+          <div className="dp-workspace-preview-list">
+            {workspacePreviewRows.map(([title, description]) => (
+              <article key={title}>
+                <Check aria-hidden="true" />
+                <span>
+                  <strong>{title}</strong>
+                  <small>{description}</small>
+                </span>
+              </article>
             ))}
           </div>
         </aside>
-
-        <button type="submit">
-          Continue to pricing
-          <ArrowRight aria-hidden="true" />
-        </button>
-        {submitted && (!form.organization.trim() || !form.contact.trim() || !form.email.trim()) ? (
-          <p className="dp-partner-form-error" role="alert">Organization, primary contact, and email are required before pricing can be confirmed.</p>
-        ) : null}
-      </form>
+      </div>
     </section>
   );
 }
@@ -398,44 +880,47 @@ function CheckoutStage({ setup, setSetup }) {
   }
 
   return (
-    <section className="dp-partner-lifecycle-section dp-partner-checkout-section">
-      <div className="dp-partner-lifecycle-section-head">
-        <p>Checkout</p>
-        <h2>Confirm billing and activate the workspace.</h2>
-        <span>Review your selected plan, add-ons, and account details before continuing.</span>
-      </div>
-      <div className="dp-checkout-grid">
-        <article>
-          <Receipt aria-hidden="true" />
-          <h3>{selectedPlan}</h3>
-          <p>{setup.partnerType || "Partner"} workspace subscription</p>
-          <dl>
-            <div><dt>Organization</dt><dd>{setup.organization || "Add during setup"}</dd></div>
-            <div><dt>Contact</dt><dd>{setup.email || "Add during setup"}</dd></div>
-            <div><dt>Billing</dt><dd>{isStripeReady ? "Secure checkout available" : "Team-assisted checkout"}</dd></div>
-            <div><dt>Annual total</dt><dd>{annualTotal == null ? "Custom" : formatCurrency(annualTotal)}</dd></div>
-            <div><dt>One-time total</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div>
-          </dl>
-          {moduleLabels.length ? (
-            <div className="dp-checkout-module-list" aria-label="Selected modules">
-              {moduleLabels.map((module) => <span key={module}>{module}</span>)}
-            </div>
-          ) : null}
-        </article>
-        <article>
-          <CreditCard aria-hidden="true" />
-          <h3>Payment path</h3>
-          <p>{isStripeReady
-            ? "Continue through secure checkout. Your workspace details stay connected to the selected plan."
-            : "This plan needs a quick review before payment. We will keep your setup details together for the next step."}</p>
-          <button type="button" onClick={handleCheckout} disabled={isSubmittingCheckout}>
-            {isSubmittingCheckout ? "Opening checkout..." : isStripeReady ? "Continue to checkout" : "Continue with setup"}
-          </button>
-          {checkoutError ? <p className="dp-partner-form-error" role="alert">{checkoutError}</p> : null}
-          <Link to="/partner-workspace/billing?checkout=1">Open billing module</Link>
-        </article>
-      </div>
-    </section>
+    <>
+      <ProfessionalServicesSection />
+      <section className="dp-partner-lifecycle-section dp-partner-checkout-section">
+        <div className="dp-partner-lifecycle-section-head">
+          <p>Checkout</p>
+          <h2>Review your membership before payment.</h2>
+          <span>Your selected plan, add-ons, account details, and workspace launch path stay together.</span>
+        </div>
+        <div className="dp-checkout-grid">
+          <article>
+            <Receipt aria-hidden="true" />
+            <h3>{selectedPlan}</h3>
+            <p>{setup.partnerType || "Partner"} workspace membership</p>
+            <dl>
+              <div><dt>Organization</dt><dd>{setup.organization || "Add during setup"}</dd></div>
+              <div><dt>Contact</dt><dd>{setup.email || "Add during setup"}</dd></div>
+              <div><dt>Billing</dt><dd>{isStripeReady ? "Secure checkout available" : "Team-assisted checkout"}</dd></div>
+              <div><dt>Annual total</dt><dd>{annualTotal == null ? "Custom" : formatCurrency(annualTotal)}</dd></div>
+              <div><dt>One-time total</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div>
+            </dl>
+            {moduleLabels.length ? (
+              <div className="dp-checkout-module-list" aria-label="Selected modules">
+                {moduleLabels.map((module) => <span key={module}>{module}</span>)}
+              </div>
+            ) : null}
+          </article>
+          <article>
+            <CreditCard aria-hidden="true" />
+            <h3>Payment path</h3>
+            <p>{isStripeReady
+              ? "Continue through secure checkout. Your workspace details stay connected to the selected plan."
+              : "This plan needs a quick review before payment. Your setup details stay saved for the next step."}</p>
+            <button type="button" onClick={handleCheckout} disabled={isSubmittingCheckout}>
+              {isSubmittingCheckout ? "Opening checkout..." : isStripeReady ? "Continue to checkout" : "Continue with setup"}
+            </button>
+            {checkoutError ? <p className="dp-partner-form-error" role="alert">{checkoutError}</p> : null}
+            <Link to="/partner-workspace/billing?checkout=1">Open billing</Link>
+          </article>
+        </div>
+      </section>
+    </>
   );
 }
 

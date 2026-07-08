@@ -19,7 +19,7 @@ const brands = [
 function CardImage({ image, alt }) {
   const [src, setSrc] = useState(image?.src);
   return (
-    <div className="mb-5 aspect-[4/5] overflow-hidden rounded-[18px] border border-[#C8A96A]/20 bg-[#FFFFFF]">
+    <div className="mb-5 aspect-[4/5] overflow-hidden rounded-[18px] border border-[#BFA46A]/20 bg-[#FFFFFF]">
       <img
         src={src}
         alt={alt}
@@ -44,14 +44,14 @@ function BrandCard({ brand, index }) {
     >
       <Link
         to={`/brands/${brand.slug}`}
-        className="group block rounded-lg border border-[#C8A96A]/20 bg-[#FFFFFF] p-4 transition-all duration-300 hover:border-[#C8A96A]/50"
+        className="group block rounded-lg border border-[#BFA46A]/20 bg-[#FFFFFF] p-4 transition-all duration-300 hover:border-[#BFA46A]/50"
       >
         <CardImage image={brand.image} alt={`${brand.category} campaign`} />
         <div className="flex items-start justify-between mb-4">
-          <span className="text-[11px] font-medium text-[#C8A96A] uppercase tracking-[0.12em]">
+          <span className="text-[11px] font-medium text-[#BFA46A] uppercase tracking-[0.12em]">
             {brand.tag}
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-[#0B1F33]/35 group-hover:text-[#C8A96A] group-hover:translate-x-0.5 transition-all" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#0B1F33]/35 group-hover:text-[#BFA46A] group-hover:translate-x-0.5 transition-all" />
         </div>
         <h3 className="font-heading text-xl font-medium mb-1 group-hover:text-primary transition-colors duration-300">
           {brand.headline}
@@ -97,7 +97,7 @@ export default function BrandsIndex() {
                   </Link>
                   <Link
                     to="/map?mode=resident&tab=map"
-                    className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#C8A96A] hover:text-[#0B1F33]"
+                    className="inline-flex items-center gap-2 rounded-lg border border-[#BFA46A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#BFA46A] hover:text-[#0B1F33]"
                   >
                     <MapPin className="w-3.5 h-3.5" /> View on Map
                   </Link>
@@ -180,7 +180,7 @@ export default function BrandsIndex() {
                 </a>
                 <Link
                   to="/downtown-perks/for-buildings"
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#C8A96A] hover:text-[#0B1F33]"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#BFA46A]/30 px-5 py-2.5 text-[13px] font-medium text-[#0B1F33]/75 transition-all duration-300 hover:border-[#BFA46A] hover:text-[#0B1F33]"
                 >
                   Partnership Details
                 </Link>

@@ -404,7 +404,7 @@ export default function Home() {
                 <span className="dp-label mb-3 block">Your role</span>
                 <h2 className="font-heading text-3xl font-medium">Spend less. Do more.</h2>
                 <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
-                  Start with a pilot. Decide with real data. No setup. No long-term commitment. Just a live test.
+                  Start with a focused launch. Decide with real data. No setup. No long-term commitment. Just a clear path to downtown action.
                 </p>
               </div>
               <div className="grid gap-6 lg:grid-cols-[250px_1fr]">
@@ -424,14 +424,14 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
-                <article className="bg-white p-6 shadow-[0_18px_56px_rgba(11,31,51,0.055),0_0_32px_rgba(200,169,106,0.05)]">
+                <article className="bg-white p-6 shadow-[0_18px_56px_rgba(11,31,51,0.055),0_0_32px_rgba(191,164,106,0.05)]">
                   <div className="grid gap-5 md:grid-cols-[1fr_220px]">
                     <div>
                       <h3 className="font-heading text-3xl font-medium">{partnerType}</h3>
                       <p className="mt-4 text-[14px] leading-relaxed text-[#0B1F33]/68">{partner.body}</p>
                       <p className="mt-5 font-heading text-2xl italic">You're not selling square footage. You're selling everything around it.</p>
                     </div>
-                    <div className="bg-white p-4 shadow-[0_14px_44px_rgba(11,31,51,0.05),0_0_26px_rgba(200,169,106,0.045)]">
+                    <div className="bg-white p-4 shadow-[0_14px_44px_rgba(11,31,51,0.05),0_0_26px_rgba(191,164,106,0.045)]">
                       <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Pricing</div>
                       <div className="mt-2 text-2xl font-semibold">{partner.pricing}</div>
                       <Link to={partner.href} className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-md bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-white">
@@ -446,7 +446,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="pricing" className="relative overflow-hidden bg-white py-12 text-[#0B1F33] shadow-[0_-18px_60px_rgba(11,31,51,0.045),0_0_44px_rgba(200,169,106,0.045)] md:py-16">
+      <section id="pricing" className="relative overflow-hidden bg-white py-12 text-[#0B1F33] shadow-[0_-18px_60px_rgba(11,31,51,0.045),0_0_44px_rgba(191,164,106,0.045)] md:py-16">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent)]" aria-hidden="true" />
         <div className="pointer-events-none absolute -left-16 top-1/2 h-56 w-56 -translate-y-1/2 bg-white/8 blur-3xl" aria-hidden="true" />
         <div className="pointer-events-none absolute right-[8%] top-0 h-40 w-40 bg-white/6 blur-3xl" aria-hidden="true" />
@@ -475,8 +475,8 @@ export default function Home() {
                   ["Events", "RSVP in one tap"],
                 ]
             ).map(([label, value]) => (
-              <div key={label} className="flex min-h-[58px] items-center justify-between gap-3 bg-white px-3.5 py-3 shadow-[0_10px_30px_rgba(11,31,51,0.04),0_0_20px_rgba(200,169,106,0.035)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(11,31,51,0.055),0_0_24px_rgba(200,169,106,0.05)]">
-                <div className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#C8A96A]">{label}</div>
+              <div key={label} className="flex min-h-[58px] items-center justify-between gap-3 bg-white px-3.5 py-3 shadow-[0_10px_30px_rgba(11,31,51,0.04),0_0_20px_rgba(191,164,106,0.035)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(11,31,51,0.055),0_0_24px_rgba(191,164,106,0.05)]">
+                <div className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#BFA46A]">{label}</div>
                 <div className="shrink-0 text-[13px] font-semibold text-[#0B1F33]">{value}</div>
               </div>
             ))}
@@ -495,12 +495,12 @@ export default function Home() {
               <button
                 key={question}
                 onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
-                className="bg-white p-5 text-left shadow-[0_12px_40px_rgba(11,31,51,0.04),0_0_24px_rgba(200,169,106,0.035)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_44px_rgba(11,31,51,0.055),0_0_28px_rgba(200,169,106,0.05)]"
+                className="bg-white p-5 text-left shadow-[0_12px_40px_rgba(11,31,51,0.04),0_0_24px_rgba(191,164,106,0.035)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_44px_rgba(11,31,51,0.055),0_0_28px_rgba(191,164,106,0.05)]"
                 aria-expanded={openFaq === index}
               >
                 <div className="flex items-center justify-between gap-4">
                   <h3 className="font-body text-[14px] font-semibold">{question}</h3>
-                  <Sparkles className="h-4 w-4 shrink-0 text-[#C8A96A]" />
+                  <Sparkles className="h-4 w-4 shrink-0 text-[#BFA46A]" />
                 </div>
                 {openFaq === index && <p className="mt-3 text-[13px] leading-relaxed text-[#0B1F33]/64">{answer}</p>}
               </button>
@@ -521,7 +521,7 @@ export default function Home() {
               {isPartner ? "Choose your partner type and send the details. We will find the right setup." : "If you sign up now and your building joins later, you will be refunded."}
             </p>
           </div>
-          <form className="grid gap-3 bg-white p-5 shadow-[0_12px_40px_rgba(11,31,51,0.06),0_0_28px_rgba(200,169,106,0.04)]">
+          <form className="grid gap-3 bg-white p-5 shadow-[0_12px_40px_rgba(11,31,51,0.06),0_0_28px_rgba(191,164,106,0.04)]">
             {(isPartner ? ["Organization Name", "Your Name & Role", "Email", "Phone"] : ["Your Name", "Phone Number", "Email", "Building", "How did you hear about us?"]).map((label) => {
               const isBuildingSelect = !isPartner && label === "Building";
               return (
@@ -530,7 +530,7 @@ export default function Home() {
                   {isBuildingSelect ? (
                     <select
                       defaultValue=""
-                      className="h-10 rounded-md bg-white px-3 text-[13px] text-[#0B1F33] shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] outline-none transition focus:shadow-[inset_0_0_0_1px_rgba(200,169,106,0.10),0_0_24px_rgba(200,169,106,0.08)]"
+                      className="h-10 rounded-md bg-white px-3 text-[13px] text-[#0B1F33] shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] outline-none transition focus:shadow-[inset_0_0_0_1px_rgba(191,164,106,0.10),0_0_24px_rgba(191,164,106,0.08)]"
                     >
                       <option value="" disabled>Select your building</option>
                       {residentBuildingOptions.map((building) => (
@@ -538,7 +538,7 @@ export default function Home() {
                       ))}
                     </select>
                   ) : (
-                    <input className="h-10 rounded-md bg-white px-3 text-[13px] shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] outline-none transition focus:shadow-[inset_0_0_0_1px_rgba(200,169,106,0.10),0_0_24px_rgba(200,169,106,0.08)]" />
+                    <input className="h-10 rounded-md bg-white px-3 text-[13px] shadow-[inset_0_0_0_1px_rgba(11,31,51,0.04)] outline-none transition focus:shadow-[inset_0_0_0_1px_rgba(191,164,106,0.10),0_0_24px_rgba(191,164,106,0.08)]" />
                   )}
                 </label>
               );

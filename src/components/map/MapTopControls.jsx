@@ -75,7 +75,7 @@ export default function MapTopControls() {
                 className={`h-10 px-3.5 rounded-xl border text-[12px] font-medium shrink-0 transition-all ${
                   filters.category === cat.id
                     ? 'bg-[#0B1F33] text-white border-[#0B1F33]'
-                    : 'bg-white text-[#0B1F33]/70 border-[#0B1F33]/8 hover:border-[#C8A96A]/45'
+                    : 'bg-white text-[#0B1F33]/70 border-[#0B1F33]/8 hover:border-[#BFA46A]/45'
                 }`}
               >
                 {cat.label}

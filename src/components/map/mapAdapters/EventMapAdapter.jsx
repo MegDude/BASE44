@@ -34,16 +34,16 @@ export function EventCard({ event, active, onClick }) {
   const CAT_COLORS = {
     fitness: "#0B1F33",
     wellness: "#0B1F33",
-    social: "#C8A96A",
-    dining: "#C8A96A",
+    social: "#BFA46A",
+    dining: "#BFA46A",
     nightlife: "#0B1F33",
     arts: "#0B1F33",
     networking: "#0B1F33",
     class: "#0B1F33",
-    run_club: "#C8A96A",
+    run_club: "#BFA46A",
     yoga: "#0B1F33",
   };
-  const color = CAT_COLORS[event.category] || "#C8A96A";
+  const color = CAT_COLORS[event.category] || "#BFA46A";
 
   return (
     <article
@@ -56,8 +56,8 @@ export function EventCard({ event, active, onClick }) {
       }`}
     >
       <div className="relative flex aspect-[1.75/1] items-center justify-center overflow-hidden bg-white">
-        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33]">
-          <Calendar className="h-8 w-8 text-[#C8A96A]" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#BFA46A]/50 bg-[#0B1F33]">
+          <Calendar className="h-8 w-8 text-[#BFA46A]" />
         </div>
         <div
           className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md ${STATUS_STYLE[event.status] || STATUS_STYLE.upcoming}`}

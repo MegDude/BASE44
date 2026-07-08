@@ -31,7 +31,7 @@ const PIN_SVG_STYLE_LG = `
   height: 18px;
   display: block;
   flex-shrink: 0;
-  stroke: #C8A96A;
+  stroke: #BFA46A;
   fill: none;
 `;
 
@@ -68,7 +68,7 @@ export function createCompactMarker(entity) {
       height: ${size}px;
       border-radius: 999px;
       background: rgba(255,255,255,0.96);
-      border: 1px solid rgba(200,169,106,0.72);
+      border: 1px solid rgba(191,164,106,0.72);
       box-shadow: none;
       display: flex;
       align-items: center;
@@ -107,7 +107,7 @@ export function createSelectedMarker(entity) {
       height: ${size}px;
       border-radius: 999px;
       background: #0B1F33;
-      border: 1px solid #C8A96A;
+      border: 1px solid #BFA46A;
       box-shadow: none;
       display: flex;
       align-items: center;
@@ -116,7 +116,7 @@ export function createSelectedMarker(entity) {
       transform: translateY(-1px);
       animation: dpPinSelect 0.2s cubic-bezier(0.22,1,0.36,1);
       overflow: hidden;
-      color: #C8A96A;
+      color: #BFA46A;
     ">
       ${glyph}
     </div>

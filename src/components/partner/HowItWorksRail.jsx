@@ -23,7 +23,7 @@ export default function HowItWorksRail({ steps = [] }) {
               transition={{ duration: 0.4, delay: i * 0.1 }}
               className="grid grid-cols-[30px_1fr] gap-3 md:block"
             >
-              <div className="flex items-start gap-2 font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">
+              <div className="flex items-start gap-2 font-heading text-[16px] font-bold leading-none text-[#A98B4A] md:text-[20px]">
                 <span>{String(i + 1).padStart(2, "0")}</span>
                 {step.icon && <span className="mt-0.5 text-[13px] md:hidden">{step.icon}</span>}
               </div>

@@ -197,7 +197,7 @@ function ProductRoutes() {
           />
           <Route
             path="/partners/sign-up"
-            element={<RedirectWithSearch to="/partners/register" />}
+            element={<PartnerLifecycle />}
           />
           <Route path="/pricing" element={<Suspense fallback={<MarketingFallback />}><PricingPage /></Suspense>} />
           <Route path="/partners/pricing" element={<RedirectWithSearch to="/pricing" />} />

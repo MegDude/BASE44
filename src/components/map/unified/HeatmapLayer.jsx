@@ -60,7 +60,7 @@ export default function HeatmapLayer() {
     <>
       {heatmapData.map((cluster, idx) => {
         const intensity = cluster.intensity;
-        const color = intensity > 0.7 ? '#C8A96A' : intensity > 0.4 ? '#0B1F33' : '#0B1F33';
+        const color = intensity > 0.7 ? '#BFA46A' : intensity > 0.4 ? '#0B1F33' : '#0B1F33';
         const radius = 50 + intensity * 150;
         const opacity = 0.3 + intensity * 0.4;
 

@@ -18,7 +18,7 @@ export default function HappyHourRail({ venues }: HappyHourRailProps) {
     <div className="space-y-6">
       {groups.map((group) => (
         <section key={group.label}>
-          <h3 className="mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{group.label}</h3>
+          <h3 className="mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">{group.label}</h3>
           <div className="dp-chip-row flex gap-3 overflow-x-auto pb-2">
             {group.items.slice(0, 8).map((venue) => <HappyHourCard key={`${group.label}-${venue.id}`} venue={venue} />)}
           </div>

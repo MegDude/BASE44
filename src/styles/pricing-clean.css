@@ -60,7 +60,7 @@
 
 .dp-pricing-page-nav a:hover,
 .dp-pricing-page-nav a:focus-visible {
-  border-color: rgba(200, 169, 106, 0.72);
+  border-color: rgba(191, 164, 106, 0.72);
   color: #8B6B2F;
   outline: none;
 }
@@ -181,7 +181,7 @@
 .dp-pricing-button:hover,
 .dp-pricing-button:focus-visible,
 .dp-pricing-button[data-active="true"] {
-  border-color: rgba(200, 169, 106, 0.72);
+  border-color: rgba(191, 164, 106, 0.72);
   color: #8B6B2F;
   outline: none;
 }
@@ -414,8 +414,8 @@
 }
 
 .dp-pricing-card[data-active="true"] {
-  border-color: rgba(200, 169, 106, 0.88);
-  box-shadow: 0 18px 40px rgba(200, 169, 106, 0.13);
+  border-color: rgba(191, 164, 106, 0.88);
+  box-shadow: 0 18px 40px rgba(191, 164, 106, 0.13);
 }
 
 .dp-pricing-builder {
@@ -478,7 +478,7 @@
 .dp-pricing-choice-grid button[data-active="true"],
 .dp-pricing-option-list button[data-active="true"],
 .dp-pricing-selected button:hover {
-  border-color: rgba(200, 169, 106, 0.8);
+  border-color: rgba(191, 164, 106, 0.8);
   color: #8B6B2F;
 }
 
@@ -984,7 +984,7 @@
 
 .dp-provision-list div.is-complete {
   color: #0B1F33;
-  border-color: rgba(200, 169, 106, 0.34);
+  border-color: rgba(191, 164, 106, 0.34);
 }
 
 @media (min-width: 640px) {
@@ -1174,7 +1174,7 @@ canvas {
 }
 
 .pricing-v4-button:focus-visible {
-  outline: 3px solid rgba(200, 169, 106, 0.45);
+  outline: 3px solid rgba(191, 164, 106, 0.45);
   outline-offset: 3px;
 }
 
@@ -1278,8 +1278,8 @@ canvas {
 
 .dp-pricing-partner-rail button[data-active="true"],
 .dp-pricing-capability-tabs button[data-active="true"] {
-  border-color: rgba(200, 169, 106, 0.86);
-  box-shadow: 0 14px 30px rgba(200, 169, 106, 0.12);
+  border-color: rgba(191, 164, 106, 0.86);
+  box-shadow: 0 14px 30px rgba(191, 164, 106, 0.12);
 }
 
 .dp-pricing-partner-rail span {
@@ -1318,7 +1318,7 @@ canvas {
 }
 
 .pricing-v4-card[data-active="true"] {
-  border-color: rgba(200, 169, 106, 0.82);
+  border-color: rgba(191, 164, 106, 0.82);
 }
 
 .pricing-v4-card-media {
@@ -1544,8 +1544,8 @@ canvas {
 }
 
 .pricing-v4-enterprise-card.is-selected {
-  border-color: rgba(200, 169, 106, 0.9);
-  box-shadow: 0 18px 38px rgba(200, 169, 106, 0.14);
+  border-color: rgba(191, 164, 106, 0.9);
+  box-shadow: 0 18px 38px rgba(191, 164, 106, 0.14);
 }
 
 .pricing-v4-enterprise-detail {
@@ -1778,8 +1778,8 @@ canvas {
 .dp-pricing-partner-list button[data-active="true"],
 .dp-pricing-capability-tabs button[data-active="true"],
 .dp-pricing-enterprise-list button[data-active="true"] {
-  border-color: rgba(200, 169, 106, 0.82);
-  box-shadow: 0 16px 34px rgba(200, 169, 106, 0.12);
+  border-color: rgba(191, 164, 106, 0.82);
+  box-shadow: 0 16px 34px rgba(191, 164, 106, 0.12);
 }
 
 .dp-pricing-partner-list span {
@@ -2134,8 +2134,8 @@ canvas {
 .dp-pricing-calculator .dp-pricing-choice-grid button[data-active="true"],
 .dp-pricing-calculator .dp-pricing-option-list button[data-active="true"],
 .dp-pricing-calculator .dp-pricing-selected button:hover {
-  background: #FBF8EF !important;
-  border-color: rgba(200, 169, 106, 0.82) !important;
+  background: #F7F8FB !important;
+  border-color: rgba(191, 164, 106, 0.82) !important;
   color: #0B1F33 !important;
 }
 
@@ -2495,8 +2495,8 @@ canvas {
 }
 
 .dp-pricing-plan-choice[data-active="true"] {
-  background: #FBF8EF;
-  border-color: rgba(184, 150, 62, 0.72);
+  background: #F7F8FB;
+  border-color: rgba(169, 139, 74, 0.72);
 }
 
 .dp-pricing-plan-choice em {
@@ -2575,9 +2575,9 @@ canvas {
   display: grid;
   gap: 16px;
   padding: 18px;
-  border: 1px solid rgba(184, 150, 62, 0.42);
+  border: 1px solid rgba(169, 139, 74, 0.42);
   border-radius: 8px;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FBF8EF 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F7F8FB 100%);
 }
 
 .dp-pricing-resident-card > div {

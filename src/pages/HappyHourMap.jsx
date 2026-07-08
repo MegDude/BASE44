@@ -46,7 +46,7 @@ export default function HappyHourMap() {
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <button onClick={openMap} className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-5 text-[13px] font-medium text-white">
-                Open in the live map <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
+                Open in the live map <ArrowRight className="h-4 w-4 text-[#BFA46A]" />
               </button>
               <Link to="/ask-map" className="inline-flex h-10 items-center justify-center gap-2 border border-[#0B1F33]/10 bg-white px-5 text-[13px] font-medium text-[#0B1F33]">
                 Ask the Map
@@ -94,13 +94,13 @@ export default function HappyHourMap() {
                   className="absolute flex h-10 w-10 items-center justify-center border border-white/80 bg-white shadow-[0_10px_28px_rgba(11,31,51,0.12)]"
                   style={{ left: `${16 + (index % 3) * 27}%`, top: `${24 + Math.floor(index / 3) * 34}%` }}
                 >
-                  <span className="flex h-7 w-7 items-center justify-center bg-[#0B1F33] text-[11px] font-semibold text-[#C8A96A]">
+                  <span className="flex h-7 w-7 items-center justify-center bg-[#0B1F33] text-[11px] font-semibold text-[#BFA46A]">
                     {spot.name[0]}
                   </span>
                 </div>
               ))}
               <div className="absolute bottom-4 left-4 right-4 border border-white/60 bg-white/78 p-4 backdrop-blur-[20px]">
-                <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8A96A]">
+                <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#BFA46A]">
                   <Sparkles className="h-3.5 w-3.5" />
                   Live map guide
                 </div>
@@ -119,11 +119,11 @@ export default function HappyHourMap() {
                     <h2 className="font-body text-[14px] font-semibold">{spot.name}</h2>
                     <p className="mt-1 text-[12px] text-[#0B1F33]/58">{spot.district} · {spot.type}</p>
                   </div>
-                  <Store className="h-4 w-4 text-[#C8A96A]" />
+                  <Store className="h-4 w-4 text-[#BFA46A]" />
                 </div>
                 <p className="mt-3 text-[12px] leading-relaxed text-[#0B1F33]/64">{spot.signal}</p>
                 <div className="mt-3 flex items-center gap-2 border-t border-white/50 pt-3 text-[11px] font-medium text-[#0B1F33]/62">
-                  <Clock className="h-3.5 w-3.5 text-[#C8A96A]" />
+                  <Clock className="h-3.5 w-3.5 text-[#BFA46A]" />
                   {spot.offer}
                 </div>
               </article>

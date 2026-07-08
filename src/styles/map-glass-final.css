@@ -4,8 +4,8 @@
   --dp-map-glass-border: rgba(255, 255, 255, 0.45);
   --dp-map-glass-chip: rgba(255, 255, 255, 0.45);
   --dp-map-glass-chip-active: rgba(255, 255, 255, 0.72);
-  --dp-map-glow: 0 12px 40px rgba(11, 31, 51, 0.08), 0 0 40px rgba(200, 169, 106, 0.05);
-  --dp-map-glow-soft: 0 8px 24px rgba(11, 31, 51, 0.045), 0 0 24px rgba(200, 169, 106, 0.055);
+  --dp-map-glow: 0 12px 40px rgba(11, 31, 51, 0.08), 0 0 40px rgba(191, 164, 106, 0.05);
+  --dp-map-glow-soft: 0 8px 24px rgba(11, 31, 51, 0.045), 0 0 24px rgba(191, 164, 106, 0.055);
   --dp-map-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -29,7 +29,7 @@
   border-color: rgba(255, 255, 255, 0.52) !important;
   border-radius: 2px !important;
   background: rgba(255, 255, 255, 0.74) !important;
-  box-shadow: 0 14px 42px rgba(11, 31, 51, 0.075), 0 0 34px rgba(200, 169, 106, 0.045) !important;
+  box-shadow: 0 14px 42px rgba(11, 31, 51, 0.075), 0 0 34px rgba(191, 164, 106, 0.045) !important;
   backdrop-filter: blur(28px) saturate(170%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(170%) !important;
 }
@@ -76,7 +76,7 @@
 .dp-map-page input.dp-soft-field:focus,
 .dp-map-page textarea.dp-soft-field:focus,
 .dp-map-page select.dp-soft-field:focus {
-  box-shadow: 0 8px 28px rgba(200, 169, 106, 0.12) !important;
+  box-shadow: 0 8px 28px rgba(191, 164, 106, 0.12) !important;
 }
 
 .dp-map-page button.dp-console-chip,
@@ -182,7 +182,7 @@
   border-color: rgba(255, 255, 255, 0.72) !important;
   background: var(--dp-map-glass-chip-active) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 0 24px rgba(200, 169, 106, 0.18), 0 6px 16px rgba(11, 31, 51, 0.04) !important;
+  box-shadow: 0 0 24px rgba(191, 164, 106, 0.18), 0 6px 16px rgba(11, 31, 51, 0.04) !important;
 }
 
 .dp-map-page .dp-panel-row,
@@ -216,12 +216,12 @@
 .dp-map-page .dp-panel-row.is-selected,
 .dp-map-page .dp-map-metric-pill.is-active {
   background: rgba(255, 255, 255, 0.38) !important;
-  box-shadow: 0 0 22px rgba(200, 169, 106, 0.12) !important;
+  box-shadow: 0 0 22px rgba(191, 164, 106, 0.12) !important;
 }
 
 .dp-map-page .dp-panel-linked-grid {
   border-radius: 2px !important;
-  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.035), 0 0 24px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 10px 28px rgba(11, 31, 51, 0.035), 0 0 24px rgba(191, 164, 106, 0.055) !important;
 }
 
 .dp-map-page .dp-panel-linked-grid > article,
@@ -262,12 +262,12 @@
   color: rgba(11,31,51,0.66) !important;
 }
 
-.dp-map-page :is(.text-\[\#B38F4F\], .placeholder\:text-\[\#B38F4F\]::placeholder) {
-  color: #C8A96A !important;
+.dp-map-page :is(.text-\[\#A98B4A\], .placeholder\:text-\[\#A98B4A\]::placeholder) {
+  color: #BFA46A !important;
 }
 
-.dp-map-page :is(svg.text-\[\#B38F4F\], svg.text-\[\#C8A96A\]) {
-  color: #C8A96A !important;
+.dp-map-page :is(svg.text-\[\#A98B4A\], svg.text-\[\#BFA46A\]) {
+  color: #BFA46A !important;
 }
 
 .dp-map-page .dp-detail-intro > .group {
@@ -330,7 +330,7 @@
   border-radius: 2px !important;
   background: rgba(255, 255, 255, 0.5) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 0 22px rgba(200, 169, 106, 0.14) !important;
+  box-shadow: 0 0 22px rgba(191, 164, 106, 0.14) !important;
   backdrop-filter: blur(18px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
 }
@@ -351,8 +351,8 @@
   border: 1px solid rgba(255, 255, 255, 0.84) !important;
   border-radius: 2px !important;
   background: rgba(255, 255, 255, 0.94) !important;
-  color: #C8A96A !important;
-  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.14), 0 0 20px rgba(200, 169, 106, 0.09) !important;
+  color: #BFA46A !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.14), 0 0 20px rgba(191, 164, 106, 0.09) !important;
   backdrop-filter: blur(12px) saturate(1.06) !important;
   -webkit-backdrop-filter: blur(12px) saturate(1.06) !important;
 }
@@ -366,14 +366,14 @@
   border: 0 !important;
   border-radius: 2px !important;
   background: #0B1F33 !important;
-  color: #C8A96A !important;
-  box-shadow: inset 0 0 0 1px rgba(200, 169, 106, 0.12), 0 0 16px rgba(200, 169, 106, 0.08) !important;
+  color: #BFA46A !important;
+  box-shadow: inset 0 0 0 1px rgba(191, 164, 106, 0.12), 0 0 16px rgba(191, 164, 106, 0.08) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-pin-svg {
   width: 13px !important;
   height: 13px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
@@ -381,15 +381,15 @@
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-pulsing {
   transform: translateY(-1px) scale(1.045) !important;
   background: #FFFFFF !important;
-  box-shadow: 0 14px 32px rgba(11, 31, 51, 0.16), 0 0 26px rgba(200, 169, 106, 0.14) !important;
+  box-shadow: 0 14px 32px rgba(11, 31, 51, 0.16), 0 0 26px rgba(191, 164, 106, 0.14) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-selected {
   width: 31px !important;
   height: 31px !important;
-  border-color: rgba(200, 169, 106, 0.36) !important;
+  border-color: rgba(191, 164, 106, 0.36) !important;
   background: #FFFFFF !important;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.72), 0 16px 34px rgba(11, 31, 51, 0.18), 0 0 28px rgba(200, 169, 106, 0.16) !important;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.72), 0 16px 34px rgba(11, 31, 51, 0.18), 0 0 28px rgba(191, 164, 106, 0.16) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends).is-selected .dp-live-pin__core,
@@ -400,7 +400,7 @@
 
 .dp-map-page .dp-live-pin__halo {
   border-radius: 2px !important;
-  background: rgba(200, 169, 106, 0.18) !important;
+  background: rgba(191, 164, 106, 0.18) !important;
 }
 
 .dp-map-page .dp-live-pin--legends,
@@ -439,7 +439,7 @@
   padding: 0.44rem 0.62rem !important;
   background: rgba(255, 255, 255, 0.68) !important;
   border: 1px solid rgba(255, 255, 255, 0.5) !important;
-  box-shadow: 0 14px 42px rgba(11, 31, 51, 0.08), 0 0 32px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 14px 42px rgba(11, 31, 51, 0.08), 0 0 32px rgba(191, 164, 106, 0.055) !important;
   backdrop-filter: blur(26px) saturate(170%) !important;
   -webkit-backdrop-filter: blur(26px) saturate(170%) !important;
 }
@@ -484,9 +484,9 @@
   width: 4px !important;
   height: 4px !important;
   border-radius: 2px !important;
-  background: #C8A96A !important;
+  background: #BFA46A !important;
   transform: translateX(-50%) !important;
-  box-shadow: 0 0 12px rgba(200, 169, 106, 0.36) !important;
+  box-shadow: 0 0 12px rgba(191, 164, 106, 0.36) !important;
 }
 
 .dp-map-page nav.dp-map-bottom-nav svg {
@@ -532,7 +532,7 @@
 .dp-partner-page :where(p[class*="uppercase"], span[class*="uppercase"], div[class*="uppercase"]),
 .partner-workspace-page :where(p[class*="uppercase"], span[class*="uppercase"], div[class*="uppercase"]),
 .dp-report-page :where(p[class*="uppercase"], span[class*="uppercase"], div[class*="uppercase"]) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-partner-page :where(
@@ -557,7 +557,7 @@
   border: 1px solid rgba(255, 255, 255, 0.45) !important;
   border-radius: 2px !important;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.62)) !important;
-  box-shadow: 0 12px 40px rgba(11, 31, 51, 0.08), 0 0 40px rgba(200, 169, 106, 0.05) !important;
+  box-shadow: 0 12px 40px rgba(11, 31, 51, 0.08), 0 0 40px rgba(191, 164, 106, 0.05) !important;
   backdrop-filter: blur(32px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
 }
@@ -576,13 +576,13 @@
   background: rgba(255, 255, 255, 0.68) !important;
   color: #0B1F33 !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 8px 20px rgba(11, 31, 51, 0.045), 0 0 20px rgba(200, 169, 106, 0.08) !important;
+  box-shadow: 0 8px 20px rgba(11, 31, 51, 0.045), 0 0 20px rgba(191, 164, 106, 0.08) !important;
 }
 
 .dp-partner-page :where(button[class*="bg-[#0B1F33]"], a[class*="bg-[#0B1F33]"]) {
   background: rgba(255, 255, 255, 0.72) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 0 24px rgba(200, 169, 106, 0.18) !important;
+  box-shadow: 0 0 24px rgba(191, 164, 106, 0.18) !important;
 }
 
 /* Final map interaction contract: chips stay glass, pins stay pins. */
@@ -617,7 +617,7 @@
   border-color: rgba(255, 255, 255, 0.72) !important;
   background: rgba(255, 255, 255, 0.72) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 0 24px rgba(200, 169, 106, 0.18), 0 6px 16px rgba(11, 31, 51, 0.04) !important;
+  box-shadow: 0 0 24px rgba(191, 164, 106, 0.18), 0 6px 16px rgba(11, 31, 51, 0.04) !important;
 }
 
 .dp-map-page.dp-map-page :is(button.dp-panel-action, a.dp-panel-action, button.dp-pass-action) {
@@ -645,7 +645,7 @@
   border-radius: 2px !important;
   background: rgba(255, 255, 255, 0.58) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 9px 22px rgba(11, 31, 51, 0.045), 0 0 20px rgba(200, 169, 106, 0.07) !important;
+  box-shadow: 0 9px 22px rgba(11, 31, 51, 0.045), 0 0 20px rgba(191, 164, 106, 0.07) !important;
   backdrop-filter: blur(18px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
 }
@@ -662,7 +662,7 @@
 ) {
   border-color: rgba(255, 255, 255, 0.78) !important;
   background: rgba(255, 255, 255, 0.72) !important;
-  box-shadow: 0 12px 26px rgba(11, 31, 51, 0.06), 0 0 26px rgba(200, 169, 106, 0.12) !important;
+  box-shadow: 0 12px 26px rgba(11, 31, 51, 0.06), 0 0 26px rgba(191, 164, 106, 0.12) !important;
   transform: translateY(-1px) !important;
 }
 
@@ -675,10 +675,10 @@
   button.dp-panel-tab.is-active,
   button.dp-map-metric-pill.is-active
 ) {
-  border-color: rgba(200, 169, 106, 0.28) !important;
+  border-color: rgba(191, 164, 106, 0.28) !important;
   background: rgba(255, 255, 255, 0.78) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 0 0 1px rgba(200, 169, 106, 0.08), 0 12px 28px rgba(11, 31, 51, 0.055), 0 0 28px rgba(200, 169, 106, 0.16) !important;
+  box-shadow: 0 0 0 1px rgba(191, 164, 106, 0.08), 0 12px 28px rgba(11, 31, 51, 0.055), 0 0 28px rgba(191, 164, 106, 0.16) !important;
 }
 
 /* Partner campaign/workspace controls: no pill buttons or rounded rail chips. */
@@ -699,7 +699,7 @@
   [role="button"]
 ) {
   color: #0B1F33 !important;
-  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.04), 0 0 20px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.04), 0 0 20px rgba(191, 164, 106, 0.055) !important;
   transition: color 180ms var(--dp-map-ease), background 180ms var(--dp-map-ease), border-color 180ms var(--dp-map-ease), box-shadow 180ms var(--dp-map-ease), transform 180ms var(--dp-map-ease) !important;
 }
 
@@ -708,7 +708,7 @@
   a[href]:hover,
   [role="button"]:hover
 ) {
-  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.055), 0 0 26px rgba(200, 169, 106, 0.11) !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.055), 0 0 26px rgba(191, 164, 106, 0.11) !important;
   transform: translateY(-1px) !important;
 }
 
@@ -720,7 +720,7 @@
 ) {
   background: #0B1F33 !important;
   color: #FFFFFF !important;
-  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.11), 0 0 24px rgba(200, 169, 106, 0.12) !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.11), 0 0 24px rgba(191, 164, 106, 0.12) !important;
 }
 
 .dp-partner-page.dp-partner-page :is(
@@ -745,7 +745,7 @@
 .dp-map-page {
   --dp-map-glass-shell: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86));
   --dp-map-soft-line: rgba(11,31,51,0.08);
-  --dp-map-gold: #C8A96A;
+  --dp-map-gold: #BFA46A;
   --dp-map-navy: #0B1F33;
 }
 
@@ -793,7 +793,7 @@
   background: rgba(255,255,255,0.24) !important;
   color: var(--dp-map-navy) !important;
   border: 1px solid rgba(255,255,255,0.46) !important;
-  box-shadow: 0 10px 24px rgba(11,31,51,0.045), 0 0 18px rgba(200,169,106,0.04) !important;
+  box-shadow: 0 10px 24px rgba(11,31,51,0.045), 0 0 18px rgba(191,164,106,0.04) !important;
   letter-spacing: 0.08em !important;
 }
 
@@ -860,7 +860,7 @@
 .dp-map-page .dp-map-bottom-nav {
   background: rgba(255,255,255,0.68) !important;
   border: 1px solid rgba(255,255,255,0.50) !important;
-  box-shadow: 0 18px 52px rgba(11,31,51,0.08), 0 0 26px rgba(200,169,106,0.045) !important;
+  box-shadow: 0 18px 52px rgba(11,31,51,0.08), 0 0 26px rgba(191,164,106,0.045) !important;
   backdrop-filter: blur(28px) !important;
   -webkit-backdrop-filter: blur(28px) !important;
   border-radius: 2px !important;
@@ -874,7 +874,7 @@
 }
 
 .dp-map-page .dp-detail-drawer :is(h2, .dp-drawer-title) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 19px !important;
   line-height: 1.08 !important;
   font-weight: 650 !important;
@@ -882,7 +882,7 @@
 }
 
 .dp-map-page .dp-detail-drawer h3 {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 15px !important;
   line-height: 1.18 !important;
   font-weight: 650 !important;
@@ -900,7 +900,7 @@
 }
 
 .dp-map-page .dp-detail-drawer :is(svg, .lucide) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page .dp-map-cluster {
@@ -911,8 +911,8 @@
   border-radius: 2px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
-  border: 1px solid rgba(200,169,106,0.72) !important;
-  box-shadow: 0 14px 34px rgba(11,31,51,0.18), 0 0 0 6px rgba(200,169,106,0.16) !important;
+  border: 1px solid rgba(191,164,106,0.72) !important;
+  box-shadow: 0 14px 34px rgba(11,31,51,0.18), 0 0 0 6px rgba(191,164,106,0.16) !important;
   font-size: 13px !important;
   font-weight: 800 !important;
 }
@@ -957,7 +957,7 @@
 ) {
   background: rgba(255,255,255,0.74) !important;
   border-color: rgba(11,31,51,0.08) !important;
-  box-shadow: 0 18px 52px rgba(11,31,51,0.055), 0 0 24px rgba(200,169,106,0.04) !important;
+  box-shadow: 0 18px 52px rgba(11,31,51,0.055), 0 0 24px rgba(191,164,106,0.04) !important;
   backdrop-filter: blur(18px) !important;
   -webkit-backdrop-filter: blur(18px) !important;
 }
@@ -996,7 +996,7 @@
 .dp-map-page [aria-label="Map command console"] label :is(svg, .lucide),
 .dp-map-page [aria-label="Map command console"] .dp-console-ask-button,
 .dp-map-page [aria-label="Map command console"] .dp-console-ask-button :is(svg, .lucide) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page [aria-label="Map command console"] .dp-console-ask-button,
@@ -1035,7 +1035,7 @@
 ) {
   border-radius: 2px !important;
   min-height: 32px !important;
-  box-shadow: 0 8px 18px rgba(11,31,51,0.04), 0 0 14px rgba(200,169,106,0.04) !important;
+  box-shadow: 0 8px 18px rgba(11,31,51,0.04), 0 0 14px rgba(191,164,106,0.04) !important;
 }
 
 .dp-map-page :is(.dp-console-chip, .dp-map-audience-tab, .dp-map-control, .dp-panel-action, .dp-panel-tab)::before,
@@ -1046,7 +1046,7 @@
 .dp-map-page :is(.dp-console-chip.is-active, .dp-map-audience-tab.is-active, .dp-map-audience-tab[aria-selected="true"], .dp-panel-tab.is-active, .dp-map-bottom-nav button[aria-pressed="true"]) {
   background: rgba(255,255,255,0.32) !important;
   color: #0B1F33 !important;
-  border-bottom: 1px solid #C8A96A !important;
+  border-bottom: 1px solid #BFA46A !important;
 }
 
 .dp-map-page .dp-map-bottom-nav {
@@ -1123,7 +1123,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 ) {
   background: rgba(255,255,255,0.72) !important;
   border-color: rgba(11,31,51,0.08) !important;
-  box-shadow: 0 18px 52px rgba(11,31,51,0.055), 0 0 24px rgba(200,169,106,0.035) !important;
+  box-shadow: 0 18px 52px rgba(11,31,51,0.055), 0 0 24px rgba(191,164,106,0.035) !important;
   backdrop-filter: blur(18px) !important;
   -webkit-backdrop-filter: blur(18px) !important;
 }
@@ -1157,15 +1157,15 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   place-items: center !important;
   border-radius: 999px !important;
   background: #0B1F33 !important;
-  color: #C8A96A !important;
-  border: 1px solid rgba(200,169,106,0.72) !important;
-  box-shadow: 0 10px 24px rgba(11,31,51,0.16), 0 0 0 4px rgba(200,169,106,0.16) !important;
+  color: #BFA46A !important;
+  border: 1px solid rgba(191,164,106,0.72) !important;
+  box-shadow: 0 10px 24px rgba(11,31,51,0.16), 0 0 0 4px rgba(191,164,106,0.16) !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-pin-svg {
   width: 15px !important;
   height: 15px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends)::before,
@@ -1175,7 +1175,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-live-pin__halo {
   border-radius: 999px !important;
-  background: rgba(200,169,106,0.18) !important;
+  background: rgba(191,164,106,0.18) !important;
 }
 
 .dp-map-page .dp-live-pin--legends,
@@ -1249,12 +1249,12 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   box-shadow: 0 12px 30px rgba(11,31,51,0.07), 0 0 20px rgba(11,31,51,0.035) !important;
 }
 
-.dp-map-page :is(.dp-panel-shell, .dp-detail-drawer, .dp-map-bottom-nav, [aria-label="Map command console"], [aria-label="Collapsed map search"]) :is(svg, .text-\[\#C8A96A\], .text-\[\#B38F4F\]) {
+.dp-map-page :is(.dp-panel-shell, .dp-detail-drawer, .dp-map-bottom-nav, [aria-label="Map command console"], [aria-label="Collapsed map search"]) :is(svg, .text-\[\#BFA46A\], .text-\[\#A98B4A\]) {
   color: #0B1F33 !important;
   stroke: currentColor !important;
 }
 
-.dp-map-page :is(.dp-panel-shell, .dp-detail-drawer, [aria-label="Map command console"], [aria-label="Collapsed map search"]) :is(.text-\[\#C8A96A\], .text-\[\#B38F4F\]) {
+.dp-map-page :is(.dp-panel-shell, .dp-detail-drawer, [aria-label="Map command console"], [aria-label="Collapsed map search"]) :is(.text-\[\#BFA46A\], .text-\[\#A98B4A\]) {
   color: rgba(11,31,51,0.68) !important;
 }
 
@@ -1344,7 +1344,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page [aria-label="Map command console"] label :is(svg, .lucide),
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-ask-button,
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-ask-button :is(svg, .lucide) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-ask-button,
@@ -1427,7 +1427,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   .dp-map-audience-tab.is-active,
   .dp-map-audience-tab[aria-selected="true"]
 ) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page :is(
@@ -1435,16 +1435,16 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   .dp-panel-tab,
   .dp-map-audience-tab
 ) :is(svg, .lucide) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
 .dp-map-page.dp-map-page .dp-map-bottom-nav button span {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page .dp-detail-drawer :is(h2, .dp-drawer-title) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 19px !important;
   line-height: 1.08 !important;
   font-weight: 650 !important;
@@ -1452,7 +1452,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-detail-drawer h3 {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 15px !important;
   line-height: 1.18 !important;
   font-weight: 650 !important;
@@ -1470,7 +1470,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-detail-drawer :is(svg, .lucide) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
@@ -1502,8 +1502,8 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   .dp-panel-shell[aria-label="Discover results"],
   .dp-panel-shell[aria-label="Partner map results"]
 ) :is(
-  .text-\[\#C8A96A\],
-  .text-\[\#B38F4F\],
+  .text-\[\#BFA46A\],
+  .text-\[\#A98B4A\],
   .text-\[\#425466\]
 ) {
   color: inherit !important;
@@ -1516,7 +1516,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   .dp-panel-shell[aria-label="Discover results"],
   .dp-panel-shell[aria-label="Partner map results"]
 ) :is(svg, .lucide, svg *, .lucide *) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
@@ -1780,7 +1780,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-map-bottom-nav :is(svg, .lucide) {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
@@ -1794,7 +1794,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   border: 0 !important;
   border-radius: 2px !important;
   background: rgba(255, 255, 255, 0.42) !important;
-  box-shadow: 0 0 22px rgba(11, 31, 51, 0.035), 0 0 26px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 0 22px rgba(11, 31, 51, 0.035), 0 0 26px rgba(191, 164, 106, 0.055) !important;
   backdrop-filter: blur(18px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
 }
@@ -1809,7 +1809,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page .dp-panel-linked-grid {
   gap: 1px !important;
   background: transparent !important;
-  box-shadow: 0 0 24px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 0 24px rgba(191, 164, 106, 0.055) !important;
 }
 
 .dp-map-page.dp-map-page .dp-panel-linked-grid > :is(article, button) {
@@ -1830,7 +1830,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page .dp-detail-drawer .dp-primary-action-row {
   gap: 1px !important;
   background: transparent !important;
-  box-shadow: 0 0 20px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 0 20px rgba(191, 164, 106, 0.055) !important;
 }
 
 .dp-map-page.dp-map-page .dp-detail-drawer .dp-primary-action-row > :is(a, button) {
@@ -1856,7 +1856,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-filter-rail {
@@ -1901,7 +1901,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask {
   min-width: max-content !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page [aria-label="Collapsed map search"] {
@@ -1949,7 +1949,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   --dp-panel-border: rgba(11, 31, 51, 0.06);
   --dp-panel-white-border: rgba(255, 255, 255, 0.45);
   --dp-panel-navy: #0B1F33;
-  --dp-panel-gold: #C8A96A;
+  --dp-panel-gold: #BFA46A;
   --dp-panel-page: #F7F8FB;
   --dp-panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -2103,7 +2103,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   line-height: 1.62 !important;
 }
 
-.dp-map-page.dp-map-page :is(.dp-detail-drawer, aside.dp-panel-shell, section.dp-panel-shell, .dp-pass-panel) :is(.text-\[\#C8A96A\], .text-\[\#B38F4F\], svg.text-\[\#C8A96A\]) {
+.dp-map-page.dp-map-page :is(.dp-detail-drawer, aside.dp-panel-shell, section.dp-panel-shell, .dp-pass-panel) :is(.text-\[\#BFA46A\], .text-\[\#A98B4A\], svg.text-\[\#BFA46A\]) {
   color: var(--dp-panel-gold) !important;
   stroke: currentColor !important;
 }
@@ -2117,7 +2117,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   display: block;
   height: 1px;
   margin: -2px 0 14px;
-  background: linear-gradient(90deg, rgba(200, 169, 106, 0.5), transparent);
+  background: linear-gradient(90deg, rgba(191, 164, 106, 0.5), transparent);
 }
 
 .dp-map-page.dp-map-page :is(.dp-primary-action-row) {
@@ -2366,7 +2366,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   grid-template-columns: minmax(0, 0.82fr) minmax(142px, 0.9fr) !important;
   align-items: center !important;
   background: rgba(255, 255, 255, 0.42) !important;
-  box-shadow: 0 0 24px rgba(11, 31, 51, 0.035), 0 0 24px rgba(200, 169, 106, 0.055) !important;
+  box-shadow: 0 0 24px rgba(11, 31, 51, 0.035), 0 0 24px rgba(191, 164, 106, 0.055) !important;
 }
 
 .dp-map-page.dp-map-page .dp-pass-panel[aria-label="Partner scanner"] .dp-partner-scanner-copy {
@@ -2718,7 +2718,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-detail-drawer .dp-map-metric-pill.is-active {
-  border-color: rgba(200, 169, 106, 0.5) !important;
+  border-color: rgba(191, 164, 106, 0.5) !important;
   background: rgba(255, 255, 255, 0.58) !important;
 }
 
@@ -2767,7 +2767,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 13px !important;
   font-weight: 500 !important;
   text-transform: none !important;
@@ -2802,7 +2802,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 12px !important;
   font-weight: 500 !important;
 }
@@ -2881,7 +2881,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   display: block !important;
   height: 1px !important;
   margin-top: 2px !important;
-  background: #C8A96A !important;
+  background: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tabs {
@@ -2932,8 +2932,8 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tab.is-active::before {
-  border-color: #C8A96A !important;
-  background: #C8A96A !important;
+  border-color: #BFA46A !important;
+  background: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-rollup {
@@ -2951,7 +2951,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   border-radius: 999px !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 0 !important;
 }
 
@@ -3150,7 +3150,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-partner-intel-card div {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 9px !important;
   font-weight: 650 !important;
   letter-spacing: 0.08em !important;
@@ -3277,7 +3277,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0 !important;
@@ -3313,7 +3313,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-rail-kicker {
   flex: 0 0 auto !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   line-height: 1 !important;
@@ -3422,8 +3422,8 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-context-row .dp-console-chip.is-active,
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-search-filter-rail .dp-console-chip.is-active,
 .dp-map-page.dp-map-page [aria-label="Map command console"] .flex > .dp-console-chip.is-active {
-  border-color: rgba(200, 169, 106, 0.25) !important;
-  background: rgba(200, 169, 106, 0.08) !important;
+  border-color: rgba(191, 164, 106, 0.25) !important;
+  background: rgba(191, 164, 106, 0.08) !important;
   color: #0B1F33 !important;
   font-weight: 500 !important;
 }
@@ -3564,7 +3564,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   align-items: center !important;
   justify-content: center !important;
   border-radius: 7px !important;
-  background: #C8A96A !important;
+  background: #BFA46A !important;
   color: #FFFFFF !important;
   font-size: 9px !important;
   line-height: 1 !important;
@@ -3726,7 +3726,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-detail-drawer .dp-perk-module-meta {
   justify-content: flex-start !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0.12em !important;
@@ -3773,7 +3773,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-detail-drawer .dp-perk-detail-label {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0.12em !important;
@@ -3881,7 +3881,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-destination-header p {
   margin: 3px 0 0 !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   line-height: 1.1 !important;
@@ -3996,13 +3996,13 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-detail-drawer .dp-polished-panel-header .dp-polished-panel-kicker svg,
 .dp-map-page.dp-map-page .dp-polished-panel-kicker svg {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
 .dp-map-page.dp-map-page .dp-polished-panel-kicker-logo {
   gap: 6px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   letter-spacing: 0.04em !important;
   text-transform: none !important;
   background: rgba(11, 31, 51, 0.46) !important;
@@ -4129,7 +4129,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   width: 4px !important;
   height: 4px !important;
   border-radius: 4px !important;
-  background: #C8A96A !important;
+  background: #BFA46A !important;
   content: "" !important;
 }
 
@@ -4199,7 +4199,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page .dp-context-label {
   display: block !important;
   max-width: 100% !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 9px !important;
   font-weight: 700 !important;
   line-height: 1.08 !important;
@@ -4296,7 +4296,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   display: inline-flex !important;
   align-items: center !important;
   gap: 7px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0.12em !important;
@@ -4346,7 +4346,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-quiet-facts span {
   display: block !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 9px !important;
   font-weight: 700 !important;
   line-height: 1.1 !important;
@@ -4885,7 +4885,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-destination-drawer :is(button, a):focus-visible {
   outline: none !important;
-  box-shadow: 0 0 0 2px rgba(200, 169, 106, 0.42) !important;
+  box-shadow: 0 0 0 2px rgba(191, 164, 106, 0.42) !important;
 }
 
 /* V6 production map experience: keep the map dominant and panels quiet. */
@@ -4973,14 +4973,14 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   color: #0B1F33 !important;
   box-shadow:
     0 10px 24px rgba(11, 31, 51, 0.07),
-    0 0 24px rgba(200, 169, 106, 0.13),
+    0 0 24px rgba(191, 164, 106, 0.13),
     inset 0 1px 0 rgba(255, 255, 255, 0.76) !important;
   backdrop-filter: blur(18px) saturate(1.08) !important;
   -webkit-backdrop-filter: blur(18px) saturate(1.08) !important;
 }
 
 .dp-map-page.dp-map-page .dp-collapsed-map-search svg {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   stroke: currentColor !important;
 }
 
@@ -5921,7 +5921,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   --dp-panel-bg: rgba(255, 255, 255, 0.72);
   --dp-panel-border: rgba(11, 31, 51, 0.08);
   --dp-panel-shadow: 0 12px 40px rgba(11, 31, 51, 0.08);
-  --dp-gold: #C8A96A;
+  --dp-gold: #BFA46A;
   --dp-navy: #0B1F33;
 }
 
@@ -6094,7 +6094,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   --dp-chrome-border: rgba(11, 31, 51, 0.09);
   --dp-chrome-glow:
     0 18px 50px rgba(11, 31, 51, 0.11),
-    0 0 34px rgba(200, 169, 106, 0.10),
+    0 0 34px rgba(191, 164, 106, 0.10),
     inset 0 1px 0 rgba(255, 255, 255, 0.78);
   --dp-chrome-control-bg: rgba(255, 255, 255, 0.58);
   --dp-chrome-control-active: rgba(255, 255, 255, 0.88);
@@ -6191,12 +6191,12 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   .dp-map-bottom-nav :is(button, a)[aria-pressed="true"],
   .dp-map-bottom-nav :is(button, a)[aria-current="page"]
 ) {
-  border-color: rgba(200, 169, 106, 0.42) !important;
+  border-color: rgba(191, 164, 106, 0.42) !important;
   background: var(--dp-chrome-control-active) !important;
   color: #0B1F33 !important;
   box-shadow:
     0 8px 22px rgba(11, 31, 51, 0.065),
-    0 0 18px rgba(200, 169, 106, 0.14) !important;
+    0 0 18px rgba(191, 164, 106, 0.14) !important;
 }
 
 .dp-map-page.dp-map-page .dp-map-bottom-nav {
@@ -6306,7 +6306,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.66)) !important;
   box-shadow:
     0 16px 44px rgba(11, 31, 51, 0.10),
-    0 0 28px rgba(200, 169, 106, 0.08),
+    0 0 28px rgba(191, 164, 106, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.70) !important;
   -webkit-backdrop-filter: blur(22px) saturate(1.14) !important;
   backdrop-filter: blur(22px) saturate(1.14) !important;
@@ -6355,12 +6355,12 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   .dp-map-bottom-nav :is(button, a)[aria-pressed="true"],
   .dp-map-bottom-nav :is(button, a)[aria-current="page"]
 ) {
-  border-color: rgba(200, 169, 106, 0.42) !important;
+  border-color: rgba(191, 164, 106, 0.42) !important;
   background: rgba(255, 255, 255, 0.86) !important;
   color: #0B1F33 !important;
   box-shadow:
     0 8px 20px rgba(11, 31, 51, 0.055),
-    0 0 18px rgba(200, 169, 106, 0.14) !important;
+    0 0 18px rgba(191, 164, 106, 0.14) !important;
 }
 
 .dp-map-page.dp-map-page :is(
@@ -6399,9 +6399,9 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 ) {
   border-radius: var(--dp-chrome-radius-control) !important;
   background: rgba(255, 255, 255, 0.72) !important;
-  border: 1px solid rgba(200, 169, 106, 0.28) !important;
+  border: 1px solid rgba(191, 164, 106, 0.28) !important;
   color: #0B1F33 !important;
-  box-shadow: 0 0 16px rgba(200, 169, 106, 0.10) !important;
+  box-shadow: 0 0 16px rgba(191, 164, 106, 0.10) !important;
 }
 
 .dp-map-page.dp-map-page :is(
@@ -6597,7 +6597,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   button,
   a[role="button"]
 ):not(.dp-destination-close):not(.dp-panel-close):hover {
-  border-color: rgba(200, 169, 106, 0.46) !important;
+  border-color: rgba(191, 164, 106, 0.46) !important;
   background: rgba(255, 255, 255, 0.86) !important;
   color: #0B1F33 !important;
   transform: translateY(-1px) !important;
@@ -6612,8 +6612,8 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page .dp-destination-drawer .dp-primary-action-row > :is(a, button):focus-visible,
 .dp-map-page.dp-map-page .dp-destination-drawer :is(button.dp-panel-action, a.dp-panel-action, .dp-button):focus-visible {
   outline: none !important;
-  border-color: rgba(200, 169, 106, 0.70) !important;
-  box-shadow: 0 0 0 2px rgba(200, 169, 106, 0.18) !important;
+  border-color: rgba(191, 164, 106, 0.70) !important;
+  box-shadow: 0 0 0 2px rgba(191, 164, 106, 0.18) !important;
 }
 
 .dp-map-page.dp-map-page .dp-destination-drawer :is(
@@ -7177,7 +7177,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-console-inline-ask svg {
   width: 11px !important;
   height: 11px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
 }
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-hero-search-form {
@@ -7288,7 +7288,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   bottom: 0 !important;
   display: block !important;
   height: 1px !important;
-  background: #C8A96A !important;
+  background: #BFA46A !important;
   opacity: 0 !important;
   transform: scaleX(0.4) !important;
   transform-origin: center !important;
@@ -7453,7 +7453,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-pass-context {
   margin: 0 0 8px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: 10px !important;
   font-weight: 600 !important;
@@ -7562,7 +7562,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-pass-row-context {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0.12em !important;
@@ -7782,7 +7782,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   inset-inline: 0;
   bottom: 0;
   height: 1px;
-  background: rgba(200, 169, 106, 0.72);
+  background: rgba(191, 164, 106, 0.72);
 }
 
 .dp-map-page.dp-map-page .dp-search-segment.is-active {
@@ -7822,7 +7822,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   color: #0B1F33 !important;
   font-weight: 600 !important;
   text-decoration: underline !important;
-  text-decoration-color: rgba(200, 169, 106, 0.72) !important;
+  text-decoration-color: rgba(191, 164, 106, 0.72) !important;
   text-underline-offset: 5px !important;
 }
 
@@ -7837,7 +7837,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-map-answer-context {
   margin-top: 8px !important;
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0.08em !important;
@@ -7878,7 +7878,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 }
 
 .dp-map-page.dp-map-page .dp-map-answer-pick span {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-size: 10px !important;
   font-weight: 600 !important;
   letter-spacing: 0.08em !important;
@@ -8043,7 +8043,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tab.is-active,
 .dp-map-page.dp-map-page [aria-label="Map command console"] .dp-map-audience-tab[aria-selected="true"] {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-weight: 600 !important;
 }
 
@@ -8244,7 +8244,7 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
 
 .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-pressed="true"],
 .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a)[aria-current="page"] {
-  color: #C8A96A !important;
+  color: #BFA46A !important;
   font-weight: 600 !important;
   background: transparent !important;
   box-shadow: none !important;

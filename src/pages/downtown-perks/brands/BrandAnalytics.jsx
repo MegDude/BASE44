@@ -81,7 +81,7 @@ function CampaignAnalyticsSnapshot({ analytics }) {
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Campaign performance</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">Campaign performance</p>
           <h2 className="mt-1 text-[18px] font-semibold leading-tight text-[#0B1F33]">Live activity snapshot</h2>
         </div>
         <div className="text-[12px] leading-5 text-[#0B1F33]/62 sm:max-w-[250px]">
@@ -226,7 +226,7 @@ export default function BrandAnalytics() {
                 <span className="text-[11px] text-muted-foreground">Placement types</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C8A96A]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#BFA46A]" />
                 <span className="text-[11px] text-muted-foreground">Live now</span>
               </div>
             </div>
@@ -263,7 +263,7 @@ export default function BrandAnalytics() {
                     : 'border-border/40 text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <fmt.Icon className="h-3.5 w-3.5 text-[#C8A96A]" />
+                <fmt.Icon className="h-3.5 w-3.5 text-[#BFA46A]" />
                 {fmt.label}
               </motion.button>
             ))}
@@ -346,7 +346,7 @@ export default function BrandAnalytics() {
                           <span className="text-[13px] font-medium text-foreground">{p.name}</span>
                           <span className="text-[11px] text-muted-foreground ml-2">{p.type}</span>
                         </div>
-                        <span className={`text-[11px] font-medium ${p.trend === 'up' ? 'text-[#C8A96A]' : 'text-muted-foreground'}`}>
+                        <span className={`text-[11px] font-medium ${p.trend === 'up' ? 'text-[#BFA46A]' : 'text-muted-foreground'}`}>
                           {p.trend === 'up' ? '+12%' : 'Stable'}
                         </span>
                       </div>
@@ -355,7 +355,7 @@ export default function BrandAnalytics() {
                           initial={{ width: 0 }}
                           animate={{ width: `${p.intensity}%` }}
                           transition={{ duration: 0.8, delay: 0.35 + idx * 0.05 }}
-                          className="h-full rounded-[4px] bg-[#C8A96A]"
+                          className="h-full rounded-[4px] bg-[#BFA46A]"
                         />
                       </div>
                     </motion.div>
@@ -403,7 +403,7 @@ export default function BrandAnalytics() {
                           <div className="text-[11px] text-muted-foreground">{v.district}</div>
                         </div>
                         <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
-                          v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#C8A96A]' : 'bg-muted/50 text-muted-foreground'
+                          v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#BFA46A]' : 'bg-muted/50 text-muted-foreground'
                         }`}>
                           {v.trend === 'up' ? '+18%' : 'Stable'}
                         </span>
@@ -453,7 +453,7 @@ export default function BrandAnalytics() {
                           <div className="font-medium text-foreground text-[13px]">{e.name}</div>
                           <div className="text-[11px] text-muted-foreground">{e.type} Campaign</div>
                         </div>
-                        <span className="text-[12px] font-semibold text-[#C8A96A]">{e.lift}</span>
+                        <span className="text-[12px] font-semibold text-[#BFA46A]">{e.lift}</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-[12px]">
                         <div className="space-y-0.5">

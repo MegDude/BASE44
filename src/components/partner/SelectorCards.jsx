@@ -28,8 +28,8 @@ export default function SelectorCards({
           onClick={() => onSelect?.(item)}
           className={`rounded-[16px] border p-5 text-left transition-all duration-200 ${
             selectedId === item.id
-              ? 'border-[#C8A96A]/45 bg-white/82 text-[#0B1F33] shadow-[0_14px_38px_rgba(11,31,51,0.06)]'
-              : 'border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:border-[#C8A96A]/45'
+              ? 'border-[#BFA46A]/45 bg-white/82 text-[#0B1F33] shadow-[0_14px_38px_rgba(11,31,51,0.06)]'
+              : 'border-[#0B1F33]/8 bg-white text-[#0B1F33] hover:border-[#BFA46A]/45'
           }`}
         >
           <div className="flex items-start justify-between gap-2 mb-2">

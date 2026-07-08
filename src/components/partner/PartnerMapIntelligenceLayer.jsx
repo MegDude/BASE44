@@ -152,7 +152,7 @@ export default function PartnerMapIntelligenceLayer({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_24%,rgba(179,143,79,0.10),transparent_30%),radial-gradient(circle_at_74%_70%,rgba(11,31,51,0.08),transparent_32%)]" />
 
       <div className="absolute left-5 right-5 top-5 z-20 max-w-[24rem] bg-white/72 p-4 text-[#0B1F33] shadow-[0_16px_44px_rgba(11,31,51,0.08),inset_0_1px_0_rgba(255,255,255,0.74)] backdrop-blur-[18px] sm:left-6 sm:right-auto sm:top-6">
-        <span className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#B38F4F]">
+        <span className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#A98B4A]">
           {caption || story.eyebrow}
         </span>
         <h3 className="mt-3 font-heading text-[34px] font-bold leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[48px]">
@@ -166,7 +166,7 @@ export default function PartnerMapIntelligenceLayer({
       {nearby.map((item) => (
         <div
           key={item.name}
-          className="absolute z-[4] h-2 w-2 -translate-x-1/2 -translate-y-1/2 bg-[#B38F4F] shadow-[0_0_0_5px_rgba(179,143,79,0.10),0_0_18px_rgba(179,143,79,0.10)]"
+          className="absolute z-[4] h-2 w-2 -translate-x-1/2 -translate-y-1/2 bg-[#A98B4A] shadow-[0_0_0_5px_rgba(179,143,79,0.10),0_0_18px_rgba(179,143,79,0.10)]"
           style={positionFor(item, bounds)}
           title={item.name}
         />
@@ -185,7 +185,7 @@ export default function PartnerMapIntelligenceLayer({
               {selected.logo ? (
                 <img src={selected.logo} alt="" className="h-10 w-10 shrink-0 bg-white object-cover" />
               ) : (
-                <SelectedIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#B38F4F]" />
+                <SelectedIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#A98B4A]" />
               )}
               <div className="min-w-0">
                 <div className="truncate text-[15px] font-semibold text-[#0B1F33]">{selected.name}</div>
@@ -208,7 +208,7 @@ export default function PartnerMapIntelligenceLayer({
           <div className="relative flex items-center justify-between">
             <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-[#0B1F33]/12" />
             <div
-              className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#B38F4F] transition-all duration-700"
+              className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-[#A98B4A] transition-all duration-700"
               style={{ width: `${progress}%` }}
             />
             {safePoints.map((point, index) => {
@@ -219,9 +219,9 @@ export default function PartnerMapIntelligenceLayer({
                   key={point.id}
                   type="button"
                   onClick={() => onSelect?.(point)}
-                  className={`relative z-10 grid h-9 w-9 place-items-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F] sm:h-10 sm:w-10 ${
+                  className={`relative z-10 grid h-9 w-9 place-items-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A] sm:h-10 sm:w-10 ${
                     active || index <= selectedIndex
-                      ? "bg-[#0B1F33] text-[#B38F4F] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
+                      ? "bg-[#0B1F33] text-[#A98B4A] shadow-[0_10px_24px_rgba(11,31,51,0.12)]"
                       : "bg-white/84 text-[#0B1F33]/42 shadow-[0_8px_20px_rgba(11,31,51,0.05)] backdrop-blur-[18px] hover:bg-white hover:text-[#0B1F33]"
                   }`}
                   aria-label={`Show ${point.name}`}

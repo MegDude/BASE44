@@ -72,7 +72,7 @@ export function InsightCard({ eyebrow, title, children, icon: Icon = MapPin, cla
   return (
     <div className={cn("dp-surface dp-surface-hover p-5", className)}>
       <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-[6px] border border-[#0B1F33]/8 bg-white">
-        <Icon className="h-4 w-4 text-[#C8A96A]" />
+        <Icon className="h-4 w-4 text-[#BFA46A]" />
       </div>
       {eyebrow && <div className="dp-label mb-2 text-[10px]">{eyebrow}</div>}
       <h3 className="font-heading text-lg font-medium leading-tight text-[#0B1F33]">{title}</h3>
@@ -119,12 +119,12 @@ export function ProgressLoopCards({ steps, activeIndex = 0 }) {
             key={step.step}
             className={cn(
               "dp-surface p-5",
-              active ? "border-[#C8A96A]/50 shadow-[0_18px_46px_rgba(11,31,51,0.18)]" : "border-[#0B1F33]/8"
+              active ? "border-[#BFA46A]/50 shadow-[0_18px_46px_rgba(11,31,51,0.18)]" : "border-[#0B1F33]/8"
             )}
           >
             <div className="mb-4 flex items-center justify-between">
               <span className="dp-label">{step.step}</span>
-              <span className={cn("h-1.5 w-10 rounded-sm", active ? "bg-[#C8A96A]" : "bg-[#0B1F33]/10")} />
+              <span className={cn("h-1.5 w-10 rounded-sm", active ? "bg-[#BFA46A]" : "bg-[#0B1F33]/10")} />
             </div>
             <h3 className="font-heading text-lg font-medium text-[#0B1F33]">{step.title}</h3>
           </div>
@@ -179,7 +179,7 @@ export function MapPreviewPanel() {
       ].map(([position, label]) => (
         <div key={label} className={cn("absolute", position)}>
           <div className="flex items-center gap-2 rounded-[6px] border border-white/12 bg-white/92 px-2.5 py-2 text-[11px] font-medium text-[#0B1F33] shadow-[0_18px_46px_rgba(11,31,51,0.18)]">
-            <span className="h-2.5 w-2.5 rounded-[999px] bg-[#C8A96A]" />
+            <span className="h-2.5 w-2.5 rounded-[999px] bg-[#BFA46A]" />
             {label}
           </div>
         </div>
@@ -208,7 +208,7 @@ export function FloatingMapFilters({ filters }) {
           key={filter}
           className={cn(
             "shrink-0 rounded-[6px] border px-3 py-2 text-[12px] font-medium",
-            index === 0 ? "border-[#C8A96A]/50 bg-[#0B1F33]/10 text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/65"
+            index === 0 ? "border-[#BFA46A]/50 bg-[#0B1F33]/10 text-[#0B1F33]" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/65"
           )}
         >
           {filter}
@@ -221,7 +221,7 @@ export function FloatingMapFilters({ filters }) {
 export const MapResultsPanel = ({ children }) => <div className="dp-surface p-5">{children}</div>;
 export const MapBottomSheet = ({ children }) => <div className="dp-surface rounded-b-none p-5">{children}</div>;
 export const MapDetailDrawer = ({ children }) => <aside className="dp-surface p-5">{children}</aside>;
-export const FloatingInput = ({ className = "", ...props }) => <input className={cn("h-10 rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 text-[13px] outline-none focus:border-[#C8A96A]/60", className)} {...props} />;
+export const FloatingInput = ({ className = "", ...props }) => <input className={cn("h-10 rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 text-[13px] outline-none focus:border-[#BFA46A]/60", className)} {...props} />;
 export const StructuredFormPanel = ({ children }) => <div className="dp-surface p-5">{children}</div>;
 export const QRSignupModule = PerksCardCTA;
 export const ResidentHowItWorks = ProgressLoopCards;

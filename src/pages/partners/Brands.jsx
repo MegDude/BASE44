@@ -152,16 +152,16 @@ function Section({ id, eyebrow, title, children, className = "" }) {
 
 function PrimaryButton({ href, children }) {
   return (
-    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
+    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
       {children}
-      <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
+      <ArrowRight className="h-4 w-4 text-[#BFA46A]" />
     </a>
   );
 }
 
 function SecondaryButton({ href, children }) {
   return (
-    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
+    <a href={href} className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#BFA46A]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
       {children}
     </a>
   );
@@ -209,11 +209,11 @@ export default function BrandsPartner() {
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Campaign preview</span>
-                <Sparkles className="h-4 w-4 text-[#C8A96A]" />
+                <Sparkles className="h-4 w-4 text-[#BFA46A]" />
               </div>
               <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-white p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#C8A96A]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0B1F33] text-[#BFA46A]">
                     <Megaphone className="h-5 w-5" />
                   </div>
                   <div>
@@ -295,7 +295,7 @@ export default function BrandsPartner() {
         <div className="grid gap-3 md:grid-cols-4">
           {WORKFLOW.map(([num, title, copy]) => (
             <article key={num} className="rounded-md border border-[#0B1F33]/8 bg-white p-5">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">{num}</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">{num}</div>
               <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{title}</h3>
               <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{copy}</p>
             </article>
@@ -333,9 +333,9 @@ export default function BrandsPartner() {
             <p className="text-[14px] leading-7 text-[#0B1F33]/66">
               Brand pricing starts with a simple annual setup. Campaigns, custom activations, sponsorships, sampling, surveys, broadcasts, and larger district work are scoped separately when they sit outside the standard module.
             </p>
-            <Link to="/marketing/pricing" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
+            <Link to="/marketing/pricing" className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
               View pricing matrix
-              <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
+              <ArrowRight className="h-4 w-4 text-[#BFA46A]" />
             </Link>
           </div>
           <div className="dp-brand-pricing-table" role="table" aria-label="Brand pricing options">
@@ -353,7 +353,7 @@ export default function BrandsPartner() {
       <Section id="brand-form" eyebrow="Brand Planning" title="Start a brand conversation." className="bg-white">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="dp-brand-form-context">
-            <Building2 className="h-5 w-5 text-[#C8A96A]" />
+            <Building2 className="h-5 w-5 text-[#BFA46A]" />
             <h3>Start with the moment you want to own.</h3>
             <p>Tell us where the campaign should live, who it should help, and what someone should be able to do next.</p>
           </div>
@@ -362,7 +362,7 @@ export default function BrandsPartner() {
             {["Brand/Company Name", "Your Name & Role", "Email", "Phone", "Timeline"].map((label) => (
               <label key={label} className="grid gap-1.5">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</span>
-                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#C8A96A]" />
+                <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#BFA46A]" />
               </label>
             ))}
             <label className="grid gap-1.5">
@@ -370,7 +370,7 @@ export default function BrandsPartner() {
               <textarea
                 value={selectedPrompt}
                 onChange={(event) => setSelectedPrompt(event.target.value)}
-                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#C8A96A]"
+                className="min-h-28 rounded-md border border-[#0B1F33]/10 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-[#BFA46A]"
               />
               <div className="dp-partner-prompt-inline" aria-label="Suggested brand prompts">
                 {PROMPTS.map((prompt) => (
@@ -380,11 +380,11 @@ export default function BrandsPartner() {
                 ))}
               </div>
             </label>
-            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]">
+            <button type="submit" className="inline-flex h-10 items-center justify-center rounded-md bg-[#0B1F33] px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]">
               Start a conversation
             </button>
             {submitted && (
-              <p className="rounded-md border border-[#C8A96A]/35 bg-white px-3 py-2 text-[12px] text-[#0B1F33]/68">
+              <p className="rounded-md border border-[#BFA46A]/35 bg-white px-3 py-2 text-[12px] text-[#0B1F33]/68">
                 Thanks. Your brand campaign request is ready for follow-up.
               </p>
             )}
@@ -412,10 +412,10 @@ export default function BrandsPartner() {
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <PrimaryButton href="#brand-form">Start a conversation</PrimaryButton>
-            <Link to="/map?mode=partner&tab=map&filter=All" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
+            <Link to="/map?mode=partner&tab=map&filter=All" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#BFA46A]/45">
               Partner overview
             </Link>
-            <Link to="/marketing/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#C8A96A]/45">
+            <Link to="/marketing/pricing" className="inline-flex h-10 items-center justify-center rounded-md border border-[#0B1F33]/10 bg-white px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33] transition hover:border-[#BFA46A]/45">
               Pricing matrix
             </Link>
           </div>

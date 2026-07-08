@@ -186,7 +186,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
     : `transition-colors ${isOpen && !isDark ? "bg-muted/30 rounded-lg" : ""}`;
 
   const qColor = isDark
-    ? isOpen ? "text-[#C8A96A]" : "text-[#FFFFFF]"
+    ? isOpen ? "text-[#BFA46A]" : "text-[#FFFFFF]"
     : isOpen ? "text-primary" : "text-foreground";
 
   const numColor = isDark ? "text-primary/50" : "text-primary/40";

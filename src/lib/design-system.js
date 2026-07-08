@@ -144,7 +144,7 @@ export const SURFACES = {
   // Solid card surfaces
   cardPrimary: "bg-white/82 border border-[#0B1F33]/8 rounded-[6px] shadow-[0_14px_34px_rgba(11,31,51,0.04)]",
   cardMuted: "bg-white rounded-[6px]",
-  cardSelected: "bg-[#0B1F33]/10 border border-[#C8A96A]/50 rounded-[6px]",
+  cardSelected: "bg-[#0B1F33]/10 border border-[#BFA46A]/50 rounded-[6px]",
 
   // Brutalist emphasis (proof, ROI, statements)
   brutalistDark: "bg-[#0B1F33] text-white rounded-3xl",
@@ -166,7 +166,7 @@ export const STATES = {
   cardHover: "hover:border-border hover:shadow-md transition-all duration-200",
   
   // Active state
-  active: "text-[#0B1F33] border-[#C8A96A]/50 bg-[#0B1F33]/10",
+  active: "text-[#0B1F33] border-[#BFA46A]/50 bg-[#0B1F33]/10",
   
   // Disabled state
   disabled: "opacity-50 cursor-not-allowed pointer-events-none",

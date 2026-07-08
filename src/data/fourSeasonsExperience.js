@@ -562,7 +562,7 @@ export const FOUR_SEASONS_WEEK_CAMPAIGN = {
   reward: "Premium Four Seasons experiences",
   participatingEntities: FOUR_SEASONS_EXPERIENCE_ENTITIES.map((entity) => entity.id),
   campaignPins: ["campaign-four-seasons-week", ...FOUR_SEASONS_EXPERIENCE_ENTITIES.map((entity) => entity.id)],
-  campaignColor: "#C8A96A",
+  campaignColor: "#BFA46A",
   image: IMAGES.promotions,
   imageUrl: IMAGES.promotions,
   primaryAction: "Explore Experiences",

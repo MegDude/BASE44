@@ -35,7 +35,7 @@ export default function UnifiedResultsPanel({ items = [] }) {
             <button
               type="button"
               onClick={() => setHidden((value) => !value)}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
               aria-expanded={!hidden}
               aria-label={hidden ? "Show results" : "Hide results"}
             >
@@ -48,7 +48,7 @@ export default function UnifiedResultsPanel({ items = [] }) {
           <button
             type="button"
             onClick={() => setExpanded((value) => !value)}
-            className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
+            className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
             aria-expanded={expanded}
           >
             {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronUp className="h-3.5 w-3.5" />}
@@ -105,7 +105,7 @@ export default function UnifiedResultsPanel({ items = [] }) {
               <button
                 type="button"
                 onClick={() => setExpanded((value) => !value)}
-                className="w-full rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
+                className="w-full rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
                 aria-expanded={expanded}
               >
                 {expanded ? "Roll up results" : `Expand list (${hiddenCount} more)`}

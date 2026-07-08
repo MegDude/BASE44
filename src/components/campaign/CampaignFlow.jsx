@@ -26,7 +26,7 @@ export default function CampaignFlow({ steps, title, description }) {
                 transition={{ delay: i * 0.1 }}
                 className="grid grid-cols-[30px_1fr] gap-3 md:block"
               >
-                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">{String(i + 1).padStart(2, "0")}</div>
+                <div className="font-heading text-[16px] font-bold leading-none text-[#A98B4A] md:text-[20px]">{String(i + 1).padStart(2, "0")}</div>
                 <div>
                   <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.label}</div>
                   <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{s.description}</div>

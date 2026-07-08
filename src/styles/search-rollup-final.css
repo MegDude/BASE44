@@ -91,7 +91,7 @@ html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-in
   box-shadow:
     0 8px 24px rgba(11, 31, 51, 0.06),
     0 2px 8px rgba(11, 31, 51, 0.04),
-    0 0 0 2px rgba(200, 169, 106, 0.28) !important;
+    0 0 0 2px rgba(191, 164, 106, 0.28) !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-rollup-icon.dp-search-rollup-icon,
@@ -100,8 +100,8 @@ html body .dp-search-intent-console-wrap.is-collapsed.is-collapsed .dp-search-ro
   width: 14px !important;
   height: 14px !important;
   flex: 0 0 14px !important;
-  color: #C8A96A !important;
-  stroke: #C8A96A !important;
+  color: #BFA46A !important;
+  stroke: #BFA46A !important;
   background: transparent !important;
   box-shadow: none !important;
 }

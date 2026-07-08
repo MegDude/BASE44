@@ -40,7 +40,7 @@ const DrawerContent = React.forwardRef(({ className, children, ...props }, ref) 
       {...props}>
       <div className="mx-auto mt-4 h-1 w-12 rounded-full bg-[#0B1F33]/14" />
       <DrawerPrimitive.Close
-        className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+        className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
         aria-label="Close drawer"
       >
         <X className="h-4 w-4" />

@@ -503,7 +503,7 @@ html body #root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button
 html body #root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav :is(button, a):focus-visible {
   color: #0B1F33 !important;
   text-decoration: underline !important;
-  text-decoration-color: rgba(200, 169, 106, 0.95) !important;
+  text-decoration-color: rgba(191, 164, 106, 0.95) !important;
   text-decoration-thickness: 2px !important;
   text-underline-offset: 5px !important;
 }
@@ -988,8 +988,8 @@ html body #root#root#root .dp-map-page.dp-map-page .dp-collection-route-panel__s
 }
 
 html body #root#root#root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button.is-active {
-  border-color: rgba(184, 150, 62, 0.45) !important;
-  background: rgba(184, 150, 62, 0.1) !important;
+  border-color: rgba(169, 139, 74, 0.45) !important;
+  background: rgba(169, 139, 74, 0.1) !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page .dp-collection-route-panel--minimized {
@@ -2382,8 +2382,8 @@ html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.d
   background-image: none !important;
   border: 0 !important;
   box-shadow: none !important;
-  color: #C8A96A !important;
-  -webkit-text-fill-color: #C8A96A !important;
+  color: #BFA46A !important;
+  -webkit-text-fill-color: #BFA46A !important;
   outline-offset: 3px !important;
 }
 
@@ -2393,8 +2393,8 @@ html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.d
   background-image: none !important;
   border: 0 !important;
   box-shadow: none !important;
-  color: #B38F4F !important;
-  -webkit-text-fill-color: #B38F4F !important;
+  color: #A98B4A !important;
+  -webkit-text-fill-color: #A98B4A !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-partner .dp-search-intent-submit.dp-search-intent-submit :is(svg, .lucide) {

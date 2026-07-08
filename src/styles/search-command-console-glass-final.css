@@ -3,7 +3,7 @@
   --dp-navy: #0B1F33;
   --dp-navy-soft: rgba(11, 31, 51, 0.72);
   --dp-navy-muted: rgba(11, 31, 51, 0.54);
-  --dp-gold: #C8A96A;
+  --dp-gold: #BFA46A;
   --dp-gold-deep: #B8963E;
   --dp-white: #FFFFFF;
   --dp-glass: rgba(255, 255, 255, 0.78);
@@ -164,7 +164,7 @@ html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-m
   -webkit-text-fill-color: var(--dp-navy) !important;
   box-shadow:
     0 8px 22px rgba(11, 31, 51, 0.08),
-    0 0 16px rgba(200, 169, 106, 0.12) !important;
+    0 0 16px rgba(191, 164, 106, 0.12) !important;
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-form.dp-search-intent-form {
@@ -239,21 +239,21 @@ html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-m
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-submit.dp-search-intent-submit {
-  border: 1px solid rgba(200, 169, 106, 0.32) !important;
+  border: 1px solid rgba(191, 164, 106, 0.32) !important;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.72)) !important;
   color: var(--dp-navy) !important;
   -webkit-text-fill-color: var(--dp-navy) !important;
   box-shadow:
     0 8px 18px rgba(11, 31, 51, 0.06),
-    0 0 14px rgba(200, 169, 106, 0.12) !important;
+    0 0 14px rgba(191, 164, 106, 0.12) !important;
   transition: transform 180ms ease, box-shadow 220ms ease, border-color 180ms ease !important;
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-submit.dp-search-intent-submit:hover {
-  border-color: rgba(200, 169, 106, 0.54) !important;
+  border-color: rgba(191, 164, 106, 0.54) !important;
   box-shadow:
     0 12px 26px rgba(11, 31, 51, 0.1),
-    0 0 20px rgba(200, 169, 106, 0.18) !important;
+    0 0 20px rgba(191, 164, 106, 0.18) !important;
   transform: translateY(-1px) !important;
 }
 
@@ -345,11 +345,11 @@ html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-m
   .dp-search-context-row-primary
 ) > button:hover,
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-more-toggle.dp-search-more-toggle:hover {
-  border-color: rgba(200, 169, 106, 0.34) !important;
+  border-color: rgba(191, 164, 106, 0.34) !important;
   background: rgba(255, 255, 255, 0.82) !important;
   color: var(--dp-navy) !important;
   -webkit-text-fill-color: var(--dp-navy) !important;
-  box-shadow: 0 0 16px rgba(200, 169, 106, 0.12) !important;
+  box-shadow: 0 0 16px rgba(191, 164, 106, 0.12) !important;
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -358,13 +358,13 @@ html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-m
   .dp-search-context-row-primary
 ) > button:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]),
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-more-toggle.dp-search-more-toggle:is(.is-active, [aria-pressed="true"], [aria-selected="true"], [data-active="true"]) {
-  border-color: rgba(200, 169, 106, 0.38) !important;
+  border-color: rgba(191, 164, 106, 0.38) !important;
   background: var(--dp-navy) !important;
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
   box-shadow:
     0 10px 22px rgba(11, 31, 51, 0.14),
-    0 0 18px rgba(200, 169, 106, 0.16) !important;
+    0 0 18px rgba(191, 164, 106, 0.16) !important;
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -411,10 +411,10 @@ html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-m
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-collapse.dp-search-intent-collapse:hover {
-  border-color: rgba(200, 169, 106, 0.34) !important;
+  border-color: rgba(191, 164, 106, 0.34) !important;
   color: var(--dp-navy) !important;
   -webkit-text-fill-color: var(--dp-navy) !important;
-  box-shadow: 0 0 16px rgba(200, 169, 106, 0.12) !important;
+  box-shadow: 0 0 16px rgba(191, 164, 106, 0.12) !important;
 }
 
 html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console-wrap:not(.is-collapsed) .dp-search-intent-rollup {
@@ -706,7 +706,7 @@ html body #root .dp-map-page.dp-map-page.dp-map-page:not(#dp-a):not(#dp-b):not(#
   -webkit-text-fill-color: var(--dp-navy) !important;
   box-shadow:
     0 8px 22px rgba(11, 31, 51, 0.08),
-    0 0 16px rgba(200, 169, 106, 0.12) !important;
+    0 0 16px rgba(191, 164, 106, 0.12) !important;
 }
 
 html body #root .dp-map-page.dp-map-page.dp-map-page:not(#dp-a):not(#dp-b):not(#dp-c):not(#dp-d):not(#dp-e):not(#dp-f):not(#dp-g):not(#dp-h):not(#dp-i):not(#dp-j):not(#dp-k):not(#dp-l):not(#dp-m):not(#dp-n):not(#dp-o):not(#dp-p):not(#dp-q):not(#dp-r):not(#dp-s):not(#dp-t) .dp-search-intent-console-wrap:not(.is-collapsed) .dp-search-intent-rollup.dp-search-intent-rollup {
@@ -758,14 +758,14 @@ html body #root .dp-map-page.dp-map-page.dp-map-page:not(#dp-a):not(#dp-b):not(#
   min-width: 32px !important;
   height: 32px !important;
   min-height: 32px !important;
-  border: 1px solid rgba(200, 169, 106, 0.32) !important;
+  border: 1px solid rgba(191, 164, 106, 0.32) !important;
   border-radius: 10px !important;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.72)) !important;
   color: var(--dp-navy) !important;
   -webkit-text-fill-color: var(--dp-navy) !important;
   box-shadow:
     0 8px 18px rgba(11, 31, 51, 0.06),
-    0 0 14px rgba(200, 169, 106, 0.12) !important;
+    0 0 14px rgba(191, 164, 106, 0.12) !important;
 }
 
 html body #root .dp-map-page.dp-map-page.dp-map-page:not(#dp-a):not(#dp-b):not(#dp-c):not(#dp-d):not(#dp-e):not(#dp-f):not(#dp-g):not(#dp-h):not(#dp-i):not(#dp-j):not(#dp-k):not(#dp-l):not(#dp-m):not(#dp-n):not(#dp-o):not(#dp-p):not(#dp-q):not(#dp-r):not(#dp-s):not(#dp-t) .dp-search-intent-collapse.dp-search-intent-collapse {

@@ -24,7 +24,7 @@ export default function ProofGrid({ metrics = [] }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="p-5 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#C8A96A]/45 transition-colors"
+              className="p-5 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#BFA46A]/45 transition-colors"
             >
               <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-3">
                 {metric.label}
@@ -33,7 +33,7 @@ export default function ProofGrid({ metrics = [] }) {
                 {metric.value}
               </div>
               {metric.change && (
-                <div className={`text-[12px] mt-2 ${metric.positive ? 'text-[#C8A96A]' : 'text-[#0B1F33]/58'}`}>
+                <div className={`text-[12px] mt-2 ${metric.positive ? 'text-[#BFA46A]' : 'text-[#0B1F33]/58'}`}>
                   {metric.change}
                 </div>
               )}

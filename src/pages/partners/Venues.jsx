@@ -7,7 +7,7 @@ import { PARTNER_SPACING, PARTNER_GRIDS } from '@/lib/partner-system';
 import FAQAccordionBlock from '@/components/ui/FAQAccordionBlock';
 import { FAQ_VENUES } from '@/lib/faq-partner-data';
 
-const CAT_COLORS = { bar: "#0B1F33", restaurant: "#C8A96A", fitness: "#0B1F33", wellness: "#C8A96A", retail: "#0B1F33", coffee: "#C8A96A" };
+const CAT_COLORS = { bar: "#0B1F33", restaurant: "#BFA46A", fitness: "#0B1F33", wellness: "#BFA46A", retail: "#0B1F33", coffee: "#BFA46A" };
 
 function CountUp({ to, duration = 1.2 }) {
   const [val, setVal] = useState(0);
@@ -151,7 +151,7 @@ export default function VenuesPartner() {
                   ))}
                 </div>
                 <div className="px-5 py-2.5 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#C8A96A]" />
+                  <div className="w-1.5 h-1.5 rounded-[12px] bg-[#BFA46A]" />
                   <span className="text-[11px] text-muted-foreground/60">Updated 2 min ago</span>
                 </div>
               </div>
@@ -244,7 +244,7 @@ export default function VenuesPartner() {
                       <div className="space-y-1">
                         {venue.live.map((l, i) => (
                           <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                            <div className="w-1 h-1 rounded-[12px] bg-[#C8A96A] shrink-0" />{l}
+                            <div className="w-1 h-1 rounded-[12px] bg-[#BFA46A] shrink-0" />{l}
                           </div>
                         ))}
                       </div>
@@ -343,7 +343,7 @@ function StepsSection({ label, headline, steps, proof }) {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
           {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }} className="grid grid-cols-[30px_1fr] gap-3 md:block">
-                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">{s.n}</div>
+                <div className="font-heading text-[16px] font-bold leading-none text-[#A98B4A] md:text-[20px]">{s.n}</div>
                 <div>
                   <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.label}</div>
                   <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{s.detail}</div>
@@ -355,7 +355,7 @@ function StepsSection({ label, headline, steps, proof }) {
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2">
             {proof.map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 + i * 0.05 }} className="flex items-center gap-2 py-2">
-                <div className="h-px w-4 shrink-0 bg-[#B38F4F]" />
+                <div className="h-px w-4 shrink-0 bg-[#A98B4A]" />
                 <span className="text-[12px] leading-5 text-[#425466]">{item}</span>
               </motion.div>
             ))}

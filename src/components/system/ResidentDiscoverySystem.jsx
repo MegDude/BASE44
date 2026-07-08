@@ -102,7 +102,7 @@ function CategoryRail({ activeId, setActiveId }) {
               "relative min-w-[38%] snap-start overflow-hidden rounded-[6px] border px-3 py-2.5 text-left transition-colors duration-300 sm:min-w-[132px]",
               active
                 ? "border-[#0B1F33] bg-[#0B1F33] text-white"
-                : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#C8A96A]/50 hover:text-[#0B1F33]"
+                : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#BFA46A]/50 hover:text-[#0B1F33]"
             )}
           >
             {active && (
@@ -114,11 +114,11 @@ function CategoryRail({ activeId, setActiveId }) {
             )}
             <span className="relative z-10 flex items-center justify-between gap-3">
               <span className="text-[13px] font-medium">{category.label}</span>
-              <Icon className={cn("h-3.5 w-3.5", active ? "text-[#C8A96A]" : "text-[#0B1F33]/42")} />
+              <Icon className={cn("h-3.5 w-3.5", active ? "text-[#BFA46A]" : "text-[#0B1F33]/42")} />
             </span>
             <span className="relative z-10 mt-3 block h-px overflow-hidden bg-white/10">
               <motion.span
-                className="block h-full bg-[#C8A96A]"
+                className="block h-full bg-[#BFA46A]"
                 animate={{ x: active ? "0%" : "-100%" }}
                 transition={{ duration: 0.4, ease }}
               />
@@ -140,7 +140,7 @@ function MapPinMarker({ className, active = false, icon: Icon = MapPin, label })
       transition={{ duration: 0.45, ease }}
     >
       <div className="flex items-center gap-2">
-        <Icon className={cn("h-5 w-5 drop-shadow-[0_8px_16px_rgba(11,31,51,0.12)]", active ? "text-[#C8A96A]" : "text-[#0B1F33]/62")} />
+        <Icon className={cn("h-5 w-5 drop-shadow-[0_8px_16px_rgba(11,31,51,0.12)]", active ? "text-[#BFA46A]" : "text-[#0B1F33]/62")} />
         {label && (
           <span className="hidden rounded-[6px] border border-[#0B1F33]/8 bg-white/90 px-2.5 py-1.5 text-[11px] font-medium text-[#0B1F33]/70 sm:inline-flex">
             {label}
@@ -158,7 +158,7 @@ function MapPreviewPanel({ activeCategory }) {
       <div className="absolute left-[10%] top-[30%] h-px w-[78%] rotate-[18deg] bg-[#0B1F33]/14" />
       <div className="absolute left-[18%] top-[64%] h-px w-[64%] -rotate-[10deg] bg-[#0B1F33]/12" />
       <motion.div
-        className="absolute left-[28%] top-[43%] h-[2px] w-[42%] origin-left rotate-[-18deg] bg-[#C8A96A]"
+        className="absolute left-[28%] top-[43%] h-[2px] w-[42%] origin-left rotate-[-18deg] bg-[#BFA46A]"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1.1, ease }}
@@ -174,8 +174,8 @@ function MapPreviewPanel({ activeCategory }) {
         animate={{ y: [0, -3, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease }}
       >
-        <div className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8A96A]">
-          <Star className="h-3 w-3 fill-[#C8A96A]" />
+        <div className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#BFA46A]">
+          <Star className="h-3 w-3 fill-[#BFA46A]" />
           Saved place
         </div>
         <div className="font-heading text-lg font-medium text-[#0B1F33]">Jo’s Coffee</div>
@@ -184,7 +184,7 @@ function MapPreviewPanel({ activeCategory }) {
 
       <div className="absolute bottom-5 left-5 right-5">
         <div className="max-w-md rounded-[6px] border border-[#0B1F33]/8 bg-white/92 p-4 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
-          <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8A96A]">5-minute walk</div>
+          <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#BFA46A]">5-minute walk</div>
           <div className="font-heading text-xl font-medium text-[#0B1F33]">Coffee, events, and perks nearby.</div>
           <p className="mt-2 text-[12px] leading-[1.6] text-[#0B1F33]/60">Open the map, tap what looks useful, and move through downtown faster.</p>
         </div>
@@ -226,7 +226,7 @@ function CategoryPanel({ category }) {
                 )}
               >
                 <span className="flex items-center gap-2">
-                  <span className={cn("h-2 w-2 rounded-[999px]", index === 0 ? "bg-[#C8A96A]" : "bg-[#0B1F33]/18")} />
+                  <span className={cn("h-2 w-2 rounded-[999px]", index === 0 ? "bg-[#BFA46A]" : "bg-[#0B1F33]/18")} />
                   {card}
                 </span>
                 <span className="text-[10px] uppercase tracking-[0.16em] text-[#0B1F33]/38">
@@ -309,7 +309,7 @@ function JourneyPanel() {
             >
               <div className="mb-4 flex items-center justify-between">
                 <span className="dp-label">{step.label}</span>
-                <span className="rounded-[6px] border border-[#C8A96A]/40 bg-[#0B1F33]/10 px-2.5 py-1 text-[11px] font-medium text-[#0B1F33]/70">
+                <span className="rounded-[6px] border border-[#BFA46A]/40 bg-[#0B1F33]/10 px-2.5 py-1 text-[11px] font-medium text-[#0B1F33]/70">
                   5 min walk
                 </span>
               </div>
@@ -330,11 +330,11 @@ function JourneyPanel() {
                 )}
                 {stepIndex === 1 && (
                   <div className="relative h-24">
-                    <motion.div className="absolute left-4 top-10 h-[2px] w-[210px] origin-left bg-[#C8A96A]" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, ease }} />
+                    <motion.div className="absolute left-4 top-10 h-[2px] w-[210px] origin-left bg-[#BFA46A]" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, ease }} />
                     <div className="absolute left-1 top-8 text-[#0B1F33]/68 drop-shadow-[0_10px_18px_rgba(11,31,51,0.12)]">
                       <MapPin className="h-5 w-5" />
                     </div>
-                    <div className="absolute right-6 top-8 text-[#C8A96A] drop-shadow-[0_10px_18px_rgba(11,31,51,0.14)]">
+                    <div className="absolute right-6 top-8 text-[#BFA46A] drop-shadow-[0_10px_18px_rgba(11,31,51,0.14)]">
                       <Check className="h-5 w-5" />
                     </div>
                   </div>
@@ -343,10 +343,10 @@ function JourneyPanel() {
                   <motion.div className="relative max-w-[260px] rounded-[10px] border border-[#0B1F33]/10 bg-[#0B1F33] p-4 text-white shadow-[0_18px_46px_rgba(11,31,51,0.18)]" initial={{ y: 22 }} animate={{ y: 0 }} transition={{ duration: 0.45, ease }}>
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/58">Resident Card</span>
-                      <CreditCard className="h-4 w-4 text-[#C8A96A]" />
+                      <CreditCard className="h-4 w-4 text-[#BFA46A]" />
                     </div>
                     <div className="mt-8 font-heading text-xl font-medium">Perk confirmed</div>
-                    <motion.div className="absolute left-3 right-3 top-1/2 h-px bg-[#C8A96A]" initial={{ x: "-110%" }} animate={{ x: "110%" }} transition={{ duration: 1.2, ease }} />
+                    <motion.div className="absolute left-3 right-3 top-1/2 h-px bg-[#BFA46A]" initial={{ x: "-110%" }} animate={{ x: "110%" }} transition={{ duration: 1.2, ease }} />
                   </motion.div>
                 )}
               </div>

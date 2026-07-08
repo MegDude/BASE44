@@ -43,8 +43,8 @@ export function VenueSideCard({ venue, active, onClick }) {
       }`}
     >
       <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden bg-white">
-        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33]">
-          <MapPin className="h-7 w-7 text-[#C8A96A]" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#BFA46A]/50 bg-[#0B1F33]">
+          <MapPin className="h-7 w-7 text-[#BFA46A]" />
         </div>
         <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold backdrop-blur-md capitalize">
           {venue.category}
@@ -92,8 +92,8 @@ export function BuildingSideCard({ building, active, onClick }) {
       }`}
     >
       <div className="relative flex aspect-[2/1] items-center justify-center overflow-hidden bg-white">
-        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#C8A96A]/50 bg-[#0B1F33]">
-          <Building2 className="h-8 w-8 text-[#C8A96A]" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#BFA46A]/50 bg-[#0B1F33]">
+          <Building2 className="h-8 w-8 text-[#BFA46A]" />
         </div>
         <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold backdrop-blur-md">
           Building
@@ -120,7 +120,7 @@ export function BuildingSideCard({ building, active, onClick }) {
           <span
             className={`px-2.5 py-1.5 rounded-full text-[11px] font-medium border ${
               building.status === "active"
-                ? "bg-white/35 border-[#C8A96A]/30 text-[#0B1F33]"
+                ? "bg-white/35 border-[#BFA46A]/30 text-[#0B1F33]"
                 : building.status === "pilot"
                 ? "bg-white border-[#0B1F33]/8 text-[#0B1F33]"
                 : "bg-white border-[#0B1F33]/8 text-[#0B1F33]/58"

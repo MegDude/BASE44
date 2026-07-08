@@ -54,7 +54,7 @@ export default function ResidentPlanTab({ user }) {
                 Plans you’ve said yes to from the Downtown Perks calendar.
               </p>
             </div>
-            <Link to="/events" className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/64 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]">
+            <Link to="/events" className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/64 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]">
               Add plans
             </Link>
           </div>
@@ -74,7 +74,7 @@ export default function ResidentPlanTab({ user }) {
                     <button
                       type="button"
                       onClick={() => removeRsvp(event.id)}
-                      className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
+                      className="shrink-0 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/58 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
                     >
                       Remove
                     </button>

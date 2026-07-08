@@ -167,7 +167,7 @@ export default function ProductEntryLayer() {
                     <h4 className="text-[13px] font-semibold text-[#0B1F33]">{card.name}</h4>
                     <p className="text-xs text-[#425466]/72">{card.distance}</p>
                   </div>
-                  <MapPin className="h-4 w-4 shrink-0 text-[#C8A96A]" />
+                  <MapPin className="h-4 w-4 shrink-0 text-[#BFA46A]" />
                 </div>
 
                 <p className="mb-3 text-xs leading-5 text-[#425466]">{card.line}</p>
@@ -204,14 +204,14 @@ export default function ProductEntryLayer() {
         >
           <button
             onClick={() => navigate("/downtown-perks/card")}
-            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-none transition-colors duration-200 hover:text-[#B38F4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-none transition-colors duration-200 hover:text-[#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
           >
             Get Your Card
           </button>
 
           <button
             onClick={() => navigate("/map?mode=resident&tab=map")}
-            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33]/62 shadow-none transition-colors duration-200 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33]/62 shadow-none transition-colors duration-200 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
           >
             Explore the Map
           </button>

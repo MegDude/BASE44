@@ -392,7 +392,7 @@ function HowItWorks({ steps, proof }) {
             {steps.map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }}
                 className="grid grid-cols-[30px_1fr] gap-3 md:block">
-                <div className="font-heading text-[16px] font-bold leading-none text-[#B38F4F] md:text-[20px]">{s.n}</div>
+                <div className="font-heading text-[16px] font-bold leading-none text-[#A98B4A] md:text-[20px]">{s.n}</div>
                 <div>
                   <div className="text-[13px] font-semibold leading-snug text-[#0B1F33]">{s.label}</div>
                   <div className="mt-1.5 text-[12px] leading-5 text-[#425466]">{s.detail}</div>
@@ -404,7 +404,7 @@ function HowItWorks({ steps, proof }) {
           {proof.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 + i * 0.05 }}
               className="flex items-center gap-2 py-2">
-              <div className="h-px w-4 shrink-0 bg-[#B38F4F]" />
+              <div className="h-px w-4 shrink-0 bg-[#A98B4A]" />
               <span className="text-[12px] leading-5 text-[#425466]">{item}</span>
             </motion.div>
           ))}

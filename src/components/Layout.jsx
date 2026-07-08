@@ -181,10 +181,10 @@ export default function Layout() {
           <button
             type="button"
             onClick={goBack}
-            className="dp-layout-back inline-flex h-7 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 shadow-none transition-all hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="dp-layout-back inline-flex h-7 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 shadow-none transition-all hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-label="Go back"
           >
-            <ArrowLeft className="h-3 w-3 text-[#C8A96A]" />
+            <ArrowLeft className="h-3 w-3 text-[#BFA46A]" />
             Back
           </button>
         </div>

@@ -53,13 +53,13 @@ function TextLink({ to, children, variant = "primary", className = "" }) {
     <Component
       {...props}
       className={cn(
-        "group inline-flex h-10 items-center justify-center gap-2 border-b border-transparent bg-transparent px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]",
-        variant === "primary" ? "text-[#0B1F33] hover:border-[#C8A96A]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]",
+        "group inline-flex h-10 items-center justify-center gap-2 border-b border-transparent bg-transparent px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]",
+        variant === "primary" ? "text-[#0B1F33] hover:border-[#BFA46A]" : "text-[#0B1F33]/58 hover:text-[#0B1F33]",
         className
       )}
     >
       {children}
-      <ArrowRight className="h-3.5 w-3.5 text-[#C8A96A] transition-transform group-hover:translate-x-0.5" />
+      <ArrowRight className="h-3.5 w-3.5 text-[#BFA46A] transition-transform group-hover:translate-x-0.5" />
     </Component>
   );
 }
@@ -85,7 +85,7 @@ function PartnerHeroVisual() {
     <div id="moments-that-matter" className="dp-partner-hero-visual relative overflow-hidden bg-[#0B1F33] p-5 text-white md:p-6">
       <div className="relative z-10 grid min-h-[330px] content-between gap-8">
         <div>
-          <p className="dp-partner-label text-[#C8A96A]">Partner map</p>
+          <p className="dp-partner-label text-[#BFA46A]">Partner map</p>
           <h2 className="mt-4 max-w-[13ch] text-[34px] font-semibold leading-[1.02] text-white md:text-[46px]">Local plans, made easier.</h2>
         </div>
         <div className="grid gap-4">
@@ -151,7 +151,7 @@ export function SharedOperatingLayer() {
               transition={{ duration: 0.45, delay: index * 0.06, ease }}
               className="border border-[#0B1F33]/[0.06] bg-white p-5"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">0{index + 1}</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">0{index + 1}</p>
               <h3 className="mt-4 text-[18px] font-semibold leading-tight text-[#0B1F33]">{card.title}</h3>
               <p className="mt-3 text-[13px] leading-[1.65] text-[#0B1F33]/62">{card.body}</p>
             </motion.article>
@@ -202,7 +202,7 @@ export function RotatingPartnerSystem() {
                   setPaused(true);
                 }}
                 className={cn(
-                  "shrink-0 border border-[#0B1F33]/[0.06] px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] lg:w-full",
+                  "shrink-0 border border-[#0B1F33]/[0.06] px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] lg:w-full",
                   isActive ? "bg-[#0B1F33] text-white" : "bg-white text-[#0B1F33]/58 hover:text-[#0B1F33]"
                 )}
               >
@@ -230,7 +230,7 @@ export function RotatingPartnerSystem() {
           </div>
           <div className="mt-8 grid gap-4 border-y border-[#0B1F33]/[0.06] py-5 md:grid-cols-[1fr_auto] md:items-end">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Pilot and pricing</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">Pilot and pricing</p>
               <div className="mt-2 space-y-1 text-[14px] leading-6 text-[#0B1F33]/70">
                 {activePartner.pricing.map((line) => (
                   <p key={line}>{line}</p>
@@ -263,7 +263,7 @@ export function IntelligenceLayer() {
           <article key={metric.label} className="border border-[#0B1F33]/[0.06] bg-[#F7F8FB] p-4">
             <p className="text-[25px] font-semibold leading-none text-[#0B1F33]">{metric.value}</p>
             <p className="mt-2 text-[11px] font-semibold text-[#0B1F33]">{metric.label}</p>
-            <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{metric.window}</p>
+            <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{metric.window}</p>
             <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/58">{metric.source}</p>
             <p className="mt-3 border-t border-[#0B1F33]/[0.06] pt-3 text-[12px] leading-5 text-[#0B1F33]/72">{metric.action}</p>
           </article>
@@ -271,7 +271,7 @@ export function IntelligenceLayer() {
       </div>
       <div className="mt-8 grid gap-4 md:grid-cols-4">
         {analyticsCards.map((card) => (
-          <article key={card.title} className="border-t border-[#C8A96A]/50 pt-4">
+          <article key={card.title} className="border-t border-[#BFA46A]/50 pt-4">
             <h3 className="text-[16px] font-semibold text-[#0B1F33]">{card.title}</h3>
             <p className="mt-2 text-[13px] leading-[1.65] text-[#0B1F33]/62">{card.body}</p>
           </article>
@@ -294,11 +294,11 @@ export function PartnerFAQ() {
               <button
                 type="button"
                 onClick={() => setOpen(isOpen ? -1 : index)}
-                className="flex w-full items-center justify-between gap-5 bg-transparent py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="flex w-full items-center justify-between gap-5 bg-transparent py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
                 aria-expanded={isOpen}
               >
                 <span className="text-[16px] font-semibold text-[#0B1F33]">{item.question}</span>
-                <ChevronDown className={cn("h-4 w-4 shrink-0 text-[#C8A96A] transition-transform", isOpen && "rotate-180")} />
+                <ChevronDown className={cn("h-4 w-4 shrink-0 text-[#BFA46A] transition-transform", isOpen && "rotate-180")} />
               </button>
               {isOpen && <p className="max-w-3xl pb-5 text-[14px] leading-[1.7] text-[#0B1F33]/64">{item.answer}</p>}
             </div>
@@ -401,14 +401,14 @@ export function DynamicIntakeWorkflow() {
                 <span>{field}</span>
                 {isLarge ? (
                   <textarea
-                    className="min-h-28 border border-[#0B1F33]/[0.06] bg-white px-3 py-2 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60"
+                    className="min-h-28 border border-[#0B1F33]/[0.06] bg-white px-3 py-2 text-[14px] text-[#0B1F33] outline-none focus:border-[#BFA46A]/60"
                     value={textValue}
                     onChange={() => {}}
                     readOnly={field === "Main goal"}
                   />
                 ) : (
                   <input
-                    className="h-11 border border-[#0B1F33]/[0.06] bg-white px-3 text-[14px] text-[#0B1F33] outline-none focus:border-[#C8A96A]/60"
+                    className="h-11 border border-[#0B1F33]/[0.06] bg-white px-3 text-[14px] text-[#0B1F33] outline-none focus:border-[#BFA46A]/60"
                     value={inputValue}
                     onChange={() => {}}
                     readOnly={field === "Partner type"}
@@ -436,14 +436,14 @@ export function PartnerFinalCTA() {
         <div>
           <p className="dp-partner-label">FINAL CTA</p>
           <h2 className="mt-4 max-w-3xl font-heading text-[48px] leading-[0.94] tracking-[-0.04em] text-white md:text-[76px]">
-            The city already moves. <span className="text-[#C8A96A]">Now make it visible.</span>
+            The city already moves. <span className="text-[#BFA46A]">Now make it visible.</span>
           </h2>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.72] text-white/68 md:text-[18px]">
             Downtown Perks connects discovery, participation, and visibility through one shared downtown map.
           </p>
         </div>
         <div className="flex flex-wrap gap-6">
-          <TextLink to="/partners/campaigns" className="text-white hover:border-[#C8A96A]">Book an Intro Call</TextLink>
+          <TextLink to="/partners/campaigns" className="text-white hover:border-[#BFA46A]">Book an Intro Call</TextLink>
           <TextLink to="/partners/dashboard" variant="secondary" className="text-white/68 hover:text-white">View Dashboard</TextLink>
         </div>
       </div>
@@ -461,10 +461,10 @@ export function PartnerWorkspaceBridge() {
           { title: "Workspace", body: "Manage campaigns, reports, and partner follow-up after login.", href: "/partner-workspace/overview" },
         ].map((item) => {
           return (
-            <Link key={item.title} to={item.href} className="group border border-[#0B1F33]/[0.06] bg-white p-5 transition-colors hover:border-[#C8A96A]/40">
+            <Link key={item.title} to={item.href} className="group border border-[#0B1F33]/[0.06] bg-white p-5 transition-colors hover:border-[#BFA46A]/40">
               <h3 className="mt-4 text-[17px] font-semibold text-[#0B1F33]">{item.title}</h3>
               <p className="mt-2 text-[13px] leading-[1.65] text-[#0B1F33]/62">{item.body}</p>
-              <span className="mt-5 inline-flex text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] group-hover:text-[#C8A96A]">Open</span>
+              <span className="mt-5 inline-flex text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33] group-hover:text-[#BFA46A]">Open</span>
             </Link>
           );
         })}

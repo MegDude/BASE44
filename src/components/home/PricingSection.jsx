@@ -93,11 +93,11 @@ export default function PricingSection() {
           <div className="mb-4 flex justify-end gap-2">
             <CarouselPrevious
               aria-label="Previous pricing option"
-              className="static h-8 w-8 translate-x-0 translate-y-0 border-transparent bg-transparent text-[#0B1F33]/60 shadow-none hover:bg-transparent hover:text-[#C8A96A]"
+              className="static h-8 w-8 translate-x-0 translate-y-0 border-transparent bg-transparent text-[#0B1F33]/60 shadow-none hover:bg-transparent hover:text-[#BFA46A]"
             />
             <CarouselNext
               aria-label="Next pricing option"
-              className="static h-8 w-8 translate-x-0 translate-y-0 border-transparent bg-transparent text-[#0B1F33]/60 shadow-none hover:bg-transparent hover:text-[#C8A96A]"
+              className="static h-8 w-8 translate-x-0 translate-y-0 border-transparent bg-transparent text-[#0B1F33]/60 shadow-none hover:bg-transparent hover:text-[#BFA46A]"
             />
           </div>
           <CarouselContent className="-ml-3">
@@ -107,7 +107,7 @@ export default function PricingSection() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
-                  className="group flex h-full min-h-[232px] flex-col rounded-[6px] border border-[#0B1F33]/8 bg-white/82 p-5 shadow-[0_14px_34px_rgba(11,31,51,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#C8A96A]/50 hover:shadow-[0_18px_48px_rgba(11,31,51,0.06)]"
+                  className="group flex h-full min-h-[232px] flex-col rounded-[6px] border border-[#0B1F33]/8 bg-white/82 p-5 shadow-[0_14px_34px_rgba(11,31,51,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#BFA46A]/50 hover:shadow-[0_18px_48px_rgba(11,31,51,0.06)]"
                 >
                   {(() => { const Icon = TIER_ICONS[tier.label]; return Icon ? <Icon className="w-4 h-4 text-primary/60 mb-3" /> : null; })()}
                   <div className="font-heading font-medium text-[13px] text-foreground mb-0.5 group-hover:text-primary transition-colors">{tier.label}</div>

@@ -71,16 +71,16 @@ export const SEARCH_PROMPTS = [
 ];
 
 export const CATEGORY_COLORS = {
-  restaurant: '#C8A96A',
-  bar: '#C8A96A',
+  restaurant: '#BFA46A',
+  bar: '#BFA46A',
   fitness: '#0B1F33',
   wellness: '#0B1F33',
   beauty: '#0B1F33',
   retail: '#425466',
   entertainment: '#0B1F33',
   coworking: '#0B1F33',
-  hotel: '#C8A96A',
-  building: '#C8A96A',
+  hotel: '#BFA46A',
+  building: '#BFA46A',
 };
 
 export const MOTION_PRESETS = {

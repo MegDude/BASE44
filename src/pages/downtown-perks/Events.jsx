@@ -221,7 +221,7 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#B38F4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                className="flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
                 aria-label="Close event details"
               >
                 <X className="h-4 w-4" />
@@ -252,7 +252,7 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
                   </h2>
                   <div className="mt-4 grid gap-2 text-[13px] text-[#0B1F33]/64">
                     <div className="flex items-center gap-2">
-                      <MapPin className="h-3.5 w-3.5 shrink-0 text-[#B38F4F]" />
+                      <MapPin className="h-3.5 w-3.5 shrink-0 text-[#A98B4A]" />
                       <span>{event.venue}</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -265,15 +265,15 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
                     <button
                       type="button"
                       onClick={() => onToggleRsvp(event)}
-                      className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                      className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
                       aria-pressed={rsvped}
                     >
                       {rsvped ? "Saved" : "RSVP / Save Event"}
-                      <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
+                      <ArrowRight className="h-3.5 w-3.5 text-[#A98B4A]" />
                     </button>
                     <Link
                       to={`/map?mode=resident&tab=map&filter=Events&q=${encodeURIComponent(event.title)}`}
-                      className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                      className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
                     >
                       View on map
                     </Link>
@@ -317,7 +317,7 @@ function DayAgenda({ date, eventsForDay, onSelectEvent, selectedEvent }) {
                 type="button"
                 onClick={() => onSelectEvent(event)}
                 className={cn(
-                  "grid w-full grid-cols-[72px_1fr] gap-3 rounded-[2px] border p-2.5 text-left transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]",
+                  "grid w-full grid-cols-[72px_1fr] gap-3 rounded-[2px] border p-2.5 text-left transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]",
                   active ? "border-[#0B1F33]/18 bg-white shadow-[0_10px_24px_rgba(11,31,51,0.08)]" : "border-[#0B1F33]/8 bg-white/72"
                 )}
               >
@@ -340,7 +340,7 @@ function DayAgenda({ date, eventsForDay, onSelectEvent, selectedEvent }) {
           <button
             type="button"
             onClick={() => setExpanded((current) => !current)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
             aria-expanded={expanded}
           >
             {expanded ? (
@@ -386,7 +386,7 @@ function EventImagePanel({ event }) {
             {event.title}
           </div>
           <div className="mt-1.5 flex min-w-0 items-center gap-1.5 text-[11px] text-white/78">
-            <MapPin className="h-3 w-3 shrink-0 text-[#B38F4F]" />
+            <MapPin className="h-3 w-3 shrink-0 text-[#A98B4A]" />
             <span className="truncate">{event.venue}</span>
           </div>
         </figcaption>
@@ -416,14 +416,14 @@ function EventMapPanel({ events: mapEvents, selectedEvent, onSelectEvent }) {
       style={{ minHeight: 380 }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(11,31,51,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
-      <div className="pointer-events-none absolute left-[10%] top-[14%] h-40 w-40 bg-[#B38F4F]/10 blur-3xl" />
+      <div className="pointer-events-none absolute left-[10%] top-[14%] h-40 w-40 bg-[#A98B4A]/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[8%] right-[10%] h-48 w-48 bg-[#0B1F33]/6 blur-3xl" />
       <div className="pointer-events-none absolute left-[12%] right-[12%] top-[48%] h-px rotate-[-8deg] bg-[#0B1F33]/10" />
       <div className="pointer-events-none absolute bottom-[24%] left-[18%] right-[8%] h-px rotate-[7deg] bg-[#0B1F33]/10" />
       <div className="pointer-events-none absolute left-[32%] top-[10%] h-[72%] w-px rotate-[8deg] bg-[#0B1F33]/10" />
 
       <div className="absolute left-4 top-4 z-10 max-w-[15rem] bg-white/82 px-3 py-2 shadow-[0_12px_30px_rgba(11,31,51,0.055)] backdrop-blur-md">
-        <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#B38F4F]">Event map</div>
+        <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#A98B4A]">Event map</div>
         <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/62">Tap a marker to open the full event details.</p>
       </div>
 
@@ -435,7 +435,7 @@ function EventMapPanel({ events: mapEvents, selectedEvent, onSelectEvent }) {
             key={event.id}
             type="button"
             onClick={() => onSelectEvent(event)}
-            className="absolute z-20 -translate-x-1/2 -translate-y-1/2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+            className="absolute z-20 -translate-x-1/2 -translate-y-1/2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
             style={{ left, top }}
             aria-label={`Open ${event.title} details`}
           >
@@ -445,16 +445,16 @@ function EventMapPanel({ events: mapEvents, selectedEvent, onSelectEvent }) {
                 active && "bg-[#0B1F33] text-white shadow-[0_14px_30px_rgba(11,31,51,0.16),0_0_26px_rgba(179,143,79,0.22)]"
               )}
             >
-              {active && <span className="absolute -inset-2 bg-[#B38F4F]/18 blur-md" aria-hidden="true" />}
-              <MapPin className={cn("relative h-4 w-4", active ? "text-[#B38F4F]" : "text-[#0B1F33]/70")} />
+              {active && <span className="absolute -inset-2 bg-[#A98B4A]/18 blur-md" aria-hidden="true" />}
+              <MapPin className={cn("relative h-4 w-4", active ? "text-[#A98B4A]" : "text-[#0B1F33]/70")} />
             </span>
             <span
               className={cn(
                 "mt-2 hidden min-w-[150px] max-w-[180px] bg-white/88 px-2.5 py-2 shadow-[0_10px_26px_rgba(11,31,51,0.065)] backdrop-blur-md sm:block",
-                active && "shadow-[inset_0_2px_0_#B38F4F,0_12px_28px_rgba(11,31,51,0.08)]"
+                active && "shadow-[inset_0_2px_0_#A98B4A,0_12px_28px_rgba(11,31,51,0.08)]"
               )}
             >
-              <span className="block truncate text-[10px] font-semibold uppercase tracking-normal text-[#B38F4F]">{event.time}</span>
+              <span className="block truncate text-[10px] font-semibold uppercase tracking-normal text-[#A98B4A]">{event.time}</span>
               <span className="mt-1 block truncate text-[13px] font-semibold text-[#0B1F33]">{event.title}</span>
               <span className="mt-0.5 block truncate text-[11px] text-[#0B1F33]/56">{event.venue}</span>
             </span>
@@ -545,7 +545,7 @@ export default function Events() {
               <h1 className="font-heading text-[52px] font-bold leading-[0.92] tracking-[-0.04em] md:text-[92px]">
                 Search less.
                 <br />
-                <span className="text-[#B38F4F]">Do more.</span>
+                <span className="text-[#A98B4A]">Do more.</span>
               </h1>
               <div className="mt-6 max-w-3xl space-y-3 text-[16px] leading-[1.72] text-[#0B1F33]/68 md:text-[18px]">
                 <p>Downtown Perks helps you see what’s happening, what’s worth showing up for, and what you can RSVP to without bouncing between five apps and a group chat.</p>
@@ -557,11 +557,11 @@ export default function Events() {
                 </p>
               </div>
               <div className="mt-7 flex flex-wrap gap-2">
-                <Link to="/map?mode=resident&tab=map&filter=Events" className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white shadow-[0_12px_28px_rgba(11,31,51,0.12),0_0_18px_rgba(179,143,79,0.08)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+                <Link to="/map?mode=resident&tab=map&filter=Events" className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white shadow-[0_12px_28px_rgba(11,31,51,0.12),0_0_18px_rgba(179,143,79,0.08)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]">
                   Open the Map
-                  <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
+                  <ArrowRight className="h-3.5 w-3.5 text-[#A98B4A]" />
                 </Link>
-                <Link to="/card" className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+                <Link to="/card" className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]">
                   Get Your Perks Card
                 </Link>
               </div>
@@ -570,9 +570,9 @@ export default function Events() {
 
           <div className="mb-8 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
             <div className="max-w-3xl">
-              <span className="mb-3 block text-[13px] font-semibold text-[#B38F4F]">Events Happening Now</span>
+              <span className="mb-3 block text-[13px] font-semibold text-[#A98B4A]">Events Happening Now</span>
               <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
-                Worth leaving <span className="text-[#B38F4F]">the apartment for.</span>
+                Worth leaving <span className="text-[#A98B4A]">the apartment for.</span>
               </h2>
               <p className="mt-4 text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
                 See what’s on, find what’s worth showing up for, and RSVP without leaving the map. A quick look at resident hours, local events, live music, happy hours, wellness, and neighborhood plans.
@@ -588,7 +588,7 @@ export default function Events() {
                   transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
                   className="relative pl-4"
                 >
-                  <span className="absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-[#B38F4F]/55 shadow-[0_0_18px_rgba(179,143,79,0.24)]" aria-hidden="true" />
+                  <span className="absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-[#A98B4A]/55 shadow-[0_0_18px_rgba(179,143,79,0.24)]" aria-hidden="true" />
                   <h3 className="text-[15px] font-semibold text-[#0B1F33]">{title}</h3>
                   <p className="mt-2 text-[13px] leading-6 text-[#0B1F33]/62">{body}</p>
                 </motion.div>
@@ -600,7 +600,7 @@ export default function Events() {
               <div className="border-b border-[#0B1F33]/8 bg-white p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#B38F4F]">Downtown Calendar</div>
+                    <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#A98B4A]">Downtown Calendar</div>
                     <div className="mt-2 font-heading text-[28px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33]">June events</div>
                     <div className="mt-2 text-[14px] leading-6 text-[#0B1F33]/62">Browse what’s coming up and open any event to save or RSVP.</div>
                   </div>
@@ -615,9 +615,9 @@ export default function Events() {
                       onClick={() => chooseCategory(category)}
                       aria-pressed={active}
                       className={cn(
-                        "inline-flex shrink-0 items-center gap-1.5 bg-transparent px-0 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/58 shadow-[inset_0_-1px_0_rgba(11,31,51,0.10)] transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]",
+                        "inline-flex shrink-0 items-center gap-1.5 bg-transparent px-0 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/58 shadow-[inset_0_-1px_0_rgba(11,31,51,0.10)] transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]",
                         active
-                          ? "text-[#0B1F33] shadow-[inset_0_-2px_0_#B38F4F]"
+                          ? "text-[#0B1F33] shadow-[inset_0_-2px_0_#A98B4A]"
                           : ""
                       )}
                     >
@@ -639,7 +639,7 @@ export default function Events() {
                         onMonthChange={setVisibleMonth}
                         modifiers={{ hasEvent: eventDates }}
                         modifiersClassNames={{
-                          hasEvent: "after:absolute after:bottom-1 after:left-1/2 after:h-1 after:w-1 after:-translate-x-1/2 after:rounded-[2px] after:bg-[#B38F4F]",
+                          hasEvent: "after:absolute after:bottom-1 after:left-1/2 after:h-1 after:w-1 after:-translate-x-1/2 after:rounded-[2px] after:bg-[#A98B4A]",
                         }}
                         className="w-full p-0"
                         classNames={{
@@ -650,7 +650,7 @@ export default function Events() {
                           head_cell: "flex h-8 items-center justify-center rounded-[2px] text-[11px] font-medium text-[#0B1F33]/46",
                           row: "mt-1 grid w-full grid-cols-7 gap-1",
                           cell: "relative p-0 text-center text-[13px]",
-                          day: "relative flex h-9 w-full items-center justify-center rounded-[2px] p-0 text-[13px] font-normal transition hover:bg-white hover:text-[#0B1F33] hover:shadow-[0_8px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B38F4F]",
+                          day: "relative flex h-9 w-full items-center justify-center rounded-[2px] p-0 text-[13px] font-normal transition hover:bg-white hover:text-[#0B1F33] hover:shadow-[0_8px_22px_rgba(11,31,51,0.06)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#A98B4A]",
                           day_selected: "bg-[#0B1F33] text-white hover:bg-[#0B1F33] hover:text-white focus:bg-[#0B1F33] focus:text-white",
                           day_today: "bg-[#0B1F33]/15 text-[#0B1F33]",
                           day_outside: "day-outside text-[#0B1F33]/30 aria-selected:bg-[#0B1F33]/10 aria-selected:text-[#0B1F33]/50",
@@ -664,17 +664,17 @@ export default function Events() {
                     <div className="mb-4 flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-center gap-3">
                         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[#0B1F33]/8 bg-white">
-                          <CalendarDays className="h-4 w-4 text-[#B38F4F]" />
+                          <CalendarDays className="h-4 w-4 text-[#A98B4A]" />
                         </span>
                         <div className="min-w-0">
-                          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#B38F4F]">Event map</div>
+                          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#A98B4A]">Event map</div>
                           <div className="font-heading text-xl font-medium text-[#0B1F33]">Find something worth showing up for.</div>
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => setEventResultsCollapsed((current) => !current)}
-                        className="inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
                         aria-expanded={!eventResultsCollapsed}
                       >
                         {eventResultsCollapsed ? (
@@ -719,17 +719,17 @@ export default function Events() {
             </div>
           <div className="mt-8 border-t border-[#0B1F33]/10 pt-8">
           <h2 className="font-heading text-[34px] font-bold leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">
-            Find the plan before <span className="text-[#B38F4F]">the group chat gives up.</span>
+            Find the plan before <span className="text-[#A98B4A]">the group chat gives up.</span>
           </h2>
           <p className="mt-4 max-w-2xl text-[14px] leading-7 text-[#0B1F33]/66 md:text-[16px]">
             Open the map, save an event, RSVP when it makes sense, and keep downtown easy to use.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Link to="/map?mode=resident&tab=map&filter=Events" className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+            <Link to="/map?mode=resident&tab=map&filter=Events" className="inline-flex h-10 items-center justify-center gap-2 bg-[#0B1F33] px-4 text-[11px] font-semibold uppercase tracking-normal text-white transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]">
               Open the Map
-              <ArrowRight className="h-3.5 w-3.5 text-[#B38F4F]" />
+              <ArrowRight className="h-3.5 w-3.5 text-[#A98B4A]" />
             </Link>
-            <Link to="/card" className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]">
+            <Link to="/card" className="inline-flex h-10 items-center justify-center bg-white px-4 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_0_0_1px_rgba(11,31,51,0.08),0_10px_24px_rgba(11,31,51,0.06)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]">
               Get Your Perks Card
             </Link>
           </div>

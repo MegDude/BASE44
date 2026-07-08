@@ -193,7 +193,7 @@ function SearchIntentCard() {
       <span className="dp-label mb-3 block">Search Intent Integration</span>
       <div className="rounded-[2px] border border-[#0B1F33]/8 bg-white p-3">
         <div className="flex items-center gap-2 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[13px] text-[#0B1F33]/58">
-          <Search className="h-4 w-4 text-[#C8A96A]" />
+          <Search className="h-4 w-4 text-[#BFA46A]" />
           Search downtown
         </div>
         <div className="mt-4 divide-y divide-[#0B1F33]/8">
@@ -201,7 +201,7 @@ function SearchIntentCard() {
             const Icon = prompt.icon;
             return (
               <div key={prompt.title} className="flex gap-3 py-2.5 first:pt-0 last:pb-0">
-                <Icon className="mt-1 h-[18px] w-[18px] shrink-0 text-[#C8A96A]" />
+                <Icon className="mt-1 h-[18px] w-[18px] shrink-0 text-[#BFA46A]" />
                 <div>
                   <div className="text-[13px] font-medium text-[#0B1F33]">{prompt.title}</div>
                   <p className="mt-1 text-[12px] leading-[1.6] text-[#0B1F33]/58">{prompt.body}</p>
@@ -223,14 +223,14 @@ function MiniMapVisual({ activeStep }) {
       <div className="absolute left-[16%] top-[66%] h-px w-[66%] -rotate-[11deg] bg-[#0B1F33]/12" />
       {(activeStep === 0 || activeStep === 2) && (
         <motion.div
-          className="absolute left-[32%] top-[47%] h-[2px] w-[40%] origin-left rotate-[-16deg] bg-[#C8A96A]"
+          className="absolute left-[32%] top-[47%] h-[2px] w-[40%] origin-left rotate-[-16deg] bg-[#BFA46A]"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.75, ease }}
         />
       )}
       <motion.div
-        className="absolute left-[30%] top-[42%] text-[#C8A96A] drop-shadow-[0_10px_18px_rgba(11,31,51,0.18)]"
+        className="absolute left-[30%] top-[42%] text-[#BFA46A] drop-shadow-[0_10px_18px_rgba(11,31,51,0.18)]"
         animate={{ scale: activeStep === 0 ? [1, 1.09, 1] : 1 }}
         transition={{ duration: 1.3, repeat: activeStep === 0 ? Infinity : 0, ease }}
       >
@@ -265,7 +265,7 @@ function MiniMapVisual({ activeStep }) {
         {activeStep === 2 && (
           <motion.div
             key="saved"
-            className="absolute bottom-5 left-5 rounded-[2px] border border-[#C8A96A]/50 bg-white px-3 py-2 text-[12px] font-medium text-[#0B1F33] shadow-[0_14px_34px_rgba(6,27,51,0.06)]"
+            className="absolute bottom-5 left-5 rounded-[2px] border border-[#BFA46A]/50 bg-white px-3 py-2 text-[12px] font-medium text-[#0B1F33] shadow-[0_14px_34px_rgba(6,27,51,0.06)]"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
@@ -285,11 +285,11 @@ function MiniMapVisual({ activeStep }) {
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">Resident Card</span>
-              <CreditCard className="h-4 w-4 text-[#C8A96A]" />
+              <CreditCard className="h-4 w-4 text-[#BFA46A]" />
             </div>
             <div className="mt-8 font-heading text-2xl font-medium">Perk confirmed</div>
             <p className="mt-1 text-[12px] text-white/58">They scan. You get the perk. Done.</p>
-            <motion.div className="absolute left-4 right-4 top-1/2 h-px bg-[#C8A96A]" initial={{ x: "-115%" }} animate={{ x: "115%" }} transition={{ duration: 1.1, ease }} />
+            <motion.div className="absolute left-4 right-4 top-1/2 h-px bg-[#BFA46A]" initial={{ x: "-115%" }} animate={{ x: "115%" }} transition={{ duration: 1.1, ease }} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -337,8 +337,8 @@ function ResidentsHowItWorksStepper() {
                     selected ? "bg-white/74 text-[#0B1F33]" : "bg-transparent text-[#0B1F33] hover:bg-white/56"
                   )}
                 >
-                  <div className={cn("font-heading text-[18px] font-medium leading-none md:text-[21px]", selected ? "text-[#B38F4F]" : "text-[#0B1F33]/38")}>{step.step.replace("Step ", "0")}</div>
-                  <div className={cn("border-l pl-3", selected ? "border-[#B38F4F]" : "border-[#0B1F33]/8")}>
+                  <div className={cn("font-heading text-[18px] font-medium leading-none md:text-[21px]", selected ? "text-[#A98B4A]" : "text-[#0B1F33]/38")}>{step.step.replace("Step ", "0")}</div>
+                  <div className={cn("border-l pl-3", selected ? "border-[#A98B4A]" : "border-[#0B1F33]/8")}>
                     <div className="text-[13px] font-semibold leading-snug">{step.title}</div>
                     <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">{step.body}</p>
                   </div>
@@ -367,7 +367,7 @@ function CapabilityToggle() {
             onClick={() => setActive(group.id)}
             className={cn(
               "shrink-0 rounded-[2px] border px-4 py-2 text-[13px] font-medium transition-colors",
-              active === group.id ? "border-[#0B1F33] bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/64 hover:border-[#C8A96A]/50"
+              active === group.id ? "border-[#0B1F33] bg-[#0B1F33] text-white" : "border-[#0B1F33]/8 bg-white text-[#0B1F33]/64 hover:border-[#BFA46A]/50"
             )}
           >
             {group.label}
@@ -385,7 +385,7 @@ function CapabilityToggle() {
         >
           {current.items.map((item) => (
             <li key={item} className="flex gap-2 text-[13px] leading-[1.6] text-[#0B1F33]/68">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A96A]" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#BFA46A]" />
               {item}
             </li>
           ))}
@@ -423,7 +423,7 @@ function MapMoveModules() {
             className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
             aria-live="polite"
           >
-            <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#B38F4F]">
+            <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#A98B4A]">
               {current.label}
             </span>
             <span className="font-heading text-[22px] font-bold leading-tight tracking-[-0.02em] text-[#0B1F33] md:text-[28px]">
@@ -432,9 +432,9 @@ function MapMoveModules() {
             <span className="max-w-5xl font-body text-[14px] font-light leading-relaxed text-[#425466] md:text-[15px]">
               {current.body}
             </span>
-            <Link to={current.href} className="font-body text-[11px] font-bold uppercase tracking-[0.14em] text-[#0B1F33] transition-colors hover:text-[#B38F4F]">
+            <Link to={current.href} className="font-body text-[11px] font-bold uppercase tracking-[0.14em] text-[#0B1F33] transition-colors hover:text-[#A98B4A]">
               {current.cta}
-              <ArrowRight className="ml-1 inline h-3.5 w-3.5 text-[#B38F4F]" />
+              <ArrowRight className="ml-1 inline h-3.5 w-3.5 text-[#A98B4A]" />
             </Link>
           </motion.div>
         </AnimatePresence>
@@ -446,8 +446,8 @@ function MapMoveModules() {
             type="button"
             onClick={() => setActive(module.id)}
             className={cn(
-              "h-px transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B38F4F]",
-              module.id === active ? "w-8 bg-[#B38F4F]" : "w-4 bg-[#0B1F33]/16"
+              "h-px transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]",
+              module.id === active ? "w-8 bg-[#A98B4A]" : "w-4 bg-[#0B1F33]/16"
             )}
             aria-label={`Show ${module.label}`}
             aria-pressed={module.id === active}
@@ -480,7 +480,7 @@ function PerksCardBlock() {
               className={cn(
                 "rounded-sm",
                 [0, 1, 2, 5, 10, 12, 14, 19, 20, 22, 24].includes(index) ? "bg-[#0B1F33]" : "bg-[#0B1F33]/10",
-                [6, 7, 11, 17, 18].includes(index) && "bg-[#C8A96A]"
+                [6, 7, 11, 17, 18].includes(index) && "bg-[#BFA46A]"
               )}
             />
           ))}
@@ -513,7 +513,7 @@ function ResidentSignupForm() {
                 {label === "Phone Number" && <span className="normal-case tracking-normal"> (Used for QR perks card login)</span>}
                 {label === "Email" && <span className="normal-case tracking-normal"> (Optional)</span>}
               </span>
-              <input type={type} className="h-10 rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#C8A96A]/60" />
+              <input type={type} className="h-10 rounded-[2px] border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#BFA46A]/60" />
             </label>
           ))}
           <div>
@@ -570,7 +570,7 @@ export default function Landing() {
             <p>Google for restaurants. Instagram for events. Text three friends to find the best happy hour.</p>
             <p>Downtown Perks fixes that. Because the problem isn’t what to do next — it’s the effort it takes to decide.</p>
           </div>
-          <div className="border-l border-[#C8A96A]/50 pl-5">
+          <div className="border-l border-[#BFA46A]/50 pl-5">
             <h3 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">Search less. Do more.</h3>
             <p className="mt-3 text-[14px] leading-[1.7] text-[#0B1F33]/64">
               Downtown Perks brings places, events, and perks together so it's easier to decide what to do next. A simple live map for people who live downtown — and the businesses that want to meet them there.

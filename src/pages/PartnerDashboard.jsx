@@ -61,7 +61,7 @@ export default function PartnerDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="h-8 w-8 border-2 border-[#0B1F33]/14 border-t-[#C8A96A] animate-spin" />
+        <div className="h-8 w-8 border-2 border-[#0B1F33]/14 border-t-[#BFA46A] animate-spin" />
       </div>
     );
   }
@@ -97,7 +97,7 @@ export default function PartnerDashboard() {
               label: 'Impressions',
               value: metrics.impressions,
               icon: Eye,
-              color: 'text-[#C8A96A]',
+              color: 'text-[#BFA46A]',
             },
             {
               label: 'Saves',
@@ -109,13 +109,13 @@ export default function PartnerDashboard() {
               label: 'Redemptions',
               value: metrics.redemptions,
               icon: CheckCircle,
-              color: 'text-[#C8A96A]',
+              color: 'text-[#BFA46A]',
             },
             {
               label: 'Trending',
               value: `${(metrics.conversionRate * 100).toFixed(1)}%`,
               icon: TrendingUp,
-              color: 'text-[#C8A96A]',
+              color: 'text-[#BFA46A]',
             },
           ].map((metric, i) => {
             const Icon = metric.icon;

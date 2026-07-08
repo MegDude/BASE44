@@ -342,7 +342,7 @@ export const downtownSushiWeekCampaign = {
   reward: "Resident sushi week perk",
   participatingEntities: sushiVenueEntities.map((item) => item.id),
   campaignPins: ["campaign-downtown-sushi-week", ...sushiVenueEntities.map((item) => item.id)],
-  campaignColor: "#C8A96A",
+  campaignColor: "#BFA46A",
   image: BARCHI_IMAGE,
   imageUrl: BARCHI_IMAGE,
   primaryAction: "Explore Sushi Week",

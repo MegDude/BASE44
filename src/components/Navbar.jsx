@@ -74,9 +74,9 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
         onClick={() => setOpenMenu(isOpen ? null : id)}
         aria-expanded={isOpen}
         aria-controls={`${id}-navigation`}
-        className={`relative inline-flex h-9 items-center gap-1.5 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
+        className={`relative inline-flex h-9 items-center gap-1.5 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
           isActiveGroup
-            ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-1 after:h-px after:w-[calc(100%-0.5rem)] after:bg-[#C8A96A]"
+            ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-1 after:h-px after:w-[calc(100%-0.5rem)] after:bg-[#BFA46A]"
             : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
         }`}
       >
@@ -95,13 +95,13 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
             className="absolute left-0 top-11 w-[340px] overflow-hidden rounded-md border border-[#0B1F33]/8 bg-white p-2 shadow-[0_18px_58px_rgba(11,31,51,0.13)]"
           >
             <div className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
                 {label} paths
               </div>
               <button
                 type="button"
                 onClick={() => setOpenMenu(null)}
-                className="inline-flex h-7 w-7 items-center justify-center rounded-[2px] border border-[#0B1F33]/8 bg-white text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-[2px] border border-[#0B1F33]/8 bg-white text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
                 aria-label={`Close ${label} navigation`}
               >
                 <X className="h-3.5 w-3.5" />
@@ -113,16 +113,16 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
                   key={link.to}
                   link={link}
                   onClick={() => setOpenMenu(null)}
-                  className="group rounded-md px-3 py-2.5 text-left transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                  className="group rounded-md px-3 py-2.5 text-left transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
                 >
                   <span className="block text-[13px] font-semibold text-[#0B1F33]">{link.label}</span>
-                  <span className="mt-0.5 block text-[11px] leading-4 text-[#C8A96A]/80">{link.description}</span>
+                  <span className="mt-0.5 block text-[11px] leading-4 text-[#BFA46A]/80">{link.description}</span>
                 </NavLinkItem>
               ))}
               <button
                 type="button"
                 onClick={() => setOpenMenu(null)}
-                className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#425466] shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition hover:-translate-y-0.5 hover:text-[#0B1F33] hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#425466] shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition hover:-translate-y-0.5 hover:text-[#0B1F33] hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 <ChevronUp className="h-3.5 w-3.5" />
                 Roll up
@@ -238,7 +238,7 @@ export default function Navbar() {
     >
       <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
         <Link to="/app?mode=resident&tab=map&filter=Perks" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
-          <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A] transition-colors duration-150 group-hover:text-[#B38F4F]" />
+          <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
           <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
             Downtown Perks
           </span>
@@ -251,9 +251,9 @@ export default function Navbar() {
                 <Link
                   key={link.to + link.label}
                   to={link.to}
-                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
+                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     isActive(link.to)
-                      ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
+                      ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                       : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
                   }`}
                 >
@@ -264,9 +264,9 @@ export default function Navbar() {
               <>
                 <Link
                   to="/app?mode=resident&tab=map&filter=Perks"
-                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
+                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     residentMapActive
-                      ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
+                      ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                       : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
                   }`}
                 >
@@ -274,9 +274,9 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/app?mode=partner&tab=map&filter=All"
-                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${
+                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     partnerMapActive
-                      ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
+                      ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                       : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
                   }`}
                 >
@@ -328,7 +328,7 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/40 hover:bg-white hover:text-[#C8A96A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/40 hover:bg-white hover:text-[#BFA46A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -369,7 +369,7 @@ export default function Navbar() {
                         onClick={() => setMobileAudience(value)}
                         className={`relative h-7 border-0 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-[0.14em] shadow-none outline-none transition focus-visible:outline-none focus-visible:ring-0 ${
                           mobileAudience === value
-                            ? "text-[#C8A96A] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#C8A96A]"
+                            ? "text-[#BFA46A] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                             : "text-[#425466] hover:text-[#0B1F33]"
                         }`}
                         style={{ border: 0, boxShadow: "none", background: "transparent" }}
@@ -412,10 +412,10 @@ function NavSection({ links, close }) {
             key={link.to}
             link={link}
             onClick={close}
-            className="group flex items-center justify-between px-0 py-2 text-[15px] font-medium text-[#0B1F33] transition-all hover:translate-x-0.5 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="group flex items-center justify-between px-0 py-2 text-[15px] font-medium text-[#0B1F33] transition-all hover:translate-x-0.5 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
           >
             <span>{link.label}</span>
-            <span className="text-[#C8A96A]/70 transition group-hover:translate-x-0.5 group-hover:text-[#C8A96A]">→</span>
+            <span className="text-[#BFA46A]/70 transition group-hover:translate-x-0.5 group-hover:text-[#BFA46A]">→</span>
           </NavLinkItem>
         ))}
       </div>

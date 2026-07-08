@@ -101,7 +101,7 @@
 
 .dp-contact-button:hover,
 .dp-contact-button:focus-visible {
-  border-color: rgba(200, 169, 106, 0.72);
+  border-color: rgba(191, 164, 106, 0.72);
   color: #8B6B2F;
   outline: none;
 }

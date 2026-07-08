@@ -22,8 +22,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="dp-site-footer-layout mb-7 grid grid-cols-1 gap-6 md:grid-cols-[0.88fr_2.12fr] md:gap-8 lg:mb-8 lg:gap-10">
           <div>
-            <Link to="/app?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 whitespace-nowrap leading-none text-white transition-colors hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]" aria-label="Downtown Perks app">
-              <MapPin className="h-[15px] w-[15px] shrink-0 text-[#C8A96A]" aria-hidden="true" />
+            <Link to="/app?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 whitespace-nowrap leading-none text-white transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]" aria-label="Downtown Perks app">
+              <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A]" aria-hidden="true" />
               <span className="inline-flex items-center whitespace-nowrap font-sans text-[14.5px] font-semibold leading-none tracking-normal">
                 Downtown Perks
               </span>
@@ -36,7 +36,7 @@ export default function Footer() {
           <div className="dp-site-footer-link-grid grid min-w-0 grid-cols-[0.82fr_0.9fr_1.28fr] gap-2 sm:gap-4 lg:gap-6">
             {Object.entries(FOOTER_LINKS).map(([group, links]) => (
               <nav key={group} aria-label={group}>
-                <h4 className="mb-2.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A] sm:mb-3 sm:text-[11px]">
+                <h4 className="mb-2.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] sm:mb-3 sm:text-[11px]">
                   {group}
                 </h4>
                 <ul className="space-y-1.5 text-[13px] font-light leading-5 text-white/68 sm:space-y-2 sm:text-[14px]">
@@ -44,7 +44,7 @@ export default function Footer() {
                     <li key={link.to + link.label}>
                       <Link
                         to={link.to}
-                        className="transition-colors hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                        className="transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
                       >
                         {link.label}
                       </Link>
@@ -60,7 +60,7 @@ export default function Footer() {
           <div>© {new Date().getFullYear()} Downtown Perks</div>
           <a
             href="mailto:partners@downtownperks.com"
-            className="text-[#C8A96A] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="text-[#BFA46A] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
           >
             partners@downtownperks.com
           </a>

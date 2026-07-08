@@ -7,7 +7,7 @@
   --dp-page-line: rgba(11, 31, 51, .08);
   --dp-page-line-strong: rgba(11, 31, 51, .12);
   --dp-page-gold: rgb(200, 169, 106);
-  --dp-page-gold-soft: rgba(200, 169, 106, .72);
+  --dp-page-gold-soft: rgba(191, 164, 106, .72);
   --dp-page-cream: #f5efe2;
   --dp-page-white: #fff;
   --dp-page-wash: #f7f8fb;
@@ -632,7 +632,7 @@ footer a[aria-label='Downtown Perks app'] svg {
 }
 
 [data-platform-layout='downtown-perks'] footer a[href^='mailto:'] {
-  color: rgba(200, 169, 106, .82) !important;
+  color: rgba(191, 164, 106, .82) !important;
 }
 
 [data-platform-layout='downtown-perks'] footer a[href^='mailto:']:hover {
@@ -651,7 +651,7 @@ footer a[aria-label='Downtown Perks app'] svg {
 }
 
 [data-platform-layout='downtown-perks'] footer .border-t > div:last-child {
-  color: rgba(200, 169, 106, .76) !important;
+  color: rgba(191, 164, 106, .76) !important;
 }
 
 .dp-ask-map-action-button {
@@ -710,7 +710,7 @@ footer a[aria-label='Downtown Perks app'] svg {
 }
 
 [data-platform-layout='downtown-perks'] :where(a, button, input):focus-visible {
-  outline: 2px solid rgba(200, 169, 106, .42);
+  outline: 2px solid rgba(191, 164, 106, .42);
   outline-offset: 3px;
 }
 

@@ -66,7 +66,7 @@ const WORKSPACE_CAPABILITY_LINKS = [
   { label: "Map Listing", href: "/partner-workspace/map", description: "Manage the public map listing, placement, images, categories, and live preview." },
   { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, validations, and in-market offers." },
   { label: "Events", href: "/partner-workspace/events", description: "Publish events and keep them connected to map discovery and reporting." },
-  { label: "Surveys", href: "/partner-workspace/surveys", description: "Build surveys, choose an audience, send a test, and launch when ready." },
+  { label: "Surveys", href: "/partner-workspace/surveys", description: "Build surveys, choose an audience, review the preview, and launch when ready." },
   { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan placements, messages, QR codes, events, and offers from one workflow." },
   { label: "Broadcasts", href: "/partner-workspace/broadcasts", description: "Create email and SMS campaigns when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
   { label: "Audience", href: "/partner-workspace/audience", description: "Choose districts, buildings, segments, uploaded contacts, and saved audiences." },
@@ -286,7 +286,7 @@ function provisionWorkspaceFromCheckout(search = "") {
     sku: setup.sku || setup.checkoutKey || "workspace",
     modules,
     moduleLabels: Array.isArray(setup.moduleLabels) ? setup.moduleLabels : [],
-    annualTotal: setup.annualTotal || "configured",
+    annualTotal: setup.annualTotal || "selected",
     status: "active",
     createdAt: existing?.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -529,7 +529,7 @@ export default function PartnerWorkspace() {
         <div className="dp-partner-workspace-header-inner max-w-6xl mx-auto">
           <div className="dp-partner-workspace-title-row flex items-end justify-between mb-5 gap-4">
             <div className="dp-partner-workspace-title-copy">
-              <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#C8A96A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
+              <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#BFA46A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
               <h1 className="dp-partner-workspace-title font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
                 {isReportsTab ? "Monthly Reports" : tab === "overview" ? `${workspaceDisplayName} Home` : workspaceDisplayName}
               </h1>
@@ -588,7 +588,7 @@ export default function PartnerWorkspace() {
                 {tab === t.id && (
                   <motion.span
                     layoutId="workspace-tab-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8A96A] rounded-[2px]"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#BFA46A] rounded-[2px]"
                     transition={{ type: "spring", stiffness: 500, damping: 40 }}
                   />
                 )}
@@ -689,18 +689,18 @@ function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
       className="rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]"
     >
-      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">{eyebrow}</span>
+      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">{eyebrow}</span>
       <h2 className="mt-2 font-body text-[20px] font-semibold leading-snug tracking-[-0.005em] text-[#0B1F33]">{title}</h2>
       <p className="mt-2.5 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/60">{description}</p>
       <div className="mt-6 grid gap-2.5 md:grid-cols-3">
         {actions.map((action, i) => (
           <div
             key={action}
-            className="group flex items-start gap-3 rounded-[8px] border border-[rgba(11,31,51,0.07)] bg-[#F7F8FB] p-4 transition-all duration-150 hover:border-[rgba(200,169,106,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(11,31,51,0.06)]"
+            className="group flex items-start gap-3 rounded-[8px] border border-[rgba(11,31,51,0.07)] bg-[#F7F8FB] p-4 transition-all duration-150 hover:border-[rgba(191,164,106,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(11,31,51,0.06)]"
             style={{ transitionDelay: `${i * 30}ms` }}
           >
-            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-[5px] bg-[rgba(200,169,106,0.12)]">
-              <Check className="h-3.5 w-3.5 text-[#C8A96A]" />
+            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-[5px] bg-[rgba(191,164,106,0.12)]">
+              <Check className="h-3.5 w-3.5 text-[#BFA46A]" />
             </div>
             <p className="text-[13px] font-medium leading-snug text-[#0B1F33] group-hover:text-[#0B1F33]">{action}</p>
           </div>
@@ -792,7 +792,7 @@ function WorkspaceReports() {
     >
       <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
         <div>
-          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#C8A96A]">Reporting & Analytics</span>
+          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reporting & Analytics</span>
           <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and follow-through.</h2>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
             See what people viewed, saved, scanned, opened, requested directions to, redeemed, and returned to. Use each signal to decide what to launch, improve, or repeat next.
@@ -800,7 +800,7 @@ function WorkspaceReports() {
         </div>
         <Link
           to="/map?mode=partner&tab=reports"
-          className="dp-partner-workspace-button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#C8A96A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50"
+          className="dp-partner-workspace-button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
         >
           Open map reports
         </Link>
@@ -813,7 +813,7 @@ function WorkspaceReports() {
           ["Next Action", "Recommendations tied to campaign, offer, event, and reporting signals."],
         ].map(([label, copy]) => (
           <article key={label} className="rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-4 shadow-[0_1px_4px_rgba(11,31,51,0.04)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{label}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</p>
             <p className="mt-2 text-[13px] leading-[1.55] text-[#0B1F33]/64">{copy}</p>
           </article>
         ))}
@@ -822,10 +822,10 @@ function WorkspaceReports() {
         {monthlyReports.map((item) => (
           <article
             key={item.section}
-            className="dp-workspace-report-card group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(200,169,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
+            className="dp-workspace-report-card group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(191,164,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
           >
             <div>
-              <p className="dp-workspace-report-label text-[10px] font-semibold tracking-[0.12em] uppercase text-[#C8A96A]">{item.section}</p>
+              <p className="dp-workspace-report-label text-[10px] font-semibold tracking-[0.12em] uppercase text-[#BFA46A]">{item.section}</p>
               <div className="dp-workspace-report-metric mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
             </div>
             <div>
@@ -842,7 +842,7 @@ function WorkspaceReports() {
             </div>
             <Link
               to="/map?mode=partner&tab=reports"
-              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#C8A96A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#C8A96A]"
+              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#BFA46A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#BFA46A]"
             >
               {item.action}
             </Link>
@@ -875,7 +875,7 @@ function WorkspaceAnalytics() {
   ];
 
   const launchTasks = [
-    ["Reviewer link", "Send the latest app link plus this analytics tab so navigation and performance can be tested."],
+    ["Reviewer link", "Share the latest app link plus this analytics tab so navigation and performance can be reviewed."],
     ["Report visibility", "Keep reports reachable from workspace analytics and the partner map."],
     ["Venue inputs", "Add bars and Sixth Street candidates once names, offers, images, and event hooks are ready."],
     ["Photo queue", "Attach current, approved imagery before pushing partner campaigns wider."],
@@ -893,7 +893,7 @@ function WorkspaceAnalytics() {
         <span>Analytics</span>
         <h2>Review the launch signal from one place.</h2>
         <p>
-          Use this section to test the app link, inspect reporting, and see which partners, source points, and campaigns need attention before launch.
+          Use this section to review the app link, inspect reporting, and see which partners, source points, and campaigns need attention before launch.
         </p>
         <div className="dp-workspace-analytics-actions">
           <Link to="/partner-workspace/reports">View reports</Link>
@@ -942,7 +942,7 @@ function WorkspaceAnalytics() {
 
       <section className="dp-workspace-analytics-next">
         <p className="dp-workspace-analytics-kicker">Launch follow-up</p>
-        <h3>Keep testing tied to the work that matters.</h3>
+        <h3>Keep launch review tied to the work that matters.</h3>
         <div>
           {launchTasks.map(([label, detail]) => (
             <article key={label}>
@@ -1072,7 +1072,7 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
           </div>
           <div className="dp-workspace-status-chip">
             <span className="font-semibold text-[#0B1F33]">{workspaceCopy.label}</span>
-            <span className="mx-2 text-[#C8A96A]">/</span>
+            <span className="mx-2 text-[#BFA46A]">/</span>
             {selectedOrganization?.plan || "free"} plan
           </div>
         </div>
@@ -1086,10 +1086,10 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
                   key={organization.id}
                   type="button"
                   onClick={() => setSelectedOrganizationId(organization.id)}
-                  className={`rounded-[4px] border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/60 ${
+                  className={`rounded-[4px] border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/60 ${
                     isSelected
-                      ? "border-[#C8A96A]/55 bg-[rgba(200,169,106,0.10)]"
-                      : "border-[rgba(11,31,51,0.08)] bg-[#F7F8FB] hover:border-[#C8A96A]/45 hover:bg-white"
+                      ? "border-[#BFA46A]/55 bg-[rgba(191,164,106,0.10)]"
+                      : "border-[rgba(11,31,51,0.08)] bg-[#F7F8FB] hover:border-[#BFA46A]/45 hover:bg-white"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -1197,11 +1197,11 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
             <p className="dp-workspace-eyebrow">Add-on</p>
             <h2 id="workspace-upgrade-title">Unlock {upgradePrompt.label}</h2>
             <p>
-              Reach the right residents, guests, buildings, or districts with a focused email and SMS campaign. Preview it, send a test, schedule it, then measure opens, clicks, and actions.
+              Reach the right residents, guests, buildings, or districts with a focused email and SMS campaign. Preview it, schedule it, then measure opens, clicks, and actions.
             </p>
             <ul>
               <li>Target by district, building, segment, or uploaded list.</li>
-              <li>Preview and test before anything goes live.</li>
+              <li>Review the preview before anything goes live.</li>
               <li>Track opens, clicks, saves, scans, and conversions.</li>
             </ul>
             <div className="dp-workspace-upgrade-actions">
@@ -1231,17 +1231,17 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
           const Icon = a.icon;
           const content = (
             <>
-              <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[rgba(11,31,51,0.05)] border border-[rgba(11,31,51,0.06)] group-hover:bg-[rgba(200,169,106,0.12)] group-hover:border-[rgba(200,169,106,0.25)] transition-all duration-150">
-                <Icon className="w-4 h-4 text-[#0B1F33]/60 group-hover:text-[#C8A96A] transition-colors duration-150" />
+              <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[rgba(11,31,51,0.05)] border border-[rgba(11,31,51,0.06)] group-hover:bg-[rgba(191,164,106,0.12)] group-hover:border-[rgba(191,164,106,0.25)] transition-all duration-150">
+                <Icon className="w-4 h-4 text-[#0B1F33]/60 group-hover:text-[#BFA46A] transition-colors duration-150" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13.5px] text-[#0B1F33] mb-0.5 leading-snug">{a.label}</div>
                 <div className="text-[12px] text-[#0B1F33]/52 leading-snug">{a.sub}</div>
               </div>
-              <ChevronRight className="w-4 h-4 text-[#0B1F33]/28 mt-0.5 shrink-0 group-hover:translate-x-0.5 group-hover:text-[#C8A96A] transition-all duration-150" />
+              <ChevronRight className="w-4 h-4 text-[#0B1F33]/28 mt-0.5 shrink-0 group-hover:translate-x-0.5 group-hover:text-[#BFA46A] transition-all duration-150" />
             </>
           );
-          const className = "group flex items-start gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 text-left shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[rgba(200,169,106,0.4)] hover:shadow-[0_4px_16px_rgba(11,31,51,0.07),0_10px_30px_rgba(11,31,51,0.06)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50";
+          const className = "group flex items-start gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 text-left shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[rgba(191,164,106,0.4)] hover:shadow-[0_4px_16px_rgba(11,31,51,0.07),0_10px_30px_rgba(11,31,51,0.06)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50";
           return a.href ? (
             <Link key={i} to={a.href} className={className}>
               {content}
@@ -1268,7 +1268,7 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
           <div className="space-y-2">
             {perks.slice(0, 3).map(p => (
               <div key={p.id} className="flex items-center gap-3 p-3.5 rounded-lg border border-border/40 bg-card/20">
-                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A]" : "bg-muted-foreground/40"}`} />
+                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${p.status === "active" ? "bg-[#BFA46A]" : "bg-muted-foreground/40"}`} />
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-medium text-foreground truncate">{p.title}</div>
                   <div className="text-[11px] text-muted-foreground">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
@@ -1290,13 +1290,13 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
           <div className="space-y-2">
             {events.slice(0, 3).map(e => (
               <div key={e.id} className="flex items-center gap-3 p-3.5 rounded-lg border border-border/40 bg-card/20">
-                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
+                <div className={`w-2 h-2 rounded-[2px] shrink-0 ${e.status === "live" ? "bg-[#BFA46A]" : e.status === "upcoming" ? "bg-primary" : "bg-muted-foreground/40"}`} />
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-medium text-foreground truncate">{e.title}</div>
                   <div className="text-[11px] text-muted-foreground">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
                 </div>
                 <span className={`text-[10px] font-medium px-2 py-0.5 rounded-[2px] border capitalize shrink-0 ${
-                  e.status === "live" ? "bg-[#0B1F33]/20 text-[#C8A96A] border-[#C8A96A]/30" :
+                  e.status === "live" ? "bg-[#0B1F33]/20 text-[#BFA46A] border-[#BFA46A]/30" :
                   e.status === "upcoming" ? "bg-primary/20 text-primary border-primary/30" :
                   "bg-muted text-muted-foreground border-border/50"
                 }`}>{e.status}</span>
@@ -1474,7 +1474,7 @@ function DaaCivicWorkspacePanel() {
     <section className="mb-8 rounded-[10px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] p-5 shadow-[0_8px_24px_rgba(11,31,51,.04)]">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Downtown Austin Art & Parks Tour</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Downtown Austin Art & Parks Tour</div>
           <h3 className="font-body mt-2 text-[23px] font-semibold leading-snug tracking-normal text-[#0B1F33]">How People Engage With This Experience</h3>
           <p className="mt-2 max-w-[48ch] text-[13px] leading-6 text-[#0B1F33]/66">
             Track discovery, saves, visits, directions, and participation across the Downtown Austin Art & Parks Tour. Understand which locations attract attention, where people return, and what drives engagement.
@@ -1493,7 +1493,7 @@ function DaaCivicWorkspacePanel() {
       <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
         {daaDashboardContent.overview.slice(0, 8).map(([label, value]) => (
           <div key={label} className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/86 p-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{label}</div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</div>
             <p className="mt-1 text-[20px] font-semibold leading-tight tracking-normal text-[#0B1F33]">{value}</p>
           </div>
         ))}
@@ -1502,7 +1502,7 @@ function DaaCivicWorkspacePanel() {
       <div className="mt-5 rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/80 p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">{activeRailItem.meta}</div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">{activeRailItem.meta}</div>
             <h4 className="font-body mt-1 text-[16px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{activeRailItem.label}</h4>
             <p className="mt-2 max-w-[64ch] text-[13px] leading-6 text-[#0B1F33]/66">{activeRailItem.detail}</p>
           </div>
@@ -1537,7 +1537,7 @@ function DaaInsightRail({ section, activeLabel, onSelect }) {
   return (
     <div className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/74 p-4">
       <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4 text-[#C8A96A]" />
+        <Icon className="h-4 w-4 text-[#BFA46A]" />
         <h4 className="font-body text-[14px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{section.title}</h4>
       </div>
       <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/58">{section.support}</p>
@@ -1552,11 +1552,11 @@ function DaaInsightRail({ section, activeLabel, onSelect }) {
               onClick={() => onSelect(item)}
               className={`min-w-[150px] snap-start rounded-[6px] border px-2.5 py-2 text-left text-[12px] font-medium leading-snug transition ${
                 isActive
-                  ? "border-[#C8A96A]/70 bg-white text-[#0B1F33] shadow-[0_8px_24px_rgba(11,31,51,.055)]"
-                  : "border-[rgba(11,31,51,.06)] bg-[#F7F8FB] text-[#0B1F33]/70 hover:border-[#C8A96A]/45 hover:text-[#0B1F33]"
+                  ? "border-[#BFA46A]/70 bg-white text-[#0B1F33] shadow-[0_8px_24px_rgba(11,31,51,.055)]"
+                  : "border-[rgba(11,31,51,.06)] bg-[#F7F8FB] text-[#0B1F33]/70 hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
               }`}
             >
-              <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{item.meta}</span>
+              <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{item.meta}</span>
               <span className="mt-1 block">{item.label}</span>
             </button>
           );
@@ -1597,7 +1597,7 @@ function PerksManager({ user }) {
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
-        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add perk
         </button>
       </div>
@@ -1616,14 +1616,14 @@ function PerksManager({ user }) {
         <div className="space-y-3">
           {perks.map(p => (
             <div key={p.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
-              <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${p.status === "active" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : p.status === "paused" ? "bg-[#C8A96A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
+              <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${p.status === "active" ? "bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.5)]" : p.status === "paused" ? "bg-[#BFA46A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{p.title}</div>
                 <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{p.venue_name} · {CAT_LABELS[p.category] || p.category}</div>
               </div>
-              <span className="text-[11.5px] font-semibold text-[#8B6B2F] border border-[rgba(200,169,106,0.35)] bg-[rgba(200,169,106,0.08)] px-2.5 py-0.5 rounded-[6px] shrink-0 hidden sm:block">{p.value}</span>
+              <span className="text-[11.5px] font-semibold text-[#8B6B2F] border border-[rgba(191,164,106,0.35)] bg-[rgba(191,164,106,0.08)] px-2.5 py-0.5 rounded-[6px] shrink-0 hidden sm:block">{p.value}</span>
               <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-[6px] border capitalize shrink-0 ${
-                p.status === "active" ? "bg-[rgba(200,169,106,0.1)] text-[#8B6B2F] border-[rgba(200,169,106,0.3)]" :
+                p.status === "active" ? "bg-[rgba(191,164,106,0.1)] text-[#8B6B2F] border-[rgba(191,164,106,0.3)]" :
                 p.status === "paused" ? "bg-[rgba(11,31,51,0.05)] text-[#0B1F33]/50 border-[rgba(11,31,51,0.1)]" :
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{p.status}</span>
@@ -1675,7 +1675,7 @@ function PerkForm({ user, perk, onClose, onSave }) {
       className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{perk ? "Edit perk" : "New perk"}</h3>
-        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#C8A96A]"><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Perk title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
@@ -1683,7 +1683,7 @@ function PerkForm({ user, perk, onClose, onSave }) {
         <div>
           <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Category</label>
           <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
             {PERK_CATEGORIES.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
           </select>
         </div>
@@ -1693,17 +1693,17 @@ function PerkForm({ user, perk, onClose, onSave }) {
         <div>
           <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Status</label>
           <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
             <option value="active">Active</option>
             <option value="paused">Paused</option>
             <option value="expired">Expired</option>
           </select>
         </div>
         <div className="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
             {saving ? "Saving…" : perk ? "Save changes" : "Create perk"}
           </button>
-          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
             Cancel
           </button>
         </div>
@@ -1741,7 +1741,7 @@ function EventsManager({ user }) {
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP and discovery.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add event
         </button>
       </div>
@@ -1760,14 +1760,14 @@ function EventsManager({ user }) {
         <div className="space-y-3">
           {events.map(e => (
             <div key={e.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
-              <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${e.status === "live" ? "bg-[#C8A96A] shadow-[0_0_4px_rgba(200,169,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
+              <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${e.status === "live" ? "bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{e.title}</div>
                 <div className="text-[12px] text-[#0B1F33]/50 mt-0.5">{e.venue_name || "—"} · {CAT_LABELS[e.category] || e.category}</div>
               </div>
               <span className="text-[11px] font-medium text-[#0B1F33]/40 hidden md:block shrink-0">{e.rsvp_count || 0} RSVPs</span>
               <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-[6px] border capitalize shrink-0 ${
-                e.status === "live" ? "bg-[rgba(200,169,106,0.1)] text-[#8B6B2F] border-[rgba(200,169,106,0.3)]" :
+                e.status === "live" ? "bg-[rgba(191,164,106,0.1)] text-[#8B6B2F] border-[rgba(191,164,106,0.3)]" :
                 e.status === "upcoming" ? "bg-[rgba(11,31,51,0.05)] text-[#0B1F33]/60 border-[rgba(11,31,51,0.12)]" :
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{e.status}</span>
@@ -1822,7 +1822,7 @@ function EventForm({ user, event, onClose, onSave }) {
       className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{event ? "Edit event" : "New event"}</h3>
-        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#C8A96A]"><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Event title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
@@ -1830,7 +1830,7 @@ function EventForm({ user, event, onClose, onSave }) {
         <div>
           <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Category</label>
           <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
             {EVENT_CATEGORIES.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
           </select>
         </div>
@@ -1843,7 +1843,7 @@ function EventForm({ user, event, onClose, onSave }) {
         <div>
           <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Status</label>
           <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors">
+            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
             <option value="upcoming">Upcoming</option>
             <option value="live">Live</option>
             <option value="past">Past</option>
@@ -1856,10 +1856,10 @@ function EventForm({ user, event, onClose, onSave }) {
           <label htmlFor="members-only" className="text-[13px] text-[#0B1F33]/60">Members only</label>
         </div>
         <div className="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
             {saving ? "Saving…" : event ? "Save changes" : "Create event"}
           </button>
-          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
             Cancel
           </button>
         </div>
@@ -2152,7 +2152,7 @@ function FormField({ label, value, onChange, type = "text", required = false }) 
       <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">{label}</label>
       <input
         type={type} value={value} onChange={e => onChange(e.target.value)} required={required}
-        className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(200,169,106,0.5)] focus:ring-2 focus:ring-[rgba(200,169,106,0.15)] transition-colors placeholder:text-[#0B1F33]/25"
+        className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors placeholder:text-[#0B1F33]/25"
       />
     </div>
   );
@@ -2161,12 +2161,12 @@ function FormField({ label, value, onChange, type = "text", required = false }) 
 function EmptyState({ icon: Icon, headline, body, action, onAction }) {
   return (
     <div className="text-center py-16 px-4">
-      <div className="w-12 h-12 rounded-[10px] border border-[rgba(200,169,106,0.25)] bg-[rgba(200,169,106,0.07)] flex items-center justify-center mx-auto mb-4 shadow-[0_2px_8px_rgba(200,169,106,0.1)]">
-        <Icon className="w-5 h-5 text-[#C8A96A]" />
+      <div className="w-12 h-12 rounded-[10px] border border-[rgba(191,164,106,0.25)] bg-[rgba(191,164,106,0.07)] flex items-center justify-center mx-auto mb-4 shadow-[0_2px_8px_rgba(191,164,106,0.1)]">
+        <Icon className="w-5 h-5 text-[#BFA46A]" />
       </div>
       <h3 className="mb-1.5 text-[15px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{headline}</h3>
       <p className="text-[13px] text-[#0B1F33]/50 mb-6 max-w-sm mx-auto leading-relaxed">{body}</p>
-      <button onClick={onAction} className="inline-flex items-center gap-2 px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]/50">
+      <button onClick={onAction} className="inline-flex items-center gap-2 px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
         <Plus className="w-3.5 h-3.5" /> {action}
       </button>
     </div>

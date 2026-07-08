@@ -152,8 +152,8 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-label svg,
 html body .dp-search-intent-label svg {
   width: 13px !important;
   height: 13px !important;
-  color: #C8A96A !important;
-  stroke: #C8A96A !important;
+  color: #BFA46A !important;
+  stroke: #BFA46A !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-search-intent-input-row.dp-search-intent-input-row,
@@ -307,8 +307,8 @@ html body .dp-search-more-toggle.dp-search-more-toggle {
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #C8A96A !important;
-  -webkit-text-fill-color: #C8A96A !important;
+  color: #BFA46A !important;
+  -webkit-text-fill-color: #BFA46A !important;
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 12px !important;
   font-weight: 600 !important;
@@ -567,8 +567,8 @@ html body .dp-search-intent-prompt-rail > .dp-search-more-toggle.dp-search-more-
   border-radius: 7px !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #C8A96A !important;
-  -webkit-text-fill-color: #C8A96A !important;
+  color: #BFA46A !important;
+  -webkit-text-fill-color: #BFA46A !important;
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 11px !important;
   font-weight: 600 !important;

@@ -414,7 +414,7 @@ export default function PricingPage() {
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.checkoutUrl) {
-        throw new Error(result.error || "Checkout is not configured yet.");
+        throw new Error(result.error || "Checkout is not available yet.");
       }
       trackCta("Open Stripe checkout", result.checkoutUrl);
       window.location.href = result.checkoutUrl;

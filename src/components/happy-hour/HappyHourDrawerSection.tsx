@@ -17,7 +17,7 @@ export default function HappyHourDrawerSection({ venue }: HappyHourDrawerSection
           <div key={`${item.days}-${index}`} className="border-t border-[#0B1F33]/[0.06] pt-3 first:border-t-0 first:pt-0">
             <p className="text-[13px] font-semibold text-[#0B1F33]">{item.days}</p>
             <p className="mt-1 text-[12px] text-[#0B1F33]/60">{item.startTime || "Time"}-{item.endTime || "TBD"}</p>
-            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">What's on special</p>
+            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">What's on special</p>
             <p className="mt-1 text-[13px] leading-6 text-[#0B1F33]/68">{item.specials}</p>
           </div>
         ))}

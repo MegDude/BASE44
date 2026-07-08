@@ -37,8 +37,8 @@ export default function MapExplorer({
                 onClick={() => onFilterChange?.(chip.id)}
                 className={`rounded-[12px] border px-4 py-2 text-[12px] font-medium transition-all ${
                   activeFilter === chip.id
-                    ? 'border-[#C8A96A]/45 bg-white/82 text-[#0B1F33] shadow-[0_10px_28px_rgba(11,31,51,0.055)]'
-                    : 'border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#C8A96A]/45'
+                    ? 'border-[#BFA46A]/45 bg-white/82 text-[#0B1F33] shadow-[0_10px_28px_rgba(11,31,51,0.055)]'
+                    : 'border-[#0B1F33]/8 bg-white text-[#0B1F33]/70 hover:border-[#BFA46A]/45'
                 }`}
               >
                 {chip.label}

@@ -141,6 +141,9 @@ function toPricingPartnerType(value) {
   return "";
 }
 
+const accessActionClass =
+  "dp-partner-access-action inline-flex min-h-11 items-center justify-center gap-2 border-0 border-b border-[#0B1F33]/14 bg-transparent px-0 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33] shadow-none transition hover:border-[#BFA46A] hover:text-[#0B1F33] focus-visible:border-[#BFA46A] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:border-[#0B1F33]/10 disabled:text-[#0B1F33]/40";
+
 export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
   const navigate = useNavigate();
@@ -346,7 +349,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           <button
             type="button"
             onClick={() => navigate("/partners")}
-            className="dp-partner-back-button inline-flex items-center justify-center text-[#0B1F33]/68 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="dp-partner-back-button inline-flex items-center justify-center text-[#0B1F33]/68 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-label="Back to partners"
             title="Back to partners"
           >
@@ -356,7 +359,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
         <section className="dp-partner-access-grid grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="dp-partner-access-copy">
-            <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
+            <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
               Partner access
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
@@ -381,7 +384,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 "Request team access if someone else owns the organization.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
-                  <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-[#C8A96A]" />
+                  <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-[#BFA46A]" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -392,7 +395,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             {isSignUp ? (
               <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
                 <div className="dp-partner-access-form-head">
-                  <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Sign up</p>
+                  <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Sign up</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                     Register your partner setup
                   </h2>
@@ -429,7 +432,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected plan">
                   <div className="dp-partner-access-setup-head">
                     <p className="dp-partner-access-setup-label">Plan</p>
-                    <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom review" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
+                    <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom setup" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
                   </div>
                   <div className="dp-partner-access-setup-fields">
                     <label>
@@ -449,7 +452,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                             </option>
                           ))
                         ) : (
-                          <option value="">Custom review</option>
+                          <option value="">Custom setup</option>
                         )}
                       </select>
                     </label>
@@ -509,7 +512,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <select
                     value={form.timeline}
                     onChange={(event) => updateField("timeline", event.target.value)}
-                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#C8A96A]/55"
+                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
                   >
                     {TIMELINES.map((timeline) => (
                       <option key={timeline} value={timeline}>{timeline}</option>
@@ -525,7 +528,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     rows={4}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
-                    className="dp-partner-access-control w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
+                    className="dp-partner-access-control w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
                     placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
                   />
                 </div>
@@ -544,15 +547,15 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <button
                   type="submit"
                   disabled={submissionState === "submitting"}
-                  className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] disabled:cursor-wait disabled:opacity-70"
+                  className={accessActionClass}
                 >
-                  {saved ? <Check className="h-4 w-4 text-[#C8A96A]" /> : <UserPlus className="h-4 w-4 text-[#C8A96A]" />}
+                  {saved ? <Check className="h-4 w-4 text-[#BFA46A]" /> : <UserPlus className="h-4 w-4 text-[#BFA46A]" />}
                   {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Submit setup request"}
                 </button>
               </form>
             ) : (
               <div className="dp-partner-access-signin">
-                <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner account</p>
+                <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Partner account</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Choose your access path
                 </h2>
@@ -581,21 +584,21 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     type="button"
                     onClick={handleSignIn}
                     disabled={!accountAccessEnabled || submissionState === "submitting"}
-                    className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    className={accessActionClass}
                   >
-                    <LogIn className="h-4 w-4 text-[#C8A96A]" />
+                    <LogIn className="h-4 w-4 text-[#BFA46A]" />
                     {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
-                    className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    className={accessActionClass}
                   >
                     Submit setup request
-                    <ArrowRight className="h-4 w-4 text-[#C8A96A]" />
+                    <ArrowRight className="h-4 w-4 text-[#BFA46A]" />
                   </Link>
                   <Link
                     to="/partners/apply?intent=request-access"
-                    className="dp-partner-access-action inline-flex h-10 items-center justify-center gap-2 rounded-[2px] bg-white px-5 text-[12px] font-bold uppercase tracking-[0.09em] text-[#0B1F33] shadow-[0_10px_24px_rgba(11,31,51,.08)] transition hover:text-[#C8A96A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                    className={accessActionClass}
                   >
                     Request team access
                   </Link>
@@ -626,7 +629,7 @@ function PartnerAccessField({ label, value, onChange, type = "text", required = 
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#C8A96A]/55"
+        className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
       />
     </div>
   );

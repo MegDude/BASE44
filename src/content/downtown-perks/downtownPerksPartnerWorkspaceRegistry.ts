@@ -779,8 +779,8 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
   surveys: {
     route: PARTNER_ROUTES.workspaceSurveys,
     headline: "Ask the right people.",
-    body: "Create a survey, choose the audience, preview it, send a test, then launch when it is ready.",
-    fields: ["Survey title", "Questions", "Audience", "Delivery method", "Preview", "Test send", "Launch"],
+    body: "Create a survey, choose the audience, review the preview, then launch when it is ready.",
+    fields: ["Survey title", "Questions", "Audience", "Delivery method", "Preview", "Review", "Launch"],
     createCta: "Create survey",
     emptyState: "No surveys yet. Start with one question you actually need answered.",
   },
@@ -807,8 +807,8 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
   broadcasts: {
     route: PARTNER_ROUTES.workspaceBroadcasts,
     headline: "Broadcasts for email and SMS.",
-    body: "Plan a message, choose who should get it, preview, test, schedule, and send. If Broadcasts are not included in the plan, this module stays visible and locked until upgraded.",
-    steps: ["Message", "Audience", "Media", "Preview", "Test", "Schedule", "Send"],
+    body: "Plan a message, choose who should get it, preview, schedule, and send. If Broadcasts are not included in the plan, this module shows the available upgrade path.",
+    steps: ["Message", "Audience", "Media", "Preview", "Schedule", "Send"],
     createCta: "Create broadcast",
     emptyState: "Broadcasts are ready to unlock when this workspace needs email or SMS campaigns.",
   },
@@ -862,7 +862,7 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     headline: "Plan and billing.",
     body: "Review your current plan, renewal date, Stripe checkout status, and available upgrades.",
     actions: ["Open Stripe checkout", "Change plan", "View invoice", "Update billing contact"],
-    missingStripe: "Checkout link not configured. Add the Stripe environment variable before using this in production.",
+    missingStripe: "Checkout is not available yet. We can complete setup with your team.",
   },
 };
 

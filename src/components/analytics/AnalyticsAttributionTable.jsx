@@ -94,7 +94,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
               >
                 <td className="p-4 text-foreground font-medium">
                   <span className="inline-flex items-center gap-2">
-                    <row.Icon className="h-3.5 w-3.5 text-[#C8A96A]" />
+                    <row.Icon className="h-3.5 w-3.5 text-[#BFA46A]" />
                     {row.label}
                   </span>
                 </td>
@@ -103,7 +103,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
                 <td className="p-4 text-right text-foreground">{row.redemptionRate}%</td>
                 <td className="p-4 text-right">
                   <span className={`text-[12px] font-medium ${
-                    row.trend === 'up' ? 'text-[#C8A96A]' : row.trend === 'down' ? 'text-[#0B1F33]/58' : 'text-muted-foreground'
+                    row.trend === 'up' ? 'text-[#BFA46A]' : row.trend === 'down' ? 'text-[#0B1F33]/58' : 'text-muted-foreground'
                   }`}>
                     {row.trend === 'up' ? '+12%' : row.trend === 'down' ? '-8%' : 'Stable'}
                   </span>
@@ -126,11 +126,11 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
           >
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-2 font-medium text-foreground">
-                <row.Icon className="h-3.5 w-3.5 text-[#C8A96A]" />
+                <row.Icon className="h-3.5 w-3.5 text-[#BFA46A]" />
                 {row.label}
               </span>
               <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
-                row.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#C8A96A]' : row.trend === 'down' ? 'bg-[#0B1F33]/8 text-[#0B1F33]/58' : 'bg-muted/50 text-muted-foreground'
+                row.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#BFA46A]' : row.trend === 'down' ? 'bg-[#0B1F33]/8 text-[#0B1F33]/58' : 'bg-muted/50 text-muted-foreground'
               }`}>
                 {row.trend === 'up' ? '+12%' : row.trend === 'down' ? '-8%' : 'Stable'}
               </span>

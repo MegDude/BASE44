@@ -3449,7 +3449,7 @@ const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
   { elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }, { weight: 0.55 }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 1.8 }] },
-  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#C8A96A" }, { weight: 0.55 }, { visibility: "simplified" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#BFA46A" }, { weight: 0.55 }, { visibility: "simplified" }] },
   { featureType: "administrative", elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }, { weight: 0.55 }] },
   { featureType: "administrative.neighborhood", elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }, { weight: 0.68 }] },
   { featureType: "administrative.neighborhood", elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 2 }] },
@@ -3473,8 +3473,8 @@ const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
   { featureType: "road", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
   { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#54625B" }, { weight: 0.45 }] },
   { featureType: "road", elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 1.7 }] },
-  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#EFE7D6" }] },
-  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#C8A96A" }, { weight: 0.85 }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#F7F8FB" }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#BFA46A" }, { weight: 0.85 }] },
   { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
   { featureType: "road.local", elementType: "geometry", stylers: [{ color: "#F7F8F7" }] },
   { featureType: "transit", elementType: "geometry", stylers: [{ color: "#D6D2C8" }, { saturation: -60 }, { lightness: 18 }] },
@@ -3500,8 +3500,8 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
   const fill = isLegends ? "#FFFFFF" : "#0B1F33";
-  const stroke = "#C8A96A";
-  const iconColor = isLegends ? "#0B1F33" : "#C8A96A";
+  const stroke = "#BFA46A";
+  const iconColor = isLegends ? "#0B1F33" : "#BFA46A";
   const pin = resolveEntityPin(place);
   const paths = isLegends ? LEGENDS_MARKER_FALLBACK_PATH : mapIconSvgInner(pin.glyph);
   const iconSize = Math.max(18, Math.round(size * 0.5));
@@ -3511,7 +3511,7 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
       <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="${fill}" stroke="${stroke}" stroke-width="${isLegends ? "2.4" : "1.8"}"/>
       ${isLegends ? "" : `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 7}" fill="none" stroke="#FFFFFF" stroke-opacity="0.26" stroke-width="1"/>`}
       ${isLegends ? "" : `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.4}" fill="none" stroke="#0B3E31" stroke-opacity="0.2" stroke-width="1"/>`}
-      ${selected ? `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 0.8}" fill="none" stroke="#C8A96A" stroke-opacity="0.42" stroke-width="1.2"/>` : ""}
+      ${selected ? `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 0.8}" fill="none" stroke="#BFA46A" stroke-opacity="0.42" stroke-width="1.2"/>` : ""}
       <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
       ${stopNumber ? `<circle cx="${size - 7}" cy="7" r="6" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.2"/><text x="${size - 7}" y="7.6" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
@@ -3529,10 +3529,10 @@ function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="#0B1F33" stroke="#C8A96A" stroke-width="1.8"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="#0B1F33" stroke="#BFA46A" stroke-width="1.8"/>
       <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 7}" fill="none" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1"/>
       <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.4}" fill="none" stroke="#0B3E31" stroke-opacity="0.22" stroke-width="1"/>
-      <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#C8A96A">${label}</text>
+      <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#BFA46A">${label}</text>
     </svg>`;
   return {
     url: svgMarkerDataUrl(svg),
@@ -3545,8 +3545,8 @@ function getCollectionRouteStyle(collectionRoute) {
   const category = String(collectionRoute?.category || "").toLowerCase();
   const theme = String(collectionRoute?.colorTheme || "gold").toLowerCase();
   const isDashed = ["civic", "event"].includes(category);
-  const mainColor = theme === "emerald" ? "#0B3E31" : theme === "navy" ? "#0B1F33" : "#C8A96A";
-  const dotColor = theme === "navy" ? "#C8A96A" : theme === "emerald" ? "#FFFFFF" : "#0B1F33";
+  const mainColor = theme === "emerald" ? "#0B3E31" : theme === "navy" ? "#0B1F33" : "#BFA46A";
+  const dotColor = theme === "navy" ? "#BFA46A" : theme === "emerald" ? "#FFFFFF" : "#0B1F33";
   return {
     mainColor,
     dotColor,
@@ -3754,7 +3754,7 @@ function DemoQrTile({ code = "DP-RES-78701" }) {
   return (
     <div className="dp-info-row bg-white/72 p-2">
       <DemoQrCode code={code} className="mx-auto h-28 w-28" />
-      <code className="mt-1.5 block text-center font-mono text-[9px] font-semibold tracking-[0.1em] text-[#C8A96A]">
+      <code className="mt-1.5 block text-center font-mono text-[9px] font-semibold tracking-[0.1em] text-[#BFA46A]">
         {code}
       </code>
     </div>
@@ -3951,9 +3951,9 @@ function PartnerQrScanner({ onVerified }) {
     <section className="mt-3 dp-info-section p-3 md:mt-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
+          <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
             Scan access
-            <ScanLine className="h-3.5 w-3.5 text-[#C8A96A]" />
+            <ScanLine className="h-3.5 w-3.5 text-[#BFA46A]" />
           </div>
           <h3 className="mt-1 text-[19px] font-semibold leading-tight text-[#0B1F33] md:text-[21px]">
             Scan resident access
@@ -3962,10 +3962,10 @@ function PartnerQrScanner({ onVerified }) {
             Verify a resident QR for a perk, event check-in, or front desk moment. Camera scan works when the browser supports QR detection; Demo Scan keeps the flow testable.
           </p>
         </div>
-        {scannerStatus === "verified" && <Check className="h-5 w-5 shrink-0 stroke-[2.7] text-[#C8A96A]" />}
+        {scannerStatus === "verified" && <Check className="h-5 w-5 shrink-0 stroke-[2.7] text-[#BFA46A]" />}
       </div>
 
-      <div className="dp-partner-scanner-row mt-3 grid gap-3 overflow-hidden bg-white/78 p-2.5 text-[#0B1F33] shadow-[0_10px_26px_rgba(11,31,51,0.035),0_0_22px_rgba(200,169,106,0.04)]">
+      <div className="dp-partner-scanner-row mt-3 grid gap-3 overflow-hidden bg-white/78 p-2.5 text-[#0B1F33] shadow-[0_10px_26px_rgba(11,31,51,0.035),0_0_22px_rgba(191,164,106,0.04)]">
         <div className="dp-partner-scanner-copy min-w-0">
           <div className="text-[12px] font-semibold text-[#0B1F33]">
             {scannerStatus === "verified" ? "Resident pass verified" : scannerStatus === "scanning" ? "Scanning resident QR" : "Ready to scan"}
@@ -4007,20 +4007,20 @@ function PartnerQrScanner({ onVerified }) {
           />
           {scannerSource === "demo" && (
             <div className="absolute inset-0 flex items-center justify-center bg-white px-4">
-              <div className="dp-demo-scan-card relative w-[154px] bg-white p-2.5 text-center shadow-[0_12px_32px_rgba(11,31,51,0.07),0_0_24px_rgba(200,169,106,0.07)] md:w-[174px]">
-                <div className="text-[8px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Resident pass</div>
+              <div className="dp-demo-scan-card relative w-[154px] bg-white p-2.5 text-center shadow-[0_12px_32px_rgba(11,31,51,0.07),0_0_24px_rgba(191,164,106,0.07)] md:w-[174px]">
+                <div className="text-[8px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Resident pass</div>
                 <DemoQrCode code={DEMO_CARD_CODE} className="mx-auto mt-1 h-28 w-28 md:h-32 md:w-32" />
                 <code className="mt-1 block font-mono text-[8px] font-semibold tracking-[0.08em] text-[#0B1F33]/58">
                   {DEMO_CARD_CODE}
                 </code>
                 {scannerStatus === "scanning" && (
                   <div className="pointer-events-none absolute inset-2">
-                    <div className="absolute inset-x-0 top-1/2 h-px bg-[#C8A96A] shadow-[0_0_18px_rgba(200,169,106,0.55)] dp-agent-scan-line" />
+                    <div className="absolute inset-x-0 top-1/2 h-px bg-[#BFA46A] shadow-[0_0_18px_rgba(191,164,106,0.55)] dp-agent-scan-line" />
                   </div>
                 )}
                 {scannerStatus === "verified" && (
                   <div className="absolute inset-0 grid place-items-center bg-white/68 backdrop-blur-[1px]">
-                    <div className="grid h-14 w-14 place-items-center border border-[#C8A96A]/28 bg-white/84 text-[#0B1F33] shadow-[0_12px_28px_rgba(11,31,51,0.08),0_0_30px_rgba(200,169,106,0.18)]">
+                    <div className="grid h-14 w-14 place-items-center border border-[#BFA46A]/28 bg-white/84 text-[#0B1F33] shadow-[0_12px_28px_rgba(11,31,51,0.08),0_0_30px_rgba(191,164,106,0.18)]">
                       <Check className="h-8 w-8 stroke-[2.8]" />
                     </div>
                   </div>
@@ -4031,20 +4031,20 @@ function PartnerQrScanner({ onVerified }) {
           {scannerStatus !== "scanning" && scannerSource !== "demo" && (
             <div className="absolute inset-0 grid place-items-center px-4 text-center">
               {scannerStatus === "verified" ? (
-                <Check className="h-10 w-10 stroke-[2.8] text-[#C8A96A]" />
+                <Check className="h-10 w-10 stroke-[2.8] text-[#BFA46A]" />
               ) : (
-                <ScanLine className="h-9 w-9 text-[#C8A96A]" />
+                <ScanLine className="h-9 w-9 text-[#BFA46A]" />
               )}
             </div>
           )}
           {scannerStatus === "scanning" && scannerSource !== "demo" && (
             <div className="pointer-events-none absolute inset-0">
-              <div className="absolute inset-x-4 top-1/2 h-px bg-[#C8A96A] shadow-[0_0_18px_rgba(200,169,106,0.55)] dp-agent-scan-line" />
-              <div className="absolute inset-4 border border-[#C8A96A]/28" />
-              <div className="absolute left-5 top-5 h-6 w-6 border-l border-t border-[#C8A96A]" />
-              <div className="absolute right-5 top-5 h-6 w-6 border-r border-t border-[#C8A96A]" />
-              <div className="absolute bottom-5 left-5 h-6 w-6 border-b border-l border-[#C8A96A]" />
-              <div className="absolute bottom-5 right-5 h-6 w-6 border-b border-r border-[#C8A96A]" />
+              <div className="absolute inset-x-4 top-1/2 h-px bg-[#BFA46A] shadow-[0_0_18px_rgba(191,164,106,0.55)] dp-agent-scan-line" />
+              <div className="absolute inset-4 border border-[#BFA46A]/28" />
+              <div className="absolute left-5 top-5 h-6 w-6 border-l border-t border-[#BFA46A]" />
+              <div className="absolute right-5 top-5 h-6 w-6 border-r border-t border-[#BFA46A]" />
+              <div className="absolute bottom-5 left-5 h-6 w-6 border-b border-l border-[#BFA46A]" />
+              <div className="absolute bottom-5 right-5 h-6 w-6 border-b border-r border-[#BFA46A]" />
             </div>
           )}
         </div>
@@ -4410,8 +4410,8 @@ function BusinessServiceDetails({ place }) {
     <section className="mt-4 dp-info-section p-3">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">
-            <Building2 className="h-3.5 w-3.5 text-[#C8A96A]" />
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
+            <Building2 className="h-3.5 w-3.5 text-[#BFA46A]" />
             {panel.eyebrow || "Local service"}
           </div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33]">
@@ -4421,7 +4421,7 @@ function BusinessServiceDetails({ place }) {
             {panel.description || place.raw?.summary || "Save this local service for later, get directions, or contact the business directly."}
           </p>
         </div>
-        <div className="shrink-0 px-0 py-1 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#C8A96A]">
+        <div className="shrink-0 px-0 py-1 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#BFA46A]">
           Service
         </div>
       </div>
@@ -4438,7 +4438,7 @@ function BusinessServiceDetails({ place }) {
       {gallery.length > 1 && (
         <div className="mt-4 grid grid-cols-2 gap-2">
           {gallery.slice(1, 3).map((src) => (
-            <div key={src} className="h-24 overflow-hidden bg-white p-1 shadow-[0_8px_20px_rgba(11,31,51,0.035),0_0_18px_rgba(200,169,106,0.03)]">
+            <div key={src} className="h-24 overflow-hidden bg-white p-1 shadow-[0_8px_20px_rgba(11,31,51,0.035),0_0_18px_rgba(191,164,106,0.03)]">
               <img
                 src={src}
                 alt={`${place.name} service context`}
@@ -4480,7 +4480,7 @@ function ResidentPerkDetails({ place, savedIds, onSave, onUse }) {
     <section className="dp-destination-section dp-perk-module">
       <div className="dp-perk-module-copy text-left">
         <div className="dp-perk-module-meta">
-          <Gift className="h-3.5 w-3.5 text-[#C8A96A]" />
+          <Gift className="h-3.5 w-3.5 text-[#BFA46A]" />
           {sectionLabel}
         </div>
         <h3 className="dp-perk-module-title">
@@ -5116,19 +5116,50 @@ function getEventProfile(place) {
   };
 }
 
+function truncateEventOverview(value = "", limit = 220) {
+  const text = cleanDisplayCopy(value);
+  if (!text || text.length <= limit) return { text, isTruncated: false };
+  const trimmed = text.slice(0, limit).replace(/\s+\S*$/, "").trim();
+  return { text: `${trimmed}...`, isTruncated: true };
+}
+
 function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, onSave, onSelect, answer, loading, onAsk, onCloseAnswer, mode = "resident" }) {
   const profile = getEventProfile(place);
+  const [isOverviewExpanded, setIsOverviewExpanded] = useState(false);
   const isSaved = savedIds?.has?.(place?.id);
   const isRsvped = (Array.isArray(eventRsvps) ? eventRsvps : []).some((item) => item.id === place?.id);
-  const factItems = [
-    profile.time && ["When", profile.time],
-    profile.duration && ["Duration", profile.duration],
-    profile.room && ["Location", profile.room],
-    profile.price && ["Price", profile.price],
-    profile.addOn && ["Add-on", profile.addOn],
+  const filteredPlaces = places.filter((candidate) => candidate?.id !== place?.id && !isCampaignEntity(candidate));
+  const metaItems = [
+    profile.address && { icon: MapPin, label: "Venue", value: profile.room || place?.venue || place?.host || "Hotel Van Zandt" },
+    profile.time && { icon: CalendarDays, label: "When", value: profile.time },
+    (profile.price || profile.reservation || profile.checkIn) && { icon: TicketPercent, label: "Entry", value: profile.price || profile.reservation || profile.checkIn },
+    profile.duration && { icon: Clock, label: "Duration", value: profile.duration },
+  ].filter(Boolean).slice(0, 4);
+  const quickFacts = [
+    profile.time && { icon: CalendarDays, label: "When", value: profile.time },
+    profile.address && { icon: MapPin, label: "Where", value: profile.address },
+    (profile.price || profile.reservation || profile.checkIn) && { icon: TicketPercent, label: "Entry", value: profile.price || profile.reservation || profile.checkIn },
+    profile.duration && { icon: Clock, label: "Duration", value: profile.duration },
+    profile.room && { icon: Landmark, label: "Venue", value: profile.room },
+    profile.addOn && { icon: Sparkles, label: "Good to know", value: profile.addOn },
   ].filter(Boolean);
   const aboutText = String(profile.about || "").trim();
   const shouldShowAbout = aboutText && aboutText !== String(profile.oneSentence || "").trim();
+  const overview = isOverviewExpanded ? { text: aboutText || profile.oneSentence, isTruncated: false } : truncateEventOverview(aboutText || profile.oneSentence);
+  const showReadMore = (aboutText || profile.oneSentence || "").length > 220;
+  const shareEvent = async () => {
+    const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+    const shareData = { title: profile.title, text: profile.oneSentence, url: shareUrl };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+      await navigator.clipboard?.writeText?.(shareUrl);
+    } catch {
+      // Share is best-effort; keep the drawer responsive if the browser blocks it.
+    }
+  };
 
   return (
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-event-detail-drawer">
@@ -5136,59 +5167,54 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
       <header className="dp-entity-panel-header dp-entity-summary dp-event-summary">
         <p className="dp-entity-eyebrow">{profile.eyebrow}</p>
         <h2 className="dp-entity-title">{profile.title}</h2>
-        {profile.meta && <p className="dp-entity-meta">{profile.meta}</p>}
         <p className="dp-entity-dek">{profile.oneSentence}</p>
+        {!!metaItems.length && (
+          <div className="dp-entity-meta-row" aria-label={`${profile.title} key details`}>
+            {metaItems.map(({ icon: Icon, label, value }) => (
+              <span key={`${label}-${value}`}>
+                <Icon aria-hidden="true" />
+                <em>{value}</em>
+              </span>
+            ))}
+          </div>
+        )}
       </header>
 
-      {shouldShowAbout && (
-        <DestinationSection title="About" className="dp-event-section">
-          <p>{aboutText}</p>
-        </DestinationSection>
-      )}
-
-      <DestinationSection title="Quick facts" className="dp-event-section">
-        <div className="dp-event-fact-rail">
-          {factItems.map(([label, value]) => (
-            <span key={`${label}-${value}`} className="dp-event-fact">
-              <strong>{label}</strong>
-              {value}
-            </span>
-          ))}
-          {profile.address && (
-            <span className="dp-event-fact">
-              <strong>Where</strong>
-              {profile.address}
-            </span>
-          )}
-        </div>
-      </DestinationSection>
-
-      <div className="dp-primary-action-row dp-editorial-hero-actions">
+      <div className="dp-primary-action-row dp-editorial-hero-actions dp-event-primary-actions">
         <button type="button" onClick={onRsvp} className="dp-panel-action dp-primary-action">
           {isRsvped ? "RSVP Submitted" : "RSVP"}
-        </button>
-        <button type="button" onClick={onSave} className="dp-panel-action">
-          {isSaved ? "Saved" : "Save"}
         </button>
         <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
           Directions
         </a>
-        {profile.url && (
-          <a href={profile.url} target="_blank" rel="noreferrer" className="dp-panel-action">
-            Event Page
-          </a>
-        )}
+        <button type="button" onClick={onSave} className="dp-panel-action">
+          {isSaved ? "Saved" : "Save"}
+        </button>
+        <button type="button" onClick={shareEvent} className="dp-panel-action">
+          Share
+        </button>
       </div>
 
-      {!!profile.included.length && (
-        <DestinationSection title="What to expect" className="dp-event-section">
-          <LocalServiceRail title="What to expect" items={profile.included} />
-        </DestinationSection>
-      )}
+      <DestinationSection title="About Event" className="dp-event-section dp-event-overview-section">
+        <p>{overview.text}</p>
+        {showReadMore && (
+          <button type="button" className="dp-event-read-more" onClick={() => setIsOverviewExpanded((current) => !current)}>
+            {isOverviewExpanded ? "Show less" : "Read more"}
+          </button>
+        )}
+      </DestinationSection>
 
-      {!!profile.goodFor.length && (
-        <DestinationSection title="Good For" className="dp-event-section">
-          <LocalServiceRail title="Good for" items={profile.goodFor} />
+      {!!quickFacts.length && (
+        <DestinationSection title="Quick Facts" className="dp-event-section dp-event-quick-facts-section">
+          <div className="dp-event-quick-fact-grid">
+            {quickFacts.slice(0, 6).map(({ icon: Icon, label, value }) => (
+              <span key={`${label}-${value}`} className="dp-event-quick-fact">
+                <Icon aria-hidden="true" />
+                <strong>{label}</strong>
+                <em>{value}</em>
+              </span>
+            ))}
+          </div>
         </DestinationSection>
       )}
 
@@ -5206,9 +5232,53 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
         </DestinationSection>
       )}
 
+      {(!!profile.included.length || !!profile.goodFor.length) && (
+        <DestinationSection title="What to Expect" className="dp-event-section">
+          <LocalServiceRail title="What to expect" items={[...profile.included, ...profile.goodFor].slice(0, 8)} />
+        </DestinationSection>
+      )}
+
+      {(profile.address || profile.room || profile.url) && (
+        <DestinationSection title="Venue" className="dp-event-section dp-event-venue-section">
+          <div className="dp-event-venue-card">
+            <strong>{profile.room || place?.venue || place?.host || place?.district || "Downtown Austin"}</strong>
+            {profile.address && <span>{profile.address}</span>}
+            {profile.url && (
+              <a href={profile.url} target="_blank" rel="noreferrer">
+                Event page
+              </a>
+            )}
+          </div>
+        </DestinationSection>
+      )}
+
       <NearbyImageRail
         place={place}
-        places={places.filter((candidate) => candidate?.id !== place?.id && !isCampaignEntity(candidate))}
+        places={filteredPlaces}
+        onSelect={onSelect}
+        title="Nearby Before"
+        targetKind="dining"
+      />
+
+      <NearbyImageRail
+        place={place}
+        places={filteredPlaces}
+        onSelect={onSelect}
+        title="Nearby After"
+        targetKind="nightlife"
+      />
+
+      <NearbyImageRail
+        place={place}
+        places={filteredPlaces}
+        onSelect={onSelect}
+        title="Similar Events"
+        targetKind="event"
+      />
+
+      <NearbyImageRail
+        place={place}
+        places={filteredPlaces}
         onSelect={onSelect}
         title="Nearby"
       />
@@ -5497,7 +5567,7 @@ function DetailBulletList({ items }) {
     <ul className="space-y-2">
       {items.map((item) => (
         <li key={item} className="grid grid-cols-[6px_1fr] gap-2 text-[13px] leading-5 text-[#0B1F33]/72">
-          <span className="mt-2 h-1.5 w-1.5 rounded-[2px] bg-[#C8A96A]" aria-hidden="true" />
+          <span className="mt-2 h-1.5 w-1.5 rounded-[2px] bg-[#BFA46A]" aria-hidden="true" />
           <span>{item}</span>
         </li>
       ))}
@@ -5533,7 +5603,7 @@ function BurgerBarCongressDetails({ place, places = [], mode = "resident", saved
           <div className="grid gap-3 sm:grid-cols-2">
             {BURGER_BAR_CONGRESS_CONTENT.businessOverview.map(([label, value]) => (
               <div key={label} className="border-t border-[rgba(11,31,51,.06)] pt-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">{label}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">{label}</div>
                 <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/72">{value}</p>
               </div>
             ))}
@@ -7172,7 +7242,19 @@ function getBrandPerkRailImage(entity) {
   if (/stagger\s+lee/.test(text)) return "/images/imported/perks/happy-hour-2.png";
   if (/emmer|rye/.test(text)) return "/images/map-entities/rainey-bars/emmer-rye-bread.png";
   if (/half\s+step/.test(text)) return "/images/restaurants/half-step.jpg";
-  if (/\bpaseo\b/.test(text)) return "/images/map-entities/attached/properties/paseo/daydreamer-lobby.jpeg";
+  if (/waterline/.test(text)) return "/images/map-pins/property/waterline-building.jpg";
+  if (/70\s*rainey|seventy\s*rainey/.test(text)) return "/images/map-pins/property/70-rainey-sky-garden.jpeg";
+  if (/natiivo/.test(text)) return "/images/map-pins/property/natiivo-building.jpg";
+  if (/w\s*austin|210\s*lavaca/.test(text)) return "/images/map-pins/property/w-austin-residences-210-lavaca.jpg";
+  if (/quincy/.test(text)) return "/images/map-pins/property/the-quincy-building.webp";
+  if (/fifth\s+and\s+west|5th\s+and\s+west|501\s+west/.test(text)) return "/images/map-pins/property/fifth-and-west-building.jpeg";
+  if (/\bpaseo\b/.test(text)) return "/images/map-pins/property/paseo-pool.webp";
+  if (/austin\s+proper/.test(text)) return "/images/map-pins/property/austin-proper-bar.jpeg";
+  if (/200\s+congress/.test(text)) return "/images/map-pins/property/200-congress-austin.jpg";
+  if (/equinox/.test(text)) return "/images/map-pins/property/equinox-austin.jpg";
+  if (/fairmont/.test(text)) return "/images/map-pins/property/fairmont-austin.jpg";
+  if (/shore/.test(text)) return "/images/map-pins/property/the-shore-austin.jpg";
+  if (/independent|301\s+west/.test(text)) return "/images/map-pins/property/the-independent-301-west.jpg";
   return "";
 }
 
@@ -8274,7 +8356,7 @@ function WaterlooDetails({ place, mode }) {
       <div className="space-y-4">
         <p className="whitespace-pre-line text-[13px] leading-6 text-[#0B1F33]/68">{drawerCopy}</p>
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A]">Good for</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">Good for</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.slice(0, 6).map((tag) => (
               <span key={tag} className="rounded-[5px] border border-[#0B1F33]/[0.08] px-2 py-1 text-[10px] font-medium text-[#0B1F33]/58">
@@ -9040,7 +9122,7 @@ function LegendsContactForm({ listing, formId }) {
       }}
     >
       <div className="max-w-2xl text-left">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
         <h3 className="mt-1 text-[14px] font-semibold leading-tight text-[#0B1F33] md:text-[15px]">{listing.address}</h3>
         <p className="mt-1 text-[12px] leading-5 text-[#425466]">
           Send interest directly from the map. Legends receives the listing, your timing, and how to follow up.
@@ -9050,19 +9132,19 @@ function LegendsContactForm({ listing, formId }) {
       <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-2">
         <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
           Name
-          <input required name="name" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Your name" />
+          <input required name="name" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Your name" />
         </label>
         <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
           Email
-          <input required type="email" name="email" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="you@example.com" />
+          <input required type="email" name="email" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="you@example.com" />
         </label>
         <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
           Phone
-          <input required name="phone" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Phone number" />
+          <input required name="phone" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Phone number" />
         </label>
         <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
           Move timeline
-          <select name="moveTimeline" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70">
+          <select name="moveTimeline" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70">
             {["ASAP", "30-60 days", "60-90 days", "Just exploring"].map((timeline) => (
               <option key={timeline}>{timeline}</option>
             ))}
@@ -9072,7 +9154,7 @@ function LegendsContactForm({ listing, formId }) {
 
       <label className="mt-2 grid max-w-2xl gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
         Message optional
-        <textarea name="message" className="min-h-16 dp-soft-field rounded-[2px] bg-white px-2.5 py-2 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue={listing.prefilledMessage} />
+        <textarea name="message" className="min-h-16 dp-soft-field rounded-[2px] bg-white px-2.5 py-2 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue={listing.prefilledMessage} />
       </label>
 
       <input type="hidden" name="listingId" value={listing.id || ""} />
@@ -9097,7 +9179,7 @@ function LegendsContactForm({ listing, formId }) {
 
       <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5" disabled={submitting}>
         {submitting ? "Sending..." : "Submit Interest"}
-        <Send className="h-3 w-3 text-[#C8A96A]" />
+        <Send className="h-3 w-3 text-[#BFA46A]" />
       </button>
     </form>
   );
@@ -9170,7 +9252,7 @@ function LegendsListingGallery({ listing }) {
 
   return (
     <div className="mt-4">
-      <div className="mb-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Listing images</div>
+      <div className="mb-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Listing images</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {images.slice(0, 6).map((image, index) => (
           <div key={`${image}-${index}`} className="relative aspect-[4/3] overflow-hidden rounded-[14px]">
@@ -9945,7 +10027,7 @@ function TheShoreResidentialEntityDrawer({
             }}
           >
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
               <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Contact Listing Agent</h3>
             </div>
             {agentFormSubmitted ? (
@@ -9955,19 +10037,19 @@ function TheShoreResidentialEntityDrawer({
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                     Name
-                    <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Your name" />
+                    <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Your name" />
                   </label>
                   <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                     Email
-                    <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="you@example.com" />
+                    <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="you@example.com" />
                   </label>
                   <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                     Phone
-                    <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" placeholder="Phone number" />
+                    <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Phone number" />
                   </label>
                   <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                     Timeline
-                    <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70">
+                    <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70">
                       <option>ASAP</option>
                       <option>30-60 days</option>
                       <option>60-90 days</option>
@@ -9977,11 +10059,11 @@ function TheShoreResidentialEntityDrawer({
                 </div>
                 <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                   Notes
-                  <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue="I would like more information about available homes at The Shore." />
+                  <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue="I would like more information about available homes at The Shore." />
                 </label>
                 <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
                   Submit Interest
-                  <Send className="h-3.5 w-3.5 text-[#C8A96A]" />
+                  <Send className="h-3.5 w-3.5 text-[#BFA46A]" />
                 </button>
               </>
             )}
@@ -10602,7 +10684,7 @@ function DrawerContactStrip({ place }) {
             key={`${item.kind}-${item.value}`}
             type="button"
             onClick={() => setActiveContact(item)}
-            className="text-left text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            className="text-left text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-expanded={activeContact?.kind === item.kind}
           >
             {item.label}
@@ -10630,7 +10712,7 @@ function DrawerContactStrip({ place }) {
                 <button
                   type="button"
                   onClick={() => setActiveContact(null)}
-                  className="grid h-6 w-6 shrink-0 place-items-center text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                  className="grid h-6 w-6 shrink-0 place-items-center text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
                   aria-label="Close"
                 >
                   <X className="h-3.5 w-3.5" />
@@ -10640,7 +10722,7 @@ function DrawerContactStrip({ place }) {
                 href={activeContact.href}
                 target={activeContact.kind === "website" ? "_blank" : undefined}
                 rel={activeContact.kind === "website" ? "noreferrer" : undefined}
-                className="inline-flex h-8 w-fit items-center justify-center bg-white/72 px-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33] shadow-[0_8px_18px_rgba(11,31,51,0.045)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+                className="inline-flex h-8 w-fit items-center justify-center bg-white/72 px-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33] shadow-[0_8px_18px_rgba(11,31,51,0.045)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 {activeAction}
               </a>
@@ -10804,7 +10886,7 @@ function PanelInsightGrid({ items, columns = "md:grid-cols-3" }) {
       {visibleItems.map((item) => {
         const content = (
           <>
-            <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">{item.label}</div>
+            <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{item.label}</div>
             <p className={`mt-1.5 text-[12px] leading-5 ${item.emphasis ? "font-semibold text-[#0B1F33]" : "text-[#425466]"}`}>
               {item.value || item.body}
             </p>
@@ -10816,7 +10898,7 @@ function PanelInsightGrid({ items, columns = "md:grid-cols-3" }) {
             key={item.label}
             type="button"
             onClick={item.onClick}
-            className={`text-left transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] ${item.className || ""}`}
+            className={`text-left transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${item.className || ""}`}
           >
             {content}
           </button>
@@ -10845,7 +10927,7 @@ function PartnerBusinessInsights({ place }) {
     <section className="mt-4 dp-info-section p-3 md:mt-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Nearby guide</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Nearby guide</div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33] md:text-[20px]">How this place fits downtown</h3>
         </div>
         <div className="text-[10px] font-semibold uppercase tracking-[0.13em] text-[#0B1F33]/70 md:text-[11px]">
@@ -10865,7 +10947,7 @@ function PartnerMetricInsight({ place }) {
     <section className="mt-4 dp-info-section p-3">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A96A]">Partner next step</div>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Partner next step</div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33] md:text-[20px]">What should happen next</h3>
           <p className="mt-2 max-w-2xl text-[13px] leading-5 text-[#425466]">{insights.action}</p>
         </div>
@@ -11516,12 +11598,12 @@ function GoogleMapCanvas({
   }, [collectionRoute, loadState, mapItems, mapZoom, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, runProgrammaticMove, selectedId]);
 
   const isConfigError = loadError === "missing-api-key" || loadError === "invalid-api-key";
-  const errorTitle = isConfigError ? "Google Maps is not configured." : "Google Maps could not load";
+  const errorTitle = isConfigError ? "Map service needs attention." : "Google Maps could not load";
   const errorCopy = isConfigError
-    ? "Add VITE_GOOGLE_MAPS_API_KEY to .env.local."
+    ? "The map is temporarily unavailable. Please try again shortly."
     : loadError === "authorization-failure"
-      ? "Map could not load. Enable Maps JavaScript API for this browser key and check referrer restrictions."
-      : "Map could not load. Check Google Maps API configuration.";
+      ? "The map is temporarily unavailable for this browser."
+      : "Map could not load. Please try again shortly.";
 
   return (
     <div className="dp-google-map-shell h-full w-full">
@@ -11639,7 +11721,7 @@ function ClusterMarker({ cluster, onOpen }) {
       if (visibleCluster) {
         visibleCluster.style.setProperty("background", "#0B1F33", "important");
         visibleCluster.style.setProperty("background-color", "#0B1F33", "important");
-        visibleCluster.style.setProperty("border", "1px solid #C8A96A", "important");
+        visibleCluster.style.setProperty("border", "1px solid #BFA46A", "important");
         visibleCluster.style.setProperty("color", "#FFFFFF", "important");
         visibleCluster.style.setProperty("box-shadow", "none", "important");
       }
@@ -15246,16 +15328,16 @@ export default function MapPage() {
               <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
-              <span className="dp-panel-header-title text-[9px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A] md:text-[10px] md:tracking-[0.16em]">
+              <span className="dp-panel-header-title text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">
                 Partner scanner
               </span>
-              <button type="button" onClick={() => switchMode(urlState.mode, "map")} className="dp-panel-close inline-flex h-8 w-8 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] md:h-9 md:w-9" aria-label="Close">
+              <button type="button" onClick={() => switchMode(urlState.mode, "map")} className="dp-panel-close inline-flex h-8 w-8 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] md:h-9 md:w-9" aria-label="Close">
                 <X className="h-4 w-4" />
               </button>
             </div>
             <div className="dp-pass-panel-body min-h-0 flex-1 overflow-y-auto px-2.5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2 sm:px-4 md:pb-4 md:pt-3">
                 <div className="px-3 pt-1 sm:px-3">
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#C8A96A] md:text-[10px] md:tracking-[0.16em]">QR verification</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">QR verification</p>
                   <h2 className="mt-1 text-[22px] font-semibold leading-none tracking-[-0.025em] text-[#0B1F33] md:mt-1.5 md:text-[25px]">Partner Scan View</h2>
                   <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">
                     Scan a resident QR and confirm the access moment without adding another workflow.
@@ -15529,7 +15611,7 @@ export default function MapPage() {
                   <button
                     type="button"
                     onClick={goBackToMap}
-                    className="dp-panel-close flex h-8 w-8 rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A] md:h-9 md:w-9"
+                    className="dp-panel-close flex h-8 w-8 rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] md:h-9 md:w-9"
                     aria-label={urlState.mode === "partner" && activePartnerPanel === "reports" ? "Close reports" : "Close"}
                   >
                     <X className="h-4 w-4" />
@@ -16247,7 +16329,7 @@ export default function MapPage() {
                         className="dp-contact-continuation mt-8 md:mt-10"
                       >
                         <div>
-                          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#C8A96A]">Interested?</div>
+                          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
                           <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Interested in living here?</h3>
                         </div>
 
@@ -16260,19 +16342,19 @@ export default function MapPage() {
                             <div className="mt-3 grid gap-2 sm:grid-cols-2 md:mt-4">
                               <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                                 Name
-                                <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="Your name" />
+                                <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10" placeholder="Your name" />
                               </label>
                               <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                                 Email
-                                <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="you@example.com" />
+                                <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10" placeholder="you@example.com" />
                               </label>
                               <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                                 Phone
-                                <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10" placeholder="Phone number" />
+                                <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10" placeholder="Phone number" />
                               </label>
                               <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                                 Move Timeline
-                                <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70 md:h-10">
+                                <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10">
                                   <option>ASAP</option>
                                   <option>30-60 days</option>
                                   <option>60-90 days</option>
@@ -16282,11 +16364,11 @@ export default function MapPage() {
                             </div>
                             <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
                               Message optional
-                              <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#C8A96A]/70" defaultValue={`I would like more information about ${selected.name}.`} />
+                              <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue={`I would like more information about ${selected.name}.`} />
                             </label>
                             <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5">
                               Submit Interest
-                              <Send className="h-3.5 w-3.5 text-[#C8A96A] md:h-4 md:w-4" />
+                              <Send className="h-3.5 w-3.5 text-[#BFA46A] md:h-4 md:w-4" />
                             </button>
                           </>
                         )}

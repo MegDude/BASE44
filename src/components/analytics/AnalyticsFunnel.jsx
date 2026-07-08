@@ -4,9 +4,9 @@ const FUNNEL_STAGES = [
   { id: 'impression', label: 'Seen on map', color: 'bg-[#0B1F33]' },
   { id: 'open', label: 'Popup opened', color: 'bg-[#0B1F33]' },
   { id: 'unlock', label: 'Scanned QR', color: 'bg-[#0B1F33]' },
-  { id: 'save', label: 'Save / RSVP', color: 'bg-[#C8A96A]' },
-  { id: 'visit_intent', label: 'Asked for directions', color: 'bg-[#C8A96A]' },
-  { id: 'visit', label: 'Visited in person', color: 'bg-[#C8A96A]' },
+  { id: 'save', label: 'Save / RSVP', color: 'bg-[#BFA46A]' },
+  { id: 'visit_intent', label: 'Asked for directions', color: 'bg-[#BFA46A]' },
+  { id: 'visit', label: 'Visited in person', color: 'bg-[#BFA46A]' },
   { id: 'redemption', label: 'Used offer or booked', color: 'bg-[#0B1F33]' }
 ];
 

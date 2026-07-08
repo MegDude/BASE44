@@ -257,14 +257,14 @@ body :is(
   .dp-settings-shell,
   [data-dp-surface="application"]
 ) :where(
-  .bg-yellow-50,
-  .bg-yellow-100,
-  .bg-amber-50,
-  .bg-amber-100,
+  .bg-yell-50,
+  .bg-yell-100,
+  .bg-amb-50,
+  .bg-amb-100,
   .bg-orange-50,
   .bg-orange-100,
-  [class*="bg-yellow"],
-  [class*="bg-amber"],
+  [class*="bg-yell"],
+  [class*="bg-amb"],
   [class*="bg-orange"],
   [class*="bg-dp-cream"],
   [class*="bg-cream"],
@@ -296,14 +296,14 @@ body :is(
   .dp-settings-shell,
   [data-dp-surface="application"]
 ) :where(
-  .text-yellow-500,
-  .text-yellow-600,
-  .text-amber-500,
-  .text-amber-600,
+  .text-yell-500,
+  .text-yell-600,
+  .text-amb-500,
+  .text-amb-600,
   .text-orange-500,
   .text-orange-600,
-  [class*="text-yellow"],
-  [class*="text-amber"],
+  [class*="text-yell"],
+  [class*="text-amb"],
   [class*="text-orange"]
 ) {
   color: var(--dp-app-ink) !important;
