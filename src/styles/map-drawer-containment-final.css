@@ -1493,3 +1493,18 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-decoration: underline !important;
   text-underline-offset: 3px !important;
 }
+
+/* Connect the detail sheet surface to the fixed bottom navigation. The drawer
+   extends behind the nav visually, while scroll content keeps enough bottom
+   padding so nothing important sits under the tabs. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell {
+  bottom: 0 !important;
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 128px) !important;
+  padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #FFFFFF !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll) {
+  padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+}
