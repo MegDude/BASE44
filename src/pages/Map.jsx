@@ -94,10 +94,10 @@ import { resolveMapCollectionRoute } from "@/lib/map/collectionRoutes";
 
 const RAINEY_STREET_CENTER = [30.25855, -97.73835];
 const AUSTIN_CENTER = RAINEY_STREET_CENTER;
-const INITIAL_MAP_ZOOM = 15.6;
+const INITIAL_MAP_ZOOM = 16.8;
 const SELECTED_ROUTE_INITIAL_MAX_ZOOM = 16.4;
 const MAP_MAX_ZOOM = 22;
-const MAP_STREET_FOCUS_ZOOM = 18;
+const MAP_STREET_FOCUS_ZOOM = 19;
 const INITIAL_DISCOVERY_MARKER_LIMIT = 16;
 const DEFAULT_INTERACTION_MARKER_LIMIT = 36;
 const DEFAULT_HIGH_ZOOM_MARKER_LIMIT = 60;
@@ -133,7 +133,7 @@ const MAP_VIEW_STORAGE_KEY = "downtown-perks-map-view-v1";
 const MAP_USER_NAVIGATED_STORAGE_KEY = "downtown-perks-map-user-navigated-v1";
 const MAP_USER_CONTEXT_STORAGE_KEY = "downtown-perks-map-user-context-v1";
 const MAP_PANEL_IMAGE_FALLBACK = "/images/map-entities/perks/civic_republic_square_1779052838327.png";
-const STREET_LEVEL_ZOOM = 18.25;
+const STREET_LEVEL_ZOOM = 17.75;
 const DAA_CIVIC_VIDEOS = [
   {
     title: "DAA Art Walk",
@@ -3432,6 +3432,12 @@ function applyZoomMarkerStyle(element, zoom, options = {}) {
   element.style.setProperty("--dp-zoom-large-cluster-size", `${metrics.largeClusterSize}px`);
 }
 
+function getStableMarkerZoom(zoom = INITIAL_MAP_ZOOM) {
+  const numericZoom = Number(zoom);
+  if (!Number.isFinite(numericZoom)) return INITIAL_MAP_ZOOM;
+  return Math.max(13, Math.min(MAP_MAX_ZOOM, Math.round(numericZoom * 2) / 2));
+}
+
 function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, zoom = INITIAL_MAP_ZOOM }) {
   const escapedId = escapeHtmlAttribute(place.id);
   const escapedLabel = escapeHtmlAttribute(ariaLabel);
@@ -3483,10 +3489,10 @@ const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
   { featureType: "administrative", elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }, { weight: 0.55 }] },
   { featureType: "administrative.neighborhood", elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }, { weight: 0.68 }] },
   { featureType: "administrative.neighborhood", elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 2 }] },
-  { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#FAFBFA" }] },
-  { featureType: "landscape.man_made", elementType: "geometry", stylers: [{ color: "#F3F5F3" }] },
+  { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#F7F8FB" }] },
+  { featureType: "landscape.man_made", elementType: "geometry", stylers: [{ color: "#EEF2F6" }] },
   { featureType: "poi", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-  { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#0B3E31" }, { weight: 0.48 }] },
+  { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#132238" }, { weight: 0.48 }] },
   { featureType: "poi", elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 1.8 }] },
   { featureType: "poi.attraction", elementType: "labels", stylers: [{ visibility: "on" }] },
   { featureType: "poi.business", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
@@ -3495,21 +3501,22 @@ const DOWNTOWN_PERKS_GOOGLE_MAP_STYLES = [
   { featureType: "poi.school", stylers: [{ visibility: "off" }] },
   { featureType: "poi.sports_complex", stylers: [{ visibility: "off" }] },
   { featureType: "poi.place_of_worship", stylers: [{ visibility: "off" }] },
-  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#DCE8DF" }, { saturation: -10 }, { lightness: 4 }] },
-  { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#0B3E31" }, { weight: 0.55 }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#E8F0EA" }, { saturation: -16 }, { lightness: 6 }] },
+  { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#132238" }, { weight: 0.55 }] },
   { featureType: "poi.park", elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 1.9 }] },
   { featureType: "road", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
-  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#E4D8BD" }, { weight: 0.5 }] },
+  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#DDE4EA" }, { weight: 0.65 }] },
   { featureType: "road", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#54625B" }, { weight: 0.45 }] },
+  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#334155" }, { weight: 0.45 }] },
   { featureType: "road", elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 1.7 }] },
   { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#F7F8FB" }] },
-  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#BFA46A" }, { weight: 0.85 }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#A98B4A" }, { weight: 0.85 }] },
   { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
-  { featureType: "road.local", elementType: "geometry", stylers: [{ color: "#F7F8F7" }] },
-  { featureType: "transit", elementType: "geometry", stylers: [{ color: "#D6D2C8" }, { saturation: -60 }, { lightness: 18 }] },
-  { featureType: "transit", elementType: "labels.text.fill", stylers: [{ color: "#0B3E31" }] },
-  { featureType: "transit.station", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  { featureType: "road.local", elementType: "geometry", stylers: [{ color: "#FFFFFF" }] },
+  { featureType: "road.local", elementType: "geometry.stroke", stylers: [{ color: "#E8EDF2" }, { weight: 0.5 }] },
+  { featureType: "transit", elementType: "geometry", stylers: [{ color: "#E2E7EE" }, { saturation: -60 }, { lightness: 18 }] },
+  { featureType: "transit", elementType: "labels.text.fill", stylers: [{ color: "#132238" }] },
+  { featureType: "transit.station", elementType: "labels.icon", stylers: [{ visibility: "on" }] },
   { featureType: "water", elementType: "geometry", stylers: [{ color: "#E6EEF4" }] },
   { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#0B1F33" }] },
 ];
@@ -11257,6 +11264,7 @@ function GoogleMapCanvas({
   const [loadState, setLoadState] = useState(() => (getGoogleMapsConfigError() ? "error" : "loading"));
   const [loadError, setLoadError] = useState(() => getGoogleMapsConfigError());
   const [mapZoom, setMapZoom] = useState(() => Number(zoom) || INITIAL_MAP_ZOOM);
+  const markerRenderZoom = useMemo(() => getStableMarkerZoom(mapZoom), [mapZoom]);
 
   useEffect(() => {
     interactionHandlersRef.current = { onUserNavigate, onViewportChange, onZoomChange };
@@ -11457,7 +11465,7 @@ function GoogleMapCanvas({
     if (routePath.length < 2) return undefined;
 
     const style = getCollectionRouteStyle(collectionRoute);
-    const routeMetrics = getZoomRouteMetrics(mapZoom);
+    const routeMetrics = getZoomRouteMetrics(markerRenderZoom);
     const ambientRoute = new maps.Polyline({
       map,
       path: routePath,
@@ -11505,7 +11513,7 @@ function GoogleMapCanvas({
       collectionRoutePolylinesRef.current.forEach((polyline) => polyline?.setMap?.(null));
       collectionRoutePolylinesRef.current = [];
     };
-  }, [collectionRoute, loadState, mapZoom]);
+  }, [collectionRoute, loadState, markerRenderZoom]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -11534,7 +11542,7 @@ function GoogleMapCanvas({
         element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
         element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
         element.setAttribute("aria-label", `Open ${item.count} places nearby`);
-        applyZoomMarkerStyle(element, mapZoom, { clusterCount: item.count });
+        applyZoomMarkerStyle(element, markerRenderZoom, { clusterCount: item.count });
         element.addEventListener("click", () => {
           onClusterOpen(item);
           const bounds = new maps.LatLngBounds();
@@ -11555,7 +11563,7 @@ function GoogleMapCanvas({
               map,
               position: { lat: item.coords[0], lng: item.coords[1] },
               title: `${item.count} places nearby`,
-              icon: legacyDowntownClusterIcon(maps, item.count, mapZoom),
+              icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
               optimized: true,
             });
         if (!canUseAdvancedMarkers) marker.addListener("click", () => onClusterOpen(item));
@@ -11574,7 +11582,7 @@ function GoogleMapCanvas({
 
       const wrapper = document.createElement("div");
       wrapper.className = "dp-google-map-marker-shell";
-      applyZoomMarkerStyle(wrapper, mapZoom, { selected: place.id === selectedId });
+      applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: place.id === selectedId });
       wrapper.innerHTML = mapPinButtonHtml({
         place,
         pin: resolveEntityPin(place),
@@ -11582,7 +11590,7 @@ function GoogleMapCanvas({
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
         classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
-        zoom: mapZoom,
+        zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
       button?.addEventListener("click", (event) => {
@@ -11609,7 +11617,7 @@ function GoogleMapCanvas({
             map,
             position: { lat: coords[0], lng: coords[1] },
             title: place.name,
-            icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, mapZoom),
+            icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
             optimized: true,
           });
 
@@ -11626,7 +11634,7 @@ function GoogleMapCanvas({
       });
       markersRef.current = [];
     };
-  }, [collectionRoute, loadState, mapItems, mapZoom, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, runProgrammaticMove, selectedId]);
+  }, [collectionRoute, loadState, mapItems, markerRenderZoom, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, runProgrammaticMove, selectedId]);
 
   const isConfigError = loadError === "missing-api-key" || loadError === "invalid-api-key";
   const errorTitle = isConfigError ? "Map service needs attention." : "Google Maps could not load";
@@ -12904,14 +12912,16 @@ export default function MapPage() {
     [discoverDisplayPlaces],
   );
   const shouldShowListingPins = activeFilter === "Legends" || activeFilter === "Listings" || /\b(legends|listing|mls|condo|for sale|for rent)\b/i.test(effectiveSearch || "");
-  const shouldShowIndividualPins = shouldShowListingPins || activeFilter === "Civic" || activeFilter === "Explore Downtown" || /\b(daa|art walk|public art|civic)\b/i.test(effectiveSearch || "");
+  const shouldShowFocusedIntentPins = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch);
+  const stableClusterZoom = getStableMarkerZoom(mapZoom);
+  const shouldShowIndividualPins = shouldShowFocusedIntentPins || shouldShowListingPins || activeFilter === "Civic" || activeFilter === "Explore Downtown" || /\b(daa|art walk|public art|civic)\b/i.test(effectiveSearch || "");
   const clusteredMapItems = useMemo(
     () => activeCollectionRoute?.stops?.length
       ? activeCollectionRoute.stops.map((place) => ({ id: place.id, type: "place", place }))
       : shouldShowIndividualPins
       ? mapPlaces.map((place) => ({ id: place.id, type: "place", place }))
-      : clusterPlaces(mapPlaces, mapZoom, selectedId),
-    [activeCollectionRoute, mapPlaces, mapZoom, selectedId, shouldShowIndividualPins],
+      : clusterPlaces(mapPlaces, stableClusterZoom, selectedId),
+    [activeCollectionRoute, mapPlaces, selectedId, shouldShowIndividualPins, stableClusterZoom],
   );
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {
