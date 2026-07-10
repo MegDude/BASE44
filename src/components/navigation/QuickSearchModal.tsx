@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import {
   Activity,
@@ -13,7 +13,7 @@ import {
   Wine,
   X,
 } from "lucide-react";
-import { useMapEntityData } from "@/hooks/useMapEntityData";
+import { useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
 import type { SearchResult, SearchResultKind } from "@/types";
 
 type QuickSearchModalProps = {
@@ -246,8 +246,9 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   const inputRef = useRef<HTMLInputElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const places = useMapEntityData();
+  const { places, runSearch } = useSearchDrivenMapEntities();
   const [query, setQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
@@ -295,6 +296,40 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     return () => window.clearInterval(timer);
   }, [isOpen, query]);
 
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    setSubmittedQuery("");
+    void runSearch({
+      query: "downtown",
+      intent: "eat_drink",
+      filter: "All",
+      audienceMode: "resident",
+      currentBounds: null,
+      zoom: 16,
+      radius: "5 min walk",
+      activeEntityId: "",
+      resultLimit: 24,
+    }, "quick_search_open");
+    return undefined;
+  }, [isOpen, runSearch]);
+
+  const executeQuickSearch = useCallback((nextQuery = query) => {
+    const cleanQuery = nextQuery.trim();
+    if (!cleanQuery || cleanQuery.length < 2) return;
+    setSubmittedQuery(cleanQuery);
+    void runSearch({
+      query: cleanQuery,
+      intent: "",
+      filter: "All",
+      audienceMode: "resident",
+      currentBounds: null,
+      zoom: 16,
+      radius: "5 min walk",
+      activeEntityId: "",
+      resultLimit: 30,
+    }, "quick_search_submit");
+  }, [query, runSearch]);
+
   if (!isOpen) return null;
 
   function chooseResult(result: SearchResult) {
@@ -318,6 +353,12 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     if (event.key === "ArrowUp") {
       event.preventDefault();
       setActiveIndex((index) => Math.max(0, index - 1));
+      return;
+    }
+
+    if (event.key === "Enter" && query.trim() && query.trim() !== submittedQuery) {
+      event.preventDefault();
+      executeQuickSearch();
       return;
     }
 
@@ -406,6 +447,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
                   className={isSelected ? "is-active" : ""}
                   onClick={() => {
                     setQuery(intent.query);
+                    executeQuickSearch(intent.query);
                     inputRef.current?.focus({ preventScroll: true });
                   }}
                   aria-pressed={isSelected}

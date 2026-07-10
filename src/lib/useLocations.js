@@ -1489,22 +1489,7 @@ function dedupeNormalizedLocations(entities) {
   return accepted;
 }
 
-export function useLocations() {
-  const [happyHoursVersion, setHappyHoursVersion] = useState(0);
-
-  useEffect(() => {
-    function updateHappyHours() {
-      setHappyHoursVersion((version) => version + 1);
-    }
-
-    window.addEventListener("storage", updateHappyHours);
-    window.addEventListener("downtown-perks:happy-hours-updated", updateHappyHours);
-    return () => {
-      window.removeEventListener("storage", updateHappyHours);
-      window.removeEventListener("downtown-perks:happy-hours-updated", updateHappyHours);
-    };
-  }, []);
-
+export function buildLocations() {
   const happyHourPlaces = getHappyHourPlaces();
   const waterlooPlaces = [
     ...waterlooParkInventory.map(waterlooInventoryPlace),
@@ -1522,7 +1507,6 @@ export function useLocations() {
   const attachedLegendsPropertyPlaces = ATTACHED_LEGENDS_IMPORTED_PROPERTIES.map(attachedLegendsPropertyPlace);
   const attachedFeaturedBrandPlaces = ATTACHED_FEATURED_BRANDS.map(attachedFeaturedBrandPlace);
   const rentalPlaces = rentalListings.filter((item) => item.status === "active").map(rentalListingPlace);
-  void happyHoursVersion;
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
@@ -1716,4 +1700,24 @@ export function useLocations() {
     .filter(Boolean);
 
   return dedupeNormalizedLocations(normalizedLocations);
+}
+
+export function useLocations() {
+  const [happyHoursVersion, setHappyHoursVersion] = useState(0);
+
+  useEffect(() => {
+    function updateHappyHours() {
+      setHappyHoursVersion((version) => version + 1);
+    }
+
+    window.addEventListener("storage", updateHappyHours);
+    window.addEventListener("downtown-perks:happy-hours-updated", updateHappyHours);
+    return () => {
+      window.removeEventListener("storage", updateHappyHours);
+      window.removeEventListener("downtown-perks:happy-hours-updated", updateHappyHours);
+    };
+  }, []);
+
+  void happyHoursVersion;
+  return buildLocations();
 }

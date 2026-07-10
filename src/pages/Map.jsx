@@ -50,7 +50,7 @@ import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
 import MapActionStandardPanel from "@/components/map/MapActionStandardPanel";
 import { AppButton } from "@/components/ui/AppButton";
-import { useMapEntityData } from "@/hooks/useMapEntityData";
+import { useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
@@ -3442,6 +3442,43 @@ function getStableMarkerZoom(zoom = INITIAL_MAP_ZOOM) {
   const numericZoom = Number(zoom);
   if (!Number.isFinite(numericZoom)) return INITIAL_MAP_ZOOM;
   return Math.max(13, Math.min(MAP_MAX_ZOOM, Math.round(numericZoom * 2) / 2));
+}
+
+function getBoundsCenter(bounds = null) {
+  if (!bounds) return null;
+  if (bounds.center?.lat !== undefined && bounds.center?.lng !== undefined) return bounds.center;
+  const north = Number(bounds.north);
+  const south = Number(bounds.south);
+  const east = Number(bounds.east);
+  const west = Number(bounds.west);
+  if (![north, south, east, west].every(Number.isFinite)) return null;
+  return { lat: (north + south) / 2, lng: (east + west) / 2 };
+}
+
+function getBoundsOverlapRatio(previousBounds = null, nextBounds = null) {
+  if (!previousBounds || !nextBounds) return 1;
+  const west = Math.max(Number(previousBounds.west), Number(nextBounds.west));
+  const east = Math.min(Number(previousBounds.east), Number(nextBounds.east));
+  const south = Math.max(Number(previousBounds.south), Number(nextBounds.south));
+  const north = Math.min(Number(previousBounds.north), Number(nextBounds.north));
+  const intersection = Math.max(0, east - west) * Math.max(0, north - south);
+  const previousArea = Math.max(0, Number(previousBounds.east) - Number(previousBounds.west)) * Math.max(0, Number(previousBounds.north) - Number(previousBounds.south));
+  const nextArea = Math.max(0, Number(nextBounds.east) - Number(nextBounds.west)) * Math.max(0, Number(nextBounds.north) - Number(nextBounds.south));
+  const denominator = Math.min(previousArea, nextArea);
+  return denominator > 0 ? intersection / denominator : 1;
+}
+
+function hasMeaningfulBoundsChange(previousBounds = null, nextBounds = null) {
+  if (!previousBounds || !nextBounds) return false;
+  const previousCenter = getBoundsCenter(previousBounds);
+  const nextCenter = getBoundsCenter(nextBounds);
+  const latSpan = Math.max(0.00001, Math.abs(Number(previousBounds.north) - Number(previousBounds.south)));
+  const lngSpan = Math.max(0.00001, Math.abs(Number(previousBounds.east) - Number(previousBounds.west)));
+  const centerShiftRatio = previousCenter && nextCenter
+    ? Math.max(Math.abs(nextCenter.lat - previousCenter.lat) / latSpan, Math.abs(nextCenter.lng - previousCenter.lng) / lngSpan)
+    : 0;
+  const zoomDelta = Math.abs(Number(nextBounds.zoom || 0) - Number(previousBounds.zoom || 0));
+  return centerShiftRatio > 0.2 || zoomDelta >= 1 || getBoundsOverlapRatio(previousBounds, nextBounds) < 0.6;
 }
 
 function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, zoom = INITIAL_MAP_ZOOM }) {
@@ -11363,6 +11400,7 @@ function GoogleMapCanvas({
     if (!map) return;
     const bounds = map.getBounds?.();
     const currentZoom = map.getZoom?.() || initialViewRef.current.zoom || INITIAL_MAP_ZOOM;
+    const currentCenter = map.getCenter?.();
     setMapZoom(currentZoom);
     interactionHandlersRef.current.onZoomChange?.(currentZoom);
     if (!bounds) return;
@@ -11372,6 +11410,7 @@ function GoogleMapCanvas({
       east: bounds.getNorthEast().lng(),
       west: bounds.getSouthWest().lng(),
       zoom: currentZoom,
+      center: currentCenter ? { lat: currentCenter.lat(), lng: currentCenter.lng() } : null,
     });
   }, []);
 
@@ -11696,12 +11735,30 @@ function GoogleMapCanvas({
       markersRef.current.push(marker);
     });
 
+    if (typeof window !== "undefined" && import.meta.env.DEV) {
+      window.__DP_MAP_MARKER_LIFECYCLE__ = {
+        mountedMarkerCount: markersRef.current.length,
+        resultItemCount: mapItems.length,
+        updatedAt: new Date().toISOString(),
+      };
+      if (markersRef.current.length > 75) {
+        console.warn("[map-search] mounted marker count exceeds cap", markersRef.current.length);
+      }
+    }
+
     return () => {
       markersRef.current.forEach((marker) => {
         if (marker?.map !== undefined) marker.map = null;
         else marker?.setMap?.(null);
       });
       markersRef.current = [];
+      if (typeof window !== "undefined" && import.meta.env.DEV) {
+        window.__DP_MAP_MARKER_LIFECYCLE__ = {
+          mountedMarkerCount: 0,
+          resultItemCount: 0,
+          updatedAt: new Date().toISOString(),
+        };
+      }
     };
   }, [collectionRoute, loadState, mapItems, markerRenderZoom, onClusterOpen, onSelect, onSelectNearestLegends, pulsingPinId, runProgrammaticMove, selectedId]);
 
@@ -12004,6 +12061,8 @@ function SearchIntentConsole({
   activeFilter,
   activeCollection,
   resultCount,
+  requestStatus = "idle",
+  lastTrigger = "",
   inputRef,
   onQueryChange,
   onSubmit,
@@ -12022,6 +12081,15 @@ function SearchIntentConsole({
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [moreOpen, setMoreOpen] = useState(false);
   const activeSearchLabel = query || activeFilter || "All";
+  const statusCopy = requestStatus === "loading"
+    ? "Searching downtown..."
+    : requestStatus === "error"
+      ? "Map results could not be loaded."
+      : resultCount > 0
+        ? `${resultCount} scoped result${resultCount === 1 ? "" : "s"}`
+        : lastTrigger
+          ? "No matches in this area."
+          : "Search downtown, choose a category, or explore a route.";
   const promptPlaceholders = ["Coffee nearby", "What's happening tonight?", "Walkable dinner spots", "Happy hour near me"];
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -12360,6 +12428,9 @@ function SearchIntentConsole({
         ) : (
           <div id="dp-search-more-filter-panel" hidden aria-hidden="true" />
         )}
+        <p className="dp-search-intent-status" aria-live="polite">
+          {statusCopy}
+        </p>
         </section>
     </div>
   );
@@ -12423,7 +12494,14 @@ function useUrlMapState() {
 
 export default function MapPage() {
   const navigate = useNavigate();
-  const places = useMapEntityData();
+  const {
+    places,
+    resultState: scopedResultState,
+    requestStatus: scopedRequestStatus,
+    lastTrigger: scopedLastTrigger,
+    runSearch: runScopedMapSearch,
+    clearResults: clearScopedMapResults,
+  } = useSearchDrivenMapEntities();
   const urlState = useUrlMapState();
   const [initialMapView] = useState(() => getStoredMapView());
   const [search, setSearch] = useState(urlState.prompt);
@@ -12587,6 +12665,10 @@ export default function MapPage() {
   const [clusterDrawer, setClusterDrawer] = useState(null);
   const [mapZoom, setMapZoom] = useState(initialMapView.zoom);
   const [viewportBounds, setViewportBounds] = useState(null);
+  const mapZoomRef = useRef(initialMapView.zoom);
+  const viewportBoundsRef = useRef(null);
+  const recentScopedQueryRef = useRef("");
+  const [searchAreaDirty, setSearchAreaDirty] = useState(false);
   const [consoleCollapsed, setConsoleCollapsed] = useState(false);
   const [intelOpen, setIntelOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -12626,6 +12708,14 @@ export default function MapPage() {
   const searchInputRef = useRef(null);
   const searchRollupRef = useRef(null);
   const updateViewportBounds = useCallback((bounds) => {
+    viewportBoundsRef.current = bounds;
+    if (
+      scopedLastTrigger &&
+      scopedResultState.resultIds.length &&
+      hasMeaningfulBoundsChange(scopedResultState.bounds, bounds)
+    ) {
+      setSearchAreaDirty(true);
+    }
     setViewportBounds((current) => {
       if (
         current &&
@@ -12633,13 +12723,18 @@ export default function MapPage() {
         Math.abs(current.south - bounds.south) < 0.00001 &&
         Math.abs(current.east - bounds.east) < 0.00001 &&
         Math.abs(current.west - bounds.west) < 0.00001 &&
-        Math.abs((current.zoom || 0) - (bounds.zoom || 0)) < 0.01
+        Math.abs((current.zoom || 0) - (bounds.zoom || 0)) < 0.01 &&
+        Math.abs((current.center?.lat || 0) - (bounds.center?.lat || 0)) < 0.00001 &&
+        Math.abs((current.center?.lng || 0) - (bounds.center?.lng || 0)) < 0.00001
       ) {
         return current;
       }
       return bounds;
     });
-  }, []);
+  }, [scopedLastTrigger, scopedResultState.bounds, scopedResultState.resultIds.length]);
+  useEffect(() => {
+    mapZoomRef.current = mapZoom;
+  }, [mapZoom]);
   const recordMapUserAction = useCallback((type, detail = {}) => {
     const action = {
       type,
@@ -12687,19 +12782,8 @@ export default function MapPage() {
   const [agentFormPlaceId, setAgentFormPlaceId] = useState("");
   const [agentFormSubmitted, setAgentFormSubmitted] = useState(false);
   useEffect(() => {
-    const railItem = getRailItemForMapState({
-      filter: urlState.filter,
-      collection: urlState.collection,
-      prompt: urlState.prompt,
-    });
-    const nextPrompt = railItem?.prompt && urlState.prompt && railItem.prompt !== urlState.prompt
-      ? railItem.prompt
-      : urlState.prompt;
-    setSearch(nextPrompt);
-    if (nextPrompt && nextPrompt !== urlState.prompt) {
-      urlState.update({ query: nextPrompt });
-    }
-  }, [urlState.prompt, urlState.filter, urlState.collection]);
+    setSearch(urlState.prompt);
+  }, [urlState.prompt]);
 
   useEffect(() => {
     setEntityAnswer(null);
@@ -12780,6 +12864,122 @@ export default function MapPage() {
     return sanitizeMapPrompt(search, urlState.mode);
   }, [search, urlState.mode]);
   const consoleHasActiveWork = Boolean(effectiveSearch || mapAnswer || filtersOpen || neighborhoodsOpen || intelOpen);
+  const buildScopedMapQuery = useCallback(({
+    query = effectiveSearch,
+    filterOverride = activeFilter,
+    collectionId = urlState.collection,
+    activeEntityId = selectedId || urlState.entityId,
+    trigger = "search",
+    limit,
+  } = {}) => {
+    const normalizedQuery = sanitizeMapPrompt(query || "", urlState.mode);
+    const parsedIntent = parseMapIntent(normalizedQuery || filterOverride, urlState.mode);
+    const collection = collectionId ? getMapCollectionById(collectionId) : null;
+    const requestBounds = viewportBoundsRef.current;
+    const requestZoom = mapZoomRef.current;
+    const isMobileViewport = typeof window !== "undefined" && window.matchMedia?.("(max-width: 767px)")?.matches;
+    const isEntityLookup = Boolean(activeEntityId);
+    const isRouteLookup = Boolean(collection?.stopIds?.length);
+    const defaultLimit = limit || (
+      isRouteLookup ? collection.stopIds.length :
+        isEntityLookup ? 17 :
+          normalizedQuery ? 30 :
+            isMobileViewport ? 30 : 40
+    );
+
+    return {
+      query: normalizedQuery,
+      intent: parsedIntent.intents?.[0] || getCanonicalIntentForFilter(filterOverride, normalizedQuery),
+      filter: filterOverride,
+      audienceMode: urlState.mode,
+      district: parsedIntent.district || (isAllNeighborhoodScope(district) ? "" : district),
+      currentBounds: requestBounds,
+      mapCenter: requestBounds?.center || { lat: AUSTIN_CENTER[0], lng: AUSTIN_CENTER[1] },
+      zoom: requestBounds?.zoom || requestZoom,
+      radius,
+      activeEntityId,
+      routeId: collection?.id || "",
+      routeIds: collection?.stopIds || [],
+      openNow: /\b(open now|right now)\b/i.test(normalizedQuery),
+      hasPerk: filterOverride === "Perks" || /\b(perk|offer|resident card|inkind|in kind)\b/i.test(normalizedQuery),
+      resultLimit: Math.min(75, defaultLimit),
+      cursor: "",
+      trigger,
+    };
+  }, [activeFilter, district, effectiveSearch, radius, selectedId, urlState.collection, urlState.entityId, urlState.mode]);
+
+  const requestScopedMapResults = useCallback(async (options = {}) => {
+    const scope = buildScopedMapQuery(options);
+    recentScopedQueryRef.current = scope.query || "";
+    const result = await runScopedMapSearch(scope, options.trigger || scope.trigger || "search");
+    if (!result?.resultIds?.length) return [];
+    setSearchAreaDirty(false);
+    return result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
+  }, [buildScopedMapQuery, runScopedMapSearch]);
+
+  useEffect(() => {
+    const hasUrlEntity = Boolean(urlState.entityId);
+    const hasUrlQuery = Boolean(urlState.prompt);
+    const hasCollection = Boolean(urlState.collection);
+    const hasLayer = Boolean(urlState.layer);
+    const hasScopedDistrict = !isAllNeighborhoodScope(district);
+    const hasExplicitFilter = activeFilter !== "All";
+    const shouldHydrate = hasUrlEntity || hasUrlQuery || hasCollection || hasLayer || hasScopedDistrict || hasExplicitFilter;
+    const currentUrlQuery = sanitizeMapPrompt(urlState.prompt || "", urlState.mode);
+    const alreadyHydratedQuery = Boolean(
+      hasUrlQuery &&
+      scopedLastTrigger &&
+      scopedResultState.resultIds.length &&
+      currentUrlQuery === effectiveSearch,
+    );
+    const isSelfHydratingQuery = Boolean(hasUrlQuery && currentUrlQuery && recentScopedQueryRef.current === currentUrlQuery);
+    const isSelfHydratingFilter = Boolean(
+      hasExplicitFilter &&
+      recentScopedQueryRef.current &&
+      !hasUrlQuery &&
+      !hasUrlEntity &&
+      !hasCollection &&
+      !hasLayer,
+    );
+    const isSelfHydratingScopedUrl = Boolean(
+      recentScopedQueryRef.current &&
+      !hasUrlEntity &&
+      !hasCollection &&
+      !hasLayer &&
+      (currentUrlQuery === recentScopedQueryRef.current || effectiveSearch === recentScopedQueryRef.current),
+    );
+
+    if (!shouldHydrate) {
+      clearScopedMapResults();
+      recentScopedQueryRef.current = "";
+      return;
+    }
+
+    if (alreadyHydratedQuery || isSelfHydratingQuery || isSelfHydratingFilter || isSelfHydratingScopedUrl) return;
+
+    void requestScopedMapResults({
+      query: urlState.prompt || search || activeFilter,
+      filterOverride: activeFilter,
+      collectionId: urlState.collection,
+      activeEntityId: urlState.entityId,
+      trigger: hasUrlEntity ? "entity_url" : hasCollection ? "curated_route" : hasUrlQuery ? "url_query" : "url_filter",
+      limit: hasUrlEntity ? 17 : hasCollection ? 75 : undefined,
+    });
+  }, [
+    activeFilter,
+    clearScopedMapResults,
+    district,
+    requestScopedMapResults,
+    effectiveSearch,
+    search,
+    scopedLastTrigger,
+    scopedResultState.resultIds.length,
+    urlState.collection,
+    urlState.entityId,
+    urlState.layer,
+    urlState.mode,
+    urlState.prompt,
+  ]);
 
   useEffect(() => {
     if (mapZoom < STREET_LEVEL_ZOOM) return;
@@ -14312,6 +14512,12 @@ export default function MapPage() {
     if (!places.length && !luxuryPresenceListingPlaces.length) return;
     if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     if (/^(republic-austin|daa-stop|waterloo|parking)/i.test(selectedId)) return;
+    if (
+      urlState.entityId &&
+      (scopedRequestStatus === "loading" || !scopedResultState.resultIds.includes(selectedId))
+    ) {
+      return;
+    }
     if (!resolveMapEntityFromCollection(selectedId, places) && !resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces)) {
       setSelectedId("");
       setSelectedPlaceOverride(null);
@@ -14319,7 +14525,7 @@ export default function MapPage() {
       setSelectedDrawerMinimized(false);
       urlState.update({ entityId: "" });
     }
-  }, [places, selectedId, selectedPlaceOverride]);
+  }, [luxuryPresenceListingPlaces, places, scopedRequestStatus, scopedResultState.resultIds, selectedId, selectedPlaceOverride, urlState]);
 
   useEffect(() => {
     if (!pulsingPinId) return undefined;
@@ -14963,8 +15169,15 @@ export default function MapPage() {
     const nextFilter = resolveFilterForIntent(query, urlState.mode);
     const routeCollection = getMapCollectionForQuery(query);
     const nextDistrict = parsedIntent.district || district;
-    const localResults = getSmartResults(query, nextFilter || activeFilter);
     openSearchResultsLayer();
+    const localResults = await requestScopedMapResults({
+      query,
+      filterOverride: nextFilter || activeFilter,
+      collectionId: routeCollection?.id || urlState.collection,
+      activeEntityId: "",
+      trigger: routeCollection?.id ? "curated_route" : "text_search",
+      limit: routeCollection?.stopIds?.length || undefined,
+    });
     recordMapUserAction("search", {
       query,
       filter: nextFilter || activeFilter,
@@ -15010,8 +15223,15 @@ export default function MapPage() {
     const nextFilter = resolveFilterForIntent(prompt, urlState.mode);
     const routeCollection = getMapCollectionForQuery(prompt);
     const nextDistrict = parsedIntent.district || district;
-    const localResults = getSmartResults(prompt, nextFilter || activeFilter);
     openSearchResultsLayer();
+    const localResults = await requestScopedMapResults({
+      query: prompt,
+      filterOverride: nextFilter || activeFilter,
+      collectionId: routeCollection?.id || urlState.collection,
+      activeEntityId: "",
+      trigger: routeCollection?.id ? "curated_route" : "prompt_search",
+      limit: routeCollection?.stopIds?.length || undefined,
+    });
     recordMapUserAction("search", {
       query: prompt,
       filter: nextFilter || activeFilter,
@@ -15060,7 +15280,7 @@ export default function MapPage() {
     void applyPrompt(item.prompt);
   }
 
-  function applyResidentTime(item) {
+  async function applyResidentTime(item) {
     const currentQuery = search.trim();
     const activeIntentLabel = RESIDENT_INTENT_CONSOLE_BUTTONS.find((intentItem) => intentItem.id === residentSearchIntent.intent)?.label;
     const nextQuery = currentQuery
@@ -15069,9 +15289,14 @@ export default function MapPage() {
         ? `${activeIntentLabel} ${item.label.toLowerCase()}`
         : item.prompt;
     const nextFilter = resolveFilterForIntent(nextQuery, urlState.mode) || activeFilter;
-    const localResults = getSmartResults(nextQuery, nextFilter);
     setResidentSearchIntent((current) => ({ ...current, time: item.id }));
     openSearchResultsLayer();
+    const localResults = await requestScopedMapResults({
+      query: nextQuery,
+      filterOverride: nextFilter,
+      activeEntityId: "",
+      trigger: "time_intent",
+    });
     setFiltersOpen(false);
     setSearch(nextQuery);
     setActiveFilter(nextFilter);
@@ -15090,12 +15315,17 @@ export default function MapPage() {
     });
   }
 
-  function applyResidentRadius(item) {
+  async function applyResidentRadius(item) {
     const nextQuery = search.trim() || "What’s worth walking to tonight?";
     const nextFilter = resolveFilterForIntent(nextQuery, urlState.mode) || activeFilter;
-    const localResults = getSmartResults(nextQuery, nextFilter);
     setRadius(item.label);
     openSearchResultsLayer();
+    const localResults = await requestScopedMapResults({
+      query: nextQuery,
+      filterOverride: nextFilter,
+      activeEntityId: "",
+      trigger: "radius_intent",
+    });
     setFiltersOpen(false);
     setActiveFilter(nextFilter);
     setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, nextFilter));
@@ -15128,7 +15358,12 @@ export default function MapPage() {
       const nextQuery = item.prompt || item.filter;
       setSearch(nextQuery);
       setActiveFilter(item.filter);
-      const localResults = getSmartResults(nextQuery, item.filter);
+      const localResults = await requestScopedMapResults({
+        query: nextQuery,
+        filterOverride: item.filter,
+        activeEntityId: "",
+        trigger: "intent_filter",
+      });
       setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, item.filter));
       openSearchResultsLayer();
       urlState.update({ tab: "map", query: nextQuery, filter: item.filter, collection: "", layer: "", entityId: "", listingId: "", drawerClosed: "" });
@@ -15408,6 +15643,24 @@ export default function MapPage() {
         </GoogleMapErrorBoundary>
       </div>
 
+      {searchAreaDirty && urlState.tab === "map" ? (
+        <button
+          type="button"
+          className="dp-map-search-area-button"
+          onClick={() => {
+            void requestScopedMapResults({
+              query: search || activeFilter,
+              filterOverride: activeFilter,
+              collectionId: urlState.collection,
+              activeEntityId: selectedId,
+              trigger: "search_this_area",
+            });
+          }}
+        >
+          Search this area
+        </button>
+      ) : null}
+
       {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed) ? (
         <CollectionRoutePanel
           route={activeCollectionRoute}
@@ -15433,6 +15686,8 @@ export default function MapPage() {
             activeFilter={activeFilter}
             activeCollection={urlState.collection}
             resultCount={mapPlaces.length}
+            requestStatus={scopedRequestStatus}
+            lastTrigger={scopedLastTrigger}
             inputRef={searchInputRef}
             onQueryChange={(value) => {
               setConsoleCollapsed(false);
