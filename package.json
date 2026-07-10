@@ -24,6 +24,7 @@
     "qa:map-registry": "tsx scripts/qa-map-registry.ts",
     "audit:map-intents": "tsx scripts/audit-map-search-intents.ts",
     "test:map-intents": "tsx scripts/test-map-search-intents.ts",
+    "audit:native-map": "tsx scripts/audit-native-google-map.ts",
     "assets:wikimedia": "python3 scripts/download_wikimedia_assets.py",
     "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs"
   },

@@ -1,8 +1,5 @@
 import { Component, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { Marker, useMap, useMapEvents } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -87,6 +84,9 @@ import {
   quickActionsByEntityType,
 } from "@/components/downtown-perks/primitives";
 import { getGoogleMapsConfigError, loadGoogleMaps } from "@/lib/googleMapsLoader";
+import { clearGoogleMapArtifacts, createDowntownGoogleMap, removeGoogleMapMarker } from "@/map/MapProvider";
+import { createDowntownMarker } from "@/map/MarkerManager";
+import { createBrandedRoutePolylines } from "@/map/RouteManager";
 import {
   getAgentEntityRegistrySnapshot,
   getCanonicalIntentForFilter,
@@ -3665,56 +3665,6 @@ function getZoomRouteMetrics(zoom) {
     repeat: zoom >= 18 ? "34px" : zoom >= 17 ? "38px" : "42px",
     dashedRepeat: zoom >= 18 ? "24px" : zoom >= 17 ? "27px" : "30px",
   };
-}
-
-function pinIcon(place, selected, pulsing = false, zoom = INITIAL_MAP_ZOOM) {
-  const pin = resolveEntityPin(place);
-  const isEventPin = isEventEntity(place);
-  const isHappyHourPin = isHappyHourEntity(place);
-  const isCampaignPin = isCampaignEntity(place);
-  const legendsListing = getLegendsListing(place);
-  const isLegendsPin =
-    isLegendsMapPlace(place) ||
-    Boolean(legendsListing) ||
-    isRentalEntity(place) ||
-    String(place?.pinKey || "").toLowerCase() === "legends" ||
-    String(pin?.label || "").toLowerCase() === "legends";
-  const eventPinClass = isEventPin ? "dp-live-pin--event" : "";
-  const happyHourPinClass = isHappyHourPin ? "dp-live-pin--happy-hour" : "";
-  const campaignPinClass = isCampaignPin ? "dp-live-pin--campaign" : "";
-  const legendsPinClass = isLegendsPin ? "dp-live-pin--legends dp-live-pin--legends-logo" : "";
-  const rentalPinClass = isRentalEntity(place) ? "dp-live-pin--rental" : "";
-  const shouldPulse = false;
-  const pinSize = getZoomMarkerMetrics(zoom, { selected }).pinSize;
-  const iconSize = [pinSize, pinSize];
-  const iconAnchor = [pinSize / 2, pinSize / 2];
-  const ariaLabel = legendsListing ? `Legends listing at ${legendsListing.address}` : `${place.name} details`;
-  return L.divIcon({
-    className: "dp-leaflet-pin",
-    html: mapPinButtonHtml({
-      place,
-      pin,
-      ariaLabel,
-      selected,
-      pulsing: shouldPulse,
-      classes: `${eventPinClass} ${happyHourPinClass} ${campaignPinClass} ${legendsPinClass} ${rentalPinClass}`,
-      zoom,
-    }),
-    iconSize,
-    iconAnchor,
-    popupAnchor: [0, -12],
-  });
-}
-
-function clusterIcon(count, zoom = INITIAL_MAP_ZOOM) {
-  const safeCount = Number.isFinite(Number(count)) ? Number(count) : 2;
-  const size = getZoomMarkerMetrics(zoom, { clusterCount: safeCount }).clusterSize;
-  return L.divIcon({
-    className: "dp-leaflet-cluster",
-    html: `<div class="dp-map-cluster" style="${zoomMarkerStyleAttribute(zoom, { clusterCount: safeCount })}" aria-hidden="true"><span>${safeCount > 99 ? "99+" : safeCount}</span></div>`,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-  });
 }
 
 function getClusterCellSize(zoom) {
@@ -11109,55 +11059,6 @@ function PartnerMetricInsight({ place }) {
   );
 }
 
-function MapFocus({ selected }) {
-  const map = useMap();
-  const lastSelectedIdRef = useRef("");
-
-  useEffect(() => {
-    if (!selected) return;
-    const selectedId = String(selected.id || selected.entityId || selected.name || "");
-    if (selectedId && lastSelectedIdRef.current === selectedId) return;
-    lastSelectedIdRef.current = selectedId;
-
-    const coords = getPlaceCoords(selected);
-    if (!coords) return;
-
-    const panToSelected = () => {
-      const size = map.getSize();
-      const zoom = map.getZoom();
-      const selectedPoint = map.project(coords, zoom);
-      const desiredPoint = L.point(size.x * 0.5, size.y * (size.x < 768 ? 0.36 : 0.46));
-      const currentCenterPoint = map.project(map.getCenter(), zoom);
-      const centerPoint = selectedPoint.subtract(desiredPoint.subtract(size.divideBy(2)));
-      const distance = currentCenterPoint.distanceTo(centerPoint);
-
-      if (distance < 18) return;
-      map.panTo(map.unproject(centerPoint, zoom), {
-        animate: true,
-        duration: 0.32,
-        easeLinearity: 0.25,
-      });
-    };
-
-    map.invalidateSize({ animate: false });
-    window.requestAnimationFrame(panToSelected);
-  }, [map, selected]);
-
-  return null;
-}
-
-function MapZoomTracker({ onZoomChange }) {
-  const map = useMapEvents({
-    zoomend: () => onZoomChange(map.getZoom()),
-  });
-
-  useEffect(() => {
-    onZoomChange(map.getZoom());
-  }, [map, onZoomChange]);
-
-  return null;
-}
-
 function getStoredMapView() {
   if (typeof window === "undefined") return { center: AUSTIN_CENTER, zoom: INITIAL_MAP_ZOOM };
   try {
@@ -11187,155 +11088,6 @@ function getStoredMapView() {
   } catch {
     return { center: AUSTIN_CENTER, zoom: INITIAL_MAP_ZOOM };
   }
-}
-
-function MapViewPersistence() {
-  const map = useMapEvents({
-    moveend: () => {
-      const center = map.getCenter();
-      window.sessionStorage.setItem(
-        MAP_VIEW_STORAGE_KEY,
-        JSON.stringify({ center: [center.lat, center.lng], zoom: map.getZoom() }),
-      );
-    },
-    zoomend: () => {
-      const center = map.getCenter();
-      window.sessionStorage.setItem(
-        MAP_VIEW_STORAGE_KEY,
-        JSON.stringify({ center: [center.lat, center.lng], zoom: map.getZoom() }),
-      );
-    },
-  });
-
-  return null;
-}
-
-function MapInteractionCollapse({ onCollapse, onUserNavigate }) {
-  useMapEvents({
-    dragstart: () => {
-      onUserNavigate?.();
-      onCollapse?.();
-    },
-    zoomstart: () => {
-      onUserNavigate?.();
-    },
-    movestart: () => {
-      onUserNavigate?.();
-    },
-  });
-
-  return null;
-}
-
-function MapViewportTracker({ onViewportChange }) {
-  const map = useMapEvents({
-    moveend: () => {
-      const bounds = map.getBounds();
-      onViewportChange?.({
-        north: bounds.getNorth(),
-        south: bounds.getSouth(),
-        east: bounds.getEast(),
-        west: bounds.getWest(),
-        zoom: map.getZoom(),
-      });
-    },
-    zoomend: () => {
-      const bounds = map.getBounds();
-      onViewportChange?.({
-        north: bounds.getNorth(),
-        south: bounds.getSouth(),
-        east: bounds.getEast(),
-        west: bounds.getWest(),
-        zoom: map.getZoom(),
-      });
-    },
-  });
-
-  useEffect(() => {
-    const bounds = map.getBounds();
-    onViewportChange?.({
-      north: bounds.getNorth(),
-      south: bounds.getSouth(),
-      east: bounds.getEast(),
-      west: bounds.getWest(),
-      zoom: map.getZoom(),
-    });
-  }, [map, onViewportChange]);
-
-  return null;
-}
-
-function MapResizeStabilizer({ watchKey }) {
-  const map = useMap();
-
-  useEffect(() => {
-    const invalidate = () => map.invalidateSize({ animate: false });
-    const frameId = window.requestAnimationFrame(invalidate);
-    const timeoutId = window.setTimeout(invalidate, 260);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.clearTimeout(timeoutId);
-    };
-  }, [map, watchKey]);
-
-  useEffect(() => {
-    if (typeof ResizeObserver === "undefined") return undefined;
-    const container = map.getContainer();
-    const observer = new ResizeObserver(() => {
-      window.requestAnimationFrame(() => map.invalidateSize({ animate: false }));
-    });
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, [map]);
-
-  return null;
-}
-
-function MapResultBoundsFitter({ places = [], activeKey, selectedId, enabled = false }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!enabled) return;
-    if (selectedId) return;
-    const coords = places.map((place) => getPlaceCoords(place)).filter(Boolean);
-    if (!coords.length) return;
-
-    const frameId = window.requestAnimationFrame(() => {
-      const size = map.getSize();
-      const isCompact = size.x < 768 || size.y < 680;
-      const topPadding = isCompact ? Math.min(132, Math.max(76, size.y * 0.18)) : 180;
-      const bottomPadding = isCompact ? Math.min(132, Math.max(86, size.y * 0.20)) : 180;
-
-      if (coords.length === 1) {
-        map.flyTo(coords[0], Math.max(map.getZoom(), 16), {
-          animate: true,
-          duration: 0.45,
-        });
-        window.setTimeout(() => {
-          map.panBy([0, -Math.min(120, Math.max(54, size.y * 0.16))], {
-            animate: true,
-            duration: 0.2,
-          });
-        }, 480);
-        return;
-      }
-
-      const bounds = L.latLngBounds(coords);
-      if (!bounds.isValid()) return;
-      map.flyToBounds(bounds.pad(0.22), {
-        animate: true,
-        duration: 0.45,
-        maxZoom: MAP_STREET_FOCUS_ZOOM,
-        paddingTopLeft: [28, topPadding],
-        paddingBottomRight: [28, bottomPadding],
-      });
-    });
-
-    return () => window.cancelAnimationFrame(frameId);
-  }, [map, activeKey, selectedId, places, enabled]);
-
-  return null;
 }
 
 function GoogleMapCanvas({
@@ -11458,7 +11210,7 @@ function GoogleMapCanvas({
               gestureHandling: "greedy",
               ...(googleMapId ? { mapId: googleMapId } : { styles: getInlineGoogleMapStyles() }),
             };
-            mapRef.current = new maps.Map(containerRef.current, mapOptions);
+            mapRef.current = createDowntownGoogleMap(maps, containerRef.current, mapOptions);
             mapRef.current.addListener("dragstart", markUserNavigated);
             mapRef.current.addListener("drag", markUserNavigated);
             mapRef.current.addListener("dragend", markUserNavigated);
@@ -11566,60 +11318,36 @@ function GoogleMapCanvas({
     const maps = mapsRef.current;
     if (!map || !maps || loadState !== "ready") return undefined;
 
-    collectionRoutePolylinesRef.current.forEach((polyline) => polyline?.setMap?.(null));
-    collectionRoutePolylinesRef.current = [];
+    collectionRoutePolylinesRef.current = clearGoogleMapArtifacts(
+      collectionRoutePolylinesRef.current,
+      (polyline) => polyline?.setMap?.(null),
+    );
 
     const routePath = collectionRoute?.routePath || [];
     if (routePath.length < 2) return undefined;
 
     const style = getCollectionRouteStyle(collectionRoute);
     const routeMetrics = getZoomRouteMetrics(markerRenderZoom);
-    const ambientRoute = new maps.Polyline({
-      map,
-      path: routePath,
-      strokeColor: style.ambientColor,
-      strokeOpacity: style.ambientOpacity,
-      strokeWeight: routeMetrics.ambientStrokeWeight,
-      clickable: false,
-      zIndex: 18,
-    });
-    const overlapRoute = new maps.Polyline({
-      map,
-      path: routePath,
-      strokeColor: style.overlapColor,
-      strokeOpacity: style.overlapOpacity,
-      strokeWeight: routeMetrics.overlapStrokeWeight,
-      clickable: false,
-      zIndex: 19,
-    });
-    const mainRoute = new maps.Polyline({
-      map,
-      path: routePath,
-      strokeColor: style.mainColor,
-      strokeOpacity: style.mainOpacity,
+    collectionRoutePolylinesRef.current = createBrandedRoutePolylines(maps, map, routePath, {
+      ambientColor: style.ambientColor,
+      ambientOpacity: style.ambientOpacity,
+      ambientStrokeWeight: routeMetrics.ambientStrokeWeight,
+      overlapColor: style.overlapColor,
+      overlapOpacity: style.overlapOpacity,
+      overlapStrokeWeight: routeMetrics.overlapStrokeWeight,
+      mainColor: style.mainColor,
+      mainOpacity: style.mainOpacity,
       strokeWeight: routeMetrics.strokeWeight,
-      clickable: true,
-      zIndex: 21,
-      icons: [{
-        icon: {
-          path: maps.SymbolPath.CIRCLE,
-          fillColor: style.dotColor,
-          fillOpacity: 0.92,
-          strokeColor: style.overlapColor,
-          strokeOpacity: 0.86,
-          strokeWeight: 1.4,
-          scale: style.isDashed ? routeMetrics.dashedDotScale : routeMetrics.dotScale,
-        },
-        offset: "14px",
-        repeat: style.isDashed ? routeMetrics.dashedRepeat : routeMetrics.repeat,
-      }],
+      dotColor: style.dotColor,
+      dotScale: style.isDashed ? routeMetrics.dashedDotScale : routeMetrics.dotScale,
+      repeat: style.isDashed ? routeMetrics.dashedRepeat : routeMetrics.repeat,
     });
-
-    collectionRoutePolylinesRef.current = [ambientRoute, overlapRoute, mainRoute];
 
     return () => {
-      collectionRoutePolylinesRef.current.forEach((polyline) => polyline?.setMap?.(null));
-      collectionRoutePolylinesRef.current = [];
+      collectionRoutePolylinesRef.current = clearGoogleMapArtifacts(
+        collectionRoutePolylinesRef.current,
+        (polyline) => polyline?.setMap?.(null),
+      );
     };
   }, [collectionRoute, loadState, markerRenderZoom]);
 
@@ -11629,8 +11357,7 @@ function GoogleMapCanvas({
     if (!map || !maps || loadState !== "ready") return undefined;
 
     markersRef.current.forEach((marker) => {
-      if (marker?.map !== undefined) marker.map = null;
-      else marker?.setMap?.(null);
+      removeGoogleMapMarker(marker);
     });
     markersRef.current = [];
     const canUseAdvancedMarkers = Boolean(
@@ -11665,15 +11392,15 @@ function GoogleMapCanvas({
           }
         });
 
-        const marker = canUseAdvancedMarkers
-          ? new maps.marker.AdvancedMarkerElement({ map, position: { lat: item.coords[0], lng: item.coords[1] }, content: element, title: `${item.count} places nearby`, anchorLeft: "-50%", anchorTop: "-50%" })
-          : new maps.Marker({
-              map,
-              position: { lat: item.coords[0], lng: item.coords[1] },
-              title: `${item.count} places nearby`,
-              icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
-              optimized: true,
-            });
+        const marker = createDowntownMarker({
+          maps,
+          map,
+          position: { lat: item.coords[0], lng: item.coords[1] },
+          content: element,
+          title: `${item.count} places nearby`,
+          icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
+          preferAdvanced: canUseAdvancedMarkers,
+        });
         if (!canUseAdvancedMarkers) marker.addListener("click", () => onClusterOpen(item));
         markersRef.current.push(marker);
         return;
@@ -11712,22 +11439,15 @@ function GoogleMapCanvas({
         onSelectNearestLegends(place);
       });
 
-      const marker = canUseAdvancedMarkers
-        ? new maps.marker.AdvancedMarkerElement({
-            map,
-            position: { lat: coords[0], lng: coords[1] },
-            content: wrapper,
-            title: place.name,
-            anchorLeft: "-50%",
-            anchorTop: "-50%",
-          })
-        : new maps.Marker({
-            map,
-            position: { lat: coords[0], lng: coords[1] },
-            title: place.name,
-            icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
-            optimized: true,
-          });
+      const marker = createDowntownMarker({
+        maps,
+        map,
+        position: { lat: coords[0], lng: coords[1] },
+        content: wrapper,
+        title: place.name,
+        icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
+        preferAdvanced: canUseAdvancedMarkers,
+      });
 
       if (!canUseAdvancedMarkers) {
         marker.addListener("click", () => onSelect(place));
@@ -11748,8 +11468,7 @@ function GoogleMapCanvas({
 
     return () => {
       markersRef.current.forEach((marker) => {
-        if (marker?.map !== undefined) marker.map = null;
-        else marker?.setMap?.(null);
+        removeGoogleMapMarker(marker);
       });
       markersRef.current = [];
       if (typeof window !== "undefined" && import.meta.env.DEV) {
@@ -11820,213 +11539,6 @@ class GoogleMapErrorBoundary extends Component {
     if (this.state.hasError) return <GoogleMapFailureState />;
     return this.props.children;
   }
-}
-
-function ClusterMarker({ cluster, onOpen }) {
-  const map = useMap();
-  const markerRef = useRef(null);
-  const lastExpandRef = useRef(0);
-
-  const expandCluster = useCallback(() => {
-    const now = Date.now();
-    if (now - lastExpandRef.current < 350) return;
-    lastExpandRef.current = now;
-
-    triggerHaptic();
-    onOpen(cluster);
-
-    const bounds = L.latLngBounds(cluster.places.map((place) => [place.latitude, place.longitude]));
-    if (bounds.isValid()) {
-      map.flyToBounds(bounds.pad(0.18), {
-        animate: true,
-        duration: 0.55,
-        maxZoom: Math.min(Math.max(map.getZoom() + 2, 16), 18),
-        paddingTopLeft: [24, 112],
-        paddingBottomRight: [24, 104],
-      });
-    } else {
-      map.flyTo(cluster.coords, Math.min(map.getZoom() + 2, 18), { duration: 0.55 });
-    }
-
-    window.setTimeout(() => onOpen(cluster), 180);
-    window.setTimeout(() => onOpen(cluster), 580);
-  }, [cluster, map, onOpen]);
-
-  useEffect(() => {
-    let cleanup = null;
-    let cancelled = false;
-    let frameId = 0;
-
-    const wireCluster = () => {
-      const marker = markerRef.current;
-      const element = marker?.getElement?.();
-      if (!element) {
-        if (!cancelled) frameId = window.requestAnimationFrame(wireCluster);
-        return;
-      }
-
-      const handleExpand = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        window.setTimeout(expandCluster, 40);
-      };
-
-      const handleKeyDown = (event) => {
-        if (event.key !== "Enter" && event.key !== " ") return;
-        handleExpand(event);
-      };
-
-      const visibleCluster = element.querySelector(".dp-map-cluster");
-      const targets = [element, visibleCluster].filter(Boolean);
-      element.classList.add("dp-map-marker-hit-target");
-      element.style.setProperty("background", "transparent", "important");
-      element.style.setProperty("background-color", "transparent", "important");
-      element.style.setProperty("border", "0", "important");
-      element.style.setProperty("box-shadow", "none", "important");
-      if (visibleCluster) {
-        visibleCluster.style.setProperty("background", "#0B1F33", "important");
-        visibleCluster.style.setProperty("background-color", "#0B1F33", "important");
-        visibleCluster.style.setProperty("border", "1px solid #BFA46A", "important");
-        visibleCluster.style.setProperty("color", "#FFFFFF", "important");
-        visibleCluster.style.setProperty("box-shadow", "none", "important");
-      }
-      targets.forEach((target) => {
-        target.addEventListener("mousedown", handleExpand, true);
-        target.addEventListener("pointerdown", handleExpand, true);
-        target.addEventListener("pointerup", handleExpand, true);
-        target.addEventListener("click", handleExpand, true);
-        target.addEventListener("keydown", handleKeyDown, true);
-      });
-      element.setAttribute("aria-label", `Open ${cluster.count} places nearby`);
-      element.setAttribute("role", "button");
-      element.setAttribute("tabindex", "0");
-      visibleCluster?.setAttribute("role", "button");
-      visibleCluster?.setAttribute("tabindex", "0");
-      visibleCluster?.setAttribute("aria-label", `Open ${cluster.count} places nearby`);
-
-      cleanup = () => {
-        targets.forEach((target) => {
-          target.removeEventListener("mousedown", handleExpand, true);
-          target.removeEventListener("click", handleExpand, true);
-          target.removeEventListener("pointerdown", handleExpand, true);
-          target.removeEventListener("pointerup", handleExpand, true);
-          target.removeEventListener("keydown", handleKeyDown, true);
-        });
-      };
-    };
-
-    wireCluster();
-
-    return () => {
-      cancelled = true;
-      if (frameId) window.cancelAnimationFrame(frameId);
-      cleanup?.();
-    };
-  }, [cluster.count, expandCluster]);
-
-  return (
-    <Marker
-      ref={markerRef}
-      position={cluster.coords}
-      icon={clusterIcon(cluster.count, map.getZoom())}
-      eventHandlers={{
-        click: expandCluster,
-      }}
-    />
-  );
-}
-
-function PlaceMarker({ place, selected, pulsing, onSelect, onSelectNearestLegends, onHover, onHoverEnd }) {
-  const map = useMap();
-  const markerRef = useRef(null);
-
-  useEffect(() => {
-    const marker = markerRef.current;
-    let element = marker?.getElement?.();
-    let retryId;
-
-    const openPlace = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onSelect(place);
-    };
-
-    const openNearestLegends = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onSelectNearestLegends(place);
-    };
-
-    const handleKeyDown = (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      openPlace(event);
-    };
-
-    const attach = () => {
-      element = marker?.getElement?.();
-      if (!element) {
-        retryId = window.setTimeout(attach, 60);
-        return;
-      }
-      element.classList.add("dp-map-marker-hit-target");
-      element.style.setProperty("background", "transparent", "important");
-      element.style.setProperty("background-color", "transparent", "important");
-      element.style.setProperty("border", "0", "important");
-      element.style.setProperty("box-shadow", "none", "important");
-      if (isLegendsMapPlace(place) || getLegendsListing(place)) {
-        element.style.setProperty("z-index", selected ? "980" : "940", "important");
-      }
-      element.addEventListener("click", openPlace, true);
-      element.addEventListener("pointerup", openPlace, true);
-      element.addEventListener("mousedown", openPlace, true);
-      element.addEventListener("dblclick", openNearestLegends, true);
-      element.addEventListener("keydown", handleKeyDown, true);
-      element.onclick = openPlace;
-      element.setAttribute("tabindex", "0");
-      element.setAttribute("role", "button");
-      element.setAttribute("aria-label", `${place.name} details`);
-      element.setAttribute(
-        "onclick",
-        `var u=new URL(window.location.href);u.searchParams.set('entityId','${escapeJsString(place.id)}');window.location.href=u.toString()`,
-      );
-    };
-
-    attach();
-
-    return () => {
-      if (retryId) window.clearTimeout(retryId);
-      if (!element) return;
-      element.removeEventListener("click", openPlace, true);
-      element.removeEventListener("pointerup", openPlace, true);
-      element.removeEventListener("mousedown", openPlace, true);
-      element.removeEventListener("dblclick", openNearestLegends, true);
-      element.removeEventListener("keydown", handleKeyDown, true);
-      element.onclick = null;
-      element.removeAttribute("onclick");
-    };
-  }, [place, onSelect, onSelectNearestLegends]);
-
-  return (
-    <Marker
-      ref={markerRef}
-      position={place.coords}
-      icon={pinIcon(place, selected, pulsing, map.getZoom())}
-      keyboard
-      title={place.name}
-      alt={place.name}
-      eventHandlers={{
-        click: () => onSelect(place),
-        dblclick: (event) => {
-          event.originalEvent?.preventDefault?.();
-          event.originalEvent?.stopPropagation?.();
-          onSelectNearestLegends(place);
-        },
-        tap: () => onSelect(place),
-        mouseover: () => onHover(place),
-        mouseout: () => onHoverEnd(place),
-      }}
-    />
-  );
 }
 
 function triggerHaptic() {

@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-07-10T19:21:25.662Z",
+  "forbiddenEmbeds": [],
+  "serviceFiles": [
+    {
+      "file": "src/map/MapProvider.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/MapController.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/CameraController.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/MarkerManager.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/RouteManager.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/DistrictManager.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/CollectionManager.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/CampaignManager.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/BrandManager.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/PlacesService.ts",
+      "exists": true
+    },
+    {
+      "file": "src/map/SearchIntentEngine.ts",
+      "exists": true
+    }
+  ],
+  "activeMapPage": {
+    "usesGoogleMapsLoader": true,
+    "createsNativeGoogleMapThroughService": true,
+    "usesAdvancedMarkersThroughService": true,
+    "drawsCustomPolylinesThroughService": true,
+    "disablesDefaultGoogleUi": true,
+    "usesMapIdOrInlineStyleFallback": true,
+    "hasNoReactLeafletImport": true,
+    "hasNoLeafletNamespace": true
+  }
+}
