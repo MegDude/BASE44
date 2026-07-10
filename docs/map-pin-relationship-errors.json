@@ -1,0 +1,748 @@
+[
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-01-malin-s-fountain",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-02-treehouse-at-pease-park",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-03-pease-park",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-04-we-all-ride",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-05-waterloo-park",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-06-moody-amphitheater",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-07-waller-creek-trail",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-08-republic-square",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-09-wooldridge-square",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-10-brush-square",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-11-mexic-arte-museum",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-12-writing-on-the-walls",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-13-the-paramount-theatre",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-14-the-contemporary-austin-jones-center",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-15-the-driskill",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-16-congress-avenue-bridge",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-17-ann-and-roy-butler-hike-and-bike-trail",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-18-shoal-beach",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-19-central-library-plaza",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-20-seaholm-intake-facility",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-21-seaholm-power-plant",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-22-the-independent-public-plaza",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-23-austin-city-hall-plaza",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-24-long-center-terrace",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-25-auditorium-shores",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-26-palmer-events-center-grounds",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-27-rainey-street-trailhead",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-28-emma-s-barrientos-mexican-american-cultural-center",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-29-palm-park",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-30-austin-convention-center-public-art",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-31-red-river-cultural-district",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-32-symphony-square",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-33-texas-state-capitol-grounds",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-34-governor-s-mansion",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-35-old-bakery-and-emporium",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-36-o-henry-museum",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-37-susanna-dickinson-museum",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-38-frost-bank-tower-plaza",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-39-indeed-tower-plaza",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-40-ballet-austin",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-41-austin-history-center",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-42-bullock-museum-grounds",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-43-blanton-museum-courtyard",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-44-ellsworth-kelly-s-austin",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-45-saltillo-plaza",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-46-comal-pocket-park",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-47-east-6th-street-murals",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "daa-art-walk",
+    "missingEntityId": "daa-stop-48-plaza-saltillo-station-art",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "waterloo-greenway",
+    "missingEntityId": "civic-waterloo-greenway",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "waterloo-greenway",
+    "missingEntityId": "discovery-waterloo-reflection-point",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "waterloo-greenway",
+    "missingEntityId": "discovery-waller-creek-design-marker",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "waterloo-greenway",
+    "missingEntityId": "discovery-golden-hour-waterloo",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "warehouse-district-happy-hour",
+    "missingEntityId": "inkind-j-carvers",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "warehouse-district-happy-hour",
+    "missingEntityId": "inkind-peche",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "warehouse-district-happy-hour",
+    "missingEntityId": "inkind-parkside",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "warehouse-district-happy-hour",
+    "missingEntityId": "partner-comedor",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "downtown-stories-walk",
+    "missingEntityId": "civic-republic-square-programming",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "downtown-stories-walk",
+    "missingEntityId": "civic-daa",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "downtown-stories-walk",
+    "missingEntityId": "priority-frost-tower",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "downtown-stories-walk",
+    "missingEntityId": "civic-waterloo-greenway",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "inkind-dining-market",
+    "missingEntityId": "inkind-j-carvers",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "inkind-dining-market",
+    "missingEntityId": "inkind-peche",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "inkind-dining-market",
+    "missingEntityId": "inkind-parkside",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "inkind-dining-market",
+    "missingEntityId": "inkind-hopdoddy-congress",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "coffee-before-work",
+    "missingEntityId": "partner-jos-coffee",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "coffee-before-work",
+    "missingEntityId": "venue-merit-coffee",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "coffee-before-work",
+    "missingEntityId": "priority-frost-tower",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "hotel-guest-arrival-route",
+    "missingEntityId": "partner-hotel-van-zandt",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "hotel-guest-arrival-route",
+    "missingEntityId": "partner-geraldines",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "hotel-guest-arrival-route",
+    "missingEntityId": "partner-stay-put",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "warning",
+    "relationshipType": "collection",
+    "relationshipId": "hotel-guest-arrival-route",
+    "missingEntityId": "partner-bangers",
+    "currentBehavior": "Stop is resolved by stop hint fallback or omitted if no matching pin exists.",
+    "expectedBehavior": "Collection stop IDs should map directly to canonical entity IDs.",
+    "rootCause": "Legacy collection stop ID does not exactly match current entity ID.",
+    "fixApplied": "Relationship is surfaced in audit output; resolver also checks stopHints for runtime continuity."
+  },
+  {
+    "severity": "info",
+    "relationshipType": "campaign",
+    "relationshipId": "campaign-equinox-wellness-reset",
+    "currentBehavior": "Draft campaign is excluded from active intent results.",
+    "expectedBehavior": "Only active/ready/live campaigns render on campaign intent layers.",
+    "rootCause": "Campaign status is draft.",
+    "fixApplied": "Canonical resolver excludes draft campaigns from active campaign relationships."
+  },
+  {
+    "severity": "info",
+    "relationshipType": "campaign",
+    "relationshipId": "campaign-ariat-weekend-western",
+    "currentBehavior": "Draft campaign is excluded from active intent results.",
+    "expectedBehavior": "Only active/ready/live campaigns render on campaign intent layers.",
+    "rootCause": "Campaign status is draft.",
+    "fixApplied": "Canonical resolver excludes draft campaigns from active campaign relationships."
+  },
+  {
+    "severity": "info",
+    "relationshipType": "campaign",
+    "relationshipId": "campaign-new-resident-welcome",
+    "currentBehavior": "Draft campaign is excluded from active intent results.",
+    "expectedBehavior": "Only active/ready/live campaigns render on campaign intent layers.",
+    "rootCause": "Campaign status is draft.",
+    "fixApplied": "Canonical resolver excludes draft campaigns from active campaign relationships."
+  },
+  {
+    "severity": "info",
+    "relationshipType": "campaign",
+    "relationshipId": "campaign-bathe-new-resident-welcome",
+    "currentBehavior": "Draft campaign is excluded from active intent results.",
+    "expectedBehavior": "Only active/ready/live campaigns render on campaign intent layers.",
+    "rootCause": "Campaign status is draft.",
+    "fixApplied": "Canonical resolver excludes draft campaigns from active campaign relationships."
+  }
+]

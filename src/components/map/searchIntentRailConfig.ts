@@ -33,6 +33,7 @@ import {
   Wine,
   Flame,
 } from "lucide-react";
+import { resolveSearchIntent } from "../../map/searchIntent/mapIntentRegistry";
 
 export const SEARCH_INTENT_RAIL = [
   { id: "breakfast", label: "Breakfast", filter: "Breakfast", prompt: "Breakfast nearby", icon: Clock, defaultVisible: true },
@@ -78,6 +79,12 @@ export const SEARCH_INTENT_RAIL = [
   { id: "shipping", label: "Shipping", filter: "Shipping", prompt: "Shipping nearby", icon: Package, defaultVisible: false },
   { id: "services", label: "Services", filter: "Services", prompt: "Services nearby", icon: Sparkles, defaultVisible: false },
 ] as const;
+
+export const SEARCH_INTENT_RAIL_WITH_CANONICAL_INTENTS = SEARCH_INTENT_RAIL.map((item) => ({
+  ...item,
+  canonicalIntentId: resolveSearchIntent(item.id).id,
+  canonicalIntentType: resolveSearchIntent(item.id).intentType,
+}));
 
 const PRIMARY_SEARCH_INTENT_IDS = [
   "coffee",

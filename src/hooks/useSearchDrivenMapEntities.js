@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCanonicalIntentForFilter, getEntityGovernance } from "@/lib/map/intentGovernance";
+import { entityMatchesMapIntent } from "@/map/searchIntent/mapIntentRegistry";
 
 const QUERY_CACHE_MAX = 40;
 const SEARCH_RESULT_LIMITS = Object.freeze({
@@ -137,6 +138,16 @@ function matchesIntent(entity, intent, filter) {
   const text = textForEntity(entity);
   const type = String(entity.type || entity.kind || entity.entityType || entity.sourceType || "").toLowerCase();
   const normalizedFilter = String(filter || "").toLowerCase();
+
+  if (["", "all", "nearby", "open now"].includes(normalizedFilter) && ["", "all", "eat_drink"].includes(String(intent || "").toLowerCase())) {
+    return true;
+  }
+  if (normalizedFilter && !["all", "nearby", "open now"].includes(normalizedFilter)) {
+    return entityMatchesMapIntent(entity, normalizedFilter);
+  }
+  if (intent && !["eat_drink", "all"].includes(String(intent).toLowerCase())) {
+    return entityMatchesMapIntent(entity, intent);
+  }
 
   if (intent === "coffee") return /\b(coffee|cafe|espresso|bakery)\b/.test(text);
   if (intent === "hotels") return /\bhotel|hospitality|stay\b/.test(text) || type === "hotel";
