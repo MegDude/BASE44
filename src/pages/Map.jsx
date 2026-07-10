@@ -92,7 +92,7 @@ import {
   getCanonicalIntentForFilter,
   getViewportBoundedMarkerPlaces,
 } from "@/lib/map/intentGovernance";
-import { PRIMARY_SEARCH_INTENT_RAIL, SECONDARY_SEARCH_INTENT_RAIL } from "@/components/map/searchIntentRailConfig";
+import { getSearchIntentDefinition, PRIMARY_SEARCH_INTENT_RAIL, SECONDARY_SEARCH_INTENT_RAIL } from "@/components/map/searchIntentRailConfig";
 import { parseSearchIntent, searchIntentToFilter } from "@/map/searchIntent/searchIntentParser";
 import CollectionRoutePanel from "@/components/map/CollectionRoutePanel";
 import { getMapCollectionById, getMapCollectionForQuery } from "@/data/mapCollections";
@@ -11592,6 +11592,8 @@ function SearchIntentConsole({
 }) {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [previewIntentId, setPreviewIntentId] = useState(null);
+  const [focusedIntentId, setFocusedIntentId] = useState(null);
   const activeSearchLabel = query || activeFilter || "All";
   const statusCopy = requestStatus === "loading"
     ? "Searching downtown..."
@@ -11659,6 +11661,32 @@ function SearchIntentConsole({
   const primaryCollectionActive = intentRail.some((item) => item.collection && isRailItemActive(item));
   const activeSecondaryItem = primaryCollectionActive ? null : moreFilterRail.find(isRailItemActive);
   const moreToggleLabel = activeSecondaryItem && !moreOpen ? `More · ${activeSecondaryItem.label}` : "More";
+  const allIntentItems = [...intentRail, ...moreFilterRail];
+  const activeIntentItem = allIntentItems.find(isRailItemActive) || null;
+  const previewedIntentItem = allIntentItems.find((item) => item.id === previewIntentId || item.id === focusedIntentId) || null;
+  const moreIntentDefinition = getSearchIntentDefinition({ id: "more", label: "More", prompt: "Explore more intents" });
+  const previewDefinition = previewedIntentItem
+    ? getSearchIntentDefinition(previewedIntentItem)
+    : moreOpen
+      ? moreIntentDefinition
+      : activeIntentItem
+        ? getSearchIntentDefinition(activeIntentItem)
+        : null;
+  const makeIntentSummary = (item, active) => {
+    const definition = getSearchIntentDefinition(item);
+    if (!active) return definition.description;
+    if (requestStatus === "loading") return `Finding ${definition.shortLabel.toLowerCase()}...`;
+    if (requestStatus === "error") return "Could not load matches nearby";
+    if (resultCount === 0) return "No active matches nearby";
+    const noun = resultCount === 1 ? "place" : "places";
+    const counts = [`${resultCount} ${noun}`];
+    if (item?.collection) counts.push("1 route");
+    return counts.join(" · ");
+  };
+  const makeIntentAriaLabel = (item, definition, active) => {
+    const state = active ? "Pressed" : "Not pressed";
+    return `${definition.fullLabel}. Shows ${definition.description}. ${state}.`;
+  };
   const trackFilterRailEvent = (eventName, item, railState = moreOpen ? "expanded" : "collapsed") => {
     if (typeof window === "undefined") return;
     window.dispatchEvent(new CustomEvent("dp:map-filter-rail", {
@@ -11674,7 +11702,9 @@ function SearchIntentConsole({
     }));
   };
   const handleMoreClick = (event) => {
-    event.stopPropagation();
+    event?.stopPropagation?.();
+    setPreviewIntentId(null);
+    setFocusedIntentId(null);
     setMoreOpen((value) => {
       const next = !value;
       trackFilterRailEvent(next ? "secondary_filter_rail_expanded" : "secondary_filter_rail_collapsed", null, next ? "expanded" : "collapsed");
@@ -11737,73 +11767,154 @@ function SearchIntentConsole({
       selectCurrent?.();
     }
   };
+  const renderIntentButton = (item, index, className) => {
+    const definition = getSearchIntentDefinition(item);
+    const Icon = item.icon;
+    const active = isRailItemActive(item);
+    const previewed = previewIntentId === item.id || focusedIntentId === item.id;
+    const expanded = active || previewed;
+    const descriptionId = `dp-search-intent-desc-${definition.id}`;
+    const summary = makeIntentSummary(item, active);
+
+    return (
+      <button
+        key={`${className}-${index}-${railKeyFor(item)}`}
+        type="button"
+        role="tab"
+        className={`dp-expanding-intent-chip ${active ? "is-active" : ""} ${previewed ? "is-previewed" : ""}`}
+        aria-pressed={active}
+        aria-selected={active}
+        aria-label={makeIntentAriaLabel(item, definition, active)}
+        aria-describedby={descriptionId}
+        onPointerEnter={(event) => {
+          if (event.pointerType === "mouse" || event.pointerType === "pen") setPreviewIntentId(item.id);
+        }}
+        onPointerLeave={(event) => {
+          if (event.pointerType === "mouse" || event.pointerType === "pen") {
+            setPreviewIntentId((current) => (current === item.id ? null : current));
+          }
+        }}
+        onPointerUp={(event) => {
+          if (event.pointerType !== "touch") return;
+          event.preventDefault();
+          setPreviewIntentId(null);
+          setFocusedIntentId(null);
+          handleRailItem(item);
+        }}
+        onFocus={() => setFocusedIntentId(item.id)}
+        onBlur={() => setFocusedIntentId((current) => (current === item.id ? null : current))}
+        onClick={() => {
+          setPreviewIntentId(null);
+          setFocusedIntentId(null);
+          handleRailItem(item);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            setPreviewIntentId(null);
+            setFocusedIntentId(null);
+            event.currentTarget.blur();
+            return;
+          }
+          handleConsoleTabKeyDown(event, () => {
+            setPreviewIntentId(null);
+            handleRailItem(item);
+          });
+        }}
+        data-label={definition.shortLabel}
+        data-intent-id={definition.id}
+        data-expanded={expanded ? "true" : "false"}
+      >
+        <span className="dp-expanding-intent-chip__icon" aria-hidden="true">
+          {Icon ? <Icon className="dp-search-intent-filter-icon" aria-hidden="true" /> : null}
+        </span>
+        <span className="dp-expanding-intent-chip__text">
+          <span className="dp-expanding-intent-chip__label dp-search-intent-filter-label">
+            {expanded ? definition.fullLabel : definition.shortLabel}
+          </span>
+          <span id={descriptionId} className="dp-expanding-intent-chip__description">
+            {summary}
+          </span>
+        </span>
+      </button>
+    );
+  };
+
+  const renderMoreButton = () => {
+    const MoreIcon = activeSecondaryItem?.icon || Compass;
+    const active = moreOpen || Boolean(activeSecondaryItem);
+    const previewed = previewIntentId === "more" || focusedIntentId === "more";
+    const expanded = active || previewed;
+    const descriptionId = "dp-search-intent-desc-more";
+    const summary = activeSecondaryItem && !moreOpen
+      ? makeIntentSummary(activeSecondaryItem, true)
+      : moreIntentDefinition.description;
+
+    return (
+      <button
+        key="more-filters-marker"
+        type="button"
+        className={`dp-expanding-intent-chip dp-search-more-toggle ${active ? "is-active" : ""} ${previewed ? "is-previewed" : ""}`}
+        aria-expanded={moreOpen}
+        aria-controls="dp-search-more-filter-panel"
+        aria-pressed={active}
+        aria-label={`Explore more intents. Shows ${moreIntentDefinition.description}.`}
+        aria-describedby={descriptionId}
+        onPointerEnter={(event) => {
+          if (event.pointerType === "mouse" || event.pointerType === "pen") setPreviewIntentId("more");
+        }}
+        onPointerLeave={(event) => {
+          if (event.pointerType === "mouse" || event.pointerType === "pen") {
+            setPreviewIntentId((current) => (current === "more" ? null : current));
+          }
+        }}
+        onPointerUp={(event) => {
+          if (event.pointerType !== "touch") return;
+          event.preventDefault();
+          handleMoreClick(event);
+        }}
+        onFocus={() => setFocusedIntentId("more")}
+        onBlur={() => setFocusedIntentId((current) => (current === "more" ? null : current))}
+        onClick={handleMoreClick}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            setPreviewIntentId(null);
+            setFocusedIntentId(null);
+            if (moreOpen) setMoreOpen(false);
+            return;
+          }
+          handleConsoleTabKeyDown(event, handleMoreClick);
+        }}
+        data-label={moreToggleLabel}
+        data-intent-id="more"
+        data-expanded={expanded ? "true" : "false"}
+      >
+        <span className="dp-expanding-intent-chip__icon" aria-hidden="true">
+          <MoreIcon className="dp-search-intent-filter-icon" aria-hidden="true" />
+        </span>
+        <span className="dp-expanding-intent-chip__text">
+          <span className="dp-expanding-intent-chip__label dp-search-intent-filter-label">
+            {expanded ? moreIntentDefinition.fullLabel : moreToggleLabel}
+          </span>
+          <span id={descriptionId} className="dp-expanding-intent-chip__description">
+            {summary}
+          </span>
+        </span>
+      </button>
+    );
+  };
+
   const renderRail = (items, className, label, options = {}) => (
     <div id={options.id} className={className} role="tablist" aria-label={label}>
       {items.flatMap((item, index) => {
-        const Icon = item.icon;
-        const active = isRailItemActive(item);
-        const itemButton = (
-          <button
-            key={`${className}-${index}-${railKeyFor(item)}`}
-            type="button"
-            role="tab"
-            className={active ? "is-active" : ""}
-            aria-pressed={active}
-            aria-selected={active}
-            onClick={() => handleRailItem(item)}
-            onKeyDown={(event) => handleConsoleTabKeyDown(event, () => handleRailItem(item))}
-            title={item.label}
-            aria-label={item.label}
-            data-label={item.label}
-          >
-            {Icon ? (
-              <Icon className="dp-search-intent-filter-icon" aria-hidden="true" />
-            ) : null}
-            <span className="dp-search-intent-filter-label">{item.label}</span>
-          </button>
-        );
+        const itemButton = renderIntentButton(item, index, className);
         if (options.includeMoreToggle && index === options.insertMoreAfterIndex) {
-          const MoreIcon = activeSecondaryItem?.icon || Compass;
-          return [
-            itemButton,
-            <button
-              key="more-filters-marker"
-              type="button"
-              className={`dp-search-more-toggle ${moreOpen || activeSecondaryItem ? "is-active" : ""}`}
-              aria-expanded={moreOpen}
-              aria-controls="dp-search-more-filter-panel"
-              aria-label={moreToggleLabel}
-              onClick={handleMoreClick}
-              title={moreToggleLabel}
-              data-label={moreToggleLabel}
-            >
-              <MoreIcon className="dp-search-intent-filter-icon" aria-hidden="true" />
-              <span className="dp-search-intent-filter-label">{moreToggleLabel}</span>
-            </button>,
-          ];
+          return [itemButton, renderMoreButton()];
         }
         return [itemButton];
       })}
-      {options.includeMoreToggle && options.insertMoreAfterIndex == null ? (
-        (() => {
-          const MoreIcon = activeSecondaryItem?.icon || Compass;
-          return (
-        <button
-          type="button"
-          className={`dp-search-more-toggle ${moreOpen || activeSecondaryItem ? "is-active" : ""}`}
-          aria-expanded={moreOpen}
-          aria-controls="dp-search-more-filter-panel"
-          aria-label={moreToggleLabel}
-          onClick={handleMoreClick}
-          title={moreToggleLabel}
-          data-label={moreToggleLabel}
-        >
-          <MoreIcon className="dp-search-intent-filter-icon" aria-hidden="true" />
-          <span className="dp-search-intent-filter-label">{moreToggleLabel}</span>
-        </button>
-          );
-        })()
-      ) : null}
+      {options.includeMoreToggle && options.insertMoreAfterIndex == null ? renderMoreButton() : null}
     </div>
   );
 
@@ -11932,11 +12043,30 @@ function SearchIntentConsole({
           "Intent shortcuts",
           { includeMoreToggle: true, insertMoreAfterIndex: intentRail.length - 1 },
         )}
-        {moreOpen ? renderRail(
-          moreFilterRail,
-          "dp-search-intent-filter-rail dp-search-context-row dp-search-context-row-primary dp-search-more-filter-panel",
-          "More map filters",
-          { id: "dp-search-more-filter-panel" },
+        {previewDefinition ? (
+          <div className="dp-search-intent-description-strip" aria-live="polite">
+            <span className="dp-search-intent-description-strip__label">
+              {previewDefinition.fullLabel}
+            </span>
+            <span className="dp-search-intent-description-strip__copy">
+              {activeIntentItem && previewDefinition.id === activeIntentItem.id
+                ? makeIntentSummary(activeIntentItem, true)
+                : previewDefinition.description}
+            </span>
+          </div>
+        ) : null}
+        {moreOpen ? (
+          <div id="dp-search-more-filter-panel" className="dp-search-more-intent-panel">
+            <div className="dp-search-more-intent-panel__header">
+              <span>Explore more intents</span>
+              <small>{moreIntentDefinition.description}</small>
+            </div>
+            {renderRail(
+              moreFilterRail,
+              "dp-search-intent-filter-rail dp-search-context-row dp-search-context-row-primary dp-search-more-filter-panel",
+              "More map filters",
+            )}
+          </div>
         ) : (
           <div id="dp-search-more-filter-panel" hidden aria-hidden="true" />
         )}

@@ -25,6 +25,7 @@ import '@/styles/partner-activity-drawer-final.css'
 import '@/styles/pricing-polish-final.css'
 import '@/styles/map-drawer-containment-final.css'
 import '@/styles/partner-register-refactor-final.css'
+import '@/styles/search-intent-chip-expansion-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
