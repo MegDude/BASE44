@@ -11,6 +11,7 @@ import {
   Building2,
   Check,
   ChevronDown,
+  ChevronRight,
   Compass,
   Coffee,
   CreditCard,
@@ -86,6 +87,11 @@ import {
   quickActionsByEntityType,
 } from "@/components/downtown-perks/primitives";
 import { getGoogleMapsConfigError, loadGoogleMaps } from "@/lib/googleMapsLoader";
+import {
+  getAgentEntityRegistrySnapshot,
+  getCanonicalIntentForFilter,
+  getViewportBoundedMarkerPlaces,
+} from "@/lib/map/intentGovernance";
 import { PRIMARY_SEARCH_INTENT_RAIL, SECONDARY_SEARCH_INTENT_RAIL } from "@/components/map/searchIntentRailConfig";
 import { parseSearchIntent, searchIntentToFilter } from "@/map/searchIntent/searchIntentParser";
 import CollectionRoutePanel from "@/components/map/CollectionRoutePanel";
@@ -5351,6 +5357,62 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
   );
 }
 
+function DistrictNearbyList({ places = [], onSelect }) {
+  const [expanded, setExpanded] = useState(false);
+  const visiblePlaces = expanded ? places : places.slice(0, 5);
+  if (!places.length) return null;
+
+  return (
+    <div className="dp-district-nearby" aria-label="Nearby pins">
+      <div className="dp-district-nearby__list">
+        {visiblePlaces.map((candidate) => {
+          const category = candidate.category || candidate.type || "Nearby";
+          const district = candidate.district || "Downtown Austin";
+          return (
+            <button
+              key={candidate.id}
+              type="button"
+              className="dp-district-nearby__item"
+              aria-label={`Open ${candidate.name}, ${category}, ${district}`}
+              onClick={() => onSelect(candidate)}
+            >
+              <span className="dp-district-nearby__media" aria-hidden="true">
+                <img src={resolveEntityImage(candidate, "card")} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />
+              </span>
+              <span className="dp-district-nearby__content">
+                <strong className="dp-district-nearby__title">{candidate.name}</strong>
+                <em className="dp-district-nearby__meta">{category}</em>
+                <small className="dp-district-nearby__district">{district}</small>
+              </span>
+              <ChevronRight className="dp-district-nearby__chevron" aria-hidden="true" />
+            </button>
+          );
+        })}
+      </div>
+      {places.length > 5 && (
+        <button type="button" className="dp-district-nearby__toggle" onClick={() => setExpanded((value) => !value)}>
+          {expanded ? "Show fewer nearby" : "View all nearby"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function DistrictDisclosureSection({ title, children, className = "" }) {
+  const displayTitle = getV4DestinationSectionTitle(title);
+  return (
+    <details className={`dp-destination-section dp-district-section dp-district-disclosure ${className}`} open>
+      <summary className="dp-district-disclosure__summary">
+        <h3>{displayTitle}</h3>
+        <ChevronDown className="dp-district-disclosure__chevron" aria-hidden="true" />
+      </summary>
+      <div className="dp-district-disclosure__body">
+        {children}
+      </div>
+    </details>
+  );
+}
+
 function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", savedIds, onSave, onSelect }) {
   const raw = place?.raw || {};
   const image = getLifestyleImage(place, mode);
@@ -5365,11 +5427,11 @@ function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", saved
   const linkedPlaces = linkedNames
     .map((name) => places.find((candidate) => String(candidate.name || "").toLowerCase() === String(name).toLowerCase()))
     .filter(Boolean)
-    .slice(0, 8);
+    .slice(0, 12);
   const campaignRecommendations = list("campaignRecommendations");
 
   return (
-    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-neighborhood-drawer">
+    <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-neighborhood-drawer dp-district-detail-drawer">
       <DestinationHero place={{ ...place, image }} mode={mode} />
       <EntityIdentityPanel identity={getEntityIdentity(place, mode)} />
       <section className="dp-destination-action-row dp-neighborhood-actions" aria-label={`${place.name} actions`}>
@@ -5410,20 +5472,20 @@ function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", saved
       )}
 
       {list("residentialSnapshot").length > 0 && (
-        <DestinationSection title="Residential snapshot">
-          <div className="dp-civic-text-rail">
+        <DistrictDisclosureSection title="Residential snapshot" className="dp-district-snapshot-section">
+          <div className="dp-district-snapshot-list" aria-label="Residential snapshot">
             {list("residentialSnapshot").map((item) => (
-              <span key={item}><strong>{item}</strong></span>
+              <span key={item}>{item}</span>
             ))}
           </div>
-        </DestinationSection>
+        </DistrictDisclosureSection>
       )}
 
       {list("notableBuildings").length > 0 && (
-        <DestinationSection title="Buildings nearby">
-          <div className="dp-civic-text-rail">
+        <DestinationSection title="Buildings nearby" className="dp-district-section dp-district-chip-section">
+          <div className="dp-district-chip-rail" aria-label="Buildings nearby">
             {list("notableBuildings").map((item) => (
-              <button key={item} type="button" onClick={() => {
+              <button key={item} type="button" className="dp-district-chip" onClick={() => {
                 const match = places.find((candidate) => String(candidate.name || "").toLowerCase() === String(item).toLowerCase());
                 if (match) onSelect(match);
               }}>
@@ -5435,18 +5497,18 @@ function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", saved
       )}
 
       {list("dailyEssentials").length > 0 && (
-        <DestinationSection title="Everyday essentials">
+        <DistrictDisclosureSection title="Everyday essentials">
           <ul className="dp-daa-clean-list">
             {list("dailyEssentials").map((item) => <li key={item}>{item}</li>)}
           </ul>
-        </DestinationSection>
+        </DistrictDisclosureSection>
       )}
 
       {list("localHighlights").length > 0 && (
-        <DestinationSection title="Local highlights">
-          <div className="dp-civic-text-rail">
+        <DistrictDisclosureSection title="Local highlights" className="dp-district-chip-section">
+          <div className="dp-district-chip-rail" aria-label="Local highlights">
             {list("localHighlights").map((item) => (
-              <button key={item} type="button" onClick={() => {
+              <button key={item} type="button" className="dp-district-chip" onClick={() => {
                 const match = places.find((candidate) => String(candidate.name || "").toLowerCase() === String(item).toLowerCase());
                 if (match) onSelect(match);
               }}>
@@ -5454,21 +5516,21 @@ function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", saved
               </button>
             ))}
           </div>
-        </DestinationSection>
+        </DistrictDisclosureSection>
       )}
 
       {featuredPerk?.title && (
-        <DestinationSection title="Featured resident perk">
+        <DestinationSection title="Featured resident perk" className="dp-district-section dp-district-featured-perk">
           <p><strong>{featuredPerk.title}</strong></p>
           <p>{featuredPerk.body}</p>
         </DestinationSection>
       )}
 
       {list("bestFor").length > 0 && (
-        <DestinationSection title="Good for">
-          <ul className="dp-daa-clean-list">
-            {list("bestFor").map((item) => <li key={item}>{item}</li>)}
-          </ul>
+        <DestinationSection title="Good for" className="dp-district-section dp-district-good-for-section">
+          <div className="dp-district-tag-cloud" aria-label="Good for">
+            {list("bestFor").map((item) => <span key={item} className="dp-district-tag">{item}</span>)}
+          </div>
         </DestinationSection>
       )}
 
@@ -5483,16 +5545,8 @@ function NeighborhoodDetailDrawer({ place, places = [], mode = "resident", saved
       )}
 
       {linkedPlaces.length > 0 && (
-        <DestinationSection title="Open nearby pins">
-          <div className="dp-daa-next-rail">
-            {linkedPlaces.map((candidate) => (
-              <button key={candidate.id} type="button" className="dp-daa-next-card" onClick={() => onSelect(candidate)}>
-                <span className="dp-daa-next-card-kicker">{candidate.category || candidate.type || "Nearby"}</span>
-                <strong>{candidate.name}</strong>
-                <em>{candidate.district || "Downtown Austin"}</em>
-              </button>
-            ))}
-          </div>
+        <DestinationSection title="Nearby pins" className="dp-district-section dp-district-nearby-pins">
+          <DistrictNearbyList places={linkedPlaces} onSelect={onSelect} />
         </DestinationSection>
       )}
     </motion.div>
@@ -12903,14 +12957,50 @@ export default function MapPage() {
       routeStopIds: activeCollectionRoute.stops.map((stop) => stop.id).slice(0, 80),
     };
   }, [activeCollectionRoute, selectedId]);
-  const mapPlaces = useMemo(() => {
+  const activeCanonicalIntentId = useMemo(
+    () => getCanonicalIntentForFilter(activeFilter, effectiveSearch),
+    [activeFilter, effectiveSearch],
+  );
+  const governedMarkerCandidates = useMemo(() => {
     const shouldPreserveListingPins = activeFilter === "Rentals" || activeFilter === "Legends" || activeFilter === "Listings" || activeFilter === "All Listings";
     const pinSourcePlaces = shouldPreserveListingPins
       ? discoverDisplayPlaces
       : discoverDisplayPlaces.filter((place) => !isUnitLevelListingPlace(place));
+
+    if (activeCollectionRoute?.stops?.length) {
+      return {
+        intentId: activeCanonicalIntentId,
+        limit: activeCollectionRoute.stops.length,
+        places: activeCollectionRoute.stops,
+        markerPayload: activeCollectionRoute.stops.map((place) => ({
+          id: place.id,
+          lat: place.latitude,
+          lng: place.longitude,
+          label: place.name,
+          entityType: place.type || place.category || "route_stop",
+          primaryIntentId: activeCanonicalIntentId,
+          iconKey: place.pinKey || "trail",
+          priorityTier: 1,
+          hasActivePerk: hasActivePerkData(place),
+          hasActiveCampaign: Boolean(place.campaignId || place.raw?.campaignId),
+        })),
+        totalCandidates: activeCollectionRoute.stops.length,
+      };
+    }
+
+    return getViewportBoundedMarkerPlaces(pinSourcePlaces, {
+      activeFilter,
+      query: effectiveSearch,
+      viewportBounds,
+      zoom: mapZoom,
+      selectedId,
+      mode: urlState.mode,
+    });
+  }, [activeCanonicalIntentId, activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, mapZoom, selectedId, urlState.mode, viewportBounds]);
+  const mapPlaces = useMemo(() => {
     if (activeCollectionRoute?.stops?.length) return activeCollectionRoute.stops;
 
-    return selectProgressiveMarkerPlaces(pinSourcePlaces, {
+    return selectProgressiveMarkerPlaces(governedMarkerCandidates.places, {
       activeFilter,
       collection: urlState.collection,
       effectiveSearch,
@@ -12920,7 +13010,7 @@ export default function MapPage() {
       userHasNavigatedMap,
       isDefaultDiscoverScope: urlState.mode === "resident" && isDefaultDiscoverScope,
     });
-  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, isDefaultDiscoverScope, mapZoom, savedIds, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap]);
+  }, [activeCollectionRoute, activeFilter, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, mapZoom, savedIds, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap]);
   const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
@@ -14690,7 +14780,15 @@ export default function MapPage() {
     });
 
     const baseResults = scoped.length ? scoped : displayPlaces.length ? displayPlaces : hasActiveCategoryScope ? [] : places;
-    return rankPlacesForIntent(baseResults, query, urlState.mode);
+    const governedResults = getViewportBoundedMarkerPlaces(baseResults, {
+      activeFilter: filterOverride,
+      query,
+      viewportBounds,
+      zoom: mapZoom,
+      selectedId,
+      mode: urlState.mode,
+    }).places;
+    return rankPlacesForIntent(governedResults, query, urlState.mode);
   }
 
   function openSearchResultsLayer() {
@@ -14795,14 +14893,14 @@ export default function MapPage() {
           recentSearches: recentSearchesForAgent,
           recentActions: recentActionsForAgent,
           routeNearbyContext,
-          entityRegistry: places.map((place) => ({
-            id: place.id,
-            title: place.name,
-            kind: place.kind || place.type || place.category || "",
-            category: place.category || "",
-            district: place.district || "",
-            tags: place.tags || place.raw?.tags || [],
-          })).slice(0, 220),
+          entityRegistry: getAgentEntityRegistrySnapshot(discoverDisplayPlaces, {
+            activeFilter,
+            query,
+            viewportBounds,
+            zoom: mapZoom,
+            selectedId,
+            mode: urlState.mode,
+          }),
         },
         mapContext: localResults.slice(0, 8).map((place) => {
           const legendsListing = getResolvedLegendsListing(place);

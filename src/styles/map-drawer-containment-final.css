@@ -760,6 +760,27 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   letter-spacing: 0.08em !important;
 }
 
+/* Compact district drawer finish: keep safe-area breathing room without a blank bottom block. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll) {
+  padding-bottom: max(16px, calc(10px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-neighborhood-drawer.dp-neighborhood-drawer {
+  gap: clamp(12px, 2.8vw, 16px) !important;
+  padding: 12px 16px max(14px, calc(8px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-neighborhood-drawer.dp-neighborhood-drawer .dp-destination-section.dp-destination-section {
+  min-height: 0 !important;
+  gap: 8px !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-neighborhood-drawer.dp-neighborhood-drawer > :last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-map-drawer-shell .dp-resident-tab-panel-header > h2 {
   margin: 0 !important;
   max-width: 100% !important;
@@ -2506,4 +2527,698 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   white-space: normal !important;
   overflow-wrap: anywhere !important;
   line-height: 1.18 !important;
+}
+
+/* Absolute final district-detail compacting. This must outrank older emergency
+   drawer padding rules that reserve bottom-nav space after the nav is hidden. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll {
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-neighborhood-drawer.dp-neighborhood-drawer {
+  gap: clamp(12px, 2.8vw, 16px) !important;
+  padding-bottom: max(14px, calc(8px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+/* Selected pin/listing drawers use the full sheet height. Older locks left a
+   76px nav cushion on the sheet itself, which collapsed residential content. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell {
+  display: grid !important;
+  grid-template-rows: var(--dp-drawer-toolbar-height, 64px) minmax(0, 1fr) !important;
+  height: min(88dvh, calc(100dvh - 72px)) !important;
+  min-height: min(620px, calc(100dvh - 72px)) !important;
+  max-height: min(88dvh, calc(100dvh - 72px)) !important;
+  padding-bottom: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell.dp-entity-drawer-shell {
+  grid-template-rows: minmax(0, 1fr) !important;
+  min-height: min(620px, calc(100dvh - 72px)) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll {
+  display: block !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* District place sheet native-flow lock.
+   The district drawer should behave like a maps place sheet: one scroll region,
+   content-sized sections, no fixed inner heights, and no reserved blank block. */
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell:has(.dp-district-detail-drawer) {
+  display: grid !important;
+  grid-template-rows: var(--dp-drawer-toolbar-height, 64px) minmax(0, 1fr) !important;
+  height: min(85dvh, calc(100dvh - 96px)) !important;
+  min-height: 96px !important;
+  max-height: min(85dvh, calc(100dvh - 96px)) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell:has(.dp-district-detail-drawer) :is(
+  .dp-map-panel-header,
+  .dp-drawer-control-row
+) {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 8 !important;
+  flex: 0 0 auto !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell:has(.dp-district-detail-drawer) .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll {
+  display: block !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: none !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 24px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 16px 16px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow: visible !important;
+  contain: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer > * {
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-destination-hero {
+  height: clamp(170px, 23vh, 230px) !important;
+  min-height: 170px !important;
+  max-height: 230px !important;
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer :is(
+  .dp-entity-identity,
+  .dp-entity-summary,
+  .dp-destination-section,
+  .dp-district-section
+) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-destination-section + .dp-destination-section {
+  margin-top: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer :is(.dp-entity-title, .dp-destination-title, .dp-detail-title) {
+  max-width: 100% !important;
+  font-size: 34px !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer :is(.dp-why-people-go, .dp-entity-dek, .dp-destination-section p) {
+  max-width: 100% !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+  color: rgba(11, 31, 51, 0.76) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.76) !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-destination-section h3 {
+  max-width: 100% !important;
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.56) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure {
+  appearance: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure > summary {
+  list-style: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure__summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure__summary h3 {
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure__chevron {
+  flex: 0 0 auto !important;
+  width: 15px !important;
+  height: 15px !important;
+  color: rgba(11, 31, 51, 0.42) !important;
+  transition: transform 160ms ease !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure[open] .dp-district-disclosure__chevron {
+  transform: rotate(180deg) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure__body {
+  display: grid !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-neighborhood-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-neighborhood-actions > * {
+  min-width: 0 !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0 12px !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-chip-rail {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 2px 2px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-chip {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: max-content !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 13px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  scroll-snap-align: start !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-chip strong {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-daa-clean-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-daa-clean-list li {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 36px !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  color: rgba(11, 31, 51, 0.74) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-tag-cloud {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 32px !important;
+  padding: 0 11px !important;
+  border-radius: 999px !important;
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-snapshot-list {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-snapshot-list > span {
+  display: block !important;
+  min-width: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  color: rgba(11, 31, 51, 0.74) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.74) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby {
+  display: grid !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby__list,
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby-card-list {
+  display: grid !important;
+  gap: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__item, .dp-district-nearby-card) {
+  display: grid !important;
+  grid-template-columns: 64px minmax(0, 1fr) 20px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 68px !important;
+  max-height: 80px !important;
+  height: auto !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby__media {
+  display: block !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+  background: #f7f8fb !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__media img, .dp-district-nearby-card img) {
+  display: block !important;
+  width: 64px !important;
+  height: 64px !important;
+  max-width: none !important;
+  min-width: 64px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 10px !important;
+  object-fit: cover !important;
+  background: #f7f8fb !important;
+  flex-shrink: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__content, .dp-district-nearby-card span) {
+  display: grid !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__title, .dp-district-nearby__meta, .dp-district-nearby__district, .dp-district-nearby-card strong, .dp-district-nearby-card em, .dp-district-nearby-card small) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__title, .dp-district-nearby-card strong) {
+  font-family: Inter, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__meta, .dp-district-nearby-card em) {
+  font-style: normal !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident :is(.dp-district-nearby__district, .dp-district-nearby-card small) {
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  color: rgba(11, 31, 51, 0.5) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.5) !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby__chevron {
+  width: 16px !important;
+  height: 16px !important;
+  color: rgba(11, 31, 51, 0.42) !important;
+  justify-self: end !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby__toggle {
+  justify-self: start !important;
+  min-height: 36px !important;
+  width: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll > .dp-district-detail-drawer.dp-district-detail-drawer {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-civic-text-rail:not(.dp-district-chip-rail) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-civic-text-rail:not(.dp-district-chip-rail) > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+  white-space: normal !important;
+}
+
+html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-civic-text-rail:not(.dp-district-chip-rail) > span strong {
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 650 !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell:has(.dp-district-detail-drawer) {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: clamp(360px, 30vw, 430px) !important;
+    max-width: min(430px, calc(100vw - 32px)) !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer {
+    gap: 32px !important;
+    padding: 18px 20px 24px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure__summary {
+    cursor: default !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-disclosure__chevron {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer {
+    gap: 24px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer :is(.dp-entity-title, .dp-destination-title, .dp-detail-title) {
+    font-size: clamp(28px, 8.2vw, 34px) !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer .dp-daa-clean-list {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Highest-specificity district scroll correction: older recovery locks target
+   the content element directly, so this final rule forces scroll ownership back
+   to the parent `.dp-drawer-scroll` container. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-map-panel-scroll.dp-destination-scroll.dp-drawer-scroll > .dp-district-detail-drawer.dp-district-detail-drawer {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+/* Final district desktop shell override. Several older recovery locks target the
+   generic selected drawer after the district block, so keep this last. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer .dp-destination-hero.dp-destination-hero {
+  height: clamp(170px, 23vh, 230px) !important;
+  min-height: 170px !important;
+  max-height: 230px !important;
+  border-radius: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer > * {
+  order: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer {
+  gap: 24px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer .dp-neighborhood-actions.dp-neighborhood-actions {
+  order: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell:has(.dp-district-detail-drawer) {
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: clamp(360px, 30vw, 430px) !important;
+    min-width: 360px !important;
+    max-width: min(430px, calc(100vw - 32px)) !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer .dp-destination-hero.dp-destination-hero {
+    height: clamp(170px, 23vh, 230px) !important;
+    min-height: 170px !important;
+    max-height: 230px !important;
+    border-radius: 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer.dp-district-detail-drawer {
+    gap: 32px !important;
+  }
+}
+
+/* Nearby Pins row contract. This intentionally targets only the isolated
+   district list item so generic button/img/card rules cannot turn it into a
+   media tile again. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__list > button.dp-district-nearby__item.dp-district-nearby__item {
+  display: grid !important;
+  grid-template-columns: 64px minmax(0, 1fr) 20px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 68px !important;
+  max-height: 80px !important;
+  height: 80px !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__media.dp-district-nearby__media {
+  display: block !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__media.dp-district-nearby__media > img {
+  display: block !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  border-radius: 10px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__content.dp-district-nearby__content {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby :is(.dp-district-nearby__title, .dp-district-nearby__meta, .dp-district-nearby__district) {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__title.dp-district-nearby__title {
+  font-family: Inter, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__meta.dp-district-nearby__meta {
+  margin-top: 3px !important;
+  font-style: normal !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-nearby .dp-district-nearby__district.dp-district-nearby__district {
+  margin-top: 2px !important;
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  color: rgba(11, 31, 51, 0.5) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.5) !important;
 }

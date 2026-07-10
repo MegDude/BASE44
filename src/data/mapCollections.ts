@@ -129,7 +129,8 @@ export const mapCollections = [
 ];
 
 export function getMapCollectionById(collectionId) {
-  const key = String(collectionId || "").trim().toLowerCase();
+  const rawKey = String(collectionId || "").trim().toLowerCase();
+  const key = rawKey === "daa-art-parks-tour" ? "daa-art-walk" : rawKey;
   return mapCollections.find((collection) => collection.id === key) || null;
 }
 

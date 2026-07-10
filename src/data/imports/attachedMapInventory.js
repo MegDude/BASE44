@@ -10878,6 +10878,7 @@ export const ATTACHED_FEATURED_BRANDS = [
     "district": "congress",
     "latitude": 30.2638,
     "longitude": -97.7444,
+    "imageUrl": "/images/map-entities/brand-yeti/yeti-austin-fc.png",
     "iconType": "spark",
     "markerVariant": "navy",
     "searchKeywords": [

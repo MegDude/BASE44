@@ -309,6 +309,8 @@ function attachedFeaturedBrandPlace(item) {
     address: item.address,
     summary: item.description,
     description: item.description,
+    image: item.imageUrl,
+    imageUrl: item.imageUrl,
     route: item.route,
     primaryAction: isProperty ? "Open Property Layer" : "Open Partner Layer",
     secondaryAction: "Save",
