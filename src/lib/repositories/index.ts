@@ -6,6 +6,16 @@
 import { base44 } from '@/api/base44Client';
 import type { SharedMapItem } from '../contracts';
 import { mapMixedEntitiesToSharedItems } from '../mappers';
+import { canViewEverything } from '@/lib/auth/session';
+
+async function getPrivilegedUser() {
+  try {
+    const user = await base44.auth.me();
+    return canViewEverything(user) ? user : null;
+  } catch {
+    return null;
+  }
+}
 
 // ── MAP REPOSITORY ──────────────────────────────────────────────────
 export const mapRepository = {
@@ -19,13 +29,16 @@ export const mapRepository = {
     limit?: number;
   }): Promise<SharedMapItem[]> {
     try {
+      const privilegedUser = await getPrivilegedUser();
       // Call the unified getSharedMapFeed function
       const response = await base44.functions.invoke('getSharedMapFeed', {
         filters: {
           districts: options?.districts,
           categories: options?.categories,
-          statuses: options?.statuses,
+          statuses: privilegedUser ? undefined : options?.statuses,
         },
+        includeAllRecords: Boolean(privilegedUser),
+        adminView: Boolean(privilegedUser),
         limit: options?.limit || 1000,
       });
       return response.data?.items || [];
@@ -194,10 +207,14 @@ export const partnerRepository = {
    */
   async getPartnerCampaigns(partnerId: string): Promise<any[]> {
     try {
+      const privilegedUser = await getPrivilegedUser();
+      const filters = privilegedUser
+        ? {}
+        : { brand_id: partnerId, status: 'active' };
       const campaigns = await base44.entities.Campaign.filter(
-        { brand_id: partnerId, status: 'active' },
+        filters,
         '-start_date',
-        50
+        privilegedUser ? 1000 : 50
       );
       return campaigns || [];
     } catch (error) {

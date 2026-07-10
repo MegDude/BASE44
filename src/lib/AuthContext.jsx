@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
       full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Partner",
       organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Partner",
       partner_type: currentUser.user_metadata?.partner_type || "partner",
-      role: "partner",
+      role: currentUser.app_metadata?.role || currentUser.user_metadata?.role || "partner",
       authProvider: "supabase",
     };
     setUser(profile);

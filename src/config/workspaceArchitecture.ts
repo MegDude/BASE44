@@ -4,7 +4,7 @@ export type WorkspaceStatus = (typeof workspaceStatuses)[number];
 export const workspaceEntityTypes = ["property", "hotel", "venue", "brand", "civic", "listing"] as const;
 export type WorkspaceEntityType = (typeof workspaceEntityTypes)[number];
 
-export const workspaceRoles = ["owner", "admin", "manager", "editor", "analyst", "viewer"] as const;
+export const workspaceRoles = ["owner", "admin", "super_admin", "manager", "editor", "analyst", "viewer"] as const;
 export type WorkspaceRole = (typeof workspaceRoles)[number];
 
 export const workspacePlans = ["free", "starter", "growth", "pro", "enterprise"] as const;
@@ -32,11 +32,11 @@ export type WorkspaceEntityOwnership = {
 };
 
 export const roleMatrix: Record<string, Partial<Record<WorkspaceRole, boolean>>> = {
-  reports: { owner: true, admin: true, manager: true, analyst: true },
-  campaigns: { owner: true, admin: true, manager: true, editor: true },
-  billing: { owner: true, admin: true },
-  team: { owner: true, admin: true },
-  settings: { owner: true, admin: true },
+  reports: { owner: true, admin: true, super_admin: true, manager: true, analyst: true },
+  campaigns: { owner: true, admin: true, super_admin: true, manager: true, editor: true },
+  billing: { owner: true, admin: true, super_admin: true },
+  team: { owner: true, admin: true, super_admin: true },
+  settings: { owner: true, admin: true, super_admin: true },
 };
 
 export const planEntitlements: Record<WorkspacePlan, EntitlementKey[]> = {
@@ -141,5 +141,6 @@ export function getWorkspaceEntitlements(plan: WorkspacePlan) {
 }
 
 export function canRoleAccess(feature: keyof typeof roleMatrix, role: WorkspaceRole) {
+  if (role === "super_admin") return true;
   return Boolean(roleMatrix[feature]?.[role]);
 }

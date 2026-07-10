@@ -15,6 +15,7 @@ import {
   canUseProductionAccountAccess,
   markLocalRecord,
 } from "@/lib/productionGuards";
+import { canViewEverything } from "@/lib/auth/session";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -453,6 +454,7 @@ export default function PartnerWorkspace() {
   const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
   const accountAccessEnabled = canUseProductionAccountAccess();
+  const hasPrivilegedWorkspaceAccess = canViewEverything(user);
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -601,7 +603,7 @@ export default function PartnerWorkspace() {
       {/* Tab content */}
       <div className="max-w-6xl mx-auto px-5 py-8">
         <AnimatePresence mode="wait">
-          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} />}
+          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
           {tab === "campaigns" && <WorkspaceRegistryPanel key="campaigns" tabId="campaigns" />}
           {tab === "offers" && <PerksManager key="offers" user={user} />}
@@ -956,7 +958,7 @@ function WorkspaceAnalytics() {
   );
 }
 
-function WorkspaceOverview({ user, setTab, mode = "active", activation = null }) {
+function WorkspaceOverview({ user, setTab, mode = "active", activation = null, hasPrivilegedAccess = false }) {
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(demoOrganizations[0]?.id);
@@ -1150,7 +1152,7 @@ function WorkspaceOverview({ user, setTab, mode = "active", activation = null })
         </div>
         <div className="dp-workspace-module-grid">
           {WORKSPACE_CAPABILITY_LINKS.map((capability) => {
-            const locked = capability.lockedByDefault && !hasWorkspaceModule(activation, capability.addonId || capability.label.toLowerCase());
+            const locked = !hasPrivilegedAccess && capability.lockedByDefault && !hasWorkspaceModule(activation, capability.addonId || capability.label.toLowerCase());
             if (locked) {
               return (
                 <button
