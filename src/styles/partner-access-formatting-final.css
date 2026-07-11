@@ -420,7 +420,8 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   outline: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  text-transform: none !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
 }
 
 @media (max-width: 639px) {
@@ -454,6 +455,13 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
 
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-list.dp-partner-access-list > div {
   display: block !important;
+}
+
+/* Eyebrow and CTA typography lock. */
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-eyebrow.dp-partner-access-eyebrow,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-action.dp-partner-access-action {
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
 }
 
 @media (max-width: 359px) {
@@ -732,4 +740,74 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid.dp-partner-type-grid {
     grid-template-columns: minmax(0, 1fr) !important;
   }
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action:last-child {
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* Final alignment and spacing lock. */
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page :is(
+  .dp-partner-access-copy,
+  .dp-partner-access-signin,
+  .dp-partner-access-form,
+  .dp-partner-type-section,
+  .dp-partner-type-section-head,
+  .dp-partner-type-grid,
+  .dp-partner-access-actions,
+  .dp-partner-access-actions .dp-partner-access-action,
+  .dp-partner-access-label,
+  .dp-partner-access-panel-copy,
+  .dp-partner-access-form-title,
+  .dp-partner-type-card,
+  .dp-partner-type-card span,
+  .dp-partner-type-card strong,
+  .dp-partner-type-card small
+) {
+  text-align: left !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-signin.dp-partner-access-signin {
+  gap: 16px !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-signin-type-section.dp-partner-signin-type-section,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-section.dp-partner-type-section {
+  width: 100% !important;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-section-head.dp-partner-type-section-head {
+  width: 100% !important;
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid.dp-partner-type-grid {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-signin.dp-partner-access-signin > div:not(.dp-partner-access-actions) {
+  width: 100% !important;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions {
+  justify-content: flex-start !important;
+  width: 100% !important;
+  margin: 4px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action:last-child {
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  text-align: left !important;
 }
