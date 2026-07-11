@@ -1871,3 +1871,268 @@ html body #root#root .dp-partner-lifecycle-page-register .dp-partner-register-su
   color: #0b1f33 !important;
   -webkit-text-fill-color: #0b1f33 !important;
 }
+
+/* Final typography scale: keep partner onboarding compact, readable, and form-led. */
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) {
+  color: #0b1f33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-lifecycle-hero h1 {
+  max-width: 680px !important;
+  font-size: clamp(34px, 4.8vw, 48px) !important;
+  font-weight: 650 !important;
+  line-height: 1.02 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-lifecycle-section-head h2,
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(.dp-partner-recommended-plan h3, .dp-workspace-preview-card h3, .dp-checkout-grid h3, .dp-partner-final-cta h2) {
+  max-width: 680px !important;
+  font-size: clamp(24px, 2.6vw, 34px) !important;
+  font-weight: 650 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(
+  .dp-partner-lifecycle-hero p,
+  .dp-partner-lifecycle-section-head p,
+  .dp-workspace-preview-card > p,
+  .dp-partner-trust-strip > span,
+  .dp-partner-register-form label > span,
+  .dp-partner-plan-summary p
+) {
+  margin-bottom: 8px !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(
+  .dp-partner-lifecycle-hero span,
+  .dp-partner-lifecycle-section-head span,
+  .dp-partner-recommended-plan p,
+  .dp-partner-services-grid p,
+  .dp-partner-faq-list p,
+  .dp-partner-final-cta span,
+  .dp-checkout-grid p,
+  .dp-workspace-preview-list small
+) {
+  max-width: 640px !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 14px !important;
+  font-weight: 450 !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(
+  .dp-partner-register-group legend,
+  .dp-partner-system-grid h3,
+  .dp-partner-impact-groups h3,
+  .dp-partner-services-grid h3,
+  .dp-partner-integration-grid h3,
+  .dp-partner-plan-summary dt,
+  .dp-partner-faq-list summary
+) {
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  .dp-partner-trust-strip strong,
+  .dp-partner-system-grid span,
+  .dp-partner-integration-grid span,
+  .dp-partner-timeline span,
+  .dp-checkout-module-list span,
+  .dp-partner-impact-groups :is(strong, span, small, em, b, i),
+  .dp-workspace-preview-list strong
+) {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) {
+    padding-top: 82px !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-lifecycle-hero {
+    gap: 18px !important;
+    padding-bottom: 28px !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-lifecycle-hero h1 {
+    font-size: clamp(30px, 8.6vw, 36px) !important;
+    line-height: 1.08 !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-lifecycle-section-head h2,
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) :is(.dp-partner-recommended-plan h3, .dp-workspace-preview-card h3, .dp-checkout-grid h3, .dp-partner-final-cta h2) {
+    font-size: clamp(22px, 6.4vw, 27px) !important;
+    line-height: 1.18 !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) :is(
+    .dp-partner-lifecycle-hero span,
+    .dp-partner-lifecycle-section-head span,
+    .dp-partner-recommended-plan p,
+    .dp-partner-services-grid p,
+    .dp-partner-faq-list p,
+    .dp-partner-final-cta span,
+    .dp-checkout-grid p,
+    .dp-workspace-preview-list small
+  ) {
+    font-size: 13px !important;
+    line-height: 1.48 !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) :is(a, button, input, textarea, select) {
+    font-size: 14px !important;
+  }
+}
+
+/* Card-level copy should stay compact inside the registration workflow. */
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-lifecycle-hero h1 {
+  font-size: clamp(32px, 4vw, 44px) !important;
+  line-height: 1.06 !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-lifecycle-section-head h2,
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-final-cta h2 {
+  font-size: clamp(23px, 2.2vw, 30px) !important;
+  line-height: 1.18 !important;
+}
+
+html body #root#root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(.dp-partner-recommended-plan h3, .dp-workspace-preview-card h3, .dp-checkout-grid h3) {
+  font-size: clamp(20px, 1.6vw, 22px) !important;
+  line-height: 1.22 !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-lifecycle-hero h1 {
+    font-size: clamp(29px, 8vw, 34px) !important;
+    line-height: 1.1 !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-lifecycle-section-head h2,
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-final-cta h2 {
+    font-size: clamp(21px, 5.8vw, 24px) !important;
+  }
+
+  html body #root#root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) :is(.dp-partner-recommended-plan h3, .dp-workspace-preview-card h3, .dp-checkout-grid h3) {
+    font-size: 20px !important;
+  }
+}
