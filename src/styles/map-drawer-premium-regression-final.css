@@ -508,15 +508,43 @@ html body #root #dp-active-map-drawer .dp-legends-brand-card img {
 html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence {
   position: relative;
   isolation: isolate;
+  z-index: 50;
 }
 
-html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence .dp-search-intent-secondary-track {
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence .dp-brand-activation-tabs {
   position: relative;
-  z-index: 3;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
   pointer-events: auto;
 }
 
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence .dp-brand-activation-tab {
+  min-height: 34px;
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  border-radius: 7px;
+  background: #fff;
+  color: #0b1f33;
+  font: 700 11px/1 Inter, system-ui, sans-serif;
+  letter-spacing: 0;
+  padding: 8px 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence .dp-brand-activation-tab.is-active {
+  border-color: rgba(200, 169, 106, 0.72);
+  box-shadow: inset 0 -2px 0 #c8a96a;
+}
+
 html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence :is(.dp-partner-opportunity-list, .dp-partner-guide-list) {
+  position: relative;
+  z-index: 55;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence ~ .dp-partner-intelligence-section,
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence ~ .dp-partner-ask-section {
   position: relative;
   z-index: 1;
 }
