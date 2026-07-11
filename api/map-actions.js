@@ -104,6 +104,11 @@ function responseMessage(action) {
   return "Map action saved.";
 }
 
+function demoResponseMessage(action) {
+  if (["save", "unsave"].includes(action)) return "Saved for this session.";
+  return "Saved for this session. Connect account storage before treating this as a permanent workspace change.";
+}
+
 function actionTypeForAnalytics(action) {
   if (action === "redeem" || action === "show_card") return "redemption";
   if (action === "add_wallet") return "redemption";
@@ -163,7 +168,7 @@ async function safeInsert(table, row, required = false) {
 }
 
 async function recordSupabaseAction(payload) {
-  if (!supabaseServer) return { persisted: false, writes: [] };
+  if (!supabaseServer) return { persisted: false, reason: "supabase_not_configured", writes: [] };
 
   const metadata = workspaceMetadata(payload);
   const entityType = payload.entity.type || payload.entity.category || "place";
@@ -277,13 +282,15 @@ export default async function handler(req, res) {
   if (!payload.entity.id && !payload.entity.name) return res.status(400).json({ error: "Entity context is required" });
 
   try {
-    await recordSupabaseAction(payload);
+    const storage = await recordSupabaseAction(payload);
     return res.status(200).json({
       ok: true,
       id: payload.id,
       action: payload.action,
       status: "accepted",
-      message: responseMessage(payload.action),
+      message: storage.persisted ? responseMessage(payload.action) : demoResponseMessage(payload.action),
+      storage,
+      writeMode: storage.persisted ? "durable" : "demo_session_only",
     });
   } catch (error) {
     console.error("[map-actions] accepted action but persistence failed", error);
@@ -293,6 +300,12 @@ export default async function handler(req, res) {
       action: payload.action,
       status: "accepted",
       message: responseMessage(payload.action),
+      storage: {
+        persisted: false,
+        reason: error?.message || "persistence_failed",
+        writes: [],
+      },
+      writeMode: "accepted_without_persistence",
     });
   }
 }
