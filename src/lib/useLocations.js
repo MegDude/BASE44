@@ -1518,7 +1518,7 @@ export function buildLocations() {
 
   const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...launchMapPinPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
-    .filter((item) => isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
+    .filter((item) => item.launchMapPin || isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
       const isVia313 = String(item.name || "").toLowerCase().includes("via 313");
       const isRoyalBlue = String(item.name || "").toLowerCase().includes("royal blue grocery");
@@ -1661,6 +1661,41 @@ export function buildLocations() {
                 ...entity.raw,
                 ...fourSeasonsExperienceUpdate,
               },
+            }
+          : {}),
+        ...(curatedItem.launchMapPin
+          ? {
+              sourceType: curatedItem.sourceType,
+              markerType: curatedItem.markerType,
+              detailDrawerType: curatedItem.detailDrawerType,
+              pinKey: curatedItem.pinKey,
+              partnerType: curatedItem.partnerType,
+              category: curatedItem.category,
+              summary: curatedItem.summary,
+              description: curatedItem.description,
+              alignment_to_downtown_perks: curatedItem.alignment_to_downtown_perks,
+              deals_offers: curatedItem.deals_offers,
+              specials: curatedItem.specials,
+              hasPerk: curatedItem.hasPerk,
+              hasPerkPotential: curatedItem.hasPerkPotential,
+              perk: curatedItem.perk,
+              offer: curatedItem.offer,
+              campaignName: curatedItem.campaignName,
+              campaignType: curatedItem.campaignType,
+              campaignCopy: curatedItem.campaignCopy,
+              collection: curatedItem.collection,
+              mapCardCta: curatedItem.mapCardCta,
+              qrPromptCopy: curatedItem.qrPromptCopy,
+              proofMetrics: curatedItem.proofMetrics,
+              primaryAction: curatedItem.primaryAction,
+              secondaryAction: curatedItem.secondaryAction,
+              tags: curatedItem.tags,
+              searchKeywords: curatedItem.searchKeywords,
+              launchMapPin: true,
+              launchPinType: curatedItem.launchPinType,
+              publicCategory: curatedItem.publicCategory,
+              hasExactMarker: curatedItem.hasExactMarker,
+              raw: curatedItem.raw,
             }
           : {}),
         category_key: curatedItem.category_key,
