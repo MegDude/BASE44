@@ -73,7 +73,7 @@ function getEntitySlugCandidates(entity) {
 }
 
 const BUILDING_NAME_ALIASES = {
-  "70-rainey": "luxury-building-70-rainey",
+  "70-rainey": "luxury-presence-70-rainey-st-1409-9192982",
   "44-east": "luxury-building-44-east",
   "44-east-ave": "luxury-building-44-east",
   "the-independent": "luxury-building-the-independent",
@@ -92,8 +92,8 @@ const BUILDING_NAME_ALIASES = {
 };
 
 const ADDRESS_BUILDING_ALIASES = {
-  "70-rainey": "luxury-building-70-rainey",
-  "70-rainey-st": "luxury-building-70-rainey",
+  "70-rainey": "luxury-presence-70-rainey-st-1409-9192982",
+  "70-rainey-st": "luxury-presence-70-rainey-st-1409-9192982",
   "44-east": "luxury-building-44-east",
   "44-east-ave": "luxury-building-44-east",
   "301-west-ave": "luxury-building-the-independent",
@@ -175,9 +175,9 @@ export const LEGENDS_LISTING_TO_BUILDING_ALIASES = listingAliasEntries.reduce((a
   });
   return aliases;
 }, {
-  "70-rainey-st-1409-legends-property-70-rainey-st-1409-9192982": "luxury-building-70-rainey",
-  "70-rainey-st-1409": "luxury-building-70-rainey",
-  "70-rainey-1409": "luxury-building-70-rainey",
+  "70-rainey-st-1409-legends-property-70-rainey-st-1409-9192982": "luxury-presence-70-rainey-st-1409-9192982",
+  "70-rainey-st-1409": "luxury-presence-70-rainey-st-1409-9192982",
+  "70-rainey-1409": "luxury-presence-70-rainey-st-1409-9192982",
 });
 
 const NON_PROPERTY_URL_ENTITY_IDS = new Set([
@@ -266,7 +266,9 @@ export const mapEntityAliases = {
   "fairmont-spa-yoga": "event-fairmont-summer-wellness",
   geraldines: "partner-geraldines",
   "geraldine-s": "partner-geraldines",
-  "70-rainey": "luxury-building-70-rainey",
+  "70-rainey": "luxury-presence-70-rainey-st-1409-9192982",
+  "70-rainey-st": "luxury-presence-70-rainey-st-1409-9192982",
+  "70-rainey-st-unit-1409": "luxury-presence-70-rainey-st-1409-9192982",
   "360-condominiums": "luxury-building-360-condominiums",
   "seaholm-residences": "luxury-building-seaholm-residences",
   "fifth-west": "luxury-building-fifth-and-west",

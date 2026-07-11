@@ -164,6 +164,7 @@ const DAA_CIVIC_VIDEOS = [
 ];
 const LEGENDS_BRAND_LINE = "Legends Real Estate";
 const LEGENDS_PIN_LOGO = "/pins/downtown-perks/legends-logo-gold.svg";
+const LEGENDS_PIN_ALT = "Legends Real Estate logo";
 const MAP_DRAWER_SURFACE_STYLE = {
   backgroundColor: "rgba(255, 255, 255, 0.94)",
   backgroundImage: "none",
@@ -3493,7 +3494,7 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, z
   const priceLabel = isRentalEntity(place) && rentalPriceLabel ? `<span class="dp-live-pin__price">${escapeHtmlAttribute(rentalPriceLabel)}</span>` : "";
   const isLegendsPin = isLegendsMapPlace(place) || Boolean(getLegendsListing(place) || getLegendsResidentialProfileForPlace(place));
   const iconSvg = isLegendsPin
-    ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${LEGENDS_PIN_LOGO}" alt="" aria-hidden="true" loading="eager" decoding="async" />`
+    ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${LEGENDS_PIN_LOGO}" alt="${LEGENDS_PIN_ALT}" loading="eager" decoding="async" />`
     : pin.glyph;
 
   const zoomStyle = zoomMarkerStyleAttribute(zoom, { selected });
@@ -9298,7 +9299,7 @@ function LegendsListingDetails({ listing }) {
         <div className="flex min-w-0 items-start gap-3 text-left">
           <img
             src={LEGENDS_PIN_LOGO}
-            alt="Legends Real Estate"
+            alt={LEGENDS_PIN_ALT}
             className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
           />
           <div className="min-w-0 text-left">
@@ -9384,7 +9385,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
           <div className="flex min-w-0 items-start gap-3">
             <img
               src={LEGENDS_PIN_LOGO}
-              alt="Legends Real Estate"
+              alt={LEGENDS_PIN_ALT}
               className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
             />
             <div className="min-w-0">
@@ -10409,7 +10410,7 @@ function LegendsResidentialIntelligenceDrawer({
       </header>
 
       <section className="dp-legends-brand-card" aria-label="Legends Real Estate">
-        <img src={LEGENDS_PIN_LOGO} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <img src={LEGENDS_PIN_LOGO} alt={LEGENDS_PIN_ALT} loading="lazy" decoding="async" />
         <span>
           <strong>{LEGENDS_BRAND_LINE}</strong>
           <small>Downtown listings, building context, showing requests, and nearby lifestyle guidance.</small>
@@ -10417,7 +10418,7 @@ function LegendsResidentialIntelligenceDrawer({
       </section>
 
       {!isPartnerMode && (
-        <div className="dp-entity-action-row dp-legends-action-carousel" aria-label="Residential actions">
+        <div className="dp-legends-action-grid" aria-label="Residential actions">
           <>
             {hasActiveListings && (
               <button type="button" className="dp-entity-action is-primary" onClick={openAvailability}>View Availability</button>
@@ -10569,7 +10570,7 @@ function LegendsResidentialIntelligenceDrawer({
           </section>
 
           <section className="dp-entity-section">
-            <div className="dp-entity-action-row dp-legends-action-carousel">
+            <div className="dp-legends-action-grid">
               <button type="button" className="dp-entity-action is-primary" onClick={openInquiry}>Schedule Tour</button>
               <button type="button" className="dp-entity-action" onClick={() => onFilter?.("Legends")}>Compare Buildings</button>
             </div>
@@ -11420,7 +11421,7 @@ function GoogleMapCanvas({
       wrapper.innerHTML = mapPinButtonHtml({
         place,
         pin: resolveEntityPin(place),
-        ariaLabel: `${place.name} details`,
+        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `${place.name}, Legends Real Estate listing. Open listing details.` : `${place.name} details`,
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
         classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,

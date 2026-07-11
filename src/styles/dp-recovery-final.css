@@ -45197,7 +45197,6 @@ html body #root .dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-live-pin__bra
   transform: translateY(-2px) !important;
 }
 
-
 /* True EOF map panel polish lock: wins over all accumulated recovery rules. */
 html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-console, .dp-map-drawer-shell, .dp-panel-shell, .dp-detail-drawer, .dp-destination-drawer, .dp-map-sheet, .dp-map-directory-sheet, .dp-bottom-sheet, .dp-pass-panel, .dp-quick-search-modal) {
   background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .76)) !important;
@@ -53141,3 +53140,66 @@ html body .dp-search-more-intent-panel__header small {
     transition: none !important;
   }
 }
+
+/* True EOF Legends brand identity and mobile action containment. */
+html body #root .dp-map-page.dp-map-page .dp-google-map-marker-shell .dp-map-pin.dp-live-pin--legends-logo,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-pin.dp-live-pin--legends-logo,
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin--legends-logo {
+  background: #0B1F33 !important;
+  border: 1px solid rgba(255, 255, 255, 0.92) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 18px rgba(11, 31, 51, 0.22) !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-google-map-marker-shell .dp-map-pin.dp-live-pin--legends-logo:is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-pin.dp-live-pin--legends-logo:is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]),
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin--legends-logo:is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]) {
+  border-color: #C8A96A !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.24), 0 10px 22px rgba(11, 31, 51, 0.28) !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-google-map-marker-shell .dp-map-pin.dp-live-pin--legends-logo :is(.dp-pin-logo, .dp-live-pin__legends-logo),
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-pin.dp-live-pin--legends-logo :is(.dp-pin-logo, .dp-live-pin__legends-logo),
+html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-live-pin--legends-logo :is(.dp-pin-logo, .dp-live-pin__legends-logo),
+html body #root .dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-pin-logo, .dp-live-pin__legends-logo) {
+  width: calc(var(--dp-zoom-pin-size, 34px) - 12px) !important;
+  height: calc(var(--dp-zoom-pin-size, 34px) - 12px) !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  filter: none !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel > button,
+html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel > .dp-entity-action {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+@media (max-width: 480px) {
+  html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel > button,
+  html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel > .dp-entity-action {
+    min-height: 44px !important;
+    padding-inline: 8px !important;
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+  }
+}
+
