@@ -1021,3 +1021,585 @@ html body #root .dp-partner-lifecycle-page-start :is(h1, h2, h3, p, span, strong
   word-break: normal !important;
   overflow-wrap: normal !important;
 }
+
+/* Partner sign-up and pricing builder deep sweep: consolidated. */
+html body #root .dp-partner-lifecycle-page-start,
+html body #root#root main.dp-pricing-page.dp-pricing-page {
+  overflow-x: clip !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start *,
+html body #root .dp-partner-lifecycle-page-start *::before,
+html body #root .dp-partner-lifecycle-page-start *::after,
+html body #root#root main.dp-pricing-page.dp-pricing-page *,
+html body #root#root main.dp-pricing-page.dp-pricing-page *::before,
+html body #root#root main.dp-pricing-page.dp-pricing-page *::after {
+  box-sizing: border-box !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start :is(.dp-partner-lifecycle-hero, .dp-partner-trust-strip, .dp-partner-lifecycle-section, .dp-partner-purchase-grid),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-container, .dp-pricing-calculator) {
+  max-width: min(1120px, calc(100vw - 32px)) !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero {
+  padding-bottom: clamp(18px, 3vw, 28px) !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero span {
+  max-width: 680px !important;
+  font-size: clamp(15px, 2vw, 17px) !important;
+  line-height: 1.48 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip {
+  padding-top: 18px !important;
+  padding-bottom: clamp(32px, 5vw, 44px) !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip > div {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip > div::-webkit-scrollbar,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-lifecycle-section {
+  padding-top: clamp(34px, 5vw, 52px) !important;
+  padding-bottom: clamp(34px, 5vw, 52px) !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button {
+  border-radius: 10px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page {
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-section {
+  padding: clamp(82px, 7vw, 100px) 16px 60px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+  width: 100% !important;
+  margin-inline: auto !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container {
+  padding-inline: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px) !important;
+  gap: clamp(18px, 4vw, 56px) !important;
+  align-items: end !important;
+  margin: 0 0 28px !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header :is(span, .dp-pricing-eyebrow),
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator legend,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid label > span {
+  display: block !important;
+  margin: 0 0 14px !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  letter-spacing: 0.11em !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header :is(span, .dp-pricing-eyebrow) {
+  color: #8a6a2f !important;
+  -webkit-text-fill-color: #8a6a2f !important;
+  letter-spacing: 0.16em !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header h2 {
+  max-width: 580px !important;
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(40px, 5.2vw, 58px) !important;
+  font-weight: 650 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header p {
+  max-width: 430px !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 15px !important;
+  font-weight: 450 !important;
+  line-height: 1.55 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 388px) !important;
+  gap: 28px !important;
+  align-items: start !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+  min-width: 0 !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: 0 18px 46px rgba(11, 31, 51, 0.05) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls {
+  padding: clamp(18px, 2.5vw, 26px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+  position: sticky !important;
+  top: 88px !important;
+  padding: clamp(18px, 2.5vw, 24px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset {
+  display: grid !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset + fieldset,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup {
+  margin-top: clamp(24px, 4vw, 30px) !important;
+  padding-top: clamp(20px, 3vw, 24px) !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid.dp-pricing-partner-type-grid,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button {
+  display: grid !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  border: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button {
+  min-height: 82px !important;
+  padding: 13px 14px !important;
+  align-content: start !important;
+  gap: 7px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-choice-grid.dp-pricing-partner-type-grid > button, .dp-pricing-plan-choice, .dp-pricing-option-list > button)[data-active="true"] {
+  border-color: rgba(200, 169, 106, 0.78) !important;
+  background: #fff !important;
+  box-shadow: inset 3px 0 0 #c8a96a !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-choice-grid.dp-pricing-partner-type-grid > button, .dp-pricing-plan-choice, .dp-pricing-option-list > button) strong {
+  display: block !important;
+  min-width: 0 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 14px !important;
+  font-weight: 720 !important;
+  line-height: 1.22 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-choice-grid.dp-pricing-partner-type-grid > button small, .dp-pricing-plan-choice p, .dp-pricing-option-list > button small) {
+  display: -webkit-box !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice {
+  min-height: 0 !important;
+  padding: 15px !important;
+  align-content: start !important;
+  gap: 11px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice > div:first-child {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: start !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice em,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary .dp-pricing-guide-primary {
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.04) !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-style: normal !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice ul {
+  display: grid !important;
+  gap: 7px !important;
+  margin: 0 !important;
+  padding: 10px 0 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice li {
+  min-width: 0 !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid label {
+  display: grid !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid :is(input, select, textarea),
+html body #root#root main.dp-pricing-page.dp-pricing-page select,
+html body #root#root main.dp-pricing-page.dp-pricing-page input {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail {
+  display: flex !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 10px 0 18px !important;
+  padding: 0 0 4px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button {
+  flex: 0 0 auto !important;
+  min-width: 132px !important;
+  min-height: 42px !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button[data-active="true"] {
+  border-color: rgba(200, 169, 106, 0.78) !important;
+  background: rgba(200, 169, 106, 0.12) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px 12px !important;
+  align-items: center !important;
+  min-height: 58px !important;
+  padding: 12px 14px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button small {
+  grid-column: 1 / -1 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button em {
+  color: #8a6a2f !important;
+  -webkit-text-fill-color: #8a6a2f !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 760 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-total {
+  margin: 22px 0 12px !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: clamp(48px, 6vw, 64px) !important;
+  font-weight: 690 !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.05em !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 22px 0 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl div {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  padding: 11px 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary :is(dt, dd) {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dt {
+  color: rgba(11, 31, 51, 0.66) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dd {
+  font-weight: 720 !important;
+  text-align: right !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-button, .dp-pricing-summary a, .dp-pricing-summary button) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  padding: 0 16px !important;
+  border-radius: 10px !important;
+  border: 1px solid #0b1f33 !important;
+  background: #0b1f33 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 720 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, p, span, strong, small, a, button, dd, dt, summary, label, legend, li) {
+  hyphens: none !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-partner-lifecycle-page-start {
+    padding: 78px 16px 48px !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero {
+    gap: 14px !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero-actions {
+    margin-top: 20px !important;
+    gap: 10px !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero span {
+    margin-top: 14px !important;
+    font-size: 15px !important;
+    line-height: 1.48 !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding-top: 16px !important;
+    padding-bottom: 28px !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong {
+    min-height: 30px !important;
+    padding-inline: 11px !important;
+    border: 1px solid rgba(11, 31, 51, 0.1) !important;
+    border-radius: 999px !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong:first-child {
+    border-left: 1px solid rgba(11, 31, 51, 0.1) !important;
+  }
+
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button {
+    min-height: 96px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-section {
+    padding: 48px 16px 48px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header {
+    margin-bottom: 24px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header h2 {
+    max-width: 320px !important;
+    font-size: clamp(34px, 11vw, 40px) !important;
+    line-height: 1.02 !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header p {
+    max-width: none !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+    width: 100% !important;
+    padding: 16px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+    position: static !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid.dp-pricing-partner-type-grid,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-card-grid,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button {
+    min-height: 74px !important;
+    padding: 12px 13px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice {
+    padding: 14px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice p {
+    -webkit-line-clamp: 3 !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button {
+    min-width: 118px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button {
+    min-height: 64px !important;
+    align-items: start !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-total {
+    font-size: 46px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
+    position: static !important;
+  }
+}
+
+/* Partner signup square-control lock: no bubbles, pills, or rounded buttons. */
+html body #root .dp-partner-lifecycle-page-start :is(a, button, summary, .dp-partner-trust-strip strong),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(a, button, summary, input, select, textarea, .dp-pricing-plan-choice em, .dp-pricing-guide-primary) {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start :is(.dp-partner-system-grid article, .dp-partner-recommended-plan, .dp-partner-plan-comparison, .dp-partner-impact-groups article, .dp-partner-services-grid article, .dp-partner-integration-grid article, .dp-partner-plan-summary, .dp-partner-final-cta),
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-calculator-controls, .dp-pricing-summary, .dp-pricing-summary-plan, .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button, .dp-pricing-plan-choice, .dp-pricing-option-list > button) {
+  border-radius: 4px !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button,
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-button, .dp-pricing-summary a, .dp-pricing-summary button) {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong {
+  background: #fff !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-partner-lifecycle-page-start .dp-partner-final-cta {
+    margin-top: 24px !important;
+  }
+}
+

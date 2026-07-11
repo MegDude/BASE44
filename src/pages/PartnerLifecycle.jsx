@@ -668,11 +668,11 @@ function StartStage({ setup, setSetup }) {
           <ProfessionalServicesSection />
           <IntegrationsSection />
           <TimelineSection />
-          <FaqSection />
-          <FinalCtaSection />
         </div>
         <LivePricingSummary setup={setup} />
       </div>
+      <FinalCtaSection />
+      <FaqSection />
     </>
   );
 }
