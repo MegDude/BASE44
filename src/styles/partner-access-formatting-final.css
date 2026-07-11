@@ -1,0 +1,359 @@
+/* Partner sign-in/sign-up: authoritative responsive formatting contract. */
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 100dvh !important;
+  padding: calc(64px + clamp(28px, 4vw, 52px)) clamp(18px, 4vw, 52px)
+    calc(env(safe-area-inset-bottom, 0px) + 56px) !important;
+  overflow-x: clip !important;
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page *,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page *::before,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page *::after {
+  box-sizing: border-box !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page :is(
+  h1,
+  h2,
+  h3,
+  p,
+  span,
+  strong,
+  small,
+  label,
+  button,
+  a
+) {
+  hyphens: none !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-shell.dp-partner-access-shell {
+  width: min(100%, 1100px) !important;
+  max-width: 1100px !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-nav.dp-partner-access-nav {
+  margin: 0 0 28px !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-back-button.dp-partner-back-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  min-width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  background: #fff !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-grid.dp-partner-access-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.92fr) minmax(440px, 1.08fr) !important;
+  align-items: start !important;
+  gap: clamp(42px, 6vw, 78px) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page :is(
+  .dp-partner-access-copy,
+  .dp-partner-access-panel,
+  .dp-partner-access-signin,
+  .dp-partner-access-form,
+  .dp-partner-type-section,
+  .dp-partner-type-grid,
+  .dp-partner-type-card,
+  .dp-partner-access-actions
+) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-copy.dp-partner-access-copy {
+  display: grid !important;
+  align-content: start !important;
+  gap: 18px !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-eyebrow.dp-partner-access-eyebrow {
+  margin: 0 !important;
+  color: #a98b4a !important;
+  -webkit-text-fill-color: #a98b4a !important;
+  font-size: 10px !important;
+  font-weight: 760 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.12em !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-title.dp-partner-access-title {
+  max-width: 560px !important;
+  margin: 0 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(38px, 4.2vw, 56px) !important;
+  font-weight: 610 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-lede.dp-partner-access-lede {
+  max-width: 540px !important;
+  margin: 0 !important;
+  font-size: 15px !important;
+  line-height: 1.62 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-list.dp-partner-access-list {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 12px 0 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-list.dp-partner-access-list > div {
+  min-width: 0 !important;
+  padding: 13px 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-list.dp-partner-access-list > div:last-child {
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-list.dp-partner-access-list span {
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-grid.dp-partner-access-grid > .dp-partner-access-panel.dp-partner-access-panel {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: clamp(24px, 3vw, 34px) !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  background: #fff !important;
+  box-shadow: 0 18px 44px rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-signin.dp-partner-access-signin {
+  display: grid !important;
+  align-content: start !important;
+  gap: 18px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page :is(
+  .dp-partner-access-form-title,
+  .dp-partner-access-panel-copy,
+  .dp-partner-signin-type-section
+) {
+  margin: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-form-title.dp-partner-access-form-title {
+  font-size: clamp(22px, 2.2vw, 28px) !important;
+  font-weight: 650 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-panel-copy.dp-partner-access-panel-copy {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-section-head.dp-partner-type-section-head {
+  margin: 0 0 12px !important;
+  padding: 0 0 12px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid.dp-partner-type-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-rows: 1fr !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-content: start !important;
+  justify-items: stretch !important;
+  gap: 5px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 118px !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 14px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  background: #fff !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card[data-active="true"] {
+  border-color: rgba(169, 139, 74, 0.65) !important;
+  background: rgba(191, 164, 106, 0.07) !important;
+  box-shadow: inset 0 0 0 1px rgba(169, 139, 74, 0.12) !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card :is(span, strong, small) {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card span {
+  color: #a98b4a !important;
+  -webkit-text-fill-color: #a98b4a !important;
+  font-size: 9px !important;
+  font-weight: 760 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.08em !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card strong {
+  font-size: 13.5px !important;
+  font-weight: 720 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card small {
+  font-size: 10.5px !important;
+  line-height: 1.38 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-label.dp-partner-access-label {
+  display: block !important;
+  margin: 0 0 7px !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page input.dp-partner-access-control.dp-partner-access-control,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page select.dp-partner-access-control.dp-partner-access-control,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page textarea.dp-partner-access-control.dp-partner-access-control {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 11px 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-size: 16px !important;
+  line-height: 1.3 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin: 2px 0 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding: 9px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.13) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  white-space: normal !important;
+  text-align: center !important;
+  text-decoration: none !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action:last-child {
+  grid-column: 1 / -1 !important;
+}
+
+@media (max-width: 960px) {
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-grid.dp-partner-access-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 34px !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-copy.dp-partner-access-copy {
+    max-width: 680px !important;
+  }
+}
+
+@media (max-width: 639px) {
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page {
+    padding: calc(64px + 18px) 16px calc(env(safe-area-inset-bottom, 0px) + 40px) !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-nav.dp-partner-access-nav {
+    margin-bottom: 20px !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-title.dp-partner-access-title {
+    font-size: clamp(36px, 11vw, 44px) !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-grid.dp-partner-access-grid > .dp-partner-access-panel.dp-partner-access-panel {
+    padding: 20px !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid.dp-partner-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card {
+    min-height: 132px !important;
+    padding: 12px !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action:last-child {
+    grid-column: auto !important;
+  }
+}
+
+@media (max-width: 359px) {
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid.dp-partner-type-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card {
+    min-height: 100px !important;
+  }
+}

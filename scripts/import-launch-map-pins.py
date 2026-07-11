@@ -82,6 +82,38 @@ PUBLIC_PIN_FIELDS = [
     "offer",
 ]
 
+INTELLIGENCE_FIELDS = [
+    "intelligence_record_id",
+    "pin_id",
+    "partner_brand",
+    "backend_display_status",
+    "backend_partner_headline",
+    "backend_partner_summary",
+    "backend_partner_fit",
+    "backend_resident_value",
+    "backend_guest_value",
+    "backend_perk_offer_copy",
+    "backend_campaign_copy",
+    "backend_activation_plan",
+    "backend_partner_pitch",
+    "backend_outreach_message",
+    "backend_contact_route",
+    "backend_target_role",
+    "backend_required_assets",
+    "backend_success_kpi",
+    "backend_risk",
+    "backend_mitigation",
+    "backend_next_step",
+    "backend_source_priority",
+    "backend_confidence",
+    "backend_source_files",
+    "source_campaign_id",
+    "unique_offer_key",
+    "partner_campaign",
+    "specificity_status",
+    "inclusion_action",
+]
+
 
 NS = {
     "main": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
@@ -291,7 +323,7 @@ def infer_collection(row: dict[str, str], public_category: str) -> str:
 
 
 def approval_status(row: dict[str, str]) -> str:
-    status = (row.get("content_status") or "").lower()
+    status = (row.get("content_status") or row.get("backend_display_status") or "").lower()
     if "published" in status:
         return "published"
     if "approved" in status:
@@ -321,6 +353,24 @@ def to_public_pin(row: dict[str, str], index: int) -> dict[str, Any]:
     lat = nullable_number(row.get("latitude"))
     lng = nullable_number(row.get("longitude"))
     approved_offer = approval in APPROVED_STATUSES
+    tags = split_list(row.get("recommended_tags")) or [
+        value for value in [
+            public_category,
+            row.get("district_or_neighborhood"),
+            row.get("source_category"),
+            row.get("campaign_name") or row.get("partner_campaign"),
+        ] if value
+    ]
+    keywords = split_list(row.get("search_keywords")) or [
+        value for value in [
+            row.get("listing_or_pin_name"),
+            row.get("public_display_title"),
+            public_category,
+            row.get("district_or_neighborhood"),
+            row.get("partner_brand"),
+            row.get("campaign_name") or row.get("partner_campaign"),
+        ] if value
+    ]
     public_pin = {
         "pinId": pin_id,
         "id": f"launch-{pin_id}",
@@ -338,8 +388,8 @@ def to_public_pin(row: dict[str, str], index: int) -> dict[str, Any]:
         "latitude": lat,
         "longitude": lng,
         "website": row.get("website") or "",
-        "recommendedTags": split_list(row.get("recommended_tags")),
-        "searchKeywords": split_list(row.get("search_keywords")),
+        "recommendedTags": tags,
+        "searchKeywords": keywords,
         "campaignName": row.get("campaign_name") or row.get("campaign") or "",
         "campaignType": row.get("campaign_type") or "",
         "campaignCopy": row.get("campaign_copy") or "",
@@ -370,6 +420,46 @@ def to_admin_pin(row: dict[str, str], index: int) -> dict[str, Any]:
         "contentApprovalStatus": approval_status(row),
         "internalOnlyFields": {field: row.get(field, "") for field in INTERNAL_ONLY_FIELDS},
     }
+
+
+def backend_intelligence_records(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    return [
+        {field: row.get(field, "") for field in INTELLIGENCE_FIELDS}
+        for row in rows
+        if row.get("pin_id") or row.get("intelligence_record_id")
+    ]
+
+
+def unique_offer_records(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    return [
+        {
+            "uniqueOfferKey": row.get("unique_offer_key", ""),
+            "campaignId": row.get("campaign_id", ""),
+            "partnerBrand": row.get("partner_brand", ""),
+            "partnerCampaign": row.get("partner_campaign", ""),
+            "entityType": row.get("entity_type", ""),
+            "district": row.get("district", ""),
+            "audience": row.get("audience", ""),
+            "launchPinId": row.get("launch_pin_id", ""),
+            "launchPinName": row.get("launch_pin_name", ""),
+            "publicCategory": row.get("public_category", ""),
+            "launchTier": row.get("launch_tier", ""),
+            "specificOfferTitle": row.get("specific_offer_title", ""),
+            "specificOfferMechanics": row.get("specific_offer_mechanics", ""),
+            "specificBackendCopy": row.get("specific_backend_copy", ""),
+            "cta": row.get("cta", ""),
+            "bestTiming": row.get("best_timing", ""),
+            "requiredAssets": row.get("required_assets", ""),
+            "successKpi": row.get("success_kpi", ""),
+            "risk": row.get("risk", ""),
+            "mitigation": row.get("mitigation", ""),
+            "status": row.get("status", ""),
+            "sourceFile": row.get("source_file", ""),
+            "uniquenessStatus": row.get("uniqueness_status", ""),
+        }
+        for row in rows
+        if row.get("unique_offer_key")
+    ]
 
 
 def campaign_records(rows: list[dict[str, str]]) -> list[dict[str, Any]]:
@@ -426,6 +516,29 @@ def read_campaign_matrix(csv_path: str) -> list[dict[str, str]]:
     ]
 
 
+def campaign_matrix_records(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    return [
+        {
+            "campaignId": row.get("Campaign ID", ""),
+            "campaignName": row.get("Campaign / Perk", ""),
+            "entityName": row.get("Entity / Partner", ""),
+            "entityType": row.get("Entity Type", ""),
+            "district": row.get("District", ""),
+            "audience": row.get("Audience", ""),
+            "offerMechanics": row.get("Offer Mechanics", ""),
+            "bestTiming": row.get("Best Timing", ""),
+            "requiredAssets": row.get("Required Assets", ""),
+            "successKpi": row.get("Success KPI", ""),
+            "risk": row.get("Risk", ""),
+            "mitigation": row.get("Mitigation", ""),
+            "status": row.get("Status", ""),
+            "recommendedDestination": "admin_outreach_or_campaign_review",
+        }
+        for row in rows
+        if row.get("Campaign ID") or row.get("Entity / Partner")
+    ]
+
+
 def assessment_records(file_path: str) -> dict[str, list[dict[str, str]]]:
     if not file_path or not Path(file_path).exists():
         return {"missingVerifyPartners": [], "recommendedInclusions": []}
@@ -459,10 +572,11 @@ def assessment_records(file_path: str) -> dict[str, list[dict[str, str]]]:
     }
 
 
-def dana_crm_records(file_path: str) -> list[dict[str, str]]:
-    if not file_path or not Path(file_path).exists():
-        return []
-    sheets = parse_workbook(file_path)
+def dana_crm_records(file_path: str = "", fallback_sheets: dict[str, list[dict[str, str]]] | None = None) -> list[dict[str, str]]:
+    if file_path and Path(file_path).exists():
+        sheets = parse_workbook(file_path)
+    else:
+        sheets = fallback_sheets or {}
     rows = sheets.get("Stakeholder CRM") or next(iter(sheets.values()), [])
     return [
         {
@@ -488,7 +602,9 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 def main() -> int:
     args = parse_args()
     sheets = parse_workbook(args.workbook)
-    launch_rows = sheets.get("Launch Pins + Copy", [])
+    launch_rows = sheets.get("Launch Pins + Copy") or sheets.get("Launch Pins Complete") or []
+    intelligence_rows = sheets.get("Intelligence View Backend", [])
+    unique_offer_rows = unique_offer_records(sheets.get("Unique Partner Offers", []))
     public_pins = [
         pin
         for index, row in enumerate(launch_rows)
@@ -496,9 +612,11 @@ def main() -> int:
         if is_publicly_eligible(row, pin["publicCategory"], approval_status(row))
     ]
     admin_pins = [to_admin_pin(row, index) for index, row in enumerate(launch_rows)]
-    campaign_matrix = read_campaign_matrix(args.campaign_matrix)
+    campaign_matrix = read_campaign_matrix(args.campaign_matrix) or campaign_matrix_records(sheets.get("Perk Campaign Matrix", []))
     assessment = assessment_records(args.assessment)
-    dana_crm = dana_crm_records(args.dana_crm)
+    dana_crm = dana_crm_records(args.dana_crm, {
+        "Stakeholder CRM": sheets.get("DANA Stakeholder CRM", []),
+    })
 
     public_payload = {
         "schema": "downtown-perks-launch-map-pins-public-v1",
@@ -509,6 +627,8 @@ def main() -> int:
             "publicPinsWithCoordinates": len([pin for pin in public_pins if pin["hasExactMarker"]]),
             "campaignRows": len(sheets.get("Campaign Rollup", [])),
             "offerTemplateRows": len(sheets.get("Offer Templates", [])),
+            "intelligenceRows": len(intelligence_rows),
+            "uniquePartnerOffers": len(unique_offer_rows),
             "draftOffersHidden": len([pin for pin in public_pins if not pin["offer"]]),
         },
         "pins": public_pins,
@@ -525,9 +645,19 @@ def main() -> int:
             "missingVerifyPartners": len(assessment["missingVerifyPartners"]),
             "recommendedInclusions": len(assessment["recommendedInclusions"]),
             "danaCrmRows": len(dana_crm),
+            "intelligenceRows": len(intelligence_rows),
+            "uniquePartnerOffers": len(unique_offer_rows),
         },
         "internalOnlyFields": INTERNAL_ONLY_FIELDS,
         "pins": admin_pins,
+        "partnerIntelligence": backend_intelligence_records(intelligence_rows),
+        "uniquePartnerOffers": unique_offer_rows,
+        "fullMapCrmMaster": sheets.get("Full Map CRM Master", []),
+        "mapPinOutreachLeads": sheets.get("Map Pin Outreach Leads", []),
+        "partnerAdminOutreach": sheets.get("Partner Admin Outreach", []),
+        "attachmentInclusion": sheets.get("Attachment Inclusion", []),
+        "addedOrUpdatedItems": sheets.get("Added or Updated Items", []),
+        "uniquenessQa": sheets.get("Uniqueness QA", []),
         "campaignMatrix": campaign_matrix,
         "missingVerifyPartners": assessment["missingVerifyPartners"],
         "recommendedInclusions": assessment["recommendedInclusions"],
@@ -543,6 +673,8 @@ def main() -> int:
         "campaignMatrixRows": len(campaign_matrix),
         "missingVerifyPartners": len(assessment["missingVerifyPartners"]),
         "danaCrmRows": len(dana_crm),
+        "intelligenceRows": len(intelligence_rows),
+        "uniquePartnerOffers": len(unique_offer_rows),
     }, indent=2))
     return 0
 

@@ -76,6 +76,7 @@ import {
 } from "@/data/legendsResidentialExperience";
 import { theShoreResidentialBuilding } from "@/data/theShoreResidentialBuilding";
 import { brandCampaignExamples, liveCampaignLayerExamples } from "@/data/campaignLayerExamples";
+import { getBrandActivationIntelligence, getBrandActivationRoutesForEntity } from "@/data/brandActivationIntelligence";
 import { DAA_TOUR_STOP_COUNT, daaArtWalkImages, getDaaTourStopById } from "@/data/daaArtParksTour";
 import {
   DPParkingReservation,
@@ -8280,6 +8281,201 @@ function PartnerPerkIntelligencePanel({ place }) {
   );
 }
 
+function BrandActivationIntelligenceView({ place, places = [], onSelect }) {
+  const activation = getBrandActivationIntelligence(place);
+  const routes = getBrandActivationRoutesForEntity(place);
+  const [activeTab, setActiveTab] = useState("overview");
+  if (!activation) return null;
+
+  const tabs = [
+    ["overview", "Overview"],
+    ["resident", "Resident"],
+    ["intelligence", "Intelligence"],
+    ["offers", "Offers"],
+    ["campaign", "Campaign"],
+    ["routes", "Routes"],
+    ["demand", "Demand"],
+    ["performance", "Proof"],
+    ["source", "Source QA"],
+  ];
+  const openRelated = (label) => {
+    const match = places.find((candidate) => String(candidate?.name || "").toLowerCase().includes(String(label || "").toLowerCase()));
+    if (match) onSelect?.(match);
+  };
+
+  return (
+    <section className="dp-partner-intelligence-section dp-brand-activation-intelligence" aria-label={`${activation.partnerBrand} brand activation intelligence`}>
+      <div className="dp-partner-perk-intel-header">
+        <span>{activation.eyebrow}</span>
+        <h3>{activation.headline}</h3>
+        <p>{activation.partnerHero.copy}</p>
+      </div>
+
+      <div className="dp-brand-activation-tabs" role="tablist" aria-label="Brand activation intelligence tabs">
+        {tabs.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === id}
+            className={`dp-brand-activation-tab ${activeTab === id ? "is-active" : ""}`}
+            onClick={() => setActiveTab(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "overview" && (
+        <div className="dp-partner-opportunity-list">
+          <article className="dp-partner-opportunity-item">
+            <h4>{activation.residentHero.title}</h4>
+            <small>{activation.residentHero.meta}</small>
+            <p>{activation.residentHero.copy}</p>
+            <strong>{activation.residentHero.primaryCta}</strong>
+          </article>
+          <article className="dp-partner-opportunity-item">
+            <h4>Partner activation</h4>
+            <p>{activation.intelligence.summary}</p>
+            <small>{activation.intelligence.specificityStatus}</small>
+          </article>
+        </div>
+      )}
+
+      {activeTab === "resident" && (
+        <div className="dp-partner-guide-list">
+          {[
+            ["Why go", activation.residentDetails.whyGo],
+            ["Current perk", activation.residentDetails.currentPerk],
+            ["How to use it", activation.residentDetails.howToUse],
+            ["Best nearby route", activation.residentDetails.bestNearbyRoute],
+            ["Good for", activation.residentDetails.goodFor],
+            ["Parking / arrival", activation.residentDetails.parkingArrival],
+          ].map(([label, value]) => (
+            <article key={label}>
+              <span>{label}</span>
+              <p>{value}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "intelligence" && (
+        <div className="dp-partner-opportunity-list">
+          {[
+            ["Partner summary", activation.intelligence.summary],
+            ["Why this partner fits", activation.intelligence.fit],
+            ["Resident value", activation.intelligence.residentValue],
+            ["Guest / visitor value", activation.intelligence.guestValue],
+            ["Perk / offer logic", activation.intelligence.offerLogic],
+            ["Campaign plan", activation.intelligence.campaignPlan],
+            ["Activation plan", activation.intelligence.activationPlan],
+            ["Suggested outreach", activation.intelligence.outreachMessage],
+            ["Contact route / target role", `${activation.intelligence.contactRoute} ${activation.intelligence.targetRole}`],
+            ["Proof metrics", activation.intelligence.successKpi],
+            ["Risk / mitigation", `${activation.intelligence.risk} / ${activation.intelligence.mitigation}`],
+            ["Next action", activation.intelligence.nextStep],
+          ].map(([title, copy]) => (
+            <article key={title} className="dp-partner-opportunity-item">
+              <h4>{title}</h4>
+              <p>{copy}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "offers" && (
+        <div className="dp-partner-opportunity-list">
+          <article className="dp-partner-opportunity-item">
+            <h4>{activation.offer.title}</h4>
+            <p>{activation.offer.mechanics}</p>
+            <small>{activation.offer.backendCopy}</small>
+            <strong>{activation.offer.cta}</strong>
+          </article>
+          <article className="dp-partner-opportunity-item">
+            <h4>{activation.offer.uniqueOfferKey}</h4>
+            <p>{activation.offer.status} / {activation.offer.bestTiming}</p>
+            <small>{activation.offer.requiredAssets}</small>
+          </article>
+        </div>
+      )}
+
+      {activeTab === "campaign" && (
+        <div className="dp-partner-guide-list">
+          {[
+            ["Campaign name", activation.offer.partnerCampaign],
+            ["Audience", "Residents, hotel guests, downtown shoppers, and brand activation visitors."],
+            ["Why now", activation.offer.bestTiming],
+            ["Offer mechanics", activation.offer.mechanics],
+            ["Required assets", activation.offer.requiredAssets],
+            ["Proof metrics", activation.offer.successKpi],
+            ["Risk / mitigation", `${activation.offer.risk} / ${activation.offer.mitigation}`],
+          ].map(([label, value]) => (
+            <article key={label}>
+              <span>{label}</span>
+              <p>{value}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "routes" && (
+        <div className="dp-partner-opportunity-list">
+          {routes.map((route) => (
+            <article key={route.routeId} className="dp-partner-opportunity-item">
+              <h4>{route.routeName}</h4>
+              <p>{route.residentCopy}</p>
+              <small>{route.partnerCopy}</small>
+              <strong>{route.routeKpis.join(" / ")}</strong>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "demand" && (
+        <div className="dp-partner-opportunity-list">
+          <article className="dp-partner-opportunity-item">
+            <h4>Nearby demand anchors</h4>
+            <ul className="dp-partner-signal-list">
+              {activation.nearbyDemand.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </article>
+          <article className="dp-partner-opportunity-item">
+            <h4>Cross-promotion opportunities</h4>
+            <div className="dp-partner-ask-rail">
+              {activation.crossPromotion.map((item) => (
+                <button key={item} type="button" onClick={() => openRelated(item)}>{item}</button>
+              ))}
+            </div>
+          </article>
+        </div>
+      )}
+
+      {activeTab === "performance" && (
+        <div className="dp-partner-guide-list">
+          {activation.performanceMetrics.map(([metric, value]) => (
+            <article key={metric}>
+              <span>{metric}</span>
+              <p>{value}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "source" && (
+        <div className="dp-partner-guide-list">
+          {Object.entries(activation.sourceQa).map(([label, value]) => (
+            <article key={label}>
+              <span>{label.replace(/([A-Z])/g, " $1").replace(/^./, (char) => char.toUpperCase())}</span>
+              <p>{value || "Not set"}</p>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function PartnerNearbyContextSection({ opportunities = [] }) {
   const items = opportunities.slice(0, 2);
   if (!items.length) return null;
@@ -8479,13 +8675,15 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onContact, an
   const campaigns = recommendCampaigns({ selectedEntity: place, nearby });
   const relatedAssets = getRelatedPartnerAssets({ nearby, selectedEntity: place });
   const brandOrPerkPanel = isBrandOrPerkPartnerPanelPlace(place);
+  const brandActivation = getBrandActivationIntelligence(place);
 
   return (
     <motion.div className="dp-partner-detail-content dp-partner-intelligence-drawer">
       <DestinationHero place={place} mode="partner" />
       <EntityIdentityPanel identity={getEntityIdentity(place, "partner")} />
+      {brandActivation && <BrandActivationIntelligenceView place={place} places={places} onSelect={onSelect} />}
       {!brandOrPerkPanel && <PartnerActivityIntelligence intelligence={intelligence} />}
-      <PartnerPerkIntelligencePanel place={place} />
+      {!brandActivation && <PartnerPerkIntelligencePanel place={place} />}
       {!brandOrPerkPanel && <PartnerCampaignRecommendationsSection recommendations={campaigns.length ? campaigns : opportunities} />}
       <PartnerRelatedAssetsSection sections={relatedAssets} onSelect={onSelect} />
       <PartnerAskSection

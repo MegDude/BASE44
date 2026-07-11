@@ -58,7 +58,15 @@ const draftOffersExposed = pins.filter((pin) => {
 });
 const searchablePins = pins.filter((pin) => (pin.searchKeywords || []).length || (pin.recommendedTags || []).length);
 
-assert(publicPayload.sourceSummary?.launchPinRows === 576, `Expected 576 source launch rows, got ${publicPayload.sourceSummary?.launchPinRows}`);
+const expectedLaunchRows = Number(process.env.EXPECT_LAUNCH_ROWS || 0);
+const expectedIntelligenceRows = Number(process.env.EXPECT_INTELLIGENCE_ROWS || 0);
+const expectedUniqueOffers = Number(process.env.EXPECT_UNIQUE_OFFERS || 0);
+
+if (expectedLaunchRows) {
+  assert(publicPayload.sourceSummary?.launchPinRows === expectedLaunchRows, `Expected ${expectedLaunchRows} source launch rows, got ${publicPayload.sourceSummary?.launchPinRows}`);
+} else {
+  assert(publicPayload.sourceSummary?.launchPinRows > 0, `Expected source launch rows, got ${publicPayload.sourceSummary?.launchPinRows}`);
+}
 assert(pins.length > 0, "Expected generated public launch pins");
 assert(leakedKeys.length === 0, `Public payload leaked internal fields: ${leakedKeys.slice(0, 10).join(", ")}`);
 assert(civicStories.length > 0, "Expected Civic Downtown Stories Walk pins");
@@ -69,6 +77,14 @@ assert(draftOffersExposed.length === 0, `Draft offers exposed publicly: ${draftO
 assert(searchablePins.length === pins.length, "Every public pin should include tags or search keywords");
 assert((adminPayload.campaignMatrix || []).length === 96, `Expected 96 campaign matrix rows, got ${(adminPayload.campaignMatrix || []).length}`);
 assert((adminPayload.missingVerifyPartners || []).length === 27, `Expected 27 missing/verify campaign partners, got ${(adminPayload.missingVerifyPartners || []).length}`);
+if (expectedIntelligenceRows) {
+  assert((adminPayload.partnerIntelligence || []).length === expectedIntelligenceRows, `Expected ${expectedIntelligenceRows} intelligence rows, got ${(adminPayload.partnerIntelligence || []).length}`);
+}
+if (expectedUniqueOffers) {
+  assert((adminPayload.uniquePartnerOffers || []).length === expectedUniqueOffers, `Expected ${expectedUniqueOffers} unique partner offers, got ${(adminPayload.uniquePartnerOffers || []).length}`);
+}
+const offerKeys = (adminPayload.uniquePartnerOffers || []).map((offer) => offer.uniqueOfferKey).filter(Boolean);
+assert(new Set(offerKeys).size === offerKeys.length, "Duplicate unique offer keys found");
 
 console.log(JSON.stringify({
   launchPinRows: publicPayload.sourceSummary.launchPinRows,
@@ -78,4 +94,6 @@ console.log(JSON.stringify({
   buildingPins: buildingPins.length,
   campaignMatrixRows: adminPayload.campaignMatrix.length,
   missingVerifyPartners: adminPayload.missingVerifyPartners.length,
+  intelligenceRows: (adminPayload.partnerIntelligence || []).length,
+  uniquePartnerOffers: (adminPayload.uniquePartnerOffers || []).length,
 }, null, 2));

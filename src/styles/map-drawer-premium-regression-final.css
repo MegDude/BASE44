@@ -505,3 +505,18 @@ html body #root #dp-active-map-drawer .dp-legends-brand-card img {
     border-radius: 16px !important;
   }
 }
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence {
+  position: relative;
+  isolation: isolate;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence .dp-search-intent-secondary-track {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+html body #root .dp-map-page.dp-map-page aside.dp-detail-drawer .dp-brand-activation-intelligence :is(.dp-partner-opportunity-list, .dp-partner-guide-list) {
+  position: relative;
+  z-index: 1;
+}
