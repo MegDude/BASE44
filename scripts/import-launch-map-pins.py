@@ -214,9 +214,11 @@ def nullable_number(value: str | None) -> float | None:
 
 def category_for(row: dict[str, str]) -> str:
     source = row.get("public_category") or row.get("source_category") or ""
+    text = f"{source} {row.get('kind', '')}".lower()
+    if re.search(r"residential|building|property|apartment|condo|dana launch building", text):
+        return "Residential Buildings"
     if source in PUBLIC_CATEGORIES:
         return source
-    text = f"{source} {row.get('kind', '')}".lower()
     if re.search(r"coffee|cafe|espresso", text):
         return "Coffee"
     if re.search(r"hotel|hospitality|guest", text):
@@ -233,8 +235,6 @@ def category_for(row: dict[str, str]) -> str:
         return "Civic"
     if re.search(r"parking|mobility|transit|garage|bike|ev", text):
         return "Parking & Mobility"
-    if re.search(r"residential|building|property|apartment|condo", text):
-        return "Residential Buildings"
     if re.search(r"partner|featured|campaign|sponsor", text):
         return "Featured / Partner"
     return "Food & Drink"
@@ -258,8 +258,6 @@ def existing_filter_for_category(category: str) -> str:
 
 
 def pin_type_for(row: dict[str, str], public_category: str) -> str:
-    if row.get("pin_type"):
-        return row["pin_type"]
     if public_category == "Residential Buildings":
         return "building_entry_pin"
     if public_category == "Civic":
@@ -270,6 +268,8 @@ def pin_type_for(row: dict[str, str], public_category: str) -> str:
         return "hotel_guest_pin"
     if public_category == "Parking & Mobility":
         return "mobility_pin"
+    if row.get("pin_type"):
+        return row["pin_type"]
     return "public_listing_pin"
 
 
