@@ -1576,15 +1576,22 @@ html body #root#root main.dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, p,
   }
 }
 
-/* Partner signup square-control lock: no bubbles, pills, or rounded buttons. */
-html body #root .dp-partner-lifecycle-page-start :is(a, button, summary, .dp-partner-trust-strip strong),
-html body #root#root main.dp-pricing-page.dp-pricing-page :is(a, button, summary, input, select, textarea, .dp-pricing-plan-choice em, .dp-pricing-guide-primary) {
+/* Partner signup square-control lock: no bubbles, pills, or rounded shapes. */
+html body #root .dp-partner-lifecycle-page-start *,
+html body #root .dp-partner-lifecycle-page-start *::before,
+html body #root .dp-partner-lifecycle-page-start *::after,
+html body #root#root main.dp-pricing-page.dp-pricing-page *,
+html body #root#root main.dp-pricing-page.dp-pricing-page *::before,
+html body #root#root main.dp-pricing-page.dp-pricing-page *::after,
+html body #root#root .dp-partner-access-page.dp-partner-access-page *,
+html body #root#root .dp-partner-access-page.dp-partner-access-page *::before,
+html body #root#root .dp-partner-access-page.dp-partner-access-page *::after {
   border-radius: 0 !important;
 }
 
 html body #root .dp-partner-lifecycle-page-start :is(.dp-partner-system-grid article, .dp-partner-recommended-plan, .dp-partner-plan-comparison, .dp-partner-impact-groups article, .dp-partner-services-grid article, .dp-partner-integration-grid article, .dp-partner-plan-summary, .dp-partner-final-cta),
 html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-calculator-controls, .dp-pricing-summary, .dp-pricing-summary-plan, .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button, .dp-pricing-plan-choice, .dp-pricing-option-list > button) {
-  border-radius: 4px !important;
+  border-radius: 0 !important;
 }
 
 html body #root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button,
@@ -1602,4 +1609,3 @@ html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong 
     margin-top: 24px !important;
   }
 }
-
