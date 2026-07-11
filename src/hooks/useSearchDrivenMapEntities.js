@@ -13,6 +13,150 @@ const SEARCH_RESULT_LIMITS = Object.freeze({
   nearby: 12,
 });
 
+const PUBLIC_RAW_FIELD_ALLOWLIST = new Set([
+  "id",
+  "slug",
+  "name",
+  "title",
+  "displayName",
+  "category",
+  "category_key",
+  "subcategory",
+  "type",
+  "kind",
+  "entityType",
+  "markerType",
+  "detailDrawerType",
+  "destinationKind",
+  "district",
+  "neighborhood",
+  "address",
+  "latitude",
+  "longitude",
+  "lat",
+  "lng",
+  "coords",
+  "summary",
+  "description",
+  "shortDescription",
+  "panelHeadline",
+  "panelBody",
+  "panelContent",
+  "drawerHeadline",
+  "drawerBody",
+  "image",
+  "imageUrl",
+  "images",
+  "gallery",
+  "galleryImages",
+  "video",
+  "videos",
+  "website",
+  "url",
+  "phone",
+  "contact_phone",
+  "bookingUrl",
+  "rsvpUrl",
+  "menuUrl",
+  "offer",
+  "deals_offers",
+  "specials",
+  "perk",
+  "perks",
+  "perkTitle",
+  "perkDescription",
+  "terms",
+  "perk_terms",
+  "valid_until",
+  "expires",
+  "happyHour",
+  "tags",
+  "searchKeywords",
+  "daaTourStop",
+  "eventTime",
+  "eventDate",
+  "startTime",
+  "start_time",
+  "endTime",
+  "end_time",
+  "date",
+  "time",
+  "schedule",
+  "quickFacts",
+  "goodFor",
+  "included",
+  "listings",
+  "legendsListing",
+  "residentQuickFacts",
+  "residentHub",
+  "localService",
+  "serviceCategory",
+  "serviceType",
+  "downtownConnection",
+  "nearbyBuildings",
+  "nearbyPlaces",
+  "nearby",
+  "linkedBusinesses",
+  "linkedBuildings",
+  "notableBuildings",
+  "highlights",
+]);
+
+const INTERNAL_FIELD_PATTERN = /\b(metrics?|analytics|dashboard|crm|pipeline|forecast|financial|revenue|ebitda|pricingStrategy|sales|lead|sponsor|internal|source(Row|File|Table|Database)?|dataQuality|qualityFlag|private|workspace|backend|admin|opportunityScore|partnerOpportunity|campaignObjective)\b/i;
+
+function sanitizeNestedPublicValue(value, depth = 0) {
+  if (!value || depth > 4) return value;
+  if (Array.isArray(value)) return value.map((item) => sanitizeNestedPublicValue(item, depth + 1));
+  if (typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => !INTERNAL_FIELD_PATTERN.test(key))
+      .map(([key, nestedValue]) => [key, sanitizeNestedPublicValue(nestedValue, depth + 1)]),
+  );
+}
+
+function sanitizePublicRaw(raw = {}) {
+  if (!raw || typeof raw !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(raw)
+      .filter(([key]) => PUBLIC_RAW_FIELD_ALLOWLIST.has(key) && !INTERNAL_FIELD_PATTERN.test(key))
+      .map(([key, value]) => [key, sanitizeNestedPublicValue(value)]),
+  );
+}
+
+function toPublicMapEntity(entity = {}) {
+  const publicRaw = sanitizePublicRaw(entity.raw);
+  const {
+    metrics: _metrics,
+    analytics: _analytics,
+    dashboardMetrics: _dashboardMetrics,
+    internalNotes: _internalNotes,
+    sourceRow: _sourceRow,
+    sourceFile: _sourceFile,
+    sourceDatabase: _sourceDatabase,
+    crmStatus: _crmStatus,
+    leadPriority: _leadPriority,
+    sponsorStatus: _sponsorStatus,
+    salesStage: _salesStage,
+    opportunityScore: _opportunityScore,
+    pricingStrategy: _pricingStrategy,
+    partnerOpportunity: _partnerOpportunity,
+    partner_opportunity: _partnerOpportunitySnake,
+    raw: _raw,
+    source: _source,
+    ...publicEntity
+  } = entity;
+
+  return {
+    ...publicEntity,
+    raw: publicRaw,
+    source: undefined,
+    metrics: undefined,
+    analytics: undefined,
+    dashboardMetrics: undefined,
+  };
+}
+
 function sourceTypeForEntity(entity) {
   const text = [
     entity?.sourceType,
@@ -39,17 +183,16 @@ function sourceTypeForEntity(entity) {
 }
 
 function normalizeMapEntityData(locations = []) {
-  return locations.map((entity) => ({
+  return locations.map((entity) => toPublicMapEntity({
     ...entity,
     sourceType: entity.sourceType || sourceTypeForEntity(entity),
     lat: entity.lat ?? entity.latitude ?? entity.coords?.[0],
     lng: entity.lng ?? entity.longitude ?? entity.coords?.[1],
     tags: Array.isArray(entity.tags)
       ? entity.tags
-      : [entity.category, entity.category_key, entity.type, entity.partnerType].filter(Boolean),
+      : [entity.category, entity.category_key, entity.type].filter(Boolean),
     description: entity.description || entity.summary,
     timing: entity.timing || entity.time || entity.date || entity.happyHour?.time,
-    metrics: entity.metrics || entity.analytics || entity.dashboardMetrics || {},
     actions: Array.isArray(entity.actions) ? entity.actions : ["Open", "Save", "Get directions"],
   }));
 }
@@ -69,7 +212,6 @@ function textForEntity(entity = {}) {
     entity.district,
     entity.address,
     entity.sourceType,
-    entity.partnerType,
     entity.brand,
     entity.summary,
     entity.description,

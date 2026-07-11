@@ -170,6 +170,8 @@ function ProductRoutes() {
           <Route path="/explore" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
           <Route path="/perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/properties" element={<Navigate to="/app?mode=resident&tab=map&filter=Properties" replace />} />
+          <Route path="/hotels" element={<Navigate to="/app?mode=resident&tab=map&filter=Hotels" replace />} />
           <Route path="/card" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
           <Route path="/about" element={<Suspense fallback={<MarketingFallback />}><AboutPage /></Suspense>} />
           <Route path="/resident-sign-up" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
@@ -295,6 +297,7 @@ function ProductRoutes() {
           <Route path="/partner-workspace/dashboard" element={<Navigate to="/partners/dashboard" replace />} />
           <Route path="/partner-workspace/reports" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/analytics" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/analytics/experiences/downtown-art-parks-tour" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/*" element={<Navigate to="/partner-workspace/overview" replace />} />
 
           <Route path="/partner/audience" element={<Navigate to="/partner-workspace/audience" replace />} />

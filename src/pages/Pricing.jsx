@@ -187,7 +187,6 @@ export default function PricingPage() {
   const [reportingNeeds, setReportingNeeds] = useState(storedSetup.reportingNeeds || "Standard reporting");
   const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("campaigns");
   const [activeCustomOption, setActiveCustomOption] = useState(storedSetup.customOption || customOptions[0].id);
-  const [checkoutState, setCheckoutState] = useState("idle");
   const [checkoutMessage, setCheckoutMessage] = useState("");
 
   const plans = useMemo(() => getPlansForPartnerType(partnerType), [partnerType]);
@@ -344,17 +343,6 @@ export default function PricingPage() {
     trackPricingEvent("pricing_cta_clicked", { label, href, partnerType, planId: selectedPlan?.id, annualTotal: selectedPlan?.annualPrice == null ? "custom" : total });
   }
 
-  function getCheckoutLineItems() {
-    const targets = [
-      selectedPlan?.checkoutKey ? resolveCheckoutTarget(selectedPlan.checkoutKey) : null,
-      ...selectedModules.map((module) => resolveCheckoutTarget(module.id)),
-    ].filter(Boolean);
-
-    return targets
-      .filter((target) => target.type === "price" && target.priceId)
-      .map((target) => ({ priceId: target.priceId, quantity: 1 }));
-  }
-
   async function continueWithSetup(event) {
     event.preventDefault();
     persistPartnerSetup(setupPayload);
@@ -372,56 +360,8 @@ export default function PricingPage() {
       return;
     }
 
-    if (checkoutTarget.type === "url" && checkoutTarget.url) {
-      trackCta("Open Stripe checkout link", checkoutTarget.url);
-      window.location.href = checkoutTarget.url;
-      return;
-    }
-
-    const lineItems = getCheckoutLineItems();
-    if (!lineItems.length && checkoutTarget.type !== "product") {
-      trackCta("Continue to registration", setupHref);
-      window.location.href = setupHref;
-      return;
-    }
-
-    try {
-      setCheckoutState("loading");
-      const response = await fetch("/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mode: checkoutTarget.mode || "subscription",
-          lineItems,
-          productId: checkoutTarget.type === "product" ? checkoutTarget.productId : undefined,
-          metadata: {
-            source: "pricing",
-            setupVersion: "workspace_activation_v1",
-            partnerType,
-            plan: selectedPlan?.label || "Custom setup",
-            sku: selectedPlan?.id || "custom",
-            modules: selectedModuleIds.join(","),
-            moduleLabels: selectedModuleLabels.join(", "),
-            locationCount: String(locationCount),
-            annualTotal: selectedPlan?.annualPrice == null ? "custom" : String(total),
-            recurringAnnualTotal: selectedPlan?.annualPrice == null ? "custom" : String(recurringAnnualTotal),
-            oneTimeTotal: String(oneTimeTotal),
-            annualAddOnTotal: String(annualAddOnTotal),
-            campaignInterest,
-            reportingNeeds,
-          },
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.checkoutUrl) {
-        throw new Error(result.error || "Checkout is not available yet.");
-      }
-      trackCta("Open Stripe checkout", result.checkoutUrl);
-      window.location.href = result.checkoutUrl;
-    } catch (error) {
-      setCheckoutState("error");
-      setCheckoutMessage("Checkout is not connected for this selection yet. Registration will preserve this plan and billing can be attached from your workspace.");
-    }
+    trackCta("Continue to registration", setupHref);
+    window.location.href = setupHref;
   }
 
   return (
@@ -606,10 +546,10 @@ export default function PricingPage() {
               </dl>
               {!isResident ? <div className="dp-pricing-selected" aria-label="Selected add-ons">{selectedModules.length > 0 ? selectedModules.map((module) => <button key={module.id} type="button" onClick={() => toggleModule(module.id)}>{module.label}</button>) : <span>No add-ons selected.</span>}</div> : null}
               <p className="dp-pricing-checkout-note">
-                {checkoutMessage || (isResident ? "Resident access is separate from partner subscriptions." : "Review everything before checkout. Paid plans continue securely through Stripe. Free and custom plans continue to registration.")}
+                {checkoutMessage || (isResident ? "Resident access is separate from partner subscriptions." : "Review your selection, then add the account details Stripe needs for a secure checkout.")}
               </p>
-              <button className="dp-pricing-button" type="button" disabled={checkoutState === "loading"} onClick={continueWithSetup}>
-                {checkoutState === "loading" ? "Opening checkout" : isResident ? "Get Perks Card" : "Continue to Checkout"} <ArrowRight aria-hidden="true" />
+              <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>
+                {isResident ? "Get Perks Card" : "Continue to registration"} <ArrowRight aria-hidden="true" />
               </button>
             </aside>
           </div>

@@ -29,6 +29,8 @@ export type WorkspaceEntityOwnership = {
   entity_id: string;
   entity_type: WorkspaceEntityType;
   display_name: string;
+  map_filter?: string;
+  perk_summary?: string;
 };
 
 export const roleMatrix: Record<string, Partial<Record<WorkspaceRole, boolean>>> = {
@@ -109,9 +111,11 @@ export const demoEntityOwners: WorkspaceEntityOwnership[] = [
   { id: "owner-the-shore", organization_id: "demo-org-legends-residential", entity_id: "property-the-shore", entity_type: "property", display_name: "The Shore" },
   { id: "owner-the-quincy", organization_id: "demo-org-legends-residential", entity_id: "property-the-quincy", entity_type: "property", display_name: "The Quincy" },
   { id: "owner-waterline", organization_id: "demo-org-legends-residential", entity_id: "property-waterline", entity_type: "property", display_name: "Waterline" },
-  { id: "owner-red-ash", organization_id: "demo-org-larry-and-guy", entity_id: "venue-red-ash", entity_type: "venue", display_name: "Red Ash" },
-  { id: "owner-atx-cocina", organization_id: "demo-org-larry-and-guy", entity_id: "venue-atx-cocina", entity_type: "venue", display_name: "ATX Cocina" },
-  { id: "owner-j-carver", organization_id: "demo-org-larry-and-guy", entity_id: "venue-j-carver", entity_type: "venue", display_name: "J Carver" },
+  { id: "owner-atx-cocina", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-atx-cocina", entity_type: "venue", display_name: "ATX Cocina", map_filter: "Dining", perk_summary: "Masa Moment Passport Perk" },
+  { id: "owner-j-carver", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-j-carvers", entity_type: "venue", display_name: "J. Carver's", map_filter: "Dining", perk_summary: "Chophouse Passport Perk" },
+  { id: "owner-red-ash", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-red-ash", entity_type: "venue", display_name: "Red Ash", map_filter: "Dining", perk_summary: "Fire Cooking Passport Perk" },
+  { id: "owner-restaurant-francois", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-restaurant-francois", entity_type: "venue", display_name: "Restaurant François", map_filter: "Dining", perk_summary: "French Evening Passport Perk" },
+  { id: "owner-roaring-fork", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-roaring-fork", entity_type: "venue", display_name: "Roaring Fork", map_filter: "Dining", perk_summary: "Downtown Classic Passport Perk" },
   { id: "owner-hotel-van-zandt", organization_id: "demo-org-hotel-van-zandt", entity_id: "hotel-van-zandt", entity_type: "hotel", display_name: "Hotel Van Zandt" },
   { id: "owner-yeti-store", organization_id: "demo-org-yeti", entity_id: "brand-yeti", entity_type: "brand", display_name: "YETI" },
 ];

@@ -10856,7 +10856,12 @@ export const ATTACHED_FEATURED_BRANDS = [
     "district": "congress",
     "latitude": 30.2638,
     "longitude": -97.7444,
-    "imageUrl": "/images/map-entities/brand-yeti/yeti-austin-fc.png",
+    "imageUrl": "/images/map-entities/brand-austin-fc/austin-fc-stadium.png",
+    "heroImage": "/images/map-entities/brand-austin-fc/austin-fc-stadium.png",
+    "panelImage": "/images/map-entities/brand-austin-fc/austin-fc-stadium.png",
+    "gallery": [
+      "/images/map-entities/brand-austin-fc/austin-fc-stadium.png"
+    ],
     "iconType": "spark",
     "markerVariant": "navy",
     "searchKeywords": [

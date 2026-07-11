@@ -22,6 +22,8 @@
     "enrich:google-places": "tsx scripts/enrich-google-places.ts",
     "build:map-registry": "tsx scripts/build-map-registry.ts",
     "qa:map-registry": "tsx scripts/qa-map-registry.ts",
+    "import:launch-map-pins": "python3 scripts/import-launch-map-pins.py",
+    "test:launch-map-import": "node scripts/test-launch-map-import.mjs",
     "audit:map-intents": "tsx scripts/audit-map-search-intents.ts",
     "test:map-intents": "tsx scripts/test-map-search-intents.ts",
     "test:search-intent-chips": "tsx scripts/test-search-intent-chips.ts",

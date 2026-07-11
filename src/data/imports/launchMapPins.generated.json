@@ -1,0 +1,15 @@
+{
+  "schema": "downtown-perks-launch-map-pins-public-v1",
+  "generatedAt": null,
+  "sourceSummary": {
+    "launchPinRows": 0,
+    "publicPins": 0,
+    "publicPinsWithCoordinates": 0,
+    "campaignRows": 0,
+    "offerTemplateRows": 0,
+    "draftOffersHidden": 0
+  },
+  "pins": [],
+  "campaigns": [],
+  "offerTemplates": []
+}

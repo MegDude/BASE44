@@ -23,8 +23,8 @@ const waterlooDiscoveryStopHints = [
 export const mapCollections = [
   {
     id: "daa-art-walk",
-    title: "DAA Art & Parks Tour",
-    description: "The actual Downtown Austin Alliance walking route for sculptures, murals, public art, parks, plazas, and cultural landmarks.",
+    title: "Downtown Art & Parks Walk",
+    description: "A Downtown Austin Alliance public-realm walk for sculptures, murals, public art, parks, plazas, and cultural landmarks.",
     category: "civic",
     routeMode: "walking",
     colorTheme: "gold",
@@ -39,7 +39,7 @@ export const mapCollections = [
   {
     id: "waterloo-greenway",
     title: "Waterloo Greenway Discovery Walk",
-    description: "A Waterloo Greenway walking route connecting parks, gardens, Waller Creek, Moody Amphitheater, discovery markers, events, and useful nearby perks.",
+    description: "A Waterloo Greenway walking route connecting parks, gardens, Waller Creek, Moody Amphitheater, discovery markers, events, and useful nearby stops.",
     category: "civic",
     routeMode: "walking",
     colorTheme: "emerald",
@@ -69,7 +69,7 @@ export const mapCollections = [
   {
     id: "downtown-stories-walk",
     title: "Downtown Stories Walk",
-    description: "A civic route connecting public spaces, downtown stories, and useful stops.",
+    description: "A welcoming civic walk connecting public spaces, downtown stories, heritage points, cultural destinations, and useful nearby stops.",
     category: "civic",
     routeMode: "editorial",
     colorTheme: "emerald",
@@ -78,8 +78,8 @@ export const mapCollections = [
     distanceLabel: "1.1 mi",
     neighborhood: "Downtown Core",
     ctaLabel: "Start walk",
-    stopIds: ["civic-republic-square-programming", "civic-daa", "priority-frost-tower", "civic-waterloo-greenway"],
-    stopHints: ["Republic Square", "Downtown Austin Alliance", "Frost Tower", "Waterloo Greenway"],
+    stopIds: ["civic-republic-square-programming", "civic-daa", "civic-waterloo-greenway", "waterloo-park"],
+    stopHints: ["Republic Square", "Downtown Austin Alliance", "Waterloo Greenway", "Waterloo Park"],
   },
   {
     id: "inkind-dining-market",

@@ -26,6 +26,10 @@ import '@/styles/pricing-polish-final.css'
 import '@/styles/map-drawer-containment-final.css'
 import '@/styles/partner-register-refactor-final.css'
 import '@/styles/search-intent-chip-expansion-final.css'
+import '@/styles/search-intent-two-rail-restore.css'
+import '@/styles/workspace-overview-operating-final.css'
+import '@/styles/workspace-platform-alignment-final.css'
+import '@/styles/campaign-platform-alignment-final.css'
 import '@/styles/map-drawer-premium-regression-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

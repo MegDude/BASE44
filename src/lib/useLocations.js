@@ -17,6 +17,8 @@ import { daaTourStops } from "../data/daaArtParksTour";
 import { legendsListingPlaces } from "../data/legendsListings";
 import { rentalListings } from "../data/rentalListings";
 import { mapNativeCampaigns } from "../data/mapNativeCampaigns";
+import { larryAndGuyRestaurantLayer } from "../data/larryAndGuyRestaurantLayer";
+import { applyLaunchMapCuration } from "../data/raineyLaunchCuration";
 import { civicDiscoveryEntities } from "../data/civicDiscoveryNetwork";
 import { getActiveMapEntityLocations } from "../data/map/mapEntityRegistry";
 import { getDowntownCoreRestaurantUpdate } from "../data/downtownCoreRestaurantPerks";
@@ -309,8 +311,11 @@ function attachedFeaturedBrandPlace(item) {
     address: item.address,
     summary: item.description,
     description: item.description,
-    image: item.imageUrl,
+    image: item.imageUrl || item.heroImage || item.panelImage,
     imageUrl: item.imageUrl,
+    heroImage: item.heroImage || item.imageUrl,
+    panelImage: item.panelImage || item.heroImage || item.imageUrl,
+    gallery: Array.isArray(item.gallery) ? item.gallery : [item.imageUrl, item.heroImage, item.panelImage].filter(Boolean),
     route: item.route,
     primaryAction: isProperty ? "Open Property Layer" : "Open Partner Layer",
     secondaryAction: "Save",
@@ -1510,7 +1515,7 @@ export function buildLocations() {
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
@@ -1577,7 +1582,8 @@ export function buildLocations() {
         ...(downtownCoreRestaurantUpdate || {}),
         ...(fourSeasonsExperienceUpdate || {}),
       };
-      const entity = normalizeEntity(enrichWithArchiveLocationContext(normalizedItem), i);
+      const curatedItem = applyLaunchMapCuration(normalizedItem);
+      const entity = normalizeEntity(enrichWithArchiveLocationContext(curatedItem), i);
 
       if (!entity) return null;
 
@@ -1656,7 +1662,7 @@ export function buildLocations() {
               },
             }
           : {}),
-        category_key: normalizedItem.category_key,
+        category_key: curatedItem.category_key,
       };
     })
     .filter(Boolean);

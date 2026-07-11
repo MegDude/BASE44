@@ -1,0 +1,339 @@
+/* Partner workspace regression lock: keep every route on the approved platform shell. */
+html body #root .dp-partner-workspace-page .dp-workspace-shell {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-content {
+  width: min(100%, 1440px) !important;
+  max-width: 1440px !important;
+  margin-inline: auto !important;
+  padding: 40px 48px 80px !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-registry-panel,
+  .dp-workspace-reports,
+  .dp-workspace-analytics,
+  .dp-workspace-experience-report,
+  .dp-profile-editor
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  color: #0b1f33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-panel-header,
+html body #root .dp-partner-workspace-page .dp-workspace-analytics-header,
+html body #root .dp-partner-workspace-page .dp-workspace-experience-report-header {
+  padding: 0 0 28px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-header,
+  .dp-workspace-analytics-header,
+  .dp-workspace-experience-report-header
+) > :is(span, .dp-workspace-eyebrow) {
+  color: #667386 !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-header,
+  .dp-workspace-analytics-header,
+  .dp-workspace-experience-report-header
+) :is(h1, h2) {
+  max-width: 24ch !important;
+  margin: 8px 0 0 !important;
+  color: #0b1f33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(30px, 3vw, 42px) !important;
+  font-weight: 650 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-header,
+  .dp-workspace-analytics-header,
+  .dp-workspace-experience-report-header
+) > p:not(.dp-workspace-eyebrow) {
+  max-width: 64ch !important;
+  margin: 12px 0 0 !important;
+  color: #566477 !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-actions,
+  .dp-workspace-analytics-actions
+) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 22px !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-actions,
+  .dp-workspace-analytics-actions
+) a,
+html body #root .dp-partner-workspace-page .dp-workspace-reports a.dp-partner-workspace-button,
+html body #root .dp-partner-workspace-page .dp-workspace-report-link {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-actions,
+  .dp-workspace-analytics-actions
+) a:first-child {
+  border-color: #c8a96a !important;
+  background: #c8a96a !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-row-list {
+  display: grid !important;
+  gap: 0 !important;
+  margin-top: 32px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-row {
+  min-width: 0 !important;
+  padding: 18px 20px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-row + .dp-workspace-row {
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-row strong {
+  color: #0b1f33 !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-row small {
+  margin-top: 5px !important;
+  color: #667386 !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-reports-hero,
+  .dp-workspace-report-card,
+  .dp-workspace-analytics-metrics,
+  .dp-workspace-analytics-grid > section,
+  .dp-workspace-analytics-next,
+  .dp-approved-experience-report > section,
+  .dp-experience-panel,
+  .dp-experience-summary
+) {
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-reports-hero {
+  padding: 24px !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-report-card {
+  padding: 20px !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-report-card:hover {
+  border-color: rgba(11, 31, 51, 0.14) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-report-readout > div {
+  padding: 12px 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+html body #root .dp-partner-workspace-page :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 1100px) {
+  html body #root .dp-partner-workspace-page .dp-workspace-content {
+    padding: 32px 28px 72px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body #root .dp-partner-workspace-page .dp-workspace-content {
+    width: 100% !important;
+    padding: 24px 16px 80px !important;
+  }
+
+  html body #root .dp-partner-workspace-page :is(
+    .dp-workspace-panel-header,
+    .dp-workspace-analytics-header,
+    .dp-workspace-experience-report-header
+  ) :is(h1, h2) {
+    font-size: clamp(28px, 9vw, 36px) !important;
+  }
+
+  html body #root .dp-partner-workspace-page :is(
+    .dp-workspace-panel-actions,
+    .dp-workspace-analytics-actions
+  ) {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root .dp-partner-workspace-page :is(
+    .dp-workspace-panel-actions,
+    .dp-workspace-analytics-actions
+  ) a,
+  html body #root .dp-partner-workspace-page .dp-workspace-reports a.dp-partner-workspace-button,
+  html body #root .dp-partner-workspace-page .dp-workspace-report-link {
+    width: 100% !important;
+    min-height: 44px !important;
+    height: 44px !important;
+  }
+
+  html body #root .dp-partner-workspace-page .dp-workspace-row {
+    padding: 16px !important;
+  }
+
+  html body #root .dp-partner-workspace-page :is(
+    .dp-workspace-reports-hero,
+    .dp-workspace-report-card,
+    .dp-workspace-analytics-grid > section,
+    .dp-workspace-analytics-next,
+    .dp-experience-panel,
+    .dp-experience-summary
+  ) {
+    padding: 18px 16px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root .dp-partner-workspace-page *,
+  html body #root .dp-partner-workspace-page *::before,
+  html body #root .dp-partner-workspace-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* High-specificity overrides for legacy workspace locks loaded by the app shell. */
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-shell.dp-workspace-shell {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-content.dp-workspace-content {
+  width: min(100%, 1440px) !important;
+  max-width: 1440px !important;
+  margin-inline: auto !important;
+  padding: 40px 48px 80px !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(
+  .dp-workspace-panel-actions,
+  .dp-workspace-analytics-actions
+) a,
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-reports a.dp-partner-workspace-button,
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-report-link.dp-workspace-report-link {
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 0 16px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(
+  .dp-workspace-row,
+  .dp-workspace-reports-hero,
+  .dp-workspace-report-card,
+  .dp-workspace-analytics-metrics,
+  .dp-workspace-analytics-grid > section,
+  .dp-workspace-analytics-next
+) {
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-reports article {
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 1100px) {
+  html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-content.dp-workspace-content {
+    padding: 32px 28px 72px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-content.dp-workspace-content {
+    width: 100% !important;
+    padding: 24px 16px 80px !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(
+    .dp-workspace-panel-actions,
+    .dp-workspace-analytics-actions
+  ) a,
+  html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-reports a.dp-partner-workspace-button,
+  html body #root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-workspace-report-link.dp-workspace-report-link {
+    width: 100% !important;
+    min-height: 44px !important;
+    height: 44px !important;
+  }
+}

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
 import "@/styles/workspace-profile-editor.css";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
+import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 import {
   demoOrganizations,
@@ -21,7 +22,15 @@ import { canViewEverything } from "@/lib/auth/session";
 // We use Perk, Event, and Venue entities which already exist.
 // Partner profile is stored on the user object.
 
-const TABS = PARTNER_WORKSPACE_NAV;
+const WORKSPACE_NAV_GROUPS = [
+  { label: "Workspace", ids: ["overview", "map", "profile"] },
+  { label: "Publish", ids: ["offers", "events", "campaigns", "broadcasts"] },
+  { label: "Understand", ids: ["audience", "surveys", "analytics", "reports"] },
+  { label: "Manage", ids: ["media", "team", "billing"] },
+].map((group) => ({
+  ...group,
+  items: group.ids.map((id) => PARTNER_WORKSPACE_NAV.find((item) => item.id === id)).filter(Boolean),
+}));
 
 const PERK_CATEGORIES = ["discount", "free_item", "priority_access", "members_rate", "experience", "class_pass"];
 const EVENT_CATEGORIES = ["fitness", "wellness", "social", "dining", "nightlife", "arts", "networking", "class", "run_club", "yoga"];
@@ -455,6 +464,7 @@ export default function PartnerWorkspace() {
   const isReportsTab = tab === "reports";
   const accountAccessEnabled = canUseProductionAccountAccess();
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -501,11 +511,12 @@ export default function PartnerWorkspace() {
 
   useEffect(() => {
     setTab(getWorkspaceTabFromPath(location.pathname));
+    setMobileNavOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
     const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === tab);
-    if (!activeItem || location.pathname === activeItem.href) return;
+    if (!activeItem || location.pathname === activeItem.href || location.pathname.startsWith(`${activeItem.href}/`)) return;
     if (!location.pathname.startsWith("/partner-workspace")) return;
     navigate(activeItem.href, { replace: true });
   }, [tab, location.pathname, navigate]);
@@ -525,83 +536,50 @@ export default function PartnerWorkspace() {
   }
 
   return (
-    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen bg-white text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
-      {/* Header */}
-      <div className="dp-partner-workspace-header pt-20 pb-0 px-5 bg-white border-b border-[rgba(11,31,51,0.07)] shadow-[0_1px_0_rgba(11,31,51,0.04),0_4px_16px_rgba(11,31,51,0.03)]">
-        <div className="dp-partner-workspace-header-inner max-w-6xl mx-auto">
-          <div className="dp-partner-workspace-title-row flex items-end justify-between mb-5 gap-4">
-            <div className="dp-partner-workspace-title-copy">
-              <span className="dp-partner-workspace-eyebrow text-[10.5px] font-semibold text-[#BFA46A] uppercase tracking-[0.18em] block mb-1.5">Partner Workspace</span>
-              <h1 className="dp-partner-workspace-title font-heading text-[22px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight text-[#0B1F33]">
-                {isReportsTab ? "Monthly Reports" : tab === "overview" ? `${workspaceDisplayName} Home` : workspaceDisplayName}
-              </h1>
-              <p className="dp-partner-workspace-support text-[#0B1F33]/52 text-[12.5px] mt-1 font-normal">
-                {isReportsTab
-                  ? "Readable partner reports organized around what changed, what worked, and what to do next."
-                  : activation
-                    ? `${activation.plan} is active. Start with profile, map listing, offers, events, campaigns, and reporting from this workspace.`
-                    : "Build your partner profile, offers, events, campaigns, and reporting in one place."}
-              </p>
-            </div>
-            <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
-              <button type="button" aria-label="Search workspace"><Search aria-hidden="true" /></button>
-              <button type="button" aria-label="Workspace assistant"><Bot aria-hidden="true" /></button>
-              <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button>
-              <button
-                type="button"
-                onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut}
-                disabled={isPublicWorkspaceUser && !accountAccessEnabled}
-                className="dp-partner-workspace-signin"
-              >
-                {isPublicWorkspaceUser ? accountAccessEnabled ? "Sign in" : "Account access" : "Sign out"}
-              </button>
-            </div>
+    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
+      <header className="dp-partner-workspace-header">
+        <div className="dp-partner-workspace-header-inner">
+          <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
+            <Menu aria-hidden="true" />
+          </button>
+          <div className="dp-partner-workspace-title-copy">
+            <span className="dp-partner-workspace-eyebrow">Partner workspace</span>
+            <strong className="dp-partner-workspace-title">{workspaceDisplayName}</strong>
+            <span className="dp-partner-workspace-plan"><i aria-hidden="true" />{activation?.plan || "Enterprise"} plan</span>
           </div>
-
-          <nav className="dp-partner-lifecycle-rail" aria-label="Partner lifecycle">
-            {PARTNER_LIFECYCLE_LINKS.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link key={item.label} to={item.href}>
-                  <Icon aria-hidden="true" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Tabs — animated sliding indicator */}
-          <div className="dp-partner-workspace-tabs relative flex gap-0 -mb-px overflow-x-auto scrollbar-none">
-            {TABS.map(t => (
-              <button
-                key={t.id}
-                title={t.helper}
-                onClick={() => {
-                  setTab(t.id);
-                  navigate(t.href);
-                }}
-                className={`dp-partner-workspace-tab relative flex-shrink-0 px-4 py-2.5 text-[12px] font-medium transition-colors duration-150 focus-visible:outline-none ${
-                  tab === t.id
-                    ? "text-[#0B1F33]"
-                    : "text-[#0B1F33]/46 hover:text-[#0B1F33]/72"
-                }`}
-              >
-                {t.label}
-                {tab === t.id && (
-                  <motion.span
-                    layoutId="workspace-tab-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#BFA46A] rounded-[2px]"
-                    transition={{ type: "spring", stiffness: 500, damping: 40 }}
-                  />
-                )}
-              </button>
-            ))}
+          <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
+            <button type="button" aria-label="Search workspace"><Search aria-hidden="true" /></button>
+            <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button>
+            <button type="button" onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut} disabled={isPublicWorkspaceUser && !accountAccessEnabled} className="dp-partner-workspace-signin">
+              {isPublicWorkspaceUser ? accountAccessEnabled ? "Sign in" : "Account" : "Account"}
+            </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Tab content */}
-      <div className="max-w-6xl mx-auto px-5 py-8">
+      <div className="dp-workspace-shell">
+        {mobileNavOpen ? <button className="dp-workspace-sidebar-backdrop" type="button" aria-label="Close workspace navigation" onClick={() => setMobileNavOpen(false)} /> : null}
+        <aside className="dp-workspace-sidebar" data-open={mobileNavOpen ? "true" : "false"}>
+          <div className="dp-workspace-sidebar-head">
+            <span>Workspace</span>
+            <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /></button>
+          </div>
+          <nav aria-label="Workspace navigation">
+            {WORKSPACE_NAV_GROUPS.map((group) => (
+              <div className="dp-workspace-nav-group" key={group.label}>
+                <p>{group.label}</p>
+                {group.items.map((item) => (
+                  <Link key={item.id} to={item.href} className={tab === item.id ? "is-active" : ""} aria-current={tab === item.id ? "page" : undefined}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </nav>
+        </aside>
+
+        <main className="dp-workspace-main">
+          <div className="dp-workspace-content">
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
@@ -619,6 +597,8 @@ export default function PartnerWorkspace() {
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
         </AnimatePresence>
+          </div>
+        </main>
       </div>
     </div>
   );
@@ -856,6 +836,20 @@ function WorkspaceReports() {
 }
 
 function WorkspaceAnalytics() {
+  const location = useLocation();
+  if (location.pathname.includes("/analytics/experiences/downtown-art-parks-tour")) {
+    return (
+      <motion.section className="dp-workspace-experience-report" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+        <header className="dp-workspace-experience-report-header">
+          <p className="dp-workspace-eyebrow">Experience report</p>
+          <h1>Downtown Austin Art & Parks Tour</h1>
+          <p>Full engagement, place, audience, survey, direction, and district analysis for the civic experience.</p>
+          <Link to="/partner-workspace/overview">Back to overview</Link>
+        </header>
+        <DaaApprovedExperienceReport />
+      </motion.section>
+    );
+  }
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands currently represented."],
     ["1,284", "Resident reach", "People who can enter from buildings, QR links, campaigns, and the map."],
@@ -958,7 +952,260 @@ function WorkspaceAnalytics() {
   );
 }
 
-function WorkspaceOverview({ user, setTab, mode = "active", activation = null, hasPrivilegedAccess = false }) {
+function WorkspaceOverview({ user, setTab, activation = null }) {
+  const [perks, setPerks] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState(() => {
+    const requestedOrganization = new URLSearchParams(window.location.search).get("organizationId");
+    return demoOrganizations.some((organization) => organization.id === requestedOrganization)
+      ? requestedOrganization
+      : demoOrganizations[0]?.id;
+  });
+  const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
+  const [workspaceSearch, setWorkspaceSearch] = useState("");
+  const [createMenuOpen, setCreateMenuOpen] = useState(false);
+
+  useEffect(() => {
+    listWorkspaceItems("Perk", "perks", user.email).then(setPerks);
+    listWorkspaceItems("Event", "events", user.email).then(setEvents);
+  }, [user.email]);
+
+  const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId) || demoOrganizations[0];
+  const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
+  const filteredOrganizations = demoOrganizations.filter((organization) => organization.name.toLowerCase().includes(workspaceSearch.trim().toLowerCase()));
+  const isLegends = selectedOrganization?.id === "demo-org-legends-residential";
+  const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
+  const metrics = isLegends
+    ? [
+        ["Map views", "12,480"],
+        ["Saves", "1,942"],
+        ["Directions", "1,376"],
+        ["Verified actions", "684"],
+        ["Active campaigns", "3"],
+      ]
+    : [
+        ["Map views", "3,240"],
+        ["Saves", "486"],
+        ["Directions", "318"],
+        ["Verified actions", "142"],
+        ["Active campaigns", "1"],
+      ];
+  const activePerks = perks.filter((perk) => perk.status === "active");
+  const upcomingEvents = events.filter((event) => event.status === "upcoming" || event.status === "live");
+  const createActions = [
+    ["Create offer", "/partner-workspace/offers"],
+    ["Create event", "/partner-workspace/events"],
+    ["Create campaign", "/partner-workspace/campaigns"],
+    ["Send broadcast", "/partner-workspace/broadcasts"],
+    ["Create survey", "/partner-workspace/surveys"],
+  ];
+
+  return (
+    <motion.div className="dp-operating-overview" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
+      <section className="dp-operating-header">
+        <div>
+          <p className="dp-workspace-eyebrow">Overview</p>
+          <h1>{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</h1>
+          <p>
+            {ownedEntities.length > 1
+              ? `Manage offers, events, campaigns, audiences, and reporting across ${ownedEntities.map((entity) => entity.display_name).join(", ")}.`
+              : "Manage your downtown presence, publishing, audience, and reporting from one focused workspace."}
+          </p>
+          <span className="dp-operating-status"><i aria-hidden="true" />Active workspace · {selectedOrganization?.plan || activation?.plan || "Enterprise"} plan</span>
+        </div>
+        <div className="dp-operating-header-actions">
+          <div className="dp-create-menu-wrap">
+            <button className="dp-button-primary" type="button" onClick={() => setCreateMenuOpen((open) => !open)} aria-expanded={createMenuOpen}>
+              Create <ChevronDown aria-hidden="true" />
+            </button>
+            {createMenuOpen ? (
+              <div className="dp-create-menu" role="menu">
+                {createActions.map(([label, href]) => <Link key={label} to={href} role="menuitem">{label}</Link>)}
+              </div>
+            ) : null}
+          </div>
+          <Link className="dp-button-secondary" to="/map?mode=partner&tab=map&filter=All">View public listing</Link>
+        </div>
+      </section>
+
+      <section className="dp-workspace-context" aria-labelledby="workspace-context-title">
+        <div className="dp-workspace-switcher-compact">
+          <span id="workspace-context-title">Workspace</span>
+          <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen}>
+            <strong>{selectedOrganization?.name}</strong>
+            <small>{friendlyRoleLabel(selectedOrganization?.role)} · {friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</small>
+            <ChevronDown aria-hidden="true" />
+          </button>
+          {workspaceMenuOpen ? (
+            <div className="dp-workspace-switcher-menu">
+              <label>
+                <Search aria-hidden="true" />
+                <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Search workspaces" aria-label="Search workspaces" />
+              </label>
+              <div>
+                {filteredOrganizations.map((organization) => (
+                  <button key={organization.id} type="button" onClick={() => { setSelectedOrganizationId(organization.id); setWorkspaceMenuOpen(false); setWorkspaceSearch(""); }}>
+                    <span><strong>{organization.name}</strong><small>{friendlyRoleLabel(organization.role)}</small></span>
+                    <i className={`is-${organization.status}`} aria-label={organization.status} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+        <div className="dp-workspace-entities-compact">
+          <span>Entities</span>
+          <div>
+            {ownedEntities.map((entity) => (
+              <Link key={entity.id} to={`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`}>
+                <strong>{entity.display_name}</strong><small>{entity.perk_summary || entity.entity_type}</small><ArrowRight aria-hidden="true" />
+              </Link>
+            ))}
+            {!ownedEntities.length ? <p>No linked entities. Add a listing from the Map workspace.</p> : null}
+          </div>
+        </div>
+        <div className="dp-workspace-context-actions">
+          <button type="button" onClick={() => setWorkspaceMenuOpen(true)}>Switch workspace</button>
+          <button type="button" onClick={() => setTab("profile")}>Manage workspace</button>
+        </div>
+      </section>
+
+      <section className="dp-operating-section" aria-labelledby="performance-summary-title">
+        <div className="dp-operating-section-header">
+          <div><p className="dp-workspace-eyebrow">Performance for</p><h2 id="performance-summary-title">{selectedOrganization?.name}</h2></div>
+          <label className="dp-period-select">Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
+        </div>
+        <div className="dp-metric-grid">
+          {metrics.map(([label, value]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span></div>)}
+        </div>
+      </section>
+
+      <section className="dp-operating-analysis">
+        <article className="dp-performance-trend">
+          <div className="dp-panel-heading"><div><p className="dp-workspace-eyebrow">Performance trend</p><h2>Discovery is building steadily.</h2></div><span>+18% vs. prior period</span></div>
+          <svg viewBox="0 0 760 220" role="img" aria-label="Map discovery trend rising over the last 30 days" preserveAspectRatio="none">
+            <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34" fill="none" stroke="#C8A96A" strokeWidth="5" />
+            <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34 L760 220 L0 220 Z" fill="rgba(200,169,106,.10)" />
+          </svg>
+          <div className="dp-chart-axis"><span>30 days ago</span><span>Today</span></div>
+        </article>
+        <aside className="dp-recommended-action">
+          <p className="dp-workspace-eyebrow">Recommended next action</p>
+          <h2>Launch a resident event between 3–6 PM.</h2>
+          <p>Afternoon discovery is the strongest activity window near Waterloo Park. Connect the event to one active offer to improve verified actions.</p>
+          <Link to="/partner-workspace/events">Create event <ArrowRight aria-hidden="true" /></Link>
+        </aside>
+      </section>
+
+      <section className="dp-operating-section" aria-labelledby="current-work-title">
+        <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Current activity</p><h2 id="current-work-title">Work that is live now.</h2></div></div>
+        <div className="dp-current-work-grid">
+          <WorkspaceActivityPanel title="Active offers" items={activePerks} empty="No active offers" emptyAction="Create an offer to begin tracking resident use." href="/partner-workspace/offers" />
+          <WorkspaceActivityPanel title="Upcoming events" items={upcomingEvents} empty="No upcoming events" emptyAction="Publish an event when the date and location are ready." href="/partner-workspace/events" />
+          <WorkspaceActivityPanel title="Live campaigns" items={isLarryAndGuy ? [larryAndGuyWorkspaceCampaign] : []} empty="No live campaigns" emptyAction="Launch a campaign around one clear action or audience." href="/partner-workspace/campaigns" />
+        </div>
+      </section>
+
+      <section className="dp-featured-experience">
+        <div><p className="dp-workspace-eyebrow">Featured experience</p><h2>Downtown Austin Art & Parks Tour</h2><p>Afternoon is the strongest activity window across this civic experience.</p></div>
+        <dl><div><dt>Opens</dt><dd>4,820</dd></div><div><dt>Verified visits</dt><dd>1,148</dd></div><div><dt>Survey completions</dt><dd>641</dd></div><div><dt>Directions</dt><dd>1,376</dd></div></dl>
+        <div className="dp-featured-actions"><Link to="/partner-workspace/analytics/experiences/downtown-art-parks-tour">Open experience report</Link><Link to="/map?mode=partner&tab=map&filter=Civic">View on map</Link></div>
+      </section>
+
+      <section className="dp-operating-section dp-recent-activity" aria-labelledby="recent-activity-title">
+        <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Recent activity</p><h2 id="recent-activity-title">Latest workspace changes.</h2></div></div>
+        <ol><li><span>Offer updated</span><time>Today, 9:42 AM</time></li><li><span>Campaign launched</span><time>Yesterday</time></li><li><span>Report generated</span><time>Jul 8</time></li><li><span>Team member invited</span><time>Jul 6</time></li></ol>
+      </section>
+    </motion.div>
+  );
+}
+
+function WorkspaceActivityPanel({ title, items, empty, emptyAction, href }) {
+  return (
+    <article className="dp-work-activity-panel">
+      <header><h3>{title}</h3><Link to={href}>View all</Link></header>
+      {items.length ? <ul>{items.slice(0, 3).map((item) => <li key={item.id}><strong>{item.title}</strong><span>{item.status}</span></li>)}</ul> : <div className="dp-work-empty"><strong>{empty}</strong><p>{emptyAction}</p><Link to={href}>Get started</Link></div>}
+    </article>
+  );
+}
+
+function DaaApprovedExperienceReport() {
+  const summaryMetrics = [
+    ["Experience opens", "4,820", "Discovery"],
+    ["Verified visits", "1,148", "Conversion"],
+    ["Survey completions", "641", "Feedback"],
+    ["Direction requests", "1,376", "Visit intent"],
+  ];
+  const timeBuckets = [["Morning", 48], ["Lunch", 66], ["Afternoon", 100], ["Evening", 78], ["Weekend", 72]];
+  const surveyThemes = [["Public art", 82], ["Park space", 71], ["Walking route", 58], ["More shade and seating", 46], ["Family-friendly stops", 39]];
+  const rankedLocations = [
+    ["Waterloo Park", "1,284 visits", "+18%"],
+    ["Republic Square", "972 visits", "+11%"],
+    ["Moody Amphitheater", "846 visits", "+7%"],
+    ["Paramount Theatre", "731 visits", "+4%"],
+    ["Congress Avenue Bridge", "692 visits", "+3%"],
+  ];
+  const funnel = [["Experience opens", 4820], ["Saved a stop", 2190], ["Requested directions", 1376], ["Verified visit", 1148], ["Completed survey", 641]];
+  const districts = [["Downtown Core", 88], ["Congress", 76], ["Waterloo", 69], ["Republic Square", 58], ["Red River", 43]];
+
+  return (
+    <div className="dp-approved-experience-report">
+      <section className="dp-experience-summary" aria-labelledby="experience-summary-title">
+        <div className="dp-experience-section-header">
+          <div><p className="dp-workspace-eyebrow">Last 30 days</p><h2 id="experience-summary-title">Experience performance</h2></div>
+          <label>Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
+        </div>
+        <div className="dp-experience-metric-grid">
+          {summaryMetrics.map(([label, value, context]) => <div key={label}><span>{context}</span><strong>{value}</strong><small>{label}</small></div>)}
+        </div>
+      </section>
+
+      <section className="dp-experience-two-column">
+        <article className="dp-experience-panel dp-time-analysis">
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Activity pattern</p><h2>Afternoon is the strongest window.</h2><span>Share of peak activity</span></div>
+          <div className="dp-column-chart" role="img" aria-label="Activity by time of day, with afternoon highest">
+            {timeBuckets.map(([label, value]) => <div key={label}><span style={{ height: `${value}%` }}><i>{value}%</i></span><small>{label}</small></div>)}
+          </div>
+        </article>
+        <article className="dp-experience-panel dp-survey-analysis">
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Survey themes</p><h2>What motivates visits.</h2><span>Relative response strength</span></div>
+          <ol className="dp-horizontal-bars">
+            {surveyThemes.map(([label, value]) => <li key={label}><div><strong>{label}</strong><span>{value}%</span></div><i><b style={{ width: `${value}%` }} /></i></li>)}
+          </ol>
+        </article>
+      </section>
+
+      <section className="dp-experience-two-column">
+        <article className="dp-experience-panel">
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Place performance</p><h2>Most visited locations</h2><span>Verified visits and change</span></div>
+          <ol className="dp-ranked-locations">
+            {rankedLocations.map(([label, value, change], index) => <li key={label}><b>{index + 1}</b><strong>{label}</strong><span>{value}</span><em>{change}</em></li>)}
+          </ol>
+        </article>
+        <article className="dp-experience-panel">
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Engagement funnel</p><h2>From discovery to feedback</h2><span>People completing each stage</span></div>
+          <ol className="dp-experience-funnel">
+            {funnel.map(([label, value], index) => <li key={label} style={{ width: `${100 - index * 10}%` }}><span>{label}</span><strong>{Number(value).toLocaleString()}</strong></li>)}
+          </ol>
+        </article>
+      </section>
+
+      <section className="dp-experience-panel dp-district-analysis">
+        <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">District activity</p><h2>Where experience use is concentrated</h2><span>Indexed activity by district</span></div>
+        <ol className="dp-district-distribution">
+          {districts.map(([label, value], index) => <li key={label}><b>{index + 1}</b><strong>{label}</strong><i><span style={{ width: `${value}%` }} /></i><em>{value}</em></li>)}
+        </ol>
+      </section>
+
+      <footer className="dp-experience-report-actions">
+        <div><p className="dp-workspace-eyebrow">Next action</p><h2>Use the afternoon window to connect the tour with nearby programming.</h2></div>
+        <div><Link className="dp-button-primary" to="/partner-workspace/campaigns">Create campaign</Link><Link className="dp-button-secondary" to="/map?mode=partner&tab=map&filter=Civic">View on map</Link></div>
+      </footer>
+    </div>
+  );
+}
+
+function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = null, hasPrivilegedAccess = false }) {
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(demoOrganizations[0]?.id);

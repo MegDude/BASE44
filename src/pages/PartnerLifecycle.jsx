@@ -715,7 +715,7 @@ function RegisterStage({ setup, setSetup }) {
       plan: nextSetup.plan,
       organization: nextSetup.organization,
     });
-    navigate("/partners/pricing");
+    navigate("/partners/checkout");
   }
 
   const businessFields = [
@@ -779,7 +779,7 @@ function RegisterStage({ setup, setSetup }) {
 
           <div className="dp-partner-register-submit">
             <button type="submit">
-              Continue to pricing
+              Continue to checkout
               <ArrowRight aria-hidden="true" />
             </button>
             {submitted && (!form.organization.trim() || !form.contact.trim() || !form.email.trim()) ? (
@@ -843,8 +843,12 @@ function CheckoutStage({ setup, setSetup }) {
             mode: checkoutTarget.mode,
             metadata: {
               source: "partner_lifecycle",
+              setupVersion: "workspace_activation_v1",
+              registrationComplete: "true",
               partnerType: nextSetup.partnerType || "",
               organization: nextSetup.organization || "",
+              contact: nextSetup.contact || "",
+              email: nextSetup.email || "",
               plan: selectedPlan,
               sku: nextSetup.sku || "",
               modules: Array.isArray(nextSetup.modules) ? nextSetup.modules.join(",") : "",

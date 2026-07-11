@@ -1,0 +1,17 @@
+{
+  "schema": "downtown-perks-launch-map-pins-admin-v1",
+  "generatedAt": null,
+  "sourceSummary": {
+    "launchPinRows": 0,
+    "campaignMatrixRows": 0,
+    "missingVerifyPartners": 0,
+    "recommendedInclusions": 0,
+    "danaCrmRows": 0
+  },
+  "internalOnlyFields": [],
+  "pins": [],
+  "campaignMatrix": [],
+  "missingVerifyPartners": [],
+  "recommendedInclusions": [],
+  "danaCrmOutreach": []
+}

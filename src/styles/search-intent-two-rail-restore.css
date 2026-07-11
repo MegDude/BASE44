@@ -1,0 +1,481 @@
+/* Final restoration: compact primary and secondary search intent rails. */
+.dp-search-intent-console .dp-search-audience-row {
+  position: static !important;
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.dp-search-intent-console .dp-search-audience-row > .dp-search-intent-audience-tabs {
+  position: static !important;
+  margin: 0 !important;
+}
+
+.dp-search-intent-console > .dp-search-intent-console-header {
+  order: 0 !important;
+}
+
+.dp-search-intent-console > .dp-search-audience-row {
+  order: 1 !important;
+}
+
+.dp-search-intent-console > .dp-search-intent-form {
+  order: 2 !important;
+}
+
+.dp-search-intent-console > .dp-search-intent-two-row-stack {
+  order: 3 !important;
+}
+
+.dp-search-intent-console > .dp-search-intent-description-strip {
+  order: 4 !important;
+}
+
+.dp-search-intent-console > .dp-search-intent-status {
+  order: 5 !important;
+}
+
+.dp-search-intent-console .dp-search-intent-two-row-stack {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 2px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console > .dp-search-intent-console-header.dp-search-intent-console-header {
+  order: 0 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console > .dp-search-audience-row.dp-search-audience-row {
+  position: static !important;
+  order: 1 !important;
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console > .dp-search-intent-form.dp-search-intent-form {
+  order: 2 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console > .dp-search-intent-two-row-stack.dp-search-intent-two-row-stack {
+  order: 3 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console > .dp-search-intent-description-strip.dp-search-intent-description-strip {
+  order: 4 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console > .dp-search-intent-status.dp-search-intent-status {
+  order: 5 !important;
+}
+
+.dp-search-intent-console .dp-search-intent-two-row-stack > .dp-search-intent-primary-rail {
+  grid-row: 1 !important;
+  grid-column: 1 !important;
+}
+
+.dp-search-intent-console .dp-search-intent-two-row-stack > #dp-search-more-filter-panel {
+  grid-row: 2 !important;
+  grid-column: 1 !important;
+}
+
+.dp-search-intent-console .dp-search-intent-more-panel {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+
+.dp-search-intent-console :is(.dp-search-intent-primary-rail, .dp-search-intent-secondary-track) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  height: auto !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  scroll-snap-type: x proximity !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-intent-two-row-stack.dp-search-intent-two-row-stack {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 2px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-intent-two-row-stack.dp-search-intent-two-row-stack > .dp-search-intent-primary-rail.dp-search-intent-primary-rail {
+  grid-row: 1 !important;
+  grid-column: 1 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-intent-two-row-stack.dp-search-intent-two-row-stack > #dp-search-more-filter-panel {
+  grid-row: 2 !important;
+  grid-column: 1 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console #dp-search-more-filter-panel.dp-search-intent-more-panel:not([hidden]) {
+  position: static !important;
+  inset: auto !important;
+  z-index: auto !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+
+.dp-search-intent-console .dp-search-intent-secondary-track {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.dp-search-intent-console .dp-search-more-intent-panel {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 6px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.dp-search-intent-console button.dp-search-more-toggle {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  grid-template-columns: none !important;
+  width: auto !important;
+  min-width: 44px !important;
+  max-width: max-content !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+}
+
+.dp-search-intent-console button.dp-search-more-toggle:is(.is-open, :hover, :focus-visible) {
+  width: auto !important;
+  min-width: 44px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+}
+
+.dp-search-intent-console button.dp-search-more-toggle .dp-expanding-intent-chip__icon,
+.dp-search-intent-console button.dp-search-more-toggle .dp-expanding-intent-chip__icon svg {
+  display: inline-flex !important;
+  width: 13px !important;
+  min-width: 13px !important;
+  height: 13px !important;
+  min-height: 13px !important;
+}
+
+.dp-search-intent-console button.dp-search-more-toggle .dp-expanding-intent-chip__text,
+.dp-search-intent-console button.dp-search-more-toggle .dp-expanding-intent-chip__label {
+  display: inline !important;
+  color: inherit !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+}
+
+.dp-search-intent-console button.dp-search-more-toggle .dp-expanding-intent-chip__description {
+  display: none !important;
+}
+
+.dp-search-intent-console :is(.dp-search-intent-primary-rail, .dp-search-intent-secondary-track)::-webkit-scrollbar {
+  display: none !important;
+}
+
+.dp-search-intent-console button.dp-compact-intent-chip {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: auto !important;
+  min-width: 34px !important;
+  max-width: max-content !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  font: 650 11px/1 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  scroll-snap-align: start !important;
+}
+
+.dp-search-intent-console button.dp-compact-intent-chip:is(.is-active, [aria-selected="true"]) {
+  border-color: #c8a96a !important;
+  background: #f7f8fb !important;
+}
+
+.dp-search-intent-console button.dp-compact-intent-chip:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.7) !important;
+  outline-offset: 2px !important;
+}
+
+.dp-search-intent-console .dp-compact-intent-chip__icon,
+.dp-search-intent-console .dp-compact-intent-chip__icon .dp-search-intent-filter-icon {
+  display: inline-flex !important;
+  flex: 0 0 13px !important;
+  width: 13px !important;
+  min-width: 13px !important;
+  max-width: 13px !important;
+  height: 13px !important;
+  min-height: 13px !important;
+  max-height: 13px !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.dp-search-intent-console .dp-compact-intent-chip__text,
+.dp-search-intent-console .dp-compact-intent-chip__label {
+  display: inline !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  white-space: nowrap !important;
+}
+
+/* Beat legacy map rail grid locks that otherwise squeeze icons and labels to 1px. */
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-search-intent-primary-rail.dp-search-intent-primary-rail,
+  .dp-search-intent-secondary-track.dp-search-intent-secondary-track
+) {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 34px !important;
+  height: auto !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-intent-secondary-track.dp-search-intent-secondary-track {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-more-intent-panel.dp-search-more-intent-panel {
+  display: block !important;
+  width: 100% !important;
+  margin: 6px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-search-more-toggle.dp-search-more-toggle {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 44px !important;
+  max-width: max-content !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+}
+
+/* More is a disclosure action, not another filled search chip. */
+html body #dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle {
+  display: inline-flex !important;
+  grid-template-columns: none !important;
+  width: auto !important;
+  min-width: 44px !important;
+  max-width: max-content !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  align-items: center !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  transform: none !important;
+}
+
+html body #dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle#dp-search-more-toggle .dp-expanding-intent-chip__description {
+  display: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-compact-intent-chip.dp-compact-intent-chip {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 34px !important;
+  max-width: max-content !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 8px !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-compact-intent-chip__icon.dp-compact-intent-chip__icon,
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-compact-intent-chip__icon.dp-compact-intent-chip__icon svg {
+  display: inline-flex !important;
+  flex: 0 0 13px !important;
+  width: 13px !important;
+  min-width: 13px !important;
+  max-width: 13px !important;
+  height: 13px !important;
+  min-height: 13px !important;
+  max-height: 13px !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-compact-intent-chip__text.dp-compact-intent-chip__text,
+  .dp-compact-intent-chip__label.dp-compact-intent-chip__label
+) {
+  display: inline !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Final placement lock: More opens as the second rail inside the search console. */
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console #dp-search-more-filter-panel.dp-search-more-intent-panel:not([hidden]) {
+  order: 4 !important;
+  display: block !important;
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-intent-description-strip.dp-search-intent-description-strip {
+  order: 5 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console .dp-search-intent-status.dp-search-intent-status {
+  order: 6 !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console #dp-search-more-filter-panel.dp-search-more-intent-panel:not([hidden]) #dp-search-secondary-intent-rail.dp-search-intent-secondary-track {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  scroll-snap-type: x proximity !important;
+}
+
+html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console #dp-search-secondary-intent-rail.dp-search-intent-secondary-track::-webkit-scrollbar {
+  display: none !important;
+}

@@ -163,14 +163,13 @@ html body #root #dp-active-map-drawer .dp-entity-summary > p:last-child {
 }
 
 html body #root #dp-active-map-drawer .dp-entity-action-row {
-  display: flex !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 8px !important;
   width: 100% !important;
   margin: 0 !important;
   padding: 14px 0 !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scrollbar-width: none !important;
+  overflow: visible !important;
 }
 
 html body #root #dp-active-map-drawer .dp-entity-action-row::-webkit-scrollbar {
@@ -179,8 +178,8 @@ html body #root #dp-active-map-drawer .dp-entity-action-row::-webkit-scrollbar {
 
 html body #root #dp-active-map-drawer .dp-entity-action {
   display: inline-flex !important;
-  flex: 0 0 auto !important;
-  min-width: 88px !important;
+  min-width: 0 !important;
+  width: 100% !important;
   min-height: 44px !important;
   align-items: center !important;
   justify-content: center !important;
@@ -272,6 +271,67 @@ html body #root #dp-active-map-drawer .dp-entity-row small {
   overflow-wrap: anywhere !important;
 }
 
+html body #root #dp-active-map-drawer :is(img, video, canvas, svg) {
+  max-width: 100% !important;
+}
+
+html body #root #dp-active-map-drawer :is(.dp-contact-continuation, .dp-shore-contact-form, .dp-legends-inquiry-section) {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 20px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root #dp-active-map-drawer :is(input, select, textarea) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html body #root #dp-active-map-drawer .dp-building-hub-summary {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  margin: 16px 0 0 !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  overflow: hidden !important;
+}
+
+html body #root #dp-active-map-drawer .dp-building-hub-summary > div {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+  padding: 14px !important;
+}
+
+html body #root #dp-active-map-drawer .dp-building-hub-summary > div:nth-child(even) {
+  border-left: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root #dp-active-map-drawer .dp-building-hub-summary > div:nth-child(n + 3) {
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root #dp-active-map-drawer .dp-building-hub-summary strong {
+  color: #0b1f33 !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+
+html body #root #dp-active-map-drawer .dp-building-hub-summary span {
+  color: #667386 !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+
 html body #root #dp-active-map-drawer .dp-entity-row strong {
   color: #0b1f33 !important;
   font-size: 13px !important;
@@ -298,6 +358,12 @@ html body #root #dp-active-map-drawer :is(a, button, input, select, textarea):fo
 
   html body #root #dp-active-map-drawer .dp-entity-summary h2 {
     font-size: 28px !important;
+  }
+}
+
+@media (min-width: 520px) {
+  html body #root #dp-active-map-drawer .dp-entity-action-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
@@ -344,21 +410,20 @@ html body #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-act
 }
 
 html body #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-entity-action-row {
-  display: flex !important;
-  flex-wrap: nowrap !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 8px !important;
   width: 100% !important;
   height: auto !important;
   min-height: 44px !important;
   padding: 10px 0 !important;
-  overflow-x: auto !important;
+  overflow: visible !important;
 }
 
 html body #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-entity-action-row > .dp-entity-action {
   display: inline-flex !important;
-  flex: 0 0 auto !important;
-  width: auto !important;
-  min-width: 88px !important;
+  width: 100% !important;
+  min-width: 0 !important;
   min-height: 44px !important;
   height: 44px !important;
   padding: 0 14px !important;
@@ -373,4 +438,70 @@ html body #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-act
   border-color: #c8a96a !important;
   background: #c8a96a !important;
   color: #0b1f33 !important;
+}
+
+@media (min-width: 520px) {
+  html body #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-entity-action-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Entity sheet framework: one dominant action, compact secondary actions. */
+html body #root #dp-active-map-drawer {
+  background: #fff !important;
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  color: #0b1f33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root #dp-active-map-drawer .dp-legends-action-grid.dp-entity-action-row,
+html body #root #dp-active-map-drawer .dp-destination-action-row.dp-neighborhood-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 12px 0 !important;
+}
+
+html body #root #dp-active-map-drawer .dp-legends-action-grid.dp-entity-action-row > .is-primary,
+html body #root #dp-active-map-drawer .dp-destination-action-row.dp-neighborhood-actions > .is-primary {
+  grid-column: 1 / -1 !important;
+  min-height: 46px !important;
+  border-color: #c8a96a !important;
+  background: #c8a96a !important;
+  color: #0b1f33 !important;
+}
+
+html body #root #dp-active-map-drawer .dp-legends-brand-card {
+  margin: 0 0 12px !important;
+  border-radius: 8px !important;
+  border-color: rgba(11, 31, 51, 0.08) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root #dp-active-map-drawer .dp-legends-brand-card img {
+  object-fit: contain !important;
+  filter: none !important;
+}
+
+@media (max-width: 760px) {
+  html body #root #dp-active-map-drawer {
+    max-height: calc(100dvh - 72px) !important;
+    border-radius: 16px 16px 0 0 !important;
+    box-shadow: 0 -8px 24px rgba(11, 31, 51, 0.08) !important;
+  }
+}
+
+@media (min-width: 761px) {
+  html body #root #dp-active-map-drawer {
+    width: min(420px, calc(100vw - 32px)) !important;
+    height: calc(100dvh - 24px) !important;
+    max-height: calc(100dvh - 24px) !important;
+    top: 12px !important;
+    right: 12px !important;
+    left: auto !important;
+    bottom: auto !important;
+    border-radius: 16px !important;
+  }
 }

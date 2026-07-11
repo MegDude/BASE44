@@ -173,7 +173,8 @@ export default async function handler(req: any, res: any) {
         ? checkoutLineItems
         : [{ price: defaultPrice, quantity: Number(quantity) || 1 }],
       success_url: buildWorkspaceSuccessUrl(appBaseUrl, normalizedMetadata),
-      cancel_url: normalizedMetadata.accessType === 'resident' ? `${appBaseUrl}/card?checkout=cancelled` : `${appBaseUrl}/pricing?checkout=cancelled`,
+      cancel_url: normalizedMetadata.accessType === 'resident' ? `${appBaseUrl}/card?checkout=cancelled` : `${appBaseUrl}/partners/checkout?checkout=cancelled`,
+      customer_email: normalizedMetadata.email || undefined,
       metadata: normalizedMetadata,
     });
 
