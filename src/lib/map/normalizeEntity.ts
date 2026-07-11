@@ -163,6 +163,36 @@ export function createFallbackEntity(entity: Record<string, unknown> = {}, index
 }
 
 export function normalizeEntity(entity: Record<string, unknown>, index = 0): NormalizedEntity {
+  if (entity.sourceType === "launch_map" && entity.hasExactMarker === false) {
+    const type = String(entity.type || entity.kind || inferType(entity));
+    const pin = resolveEntityPin({ ...entity, type });
+    const image = resolveEntityImage({ ...entity, type });
+    return {
+      id: slug(entity.id, `entity-${index}`),
+      title: String(entity.title || entity.name || entity.address || `Downtown launch listing ${index + 1}`),
+      name: String(entity.name || entity.title || entity.address || `Downtown launch listing ${index + 1}`),
+      kind: type,
+      type,
+      category: String(entity.category || type),
+      address: typeof entity.address === "string" ? entity.address : "",
+      lat: undefined as unknown as number,
+      lng: undefined as unknown as number,
+      latitude: undefined as unknown as number,
+      longitude: undefined as unknown as number,
+      coords: [] as unknown as [number, number],
+      image,
+      pinKey: pin.label,
+      district: String(entity.district || inferDistrict(entity)),
+      partnerType: String(entity.partnerType || type),
+      phone: typeof entity.contact_phone === "string" ? entity.contact_phone : typeof entity.phone === "string" ? entity.phone : undefined,
+      email: typeof entity.contact_email === "string" ? entity.contact_email : typeof entity.email === "string" ? entity.email : undefined,
+      website: typeof entity.website === "string" ? entity.website : undefined,
+      source: typeof entity.source === "string" ? entity.source : undefined,
+      brand: typeof entity.brand === "string" ? entity.brand : undefined,
+      raw: entity,
+    };
+  }
+
   const coordinate = validateCoordinate(
     entity.latitude ?? entity.lat ?? (entity.coordinates as Record<string, unknown> | undefined)?.lat,
     entity.longitude ?? entity.lng ?? (entity.coordinates as Record<string, unknown> | undefined)?.lng,

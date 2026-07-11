@@ -3381,7 +3381,11 @@ function isLegendsPropertyPanel(place) {
 }
 
 function getPlaceCoords(place) {
-  if (Array.isArray(place?.coords) && place.coords.length >= 2) return place.coords;
+  if (Array.isArray(place?.coords) && place.coords.length >= 2) {
+    const lat = Number(place.coords[0]);
+    const lng = Number(place.coords[1]);
+    return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
+  }
   if (Number.isFinite(place?.latitude) && Number.isFinite(place?.longitude)) return [place.latitude, place.longitude];
   return null;
 }
