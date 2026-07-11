@@ -1338,7 +1338,6 @@ const RESIDENT_OFFER_RECORDS = [
   ["BATHE", ["bathe"], "10% Off First Soak", "Wellness perk", "The BATHE perk gives residents 10% off a first soak across sauna, cold plunge, soaking pools, massage, sound immersion, and coworking.", "Claim the wellness perk and confirm availability before visiting.", "Wellness"],
   ["YETI", ["yeti"], "Free Custom Engraving For Verified Residents", "Retail resident offer", "The YETI perk gives verified residents free custom engraving in-store, tied to downtown routes, lake days, and weekend plans.", "Show the Resident Pass in-store when the offer is active.", "Retail"],
   ["Rivian", ["rivian"], "Priority Test Drives & Resident Charging Perks", "Mobility resident offer", "The Rivian perk gives residents priority test-drive access and charging-perk context for weekend routes and local exploration.", "Save it and open the partner drawer for current test-drive details.", "Mobility"],
-  ["Standard Proof Whiskey Co.", ["standard proof"], "Complimentary Whiskey Flight Upgrade", "Resident drink offer", "The Standard Proof perk gives residents a complimentary whiskey flight upgrade at a focused Rainey-area drinks stop.", "Show the Resident Pass when the offer is active.", "Drinks"],
 ].map(([name, aliases, title, value, description, terms, category]) => ({
   name,
   aliases,
@@ -11612,7 +11611,6 @@ function SearchIntentConsole({
     return () => window.clearInterval(timer);
   }, [promptPlaceholders.length]);
 
-  const residentIntentRail = PRIMARY_SEARCH_INTENT_RAIL;
   const railIconFor = (item = {}) => {
     const text = `${item.id || ""} ${item.label || ""} ${item.filter || ""} ${item.kind || ""}`.toLowerCase();
     if (item.collection || /\b(route|walk|crawl|collection)\b/.test(text)) return Route;
@@ -11642,12 +11640,27 @@ function SearchIntentConsole({
     if (/\b(gap|coverage)\b/.test(text)) return Search;
     return Compass;
   };
-  const withRailIcon = (item) => ({ ...item, icon: item.icon || railIconFor(item) });
-  const intentRail = residentIntentRail;
-  const rawMoreFilterRail = SECONDARY_SEARCH_INTENT_RAIL;
+  const railIdFor = (item = {}, prefix = "intent") => {
+    if (item.id) return item.id;
+    const source = String(item.label || item.filter || item.prompt || prefix || "intent");
+    const slug = source.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "intent";
+    return `${prefix}-${slug}`;
+  };
+  const withRailIcon = (item, prefix = "intent") => ({
+    ...item,
+    id: railIdFor(item, prefix),
+    icon: item.icon || railIconFor(item),
+  });
+  const modeConfig = SEARCH_CONSOLE_MODE_CONFIG[mode] || SEARCH_CONSOLE_MODE_CONFIG.resident;
+  const primaryIntentSource = mode === "partner" ? modeConfig.intentChips : PRIMARY_SEARCH_INTENT_RAIL;
+  const secondaryIntentSource = mode === "partner"
+    ? [...(modeConfig.filterRail || []), ...(modeConfig.featuredPins || [])]
+    : SECONDARY_SEARCH_INTENT_RAIL;
+  const intentRail = primaryIntentSource.map((item) => withRailIcon(item, `${mode}-primary`));
+  const rawMoreFilterRail = secondaryIntentSource.map((item) => withRailIcon(item, `${mode}-secondary`));
   const moreFilterRail = rawMoreFilterRail.filter((item) => (
     !intentRail.some((intentItem) => String(intentItem.label).toLowerCase() === String(item.label).toLowerCase())
-  )).map(withRailIcon);
+  ));
 
   const railKeyFor = (item) => String(item?.id || item?.label || item?.filter || item?.prompt || "").toLowerCase();
   const isRailItemActive = (item) => {

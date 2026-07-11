@@ -15510,21 +15510,6 @@ export const heroImageRegistry = [
     }
   },
   {
-    "slug": "standard-proof-whiskey-co-austin",
-    "heroImage": "/images/map-pins/property/standard-proof-whiskey-co.webp",
-    "thumbnail": "/images/map-pins/property/standard-proof-whiskey-co.webp",
-    "gallery": [
-      "/images/map-pins/property/standard-proof-whiskey-co.webp"
-    ],
-    "fallback": "/images/fallbacks/drinks.jpg",
-    "inheritance": {
-      "district": "Rainey",
-      "imageStrategy": "source",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
     "slug": "star-bar",
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
@@ -17620,19 +17605,6 @@ export const heroImageRegistry = [
     "fallback": "/images/fallbacks/drinks.jpg",
     "inheritance": {
       "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "the-tipsy-alchemist",
-    "heroImage": "/images/fallbacks/drinks.jpg",
-    "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
-    "inheritance": {
-      "district": "Rainey",
       "imageStrategy": "category-fallback",
       "buildingSlug": "",
       "mlsOverridesImage": false

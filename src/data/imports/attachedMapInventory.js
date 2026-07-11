@@ -5287,28 +5287,6 @@ export const ATTACHED_HAPPY_HOUR_PERK_LOCATIONS = [
     "isSpeakeasy": false
   },
   {
-    "id": "happy-hour-the-tipsy-alchemist",
-    "name": "The Tipsy Alchemist",
-    "kind": "bar",
-    "category": "Bar / Nightlife",
-    "latitude": 30.258393,
-    "longitude": -97.739041,
-    "address": "70, Rainey Street, Austin, TX, 78701",
-    "district": "Rainey",
-    "operatingHours": "Not listed",
-    "specials": [],
-    "specialLabel": "No public happy hour or deal listed yet",
-    "hasPublicSpecial": false,
-    "website": "",
-    "phone": "",
-    "email": "",
-    "eventsAvailable": "",
-    "alignment": "Resident happy-hour perks, nightlife activations, and event check-ins",
-    "summary": "Bar / Nightlife listing in Downtown Austin.",
-    "source": "OpenStreetMap / Overpass",
-    "isSpeakeasy": false
-  },
-  {
     "id": "happy-hour-unbarlievable",
     "name": "Unbarlievable",
     "kind": "bar",

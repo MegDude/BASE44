@@ -180,11 +180,6 @@
     "publicPath": "/images/map-pins/property/residential-property-west-avenue-300.webp"
   },
   {
-    "sourceName": "Standard Proof Whiskey Co..webp",
-    "targetName": "standard-proof-whiskey-co.webp",
-    "publicPath": "/images/map-pins/property/standard-proof-whiskey-co.webp"
-  },
-  {
     "sourceName": "The Quincy .jpg",
     "targetName": "the-quincy.jpg",
     "publicPath": "/images/map-pins/property/the-quincy.jpg"

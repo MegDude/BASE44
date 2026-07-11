@@ -56446,49 +56446,6 @@
       "searchText": "Stagger Lee Drinks Rainey 87, Rainey Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
     },
     {
-      "id": "map-133-standard-proof-whiskey-co-austin",
-      "slug": "standard-proof-whiskey-co-austin",
-      "name": "Standard Proof Whiskey Co - Austin",
-      "entityType": "bar",
-      "category": "Drinks",
-      "subcategory": "Bar / Nightlife",
-      "district": "Rainey",
-      "address": "51, Rainey Street, Austin, TX, 78701",
-      "lat": 30.256762,
-      "lng": -97.739414,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Bar / Nightlife listing in Downtown Austin.",
-      "primaryImage": "/images/map-pins/property/standard-proof-whiskey-co.webp",
-      "galleryImages": [
-        "/images/map-pins/property/standard-proof-whiskey-co.webp"
-      ],
-      "thumbnail": "/images/map-pins/property/standard-proof-whiskey-co.webp",
-      "actions": [
-        {
-          "label": "Save"
-        },
-        {
-          "label": "Directions"
-        },
-        {
-          "label": "Website"
-        }
-      ],
-      "inheritance": {
-        "district": "Rainey",
-        "imageStrategy": "source",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "Standard Proof Whiskey Co - Austin | Downtown Perks",
-        "description": "Bar / Nightlife listing in Downtown Austin."
-      },
-      "searchText": "Standard Proof Whiskey Co - Austin Drinks Rainey 51, Rainey Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
-    },
-    {
       "id": "map-134-star-bar",
       "slug": "star-bar",
       "name": "Star Bar",
@@ -63108,47 +63065,6 @@
         "description": "Bar / Nightlife listing in Downtown Austin."
       },
       "searchText": "The Tavern Drinks Downtown Core 922, West 12th Street, Austin, TX, 78703 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
-    },
-    {
-      "id": "map-160-the-tipsy-alchemist",
-      "slug": "the-tipsy-alchemist",
-      "name": "The Tipsy Alchemist",
-      "entityType": "bar",
-      "category": "Drinks",
-      "subcategory": "Bar / Nightlife",
-      "district": "Rainey",
-      "address": "70, Rainey Street, Austin, TX, 78701",
-      "lat": 30.258393,
-      "lng": -97.739041,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Bar / Nightlife listing in Downtown Austin.",
-      "primaryImage": "/images/fallbacks/drinks.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
-      "actions": [
-        {
-          "label": "Save"
-        },
-        {
-          "label": "Directions"
-        },
-        {
-          "label": "Website"
-        }
-      ],
-      "inheritance": {
-        "district": "Rainey",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "The Tipsy Alchemist | Downtown Perks",
-        "description": "Bar / Nightlife listing in Downtown Austin."
-      },
-      "searchText": "The Tipsy Alchemist Drinks Rainey 70, Rainey Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
     },
     {
       "id": "map-1449-the-tox",

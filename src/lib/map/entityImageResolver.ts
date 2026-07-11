@@ -765,11 +765,6 @@ const entityImageSets: Record<string, string[]> = {
     "/images/imported/perks/fine-eyewear-campaign.png",
     "/images/imported/perks/fine-eywear-survey.png",
   ],
-  "standard-proof": [
-    "/images/imported/perks/standard-proof-whiskey-co.webp",
-    "/images/imported/perks/restaurantfrancois-martiniflight-richardcasteel-atx-5-h31lmk.avif",
-    "/images/imported/perks/restaurantfrancois-int-ext-richardcasteel-atx-26-fnm2bj.avif",
-  ],
   "stay-put": [
     `${ATTACHED_IMAGE_BASE}/venues/stay-put-patio.png`,
     "/images/imported/perks/stayput.png",
@@ -880,7 +875,6 @@ const contentImageRules = [
   { key: "shangri-la", terms: ["shangri la", "shangri-la", "treasury shangri"] },
   { key: "restaurant-francois", terms: ["restaurant françois", "restaurant francois", "françois", "francois"] },
   { key: "royal-blue", terms: ["royal blue"] },
-  { key: "standard-proof", terms: ["standard proof", "whiskey", "distillery"] },
   { key: "hotel-van-zandt", terms: ["hotel van zandt", "van zandt first thursday"] },
   { key: "waterloo", terms: ["waterloo", "waller creek", "moody amphitheater"] },
   { key: "lake-photo", terms: ["lake", "boat", "lady bird", "waterfront"] },

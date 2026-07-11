@@ -1516,7 +1516,6 @@ export function buildLocations() {
     .map((item, i) => {
       const isVia313 = String(item.name || "").toLowerCase().includes("via 313");
       const isRoyalBlue = String(item.name || "").toLowerCase().includes("royal blue grocery");
-      const isStandardProof = String(item.name || "").toLowerCase().includes("standard proof whiskey");
       const isAntones = /\bantone'?s\b/i.test(`${item.name || ""} ${item.slug || item.id || ""}`);
       const isStAugustine = String(item.name || "").trim().toLowerCase() === "augustine";
       const downtownCoreRestaurantUpdate = getDowntownCoreRestaurantUpdate(item);
@@ -1573,43 +1572,6 @@ export function buildLocations() {
               alignment_to_downtown_perks: "Resident grocery discounts and neighborhood shopping value for everyday downtown errands.",
               deals_offers: "Resident grocery discount when shopping in-store",
               specials: "Resident shopping value on groceries, coffee, snacks, pantry basics, wine, and quick downtown errands.",
-            }
-          : {}),
-        ...(isStandardProof
-          ? {
-              name: "Standard Proof Whiskey Co.",
-              category: "Bar & Nightlife",
-              category_key: "bar_nightlife whiskey_flights craft_cocktails rainey_legacy",
-              type: "venue",
-              partnerType: "venues",
-              district: "Rainey",
-              address: "51 Rainey Street, Austin, TX 78701",
-              summary: "Whiskey, cocktails, and a slower pace at the edge of Rainey Street.",
-              description: "A whiskey tasting room and cocktail lounge designed for people who appreciate good drinks, good conversation, and a slightly slower pace than the rest of Rainey Street.",
-              neighborhood_narrative: "At the southern end of Rainey Street, Standard Proof sat between downtown's high-rise residential district and Lady Bird Lake. Residents could stop in for a cocktail before dinner, meet friends before a concert, or start a night out without the crowds often associated with the center of Rainey Street.",
-              alignment_to_downtown_perks: "A quieter side of Rainey for date nights, after-work drinks, small group gatherings, and discovering something new before heading out downtown.",
-              deals_offers: "Complimentary Whiskey Flight Upgrade",
-              specials: "Purchase any whiskey flight and receive a premium flight upgrade or featured seasonal pour.",
-              terms: "Subject to availability and partner participation.",
-              perk: {
-                title: "Complimentary Whiskey Flight Upgrade",
-                value: "Premium flight upgrade or featured seasonal pour",
-                description: "Purchase any whiskey flight and receive a premium flight upgrade or featured seasonal pour.",
-                isActive: true,
-              },
-              knownFor: [
-                "Whiskey flights",
-                "Signature infused rye whiskies",
-                "Craft cocktails",
-                "Small group gatherings",
-                "Pre-event drinks",
-                "Date nights",
-                "Resident meetups",
-              ],
-              nearby: ["Lady Bird Lake", "Hotel Van Zandt", "Rainey Street", "Convention Center", "Downtown Trail Network"],
-              inventory_status: "Legacy Venue / Previously Featured Partner",
-              inventory_status_note: "Standard Proof's Rainey Street tasting room is marked as a legacy venue because the company shifted focus to broader brand growth after the downtown location closed.",
-              website: "https://www.standardproofwhiskey.com/rainey-street",
             }
           : {}),
         ...(downtownCoreRestaurantUpdate || {}),
