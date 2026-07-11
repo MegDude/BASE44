@@ -67,13 +67,14 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
+    const partnerType = currentUser.user_metadata?.partner_type || currentUser.user_metadata?.account_type || "partner";
     const profile = {
       id: currentUser.id,
       email: currentUser.email || "",
-      full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Partner",
-      organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Partner",
-      partner_type: currentUser.user_metadata?.partner_type || "partner",
-      role: currentUser.app_metadata?.role || currentUser.user_metadata?.role || "partner",
+      full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Account",
+      organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Account",
+      partner_type: partnerType,
+      role: currentUser.app_metadata?.role || currentUser.user_metadata?.role || (partnerType === "resident" ? "resident" : "partner"),
       authProvider: "supabase",
     };
     setUser(profile);
@@ -157,7 +158,10 @@ export const AuthProvider = ({ children }) => {
       return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
     }
 
-    const organizationName = profile.organization_name || profile.company || "Downtown Perks Partner";
+    const partnerType = profile.partner_type || profile.account_type || "partner";
+    const accessRole = partnerType === "resident" ? "resident" : "partner";
+    const redirectPath = profile.redirectPath || (partnerType === "resident" ? "/app?mode=resident&tab=map&filter=All" : "/partner-workspace/overview");
+    const organizationName = profile.organization_name || profile.company || "Downtown Perks Account";
     const email = profile.email || profile.signup_email || "";
 
     if (isProductionLike()) {
@@ -166,14 +170,19 @@ export const AuthProvider = ({ children }) => {
         return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
       }
       if (!email) {
-        const message = "Enter the email for your partner account before requesting sign-in access.";
+        const message = "Enter the email for this account before requesting sign-in access.";
         setAuthError(message);
         return { type: "error", message };
       }
       const { error } = await supabaseClient.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/partner-workspace/overview`,
+          emailRedirectTo: `${window.location.origin}${redirectPath}`,
+          data: {
+            organization_name: organizationName,
+            partner_type: partnerType,
+            partner_type_label: profile.partner_type_label || "",
+          },
         },
       });
       if (error) {
@@ -181,7 +190,7 @@ export const AuthProvider = ({ children }) => {
         setAuthError(message);
         return { type: "error", message };
       }
-      const message = "Check your email for the secure partner sign-in link.";
+      const message = "Check your email for the secure sign-in link.";
       setAuthError(message);
       return { type: "supabase_otp", email, message };
     }
@@ -193,8 +202,8 @@ export const AuthProvider = ({ children }) => {
         email,
         full_name: profile.full_name || profile.contact_name || organizationName,
         organization_name: organizationName,
-        partner_type: profile.partner_type || "partner",
-        role: "partner",
+        partner_type: partnerType,
+        role: accessRole,
       },
       createdAt: new Date().toISOString(),
     };

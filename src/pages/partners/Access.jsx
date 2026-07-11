@@ -67,6 +67,12 @@ const PARTNER_TYPES = [
   },
 ];
 
+const SIGN_IN_ACCESS_TYPES = PARTNER_TYPES;
+
+const ACCESS_ROUTE_BY_TYPE = {
+  resident: "/app?mode=resident&tab=map&filter=All",
+};
+
 const TIMELINES = [
   "This month",
   "Next 30 days",
@@ -94,6 +100,10 @@ function getPartnerTypeLabel(value) {
   return PARTNER_TYPES.find((type) => type.value === value)?.label || value;
 }
 
+function getAccessTypeLabel(value) {
+  return SIGN_IN_ACCESS_TYPES.find((type) => type.value === value)?.label || getPartnerTypeLabel(value);
+}
+
 function normalizePartnerType(value) {
   const normalized = String(value || "").trim().toLowerCase();
   if (!normalized) return "";
@@ -103,9 +113,17 @@ function normalizePartnerType(value) {
   if (["brand", "brands", "sponsor", "sponsors"].includes(normalized)) return "brand";
   if (["civic", "community", "district"].includes(normalized)) return "civic";
   if (["realestate", "real-estate", "real estate", "listing", "listings", "agent", "broker"].includes(normalized)) return "real-estate";
-  if (["resident", "residents"].includes(normalized)) return "resident";
+  if (["resident", "residents", "member", "members", "user", "users"].includes(normalized)) return "resident";
   if (normalized === "custom") return "custom";
   return "";
+}
+
+function getAccessRouteForType(value) {
+  return ACCESS_ROUTE_BY_TYPE[normalizePartnerType(value)] || "/partner-workspace/overview";
+}
+
+function getAccessRoleForType(value) {
+  return normalizePartnerType(value) === "resident" ? "resident" : "partner";
 }
 
 function savePartnerProfile(profile) {
@@ -117,15 +135,21 @@ function savePartnerProfile(profile) {
   }
 }
 
-async function startPartnerSignIn(navigate, signInPartner, email) {
+async function startPartnerSignIn(navigate, signInPartner, { email, accountType } = {}) {
   if (!canUseProductionAccountAccess()) return null;
+  const partnerType = normalizePartnerType(accountType) || "property";
+  const accessLabel = getAccessTypeLabel(partnerType) || "Downtown Perks";
+  const redirectPath = getAccessRouteForType(partnerType);
   const session = await signInPartner({
     email,
-    organization_name: "Downtown Perks Partner",
-    contact_name: email || "Partner",
-    partner_type: "partner",
+    organization_name: `${accessLabel} Access`,
+    contact_name: email || accessLabel,
+    partner_type: partnerType,
+    partner_type_label: accessLabel,
+    role: getAccessRoleForType(partnerType),
+    redirectPath,
   });
-  if (session?.type === "partner") navigate("/partner-workspace/overview");
+  if (session?.type === "partner") navigate(redirectPath);
   return session;
 }
 
@@ -185,6 +209,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
   const [signInEmail, setSignInEmail] = useState("");
+  const [signInType, setSignInType] = useState(initialType || "property");
+  const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
   const hasPartnerType = Boolean(form.partner_type);
   const accountAccessEnabled = canUseProductionAccountAccess();
 
@@ -199,8 +225,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
   useEffect(() => {
     if (isSignUp || !isAuthenticated) return;
-    if (user?.organization_name || user?.partner_type === "partner") navigate("/partner-workspace/overview", { replace: true });
-    else navigate("/partners/apply", { replace: true });
+    const accountType = user?.partner_type || user?.role || "property";
+    navigate(getAccessRouteForType(accountType), { replace: true });
   }, [isAuthenticated, isSignUp, navigate, user]);
 
   function updateField(field, value) {
@@ -331,15 +357,18 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     }
     if (!signInEmail && !user?.email) {
       setSubmissionState("error");
-      setSubmissionMessage("Enter the email for your partner account before requesting sign-in access.");
+      setSubmissionMessage("Enter the email for this account before requesting sign-in access.");
       return;
     }
     setSubmissionState("submitting");
     setSubmissionMessage("");
-    const session = await startPartnerSignIn(navigate, signInPartner, signInEmail || user?.email || "partner@downtownperks.local");
+    const session = await startPartnerSignIn(navigate, signInPartner, {
+      email: signInEmail || user?.email || "account@downtownperks.local",
+      accountType: signInType,
+    });
     if (session?.type === "partner") return;
     setSubmissionState("idle");
-    setSubmissionMessage(session?.message || "Check your email for the secure partner sign-in link.");
+    setSubmissionMessage(session?.message || "Check your email for the secure sign-in link.");
   }
 
   return (
@@ -360,16 +389,16 @@ export default function PartnerAccess({ mode = "sign-in" }) {
         <section className="dp-partner-access-grid grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="dp-partner-access-copy">
             <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
-              Partner access
+              {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Register your partner setup." : "Partner sign in"}
+              {isSignUp ? "Register your partner setup." : "Sign in to Downtown Perks."}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
                 ? "Choose the right path first, then add your profile, map listing, campaigns, and billing."
                 : accountAccessEnabled
-                  ? "Sign in to manage your organization, campaigns, offers, events, reports, team access, and billing."
+                  ? "Use one secure sign-in for properties, hotels, venues, brands, civic teams, real estate teams, residents, and custom partner accounts."
                   : PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
             </p>
 
@@ -379,8 +408,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 "Share the details your account needs.",
                 "Continue without re-entering the same information.",
               ] : [
-                "Use sign in if your organization already has an account.",
-                "Create a partner account if this is your first time here.",
+                "Choose the access type that matches your account.",
+                "Use the same secure link pattern for partner and resident access.",
                 "Request team access if someone else owns the organization.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
@@ -555,15 +584,44 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               </form>
             ) : (
               <div className="dp-partner-access-signin">
-                <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Partner account</p>
+                <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Account access</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Choose your access path
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Continue to the right place for your organization, team access, and billing.
+                  Select the account type first. The secure link will return you to the right workspace or resident experience.
                 </p>
+                <section className="dp-partner-type-section dp-partner-signin-type-section mt-5" aria-labelledby="signin-type-heading">
+                  <div className="dp-partner-type-section-head">
+                    <p className="dp-partner-access-label">Access type</p>
+                    <h3 id="signin-type-heading">Who is signing in?</h3>
+                  </div>
+                  <div className="dp-partner-type-grid dp-partner-signin-type-grid" role="radiogroup" aria-label="Account access type">
+                    {SIGN_IN_ACCESS_TYPES.map((type) => {
+                      const isActive = signInType === type.value;
+                      return (
+                        <button
+                          key={type.value}
+                          type="button"
+                          role="radio"
+                          aria-checked={isActive}
+                          data-active={isActive}
+                          onClick={() => {
+                            setSignInType(type.value);
+                            setSubmissionMessage("");
+                          }}
+                          className="dp-partner-type-card"
+                        >
+                          <span>{type.section}</span>
+                          <strong>{type.label}</strong>
+                          <small>{type.summary}</small>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
                 <PartnerAccessField
-                  label="Partner email"
+                  label={`${selectedSignInType?.label || "Account"} email`}
                   type="email"
                   value={signInEmail}
                   onChange={setSignInEmail}
