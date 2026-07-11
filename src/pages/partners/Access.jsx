@@ -623,6 +623,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <PartnerAccessField
                   label={`${selectedSignInType?.label || "Account"} email`}
                   type="email"
+                  placeholder="name@organization.com"
                   value={signInEmail}
                   onChange={setSignInEmail}
                   required={accountAccessEnabled}
@@ -678,13 +679,14 @@ function formatSetupText(value) {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
-function PartnerAccessField({ label, value, onChange, type = "text", required = false }) {
+function PartnerAccessField({ label, value, onChange, type = "text", required = false, placeholder = "" }) {
   return (
     <div>
       <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">{label}</label>
       <input
         type={type}
         value={value}
+        placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         required={required}
         className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
