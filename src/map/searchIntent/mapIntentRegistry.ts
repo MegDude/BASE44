@@ -3,6 +3,36 @@ import { brandCampaignExamples, liveCampaignLayerExamples } from "../../data/cam
 
 export type MapIntentMode = "resident" | "partner";
 
+export const CANONICAL_PARTNER_INTENT_IDS = [
+  "performance",
+  "campaigns",
+  "audience",
+  "opportunity",
+  "activation",
+  "insights",
+  "trails",
+  "parking",
+  "properties",
+  "events",
+  "perks",
+] as const;
+
+export type PartnerIntentId = (typeof CANONICAL_PARTNER_INTENT_IDS)[number];
+
+const PARTNER_INTENT_ALIASES: Record<string, PartnerIntentId> = {
+  campaign_opportunity: "campaigns",
+  coverage_gap: "opportunity",
+  demand_signal: "audience",
+  partner_intelligence: "insights",
+  partner_performance: "performance",
+  partner_campaigns: "campaigns",
+  partner_opportunity: "opportunity",
+  partner_coverage: "opportunity",
+  partner_properties: "properties",
+  partner_events: "events",
+  partner_perks: "perks",
+};
+
 export type MapIntentType =
   | "category"
   | "subcategory"
@@ -54,6 +84,7 @@ export type MapIntent = {
     end: string;
   };
   searchTerms?: string[];
+  allowEmpty?: boolean;
   mode: MapIntentMode;
 };
 
@@ -292,10 +323,66 @@ export const MAP_INTENT_REGISTRY: MapIntent[] = [
     intentType: "campaign",
     mode: "partner",
     campaignIds: [...brandCampaignExamples, ...liveCampaignLayerExamples].map((campaign) => campaign.id),
-    searchTerms: ["campaign", "campaigns", "active campaigns", "austin fc campaign", "performance"],
+    searchTerms: ["campaign", "campaigns", "active campaigns", "austin fc campaign"],
   },
   {
-    id: "partner_properties",
+    id: "performance",
+    label: "Performance",
+    intentType: "campaign",
+    mode: "partner",
+    campaignIds: [...brandCampaignExamples, ...liveCampaignLayerExamples].map((campaign) => campaign.id),
+    searchTerms: ["performance", "scans", "saves", "opens", "redemptions", "reports"],
+  },
+  {
+    id: "audience",
+    label: "Interest",
+    intentType: "district",
+    mode: "partner",
+    allowEmpty: true,
+    searchTerms: ["audience", "resident interest", "demand", "nearby interest"],
+  },
+  {
+    id: "opportunity",
+    label: "Opportunity",
+    intentType: "natural-language",
+    mode: "partner",
+    allowEmpty: true,
+    searchTerms: ["opportunity", "coverage gap", "white space", "promote next"],
+  },
+  {
+    id: "activation",
+    label: "Activation",
+    intentType: "campaign",
+    mode: "partner",
+    entityTypes: ["campaign", "event", "brand"],
+    searchTerms: ["activation", "sponsorship", "promotion", "launch"],
+  },
+  {
+    id: "insights",
+    label: "Insights",
+    intentType: "natural-language",
+    mode: "partner",
+    allowEmpty: true,
+    searchTerms: ["insights", "trending", "opportunity", "demand"],
+  },
+  {
+    id: "trails",
+    label: "Trails",
+    intentType: "route",
+    mode: "partner",
+    searchTerms: ["trail", "route", "discovery route", "placement"],
+  },
+  {
+    id: "parking",
+    label: "Parking",
+    intentType: "category",
+    mode: "partner",
+    entityTypes: ["mobility", "service"],
+    categories: ["Parking", "Mobility"],
+    searchTerms: ["parking", "garage", "valet", "mobility"],
+  },
+  {
+    id: "properties",
     label: "Properties",
     intentType: "property",
     mode: "partner",
@@ -304,7 +391,7 @@ export const MAP_INTENT_REGISTRY: MapIntent[] = [
     searchTerms: ["properties", "buildings", "residential", "leasing"],
   },
   {
-    id: "partner_events",
+    id: "events",
     label: "Events",
     intentType: "event",
     mode: "partner",
@@ -313,7 +400,7 @@ export const MAP_INTENT_REGISTRY: MapIntent[] = [
     searchTerms: ["events", "event sponsorship", "rsvp"],
   },
   {
-    id: "partner_perks",
+    id: "perks",
     label: "Perks",
     intentType: "perk",
     mode: "partner",
@@ -329,7 +416,11 @@ export const MAP_INTENT_REGISTRY: MapIntent[] = [
   },
 ];
 
-const INTENTS_BY_ID = new Map(MAP_INTENT_REGISTRY.map((intent) => [intent.id, intent]));
+function getIntentById(id: string, mode: MapIntentMode): MapIntent | undefined {
+  const normalizedId = mode === "partner" ? PARTNER_INTENT_ALIASES[id] || id : id;
+  return MAP_INTENT_REGISTRY.find((intent) => intent.id === normalizedId && intent.mode === mode)
+    || MAP_INTENT_REGISTRY.find((intent) => intent.id === normalizedId && intent.mode === "resident");
+}
 
 function asTextParts(entity: AnyEntity): string[] {
   const raw = entity?.raw && typeof entity.raw === "object" ? entity.raw : {};
@@ -422,13 +513,13 @@ export function normalizeEntityTaxonomy(entity: AnyEntity): TaxonomyProjection {
 
 export function resolveSearchIntent(input: string | Partial<MapIntent>, mode: MapIntentMode = "resident"): MapIntent {
   if (typeof input === "object" && input.id) {
-    const fromRegistry = INTENTS_BY_ID.get(input.id);
+    const fromRegistry = getIntentById(input.id, input.mode || mode);
     return { ...(fromRegistry || input as MapIntent), ...input, mode: input.mode || mode } as MapIntent;
   }
 
   const query = String(input || "").trim().toLowerCase();
   const directId = query.replace(/[\s-]+/g, "_");
-  const direct = INTENTS_BY_ID.get(directId) || INTENTS_BY_ID.get(query);
+  const direct = getIntentById(directId, mode) || getIntentById(query, mode);
   if (direct) return { ...direct, mode };
 
   const scoped = MAP_INTENT_REGISTRY.filter((intent) => intent.mode === mode || intent.mode === "resident");
@@ -448,7 +539,7 @@ export function resolveSearchIntent(input: string | Partial<MapIntent>, mode: Ma
   }
 
   return {
-    ...(INTENTS_BY_ID.get("natural_language") as MapIntent),
+    ...(getIntentById("natural_language", mode) as MapIntent),
     id: `natural:${query || "empty"}`,
     label: query || "Natural-language search",
     searchTerms: query ? query.split(/\s+/).filter(Boolean) : [],
@@ -644,7 +735,7 @@ export function applyMapIntent(entities: AnyEntity[], intentInput: string | Part
       campaignId: intent.campaignIds?.[0] || "",
       brandId: intent.brandIds?.[0] || "",
       district: intent.districtIds?.[0] || "",
-      query: intent.searchTerms?.[0] || "",
+      query: mode === "partner" ? "" : intent.searchTerms?.[0] || "",
     },
   };
 }

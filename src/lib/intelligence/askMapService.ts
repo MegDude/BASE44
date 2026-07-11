@@ -19,12 +19,15 @@ export type AskMapRequest = {
 export function parseAskMapIntent(query = "", mode: AgentMode = "resident") {
   const text = query.toLowerCase();
   if (mode === "partner") {
-    if (text.includes("campaign")) return "campaign_opportunity";
-    if (text.includes("coverage")) return "coverage_gap";
-    if (text.includes("demand") || text.includes("rising")) return "demand_signal";
+    if (text.includes("campaign")) return "campaigns";
+    if (text.includes("coverage") || text.includes("gap")) return "opportunity";
+    if (text.includes("demand") || text.includes("rising")) return "audience";
     if (text.includes("audience")) return "audience";
     if (text.includes("scan") || text.includes("save") || text.includes("open")) return "performance";
-    return "partner_intelligence";
+    if (text.includes("activation") || text.includes("sponsor")) return "activation";
+    if (text.includes("trail") || text.includes("route")) return "trails";
+    if (text.includes("parking") || text.includes("garage")) return "parking";
+    return "insights";
   }
   if (text.includes("happy hour")) return "happy_hour";
   if (text.includes("coffee")) return "coffee";

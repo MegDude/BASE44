@@ -10,11 +10,14 @@ const RESIDENT_RULES = [
 ];
 
 const PARTNER_RULES = [
-  { id: "campaign_opportunity", label: "Campaign Opportunity", categories: ["Campaigns"], tokens: ["campaign", "launch", "promote", "activation"] },
-  { id: "coverage_gap", label: "Coverage Gap", categories: ["Coverage"], tokens: ["coverage", "gap", "missing", "white space"] },
+  { id: "campaigns", label: "Campaigns", categories: ["Campaigns"], tokens: ["campaign", "campaigns"] },
+  { id: "opportunity", label: "Opportunity", categories: ["Coverage"], tokens: ["coverage", "gap", "missing", "white space", "opportunity"] },
   { id: "audience", label: "Audience", categories: ["Audience"], tokens: ["audience", "residents", "guests", "workers", "visitors"] },
   { id: "performance", label: "Performance", categories: ["Reports"], tokens: ["performance", "scans", "saves", "opens", "report"] },
-  { id: "partner_intelligence", label: "Partner Intelligence", categories: ["Activity"], tokens: ["what", "why", "next", "opportunity"] },
+  { id: "activation", label: "Activation", categories: ["Campaigns"], tokens: ["activation", "sponsorship", "promotion", "launch"] },
+  { id: "insights", label: "Insights", categories: ["Activity"], tokens: ["insights", "trending", "what", "why", "next"] },
+  { id: "trails", label: "Trails", categories: ["Routes"], tokens: ["trail", "route", "placement"] },
+  { id: "parking", label: "Parking", categories: ["Parking", "Mobility"], tokens: ["parking", "garage", "valet", "mobility"] },
 ];
 
 function normalize(text: string) {
@@ -27,7 +30,9 @@ export function detectAgentIntent(input: AgentContext): AgentIntent {
   const rules = mode === "partner" ? PARTNER_RULES : RESIDENT_RULES;
   const configured = Array.isArray(input.intentCategories) ? input.intentCategories.filter(Boolean).map(String) : [];
   const match = rules.find((rule) => rule.tokens.some((token) => query.includes(token)));
-  const fallback = mode === "partner" ? PARTNER_RULES[PARTNER_RULES.length - 1] : RESIDENT_RULES[RESIDENT_RULES.length - 1];
+  const fallback = mode === "partner"
+    ? PARTNER_RULES.find((rule) => rule.id === "insights") || PARTNER_RULES[0]
+    : RESIDENT_RULES[RESIDENT_RULES.length - 1];
   const rule = match || fallback;
 
   return {

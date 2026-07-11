@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import productionMapInventory from "../src/data/production/production-map-inventory.json";
 import {
+  CANONICAL_PARTNER_INTENT_IDS,
   MAP_INTENT_REGISTRY,
   applyMapIntent,
   entityMatchesMapIntent,
@@ -9,6 +10,26 @@ import {
 
 const entities = productionMapInventory.records;
 const failures: Array<{ intentId: string; message: string }> = [];
+
+for (const intentId of CANONICAL_PARTNER_INTENT_IDS) {
+  const definition = MAP_INTENT_REGISTRY.find((intent) => intent.mode === "partner" && intent.id === intentId);
+  assert.ok(definition, `canonical partner intent ${intentId} is registered`);
+  const applied = applyMapIntent(entities, intentId, "partner");
+  assert.equal(applied.intent.id, intentId, `canonical partner intent ${intentId} resolves directly`);
+  assert.equal(applied.urlState.query, "", `partner intent ${intentId} clears free-text query state`);
+}
+
+for (const [legacyId, canonicalId] of Object.entries({
+  campaign_opportunity: "campaigns",
+  coverage_gap: "opportunity",
+  partner_intelligence: "insights",
+  partner_performance: "performance",
+  partner_properties: "properties",
+  partner_events: "events",
+  partner_perks: "perks",
+})) {
+  assert.equal(resolveSearchIntent(legacyId, "partner").id, canonicalId, `${legacyId} resolves to ${canonicalId}`);
+}
 
 function testIntent(intent: (typeof MAP_INTENT_REGISTRY)[number]) {
   const applied = applyMapIntent(entities, intent, intent.mode);
@@ -19,7 +40,7 @@ function testIntent(intent: (typeof MAP_INTENT_REGISTRY)[number]) {
   assert.ok(Array.isArray(applied.filteredPins), "previous filtered pins are cleared before applying intent");
   assert.ok(Array.isArray(applied.routeLayers), "route layer output is always present");
 
-  if (intent.id !== "natural_language") {
+  if (intent.id !== "natural_language" && !intent.allowEmpty) {
     assert.ok(applied.resultCount > 0, "registered intent should return at least one pin");
   }
 

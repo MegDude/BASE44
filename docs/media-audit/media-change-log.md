@@ -1,0 +1,33 @@
+# Media reconciliation change log
+
+- 44-east-ave: manifest resolves building_exterior to `/images/residential-content/44-east-ave.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- natiivo-austin: manifest resolves building_exterior to `/images/residential-content/natiivo-austin.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- the-shore: manifest resolves building_exterior to `/images/residential-content/the-shore.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- the-shore: manifest resolves hotel_group_experience to `/images/residential-content/the-shore-hospitality.webp` (verified). Copy remains mode-specific at the canonical entity source.
+- milago: manifest resolves building_exterior to `/images/residential-content/milago.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- 70-rainey: manifest resolves building_exterior to `/images/residential-content/70-rainey.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- vesper: manifest resolves building_exterior to `/images/residential-content/vesper.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- the-quincy: manifest resolves building_exterior to `/images/residential-content/the-quincy.webp` (verified). Copy remains mode-specific at the canonical entity source.
+- waterline-residences: manifest resolves building_exterior to `/images/residential-content/waterline-residences.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- paseo: manifest resolves building_exterior to `/images/residential-content/paseo.webp` (verified). Copy remains mode-specific at the canonical entity source.
+- paseo: manifest resolves building_shared_amenity to `/images/residential-content/paseo-amenity.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- 700-river: manifest resolves building_exterior to `/images/residential-content/700-river.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- 700-river: manifest resolves building_shared_amenity to `/images/residential-content/700-river-shared-access.jpeg` (manual_review_required). Copy remains mode-specific at the canonical entity source.
+- the-independent: manifest resolves building_exterior to `/images/residential-content/the-independent.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- fifth-and-west: manifest resolves building_exterior to `/images/residential-content/fifth-and-west.jpeg` (verified). Copy remains mode-specific at the canonical entity source.
+- the-austonian: manifest resolves building_exterior to `/images/residential-content/the-austonian.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- 360-condominiums: manifest resolves building_exterior to `/images/residential-content/360-condominiums.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- spring-condominiums: manifest resolves building_exterior to `/images/residential-content/spring-condominiums.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- austin-proper-residences: manifest resolves building_exterior to `/images/residential-content/austin-proper-residences.jpeg` (verified). Copy remains mode-specific at the canonical entity source.
+- four-seasons-residences: manifest resolves building_exterior to `/images/residential-content/four-seasons-residences.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- the-catherine: manifest resolves building_exterior to `/images/residential-content/the-catherine.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- northshore: manifest resolves building_exterior to `/images/residential-content/northshore.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- the-monarch: manifest resolves building_exterior to `/images/residential-content/the-monarch.avif` (verified). Copy remains mode-specific at the canonical entity source.
+- hotel-van-zandt: manifest resolves hotel_exterior to `/images/residential-content/the-shore-hospitality.webp` (verified). Copy remains mode-specific at the canonical entity source.
+- brand-hotel-van-zandt: manifest resolves hotel_exterior to `/images/residential-content/the-shore-hospitality.webp` (verified). Copy remains mode-specific at the canonical entity source.
+- brand-fairmont-austin: manifest resolves hotel_exterior to `/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg` (verified). Copy remains mode-specific at the canonical entity source.
+- partner-geraldines: manifest resolves restaurant_interior to `/images/map-entities/attached/venues/geraldines-stage.jpeg` (verified). Copy remains mode-specific at the canonical entity source.
+- geraldines: manifest resolves restaurant_interior to `/images/map-entities/attached/venues/geraldines-stage.jpeg` (verified). Copy remains mode-specific at the canonical entity source.
+- partner-stay-put: manifest resolves nightlife to `/images/imported/perks/stayput.png` (verified). Copy remains mode-specific at the canonical entity source.
+- partner-bangers: manifest resolves restaurant_interior to `/images/restaurants/bangers-bar.webp` (verified). Copy remains mode-specific at the canonical entity source.
+- hotel-guest-arrival-route: manifest resolves route_cover to `/images/map-entities/rainey-bars/rainey-street.jpeg` (verified). Copy remains mode-specific at the canonical entity source.

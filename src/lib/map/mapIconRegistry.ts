@@ -56,6 +56,7 @@ export type MapIconDefinition = {
 };
 
 export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo-gold.svg";
+export const INKIND_PIN_ASSET = "/pins/brands/inkind-logo.png";
 
 function icon(paths: string) {
   return `<svg class="dp-pin-svg dp-map-icon-svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
@@ -93,7 +94,11 @@ export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
   campaign: { label: "Campaign", glyph: icon('<path d="M4 13V7l11-3v12L4 13Z"/><path d="M4 13l2 7h4l-2-6"/><path d="M18 8v4"/>') },
   analytics: { label: "Reports", glyph: icon('<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/>') },
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
-  inkind: { label: "inKind", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
+  inkind: {
+    label: "inKind",
+    glyph: `<img class="dp-pin-logo dp-live-pin__inkind-logo" src="${INKIND_PIN_ASSET}" alt="" aria-hidden="true" />`,
+    asset: INKIND_PIN_ASSET,
+  },
   dana: { label: "DANA", glyph: icon('<path d="M3 10h18"/><path d="M5 10l7-6 7 6"/><path d="M6 10v9M10 10v9M14 10v9M18 10v9"/><path d="M4 21h16"/>') },
   "fine-eyewear": { label: "Fine Eyewear", glyph: icon('<circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/><path d="M12 12h0"/><path d="M4 12H2M22 12h-2"/><path d="M10.8 10.8c.8-.7 1.6-.7 2.4 0"/>') },
   "waterloo-greenway": { label: "Waterloo Greenway", glyph: icon('<path d="M6 18c3-7 9-3 12-10"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/><path d="M8 13h8"/><path d="M12 21v-8"/>') },

@@ -1,5 +1,6 @@
 import { categoryImageFallbacks, districtImageFallbacks, perkImageRegistry } from "./perkImageRegistry";
 import { resolveDowntownPerksEntityImage } from "../../data/downtownPerksEntityImages";
+import { getEntityMediaEntry } from "../../data/media/entityMediaManifest";
 
 export type ImageResolveContext = "pin" | "drawerHeader" | "nearbyRail" | "relatedRail" | "card" | "fallback";
 const IMAGE_RESOLVER_WARNINGS = Boolean(import.meta.env?.DEV && import.meta.env?.VITE_IMAGE_RESOLVER_WARNINGS === "true");
@@ -1178,6 +1179,8 @@ export function resolveHotelImage(entity: Record<string, unknown>): string | nul
 }
 
 export function resolveMapImage(entity: Record<string, unknown>, context: ImageResolveContext = "fallback"): string {
+  const manifestMedia = getEntityMediaEntry(entity);
+  if (manifestMedia?.hero?.src) return manifestMedia.hero.src;
   const waterlooKey = [
     slug(entity.id),
     slug(entity.name),
@@ -1262,7 +1265,8 @@ export function resolveEntityGallery(entity: Record<string, unknown>): string[] 
   const premiumPropertyImages = (looksResidential(entity) || looksHotel(entity)) ? resolvePremiumPropertyImageSet(entity) : [];
   const matchedSet = premiumPropertyImages.length ? [] : matchingImageSet(entity) || [];
   const primary = resolveEntityImage(entity);
-  return [primary, ...actualVenueGallery, ...premiumPropertyImages, ...explicitGallery, ...rawGallery, ...matchedSet]
+  const manifestGallery = getEntityMediaEntry(entity)?.gallery?.map((item) => item.src) || [];
+  return [primary, ...manifestGallery, ...actualVenueGallery, ...premiumPropertyImages, ...explicitGallery, ...rawGallery, ...matchedSet]
     .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
     .filter((item, index, list) => list.indexOf(item) === index);
 }

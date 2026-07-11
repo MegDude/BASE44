@@ -29,6 +29,8 @@ import { getHappyHourPlaces } from "./happyHours";
 import { enrichWithArchiveLocationContext } from "./archiveLocationContext";
 import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
 import { normalizeEntity } from "./map/normalizeEntity";
+import { getHospitalityCsvUpdate } from "../data/hospitalityContentLibrary";
+import { getResidentialMixedUseUpdate } from "../data/residentialMixedUseContentLibrary";
 
 const FAIRMONT_HOTEL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg";
 const FAIRMONT_POOL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-rooftop-pool.webp";
@@ -1526,8 +1528,31 @@ export function buildLocations() {
       const isStAugustine = String(item.name || "").trim().toLowerCase() === "augustine";
       const downtownCoreRestaurantUpdate = getDowntownCoreRestaurantUpdate(item);
       const fourSeasonsExperienceUpdate = getFourSeasonsExperienceUpdate(item);
+      const hospitalityCsvUpdate = getHospitalityCsvUpdate(item);
+      const residentialMixedUseUpdate = getResidentialMixedUseUpdate(item);
       const normalizedItem = {
         ...item,
+        ...(hospitalityCsvUpdate
+          ? {
+              ...hospitalityCsvUpdate,
+              latitude: item.latitude ?? hospitalityCsvUpdate.latitude,
+              longitude: item.longitude ?? hospitalityCsvUpdate.longitude,
+              image: item.image || hospitalityCsvUpdate.image,
+              heroImage: item.heroImage || item.image || hospitalityCsvUpdate.heroImage,
+              raw: { ...(item.raw || {}), ...(hospitalityCsvUpdate.rawCsvRow || {}) },
+            }
+          : {}),
+        ...(residentialMixedUseUpdate
+          ? {
+              ...residentialMixedUseUpdate,
+              latitude: item.latitude ?? residentialMixedUseUpdate.latitude,
+              longitude: item.longitude ?? residentialMixedUseUpdate.longitude,
+              address: item.address || residentialMixedUseUpdate.address,
+              image: residentialMixedUseUpdate.image || item.image,
+              heroImage: residentialMixedUseUpdate.heroImage || residentialMixedUseUpdate.image || item.heroImage || item.image,
+              raw: { ...(item.raw || {}), ...(residentialMixedUseUpdate.rawCsvRow || {}) },
+            }
+          : {}),
         id: stableRawLocationId(item, i),
         ...(isAntones
           ? {
@@ -1590,6 +1615,55 @@ export function buildLocations() {
 
       return {
         ...entity,
+        ...(curatedItem.amenityNetwork === "downtown-hospitality"
+          ? {
+              amenityNetwork: curatedItem.amenityNetwork,
+              parentHotelId: curatedItem.parentHotelId,
+              parentHotelName: curatedItem.parentHotelName,
+              kind: curatedItem.kind,
+              entityType: curatedItem.entityType,
+              residentSummary: curatedItem.residentSummary,
+              partnerSummary: curatedItem.partnerSummary,
+              highlights: curatedItem.highlights,
+              bestFor: curatedItem.bestFor,
+              bookingUrl: curatedItem.bookingUrl,
+              primaryAction: curatedItem.primaryAction,
+              secondaryAction: curatedItem.secondaryAction,
+              residentPanel: curatedItem.residentPanel,
+              partnerPanel: curatedItem.partnerPanel,
+              sourceUrl: curatedItem.sourceUrl,
+              validThrough: curatedItem.validThrough,
+              validThroughLabel: curatedItem.validThroughLabel,
+              termsSummary: curatedItem.termsSummary,
+              verificationStatus: curatedItem.verificationStatus,
+              offerState: curatedItem.offerState,
+              pinAssetPath: curatedItem.pinAssetPath,
+            }
+          : {}),
+        ...(curatedItem.residentialContentSystem === "canonical-residential-mixed-use"
+          ? {
+              residentialContentSystem: curatedItem.residentialContentSystem,
+              overview: curatedItem.overview,
+              residentSummary: curatedItem.residentSummary,
+              partnerSummary: curatedItem.partnerSummary,
+              sharedAmenities: curatedItem.sharedAmenities,
+              residentPerk: curatedItem.residentPerk,
+              secretSauce: curatedItem.secretSauce,
+              hiddenGems: curatedItem.hiddenGems,
+              campaignAlignment: curatedItem.campaignAlignment,
+              residentActions: curatedItem.residentActions,
+              partnerActions: curatedItem.partnerActions,
+              residentContextLabels: curatedItem.residentContextLabels,
+              partnerContextLabels: curatedItem.partnerContextLabels,
+              sourceUrl: curatedItem.sourceUrl,
+              verificationStatus: curatedItem.verificationStatus,
+              operatingStatus: curatedItem.operatingStatus,
+              pinAssetPath: curatedItem.pinAssetPath,
+              image: curatedItem.image,
+              heroImage: curatedItem.heroImage,
+              galleryImages: curatedItem.galleryImages,
+            }
+          : {}),
         ...(downtownCoreRestaurantUpdate
           ? {
               shortTitle: downtownCoreRestaurantUpdate.shortTitle,

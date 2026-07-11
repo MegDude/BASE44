@@ -2,6 +2,8 @@ import { DOWNTOWN_CORE_RESTAURANT_RECORDS } from "./downtownCoreRestaurantPerks"
 import { dateNightCollectionEntities } from "./dateNightCollection";
 import { FOUR_SEASONS_EXPERIENCE_ENTITIES } from "./fourSeasonsExperience";
 import { theShoreResidentialBuilding } from "./theShoreResidentialBuilding";
+import { hospitalityContentLibraryEntities } from "./hospitalityContentLibrary";
+import { residentialMixedUseEntities } from "./residentialMixedUseContentLibrary";
 
 const DEFAULT_IMAGE = "/images/imported/perks/places-nearby.png";
 const PROPERTY_IMAGE = "/images/imported/perks/prospective-residents-walking-through-the-neighborhood.png";
@@ -977,6 +979,8 @@ export const supplementalMapEntities = [
   ...DOWNTOWN_CORE_RESTAURANT_RECORDS.map((record) => entity(record)),
   ...dateNightCollectionEntities.map((record) => entity(record)),
   ...FOUR_SEASONS_EXPERIENCE_ENTITIES.map((record) => entity(record)),
+  ...hospitalityContentLibraryEntities.map((record) => entity(record)),
+  ...residentialMixedUseEntities.map((record) => entity(record)),
   ...RIVIAN_CAMPAIGN_LAYERS.map((record) => entity(record)),
   ...LOCAL_SERVICE_ENTITIES,
   ...AUSTIN_CIVIC_EVENT_ENTITIES.map((record) => entity({

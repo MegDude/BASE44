@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCanonicalIntentForFilter, getEntityGovernance } from "@/lib/map/intentGovernance";
-import { entityMatchesMapIntent } from "@/map/searchIntent/mapIntentRegistry";
+import { entityMatchesMapIntent, resolveSearchIntent } from "@/map/searchIntent/mapIntentRegistry";
 
 const QUERY_CACHE_MAX = 40;
 const SEARCH_RESULT_LIMITS = Object.freeze({
@@ -276,7 +276,7 @@ function isPrivatePartnerEntity(entity = {}) {
   return /\b(admin|internal|qa only|backend|workspace|private partner)\b/.test(textForEntity(entity));
 }
 
-function matchesIntent(entity, intent, filter) {
+function matchesIntent(entity, intent, filter, mode = "resident") {
   const text = textForEntity(entity);
   const type = String(entity.type || entity.kind || entity.entityType || entity.sourceType || "").toLowerCase();
   const normalizedFilter = String(filter || "").toLowerCase();
@@ -284,8 +284,11 @@ function matchesIntent(entity, intent, filter) {
   if (["", "all", "nearby", "open now"].includes(normalizedFilter) && ["", "all", "eat_drink"].includes(String(intent || "").toLowerCase())) {
     return true;
   }
+  if (mode === "partner" && intent && !["all", "eat_drink"].includes(String(intent).toLowerCase())) {
+    return entityMatchesMapIntent(entity, resolveSearchIntent(intent, "partner"));
+  }
   if (normalizedFilter && !["all", "nearby", "open now"].includes(normalizedFilter)) {
-    return entityMatchesMapIntent(entity, normalizedFilter);
+    return entityMatchesMapIntent(entity, resolveSearchIntent(normalizedFilter, mode));
   }
   if (intent && !["eat_drink", "all"].includes(String(intent).toLowerCase())) {
     return entityMatchesMapIntent(entity, intent);
@@ -447,7 +450,7 @@ function selectScopedEntities(allEntities, scope) {
     if (scope.district && scope.district !== "All Downtown" && entity.district !== scope.district) return false;
     if (scope.hasPerk && !hasActivePerk(entity)) return false;
     if (!activeEntity && !withinBounds(entity, scope.currentBounds)) return false;
-    if (!matchesIntent(entity, intent, scope.filter)) return false;
+    if (!matchesIntent(entity, intent, scope.filter, scope.audienceMode)) return false;
     if (query && !textForEntity(entity).includes(query)) {
       const tokens = query.split(/\s+/).filter((token) => token.length > 2);
       if (!tokens.some((token) => textForEntity(entity).includes(token))) return false;

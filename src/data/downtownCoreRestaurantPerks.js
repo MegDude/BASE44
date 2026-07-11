@@ -61,8 +61,13 @@ function buildRestaurantRecord(record) {
   return {
     ...record,
     name: record.title,
+    entityType: "restaurant",
     kind: "venue",
-    partnerType: "venues",
+    partnerType: "inkind",
+    partnerNetwork: "inkind",
+    benefitType: "resident-dining-benefit",
+    residentEligible: true,
+    partnerCampaignEligible: true,
     category_key: [
       "venue",
       "restaurant",
@@ -85,7 +90,7 @@ function buildRestaurantRecord(record) {
     galleryImages: [image, record.secondaryImage].filter(Boolean),
     summary: record.cardDescription,
     description: record.drawerBody,
-    website: record.website,
+    website: record.website || record.imageSourceUrl,
     offer: record.perkTitle,
     deals_offers: record.perkTitle,
     specials: record.perkDescription,
@@ -116,6 +121,8 @@ function buildRestaurantRecord(record) {
       "Client dinner",
       ...(record.residentSearchIntents || []),
     ],
+    applicableIntents: ["dining", "perks", "inkind", "date-night", "hotel-dining", "resident-benefits"],
+    partnerSearchTerms: ["campaign", "audience", "placement", "attribution", "building distribution", "hotel distribution", "resident reach", "guest dining", "partner performance"],
     residentDrawer: {
       eyebrow: record.cardEyebrow,
       headline: record.drawerHeadline,

@@ -7,6 +7,7 @@ import {
 
 const baseUrl = process.env.BASE_URL || "http://localhost:5173";
 const route = `${baseUrl.replace(/\/$/, "")}/map?mode=resident&tab=map&filter=All`;
+const partnerRoute = `${baseUrl.replace(/\/$/, "")}/app?mode=partner&tab=map&filter=Legends&query=leg&intent=legends`;
 const screenshotDir = "/private/tmp/search-intent-chips";
 
 function assertRegisteredIntentDefinitions() {
@@ -107,12 +108,51 @@ async function runMobileChecks(browser) {
   await page.close();
 }
 
+async function runPartnerChecks(browser) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(partnerRoute, { waitUntil: "domcontentloaded", timeout: 30_000 });
+  await ensureConsole(page);
+
+  const campaigns = await chip(page, "campaigns");
+  const performance = await chip(page, "performance");
+  const more = await chip(page, "more");
+
+  await campaigns.click();
+  await expect(campaigns).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
+  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("campaigns");
+  expect(new URL(page.url()).searchParams.get("query")).toBeNull();
+
+  await performance.click();
+  await expect(performance).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
+  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");
+  expect(new URL(page.url()).searchParams.get("query")).toBeNull();
+
+  const requestsBeforeDuplicate = await page.evaluate(() => (window as any).__DP_MAP_SEARCH_METRICS__?.searchRequestCount || 0);
+  await performance.click();
+  await page.waitForTimeout(300);
+  const requestsAfterDuplicate = await page.evaluate(() => (window as any).__DP_MAP_SEARCH_METRICS__?.searchRequestCount || 0);
+  expect(requestsAfterDuplicate).toBe(requestsBeforeDuplicate);
+
+  await more.click();
+  const parking = await chip(page, "parking");
+  await parking.click();
+  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("parking");
+  expect(new URL(page.url()).searchParams.get("query")).toBeNull();
+
+  await page.goBack();
+  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");
+  await expect(performance).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
+
+  await page.close();
+}
+
 async function main() {
   assertRegisteredIntentDefinitions();
   const browser = await chromium.launch({ headless: true });
   try {
     await runDesktopChecks(browser);
     await runMobileChecks(browser);
+    await runPartnerChecks(browser);
   } finally {
     await browser.close();
   }

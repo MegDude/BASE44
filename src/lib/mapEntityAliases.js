@@ -189,6 +189,12 @@ const NON_PROPERTY_URL_ENTITY_IDS = new Set([
   "partner-rivian",
 ]);
 
+const HOSPITALITY_URL_ENTITY_IDS = new Set(["hotel-van-zandt", "brand-hotel-van-zandt", "brand-fairmont-austin"]);
+const RESIDENTIAL_CONTENT_URL_ENTITY_IDS = new Set([
+  "44-east-ave", "natiivo-austin", "the-shore", "milago", "70-rainey", "vesper", "the-quincy", "waterline-residences", "paseo", "700-river",
+  "the-independent", "fifth-and-west", "the-austonian", "360-condominiums", "spring-condominiums", "austin-proper-residences", "four-seasons-residences", "the-catherine", "northshore", "the-monarch",
+]);
+
 export function resolvePropertyEntityId(rawEntityId) {
   const normalized = normalizePropertyId(rawEntityId);
   if (!normalized) return "";
@@ -198,11 +204,15 @@ export function resolvePropertyEntityId(rawEntityId) {
 }
 
 export function resolvePropertyUrlEntityId(rawEntityId) {
+  const hospitalityId = String(rawEntityId || "").trim().toLowerCase();
+  if (/^(hvz-|fairmont-)/.test(hospitalityId) || HOSPITALITY_URL_ENTITY_IDS.has(hospitalityId) || RESIDENTIAL_CONTENT_URL_ENTITY_IDS.has(hospitalityId)) return hospitalityId;
   const resolved = resolvePropertyEntityId(rawEntityId);
   return PROPERTY_BUILDING_TO_PUBLIC_ID[resolved] || resolved;
 }
 
 export function resolvePropertyListingUrlId(rawEntityId) {
+  const hospitalityId = String(rawEntityId || "").trim().toLowerCase();
+  if (/^(hvz-|fairmont-)/.test(hospitalityId) || HOSPITALITY_URL_ENTITY_IDS.has(hospitalityId) || RESIDENTIAL_CONTENT_URL_ENTITY_IDS.has(hospitalityId)) return "";
   const normalized = normalizePropertyId(rawEntityId);
   if (!normalized) return "";
   if (NON_PROPERTY_URL_ENTITY_IDS.has(normalized)) return "";
@@ -314,6 +324,8 @@ export const mapEntityAliases = {
 export function resolveMapEntityAlias(entityId) {
   const id = String(entityId || "").trim();
   if (!id) return "";
+  const hospitalityId = id.toLowerCase();
+  if (/^(hvz-|fairmont-)/.test(hospitalityId) || HOSPITALITY_URL_ENTITY_IDS.has(hospitalityId) || RESIDENTIAL_CONTENT_URL_ENTITY_IDS.has(hospitalityId)) return hospitalityId;
   const propertyId = resolvePropertyEntityId(id);
   return mapEntityAliases[propertyId] || mapEntityAliases[id] || propertyId || id;
 }

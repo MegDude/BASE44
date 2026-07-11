@@ -1,4 +1,5 @@
 import { DAA_CAMPAIGN_ID, DAA_WORKSPACE_ID } from "../../src/data/daaCampaignStrategy.js";
+import { getDaaTourStopById } from "../../src/data/daaArtParksTour.js";
 import { supabaseServer } from "../../src/lib/supabaseServer.js";
 
 function cleanText(value, limit = 180) {
@@ -19,15 +20,19 @@ export default async function handler(req, res) {
   if (!stopId || !stopName) {
     return res.status(400).json({ error: "Stop id and stop name are required" });
   }
+  const canonicalStop = getDaaTourStopById(stopId);
+  if (!canonicalStop) {
+    return res.status(400).json({ error: "Unknown DAA Art & Parks Tour stop" });
+  }
 
   const checkIn = {
     id: `daa-check-in-${stopId}-${Date.now()}`,
     campaignId: body.campaignId === DAA_CAMPAIGN_ID ? body.campaignId : DAA_CAMPAIGN_ID,
     stopId,
-    stopName,
-    stopNumber: cleanText(body.stopNumber, 12),
+    stopName: canonicalStop.displayName || canonicalStop.name,
+    stopNumber: String(canonicalStop.stopNumber).padStart(2, "0"),
     placeId: cleanText(body.placeId, 120) || stopId,
-    district: cleanText(body.district, 120) || "Downtown Austin",
+    district: canonicalStop.district || cleanText(body.district, 120) || "Downtown Austin",
     shareUrl: cleanText(body.shareUrl, 500),
     source: cleanText(body.source, 80) || "resident-map",
     checkedInAt: cleanText(body.checkedInAt, 80) || new Date().toISOString(),

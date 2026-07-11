@@ -1,0 +1,106 @@
+/* Canonical resident + partner intent rail: icon-first, text expands only for selection. */
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-label {
+  flex: 0 0 auto !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs button {
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline-offset: 3px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs button.is-active {
+  color: #a47b2f !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-top-actions {
+  margin-left: auto !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip,
+html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle {
+  min-width: 34px !important;
+  width: auto !important;
+  padding: 0 7px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip:is(.is-active, [aria-selected="true"]),
+html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle:is(.is-open, [aria-expanded="true"]) {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #a47b2f !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-compact-intent-chip__icon,
+html body #root .dp-map-page .dp-search-intent-console .dp-expanding-intent-chip__icon,
+html body #root .dp-map-page .dp-search-intent-console .dp-compact-intent-chip__icon svg,
+html body #root .dp-map-page .dp-search-intent-console .dp-expanding-intent-chip__icon svg {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  fill: none !important;
+}
+
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-compact-intent-chip.dp-compact-intent-chip:not([data-expanded="true"]) .dp-compact-intent-chip__text.dp-compact-intent-chip__text {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-compact-intent-chip.dp-compact-intent-chip[data-expanded="true"] .dp-compact-intent-chip__text.dp-compact-intent-chip__text {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip .dp-expanding-intent-chip__description {
+  display: none !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-status:empty,
+html body #root .dp-map-page .dp-search-intent-console .dp-search-audience-row {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header {
+    gap: 10px !important;
+  }
+
+  html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs {
+    gap: 9px !important;
+  }
+}

@@ -51,6 +51,11 @@ const SEARCH_INTENT_COPY = {
     description: "Fast lunches, food halls, restaurants and midday perks",
     includesPerks: true,
   },
+  dinner: {
+    fullLabel: "Dinner nearby",
+    description: "Dinner restaurants, date-night places and evening dining perks",
+    includesPerks: true,
+  },
   dining: {
     fullLabel: "Dining nearby",
     description: "Restaurants, food halls, dining perks and curated collections",
@@ -247,6 +252,7 @@ export const SEARCH_INTENT_RAIL = [
   { id: "breakfast", label: "Breakfast", filter: "Breakfast", prompt: "Breakfast nearby", icon: Clock, defaultVisible: true },
   { id: "coffee", label: "Coffee", filter: "Coffee", prompt: "Coffee nearby", icon: Coffee, defaultVisible: true },
   { id: "lunch", label: "Lunch", filter: "Lunch", prompt: "Lunch nearby", icon: Utensils, defaultVisible: true },
+  { id: "dinner", label: "Dinner", filter: "Dinner", prompt: "Dinner nearby", icon: Utensils, defaultVisible: true },
   { id: "dining", label: "Dining", filter: "Dining", prompt: "Dining nearby", icon: Sparkles, defaultVisible: true },
   { id: "drinks", label: "Drinks", filter: "Drinks", prompt: "Drinks nearby", icon: Wine, defaultVisible: true },
   { id: "happy_hour", label: "Happy Hour", filter: "Happy Hour", prompt: "Happy Hour nearby", icon: BadgePercent, defaultVisible: true },
@@ -295,16 +301,18 @@ export const SEARCH_INTENT_RAIL_WITH_CANONICAL_INTENTS = SEARCH_INTENT_RAIL.map(
 }));
 
 const PRIMARY_SEARCH_INTENT_IDS = [
+  "breakfast",
   "coffee",
+  "lunch",
+  "dinner",
   "dining",
+  "drinks",
   "happy_hour",
   "events",
+  "legends",
 ] as const;
 
 const SECONDARY_SEARCH_INTENT_IDS = [
-  "breakfast",
-  "lunch",
-  "drinks",
   "happy_hour_route",
   "dining_route",
   "daa_art_walk",
