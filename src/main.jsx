@@ -26,6 +26,7 @@ import '@/styles/pricing-polish-final.css'
 import '@/styles/map-drawer-containment-final.css'
 import '@/styles/partner-register-refactor-final.css'
 import '@/styles/search-intent-chip-expansion-final.css'
+import '@/styles/map-drawer-premium-regression-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
