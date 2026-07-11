@@ -13289,6 +13289,10 @@ export default function MapPage() {
       isDefaultDiscoverScope: urlState.mode === "resident" && isDefaultDiscoverScope,
     });
   }, [activeCollectionRoute, activeFilter, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, mapZoom, savedIds, selectedId, urlState.collection, urlState.mode, userHasNavigatedMap]);
+  const mappablePlaces = useMemo(
+    () => mapPlaces.filter((place) => place?.hasExactMarker !== false || Boolean(getPlaceCoords(place))),
+    [mapPlaces],
+  );
   const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
@@ -13302,9 +13306,9 @@ export default function MapPage() {
     () => activeCollectionRoute?.stops?.length
       ? activeCollectionRoute.stops.map((place) => ({ id: place.id, type: "place", place }))
       : shouldShowIndividualPins
-      ? mapPlaces.map((place) => ({ id: place.id, type: "place", place }))
-      : clusterPlaces(mapPlaces, stableClusterZoom, selectedId),
-    [activeCollectionRoute, mapPlaces, selectedId, shouldShowIndividualPins, stableClusterZoom],
+      ? mappablePlaces.map((place) => ({ id: place.id, type: "place", place }))
+      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId),
+    [activeCollectionRoute, mappablePlaces, selectedId, shouldShowIndividualPins, stableClusterZoom],
   );
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {

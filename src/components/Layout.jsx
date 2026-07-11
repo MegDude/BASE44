@@ -138,7 +138,7 @@ export default function Layout() {
     }
 
     if (pathname.startsWith("/partners/")) return "/partners";
-    if (pathname.startsWith("/partner-workspace")) return "/partners/dashboard";
+    if (pathname.startsWith("/partner-workspace")) return "/partner-workspace/overview";
     if (pathname.startsWith("/buildings/") || pathname.startsWith("/properties/") || pathname.startsWith("/building-intelligence/")) {
       return "/partners/properties";
     }

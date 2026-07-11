@@ -87,7 +87,7 @@ function buildMapHref(mode, searchParams) {
   const district = searchParams.get("district");
   if (entityId) params.set("entityId", entityId);
   if (district) params.set("district", district);
-  return `/partners/dashboard/map?${params.toString()}`;
+  return `/map?${params.toString()}`;
 }
 
 function PartnerPageShell({ children }) {

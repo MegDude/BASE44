@@ -263,7 +263,7 @@ export default function Dashboard() {
       navigate(-1);
       return;
     }
-    navigate("/partners/dashboard");
+    navigate("/partner-workspace/overview");
   }
 
   async function downloadReport(format) {

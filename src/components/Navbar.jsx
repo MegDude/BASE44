@@ -13,7 +13,7 @@ const RESIDENT_LINKS = [
 
 const PARTNER_LINKS = [
   { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
-  { to: "/partners/dashboard", label: "Dashboard", description: "See what people opened, saved, and used" },
+  { to: "/partner-workspace/overview", label: "Platform", description: "Open the partner operating workspace" },
   { to: "/partners/campaigns", label: "Campaigns", description: "Create a local offer or event placement" },
   { to: "/partner-workspace/overview", label: "Workspace", description: "Manage reports, campaigns, and team access" },
   { to: "/partner-workspace/reports", label: "Reports", description: "Review partner results" },
@@ -30,7 +30,7 @@ const HAMBURGER_RESIDENT_LINKS = [
 
 const HAMBURGER_PARTNER_LINKS = [
   { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
-  { to: "/partners/dashboard", label: "Dashboard" },
+  { to: "/partner-workspace/overview", label: "Platform" },
   { to: "/partners/campaigns", label: "Campaigns" },
   { to: "/partner-workspace/overview", label: "Workspace" },
   { to: "/partner-workspace/reports", label: "Reports" },
@@ -190,7 +190,7 @@ export default function Navbar() {
   const isActive = (to) => {
     if (!to) return false;
     if (to.startsWith("/app?") || to.startsWith("/map?")) return `${location.pathname}${location.search}` === to;
-    if (to === "/partners/dashboard") return location.pathname === "/partners/dashboard";
+    if (to === "/partner-workspace/overview") return location.pathname.startsWith("/partner-workspace");
     return location.pathname === to;
   };
 

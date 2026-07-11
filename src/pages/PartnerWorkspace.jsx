@@ -1293,9 +1293,9 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
               <LogIn className="h-4 w-4" aria-hidden="true" />
               Sign in to an existing workspace
             </Link>
-            <Link to="/partners/dashboard">
+            <Link to="/partner-workspace/overview">
               <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-              Open partner dashboard
+              Open partner platform
             </Link>
           </div>
 

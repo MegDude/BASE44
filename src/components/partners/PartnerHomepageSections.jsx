@@ -444,7 +444,7 @@ export function PartnerFinalCTA() {
         </div>
         <div className="flex flex-wrap gap-6">
           <TextLink to="/partners/campaigns" className="text-white hover:border-[#BFA46A]">Book an Intro Call</TextLink>
-          <TextLink to="/partners/dashboard" variant="secondary" className="text-white/68 hover:text-white">View Dashboard</TextLink>
+          <TextLink to="/partner-workspace/overview" variant="secondary" className="text-white/68 hover:text-white">View Platform</TextLink>
         </div>
       </div>
     </section>
@@ -457,7 +457,7 @@ export function PartnerWorkspaceBridge() {
       <div className="grid gap-4 md:grid-cols-3">
         {[
           { title: "Map", body: "Open the partner map and review places, offers, events, and nearby context.", href: "/map?mode=partner&tab=map" },
-          { title: "Reports", body: "See what people opened, saved, scanned, and requested.", href: "/partners/dashboard" },
+          { title: "Reports", body: "See what people opened, saved, scanned, and requested.", href: "/partner-workspace/reports" },
           { title: "Workspace", body: "Manage campaigns, reports, and partner follow-up after login.", href: "/partner-workspace/overview" },
         ].map((item) => {
           return (

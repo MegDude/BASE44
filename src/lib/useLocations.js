@@ -1695,6 +1695,15 @@ export function buildLocations() {
               launchPinType: curatedItem.launchPinType,
               publicCategory: curatedItem.publicCategory,
               hasExactMarker: curatedItem.hasExactMarker,
+              ...(curatedItem.hasExactMarker === false
+                ? {
+                    lat: undefined,
+                    lng: undefined,
+                    latitude: undefined,
+                    longitude: undefined,
+                    coords: [],
+                  }
+                : {}),
               raw: curatedItem.raw,
             }
           : {}),

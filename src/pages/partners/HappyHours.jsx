@@ -90,7 +90,7 @@ export default function HappyHoursPartner() {
         <div className="pointer-events-none absolute right-[8%] top-[12%] h-72 w-72 bg-[#BFA46A]/8 blur-[80px]" />
         <div className="mx-auto max-w-7xl">
           <Link
-            to="/partners/dashboard"
+            to="/partner-workspace/overview"
             className="dp-partner-back-button mb-8 inline-flex items-center justify-center text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-label="Back to dashboard"
             title="Back to dashboard"
