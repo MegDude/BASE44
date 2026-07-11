@@ -1580,6 +1580,9 @@ html body #root#root main.dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, p,
 html body #root .dp-partner-lifecycle-page-start *,
 html body #root .dp-partner-lifecycle-page-start *::before,
 html body #root .dp-partner-lifecycle-page-start *::after,
+html body #root .dp-partner-lifecycle-page-register *,
+html body #root .dp-partner-lifecycle-page-register *::before,
+html body #root .dp-partner-lifecycle-page-register *::after,
 html body #root#root main.dp-pricing-page.dp-pricing-page *,
 html body #root#root main.dp-pricing-page.dp-pricing-page *::before,
 html body #root#root main.dp-pricing-page.dp-pricing-page *::after,
@@ -1595,6 +1598,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-calcul
 }
 
 html body #root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button,
+html body #root .dp-partner-lifecycle-page-register :is(.dp-partner-lifecycle-hero-actions a, .dp-partner-lifecycle-hero > a, .dp-partner-register-submit button),
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button,
 html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-button, .dp-pricing-summary a, .dp-pricing-summary button) {
   border-radius: 0 !important;
@@ -1604,8 +1608,266 @@ html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong 
   background: #fff !important;
 }
 
+html body #root .dp-partner-lifecycle-page-start :is(
+  .dp-partner-lifecycle-hero p,
+  .dp-partner-lifecycle-section-head p,
+  .dp-partner-trust-strip > span,
+  .dp-partner-trust-strip strong,
+  .dp-partner-system-grid span,
+  .dp-partner-integration-grid span,
+  .dp-partner-timeline span,
+  .dp-checkout-module-list span,
+  .dp-partner-impact-groups button,
+  .dp-partner-impact-groups button *,
+  .dp-partner-lifecycle-section-head p,
+  .dp-partner-impact-groups h3,
+  .dp-partner-impact-groups strong,
+  .dp-partner-impact-groups span,
+  .dp-partner-impact-groups small,
+  .dp-partner-impact-groups em,
+  .dp-partner-impact-groups b,
+  .dp-partner-impact-groups i
+) {
+  border-radius: 0 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-impact-groups h3 {
+  font-size: 16px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip > div {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong,
+html body #root .dp-partner-lifecycle-page-register .dp-partner-trust-strip strong {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+html body #root .dp-partner-lifecycle-page-register :is(
+  .dp-partner-lifecycle-hero p,
+  .dp-partner-lifecycle-section-head p,
+  .dp-workspace-preview-card > p,
+  .dp-partner-trust-strip > span,
+  .dp-partner-register-form label > span,
+  .dp-partner-lifecycle-hero-actions a,
+  .dp-partner-lifecycle-hero > a
+) {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-register :is(.dp-partner-lifecycle-hero-actions a, .dp-partner-lifecycle-hero > a) {
+  border-color: rgba(11, 31, 51, 0.18) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-register .dp-partner-register-submit button {
+  border-color: #0b1f33 !important;
+  background: #0b1f33 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
 @media (max-width: 767px) {
   html body #root .dp-partner-lifecycle-page-start .dp-partner-final-cta {
     margin-top: 24px !important;
   }
+}
+
+/* Unified partner conversion surface: sign-up, registration, pricing, and checkout. */
+html body #root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+),
+html body #root#root main.dp-pricing-page.dp-pricing-page {
+  background: #fff !important;
+  background-image: none !important;
+}
+
+html body #root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(
+  .dp-partner-lifecycle-hero,
+  .dp-partner-trust-strip,
+  .dp-partner-lifecycle-section,
+  .dp-partner-register-form,
+  .dp-workspace-preview-card,
+  .dp-checkout-grid > article,
+  .dp-partner-system-grid article,
+  .dp-partner-recommended-plan,
+  .dp-partner-plan-comparison,
+  .dp-partner-impact-groups article,
+  .dp-partner-services-grid article,
+  .dp-partner-integration-grid article,
+  .dp-partner-plan-summary
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-trust-strip strong {
+  min-height: auto !important;
+  padding: 4px 10px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) .dp-partner-trust-strip strong:first-child {
+  border: 0 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-register :is(.dp-partner-register-form, .dp-workspace-preview-card),
+html body #root .dp-partner-lifecycle-page-checkout .dp-checkout-grid > article {
+  padding-inline: 0 !important;
+}
+
+html body #root .dp-partner-lifecycle-page-register .dp-workspace-preview-list article,
+html body #root .dp-partner-lifecycle-page-checkout .dp-checkout-grid dl div,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl div {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(
+  .dp-pricing-calculator-controls,
+  .dp-pricing-summary,
+  .dp-pricing-summary-plan,
+  .dp-pricing-addon-panel,
+  .dp-custom-option-detail
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(
+  .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button,
+  .dp-pricing-plan-choice,
+  .dp-pricing-option-list > button,
+  .dp-pricing-addon-rail > button,
+  .dp-custom-option-card
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(
+  .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button[data-active="true"],
+  .dp-pricing-plan-choice[data-active="true"],
+  .dp-pricing-option-list > button[data-active="true"],
+  .dp-pricing-addon-rail > button[data-active="true"],
+  .dp-custom-option-card[aria-expanded="true"]
+) {
+  box-shadow: inset 0 3px 0 #c8a96a !important;
+}
+
+html body #root :is(
+  .dp-partner-lifecycle-page-start,
+  .dp-partner-lifecycle-page-register,
+  .dp-partner-lifecycle-page-checkout
+) :is(a, button):focus-visible,
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(a, button, input, select):focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) .dp-partner-trust-strip strong {
+    padding-inline: 0 !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-calculator-controls, .dp-pricing-summary) {
+    padding-inline: 0 !important;
+  }
+
+  html body #root :is(
+    .dp-partner-lifecycle-page-start,
+    .dp-partner-lifecycle-page-register,
+    .dp-partner-lifecycle-page-checkout
+  ) :is(
+    .dp-partner-lifecycle-hero-actions a,
+    .dp-partner-lifecycle-hero > a,
+    .dp-partner-register-submit button,
+    .dp-checkout-grid button,
+    .dp-checkout-grid a
+  ) {
+    min-height: 44px !important;
+  }
+}
+
+/* Final partner-page cascade guard. Keep this at EOF so later polish cannot reintroduce bubbles, all-caps add-ons, or invisible CTAs. */
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-impact-groups button,
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-impact-groups button *,
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-impact-groups h3,
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-impact-groups :is(strong, span, small, em, b, i),
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button,
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button img,
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-impact-groups button svg,
+html body #root#root .dp-partner-lifecycle-page-start .dp-partner-services-grid article svg,
+html body #root#root .dp-partner-lifecycle-page-register :is(.dp-partner-lifecycle-hero-actions a, .dp-partner-lifecycle-hero > a, .dp-partner-register-submit button),
+html body #root#root .dp-partner-lifecycle-page-register :is(.dp-partner-lifecycle-hero-actions a, .dp-partner-lifecycle-hero > a, .dp-partner-register-submit button) *,
+html body #root#root .dp-partner-lifecycle-page-register :is(.dp-partner-lifecycle-hero p, .dp-partner-lifecycle-section-head p, .dp-workspace-preview-card > p, .dp-partner-trust-strip > span, .dp-partner-register-form label > span) {
+  border-radius: 0 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root .dp-partner-lifecycle-page-register :is(.dp-partner-lifecycle-hero-actions a, .dp-partner-lifecycle-hero > a) {
+  border: 1px solid rgba(11, 31, 51, 0.18) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root .dp-partner-lifecycle-page-register .dp-partner-register-submit button {
+  border: 1px solid rgba(11, 31, 51, 0.18) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root .dp-partner-lifecycle-page-register .dp-partner-register-submit button:is(:hover, :focus-visible) {
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
 }
