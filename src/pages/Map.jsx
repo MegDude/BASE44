@@ -11784,8 +11784,8 @@ function SearchIntentConsole({
     const definition = getSearchIntentDefinition(item);
     const Icon = item.icon;
     const active = isRailItemActive(item);
-    const previewed = previewIntentId === item.id || focusedIntentId === item.id;
-    const expanded = active || previewed;
+    const previewed = false;
+    const expanded = active;
     const descriptionId = `dp-search-intent-desc-${definition.id}`;
     const summary = makeIntentSummary(item, active);
 
@@ -11799,14 +11799,8 @@ function SearchIntentConsole({
         aria-selected={active}
         aria-label={makeIntentAriaLabel(item, definition, active)}
         aria-describedby={descriptionId}
-        onPointerEnter={(event) => {
-          if (event.pointerType === "mouse" || event.pointerType === "pen") setPreviewIntentId(item.id);
-        }}
-        onPointerLeave={(event) => {
-          if (event.pointerType === "mouse" || event.pointerType === "pen") {
-            setPreviewIntentId((current) => (current === item.id ? null : current));
-          }
-        }}
+        onPointerEnter={() => {}}
+        onPointerLeave={() => {}}
         onPointerUp={(event) => {
           if (event.pointerType !== "touch") return;
           event.preventDefault();
@@ -11814,8 +11808,8 @@ function SearchIntentConsole({
           setFocusedIntentId(null);
           handleRailItem(item);
         }}
-        onFocus={() => setFocusedIntentId(item.id)}
-        onBlur={() => setFocusedIntentId((current) => (current === item.id ? null : current))}
+        onFocus={() => {}}
+        onBlur={() => {}}
         onClick={() => {
           setPreviewIntentId(null);
           setFocusedIntentId(null);
@@ -11856,8 +11850,8 @@ function SearchIntentConsole({
   const renderMoreButton = () => {
     const MoreIcon = activeSecondaryItem?.icon || Compass;
     const active = moreOpen || Boolean(activeSecondaryItem);
-    const previewed = previewIntentId === "more" || focusedIntentId === "more";
-    const expanded = active || previewed;
+    const previewed = false;
+    const expanded = active;
     const descriptionId = "dp-search-intent-desc-more";
     const summary = activeSecondaryItem && !moreOpen
       ? makeIntentSummary(activeSecondaryItem, true)
@@ -11873,21 +11867,15 @@ function SearchIntentConsole({
         aria-pressed={active}
         aria-label={`Explore more intents. Shows ${moreIntentDefinition.description}.`}
         aria-describedby={descriptionId}
-        onPointerEnter={(event) => {
-          if (event.pointerType === "mouse" || event.pointerType === "pen") setPreviewIntentId("more");
-        }}
-        onPointerLeave={(event) => {
-          if (event.pointerType === "mouse" || event.pointerType === "pen") {
-            setPreviewIntentId((current) => (current === "more" ? null : current));
-          }
-        }}
+        onPointerEnter={() => {}}
+        onPointerLeave={() => {}}
         onPointerUp={(event) => {
           if (event.pointerType !== "touch") return;
           event.preventDefault();
           handleMoreClick(event);
         }}
-        onFocus={() => setFocusedIntentId("more")}
-        onBlur={() => setFocusedIntentId((current) => (current === "more" ? null : current))}
+        onFocus={() => {}}
+        onBlur={() => {}}
         onClick={handleMoreClick}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
@@ -11908,7 +11896,7 @@ function SearchIntentConsole({
         </span>
         <span className="dp-expanding-intent-chip__text">
           <span className="dp-expanding-intent-chip__label dp-search-intent-filter-label">
-            {expanded ? moreIntentDefinition.fullLabel : moreToggleLabel}
+            {expanded ? "More" : moreToggleLabel}
           </span>
           <span id={descriptionId} className="dp-expanding-intent-chip__description">
             {summary}
