@@ -3,6 +3,7 @@ import data from "../data/locations.json";
 import { luxuryPresenceBuildingPlaces } from "../data/luxuryPresenceInventory";
 import { supplementalMapEntities } from "../data/supplementalMapEntities";
 import { getRepublicAustinMapPlaces } from "../data/imports/republicAustinPins";
+import { launchMapPinPlaces } from "../data/imports/launchMapPins";
 import {
   ATTACHED_FEATURED_BRANDS,
   ATTACHED_HAPPY_HOUR_PERK_LOCATIONS,
@@ -1515,7 +1516,7 @@ export function buildLocations() {
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...launchMapPinPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
