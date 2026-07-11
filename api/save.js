@@ -6,7 +6,11 @@ export default async function handler(req, res) {
   }
 
   if (!supabaseServer) {
-    return res.status(200).json({ ok: true, status: 'accepted' });
+    return res.status(200).json({
+      ok: true,
+      mode: 'demo_session_only',
+      storage: { stored: false, reason: 'supabase_not_configured' }
+    });
   }
 
   const { profileId, entityType, entityId } = req.body || {};

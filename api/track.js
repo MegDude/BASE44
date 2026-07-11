@@ -32,7 +32,11 @@ export default async function handler(req, res) {
   }
 
   if (!supabaseServer) {
-    return res.status(201).json({ ok: true, status: 'accepted' });
+    return res.status(200).json({
+      ok: true,
+      mode: 'demo_session_only',
+      storage: { stored: false, reason: 'supabase_not_configured' }
+    });
   }
 
   const { type, entityId, entityType, campaign, value, sessionId, profileId, sourceType } = req.body || {};
@@ -57,9 +61,8 @@ export default async function handler(req, res) {
   const { error } = await supabaseServer.from('analytics_signals').insert(payload);
 
   if (error) {
-    console.error('[track] accepted event but persistence failed', error);
-    return res.status(201).json({ ok: true, status: 'accepted' });
+    return res.status(500).json({ error: error.message });
   }
 
-  return res.status(201).json({ ok: true, status: 'accepted' });
+  return res.status(200).json({ ok: true });
 }
