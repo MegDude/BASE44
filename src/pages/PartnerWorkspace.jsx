@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
 import "@/styles/workspace-profile-editor.css";
+import { PartnerMobileTabBar } from "@/components/partner/PartnerMobileTabBar";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
@@ -600,6 +601,7 @@ export default function PartnerWorkspace() {
           </div>
         </main>
       </div>
+      <PartnerMobileTabBar activeTab={tab} />
     </div>
   );
 }
@@ -1820,7 +1822,7 @@ function DaaInsightRail({ section, activeLabel, onSelect }) {
 function PerksManager({ user }) {
   const [perks, setPerks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("intent") === "new");
   const [editing, setEditing] = useState(null);
 
   const load = () => {
@@ -1832,8 +1834,16 @@ function PerksManager({ user }) {
 
   useEffect(() => { load(); }, [user.email]);
 
+  function setPublisherIntent(open) {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (open) url.searchParams.set("intent", "new");
+    else url.searchParams.delete("intent");
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  }
+  function closePublisher() { setPublisherIntent(false); setShowForm(false); setEditing(null); }
   function handleEdit(perk) { setEditing(perk); setShowForm(true); }
-  function handleAdd() { setEditing(null); setShowForm(true); }
+  function handleAdd() { setPublisherIntent(true); setEditing(null); setShowForm(true); }
   async function handleDelete(id) {
     await deleteWorkspaceItem("Perk", "perks", user.email, id);
     load();
@@ -1852,7 +1862,7 @@ function PerksManager({ user }) {
       </div>
 
       {showForm && (
-        <PerkForm user={user} perk={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
+        <PerkForm user={user} perk={editing} onClose={closePublisher} onSave={() => { closePublisher(); load(); }} />
       )}
 
       {loading ? (
@@ -1893,6 +1903,7 @@ function PerksManager({ user }) {
 }
 
 function PerkForm({ user, perk, onClose, onSave }) {
+  const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     title: perk?.title || "",
     venue_name: perk?.venue_name || "",
@@ -1901,11 +1912,20 @@ function PerkForm({ user, perk, onClose, onSave }) {
     description: perk?.description || "",
     terms: perk?.terms || "",
     status: perk?.status || "active",
+    eligibility: perk?.eligibility || "all_residents",
+    redemption_type: perk?.redemption_type || "resident_card",
+    start_date: perk?.start_date || "",
+    end_date: perk?.end_date || "",
+    available_hours: perk?.available_hours || "All day",
   });
   const [saving, setSaving] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (step < 4) {
+      setStep((current) => current + 1);
+      return;
+    }
     setSaving(true);
     try {
       if (perk?.id) {
@@ -1921,44 +1941,50 @@ function PerkForm({ user, perk, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-      className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
+      className="dp-native-publisher mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{perk ? "Edit perk" : "New perk"}</h3>
-        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
+        <div><p className="dp-native-publisher__step">{step} of 4</p><h3 className="text-[17px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{perk ? "Edit perk" : "New perk"}</h3></div>
+        <button type="button" onClick={onClose} aria-label="Close perk editor" className="flex h-11 w-11 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
       </div>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormField label="Perk title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
-        <FormField label="Venue name" value={form.venue_name} onChange={v => setForm(f => ({ ...f, venue_name: v }))} required />
-        <div>
-          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Category</label>
-          <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
-            {PERK_CATEGORIES.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
-          </select>
-        </div>
-        <FormField label="Value (e.g. 15% off)" value={form.value} onChange={v => setForm(f => ({ ...f, value: v }))} required />
-        <FormField label="Description" value={form.description} onChange={v => setForm(f => ({ ...f, description: v }))} />
-        <FormField label="Terms & conditions" value={form.terms} onChange={v => setForm(f => ({ ...f, terms: v }))} />
-        <div>
-          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Status</label>
-          <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-            className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
-            <option value="expired">Expired</option>
-          </select>
-        </div>
-        <div className="md:col-span-2 flex gap-3 pt-2">
+      <div className="dp-native-publisher__progress" aria-label={`Perk creation step ${step} of 4`}>{[1, 2, 3, 4].map((item) => <i key={item} className={item <= step ? "is-active" : ""} />)}</div>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+        {step === 1 ? <>
+          <h4>Perk basics</h4>
+          <FormField label="Perk title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
+          <FormField label="Short description" value={form.description} onChange={v => setForm(f => ({ ...f, description: v }))} />
+          <FormField label="Offer value (e.g. 15% off)" value={form.value} onChange={v => setForm(f => ({ ...f, value: v }))} required />
+          <PublisherSelect label="Offer type" value={form.category} onChange={value => setForm(f => ({ ...f, category: value }))} options={PERK_CATEGORIES.map(value => ({ value, label: CAT_LABELS[value] }))} />
+        </> : null}
+        {step === 2 ? <>
+          <h4>Eligibility and use</h4>
+          <PublisherSelect label="Who can use this?" value={form.eligibility} onChange={value => setForm(f => ({ ...f, eligibility: value }))} options={[{ value: "all_residents", label: "All residents" }, { value: "selected_properties", label: "Selected properties" }, { value: "selected_districts", label: "Selected districts" }, { value: "card_holders", label: "Perks Card holders" }]} />
+          <PublisherSelect label="How is it redeemed?" value={form.redemption_type} onChange={value => setForm(f => ({ ...f, redemption_type: value }))} options={[{ value: "resident_card", label: "Show resident card" }, { value: "qr", label: "Scan QR" }, { value: "external", label: "Use external link" }, { value: "staff", label: "Ask staff" }]} />
+          <FormField label="Terms" value={form.terms} onChange={v => setForm(f => ({ ...f, terms: v }))} />
+        </> : null}
+        {step === 3 ? <>
+          <h4>Timing and location</h4>
+          <div className="dp-native-publisher__dates"><FormField label="Start date" type="date" value={form.start_date} onChange={v => setForm(f => ({ ...f, start_date: v }))} /><FormField label="End date" type="date" value={form.end_date} onChange={v => setForm(f => ({ ...f, end_date: v }))} /></div>
+          <FormField label="Available hours" value={form.available_hours} onChange={v => setForm(f => ({ ...f, available_hours: v }))} />
+          <FormField label="Location" value={form.venue_name} onChange={v => setForm(f => ({ ...f, venue_name: v }))} required />
+        </> : null}
+        {step === 4 ? <>
+          <h4>Preview and publish</h4>
+          <article className="dp-native-perk-preview" aria-label="Resident perk preview"><span>Resident preview</span><strong>{form.title || "Your perk title"}</strong><p>{form.value || form.description || "Resident offer"}</p><small>{form.venue_name || "Your location"} · {form.redemption_type === "resident_card" ? "Show your Perks Card" : "Follow redemption instructions"}</small></article>
+          <PublisherSelect label="Publish" value={form.status} onChange={value => setForm(f => ({ ...f, status: value }))} options={[{ value: "active", label: "Publish now" }, { value: "paused", label: "Save as draft" }]} />
+        </> : null}
+        <div className="dp-native-publisher__actions pt-2">
+          {step > 1 ? <button type="button" onClick={() => setStep((current) => current - 1)} className="dp-native-publisher__back"><ChevronLeft aria-hidden="true" /> Back</button> : <button type="button" onClick={onClose} className="dp-native-publisher__back">Cancel</button>}
           <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
-            {saving ? "Saving…" : perk ? "Save changes" : "Create perk"}
-          </button>
-          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
-            Cancel
+            {saving ? "Publishing…" : step < 4 ? "Continue" : perk ? "Save changes" : "Publish perk"}
           </button>
         </div>
       </form>
     </motion.div>
   );
+}
+
+function PublisherSelect({ label, value, onChange, options }) {
+  return <label className="dp-native-publisher__field"><span>{label}</span><select value={value} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
 }
 
 // ─── EVENTS MANAGER ───────────────────────────────────────────────────────────
@@ -2397,13 +2423,13 @@ function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
 
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (
-    <div>
-      <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">{label}</label>
+    <label className="block">
+      <span className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">{label}</span>
       <input
         type={type} value={value} onChange={e => onChange(e.target.value)} required={required}
         className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors placeholder:text-[#0B1F33]/25"
       />
-    </div>
+    </label>
   );
 }
 

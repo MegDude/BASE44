@@ -16815,12 +16815,12 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
-                  onClick={() => openPartnerPanel("info")}
-                  aria-pressed={activeBottomTab === "info"}
-                  aria-selected={activeBottomTab === "info"}
+                  onClick={() => navigate("/partner-workspace/overview")}
+                  aria-pressed={false}
+                  aria-selected={false}
                 >
                   <Info className="h-4 w-4" />
-                  <span>Overview</span>
+                  <span>Home</span>
                 </button>
                 <button
                   type="button"
@@ -16835,29 +16835,28 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
-                  onClick={() => openPartnerPanel("campaigns")}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "campaigns"}
-                  aria-selected={urlState.tab === "map" && activeBottomTab === "campaigns"}
+                  onClick={() => navigate("/partner-workspace/offers")}
+                  aria-pressed={false}
+                  aria-selected={false}
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span>Campaigns</span>
+                  <span>Publish</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  onClick={() => openPartnerPanel("activity")}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "activity"}
-                  aria-selected={urlState.tab === "map" && activeBottomTab === "activity"}
-                  aria-label="Audience"
+                  onClick={() => navigate("/partner-workspace/analytics")}
+                  aria-pressed={false}
+                  aria-selected={false}
+                  aria-label="Insights"
                 >
                   <ScanLine className="h-4 w-4" />
-                  <span>Audience</span>
-                  {contextCount > 0 && <span aria-hidden="true" className="dp-nav-activity-badge">{Math.min(contextCount, 9)}</span>}
+                  <span>Insights</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  onClick={() => navigate("/partner-workspace/overview")}
+                  onClick={() => navigate("/partner-workspace/profile")}
                   aria-pressed={false}
                   aria-selected={false}
                 >

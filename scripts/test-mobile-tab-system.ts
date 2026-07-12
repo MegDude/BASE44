@@ -3,9 +3,11 @@ import { mobileTabsByMode, normalizeMobileTab } from "../src/components/map/mobi
 import { createMobileTabState, rememberTabScroll, transitionMobileTabState } from "../src/components/map/mobileTabState";
 
 assert.deepEqual(mobileTabsByMode.resident.map((tab) => tab.label), ["Home", "Map", "Perks", "Events", "Card"]);
-assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Overview", "Map", "Campaigns", "Audience", "Workspace"]);
+assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Home", "Publish", "Map", "Insights", "Workspace"]);
 assert.equal(normalizeMobileTab("resident", "pass"), "card");
-assert.equal(normalizeMobileTab("partner", "audience"), "activity");
+assert.equal(normalizeMobileTab("partner", "campaigns"), "publish");
+assert.equal(normalizeMobileTab("partner", "audience"), "insights");
+assert.equal(normalizeMobileTab("partner", "reports"), "insights");
 assert.ok(mobileTabsByMode.resident.every((tab) => tab.emptyTitle && tab.emptyAction && tab.sections.length));
 assert.ok(mobileTabsByMode.partner.every((tab) => tab.emptyTitle && tab.emptyAction && tab.sections.length));
 assert.ok(mobileTabsByMode.resident.every((tab) => !/campaign|audience|performance/i.test(tab.purpose)));

@@ -21,11 +21,11 @@ export const residentMobileTabs: readonly MobileTabDefinition[] = [
 ] as const;
 
 export const partnerMobileTabs: readonly MobileTabDefinition[] = [
-  { id: "info", label: "Overview", purpose: "A concise operating view of current activity.", route: "/map?mode=partner&tab=overview", emptyTitle: "Activity appears after your profile or first campaign starts receiving engagement.", emptyAction: "Complete profile", analyticsEvent: "partner_overview_open", sections: ["Campaign status", "Key metrics", "Current offer", "Upcoming event", "Audience signal", "Recommended action", "Recent activity", "Quick links"] },
+  { id: "info", label: "Home", purpose: "A concise operating view of what needs attention now.", route: "/partner-workspace/overview", emptyTitle: "Activity appears after your profile or first campaign starts receiving engagement.", emptyAction: "Complete profile", analyticsEvent: "partner_home_open", sections: ["Needs attention", "Profile completeness", "Active perks", "Upcoming event", "Performance snapshot", "Recommended action", "Recent activity"] },
+  { id: "publish", label: "Publish", purpose: "Create and manage perks, events, listings, and campaigns.", route: "/partner-workspace/offers", emptyTitle: "No partner content has been published yet.", emptyAction: "Create a perk", analyticsEvent: "partner_publish_open", sections: ["Active", "Drafts", "Scheduled", "Past", "Perks", "Events", "Campaigns", "Listing updates"] },
   { id: "map", label: "Map", purpose: "Local context and nearby opportunity.", route: "/map?mode=partner&tab=map&filter=All", emptyTitle: "Add or select a business location to see local opportunity.", emptyAction: "Edit visibility", analyticsEvent: "partner_map_open", sections: ["Own business", "Active visibility", "Nearby audience", "Nearby events", "Nearby properties", "Complementary categories", "Campaign suggestions", "Map filters"] },
-  { id: "campaigns", label: "Campaigns", purpose: "Create, manage, and evaluate campaigns.", route: "/map?mode=partner&tab=campaigns", emptyTitle: "No campaigns are live yet.", emptyAction: "Create campaign", analyticsEvent: "partner_campaigns_open", sections: ["Active", "Scheduled", "Draft", "Completed", "Expired"] },
-  { id: "activity", label: "Audience", purpose: "Privacy-safe nearby and engagement signals.", route: "/map?mode=partner&tab=audience", emptyTitle: "Audience insights will appear after your profile or campaign begins receiving activity.", emptyAction: "Launch campaign", analyticsEvent: "partner_audience_open", sections: ["Nearby now", "Resident buildings", "Guest signals", "Saved interest", "Repeat interest", "Campaign audience", "Recommended segment"] },
-  { id: "workspace", label: "Workspace", purpose: "Central operational access.", route: "/partner-workspace/overview", emptyTitle: "Your workspace modules will appear when account access is active.", emptyAction: "Open account access", analyticsEvent: "partner_workspace_open", sections: ["Profile", "Perks", "Events", "Campaigns", "Audience", "Media", "Reports", "QR", "Surveys", "Team", "Billing", "Integrations", "Settings"] },
+  { id: "insights", label: "Insights", purpose: "Reporting, audience, and explainable recommendations.", route: "/partner-workspace/analytics", emptyTitle: "Insights appear after your listing or content receives activity.", emptyAction: "Preview listing", analyticsEvent: "partner_insights_open", sections: ["Reach", "Map views", "Saves", "Directions", "Redemptions", "Audience", "Recommendations"] },
+  { id: "workspace", label: "Workspace", purpose: "Organization, team, billing, integrations, and settings.", route: "/partner-workspace/profile", emptyTitle: "Your organization settings appear when account access is active.", emptyAction: "Open account access", analyticsEvent: "partner_workspace_open", sections: ["Organization", "Team", "Locations", "Integrations", "Billing", "Notifications", "Brand assets", "Support"] },
 ] as const;
 
 export const mobileTabsByMode = { resident: residentMobileTabs, partner: partnerMobileTabs } as const;
@@ -38,7 +38,7 @@ export function normalizeMobileTab(mode: MapAudienceMode, tab?: string | null, p
   const requested = panel || tab || "map";
   const aliases: Record<string, string> = mode === "resident"
     ? { home: "info", card: "card", pass: "card" }
-    : { overview: "info", audience: "activity", reports: "activity" };
+    : { overview: "info", campaigns: "publish", perks: "publish", offers: "publish", events: "publish", audience: "insights", reports: "insights", analytics: "insights" };
   const canonical = aliases[requested] || requested;
   return getMobileTab(mode, canonical).id;
 }
