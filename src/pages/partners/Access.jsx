@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
+import { demoOrganizations } from "@/config/workspaceArchitecture";
+import { getSuperAdminEmails, isSuperAdminSession } from "@/lib/auth/session";
 import {
   canUseProductionAccountAccess,
   ACTION_ACCEPTED_MESSAGE,
@@ -15,6 +17,7 @@ import {
 } from "@/config/pricingRegistry";
 
 const PARTNER_PROFILE_KEY = "dp_partner_workspace:profile:current";
+const ADMIN_WORKSPACE_CONTEXT_KEY = "dp_partner_workspace:admin_context";
 
 const PARTNER_TYPES = [
   {
@@ -139,7 +142,9 @@ async function startPartnerSignIn(navigate, signInPartner, { email, accountType 
   if (!canUseProductionAccountAccess()) return null;
   const partnerType = normalizePartnerType(accountType) || "property";
   const accessLabel = getAccessTypeLabel(partnerType) || "Downtown Perks";
-  const redirectPath = getAccessRouteForType(partnerType);
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const isAdminEmail = getSuperAdminEmails().includes(normalizedEmail);
+  const redirectPath = isAdminEmail ? "/partners/sign-in?admin=1" : getAccessRouteForType(partnerType);
   const session = await signInPartner({
     email,
     organization_name: `${accessLabel} Access`,
@@ -213,6 +218,10 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
   const hasPartnerType = Boolean(form.partner_type);
   const accountAccessEnabled = canUseProductionAccountAccess();
+  const isSuperAdmin = Boolean(isAuthenticated && isSuperAdminSession({
+    email: user?.email,
+    role: user?.role,
+  }));
 
   useEffect(() => {
     if (!hasPartnerType) {
@@ -224,10 +233,40 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   }, [availablePlans, hasPartnerType, selectedPlanId]);
 
   useEffect(() => {
-    if (isSignUp || !isAuthenticated) return;
+    if (isSignUp || !isAuthenticated || isSuperAdmin) return;
     const accountType = user?.partner_type || user?.role || "property";
     navigate(getAccessRouteForType(accountType), { replace: true });
-  }, [isAuthenticated, isSignUp, navigate, user]);
+  }, [isAuthenticated, isSignUp, isSuperAdmin, navigate, user]);
+
+  function openAdminWorkspace(organization) {
+    if (!isSuperAdmin || !organization) return;
+    const adminContext = {
+      organizationId: organization.id,
+      organizationName: organization.name,
+      organizationType: organization.type,
+      plan: organization.plan,
+      status: organization.status,
+      role: "super_admin",
+      adminEmail: user?.email || "",
+      accessMode: "admin_workspace_switch",
+      selectedAt: new Date().toISOString(),
+    };
+    savePartnerProfile({
+      ...adminContext,
+      organization_id: organization.id,
+      organization_name: organization.name,
+      partner_name: organization.name,
+      partner_type: organization.type,
+      full_name: user?.full_name || "Meg Dude",
+      email: user?.email || "",
+    });
+    try {
+      window.localStorage.setItem(ADMIN_WORKSPACE_CONTEXT_KEY, JSON.stringify(adminContext));
+    } catch {
+      // The organization query parameter still opens the selected workspace.
+    }
+    navigate(`/partner-workspace/overview?organizationId=${encodeURIComponent(organization.id)}&admin=1`);
+  }
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -668,6 +707,59 @@ export default function PartnerAccess({ mode = "sign-in" }) {
         </section>
       </div>
     </main>
+  );
+}
+
+function AdminWorkspaceChooser({ user, onOpenWorkspace }) {
+  const [search, setSearch] = useState("");
+  const filteredOrganizations = demoOrganizations.filter((organization) => (
+    organization.name.toLowerCase().includes(search.trim().toLowerCase())
+  ));
+
+  return (
+    <section className="dp-admin-workspace-access" aria-labelledby="admin-workspace-access-title">
+      <p className="dp-partner-access-eyebrow">Administrator access</p>
+      <h2 id="admin-workspace-access-title">Choose a workspace.</h2>
+      <p>
+        Signed in as {user?.full_name || "Meg Dude"}{user?.email ? ` · ${user.email}` : ""}. Each selection is stored as an admin workspace context before opening.
+      </p>
+      <label className="dp-admin-workspace-search">
+        <span>Find organization</span>
+        <input
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search workspaces"
+          autoComplete="off"
+        />
+      </label>
+      <div className="dp-admin-workspace-list" role="list" aria-label="Available organizations">
+        {filteredOrganizations.map((organization) => (
+          <button
+            key={organization.id}
+            type="button"
+            role="listitem"
+            onClick={() => onOpenWorkspace(organization)}
+          >
+            <span>
+              <strong>{organization.name}</strong>
+              <small>{formatSetupText(organization.type)} · {formatSetupText(organization.status)}</small>
+            </span>
+            <span>
+              <small>{formatSetupText(organization.plan)} plan</small>
+              <ArrowRight aria-hidden="true" />
+            </span>
+          </button>
+        ))}
+      </div>
+      {!filteredOrganizations.length ? (
+        <p className="dp-admin-workspace-empty">No workspace matches that search.</p>
+      ) : null}
+      <div className="dp-admin-workspace-actions">
+        <Link to="/admin-studio/command-center">Open admin studio</Link>
+        <Link to="/partners">Return to partners</Link>
+      </div>
+    </section>
   );
 }
 
