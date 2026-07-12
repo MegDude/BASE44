@@ -39,6 +39,8 @@ import '@/styles/resident-product-alignment-final.css'
 import '@/styles/partner-native-mobile-final.css'
 import '@/styles/resident-native-mobile-final.css'
 
+import "@/styles/partner-public-platform-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )

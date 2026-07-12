@@ -332,6 +332,7 @@ function trackLifecycleEvent(eventName, payload = {}) {
 }
 
 function getStage(pathname) {
+  if (pathname.includes("/tools")) return "tools";
   if (pathname.includes("/sign-up")) return "start";
   if (pathname.includes("/start")) return "start";
   if (pathname.includes("/register")) return "register";
@@ -350,26 +351,28 @@ function formatPlanTotal(setup, fallback = "$99") {
 }
 
 function LifecycleShell({ stage, children }) {
+  const isTools = stage === "tools";
   return (
-    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage}`}>
+    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage} ${isTools ? "dp-partner-lifecycle-page-start" : ""}`}>
       <header className="dp-partner-lifecycle-hero">
         <div>
-          <p>Partner membership</p>
-          <h1>Grow your business without replacing the tools you already use.</h1>
+          <p>{isTools ? "Partner platform" : "Partner membership"}</p>
+          <h1>{isTools ? "One clear workspace for your downtown presence." : "Turn nearby attention into real visits."}</h1>
           <span>
-            Downtown Perks connects your business with the people already living, working and staying downtown. Keep your existing software,
-            rewards, and workflows. Simply make everything easier to discover.
+            {isTools
+              ? "Publish perks and events, preview your listing on the map, and understand what residents respond to—without replacing the systems that already run your business."
+              : "Downtown Perks helps residents discover your business, understand why they should visit, and take the next step. Your existing software, rewards, and workflows keep working."}
           </span>
           <div className="dp-partner-lifecycle-hero-actions">
-            <Link to={stage === "register" ? "#partner-signup" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
-              {stage === "register" ? "Continue to signup" : "Become a Founding Partner"}
+            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
+              {isTools ? "Open Partner Workspace" : stage === "register" ? "Continue to signup" : "Become a Founding Partner"}
               <ArrowRight aria-hidden="true" />
             </Link>
-            <Link to="/partners/tools#partners">Explore the Platform</Link>
+            <Link to={isTools ? "/partners#partners" : "/partners/tools#platform-tools"}>{isTools ? "View Membership" : "Explore the Platform"}</Link>
           </div>
         </div>
-        <Link to="/partner-workspace/overview">
-          Open Workspace
+        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/register" : "/partner-workspace/overview"}>
+          {isTools ? "Create partner account" : "Partner sign in"}
           <ArrowRight aria-hidden="true" />
         </Link>
       </header>
@@ -494,67 +497,37 @@ function RecommendedMembership({ setup }) {
   );
 }
 
-function GrowImpactSection({ setup, setSetup }) {
-  function addImpact(label) {
-    const currentLabels = Array.isArray(setup.moduleLabels) ? setup.moduleLabels : [];
-    const nextLabels = currentLabels.includes(label) ? currentLabels : [...currentLabels, label];
-    const nextSetup = { ...setup, moduleLabels: nextLabels };
-    setSetup(nextSetup);
-    saveSetup(nextSetup);
-  }
+function PlatformToolsSection() {
+  const destinations = [
+    "/partner-workspace/offers",
+    "/partner-workspace/events",
+    "/partner-workspace/surveys",
+    "/partner-workspace/campaigns",
+  ];
 
   return (
-    <section className="dp-partner-lifecycle-section dp-partner-impact-section">
+    <section id="platform-tools" className="dp-partner-lifecycle-section dp-partner-tools-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Grow your impact</p>
-        <h2>Optional ways to grow faster.</h2>
-        <span>Add campaigns, events, research, and visibility only when they match the next outcome you want.</span>
+        <p>Platform tools</p>
+        <h2>Everything follows the same simple workflow.</h2>
+        <span>Create, preview, publish, and measure from one consistent workspace. Choose the tool that matches what you need to do next.</span>
       </div>
-      <div className="dp-partner-impact-groups">
-        {impactGroups.map((group) => (
+      <div className="dp-partner-tools-list">
+        {impactGroups.map((group, index) => (
           <article key={group.title}>
-            <h3>{group.title}</h3>
             <div>
-              {group.items.map(([headline, who, when, outcome, price]) => (
-                <button key={headline} type="button" onClick={() => addImpact(headline)}>
-                  <Sparkles aria-hidden="true" />
-                  <strong>{headline}</strong>
-                  <span>{who}</span>
-                  <small>{when}</small>
-                  <em>{outcome}</em>
-                  <b>{price}</b>
-                  <i>{Array.isArray(setup.moduleLabels) && setup.moduleLabels.includes(headline) ? "Added" : "Add"}</i>
-                </button>
-              ))}
+              <span>0{index + 1}</span>
+              <h3>{group.title}</h3>
+              <p>{group.items[0][3]}</p>
             </div>
+            <Link to={destinations[index]} aria-label={`Open ${group.title}`}>
+              Open tool
+              <ArrowRight aria-hidden="true" />
+            </Link>
           </article>
         ))}
       </div>
     </section>
-  );
-}
-
-function LivePricingSummary({ setup }) {
-  const selectedType = getSelectedPartnerType(setup);
-  const modules = Array.isArray(setup.moduleLabels) && setup.moduleLabels.length ? setup.moduleLabels : ["None"];
-  const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
-
-  return (
-    <aside className="dp-partner-plan-summary" aria-label="Live pricing summary">
-      <p>Your plan</p>
-      <dl>
-        <div><dt>Business</dt><dd>{selectedType.label}</dd></div>
-        <div><dt>Membership</dt><dd>{setup.plan || selectedType.plan}</dd></div>
-        <div><dt>Annual</dt><dd>{total}</dd></div>
-        <div><dt>Campaigns</dt><dd>{modules.slice(0, 2).join(", ")}{modules.length > 2 ? ` +${modules.length - 2}` : ""}</dd></div>
-        <div><dt>Professional services</dt><dd>Optional</dd></div>
-        <div><dt>Today's total</dt><dd>{total}</dd></div>
-      </dl>
-      <Link to={`/partners/register?partnerType=${encodeURIComponent(selectedType.id)}`}>
-        Continue
-        <ArrowRight aria-hidden="true" />
-      </Link>
-    </aside>
   );
 }
 
@@ -659,20 +632,23 @@ function FinalCtaSection() {
 function StartStage({ setup, setSetup }) {
   return (
     <>
-      <ExistingSystemsSection />
       <ChooseBusinessSection setup={setup} setSetup={setSetup} />
-      <div className="dp-partner-purchase-grid">
-        <div>
-          <RecommendedMembership setup={setup} />
-          <GrowImpactSection setup={setup} setSetup={setSetup} />
-          <ProfessionalServicesSection />
-          <IntegrationsSection />
-          <TimelineSection />
-        </div>
-        <LivePricingSummary setup={setup} />
-      </div>
+      <RecommendedMembership setup={setup} />
+      <TimelineSection />
       <FinalCtaSection />
       <FaqSection />
+    </>
+  );
+}
+
+function ToolsStage() {
+  return (
+    <>
+      <PlatformToolsSection />
+      <ExistingSystemsSection />
+      <IntegrationsSection />
+      <ProfessionalServicesSection />
+      <FinalCtaSection />
     </>
   );
 }
@@ -986,6 +962,7 @@ export default function PartnerLifecycle() {
   }, [location.search]);
 
   const content = useMemo(() => {
+    if (stage === "tools") return <ToolsStage />;
     if (stage === "register") return <RegisterStage setup={setup} setSetup={setSetup} />;
     if (stage === "checkout") return <CheckoutStage setup={setup} setSetup={setSetup} />;
     if (stage === "provision") return <ProvisionStage setup={setup} />;
