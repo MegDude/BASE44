@@ -59,6 +59,10 @@ import "@/styles/partner-register-unified-final.css"
 
 import "@/styles/global-back-control-final.css"
 
+import "@/styles/resident-home-native-panels-final.css"
+
+import "@/styles/resident-home-saved-preview-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )

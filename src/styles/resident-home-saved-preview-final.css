@@ -1,0 +1,24 @@
+/* Direct-on-Home saved perk preview rows. */
+html body #root#root .dp-resident-section-title > button {
+  min-height: 44px; padding: 0; border: 0; background: transparent; color: #0b1f33;
+  font-size: 12px; font-weight: 650;
+}
+html body #root#root .dp-resident-home__saved-rows { border-top: 1px solid rgba(11,31,51,.1); }
+html body #root#root .dp-resident-home__saved-rows > button,
+html body #root#root .dp-resident-home__saved-empty {
+  display: flex; width: 100%; min-height: 64px; align-items: center; gap: 11px; padding: 10px 0;
+  border: 0; border-bottom: 1px solid rgba(11,31,51,.1); border-radius: 0; background: transparent;
+  color: #0b1f33; text-align: left;
+}
+html body #root#root .dp-resident-home__saved-rows > button > svg:first-child { width: 18px; color: #0b1f33; }
+html body #root#root .dp-resident-home__saved-rows > button > span,
+html body #root#root .dp-resident-home__saved-empty > span { display: grid; flex: 1; gap: 3px; min-width: 0; }
+html body #root#root .dp-resident-home__saved-rows strong,
+html body #root#root .dp-resident-home__saved-empty strong {
+  overflow: hidden; font-size: 14px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap;
+}
+html body #root#root .dp-resident-home__saved-rows small,
+html body #root#root .dp-resident-home__saved-empty small { color: #5f6e7b; font-size: 12px; line-height: 1.4; }
+html body #root#root .dp-resident-home__saved-rows > button > svg:last-child,
+html body #root#root .dp-resident-home__saved-empty > svg { width: 16px; color: rgba(11,31,51,.38); }
+

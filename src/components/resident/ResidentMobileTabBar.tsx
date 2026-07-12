@@ -18,18 +18,32 @@ const RESIDENT_TABS = [
 
 type ResidentMobileTabBarProps = {
   activeTab: string;
+  onTabChange?: (tabId: string) => void;
 };
 
-export function ResidentMobileTabBar({ activeTab }: ResidentMobileTabBarProps) {
+export function ResidentMobileTabBar({ activeTab, onTabChange }: ResidentMobileTabBarProps) {
   return (
     <nav className="dp-resident-native-tabs" aria-label="Resident app" role="tablist">
       {RESIDENT_TABS.map((item) => {
         const Icon = item.icon;
         const active = item.id === activeTab;
-        return (
+        const opensHomePanel = Boolean(onTabChange && (item.id === "home" || item.id === "perks" || item.id === "card"));
+        const content = <><Icon aria-hidden="true" /><span>{item.label}</span></>;
+
+        return opensHomePanel ? (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            className={active ? "is-active" : ""}
+            onClick={() => onTabChange?.(item.id)}
+          >
+            {content}
+          </button>
+        ) : (
           <Link key={item.id} to={item.href} role="tab" aria-selected={active} className={active ? "is-active" : ""}>
-            <Icon aria-hidden="true" />
-            <span>{item.label}</span>
+            {content}
           </Link>
         );
       })}
