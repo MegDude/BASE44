@@ -57,3 +57,14 @@ html body #root#root main.dp-partner-lifecycle-page-tools :is(
   background: #f7f8fb !important;
   color: #0b1f33 !important;
 }
+
+html body #root#root main.dp-partner-lifecycle-page-start :is(
+  .dp-partner-business-copy small,
+  .dp-partner-business-state
+),
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid button small,
+html body #root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card small {
+  font-variant: normal !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
