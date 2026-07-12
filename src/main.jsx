@@ -85,6 +85,7 @@ import "@/styles/native-panel-surface-lock-final.css"
 import '@/styles/map-native-ios-polish-final.css'
 import '@/styles/workspace-sharp-platform-final.css'
 import '@/styles/partner-signup-product-final.css'
+import '@/styles/partner-tools-polish-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

@@ -493,7 +493,7 @@ function formatPlanTotal(setup, fallback = "$99") {
 function LifecycleShell({ stage, children }) {
   const isTools = stage === "tools";
   return (
-    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage} ${isTools ? "dp-partner-lifecycle-page-start" : ""}`}>
+    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage}`}>
       <header className="dp-partner-lifecycle-hero">
         <div className="dp-partner-lifecycle-hero-copy">
           <p>{isTools ? "Partner platform" : "Partner membership"}</p>

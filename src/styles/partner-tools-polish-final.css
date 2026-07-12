@@ -1,0 +1,475 @@
+/* Public partner tools: final route-scoped layout and surface governance. */
+html body #root#root main.dp-partner-lifecycle-page-tools {
+  --tools-ink: #0b1f33;
+  --tools-muted: #5f6e7b;
+  --tools-gold: #c8a96a;
+  --tools-line: rgba(11, 31, 51, 0.1);
+  --tools-soft: #f7f8fb;
+  overflow-x: clip !important;
+  background: #fff !important;
+  color: var(--tools-ink) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-partner-lifecycle-hero,
+  .dp-partner-lifecycle-section
+) {
+  width: min(calc(100% - 48px), 1120px) !important;
+  max-width: 1120px !important;
+  margin-inline: auto !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 760px) minmax(190px, 1fr) !important;
+  align-items: start !important;
+  gap: clamp(32px, 6vw, 72px) !important;
+  padding: clamp(52px, 7vw, 76px) 0 56px !important;
+  border-bottom: 1px solid var(--tools-line) !important;
+  background: #fff !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-copy {
+  min-width: 0 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-copy > p {
+  margin: 0 0 12px !important;
+  color: #927331 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.3 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero h1 {
+  max-width: 700px !important;
+  margin: 0 0 18px !important;
+  color: var(--tools-ink) !important;
+  font: 650 clamp(38px, 4.4vw, 52px)/1.03 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.045em !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-copy > span {
+  display: block !important;
+  max-width: 650px !important;
+  color: var(--tools-muted) !important;
+  font-size: 16px !important;
+  line-height: 1.62 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: auto !important;
+  margin: 28px 0 0 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 12px 17px !important;
+  border: 1px solid var(--tools-line) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: var(--tools-ink) !important;
+  -webkit-text-fill-color: var(--tools-ink) !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a:first-child {
+  border-color: var(--tools-gold) !important;
+  background: var(--tools-gold) !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a::before,
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a svg,
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-utility-link svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-utility-link {
+  align-self: start !important;
+  justify-self: end !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-height: 48px !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--tools-line) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: var(--tools-ink) !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-partner-lifecycle-hero-actions a,
+  .dp-partner-lifecycle-utility-link
+):focus-visible {
+  outline: 3px solid rgba(200, 169, 106, 0.34) !important;
+  outline-offset: 3px !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools #platform-tools {
+  scroll-margin-top: 68px !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section {
+  padding: clamp(54px, 6vw, 72px) 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section + .dp-partner-lifecycle-section {
+  border-top: 1px solid var(--tools-line) !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section-head {
+  max-width: 650px !important;
+  margin: 0 0 30px !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section-head > p {
+  margin: 0 0 10px !important;
+  color: #927331 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.3 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section-head h2 {
+  max-width: 620px !important;
+  margin: 0 0 12px !important;
+  color: var(--tools-ink) !important;
+  font: 650 clamp(28px, 3vw, 36px)/1.08 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section-head > span {
+  display: block !important;
+  max-width: 620px !important;
+  color: var(--tools-muted) !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+}
+
+/* Workflow outcomes stay editorial and never inherit the onboarding grid columns. */
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0 24px !important;
+  border-top: 1px solid var(--tools-line) !important;
+  background: transparent !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list article {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  align-content: start !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  min-height: 112px !important;
+  padding: 20px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--tools-line) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list :is(h3, p) {
+  grid-column: 1 !important;
+  grid-row: auto !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list h3 {
+  color: var(--tools-ink) !important;
+  font-size: 16px !important;
+  font-weight: 650 !important;
+  line-height: 1.3 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list p {
+  color: var(--tools-muted) !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+/* Interactive builder. */
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-programs {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 260px !important;
+  gap: 14px !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-tabs {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1px !important;
+  padding: 1px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--tools-line) !important;
+  border-radius: 13px !important;
+  background: var(--tools-line) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-tabs button {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 11px 13px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  color: var(--tools-muted) !important;
+  font: 630 12px/1.3 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  text-align: left !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-tabs button.is-active {
+  background: var(--tools-soft) !important;
+  color: var(--tools-ink) !important;
+  box-shadow: inset 0 -3px 0 var(--tools-gold) !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools :is(.dp-growth-program-panel, .dp-growth-estimate) {
+  min-width: 0 !important;
+  border: 1px solid var(--tools-line) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate {
+  background: var(--tools-soft) !important;
+}
+
+/* Professional services also opt out of legacy multi-column article templates. */
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-professional-service-list article {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-professional-service-list article > * {
+  grid-column: 1 !important;
+  grid-row: auto !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-category-tabs,
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix,
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-detail {
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-final-cta {
+  padding: clamp(32px, 5vw, 52px) !important;
+  border: 1px solid var(--tools-line) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-growth-program-tabs button,
+  .dp-integration-category-tabs button,
+  .dp-integration-logo-matrix button,
+  .dp-growth-program-list input
+):focus-visible {
+  outline: 3px solid rgba(200, 169, 106, 0.34) !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 860px) {
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-utility-link {
+    justify-self: start !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-programs,
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-matrix-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 639px) {
+  html body #root#root main.dp-partner-lifecycle-page-tools :is(
+    .dp-partner-lifecycle-hero,
+    .dp-partner-lifecycle-section
+  ) {
+    width: min(calc(100% - 32px), 1120px) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section {
+    padding: 46px 0 !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero {
+    gap: 22px !important;
+    padding: 42px 0 46px !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero h1 {
+    font-size: clamp(34px, 9.5vw, 40px) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    width: auto !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a {
+    width: auto !important;
+    max-width: 100% !important;
+    min-height: 44px !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section-head {
+    margin-bottom: 24px !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-section-head h2 {
+    font-size: clamp(26px, 7.5vw, 32px) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list,
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-professional-service-list {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-tools-list article {
+    min-height: 0 !important;
+    padding: 18px 0 !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-tabs,
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-category-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools :is(
+    .dp-growth-program-tabs,
+    .dp-integration-category-tabs
+  )::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-tabs button {
+    flex: 0 0 148px !important;
+    scroll-snap-align: start !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-category-tabs button {
+    flex: 0 0 132px !important;
+    scroll-snap-align: start !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-list label {
+    grid-template-columns: 20px minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    padding: 14px 16px !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-final-cta {
+    padding: 28px 22px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root main.dp-partner-lifecycle-page-tools *,
+  html body #root#root main.dp-partner-lifecycle-page-tools *::before,
+  html body #root#root main.dp-partner-lifecycle-page-tools *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Route release lock: generic sign-up rules must not inflate the tools UI. */
+html body #root#root#root#root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  width: auto !important;
+}
+
+html body #root#root#root#root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-hero-actions a {
+  width: auto !important;
+  max-width: 100% !important;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-page-tools :is(
+  .dp-growth-program-tabs,
+  .dp-growth-program-list label,
+  .dp-integration-category-tabs,
+  .dp-integration-category-tabs button,
+  .dp-integration-logo-matrix,
+  .dp-integration-detail,
+  .dp-partner-final-cta
+) {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
