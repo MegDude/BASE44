@@ -12,7 +12,6 @@ import {
   Landmark,
   Megaphone,
   MapPin,
-  Plug,
   QrCode,
   Receipt,
   Sparkles,
@@ -124,12 +123,6 @@ const partnerTypes = [
 ];
 
 const trustPartners = ["Toast", "BuildingLink", "SevenRooms", "OpenTable", "Eventbrite", "Stripe", "Square", "HubSpot", "Salesforce", "Google", "Shopify", "Zapier"];
-
-const systemGroups = [
-  { title: "Keep your rewards", tools: ["Toast", "Square Loyalty", "inKind"] },
-  { title: "Keep your bookings", tools: ["SevenRooms", "OpenTable", "Resy"] },
-  { title: "Keep your property systems", tools: ["BuildingLink", "ActiveBuilding", "Entrata", "Yardi"] },
-];
 
 const impactGroups = [
   {
@@ -369,38 +362,17 @@ function LifecycleShell({ stage, children }) {
         </Link>
       </header>
 
-      <section className="dp-partner-trust-strip" aria-label="Connected tools">
-        <span>Works with</span>
-        <div>
-          {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
-        </div>
-      </section>
+      {!isTools ? (
+        <section className="dp-partner-trust-strip" aria-label="Connected tools">
+          <span>Works with</span>
+          <div>
+            {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
+          </div>
+        </section>
+      ) : null}
 
       {children}
     </main>
-  );
-}
-
-function ExistingSystemsSection() {
-  return (
-    <section className="dp-partner-lifecycle-section dp-partner-systems-section">
-      <div className="dp-partner-lifecycle-section-head">
-        <p>Existing systems</p>
-        <h2>Everything you already use keeps working.</h2>
-        <span>
-          You have already invested in software that runs your business. Downtown Perks sits alongside those systems instead of replacing them,
-          bringing rewards, reservations, resident portals, events, and discovery into one connected neighborhood experience.
-        </span>
-      </div>
-      <div className="dp-partner-system-grid">
-        {systemGroups.map((group) => (
-          <article key={group.title}>
-            <h3>{group.title}</h3>
-            <div>{group.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
-          </article>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -558,7 +530,7 @@ function ProfessionalServicesSection() {
 
 function IntegrationsSection() {
   return (
-    <section className="dp-partner-lifecycle-section dp-partner-integrations-section">
+    <section id="integrations" className="dp-partner-lifecycle-section dp-partner-integrations-section">
       <div className="dp-partner-lifecycle-section-head">
         <p>Integrations</p>
         <h2>Works with the software you already trust.</h2>
@@ -569,13 +541,11 @@ function IntegrationsSection() {
       <div className="dp-partner-integration-grid">
         {integrationGroups.map(([category, tools]) => (
           <article key={category}>
-            <Plug aria-hidden="true" />
             <h3>{category}</h3>
             <div>{tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
           </article>
         ))}
       </div>
-      <Link className="dp-partner-text-link" to="/partners/tools#integrations">View integrations</Link>
     </section>
   );
 }
@@ -647,7 +617,6 @@ function ToolsStage() {
   return (
     <>
       <PlatformToolsSection />
-      <ExistingSystemsSection />
       <IntegrationsSection />
       <ProfessionalServicesSection />
       <FinalCtaSection />
