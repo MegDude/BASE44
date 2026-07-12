@@ -93,6 +93,7 @@ export default function Layout() {
   const noFooter =
     pathname === "/" ||
     isProductRoute ||
+    pathname === "/card" ||
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/map" ||
@@ -105,7 +106,7 @@ export default function Layout() {
     pathname === "/downtown-perks/events";
 
   const suppressGlobalBackButton =
-    noFooter ||
+    (noFooter && pathname !== "/card") ||
     pathname === "/marketing/contact" ||
     pathname === "/contact" ||
     pathname === "/pricing" ||

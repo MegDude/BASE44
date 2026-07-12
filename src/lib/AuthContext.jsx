@@ -217,6 +217,90 @@ export const AuthProvider = ({ children }) => {
     return nextSession;
   };
 
+  const signInResidentWithPassword = async ({ email = "", password = "" } = {}) => {
+    if (!canUseProductionAccountAccess()) {
+      return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    }
+
+    if (!email || !password) {
+      return { type: "error", message: "Enter your email address and password." };
+    }
+
+    if (isProductionLike()) {
+      if (!supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        const confirmationRequired = error.code === "email_not_confirmed" || /email.*not.*confirm/i.test(error.message || "");
+        const message = confirmationRequired
+          ? "Your email is not confirmed yet. Open the confirmation email we sent, or request a new one below."
+          : (error.message || "We could not sign you in with that email and password.");
+        setAuthError(message);
+        return { type: "error", code: error.code || "sign_in_failed", confirmationRequired, message };
+      }
+      applySupabaseSession(data?.session);
+      return { type: "authenticated", session: data?.session, user: data?.user };
+    }
+
+    return signInPartner({ email, partner_type: "resident", organization_name: "Downtown Perks Resident" });
+  };
+
+  const registerResidentWithPassword = async ({ email = "", password = "", fullName = "", redirectPath = "/auth/callback" } = {}) => {
+    if (!canUseProductionAccountAccess()) {
+      return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    }
+
+    if (!email || !password || !fullName) {
+      return { type: "error", message: "Enter your name, email address, and password to create an account." };
+    }
+
+    if (isProductionLike()) {
+      if (!supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}${redirectPath}`,
+          data: {
+            full_name: fullName,
+            organization_name: "Downtown Perks Resident",
+            partner_type: "resident",
+            account_type: "resident",
+          },
+        },
+      });
+      if (error) {
+        const message = error.message || "We could not create your resident account.";
+        setAuthError(message);
+        return { type: "error", code: error.code || "registration_failed", message };
+      }
+      if (data?.session) {
+        applySupabaseSession(data.session);
+        return { type: "authenticated", session: data.session, user: data.user };
+      }
+      return {
+        type: "confirmation_required",
+        email,
+        message: "Account created. Check your email and confirm your address before signing in.",
+      };
+    }
+
+    return signInPartner({ email, full_name: fullName, partner_type: "resident", organization_name: "Downtown Perks Resident" });
+  };
+
+  const resendResidentConfirmation = async ({ email = "", redirectPath = "/auth/callback" } = {}) => {
+    if (!email) return { type: "error", message: "Enter the email address for your resident account." };
+    if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) {
+      return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    }
+    const { error } = await supabaseClient.auth.resend({
+      type: "signup",
+      email,
+      options: { emailRedirectTo: `${window.location.origin}${redirectPath}` },
+    });
+    if (error) return { type: "error", code: error.code || "resend_failed", message: error.message || "We could not resend the confirmation email." };
+    return { type: "confirmation_sent", email, message: "Confirmation email sent. Check your inbox and spam folder." };
+  };
+
   const signInWithGoogle = async (profile = {}) => {
     if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) {
       const message = "Google sign-in is available when production account access is configured.";
@@ -229,6 +313,7 @@ export const AuthProvider = ({ children }) => {
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}${redirectPath}`,
+        skipBrowserRedirect: true,
         queryParams: { access_type: "offline", prompt: "consent" },
       },
     });
@@ -236,6 +321,13 @@ export const AuthProvider = ({ children }) => {
       const message = error.message || "Google sign-in could not be started.";
       setAuthError(message);
       return { type: "error", message };
+    }
+    if (data?.url) {
+      try {
+        window.top?.location.assign(data.url);
+      } catch {
+        window.location.assign(data.url);
+      }
     }
     return { type: "supabase_oauth", url: data?.url || "" };
   };
@@ -251,6 +343,9 @@ export const AuthProvider = ({ children }) => {
       appPublicSettings,
       logout,
       signInPartner,
+      signInResidentWithPassword,
+      registerResidentWithPassword,
+      resendResidentConfirmation,
       signInWithGoogle,
       navigateToLogin,
       checkAppState

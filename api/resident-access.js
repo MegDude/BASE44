@@ -6,19 +6,6 @@ const APPROVED_BUILDING_DOMAINS = new Set([
   "seaholmresidences.com",
 ]);
 
-const BUILDING_HINTS = [
-  "The Independent",
-  "Seaholm Residences",
-  "Spring Condominiums",
-  "The Shore",
-  "Austin Proper Residences",
-  "Fifth & West",
-  "44 East",
-  "Milago",
-  "The Waterline",
-  "Four Seasons Residences",
-];
-
 function clean(value, limit = 240) {
   if (value === null || value === undefined) return "";
   return String(value).trim().slice(0, limit);
@@ -30,9 +17,7 @@ function normalizeDomain(email = "") {
 
 function verificationStatus(record) {
   const domain = normalizeDomain(record.email);
-  const building = clean(record.buildingName).toLowerCase();
-  const hasBuildingMatch = BUILDING_HINTS.some((name) => building.includes(name.toLowerCase()));
-  if (APPROVED_BUILDING_DOMAINS.has(domain) || hasBuildingMatch) return "verified";
+  if (APPROVED_BUILDING_DOMAINS.has(domain)) return "verified";
   if (record.accessPath === "building") return "pending_building_review";
   return "perks_card";
 }
@@ -98,13 +83,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    await storeResident(record);
+    const persistence = await storeResident(record);
     const resident = record;
     return res.status(200).json({
       ok: true,
       resident,
-      status: "accepted",
-      next: record.verificationStatus === "verified" ? "open_app" : "checkout_or_review",
+      persisted: persistence.persisted,
+      status: persistence.persisted ? "accepted" : "accepted_local",
+      next: persistence.persisted && record.verificationStatus === "verified" ? "open_app" : "review",
     });
   } catch (error) {
     return res.status(500).json({ error: error?.message || "Resident access failed" });

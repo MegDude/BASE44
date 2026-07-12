@@ -19,14 +19,14 @@ const INCLUDED = [
 ];
 
 const BENEFITS = [
-  { title: "Access", body: "Keep your resident identity and eligible benefits together.", icon: ShieldCheck },
-  { title: "Dining", body: "Open participating restaurant perks and nearby offers.", icon: Utensils },
-  { title: "Hotels", body: "Explore downtown stays, experiences, and resident offers.", icon: Hotel },
-  { title: "Events", body: "Find local events and keep resident moments close.", icon: CalendarDays },
-  { title: "Buildings", body: "Connect building access with the neighborhood around you.", icon: Building2 },
-  { title: "Shopping", body: "Discover useful retail and local resident benefits.", icon: ShoppingBag },
-  { title: "Wellness", body: "Find fitness, recovery, and everyday wellness nearby.", icon: HeartPulse },
-  { title: "Community", body: "Move through downtown with local context and connection.", icon: Users },
+  { title: "Access", body: "Keep your resident identity and eligible benefits together.", icon: ShieldCheck, href: "#resident-card-access" },
+  { title: "Dining", body: "Open participating restaurant perks and nearby offers.", icon: Utensils, href: "/app?mode=resident&tab=map&filter=Dining&intent=dining" },
+  { title: "Hotels", body: "Explore downtown stays, experiences, and resident offers.", icon: Hotel, href: "/app?mode=resident&tab=map&filter=Hotels&intent=hotels" },
+  { title: "Events", body: "Find local events and keep resident moments close.", icon: CalendarDays, href: "/app?mode=resident&tab=events&filter=Events&intent=events" },
+  { title: "Buildings", body: "Connect building access with the neighborhood around you.", icon: Building2, href: "/app?mode=resident&tab=map&filter=Properties&intent=properties" },
+  { title: "Shopping", body: "Discover useful retail and local resident benefits.", icon: ShoppingBag, href: "/app?mode=resident&tab=map&filter=Shopping&intent=shopping" },
+  { title: "Wellness", body: "Find fitness, recovery, and everyday wellness nearby.", icon: HeartPulse, href: "/app?mode=resident&tab=map&filter=Wellness&intent=wellness" },
+  { title: "Community", body: "Move through downtown with local context and connection.", icon: Users, href: "/app?mode=resident&tab=map&filter=Civic&intent=civic" },
 ];
 
 const PROCESS = [
@@ -37,9 +37,9 @@ const PROCESS = [
 ];
 
 const PLACES = [
-  { title: "Stay", name: "Hotel Van Zandt", body: "Explore hotel experiences and the Rainey neighborhood around them.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg" },
-  { title: "Save", name: "Fairmont Austin", body: "Keep downtown hotel experiences and available perks within reach.", image: "/images/map-pins/property/fairmont-austin.jpg" },
-  { title: "Explore", name: "The Shore", body: "Connect where you live with resident benefits and nearby discoveries.", image: "/images/residential-content/the-shore.jpg" },
+  { title: "Stay", name: "Hotel Van Zandt", body: "Explore hotel experiences and the Rainey neighborhood around them.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
+  { title: "Save", name: "Fairmont Austin", body: "Keep downtown hotel experiences and available perks within reach.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
+  { title: "Explore", name: "The Shore", body: "Connect where you live with resident benefits and nearby discoveries.", image: "/images/residential-content/the-shore.jpg", href: "/app?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
 ];
 
 const BUILDINGS = [
@@ -155,9 +155,9 @@ export default function ResidentAccess() {
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(payload.error || "Resident access could not be saved.");
-    const resident = markLocalRecord(payload.resident);
+    const resident = payload.persisted ? payload.resident : markLocalRecord(payload.resident);
     writeResidentAccess(resident);
-    return { resident };
+    return { resident, persisted: Boolean(payload.persisted) };
   }
 
   async function startCheckout(resident) {
@@ -205,6 +205,12 @@ export default function ResidentAccess() {
     try {
       const result = await createResidentRecord();
       const resident = result.resident;
+      if (!result.persisted) {
+        setResidentCard(resident);
+        setState("success");
+        setMessage("Your request is saved on this device and queued for review. Secure verification and checkout will open when resident account storage is available.");
+        return;
+      }
       if (isBuildingPath && resident.verificationStatus === "verified") {
         setResidentCard(resident);
         setState("success");
@@ -228,10 +234,6 @@ export default function ResidentAccess() {
 
   return (
     <main className="dp-resident-access-page">
-      <nav className="dp-resident-access-topbar" aria-label="Resident access navigation">
-        <span>Downtown Perks</span>
-        <a href={APP_HREF}>Open resident map</a>
-      </nav>
       <div className="dp-resident-access-editorial">
         <section className="dp-resident-access-hero" aria-labelledby="resident-access-title">
           <div className="dp-resident-access-copy">
@@ -263,7 +265,7 @@ export default function ResidentAccess() {
         <section className="dp-resident-editorial-section" aria-labelledby="benefits-title">
           <header><p className="dp-resident-access-eyebrow">Benefits</p><h2 id="benefits-title">Downtown, connected to your day.</h2><p>One resident layer for the places, moments, and benefits that make downtown easier to use.</p></header>
           <div className="dp-resident-benefit-list">
-            {BENEFITS.map(({ title, body, icon: Icon }) => <a key={title} href={APP_HREF}><Icon aria-hidden="true" /><span><strong>{title}</strong><small>{body}</small></span><ArrowRight aria-hidden="true" /></a>)}
+            {BENEFITS.map(({ title, body, icon: Icon, href }) => <a key={title} href={href}><Icon aria-hidden="true" /><span><strong>{title}</strong><small>{body}</small></span><ArrowRight aria-hidden="true" /></a>)}
           </div>
         </section>
 
@@ -277,7 +279,7 @@ export default function ResidentAccess() {
         <section className="dp-resident-editorial-section" aria-labelledby="places-title">
           <header><p className="dp-resident-access-eyebrow">Where you can use it</p><h2 id="places-title">Stay. Save. Explore.</h2><p>Move between hotels, residential buildings, local experiences, and participating partners without leaving the product.</p></header>
           <div className="dp-resident-place-grid">
-            {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={APP_HREF}>Explore <ArrowRight aria-hidden="true" /></a></article>)}
+            {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={place.href}>Explore <ArrowRight aria-hidden="true" /></a></article>)}
           </div>
         </section>
 
@@ -295,12 +297,22 @@ export default function ResidentAccess() {
           <fieldset>
             <legend>Choose your access path</legend>
             <div className="dp-resident-access-paths">
-              <button type="button" data-active={isBuildingPath} onClick={() => updateField("accessPath", "building")}>
+              <button
+                type="button"
+                data-active={isBuildingPath}
+                aria-pressed={isBuildingPath}
+                onClick={() => updateField("accessPath", "building")}
+              >
                 <Home aria-hidden="true" />
                 <strong>Verify my building</strong>
                 <span>Use your building, unit, and address.</span>
               </button>
-              <button type="button" data-active={!isBuildingPath} onClick={() => updateField("accessPath", "card")}>
+              <button
+                type="button"
+                data-active={!isBuildingPath}
+                aria-pressed={!isBuildingPath}
+                onClick={() => updateField("accessPath", "card")}
+              >
                 <ShieldCheck aria-hidden="true" />
                 <strong>Get Perks Card</strong>
                 <span>Start with individual access.</span>

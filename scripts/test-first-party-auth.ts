@@ -5,6 +5,11 @@ import { buildResidentMapPath, getSafeReturnPath, isSafeFirstPartyPath } from ".
 
 const root = process.cwd();
 const appSource = readFileSync(join(root, "src/App.jsx"), "utf8");
+const authSource = readFileSync(join(root, "src/lib/AuthContext.jsx"), "utf8");
+const residentSignInSource = readFileSync(join(root, "src/pages/ResidentSignIn.jsx"), "utf8");
+const residentAccessSource = readFileSync(join(root, "src/pages/ResidentAccess.jsx"), "utf8");
+const residentAccessApiSource = readFileSync(join(root, "api/resident-access.js"), "utf8");
+const layoutSource = readFileSync(join(root, "src/components/Layout.jsx"), "utf8");
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory).flatMap((name) => {
@@ -33,6 +38,22 @@ assert.match(appSource, /path="\/map" element=\{<PublicMapGateway/);
 assert.match(appSource, /path="\/app\/map" element=\{<AuthenticatedResidentMap/);
 assert.match(appSource, /path="\/auth\/callback"/);
 assert.match(appSource, /path="\/sign-in"/);
+assert.match(authSource, /signInWithPassword\(\{ email, password \}\)/);
+assert.match(authSource, /auth\.signUp\(\{/);
+assert.match(authSource, /auth\.resend\(\{/);
+assert.match(authSource, /email_not_confirmed/);
+assert.match(authSource, /skipBrowserRedirect:\s*true/);
+assert.match(authSource, /window\.top\?\.location\.assign/);
+assert.match(residentSignInSource, /Create resident account/);
+assert.match(residentSignInSource, /Resend confirmation email/);
+assert.match(residentSignInSource, /"current-password"/);
+assert.doesNotMatch(residentAccessSource, /dp-resident-access-topbar/);
+assert.match(residentAccessSource, /payload\.persisted/);
+assert.match(residentAccessSource, /href=\{href\}/);
+assert.match(residentAccessSource, /href=\{place\.href\}/);
+assert.doesNotMatch(residentAccessApiSource, /hasBuildingMatch/);
+assert.match(residentAccessApiSource, /accepted_local/);
+assert.match(layoutSource, /pathname === "\/card" \|\|/);
 
 for (const file of sourceFiles(join(root, "src"))) {
   const source = readFileSync(file, "utf8");
