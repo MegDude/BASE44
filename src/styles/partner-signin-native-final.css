@@ -1,0 +1,447 @@
+/* Partner sign-in: quiet native product surface. Scoped away from sign-up. */
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) {
+  min-height: 100dvh !important;
+  padding: calc(64px + env(safe-area-inset-top, 0px) + 28px) clamp(20px, 5vw, 64px)
+    calc(40px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-shell {
+  width: min(100%, 1040px) !important;
+  margin-inline: auto !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-nav {
+  margin: 0 0 clamp(24px, 4vw, 44px) !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-back-button {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-back-button:is(:hover, :focus-visible) {
+  background: #fff !important;
+  outline: 2px solid rgba(200, 169, 106, 0.45) !important;
+  outline-offset: 0 !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.82fr) minmax(420px, 1fr) !important;
+  gap: clamp(52px, 8vw, 96px) !important;
+  align-items: start !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-copy {
+  display: grid !important;
+  gap: 0 !important;
+  padding-top: 6px !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-eyebrow {
+  margin: 0 0 14px !important;
+  color: #8a6a2d !important;
+  -webkit-text-fill-color: #8a6a2d !important;
+  font: 600 12px/1.3 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-title {
+  max-width: 470px !important;
+  margin: 0 !important;
+  font: 650 clamp(30px, 4vw, 42px)/1.08 Inter, sans-serif !important;
+  letter-spacing: -0.035em !important;
+  text-wrap: balance !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-lede {
+  max-width: 460px !important;
+  margin: 18px 0 0 !important;
+  color: rgba(11, 31, 51, 0.67) !important;
+  font: 400 15px/1.6 Inter, sans-serif !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-list {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 30px 0 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.1) !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-list > div {
+  min-height: 52px !important;
+  align-items: center !important;
+  padding: 11px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.1) !important;
+  color: rgba(11, 31, 51, 0.67) !important;
+  font: 400 13px/1.45 Inter, sans-serif !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-list svg {
+  width: 15px !important;
+  height: 15px !important;
+  color: #8a6a2d !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-panel {
+  margin: 0 !important;
+  padding: 0 0 0 clamp(24px, 4vw, 46px) !important;
+  border: 0 !important;
+  border-left: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-signin {
+  display: grid !important;
+  gap: 0 !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-form-title {
+  margin: 0 !important;
+  font: 650 24px/1.16 Inter, sans-serif !important;
+  letter-spacing: -0.025em !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-panel-copy {
+  max-width: 430px !important;
+  margin: 10px 0 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font: 400 14px/1.55 Inter, sans-serif !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-signin-type-section {
+  margin: 26px 0 22px !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-section-head {
+  margin: 0 !important;
+  padding: 0 0 10px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.12) !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-section-head :is(p, h3) {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font: 500 13px/1.4 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-section-head p {
+  display: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-signin-type-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.12) !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(110px, 0.75fr) minmax(0, 1.25fr) 18px !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  gap: 2px 18px !important;
+  min-height: 66px !important;
+  padding: 11px 28px 11px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 2px !important;
+  top: 50% !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-right: 1.5px solid rgba(11, 31, 51, 0.44) !important;
+  border-bottom: 1.5px solid rgba(11, 31, 51, 0.44) !important;
+  transform: translateY(-50%) rotate(-45deg) !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card[data-active="true"] {
+  padding-left: 12px !important;
+  border-left: 2px solid #c8a96a !important;
+  background: #fff !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card:is(:hover, :focus-visible) {
+  background: #fff !important;
+  outline: 0 !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card span {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  color: rgba(11, 31, 51, 0.52) !important;
+  -webkit-text-fill-color: currentColor !important;
+  font: 500 12px/1.35 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card strong {
+  grid-column: 2 !important;
+  font: 600 15px/1.3 Inter, sans-serif !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card small {
+  grid-column: 2 !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font: 400 12px/1.4 Inter, sans-serif !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-signin > label {
+  display: grid !important;
+  gap: 7px !important;
+  margin: 0 0 20px !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-label {
+  color: rgba(11, 31, 51, 0.66) !important;
+  font: 500 13px/1.35 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-control {
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.16) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  font: 400 16px/1.3 Inter, sans-serif !important;
+  box-shadow: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-control:focus {
+  border-color: #8a6a2d !important;
+  outline: 2px solid rgba(200, 169, 106, 0.2) !important;
+  outline-offset: 1px !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-actions {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  margin: 4px 0 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.1) !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-actions :is(button, a) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-height: 50px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  font: 600 14px/1.3 Inter, sans-serif !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-actions :is(button, a):first-child {
+  min-height: 52px !important;
+  border-left: 2px solid #c8a96a !important;
+  padding-left: 12px !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-actions :is(button, a):is(:hover, :focus-visible) {
+  background: #fff !important;
+  outline: 0 !important;
+}
+
+html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-actions button:disabled {
+  color: rgba(11, 31, 51, 0.38) !important;
+  cursor: not-allowed !important;
+}
+
+@media (max-width: 820px) {
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) {
+    padding-inline: max(18px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)) !important;
+  }
+
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 34px !important;
+  }
+
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-copy {
+    max-width: 620px !important;
+  }
+
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-list {
+    display: none !important;
+  }
+
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-panel {
+    padding: 28px 0 0 !important;
+    border-left: 0 !important;
+    border-top: 1px solid rgba(11, 31, 51, 0.12) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) {
+    padding-top: calc(56px + env(safe-area-inset-top, 0px) + 18px) !important;
+  }
+
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-access-title {
+    font-size: 30px !important;
+  }
+
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) .dp-partner-type-card {
+    grid-template-columns: minmax(84px, 0.7fr) minmax(0, 1.3fr) 14px !important;
+    gap: 2px 12px !important;
+    min-height: 64px !important;
+  }
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-access-signin .dp-partner-access-eyebrow.dp-partner-access-eyebrow,
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-access-signin .dp-partner-access-label.dp-partner-access-label {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-access-actions.dp-partner-access-actions :is(button, a) {
+  height: 44px !important;
+  min-height: 44px !important;
+  block-size: 44px !important;
+  max-height: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root main.dp-partner-access-page:has(.dp-partner-access-signin) * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Cascade lock: older partner access sheets use duplicated selectors and !important. */
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid.dp-partner-signin-type-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-rows: auto !important;
+  gap: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid.dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card {
+  grid-template-columns: minmax(110px, 0.75fr) minmax(0, 1.25fr) 18px !important;
+  grid-template-rows: auto auto !important;
+  align-content: center !important;
+  min-height: 66px !important;
+  max-height: none !important;
+  padding: 11px 28px 11px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: transparent !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid.dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card[data-active="true"] {
+  padding-left: 12px !important;
+  border-left: 2px solid #c8a96a !important;
+  background: #fff !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card :is(span, strong, small) {
+  display: block !important;
+  width: auto !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  text-align: left !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card span {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  font: 500 12px/1.35 Inter, sans-serif !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card strong {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  font: 600 15px/1.3 Inter, sans-serif !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card small {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  font: 400 12px/1.4 Inter, sans-serif !important;
+}
+
+html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+  .dp-partner-access-actions.dp-partner-access-actions :is(button, a) {
+  min-height: 44px !important;
+  height: auto !important;
+  font: 600 14px/1.3 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+@media (max-width: 820px) {
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+    .dp-partner-access-list.dp-partner-access-list {
+    display: none !important;
+  }
+
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+    .dp-partner-access-title.dp-partner-access-title {
+    font-size: 32px !important;
+    line-height: 1.08 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page:has(.dp-partner-access-signin)
+    .dp-partner-signin-type-grid.dp-partner-signin-type-grid .dp-partner-type-card.dp-partner-type-card {
+    grid-template-columns: minmax(82px, 0.65fr) minmax(0, 1.35fr) 14px !important;
+    gap: 2px 12px !important;
+    min-height: 64px !important;
+  }
+}

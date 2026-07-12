@@ -66,6 +66,8 @@ import "@/styles/resident-home-saved-preview-final.css"
 import "@/styles/resident-home-light-editorial-final.css"
 import "@/styles/resident-discover-native-final.css"
 
+import "@/styles/partner-signin-native-final.css"
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
