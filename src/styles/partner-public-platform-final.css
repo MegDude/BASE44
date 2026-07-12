@@ -43,16 +43,26 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-section-head > span { color: var(--partner-muted) !important; font-size: 16px !important; line-height: 1.6 !important; }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 10px !important; }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button {
-  position: relative !important; display: grid !important; grid-template-columns: 72px minmax(0,1fr) 24px !important; grid-template-rows: auto auto !important;
-  align-items: center !important; gap: 3px 16px !important; min-height: 96px !important; padding: 12px !important;
-  border: 1px solid var(--partner-line) !important; border-radius: 14px !important; background: #fff !important; color: var(--partner-ink) !important; text-align: left !important;
+  position: relative !important; display: grid !important; grid-template-columns: 46px minmax(0,1fr) auto !important;
+  align-items: center !important; gap: 14px !important; min-height: 92px !important; padding: 16px !important;
+  border: 1px solid var(--partner-line) !important; border-radius: 14px !important; background: #fff !important;
+  color: var(--partner-ink) !important; text-align: left !important; transition: border-color 180ms ease, background-color 180ms ease !important;
 }
-html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button img { grid-row: 1/3 !important; width: 72px !important; height: 72px !important; border-radius: 10px !important; object-fit: cover !important; }
-html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button > span { align-self: end !important; color: var(--partner-muted) !important; font-size: 13px !important; }
-html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button > strong { align-self: start !important; font-size: 15px !important; line-height: 1.35 !important; }
-html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button::after { content: "Select" !important; grid-column: 3 !important; grid-row: 1/3 !important; color: var(--partner-muted) !important; font-size: 0 !important; }
-html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button.is-selected { border-color: var(--partner-gold) !important; box-shadow: inset 3px 0 0 var(--partner-gold) !important; }
-html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button.is-selected::after { content: "✓" !important; color: var(--partner-ink) !important; font-size: 18px !important; font-weight: 700 !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-icon {
+  display: grid !important; place-items: center !important; width: 44px !important; height: 44px !important;
+  border-radius: 12px !important; background: var(--partner-grouped) !important; color: var(--partner-ink) !important;
+}
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-icon svg { width: 21px !important; height: 21px !important; stroke-width: 1.7 !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-copy { display: grid !important; gap: 4px !important; min-width: 0 !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-copy strong { font-size: 16px !important; font-weight: 650 !important; line-height: 1.25 !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-copy small { color: var(--partner-muted) !important; font-size: 13px !important; line-height: 1.4 !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-state { color: var(--partner-muted) !important; font-size: 12px !important; font-weight: 650 !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button.is-selected {
+  border-color: var(--partner-gold) !important; background: #fbfcfd !important; box-shadow: inset 3px 0 0 var(--partner-gold) !important;
+}
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button.is-selected .dp-partner-business-icon { background: var(--partner-ink) !important; color: #fff !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button.is-selected .dp-partner-business-state { color: var(--partner-ink) !important; }
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button:focus-visible { outline: 3px solid rgba(200,169,106,.34) !important; outline-offset: 3px !important; }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-recommendation-grid { grid-template-columns: minmax(0,1.35fr) minmax(280px,.65fr) !important; gap: 16px !important; }
 html body #root#root main.dp-partner-lifecycle-page-start :is(.dp-partner-recommended-plan,.dp-partner-plan-comparison) { border: 1px solid var(--partner-line) !important; border-radius: 16px !important; background: #fff !important; padding: 24px !important; }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-recommended-plan { border-top: 3px solid var(--partner-gold) !important; }
@@ -89,8 +99,8 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta 
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero-actions { display: grid !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero-actions a { width: 100% !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-trust-strip { grid-template-columns: 1fr !important; }
-  html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button { grid-template-columns: 58px minmax(0,1fr) 20px !important; min-height: 82px !important; }
-  html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button img { width: 58px !important; height: 58px !important; }
+  html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button { grid-template-columns: 42px minmax(0,1fr) !important; min-height: 84px !important; padding: 14px !important; }
+  html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-business-state { grid-column: 2 !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-tools-list article { grid-template-columns: 1fr !important; gap: 8px !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-tools-list a { margin-left: 48px !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline { grid-template-columns: 1fr !important; }

@@ -35,7 +35,6 @@ const partnerTypes = [
     price: "$99 annually",
     outcome: "The neighborhood becomes part of your amenity.",
     overview: "Best for buildings that want residents to regularly discover local businesses, events, and neighborhood experiences.",
-    image: "/images/map-pins/property/the-independent-301-west.jpg",
     includes: ["Building profile", "Interactive map listing", "Resident welcome QR", "Unlimited perks", "Unlimited events", "Campaign reporting", "Priority support"],
   },
   {
@@ -48,7 +47,6 @@ const partnerTypes = [
     price: "$149 annually",
     outcome: "Help guests experience more than the lobby.",
     overview: "Recommended for hotels that want a polished local guide, QR handoff, and measurable guest engagement.",
-    image: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
     includes: ["Hotel profile", "Guest QR path", "Nearby recommendations", "Event visibility", "Guest activity reporting", "Concierge-ready links"],
   },
   {
@@ -61,7 +59,6 @@ const partnerTypes = [
     price: "$99 annually",
     outcome: "Become tonight's decision.",
     overview: "A clean fit for restaurants, cafes, nightlife, music, and cultural venues that want to turn nearby intent into visits.",
-    image: "/images/map-entities/attached/venues/geraldines-stage.jpeg",
     includes: ["Venue profile", "Offer publishing", "Event publishing", "Directions activity", "Resident saves", "Campaign reporting"],
   },
   {
@@ -74,7 +71,6 @@ const partnerTypes = [
     price: "$99 annually",
     outcome: "Give nearby residents a clear reason to choose you.",
     overview: "Recommended for restaurants and cafes that want perks, events, and moments to appear when people are deciding what is nearby.",
-    image: "/images/map-listing-actual/burger-bar/burger-bar-congress-arrival.jpeg",
     includes: ["Dining profile", "Perk campaigns", "Happy hour placement", "QR redemption", "Resident saves", "Performance reporting"],
   },
   {
@@ -87,7 +83,6 @@ const partnerTypes = [
     price: "$249 annually",
     outcome: "Meet people while they're already downtown.",
     overview: "Built for sponsors and destination brands that want to support experiences residents already choose.",
-    image: "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg",
     includes: ["Brand profile", "Sponsored campaigns", "District targeting", "QR moments", "Activation reporting", "Audience signals"],
   },
   {
@@ -100,7 +95,6 @@ const partnerTypes = [
     price: "Custom",
     outcome: "Help more people discover their city.",
     overview: "For organizations coordinating public spaces, events, wayfinding, community participation, and district-level storytelling.",
-    image: "/images/map-entities/attached/civic/waterloo-park.jpeg",
     includes: ["Civic profile", "Public programming", "Event publishing", "Wayfinding", "Participation reporting", "Community prompts"],
   },
   {
@@ -113,7 +107,6 @@ const partnerTypes = [
     price: "$199 annually",
     outcome: "Show the neighborhood before the showing.",
     overview: "For leasing, sales, and development teams that need the surrounding district to help tell the property story.",
-    image: "/images/map-pins/property/waterline-building.jpg",
     includes: ["Listing profile", "Neighborhood context", "Map visibility", "Inquiry path", "Tour requests", "Performance reporting"],
   },
   {
@@ -126,7 +119,6 @@ const partnerTypes = [
     price: "$149 annually",
     outcome: "Turn nearby browsing into a reason to stop in.",
     overview: "Recommended for shops and service businesses that want local discovery, resident saves, and offer-driven visits.",
-    image: "/images/fallbacks/retail.jpg",
     includes: ["Retail profile", "Offer publishing", "QR redemption", "Resident saves", "Directions activity", "Campaign reporting"],
   },
 ];
@@ -357,7 +349,7 @@ function LifecycleShell({ stage, children }) {
       <header className="dp-partner-lifecycle-hero">
         <div>
           <p>{isTools ? "Partner platform" : "Partner membership"}</p>
-          <h1>{isTools ? "One clear workspace for your downtown presence." : "Turn nearby attention into real visits."}</h1>
+          <h1>{isTools ? "One clear workspace for your downtown presence." : "Turn residents into regulars."}</h1>
           <span>
             {isTools
               ? "Publish perks and events, preview your listing on the map, and understand what residents respond to—without replacing the systems that already run your business."
@@ -439,11 +431,21 @@ function ChooseBusinessSection({ setup, setSetup }) {
       <div className="dp-partner-lifestyle-grid">
         {partnerTypes.slice(0, 7).map((type) => {
           const isSelected = selectedType.id === type.id;
+          const TypeIcon = type.icon;
           return (
-            <button key={type.id} type="button" className={isSelected ? "is-selected" : ""} onClick={() => selectType(type)}>
-              <img src={type.image} alt="" loading="lazy" />
-              <span>{type.eyebrow}</span>
-              <strong>{type.outcome}</strong>
+            <button
+              key={type.id}
+              type="button"
+              className={isSelected ? "is-selected" : ""}
+              aria-pressed={isSelected}
+              onClick={() => selectType(type)}
+            >
+              <span className="dp-partner-business-icon" aria-hidden="true"><TypeIcon /></span>
+              <span className="dp-partner-business-copy">
+                <strong>{type.eyebrow}</strong>
+                <small>{type.outcome}</small>
+              </span>
+              <span className="dp-partner-business-state">{isSelected ? "Selected" : "Select"}</span>
             </button>
           );
         })}
