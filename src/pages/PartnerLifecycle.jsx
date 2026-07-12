@@ -358,14 +358,14 @@ const setupModules = [
 ];
 
 const workspacePreviewRows = [
-  ["Map profile", "Your public presence across the downtown map and nearby discovery surfaces."],
-  ["Perks and offers", "Resident-facing reasons to save, visit, redeem, or return."],
-  ["Events", "Moments your team can publish for residents, guests, and visitors."],
-  ["QR experiences", "Scan paths for printed materials, front desks, staff, and events."],
-  ["Campaigns", "Simple local pushes connected to map context and audience signals."],
-  ["Reporting", "Activity from saves, scans, redemptions, directions, and RSVPs."],
-  ["Connections", "Context for the tools and workflows your business already uses."],
-  ["Billing", "Membership and checkout details connected to your workspace setup."],
+  ["Business profile", "Keep your business details, photos, hours, and links up to date on the map."],
+  ["Offers", "Create discounts and perks that residents can save and use."],
+  ["Events", "Add upcoming events and share the details people need to attend."],
+  ["QR codes", "Create QR codes for signs, menus, front desks, staff, and events."],
+  ["Promotions", "Give an offer, event, or location more visibility when it matters."],
+  ["Results", "See views, saves, directions, redemptions, and RSVPs in one place."],
+  ["Connected tools", "Link the booking, payment, property, and marketing tools you already use."],
+  ["Plan and billing", "View your membership, payment details, and invoices."],
 ];
 
 const provisioningSteps = [
@@ -1031,7 +1031,7 @@ function RegisterStage({ setup, setSetup }) {
 
         <aside className="dp-workspace-preview-card">
           <p>Workspace preview</p>
-          <h3>What opens after signup.</h3>
+          <h3>What you can do after signup.</h3>
           <div className="dp-workspace-preview-list">
             {workspacePreviewRows.map(([title, description]) => (
               <article key={title}>
