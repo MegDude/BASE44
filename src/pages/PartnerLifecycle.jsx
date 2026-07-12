@@ -759,9 +759,14 @@ function TimelineSection() {
         <h2>Most partners launch within a few days.</h2>
         <span>A clear path from membership selection to workspace, publishing, and measurable downtown activity.</span>
       </div>
-      <div className="dp-partner-timeline">
-        {timelineSteps.map((step) => <span key={step}>{step}</span>)}
-      </div>
+      <ol className="dp-partner-timeline" aria-label="Partner launch timeline">
+        {timelineSteps.map((step, index) => (
+          <li key={step}>
+            <b>0{index + 1}</b>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
