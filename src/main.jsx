@@ -41,6 +41,8 @@ import '@/styles/resident-native-mobile-final.css'
 
 import "@/styles/partner-public-platform-final.css"
 
+import "@/styles/resident-card-polish-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )

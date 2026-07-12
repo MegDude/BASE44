@@ -10,12 +10,10 @@ const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
 const APP_HREF = "/app?mode=resident&tab=map&filter=Perks";
 
 const INCLUDED = [
-  "Perks Card",
+  "Nearby perks",
   "Saved places",
-  "Local offers",
-  "Events",
-  "Map",
-  "Instant deals",
+  "Events and map access",
+  "Resident-only moments",
 ];
 
 const BUILDINGS = [
@@ -205,14 +203,15 @@ export default function ResidentAccess() {
   return (
     <main className="dp-resident-access-page">
       <nav className="dp-resident-access-topbar" aria-label="Resident access navigation">
-        <a href={APP_HREF}>Open resident map</a>
+        <span className="dp-resident-access-brand">Downtown Perks</span>
+        <a href={APP_HREF}>Open map <ArrowRight aria-hidden="true" /></a>
       </nav>
       <section className="dp-resident-access-shell" aria-labelledby="resident-access-title">
         <div className="dp-resident-access-copy">
           <p className="dp-resident-access-eyebrow">Resident Access</p>
           <h1 id="resident-access-title">Get your Downtown Perks Card.</h1>
           <p>
-            Use one card to open local perks, saved places, events, the map, and instant deals. If your building is already part of Downtown Perks, verify your unit. If not, get individual access for $25/year.
+            Verify a participating building or choose individual access. Your card keeps nearby perks, saved places, events, and map discovery in one simple resident experience.
           </p>
           <div className="dp-resident-access-includes" aria-label="Included with resident access">
             {INCLUDED.map((item) => (
@@ -225,7 +224,7 @@ export default function ResidentAccess() {
           <div className="dp-resident-access-plan">
             <div>
               <p className="dp-resident-access-eyebrow">Perks Card</p>
-              <h2>$25/year</h2>
+              <h2>$25 annually</h2>
               <span>Individual access when your building is not active yet.</span>
             </div>
             <CreditCard aria-hidden="true" />
@@ -234,12 +233,12 @@ export default function ResidentAccess() {
           <fieldset>
             <legend>Choose your access path</legend>
             <div className="dp-resident-access-paths">
-              <button type="button" data-active={isBuildingPath} onClick={() => updateField("accessPath", "building")}>
+              <button type="button" data-active={isBuildingPath} aria-pressed={isBuildingPath} onClick={() => updateField("accessPath", "building")}>
                 <Home aria-hidden="true" />
                 <strong>Verify my building</strong>
                 <span>Use your building, unit, and address.</span>
               </button>
-              <button type="button" data-active={!isBuildingPath} onClick={() => updateField("accessPath", "card")}>
+              <button type="button" data-active={!isBuildingPath} aria-pressed={!isBuildingPath} onClick={() => updateField("accessPath", "card")}>
                 <ShieldCheck aria-hidden="true" />
                 <strong>Get Perks Card</strong>
                 <span>Start with individual access.</span>
@@ -334,11 +333,10 @@ export default function ResidentAccess() {
               {state === "loading" ? "Checking access" : isBuildingPath ? "Verify and Continue" : "Continue to Checkout"}
               <ArrowRight aria-hidden="true" />
             </button>
-            <a href={APP_HREF}>
-              <MapPin aria-hidden="true" />
-              Open resident map
-            </a>
           </div>
+          <p className="dp-resident-access-footnote">
+            {isBuildingPath ? "We will check your building access before creating your card." : "Individual access continues through secure checkout."}
+          </p>
         </form>
       </section>
     </main>
