@@ -620,32 +620,18 @@ function RecommendedMembership({ setup }) {
 }
 
 function PlatformToolsSection() {
-  const destinations = [
-    "/partner-workspace/offers",
-    "/partner-workspace/events",
-    "/partner-workspace/surveys",
-    "/partner-workspace/campaigns",
-  ];
-
   return (
     <section id="platform-tools" className="dp-partner-lifecycle-section dp-partner-tools-section">
       <div className="dp-partner-lifecycle-section-head">
         <p>Platform tools</p>
         <h2>Everything follows the same simple workflow.</h2>
-        <span>Create, preview, publish, and measure from one consistent workspace. Choose the tool that matches what you need to do next.</span>
+        <span>Create, preview, publish, and measure from one consistent workspace.</span>
       </div>
       <div className="dp-partner-tools-list">
-        {impactGroups.map((group, index) => (
+        {impactGroups.map((group) => (
           <article key={group.title}>
-            <div>
-              <span>0{index + 1}</span>
-              <h3>{group.title}</h3>
-              <p>{group.items[0][3]}</p>
-            </div>
-            <Link to={destinations[index]} aria-label={`Open ${group.title}`}>
-              Open tool
-              <ArrowRight aria-hidden="true" />
-            </Link>
+            <h3>{group.title}</h3>
+            <p>{group.items[0][3]}</p>
           </article>
         ))}
       </div>
@@ -653,20 +639,35 @@ function PlatformToolsSection() {
   );
 }
 
-
 function GrowthProgramsSection() {
   const [activeGroupIndex, setActiveGroupIndex] = useState(0);
+  const [selectedPrograms, setSelectedPrograms] = useState([]);
   const activeGroup = impactGroups[activeGroupIndex];
+  const allPrograms = impactGroups.flatMap((group) => group.items);
+  const selectedItems = allPrograms.filter(([headline]) => selectedPrograms.includes(headline));
+  const estimatedTotal = selectedItems.reduce((total, item) => {
+    const amount = Number(String(item[4]).replace(/[^0-9.]/g, ""));
+    return total + (Number.isFinite(amount) ? amount : 0);
+  }, 0);
+  const customCount = selectedItems.filter((item) => item[4] === "Custom").length;
+
+  function toggleProgram(headline) {
+    setSelectedPrograms((current) => (
+      current.includes(headline)
+        ? current.filter((item) => item !== headline)
+        : [...current, headline]
+    ));
+  }
 
   return (
     <section id="growth-programs" className="dp-partner-lifecycle-section dp-partner-growth-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Growth programs</p>
-        <h2>Choose the outcome, then choose the level of support.</h2>
-        <span>Focused programs for customer visits, event attendance, community insight, and map visibility. Pricing stays clear before setup begins.</span>
+        <p>Pricing builder</p>
+        <h2>Estimate the programs you need.</h2>
+        <span>Select add-ons across each outcome. Your estimate updates as you build, while custom programs remain clearly marked for review.</span>
       </div>
       <div className="dp-growth-programs">
-        <div className="dp-growth-program-tabs" role="tablist" aria-label="Growth program categories">
+        <div className="dp-growth-program-tabs" role="tablist" aria-label="Add-on categories">
           {impactGroups.map((group, index) => (
             <button
               key={group.title}
@@ -678,7 +679,6 @@ function GrowthProgramsSection() {
               className={activeGroupIndex === index ? "is-active" : ""}
               onClick={() => setActiveGroupIndex(index)}
             >
-              <span>0{index + 1}</span>
               {group.title}
             </button>
           ))}
@@ -690,31 +690,43 @@ function GrowthProgramsSection() {
           aria-labelledby={`growth-tab-${activeGroupIndex}`}
         >
           <div className="dp-growth-program-panel-head">
-            <p>Selected outcome</p>
             <h3>{activeGroup.title}</h3>
           </div>
           <div className="dp-growth-program-list">
-            {activeGroup.items.map(([headline, who, when, outcome, price]) => (
-              <article key={headline}>
-                <div>
-                  <h4>{headline}</h4>
-                  <p>{who}</p>
-                </div>
-                <div className="dp-growth-program-context">
-                  <span>{when}</span>
-                  <strong>{outcome}</strong>
-                </div>
-                <div className="dp-growth-program-action">
+            {activeGroup.items.map(([headline, who, , outcome, price]) => {
+              const isSelected = selectedPrograms.includes(headline);
+              return (
+                <label key={headline} className={isSelected ? "is-selected" : ""}>
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => toggleProgram(headline)}
+                  />
+                  <span>
+                    <strong>{headline}</strong>
+                    <small>{who} {outcome}</small>
+                  </span>
                   <b>{price}</b>
-                  <Link to={`/pricing?intent=partner-registration&module=${encodeURIComponent(headline)}`}>
-                    Add
-                    <ArrowRight aria-hidden="true" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+                </label>
+              );
+            })}
           </div>
         </div>
+        <aside className="dp-growth-estimate" aria-live="polite">
+          <div>
+            <span>Estimated add-ons</span>
+            <strong>{`${estimatedTotal}`}</strong>
+          </div>
+          <p>
+            {selectedPrograms.length
+              ? `${selectedPrograms.length} selected${customCount ? ` · ${customCount} custom quote` : ""}`
+              : "Select programs to build an estimate."}
+          </p>
+          <Link to={`/pricing?intent=partner-registration&modules=${encodeURIComponent(selectedPrograms.join(","))}`}>
+            Continue with estimate
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </aside>
       </div>
     </section>
   );
@@ -731,21 +743,17 @@ function ProfessionalServicesSection() {
         </span>
       </div>
       <div className="dp-professional-service-list">
-        {professionalServices.map(([title, Icon, copy], index) => (
+        {professionalServices.map(([title, , copy]) => (
           <article key={title}>
-            <span>0{index + 1}</span>
-            <span className="dp-professional-service-icon" aria-hidden="true"><Icon /></span>
-            <div>
-              <h3>{title}</h3>
-              <p>{copy}</p>
-            </div>
-            <Link to={`/contact?service=${encodeURIComponent(title)}`}>
-              Discuss
-              <ArrowRight aria-hidden="true" />
-            </Link>
+            <h3>{title}</h3>
+            <p>{copy}</p>
           </article>
         ))}
       </div>
+      <Link className="dp-partner-section-action" to="/contact">
+        Discuss launch support
+        <ArrowRight aria-hidden="true" />
+      </Link>
     </section>
   );
 }
