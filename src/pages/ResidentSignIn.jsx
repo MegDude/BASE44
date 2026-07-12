@@ -36,7 +36,7 @@ export default function ResidentSignIn() {
         </header>
         <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
           <p className="dp-resident-signin-eyebrow">Resident access</p>
-          <h1 id="resident-signin-title">Sign in to your downtown.</h1>
+          <h1 id="resident-signin-title">Sign into<br />your downtown.</h1>
           <p>Access your resident card, saved places, active perks, RSVPs, and building benefits.</p>
           <form onSubmit={submit}>
             <label htmlFor="resident-email">Email address</label>

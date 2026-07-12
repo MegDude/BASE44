@@ -51,6 +51,7 @@ export default function Layout() {
   const { pathname, search } = location;
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+  const isEmbeddedMap = pathname === "/map" && new URLSearchParams(search).get("embed") === "true";
 
   useEffect(() => {
     function handleOpenQuickSearch() {
@@ -106,9 +107,9 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const showBackButton = pathname !== "/";
-  const showNavbar = pathname !== "/" && pathname !== "/resident/home";
-  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
+  const showBackButton = pathname !== "/" && !isEmbeddedMap && !pathname.startsWith("/partner-workspace");
+  const showNavbar = pathname !== "/" && pathname !== "/resident/home" && !isEmbeddedMap;
+  const showProductSearchButton = !isEmbeddedMap && !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {

@@ -69,6 +69,16 @@ import "@/styles/resident-discover-native-final.css"
 import "@/styles/partner-signin-native-final.css"
 
 import "@/styles/workspace-no-capsules-final.css"
+import "@/styles/workspace-switcher-clean-final.css"
+
+import "@/styles/partner-gateway-final.css"
+import "@/styles/map-embed-final.css"
+import "@/styles/map-reports-seo-surface-final.css"
+import "@/styles/map-the-shore-partner-polish-final.css"
+import "@/styles/partner-campaigns-clean-final.css"
+import "@/styles/map-partner-campaigns-audience-final.css"
+import "@/styles/workspace-header-clean-final.css"
+import "@/styles/workspace-navigation-analytics-final.css"
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

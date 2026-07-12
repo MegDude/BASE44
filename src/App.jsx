@@ -19,6 +19,7 @@ const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
 const ResidentHome = lazy(() => import("./pages/ResidentHome"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
+const PartnerGateway = lazy(() => import("./pages/PartnerGateway"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
 const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
@@ -187,6 +188,7 @@ function ProductRoutes() {
 
           {/* Partner landing, onboarding, and public marketing routes. */}
           <Route path="/partners" element={<PartnerLifecycle />} />
+          <Route path="/partner-gateway" element={<PartnerGateway />} />
           <Route
             path="/partners/apply"
             element={

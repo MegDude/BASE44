@@ -1,6 +1,10 @@
 import { supabaseServer } from "../src/lib/supabaseServer.js";
 
 const ALLOWED_EVENT_TYPES = new Set([
+  "embed.loaded",
+  "embed.opened_full_map",
+  "collection.opened",
+  "route.started",
   "entity.viewed",
   "entity.saved",
   "entity.shared",

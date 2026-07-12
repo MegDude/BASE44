@@ -52,15 +52,15 @@ export const planEntitlements: Record<WorkspacePlan, EntitlementKey[]> = {
 export const workspaceStatusCopy: Record<WorkspaceStatus, { label: string; description: string }> = {
   unlinked: {
     label: "Unlinked",
-    description: "Workspace loads without a connected partner organization. Users can select, create, or request access.",
+    description: "Workspace opens without a connected partner organization. Users can select, create, or request access.",
   },
   trial: {
     label: "Trial",
-    description: "Workspace is active with trial entitlements and limited billing access.",
+    description: "Workspace is active with trial access and limited billing.",
   },
   active: {
     label: "Active",
-    description: "Workspace can manage campaigns, offers, QR activity, reporting, and team settings.",
+    description: "Workspace can manage campaigns, offers, QR links, reports, and team settings.",
   },
   suspended: {
     label: "Suspended",

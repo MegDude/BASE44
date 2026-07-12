@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCanonicalIntentForFilter, getEntityGovernance } from "@/lib/map/intentGovernance";
 import { entityMatchesMapIntent, resolveSearchIntent } from "@/map/searchIntent/mapIntentRegistry";
+import { PIN_LOADING_LIMITS } from "@/platform";
 
 const QUERY_CACHE_MAX = 40;
 const SEARCH_RESULT_LIMITS = Object.freeze({
-  text: 30,
-  intent: 40,
-  mobile: 30,
-  desktop: 50,
+  text: PIN_LOADING_LIMITS.standard,
+  intent: PIN_LOADING_LIMITS.standard,
+  mobile: PIN_LOADING_LIMITS.standard,
+  desktop: PIN_LOADING_LIMITS.maxUnclustered,
   entity: 9,
-  route: 75,
+  route: PIN_LOADING_LIMITS.maxUnclustered,
   nearby: 12,
 });
 
@@ -226,7 +227,7 @@ function textForEntity(entity = {}) {
 function clampLimit(limit, fallback = SEARCH_RESULT_LIMITS.intent) {
   const next = Number(limit || fallback);
   if (!Number.isFinite(next)) return fallback;
-  return Math.max(1, Math.min(75, Math.round(next)));
+  return Math.max(1, Math.min(PIN_LOADING_LIMITS.maxUnclustered, Math.round(next)));
 }
 
 function compactBounds(bounds) {

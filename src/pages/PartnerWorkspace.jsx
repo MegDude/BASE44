@@ -7,6 +7,7 @@ import "@/styles/workspace-profile-editor.css";
 import { PartnerMobileTabBar } from "@/components/partner/PartnerMobileTabBar";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
+import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 import {
   demoOrganizations,
@@ -18,6 +19,7 @@ import {
   markLocalRecord,
 } from "@/lib/productionGuards";
 import { canViewEverything } from "@/lib/auth/session";
+import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -26,7 +28,7 @@ import { canViewEverything } from "@/lib/auth/session";
 const WORKSPACE_NAV_GROUPS = [
   { label: "Workspace", ids: ["overview", "map", "profile"] },
   { label: "Publish", ids: ["offers", "events", "campaigns", "broadcasts"] },
-  { label: "Understand", ids: ["audience", "surveys", "analytics", "reports"] },
+  { label: "Review", ids: ["audience", "surveys", "analytics", "reports"] },
   { label: "Manage", ids: ["media", "team", "billing"] },
 ].map((group) => ({
   ...group,
@@ -52,39 +54,69 @@ const PUBLIC_PARTNER_USER = {
 };
 
 const WORKSPACE_CATEGORIES = [
-  { label: "Properties", href: "/partners/properties", description: "Connect your building to nearby experiences, resident perks, events, and neighborhood activity." },
-  { label: "Hotels", href: "/partners/hotels", description: "Help guests discover what is happening nearby while measuring engagement beyond the hotel lobby." },
+  { label: "Properties", href: "/partners/properties", description: "Connect your building to nearby places, resident perks, events, and neighborhood updates." },
+  { label: "Hotels", href: "/partners/hotels", description: "Help guests find what is nearby and see what they choose after they leave the lobby." },
   { label: "Venues", href: "/partners/venues", description: "Appear when people nearby are deciding where to eat, drink, meet, or explore." },
-  { label: "Brands", href: "/partners/brands", description: "Reach people in real places during real decision-making moments." },
-  { label: "Civic", href: "/partners/civic", description: "Promote public spaces, cultural destinations, and community participation throughout downtown." },
-  { label: "Real Estate", href: "/partners/real-estate", description: "Show available properties alongside the places, amenities, and activity that shape buyer decisions." },
+  { label: "Brands", href: "/partners/brands", description: "Reach people downtown when they are choosing where to go next." },
+  { label: "Civic", href: "/partners/civic", description: "Promote public spaces, cultural destinations, and ways to take part downtown." },
+  { label: "Real Estate", href: "/partners/real-estate", description: "Show available properties alongside the places, amenities, and neighborhood details buyers care about." },
 ];
 
-const FRIENDLY_ENTITLEMENTS = ["Map Listing", "Campaigns", "Offers", "Events", "Surveys", "Reports", "QR Experiences", "Audience", "Media"];
+const FRIENDLY_ENTITLEMENTS = ["Map Listing", "Campaigns", "Offers", "Events", "Surveys", "Reports", "QR Experiences", "People", "Media"];
 const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
 const WORKSPACE_ACTIVATION_KEY = "dp_partner_workspace:activation";
 const PARTNER_SESSION_KEY = "dp_partner_workspace:session";
+const LEGENDS_WORKSPACE_SEO_REPORT = normalizeLuxuryPresenceSeoSnapshot(legendsLuxuryPresenceSeoSnapshot);
+const WORKSPACE_NUMBER_FORMATTER = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
+const WORKSPACE_PERCENT_FORMATTER = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+  style: "percent",
+});
+const WORKSPACE_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+
+function formatWorkspaceNumber(value, fallback = "—") {
+  if (value === null || value === undefined || value === "") return fallback;
+  const number = Number(value);
+  return Number.isFinite(number) ? WORKSPACE_NUMBER_FORMATTER.format(number) : fallback;
+}
+
+function formatWorkspacePercent(value) {
+  if (value === null || value === undefined) return "Not available";
+  const number = Number(value);
+  return Number.isFinite(number) ? WORKSPACE_PERCENT_FORMATTER.format(number) : "Not available";
+}
+
+function formatWorkspaceDate(value) {
+  if (!value) return "Snapshot date pending";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "Snapshot date pending" : WORKSPACE_DATE_FORMATTER.format(date);
+}
 
 const PARTNER_LIFECYCLE_LINKS = [
-  { label: "Partner Type", href: "/partners/start", detail: "Choose the lane, workspace template, recommended plan, and default modules.", icon: UserPlus },
+  { label: "Partner Type", href: "/partners/start", detail: "Choose the kind of business, workspace, recommended plan, and included tools.", icon: UserPlus },
   { label: "Registration", href: "/partners/register", detail: "Confirm organization, contact, location, profile, and setup details.", icon: ShieldCheck },
-  { label: "Pricing", href: "/partners/pricing", detail: "Compare annual plans, modules, limits, and upgrade paths.", icon: CreditCard },
+  { label: "Pricing", href: "/partners/pricing", detail: "Compare annual plans, included tools, limits, and upgrade options.", icon: CreditCard },
   { label: "Checkout", href: "/partners/checkout", detail: "Confirm subscription, invoice, tax, coupon, and billing details.", icon: WalletCards },
-  { label: "Workspace", href: "/partners/provision", detail: "Provision profile, modules, team, reporting, billing, and AI context.", icon: LayoutDashboard },
+  { label: "Workspace", href: "/partners/provision", detail: "Set up the profile, tools, team, reports, and billing details.", icon: LayoutDashboard },
 ];
 
 const WORKSPACE_CAPABILITY_LINKS = [
   { label: "Map Listing", href: "/partner-workspace/map", description: "Manage the public map listing, placement, images, categories, and live preview." },
-  { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, validations, and in-market offers." },
-  { label: "Events", href: "/partner-workspace/events", description: "Publish events and keep them connected to map discovery and reporting." },
-  { label: "Surveys", href: "/partner-workspace/surveys", description: "Build surveys, choose an audience, review the preview, and launch when ready." },
-  { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan placements, messages, QR codes, events, and offers from one workflow." },
-  { label: "Broadcasts", href: "/partner-workspace/broadcasts", description: "Create email and SMS campaigns when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
-  { label: "Audience", href: "/partner-workspace/audience", description: "Choose districts, buildings, segments, uploaded contacts, and saved audiences." },
+  { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, approvals, and live offers." },
+  { label: "Events", href: "/partner-workspace/events", description: "Publish events and see how people find them on the map." },
+  { label: "Surveys", href: "/partner-workspace/surveys", description: "Build surveys, choose who should see them, review the preview, and publish when ready." },
+  { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan placements, messages, QR codes, events, and offers in one place." },
+  { label: "Broadcasts", href: "/partner-workspace/broadcasts", description: "Create email and SMS sends when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
+  { label: "People", href: "/partner-workspace/audience", description: "Choose districts, buildings, saved groups, and uploaded contacts." },
   { label: "Media", href: "/partner-workspace/media", description: "Keep logos, photos, videos, copy, and QR assets ready to publish." },
-  { label: "Reports", href: "/partner-workspace/reports", description: "See monthly performance, saves, redemptions, activity, and recommendations." },
-  { label: "Analytics", href: "/partner-workspace/analytics", description: "Understand what people view, save, open, scan, and act on." },
-  { label: "Profile", href: "/partner-workspace/profile", description: "Keep organization details, contacts, listings, and workspace context current." },
+  { label: "Reports", href: "/partner-workspace/reports", description: "See monthly results, saves, redemptions, activity, and suggested next steps." },
+  { label: "Results", href: "/partner-workspace/analytics", description: "See what people view, save, open, scan, and act on." },
+  { label: "Profile", href: "/partner-workspace/profile", description: "Keep organization details, contacts, listings, and workspace information current." },
   { label: "Team", href: "/partner-workspace/team", description: "Manage roles, permissions, and workspace access." },
   { label: "Billing", href: "/partner-workspace/billing", description: "Review plan access, invoices, subscriptions, and checkout status." },
 ];
@@ -95,9 +127,9 @@ const WORKSPACE_MODULE_GROUPS = [
     items: [
       { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage resident benefits." },
       { label: "Events", href: "/partner-workspace/events", description: "Publish plans that should appear nearby." },
-      { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Build moments around places and timing." },
+      { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan a clear reason to visit." },
       { label: "QR", href: "/partner-workspace/sources", description: "Generate entry points for lobbies, counters, and events." },
-      { label: "Listings", href: "/partner-workspace/sources", description: "Connect property or listing context to the map." },
+      { label: "Listings", href: "/partner-workspace/sources", description: "Connect property or listing details to the map." },
     ],
   },
   {
@@ -111,10 +143,10 @@ const WORKSPACE_MODULE_GROUPS = [
   {
     label: "Customers",
     items: [
-      { label: "Audience", href: "/partner-workspace/analytics", description: "Read saves, scans, visits, and source paths." },
+      { label: "Audience", href: "/partner-workspace/analytics", description: "Read saves, scans, visits, and where people came from." },
       { label: "Followers", href: "/partner-workspace/analytics", description: "Understand who keeps coming back." },
       { label: "Saved", href: "/partner-workspace/reports", description: "Review saved places and offers." },
-      { label: "Reviews", href: "/partner-workspace/reports", description: "Summarize feedback and survey signal." },
+      { label: "Reviews", href: "/partner-workspace/reports", description: "Summarize feedback and survey responses." },
     ],
   },
   {
@@ -305,8 +337,8 @@ function provisionWorkspaceFromCheckout(search = "") {
       { id: "profile", label: "Complete business profile", done: Boolean(setup.businessName || setup.organizationName || setup.partnerName) },
       { id: "map", label: "Publish map listing", done: modules.includes("map") },
       { id: "offer", label: "Create first offer", done: modules.includes("offers") },
-      { id: "campaign", label: "Launch first campaign", done: modules.includes("campaigns") },
-      { id: "audience", label: "Choose target audience", done: modules.includes("audience") },
+      { id: "campaign", label: "Publish first campaign", done: modules.includes("campaigns") },
+      { id: "audience", label: "Choose who should see it", done: modules.includes("audience") },
       { id: "media", label: "Add media and QR assets", done: modules.includes("media") || modules.includes("qr") },
     ],
   };
@@ -460,11 +492,11 @@ export default function PartnerWorkspace() {
   const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
   const [activation, setActivation] = useState(() => getWorkspaceActivation());
   const navigate = useNavigate();
-  const workspaceDisplayName = activation?.organizationName || user.organization_name || user.partner_name || user.full_name || user.email?.split("@")[0] || "Your workspace";
   const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
   const accountAccessEnabled = canUseProductionAccountAccess();
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
+  const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
@@ -527,13 +559,26 @@ export default function PartnerWorkspace() {
     navigate("/partners/sign-in");
   }
 
-  function handleSignOut() {
-    try {
-      base44.auth.logout();
-    } catch {
-      // The public workspace remains usable even if the SDK has no active session.
+  function handleWorkspaceBack() {
+    const fallback = location.pathname === "/partner-workspace/overview" ? "/partners" : "/partner-workspace/overview";
+    const routerHistoryIndex = window.history.state?.idx;
+    if (Number.isInteger(routerHistoryIndex) && routerHistoryIndex > 0) {
+      navigate(-1);
+      return;
     }
-    setUser({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}) });
+    navigate(fallback);
+  }
+
+  function handleWorkspaceSearch() {
+    window.dispatchEvent(new Event("dp-open-quick-search"));
+  }
+
+  function handleAccount() {
+    if (!isPartnerLoggedIn) {
+      handleSignIn();
+      return;
+    }
+    navigate("/partner-workspace/profile?section=account");
   }
 
   return (
@@ -543,17 +588,19 @@ export default function PartnerWorkspace() {
           <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
             <Menu aria-hidden="true" />
           </button>
-          <div className="dp-partner-workspace-title-copy">
-            <span className="dp-partner-workspace-eyebrow">Partner workspace</span>
-            <strong className="dp-partner-workspace-title">{workspaceDisplayName}</strong>
-            <span className="dp-partner-workspace-plan"><i aria-hidden="true" />{activation?.plan || "Enterprise"} plan</span>
-          </div>
+          <Link className="dp-partner-workspace-brand" to="/partner-workspace/overview" aria-label="Downtown Perks workspace overview">
+            <strong>Downtown Perks</strong>
+            <span>Workspace</span>
+          </Link>
           <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
-            <button type="button" aria-label="Search workspace"><Search aria-hidden="true" /></button>
-            <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button>
-            <button type="button" onClick={isPublicWorkspaceUser ? handleSignIn : handleSignOut} disabled={isPublicWorkspaceUser && !accountAccessEnabled} className="dp-partner-workspace-signin">
-              {isPublicWorkspaceUser ? accountAccessEnabled ? "Sign in" : "Account" : "Account"}
-            </button>
+            <button type="button" className="dp-partner-workspace-back" onClick={handleWorkspaceBack} aria-label="Go back"><ChevronLeft aria-hidden="true" /><span>Back</span></button>
+            <button type="button" onClick={handleWorkspaceSearch} aria-label="Search workspace"><Search aria-hidden="true" /></button>
+            {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
+            {(isPartnerLoggedIn || accountAccessEnabled) ? (
+              <button type="button" onClick={handleAccount} disabled={!isPartnerLoggedIn && !accountAccessEnabled} className="dp-partner-workspace-signin">
+                {isPartnerLoggedIn ? "Account" : "Sign in"}
+              </button>
+            ) : null}
           </div>
         </div>
       </header>
@@ -700,34 +747,34 @@ function WorkspaceReports() {
       section: "Executive Summary",
       value: "42%",
       headline: "After-work activity is leading the month.",
-      copy: "Dinner, events, and nearby offers are driving the strongest resident intent.",
+      copy: "Dinner, events, and nearby offers are getting the most attention from residents.",
       readout: [
-        ["Observation", "Weekday evening decisions are clustering around dining and live plans."],
-        ["Recommendation", "Lead with one after-work offer tied to a walkable route."],
-        ["Likely next signal", "More saves, directions, and clearer campaign attribution."],
+        ["What changed", "Weekday evenings are strongest for dining and live plans."],
+        ["What to try", "Lead with one after-work offer people can reach on foot."],
+        ["What to watch", "More saves, more directions, and a clearer read on what worked."],
       ],
       action: "View report",
     },
     {
-      section: "Trend Visuals",
+      section: "Trends",
       value: "+18%",
-      headline: "Walkable moments are outperforming broad reach.",
+      headline: "Nearby choices are working better than broad reach.",
       copy: "Rainey, Seaholm, Congress, and Waterloo show the cleanest activity patterns.",
       readout: [
-        ["Trend", "Short-distance discovery is converting better than broad awareness."],
-        ["Recommendation", "Keep placements near active pedestrian corridors."],
+        ["What changed", "People are more likely to act when the place is close by."],
+        ["What to try", "Keep placements near busy walking paths."],
       ],
       action: "Review trend",
     },
     {
-      section: "Campaign Performance",
+      section: "Campaign Results",
       value: "6.8%",
       headline: "Simple timed offers are easiest to act on.",
       copy: "Campaigns with one clear save, RSVP, scan, or direction action perform best.",
       readout: [
-        ["Observation", "One-action campaigns are easier for residents to understand."],
-        ["Recommendation", "Use a single CTA and a narrow time window."],
-        ["Likely next signal", "Higher completion and fewer drop-offs."],
+        ["What changed", "One clear action is easier for residents to understand."],
+        ["What to try", "Use one call to action and a clear time window."],
+        ["What to watch", "More people completing the action without dropping off."],
       ],
       action: "Plan offer",
     },
@@ -735,32 +782,32 @@ function WorkspaceReports() {
       section: "Resident Behavior",
       value: "312",
       headline: "People save first, then decide.",
-      copy: "Saved places are becoming the bridge between discovery and visits.",
+      copy: "Saved places help people come back when they are ready to go.",
       readout: [
-        ["Trend", "Saves are acting as intent signals before directions or scans."],
-        ["Recommendation", "Retarget saved audiences with a timely reason to return."],
+        ["What changed", "Saves often happen before directions or scans."],
+        ["What to try", "Give people who saved you a timely reason to return."],
       ],
       action: "Review behavior",
     },
     {
-      section: "Recommendations",
+      section: "Next Steps",
       value: "3",
       headline: "Run the next test near the busiest walk path.",
       copy: "Anchor the next placement to movement that is already happening nearby.",
       readout: [
-        ["Recommendation", "Start with Rainey, Seaholm, or Congress based on current movement."],
-        ["Likely next signal", "Faster learning with less wasted reach."],
+        ["What to try", "Start with Rainey, Seaholm, or Congress based on where people already walk."],
+        ["What to watch", "A cleaner read with less wasted reach."],
       ],
       action: "Open campaigns",
     },
     {
       section: "Next Actions",
       value: "4",
-      headline: "Move from insight to one live campaign.",
-      copy: "Pick a place, timing, audience, and action from the monthly readout.",
+      headline: "Turn the report into one clear update.",
+      copy: "Pick a place, time, group, and action from the monthly report.",
       readout: [
-        ["Observation", "The next step is operational, not another report."],
-        ["Recommendation", "Launch one campaign and review it next week."],
+        ["What changed", "The next step is a practical update, not another report."],
+        ["What to try", "Publish one campaign and review it next week."],
       ],
       action: "Start next step",
     },
@@ -776,10 +823,10 @@ function WorkspaceReports() {
     >
       <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
         <div>
-          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reporting & Analytics</span>
-          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and follow-through.</h2>
+          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reports</span>
+          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">See what people did, then choose what to do next.</h2>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
-            See what people viewed, saved, scanned, opened, requested directions to, redeemed, and returned to. Use each signal to decide what to launch, improve, or repeat next.
+            See what people viewed, saved, scanned, opened, asked directions for, redeemed, and came back to. Use that read to choose what to publish, improve, or repeat next.
           </p>
         </div>
         <Link
@@ -791,10 +838,10 @@ function WorkspaceReports() {
       </div>
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          ["Visibility", "Views, map opens, listing activity, and featured placement reach."],
-          ["Engagement", "Saves, scans, RSVPs, event opens, and offer interest."],
+          ["Views", "Map opens, listing views, and featured placement reach."],
+          ["Interest", "Saves, scans, RSVPs, event opens, and offer activity."],
           ["Visits", "Directions, verified visits, redemptions, and repeat activity."],
-          ["Next Action", "Recommendations tied to campaign, offer, event, and reporting signals."],
+          ["Next step", "Suggested updates tied to campaigns, offers, events, and reports."],
         ].map(([label, copy]) => (
           <article key={label} className="rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-4 shadow-[0_1px_4px_rgba(11,31,51,0.04)]">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</p>
@@ -845,7 +892,7 @@ function WorkspaceAnalytics() {
         <header className="dp-workspace-experience-report-header">
           <p className="dp-workspace-eyebrow">Experience report</p>
           <h1>Downtown Austin Art & Parks Tour</h1>
-          <p>Full engagement, place, audience, survey, direction, and district analysis for the civic experience.</p>
+          <p>A clear read on visits, survey answers, directions, and the downtown areas people used most.</p>
           <Link to="/partner-workspace/overview">Back to overview</Link>
         </header>
         <DaaApprovedExperienceReport />
@@ -853,30 +900,30 @@ function WorkspaceAnalytics() {
     );
   }
   const launchMetrics = [
-    ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands currently represented."],
-    ["1,284", "Resident reach", "People who can enter from buildings, QR links, campaigns, and the map."],
-    ["81,904", "Views", "Map, campaign, event, and partner detail views available for review."],
-    ["31,511", "Discovery actions", "Searches, saves, directions, scans, RSVPs, and offer opens."],
+    ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
+    ["1,284", "Residents reached", "People who can enter from buildings, QR links, campaigns, and the map."],
+    ["81,904", "Views", "Views across the map, campaigns, events, and partner pages."],
+    ["31,511", "Actions taken", "Searches, saves, directions, scans, RSVPs, and offer opens."],
   ];
 
   const reportStreams = [
-    ["Performance report", "Partner activity by views, saves, directions, redemptions, and campaign action.", "/partner-workspace/reports"],
-    ["Map reports", "Open partner-mode reports directly on the live downtown map.", "/map?mode=partner&tab=reports"],
-    ["Campaign report", "Review what a campaign changed across source points, timing, and nearby activity.", "/partners/campaigns"],
+    ["Monthly report", "Views, saves, directions, redemptions, and campaign activity in one place.", "/partner-workspace/reports"],
+    ["Map report", "See the same read from the live downtown map.", "/map?mode=partner&tab=reports"],
+    ["Campaign report", "See what changed by place, time, and nearby activity.", "/partners/campaigns"],
   ];
 
   const onboardingTargets = [
     ["Venues", "Bars, restaurants, coffee, live music, happy hours, and event-friendly places."],
-    ["Hotels", "Lobby QR, guest discovery, concierge prompts, and nearby recommendations."],
-    ["Residential", "Resident onboarding, building links, lobby QR, and neighborhood planning."],
-    ["Civic and parks", "Waterloo, trails, public spaces, art, events, and downtown participation."],
+    ["Hotels", "Lobby QR, guest guides, concierge prompts, and nearby suggestions."],
+    ["Residential", "Resident welcome links, building links, lobby QR, and neighborhood guides."],
+    ["Civic and parks", "Waterloo, trails, public spaces, art, events, and ways to take part downtown."],
   ];
 
   const launchTasks = [
-    ["Reviewer link", "Share the latest app link plus this analytics tab so navigation and performance can be reviewed."],
-    ["Report visibility", "Keep reports reachable from workspace analytics and the partner map."],
+    ["Reviewer link", "Share the latest app link and this page so the team can review the flow."],
+    ["Report access", "Keep reports easy to find from the workspace and the partner map."],
     ["Venue inputs", "Add bars and Sixth Street candidates once names, offers, images, and event hooks are ready."],
-    ["Photo queue", "Attach current, approved imagery before pushing partner campaigns wider."],
+    ["Photo queue", "Attach current, approved images before sharing partner campaigns more widely."],
   ];
 
   return (
@@ -888,10 +935,10 @@ function WorkspaceAnalytics() {
       className="dp-workspace-analytics"
     >
       <header className="dp-workspace-analytics-header">
-        <span>Analytics</span>
-        <h2>Review the launch signal from one place.</h2>
+        <span>Results</span>
+        <h2>See what is working from one place.</h2>
         <p>
-          Use this section to review the app link, inspect reporting, and see which partners, source points, and campaigns need attention before launch.
+          Use this page to review the app link, read the reports, and see which partners, links, and campaigns need attention before the next release.
         </p>
         <div className="dp-workspace-analytics-actions">
           <Link to="/partner-workspace/reports">View reports</Link>
@@ -899,7 +946,7 @@ function WorkspaceAnalytics() {
         </div>
       </header>
 
-      <div className="dp-workspace-analytics-metrics" aria-label="Launch analytics snapshot">
+      <div className="dp-workspace-analytics-metrics" aria-label="Workspace results snapshot">
         {launchMetrics.map(([value, label, detail]) => (
           <article key={label}>
             <strong>{value}</strong>
@@ -912,7 +959,7 @@ function WorkspaceAnalytics() {
       <div className="dp-workspace-analytics-grid">
         <section>
           <p className="dp-workspace-analytics-kicker">Reports</p>
-          <h3>Reports are viewable from the workspace and map.</h3>
+          <h3>Reports stay close to the work.</h3>
           <div className="dp-workspace-analytics-list">
             {reportStreams.map(([label, detail, href]) => (
               <Link key={label} to={href}>
@@ -926,7 +973,7 @@ function WorkspaceAnalytics() {
 
         <section>
           <p className="dp-workspace-analytics-kicker">Onboarding</p>
-          <h3>Focus the next three months on places that make the map useful.</h3>
+          <h3>Focus the next three months on places people already ask about.</h3>
           <div className="dp-workspace-analytics-list is-static">
             {onboardingTargets.map(([label, detail]) => (
               <article key={label}>
@@ -939,8 +986,8 @@ function WorkspaceAnalytics() {
       </div>
 
       <section className="dp-workspace-analytics-next">
-        <p className="dp-workspace-analytics-kicker">Launch follow-up</p>
-        <h3>Keep launch review tied to the work that matters.</h3>
+        <p className="dp-workspace-analytics-kicker">Follow-up</p>
+        <h3>Keep the review tied to the work that matters.</h3>
         <div>
           {launchTasks.map(([label, detail]) => (
             <article key={label}>
@@ -951,6 +998,145 @@ function WorkspaceAnalytics() {
         </div>
       </section>
     </motion.section>
+  );
+}
+
+function WorkspaceLegendsSeoPanel({ report }) {
+  const priorityKeywords = [...(report.keywordMetrics || [])]
+    .sort((a, b) => b.opportunityScore - a.opportunityScore)
+    .slice(0, 5);
+  const nextActions = (report.opportunities || []).slice(0, 3);
+
+  return (
+    <section className="dp-legends-workspace-seo" aria-labelledby="legends-seo-workspace-title">
+      <div className="dp-legends-workspace-seo-heading">
+        <div>
+          <span>SEO Snapshot</span>
+          <h2 id="legends-seo-workspace-title">What people are already searching for downtown.</h2>
+          <p>
+            This view uses the current SEO Snapshot for Legends Real Estate. It shows which searches
+            are already working, which pages need care, and which updates should appear on the map next.
+          </p>
+        </div>
+        <Link to="/map?mode=partner&tab=reports">Open map report <ArrowRight aria-hidden="true" /></Link>
+      </div>
+
+      <div className="dp-legends-workspace-keywords" aria-label="Priority keyword rows">
+        {priorityKeywords.map((metric) => (
+          <article key={metric.normalizedKeyword}>
+            <div>
+              <strong>{metric.keyword}</strong>
+              <span>{metric.clusterLabel} · {metric.keywordType === "branded" ? "Branded" : "Non-branded"}</span>
+            </div>
+            <dl>
+              <div><dt>Clicks</dt><dd>{formatWorkspaceNumber(metric.clicks)}</dd></div>
+              <div><dt>Impressions</dt><dd>{formatWorkspaceNumber(metric.impressions)}</dd></div>
+              <div><dt>CTR</dt><dd>{formatWorkspacePercent(metric.ctr)}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>
+
+      <div className="dp-legends-workspace-actions" aria-label="SEO next steps">
+        {nextActions.map((metric) => (
+          <article key={metric.normalizedKeyword}>
+            <span>{metric.owner}</span>
+            <strong>{metric.landingPage}</strong>
+            <p>{metric.recommendedAction}</p>
+          </article>
+        ))}
+      </div>
+
+      <p className="dp-legends-workspace-sync-note">{report.accessMethod.note}</p>
+    </section>
+  );
+}
+
+function WorkspaceAnalyticsSnapshotGraphs({ report }) {
+  const keywordMetrics = (report.keywordMetrics || []).filter(
+    (metric) => metric.intentCluster !== "neighborhood_clarksville",
+  );
+  const impressionRows = [...keywordMetrics]
+    .filter((metric) => Number(metric.impressions || 0) > 0)
+    .sort((a, b) => Number(b.impressions || 0) - Number(a.impressions || 0))
+    .slice(0, 5);
+  const clickRows = [...keywordMetrics]
+    .filter((metric) => Number(metric.clicks || 0) > 0)
+    .sort((a, b) => Number(b.clicks || 0) - Number(a.clicks || 0))
+    .slice(0, 5);
+  const maxImpressions = Math.max(...impressionRows.map((metric) => Number(metric.impressions || 0)), 1);
+  const maxClicks = Math.max(...clickRows.map((metric) => Number(metric.clicks || 0)), 1);
+  const rankRows = [
+    ["Branded", report.summary.brandedAveragePosition, "Searches with the Legends name"],
+    ["Neighborhood", report.summary.nonBrandedAveragePosition, "Homes, places, and lifestyle searches"],
+  ];
+  const rankMax = Math.max(...rankRows.map(([, value]) => Number(value || 0)), 1);
+
+  const renderBarRows = (rows, valueKey, maxValue) => rows.map((metric) => {
+    const value = Number(metric[valueKey] || 0);
+    const width = Math.max(4, Math.round((value / maxValue) * 100));
+    return (
+      <li key={`${valueKey}-${metric.normalizedKeyword}`}>
+        <div>
+          <span>{metric.keyword}</span>
+          <strong>{formatWorkspaceNumber(value)}</strong>
+        </div>
+        <i aria-hidden="true"><b style={{ width: `${width}%` }} /></i>
+      </li>
+    );
+  });
+
+  return (
+    <section className="dp-workspace-analytics-snapshot" aria-labelledby="workspace-analytics-graph-title">
+      <div className="dp-workspace-analytics-heading">
+        <div>
+          <p className="dp-workspace-eyebrow">SEO Snapshot</p>
+          <h2 id="workspace-analytics-graph-title">Search activity at a glance.</h2>
+          <p>These charts use the current snapshot only. They show searches, clicks, and average rank without guessing at trends that are not connected yet.</p>
+        </div>
+      </div>
+
+      <div className="dp-workspace-analytics-graph-grid">
+        <article className="dp-workspace-analytics-graph" aria-label="Top keyword impressions">
+          <div className="dp-workspace-analytics-graph-title">
+            <span>Searches</span>
+            <strong>Most seen terms</strong>
+          </div>
+          <ol>{renderBarRows(impressionRows, "impressions", maxImpressions)}</ol>
+        </article>
+
+        <article className="dp-workspace-analytics-graph" aria-label="Top keyword clicks">
+          <div className="dp-workspace-analytics-graph-title">
+            <span>Clicks</span>
+            <strong>Most clicked terms</strong>
+          </div>
+          <ol>{renderBarRows(clickRows, "clicks", maxClicks)}</ol>
+        </article>
+
+        <article className="dp-workspace-analytics-graph dp-workspace-rank-graph" aria-label="Average rank comparison">
+          <div className="dp-workspace-analytics-graph-title">
+            <span>Rank</span>
+            <strong>Average position</strong>
+          </div>
+          <ol>
+            {rankRows.map(([label, value, note]) => {
+              const number = Number(value || 0);
+              const width = Math.max(4, Math.round((number / rankMax) * 100));
+              return (
+                <li key={label}>
+                  <div>
+                    <span>{label}</span>
+                    <strong>{formatWorkspaceNumber(number)}</strong>
+                    <small>{note}</small>
+                  </div>
+                  <i aria-hidden="true"><b style={{ width: `${width}%` }} /></i>
+                </li>
+              );
+            })}
+          </ol>
+        </article>
+      </div>
+    </section>
   );
 }
 
@@ -977,13 +1163,15 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   const filteredOrganizations = demoOrganizations.filter((organization) => organization.name.toLowerCase().includes(workspaceSearch.trim().toLowerCase()));
   const isLegends = selectedOrganization?.id === "demo-org-legends-residential";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
+  const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;
   const metrics = isLegends
     ? [
-        ["Map views", "12,480"],
-        ["Saves", "1,942"],
-        ["Directions", "1,376"],
-        ["Verified actions", "684"],
-        ["Active campaigns", "3"],
+        ["Branded avg position", formatWorkspaceNumber(legendsSeoReport.summary.brandedAveragePosition)],
+        ["Non-branded avg position", formatWorkspaceNumber(legendsSeoReport.summary.nonBrandedAveragePosition)],
+        ["Branded top 10", formatWorkspaceNumber(legendsSeoReport.summary.brandedTop10KeywordCount)],
+        ["Non-branded top 10", formatWorkspaceNumber(legendsSeoReport.summary.nonBrandedTop10KeywordCount)],
+        ["Tracked keyword clicks", formatWorkspaceNumber(legendsSeoReport.summary.organicClicks)],
+        ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
         ["Map views", "3,240"],
@@ -1010,10 +1198,10 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
           <h1>{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</h1>
           <p>
             {ownedEntities.length > 1
-              ? `Manage offers, events, campaigns, audiences, and reporting across ${ownedEntities.map((entity) => entity.display_name).join(", ")}.`
-              : "Manage your downtown presence, publishing, audience, and reporting from one focused workspace."}
+              ? `Manage offers, events, campaigns, people, and reports across ${ownedEntities.map((entity) => entity.display_name).join(", ")}.`
+              : "Manage your downtown presence, publishing, people, and reports from one focused workspace."}
           </p>
-          <span className="dp-operating-status"><i aria-hidden="true" />Active workspace · {selectedOrganization?.plan || activation?.plan || "Enterprise"} plan</span>
+          <span className="dp-operating-status"><i aria-hidden="true" />Workspace active — {selectedOrganization?.plan || activation?.plan || "Enterprise"} plan</span>
         </div>
         <div className="dp-operating-header-actions">
           <div className="dp-create-menu-wrap">
@@ -1035,20 +1223,25 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
           <span id="workspace-context-title">Workspace</span>
           <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen}>
             <strong>{selectedOrganization?.name}</strong>
-            <small>{friendlyRoleLabel(selectedOrganization?.role)} · {friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</small>
+            <small>{friendlyRoleLabel(selectedOrganization?.role)} — {friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</small>
             <ChevronDown aria-hidden="true" />
           </button>
           {workspaceMenuOpen ? (
             <div className="dp-workspace-switcher-menu">
               <label>
                 <Search aria-hidden="true" />
-                <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Search workspaces" aria-label="Search workspaces" />
+                <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" />
               </label>
               <div>
                 {filteredOrganizations.map((organization) => (
-                  <button key={organization.id} type="button" onClick={() => { setSelectedOrganizationId(organization.id); setWorkspaceMenuOpen(false); setWorkspaceSearch(""); }}>
+                  <button
+                    key={organization.id}
+                    type="button"
+                    aria-current={organization.id === selectedOrganizationId ? "true" : undefined}
+                    onClick={() => { setSelectedOrganizationId(organization.id); setWorkspaceMenuOpen(false); setWorkspaceSearch(""); }}
+                  >
                     <span><strong>{organization.name}</strong><small>{friendlyRoleLabel(organization.role)}</small></span>
-                    <i className={`is-${organization.status}`} aria-label={organization.status} />
+                    {organization.id === selectedOrganizationId ? <em>Current</em> : null}
                   </button>
                 ))}
               </div>
@@ -1074,49 +1267,58 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
 
       <section className="dp-operating-section" aria-labelledby="performance-summary-title">
         <div className="dp-operating-section-header">
-          <div><p className="dp-workspace-eyebrow">Performance for</p><h2 id="performance-summary-title">{selectedOrganization?.name}</h2></div>
-          <label className="dp-period-select">Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
+          <div><p className="dp-workspace-eyebrow">Results for</p><h2 id="performance-summary-title">{selectedOrganization?.name}</h2></div>
+          {isLegends ? (
+            <span className="dp-seo-period-note">Analytics Snapshot · {formatWorkspaceDate(legendsSeoReport.capturedAt)}</span>
+          ) : (
+            <label className="dp-period-select">Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
+          )}
         </div>
         <div className="dp-metric-grid">
           {metrics.map(([label, value]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span></div>)}
         </div>
+        {isLegends ? <WorkspaceAnalyticsSnapshotGraphs report={legendsSeoReport} /> : null}
       </section>
 
-      <section className="dp-operating-analysis">
-        <article className="dp-performance-trend">
-          <div className="dp-panel-heading"><div><p className="dp-workspace-eyebrow">Performance trend</p><h2>Discovery is building steadily.</h2></div><span>+18% vs. prior period</span></div>
-          <svg viewBox="0 0 760 220" role="img" aria-label="Map discovery trend rising over the last 30 days" preserveAspectRatio="none">
-            <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34" fill="none" stroke="#C8A96A" strokeWidth="5" />
-            <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34 L760 220 L0 220 Z" fill="rgba(200,169,106,.10)" />
-          </svg>
-          <div className="dp-chart-axis"><span>30 days ago</span><span>Today</span></div>
-        </article>
-        <aside className="dp-recommended-action">
-          <p className="dp-workspace-eyebrow">Recommended next action</p>
-          <h2>Launch a resident event between 3–6 PM.</h2>
-          <p>Afternoon discovery is the strongest activity window near Waterloo Park. Connect the event to one active offer to improve verified actions.</p>
-          <Link to="/partner-workspace/events">Create event <ArrowRight aria-hidden="true" /></Link>
-        </aside>
-      </section>
+      {isLegends ? (
+        <WorkspaceLegendsSeoPanel report={legendsSeoReport} />
+      ) : (
+        <section className="dp-operating-analysis">
+          <article className="dp-performance-trend">
+            <div className="dp-panel-heading"><div><p className="dp-workspace-eyebrow">Results trend</p><h2>More people are finding the listing.</h2></div><span>+18% vs. prior period</span></div>
+            <svg viewBox="0 0 760 220" role="img" aria-label="Map views rising over the last 30 days" preserveAspectRatio="none">
+              <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34" fill="none" stroke="#C8A96A" strokeWidth="5" />
+              <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34 L760 220 L0 220 Z" fill="rgba(200,169,106,.10)" />
+            </svg>
+            <div className="dp-chart-axis"><span>30 days ago</span><span>Today</span></div>
+          </article>
+          <aside className="dp-recommended-action">
+            <p className="dp-workspace-eyebrow">Suggested next step</p>
+            <h2>Publish a resident event between 3–6 PM.</h2>
+            <p>Afternoons are strongest near Waterloo Park. Pair the event with one active offer so people have a clear reason to go.</p>
+            <Link to="/partner-workspace/events">Create event <ArrowRight aria-hidden="true" /></Link>
+          </aside>
+        </section>
+      )}
 
       <section className="dp-operating-section" aria-labelledby="current-work-title">
         <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Current activity</p><h2 id="current-work-title">Work that is live now.</h2></div></div>
         <div className="dp-current-work-grid">
           <WorkspaceActivityPanel title="Active offers" items={activePerks} empty="No active offers" emptyAction="Create an offer to begin tracking resident use." href="/partner-workspace/offers" />
           <WorkspaceActivityPanel title="Upcoming events" items={upcomingEvents} empty="No upcoming events" emptyAction="Publish an event when the date and location are ready." href="/partner-workspace/events" />
-          <WorkspaceActivityPanel title="Live campaigns" items={isLarryAndGuy ? [larryAndGuyWorkspaceCampaign] : []} empty="No live campaigns" emptyAction="Launch a campaign around one clear action or audience." href="/partner-workspace/campaigns" />
+          <WorkspaceActivityPanel title="Live campaigns" items={isLarryAndGuy ? [larryAndGuyWorkspaceCampaign] : []} empty="No live campaigns" emptyAction="Publish a campaign around one clear action." href="/partner-workspace/campaigns" />
         </div>
       </section>
 
       <section className="dp-featured-experience">
-        <div><p className="dp-workspace-eyebrow">Featured experience</p><h2>Downtown Austin Art & Parks Tour</h2><p>Afternoon is the strongest activity window across this civic experience.</p></div>
+        <div><p className="dp-workspace-eyebrow">Featured guide</p><h2>Downtown Austin Art & Parks Tour</h2><p>Afternoons are when people use this guide most.</p></div>
         <dl><div><dt>Opens</dt><dd>4,820</dd></div><div><dt>Verified visits</dt><dd>1,148</dd></div><div><dt>Survey completions</dt><dd>641</dd></div><div><dt>Directions</dt><dd>1,376</dd></div></dl>
         <div className="dp-featured-actions"><Link to="/partner-workspace/analytics/experiences/downtown-art-parks-tour">Open experience report</Link><Link to="/map?mode=partner&tab=map&filter=Civic">View on map</Link></div>
       </section>
 
       <section className="dp-operating-section dp-recent-activity" aria-labelledby="recent-activity-title">
         <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Recent activity</p><h2 id="recent-activity-title">Latest workspace changes.</h2></div></div>
-        <ol><li><span>Offer updated</span><time>Today, 9:42 AM</time></li><li><span>Campaign launched</span><time>Yesterday</time></li><li><span>Report generated</span><time>Jul 8</time></li><li><span>Team member invited</span><time>Jul 6</time></li></ol>
+        <ol><li><span>Offer updated</span><time>Today, 9:42 AM</time></li><li><span>Campaign published</span><time>Yesterday</time></li><li><span>Report created</span><time>Jul 8</time></li><li><span>Team member invited</span><time>Jul 6</time></li></ol>
       </section>
     </motion.div>
   );
@@ -1133,10 +1335,10 @@ function WorkspaceActivityPanel({ title, items, empty, emptyAction, href }) {
 
 function DaaApprovedExperienceReport() {
   const summaryMetrics = [
-    ["Experience opens", "4,820", "Discovery"],
-    ["Verified visits", "1,148", "Conversion"],
+    ["Guide opens", "4,820", "Views"],
+    ["Verified visits", "1,148", "Visits"],
     ["Survey completions", "641", "Feedback"],
-    ["Direction requests", "1,376", "Visit intent"],
+    ["Direction requests", "1,376", "Directions"],
   ];
   const timeBuckets = [["Morning", 48], ["Lunch", 66], ["Afternoon", 100], ["Evening", 78], ["Weekend", 72]];
   const surveyThemes = [["Public art", 82], ["Park space", 71], ["Walking route", 58], ["More shade and seating", 46], ["Family-friendly stops", 39]];
@@ -1147,14 +1349,14 @@ function DaaApprovedExperienceReport() {
     ["Paramount Theatre", "731 visits", "+4%"],
     ["Congress Avenue Bridge", "692 visits", "+3%"],
   ];
-  const funnel = [["Experience opens", 4820], ["Saved a stop", 2190], ["Requested directions", 1376], ["Verified visit", 1148], ["Completed survey", 641]];
+  const funnel = [["Opened the guide", 4820], ["Saved a stop", 2190], ["Asked for directions", 1376], ["Visited", 1148], ["Answered the survey", 641]];
   const districts = [["Downtown Core", 88], ["Congress", 76], ["Waterloo", 69], ["Republic Square", 58], ["Red River", 43]];
 
   return (
     <div className="dp-approved-experience-report">
       <section className="dp-experience-summary" aria-labelledby="experience-summary-title">
         <div className="dp-experience-section-header">
-          <div><p className="dp-workspace-eyebrow">Last 30 days</p><h2 id="experience-summary-title">Experience performance</h2></div>
+          <div><p className="dp-workspace-eyebrow">Last 30 days</p><h2 id="experience-summary-title">How the guide performed</h2></div>
           <label>Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
         </div>
         <div className="dp-experience-metric-grid">
@@ -1179,13 +1381,13 @@ function DaaApprovedExperienceReport() {
 
       <section className="dp-experience-two-column">
         <article className="dp-experience-panel">
-          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Place performance</p><h2>Most visited locations</h2><span>Verified visits and change</span></div>
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Places</p><h2>Most visited locations</h2><span>Verified visits and change</span></div>
           <ol className="dp-ranked-locations">
             {rankedLocations.map(([label, value, change], index) => <li key={label}><b>{index + 1}</b><strong>{label}</strong><span>{value}</span><em>{change}</em></li>)}
           </ol>
         </article>
         <article className="dp-experience-panel">
-          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Engagement funnel</p><h2>From discovery to feedback</h2><span>People completing each stage</span></div>
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Progress</p><h2>From opening the guide to leaving feedback</h2><span>People completing each step</span></div>
           <ol className="dp-experience-funnel">
             {funnel.map(([label, value], index) => <li key={label} style={{ width: `${100 - index * 10}%` }}><span>{label}</span><strong>{Number(value).toLocaleString()}</strong></li>)}
           </ol>
@@ -1193,7 +1395,7 @@ function DaaApprovedExperienceReport() {
       </section>
 
       <section className="dp-experience-panel dp-district-analysis">
-        <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">District activity</p><h2>Where experience use is concentrated</h2><span>Indexed activity by district</span></div>
+        <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">District activity</p><h2>Where people used the guide most</h2><span>Activity by district</span></div>
         <ol className="dp-district-distribution">
           {districts.map(([label, value], index) => <li key={label}><b>{index + 1}</b><strong>{label}</strong><i><span style={{ width: `${value}%` }} /></i><em>{value}</em></li>)}
         </ol>
@@ -1234,10 +1436,10 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
   ];
 
   const QUICK_ACTIONS = [
-    { label: "Create offer", sub: "Launch a resident benefit, validation, or limited-time reason to visit.", icon: Star, tab: "offers" },
-    { label: "Create event", sub: "Publish programming that should appear in local recommendations.", icon: Calendar, tab: "events" },
-    { label: "Launch campaign", sub: "Connect a message, audience, placement, and measurable action.", icon: LayoutDashboard, tab: "campaigns" },
-    { label: "Generate report", sub: "Review performance, attribution, and the next best action.", icon: ShieldCheck, tab: "reports" },
+    { label: "Create offer", sub: "Give residents a clear reason to visit this week.", icon: Star, tab: "offers" },
+    { label: "Create event", sub: "Add something happening soon so people can find it nearby.", icon: Calendar, tab: "events" },
+    { label: "Create campaign", sub: "Choose the message, where it appears, and what people should do next.", icon: LayoutDashboard, tab: "campaigns" },
+    { label: "Create report", sub: "Review the results and choose the next practical update.", icon: ShieldCheck, tab: "reports" },
   ];
 
   return (
@@ -1251,7 +1453,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
               Your plan is connected. Start with the map listing, then publish the first offer, event, survey, or campaign when the content is ready.
             </p>
           </div>
-          <div className="dp-workspace-activation-status" aria-label="Workspace activation checklist">
+          <div className="dp-workspace-activation-status" aria-label="Workspace setup checklist">
             {activation.checklist?.map((item) => (
               <span key={item.id} className={item.done ? "is-done" : ""}>
                 <Check aria-hidden="true" />
@@ -1270,13 +1472,13 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       {isPreviewMode && (
         <section className="dp-workspace-overview-section dp-workspace-intake-panel">
           <div className="dp-workspace-section-copy">
-            <p className="dp-workspace-eyebrow">Partner lifecycle</p>
-            <h2>Start once. Operate from one workspace.</h2>
+            <p className="dp-workspace-eyebrow">Partner setup</p>
+            <h2>Start once. Run it from one workspace.</h2>
             <p>
-              Move from registration into pricing, checkout, provisioning, and daily operations without jumping between disconnected pages.
+              Move from signup to plan, checkout, setup, and everyday updates without jumping between disconnected pages.
             </p>
           </div>
-          <div className="dp-workspace-lifecycle-list" aria-label="Partner setup lifecycle">
+          <div className="dp-workspace-lifecycle-list" aria-label="Partner setup steps">
             {PARTNER_LIFECYCLE_LINKS.map((step, index) => {
               const Icon = step.icon;
               return (
@@ -1297,7 +1499,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
             </Link>
             <Link to="/partner-workspace/overview">
               <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-              Open partner platform
+              Open workspace
             </Link>
           </div>
 
@@ -1315,7 +1517,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       <section className="dp-workspace-overview-section dp-workspace-switcher-section">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="dp-workspace-eyebrow">Organizations & Workspaces</p>
+            <p className="dp-workspace-eyebrow">Organizations and workspaces</p>
             <h2 className="dp-workspace-section-title">Manage multiple organizations from a single account.</h2>
             <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-[#0B1F33]/60">
               Switch between properties, venues, hotels, brands, civic programs, and listings without creating separate logins.
@@ -1362,7 +1564,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
               <div>
                 <h3 className="text-[15px] font-semibold leading-snug text-[#0B1F33]">{selectedOrganization?.name}</h3>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-[#0B1F33]/58">
-                  Manage the entities, campaigns, reports, people, and billing connected to this workspace.
+                  Manage the places, campaigns, reports, team, and billing connected to this workspace.
                 </p>
               </div>
               <span className="w-fit rounded-[3px] border border-[rgba(11,31,51,0.08)] bg-white px-2.5 py-1 text-[11px] font-semibold text-[#0B1F33]/62">
@@ -1391,12 +1593,12 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       <section className="dp-workspace-overview-section dp-workspace-module-section">
         <div className="dp-workspace-section-head">
           <div>
-            <p className="dp-workspace-eyebrow">Workspace Capabilities</p>
-            <h2 className="dp-workspace-section-title">One operating system for partner work.</h2>
+            <p className="dp-workspace-eyebrow">Workspace tools</p>
+            <h2 className="dp-workspace-section-title">One place for partner work.</h2>
           </div>
           <p>
-            Each capability routes to a real workspace surface. Pricing and registration stay connected to the public onboarding flow,
-            while billing, reports, campaigns, offers, events, and team access stay inside the workspace.
+            Each tool opens the right part of the workspace. Plans and signup stay on the public pages,
+            while billing, reports, campaigns, offers, events, and team access stay here.
           </p>
         </div>
         <div className="dp-workspace-module-grid">
@@ -1446,14 +1648,14 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
               <X aria-hidden="true" />
             </button>
             <p className="dp-workspace-eyebrow">Add-on</p>
-            <h2 id="workspace-upgrade-title">Unlock {upgradePrompt.label}</h2>
+            <h2 id="workspace-upgrade-title">Add {upgradePrompt.label}</h2>
             <p>
-              Reach the right residents, guests, buildings, or districts with a focused email and SMS campaign. Preview it, schedule it, then measure opens, clicks, and actions.
+              Send a focused email or text to the residents, guests, buildings, or districts that matter. Preview it, schedule it, then see how people responded.
             </p>
             <ul>
-              <li>Target by district, building, segment, or uploaded list.</li>
+              <li>Choose a district, building, group, or uploaded list.</li>
               <li>Review the preview before anything goes live.</li>
-              <li>Track opens, clicks, saves, scans, and conversions.</li>
+              <li>See opens, clicks, saves, scans, and follow-up actions.</li>
             </ul>
             <div className="dp-workspace-upgrade-actions">
               <Link to="/partner-workspace/billing?addon=broadcasts">Unlock Broadcasts</Link>
@@ -1600,7 +1802,7 @@ function DaaCivicWorkspacePanel() {
     {
       title: "Requested Improvements",
       icon: MessageSquareText,
-      support: "Identify opportunities for future programming, amenities, and placemaking.",
+      support: "See what people want more of, from events and shade to easier routes.",
       items: daaExplorerQuestions[1].options.map((label) => ({
         label,
         meta: "Requested more",
@@ -1609,31 +1811,31 @@ function DaaCivicWorkspacePanel() {
       })),
     },
     {
-      title: "Audience Frequency",
+      title: "How Often People Visit",
       icon: Users,
-      support: "Understand whether activity comes from residents, regular visitors, workers, or occasional guests.",
+      support: "See whether people are residents, regular visitors, workers, or occasional guests.",
       items: daaExplorerQuestions[2].options.map((label) => ({
         label,
         meta: "Visit frequency",
-        detail: `${label} gives civic partners a clearer sense of whether the tour is serving regular downtown routines or bringing people back in.`,
+        detail: `${label} helps civic partners see whether the tour fits everyday downtown routines or brings people back in.`,
         href: "/map?mode=partner&tab=map&filter=Civic",
       })),
     },
     {
-      title: "Highest Performing Locations",
+      title: "Most Used Places",
       icon: MapPin,
-      support: "Identify the places generating the strongest engagement across discovery, saves, directions, and repeat visits.",
+      support: "See which places people open, save, visit, and return to most.",
       items: daaDashboardContent.placesPeopleUseMost.map((label) => ({
         label,
         meta: "Place behavior",
-        detail: `${label} connects tour behavior to a practical next action: visit, save, return, get directions, or learn more.`,
+        detail: `${label} helps show what people do next: visit, save, return, get directions, or learn more.`,
         href: "/map?mode=partner&tab=map&filter=Civic",
       })),
     },
     {
       title: "Most Visited Locations",
       icon: MapPin,
-      support: "Stops that convert tour opens into real-world visits.",
+      support: "Stops people open and then visit in person.",
       items: mostVisitedStops.map((label) => ({
         label,
         meta: "Visited stop",
@@ -1653,13 +1855,13 @@ function DaaCivicWorkspacePanel() {
       })),
     },
     {
-      title: "Highest Repeat Engagement",
+      title: "Most Returned-To Stops",
       icon: Check,
-      support: "Stops that become part of repeated downtown movement.",
+      support: "Stops people come back to as part of their downtown routine.",
       items: returnStops.map((label) => ({
         label,
         meta: "Return use",
-        detail: `${label} shows repeat interest, which is useful for programming, signage, and nearby partner prompts.`,
+        detail: `${label} shows repeat interest, which is useful for events, signs, and nearby partner suggestions.`,
         href: stopHref(label),
       })),
     },
@@ -1670,38 +1872,38 @@ function DaaCivicWorkspacePanel() {
       items: directionStops.map((label) => ({
         label,
         meta: "Directions",
-        detail: `${label} creates directions intent, meaning people are ready to move from interest to a real visit.`,
+        detail: `${label} gets direction requests, which usually means people are ready to visit.`,
         href: stopHref(label),
       })),
     },
     {
-      title: "High-Interest Content",
+      title: "Most Requested Context",
       icon: MessageSquareText,
-      support: "Locations where people actively seek additional information, history, or context.",
+      support: "Places where people want more history, detail, or visitor information.",
       items: learningStops.map((label) => ({
         label,
         meta: "Learn more",
-        detail: `${label} is a strong candidate for richer interpretive copy, QR prompts, and nearby tour context.`,
+        detail: `${label} is a good place for richer copy, better QR prompts, and nearby tour details.`,
         href: stopHref(label),
       })),
     },
     {
       title: "Activity by Time of Day",
       icon: Calendar,
-      support: "Understand when audiences are most active across discovery, saves, visits, and directions.",
+      support: "See when people are most likely to open, save, visit, and ask for directions.",
       items: daaDashboardContent.timeAnalysis.buckets.map((label) => ({
         label,
         meta: "Time window",
-        detail: `${label} activity helps civic partners understand when people are most likely to explore, save, or continue to another stop.`,
+        detail: `${label} helps civic partners see when people are most likely to explore, save, or continue to another stop.`,
         href: `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`,
       })),
     },
     {
-      title: "Engagement Funnel",
+      title: "Visit Progress",
       icon: Check,
-      support: "Track movement from discovery through participation and real-world visitation.",
+      support: "Follow the path from opening the guide to visiting a stop.",
       items: [
-        { label: `Visited ${daaTourProgress.visited} / ${daaTourProgress.total}`, meta: "Check-ins", detail: "Visited stops show where tour discovery is turning into real-world movement.", href: "/map?mode=partner&tab=map&filter=Civic" },
+        { label: `Visited ${daaTourProgress.visited} / ${daaTourProgress.total}`, meta: "Check-ins", detail: "Visited stops show where the guide is helping people go in person.", href: "/map?mode=partner&tab=map&filter=Civic" },
         { label: `Saved ${daaTourProgress.saved}`, meta: "Saved", detail: "Saved stops show which places people want to remember or return to later.", href: "/map?mode=partner&tab=map&filter=Civic" },
         { label: `Nearby ${daaTourProgress.nearby}`, meta: "Nearby", detail: "Nearby stops show where people can continue the tour without starting over.", href: "/map?mode=partner&tab=map&filter=Civic" },
         { label: `Last Visited: ${daaTourProgress.lastVisited}`, meta: "Latest", detail: `${daaTourProgress.lastVisited} is the latest visited stop in this civic workspace view.`, href: stopHref(daaTourProgress.lastVisited) },
@@ -1714,7 +1916,7 @@ function DaaCivicWorkspacePanel() {
       items: daaTourDistricts.map((label) => ({
         label,
         meta: "District",
-        detail: `${label} groups stops, saves, directions, and learning moments into a downtown area people can understand.`,
+        detail: `${label} groups stops, saves, directions, and learning into a downtown area people can understand.`,
         href: `/map?mode=partner&tab=map&filter=Civic&q=${encodeURIComponent(label)}`,
       })),
     },
@@ -1726,9 +1928,9 @@ function DaaCivicWorkspacePanel() {
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Downtown Austin Art & Parks Tour</div>
-          <h3 className="font-body mt-2 text-[23px] font-semibold leading-snug tracking-normal text-[#0B1F33]">How People Engage With This Experience</h3>
+          <h3 className="font-body mt-2 text-[23px] font-semibold leading-snug tracking-normal text-[#0B1F33]">How People Use This Guide</h3>
           <p className="mt-2 max-w-[48ch] text-[13px] leading-6 text-[#0B1F33]/66">
-            Track discovery, saves, visits, directions, and participation across the Downtown Austin Art & Parks Tour. Understand which locations attract attention, where people return, and what drives engagement.
+            See opens, saves, visits, directions, and survey answers across the Downtown Austin Art & Parks Tour. Learn which places draw attention and where people come back.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -1870,7 +2072,7 @@ function PerksManager({ user }) {
           <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-[8px] animate-spin" />
         </div>
       ) : perks.length === 0 ? (
-        <EmptyState icon={Star} headline="No offers yet" body="Create your first offer and it will appear in the Downtown Perks discovery experience." action="Create Offer" onAction={handleAdd} />
+        <EmptyState icon={Star} headline="No offers yet" body="Create your first offer and it will appear on the Downtown Perks map." action="Create Offer" onAction={handleAdd} />
       ) : (
         <div className="space-y-3">
           {perks.map(p => (
@@ -1969,7 +2171,7 @@ function PerkForm({ user, perk, onClose, onSave }) {
         </> : null}
         {step === 4 ? <>
           <h4>Preview and publish</h4>
-          <article className="dp-native-perk-preview" aria-label="Resident perk preview"><span>Resident preview</span><strong>{form.title || "Your perk title"}</strong><p>{form.value || form.description || "Resident offer"}</p><small>{form.venue_name || "Your location"} · {form.redemption_type === "resident_card" ? "Show your Perks Card" : "Follow redemption instructions"}</small></article>
+          <article className="dp-native-perk-preview" aria-label="Resident perk preview"><span>Resident preview</span><strong>{form.title || "Your perk title"}</strong><p>{form.value || form.description || "Resident offer"}</p><small>{form.venue_name || "Your location"} · {form.redemption_type === "resident_card" ? "Show your Perks Card" : "Show the offer details"}</small></article>
           <PublisherSelect label="Publish" value={form.status} onChange={value => setForm(f => ({ ...f, status: value }))} options={[{ value: "active", label: "Publish now" }, { value: "paused", label: "Save as draft" }]} />
         </> : null}
         <div className="dp-native-publisher__actions pt-2">
@@ -2014,7 +2216,7 @@ function EventsManager({ user }) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
-          <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP and discovery.</p>
+          <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP details.</p>
         </div>
         <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add event
@@ -2171,7 +2373,7 @@ function ProfileSection({ user, setUser }) {
     nearby_landmarks: user?.nearby_landmarks || storedProfile.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District",
     keywords: user?.keywords || storedProfile.keywords || "parks, public art, events, trails, community",
     category: user?.category || storedProfile.category || "Parks and culture",
-    map_visibility: user?.map_visibility || storedProfile.map_visibility || "Visible on map, search, events, offers, and QR experiences",
+    map_visibility: user?.map_visibility || storedProfile.map_visibility || "Appears on the map, search, events, offers, and QR links",
   }));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -2200,7 +2402,7 @@ function ProfileSection({ user, setUser }) {
       nearby_landmarks: user?.nearby_landmarks || latestStoredProfile.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District",
       keywords: user?.keywords || latestStoredProfile.keywords || "parks, public art, events, trails, community",
       category: user?.category || latestStoredProfile.category || "Parks and culture",
-      map_visibility: user?.map_visibility || latestStoredProfile.map_visibility || "Visible on map, search, events, offers, and QR experiences",
+      map_visibility: user?.map_visibility || latestStoredProfile.map_visibility || "Appears on the map, search, events, offers, and QR links",
     });
   }, [user.email, user.organization_name, user.partner_name, user.full_name, user.partner_type]);
 
@@ -2296,7 +2498,7 @@ function ProfileSection({ user, setUser }) {
               <ProfileField label="Email" value={form.email} onChange={value => update("email", value)} type="email" />
               <ProfileField label="Phone" value={form.phone} onChange={value => update("phone", value)} type="tel" />
               <ProfileField label="Website" value={form.website} onChange={value => update("website", value)} type="url" />
-              <ProfileField label="Audience Size" value={form.audience_size} onChange={value => update("audience_size", value)} />
+              <ProfileField label="People you reach" value={form.audience_size} onChange={value => update("audience_size", value)} />
             </div>
           </section>
 
@@ -2331,7 +2533,7 @@ function ProfileSection({ user, setUser }) {
               <ProfileField label="Nearby Landmarks" value={form.nearby_landmarks} onChange={value => update("nearby_landmarks", value)} />
               <ProfileField label="Keywords" value={form.keywords} onChange={value => update("keywords", value)} />
               <ProfileField label="Category" value={form.category} onChange={value => update("category", value)} />
-              <ProfileField label="Map Visibility" value={form.map_visibility} onChange={value => update("map_visibility", value)} />
+              <ProfileField label="Where it appears" value={form.map_visibility} onChange={value => update("map_visibility", value)} />
             </div>
           </section>
 
@@ -2357,17 +2559,17 @@ function ProfileSection({ user, setUser }) {
               <p className="dp-profile-preview__description">{form.public_summary || defaultStory}</p>
               <button type="button">Open on map</button>
               <div className="dp-profile-preview__nearby">
-                <span>Nearby recommendations</span>
+                <span>Nearby suggestions</span>
                 <p>{form.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District"}</p>
               </div>
               <dl>
                 <div>
-                  <dt>Likely audience</dt>
+                  <dt>Likely visitors</dt>
                   <dd>{form.audience_size}</dd>
                 </div>
                 <div>
                   <dt>Visible across</dt>
-                  <dd>Map, search, events, offers, and QR experiences</dd>
+                  <dd>Map, search, events, offers, and QR links</dd>
                 </div>
                 <div>
                   <dt>Suggested improvement</dt>

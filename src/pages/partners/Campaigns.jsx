@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Send } from "lucide-react";
+import { DAA_TOUR_STOP_COUNT, daaDashboardContent } from "@/data/daaArtParksTour";
+import { daaCampaignStrategy } from "@/data/daaCampaignStrategy";
+import { mapNativeCampaigns } from "@/data/mapNativeCampaigns";
 
 const campaignTypes = {
   Perks: {
@@ -203,6 +206,36 @@ const campaignTypeBySlug = {
   visibility: "Visibility",
 };
 
+const campaignNumberFormatter = new Intl.NumberFormat("en-US");
+
+function formatCampaignNumber(value) {
+  const number = Number(value || 0);
+  return campaignNumberFormatter.format(Number.isFinite(number) ? number : 0);
+}
+
+function getCampaignAnalyticsTotals(campaigns) {
+  return campaigns.reduce((totals, campaign) => {
+    const analytics = campaign.analytics || {};
+    return {
+      views: totals.views + Number(analytics.views || 0),
+      opens: totals.opens + Number(analytics.opens || 0),
+      participants: totals.participants + Number(analytics.participants || 0),
+      saves: totals.saves + Number(analytics.saves || 0),
+      directions: totals.directions + Number(analytics.directions || 0),
+      checkIns: totals.checkIns + Number(analytics.checkIns || 0),
+      redemptions: totals.redemptions + Number(analytics.redemptions || 0),
+    };
+  }, {
+    views: 0,
+    opens: 0,
+    participants: 0,
+    saves: 0,
+    directions: 0,
+    checkIns: 0,
+    redemptions: 0,
+  });
+}
+
 function slugForCampaignType(type) {
   if (type === "Real Estate") return "real-estate";
   if (type === "Property") return "properties";
@@ -300,6 +333,31 @@ export default function CampaignsPage() {
     pricing: activeCampaign.price,
   };
   const mapHref = `/map?mode=partner&tab=campaigns&entityId=${encodeURIComponent(routeContext.entityId)}&filter=Campaigns`;
+  const measuredCampaigns = useMemo(() => mapNativeCampaigns.filter((campaign) => campaign.analytics), []);
+  const campaignTotals = useMemo(() => getCampaignAnalyticsTotals(measuredCampaigns), [measuredCampaigns]);
+  const liveCampaignRows = useMemo(
+    () => mapNativeCampaigns
+      .filter((campaign) => campaign.status === "active")
+      .sort((a, b) => Number(b.analytics?.views || 0) - Number(a.analytics?.views || 0))
+      .slice(0, 4),
+    []
+  );
+  const launchSignalRows = [
+    ["Campaign records", mapNativeCampaigns.length, "Map-native records in this build"],
+    ["Measured records", measuredCampaigns.length, "Campaigns with analytics attached"],
+    ["DAA tour stops", DAA_TOUR_STOP_COUNT, daaCampaignStrategy.measures.join(", ")],
+  ];
+  const measuredSignalRows = [
+    ["Views", campaignTotals.views],
+    ["Opens", campaignTotals.opens],
+    ["Participants", campaignTotals.participants],
+    ["Saves", campaignTotals.saves],
+    ["Directions", campaignTotals.directions],
+    ["Check-ins", campaignTotals.checkIns],
+    ["Redemptions", campaignTotals.redemptions],
+  ];
+  const daaMetricRows = daaDashboardContent.overview
+    .filter(([label]) => ["Tour Views", "Experience Opens", "Saved Stops", "Directions Clicked", "Verified Visits", "Survey Completions"].includes(label));
   const isGenericCampaign = routeContext.entity === "Downtown partner";
   const displayEntity = isGenericCampaign ? "Your downtown presence" : routeContext.entity;
   const displaySchedule = isGenericCampaign ? "Choose a launch window" : routeContext.schedule;
@@ -331,10 +389,6 @@ export default function CampaignsPage() {
         ["Nearby destinations", "Connect the campaign to relevant places, events, and services nearby."],
         ["Partner recommendations", "Use one primary action and only the nearby context that helps someone decide."],
       ];
-  const goals = routeContext.isCivic
-    ? ["Saves", "Directions", "RSVPs", "Visits", "Repeat engagement"]
-    : ["Saves", "Directions", "Redemptions", "Visits", "Repeat engagement"];
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const requestedSlug = params.get("type") || params.get("campaignType");
@@ -384,14 +438,14 @@ export default function CampaignsPage() {
   };
 
   return (
-    <main className="dp-campaigns-page">
+    <main className="dp-campaigns-page" data-campaigns-clean="true">
       <section className="dp-campaign-plan-shell">
         <div className="dp-campaign-plan-main">
           <section className="dp-campaign-plan-header" aria-label="Campaign header">
             <div>
-              <p className="dp-campaigns-eyebrow">Campaign builder</p>
+              <p className="dp-campaigns-eyebrow">Campaigns</p>
               <h1>{campaignName}</h1>
-              <p className="dp-campaign-plan-intro">Choose the campaign that fits the outcome, review how it will appear, then send one complete brief for scheduling.</p>
+              <p className="dp-campaign-plan-intro">Choose the goal, connect it to a real map context, and send one clear brief for setup.</p>
             </div>
             <dl>
               <div><dt>Status</dt><dd>{routeContext.status}</dd></div>
@@ -399,7 +453,7 @@ export default function CampaignsPage() {
               <div><dt>District</dt><dd>{routeContext.district}</dd></div>
             </dl>
             <button type="button" onClick={() => scrollToLaunch(form.campaignType)} className="dp-campaigns-primary">
-              Continue to brief <ArrowRight size={15} aria-hidden="true" />
+              Start brief <ArrowRight size={15} aria-hidden="true" />
             </button>
           </section>
 
@@ -407,7 +461,7 @@ export default function CampaignsPage() {
             <div>
               <p className="dp-campaigns-eyebrow">Choose a campaign type</p>
               <h2 id="campaign-type-heading">What do you want people to do?</h2>
-              <p>Select one option. The plan, preview, audience, and recommended brief will update together.</p>
+              <p>Select one option. The audience, map context, and brief fields update together.</p>
             </div>
             <div className="dp-campaign-type-rail" role="tablist" aria-label="Campaign types">
               {Object.keys(campaignTypes).map((type) => (
@@ -430,7 +484,7 @@ export default function CampaignsPage() {
           </section>
 
           <section className="dp-campaigns-section dp-campaign-detail-section" aria-label="Campaign details">
-            <h2>Plan details</h2>
+            <h2>Campaign brief</h2>
             <dl className="dp-campaign-detail-grid">
               {details.map(([label, value]) => (
                 <div key={label}>
@@ -442,35 +496,39 @@ export default function CampaignsPage() {
           </section>
         </div>
 
-        <aside className="dp-campaign-live-preview" aria-label="Live preview">
+        <aside className="dp-campaign-live-preview dp-campaign-real-panel" aria-label="Campaign data panel">
           <div className="dp-campaign-preview-head">
-            <h2>Live preview</h2>
-            <Link to={mapHref}><MapPin size={14} /> Map preview</Link>
-          </div>
-          <article className="dp-campaign-preview-desktop">
-            <span>Desktop</span>
-            <h3>{campaignName}</h3>
-            <p>{routeContext.isCivic ? "Galleries, performances, educational programmes, and community gatherings near the waterfront." : activeRail.headline}</p>
-            <button type="button">{routeContext.callToAction}</button>
-          </article>
-          <article className="dp-campaign-preview-mobile">
-            <span>Mobile</span>
-            <strong>{displayEntity}</strong>
-            <p>{routeContext.district} · {displaySchedule}</p>
-            <button type="button">{routeContext.callToAction}</button>
-          </article>
-          <article className="dp-campaign-preview-qr">
-            <span>QR</span>
-            <div aria-hidden="true">
-              {Array.from({ length: 25 }).map((_, index) => <i key={index} />)}
+            <div>
+              <p className="dp-campaigns-eyebrow">Map layer</p>
+              <h2>Campaign signal</h2>
             </div>
-            <p>Scan to open this {routeContext.isCivic ? "programme" : "campaign"}.</p>
-          </article>
-          <article className="dp-campaign-preview-map">
-            <span>Map</span>
-            <strong>{routeContext.district}</strong>
-            <p>{displayEntity}</p>
-          </article>
+            <Link to={mapHref}><MapPin size={14} /> Open map</Link>
+          </div>
+          <p className="dp-campaign-real-intro">Use existing map records and attached analytics to choose what to launch next.</p>
+          <dl className="dp-campaign-source-metrics">
+            {launchSignalRows.map(([label, value, note]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{formatCampaignNumber(value)}</dd>
+                <small>{note}</small>
+              </div>
+            ))}
+          </dl>
+          <section className="dp-campaign-real-list" aria-label="Active campaign records">
+            <h3>Active records</h3>
+            {liveCampaignRows.map((campaign) => (
+              <article key={campaign.id}>
+                <div>
+                  <strong>{campaign.title}</strong>
+                  <span>{[campaign.sponsorName, campaign.district].filter(Boolean).join(" · ")}</span>
+                </div>
+                <dl>
+                  <div><dt>Views</dt><dd>{formatCampaignNumber(campaign.analytics?.views)}</dd></div>
+                  <div><dt>Stops</dt><dd>{formatCampaignNumber((campaign.activationStops || campaign.campaignPins || campaign.participatingEntities || []).length)}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </section>
         </aside>
 
         <div className="dp-campaign-plan-lower">
@@ -487,17 +545,41 @@ export default function CampaignsPage() {
           </section>
 
           <section className="dp-campaigns-section dp-campaign-goals" aria-label="Performance goals">
-            <h2>Performance goals</h2>
-            <p>{routeContext.isCivic ? "Use these indicators to understand participation and programme discovery after publication." : "Start with five measurable actions. Add deeper reporting after the campaign establishes a baseline."}</p>
-            <ul>
-              {goals.map((goal) => <li key={goal}>{goal}</li>)}
-            </ul>
+            <h2>Measured campaign signals</h2>
+            <p>These totals come from map-native campaign records that already have analytics attached.</p>
+            <dl className="dp-campaign-signal-strip">
+              {measuredSignalRows.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{formatCampaignNumber(value)}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section className="dp-campaigns-section dp-campaign-daa-layer" aria-label="DAA civic campaign layer">
+            <div>
+              <p className="dp-campaigns-eyebrow">Civic layer</p>
+              <h2>{daaCampaignStrategy.title}</h2>
+              <p>{daaCampaignStrategy.use}</p>
+            </div>
+            <dl className="dp-campaign-daa-metrics">
+              {daaMetricRows.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="dp-campaign-daa-measures" aria-label="DAA measures">
+              {daaCampaignStrategy.measures.map((measure) => <span key={measure}>{measure}</span>)}
+            </div>
           </section>
 
           <section id="launch-campaign" className="dp-campaigns-section dp-launch-section dp-campaign-next-step">
             <div>
-              <p className="dp-campaigns-eyebrow">Recommended next step</p>
-              <h2>{routeContext.isCivic ? "Review programme copy." : "Review campaign copy."}</h2>
+              <p className="dp-campaigns-eyebrow">Brief</p>
+              <h2>{routeContext.isCivic ? "Send the programme brief." : "Send the campaign brief."}</h2>
               <p>{routeContext.isCivic ? "Confirm the programme focus, timing, and call to action before scheduling publication." : "Confirm the goal, placement, and primary action before scheduling."}</p>
               {draftSummary && <small>{draftSummary}</small>}
             </div>

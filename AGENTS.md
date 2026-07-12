@@ -10,6 +10,25 @@ Work token-light by default.
 - Preserve unrelated dirty files. Stage and commit only files intentionally changed for the current task.
 - For deployment requests, verify branch, clean/dirty state, build result, and the canonical URL separately before reporting success.
 
+## SEO Snapshot Product Language
+
+For Legends reporting surfaces, use **SEO Snapshot** as the screen and product name. Do not title the screen “Luxury Presence SEO snapshot” or write the drawer as if Luxury Presence is the user-facing feature.
+
+Luxury Presence may appear only as source attribution, for example “Source: Luxury Presence reporting dashboard,” or in integration/source-status copy. The report itself should answer:
+
+- what changed in search demand;
+- why it matters for Downtown Austin listings, pages, campaigns, and map content;
+- what each role does next.
+
+The role reads are:
+
+- Owner — executive read: approve the next page, campaign, or listing priority.
+- Marketing — campaign read: turn high-intent searches into map-visible campaigns, offers, and routes.
+- Content and SEO — keyword read: update the page, listing, guide, schema, or internal links tied to the priority term.
+- Workspace manager — operating read: assign the update and keep map/reporting status current.
+
+Keep the UI language plain and operational. Avoid backend-first phrases such as “fully reconciled,” “visible rows only,” or “integration status” unless the task is specifically about data plumbing.
+
 ## Repository Synchronization Contract
 
 BASE44 and the Downtown Perks Backend Platform share the product, but they are separate bounded contexts.
