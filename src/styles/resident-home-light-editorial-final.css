@@ -1,0 +1,70 @@
+/* Light editorial resident home: no oversized dark surfaces. */
+html body #root#root .dp-resident-home {
+  background: #f7f8fb !important;
+}
+
+html body #root#root .dp-resident-hero-card {
+  display: grid !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-top: 1px solid rgba(11,31,51,.1) !important;
+  border-bottom: 1px solid rgba(11,31,51,.1) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root .dp-resident-hero-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root#root .dp-resident-hero-card img {
+  position: relative !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: clamp(180px,48vw,216px) !important;
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-resident-hero-card > div {
+  position: relative !important;
+  inset: auto !important;
+  padding: 16px 0 18px !important;
+  background: #fff !important;
+}
+
+html body #root#root .dp-resident-hero-card span {
+  color: #5f6e7b !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root .dp-resident-hero-card h3 {
+  margin: 6px 0 5px !important;
+  color: #0b1f33 !important;
+  font-size: 23px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root .dp-resident-hero-card p {
+  margin-bottom: 11px !important;
+  color: #5f6e7b !important;
+  font-size: 14px !important;
+}
+
+html body #root#root .dp-resident-hero-card strong {
+  min-height: 44px !important;
+  color: #0b1f33 !important;
+  font-size: 13px !important;
+}
+
+html body #root#root .dp-resident-home-card,
+html body #root#root .dp-resident-card-panel,
+html body #root#root .dp-resident-saved-panel,
+html body #root#root .dp-resident-profile-section {
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
