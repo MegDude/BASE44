@@ -49,6 +49,10 @@ import "@/styles/partner-admin-access-final.css"
 
 import "@/styles/pricing-lead-polish-final.css"
 
+import "@/styles/partner-flat-surfaces-final.css"
+
+import "@/styles/partner-no-yellow-fill-lock.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )

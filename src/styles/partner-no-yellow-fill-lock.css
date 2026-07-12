@@ -1,0 +1,59 @@
+/* Hard lock: partner surfaces never use yellow fills or dark feature blocks. */
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline::after {
+  width: 83.334% !important;
+  background: #0b1f33 !important;
+  animation: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline > li::before {
+  background: #0b1f33 !important;
+  animation: none !important;
+  box-shadow: 0 0 0 1px rgba(11,31,51,.16) !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline b {
+  color: #5f6e7b !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta {
+  border: 0 !important;
+  border-top: 1px solid rgba(11,31,51,.12) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta :is(p,h2,span) {
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start :is(
+  .dp-partner-lifecycle-hero-actions a,
+  .dp-partner-final-cta a
+),
+html body #root#root main.dp-partner-access-page.dp-partner-access-page button[type="submit"] {
+  border: 1px solid rgba(11,31,51,.18) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-integration-category-tabs button.is-active::after,
+  .dp-growth-program-tabs button.is-active::after
+) {
+  background: #0b1f33 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-integration-category-tabs button small,
+  .dp-integration-logo-matrix button > b
+) {
+  background: #f7f8fb !important;
+  color: #0b1f33 !important;
+}
