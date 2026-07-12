@@ -17,7 +17,6 @@ Audit date: 2026-07-11
 | `src/data/map/mapEntityRegistry.browserExtract.json` | Reference extract | Validation reference only. |
 | `src/data/map/mapEntityRegistry.manualReview.json` | Incomplete/manual review | Must not be promoted without review. |
 | `src/data/map/mapEntityRegistry.seed.json` | Demo/seed | Exclude from production rendering unless normalized and approved. |
-| `/Users/megdude/Downloads/LAUNCHPERKS/src/data/mapEntities.ts` | Legacy reference | Do not merge; compare only for missing verified features/content. |
 
 ## Validation rules
 

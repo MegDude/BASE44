@@ -24,6 +24,5 @@ Audit date: 2026-07-11
 
 ## Exclusions
 
-- No LAUNCHPERKS presentation markup, global CSS, route folders, or map components were copied.
 - No `.env` files, Vercel project state, caches, build output, or generated screenshots are included in the reviewed source diff.
 - Content marked for manual review remains unapproved and must not be represented as a live perk, partnership, or campaign.

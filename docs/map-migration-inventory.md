@@ -6,7 +6,6 @@ Audit date: 2026-07-11
 
 - Canonical localhost source: `/Users/megdude/Downloads/BASE44 2`, verified as the process working directory serving port `5173`.
 - Clean integration checkout: `/Users/megdude/Documents/CLEAN MAP BUILD` on `codex/session-019f4f10-map-integration`.
-- Legacy reference only: `/Users/megdude/Downloads/LAUNCHPERKS`.
 - Deployed reference: `base-44-h2iq-6e41lfzmp-meg-dude.vercel.app/map` (content-validation reference; no presentation markup copied).
 
 ## Component inventory
@@ -39,4 +38,4 @@ Audit date: 2026-07-11
 
 ## Architecture gate
 
-This integration does not claim the final clean-map completion definition. `src/pages/Map.jsx` and multiple historical store modules still exist. They must not be deleted during preservation work without replacement tests and route proof. LAUNCHPERKS is an implementation reference only; none of its route folders, global styles, or map components are merged here.
+This integration does not claim the final clean-map completion definition. `src/pages/Map.jsx` and multiple historical store modules still exist. They must not be deleted during preservation work without replacement tests and route proof.
