@@ -47,6 +47,8 @@ import "@/styles/partner-tools-light-final.css"
 
 import "@/styles/partner-admin-access-final.css"
 
+import "@/styles/pricing-lead-polish-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )

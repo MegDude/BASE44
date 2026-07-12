@@ -1,0 +1,103 @@
+/* Compact pricing builder and partner lead form alignment. */
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container,
+html body #root#root .dp-partner-access-page .dp-partner-access-shell {
+  width: min(100%, 1120px) !important;
+  margin-inline: auto !important;
+  padding-inline: 0 !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-section,
+html body #root#root main.dp-partner-access-page.dp-partner-access-page {
+  padding-inline: clamp(18px, 4vw, 32px) !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px) !important;
+  gap: 32px !important;
+  margin-bottom: 22px !important;
+  align-items: end !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header h2 {
+  max-width: 520px !important;
+  font-size: clamp(34px, 4.2vw, 48px) !important;
+  line-height: 1 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+  grid-template-columns: minmax(0, 1fr) minmax(292px, 340px) !important;
+  gap: 18px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-calculator-controls, .dp-pricing-summary) {
+  padding: clamp(16px, 2vw, 22px) !important;
+  border-radius: 12px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator fieldset + fieldset,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid,
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup {
+  margin-top: 20px !important;
+  padding-top: 18px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-choice-grid.dp-pricing-partner-type-grid > button {
+  min-height: 64px !important;
+  padding: 10px 12px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice {
+  min-height: 0 !important;
+  padding: 12px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-list > button {
+  min-height: 54px !important;
+  padding-block: 10px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary h2 {
+  font-size: clamp(34px, 4vw, 44px) !important;
+  line-height: .96 !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl {
+  margin-block: 16px !important;
+}
+
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl div {
+  padding-block: 8px !important;
+}
+
+html body #root#root .dp-partner-access-page .dp-partner-access-panel,
+html body #root#root .dp-partner-access-page .dp-partner-access-form,
+html body #root#root .dp-partner-access-page .dp-partner-access-form-head,
+html body #root#root .dp-partner-access-page .dp-partner-access-form :is(label, input, select, textarea, p, h2, dl) {
+  text-align: left !important;
+}
+
+html body #root#root .dp-partner-access-page .dp-partner-access-panel {
+  padding: clamp(18px, 2.5vw, 24px) !important;
+  border-radius: 12px !important;
+}
+
+html body #root#root .dp-partner-access-page .dp-partner-access-form {
+  gap: 13px !important;
+}
+
+html body #root#root .dp-partner-access-page .dp-partner-access-control {
+  min-height: 44px !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header,
+  html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-calculator-controls, .dp-pricing-summary) {
+    padding: 16px !important;
+  }
+}

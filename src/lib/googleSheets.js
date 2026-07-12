@@ -77,7 +77,7 @@ function clean(value) {
 export async function appendContactLead(lead) {
   const { spreadsheetId, tabName } = getSheetsConfig();
   const accessToken = await getAccessToken();
-  const range = encodeURIComponent(`${tabName}!A:X`);
+  const range = encodeURIComponent(`${tabName}!A:AB`);
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=USER_ENTERED`;
 
   const values = [[
@@ -97,9 +97,13 @@ export async function appendContactLead(lead) {
     clean(lead.selectedPlan || lead.planInterest),
     clean(lead.selectedAddOns || lead.campaignInterest),
     clean(lead.estimatedTotal),
+    clean(lead.recurringAnnualTotal),
+    clean(lead.firstYearEstimate),
     clean(lead.checkoutMode),
     clean(lead.budgetRange),
     clean(lead.timing),
+    clean(lead.reportingNeeds),
+    clean(lead.website),
     clean(lead.message),
     clean(lead.utmSource),
     clean(lead.utmMedium),

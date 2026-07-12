@@ -49,13 +49,17 @@ function normalizeLead(body) {
     priceText: body.priceText || "",
     billingKind: body.billingKind || "",
     selectedPlan: body.selectedPlan || body.planInterest || "",
-    selectedAddOns: body.selectedAddOns || body.campaignInterest || "",
+    selectedAddOns: body.selectedAddOns || body.addOns || body.campaignInterest || "",
     estimatedTotal: body.estimatedTotal || "",
+    recurringAnnualTotal: body.recurringAnnualTotal || "",
+    firstYearEstimate: body.firstYearEstimate || "",
     checkoutMode: body.checkoutMode || "",
     planInterest: body.planInterest || "",
     campaignInterest: body.campaignInterest || "",
     budgetRange: body.budgetRange || body.budget || "",
     timing: body.timing || body.timeline || "",
+    reportingNeeds: body.reportingNeeds || "",
+    website: body.website || "",
     message: body.message || "",
     utmSource: body.utmSource || "",
     utmMedium: body.utmMedium || "",
@@ -99,27 +103,20 @@ export default async function handler(req, res) {
       return;
     }
 
-    try {
-      await appendContactLead(lead);
-    } catch (error) {
-      if (!isGoogleSheetsConfigurationError(error)) throw error;
-      console.warn("[contact] Google Sheets is not configured; accepted lead without sheet append.", {
-        sourcePage: lead.sourcePage,
-        entryPath: lead.entryPath,
-        company: lead.company,
-      });
-      sendJson(res, 202, {
-        ok: true,
-        queued: true,
-        message: "Message received. We’ll follow up with the right next step.",
-      });
-      return;
-    }
+    await appendContactLead(lead);
 
     sendJson(res, 200, { ok: true, message: "Message sent. We’ll follow up with the right next step." });
   } catch (error) {
-    sendJson(res, 500, {
-      error: "Contact submission failed",
+    const configurationError = isGoogleSheetsConfigurationError(error);
+    console.error("[contact] Submission failed before Google Sheets persistence.", {
+      configurationError,
+      message: error?.message || "Unknown contact submission error",
+    });
+    sendJson(res, configurationError ? 503 : 500, {
+      error: configurationError
+        ? "Contact storage is temporarily unavailable. Please try again shortly."
+        : "Contact submission failed",
+      stored: false,
     });
   }
 }
