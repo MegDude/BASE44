@@ -43,6 +43,8 @@ import "@/styles/partner-public-platform-final.css"
 
 import "@/styles/resident-card-polish-final.css"
 
+import "@/styles/partner-tools-light-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )
