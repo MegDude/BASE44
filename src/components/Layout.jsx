@@ -106,19 +106,7 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const suppressGlobalBackButton =
-    noFooter ||
-    pathname === "/marketing/contact" ||
-    pathname === "/contact" ||
-    pathname === "/pricing" ||
-    pathname === "/marketing/pricing" ||
-    pathname.startsWith("/partner-workspace") ||
-    pathname.startsWith("/dashboard") ||
-    pathname === "/partner-dashboard" ||
-    pathname.startsWith("/resident-workspace") ||
-    pathname.startsWith("/resident-app");
-
-  const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
+  const showBackButton = pathname !== "/";
   const showNavbar = pathname !== "/" && pathname !== "/resident/home";
   const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
@@ -136,10 +124,16 @@ export default function Layout() {
 
     if (pathname === "/app" || pathname === "/app/map" || pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover" || pathname === "/partners/map") {
       if (mode === "partner" && filter === "Events") return "/partners/campaigns";
-      return "/";
+      if (mode === "partner" || pathname === "/partners/map") return "/partners";
+      return "/resident/home";
     }
 
+    if (pathname === "/resident/home") return "/app?mode=resident&tab=map&filter=All";
+    if (pathname === "/pricing" || pathname === "/contact") return "/partners";
+    if (pathname.startsWith("/ask-map")) return "/app?mode=resident&tab=map&filter=All";
+    if (pathname.startsWith("/admin-studio")) return "/partner-workspace/overview";
     if (pathname.startsWith("/partners/")) return "/partners";
+    if (pathname === "/partner-workspace/overview") return "/partners";
     if (pathname.startsWith("/partner-workspace")) return "/partner-workspace/overview";
     if (pathname.startsWith("/buildings/") || pathname.startsWith("/properties/") || pathname.startsWith("/building-intelligence/")) {
       return "/partners/properties";
@@ -148,9 +142,9 @@ export default function Layout() {
     if (pathname.startsWith("/brands/")) return "/brands";
     if (pathname.startsWith("/downtown-perks/")) return "/downtown-perks";
     if (pathname === "/events") return "/residents";
-    if (pathname === "/about" || pathname === "/card" || pathname === "/perks") return "/residents";
+    if (pathname === "/about" || pathname === "/card" || pathname === "/perks" || pathname === "/sign-in") return "/resident/home";
 
-    return "/";
+    return "/resident/home";
   }
 
   function goBack() {
@@ -179,14 +173,14 @@ export default function Layout() {
         </button>
       )}
       {showBackButton && (
-        <div className="dp-layout-back-row">
+        <div className={`dp-layout-back-row${showNavbar ? "" : " is-product"}`}>
           <button
             type="button"
             onClick={goBack}
-            className="dp-layout-back inline-flex h-7 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 shadow-none transition-all hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+            className="dp-layout-back"
             aria-label="Go back"
           >
-            <ArrowLeft className="h-3 w-3 text-[#BFA46A]" />
+            <ArrowLeft aria-hidden="true" />
             Back
           </button>
         </div>

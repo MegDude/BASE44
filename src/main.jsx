@@ -57,6 +57,8 @@ import "@/styles/partner-integration-logo-grid-final.css"
 
 import "@/styles/partner-register-unified-final.css"
 
+import "@/styles/global-back-control-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )
