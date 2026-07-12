@@ -814,7 +814,7 @@ function IntegrationsSection() {
                 aria-pressed={isSelected}
                 onClick={() => setSelectedTool(tool)}
               >
-                {logo ? <img src={logo} alt="" loading="lazy" /> : <b aria-hidden="true">{tool.slice(0, 2)}</b>}
+                {logo ? <img src={logo} alt={`${tool} logo`} loading="lazy" /> : <b aria-hidden="true">{tool.slice(0, 2)}</b>}
                 <span>{tool}</span>
               </button>
             );

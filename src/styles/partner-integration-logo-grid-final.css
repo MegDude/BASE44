@@ -1,0 +1,108 @@
+/* Compact, gap-free integration logo matrix with unboxed controls. */
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-matrix-layout {
+  grid-template-columns: minmax(0,1fr) minmax(280px,340px) !important;
+  gap: clamp(24px,4vw,48px) !important;
+  align-items: start !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-content: flex-start !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button {
+  display: grid !important;
+  flex: 1 1 132px !important;
+  grid-template-rows: 42px auto !important;
+  place-items: center !important;
+  align-content: center !important;
+  gap: 6px !important;
+  min-width: 120px !important;
+  min-height: 76px !important;
+  padding: 9px 12px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.1) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #5f6e7b !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button img {
+  display: block !important;
+  width: min(100%,132px) !important;
+  height: 38px !important;
+  margin: 0 auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  filter: none !important;
+  opacity: .82 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button > b {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  font-size: 18px !important;
+  font-weight: 680 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button > span {
+  color: #5f6e7b !important;
+  font-size: 10px !important;
+  font-weight: 560 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button.is-selected {
+  border-bottom-color: #0b1f33 !important;
+  background: transparent !important;
+  box-shadow: inset 0 -2px 0 #0b1f33 !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button.is-selected img {
+  opacity: 1 !important;
+  transform: scale(1.04) !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-detail {
+  min-height: 0 !important;
+  padding: 6px 0 0 !important;
+  border-top: 1px solid rgba(11,31,51,.12) !important;
+}
+
+@media (max-width: 860px) {
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-matrix-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 639px) {
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button {
+    flex-basis: calc(50% - 1px) !important;
+    min-width: 0 !important;
+    min-height: 72px !important;
+    padding-inline: 10px !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button img {
+    width: min(100%,120px) !important;
+    height: 34px !important;
+  }
+}

@@ -53,6 +53,8 @@ import "@/styles/partner-flat-surfaces-final.css"
 
 import "@/styles/partner-no-yellow-fill-lock.css"
 
+import "@/styles/partner-integration-logo-grid-final.css"
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 )
