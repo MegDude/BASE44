@@ -64,6 +64,8 @@ import "@/styles/resident-home-native-panels-final.css"
 import "@/styles/resident-home-saved-preview-final.css"
 
 import "@/styles/resident-home-light-editorial-final.css"
+import "@/styles/resident-discover-native-final.css"
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

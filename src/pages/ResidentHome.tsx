@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Bookmark, ChevronRight, CreditCard, LogIn, MapPin, Search, UserRound } from "lucide-react";
+import { ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Hotel, Landmark, LogIn, MapPin, Route, Search, UserRound } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 
@@ -14,6 +14,41 @@ const nearbyCategories = [
   ["Happy Hour", "Happy Hour"],
   ["Fitness", "Fitness"],
   ["Weekend", "This Week"],
+] as const;
+
+const residentEvents = [
+  { title: "Live music downtown", detail: "Tonight · Rainey and the Red River district", href: "/map?mode=resident&tab=events&filter=Events&query=live%20music&intent=events" },
+  { title: "Waterloo events", detail: "Park programs, performances and community events", href: "/map?mode=resident&tab=events&filter=Events&collection=waterloo-greenway&query=Waterloo%20events" },
+  { title: "Weekend downtown", detail: "Events, markets and plans worth walking to", href: "/map?mode=resident&tab=events&filter=Events&query=weekend%20events&intent=events" },
+] as const;
+
+const hotelPerks = [
+  { title: "Hotel Van Zandt", detail: "Resident rate, rooftop access and live music", href: "/map?mode=resident&tab=perks&filter=Perks&entityId=partner-hotel-van-zandt&query=Hotel%20Van%20Zandt%20resident%20perks" },
+  { title: "Fairmont Austin", detail: "Dining, pool and downtown hotel experiences", href: "/map?mode=resident&tab=perks&filter=Perks&entityId=partner-fairmont-austin&query=Fairmont%20Austin%20resident%20perks" },
+  { title: "Four Seasons Austin", detail: "Spa, dining and waterfront experiences", href: "/map?mode=resident&tab=perks&filter=Perks&entityId=partner-four-seasons&query=Four%20Seasons%20resident%20perks" },
+] as const;
+
+const residentRoutes = [
+  { title: "Warehouse Happy Hour Walk", detail: "Four walkable drinks and dining stops", meta: "18 min · 0.8 mi", href: "/map?mode=resident&tab=map&filter=Happy%20Hour&collection=warehouse-district-happy-hour&query=walking%20happy%20hour%20route&intent=happy_hour" },
+  { title: "DAA Art & Parks Walk", detail: "Public art, parks, plazas and cultural landmarks", meta: "Self-guided", href: "/map?mode=resident&tab=map&filter=Civic&collection=daa-art-walk&query=DAA%20Art%20Walk&intent=DAA_art_walk" },
+  { title: "Waterloo Greenway Walk", detail: "Parks, gardens, Waller Creek and events", meta: "Self-guided", href: "/map?mode=resident&tab=map&filter=Civic&collection=waterloo-greenway&query=Waterloo%20Greenway%20walk&intent=explore_downtown" },
+  { title: "Downtown Stories Walk", detail: "Public spaces, history and neighborhood stories", meta: "25 min · 1.1 mi", href: "/map?mode=resident&tab=map&filter=Civic&collection=downtown-stories-walk&query=downtown%20stories%20walk&intent=explore_downtown" },
+  { title: "Coffee Before Work", detail: "A short morning route through downtown", meta: "14 min · 0.6 mi", href: "/map?mode=resident&tab=map&filter=Coffee&collection=coffee-before-work&query=coffee%20before%20work&intent=coffee" },
+  { title: "Hotel Guest Arrival Route", detail: "Hotel Van Zandt to food, music and the river", meta: "16 min · 0.7 mi", href: "/map?mode=resident&tab=map&filter=Hotels&collection=hotel-guest-arrival-route&query=hotel%20guest%20arrival%20route" },
+] as const;
+
+const experienceCollections = [
+  { title: "Best sushi downtown", detail: "Sushi, sake and resident happy hours", href: "/map?mode=resident&tab=map&filter=Dining&query=Best%20sushi%20downtown&intent=dining" },
+  { title: "Date night", detail: "Dinner, cocktails, music and waterfront stops", href: "/map?mode=resident&tab=map&filter=Dining&collection=date-night&query=Dinner%20for%20a%20date%20night&intent=dinner" },
+  { title: "First date", detail: "Low-pressure coffee, drinks and easy walks", href: "/map?mode=resident&tab=map&filter=All&query=first%20date%20downtown&intent=dining" },
+  { title: "Meet new friends", detail: "Social events, group activities and casual places", href: "/map?mode=resident&tab=events&filter=Events&query=events%20to%20meet%20new%20friends&intent=events" },
+  { title: "Campaigns and pop-ups", detail: "Limited-time brand and partner experiences", href: "/map?mode=resident&tab=map&filter=Campaigns&query=campaigns%20pop-ups%20and%20brand%20activations" },
+  { title: "Shared amenities", detail: "One participating building at a time", href: "/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access&intent=explore_downtown" },
+] as const;
+
+const partnerDirectories = [
+  ["Dining", "Dining"], ["Hotels", "Hotels"], ["Properties", "Properties"], ["Events", "Events"],
+  ["Brands", "Brands"], ["Civic", "Civic"], ["Services", "Services"], ["Real estate", "Real%20Estate"],
 ] as const;
 
 type HomePanel = "home" | "perks" | "card";
@@ -162,6 +197,41 @@ export default function ResidentHome() {
               <button type="button" onClick={() => openPanel("card")}><CreditCard aria-hidden="true" /><span><strong>Card and profile</strong><small>{resident?.fullName || "View resident access"}</small></span><ChevronRight aria-hidden="true" /></button>
             </div>
           </section>
+
+          <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="home-events-title">
+            <div className="dp-resident-section-title"><h2 id="home-events-title">Happening today</h2><Link to="/map?mode=resident&tab=events&filter=Events">See all</Link></div>
+            <div>{residentEvents.map((item) => <Link key={item.title} to={item.href}><CalendarDays aria-hidden="true" /><span><strong>{item.title}</strong><small>{item.detail}</small></span><ChevronRight aria-hidden="true" /></Link>)}</div>
+          </section>
+
+          <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="hotel-perks-title">
+            <div className="dp-resident-section-title"><h2 id="hotel-perks-title">Hotel perks</h2><button type="button" onClick={() => openPanel("perks")}>Saved perks</button></div>
+            <div>{hotelPerks.map((item) => <Link key={item.title} to={item.href}><Hotel aria-hidden="true" /><span><strong>{item.title}</strong><small>{item.detail}</small></span><ChevronRight aria-hidden="true" /></Link>)}</div>
+          </section>
+          <section className="dp-resident-directory-section" aria-labelledby="walking-routes-title">
+            <div className="dp-resident-section-title"><h2 id="walking-routes-title">Walking routes</h2></div>
+            <div className="dp-resident-route-list">{residentRoutes.map((item, index) => <Link key={item.title} to={item.href} className={index === 0 ? "is-featured" : ""}><Route aria-hidden="true" /><span><strong>{item.title}</strong><small>{item.detail}</small><em>{item.meta}</em></span><ChevronRight aria-hidden="true" /></Link>)}</div>
+          </section>
+
+          <section className="dp-resident-directory-section" aria-labelledby="collections-title">
+            <div className="dp-resident-section-title"><h2 id="collections-title">Collections</h2></div>
+            <div className="dp-resident-directory-list">{experienceCollections.map((item) => <Link key={item.title} to={item.href}><span><strong>{item.title}</strong><small>{item.detail}</small></span><ChevronRight aria-hidden="true" /></Link>)}</div>
+          </section>
+          <section className="dp-resident-directory-section" aria-labelledby="directory-title">
+            <div className="dp-resident-section-title"><h2 id="directory-title">Browse the directory</h2></div>
+            <div className="dp-resident-directory-types">
+              {partnerDirectories.map(([label, filter]) => <Link key={label} to={`/map?mode=resident&tab=map&filter=${filter}&query=${encodeURIComponent(label)}`}><span>{label}</span><ChevronRight aria-hidden="true" /></Link>)}
+            </div>
+          </section>
+
+          <section className="dp-resident-directory-section dp-resident-shared-amenity" aria-labelledby="shared-amenity-title">
+            <Building2 aria-hidden="true" />
+            <div><small>Shared amenity spotlight</small><h2 id="shared-amenity-title">One nearby building benefit at a time.</h2><p>See participating resident amenities without opening access across every property at once.</p><Link to="/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access">View this month’s amenity</Link></div>
+          </section>
+          <section className="dp-resident-directory-section dp-resident-dana-question" aria-labelledby="dana-question-title">
+            <Landmark aria-hidden="true" />
+            <div><small>DANA resident question</small><h2 id="dana-question-title">What would make it easier to spend more time downtown this month?</h2><p>Choose the answer that matters most and continue to the short survey.</p><Link to="/map?mode=resident&tab=map&filter=Surveys&query=resident%20downtown%20priority%20survey">Answer the question</Link></div>
+          </section>
+
         </div>
       ) : null}
 
