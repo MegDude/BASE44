@@ -37,6 +37,7 @@ import '@/styles/inkind-partner-drawer-final.css'
 import '@/styles/search-intent-rail-alignment-final.css'
 import '@/styles/resident-product-alignment-final.css'
 import '@/styles/partner-native-mobile-final.css'
+import '@/styles/resident-native-mobile-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

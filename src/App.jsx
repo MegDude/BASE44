@@ -16,6 +16,7 @@ const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentAccess = lazy(() => import("./pages/ResidentAccess"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
+const ResidentHome = lazy(() => import("./pages/ResidentHome"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
@@ -149,6 +150,7 @@ function ProductRoutes() {
           <Route path="/app" element={<MapLaunchGate />} />
           <Route path="/app/map" element={<MapLaunchGate />} />
           <Route path="/map" element={<MapLaunchGate />} />
+          <Route path="/resident/home" element={<ResidentHome />} />
           <Route
             path="/ask-map"
             element={

@@ -16737,13 +16737,10 @@ export default function MapPage() {
                   type="button"
                   role="tab"
                   onClick={() => {
-                    beginSearchIntentTransition("All");
-                    setConsoleCollapsed(true);
-                    setActiveBottomTab("info");
-                    navigate("/map?mode=resident&tab=map&filter=All&panel=info");
+                    navigate("/resident/home");
                   }}
-                  aria-pressed={activeBottomTab === "info"}
-                  aria-selected={activeBottomTab === "info"}
+                  aria-pressed={false}
+                  aria-selected={false}
                 >
                   <Info className="h-4 w-4" />
                   <span>Home</span>
