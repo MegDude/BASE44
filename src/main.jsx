@@ -34,6 +34,7 @@ import '@/styles/map-drawer-premium-regression-final.css'
 import '@/styles/partner-access-formatting-final.css'
 import '@/styles/partner-signup-cleanup-final.css'
 import '@/styles/inkind-partner-drawer-final.css'
+import '@/styles/native-drawer-interactions-final.css'
 import '@/styles/search-intent-rail-alignment-final.css'
 import '@/styles/resident-product-alignment-final.css'
 import '@/styles/partner-native-mobile-final.css'
@@ -81,7 +82,9 @@ import "@/styles/workspace-header-clean-final.css"
 import "@/styles/workspace-navigation-analytics-final.css"
 import "@/styles/resident-onboarding-final.css"
 import "@/styles/native-panel-surface-lock-final.css"
-
+import '@/styles/map-native-ios-polish-final.css'
+import '@/styles/workspace-sharp-platform-final.css'
+import '@/styles/partner-signup-product-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

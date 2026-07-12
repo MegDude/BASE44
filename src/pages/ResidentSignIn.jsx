@@ -6,10 +6,13 @@ import { getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
 
 export default function ResidentSignIn() {
   const location = useLocation();
-  const { signInPartner } = useAuth();
+  const { signInPartner, signInWithGoogle } = useAuth();
   const returnTo = useMemo(() => getSafeReturnPath(location.search), [location.search]);
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState({ type: "idle", message: "" });
+  const [status, setStatus] = useState(() => {
+    const error = new URLSearchParams(location.search).get("error");
+    return error ? { type: "error", message: error === "callback_failed" ? "We could not complete sign-in. Request a new secure link and try again." : error } : { type: "idle", message: "" };
+  });
 
   async function submit(event) {
     event.preventDefault();
@@ -27,6 +30,15 @@ export default function ResidentSignIn() {
     });
   }
 
+  async function submitGoogle() {
+    setStatus({ type: "loading", message: "" });
+    storeAuthReturnPath(returnTo);
+    const result = await signInWithGoogle({
+      redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}`,
+    });
+    if (result?.type === "error") setStatus({ type: "error", message: result.message });
+  }
+
   return (
     <main className="dp-resident-signin-page">
       <div className="dp-resident-signin-shell">
@@ -36,14 +48,16 @@ export default function ResidentSignIn() {
         </header>
         <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
           <p className="dp-resident-signin-eyebrow">Resident access</p>
-          <h1 id="resident-signin-title">Sign into<br />your downtown.</h1>
-          <p>Sign in to access your Downtown Perks Card, saved places, resident-only perks, event RSVPs, and benefits available through your building and local partners.</p>
+          <h1 id="resident-signin-title">Sign in to your downtown.</h1>
+          <p>Access your resident card, saved places, active perks, RSVPs, and building benefits.</p>
           <form onSubmit={submit}>
             <label htmlFor="resident-email">Email address</label>
             <input id="resident-email" name="email" type="email" autoComplete="email" inputMode="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" />
             {status.message ? <p className={`dp-resident-signin-status is-${status.type}`} role={status.type === "error" ? "alert" : "status"}>{status.message}</p> : null}
             <button type="submit" disabled={status.type === "loading"}><Mail aria-hidden="true" />{status.type === "loading" ? "Sending sign-in link…" : "Email me a sign-in link"}</button>
           </form>
+          <div className="dp-resident-signin-divider" aria-hidden="true"><span />Or<span /></div>
+          <button type="button" className="dp-resident-signin-google" onClick={submitGoogle} disabled={status.type === "loading"}>Continue with Google</button>
           <p className="dp-resident-signin-note">Your secure link returns you to the same map, filter, offer, property, or route you opened.</p>
         </section>
       </div>

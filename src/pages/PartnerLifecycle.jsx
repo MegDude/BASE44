@@ -122,7 +122,14 @@ const partnerTypes = [
   },
 ];
 
-const trustPartners = ["Toast", "BuildingLink", "SevenRooms", "OpenTable", "Eventbrite", "Stripe", "Square", "HubSpot", "Salesforce", "Google", "Shopify", "Zapier"];
+const worksWithGroups = [
+  ["Hospitality", ["Toast", "SevenRooms", "OpenTable"], "Keep service and reservation workflows connected."],
+  ["Property", ["BuildingLink", "Entrata", "Yardi"], "Extend resident systems into neighborhood discovery."],
+  ["Marketing", ["HubSpot", "Salesforce", "Mailchimp"], "Carry local engagement into existing customer workflows."],
+  ["Commerce", ["Shopify", "Square", "Clover"], "Support offers without replacing commerce tools."],
+  ["Payments", ["Stripe", "Square"], "Connect checkout and campaign value securely."],
+  ["Google", ["Business Profile", "Maps", "Calendar"], "Keep identity, location, and events useful across surfaces."],
+];
 
 const impactGroups = [
   {
@@ -488,13 +495,13 @@ function LifecycleShell({ stage, children }) {
   return (
     <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage} ${isTools ? "dp-partner-lifecycle-page-start" : ""}`}>
       <header className="dp-partner-lifecycle-hero">
-        <div>
+        <div className="dp-partner-lifecycle-hero-copy">
           <p>{isTools ? "Partner platform" : "Partner membership"}</p>
-          <h1>{isTools ? "One clear workspace for your downtown presence." : "Turn residents into regulars."}</h1>
+          <h1>{isTools ? "One clear workspace for your downtown presence." : "Grow your business without replacing the tools you already use."}</h1>
           <span>
             {isTools
               ? "Publish perks and events, preview your listing on the map, and understand what residents respond to—without replacing the systems that already run your business."
-              : "Downtown Perks helps residents discover your business, understand why they should visit, and take the next step. Your existing software, rewards, and workflows keep working."}
+              : "Connect with people already living, working, and staying downtown while keeping your existing software, rewards, and workflows."}
           </span>
           <div className="dp-partner-lifecycle-hero-actions">
             <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
@@ -502,19 +509,33 @@ function LifecycleShell({ stage, children }) {
               <ArrowRight aria-hidden="true" />
             </Link>
             <Link to={isTools ? "/partners#partners" : "/partners/tools#platform-tools"}>{isTools ? "View Membership" : "Explore the Platform"}</Link>
+            {!isTools ? <Link to="/partner-workspace/overview">Open Workspace</Link> : null}
           </div>
         </div>
-        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/register" : "/partner-workspace/overview"}>
-          {isTools ? "Create partner account" : "Partner sign in"}
-          <ArrowRight aria-hidden="true" />
-        </Link>
+        {isTools ? (
+          <Link className="dp-partner-lifecycle-utility-link" to="/partners/register">
+            Create partner account
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        ) : (
+          <figure className="dp-partner-lifecycle-hero-media">
+            <img src="/images/partners/pricing/rail/resident-map-phone.jpg" alt="Downtown Perks mobile map connecting residents with downtown partners" />
+          </figure>
+        )}
       </header>
 
       {!isTools ? (
-        <section className="dp-partner-trust-strip" aria-label="Connected tools">
-          <span>Works with</span>
-          <div>
-            {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
+        <section className="dp-partner-trust-strip" aria-labelledby="works-with-title">
+          <div className="dp-partner-trust-heading"><span>Works with</span><h2 id="works-with-title">Keep the tools that run your business.</h2></div>
+          <div className="dp-partner-trust-groups">
+            {worksWithGroups.map(([category, tools, description]) => (
+              <article key={category}>
+                <strong>{category}</strong>
+                <div>{tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
+                <p>{description}</p>
+                <Link to="/partners/tools#integrations">View integrations</Link>
+              </article>
+            ))}
           </div>
         </section>
       ) : null}
@@ -758,6 +779,30 @@ function ProfessionalServicesSection() {
   );
 }
 
+function LivePricingSummary({ setup }) {
+  const selectedType = getSelectedPartnerType(setup);
+  const modules = Array.isArray(setup.moduleLabels) && setup.moduleLabels.length ? setup.moduleLabels : ["None"];
+  const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
+
+  return (
+    <aside className="dp-partner-plan-summary" aria-label="Live pricing summary">
+      <p>Your plan</p>
+      <dl>
+        <div><dt>Business</dt><dd>{selectedType.label}</dd></div>
+        <div><dt>Membership</dt><dd>{setup.plan || selectedType.plan}</dd></div>
+        <div><dt>Annual</dt><dd>{total}</dd></div>
+        <div><dt>Campaigns</dt><dd>{modules.slice(0, 2).join(", ")}{modules.length > 2 ? ` +${modules.length - 2}` : ""}</dd></div>
+        <div><dt>Professional services</dt><dd>Optional</dd></div>
+        <div><dt>Today's total</dt><dd>{total}</dd></div>
+      </dl>
+      <Link to={`/partners/register?partnerType=${encodeURIComponent(selectedType.id)}`}>
+        Continue
+        <ArrowRight aria-hidden="true" />
+      </Link>
+    </aside>
+  );
+}
+
 function IntegrationsSection() {
   const [activeCategory, setActiveCategory] = useState(integrationCatalog[0].category);
   const [selectedTool, setSelectedTool] = useState(integrationCatalog[0].tools[0]);
@@ -880,12 +925,9 @@ function FaqSection() {
 function FinalCtaSection() {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-final-cta">
-      <p>Ready to become part of downtown?</p>
-      <h2>Connect the experiences people remember.</h2>
-      <span>
-        Whether you manage a building, run a restaurant, welcome hotel guests, or organize community events, Downtown Perks helps people discover
-        your business at the moments that matter most.
-      </span>
+      <p>Partner membership</p>
+      <h2>Become part of downtown.</h2>
+      <span>Give residents, guests, and visitors a clear path to discover and choose your business.</span>
       <div>
         <Link to="/partners/register">Become a Founding Partner</Link>
         <Link to="/contact">Book a Demo</Link>
@@ -895,13 +937,26 @@ function FinalCtaSection() {
 }
 
 function StartStage({ setup, setSetup }) {
+  const selectedType = getSelectedPartnerType(setup);
   return (
     <>
       <ChooseBusinessSection setup={setup} setSetup={setSetup} />
-      <RecommendedMembership setup={setup} />
-      <TimelineSection />
-      <FinalCtaSection />
+      <div className="dp-partner-purchase-grid">
+        <div>
+          <RecommendedMembership setup={setup} />
+          <GrowthProgramsSection />
+          <ProfessionalServicesSection />
+          <IntegrationsSection />
+          <TimelineSection />
+        </div>
+        <LivePricingSummary setup={setup} />
+      </div>
       <FaqSection />
+      <FinalCtaSection />
+      <Link className="dp-partner-mobile-sticky-cta" to={`/partners/register?partnerType=${encodeURIComponent(selectedType.id)}`}>
+        Continue with {setup.plan || selectedType.plan}
+        <ArrowRight aria-hidden="true" />
+      </Link>
     </>
   );
 }

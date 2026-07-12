@@ -30,6 +30,7 @@
     "test:mobile-tabs": "tsx scripts/test-mobile-tab-system.ts",
     "test:partner-native-mobile": "node scripts/test-partner-native-mobile.mjs",
     "test:resident-native-mobile": "node scripts/test-resident-native-mobile.mjs",
+    "test:first-party-auth": "tsx scripts/test-first-party-auth.ts",
     "test:search-intent-exclusivity": "tsx scripts/test-search-intent-exclusivity.ts",
     "test:daa-hospitality": "node scripts/test-daa-hospitality.mjs",
     "test:residential-content": "node scripts/test-residential-mixed-use.mjs",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
@@ -12,7 +12,7 @@ const RESIDENT_LINKS = [
 ];
 
 const PARTNER_LINKS = [
-  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
+  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
   { to: "/partner-workspace/overview", label: "Platform", description: "Open the partner operating workspace" },
   { to: "/partners/campaigns", label: "Campaigns", description: "Create a local offer or event placement" },
   { to: "/partner-workspace/overview", label: "Workspace", description: "Manage reports, campaigns, and team access" },
@@ -29,7 +29,7 @@ const HAMBURGER_RESIDENT_LINKS = [
 ];
 
 const HAMBURGER_PARTNER_LINKS = [
-  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
+  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/partner-workspace/overview", label: "Platform" },
   { to: "/partners/campaigns", label: "Campaigns" },
   { to: "/partner-workspace/overview", label: "Workspace" },
@@ -41,7 +41,7 @@ const HAMBURGER_PARTNER_LINKS = [
 const COMMERCE_LINKS = [
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/card", label: "Perks Card" },
-  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
+  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/pricing", label: "Pricing" },
   { to: "/partners/sign-up", label: "Sign Up" },
 ];
@@ -135,7 +135,7 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ showBackButton = false, onBack }) {
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -237,12 +237,25 @@ export default function Navbar() {
       }`}
     >
       <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
-        <Link to="/map?mode=resident&tab=map&filter=Perks" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
-          <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
-          <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
-            Downtown Perks
-          </span>
-        </Link>
+        <div className="flex min-w-0 items-center gap-3">
+          {showBackButton && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex h-11 shrink-0 items-center gap-1.5 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition-colors hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="h-4 w-4 text-[#BFA46A]" aria-hidden="true" />
+              <span className="hidden sm:inline">Back</span>
+            </button>
+          )}
+          <Link to="/map?mode=resident&tab=map&filter=Perks" className="group flex min-w-0 shrink items-center gap-2" aria-label="Downtown Perks app">
+            <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
+            <span className="truncate text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
+              Downtown Perks
+            </span>
+          </Link>
+        </div>
 
         {!open && (
           <div className="hidden items-center gap-4 transition-all duration-200">
@@ -273,7 +286,7 @@ export default function Navbar() {
                   Resident Map
                 </Link>
                 <Link
-                  to="/app?mode=partner&tab=map&filter=All"
+                  to="/map?mode=partner&tab=map&filter=All"
                   className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     partnerMapActive
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"

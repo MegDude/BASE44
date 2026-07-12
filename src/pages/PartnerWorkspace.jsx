@@ -821,17 +821,17 @@ function WorkspaceReports() {
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
       className="dp-workspace-reports"
     >
-      <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
+      <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 border border-[rgba(11,31,51,0.10)] bg-white p-6 md:flex-row md:items-end md:justify-between">
         <div>
-          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reports</span>
-          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">See what people did, then choose what to do next.</h2>
+          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reporting & Analytics</span>
+          <h2 className="mt-2 text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and follow-through.</h2>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
             See what people viewed, saved, scanned, opened, asked directions for, redeemed, and came back to. Use that read to choose what to publish, improve, or repeat next.
           </p>
         </div>
         <Link
           to="/map?mode=partner&tab=reports"
-          className="dp-partner-workspace-button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
+          className="dp-partner-workspace-button inline-flex h-11 shrink-0 items-center justify-center gap-1.5 border border-[rgba(11,31,51,0.14)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
         >
           Open map reports
         </Link>
@@ -843,7 +843,7 @@ function WorkspaceReports() {
           ["Visits", "Directions, verified visits, redemptions, and repeat activity."],
           ["Next step", "Suggested updates tied to campaigns, offers, events, and reports."],
         ].map(([label, copy]) => (
-          <article key={label} className="rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-4 shadow-[0_1px_4px_rgba(11,31,51,0.04)]">
+          <article key={label} className="border border-[rgba(11,31,51,0.10)] bg-white p-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</p>
             <p className="mt-2 text-[13px] leading-[1.55] text-[#0B1F33]/64">{copy}</p>
           </article>
@@ -853,18 +853,18 @@ function WorkspaceReports() {
         {monthlyReports.map((item) => (
           <article
             key={item.section}
-            className="dp-workspace-report-card group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(191,164,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
+            className="dp-workspace-report-card grid gap-4 bg-white p-5 md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
           >
             <div>
               <p className="dp-workspace-report-label text-[10px] font-semibold tracking-[0.12em] uppercase text-[#BFA46A]">{item.section}</p>
               <div className="dp-workspace-report-metric mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
             </div>
             <div>
-              <h3 className="font-body text-[14.5px] font-semibold leading-snug tracking-tight text-[#0B1F33]">{item.headline}</h3>
+              <h3 className="text-[14.5px] font-semibold leading-snug tracking-tight text-[#0B1F33]">{item.headline}</h3>
               <p className="mt-1.5 text-[13px] leading-[1.6] text-[#0B1F33]/60">{item.copy}</p>
               <dl className="dp-workspace-report-readout mt-3.5 grid gap-2 text-[12px] leading-[1.55] md:grid-cols-2">
                 {item.readout.map(([label, detail]) => (
-                  <div key={`${item.section}-${label}`} className="p-2.5 rounded-[6px] bg-[#F7F8FB]">
+                  <div key={`${item.section}-${label}`} className="border-t border-[rgba(11,31,51,0.10)] py-3">
                     <dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">{label}</dt>
                     <dd className="text-[#0B1F33]/70 mt-0.5">{detail}</dd>
                   </div>
@@ -873,7 +873,7 @@ function WorkspaceReports() {
             </div>
             <Link
               to="/map?mode=partner&tab=reports"
-              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#BFA46A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#BFA46A]"
+              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]"
             >
               {item.action}
             </Link>

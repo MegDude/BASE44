@@ -35,7 +35,9 @@ export const AuthProvider = ({ children }) => {
   const [partnerSession, setPartnerSession] = useState(() => readPartnerSession());
   const [user, setUser] = useState(() => partnerSession?.user || null);
   const [isAuthenticated, setIsAuthenticated] = useState(Boolean(partnerSession));
-  const [isLoadingAuth, setIsLoadingAuth] = useState(Boolean(appParams.token));
+  const [isLoadingAuth, setIsLoadingAuth] = useState(Boolean(
+    appParams.token || (isProductionLike() && canUseProductionAccountAccess() && supabaseClient)
+  ));
   const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
   const [authError, setAuthError] = useState(null);
   const [appPublicSettings, setAppPublicSettings] = useState(null); // Contains only { id, public_settings }
@@ -67,14 +69,15 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const partnerType = currentUser.user_metadata?.partner_type || currentUser.user_metadata?.account_type || "partner";
+    const partnerType = currentUser.user_metadata?.partner_type || currentUser.user_metadata?.account_type || "resident";
+    const role = String(currentUser.app_metadata?.role || currentUser.app_metadata?.account_type || "resident").toLowerCase();
     const profile = {
       id: currentUser.id,
       email: currentUser.email || "",
       full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Account",
       organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Account",
       partner_type: partnerType,
-      role: currentUser.app_metadata?.role || currentUser.user_metadata?.role || (partnerType === "resident" ? "resident" : "partner"),
+      role: ["resident", "partner", "admin"].includes(role) ? role : "resident",
       authProvider: "supabase",
     };
     setUser(profile);
@@ -214,6 +217,29 @@ export const AuthProvider = ({ children }) => {
     return nextSession;
   };
 
+  const signInWithGoogle = async (profile = {}) => {
+    if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) {
+      const message = "Google sign-in is available when production account access is configured.";
+      setAuthError(message);
+      return { type: "error", message };
+    }
+
+    const redirectPath = profile.redirectPath || "/auth/callback";
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}${redirectPath}`,
+        queryParams: { access_type: "offline", prompt: "consent" },
+      },
+    });
+    if (error) {
+      const message = error.message || "Google sign-in could not be started.";
+      setAuthError(message);
+      return { type: "error", message };
+    }
+    return { type: "supabase_oauth", url: data?.url || "" };
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -225,6 +251,7 @@ export const AuthProvider = ({ children }) => {
       appPublicSettings,
       logout,
       signInPartner,
+      signInWithGoogle,
       navigateToLogin,
       checkAppState
     }}>

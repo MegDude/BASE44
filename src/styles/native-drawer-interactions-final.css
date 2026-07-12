@@ -1,0 +1,99 @@
+/* Shared native drawer interaction contract for every map panel. */
+.dp-map-page .dp-native-drawer-shell {
+  --dp-native-drawer-duration: 260ms;
+  --dp-native-drawer-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  overscroll-behavior: contain !important;
+  transition:
+    height var(--dp-native-drawer-duration) var(--dp-native-drawer-ease),
+    max-height var(--dp-native-drawer-duration) var(--dp-native-drawer-ease),
+    border-radius var(--dp-native-drawer-duration) var(--dp-native-drawer-ease) !important;
+  will-change: transform, height !important;
+}
+
+.dp-map-page .dp-native-drawer-handle {
+  position: relative !important;
+  z-index: 40 !important;
+  width: 100% !important;
+  min-height: 28px !important;
+  flex: 0 0 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: none !important;
+  cursor: ns-resize !important;
+  touch-action: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.dp-map-page .dp-native-drawer-handle > span {
+  width: 38px !important;
+  height: 4px !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.18) !important;
+  transition: background 180ms ease !important;
+}
+
+.dp-map-page .dp-native-drawer-handle:is(:hover, :focus-visible) > span {
+  background: rgba(11, 31, 51, 0.34) !important;
+}
+
+.dp-map-page .dp-native-drawer-shell :is(.dp-map-panel-scroll, .dp-drawer-scroll, .dp-panel-scroll, [data-panel-body]) {
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-gutter: stable !important;
+}
+
+@media (max-width: 767px) {
+  .dp-map-page .dp-native-drawer-shell {
+    position: fixed !important;
+    inset-inline: 0 !important;
+    bottom: calc(var(--dp-bottom-nav-height, 72px) + env(safe-area-inset-bottom)) !important;
+    width: 100% !important;
+    max-width: none !important;
+    overflow: hidden !important;
+    border-radius: 18px 18px 0 0 !important;
+    background: #fff !important;
+    box-shadow: 0 -12px 40px rgba(11, 31, 51, 0.12) !important;
+  }
+
+  .dp-map-page .dp-native-drawer-shell[data-drawer-state="medium"] {
+    height: 46dvh !important;
+    max-height: 46dvh !important;
+  }
+
+  .dp-map-page .dp-native-drawer-shell[data-drawer-state="expanded"] {
+    height: min(82dvh, calc(100dvh - var(--dp-app-header-height, 64px) - var(--dp-bottom-nav-height, 72px) - env(safe-area-inset-bottom))) !important;
+    max-height: calc(100dvh - var(--dp-app-header-height, 64px) - var(--dp-bottom-nav-height, 72px) - env(safe-area-inset-bottom)) !important;
+  }
+
+  .dp-map-page .dp-native-drawer-shell[data-drawer-state="full"] {
+    height: calc(100dvh - max(env(safe-area-inset-top), 12px) - var(--dp-bottom-nav-height, 72px) - env(safe-area-inset-bottom)) !important;
+    max-height: calc(100dvh - max(env(safe-area-inset-top), 12px) - var(--dp-bottom-nav-height, 72px) - env(safe-area-inset-bottom)) !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .dp-map-page .dp-native-drawer-shell[data-drawer-state="medium"] .dp-map-panel-scroll {
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .dp-map-page .dp-native-drawer-handle {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-map-page .dp-native-drawer-shell,
+  .dp-map-page .dp-native-drawer-handle > span {
+    transition-duration: 0.01ms !important;
+  }
+}

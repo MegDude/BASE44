@@ -10,16 +10,22 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     if (isLoadingAuth) return;
+    const hashParams = new URLSearchParams(location.hash.replace(/^#/, ""));
+    const callbackError = hashParams.get("error_description") || hashParams.get("error");
+    const returnTo = getSafeReturnPath(location.search);
+    if (callbackError) {
+      navigate(`/sign-in?returnTo=${encodeURIComponent(returnTo)}&error=${encodeURIComponent(callbackError)}`, { replace: true });
+      return;
+    }
     if (!isAuthenticated) {
-      const returnTo = getSafeReturnPath(location.search);
       navigate(`/sign-in?returnTo=${encodeURIComponent(returnTo)}&error=callback_failed`, { replace: true });
       return;
     }
     const role = String(user?.role || user?.partner_type || "resident").toLowerCase();
-    if (role === "admin") return navigate("/admin", { replace: true });
+    if (role === "admin") return navigate("/admin-studio/command-center", { replace: true });
     if (role !== "resident") return navigate("/partner-workspace/overview", { replace: true });
-    navigate(consumeAuthReturnPath(getSafeReturnPath(location.search)), { replace: true });
-  }, [isAuthenticated, isLoadingAuth, location.search, navigate, user]);
+    navigate(consumeAuthReturnPath(returnTo), { replace: true });
+  }, [isAuthenticated, isLoadingAuth, location.hash, location.search, navigate, user]);
 
   return <main className="dp-auth-callback" aria-busy="true" aria-label="Signing in to Downtown Perks"><div><span aria-hidden="true" /><strong>Signing you in…</strong><p>You will return to your map in a moment.</p></div></main>;
 }

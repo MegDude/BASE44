@@ -3232,42 +3232,6 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-status.dp-search-inte
   letter-spacing: 0 !important;
 }
 
-html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-search-area-button {
-  position: absolute !important;
-  left: 50% !important;
-  top: auto !important;
-  bottom: 112px !important;
-  z-index: 690 !important;
-  min-height: 44px !important;
-  padding: 0 16px !important;
-  transform: translateX(-50%) !important;
-  border: 1px solid rgba(11, 31, 51, 0.14) !important;
-  border-radius: 999px !important;
-  background: rgba(255, 255, 255, 0.94) !important;
-  color: #0B1F33 !important;
-  box-shadow: 0 14px 32px rgba(11, 31, 51, 0.14) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
-  backdrop-filter: blur(18px) saturate(140%) !important;
-  font-size: 13px !important;
-  font-weight: 760 !important;
-  letter-spacing: 0 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-search-area-button:is(:hover, :focus-visible) {
-  border-color: rgba(200, 169, 106, 0.46) !important;
-  box-shadow: 0 16px 34px rgba(11, 31, 51, 0.18) !important;
-}
-
-@media (max-width: 767px) {
-  html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-search-area-button {
-    top: auto !important;
-    bottom: 102px !important;
-    min-height: 44px !important;
-    padding: 0 14px !important;
-    font-size: 12px !important;
-  }
-}
-
 /* Native map panel finish.
    Shared by resident and partner pin/perk detail sheets. */
 html body #root .dp-map-page.dp-map-page {

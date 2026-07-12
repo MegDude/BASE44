@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeFooter from "./HomeFooter";
@@ -51,9 +51,6 @@ export default function Layout() {
   const { pathname, search } = location;
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
-  const isEmbeddedMap = pathname === "/map" && new URLSearchParams(search).get("embed") === "true";
-  const isResidentAccessRoute = pathname === "/card" || pathname === "/resident-sign-up";
-  const isPublicPartnerRoute = pathname === "/partners" || pathname.startsWith("/partners/");
 
   useEffect(() => {
     function handleOpenQuickSearch() {
@@ -67,11 +64,8 @@ export default function Layout() {
   const isProductRoute =
     pathname === "/app" ||
     pathname === "/app/map" ||
-    pathname === "/resident/home" ||
-    isResidentAccessRoute ||
     pathname === "/about" ||
     pathname === "/map" ||
-    pathname === "/resident/home" ||
     pathname === "/partner-map" ||
     pathname.startsWith("/partner-workspace") ||
     pathname.startsWith("/partners") ||
@@ -102,7 +96,6 @@ export default function Layout() {
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/map" ||
-    isResidentAccessRoute ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
     pathname === "/residents/map" ||
@@ -111,31 +104,27 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const showBackButton =
-    pathname !== "/" &&
-    pathname !== "/app" &&
-    pathname !== "/app/map" &&
-    pathname !== "/map" &&
-    pathname !== "/sign-in" &&
-    !isEmbeddedMap &&
-    !isResidentAccessRoute &&
-    !isPublicPartnerRoute &&
-    !pathname.startsWith("/partner-workspace");
-  const showNavbar =
-    pathname !== "/" &&
-    pathname !== "/app" &&
-    pathname !== "/app/map" &&
-    pathname !== "/map" &&
-    pathname !== "/resident/home" &&
-    !isEmbeddedMap &&
-    !isResidentAccessRoute;
-  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
+  const suppressGlobalBackButton =
+    noFooter ||
+    pathname === "/marketing/contact" ||
+    pathname === "/contact" ||
+    pathname === "/pricing" ||
+    pathname === "/marketing/pricing" ||
+    pathname.startsWith("/partner-workspace") ||
+    pathname.startsWith("/dashboard") ||
+    pathname === "/partner-dashboard" ||
+    pathname.startsWith("/resident-workspace") ||
+    pathname.startsWith("/resident-app");
+
+  const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
+  const showNavbar = !["/", "/map", "/app", "/app/map", "/sign-in", "/auth/callback"].includes(pathname);
+  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {
       window.sessionStorage?.setItem("dp-opening-story-seen", "true");
     }
-    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+    navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
   function getBackFallbackPath() {
@@ -145,16 +134,10 @@ export default function Layout() {
 
     if (pathname === "/app" || pathname === "/app/map" || pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover" || pathname === "/partners/map") {
       if (mode === "partner" && filter === "Events") return "/partners/campaigns";
-      if (mode === "partner" || pathname === "/partners/map") return "/partners";
-      return "/resident/home";
+      return "/";
     }
 
-    if (pathname === "/resident/home") return "/map?mode=resident&tab=map&filter=All";
-    if (pathname === "/pricing" || pathname === "/contact") return "/partners";
-    if (pathname.startsWith("/ask-map")) return "/map?mode=resident&tab=map&filter=All";
-    if (pathname.startsWith("/admin-studio")) return "/partner-workspace/overview";
     if (pathname.startsWith("/partners/")) return "/partners";
-    if (pathname === "/partner-workspace/overview") return "/partners";
     if (pathname.startsWith("/partner-workspace")) return "/partner-workspace/overview";
     if (pathname.startsWith("/buildings/") || pathname.startsWith("/properties/") || pathname.startsWith("/building-intelligence/")) {
       return "/partners/properties";
@@ -163,9 +146,9 @@ export default function Layout() {
     if (pathname.startsWith("/brands/")) return "/brands";
     if (pathname.startsWith("/downtown-perks/")) return "/downtown-perks";
     if (pathname === "/events") return "/residents";
-    if (pathname === "/about" || pathname === "/card" || pathname === "/perks" || pathname === "/sign-in") return "/resident/home";
+    if (pathname === "/about" || pathname === "/card" || pathname === "/perks") return "/residents";
 
-    return "/resident/home";
+    return "/";
   }
 
   function goBack() {
@@ -181,7 +164,7 @@ export default function Layout() {
     <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks">
       <ScrollToTop />
       <InteractionFeedback />
-      {showNavbar && <Navbar />}
+      {showNavbar && <Navbar showBackButton={showBackButton} onBack={goBack} />}
       {showProductSearchButton && (
         <button
           type="button"
@@ -192,19 +175,6 @@ export default function Layout() {
           <Search className="h-4 w-4" aria-hidden="true" />
           <span>Search</span>
         </button>
-      )}
-      {showBackButton && (
-        <div className={`dp-layout-back-row${showNavbar ? "" : " is-product"}`}>
-          <button
-            type="button"
-            onClick={goBack}
-            className="dp-layout-back"
-            aria-label="Go back"
-          >
-            <ArrowLeft aria-hidden="true" />
-            Back
-          </button>
-        </div>
       )}
       <div className="dp-route-outlet">
         <Outlet />

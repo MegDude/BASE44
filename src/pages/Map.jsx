@@ -13562,7 +13562,7 @@ export default function MapPage() {
   const mapZoomRef = useRef(initialMapView.zoom);
   const viewportBoundsRef = useRef(null);
   const recentScopedQueryRef = useRef("");
-  const [searchAreaDirty, setSearchAreaDirty] = useState(false);
+  const [, setSearchAreaDirty] = useState(false);
   const [consoleCollapsed, setConsoleCollapsed] = useState(false);
   const [intelOpen, setIntelOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -16695,24 +16695,6 @@ export default function MapPage() {
         </GoogleMapErrorBoundary>
       </div>
 
-      {searchAreaDirty && urlState.tab === "map" ? (
-        <button
-          type="button"
-          className="dp-map-search-area-button"
-          onClick={() => {
-            void requestScopedMapResults({
-              query: search || activeFilter,
-              filterOverride: activeFilter,
-              collectionId: urlState.collection,
-              activeEntityId: selectedId,
-              trigger: "search_this_area",
-            });
-          }}
-        >
-          Search this area
-        </button>
-      ) : null}
-
       {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed) ? (
         <CollectionRoutePanel
           route={activeCollectionRoute}
@@ -16728,18 +16710,7 @@ export default function MapPage() {
         <div
           className="dp-map-search-anchor pointer-events-none absolute inset-x-0 top-[72px] z-[680] px-2.5 md:top-[80px] md:px-5"
         >
-          <div className={`dp-map-top-nav ${showTopMapBack ? "has-back" : ""}`}>
-            {showTopMapBack ? (
-              <button
-                type="button"
-                className="dp-map-top-back"
-                onClick={isLegendsDirectoryLayer ? closeDirectoryToMap : goBackToMap}
-                aria-label="Back to map"
-              >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                <span>Back</span>
-              </button>
-            ) : null}
+          <div className="dp-map-top-nav">
             <SearchIntentConsole
               mode={urlState.mode}
               query={search}
